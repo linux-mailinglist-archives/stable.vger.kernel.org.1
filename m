@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DCB8B7018
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303D68B7395
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 837141C21EE7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF08528884D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783D512C485;
-	Tue, 30 Apr 2024 10:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0C212D1E8;
+	Tue, 30 Apr 2024 11:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lmg07e9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG4Z4BlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3159A127B70;
-	Tue, 30 Apr 2024 10:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF688801;
+	Tue, 30 Apr 2024 11:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473803; cv=none; b=aUHua1C/hRpkskAGFTilx9mEUzc9Xwp7MzW33hZjoUSldh9Gd/GVpJC8G4r7E2aKaVWKKp79GbJ+EaGKK7yqX7Pk70MDqDoUY5Oob0jfNFozTtJMPhb7s6AQWLn2QIHTzV95U/Ie/YimbD4UpmdW52QIkgWmN8vFwrpVAvcOXGc=
+	t=1714476053; cv=none; b=KGDbAy/byiqa4aIuQQ7NK5znIcONouVK1JQcob7W7Re7EgCrnVAUpzHpmpZsGCPOBIuI2M8K4SHTvtXMXHFQmCh051qjLIuaWyswJ9edE6qNgpLmZl+H6YvRtQjZEmUIg42KWpU+zZHEPPaFqDRUabC30C266MpCYqgcTmFQNc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473803; c=relaxed/simple;
-	bh=vrcGxd1iod31I02HaCKdGpaeq4s0sWyXj/DKjvuJ3AQ=;
+	s=arc-20240116; t=1714476053; c=relaxed/simple;
+	bh=KnfD3PEtQI1s1Bhd1kjMc+BqSkY3EYz1zbeFad/uZ50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLeSb2yQAN6Jv8YxGuV9sh/r/k7x7sNR7tiTr1jHl+4ZVHFO+CwCBh66pcMLD+bs6cLRcu/gqxSoguqzLMZEYOV4vWDqC8tqnl9xcnH099aKRxmmIY6Vo4Gjv48KAfwdVZlQTKRwsjlM870JDVlJ+vhspsY/ogZG0cMLkADP5Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lmg07e9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C6DC4AF1A;
-	Tue, 30 Apr 2024 10:43:22 +0000 (UTC)
+	 MIME-Version; b=DDosXavEyWKB8sTS/GEqz3wcMhd2WxQppOH4fA7EciYP8IiIVSzUAMHxnTEAHhYMUN/dwNLI3ST4t/VjIpDTn93T1T7yD5qIXe+F+A5hgbuQmxV67j87P/unMo42XV18p8rTzJTeIkGX1M9F0z1Un+MCaIsbS8imfHuzF6EANI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG4Z4BlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95D1C2BBFC;
+	Tue, 30 Apr 2024 11:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473803;
-	bh=vrcGxd1iod31I02HaCKdGpaeq4s0sWyXj/DKjvuJ3AQ=;
+	s=korg; t=1714476053;
+	bh=KnfD3PEtQI1s1Bhd1kjMc+BqSkY3EYz1zbeFad/uZ50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lmg07e9lrq3i+kVxMnyMgc3JToO7O4qbn118pFnF5qemCnfbdKyuqCQ/8NxBD2w5T
-	 fhAOH5A7ZRj3FFUxxdc4Uo3uCx7FdXk6EKxJmk49FAalDcloi+SfLBLw27ADnDPI3M
-	 o0toRUWI7SimhSd8pkDxAQqBHT771iy4UNZE5lI8=
+	b=uG4Z4BlZq999t7Jl4it4dXoI2LVtqxmeqrpjyvR9IvrqW5Oc1kZmbYN6uU8DF/6uO
+	 wf4z3DG307DKa2Va89HoW7ObM5wzVNYosktooiMg8sy/wmvQQAoH4e83DFCF00WEYP
+	 uWtaWSaU1ZJ9gTrnSD7CxW/WGxaGfYs38Dty5pVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vineet Gupta <vgupta@kernel.org>,
-	Alexey Brodkin <abrodkin@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 43/77] ARC: [plat-hsdk]: Remove misplaced interrupt-cells property
+	syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.4 002/107] Bluetooth: Fix memory leak in hci_req_sync_complete()
 Date: Tue, 30 Apr 2024 12:39:22 +0200
-Message-ID: <20240430103042.405725384@linuxfoundation.org>
+Message-ID: <20240430103044.730213999@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Brodkin <Alexey.Brodkin@synopsys.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 61231eb8113ce47991f35024f9c20810b37996bf ]
+commit 45d355a926ab40f3ae7bc0b0a00cb0e3e8a5a810 upstream.
 
-"gmac" node stands for just an ordinary Ethernet controller,
-which is by no means a provider of interrupts, i.e. it doesn't serve
-as an interrupt controller, thus "#interrupt-cells" property doesn't
-belong to it and so we remove it.
+In 'hci_req_sync_complete()', always free the previous sync
+request state before assigning reference to a new one.
 
-Fixes:
------------->8------------
-  DTC     arch/arc/boot/dts/hsdk.dtb
-arch/arc/boot/dts/hsdk.dts:207.23-235.5: Warning (interrupt_provider): /soc/ethernet@8000: '#interrupt-cells' found, but node is not an interrupt provider
-arch/arc/boot/dts/hsdk.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
------------->8------------
-
-Reported-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+39ec16ff6cc18b1d066d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=39ec16ff6cc18b1d066d
+Cc: stable@vger.kernel.org
+Fixes: f60cb30579d3 ("Bluetooth: Convert hci_req_sync family of function to new request API")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arc/boot/dts/hsdk.dts | 1 -
- 1 file changed, 1 deletion(-)
+ net/bluetooth/hci_request.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arc/boot/dts/hsdk.dts b/arch/arc/boot/dts/hsdk.dts
-index f6b6e3c9ca8aa..40a6681bae8a5 100644
---- a/arch/arc/boot/dts/hsdk.dts
-+++ b/arch/arc/boot/dts/hsdk.dts
-@@ -170,7 +170,6 @@
- 		};
- 
- 		gmac: ethernet@8000 {
--			#interrupt-cells = <1>;
- 			compatible = "snps,dwmac";
- 			reg = <0x8000 0x2000>;
- 			interrupts = <10>;
--- 
-2.43.0
-
+--- a/net/bluetooth/hci_request.c
++++ b/net/bluetooth/hci_request.c
+@@ -107,8 +107,10 @@ static void hci_req_sync_complete(struct
+ 	if (hdev->req_status == HCI_REQ_PEND) {
+ 		hdev->req_result = result;
+ 		hdev->req_status = HCI_REQ_DONE;
+-		if (skb)
++		if (skb) {
++			kfree_skb(hdev->req_skb);
+ 			hdev->req_skb = skb_get(skb);
++		}
+ 		wake_up_interruptible(&hdev->req_wait_q);
+ 	}
+ }
 
 
 
