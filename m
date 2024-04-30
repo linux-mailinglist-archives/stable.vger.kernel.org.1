@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-42413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62AA8B72E6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EFE8B7181
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06FA1B23399
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3349284BD4
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8288812CD90;
-	Tue, 30 Apr 2024 11:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D0012C534;
+	Tue, 30 Apr 2024 10:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSaZpwZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A68H9a83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA1E1E50A;
-	Tue, 30 Apr 2024 11:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C0D12C499;
+	Tue, 30 Apr 2024 10:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475584; cv=none; b=BDlPmtHTiXzn6VWLUiD5pojHaAWydpx5n6/Ge2CLeBjq4L4Jm0N6A3dNxXF5FOw9BWvP4qFDyAtn/it3HEFCaxPK4cB6GZKeU3NV6h5DX7sPfl1Ii+el/d6Zh69dyY6pQXFct0UtMGzhmYBVAgCvrlg2IJ9McLgeklFY9VqagfQ=
+	t=1714474635; cv=none; b=XttT2IzimYMUXm44XR2HqIV+ayK1bI3tr+EvZAu8CIs9azZhNKKpBq6S6ax4S58JgrRUw09Iop2BVQ2Ll3tC+wzb6lLA+ujmBCTXw0Ic+DUfwTA/hBm6/gP7rJMMq0TNx+YykZdy0SDfeE6b9YvGyMBmj95OD5dhCcOaEDTCScA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475584; c=relaxed/simple;
-	bh=ycONLZEvvtYqCb3WuDzJvTe25E9GAGfd249LwHlXxBI=;
+	s=arc-20240116; t=1714474635; c=relaxed/simple;
+	bh=XplUxNMzggqqgj7viqwY8T7U7rWBPVzDqqvnVgibDK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AKjeHXfLIocZ+urfbFE1tBiIaj+yTfLZg8U7Tiwpasd3UKXuvZIdGInlAA5aR+0ta/s9zCsqSY+075zhe1g4nnuq+Twr4pIRTUm28ecTGbGzyTqoMqN39B0QHdq0Gk6n+bTDLsGq4ci3ypX9o2eIifx8S0ZX84Hs0KaLJstHtxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSaZpwZ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BBAC2BBFC;
-	Tue, 30 Apr 2024 11:13:03 +0000 (UTC)
+	 MIME-Version; b=dttmv2WBfIr+ghutCpibBJFhJ/1FAVqY2awSzB2R1AAgs03grriWfZmT3N1qeRR7Gzh0eHpR8v4BjpPc5BIFqe7Uq9xtUzns0msq1igO72d3ttYWdn4KdeDk7kMq8hagKbmNpMRk4BhwQ9uXVtk9X4WqRYHytwOuyv5LWi1VXvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A68H9a83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3FBC2BBFC;
+	Tue, 30 Apr 2024 10:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475584;
-	bh=ycONLZEvvtYqCb3WuDzJvTe25E9GAGfd249LwHlXxBI=;
+	s=korg; t=1714474635;
+	bh=XplUxNMzggqqgj7viqwY8T7U7rWBPVzDqqvnVgibDK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSaZpwZ8JPOp3DI66L1ToEelciiufuixAUS/9Hz5jp/h6AW43S4Mi4bpP88dSgQa6
-	 FlgmKO1n2lQxFM1E032ifShg70klgVtogxx0G0RuAy2m/u8xPqFrtthCjqBJqTZV12
-	 Nvwa6VYEn5xR+se8GNSIlDSw9sk6l517Q6gTaxyQ=
+	b=A68H9a83e+UMPNnoA+GBO8vGPhxJoe2CvddwqEoAFVRbNtgaU0+Z6aLOUG6KuktrO
+	 cO9KnlE5rCdRpPxX4bUgWti6keCWKDHcWDlUJCYDAW3NNfxonVUcxKFidZuZEj2lA1
+	 dOOc60F20cDVR4SuF62gFOoljhucQty2PeZHpoQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 141/186] drm/amdgpu/sdma5.2: use legacy HDP flush for SDMA2/3
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 215/228] riscv: Fix loading 64-bit NOMMU kernels past the start of RAM
 Date: Tue, 30 Apr 2024 12:39:53 +0200
-Message-ID: <20240430103102.126719400@linuxfoundation.org>
+Message-ID: <20240430103110.009652974@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 9792b7cc18aaa0c2acae6af5d0acf249bcb1ab0d upstream.
+[ Upstream commit aea702dde7e9876fb00571a2602f25130847bf0f ]
 
-This avoids a potential conflict with firmwares with the newer
-HDP flush mechanism.
+commit 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear
+mapping") added logic to allow using RAM below the kernel load address.
+However, this does not work for NOMMU, where PAGE_OFFSET is fixed to the
+kernel load address. Since that range of memory corresponds to PFNs
+below ARCH_PFN_OFFSET, mm initialization runs off the beginning of
+mem_map and corrupts adjacent kernel memory. Fix this by restoring the
+previous behavior for NOMMU kernels.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear mapping")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20240227003630.3634533-3-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ arch/riscv/include/asm/page.h | 2 +-
+ arch/riscv/mm/init.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-@@ -292,17 +292,21 @@ static void sdma_v5_2_ring_emit_hdp_flus
- 	u32 ref_and_mask = 0;
- 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio.hdp_flush_reg;
+diff --git a/arch/riscv/include/asm/page.h b/arch/riscv/include/asm/page.h
+index 57e887bfa34cb..94b3d6930fc37 100644
+--- a/arch/riscv/include/asm/page.h
++++ b/arch/riscv/include/asm/page.h
+@@ -89,7 +89,7 @@ typedef struct page *pgtable_t;
+ #define PTE_FMT "%08lx"
+ #endif
  
--	ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
-+	if (ring->me > 1) {
-+		amdgpu_asic_flush_hdp(adev, ring);
-+	} else {
-+		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0 << ring->me;
+-#ifdef CONFIG_64BIT
++#if defined(CONFIG_64BIT) && defined(CONFIG_MMU)
+ /*
+  * We override this value as its generic definition uses __pa too early in
+  * the boot process (before kernel_map.va_pa_offset is set).
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index fa34cf55037bd..0c00efc75643a 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -232,7 +232,7 @@ static void __init setup_bootmem(void)
+ 	 * In 64-bit, any use of __va/__pa before this point is wrong as we
+ 	 * did not know the start of DRAM before.
+ 	 */
+-	if (IS_ENABLED(CONFIG_64BIT))
++	if (IS_ENABLED(CONFIG_64BIT) && IS_ENABLED(CONFIG_MMU))
+ 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
  
--	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
--			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
--			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
--	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
--	amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
--	amdgpu_ring_write(ring, ref_and_mask); /* reference */
--	amdgpu_ring_write(ring, ref_and_mask); /* mask */
--	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
--			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
-+		amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
-+				  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
-+				  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
-+		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_done_offset(adev)) << 2);
-+		amdgpu_ring_write(ring, (adev->nbio.funcs->get_hdp_flush_req_offset(adev)) << 2);
-+		amdgpu_ring_write(ring, ref_and_mask); /* reference */
-+		amdgpu_ring_write(ring, ref_and_mask); /* mask */
-+		amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
-+				  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
-+	}
- }
- 
- /**
+ 	/*
+-- 
+2.43.0
+
 
 
 
