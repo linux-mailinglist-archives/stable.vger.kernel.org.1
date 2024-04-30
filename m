@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-42102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9EB68B7169
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8EF8B716D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61972285ABB
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A611F232F9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C32F12C550;
-	Tue, 30 Apr 2024 10:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24DA12CDBB;
+	Tue, 30 Apr 2024 10:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtdzgfS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IjZLiCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD61012C534;
-	Tue, 30 Apr 2024 10:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DD912D1EA;
+	Tue, 30 Apr 2024 10:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474576; cv=none; b=XEt9SUJHXv+VM1BK9dHRr/73SG5IbpDkvgpXeZWR7sR24ke2isV6T9rzGpqFVfaUR1L3KXjlTyCOiofneElErdL+CX73PqpohJfZXCjH/YXr4uKcpFHJuPCaFvOcA2BF01MR8HJyw5x3VF01dWH+hvwrv9aTc45mVMPBzxnRca4=
+	t=1714474583; cv=none; b=fh+qzj4e4Kc0o6qkFZUXxSYdiPPbrcFefX07azablRD21YZxgJ0rJ0wpZe/rMWtwjmBcBi28YeV3ZuzH0meY/knnXHJI1cmbU68FGYPiARjcpciklxBZ1tP0JhKP3jIxxlMatUNHtgFWki8ih/zO394hf+lvgEilTDT4dIyW6gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474576; c=relaxed/simple;
-	bh=AO6y+YKJoirzJpk/UyWJsmb/mThT2G68Rv7R+xWkic8=;
+	s=arc-20240116; t=1714474583; c=relaxed/simple;
+	bh=+roPYsY/mNdQbLcdR8sap7VO76RY6ei6dJyyiPK2O/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9xYuJ0jYo/XZ2R98pA0VZiQy56+WYJu9GotaAMgUM03YafmNhLgtoe7dtga8Amavh1tpdvYjkjR9s/wFk9xKcBXVnC8q0L4BPFVunQHIXGEdNr1o673k+smyfNOD6ocygW20MDu8KMJAuAFjAz5Clb8eZ2A7WGHLaJydWWGK5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtdzgfS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0E3C2BBFC;
-	Tue, 30 Apr 2024 10:56:16 +0000 (UTC)
+	 MIME-Version; b=cCLo+RwB8oq1VeM4OYMrAKCA4nJHFqy0J/wIDKqydJVVuobGDQO0wNkpgQBFGn5glt65xuM90XcLDvJ7d+1DAw6NcgE+1o2FVTtg376XRuppmmWePYE03jUdA1xPe/gGGjyfponrfLe2hWg6Q0oLyHK0mjRhvCGmbkNYwQ7uz/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IjZLiCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2B9C2BBFC;
+	Tue, 30 Apr 2024 10:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474576;
-	bh=AO6y+YKJoirzJpk/UyWJsmb/mThT2G68Rv7R+xWkic8=;
+	s=korg; t=1714474583;
+	bh=+roPYsY/mNdQbLcdR8sap7VO76RY6ei6dJyyiPK2O/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtdzgfS1kSlPxUbd8gg19j4LArnnTCzlcAiA5AN5CoKGKAaD3B/rYWAbFSuy1+H3j
-	 gCr3bMM4iT+jIhZmmkJqkxtSRCb8S02oPnz50TF+8RQyCWfQLIxGda4AkcRcnT5oL3
-	 UJ/A+XbSHsqf3Dgm7c7GRS49sLttr2ag4mYTsWHM=
+	b=2IjZLiCRh+z2+e/b5wGYqK/Wv46FJGtoivd/dRamE9ReDuJNFvHfuCX4Maea5bmS9
+	 r0058j2SQO5H9OwoagGozk1MF4wvkQd7/ti5/Z24R+f4kopCd3M2vuVP26GWHLRz2N
+	 IkoEmpEVb+DfFdavyCA57S9aCuwwxE0quA4K8shE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Christian Heusel <christian@heusel.eu>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Dan Streetman <ddstreet@ieee.org>,
-	"Richard W.M. Jones" <rjones@redhat.com>,
-	Seth Jennings <sjenning@redhat.com>,
-	Vitaly Wool <vitaly.wool@konsulko.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 199/228] mm: zswap: fix shrinker NULL crash with cgroup_disable=memory
-Date: Tue, 30 Apr 2024 12:39:37 +0200
-Message-ID: <20240430103109.544924480@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 200/228] dmaengine: owl: fix register access functions
+Date: Tue, 30 Apr 2024 12:39:38 +0200
+Message-ID: <20240430103109.574779443@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -73,86 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 682886ec69d22363819a83ddddd5d66cb5c791e1 upstream.
+[ Upstream commit 43c633ef93a5d293c96ebcedb40130df13128428 ]
 
-Christian reports a NULL deref in zswap that he bisected down to the zswap
-shrinker.  The issue also cropped up in the bug trackers of libguestfs [1]
-and the Red Hat bugzilla [2].
+When building with 'make W=1', clang notices that the computed register
+values are never actually written back but instead the wrong variable
+is set:
 
-The problem is that when memcg is disabled with the boot time flag, the
-zswap shrinker might get called with sc->memcg == NULL.  This is okay in
-many places, like the lruvec operations.  But it crashes in
-memcg_page_state() - which is only used due to the non-node accounting of
-cgroup's the zswap memory to begin with.
+drivers/dma/owl-dma.c:244:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
+  244 |         u32 regval;
+      |             ^
+drivers/dma/owl-dma.c:268:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
+  268 |         u32 regval;
+      |             ^
 
-Nhat spotted that the memcg can be NULL in the memcg-disabled case, and I
-was then able to reproduce the crash locally as well.
+Change these to what was most likely intended.
 
-[1] https://github.com/libguestfs/libguestfs/issues/139
-[2] https://bugzilla.redhat.com/show_bug.cgi?id=2275252
-
-Link: https://lkml.kernel.org/r/20240418124043.GC1055428@cmpxchg.org
-Link: https://lkml.kernel.org/r/20240417143324.GA1055428@cmpxchg.org
-Fixes: b5ba474f3f51 ("zswap: shrink zswap pool based on memory pressure")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reported-by: Christian Heusel <christian@heusel.eu>
-Debugged-by: Nhat Pham <nphamcs@gmail.com>
-Suggested-by: Nhat Pham <nphamcs@gmail.com>
-Tested-by: Christian Heusel <christian@heusel.eu>
-Acked-by: Yosry Ahmed <yosryahmed@google.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Dan Streetman <ddstreet@ieee.org>
-Cc: Richard W.M. Jones <rjones@redhat.com>
-Cc: Seth Jennings <sjenning@redhat.com>
-Cc: Vitaly Wool <vitaly.wool@konsulko.com>
-Cc: <stable@vger.kernel.org>	[v6.8]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240322132116.906475-1-arnd@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/zswap.c |   25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/dma/owl-dma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Two minor conflicts in the else branch:
-- zswap_pool_total_size was get_zswap_pool_size() in 6.8
-- zswap_nr_stored was pool->nr_stored in 6.8
+diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
+index 4e76c4ec2d396..e001f4f7aa640 100644
+--- a/drivers/dma/owl-dma.c
++++ b/drivers/dma/owl-dma.c
+@@ -250,7 +250,7 @@ static void pchan_update(struct owl_dma_pchan *pchan, u32 reg,
+ 	else
+ 		regval &= ~val;
+ 
+-	writel(val, pchan->base + reg);
++	writel(regval, pchan->base + reg);
+ }
+ 
+ static void pchan_writel(struct owl_dma_pchan *pchan, u32 reg, u32 data)
+@@ -274,7 +274,7 @@ static void dma_update(struct owl_dma *od, u32 reg, u32 val, bool state)
+ 	else
+ 		regval &= ~val;
+ 
+-	writel(val, od->base + reg);
++	writel(regval, od->base + reg);
+ }
+ 
+ static void dma_writel(struct owl_dma *od, u32 reg, u32 data)
+-- 
+2.43.0
 
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -653,15 +653,22 @@ static unsigned long zswap_shrinker_coun
- 	if (!gfp_has_io_fs(sc->gfp_mask))
- 		return 0;
- 
--#ifdef CONFIG_MEMCG_KMEM
--	mem_cgroup_flush_stats(memcg);
--	nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
--	nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
--#else
--	/* use pool stats instead of memcg stats */
--	nr_backing = get_zswap_pool_size(pool) >> PAGE_SHIFT;
--	nr_stored = atomic_read(&pool->nr_stored);
--#endif
-+	/*
-+	 * For memcg, use the cgroup-wide ZSWAP stats since we don't
-+	 * have them per-node and thus per-lruvec. Careful if memcg is
-+	 * runtime-disabled: we can get sc->memcg == NULL, which is ok
-+	 * for the lruvec, but not for memcg_page_state().
-+	 *
-+	 * Without memcg, use the zswap pool-wide metrics.
-+	 */
-+	if (!mem_cgroup_disabled()) {
-+		mem_cgroup_flush_stats(memcg);
-+		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
-+		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
-+	} else {
-+		nr_backing = get_zswap_pool_size(pool) >> PAGE_SHIFT;
-+		nr_stored = atomic_read(&pool->nr_stored);
-+	}
- 
- 	if (!nr_stored)
- 		return 0;
 
 
 
