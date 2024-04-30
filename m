@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40BEE8B72DE
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713128B739C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC4531F21BC0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4800B20D97
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F42012D74E;
-	Tue, 30 Apr 2024 11:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD2F12D1F1;
+	Tue, 30 Apr 2024 11:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7VQhomV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ+ddMI6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9CB12CDAE;
-	Tue, 30 Apr 2024 11:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEADA12CD9B;
+	Tue, 30 Apr 2024 11:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475560; cv=none; b=LBOU7HUMzB/pyYCVibR0mi1o5dBRASK1HN5njqGds026O3ELIrhjURS3mUid5PBV8rWSxun96PKBhzB7Yb6ATHlpPV+ejQhvJDAxd9wdovNEW2EhJsRP8kBG3zXLamh0I+apqs1vAPL9MGUjqpyoOQRaM2KzRwae7jVVbpmdeqo=
+	t=1714476076; cv=none; b=EsqS8p0ZbET0ETZyVSeXnky/yx0pwc/YYn0MRM896AqXuJLQZGmz366tFjk16sMCQe0pcl7nseen2WO2OcNcgdDR3XzTubhslSzQc+tITJkwSO+EGtiEWIvoYFg5cL+vh6moHXaVnKuzqSJjjkXK0VtGRQI1mMPFAjfaw5uM8Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475560; c=relaxed/simple;
-	bh=kUy7hWKy7S0wwXMJzRXZjO71FhsvR+SvoczCeLHoNjQ=;
+	s=arc-20240116; t=1714476076; c=relaxed/simple;
+	bh=T5vadjCBokk3W7b39KvSHV/soDElfxwavfFgjzTLI/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZrHcO7xVEtzcAaTvk8KeuIVfWBKTMAKpcK558MloL829j+Smj8OSkPGUD8gq1NJEsC1YB9UNV/r/G6D12zwYavP/k9O56TS+EjI01fxSGqqT+N8rr4VgNMp7NkWKdL0nkdXE5DwPvEeLbmfX+61QyeqVFaNR0X9fjklsFAEGPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7VQhomV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF58C2BBFC;
-	Tue, 30 Apr 2024 11:12:39 +0000 (UTC)
+	 MIME-Version; b=VlfWIDRAGBPt2502vD0HgIRL+LBoDWPA9vZx/37SWbUI4DR/pOO6TPrqX13SNfNwL7Crx1u3yQNFxJiKVQyUKtAFU6gSxyyXi/VKZsq6TdGeN+w7tO+Dznh4MWft06MYHGMyq429HTcP41bIOURTuJOxCZdmZvVJsY/8SMyC8aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ+ddMI6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A18C2BBFC;
+	Tue, 30 Apr 2024 11:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475559;
-	bh=kUy7hWKy7S0wwXMJzRXZjO71FhsvR+SvoczCeLHoNjQ=;
+	s=korg; t=1714476075;
+	bh=T5vadjCBokk3W7b39KvSHV/soDElfxwavfFgjzTLI/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7VQhomVOuKbPQRByiya1rFQqQeac4FINxsaYtTsppuvBIMJkbvZsH0WIObcOaffu
-	 u0x9jNy80ftsf3Wo58OfN2nVs6dOdnjg6zX+viXzP7hRxhpLvsxpskv5MF5GspjwEV
-	 9pObOWRe37nThPzhwSLRRjII6JCO5G0JCPaBNxMM=
+	b=AZ+ddMI6C1vkBESNhqSfKsYSwETseDR5tlL63aAsB2vCPNM/6DsWaxx9bhVmxRtKp
+	 sJHH81sS0MF4qf+nV5IEG5l1O5tRre22trNZsNu4voVdjzbgHQhQVh+SRbBz+2RVe7
+	 0xU1wt02WF9wTUpR9vkNkankiiltnl7hA/z+GmYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <Johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 134/186] btrfs: fix information leak in btrfs_ioctl_logical_to_ino()
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 026/107] RDMA/mlx5: Fix port number for counter query in multi-port configuration
 Date: Tue, 30 Apr 2024 12:39:46 +0200
-Message-ID: <20240430103101.921880698@linuxfoundation.org>
+Message-ID: <20240430103045.435853006@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-commit 2f7ef5bb4a2f3e481ef05fab946edb97c84f67cf upstream.
+[ Upstream commit be121ffb384f53e966ee7299ffccc6eeb61bc73d ]
 
-Syzbot reported the following information leak for in
-btrfs_ioctl_logical_to_ino():
+Set the correct port when querying PPCNT in multi-port configuration.
+Distinguish between cases where switchdev mode was enabled to multi-port
+configuration and don't overwrite the queried port to 1 in multi-port
+case.
 
-  BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-  BUG: KMSAN: kernel-infoleak in _copy_to_user+0xbc/0x110 lib/usercopy.c:40
-   instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-   _copy_to_user+0xbc/0x110 lib/usercopy.c:40
-   copy_to_user include/linux/uaccess.h:191 [inline]
-   btrfs_ioctl_logical_to_ino+0x440/0x750 fs/btrfs/ioctl.c:3499
-   btrfs_ioctl+0x714/0x1260
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:904 [inline]
-   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
-   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
-   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-  Uninit was created at:
-   __kmalloc_large_node+0x231/0x370 mm/slub.c:3921
-   __do_kmalloc_node mm/slub.c:3954 [inline]
-   __kmalloc_node+0xb07/0x1060 mm/slub.c:3973
-   kmalloc_node include/linux/slab.h:648 [inline]
-   kvmalloc_node+0xc0/0x2d0 mm/util.c:634
-   kvmalloc include/linux/slab.h:766 [inline]
-   init_data_container+0x49/0x1e0 fs/btrfs/backref.c:2779
-   btrfs_ioctl_logical_to_ino+0x17c/0x750 fs/btrfs/ioctl.c:3480
-   btrfs_ioctl+0x714/0x1260
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:904 [inline]
-   __se_sys_ioctl+0x261/0x450 fs/ioctl.c:890
-   __x64_sys_ioctl+0x96/0xe0 fs/ioctl.c:890
-   x64_sys_call+0x1883/0x3b50 arch/x86/include/generated/asm/syscalls_64.h:17
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-  Bytes 40-65535 of 65536 are uninitialized
-  Memory access of size 65536 starts at ffff888045a40000
-
-This happens, because we're copying a 'struct btrfs_data_container' back
-to user-space. This btrfs_data_container is allocated in
-'init_data_container()' via kvmalloc(), which does not zero-fill the
-memory.
-
-Fix this by using kvzalloc() which zeroes out the memory on allocation.
-
-CC: stable@vger.kernel.org # 4.14+
-Reported-by:  <syzbot+510a1abbb8116eeb341d@syzkaller.appspotmail.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <Johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 74b30b3ad5ce ("RDMA/mlx5: Set local port to one when accessing counters")
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/9bfcc8ade958b760a51408c3ad654a01b11f7d76.1712134988.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/backref.c |   12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/infiniband/hw/mlx5/mad.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/backref.c
-+++ b/fs/btrfs/backref.c
-@@ -2770,20 +2770,14 @@ struct btrfs_data_container *init_data_c
- 	size_t alloc_bytes;
- 
- 	alloc_bytes = max_t(size_t, total_bytes, sizeof(*data));
--	data = kvmalloc(alloc_bytes, GFP_KERNEL);
-+	data = kvzalloc(alloc_bytes, GFP_KERNEL);
- 	if (!data)
- 		return ERR_PTR(-ENOMEM);
- 
--	if (total_bytes >= sizeof(*data)) {
-+	if (total_bytes >= sizeof(*data))
- 		data->bytes_left = total_bytes - sizeof(*data);
--		data->bytes_missing = 0;
--	} else {
-+	else
- 		data->bytes_missing = sizeof(*data) - total_bytes;
--		data->bytes_left = 0;
--	}
--
--	data->elem_cnt = 0;
--	data->elem_missed = 0;
- 
- 	return data;
- }
+diff --git a/drivers/infiniband/hw/mlx5/mad.c b/drivers/infiniband/hw/mlx5/mad.c
+index 3897a3ce02ad0..84d72b3b6df84 100644
+--- a/drivers/infiniband/hw/mlx5/mad.c
++++ b/drivers/infiniband/hw/mlx5/mad.c
+@@ -219,7 +219,8 @@ static int process_pma_cmd(struct mlx5_ib_dev *dev, u8 port_num,
+ 		mdev = dev->mdev;
+ 		mdev_port_num = 1;
+ 	}
+-	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1) {
++	if (MLX5_CAP_GEN(dev->mdev, num_ports) == 1 &&
++	    !mlx5_core_mp_enabled(mdev)) {
+ 		/* set local port to one for Function-Per-Port HCA. */
+ 		mdev = dev->mdev;
+ 		mdev_port_num = 1;
+-- 
+2.43.0
+
 
 
 
