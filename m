@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-42673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BE48B7417
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:27:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64808B705D
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9D341F21557
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:27:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E812C1C2216E
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C21D12CDAE;
-	Tue, 30 Apr 2024 11:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D573012C80B;
+	Tue, 30 Apr 2024 10:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUlL5hs5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGcwuzvI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68D17592;
-	Tue, 30 Apr 2024 11:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92648E560;
+	Tue, 30 Apr 2024 10:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476416; cv=none; b=NnRyj2qCW9qgofF/Qz29tEgKe2Zwfy6bZ+AFqk8aVdwKCu3L/YftF4NqKcUWMkYcVuPONROntnY6GFQEdmgxXNT0DgSMtNwtSNoR2DfTsJa1oPd/ZlVPIFDhvtnWHwhUtgn+XPSaXPbHTgl7xDkUkG7GGhamWXs9SQJaTebbkAs=
+	t=1714473901; cv=none; b=oxYrtO3WGthC1mlC2b21l653ac7neo/dS+N44XtBXPa/EGdLB9ogu1n1JMDvHdQclzDTnLAMUlKyJN1lyR9hVLCB+uYmvmyABvBbR3T0IGcFxgaRmUtU6izR7jBzrA4dalnTGFLaYY4zz+thYozr531LzVxCRW5LMRXSup4gVdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476416; c=relaxed/simple;
-	bh=IrdqwWEqcGkEZPDr/zACjrltGCO1brGw4QjoCDloe5c=;
+	s=arc-20240116; t=1714473901; c=relaxed/simple;
+	bh=gU8l+ODD5Xu6b2D6+w4zdYXkNyUej/zZAPMxNNr2psM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p92g9eo0Lhn/SFfUowQGV93/g5WbHejTrh87Ema2yMDdLY3/dxgq5HJmYMX/0zyJ1XoZJLjD7d0aVmZr6bJeq6/KzwX3phcbLsA6SaLYsG+uIziUJvsy7WtENrRvh+pM1Ik6FiAc/KI7aYP5/OczZLivPKDbG18jod300q6iMA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUlL5hs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716E1C4AF19;
-	Tue, 30 Apr 2024 11:26:55 +0000 (UTC)
+	 MIME-Version; b=sypEWx+dJx1/p1gv+xGPlOstreId1igEK1JGZMO/xgamgZvB8ZuCKPwbknxCfL8Nud124OqyKIfnO8hNVRcSiJ/CoXQWhLD6jyXlTL9JckCXcL+PeEtve5lmC/JTqck7x9gk9ouxdP/4XdgCUJiKsf9P9dsG1ixINvPh+k+D+oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGcwuzvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EACC2BBFC;
+	Tue, 30 Apr 2024 10:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476415;
-	bh=IrdqwWEqcGkEZPDr/zACjrltGCO1brGw4QjoCDloe5c=;
+	s=korg; t=1714473901;
+	bh=gU8l+ODD5Xu6b2D6+w4zdYXkNyUej/zZAPMxNNr2psM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUlL5hs58/SGh0MNnkfkwZubCf883gzLMDyOSy5SnC7G9J7Oo6hiazhdsHbXuTdj+
-	 LI6rm2XQj54XIafYWOGlCMh8yk00ua5GkiaSjqF18wnAJBpgX9wIqh4VC6cH623/Jf
-	 VKUhzYwyA0HUrW2i/iFDyGpo6aSv100FPzvwddt0=
+	b=TGcwuzvIWOKIRJanDIwBTugJDu6eRaD7Ds5G1+sENDZGKrI55VDPS1zbldc/Fk5UT
+	 OCGwGJjf4KqHT5xCvyGF0epxniSNVCNnqYTdGt7RHeqOt3e/JeIIqC4fL5prW0s6lb
+	 4g1HCOB7PH3g1f6pw2seDXwihqU9R1Ow/4/75NbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/110] mlxsw: core: Unregister EMAD trap using FORWARD action
+	Yick Xie <yick.xie@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 76/77] udp: preserve the connected status if only UDP cmsg
 Date: Tue, 30 Apr 2024 12:39:55 +0200
-Message-ID: <20240430103048.341744238@linuxfoundation.org>
+Message-ID: <20240430103043.384537921@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Yick Xie <yick.xie@gmail.com>
 
-[ Upstream commit 976c44af48141cd8595601c0af2a19a43c5b228b ]
+commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
 
-The device's manual (PRM - Programmer's Reference Manual) classifies the
-trap that is used to deliver EMAD responses as an "event trap". Among
-other things, it means that the only actions that can be associated with
-the trap are TRAP and FORWARD (NOP).
+If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
+"connected" should not be set to 0. Otherwise it stops
+the connected socket from using the cached route.
 
-Currently, during driver de-initialization the driver unregisters the
-trap by setting its action to DISCARD, which violates the above
-guideline. Future firmware versions will prevent such misuses by
-returning an error. This does not prevent the driver from working, but
-an error will be printed to the kernel log during module removal /
-devlink reload:
-
-mlxsw_spectrum 0000:03:00.0: Reg cmd access status failed (status=7(bad parameter))
-mlxsw_spectrum 0000:03:00.0: Reg cmd access failed (reg_id=7003(hpkt),type=write)
-
-Suppress the error message by aligning the driver to the manual and use
-a FORWARD (NOP) action when unregistering the trap.
-
-Fixes: 4ec14b7634b2 ("mlxsw: Add interface to access registers and process events")
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Amit Cohen <amcohen@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/753a89e14008fde08cb4a2c1e5f537b81d8eb2d6.1713446092.git.petrm@nvidia.com
+Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yick Xie <yick.xie@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/udp.c |    5 +++--
+ net/ipv6/udp.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
-index e2a985ec2c765..f36a416ffcfe9 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
-@@ -792,7 +792,7 @@ static void mlxsw_emad_rx_listener_func(struct sk_buff *skb, u16 local_port,
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1001,16 +1001,17 @@ int udp_sendmsg(struct sock *sk, struct
  
- static const struct mlxsw_listener mlxsw_emad_rx_listener =
- 	MLXSW_RXL(mlxsw_emad_rx_listener_func, ETHEMAD, TRAP_TO_CPU, false,
--		  EMAD, DISCARD);
-+		  EMAD, FORWARD);
+ 	if (msg->msg_controllen) {
+ 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip_cmsg_send(sk, msg, &ipc,
+ 					   sk->sk_family == AF_INET6);
++			connected = 0;
++		}
+ 		if (unlikely(err < 0)) {
+ 			kfree(ipc.opt);
+ 			return err;
+ 		}
+ 		if (ipc.opt)
+ 			free = 1;
+-		connected = 0;
+ 	}
+ 	if (!ipc.opt) {
+ 		struct ip_options_rcu *inet_opt;
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1324,9 +1324,11 @@ do_udp_sendmsg:
+ 		ipc6.opt = opt;
  
- static int mlxsw_emad_init(struct mlxsw_core *mlxsw_core)
- {
--- 
-2.43.0
-
+ 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
+-		if (err > 0)
++		if (err > 0) {
+ 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, &fl6,
+ 						    &ipc6);
++			connected = false;
++		}
+ 		if (err < 0) {
+ 			fl6_sock_release(flowlabel);
+ 			return err;
+@@ -1338,7 +1340,6 @@ do_udp_sendmsg:
+ 		}
+ 		if (!(opt->opt_nflen|opt->opt_flen))
+ 			opt = NULL;
+-		connected = false;
+ 	}
+ 	if (!opt) {
+ 		opt = txopt_get(np);
 
 
 
