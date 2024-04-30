@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-42147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BEC8B71A0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016A78B726F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53FB21C222A9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A280F282AE9
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73FE12C48A;
-	Tue, 30 Apr 2024 10:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116EB12D743;
+	Tue, 30 Apr 2024 11:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeRcyA8o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9Gay1DS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7482C7464;
-	Tue, 30 Apr 2024 10:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30F612CDAE;
+	Tue, 30 Apr 2024 11:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474719; cv=none; b=g7MUmvpPZItD4UIGVxiMeMIyUlzd7cGRZTw1rgtBy6ei0RxHgaOlLgiwcGmh1gjpbWU5Py/cq+pvPQ9uQvicLOgAgsQClB2F4qyceV3tw0Uu4NXr4oMiFc2mRakmw6DLi1lOIFP02lguIxCg3L55/ZXYb9DrYRfvzR47ggmXORk=
+	t=1714475278; cv=none; b=tMZxHyIqvzgghPcJIK2DdndabRY7h7DR2szJ7bRfvDLxWjw+KASA36kM2DjyYAl1bNR3sak6QQLtSFb/Gsm2a/We9AQymRcQ6KY6Kr3FcHPMbm/eeY5Q9bvZduibWAaQHkTopEurejUY6DXely0F1p6POtLVEmW4xnB/5syKFn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474719; c=relaxed/simple;
-	bh=lsq7McuREHMYt1jrNxxxWb80bXOcBygw9fw3+voee9Q=;
+	s=arc-20240116; t=1714475278; c=relaxed/simple;
+	bh=7JcElU5uO2pD8Apw3n1K1FJzWI6RA2ANfKerNNlW5ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lP/W54lPnLYD1ebdMvLhUmQQBaJhHYZagTJO81AvqNwZAvPXDKmXJJF3rInnteD6nVMfLU+tzcbOqNTVKQG0VyxVTuuIYGH5N8vTyOCsdI0pEwulNbUJaOfnn2npqnJFoDD6JfgrFRTaVdl+ISrkh4Jpv5niJjFQAjHmI7Cq1jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeRcyA8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8BAC2BBFC;
-	Tue, 30 Apr 2024 10:58:38 +0000 (UTC)
+	 MIME-Version; b=u3Dh5VcK2BEIhm5oti3C2p5SgFFdg4clnFJXcRkLDqPnevsqAZthl72g/RsYPGN+mS7ANAvRUs0pr3eXuX9PGRUbxyAf+4pW7p766pH8Xl0AJXcFy+mFewcRrWaII9vfrIpIYM3T63aoAzSTL1y2brxXjd82wQKH3Z19U8hoPNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9Gay1DS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3081BC2BBFC;
+	Tue, 30 Apr 2024 11:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474719;
-	bh=lsq7McuREHMYt1jrNxxxWb80bXOcBygw9fw3+voee9Q=;
+	s=korg; t=1714475278;
+	bh=7JcElU5uO2pD8Apw3n1K1FJzWI6RA2ANfKerNNlW5ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeRcyA8ojpOiypvM2N0mFShL8jLpDYzSg+6SB8TE4ISdWtmb6BE+N1AxFiKQG6oIc
-	 GN1lAwRDurOrY4AScWCjTpY8B4A5Sft4aVn9ueJtKT/oQYpffVZLqOa2+A282PCJvC
-	 HyCSSNjOJjU/hBeKJYI/J4tA2nrRLUkIfuUH8Y+k=
+	b=a9Gay1DStmRm6yqNGvTlgMhbaMz7aVxf5o8ZtVFTl8ng48qjw1GDUmvQK8RFDd+sF
+	 h2ZS9OarUTuHeba+2pFbyxw4tVC1a7hrtuSjrJx84mUP4c7a5SxaMoSb/ozqg1wmu0
+	 U5FK9HiTF2d7pAKE+rqCZ7p4n2SFwoP5HloaKkuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/138] net/mlx5: Properly link new fs rules into the tree
-Date: Tue, 30 Apr 2024 12:38:20 +0200
-Message-ID: <20240430103049.875405335@linuxfoundation.org>
+Subject: [PATCH 6.6 049/186] ARM: dts: microchip: at91-sama7g5ek: Replace regulator-suspend-voltage with the valid property
+Date: Tue, 30 Apr 2024 12:38:21 +0200
+Message-ID: <20240430103059.455845251@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Andrei Simion <andrei.simion@microchip.com>
 
-[ Upstream commit 7c6782ad4911cbee874e85630226ed389ff2e453 ]
+[ Upstream commit e027b71762e84ee9d4ba9ad5401b956b9e83ed2a ]
 
-Previously, add_rule_fg would only add newly created rules from the
-handle into the tree when they had a refcount of 1. On the other hand,
-create_flow_handle tries hard to find and reference already existing
-identical rules instead of creating new ones.
+By checking the pmic node with microchip,mcp16502.yaml#
+'regulator-suspend-voltage' does not match any of the
+regexes 'pinctrl-[0-9]+' from schema microchip,mcp16502.yaml#
+which inherits regulator.yaml#. So replace regulator-suspend-voltage
+with regulator-suspend-microvolt to avoid the inconsitency.
 
-These two behaviors can result in a situation where create_flow_handle
-1) creates a new rule and references it, then
-2) in a subsequent step during the same handle creation references it
-   again,
-resulting in a rule with a refcount of 2 that is not linked into the
-tree, will have a NULL parent and root and will result in a crash when
-the flow group is deleted because del_sw_hw_rule, invoked on rule
-deletion, assumes node->parent is != NULL.
-
-This happened in the wild, due to another bug related to incorrect
-handling of duplicate pkt_reformat ids, which lead to the code in
-create_flow_handle incorrectly referencing a just-added rule in the same
-flow handle, resulting in the problem described above. Full details are
-at [1].
-
-This patch changes add_rule_fg to add new rules without parents into
-the tree, properly initializing them and avoiding the crash. This makes
-it more consistent with how rules are added to an FTE in
-create_flow_handle.
-
-Fixes: 74491de93712 ("net/mlx5: Add multi dest support")
-Link: https://lore.kernel.org/netdev/ea5264d6-6b55-4449-a602-214c6f509c1e@163.com/T/#u [1]
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240409190820.227554-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 85b1304b9daa ("ARM: dts: at91: sama7g5ek: set regulator voltages for standby state")
+Signed-off-by: Andrei Simion <andrei.simion@microchip.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20240404123824.19182-2-andrei.simion@microchip.com
+[claudiu.beznea: added a dot before starting the last sentence in commit
+ description]
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/microchip/at91-sama7g5ek.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 4e8e3797aed08..074c9eb44ab73 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -1675,8 +1675,9 @@ static struct mlx5_flow_handle *add_rule_fg(struct mlx5_flow_group *fg,
- 	}
- 	trace_mlx5_fs_set_fte(fte, false);
+diff --git a/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts b/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts
+index 217e9b96c61e5..20b2497657ae4 100644
+--- a/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts
++++ b/arch/arm/boot/dts/microchip/at91-sama7g5ek.dts
+@@ -293,7 +293,7 @@
  
-+	/* Link newly added rules into the tree. */
- 	for (i = 0; i < handle->num_rules; i++) {
--		if (refcount_read(&handle->rule[i]->node.refcount) == 1) {
-+		if (!handle->rule[i]->node.parent) {
- 			tree_add_node(&handle->rule[i]->node, &fte->node);
- 			trace_mlx5_fs_add_rule(handle->rule[i]);
- 		}
+ 					regulator-state-standby {
+ 						regulator-on-in-suspend;
+-						regulator-suspend-voltage = <1150000>;
++						regulator-suspend-microvolt = <1150000>;
+ 						regulator-mode = <4>;
+ 					};
+ 
+@@ -314,7 +314,7 @@
+ 
+ 					regulator-state-standby {
+ 						regulator-on-in-suspend;
+-						regulator-suspend-voltage = <1050000>;
++						regulator-suspend-microvolt = <1050000>;
+ 						regulator-mode = <4>;
+ 					};
+ 
+@@ -331,7 +331,7 @@
+ 					regulator-always-on;
+ 
+ 					regulator-state-standby {
+-						regulator-suspend-voltage = <1800000>;
++						regulator-suspend-microvolt = <1800000>;
+ 						regulator-on-in-suspend;
+ 					};
+ 
+@@ -346,7 +346,7 @@
+ 					regulator-max-microvolt = <3700000>;
+ 
+ 					regulator-state-standby {
+-						regulator-suspend-voltage = <1800000>;
++						regulator-suspend-microvolt = <1800000>;
+ 						regulator-on-in-suspend;
+ 					};
+ 
 -- 
 2.43.0
 
