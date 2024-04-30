@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1324B8B7103
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:52:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84958B71A1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4489E1C21957
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A58D2282AA7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F60612C819;
-	Tue, 30 Apr 2024 10:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412E112C476;
+	Tue, 30 Apr 2024 10:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLk84hpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gO5C8rFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F073212C487;
-	Tue, 30 Apr 2024 10:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D987464;
+	Tue, 30 Apr 2024 10:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474324; cv=none; b=kYdUH+QfEeDPZ6h6JK3gsmR4WVgseJVSrSgfxLUhSvnXd7UICDVOOirlcC+jxYnCeO3Ut81aPVS1DmMy1Gs83aZxgKBOqVLQbzvKDYxTdxLpq5qwOXQhc8NTJ4elSS26pi9id6tuUIct+/mAbu+q5wk2IJfWLO4gIAs486y9eh8=
+	t=1714474723; cv=none; b=tmtMjTcaLJq9YPDIuQYJMQnCNlXld7BuP0UYyJfzEjCSxzQ86OY8b2bl0HLnXHIxZ8VqiRzZSQ1yy5l8uHKD9PqzcVnHEmFeGLp4p5x09hK7brB6hdvZev/0gYYngcctuUsdSo+euKBy2uANK2p3WC42MW8mWCkWmSHjQYZ259Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474324; c=relaxed/simple;
-	bh=BscQzC8MejwO+Ouxt+Gsp1yUuuNTKjlzdz4W+5O5CAg=;
+	s=arc-20240116; t=1714474723; c=relaxed/simple;
+	bh=M5PqpFbdqhUY/5HjBpTnyKi/0ZsMaA0CjoZwcZx4s9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4uhlGW1Z2RT0O9itbcXwgFxB9urzCaoKTMpOGfDtZ37FqiAOvlsTlvX929FnFKd1GA8fxoGNEeh48qlmzz8tkwZ6SPE2O3DNkjh+XrRmkO6Sop3x+pV9/WR6gNQR8a4G+c6mogkiEhDkYEHIibJTfcPDRGL8Suxxnfv1AfuSCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLk84hpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01165C2BBFC;
-	Tue, 30 Apr 2024 10:52:02 +0000 (UTC)
+	 MIME-Version; b=g6WaUXZT9eDqPVkq+1kvRXmmogx352QSTPlizCqL0ouYqDOYOoJXFT4Hg0CBb5SR2W2FAL4t1fO0IzOSapQUAi+V81SFkP5pOIUM5H5+/7FS9F6cEnEVnU7EFF7o5yu3g3dW0LafMuGw9xJ58CYHuDTH8pmMyadv0IEqEqdmj0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gO5C8rFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BD2C2BBFC;
+	Tue, 30 Apr 2024 10:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474323;
-	bh=BscQzC8MejwO+Ouxt+Gsp1yUuuNTKjlzdz4W+5O5CAg=;
+	s=korg; t=1714474722;
+	bh=M5PqpFbdqhUY/5HjBpTnyKi/0ZsMaA0CjoZwcZx4s9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLk84hpXw8OWPDQ7VSaP+k6BG7W6OgQFDBT/3tDLUFMbHdUx4Rv3f4nuyLb/UvwpI
-	 FYwGK9LluqCazpe/N5k2blmFW7SEwWCMGPPCwI1BGqQrcVy1VmdQCicizDJir56KLe
-	 CWnuWo+R0enwvbvG1VXuroPkfvRmWqgXM6w4AGbE=
+	b=gO5C8rFFU9NJHz7RtgqdufBda7n6A4LvyTIy6zHAx0gQU2tpR74HZRWsgTJzWlawg
+	 aRqz4Kk+OT+cdvGOSHV8/5kNDODhxWo+7/JMQyN1sdDubD6ZmuNUffv37GebnLewFX
+	 wSnUbb2sfdSKhbRjn4pSex7StpjTG+TQRLtK1uaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 123/228] usb: xhci: correct return value in case of STS_HCE
+Subject: [PATCH 5.10 016/138] af_unix: Do not use atomic ops for unix_sk(sk)->inflight.
 Date: Tue, 30 Apr 2024 12:38:21 +0200
-Message-ID: <20240430103107.355977146@linuxfoundation.org>
+Message-ID: <20240430103049.904634713@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 5bfc311dd6c376d350b39028b9000ad766ddc934 ]
+[ Upstream commit 97af84a6bba2ab2b9c704c08e67de3b5ea551bb2 ]
 
-If we get STS_HCE we give up on the interrupt, but for the purpose
-of IRQ handling that still counts as ours. We may return IRQ_NONE
-only if we are positive that it wasn't ours. Hence correct the default.
+When touching unix_sk(sk)->inflight, we are always under
+spin_lock(&unix_gc_lock).
 
-Fixes: 2a25e66d676d ("xhci: print warning when HCE was set")
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240404121106.2842417-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's convert unix_sk(sk)->inflight to the normal unsigned long.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240123170856.41348-3-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 47d8ac011fe1 ("af_unix: Fix garbage collector racing against connect()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ include/net/af_unix.h |  2 +-
+ net/unix/af_unix.c    |  4 ++--
+ net/unix/garbage.c    | 17 ++++++++---------
+ net/unix/scm.c        |  8 +++++---
+ 4 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 2306a95d6251a..b2868217de941 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -3123,7 +3123,7 @@ static int xhci_handle_events(struct xhci_hcd *xhci, struct xhci_interrupter *ir
- irqreturn_t xhci_irq(struct usb_hcd *hcd)
+diff --git a/include/net/af_unix.h b/include/net/af_unix.h
+index a6b6ce8b918b7..67eeca1013ade 100644
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -56,7 +56,7 @@ struct unix_sock {
+ 	struct mutex		iolock, bindlock;
+ 	struct sock		*peer;
+ 	struct list_head	link;
+-	atomic_long_t		inflight;
++	unsigned long		inflight;
+ 	spinlock_t		lock;
+ 	unsigned long		gc_flags;
+ #define UNIX_GC_CANDIDATE	0
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index b003d0597f4bd..224b1fdc82279 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -817,11 +817,11 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern)
+ 	sk->sk_write_space	= unix_write_space;
+ 	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
+ 	sk->sk_destruct		= unix_sock_destructor;
+-	u	  = unix_sk(sk);
++	u = unix_sk(sk);
++	u->inflight = 0;
+ 	u->path.dentry = NULL;
+ 	u->path.mnt = NULL;
+ 	spin_lock_init(&u->lock);
+-	atomic_long_set(&u->inflight, 0);
+ 	INIT_LIST_HEAD(&u->link);
+ 	mutex_init(&u->iolock); /* single task reading lock */
+ 	mutex_init(&u->bindlock); /* single task binding lock */
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 9121a4d5436d5..675fbe594dbb3 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -166,17 +166,18 @@ static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
+ 
+ static void dec_inflight(struct unix_sock *usk)
  {
- 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
--	irqreturn_t ret = IRQ_NONE;
-+	irqreturn_t ret = IRQ_HANDLED;
- 	u32 status;
+-	atomic_long_dec(&usk->inflight);
++	usk->inflight--;
+ }
  
- 	spin_lock(&xhci->lock);
-@@ -3131,12 +3131,13 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	status = readl(&xhci->op_regs->status);
- 	if (status == ~(u32)0) {
- 		xhci_hc_died(xhci);
--		ret = IRQ_HANDLED;
- 		goto out;
- 	}
+ static void inc_inflight(struct unix_sock *usk)
+ {
+-	atomic_long_inc(&usk->inflight);
++	usk->inflight++;
+ }
  
--	if (!(status & STS_EINT))
-+	if (!(status & STS_EINT)) {
-+		ret = IRQ_NONE;
- 		goto out;
-+	}
- 
- 	if (status & STS_HCE) {
- 		xhci_warn(xhci, "WARNING: Host Controller Error\n");
-@@ -3146,7 +3147,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	if (status & STS_FATAL) {
- 		xhci_warn(xhci, "WARNING: Host System Error\n");
- 		xhci_halt(xhci);
--		ret = IRQ_HANDLED;
- 		goto out;
- 	}
- 
-@@ -3157,7 +3157,6 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ static void inc_inflight_move_tail(struct unix_sock *u)
+ {
+-	atomic_long_inc(&u->inflight);
++	u->inflight++;
++
+ 	/* If this still might be part of a cycle, move it to the end
+ 	 * of the list, so that it's checked even if it was already
+ 	 * passed over
+@@ -237,14 +238,12 @@ void unix_gc(void)
  	 */
- 	status |= STS_EINT;
- 	writel(status, &xhci->op_regs->status);
--	ret = IRQ_HANDLED;
+ 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
+ 		long total_refs;
+-		long inflight_refs;
  
- 	/* This is the handler of the primary interrupter */
- 	xhci_handle_events(xhci, xhci->interrupters[0]);
+ 		total_refs = file_count(u->sk.sk_socket->file);
+-		inflight_refs = atomic_long_read(&u->inflight);
+ 
+-		BUG_ON(inflight_refs < 1);
+-		BUG_ON(total_refs < inflight_refs);
+-		if (total_refs == inflight_refs) {
++		BUG_ON(!u->inflight);
++		BUG_ON(total_refs < u->inflight);
++		if (total_refs == u->inflight) {
+ 			list_move_tail(&u->link, &gc_candidates);
+ 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
+ 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
+@@ -271,7 +270,7 @@ void unix_gc(void)
+ 		/* Move cursor to after the current position. */
+ 		list_move(&cursor, &u->link);
+ 
+-		if (atomic_long_read(&u->inflight) > 0) {
++		if (u->inflight) {
+ 			list_move_tail(&u->link, &not_cycle_list);
+ 			__clear_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
+ 			scan_children(&u->sk, inc_inflight_move_tail, NULL);
+diff --git a/net/unix/scm.c b/net/unix/scm.c
+index d1048b4c2baaf..4eff7da9f6f96 100644
+--- a/net/unix/scm.c
++++ b/net/unix/scm.c
+@@ -52,12 +52,13 @@ void unix_inflight(struct user_struct *user, struct file *fp)
+ 	if (s) {
+ 		struct unix_sock *u = unix_sk(s);
+ 
+-		if (atomic_long_inc_return(&u->inflight) == 1) {
++		if (!u->inflight) {
+ 			BUG_ON(!list_empty(&u->link));
+ 			list_add_tail(&u->link, &gc_inflight_list);
+ 		} else {
+ 			BUG_ON(list_empty(&u->link));
+ 		}
++		u->inflight++;
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
+ 	}
+@@ -74,10 +75,11 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
+ 	if (s) {
+ 		struct unix_sock *u = unix_sk(s);
+ 
+-		BUG_ON(!atomic_long_read(&u->inflight));
++		BUG_ON(!u->inflight);
+ 		BUG_ON(list_empty(&u->link));
+ 
+-		if (atomic_long_dec_and_test(&u->inflight))
++		u->inflight--;
++		if (!u->inflight)
+ 			list_del_init(&u->link);
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
 -- 
 2.43.0
 
