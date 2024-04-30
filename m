@@ -1,163 +1,113 @@
-Return-Path: <stable+bounces-42834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346998B8115
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 22:05:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A5D8B8199
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 22:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 638341C264BC
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 20:05:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121E21F237D1
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 20:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1CD19DF70;
-	Tue, 30 Apr 2024 20:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB5B1A0AED;
+	Tue, 30 Apr 2024 20:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="YRghvhWW"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="D5iJH4+4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1E217B514;
-	Tue, 30 Apr 2024 20:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89D3129E72
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 20:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714507488; cv=none; b=DnEZEpAkhbyT6fQUAy2xUm2Z+RwCTO2hilGaCP4T9XRNwNAJBKPUDip58Cf+vsWQHwqoTyMbSwDds53uuEBishqXqO3WcZti5z3Z1KiZFfHyHeGJ2TPQO782e+1+zlAu6yFkfpccfImhqIf7A2H6NIQo8T5vHmmlqAEhrvwwnUI=
+	t=1714509606; cv=none; b=O82DbuhklmMcG867JEYb+ugeJzdl8RZgKjafMM+KDFnzseqR4viwPtyTWdOWDcrw1huYdqV88/F77Xw/jHAT9Eva4xexzebfExxfZPbKgfkk8IcXGphg04BDnt6ex9fRNMUR+/T+9p/W1UU0XUdPfD5gK+GwYY9gZB2s4Vxiok4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714507488; c=relaxed/simple;
-	bh=CRudngwwFqEb5JkD9tyr3v9H3uVKI58dqmSAZwNlhLA=;
-	h=From:To:Cc:Date:Message-Id:MIME-Version:Subject; b=rVb/UVeps+LibZe49Obevjuw0D9Qpfz+9RgTtk1YyFDaycWvTW2pP6cIFrG9rkWsM2JiqJldaKPl6REe60dX4DGZygEn1elYgV7AXsNtSb5vAGs4MhHVEgRsKE2rLS4Vxu5sPt8Kj3gH9COGOXPjs8QKojy2cDyRbAfq1R+gwfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=YRghvhWW; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=EpMG0aEBxpsvqvhiJSjNm3u60yLj5lLNLQykLwZWCdM=; b=YRghvhWWNz/Z8+sY5K2sqgOodF
-	OItBrAWOjBTOExlNIlmi/nDITvP8Eq8Q1DzAmbtvjXOo9PTBLEMaPlYWhKeU386vGXaCCFk9tFXvB
-	JXwNWR2g+TpxEpV0uheYUXPRkvqvPQtAHKI7VUqGln+5V5ClMbchYykqrcSR8WwXE3RM=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:57260 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1s1tiN-0007JJ-AS; Tue, 30 Apr 2024 16:04:35 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Jon Ringle <jringle@gridpoint.com>
-Cc: hugo@hugovil.com,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Date: Tue, 30 Apr 2024 16:04:30 -0400
-Message-Id: <20240430200431.4102923-1-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1714509606; c=relaxed/simple;
+	bh=oQSngsPwHpqjPWpk2CQtdzD5TSEeud66qrlHa2cPFsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vdg32pFZfkPd8AozbuGRLN/tZl1nLlm8j9lP4pRkP+/vfbgMjYe3f9kjr4JzcT/NeNv4ZeT3NoijlGo6rU+QWsOyjfZY0eTUdyoPR38Q1W4eD4zgX55sUP3NzpfUHKCznFAtyuTHGrlQNDUeQvQdoNGy2uB5Kc9SQR/+/Jnc+/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=D5iJH4+4; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-6ee3231d95eso115451a34.0
+        for <stable@vger.kernel.org>; Tue, 30 Apr 2024 13:40:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1714509604; x=1715114404; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2YYgSWxhf4zOPIcEbuWf3i+tS5g0up/+LJ/wCKYsmNQ=;
+        b=D5iJH4+4eWojvAlJFfFNbOK0NrVhneQ8iK0IT+BHCN9g9vbAyvAOJr21EZvUSLXIm2
+         gE68/bZfE9OiHviN+W7NsfkMoVLJ3Yysz+wceU1SngsmPQGBXUaMoCrW9KDZO9AZWqZr
+         TbMcS+PAEZgViIp0CER1c4Y6sgERL62oFaZGE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714509604; x=1715114404;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2YYgSWxhf4zOPIcEbuWf3i+tS5g0up/+LJ/wCKYsmNQ=;
+        b=EYf25SozgFcuY3Gklf/GKbaD0WlLaUmcMb3PdwUyAOG8thIj1D6qzlqH4ZCV0JoyMP
+         g8h49cAi8jOt2pfbar6+wgnOaWc/bd/9Y3sfxblSjs1zVCxkr/rNUfKrDdp/f5xy1TgM
+         GNgA2YpLHrjgEuuuh5fUh/3f9U/OQo/mTXdf3EkUjGfORlIgV1xDm21RIrrLRjUA2kFt
+         9TDoQx9okdjMzIRxiWC+BsTs99aXPdBX/KiFhukr7rFVbUl548lK4X1vadP3a9Evj2yE
+         Od4D4i3mFJprbfR8vKdNbHDOovDSy/7LdSx7/03n2T8CqWRSR5PkcjQ8uhQ5UBqjmiU4
+         nc1Q==
+X-Gm-Message-State: AOJu0YxfkfS45kIrNWdsweVL8MoI+8BXzTBum9CLzJIgmozquRf4SXva
+	4UTiDK7yOqs2C2p9IN/UFrn7tRJmh7tpwSaWq8JDslMcWF2Pwjx+kSlVtHQZMQ==
+X-Google-Smtp-Source: AGHT+IFRIwaOZIJKk9q6FINe4lpZDhEXBbf7mbgHPgC2qdcV1d/X97KO1ZiGdcpPPLnYfRdPuBcpvw==
+X-Received: by 2002:a9d:6d90:0:b0:6ee:3f5f:c4ef with SMTP id x16-20020a9d6d90000000b006ee3f5fc4efmr1871923otp.0.1714509603829;
+        Tue, 30 Apr 2024 13:40:03 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id l4-20020a056830268400b006ee64b1c8dfsm395000otu.23.2024.04.30.13.40.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Apr 2024 13:40:03 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Tue, 30 Apr 2024 15:40:01 -0500
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.8 000/228] 6.8.9-rc1 review
+Message-ID: <ZjFXIftVw8F1VT6T@fedora64.linuxtx.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-Subject: [PATCH v2] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On Tue, Apr 30, 2024 at 12:36:18PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.8.9 release.
+> There are 228 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 02 May 2024 10:30:27 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-When using a high speed clock with a low baud rate, the 4x prescaler is
-automatically selected if required. In that case, sc16is7xx_set_baud()
-properly configures the chip registers, but returns an incorrect baud
-rate by not taking into account the prescaler value. This incorrect baud
-rate is then fed to uart_update_timeout().
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-For example, with an input clock of 80MHz, and a selected baud rate of 50,
-sc16is7xx_set_baud() will return 200 instead of 50.
-
-Fix this by first changing the prescaler variable to hold the selected
-prescaler value instead of the MCR bitfield. Then properly take into
-account the selected prescaler value in the return value computation.
-
-Also add better documentation about the divisor value computation.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-
----
-
-Changes for V2:
-- Change prescaler type to "unsigned int" (Jiri S.)
-
----
- drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 03cf30e20b75..bf0065d1c8e9 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -555,16 +555,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
- 	return reg == SC16IS7XX_RHR_REG;
- }
- 
-+/*
-+ * Configure programmable baud rate generator (divisor) according to the
-+ * desired baud rate.
-+ *
-+ * From the datasheet, the divisor is computed according to:
-+ *
-+ *              XTAL1 input frequency
-+ *             -----------------------
-+ *                    prescaler
-+ * divisor = ---------------------------
-+ *            baud-rate x sampling-rate
-+ */
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 	u8 lcr;
--	u8 prescaler = 0;
-+	unsigned int prescaler = 1;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
- 
- 	if (div >= BIT(16)) {
--		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
--		div /= 4;
-+		prescaler = 4;
-+		div /= prescaler;
- 	}
- 
- 	/* Enable enhanced features */
-@@ -574,9 +586,10 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 			      SC16IS7XX_EFR_ENABLE_BIT);
- 	sc16is7xx_efr_unlock(port);
- 
-+	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
--			      prescaler);
-+			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
- 
- 	/* Backup LCR and access special register set (DLL/DLH) */
- 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
-@@ -592,7 +605,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	/* Restore LCR and access to general register set */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
- 
--	return DIV_ROUND_CLOSEST(clk / 16, div);
-+	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
- }
- 
- static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
-
-base-commit: 660a708098569a66a47d0abdad998e29e1259de6
--- 
-2.39.2
-
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
