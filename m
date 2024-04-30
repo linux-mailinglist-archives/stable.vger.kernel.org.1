@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-42612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30808B73D1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793BB8B7368
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A3E41F22490
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 198A11F24078
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0144212D1F1;
-	Tue, 30 Apr 2024 11:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F2612D1EA;
+	Tue, 30 Apr 2024 11:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjVZTkbY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaBMkK5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B143917592;
-	Tue, 30 Apr 2024 11:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C568A12CD9B;
+	Tue, 30 Apr 2024 11:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476222; cv=none; b=hcshR9AhTwrXz9/rhGz1rYxDm2Pnp57ANTspBc13vYeWV1cMpXlxVeRRZ3d6bWoKWVuy+9wUNr7gR7hCTArEbJEysxfoQ/kiCJZQhFinKeebtDQCOoYmxLzE1DLxmZ+SgnLTZEvg7RiaCBK3zkPu8wx/pIRJDCDo3gW3uVziias=
+	t=1714475924; cv=none; b=UnLfkxqu+LRpzW7hhc/E35wkhUJlzzm0P9CEmGI/QQT+MVTqvhUxvrIO2rBr1K1uSu9Fe0uNngcpOLQeLGsKelrrXwnUT1oCGVLPBtUx2hD+8ItBMmjkMTd7Z0Pcu/HCVhcdYdpKkKpXZpOQFS3x6rO4ozUwk7RvY+uuLPoxRHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476222; c=relaxed/simple;
-	bh=MAw0mowXNLwC8o2bCrGjl8ztPd/LECfczMJHMrQIcB4=;
+	s=arc-20240116; t=1714475924; c=relaxed/simple;
+	bh=m9Eyqy9BjfeuiV2xkLV7hBUXvAaCYAPOcziaoIeEYIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2O+ogM8uriCjO+zX40hWYuOZAjgpGmdeLBMBOawerVaeTcMG7oz6Gzsom4TOEhhHZtQvMdr/gbaaAHdXLWRmNGjHsDaaKbU2Xh6UclwOOxmRIEJ0QsWMy9Z4XYZpT2vw9ZD9EFV+T8X2L2ERR8bEwmdWfYWurE7w9sWSwFbqvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjVZTkbY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2222DC2BBFC;
-	Tue, 30 Apr 2024 11:23:41 +0000 (UTC)
+	 MIME-Version; b=HKmfoq06+xlwEB1hCHe+dElNWDpOnPIR8lgJyBdxRMq03z0geJbsUPb8+y+WViNSPT3p5Y7mbd5V/Mt6x2j1T41Y91773J26L7rTBpOo9DmwA+Bb9KsT0dtugoRMN5pqkAUNQFkBnfSEY8CwLwXX6HXQjazjnSgWSaIAwk5+i/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaBMkK5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00123C2BBFC;
+	Tue, 30 Apr 2024 11:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476222;
-	bh=MAw0mowXNLwC8o2bCrGjl8ztPd/LECfczMJHMrQIcB4=;
+	s=korg; t=1714475924;
+	bh=m9Eyqy9BjfeuiV2xkLV7hBUXvAaCYAPOcziaoIeEYIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjVZTkbYhPPT8t3cP1pkSVxRqoVuPGyFLJsqdMny6nUB4mTahtw3QW6LtU2rPpzd3
-	 MauoT8YrYhowz+03CzuUsxaSsCOSY3X6W6URAEFQ383wZxlfbTJllB7d6xykBBOVS4
-	 alYUgrMKLQgXqflGABIr/7IAHwqrRjWRZ7eeezD4=
+	b=kaBMkK5QPGCW98gqDJA3DXUTne9tjy6FV4QHqxH/bcspVASlscfekyxUv8eDSQahW
+	 +1Cv6SQ3U9m/Q8IshuX2JLIyQ/60fGisG3NqZoxU8IKV4diI8AgpjR+K5Yk1+P2qih
+	 fVyzX4l42bfOmJLd61TdGDT5l4SEUWUQ4WxPV/w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 071/107] mlxsw: spectrum_acl_tcam: Rate limit error message
+	Iskander Amara <iskander.amara@theobroma-systems.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 5.15 59/80] arm64: dts: rockchip: enable internal pull-up for Q7_THRM# on RK3399 Puma
 Date: Tue, 30 Apr 2024 12:40:31 +0200
-Message-ID: <20240430103046.751572332@linuxfoundation.org>
+Message-ID: <20240430103045.162321599@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Iskander Amara <iskander.amara@theobroma-systems.com>
 
-[ Upstream commit 5bcf925587e9b5d36420d572a0b4d131c90fb306 ]
+commit 0ac417b8f124427c90ec8c2ef4f632b821d924cc upstream.
 
-In the rare cases when the device resources are exhausted it is likely
-that the rehash delayed work will fail. An error message will be printed
-whenever this happens which can be overwhelming considering the fact
-that the work is per-region and that there can be hundreds of regions.
+Q7_THRM# pin is connected to a diode on the module which is used
+as a level shifter, and the pin have a pull-down enabled by
+default. We need to configure it to internal pull-up, other-
+wise whenever the pin is configured as INPUT and we try to
+control it externally the value will always remain zero.
 
-Fix by rate limiting the error message.
-
-Fixes: e5e7962ee5c2 ("mlxsw: spectrum_acl: Implement region migration according to hints")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/c510763b2ebd25e7990d80183feff91cde593145.1713797103.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Iskander Amara <iskander.amara@theobroma-systems.com>
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240308085243.69903-1-iskander.amara@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 7e5dc664c55c7..5175ed6cdae08 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -1521,7 +1521,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
- 	err = mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion,
- 						ctx, credits);
- 	if (err) {
--		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
-+		dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
- 		return;
- 	}
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -396,6 +396,16 @@
+ };
  
--- 
-2.43.0
-
+ &pinctrl {
++	pinctrl-names = "default";
++	pinctrl-0 = <&q7_thermal_pin>;
++
++	gpios {
++		q7_thermal_pin: q7-thermal-pin {
++			rockchip,pins =
++				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++	};
++
+ 	i2c8 {
+ 		i2c8_xfer_a: i2c8-xfer {
+ 			rockchip,pins =
 
 
 
