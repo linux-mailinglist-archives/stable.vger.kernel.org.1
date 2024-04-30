@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-42218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6B88B71F0
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8ACD8B72CF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5F011F22C8E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13C60B231A8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA1612C490;
-	Tue, 30 Apr 2024 11:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CC012D76A;
+	Tue, 30 Apr 2024 11:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="op6q2jDX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5kHhpGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABF212C462;
-	Tue, 30 Apr 2024 11:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC40C12D74E;
+	Tue, 30 Apr 2024 11:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474949; cv=none; b=JVzA0oLgDP4vV2htfxJPFvNHtvJF8XoneigoVoD+hZt5t9PA4pVLFnEjrExOPYgfSzmkw2yISmvPoBe0ocH60FjnUtdIZKKcOwh2+dwc7pgpN5qx4NdfAADEICy2euUkWeq7MxVjJEcgmYXcrhKLdXVcA0oXWLQuyJPHMR56bNU=
+	t=1714475506; cv=none; b=USDwRYNzJIYQCuYMzkCdIaQQK/J7VSrqPcmz62a4tq36IRb78hY8EQsAhsSPHo82zD74VjtM7mVs9vuBNALY3CLj9oSHDgFuJlREicBwNbb5oEtle32uPxVgrDhARQ+Ee1xhrSKR0BORuH0UgoA3zDA2cw9vGLDVRq6HZX8P1i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474949; c=relaxed/simple;
-	bh=CTlGQwnt6zZ4gRDjl6Pq2EvwdRcBr0GNI04fCXD7VuI=;
+	s=arc-20240116; t=1714475506; c=relaxed/simple;
+	bh=d+Zc8s4XOyVXH9IHqsbigNBoLZW7l/kabF1+lj+Zcjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuHVTQ5sJKg7CjhSznMjngID1rPdtMDAF5JOWNXsY1PGfe0tJCvFyc1tpkMQQwCtk2aDPKoQJs1n3RXGpcfKoE/z3UQoBswozGQ20tUi/KGX6yF9kn5iNCWLlqDpOV7+wjOkV0Ak5kg00oIRx6SfF+gpicVJwpH3OFDkvX9dYrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=op6q2jDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DA2C2BBFC;
-	Tue, 30 Apr 2024 11:02:28 +0000 (UTC)
+	 MIME-Version; b=J4rCSuyBpi338kfUMTsCJZ5j/aSf+f+rPQxNcAFcWT1PzOFcDcWzGP33FnsK+ZEgRX+FFw+BtB+wAO8jvT+T3EL3wjzNeQWIHYwEouD818Qj8aMT+FZIedKu5AQiajzUFCDP6PtOOkENkz9ONC8VEuhck53T4JjJ5xKomkzpsY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5kHhpGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BACC2BBFC;
+	Tue, 30 Apr 2024 11:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474949;
-	bh=CTlGQwnt6zZ4gRDjl6Pq2EvwdRcBr0GNI04fCXD7VuI=;
+	s=korg; t=1714475506;
+	bh=d+Zc8s4XOyVXH9IHqsbigNBoLZW7l/kabF1+lj+Zcjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=op6q2jDXxoyqGn+iYHW8/6IWxhehqo9HPw123+/giYY6vRV6QZDim5IjxcylukE8o
-	 D36MGFAhfZlqG3DZw25oYouBHAXsczRUs5zp0BeNFibxhDY91ryd9zZUMcHTTNojJM
-	 NKjehBrenIXqZLv8ApWl3kmMyw+PK17mIhLII8K8=
+	b=a5kHhpGsR0HqMvDyfPMYwqpgQ73nXfoJBCfLIv0vZpoRnaCvV5ZQcjtDm6prvafBh
+	 XbOMhb6FfM1tYIAOXmJ70GSfI5kj3Hr25gTJtokbq9xCn89QJEqFcPseIrSa6y3nlT
+	 lmg8jvx/7bOtWJdGmgxiSsK0/VNvMITR3SpQ+Chg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexander Zubkov <green@qrator.net>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/138] clk: remove extra empty line
+Subject: [PATCH 6.6 079/186] mlxsw: spectrum_acl_tcam: Rate limit error message
 Date: Tue, 30 Apr 2024 12:38:51 +0200
-Message-ID: <20240430103050.785575397@linuxfoundation.org>
+Message-ID: <20240430103100.330720607@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 79806d338829b2bf903480428d8ce5aab8e2d24b ]
+[ Upstream commit 5bcf925587e9b5d36420d572a0b4d131c90fb306 ]
 
-Remove extra empty line.
+In the rare cases when the device resources are exhausted it is likely
+that the rehash delayed work will fail. An error message will be printed
+whenever this happens which can be overwhelming considering the fact
+that the work is per-region and that there can be hundreds of regions.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20220630151205.3935560-1-claudiu.beznea@microchip.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
+Fix by rate limiting the error message.
+
+Fixes: e5e7962ee5c2 ("mlxsw: spectrum_acl: Implement region migration according to hints")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/c510763b2ebd25e7990d80183feff91cde593145.1713797103.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 1043addcd38f6..f6be526005bbe 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3631,7 +3631,6 @@ static int __clk_core_init(struct clk_core *core)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 1ff0b2c7c11de..568ae7092fe0e 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1450,7 +1450,7 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
+ 	err = mlxsw_sp_acl_tcam_vregion_migrate(mlxsw_sp, vregion,
+ 						ctx, credits);
+ 	if (err) {
+-		dev_err(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
++		dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to migrate vregion\n");
+ 		return;
+ 	}
  
- 	clk_core_reparent_orphans_nolock();
- 
--
- 	kref_init(&core->ref);
- out:
- 	clk_pm_runtime_put(core);
 -- 
 2.43.0
 
