@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-42728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDA08B745B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84798B73C6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B0E1C233F2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 841F8281885
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B03112D755;
-	Tue, 30 Apr 2024 11:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3190A12D1F1;
+	Tue, 30 Apr 2024 11:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNpAf06A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caWMEO/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0800512BF32;
-	Tue, 30 Apr 2024 11:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E397B8801;
+	Tue, 30 Apr 2024 11:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476593; cv=none; b=YmusXJyd5tMbV8JVac7ede66lYsZMW7+I94moLyrZtBUYLLUA6M5Np0uuLFaZjiTNImerINCsTbnnEC5ITO5w+4LVBaV5BkAK9gTQN+nyc179iIIeUeYMwww2tcG3HQ087PugJQk5siEfUQAimcHwFH3ikpLz/m6NyjbVUYLr4E=
+	t=1714476191; cv=none; b=ZyPhFk4rvzJ57v452fAA0SowqioMxS6rKhCm4Cb5NLRsbsrCfU1H72d1AA2NdHU+keurK6f6+6WiehYHyyt60y+k3SG7ewnuxSazIaaEUTQPc7HowWQvuZcQSG/az6SBUGhBdd6t4Up/QgZpiHORSKcX8TUILMl1Z3hN3y6qvtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476593; c=relaxed/simple;
-	bh=8T4+Q6C+cwZVgnBDEd+NCkTBLIjWR+c8rA0sdnVxUkM=;
+	s=arc-20240116; t=1714476191; c=relaxed/simple;
+	bh=3k9CdTI/8OVdl52+BaJCE8aHJlrXvaKWJOQ/S5QkmBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSpTWrdMvMu0a66X9YMpZmUSNVfRXfHku7/D3Ym+wEE8UYNHr1RcB4wIBp4+CvpvDU3i46L6t9DhIPxB9InQWw8UKr4MnRp1yd+QpIkNa330nMwiS29d7dM33Lotc/xua2ugsl9cYYqAjNhWydHTdo3PSy983w3/S9O0RWMSYJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNpAf06A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FD9C2BBFC;
-	Tue, 30 Apr 2024 11:29:52 +0000 (UTC)
+	 MIME-Version; b=oN1toqxikieGCDG2pjeGXm0arg1LBSQBMDqHal1e6js81q+La2EI9XibSoWafQ9GHUWOYd1icXQhF+oB7xw2qZbyrAlyXnCR1AmyZJJF4yS9RDOEJq1fuMdjmE2V8cYDt8biZkDJzfv+OalLNCpCNHNbbZnjtrPlzFyBfyHcD9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caWMEO/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FC8C2BBFC;
+	Tue, 30 Apr 2024 11:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476592;
-	bh=8T4+Q6C+cwZVgnBDEd+NCkTBLIjWR+c8rA0sdnVxUkM=;
+	s=korg; t=1714476190;
+	bh=3k9CdTI/8OVdl52+BaJCE8aHJlrXvaKWJOQ/S5QkmBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNpAf06AhyyEayB81zH3YlcUzadYgpFPhyOCiQi3ozirfxZx9dixrFWHSjt51++1u
-	 FwJfpj4748MWBa5d8Xsj+HRmOh9MwNz6+CeI/jKj77/q2kG4G8P4CkWxiFX1RF5Fqm
-	 Ki2DAbjJHF+Pa+egVcXT1Gpp4yo+7FxM8TklFxX8=
+	b=caWMEO/dJ60ZtPKXsxwt7JOzseW+zRxGYXyBXdL0ZGo59O1ZlmA3fUSt7vXovJTI5
+	 oJQBKQ0mWreaApkh5InHAu5hHGcTPNB3XiLDoWZsiyNIDTnXNJYcz3jTWeWXgB+I3u
+	 T4crvWIYAm2tCWWZdY1s9Cole88Il4KOH/HC6V5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/110] netfilter: nf_tables: honor table dormant flag from netdev release event path
+Subject: [PATCH 5.4 062/107] mlxsw: core: Unregister EMAD trap using FORWARD action
 Date: Tue, 30 Apr 2024 12:40:22 +0200
-Message-ID: <20240430103049.131748732@linuxfoundation.org>
+Message-ID: <20240430103046.486478356@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 8e30abc9ace4f0add4cd761dfdbfaebae5632dd2 ]
+[ Upstream commit 976c44af48141cd8595601c0af2a19a43c5b228b ]
 
-Check for table dormant flag otherwise netdev release event path tries
-to unregister an already unregistered hook.
+The device's manual (PRM - Programmer's Reference Manual) classifies the
+trap that is used to deliver EMAD responses as an "event trap". Among
+other things, it means that the only actions that can be associated with
+the trap are TRAP and FORWARD (NOP).
 
-[524854.857999] ------------[ cut here ]------------
-[524854.858010] WARNING: CPU: 0 PID: 3386599 at net/netfilter/core.c:501 __nf_unregister_net_hook+0x21a/0x260
-[...]
-[524854.858848] CPU: 0 PID: 3386599 Comm: kworker/u32:2 Not tainted 6.9.0-rc3+ #365
-[524854.858869] Workqueue: netns cleanup_net
-[524854.858886] RIP: 0010:__nf_unregister_net_hook+0x21a/0x260
-[524854.858903] Code: 24 e8 aa 73 83 ff 48 63 43 1c 83 f8 01 0f 85 3d ff ff ff e8 98 d1 f0 ff 48 8b 3c 24 e8 8f 73 83 ff 48 63 43 1c e9 26 ff ff ff <0f> 0b 48 83 c4 18 48 c7 c7 00 68 e9 82 5b 5d 41 5c 41 5d 41 5e 41
-[524854.858914] RSP: 0018:ffff8881e36d79e0 EFLAGS: 00010246
-[524854.858926] RAX: 0000000000000000 RBX: ffff8881339ae790 RCX: ffffffff81ba524a
-[524854.858936] RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff8881c8a16438
-[524854.858945] RBP: ffff8881c8a16438 R08: 0000000000000001 R09: ffffed103c6daf34
-[524854.858954] R10: ffff8881e36d79a7 R11: 0000000000000000 R12: 0000000000000005
-[524854.858962] R13: ffff8881c8a16000 R14: 0000000000000000 R15: ffff8881351b5a00
-[524854.858971] FS:  0000000000000000(0000) GS:ffff888390800000(0000) knlGS:0000000000000000
-[524854.858982] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[524854.858991] CR2: 00007fc9be0f16f4 CR3: 00000001437cc004 CR4: 00000000001706f0
-[524854.859000] Call Trace:
-[524854.859006]  <TASK>
-[524854.859013]  ? __warn+0x9f/0x1a0
-[524854.859027]  ? __nf_unregister_net_hook+0x21a/0x260
-[524854.859044]  ? report_bug+0x1b1/0x1e0
-[524854.859060]  ? handle_bug+0x3c/0x70
-[524854.859071]  ? exc_invalid_op+0x17/0x40
-[524854.859083]  ? asm_exc_invalid_op+0x1a/0x20
-[524854.859100]  ? __nf_unregister_net_hook+0x6a/0x260
-[524854.859116]  ? __nf_unregister_net_hook+0x21a/0x260
-[524854.859135]  nf_tables_netdev_event+0x337/0x390 [nf_tables]
-[524854.859304]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
-[524854.859461]  ? packet_notifier+0xb3/0x360
-[524854.859476]  ? _raw_spin_unlock_irqrestore+0x11/0x40
-[524854.859489]  ? dcbnl_netdevice_event+0x35/0x140
-[524854.859507]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
-[524854.859661]  notifier_call_chain+0x7d/0x140
-[524854.859677]  unregister_netdevice_many_notify+0x5e1/0xae0
+Currently, during driver de-initialization the driver unregisters the
+trap by setting its action to DISCARD, which violates the above
+guideline. Future firmware versions will prevent such misuses by
+returning an error. This does not prevent the driver from working, but
+an error will be printed to the kernel log during module removal /
+devlink reload:
 
-Fixes: d54725cd11a5 ("netfilter: nf_tables: support for multiple devices per netdev hook")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+mlxsw_spectrum 0000:03:00.0: Reg cmd access status failed (status=7(bad parameter))
+mlxsw_spectrum 0000:03:00.0: Reg cmd access failed (reg_id=7003(hpkt),type=write)
+
+Suppress the error message by aligning the driver to the manual and use
+a FORWARD (NOP) action when unregistering the trap.
+
+Fixes: 4ec14b7634b2 ("mlxsw: Add interface to access registers and process events")
+Cc: Jiri Pirko <jiri@resnulli.us>
+Cc: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://lore.kernel.org/r/753a89e14008fde08cb4a2c1e5f537b81d8eb2d6.1713446092.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_chain_filter.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
-index 274b6f7e6bb57..d170758a1eb5d 100644
---- a/net/netfilter/nft_chain_filter.c
-+++ b/net/netfilter/nft_chain_filter.c
-@@ -338,7 +338,9 @@ static void nft_netdev_event(unsigned long event, struct net_device *dev,
- 		return;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
+index 2d39bade89e33..bb9299481b45b 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
+@@ -566,7 +566,7 @@ static void mlxsw_emad_rx_listener_func(struct sk_buff *skb, u8 local_port,
  
- 	if (n > 1) {
--		nf_unregister_net_hook(ctx->net, &found->ops);
-+		if (!(ctx->chain->table->flags & NFT_TABLE_F_DORMANT))
-+			nf_unregister_net_hook(ctx->net, &found->ops);
-+
- 		list_del_rcu(&found->list);
- 		kfree_rcu(found, rcu);
- 		return;
+ static const struct mlxsw_listener mlxsw_emad_rx_listener =
+ 	MLXSW_RXL(mlxsw_emad_rx_listener_func, ETHEMAD, TRAP_TO_CPU, false,
+-		  EMAD, DISCARD);
++		  EMAD, FORWARD);
+ 
+ static int mlxsw_emad_init(struct mlxsw_core *mlxsw_core)
+ {
 -- 
 2.43.0
 
