@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-42426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336998B72F6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:13:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6F38B7198
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6AD1C22742
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:13:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D472CB221AA
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA3512CDA5;
-	Tue, 30 Apr 2024 11:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAB212C530;
+	Tue, 30 Apr 2024 10:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSSpx+Ny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YE9yuyaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E2C211C;
-	Tue, 30 Apr 2024 11:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB31128816;
+	Tue, 30 Apr 2024 10:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475626; cv=none; b=K5WQ94gjDnvlt/xQgf3VeH2iEF92vrJJt9RsYCQWlvXhG7SaFhcPsruW9wLGKPfMJRk+eNB9CVI41aHGVP8i3aD2XIpuawfwxdHMbXn3K0ajohKQvD1F7HWRXJZrYmA2H5YsUhZxvw1zAeqVZKZOm1hdayn2yW9P6n6XDac2zJg=
+	t=1714474690; cv=none; b=OiO3LIQ/WCuD1FUjBgeONjkQqbyhUyUjTLZuggUquLd2Nml64E7PPB47qAozWyL3aOjkv5cqjNWZoG5R+mtjM8SfBB4YeryTIpflcEZ6dmxXzDcO7v3QUHyNbGDT1wepgsaxgApIHX5XULulOpqJ0ACpLiAyM93+UEHCT8HQ+Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475626; c=relaxed/simple;
-	bh=xaZlMGuoBQQpWEACIAYRigKSuIuTGvu41kmcIM2kXRc=;
+	s=arc-20240116; t=1714474690; c=relaxed/simple;
+	bh=4bYrz8/XJSAtLuXhMeAiIVEuLtMBD5gPukMdw7cUC58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leJKqErfwKrboDj/OlAdQG3ethMO3/adWfh9TJ/ZT2zJGvBmVX8v92a7lmZu7yRxgMZTmlbtuv9VUxcVye6F4hDgiljbTL5DGFmizS8NualfK7r573VVWK+2bAyzz2TDGThm0xYZfnWxX3Gl1Sw8/f6jPLr3ViO0t5Wi0+Bbxug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSSpx+Ny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CBAC2BBFC;
-	Tue, 30 Apr 2024 11:13:45 +0000 (UTC)
+	 MIME-Version; b=IgtmRJ9wUuK3hcWURTPe4y4+B/4Lxerm2Zfs4KY40OpPrjePMfBQH1VB+QOcIiN4ycP4GokMj0EAYPLvu2pf48Au8z0rmLnn8kqeabUUpCLFXRk3wMpvj4Be50MZYzh5WnErQ7Tptf7bneFD6BcMx4+HOG2F3679aK05H80+Udk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YE9yuyaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A2CC2BBFC;
+	Tue, 30 Apr 2024 10:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475626;
-	bh=xaZlMGuoBQQpWEACIAYRigKSuIuTGvu41kmcIM2kXRc=;
+	s=korg; t=1714474690;
+	bh=4bYrz8/XJSAtLuXhMeAiIVEuLtMBD5gPukMdw7cUC58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSSpx+NyIcY9L6XeYnPBOU8Xy5SLW/cbDW/fMbHFNQwN9RnXhxczijWeoJCb8k0x3
-	 O26wcowNwysWt1ckXJR7tKeOIvAn4DPXYB9x2EDS+4/O8xDG+dEMHvRLR/EdaT21Wr
-	 u+PDXbnIwrqh5hcIkjM4SdH1DOQlX3W3l6+Fm6ss=
+	b=YE9yuyaIES6fQDoqTh+Q38Aucm1B8TGoEf/TeM5L+R2tV9zK1Pc8ktbTDhKR7UrS4
+	 k2dyJpcZrwSwTSunvhHdOKh2oG6ADohxIsOGG56RBDvTcjuhO1clStjalGzQWTVe+6
+	 nxRHkpM98M7yIGvnbSVkxK6XW6LLh9cM9rCbEstA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 153/186] mtd: diskonchip: work around ubsan link failure
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.8 227/228] Bluetooth: hci_sync: Fix UAF on create_le_conn_complete
 Date: Tue, 30 Apr 2024 12:40:05 +0200
-Message-ID: <20240430103102.475647456@linuxfoundation.org>
+Message-ID: <20240430103110.353455546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 21c9fb611c25d5cd038f6fe485232e7884bb0b3d upstream.
+commit f7cbce60a38a6589f0dade720d4c2544959ecc0e upstream.
 
-I ran into a randconfig build failure with UBSAN using gcc-13.2:
+While waiting for hci_dev_lock the hci_conn object may be cleanup
+causing the following trace:
 
-arm-linux-gnueabi-ld: error: unplaced orphan section `.bss..Lubsan_data31' from `drivers/mtd/nand/raw/diskonchip.o'
+BUG: KASAN: slab-use-after-free in hci_connect_le_scan_cleanup+0x29/0x350
+Read of size 8 at addr ffff888001a50a30 by task kworker/u3:1/111
 
-I'm not entirely sure what is going on here, but I suspect this has something
-to do with the check for the end of the doc_locations[] array that contains
-an (unsigned long)0xffffffff element, which is compared against the signed
-(int)0xffffffff. If this is the case, we should get a runtime check for
-undefined behavior, but we instead get an unexpected build-time error.
+CPU: 0 PID: 111 Comm: kworker/u3:1 Not tainted
+6.8.0-rc2-00701-g8179b15ab3fd-dirty #6418
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-1.fc38
+04/01/2014
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x21/0x70
+ print_report+0xce/0x620
+ ? preempt_count_sub+0x13/0xc0
+ ? __virt_addr_valid+0x15f/0x310
+ ? hci_connect_le_scan_cleanup+0x29/0x350
+ kasan_report+0xdf/0x110
+ ? hci_connect_le_scan_cleanup+0x29/0x350
+ hci_connect_le_scan_cleanup+0x29/0x350
+ create_le_conn_complete+0x25c/0x2c0
 
-I would have expected this to work fine on 32-bit architectures despite the
-signed integer overflow, though on 64-bit architectures this likely won't
-ever work.
-
-Changing the contition to instead check for the size of the array makes the
-code safe everywhere and avoids the ubsan check that leads to the link
-error. The loop code goes back to before 2.6.12.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240405143015.717429-1-arnd@kernel.org
+Fixes: 881559af5f5c ("Bluetooth: hci_sync: Attempt to dequeue connection attempt")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/diskonchip.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_sync.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/nand/raw/diskonchip.c
-+++ b/drivers/mtd/nand/raw/diskonchip.c
-@@ -53,7 +53,7 @@ static unsigned long doc_locations[] __i
- 	0xe8000, 0xea000, 0xec000, 0xee000,
- #endif
- #endif
--	0xffffffff };
-+};
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6763,6 +6763,9 @@ static void create_le_conn_complete(stru
  
- static struct mtd_info *doclist = NULL;
+ 	hci_dev_lock(hdev);
  
-@@ -1552,7 +1552,7 @@ static int __init init_nanddoc(void)
- 		if (ret < 0)
- 			return ret;
- 	} else {
--		for (i = 0; (doc_locations[i] != 0xffffffff); i++) {
-+		for (i = 0; i < ARRAY_SIZE(doc_locations); i++) {
- 			doc_probe(doc_locations[i]);
- 		}
- 	}
++	if (!hci_conn_valid(hdev, conn))
++		goto done;
++
+ 	if (!err) {
+ 		hci_connect_le_scan_cleanup(conn, 0x00);
+ 		goto done;
 
 
 
