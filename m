@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4BE8B71B2
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5968B7118
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD6C71F216FD
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E2EA1F21DA2
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F3A12C47A;
-	Tue, 30 Apr 2024 10:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F7D12C490;
+	Tue, 30 Apr 2024 10:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQxCZptT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqF4E8zt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ACB7464;
-	Tue, 30 Apr 2024 10:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BEB12C487;
+	Tue, 30 Apr 2024 10:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474777; cv=none; b=WMO9sv4OCivntCl8C5lM3Mi4NK/Ak0RUhwndPJ72fQImC+rccew62WIA1PHI0sxjIWO2dulXg3qOv3NHOnL4HyZRiZ4KdLUbbX7G86fNxz8qB0lKSdGiEcto9REO6NkP0CWjlkESN5kAh8KI92Y70UqJpSNLk/9oDn7Fpbgm6+M=
+	t=1714474379; cv=none; b=t3SeOH5Tw1PoHrcpi88gxgeXUnRsFsmJz2g9mEcL+qSuFhbU4EdF3UxlYOqP/3clnrtHMeEF0/fggQzp0/vCSvmYQO13Psk3RVjCtEOAykrPsZSqsgnjk62CufCqYEdJkJqfMgqFj3no9XzgSuHnlm6tnw/2fvyjQ5CDlcpBoT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474777; c=relaxed/simple;
-	bh=FKBbCRc0mKPRumS/Rn4HdxyJHlF9Ea2Woc7GOiPJarw=;
+	s=arc-20240116; t=1714474379; c=relaxed/simple;
+	bh=Qbn3dgf3IbVCLGnfvEPncN8w10LfxyKkHOY2FQlrUno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+HGFkyV7QAawxXntIgJtT61hzUk1kNGCE0zWug9tzRDdCdDNhT+N8eusYjWpYOL8UpVMHTVF2TiYbGwZ22Hz5ITMGhQTDEUXN9t0P3Ej6TRo82dV4R+8/17+2AxdFAxfzEKiV1nm+IDKHMsY5MxiKMJfWytVa3r5R8KCQn6Kg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQxCZptT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B33C2BBFC;
-	Tue, 30 Apr 2024 10:59:36 +0000 (UTC)
+	 MIME-Version; b=ZRc7hX3gnalMop4EoAC2/FcV475BDpDgkNd2f3cCMXnJbVqnipnSatHmu8OmpRtoPsmEMmiD2RXEZbi26NWcL1yXZEq/w4mV7Iw/ItEs8k1nHIuc1vBfGr+AnJZq+3Wc8TCi8l3kN8KIni1dLWBqFlELPs164Ptvs+Y759LoGL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqF4E8zt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7701C4AF18;
+	Tue, 30 Apr 2024 10:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474777;
-	bh=FKBbCRc0mKPRumS/Rn4HdxyJHlF9Ea2Woc7GOiPJarw=;
+	s=korg; t=1714474379;
+	bh=Qbn3dgf3IbVCLGnfvEPncN8w10LfxyKkHOY2FQlrUno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQxCZptTltYfPcQf2jxx4/nr01ZP+NolAHZHme3lFwBgbrNtWC8unFbHjj9SzedWB
-	 XhV/3xc3VZt4lA95kzpLu8Vgs7odKb1KPbWX4FlZE16mpsatqvIAWjzL+5s1U9D7nL
-	 YzG5wfs5yHDgSjY75ChemsU4wP7ewVQAvajJQkzg=
+	b=xqF4E8ztVaBhh7liNP1Yo9/U2cOeJGdgSZbHBdmhrVDs12ncg2lpznSUDeBEL1Vnc
+	 CzCxP9ERf7pOBUpl5U2/wTxkv8mLEdxWcBcn4N0tASLFIMjSd1EuYdSpW8lWmZXay0
+	 z4ywrwTKJb/JDw5S6Hue6MTbufWRlyF7ASqnddY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@linux.alibaba.com>,
-	Cooper Qu <cooper.qu@linux.alibaba.com>,
-	Kees Cook <keescook@chromium.org>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/138] riscv: Enable per-task stack canaries
+	Conor Dooley <conor.dooley@microchip.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.8 138/228] rust: make mutually exclusive with CFI_CLANG
 Date: Tue, 30 Apr 2024 12:38:36 +0200
-Message-ID: <20240430103050.347638688@linuxfoundation.org>
+Message-ID: <20240430103107.782803623@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,171 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit fea2fed201ee5647699018a56fbb6a5e8cc053a5 ]
+commit 8933cf4651e02853ca679be7b2d978dfcdcc5e0c upstream.
 
-This enables the use of per-task stack canary values if GCC has
-support for emitting the stack canary reference relative to the
-value of tp, which holds the task struct pointer in the riscv
-kernel.
+On RISC-V and arm64, and presumably x86, if CFI_CLANG is enabled,
+loading a rust module will trigger a kernel panic. Support for
+sanitisers, including kcfi (CFI_CLANG), is in the works, but for now
+they're nightly-only options in rustc. Make RUST depend on !CFI_CLANG
+to prevent configuring a kernel without symmetrical support for kfi.
 
-After compare arm64 and x86 implementations, seems arm64's is more
-flexible and readable. The key point is how gcc get the offset of
-stack_canary from gs/el0_sp.
+[ Matthew Maurer writes [1]:
 
-x86: Use a fix offset from gs, not flexible.
+    This patch is fine by me - the last patch needed for KCFI to be
+    functional in Rust just landed upstream last night, so we should
+    revisit this (in the form of enabling it) once we move to
+    `rustc-1.79.0` or later.
 
-struct fixed_percpu_data {
-	/*
-	 * GCC hardcodes the stack canary as %gs:40.  Since the
-	 * irq_stack is the object at %gs:0, we reserve the bottom
-	 * 48 bytes of the irq stack for the canary.
-	 */
-	char            gs_base[40]; // :(
-	unsigned long   stack_canary;
-};
+  Ramon de C Valle also gave feedback [2] on the status of KCFI for
+  Rust and created a tracking issue [3] in upstream Rust.   - Miguel ]
 
-arm64: Use -mstack-protector-guard-offset & guard-reg
-	gcc options:
-	-mstack-protector-guard=sysreg
-	-mstack-protector-guard-reg=sp_el0
-	-mstack-protector-guard-offset=xxx
-
-riscv: Use -mstack-protector-guard-offset & guard-reg
-	gcc options:
-	-mstack-protector-guard=tls
-	-mstack-protector-guard-reg=tp
-	-mstack-protector-guard-offset=xxx
-
- GCC's implementation has been merged:
- commit c931e8d5a96463427040b0d11f9c4352ac22b2b0
- Author: Cooper Qu <cooper.qu@linux.alibaba.com>
- Date:   Mon Jul 13 16:15:08 2020 +0800
-
-     RISC-V: Add support for TLS stack protector canary access
-
-In the end, these codes are inserted by gcc before return:
-
-*  0xffffffe00020b396 <+120>:   ld      a5,1008(tp) # 0x3f0
-*  0xffffffe00020b39a <+124>:   xor     a5,a5,a4
-*  0xffffffe00020b39c <+126>:   mv      a0,s5
-*  0xffffffe00020b39e <+128>:   bnez    a5,0xffffffe00020b61c <_do_fork+766>
-   0xffffffe00020b3a2 <+132>:   ld      ra,136(sp)
-   0xffffffe00020b3a4 <+134>:   ld      s0,128(sp)
-   0xffffffe00020b3a6 <+136>:   ld      s1,120(sp)
-   0xffffffe00020b3a8 <+138>:   ld      s2,112(sp)
-   0xffffffe00020b3aa <+140>:   ld      s3,104(sp)
-   0xffffffe00020b3ac <+142>:   ld      s4,96(sp)
-   0xffffffe00020b3ae <+144>:   ld      s5,88(sp)
-   0xffffffe00020b3b0 <+146>:   ld      s6,80(sp)
-   0xffffffe00020b3b2 <+148>:   ld      s7,72(sp)
-   0xffffffe00020b3b4 <+150>:   addi    sp,sp,144
-   0xffffffe00020b3b6 <+152>:   ret
-   ...
-*  0xffffffe00020b61c <+766>:   auipc   ra,0x7f8
-*  0xffffffe00020b620 <+770>:   jalr    -1764(ra) # 0xffffffe000a02f38 <__stack_chk_fail>
-
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Cooper Qu <cooper.qu@linux.alibaba.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
-Stable-dep-of: d14fa1fcf69d ("riscv: process: Fix kernel gp leakage")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/rust-for-linux/CAGSQo024u1gHJgzsO38Xg3c4or+JupoPABQx_+0BLEpPg0cOEA@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/rust-for-linux/CAOcBZOS2kPyH0Dm7Fuh4GC3=v7nZhyzBj_-dKu3PfAnrHZvaxg@mail.gmail.com/ [2]
+Link: https://github.com/rust-lang/rust/issues/123479 [3]
+Link: https://lore.kernel.org/r/20240404-providing-emporium-e652e359c711@spud
+[ Added feedback from the list, links, and used Cc for the tag. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig                      |  7 +++++++
- arch/riscv/Makefile                     | 10 ++++++++++
- arch/riscv/include/asm/stackprotector.h |  3 ++-
- arch/riscv/kernel/asm-offsets.c         |  3 +++
- arch/riscv/kernel/process.c             |  2 +-
- 5 files changed, 23 insertions(+), 2 deletions(-)
+ init/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index b28fabfc91bf7..0248da3be3e70 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -445,6 +445,13 @@ config EFI
- 	  allow the kernel to be booted as an EFI application. This
- 	  is only useful on systems that have UEFI firmware.
- 
-+config CC_HAVE_STACKPROTECTOR_TLS
-+	def_bool $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=tp -mstack-protector-guard-offset=0)
-+
-+config STACKPROTECTOR_PER_TASK
-+	def_bool y
-+	depends on STACKPROTECTOR && CC_HAVE_STACKPROTECTOR_TLS
-+
- endmenu
- 
- config BUILTIN_DTB
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index daa679440000a..8572d23fba700 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -88,6 +88,16 @@ KBUILD_AFLAGS_MODULE += $(call as-option,-Wa$(comma)-mno-relax)
- # architectures.  It's faster to have GCC emit only aligned accesses.
- KBUILD_CFLAGS += $(call cc-option,-mstrict-align)
- 
-+ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
-+prepare: stack_protector_prepare
-+stack_protector_prepare: prepare0
-+	$(eval KBUILD_CFLAGS += -mstack-protector-guard=tls		  \
-+				-mstack-protector-guard-reg=tp		  \
-+				-mstack-protector-guard-offset=$(shell	  \
-+			awk '{if ($$2 == "TSK_STACK_CANARY") print $$3;}' \
-+					include/generated/asm-offsets.h))
-+endif
-+
- # arch specific predefines for sparse
- CHECKFLAGS += -D__riscv -D__riscv_xlen=$(BITS)
- 
-diff --git a/arch/riscv/include/asm/stackprotector.h b/arch/riscv/include/asm/stackprotector.h
-index 5962f8891f06f..09093af46565e 100644
---- a/arch/riscv/include/asm/stackprotector.h
-+++ b/arch/riscv/include/asm/stackprotector.h
-@@ -24,6 +24,7 @@ static __always_inline void boot_init_stack_canary(void)
- 	canary &= CANARY_MASK;
- 
- 	current->stack_canary = canary;
--	__stack_chk_guard = current->stack_canary;
-+	if (!IS_ENABLED(CONFIG_STACKPROTECTOR_PER_TASK))
-+		__stack_chk_guard = current->stack_canary;
- }
- #endif /* _ASM_RISCV_STACKPROTECTOR_H */
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index db203442c08f9..877ff65b4e136 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -66,6 +66,9 @@ void asm_offsets(void)
- 	OFFSET(TASK_THREAD_F30, task_struct, thread.fstate.f[30]);
- 	OFFSET(TASK_THREAD_F31, task_struct, thread.fstate.f[31]);
- 	OFFSET(TASK_THREAD_FCSR, task_struct, thread.fstate.fcsr);
-+#ifdef CONFIG_STACKPROTECTOR
-+	OFFSET(TSK_STACK_CANARY, task_struct, stack_canary);
-+#endif
- 
- 	DEFINE(PT_SIZE, sizeof(struct pt_regs));
- 	OFFSET(PT_EPC, pt_regs, epc);
-diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index 7868050ff426d..d83d7761a157d 100644
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -24,7 +24,7 @@
- 
- register unsigned long gp_in_global __asm__("gp");
- 
--#ifdef CONFIG_STACKPROTECTOR
-+#if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
- #include <linux/stackprotector.h>
- unsigned long __stack_chk_guard __read_mostly;
- EXPORT_SYMBOL(__stack_chk_guard);
--- 
-2.43.0
-
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1904,6 +1904,7 @@ config RUST
+ 	bool "Rust support"
+ 	depends on HAVE_RUST
+ 	depends on RUST_IS_AVAILABLE
++	depends on !CFI_CLANG
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
 
 
 
