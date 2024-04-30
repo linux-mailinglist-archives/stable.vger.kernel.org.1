@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-42660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8E68B7408
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322938B7166
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39B29B20386
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E132F283163
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D15612D215;
-	Tue, 30 Apr 2024 11:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC0212CD9C;
+	Tue, 30 Apr 2024 10:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rx1zaizh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wCNl0nn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C75812C47A;
-	Tue, 30 Apr 2024 11:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495C612C7FB;
+	Tue, 30 Apr 2024 10:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476374; cv=none; b=pwBtAZdBto+utDdH3ojV/Cft7Ceou1fx6SAFu7Wat8AU76QLqa19k1qWXsy/+jRnBFxWQiFJOVqUqH4cMxVtauYIGvuXrM1muICHCfSKu1GBa5ZYLFoDH3QjTQvq/u2iShrKizqIj1pXPv3cH0HMhUUModgHkLQpR2hCNb1yubM=
+	t=1714474567; cv=none; b=VCaqDI8HHgisfXBrto1C4qaaFnmVe3VAhEtySTWESxXI5KRRuj0sgacfMTL/O0wvDUg9OqsVUgx4YHBx3JazLZjfUVYY8EZo8xZZVpIaQWE/ZIXaN70+GMZb1n6almHUIoSEH38+CscKlsO/TdkKSjbiFiIvZQ40piCSO8cafBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476374; c=relaxed/simple;
-	bh=Hdv0P8mEEWzHGMdQ21XpGusN25DBTCCawk9pqBdICJU=;
+	s=arc-20240116; t=1714474567; c=relaxed/simple;
+	bh=3Oz8ifsHIeUIOEn/eTKTVf2FvH8CYW9wCxyTZY/L6nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XvAMcYm9/Z0vY/Q/aGzculuu8OBAX5gYOhLnxMyYm470HYI9qF8m313X/WTKzFpPTIHHGXrEJgehpMNYK208K/8wSYZXtndTS+tKkATPY1i5Ezz8kBEQ/ieaiBMFfbTXW1NtHgek+oXk5kvle9Ba8qHvcds+RzbBQe1J+M5vDmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rx1zaizh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D230AC4AF1A;
-	Tue, 30 Apr 2024 11:26:13 +0000 (UTC)
+	 MIME-Version; b=OyQJyhZGkyGq7UtOSMlgkTbz0ytObe1GbfgnG4bOwK6aA8ZjevMBrrzAVSmPVLhNtoTCwQdcbWFKAkGsR9kZQVhSn7fUWARcl25woO8OpSbE0BgBZ9RZp8FiqGe5UHXbVhlYGWPzi2iDVOOw9u1yYcYnyskL8v+H7u/KwDT7Zl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wCNl0nn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986A2C2BBFC;
+	Tue, 30 Apr 2024 10:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476374;
-	bh=Hdv0P8mEEWzHGMdQ21XpGusN25DBTCCawk9pqBdICJU=;
+	s=korg; t=1714474567;
+	bh=3Oz8ifsHIeUIOEn/eTKTVf2FvH8CYW9wCxyTZY/L6nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rx1zaizhhcV+PaP0r+G5SDO9eHXJ90+jvCkzeA+WMgZrmGZUFH9/78A+2Dahb4ufm
-	 Oh9XNj3PnOT5Cn7sIeAI8YsHMJS7F5ci75m3Tyu944RPjcIXbKkhGDnw0xGOBUX+cu
-	 TOnyCsgSlhSiScHd/corzT+b2Y7yX/0JeT1r1+a0=
+	b=0wCNl0nn37xjq5SK+POJ73zoLc7yYP1rHWZ/2xG+BKPrCnaCao1FuFmtJc8g2pp6V
+	 Z5Uj7htgr2FFav+ojgeFNyhpBCMZh39QUs7dYDXfQPBg8S7/WwhrGMv6CgkH0P3bvY
+	 cWfzFt/+xfsMlaDyx8iP1yfk2Y0Hlw9n2+gET030=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/110] arm64: dts: rockchip: set PHY address of MT7531 switch to 0x1f
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.8 196/228] phy: qcom: qmp-combo: Fix register base for QSERDES_DP_PHY_MODE
 Date: Tue, 30 Apr 2024 12:39:34 +0200
-Message-ID: <20240430103047.726998122@linuxfoundation.org>
+Message-ID: <20240430103109.455550148@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +67,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arınç ÜNAL <arinc.unal@arinc9.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit a2ac2a1b02590a22a236c43c455f421cdede45f5 ]
+commit ee13e1f3c72b9464a4d73017c060ab503eed653a upstream.
 
-The MT7531 switch listens on PHY address 0x1f on an MDIO bus. I've got two
-findings that support this. There's no bootstrapping option to change the
-PHY address of the switch. The Linux driver hardcodes 0x1f as the PHY
-address of the switch. So the reg property on the device tree is currently
-ignored by the Linux driver.
+The register base that was used to write to the QSERDES_DP_PHY_MODE
+register was 'dp_dp_phy' before commit 815891eee668 ("phy:
+qcom-qmp-combo: Introduce orientation variable"). There isn't any
+explanation in the commit why this is changed, so I suspect it was an
+oversight or happened while being extracted from some other series.
+Oddly the value being 0x4c or 0x5c doesn't seem to matter for me, so I
+suspect this is dead code, but that can be fixed in another patch. It's
+not good to write to the wrong register space, and maybe some other
+version of this phy relies on this.
 
-Therefore, describe the correct PHY address on Banana Pi BPI-R2 Pro that
-has this switch.
-
-Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Fixes: c1804463e5c6 ("arm64: dts: rockchip: Add mt7531 dsa node to BPI-R2-Pro board")
-Link: https://lore.kernel.org/r/20240314-for-rockchip-mt7531-phy-address-v1-1-743b5873358f@arinc9.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Steev Klimaszewski <steev@kali.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>
+Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: stable@vger.kernel.org      # 6.5
+Fixes: 815891eee668 ("phy: qcom-qmp-combo: Introduce orientation variable")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240405000111.1450598-1-swboyd@chromium.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts | 4 ++--
+ drivers/phy/qualcomm/phy-qcom-qmp-combo.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-index 26d7fda275edb..7952a14314360 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-bpi-r2-pro.dts
-@@ -521,9 +521,9 @@
- 	#address-cells = <1>;
- 	#size-cells = <0>;
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+@@ -2211,9 +2211,9 @@ static bool qmp_combo_configure_dp_mode(
+ 	writel(val, qmp->dp_dp_phy + QSERDES_DP_PHY_PD_CTL);
  
--	switch@0 {
-+	switch@1f {
- 		compatible = "mediatek,mt7531";
--		reg = <0>;
-+		reg = <0x1f>;
+ 	if (reverse)
+-		writel(0x4c, qmp->pcs + QSERDES_DP_PHY_MODE);
++		writel(0x4c, qmp->dp_dp_phy + QSERDES_DP_PHY_MODE);
+ 	else
+-		writel(0x5c, qmp->pcs + QSERDES_DP_PHY_MODE);
++		writel(0x5c, qmp->dp_dp_phy + QSERDES_DP_PHY_MODE);
  
- 		ports {
- 			#address-cells = <1>;
--- 
-2.43.0
-
+ 	return reverse;
+ }
 
 
 
