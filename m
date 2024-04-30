@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-41837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6798B6FF5
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:41:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4338B7048
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4E771F2391A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:41:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 402631C220B3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0BC12C48F;
-	Tue, 30 Apr 2024 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2331B12D215;
+	Tue, 30 Apr 2024 10:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3YlpQ5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHjRQmC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8367A12C47F;
-	Tue, 30 Apr 2024 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D462312C7E3;
+	Tue, 30 Apr 2024 10:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473710; cv=none; b=bwFv/BLyDimt7V+PoqvUR0+M0IKWcLyZol7AfdwlWABVKjJtkO+Cp/jWzJuKEU54hlSQADp6oGmUsDH3j+YoAgZFl2uUJsTFFf+DYSD8gcoZy/rXw0agbogXIn57fAGUh7Z2+w664WLdHxj+Df0PFqyKjoda+H12UeQZ1B6QHrY=
+	t=1714473859; cv=none; b=tXXxms/8Dzo159I8odaoIMxzTOSO1N9oePn7NnEYwDWlWaAiD4UFjzuWOdXqN09vvu9YDcV9EG3Wdd+fhe35AqkgWQRzfr7L++5DiElpaOD33jrUwyTWuiAJs/nNkpjQUdZf8IwgmA61U33jggi7EQJlS7yTW1gjlCJ+yHBGlK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473710; c=relaxed/simple;
-	bh=qvl4q71NxBmznRRcgjBzkcuWg2HaN/RbXs4ERXWOkGQ=;
+	s=arc-20240116; t=1714473859; c=relaxed/simple;
+	bh=6NCaHs8Stm2t94vtII86LXXCn17SnCF8BFZFqkkYVHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmPuTDzRCanVQTLCe0cab2Gyfm0Le0I0/4zp8xXBm7Gds1u07EF2ucEoD/Tx4CHhfqEGvzYV4DOwtBHFGSRVxW/T0LgZOty25diyp4KTEjTX1EgjmuzqJWKgZhTQFdn1mnDKj6y7gN7hPLNBQBCpwYHQ9nSLNxdXFkrU/ao+5wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3YlpQ5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE65C2BBFC;
-	Tue, 30 Apr 2024 10:41:49 +0000 (UTC)
+	 MIME-Version; b=GM3Y3hNKsqTLNH3l/tF+oANYNmXes/x8ld7a6B4i27fhNWsj2j4SlTu+jKQjG/0q09iwKkB1pVJAgT9B9KZZx5+bidzxohKCdzBWqdbdJjq3nLrd+bI0ciNULzIuo0m+ZsocLa5O7yhyBkc67ZmyviMuKEIHqExQtH7hapNDxoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHjRQmC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F325C4AF1A;
+	Tue, 30 Apr 2024 10:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473710;
-	bh=qvl4q71NxBmznRRcgjBzkcuWg2HaN/RbXs4ERXWOkGQ=;
+	s=korg; t=1714473859;
+	bh=6NCaHs8Stm2t94vtII86LXXCn17SnCF8BFZFqkkYVHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3YlpQ5/7hLi1zv9rKX2muU8fpzuVkihOq15kzatZxqhGv1IZGBuaj7i1lRXtiN24
-	 iBHq2R7BokW5/P1l2FRHxjrfdYtg8YYQ1vm6bilQVo/BkciaqX3/XB7QHD3wAvoN+B
-	 pL1IJFnWqhgPhmZA2lgk7aQDnfWuGKuRokNDdL/I=
+	b=kHjRQmC8Zn4f9yrSaBVJGknanY9/iCEXx1nSNwi0JQTUo1lb126HgzeSoheQOS38c
+	 LnQvYp83gkeUeBrsqiPCZhBDE3tg0TBybd/1oiGW0xIskoeccmeb1tTH/HDouSWwSa
+	 JyKX8keEY63EhqBJPU+P1oqfIxBhEeFXijvcHNxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 13/77] btrfs: record delayed inode root in transaction
-Date: Tue, 30 Apr 2024 12:38:52 +0200
-Message-ID: <20240430103041.515285767@linuxfoundation.org>
+	Yuanhe Shu <xiangzao@linux.alibaba.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 4.19 14/77] selftests/ftrace: Limit length in subsystem-enable tests
+Date: Tue, 30 Apr 2024 12:38:53 +0200
+Message-ID: <20240430103041.545271869@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
 References: <20240430103041.111219002@linuxfoundation.org>
@@ -67,37 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Yuanhe Shu <xiangzao@linux.alibaba.com>
 
-[ Upstream commit 71537e35c324ea6fbd68377a4f26bb93a831ae35 ]
+commit 1a4ea83a6e67f1415a1f17c1af5e9c814c882bb5 upstream.
 
-When running delayed inode updates, we do not record the inode's root in
-the transaction, but we do allocate PREALLOC and thus converted PERTRANS
-space for it. To be sure we free that PERTRANS meta rsv, we must ensure
-that we record the root in the transaction.
+While sched* events being traced and sched* events continuously happen,
+"[xx] event tracing - enable/disable with subsystem level files" would
+not stop as on some slower systems it seems to take forever.
+Select the first 100 lines of output would be enough to judge whether
+there are more than 3 types of sched events.
 
-Fixes: 4f5427ccce5d ("btrfs: delayed-inode: Use new qgroup meta rsv for delayed inode and item")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 815b18ea66d6 ("ftracetest: Add basic event tracing test cases")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1133,6 +1133,9 @@ __btrfs_commit_inode_delayed_items(struc
- 	if (ret)
- 		return ret;
+--- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
++++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
+@@ -30,7 +30,7 @@ echo 'sched:*' > set_event
  
-+	ret = btrfs_record_root_in_trans(trans, node->root);
-+	if (ret)
-+		return ret;
- 	ret = btrfs_update_delayed_inode(trans, node->root, path, node);
- 	return ret;
- }
+ yield
+ 
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -41,7 +41,7 @@ echo 1 > events/sched/enable
+ 
+ yield
+ 
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -lt 3 ]; then
+     fail "at least fork, exec and exit events should be recorded"
+ fi
+@@ -52,7 +52,7 @@ echo 0 > events/sched/enable
+ 
+ yield
+ 
+-count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
++count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
+ if [ $count -ne 0 ]; then
+     fail "any of scheduler events should not be recorded"
+ fi
 
 
 
