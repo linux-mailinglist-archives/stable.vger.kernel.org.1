@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-41947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5313E8B7098
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C30328B70A7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A371C210E6
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:47:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 007A51C218EF
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B814312C48B;
-	Tue, 30 Apr 2024 10:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6577612C499;
+	Tue, 30 Apr 2024 10:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vR1QuNE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM8ZEtQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C101292C8;
-	Tue, 30 Apr 2024 10:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246E212C46B;
+	Tue, 30 Apr 2024 10:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474051; cv=none; b=ML7MrgMUCzLPmQ/hIcEMaTu6YQXNPl/1Xt5WBBD68Jrp0YrTwtOUf8MgDD/VfIrY/mlhqyh8dUVtnGOuUO6yT+4nRtJ6oEisjqvYLaCwzYyExRJfKeJGGZEpT0v9XN2dNwrpKAuF/WtjrjHWfWwyP+b/y6DAlKrdXnK7kEl6/rE=
+	t=1714474092; cv=none; b=iziYI21+XlUvwFn/Bakm0lHlH6xL8Wf11QAWNA9ZmZ/Xak/iVKmJexn/dxJsHEmAGN+eNV8OdiE8RiTXtKuyz2AjIt04ZQ+XdKTAyWXKtFr9qLEJHptFvBC9ZtK0jXrQ61z68/LMaMOKnnWfXSN9jeqWRkLNWw/7iXXMwVocZzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474051; c=relaxed/simple;
-	bh=S9NkVb6XVWbUcK4rWvnE4A4b8J1a5wo3sY5zKOgzjxE=;
+	s=arc-20240116; t=1714474092; c=relaxed/simple;
+	bh=qYYk5KQXlxxE/cJA+8S4KcuPhNQM7b4a/si+9tiiQY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AkusuM6OeQvPfXcJuCm54LbB16A7w4fXJ281VwL9thBwIu4g3c4Fyl9pzWzAyXNTLFpd05y/QBTdFEp0UdaZAuqdd4uckAjHq6M1H9yaPdc2RW0BUYdrvB7GvsuikljXT65H63UUsLsl7U/RqkXbHhOlKKEMILJSdlrVLEd3Po0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vR1QuNE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E81C2BBFC;
-	Tue, 30 Apr 2024 10:47:29 +0000 (UTC)
+	 MIME-Version; b=FV1GS105gHm/xqkV4TLOo/OQZwlTyGG/u1v34xmfMxSg5tHdO47lfI9c8jumuqrvXzbO342LIjsrOww2TxxF7VYZvZpelQM93na/9WMTsdvGtRtL6fJixZGmBbf7EidfPwgN4X3kMd+MVgC5DTE8FmdP1Umpc6EglWmvx48J8RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM8ZEtQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A067CC2BBFC;
+	Tue, 30 Apr 2024 10:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474050;
-	bh=S9NkVb6XVWbUcK4rWvnE4A4b8J1a5wo3sY5zKOgzjxE=;
+	s=korg; t=1714474092;
+	bh=qYYk5KQXlxxE/cJA+8S4KcuPhNQM7b4a/si+9tiiQY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vR1QuNEYiXpeZgZ+/WdPMn1lJdRk5LgZgh6xJ81RUOYYL2ofE/scsHV3I54R6DuD
-	 EfHCVs0Fw1ASw1ryEZ94Lz2vBXDn9BN8Bd7VqcdAbUw9peGcCJA4Pvd/QikG6+Sbfk
-	 zmrxnoHj9RNAhICXi9VIlSJD6iuXaIUOHYTy2eXM=
+	b=CM8ZEtQJ66OvsoOVJTR8wJgzT3rFsY5w338ewadIgBaXU8AqVDuQaSEMQ/OUY+5G5
+	 GtXsKZGxJJ66fs9Oi7HSZxpElmR6Ttqg1uiaiKCtxPDYV+ryofi+o+dWj36pLDJRzp
+	 g3VR9SCKHql9/kvZdGJrq0V2v1DkDDmX8waYNTYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Pin-yen Lin <treapking@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 017/228] arm64: dts: mediatek: cherry: Describe CPU supplies
-Date: Tue, 30 Apr 2024 12:36:35 +0200
-Message-ID: <20240430103104.312110978@linuxfoundation.org>
+Subject: [PATCH 6.8 018/228] arm64: dts: mediatek: mt8192-asurada: Update min voltage constraint for MT6315
+Date: Tue, 30 Apr 2024 12:36:36 +0200
+Message-ID: <20240430103104.341263996@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 References: <20240430103103.806426847@linuxfoundation.org>
@@ -60,72 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 17b33dd9e4a38fbaca87c68e532b52f9d0492ba7 ]
+[ Upstream commit 374a7c6400e314458178255a63c37d6347845092 ]
 
-Describe in each CPU node the regulator supplying it.
+Update the minimum voltage from 300000 uV to 400000 uV so it matches
+the MT6315 datasheet.
 
-Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Also update the minimum voltage for Vgpu regulator from 606250 uV to
+400000 uV because the requested voltage could be lower than the minimum
+voltage on the GPU OPP table when the MTK Smart Voltage Scaling (SVS)
+driver is enabled.
+
+Fixes: 3183cb62b033 ("arm64: dts: mediatek: asurada: Add SPMI regulators")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240110142305.755367-2-nfraprado@collabora.com
+Link: https://lore.kernel.org/r/20240315111621.2263159-2-treapking@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/mediatek/mt8195-cherry.dtsi      | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-index 3c6079edda190..1f3a6755f1550 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -264,6 +264,38 @@
- 	status = "okay";
- };
- 
-+&cpu0 {
-+	cpu-supply = <&mt6359_vcore_buck_reg>;
-+};
-+
-+&cpu1 {
-+	cpu-supply = <&mt6359_vcore_buck_reg>;
-+};
-+
-+&cpu2 {
-+	cpu-supply = <&mt6359_vcore_buck_reg>;
-+};
-+
-+&cpu3 {
-+	cpu-supply = <&mt6359_vcore_buck_reg>;
-+};
-+
-+&cpu4 {
-+	cpu-supply = <&mt6315_6_vbuck1>;
-+};
-+
-+&cpu5 {
-+	cpu-supply = <&mt6315_6_vbuck1>;
-+};
-+
-+&cpu6 {
-+	cpu-supply = <&mt6315_6_vbuck1>;
-+};
-+
-+&cpu7 {
-+	cpu-supply = <&mt6315_6_vbuck1>;
-+};
-+
- &dp_intf0 {
- 	status = "okay";
- 
+diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+index d4dd5e8b2e1d3..f62b2498eb1c7 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+@@ -1420,7 +1420,7 @@
+ 			mt6315_6_vbuck1: vbuck1 {
+ 				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+-				regulator-min-microvolt = <300000>;
++				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
+ 				regulator-enable-ramp-delay = <256>;
+ 				regulator-allowed-modes = <0 1 2>;
+@@ -1430,7 +1430,7 @@
+ 			mt6315_6_vbuck3: vbuck3 {
+ 				regulator-compatible = "vbuck3";
+ 				regulator-name = "Vlcpu";
+-				regulator-min-microvolt = <300000>;
++				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
+ 				regulator-enable-ramp-delay = <256>;
+ 				regulator-allowed-modes = <0 1 2>;
+@@ -1447,7 +1447,7 @@
+ 			mt6315_7_vbuck1: vbuck1 {
+ 				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+-				regulator-min-microvolt = <606250>;
++				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <800000>;
+ 				regulator-enable-ramp-delay = <256>;
+ 				regulator-allowed-modes = <0 1 2>;
 -- 
 2.43.0
 
