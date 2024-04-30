@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-42334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151C18B727D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0D18B7116
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46A131C2192B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 079D0288D53
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6461B12C819;
-	Tue, 30 Apr 2024 11:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5304A12C462;
+	Tue, 30 Apr 2024 10:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTnYg0tb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jM1dD4Fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B531E50A;
-	Tue, 30 Apr 2024 11:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A4C12C47A;
+	Tue, 30 Apr 2024 10:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475323; cv=none; b=iK3wPcaDiX4kawwMtxTHmx5G40ojk0BRzrxlEKjZnEowoqOx7EmzTGVKZuO3EoZpIaH2tvgNrQe+BQa5hROSrPIIMbZF3SEQPj8pRHus6ZJSTlu29/QCF0eG3WJI0Dh/dHSICBiFb05AI9r9GKGj7l59Y5KebUGsMOkvHvODQEA=
+	t=1714474376; cv=none; b=HrhBY8MmG9aZ+rF3rpudmVZRqHwRHIBNKc4QyRhr1VYIlWnhFemW3tOlc7+mISFcxz+kyZXn/5ESnivE91SpyqtNh8zgME50EFn9SWm6p01KOFJfFC2a3+fHxZw2HC1JSZqQ0asxaQIsqHVR4QJpDfAyUPt/wHoAi8zkD9bhogM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475323; c=relaxed/simple;
-	bh=ien2W0vUjyEyqPDY0Pvplgmb1ZVEZ9UZ64X8Er97ePY=;
+	s=arc-20240116; t=1714474376; c=relaxed/simple;
+	bh=uTicIQkuAoanNIgtmhGlwIIiozMqRQ7/SVcwoFfcM5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCREnggdNYk53cRV0X8UJfC1vaDRlXUhEPrlyTefikQRepdJ82LFMfZCzMh9IZsudFfxJrHh8GUmPF0q8+/FiqeloN8/PJfDzuAW8Sv5laDLngcHrIQKM+ii+Z1KWH3+z9QUJt76VUCS3txV5n3mOR/7tmnZmHJBKOlQmmwpbuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTnYg0tb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864C7C2BBFC;
-	Tue, 30 Apr 2024 11:08:42 +0000 (UTC)
+	 MIME-Version; b=YTUIsjZ1nYAad9HdQGy2Rd2mtf/EpruQcUw7DgoJBksn3J4V3bawms4MIYtJOrnqhi0VxsaYFXX2aF+vQLRfZ7GidVk1WRp/2BuNUuF0flnlRCJ8gIKBOCHwi1CezXjb/64F3E0nYqLZ0a3iAs7sE+2ljYgj8rihkyz0sEZsB1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jM1dD4Fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81865C2BBFC;
+	Tue, 30 Apr 2024 10:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475323;
-	bh=ien2W0vUjyEyqPDY0Pvplgmb1ZVEZ9UZ64X8Er97ePY=;
+	s=korg; t=1714474375;
+	bh=uTicIQkuAoanNIgtmhGlwIIiozMqRQ7/SVcwoFfcM5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTnYg0tbG++oUcbriN0V52cFGfyznkSHaPhL9sAZx8p9AXNsd7mhjTdPkdp2hLyS3
-	 2Bo8u5CaQRXoXfN/ta8gJYAayrzFD2pT2RPLYjI0nHB27fEjISYT1mDIfvMOVMrMJ+
-	 ZOCvv4H0YN5OSEW0c8yYBKefMWSKiQ3s7ERhmgns=
+	b=jM1dD4FegzKc+LLsAnwnpXer2LOz3UMRsbBmXr5OZ2m+2XKAWWdP6yEaff6T+NSX8
+	 IaPEM2H8BoKAwMKRmhdgzXjwd5HB0eky7HA4KAtnVLJJeaO/+CzsqOktWTkLI32weH
+	 fcc4uColrjyZ+aF4ZRmGB+kGUx0pGM1twDj9UvnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	shironeko <shironeko@tesaguri.club>,
-	Eric Dumazet <edumazet@google.com>,
-	Jose Alonso <joalonsof@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/186] net: usb: ax88179_178a: stop lying about skb->truesize
-Date: Tue, 30 Apr 2024 12:38:34 +0200
-Message-ID: <20240430103059.839419178@linuxfoundation.org>
+	Laine Taffin Altman <alexanderaltman@me.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.8 137/228] rust: init: remove impl Zeroable for Infallible
+Date: Tue, 30 Apr 2024 12:38:35 +0200
+Message-ID: <20240430103107.754646328@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Laine Taffin Altman <alexanderaltman@me.com>
 
-[ Upstream commit 4ce62d5b2f7aecd4900e7d6115588ad7f9acccca ]
+commit 49ceae68a0df9a92617a61e9ce8a0efcf6419585 upstream.
 
-Some usb drivers try to set small skb->truesize and break
-core networking stacks.
+In Rust, producing an invalid value of any type is immediate undefined
+behavior (UB); this includes via zeroing memory.  Therefore, since an
+uninhabited type has no valid values, producing any values at all for it is
+UB.
 
-In this patch, I removed one of the skb->truesize overide.
+The Rust standard library type `core::convert::Infallible` is uninhabited,
+by virtue of having been declared as an enum with no cases, which always
+produces uninhabited types in Rust.
 
-I also replaced one skb_clone() by an allocation of a fresh
-and small skb, to get minimally sized skbs, like we did
-in commit 1e2c61172342 ("net: cdc_ncm: reduce skb truesize
-in rx path")
+The current kernel code allows this UB to be triggered, for example by code
+like `Box::<core::convert::Infallible>::init(kernel::init::zeroed())`.
 
-Fixes: f8ebb3ac881b ("net: usb: ax88179_178a: Fix packet receiving")
-Reported-by: shironeko <shironeko@tesaguri.club>
-Closes: https://lore.kernel.org/netdev/c110f41a0d2776b525930f213ca9715c@tesaguri.club/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jose Alonso <joalonsof@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240421193828.1966195-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thus, remove the implementation of `Zeroable` for `Infallible`, thereby
+avoiding the unsoundness (potential for future UB).
+
+Cc: stable@vger.kernel.org
+Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` function")
+Closes: https://github.com/Rust-for-Linux/pinned-init/pull/13
+Signed-off-by: Laine Taffin Altman <alexanderaltman@me.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/r/CA160A4E-561E-4918-837E-3DCEBA74F808@me.com
+[ Reformatted the comment slightly. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ax88179_178a.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ rust/kernel/init.rs |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 3078511f76083..21b6c4d94a632 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1456,21 +1456,16 @@ static int ax88179_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			/* Skip IP alignment pseudo header */
- 			skb_pull(skb, 2);
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1292,8 +1292,15 @@ impl_zeroable! {
+     i8, i16, i32, i64, i128, isize,
+     f32, f64,
  
--			skb->truesize = SKB_TRUESIZE(pkt_len_plus_padd);
- 			ax88179_rx_checksum(skb, pkt_hdr);
- 			return 1;
- 		}
+-    // SAFETY: These are ZSTs, there is nothing to zero.
+-    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, Infallible, (),
++    // Note: do not add uninhabited types (such as `!` or `core::convert::Infallible`) to this list;
++    // creating an instance of an uninhabited type is immediate undefined behavior. For more on
++    // uninhabited/empty types, consult The Rustonomicon:
++    // <https://doc.rust-lang.org/stable/nomicon/exotic-sizes.html#empty-types>. The Rust Reference
++    // also has information on undefined behavior:
++    // <https://doc.rust-lang.org/stable/reference/behavior-considered-undefined.html>.
++    //
++    // SAFETY: These are inhabited ZSTs; there is nothing to zero and a valid value exists.
++    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, (),
  
--		ax_skb = skb_clone(skb, GFP_ATOMIC);
-+		ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
- 		if (!ax_skb)
- 			return 0;
--		skb_trim(ax_skb, pkt_len);
-+		skb_put(ax_skb, pkt_len);
-+		memcpy(ax_skb->data, skb->data + 2, pkt_len);
- 
--		/* Skip IP alignment pseudo header */
--		skb_pull(ax_skb, 2);
--
--		skb->truesize = pkt_len_plus_padd +
--				SKB_DATA_ALIGN(sizeof(struct sk_buff));
- 		ax88179_rx_checksum(ax_skb, pkt_hdr);
- 		usbnet_skb_return(dev, ax_skb);
- 
--- 
-2.43.0
-
+     // SAFETY: Type is allowed to take any value, including all zeros.
+     {<T>} MaybeUninit<T>,
 
 
 
