@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6888B7187
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:57:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8ECA8B71E8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 631CBB23024
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:57:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0301F23BBB
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CFA12C805;
-	Tue, 30 Apr 2024 10:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0DC12C48A;
+	Tue, 30 Apr 2024 11:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGWAoYU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VonfJoSe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78DA12C499;
-	Tue, 30 Apr 2024 10:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B8A12C462;
+	Tue, 30 Apr 2024 11:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474650; cv=none; b=jV1SluqOlHQye4a02ossnEBBG+OgCmjmGOk0ugROn6y/TL2DInQlArNOwOYWZYiGjRSAQB9C5XDPSvc1lllX7TFLc8HhFipaitGJDi0Wdf51Y/qz4spO+eT5UUQFXZRaK5cXao3l8fhawPZDgfhY6ITI7Ew0UzIa3lL+VYWzRzg=
+	t=1714474930; cv=none; b=FSMANzXRLc9kzKiMkZ4XPmt6IRAMTy3KurolQ4hSbrY6JszAXe6BIPU/lPPp3NurjJ5wQMuGEqnlAHnAUOEbjYno+hGrj48nD+Ehc8w/n2iJIhrQ4MhP3LmPcAb/2b2ydhMEJ51VR40CWUe2PHa/MbE49koZZ0XRFZohMaLtkLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474650; c=relaxed/simple;
-	bh=/NPikGZAQlmbGd9c8vuVlKXxGnbAqRl5P6cJy/9tAVk=;
+	s=arc-20240116; t=1714474930; c=relaxed/simple;
+	bh=w+Ufxc/f8skTLdj9kjSFT/nbyGAkNjcGu2OblblLWJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/0hrZz2YmYcg8Z1NMh3DOUxHa+RqyRWQMOitiXDRhdtrSRTWagbc/KMjReEQyS5xRq42vxo/fXQPOytCGPTygbl20DPuaLNChg/n5pM26bIXpf1BIYwLrqgb1sPD0KnKM6H7/LbefY6BMWc7Vy4sBTkia+NH2a5AmdPjtYpxEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGWAoYU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C46BC2BBFC;
-	Tue, 30 Apr 2024 10:57:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=At++mwbYaAYePCiWZFGUChbYV7/atBxzD8Qmy5pcF+BG4xfsYZlzdyfBTcBr5SoaEPT8Sxco4i2WUDOgSvCPXftvfAe4SU66zoWZuJ0YSRWsrlP1WAe0W5Q2Bi3FKvEDBiR4FMOUks04+6zS7tUTC2ECaxU6yqCUpx5Ff4qSXbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VonfJoSe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC763C4AF19;
+	Tue, 30 Apr 2024 11:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474650;
-	bh=/NPikGZAQlmbGd9c8vuVlKXxGnbAqRl5P6cJy/9tAVk=;
+	s=korg; t=1714474930;
+	bh=w+Ufxc/f8skTLdj9kjSFT/nbyGAkNjcGu2OblblLWJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGWAoYU4xrdzPc2cusvIMGoJBCT/FOWbaj8HoNwroQpjPCXqtIY3abZQLwS0v2Ead
-	 ggtQrc+NCBWsmOGkrxsT5j9rVSyI+7dRANYegxxp5TzvRY1qogLy8+ZKMbCO8uNPC+
-	 7bR7LwxdIiHekMz+WeEtEwUb4PhSJwRtdyFJij/E=
+	b=VonfJoSe4z0VrEEYjuHjw/s9SizAwDNOshU87zA64i3uc0zqOI5XHYnWbviuv75Q4
+	 lvE06wfgTnq09s/FSLr5yfVx1uontxHWK1x61IZRzpcnA3lqwS2iTq4okTI7kry8wC
+	 TVTxfEtSCvwmhMT8+IEFuROd5JxldElTGP1MWzC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.8 184/228] ACPI: CPPC: Fix access width used for PCC registers
-Date: Tue, 30 Apr 2024 12:39:22 +0200
-Message-ID: <20240430103109.113154348@linuxfoundation.org>
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 078/138] arm64: dts: mediatek: mt7622: fix clock controllers
+Date: Tue, 30 Apr 2024 12:39:23 +0200
+Message-ID: <20240430103051.720773626@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,162 +60,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit f489c948028b69cea235d9c0de1cc10eeb26a172 upstream.
+[ Upstream commit 3ba5a61594347ab46e7c2cff6cd63ea0f1282efb ]
 
-commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system
-memory accesses") modified cpc_read()/cpc_write() to use access_width to
-read CPC registers.
+1. Drop unneeded "syscon"s (bindings were updated recently)
+2. Use "clock-controller" in nodenames
+3. Add missing "#clock-cells"
 
-However, for PCC registers the access width field in the ACPI register
-macro specifies the PCC subspace ID.  For non-zero PCC subspace ID it is
-incorrectly treated as access width. This causes errors when reading
-from PCC registers in the CPPC driver.
-
-For PCC registers, base the size of read/write on the bit width field.
-The debug message in cpc_read()/cpc_write() is updated to print relevant
-information for the address space type used to read the register.
-
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d7167881e03e ("arm64: dts: mt7622: add clock controller device nodes")
+Fixes: e9b65ecb7c30 ("arm64: dts: mediatek: mt7622: introduce nodes for Wireless Ethernet Dispatch")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-2-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c |   53 ++++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 16 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 27 +++++++++++-------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1002,14 +1002,14 @@ static int cpc_read(int cpu, struct cpc_
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index ab218229b7ea1..b590c2d3bc86f 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -275,16 +275,14 @@
+ 		};
+ 	};
  
- 	*val = 0;
-+	size = GET_BIT_WIDTH(reg);
+-	apmixedsys: apmixedsys@10209000 {
+-		compatible = "mediatek,mt7622-apmixedsys",
+-			     "syscon";
++	apmixedsys: clock-controller@10209000 {
++		compatible = "mediatek,mt7622-apmixedsys";
+ 		reg = <0 0x10209000 0 0x1000>;
+ 		#clock-cells = <1>;
+ 	};
  
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = GET_BIT_WIDTH(reg);
- 		u32 val_u32;
- 		acpi_status status;
+-	topckgen: topckgen@10210000 {
+-		compatible = "mediatek,mt7622-topckgen",
+-			     "syscon";
++	topckgen: clock-controller@10210000 {
++		compatible = "mediatek,mt7622-topckgen";
+ 		reg = <0 0x10210000 0 0x1000>;
+ 		#clock-cells = <1>;
+ 	};
+@@ -715,9 +713,8 @@
+ 		power-domains = <&scpsys MT7622_POWER_DOMAIN_WB>;
+ 	};
  
- 		status = acpi_os_read_port((acpi_io_address)reg->address,
--					   &val_u32, width);
-+					   &val_u32, size);
- 		if (ACPI_FAILURE(status)) {
- 			pr_debug("Error: Failed to read SystemIO port %llx\n",
- 				 reg->address);
-@@ -1018,17 +1018,22 @@ static int cpc_read(int cpu, struct cpc_
+-	ssusbsys: ssusbsys@1a000000 {
+-		compatible = "mediatek,mt7622-ssusbsys",
+-			     "syscon";
++	ssusbsys: clock-controller@1a000000 {
++		compatible = "mediatek,mt7622-ssusbsys";
+ 		reg = <0 0x1a000000 0 0x1000>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
+@@ -774,9 +771,8 @@
+ 		};
+ 	};
  
- 		*val = val_u32;
- 		return 0;
--	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_read_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_read_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
+-	pciesys: pciesys@1a100800 {
+-		compatible = "mediatek,mt7622-pciesys",
+-			     "syscon";
++	pciesys: clock-controller@1a100800 {
++		compatible = "mediatek,mt7622-pciesys";
+ 		reg = <0 0x1a100800 0 0x1000>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
+@@ -893,12 +889,13 @@
+ 		};
+ 	};
  
- 	switch (size) {
- 	case 8:
-@@ -1044,8 +1049,13 @@ static int cpc_read(int cpu, struct cpc_
- 		*val = readq_relaxed(vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot read %u bit width from system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		return -EFAULT;
- 	}
+-	hifsys: syscon@1af00000 {
+-		compatible = "mediatek,mt7622-hifsys", "syscon";
++	hifsys: clock-controller@1af00000 {
++		compatible = "mediatek,mt7622-hifsys";
+ 		reg = <0 0x1af00000 0 0x70>;
++		#clock-cells = <1>;
+ 	};
  
-@@ -1063,12 +1073,13 @@ static int cpc_write(int cpu, struct cpc
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
-+	size = GET_BIT_WIDTH(reg);
-+
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = GET_BIT_WIDTH(reg);
- 		acpi_status status;
- 
- 		status = acpi_os_write_port((acpi_io_address)reg->address,
--					    (u32)val, width);
-+					    (u32)val, size);
- 		if (ACPI_FAILURE(status)) {
- 			pr_debug("Error: Failed to write SystemIO port %llx\n",
- 				 reg->address);
-@@ -1076,17 +1087,22 @@ static int cpc_write(int cpu, struct cpc
- 		}
- 
- 		return 0;
--	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_write_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		val = MASK_VAL(reg, val);
-@@ -1105,8 +1121,13 @@ static int cpc_write(int cpu, struct cpc
- 		writeq_relaxed(val, vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot write %u bit width to system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		ret_val = -EFAULT;
- 		break;
- 	}
+-	ethsys: syscon@1b000000 {
++	ethsys: clock-controller@1b000000 {
+ 		compatible = "mediatek,mt7622-ethsys",
+ 			     "syscon";
+ 		reg = <0 0x1b000000 0 0x1000>;
+-- 
+2.43.0
+
 
 
 
