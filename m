@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875028B745D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64508B7386
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BFDA1F22934
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C6E71F215E7
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E058512D746;
-	Tue, 30 Apr 2024 11:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E537B12CDAE;
+	Tue, 30 Apr 2024 11:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGy6V5Z3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUuPJV2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4BC12BF32;
-	Tue, 30 Apr 2024 11:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C198801;
+	Tue, 30 Apr 2024 11:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476596; cv=none; b=Inp2Nl+qYpuaOnoW4m59Qhb9E4/c3xtFELig9w/g8n8v+C2TndsGkKbjAN9QiVOrouFXIjENyhgeUCon7fN5w95f5kH3sqA1Ylz1tJ+6ZHvG0wzgUJUhHswhAbujI9r/8Yl5lH1JehObOhnkLiENi8lamhxK2utYePCZdCs1CzA=
+	t=1714476008; cv=none; b=jgU5/kfjkedGfPrRh+ZzaQAu44U23hwvkxFFLarqWU0qD3Ngljg7Id2hXvSNKOZM+5xFuyZ8RHjT+S0vFCd9ttPjpI5qeHpm1+b8v9wEs2IWsvoHNKsfnIaKJPzOfH/pg/LiPxnl31CzNk2xHgfkbDSv/ePqo2HFd0H9L3VTnHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476596; c=relaxed/simple;
-	bh=UWkDCFnZ61yO6SAwL6rskwlSmq/KozOJXKlqVHpd6JM=;
+	s=arc-20240116; t=1714476008; c=relaxed/simple;
+	bh=GdLeS1Ssq7m2y6Yyl5v7Q3k/wa9oXVpQ3HEfM1Qkr9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TH+hZAO9RzUJY1diqH26D1WZQL1cLHdpvjIWV7WJbyAGaoE3jJxXrtqosqdLOqJkTIXmYYZnJYizjpZEp4kApBzWn1pCz+TwNMUww27ejmFUUjxCwI3RfuQCJpLgq2XrfG44qTVaniIwid9KZdshu/0a97Ri1zn56fWSt7gby18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGy6V5Z3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6706C2BBFC;
-	Tue, 30 Apr 2024 11:29:55 +0000 (UTC)
+	 MIME-Version; b=pXirf5RjMFWQYJTOc8VTZdDxbHVE5bxdQX7864hvU6Y+1nNwGecjVh7Qv4Yibzg8aiaQGwm6tMKThsCtM6KMvaMxeJ16ADKRQTeS46YkXL/j8andnzgtARY4eqtO3AOhsTsBY+h87f8LBylpSkKMIaxPHemO/JrND6VGXf7P8bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUuPJV2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5F7C2BBFC;
+	Tue, 30 Apr 2024 11:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476596;
-	bh=UWkDCFnZ61yO6SAwL6rskwlSmq/KozOJXKlqVHpd6JM=;
+	s=korg; t=1714476008;
+	bh=GdLeS1Ssq7m2y6Yyl5v7Q3k/wa9oXVpQ3HEfM1Qkr9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGy6V5Z3pGliZg8NMojWSzXSVaHwWaXZLDaXboW82DkQk4ygPmVn4hwS5EXGLgtEv
-	 0tsguLvGYYbI9nSDt63KEzS/b2Tntb2jLJMSkE7XQdnj9Gid+cU+6QM1ITi+hZ82N6
-	 RbLOZUoq6iKNpp9+Td9uRrTrc4fUTyp12AS+uWtE=
+	b=IUuPJV2xJF7TvxjUJobfS/J3Hn7z/96YXiVrLlazk23yz6rqmrPexX/lbYXeR71v6
+	 MhYgeZLrecIf1/3U9KcXxV/9D1ljsBkKoT/jhxYvWj9wOB1rJjSIIykKF1BLOco/44
+	 Oc5AGFfKBemQxjY9C23SuhZzqOMrb53POby5u5OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 6.1 080/110] irqchip/gic-v3-its: Prevent double free on error
+	Nam Cao <namcao@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
+	Eva Kurchatova <nyandarknessgirl@gmail.com>
+Subject: [PATCH 5.15 77/80] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
 Date: Tue, 30 Apr 2024 12:40:49 +0200
-Message-ID: <20240430103049.927206446@linuxfoundation.org>
+Message-ID: <20240430103045.685119702@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit c26591afd33adce296c022e3480dea4282b7ef91 upstream.
+commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
 
-The error handling path in its_vpe_irq_domain_alloc() causes a double free
-when its_vpe_init() fails after successfully allocating at least one
-interrupt. This happens because its_vpe_irq_domain_free() frees the
-interrupts along with the area bitmap and the vprop_page and
-its_vpe_irq_domain_alloc() subsequently frees the area bitmap and the
-vprop_page again.
+The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
+However, this is not necessary, because I2C core already has its own
+locking for that.
 
-Fix this by unconditionally invoking its_vpe_irq_domain_free() which
-handles all cases correctly and by removing the bitmap/vprop_page freeing
-from its_vpe_irq_domain_alloc().
+More importantly, this flag can cause a lock-up: if the flag is set in
+i2c_hid_xfer() and an interrupt happens, the interrupt handler
+(i2c_hid_irq) will check this flag and return immediately without doing
+anything, then the interrupt handler will be invoked again in an
+infinite loop.
 
-[ tglx: Massaged change log ]
+Since interrupt handler is an RT task, it takes over the CPU and the
+flag-clearing task never gets scheduled, thus we have a lock-up.
 
-Fixes: 7d75bbb4bc1a ("irqchip/gic-v3-its: Add VPE irq domain allocation/teardown")
-Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240418061053.96803-2-guanrui.huang@linux.alibaba.com
+Delete this unnecessary flag.
+
+Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
+Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
+Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+[apply to v4.19 -> v5.15]
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-core.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -4535,13 +4535,8 @@ static int its_vpe_irq_domain_alloc(stru
- 		set_bit(i, bitmap);
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -51,7 +51,6 @@
+ /* flags */
+ #define I2C_HID_STARTED		0
+ #define I2C_HID_RESET_PENDING	1
+-#define I2C_HID_READ_PENDING	2
+ 
+ #define I2C_HID_PWR_ON		0x00
+ #define I2C_HID_PWR_SLEEP	0x01
+@@ -251,7 +250,6 @@ static int __i2c_hid_command(struct i2c_
+ 		msg[1].len = data_len;
+ 		msg[1].buf = buf_recv;
+ 		msg_num = 2;
+-		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
  	}
  
--	if (err) {
--		if (i > 0)
--			its_vpe_irq_domain_free(domain, virq, i);
--
--		its_lpi_free(bitmap, base, nr_ids);
--		its_free_prop_table(vprop_page);
--	}
-+	if (err)
-+		its_vpe_irq_domain_free(domain, virq, i);
+ 	if (wait)
+@@ -259,9 +257,6 @@ static int __i2c_hid_command(struct i2c_
  
- 	return err;
- }
+ 	ret = i2c_transfer(client->adapter, msg, msg_num);
+ 
+-	if (data_len > 0)
+-		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
+-
+ 	if (ret != msg_num)
+ 		return ret < 0 ? ret : -EIO;
+ 
+@@ -533,9 +528,6 @@ static irqreturn_t i2c_hid_irq(int irq,
+ {
+ 	struct i2c_hid *ihid = dev_id;
+ 
+-	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
+-		return IRQ_HANDLED;
+-
+ 	i2c_hid_get_input(ihid);
+ 
+ 	return IRQ_HANDLED;
 
 
 
