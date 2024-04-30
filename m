@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-41867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C2F8B7017
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 166048B7389
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 320971C21A50
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA761288834
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C53212C53F;
-	Tue, 30 Apr 2024 10:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638EF12CDAE;
+	Tue, 30 Apr 2024 11:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqh1HhsT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WESD4NSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277D712C49F;
-	Tue, 30 Apr 2024 10:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2289A8801;
+	Tue, 30 Apr 2024 11:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473800; cv=none; b=geIjsBpCoh4eFVeSHS5xRmyac11iWqC7hP+YgQ8ARm5p5BO3aEvNs3njgKneklTiWSeoanCYVi3/yTGhR2LLwHm4/v7JNg6wQ1Q2qPACRqwGnfSgxOniO55ygHmPIMVJDyLFLmndDa499spPkDETo5J14uZ7YIzZxpxOf4O+F8s=
+	t=1714476018; cv=none; b=u3kcAyQe0q/pTq+gzAp8d5O2/amHO0PPuRTIwQUoInUF2eOhDYubWl5NkOpTrT0/FyEUh8U1oESNNQHiSYyOD2aI7DSb10KWMFq9ItueJ20AUnIYXfUKRHxVibqV/HEdOjiZyX6jsABeN23E8P/ZMuHnEudk3/TJRrIp0p3c1/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473800; c=relaxed/simple;
-	bh=fxrdvmnPTYCcFi3R+bG7O7idqWTwBxc9rObV+ySImo0=;
+	s=arc-20240116; t=1714476018; c=relaxed/simple;
+	bh=nFwLMQvRWsHyXb5UbI/RJRUv7oU5Q+Y9nSbuBvIgqCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YpHS+LhwFceJLaN6UMXZYCssy91kkw71TYub7bwAqmMMRHb50yAZTk3I2RCrvPpKPI+InmP1tdJmgLnZ7/7Ufj5Z4Nw8MNn6xp1SLKDy1GT47AFOyr4pQpY4ps6CVtDjtyM3CTw6XhcTmLIwbc894aSLcBIymCsSB2kmonn9juw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqh1HhsT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A0CC2BBFC;
-	Tue, 30 Apr 2024 10:43:19 +0000 (UTC)
+	 MIME-Version; b=PTepBIlNzWddNxsDcfwpuue3gDeR0ZN7GxrPIsfjRBeFhKoRSHLav1YrT4489C1K8dN59/qwZMSZ/yd0wHeyez3XW62zWxa6bVS3ZOdMnMqqInXMZMKFK+ypJJfw4A3a66Pq9BQpojtoSF+vkUPffMV1TwxFvKOuhVXImN+7oK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WESD4NSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9242EC4AF18;
+	Tue, 30 Apr 2024 11:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473800;
-	bh=fxrdvmnPTYCcFi3R+bG7O7idqWTwBxc9rObV+ySImo0=;
+	s=korg; t=1714476018;
+	bh=nFwLMQvRWsHyXb5UbI/RJRUv7oU5Q+Y9nSbuBvIgqCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqh1HhsTixEL2chOCb28F/x7RZKKjv2aps3O6sgKLzlOjnyCu4a42WfJe7e8cvXms
-	 NUvb+H/V0/63dFX9ciRiw3wTKC0euySLhTnrcONmN1FhvsqW7NSBiXDyOpz5cZ8Ts7
-	 7blvVjYNzh1WHxIbElqrOPR8ueohrAszmVbhIjeM=
+	b=WESD4NSMtVqNH9NUcEaxfb6T2jNqU0DPl9lbn2ZhiXyFBBMFSThheDY5k6xccUMHs
+	 Mmiz9ka687FAq49pND/cHB6jofA9Q6sq5hV6aOHee2uQWKeHzm+wMgCUCedlsp6Ud6
+	 eL+nryNAz4m2aQppuSNtGoMifw4qPLWJeYoleXlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 42/77] arm64: dts: mediatek: mt7622: drop "reset-names" from thermal block
+	syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.4 001/107] batman-adv: Avoid infinite loop trying to resize local TT
 Date: Tue, 30 Apr 2024 12:39:21 +0200
-Message-ID: <20240430103042.376759115@linuxfoundation.org>
+Message-ID: <20240430103044.701842056@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit ecb5b0034f5bcc35003b4b965cf50c6e98316e79 ]
+commit b1f532a3b1e6d2e5559c7ace49322922637a28aa upstream.
 
-Binding doesn't specify "reset-names" property and Linux driver also
-doesn't use it.
+If the MTU of one of an attached interface becomes too small to transmit
+the local translation table then it must be resized to fit inside all
+fragments (when enabled) or a single packet.
 
-Fix following validation error:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: thermal@1100b000: Unevaluated properties are not allowed ('reset-names' was unexpected)
-        from schema $id: http://devicetree.org/schemas/thermal/mediatek,thermal.yaml#
+But if the MTU becomes too low to transmit even the header + the VLAN
+specific part then the resizing of the local TT will never succeed. This
+can for example happen when the usable space is 110 bytes and 11 VLANs are
+on top of batman-adv. In this case, at least 116 byte would be needed.
+There will just be an endless spam of
 
-Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240317221050.18595-5-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   batman_adv: batadv0: Forced to purge local tt entries to fit new maximum fragment MTU (110)
+
+in the log but the function will never finish. Problem here is that the
+timeout will be halved all the time and will then stagnate at 0 and
+therefore never be able to reduce the table even more.
+
+There are other scenarios possible with a similar result. The number of
+BATADV_TT_CLIENT_NOPURGE entries in the local TT can for example be too
+high to fit inside a packet. Such a scenario can therefore happen also with
+only a single VLAN + 7 non-purgable addresses - requiring at least 120
+bytes.
+
+While this should be handled proactively when:
+
+* interface with too low MTU is added
+* VLAN is added
+* non-purgeable local mac is added
+* MTU of an attached interface is reduced
+* fragmentation setting gets disabled (which most likely requires dropping
+  attached interfaces)
+
+not all of these scenarios can be prevented because batman-adv is only
+consuming events without the the possibility to prevent these actions
+(non-purgable MAC address added, MTU of an attached interface is reduced).
+It is therefore necessary to also make sure that the code is able to handle
+also the situations when there were already incompatible system
+configuration are present.
+
+Cc: stable@vger.kernel.org
+Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
+Reported-by: syzbot+a6a4b5bb3da165594cff@syzkaller.appspotmail.com
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ net/batman-adv/translation-table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-index 76297dac2d459..f8df34ac1e64d 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
-@@ -459,7 +459,6 @@
- 			 <&pericfg CLK_PERI_AUXADC_PD>;
- 		clock-names = "therm", "auxadc";
- 		resets = <&pericfg MT7622_PERI_THERM_SW_RST>;
--		reset-names = "therm";
- 		mediatek,auxadc = <&auxadc>;
- 		mediatek,apmixedsys = <&apmixedsys>;
- 		nvmem-cells = <&thermal_calibration>;
--- 
-2.43.0
-
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -4190,7 +4190,7 @@ void batadv_tt_local_resize_to_mtu(struc
+ 
+ 	spin_lock_bh(&bat_priv->tt.commit_lock);
+ 
+-	while (true) {
++	while (timeout) {
+ 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
+ 		if (packet_size_max >= table_size)
+ 			break;
 
 
 
