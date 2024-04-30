@@ -1,156 +1,169 @@
-Return-Path: <stable+bounces-41820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF0A8B6CD3
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:32:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7397B8B6CD8
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9BE928477A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 08:32:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02BC51F23C6B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 08:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F5C10788;
-	Tue, 30 Apr 2024 08:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC511272C6;
+	Tue, 30 Apr 2024 08:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WbNBTWxT"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Pwqn2Od0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F51C8D7
-	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 08:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABDB126F2C
+	for <stable@vger.kernel.org>; Tue, 30 Apr 2024 08:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714465942; cv=none; b=qN3/AXc6bnb6EVn7fsVRPriVwCrcmhy/rgj42fiBni5vKlTH6ryym2GaBCTHuf/ePBNWCsKBQcb69nCmbxuJ5Nc8AffJs3R97T+w909+OdL51XUbYfRyzCn9DPzdReIC3VVLfEQ4xjA4Avtpv3Jel3W+Qq3juV5lJ/q4j3C/6ls=
+	t=1714466023; cv=none; b=CKGx9myvXJndufmUcvBHrToF1dhGevwFu0PaXgNtH4k/zzj66IqYAEpX9ro71UrieSyV6dFfSE+42UQMqASFPPFtimJLmLzJ4ZuQC3Abzm+Xy4947cM7+hVHkEXUnZ9iJKTWc2WTtI9GoznZuLb9m2aLFqWcU19uIPkYk83wya8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714465942; c=relaxed/simple;
-	bh=CchJ+tIVl0NZlFN/7Ev94oxKjWVBAzjbNzZiwXsFf4c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nNV8KE3g9m3GlyvqHHaGjamL9TCuSDbsCQNIqoba3umIg1rw46ji0KgPw2ArhlEzBuywW6mTdDWS+leH8A5qFygtPJnQzaHzq3HDrTeqNnu6BKbY4n6rdbBlWgPGn6hSixRIWnQINY4RO9AWf39JPfqm7S81UxMLQmBJacr4KKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WbNBTWxT; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6eff9dc1821so5068753b3a.3
-        for <stable@vger.kernel.org>; Tue, 30 Apr 2024 01:32:21 -0700 (PDT)
+	s=arc-20240116; t=1714466023; c=relaxed/simple;
+	bh=oecYEBg/m+JIl1z6nng3Q9y9gkG6hNdRxPbZ3Q/c3F4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t9roiduuUgYNr6Kqtoab1ZYJetSarf3Or+5cmQJlVLq61IiiEYnZRt01J0UyRqGZdpEfldPuirvkkjhKr5aNdg/yGrs6qnNrYfZ+Yh/z93bT5SMBCjJ09S82ulsqOyxpdHZNEWt2blgBCWCXDqcmMKgOY8HNIaY5MBaT/rtX+As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Pwqn2Od0; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1ec44cf691aso2133675ad.0
+        for <stable@vger.kernel.org>; Tue, 30 Apr 2024 01:33:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714465940; x=1715070740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ua9wk0GDoWgSF9X8luuE8yZyVrPP6lCWVNvKZNP+VyM=;
-        b=WbNBTWxTIBZFn7xtORjBvuUaxrTensyVNBIeRQ6LdZRzsfbUJ/J1k0BLQBKfRZKGsy
-         DbLmOr13n4zpTVx/i8/w9sNRUFnwqknmM8ABH6DpNboYah7/km2edulwmYBKe/GbjNut
-         Qg3vsUrCo2RUcP+q45sRfiMbPCPGRHdGOPyCTNVOsuTXU2EsU+otGenttHbaNn0vDXX6
-         RItxPNV/eHuk7FaCCrZ/vdwTjBqH9/FQtdWnpSiGZhHmfoI1LcUVey7XFf7j6bbhfJHr
-         fDdXwEUlt2HjVVmR3myRlDbzi6qMArSWVVWz75qbBtOEQlgk505O6Kc/mfSyL765CmPa
-         0jqQ==
+        d=broadcom.com; s=google; t=1714466020; x=1715070820; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p+cEXH1y9v8gdKKfiUtDyIavn65HjLmSRQA8Q6Bh/1I=;
+        b=Pwqn2Od0ubM9IuPaTGxT4hySmMsl6FEvkrG7sBiKvrJYDsQeKqzCBJUmUBF3zrj7Mr
+         RGBkV7sW93wYTCLn2pUTVX+MjavVCs733P7lCRWsPQEoAntMGYys9itRaemLO5BlZDBh
+         Tvg5EPRH3opf1HAbF/ChQv9jZB6rOQGxKNidg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714465940; x=1715070740;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ua9wk0GDoWgSF9X8luuE8yZyVrPP6lCWVNvKZNP+VyM=;
-        b=S8USbK8MtxXCcF1pG+WlByhyAuP2lClz2ascZA0YnuBc+bNfM9vgKBdiDFd92mqZ0D
-         sRgLS4srCLLx1+Zdv5hyMggU+tRPv/C/2FvAvd5Brm9zEZZahzY2O7nt09nTPuMmCFge
-         aipEpzpU+hi4xFPR8KMGqQsmAr4Gt7KrQyk0ssVPNc5yNF3i1oAnRiLM5kiSj8/aVVRq
-         CrbnMFeSLkgy+LzIoWxELPL7T9wzeJIHn5Lt48Y8CwIv5SRZNJQLtdeal9TAn08CdKZx
-         ZCSfbFIJaroGxJCmM8FWWg3P+BqblqwB7omYaQmyYWq6ZYDV9qBF1LpZ8WbcaSNiBg4C
-         GzAw==
-X-Gm-Message-State: AOJu0YzzthYElmzS6E2EpNjg8kTvPeCVziZH3AbsCePb/U/0EqGnGC6m
-	86lA0cxVvtVDNpVjybK55EDnYrfA7hqy8gWC6deigu8TooGQmUKzW2dcADJJ
-X-Google-Smtp-Source: AGHT+IG5RWnpDwG2tjSRYUxQt4IAS/YYByi4ISYo5NcNFRI/uAgBW6B8pLi7XR0XNT/Zlwqi+8zHQg==
-X-Received: by 2002:a05:6a20:975b:b0:1a7:8a02:3058 with SMTP id hs27-20020a056a20975b00b001a78a023058mr9259390pzc.12.1714465939705;
-        Tue, 30 Apr 2024 01:32:19 -0700 (PDT)
-Received: from localhost.localdomain ([67.198.131.126])
-        by smtp.gmail.com with ESMTPSA id e7-20020a17090301c700b001e434923462sm897382plh.50.2024.04.30.01.32.18
+        d=1e100.net; s=20230601; t=1714466020; x=1715070820;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p+cEXH1y9v8gdKKfiUtDyIavn65HjLmSRQA8Q6Bh/1I=;
+        b=k/JwdFahLZ1AbS9yb7NCb7SR4e48xUpfKKDmxhLat/Pq6/E0Ewe4+dI6lB1PaS9nVx
+         VK/rEt7Up0Cbvb2Ju6yKZWqYCFUGszrKl/VlhEghWLELBpiSLZsoi65SDu7Jh8pH7dAl
+         BRoMAZIqZr5Kw4pZNg/FhVq25vtHQnhBmclHz+hNFTcTHMdFrv8zBDFAoPbse4X5f3od
+         0z6r+s011hvhPjiFg0JGzU/0L758pkDuoTwNcsZiFSwTuoiOeyx/ckuOtsZ2h37YmKFm
+         XhrQlzFl/Gb2GKv7i/WHx1P0i/dNnx0s7cCWNgQW3mIVIA0IvdcEVZTdS7ztVqj2HxD5
+         /vxA==
+X-Gm-Message-State: AOJu0YzXn6lXkLMvvKaEGVxRVYeQDz+9CJy+/L8WTvNQJEzHJBGdnl0/
+	/j0MjKAVxYjJNfMS7UyJe3amJx1vADGydLx9ONzBnZtBuipaV6SGt80RAHDr90IuYWyPtybBIyf
+	bdnVQu4jyaM8MQYQ22ivOjndowFaJgSkeBBk3YLDEWjj3x+UQ89CRCKh1Dhx1R053jo5VjnZN6k
+	jfT8iIEst9fu8LSs5+xBOrLKUdULcvK+b3wdDHiFlfyVBwzmor
+X-Google-Smtp-Source: AGHT+IGCOzmCKio/JP5qG/I6KNBaEo1J13jlZS2fr9YI7oFRkUWGrDWWUxDmUGoZl0Q9cBtbT05Amw==
+X-Received: by 2002:a17:903:244e:b0:1e5:c131:ca0e with SMTP id l14-20020a170903244e00b001e5c131ca0emr2961832pls.6.1714466020323;
+        Tue, 30 Apr 2024 01:33:40 -0700 (PDT)
+Received: from srish-ubuntu-dev.eng.vmware.com ([66.170.99.1])
+        by smtp.gmail.com with ESMTPSA id o16-20020a170902d4d000b001eb3f705ddasm6222720plg.255.2024.04.30.01.33.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 01:32:19 -0700 (PDT)
-From: Yick Xie <yick.xie@gmail.com>
-To: stable@vger.kernel.org
-Cc: Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10.y] udp: preserve the connected status if only UDP cmsg
-Date: Tue, 30 Apr 2024 16:31:19 +0800
-Message-Id: <20240430083119.3157760-1-yick.xie@gmail.com>
+        Tue, 30 Apr 2024 01:33:39 -0700 (PDT)
+From: Srish Srinivasan <srish.srinivasan@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: agk@redhat.com,
+	snitzer@redhat.com,
+	dm-devel@redhat.com,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	He Gao <hegao@google.com>,
+	Srish Srinivasan <srish.srinivasan@broadcom.com>
+Subject: [PATCH v5.4] dm: limit the number of targets and parameter size area
+Date: Tue, 30 Apr 2024 14:02:59 +0530
+Message-Id: <20240430083259.13876-1-srish.srinivasan@broadcom.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2024042919-purge-pegboard-b8f1@gregkh>
-References: <2024042919-purge-pegboard-b8f1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 680d11f6e5427b6af1321932286722d24a8b16c1)
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
+commit bd504bcfec41a503b32054da5472904b404341a4 upstream.
+
+The kvmalloc function fails with a warning if the size is larger than
+INT_MAX. The warning was triggered by a syscall testing robot.
+
+In order to avoid the warning, this commit limits the number of targets to
+1048576 and the size of the parameter area to 1073741824.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: He Gao <hegao@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[srish: Apply to stable branch linux-5.4.y]
+Signed-off-by: Srish Srinivasan <srish.srinivasan@broadcom.com>
 ---
- net/ipv4/udp.c | 5 +++--
- net/ipv6/udp.c | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/md/dm-core.h  | 2 ++
+ drivers/md/dm-ioctl.c | 3 ++-
+ drivers/md/dm-table.c | 9 +++++++--
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 0b7e76e6f202..16ff3962b24d 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1125,16 +1125,17 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+diff --git a/drivers/md/dm-core.h b/drivers/md/dm-core.h
+index 3fea121fc..e3c3bbe92 100644
+--- a/drivers/md/dm-core.h
++++ b/drivers/md/dm-core.h
+@@ -18,6 +18,8 @@
+ #include "dm.h"
  
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index b5d879f2501d..8c9672e7a7dd 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1453,9 +1453,11 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 		ipc6.opt = opt;
+ #define DM_RESERVED_MAX_IOS		1024
++#define DM_MAX_TARGETS			1048576
++#define DM_MAX_TARGET_PARAMS		1024
  
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, &fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1467,7 +1469,6 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
+ struct dm_kobject_holder {
+ 	struct kobject kobj;
+diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
+index 8e787677a..e89e710dd 100644
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1760,7 +1760,8 @@ static int copy_params(struct dm_ioctl __user *user, struct dm_ioctl *param_kern
+ 	if (copy_from_user(param_kernel, user, minimum_data_size))
+ 		return -EFAULT;
+ 
+-	if (param_kernel->data_size < minimum_data_size)
++	if (unlikely(param_kernel->data_size < minimum_data_size) ||
++	    unlikely(param_kernel->data_size > DM_MAX_TARGETS * DM_MAX_TARGET_PARAMS))
+ 		return -EINVAL;
+ 
+ 	secure_data = param_kernel->flags & DM_SECURE_DATA_FLAG;
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index 8b05d938a..fcb9e2775 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -184,7 +184,12 @@ static int alloc_targets(struct dm_table *t, unsigned int num)
+ int dm_table_create(struct dm_table **result, fmode_t mode,
+ 		    unsigned num_targets, struct mapped_device *md)
+ {
+-	struct dm_table *t = kzalloc(sizeof(*t), GFP_KERNEL);
++	struct dm_table *t;
++
++	if (num_targets > DM_MAX_TARGETS)
++		return -EOVERFLOW;
++
++	t = kzalloc(sizeof(*t), GFP_KERNEL);
+ 
+ 	if (!t)
+ 		return -ENOMEM;
+@@ -199,7 +204,7 @@ int dm_table_create(struct dm_table **result, fmode_t mode,
+ 
+ 	if (!num_targets) {
+ 		kfree(t);
+-		return -ENOMEM;
++		return -EOVERFLOW;
  	}
- 	if (!opt) {
- 		opt = txopt_get(np);
+ 
+ 	if (alloc_targets(t, num_targets)) {
 -- 
-2.34.1
-
+2.35.6
 
