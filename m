@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218608B7173
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:56:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C428B732F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD46F1F2243E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:56:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5499D1C22DCD
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9BE12CD89;
-	Tue, 30 Apr 2024 10:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C065712CDAE;
+	Tue, 30 Apr 2024 11:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSGTPeFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CumSNnpD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0863D2940D;
-	Tue, 30 Apr 2024 10:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1EB211C;
+	Tue, 30 Apr 2024 11:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474603; cv=none; b=Ey8ftkh0J0jgTxk1Ea0E7L93vyU67yLnNPbbCRkEAfDpDuFmd9d8wsfUmr532a84359SBK4BeKc9mJE2eQfB3L1q0qUvtLQE5z8Pv0DhHgSC3Kfe3ywEYKP5vOCzDt4sstHgwM+1VCBo/muL4I37LECG9UbOtZr2R9ARBQ5fA9k=
+	t=1714475768; cv=none; b=KNm2uhsMtiHNChkDCgHwc5eoV9+aIB/fuuo5kJWI4C20geNIDMwFICQCk6+G0Uybmb5iNPQx1wZF5IDT3k1Z2oLpD1r6ZyhaNOQlbP8g7lmo5HlzyK+YAJHqUQmxFO3/S1hRIvsIW7oUxuRzATraYj4egmwwikr9V1yWn18GU0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474603; c=relaxed/simple;
-	bh=RXauIFv/PFTrtnCdOpD7XIOGJB1ZvGTsA0NEBoS8Qmg=;
+	s=arc-20240116; t=1714475768; c=relaxed/simple;
+	bh=f1r36kzcRmiIcvPbiAWjd03LlFUn+u2XS0nbCJa5HJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+fHLIo2kzT4+f/BQoalRGtDWA4YBxs+6cLQzyX6F2MqgiKl+3fu0afsmd21jlEksPQT1eopyprm7NNG2NqkhL3X42zfyF0TsSCmdEE2i4JRWUKB93J40wuKds+mBIuVYiRwLpUTR47mg86C7QjN95Iky5zruj5hc8TQWqvE8EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSGTPeFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824B8C2BBFC;
-	Tue, 30 Apr 2024 10:56:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M+ggBJ0+fSBrJWmP8XENmIBR7+Wyfu/rPzm+SnDwqo9sHoCovBJLQRmoYNUTU0uNWi6od2X9kJiRZm1Fw0nQHpmkUDahO9BCu8B+V0hZZOY64sBOm6ZlPojGY5JPBtfii2twmFts3vo/7tpRuUP0cd0E5G7p9UFJUPnJjzKKhxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CumSNnpD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8EBC4AF18;
+	Tue, 30 Apr 2024 11:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474602;
-	bh=RXauIFv/PFTrtnCdOpD7XIOGJB1ZvGTsA0NEBoS8Qmg=;
+	s=korg; t=1714475768;
+	bh=f1r36kzcRmiIcvPbiAWjd03LlFUn+u2XS0nbCJa5HJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSGTPeFFmoaeXKiki9w9eBrSy7lvD4//11sWMwFAXtpCGTKqifySDrzjkqSBAWvKc
-	 HGFXI641lnx7r+HUBUlXCZehmuwbHEY1de+9RRjIdB3dmF/xhefnz+2rDQDykp0adc
-	 +sPZ5FoDBmX1kBrDe52IapCk9GUGNqnbd9ZECZCI=
+	b=CumSNnpD7s0kqSaaNJsV7KndwQobzpGC1UYeM+wj/9DdmigHM0Kcs+57fzsPV4EPk
+	 pSfhGOCAmQbFXJwuQf3yh/v+zIWp/RjApcVb0H4nwma79xlCsQU/eeAb38Pxk5FjQ+
+	 hhBdD4HU3ArZsXRUES10PhO0jVDYs4X9obhtwcF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 206/228] phy: freescale: imx8m-pcie: fix pcie link-up instability
+Subject: [PATCH 5.15 12/80] arm64: dts: mediatek: mt7622: fix clock controllers
 Date: Tue, 30 Apr 2024 12:39:44 +0200
-Message-ID: <20240430103109.750044691@linuxfoundation.org>
+Message-ID: <20240430103043.774603252@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 3a161017f1de55cc48be81f6156004c151f32677 ]
+[ Upstream commit 3ba5a61594347ab46e7c2cff6cd63ea0f1282efb ]
 
-Leaving AUX_PLL_REFCLK_SEL at its reset default of AUX_IN (PLL clock)
-proves to be more stable on the i.MX 8M Mini.
+1. Drop unneeded "syscon"s (bindings were updated recently)
+2. Use "clock-controller" in nodenames
+3. Add missing "#clock-cells"
 
-Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
-
-Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
-Link: https://lore.kernel.org/r/20240322130646.1016630-2-marcel@ziswiler.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: d7167881e03e ("arm64: dts: mt7622: add clock controller device nodes")
+Fixes: e9b65ecb7c30 ("arm64: dts: mediatek: mt7622: introduce nodes for Wireless Ethernet Dispatch")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-2-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 27 +++++++++++-------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-index b700f52b7b679..11fcb1867118c 100644
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -110,8 +110,10 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 		/* Source clock from SoC internal PLL */
- 		writel(ANA_PLL_CLK_OUT_TO_EXT_IO_SEL,
- 		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG062);
--		writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
--		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
-+		if (imx8_phy->drvdata->variant != IMX8MM) {
-+			writel(AUX_PLL_REFCLK_SEL_SYS_PLL,
-+			       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG063);
-+		}
- 		val = ANA_AUX_RX_TX_SEL_TX | ANA_AUX_TX_TERM;
- 		writel(val | ANA_AUX_RX_TERM_GND_EN,
- 		       imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG064);
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 636783511779a..a5395d1d098c0 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -275,16 +275,14 @@
+ 		};
+ 	};
+ 
+-	apmixedsys: apmixedsys@10209000 {
+-		compatible = "mediatek,mt7622-apmixedsys",
+-			     "syscon";
++	apmixedsys: clock-controller@10209000 {
++		compatible = "mediatek,mt7622-apmixedsys";
+ 		reg = <0 0x10209000 0 0x1000>;
+ 		#clock-cells = <1>;
+ 	};
+ 
+-	topckgen: topckgen@10210000 {
+-		compatible = "mediatek,mt7622-topckgen",
+-			     "syscon";
++	topckgen: clock-controller@10210000 {
++		compatible = "mediatek,mt7622-topckgen";
+ 		reg = <0 0x10210000 0 0x1000>;
+ 		#clock-cells = <1>;
+ 	};
+@@ -715,9 +713,8 @@
+ 		power-domains = <&scpsys MT7622_POWER_DOMAIN_WB>;
+ 	};
+ 
+-	ssusbsys: ssusbsys@1a000000 {
+-		compatible = "mediatek,mt7622-ssusbsys",
+-			     "syscon";
++	ssusbsys: clock-controller@1a000000 {
++		compatible = "mediatek,mt7622-ssusbsys";
+ 		reg = <0 0x1a000000 0 0x1000>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
+@@ -774,9 +771,8 @@
+ 		};
+ 	};
+ 
+-	pciesys: pciesys@1a100800 {
+-		compatible = "mediatek,mt7622-pciesys",
+-			     "syscon";
++	pciesys: clock-controller@1a100800 {
++		compatible = "mediatek,mt7622-pciesys";
+ 		reg = <0 0x1a100800 0 0x1000>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
+@@ -894,12 +890,13 @@
+ 		};
+ 	};
+ 
+-	hifsys: syscon@1af00000 {
+-		compatible = "mediatek,mt7622-hifsys", "syscon";
++	hifsys: clock-controller@1af00000 {
++		compatible = "mediatek,mt7622-hifsys";
+ 		reg = <0 0x1af00000 0 0x70>;
++		#clock-cells = <1>;
+ 	};
+ 
+-	ethsys: syscon@1b000000 {
++	ethsys: clock-controller@1b000000 {
+ 		compatible = "mediatek,mt7622-ethsys",
+ 			     "syscon";
+ 		reg = <0 0x1b000000 0 0x1000>;
 -- 
 2.43.0
 
