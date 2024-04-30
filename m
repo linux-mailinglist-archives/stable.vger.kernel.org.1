@@ -1,73 +1,55 @@
-Return-Path: <stable+bounces-42370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-41855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D508B72A7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF318B7008
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A6B1C2299D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B1C28513B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A99112D1E8;
-	Tue, 30 Apr 2024 11:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394F4127B70;
+	Tue, 30 Apr 2024 10:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbdAU84I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK01tYxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474481E50A;
-	Tue, 30 Apr 2024 11:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8B012BF21;
+	Tue, 30 Apr 2024 10:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475449; cv=none; b=n0k9ssMO64NqjELzq0Hj5UhsS1yKjgPs4ggbT0GiQhNhQ3JfuPYa6R5sEte5zl73NlpG8jrKZePvi00Yic25oai+ltC+kFjnFMKZDqLigS50BQePDWYMxIQmGe7JvwxButXQp7rdlc9n5cgYD1hPRmPNLzYdsoC3w62D+Q29Eq8=
+	t=1714473764; cv=none; b=rjaDrtN+GAMEz121kA9vN+lGLvzt7LOwGINvieXH2IxVLfkRmdE6A+AQh0QYL2h0lhvn3FJu+YPOy4XW98UA4taTSrwcj78z/KoTpGD3KK1KOXHjc/GGgqvGI0yaffWW7YtRstw7eEP7GORToGTwIsYEPayzgJj7AQcseFb6AIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475449; c=relaxed/simple;
-	bh=ZKBntvXSi1pPgzavQVSpJLGRgyy8XPStHkITlX771t4=;
+	s=arc-20240116; t=1714473764; c=relaxed/simple;
+	bh=lWrVEkCngJmGQcni8RmEF1NI8KNJMug8T1n/m3VicUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhbBajtF3Ply9TLTbV8vTh13zYhkBM8fOKT+X2alfTYfDjtjYcgHGaZxWHwiEUYAoHIu9FuRDtcsSV0v34JKvvJsJvR8Rk9OkesT7qyqHw6kltZg6m0qSH/I6EitkEECjJJnju9YsI0QbrSWxhRKFnjoZIdOif2vBu44QVaBIwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbdAU84I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49242C2BBFC;
-	Tue, 30 Apr 2024 11:10:48 +0000 (UTC)
+	 MIME-Version; b=RD2PCBUY+/iWgwwByM8KTZiI7kPDiCGSUjHQOhfHdQ5aXbrGhJU+jFJq2EYiByDyXJpfoqzKnvAbR7O0z4Jr4YO1oHV/aSFX7StecFUt8ZHRUVtFdAIRxw/UwqXvNvD2MKPzDoklb+M32D84AjHIsT26jModpWXib/0aSVuAOeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK01tYxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CBCC2BBFC;
+	Tue, 30 Apr 2024 10:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475449;
-	bh=ZKBntvXSi1pPgzavQVSpJLGRgyy8XPStHkITlX771t4=;
+	s=korg; t=1714473763;
+	bh=lWrVEkCngJmGQcni8RmEF1NI8KNJMug8T1n/m3VicUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbdAU84IAiprAfDDta7MWKEe2F99G9LWZ21K0BZjhizSfyCLdrQ6ax6fz9d8j82gQ
-	 83foWdrXE27VXZ9zyEAkIyRe9lWeYcvhGSSJszrxHFVOcpVCPMcoDPoE831YhyBM/h
-	 OVY4Nb4G0rGZFm/azZZKe8y+s8b+BMEaBV3Ateqk=
+	b=hK01tYxWJpsBE+qw9mfEdLFgd2Gusx64sgePrICBBsSbh83jSh6hBLu0mfx1Jsk0X
+	 WwtbBFl1JGqdQDzC+if9dw+Ysbf9JbWp4GFpCa4zk95W6X+UQIwv8nxwnUelJL2SK4
+	 nOfOXVrm7690kprue+6LnODm7u/cgk8Nq097P/v8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lstoakes@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/186] mm/gup: explicitly define and check internal GUP flags, disallow FOLL_TOUCH
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Subject: [PATCH 4.19 31/77] usb: dwc2: host: Fix dereference issue in DDMA completion flow.
 Date: Tue, 30 Apr 2024 12:39:10 +0200
-Message-ID: <20240430103100.878616217@linuxfoundation.org>
+Message-ID: <20240430103042.050514202@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,83 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 
-[ Upstream commit 0f20bba1688bdf3b32df0162511a67d4eda15790 ]
+commit eed04fa96c48790c1cce73c8a248e9d460b088f8 upstream.
 
-Rather than open-coding a list of internal GUP flags in
-is_valid_gup_args(), define which ones are internal.
+Fixed variable dereference issue in DDMA completion flow.
 
-In addition, explicitly check to see if the user passed in FOLL_TOUCH
-somehow, as this appears to have been accidentally excluded.
-
-Link: https://lkml.kernel.org/r/971e013dfe20915612ea8b704e801d7aef9a66b6.1696288092.git.lstoakes@gmail.com
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Richard Cochran <richardcochran@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 631426ba1d45 ("mm/madvise: make MADV_POPULATE_(READ|WRITE) handle VM_FAULT_RETRY properly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b258e4268850 ("usb: dwc2: host: Fix ISOC flow in DDMA mode")
+CC: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-usb/2024040834-ethically-rumble-701f@gregkh/T/#m4c4b83bef0ebb4b67fe2e0a7d6466cbb6f416e39
+Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Link: https://lore.kernel.org/r/cc826d3ef53c934d8e6d98870f17f3cdc3d2755d.1712665387.git.Minas.Harutyunyan@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/gup.c      | 5 ++---
- mm/internal.h | 3 +++
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/usb/dwc2/hcd_ddma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 2f8a2d89fde19..b21b33d1787e1 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2227,12 +2227,11 @@ static bool is_valid_gup_args(struct page **pages, int *locked,
- 	/*
- 	 * These flags not allowed to be specified externally to the gup
- 	 * interfaces:
--	 * - FOLL_PIN/FOLL_TRIED/FOLL_FAST_ONLY are internal only
-+	 * - FOLL_TOUCH/FOLL_PIN/FOLL_TRIED/FOLL_FAST_ONLY are internal only
- 	 * - FOLL_REMOTE is internal only and used on follow_page()
- 	 * - FOLL_UNLOCKABLE is internal only and used if locked is !NULL
- 	 */
--	if (WARN_ON_ONCE(gup_flags & (FOLL_PIN | FOLL_TRIED | FOLL_UNLOCKABLE |
--				      FOLL_REMOTE | FOLL_FAST_ONLY)))
-+	if (WARN_ON_ONCE(gup_flags & INTERNAL_GUP_FLAGS))
- 		return false;
+--- a/drivers/usb/dwc2/hcd_ddma.c
++++ b/drivers/usb/dwc2/hcd_ddma.c
+@@ -897,13 +897,15 @@ static int dwc2_cmpl_host_isoc_dma_desc(
+ 	struct dwc2_dma_desc *dma_desc;
+ 	struct dwc2_hcd_iso_packet_desc *frame_desc;
+ 	u16 frame_desc_idx;
+-	struct urb *usb_urb = qtd->urb->priv;
++	struct urb *usb_urb;
+ 	u16 remain = 0;
+ 	int rc = 0;
  
- 	gup_flags |= to_set;
-diff --git a/mm/internal.h b/mm/internal.h
-index 30cf724ddbce3..50cf76d30a88f 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -964,6 +964,9 @@ enum {
- 	FOLL_UNLOCKABLE = 1 << 21,
- };
+ 	if (!qtd->urb)
+ 		return -EINVAL;
  
-+#define INTERNAL_GUP_FLAGS (FOLL_TOUCH | FOLL_TRIED | FOLL_REMOTE | FOLL_PIN | \
-+			    FOLL_FAST_ONLY | FOLL_UNLOCKABLE)
++	usb_urb = qtd->urb->priv;
 +
- /*
-  * Indicates for which pages that are write-protected in the page table,
-  * whether GUP has to trigger unsharing via FAULT_FLAG_UNSHARE such that the
--- 
-2.43.0
-
+ 	dma_sync_single_for_cpu(hsotg->dev, qh->desc_list_dma + (idx *
+ 				sizeof(struct dwc2_dma_desc)),
+ 				sizeof(struct dwc2_dma_desc),
 
 
 
