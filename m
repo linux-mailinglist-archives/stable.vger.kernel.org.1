@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-42618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24618B73DA
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:24:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AD28B744A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 429C8B20FE9
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:24:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C241C232DC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4D512D75C;
-	Tue, 30 Apr 2024 11:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B01012D214;
+	Tue, 30 Apr 2024 11:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+sTKIwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nk7FBTn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D734512D745;
-	Tue, 30 Apr 2024 11:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3830112C47F;
+	Tue, 30 Apr 2024 11:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476241; cv=none; b=V7Tj9R4/RY3jHf2uxOUyJvDYeL7e5fvPUy3ONapPkHxN1EmYCWmT6V9dUoc9rkoF1rnMGdCWt3PZVX6RnPXFMA5Gl62ugQP/amEBSPVEkLVIOhv39zg+tummQoizm3iHIH93f2XBlw7uaKHqng2Rke1TVItRsyjZFTaShIzX1nA=
+	t=1714476551; cv=none; b=fsXxLrYqeymGyuhFDVeERxG5qVp2Hii9/YhUoDMvppiIwGYz/WlRXOLwfXsaOc4l4j1njeaB18wOrTdCE54LJw1ICywqPoAfVO9PBbTqoU1wMJWeQkkbCWdkW36hFD5izTN/+ePIMZGVyYEmaHheKrYWh7BaO5CaOtSSWIhNnhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476241; c=relaxed/simple;
-	bh=7E3r3RXG6A3JCCOe2TV/f9NpxcnDvo4v9V9PDtBZa2k=;
+	s=arc-20240116; t=1714476551; c=relaxed/simple;
+	bh=PlW4O9Ce+KZthJAvitDmnPmF5aQMbr2LsybrXF1PzA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G9JNfazIBx7xsmV40+iepgGiuQ4iBXDk+Yd80hyIhvNAgs1HfwEHk/KJsWX1EHTARKAhnG0MYYAmpKaL6wKrFj+i+ucK1x/IKCWiZG3vPOIYx0j9tMYyndH8om9wpHf5m/xzEumvdO/PKBnLkcDBDINC+uWV4h/R72BSUiDQ6UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+sTKIwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BA4C4AF1A;
-	Tue, 30 Apr 2024 11:24:01 +0000 (UTC)
+	 MIME-Version; b=kfKBIuTxlbpioFDfn3WwDC1wpJLXsq4yslv0L3HS+f0yM5hDmuLylfKoT+tiIUo4qlA3nk5GCNS3oUFUbrB7Xf8pq0kzA/m+3V5AP8yOVW6jwXSWRs+dgU/9auLk9+nTKrTSJBLXFIb9pSG1YhZi666Rjkat9RRBC/IeeR9TDpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nk7FBTn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B65FC4AF1C;
+	Tue, 30 Apr 2024 11:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476241;
-	bh=7E3r3RXG6A3JCCOe2TV/f9NpxcnDvo4v9V9PDtBZa2k=;
+	s=korg; t=1714476551;
+	bh=PlW4O9Ce+KZthJAvitDmnPmF5aQMbr2LsybrXF1PzA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+sTKIwFNpnHNePcCD3LxMbAp3XV4ynhaAZyD+GBWeq9d8TkZPlb7EBBGrbZzLj5m
-	 4NvSfd4y0NPZjt6ozewpl1QxQhuL0dC3amYEQorvnVe1k/FL6Q42jAHotaWtnvTSp9
-	 2hZjnUb/m+rW1CE8DtJBp4fMbmpqjJxy99En3qsU=
+	b=Nk7FBTn2j1AaHJxOqZbAbX1ojFU0ZJ2tNE0Ip4lRpAj3V5TBRXrq8/VN+35NUzSw1
+	 MyySbINZgBSSsZDmVpPXFCiDyhWysVoxIe+xKjS2AwTegXwuvmBewBkq9BSR46Bqed
+	 e1FgaZFUn4OuvDA1h9vytqmEtEzq4XviA553sBug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mineri Bhange <minerix.bhange@intel.com>
-Subject: [PATCH 5.4 077/107] iavf: Fix TC config comparison with existing adapter TC config
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 068/110] Bluetooth: qca: fix NULL-deref on non-serdev suspend
 Date: Tue, 30 Apr 2024 12:40:37 +0200
-Message-ID: <20240430103046.928807355@linuxfoundation.org>
+Message-ID: <20240430103049.574739386@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 54976cf58d6168b8d15cebb395069f23b2f34b31 ]
+commit 73e87c0a49fda31d7b589edccf4c72e924411371 upstream.
 
-Same number of TCs doesn't imply that underlying TC configs are
-same. The config could be different due to difference in number
-of queues in each TC. Add utility function to determine if TC
-configs are same.
+Qualcomm ROME controllers can be registered from the Bluetooth line
+discipline and in this case the HCI UART serdev pointer is NULL.
 
-Fixes: d5b33d024496 ("i40evf: add ndo_setup_tc callback to i40evf")
-Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
-Tested-by: Mineri Bhange <minerix.bhange@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240423182723.740401-4-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing sanity check to prevent a NULL-pointer dereference when
+wakeup() is called for a non-serdev controller during suspend.
+
+Just return true for now to restore the original behaviour and address
+the crash with pre-6.2 kernels, which do not have commit e9b3e5b8c657
+("Bluetooth: hci_qca: only assign wakeup with serial port support") that
+causes the crash to happen already at setup() time.
+
+Fixes: c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
+Cc: stable@vger.kernel.org      # 5.13
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 30 ++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/bluetooth/hci_qca.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 9cf556fedc704..8cc20db625c22 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -2647,6 +2647,34 @@ static void iavf_del_all_cloud_filters(struct iavf_adapter *adapter)
- 	spin_unlock_bh(&adapter->cloud_filter_list_lock);
- }
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1645,6 +1645,9 @@ static bool qca_wakeup(struct hci_dev *h
+ 	struct hci_uart *hu = hci_get_drvdata(hdev);
+ 	bool wakeup;
  
-+/**
-+ * iavf_is_tc_config_same - Compare the mqprio TC config with the
-+ * TC config already configured on this adapter.
-+ * @adapter: board private structure
-+ * @mqprio_qopt: TC config received from kernel.
-+ *
-+ * This function compares the TC config received from the kernel
-+ * with the config already configured on the adapter.
-+ *
-+ * Return: True if configuration is same, false otherwise.
-+ **/
-+static bool iavf_is_tc_config_same(struct iavf_adapter *adapter,
-+				   struct tc_mqprio_qopt *mqprio_qopt)
-+{
-+	struct virtchnl_channel_info *ch = &adapter->ch_config.ch_info[0];
-+	int i;
++	if (!hu->serdev)
++		return true;
 +
-+	if (adapter->num_tc != mqprio_qopt->num_tc)
-+		return false;
-+
-+	for (i = 0; i < adapter->num_tc; i++) {
-+		if (ch[i].count != mqprio_qopt->count[i] ||
-+		    ch[i].offset != mqprio_qopt->offset[i])
-+			return false;
-+	}
-+	return true;
-+}
-+
- /**
-  * __iavf_setup_tc - configure multiple traffic classes
-  * @netdev: network interface device structure
-@@ -2703,7 +2731,7 @@ static int __iavf_setup_tc(struct net_device *netdev, void *type_data)
- 		if (ret)
- 			return ret;
- 		/* Return if same TC config is requested */
--		if (adapter->num_tc == num_tc)
-+		if (iavf_is_tc_config_same(adapter, &mqprio_qopt->qopt))
- 			return 0;
- 		adapter->num_tc = num_tc;
- 
--- 
-2.43.0
-
+ 	/* BT SoC attached through the serial bus is handled by the serdev driver.
+ 	 * So we need to use the device handle of the serdev driver to get the
+ 	 * status of device may wakeup.
 
 
 
