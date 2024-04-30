@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-42262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31AB8B7224
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFF38B7409
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698461F2366D
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:04:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 953261F23F83
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D6312CD96;
-	Tue, 30 Apr 2024 11:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F92412D210;
+	Tue, 30 Apr 2024 11:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mdrdoevw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDz9nEIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B5E12C54B;
-	Tue, 30 Apr 2024 11:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C7B17592;
+	Tue, 30 Apr 2024 11:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475091; cv=none; b=BqWUIEA3U5psplgDjvfr2OC/3fEj5N6W8KQKkZvsZAE5WGuYQt+ieRw2niG9eLxJbEZagEBRwQ66LXDUUU5QRX+D15CqV01w0tEOymo4LlmSphCyyJ/7rUz6r6AA9ARorR+7GzW7SUFaKsHytGba37iau5t2C6zMCKZNZkET9Os=
+	t=1714476378; cv=none; b=Ard/6O8UWJSx6g2AWUdIj1EYNGiaN4NNThU1eN0u8DxwCB19CrHIYLCe9r5UqK2Im4A+arUHYt7mxfc8lt2MI8NAu832W3CgIQk50nLNxR3AeciEa//rD97nWfMarfnXrYV6fi+s9OcLG052+1rkcVRY6GuI4Vvze2t8qZ+2k18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475091; c=relaxed/simple;
-	bh=MPoQHONkmhQDhC0lzVf9jz8yAaKZHxfGMKNV3ib36CQ=;
+	s=arc-20240116; t=1714476378; c=relaxed/simple;
+	bh=dnIya9NE5YszuhsOyMbm7q8UZW9RX608jVYPSiKAQig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ralKzBvn5Yq6ABRjY7n9+WNVwv3F0ANasCnschzFcZcI3AZM/mpGcttHds1GG/iK5++sDi/G08iVWLVFm5a3Y5TfLPPaGQ6y3MPOXeZvL+yCyt63yUOuhlRuY8HvhOXWHWndN+3W/F0bQXtRst3obtnlo4GS8s9eZuQ/20XyLsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mdrdoevw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAEEC2BBFC;
-	Tue, 30 Apr 2024 11:04:50 +0000 (UTC)
+	 MIME-Version; b=r87OTx6cocYSRq1Ex7LC+v5pPw34Q0LeQ8Ph8120KBz2tTdFUjIw4uWJOseJHUzyaSREU3dp/IKcS0h54dT9OKwM/0aQaijodZteC+rSjYoVEOqZo7ZBGn3+Y48IMpnh1FGZUM4pxYFuPS5SaUXEqVx7f2ycTWTEhtPvay8+P2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDz9nEIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0158DC2BBFC;
+	Tue, 30 Apr 2024 11:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475091;
-	bh=MPoQHONkmhQDhC0lzVf9jz8yAaKZHxfGMKNV3ib36CQ=;
+	s=korg; t=1714476377;
+	bh=dnIya9NE5YszuhsOyMbm7q8UZW9RX608jVYPSiKAQig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mdrdoevw8jLx0CehP8fWHUvCaknrayCU/PhcFb8oiyJ5l+ypACjgYL5YeIehsl2iS
-	 UBpxIXCvabFd2Ui9ciUF7kTp4prJKeAO/QrS+D8+EDYQzyQwpE8HRX74IST4zSMPFe
-	 Of8wY8dclnOMXbaOhxklQL/lmrV8mEwdq7fUJyFg=
+	b=uDz9nEIfXEzgDyenRziM6V0RBCGAy6547afZyvvbRfmg7ozGPg94GEe8MmPh6oSLB
+	 Y0rHbBspQPrREdgbtR52AGD8V+a9VOVMsKdABvmU2t9P9q0pqQj2PtukiTcQrQO4I9
+	 qliey1ES2abUyXmkzEjkv24taGmn1Z9p7SRk7vcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/138] net: gtp: Fix Use-After-Free in gtp_dellink
+Subject: [PATCH 6.1 006/110] arm64: dts: rockchip: enable internal pull-up on Q7_USB_ID for RK3399 Puma
 Date: Tue, 30 Apr 2024 12:39:35 +0200
-Message-ID: <20240430103052.069580012@linuxfoundation.org>
+Message-ID: <20240430103047.756623677@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-[ Upstream commit f2a904107ee2b647bb7794a1a82b67740d7c8a64 ]
+[ Upstream commit e6b1168f37e3f86d9966276c5a3fff9eb0df3e5f ]
 
-Since call_rcu, which is called in the hlist_for_each_entry_rcu traversal
-of gtp_dellink, is not part of the RCU read critical section, it
-is possible that the RCU grace period will pass during the traversal and
-the key will be free.
+The Q7_USB_ID has a diode used as a level-shifter, and is used as an
+input pin. The SoC default for this pin is a pull-up, which is correct
+but the pinconf in the introducing commit missed that, so let's fix this
+oversight.
 
-To prevent this, it should be changed to hlist_for_each_entry_safe.
-
-Fixes: 94dc550a5062 ("gtp: fix an use-after-free in ipv4_pdp_find()")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: ed2c66a95c0c ("arm64: dts: rockchip: fix rk3399-puma-haikou USB OTG mode")
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240308-puma-diode-pu-v2-1-309f83da110a@theobroma-systems.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 4e19760cddefe..c8246363d3832 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -700,11 +700,12 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
- static void gtp_dellink(struct net_device *dev, struct list_head *head)
- {
- 	struct gtp_dev *gtp = netdev_priv(dev);
-+	struct hlist_node *next;
- 	struct pdp_ctx *pctx;
- 	int i;
- 
- 	for (i = 0; i < gtp->hash_size; i++)
--		hlist_for_each_entry_rcu(pctx, &gtp->tid_hash[i], hlist_tid)
-+		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
- 			pdp_context_delete(pctx);
- 
- 	list_del_rcu(&gtp->list);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+index aa3e21bd6c8f4..fee2cc035613c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -443,7 +443,7 @@
+ 	usb3 {
+ 		usb3_id: usb3-id {
+ 			rockchip,pins =
+-			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
++			  <1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
+ };
 -- 
 2.43.0
 
