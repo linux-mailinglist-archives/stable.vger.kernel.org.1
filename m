@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-42554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6158B7390
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7E88B7342
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 420F11F24185
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B001C22BED
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54B112CDAE;
-	Tue, 30 Apr 2024 11:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C77212D1EA;
+	Tue, 30 Apr 2024 11:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NU/CIGXG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCHzH4wG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EB58801;
-	Tue, 30 Apr 2024 11:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B878801;
+	Tue, 30 Apr 2024 11:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476037; cv=none; b=hVD6Bxn18lfxRgFCN41a5moHuT8M9hJUhEoUUvydZwjcD23dUA3WcdL4zBfIlKttMsOJu7FwCuzMQLXLgpLQB1f2g/U8lcQaMXoMZzLg3HhjwhGCPjUx2n9eGtSKZCqB3krPgvuxfiXcGhr+LgAbM8rhRUoQ0p7idJm1xJI3jG8=
+	t=1714475820; cv=none; b=H+ELSHbVvxYy58d3rDEZ2/APfZt7x6il/Yt6gOuAe82crsWVWY7EkloRtZg2547I3elMAAkbAbvM5dpUlaIllzL/wSDiC/sVZLqtvomwRDxoy0AUtv27FxOpgS6DZj0hBe81Le0ogskyiMuEQc4mROyRy833WMzUL47pwd5MuKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476037; c=relaxed/simple;
-	bh=kQHtj4+xmjX0cyc6cCJDcGhWCCiP5wKos6hEpQ8MOhc=;
+	s=arc-20240116; t=1714475820; c=relaxed/simple;
+	bh=pT4zJmUQICGgDmA3NJ4m1+kLcEsMY/cPMpd2TYnMXt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JtFWkBSKRmvcOFWpU+OIf86opJMEFUTEUEYoOn8SnOEsqD7hLqO7EC93SxCD7AGmYVHIEEOBLHFe6kZoKVcIRHfu2SOzh3oRtIoTnKiKDG3vO6szyY3V9qdKCsFgEupF5NeyM41tZGcdxKu86wELzHdJQRrUI6gefENO+DLKykQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NU/CIGXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1197C2BBFC;
-	Tue, 30 Apr 2024 11:20:36 +0000 (UTC)
+	 MIME-Version; b=C5Q7DgeiERb9lX4yslii8OC0dQUuMP8HizKnquGVWhv6xUazpKs6SmyzrjmnoGNIAnnNg4Iuv/W/mXrrn0qRsCzSXREyilIqYICQES6OJMRR4ahSHowbI0FaNwYPF93xVpi8c1wWZTJGGYatONVtgsnzA+d9OIbn6fmNt8N3DGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCHzH4wG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90662C4AF18;
+	Tue, 30 Apr 2024 11:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476037;
-	bh=kQHtj4+xmjX0cyc6cCJDcGhWCCiP5wKos6hEpQ8MOhc=;
+	s=korg; t=1714475820;
+	bh=pT4zJmUQICGgDmA3NJ4m1+kLcEsMY/cPMpd2TYnMXt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NU/CIGXGKAR1VxodvTogcBw5b77KipBTsEQ/ksHkfaQ5TqJMvjEhDaPwNOa3ZUSvj
-	 K59V0oHRaz5nwTrkOf38AisaHpXvAec9YNwarW49j2K13OL/bdsOW4b/W2jB1HpR4Q
-	 Ild/iAd5Fp0jeHeZaVgmkb8k249F/Dot0WDL5YF8=
+	b=vCHzH4wGOxXASinLcUqDZwZUlXlAhNAMvVGGSsPVbO6t9FHUvxg2rpJKsN+/1Hxfn
+	 vWWNRwEEU0oe+o67L23MS2HOmQn+HGN7hfluLkRfYSC6sjhyA4YkiixBp2obBAws4e
+	 WZU5sloLv4yink+v7qUxfsrQkZ9fYdJU3SRstv5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.4 015/107] drm/client: Fully protect modes[] with dev->mode_config.mutex
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 03/80] HID: intel-ish-hid: ipc: Fix dev_err usage with uninitialized dev->devc
 Date: Tue, 30 Apr 2024 12:39:35 +0200
-Message-ID: <20240430103045.111905028@linuxfoundation.org>
+Message-ID: <20240430103043.502582644@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
-References: <20240430103044.655968143@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-commit 3eadd887dbac1df8f25f701e5d404d1b90fd0fea upstream.
+[ Upstream commit 92826905ae340b7f2b25759a06c8c60bfc476b9f ]
 
-The modes[] array contains pointers to modes on the connectors'
-mode lists, which are protected by dev->mode_config.mutex.
-Thus we need to extend modes[] the same protection or by the
-time we use it the elements may already be pointing to
-freed/reused memory.
+The variable dev->devc in ish_dev_init was utilized by dev_err before it
+was properly assigned. To rectify this, the assignment of dev->devc has
+been moved to immediately follow memory allocation.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10583
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404203336.10454-2-ville.syrjala@linux.intel.com
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without this change "(NULL device *)" is printed for device information.
+
+Fixes: 8ae2f2b0a284 ("HID: intel-ish-hid: ipc: Fix potential use-after-free in work function")
+Fixes: ae02e5d40d5f ("HID: intel-ish-hid: ipc layer")
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_client_modeset.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/intel-ish-hid/ipc/ipc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_client_modeset.c
-+++ b/drivers/gpu/drm/drm_client_modeset.c
-@@ -700,6 +700,7 @@ int drm_client_modeset_probe(struct drm_
- 	unsigned int total_modes_count = 0;
- 	struct drm_client_offset *offsets;
- 	unsigned int connector_count = 0;
-+	/* points to modes protected by mode_config.mutex */
- 	struct drm_display_mode **modes;
- 	struct drm_crtc **crtcs;
- 	int i, ret = 0;
-@@ -768,7 +769,6 @@ int drm_client_modeset_probe(struct drm_
- 		drm_client_pick_crtcs(client, connectors, connector_count,
- 				      crtcs, modes, 0, width, height);
+diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
+index 6c942dd1abca2..ba45605fc6b52 100644
+--- a/drivers/hid/intel-ish-hid/ipc/ipc.c
++++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+@@ -944,6 +944,7 @@ struct ishtp_device *ish_dev_init(struct pci_dev *pdev)
+ 	if (!dev)
+ 		return NULL;
+ 
++	dev->devc = &pdev->dev;
+ 	ishtp_device_init(dev);
+ 
+ 	init_waitqueue_head(&dev->wait_hw_ready);
+@@ -979,7 +980,6 @@ struct ishtp_device *ish_dev_init(struct pci_dev *pdev)
  	}
--	mutex_unlock(&dev->mode_config.mutex);
  
- 	drm_client_modeset_release(client);
- 
-@@ -798,6 +798,7 @@ int drm_client_modeset_probe(struct drm_
- 			modeset->y = offset->y;
- 		}
- 	}
-+	mutex_unlock(&dev->mode_config.mutex);
- 
- 	mutex_unlock(&client->modeset_mutex);
- out:
+ 	dev->ops = &ish_hw_ops;
+-	dev->devc = &pdev->dev;
+ 	dev->mtu = IPC_PAYLOAD_SIZE - sizeof(struct ishtp_msg_hdr);
+ 	return dev;
+ }
+-- 
+2.43.0
+
 
 
 
