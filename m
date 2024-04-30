@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-42547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612148B7388
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:20:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F558B7450
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FB62B20423
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:20:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3FF51C233BE
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDEB12CDA5;
-	Tue, 30 Apr 2024 11:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B927B12D746;
+	Tue, 30 Apr 2024 11:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bo70pF5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6OHCyxv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8BE8801;
-	Tue, 30 Apr 2024 11:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E4412BF32;
+	Tue, 30 Apr 2024 11:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476014; cv=none; b=D578jCMmdWHrY1/LahTySXP5whAsT34GijxJ/VZxuVZUwpdqirovR00qLeOfeQDpbqLY31fNkwO5PAoPi1Cp9ji0AL/3V3nltUecBip0/bMwpsxqNL7M/Zv7ypGzqlz78+yZXIp3vpDyQemhgECoGefFXCaIc44OBdCnbC1FLA4=
+	t=1714476567; cv=none; b=PHtqkrIgimCvTN4Y78yTOijbMvW3RCVfmOCQqk4ih8x/yRxZrWTnO0MzDoOhhksRZctFu5ae3vgxCgZucmaZdpEoEDCESaObc2Re9i3Fwz3hMKk2QdtoAb4jWAlMbw9VgQtK/Z99UzXzXbV5gdFhStc55ZYR8aeh7hLGCHxWiaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476014; c=relaxed/simple;
-	bh=mK9D4+PGONL46s0Uwmp22T4CyXnS6DSrJT0V1C/7r4w=;
+	s=arc-20240116; t=1714476567; c=relaxed/simple;
+	bh=LBXcx3zeYADjd2H7AVArw+n6dtIIduAKI3WJ4R6NQp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bp+PGuhkhrFD+lJV8FShEq/QjE556Re9JKylMwZRIYsIbYcN/FJO2Zag8M+CE1D6LrbU1h4dknb5Fbr7F+VRTbYQwQzkKahbmuf/elCplGVgfsKLD/OB99FsjAp/kHjZbBD6DGn423p7cn8kEWVv5fym/RvrOyGVH1X9jKhHkqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bo70pF5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A26C2BBFC;
-	Tue, 30 Apr 2024 11:20:14 +0000 (UTC)
+	 MIME-Version; b=p/yb670QrRJpXGsKpk/ORz+zitWeD2llybM1YiDqO9oE9jREQD2OQ9EFcXj6oqtMub+kHTT9aA3q7jWUsx5Np3VUNm7XhEFkjF3JqE86syfokTGORICks8PH0bLDIrWkV95epxCdO9sfrVxp+s2gcXrhmRk67d4K7o9Iv3LZNkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6OHCyxv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95162C2BBFC;
+	Tue, 30 Apr 2024 11:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476014;
-	bh=mK9D4+PGONL46s0Uwmp22T4CyXnS6DSrJT0V1C/7r4w=;
+	s=korg; t=1714476567;
+	bh=LBXcx3zeYADjd2H7AVArw+n6dtIIduAKI3WJ4R6NQp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bo70pF5od5SgGuVQ+e93kZWwlXhxsKTenNvNYG642s4WVuWQaEQGSwejBE4TMwXrx
-	 cgqV1i0Q4gHbFTED3B/kVrXkRKNkTIFhHMRflmKAN8moEvFGsGFgbS0bveG89CF1/I
-	 Fyg1FEKxaSB9JwjIDCWvgKdkI08MNB3LSOc9yWZw=
+	b=a6OHCyxvFaHlHR5NgrYPW/BeYyx9Oeb80yw665NiBmkmQlbEgIimCk/HNRnHrGCyC
+	 fd6c5zu+TZ4RAQuxTuBzteBj1EHPVL/aJGXzJtQVXsgfaZ6eU/T7edVPCVREbS64z5
+	 D27skiBv7V8TBFGVohNcgGbRmhLsbNlVb+dJcveU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 69/80] dmaengine: owl: fix register access functions
+	Nam Cao <namcao@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
+	Eva Kurchatova <nyandarknessgirl@gmail.com>
+Subject: [PATCH 6.1 072/110] HID: i2c-hid: remove I2C_HID_READ_PENDING flag to prevent lock-up
 Date: Tue, 30 Apr 2024 12:40:41 +0200
-Message-ID: <20240430103045.453152807@linuxfoundation.org>
+Message-ID: <20240430103049.691797296@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
-References: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 43c633ef93a5d293c96ebcedb40130df13128428 ]
+commit 9c0f59e47a90c54d0153f8ddc0f80d7a36207d0e upstream.
 
-When building with 'make W=1', clang notices that the computed register
-values are never actually written back but instead the wrong variable
-is set:
+The flag I2C_HID_READ_PENDING is used to serialize I2C operations.
+However, this is not necessary, because I2C core already has its own
+locking for that.
 
-drivers/dma/owl-dma.c:244:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  244 |         u32 regval;
-      |             ^
-drivers/dma/owl-dma.c:268:6: error: variable 'regval' set but not used [-Werror,-Wunused-but-set-variable]
-  268 |         u32 regval;
-      |             ^
+More importantly, this flag can cause a lock-up: if the flag is set in
+i2c_hid_xfer() and an interrupt happens, the interrupt handler
+(i2c_hid_irq) will check this flag and return immediately without doing
+anything, then the interrupt handler will be invoked again in an
+infinite loop.
 
-Change these to what was most likely intended.
+Since interrupt handler is an RT task, it takes over the CPU and the
+flag-clearing task never gets scheduled, thus we have a lock-up.
 
-Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240322132116.906475-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Delete this unnecessary flag.
+
+Reported-and-tested-by: Eva Kurchatova <nyandarknessgirl@gmail.com>
+Closes: https://lore.kernel.org/r/CA+eeCSPUDpUg76ZO8dszSbAGn+UHjcyv8F1J-CUPVARAzEtW9w@mail.gmail.com
+Fixes: 4a200c3b9a40 ("HID: i2c-hid: introduce HID over i2c specification implementation")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/owl-dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-core.c |    9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
-index 1f0bbaed4643a..9739c6c62123d 100644
---- a/drivers/dma/owl-dma.c
-+++ b/drivers/dma/owl-dma.c
-@@ -249,7 +249,7 @@ static void pchan_update(struct owl_dma_pchan *pchan, u32 reg,
- 	else
- 		regval &= ~val;
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -61,7 +61,6 @@
+ /* flags */
+ #define I2C_HID_STARTED		0
+ #define I2C_HID_RESET_PENDING	1
+-#define I2C_HID_READ_PENDING	2
  
--	writel(val, pchan->base + reg);
-+	writel(regval, pchan->base + reg);
- }
+ #define I2C_HID_PWR_ON		0x00
+ #define I2C_HID_PWR_SLEEP	0x01
+@@ -193,15 +192,10 @@ static int i2c_hid_xfer(struct i2c_hid *
+ 		msgs[n].len = recv_len;
+ 		msgs[n].buf = recv_buf;
+ 		n++;
+-
+-		set_bit(I2C_HID_READ_PENDING, &ihid->flags);
+ 	}
  
- static void pchan_writel(struct owl_dma_pchan *pchan, u32 reg, u32 data)
-@@ -273,7 +273,7 @@ static void dma_update(struct owl_dma *od, u32 reg, u32 val, bool state)
- 	else
- 		regval &= ~val;
+ 	ret = i2c_transfer(client->adapter, msgs, n);
  
--	writel(val, od->base + reg);
-+	writel(regval, od->base + reg);
- }
+-	if (recv_len)
+-		clear_bit(I2C_HID_READ_PENDING, &ihid->flags);
+-
+ 	if (ret != n)
+ 		return ret < 0 ? ret : -EIO;
  
- static void dma_writel(struct owl_dma *od, u32 reg, u32 data)
--- 
-2.43.0
-
+@@ -569,9 +563,6 @@ static irqreturn_t i2c_hid_irq(int irq,
+ {
+ 	struct i2c_hid *ihid = dev_id;
+ 
+-	if (test_bit(I2C_HID_READ_PENDING, &ihid->flags))
+-		return IRQ_HANDLED;
+-
+ 	i2c_hid_get_input(ihid);
+ 
+ 	return IRQ_HANDLED;
 
 
 
