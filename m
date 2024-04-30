@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-42185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAEE8B71C7
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:00:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B28E8B7297
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1921C2255A
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:00:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFD551F2369B
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9935312C48A;
-	Tue, 30 Apr 2024 11:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D30412CD90;
+	Tue, 30 Apr 2024 11:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrMRuUXY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkOV4ZZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5727F12C462;
-	Tue, 30 Apr 2024 11:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED781E50A;
+	Tue, 30 Apr 2024 11:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474843; cv=none; b=m+MWhWWgBjqGXtKnlU04+I3nsdz7C507PKVxcc197FL1VjNXHR0VGscUZESF9h3YO8jZRFw5TN6qegWEo1Kh4LuGbN0rtLxF7LRcDRtPgMONjPqUhwc06INGGNRXNso382vw0UE0yLMXZpvweqekfoqi1/9cWMvYicEduOtyQ9E=
+	t=1714475408; cv=none; b=JkItknfLioSnlpmKAJRrcBgLGlESYFaMP6D1X12Ss+iG2Q/m0OeCdeDScBbPukq5FvYR9eP7XXrqCObk2fjke2Uorhm0m8MNVtX4I7tD5Z0Gmebc1J5bl+3pXTnxQtEQIWYbbEM9CwoxaIHYPCKFkd0+fQ6n19nR4EOxCXYwbFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474843; c=relaxed/simple;
-	bh=FTSvSt3uvxPL4SUkELdR6Bb5yfHQ/nJM30xQ1YRoDO8=;
+	s=arc-20240116; t=1714475408; c=relaxed/simple;
+	bh=uIGphSZsDV8P7BxXl47ELQB83mGPB/qKy8srE7sWJK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTyo/0XrgZo3XHcT5a2ZPubO6kbKE1vabiukcdtxZ9E6G5428cgTHkE8UfD5f0PcBIwY6wQeOcwaaQHzcKOITXOz7uAJp+760OZLPBQcXMFVt4Z3uqdIil9wGAYCGZcF6C7GjmoeDiUZ0SyFR/YZHUzA+gjxJVPW/VrqYv2mgXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrMRuUXY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E165C2BBFC;
-	Tue, 30 Apr 2024 11:00:42 +0000 (UTC)
+	 MIME-Version; b=efQcVASNkHI4mmzTQhWtvH9CDeaykkK4fVd4FW6KIHKILO9Pl5hZlxnC1V1lOvsg5CeTSRppyzv+F4ozryg+0BbiPT3rKnj/R63dspnqNnjbOctTNAfPxi66iTZuPVlp0hZIdV8ejTwoJcfnV7/EF9h58isYk6TL9QdbgObdCmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkOV4ZZ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B247C2BBFC;
+	Tue, 30 Apr 2024 11:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474842;
-	bh=FTSvSt3uvxPL4SUkELdR6Bb5yfHQ/nJM30xQ1YRoDO8=;
+	s=korg; t=1714475407;
+	bh=uIGphSZsDV8P7BxXl47ELQB83mGPB/qKy8srE7sWJK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrMRuUXY3mI13wfitPhAIQq9CCfF0636xH4fK9SxsTbLkgzVkHESJf4EAOixnAx+x
-	 z3LH0gLCZyskCZpNbH9yNhJ+qFenaSKTPkmJ44fK3i0yaohRSMenMIk7BXADzEdj+L
-	 LSiCqWhtCmw6Xsx6VrFcKkgexAR7XOyq59Cue1LU=
+	b=OkOV4ZZ2ivX/BEKrngl9gp66dfyLKwa1hxJscetUWzLYUgEpA60cjXYtffQrYqZ+o
+	 pulCcuYExjbTUudYQedGwycAj1RB/q3Izl4vmdIY5XcLwFqxmX++HCppQ+AzohiDhJ
+	 JcLSG0iYd3HdPqSc7C5dtRufkO9q8EUKhy33feNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Fine <gil.fine@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.10 053/138] thunderbolt: Fix wake configurations after device unplug
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/186] netfilter: nf_tables: honor table dormant flag from netdev release event path
 Date: Tue, 30 Apr 2024 12:38:58 +0200
-Message-ID: <20240430103050.988653092@linuxfoundation.org>
+Message-ID: <20240430103100.530765094@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
+References: <20240430103058.010791820@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Fine <gil.fine@linux.intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit c38fa07dc69f0b9e6f43ecab96dc7861a70c827c upstream.
+[ Upstream commit 8e30abc9ace4f0add4cd761dfdbfaebae5632dd2 ]
 
-Currently we don't configure correctly the wake events after unplug of device
-router. What can happen is that the downstream ports of host router will be
-configured to wake on: USB4-wake and wake-on-disconnect, but not on
-wake-on-connect. This may cause the later plugged device not to wake the
-domain and fail in enumeration. Fix this by clearing downstream port's "USB4
-Port is Configured" bit, after unplug of a device router.
+Check for table dormant flag otherwise netdev release event path tries
+to unregister an already unregistered hook.
 
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[524854.857999] ------------[ cut here ]------------
+[524854.858010] WARNING: CPU: 0 PID: 3386599 at net/netfilter/core.c:501 __nf_unregister_net_hook+0x21a/0x260
+[...]
+[524854.858848] CPU: 0 PID: 3386599 Comm: kworker/u32:2 Not tainted 6.9.0-rc3+ #365
+[524854.858869] Workqueue: netns cleanup_net
+[524854.858886] RIP: 0010:__nf_unregister_net_hook+0x21a/0x260
+[524854.858903] Code: 24 e8 aa 73 83 ff 48 63 43 1c 83 f8 01 0f 85 3d ff ff ff e8 98 d1 f0 ff 48 8b 3c 24 e8 8f 73 83 ff 48 63 43 1c e9 26 ff ff ff <0f> 0b 48 83 c4 18 48 c7 c7 00 68 e9 82 5b 5d 41 5c 41 5d 41 5e 41
+[524854.858914] RSP: 0018:ffff8881e36d79e0 EFLAGS: 00010246
+[524854.858926] RAX: 0000000000000000 RBX: ffff8881339ae790 RCX: ffffffff81ba524a
+[524854.858936] RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff8881c8a16438
+[524854.858945] RBP: ffff8881c8a16438 R08: 0000000000000001 R09: ffffed103c6daf34
+[524854.858954] R10: ffff8881e36d79a7 R11: 0000000000000000 R12: 0000000000000005
+[524854.858962] R13: ffff8881c8a16000 R14: 0000000000000000 R15: ffff8881351b5a00
+[524854.858971] FS:  0000000000000000(0000) GS:ffff888390800000(0000) knlGS:0000000000000000
+[524854.858982] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[524854.858991] CR2: 00007fc9be0f16f4 CR3: 00000001437cc004 CR4: 00000000001706f0
+[524854.859000] Call Trace:
+[524854.859006]  <TASK>
+[524854.859013]  ? __warn+0x9f/0x1a0
+[524854.859027]  ? __nf_unregister_net_hook+0x21a/0x260
+[524854.859044]  ? report_bug+0x1b1/0x1e0
+[524854.859060]  ? handle_bug+0x3c/0x70
+[524854.859071]  ? exc_invalid_op+0x17/0x40
+[524854.859083]  ? asm_exc_invalid_op+0x1a/0x20
+[524854.859100]  ? __nf_unregister_net_hook+0x6a/0x260
+[524854.859116]  ? __nf_unregister_net_hook+0x21a/0x260
+[524854.859135]  nf_tables_netdev_event+0x337/0x390 [nf_tables]
+[524854.859304]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
+[524854.859461]  ? packet_notifier+0xb3/0x360
+[524854.859476]  ? _raw_spin_unlock_irqrestore+0x11/0x40
+[524854.859489]  ? dcbnl_netdevice_event+0x35/0x140
+[524854.859507]  ? __pfx_nf_tables_netdev_event+0x10/0x10 [nf_tables]
+[524854.859661]  notifier_call_chain+0x7d/0x140
+[524854.859677]  unregister_netdevice_many_notify+0x5e1/0xae0
+
+Fixes: d54725cd11a5 ("netfilter: nf_tables: support for multiple devices per netdev hook")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/switch.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ net/netfilter/nft_chain_filter.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2402,22 +2402,29 @@ void tb_switch_unconfigure_link(struct t
- {
- 	struct tb_port *up, *down;
- 
--	if (sw->is_unplugged)
--		return;
- 	if (!tb_route(sw) || tb_switch_is_icm(sw))
+diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
+index 274b6f7e6bb57..d170758a1eb5d 100644
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -338,7 +338,9 @@ static void nft_netdev_event(unsigned long event, struct net_device *dev,
  		return;
  
-+	/*
-+	 * Unconfigure downstream port so that wake-on-connect can be
-+	 * configured after router unplug. No need to unconfigure upstream port
-+	 * since its router is unplugged.
-+	 */
- 	up = tb_upstream_port(sw);
--	if (tb_switch_is_usb4(up->sw))
--		usb4_port_unconfigure(up);
--	else
--		tb_lc_unconfigure_port(up);
--
- 	down = up->remote;
- 	if (tb_switch_is_usb4(down->sw))
- 		usb4_port_unconfigure(down);
- 	else
- 		tb_lc_unconfigure_port(down);
+ 	if (n > 1) {
+-		nf_unregister_net_hook(ctx->net, &found->ops);
++		if (!(ctx->chain->table->flags & NFT_TABLE_F_DORMANT))
++			nf_unregister_net_hook(ctx->net, &found->ops);
 +
-+	if (sw->is_unplugged)
-+		return;
-+
-+	up = tb_upstream_port(sw);
-+	if (tb_switch_is_usb4(up->sw))
-+		usb4_port_unconfigure(up);
-+	else
-+		tb_lc_unconfigure_port(up);
- }
- 
- static int tb_switch_port_hotplug_enable(struct tb_switch *sw)
+ 		list_del_rcu(&found->list);
+ 		kfree_rcu(found, rcu);
+ 		return;
+-- 
+2.43.0
+
 
 
 
