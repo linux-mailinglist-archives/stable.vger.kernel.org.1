@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0349B8B71F8
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872168B7135
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADB41283AC4
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D11EAB22AC6
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EC612D762;
-	Tue, 30 Apr 2024 11:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B11112D74B;
+	Tue, 30 Apr 2024 10:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfO+8qcX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzzGYFW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9522C12D1FC;
-	Tue, 30 Apr 2024 11:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491F512C817;
+	Tue, 30 Apr 2024 10:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474956; cv=none; b=dwE61s0Noml8d9BQC0WsaIwn8pyiLRtL9FL0YEysiwsJwYtrv/rsjvtKsWee+u5o4pyff6MWvLk6XW9TVCbw5WA2RxyPsf/oD90spvOI5mH5Y7JhAI3LuEviqP9W54B0cMDYM/TrGlvlD1mlnn2fGPIDUuzeDXbMHShtzZaN/PQ=
+	t=1714474431; cv=none; b=k6DkHwGiRqmQN6zX7qeKUtbHYYmYTT7mBbbcfkI5ezws8qulNF31AKcx/SGrxh0ePunJSdb88tkDCRwOdJPmmiFLDGYq4I7XSW2S9TFRZDvl97kcnOprVrAizydev1z/KLGBTh3rDbIgAyKgUpY3f1ZNXMCVgkNA0yk0gnybStY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474956; c=relaxed/simple;
-	bh=Zn/hqPe71RkA7ic/DpLf+gAcJgL/nvONLVqizo+bvIc=;
+	s=arc-20240116; t=1714474431; c=relaxed/simple;
+	bh=cEJ/ICwgk5113syVatDaBbmMp7Lf+4+6zCiuRMxuxz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bknuj8oPu23aXBxLT6gOD/yNygZCvXkurcdIYqCCSmOgiQBFOGTuNQcGnxcCdbfXtt+h7WygZ2UamflUAlLhp+fD0ucs9yTj2a+IiCfCXsfxf8uLpIIFPdduD5RzHVxA8qSkM1l1sXcxONx6VuBdE1vlpuTdWscF5tH9Q5f3Rv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfO+8qcX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A319C4AF1A;
-	Tue, 30 Apr 2024 11:02:35 +0000 (UTC)
+	 MIME-Version; b=gDOSQUCeFZ2iPnq7ovEjPiJR3CewfXa8GYGFW21UMagCBK3vdYEQbbP0+622KhW2vEzJ9OPx9R7G65rjnsyLcPQzFFDrWRKYTYd7Ow+pChLgisHYFSwUfCDnDfXDPc8Z3EiGR6wjMoO5sahYBwgVapjlcdND6JyocydfmcnNNzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzzGYFW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8155EC2BBFC;
+	Tue, 30 Apr 2024 10:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474956;
-	bh=Zn/hqPe71RkA7ic/DpLf+gAcJgL/nvONLVqizo+bvIc=;
+	s=korg; t=1714474430;
+	bh=cEJ/ICwgk5113syVatDaBbmMp7Lf+4+6zCiuRMxuxz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfO+8qcXa2zEibSYoXqdP0NNcJ39gcMM54pP5s1p2Ln8sKxfJ2B7dwr1WJQgq0PQM
-	 IFdF8xfCA6dKYa0hNEpEHJM72KlYacXsbY4a8CZ8W1QzrtN+76trz5oY8WbObZwpa1
-	 LeppBwpVRONTBGDGAfnsVqrHgwsGAdJ7TAQZ6Wj4=
+	b=KzzGYFW+kNmBdqJ098cIo7aXBzwVd8x+Z5V9Lz8hlH3RXeS9ESJPkKVzuHM5yHLrw
+	 PMj3Oy2+8bSXovus9kML9M+4kKvoZZk01StY5alkjkHne7VWKL+nbGrzPxmb2WhvgI
+	 XLPG+yPOkyQr6GA+zfPUx+lYMPPz+ItMPyJ7D5fI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 048/138] clk: Initialize struct clk_core kref earlier
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.8 155/228] smb3: fix lock ordering potential deadlock in cifs_sync_mid_result
 Date: Tue, 30 Apr 2024 12:38:53 +0200
-Message-ID: <20240430103050.842748562@linuxfoundation.org>
+Message-ID: <20240430103108.279110509@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
-References: <20240430103049.422035273@linuxfoundation.org>
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
+References: <20240430103103.806426847@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 9d05ae531c2cff20d5d527f04e28d28e04379929 ]
+commit 8861fd5180476f45f9e8853db154600469a0284f upstream.
 
-Initialize this kref once we allocate memory for the struct clk_core so
-that we can reuse the release function to free any memory associated
-with the structure. This mostly consolidates code, but also clarifies
-that the kref lifetime exists once the container structure (struct
-clk_core) is allocated instead of leaving it in a half-baked state for
-most of __clk_core_init().
+Coverity spotted that the cifs_sync_mid_result function could deadlock
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-4-sboyd@kernel.org
-Stable-dep-of: e581cf5d2162 ("clk: Get runtime PM before walking tree during disable_unused")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"Thread deadlock (ORDER_REVERSAL) lock_order: Calling spin_lock acquires
+lock TCP_Server_Info.srv_lock while holding lock TCP_Server_Info.mid_lock"
+
+Addresses-Coverity: 1590401 ("Thread deadlock (ORDER_REVERSAL)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ fs/smb/client/transport.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index bcaaadb0fed8d..d2b6c374c3f95 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3632,8 +3632,6 @@ static int __clk_core_init(struct clk_core *core)
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -909,12 +909,15 @@ cifs_sync_mid_result(struct mid_q_entry
+ 			list_del_init(&mid->qhead);
+ 			mid->mid_flags |= MID_DELETED;
+ 		}
++		spin_unlock(&server->mid_lock);
+ 		cifs_server_dbg(VFS, "%s: invalid mid state mid=%llu state=%d\n",
+ 			 __func__, mid->mid, mid->mid_state);
+ 		rc = -EIO;
++		goto sync_mid_done;
  	}
+ 	spin_unlock(&server->mid_lock);
  
- 	clk_core_reparent_orphans_nolock();
--
--	kref_init(&core->ref);
- out:
- 	clk_pm_runtime_put(core);
- unlock:
-@@ -3843,6 +3841,16 @@ static void clk_core_free_parent_map(struct clk_core *core)
- 	kfree(core->parents);
++sync_mid_done:
+ 	release_mid(mid);
+ 	return rc;
  }
- 
-+/* Free memory allocated for a struct clk_core */
-+static void __clk_release(struct kref *ref)
-+{
-+	struct clk_core *core = container_of(ref, struct clk_core, ref);
-+
-+	clk_core_free_parent_map(core);
-+	kfree_const(core->name);
-+	kfree(core);
-+}
-+
- static struct clk *
- __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- {
-@@ -3863,6 +3871,8 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- 		goto fail_out;
- 	}
- 
-+	kref_init(&core->ref);
-+
- 	core->name = kstrdup_const(init->name, GFP_KERNEL);
- 	if (!core->name) {
- 		ret = -ENOMEM;
-@@ -3917,12 +3927,10 @@ __clk_register(struct device *dev, struct device_node *np, struct clk_hw *hw)
- 	hw->clk = NULL;
- 
- fail_create_clk:
--	clk_core_free_parent_map(core);
- fail_parents:
- fail_ops:
--	kfree_const(core->name);
- fail_name:
--	kfree(core);
-+	kref_put(&core->ref, __clk_release);
- fail_out:
- 	return ERR_PTR(ret);
- }
-@@ -4002,16 +4010,6 @@ int of_clk_hw_register(struct device_node *node, struct clk_hw *hw)
- }
- EXPORT_SYMBOL_GPL(of_clk_hw_register);
- 
--/* Free memory allocated for a clock. */
--static void __clk_release(struct kref *ref)
--{
--	struct clk_core *core = container_of(ref, struct clk_core, ref);
--
--	clk_core_free_parent_map(core);
--	kfree_const(core->name);
--	kfree(core);
--}
--
- /*
-  * Empty clk_ops for unregistered clocks. These are used temporarily
-  * after clk_unregister() was called on a clock and until last clock
--- 
-2.43.0
-
 
 
 
