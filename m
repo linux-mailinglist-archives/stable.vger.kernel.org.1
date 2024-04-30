@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-41896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3FD8B7058
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:45:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF448B733A
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18A651C21765
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:45:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 964BC1F21BA0
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2358612C53F;
-	Tue, 30 Apr 2024 10:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBC512BF3E;
+	Tue, 30 Apr 2024 11:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kb+zATHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0e+DXPm8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A1312C49C;
-	Tue, 30 Apr 2024 10:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C15E8801;
+	Tue, 30 Apr 2024 11:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473886; cv=none; b=SbNcmsQdh4cTpJPrBPOHlr67kgfh/tE+bwddZffizu4Tz71Ubq09v4JtTd2D2jaxZLn6gwRwEo8rLbxyqsDpL5StkiTclGN8KDBTcJ2ib46xQnoluv4QlftCmg6bkcvhnRzmbktlHt1+X53YiUzOYb91zdVVTxxHYro3GSOWyYw=
+	t=1714475796; cv=none; b=FFVWLiJHKYPtsekAamN38aRn9spNmUL7QmSG2j2RcBdRENfG3cg8OZL2aIcbGWTOUArZVvVA1TaVLKla/ra5/6SpvwSGEaN+YJsqmOr7d4cat0Tt1xwezaUSq2nwbHVSb+DRcohJX1ygVbusesJTp987c1D7tWUYN+ywmD2SPcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473886; c=relaxed/simple;
-	bh=uhjzMqo/PcgTF3CPi5JbUx0e0XG/cd+rxb+g6zig7ao=;
+	s=arc-20240116; t=1714475796; c=relaxed/simple;
+	bh=P1fiImdVaC51LPyXqwaerbt1q0QUZBkf6K9wmqSFsFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6hBSLX3xi+ZxlHEfiow+4xfE8oDnvMq7SR0p54//be1dnuaHu/dYoW1NyC1iEcF1irdklYdCUmhziv/Q+arrxYde3iJ+TaUIeh+CGffjTOfoRjzjjfMQVgrOzvVEb/4IS4r2l6APbLpgR+esBDIfPpiQ9AwQRU3TyRETfp0GNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kb+zATHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C16C2BBFC;
-	Tue, 30 Apr 2024 10:44:46 +0000 (UTC)
+	 MIME-Version; b=RajkqDN1F548FwLl9Qltxx6AD50hQt0Y1UEKsYLgqKAIBnWOSVtClr3W3WBuN99IM47YZ/CuIdwa/r+2u9JzkNT8L4ia2ObKDsfs9KADRhcgwx2IkArqPryzgP3EHDj1kYTwze/b2c/l/zdkRbgB4payT6t1QkysfTyfBdkr1qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0e+DXPm8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D33C2BBFC;
+	Tue, 30 Apr 2024 11:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473886;
-	bh=uhjzMqo/PcgTF3CPi5JbUx0e0XG/cd+rxb+g6zig7ao=;
+	s=korg; t=1714475796;
+	bh=P1fiImdVaC51LPyXqwaerbt1q0QUZBkf6K9wmqSFsFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kb+zATHEtxdJ1pnZFi3yVAH7RV2j6q7CS6oMEpTkkmtXJ4wLtSEFa3DMwE8OVmwy9
-	 KzyEYd054G1lNd7WAR43ejJYOibSIdqeiBsKDuka17P0A9g6ryQxC9TMPLcWxzbhgB
-	 jeDHahYD9InxefXVm2fRjh1NGAcJ4jJx8eeoDAU8=
+	b=0e+DXPm88rrxg/oEeMwIjaYs7S/Qf2ISKqJnnMbJmsvuqEwCZswR98tl4resplPX9
+	 4TkKSiLgKJHxEE1YdkifD5zgWdw0r/+3KXUyIFI6t6YhIyUrqBRMyZ4VtwHrJPggaN
+	 gizKjCtkchUu77Z60CZW19l1f/rUDCezGaAC9lVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baruch Siach <baruch@tkos.co.il>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Bauer <mail@david-bauer.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 72/77] i2c: smbus: fix NULL function pointer dereference
-Date: Tue, 30 Apr 2024 12:39:51 +0200
-Message-ID: <20240430103043.265162617@linuxfoundation.org>
+Subject: [PATCH 5.15 20/80] vxlan: drop packets from invalid src-address
+Date: Tue, 30 Apr 2024 12:39:52 +0200
+Message-ID: <20240430103044.011746921@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103043.397234724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: David Bauer <mail@david-bauer.net>
 
-[ Upstream commit 91811a31b68d3765b3065f4bb6d7d6d84a7cfc9f ]
+[ Upstream commit f58f45c1e5b92975e91754f5407250085a6ae7cf ]
 
-Baruch reported an OOPS when using the designware controller as target
-only. Target-only modes break the assumption of one transfer function
-always being available. Fix this by always checking the pointer in
-__i2c_transfer.
+The VXLAN driver currently does not check if the inner layer2
+source-address is valid.
 
-Reported-by: Baruch Siach <baruch@tkos.co.il>
-Closes: https://lore.kernel.org/r/4269631780e5ba789cf1ae391eec1b959def7d99.1712761976.git.baruch@tkos.co.il
-Fixes: 4b1acc43331d ("i2c: core changes for slave support")
-[wsa: dropped the simplification in core-smbus to avoid theoretical regressions]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Baruch Siach <baruch@tkos.co.il>
+In case source-address snooping/learning is enabled, a entry in the FDB
+for the invalid address is created with the layer3 address of the tunnel
+endpoint.
+
+If the frame happens to have a non-unicast address set, all this
+non-unicast traffic is subsequently not flooded to the tunnel network
+but sent to the learnt host in the FDB. To make matters worse, this FDB
+entry does not expire.
+
+Apply the same filtering for packets as it is done for bridges. This not
+only drops these invalid packets but avoids them from being learnt into
+the FDB.
+
+Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core-base.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 9079be0d51d15..2bdb8bc4cc829 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1872,13 +1872,18 @@ static int i2c_check_for_quirks(struct i2c_adapter *adap, struct i2c_msg *msgs,
-  * Returns negative errno, else the number of messages executed.
-  *
-  * Adapter lock must be held when calling this function. No debug logging
-- * takes place. adap->algo->master_xfer existence isn't checked.
-+ * takes place.
-  */
- int __i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
- {
- 	unsigned long orig_jiffies;
- 	int ret, try;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 41b1b23fdd3e9..2e61041a11131 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1779,6 +1779,10 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
+ 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
+ 		return false;
  
-+	if (!adap->algo->master_xfer) {
-+		dev_dbg(&adap->dev, "I2C level transfers not supported\n");
-+		return -EOPNOTSUPP;
-+	}
++	/* Ignore packets from invalid src-address */
++	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
++		return false;
 +
- 	if (WARN_ON(!msgs || num < 1))
- 		return -EINVAL;
- 
+ 	/* Get address from the outer IP header */
+ 	if (vxlan_get_sk_family(vs) == AF_INET) {
+ 		saddr.sin.sin_addr.s_addr = ip_hdr(skb)->saddr;
 -- 
 2.43.0
 
