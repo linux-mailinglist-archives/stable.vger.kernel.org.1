@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-42737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1648B7464
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:30:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842938B73ED
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDBFA28712E
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:30:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B2A11F22296
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5642212D757;
-	Tue, 30 Apr 2024 11:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DEA12D1F1;
+	Tue, 30 Apr 2024 11:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yes/KLC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHHVgqAJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142FB12BF32;
-	Tue, 30 Apr 2024 11:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E0412C47A;
+	Tue, 30 Apr 2024 11:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714476622; cv=none; b=Eo0BUDquvyVTwEsg8+CcNDuw7YE3lmTPbZsLtf47PWlD2YieqtEdwz6yIoBsszAmJcWpXBAbq7Qx3xsBJgDHYpZ57jZXS1KDHolQYK7l38Ut+ME5mU0JMOrobwqW4r1h6CpAs3ASimCcHEcl6nUiEUkEN9gxTfxx+FdP7od7Vx4=
+	t=1714476298; cv=none; b=lRhe4wMYqKOg93QcIf2AKkx2H2WIY10GuD15FNXfPQJFVr1cyjLoZ9UpSxgE7qobRu3bCoQ6ajc3OP29bEIERe5XBRLOydcHGbM1ls5tKouq4BVdyQH16YvsLIm9rs9jv4QZnNykQki/kX73kfyY3zYunCwE9imLm4Oacj1sjn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714476622; c=relaxed/simple;
-	bh=1LNpDgTzC1o9HtqDs8SL2SM8rJNS9PLMVTVl9E0Zids=;
+	s=arc-20240116; t=1714476298; c=relaxed/simple;
+	bh=dBEnNRLDx28w+DDLgNWPFCJ3R+nxSIbLnXeH8JyPBGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQswiOXScOZ49gkuvXbb2AWn0D8ce3TjS3ABMhTaac/URhDcddjpT5PiCj2Ittvm7jaWG6BUQws4mkIlCFsNyO500iAdfgk8biuEmQ4fKUPp+sqkPr4WxK64CM4zdq4YTc27IIK8TEJF1ya5Ad30Bf4gIFo9WgKobawrUgbbmEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yes/KLC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC37C2BBFC;
-	Tue, 30 Apr 2024 11:30:21 +0000 (UTC)
+	 MIME-Version; b=WCvCiO0uV7yY8u3zeDWn2HpbaCn9emMaBUU46wrZCVfvSTWP8bLq+Iv1hDUaFfDR3OtD2huSl2Lwx95LdwfpUTwhCvxj4Wq/n60xLquZFbYbp4Lh63hHYKwA2byCkT1psdFLAscLv0eq0WyZeHgYvEEvTZhyq8no8FM6aVlJy+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHHVgqAJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04193C2BBFC;
+	Tue, 30 Apr 2024 11:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714476621;
-	bh=1LNpDgTzC1o9HtqDs8SL2SM8rJNS9PLMVTVl9E0Zids=;
+	s=korg; t=1714476298;
+	bh=dBEnNRLDx28w+DDLgNWPFCJ3R+nxSIbLnXeH8JyPBGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yes/KLC3KufqDkDJyti78cJdRsG4YNFz213Qtut/rgrYg0vnb72JLm3UhowdHWDQE
-	 RYQec8W0zoEIC/b6GZQzJuq9Ilp679csbrQSUqAYz0u88Rt55Tk19E1v6+LCisZ4b5
-	 1J5dWspgKI7kFw0p6+STTwPSj3x8u57cE+isCC3U=
+	b=LHHVgqAJHC6tgKUIPbQYQ63vFR6gu90IEMvCQcHtPzThHYytuRzoKzfdWt+U52wOY
+	 GVsYGxiNWCp5Ze7QTHiQanZnBbT6VqRaO75IVp++iH+SPY4JYO8Y0Hnud5Utr1IJ2J
+	 ZDNp5Pzr2+P2imu/RSajUIyRBcRS7AtvKGdx0bj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yick Xie <yick.xie@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 088/110] udp: preserve the connected status if only UDP cmsg
+	Arnd Bergmann <arnd@arndb.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.4 097/107] mtd: diskonchip: work around ubsan link failure
 Date: Tue, 30 Apr 2024 12:40:57 +0200
-Message-ID: <20240430103050.168666956@linuxfoundation.org>
+Message-ID: <20240430103047.521177987@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
-References: <20240430103047.561802595@linuxfoundation.org>
+In-Reply-To: <20240430103044.655968143@linuxfoundation.org>
+References: <20240430103044.655968143@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yick Xie <yick.xie@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 680d11f6e5427b6af1321932286722d24a8b16c1 upstream.
+commit 21c9fb611c25d5cd038f6fe485232e7884bb0b3d upstream.
 
-If "udp_cmsg_send()" returned 0 (i.e. only UDP cmsg),
-"connected" should not be set to 0. Otherwise it stops
-the connected socket from using the cached route.
+I ran into a randconfig build failure with UBSAN using gcc-13.2:
 
-Fixes: 2e8de8576343 ("udp: add gso segment cmsg")
-Signed-off-by: Yick Xie <yick.xie@gmail.com>
+arm-linux-gnueabi-ld: error: unplaced orphan section `.bss..Lubsan_data31' from `drivers/mtd/nand/raw/diskonchip.o'
+
+I'm not entirely sure what is going on here, but I suspect this has something
+to do with the check for the end of the doc_locations[] array that contains
+an (unsigned long)0xffffffff element, which is compared against the signed
+(int)0xffffffff. If this is the case, we should get a runtime check for
+undefined behavior, but we instead get an unexpected build-time error.
+
+I would have expected this to work fine on 32-bit architectures despite the
+signed integer overflow, though on 64-bit architectures this likely won't
+ever work.
+
+Changing the contition to instead check for the size of the array makes the
+code safe everywhere and avoids the ubsan check that leads to the link
+error. The loop code goes back to before 2.6.12.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240418170610.867084-1-yick.xie@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240405143015.717429-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp.c |    5 +++--
- net/ipv6/udp.c |    5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/raw/diskonchip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1141,16 +1141,17 @@ int udp_sendmsg(struct sock *sk, struct
+--- a/drivers/mtd/nand/raw/diskonchip.c
++++ b/drivers/mtd/nand/raw/diskonchip.c
+@@ -53,7 +53,7 @@ static unsigned long doc_locations[] __i
+ 	0xe8000, 0xea000, 0xec000, 0xee000,
+ #endif
+ #endif
+-	0xffffffff };
++};
  
- 	if (msg->msg_controllen) {
- 		err = udp_cmsg_send(sk, msg, &ipc.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip_cmsg_send(sk, msg, &ipc,
- 					   sk->sk_family == AF_INET6);
-+			connected = 0;
-+		}
- 		if (unlikely(err < 0)) {
- 			kfree(ipc.opt);
- 			return err;
- 		}
- 		if (ipc.opt)
- 			free = 1;
--		connected = 0;
- 	}
- 	if (!ipc.opt) {
- 		struct ip_options_rcu *inet_opt;
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1493,9 +1493,11 @@ do_udp_sendmsg:
- 		ipc6.opt = opt;
+ static struct mtd_info *doclist = NULL;
  
- 		err = udp_cmsg_send(sk, msg, &ipc6.gso_size);
--		if (err > 0)
-+		if (err > 0) {
- 			err = ip6_datagram_send_ctl(sock_net(sk), sk, msg, fl6,
- 						    &ipc6);
-+			connected = false;
-+		}
- 		if (err < 0) {
- 			fl6_sock_release(flowlabel);
- 			return err;
-@@ -1507,7 +1509,6 @@ do_udp_sendmsg:
+@@ -1666,7 +1666,7 @@ static int __init init_nanddoc(void)
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		for (i = 0; (doc_locations[i] != 0xffffffff); i++) {
++		for (i = 0; i < ARRAY_SIZE(doc_locations); i++) {
+ 			doc_probe(doc_locations[i]);
  		}
- 		if (!(opt->opt_nflen|opt->opt_flen))
- 			opt = NULL;
--		connected = false;
  	}
- 	if (!opt) {
- 		opt = txopt_get(np);
 
 
 
