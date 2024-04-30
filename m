@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-42337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0498E8B7280
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:08:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE8B8B71B3
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 280921C20D9C
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:08:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44F98284C8C
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0AB12C819;
-	Tue, 30 Apr 2024 11:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF3B12C476;
+	Tue, 30 Apr 2024 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGXhEEiF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OB6XnWYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7E11E50A;
-	Tue, 30 Apr 2024 11:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDA67464;
+	Tue, 30 Apr 2024 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714475332; cv=none; b=fJ5PZH5lJuKqPwrvzvai2yJtsfkF/UW+jr1vN2UNtWn1OTszqGe8abUdW2z9ky/EwlxnOl+9IxaKOk/HEgT8yuqDlIB0VgVD9MYMlz/iKAg0zIePYQtye34eB5PDi/ANVcN41OpOT3JbrQx8tCoK2CYgeejuZPWKZJ33jrACavM=
+	t=1714474780; cv=none; b=LRdc8PI9CzZ45OcWAJIqGZZVGZfj7PBAjTY5QrPTu0fwOAzmGoGFrFC2V+hm7/NLS6T8leaACkeXs/KJsDzmITqBBQF+Svt5uVQ9fJ4LJZXC92ifKblU+qUU2AKqBAvjJySwWhBZ1gHmqIJaaaqxojBz8XN438M3yIVdJCUPA5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714475332; c=relaxed/simple;
-	bh=/xr2OAPd0PJ7NxjcmgEAgy33vvMHsB6r1arZ4oshd1U=;
+	s=arc-20240116; t=1714474780; c=relaxed/simple;
+	bh=uiHLPI3tMz5hEgd6jQBwkip8trOp8/BNJTeI+W8JNoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWzleleGP37lxaGDM7zVKqUC1prejro4lxu5GlnnFT+NojkToYqtbOFn1aNVzJn5WOAXx00FEswBU6Cysux69rMMHVUfSJIDOsOTW/e+H5tnuqTmeETS9Y0PyxDwyhIppH6/AiYvhDsV79/b8RDEdhqtONMSFcmIVFCVEYnXaGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGXhEEiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5511C2BBFC;
-	Tue, 30 Apr 2024 11:08:51 +0000 (UTC)
+	 MIME-Version; b=u27MVrCKpmeA44CAnGflVFQ1AYvyMWV6/c0XrTbRY3JTNuxNdvfQmT265qd237BD51iUoAYTZ9cqs6fXrgt0gNTgIz9nowQuA6/wvTYu8D/zbTe5soD3WXFxVSvDWygq2AWYWdfRVARByWjfAp8hak8KM66uYOnnq7e0cUM7zCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OB6XnWYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE1AC2BBFC;
+	Tue, 30 Apr 2024 10:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714475332;
-	bh=/xr2OAPd0PJ7NxjcmgEAgy33vvMHsB6r1arZ4oshd1U=;
+	s=korg; t=1714474780;
+	bh=uiHLPI3tMz5hEgd6jQBwkip8trOp8/BNJTeI+W8JNoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGXhEEiF9U2jJWIbrrimtHmaxQVpD7pI1qRNeM+b4LQoY5elGJOcUCPop/LwZ3fWo
-	 /abjdcTYmB9isEUE4ad6MKkPB5YwmaAkAJZr1ZHk2Fqt9WNHK9Mnld172xR6SE1gXJ
-	 dwPW6FILrnqTDuO0ltGCPhXol2vXHX6RrijVkrF0=
+	b=OB6XnWYZcbLnj9Cu1i359B0KpTr0158G9ngCEXrAZ+bWmsDPH3b3EKiWFo7FQrrlL
+	 7pclHMRe33EAR6Ei/xpz7y9FnxRqP5ywNHqNzZCFDu1VQ3uNPXea+ATVBbJbkAEEQ/
+	 klmXtm2sCxNdo4oRTTvsXXl5E/zzjW3RQN2AMEFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stefan ORear <sorear@fastmail.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/186] net: phy: mediatek-ge-soc: follow netdev LED trigger semantics
-Date: Tue, 30 Apr 2024 12:38:36 +0200
-Message-ID: <20240430103059.896400653@linuxfoundation.org>
+Subject: [PATCH 5.10 032/138] riscv: process: Fix kernel gp leakage
+Date: Tue, 30 Apr 2024 12:38:37 +0200
+Message-ID: <20240430103050.376555518@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103058.010791820@linuxfoundation.org>
-References: <20240430103058.010791820@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Stefan O'Rear <sorear@fastmail.com>
 
-[ Upstream commit 5b5f724b05c550e10693a53a81cadca901aefd16 ]
+[ Upstream commit d14fa1fcf69db9d070e75f1c4425211fa619dfc8 ]
 
-Only blink if the link is up on a LED which is programmed to also
-indicate link-status.
+childregs represents the registers which are active for the new thread
+in user context. For a kernel thread, childregs->gp is never used since
+the kernel gp is not touched by switch_to. For a user mode helper, the
+gp value can be observed in user space after execve or possibly by other
+means.
 
-Otherwise, if both LEDs are in use to indicate different speeds, the
-resulting blinking being inverted on LEDs which aren't switched on at
-a specific speed is quite counter-intuitive.
+[From the email thread]
 
-Also make sure that state left behind by reset or the bootloader is
-recognized correctly including the half-duplex and full-duplex bits as
-well as the (unsupported by Linux netdev trigger semantics) link-down
-bit.
+The /* Kernel thread */ comment is somewhat inaccurate in that it is also used
+for user_mode_helper threads, which exec a user process, e.g. /sbin/init or
+when /proc/sys/kernel/core_pattern is a pipe. Such threads do not have
+PF_KTHREAD set and are valid targets for ptrace etc. even before they exec.
 
-Fixes: c66937b0f8db ("net: phy: mediatek-ge-soc: support PHY LEDs")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+childregs is the *user* context during syscall execution and it is observable
+from userspace in at least five ways:
+
+1. kernel_execve does not currently clear integer registers, so the starting
+   register state for PID 1 and other user processes started by the kernel has
+   sp = user stack, gp = kernel __global_pointer$, all other integer registers
+   zeroed by the memset in the patch comment.
+
+   This is a bug in its own right, but I'm unwilling to bet that it is the only
+   way to exploit the issue addressed by this patch.
+
+2. ptrace(PTRACE_GETREGSET): you can PTRACE_ATTACH to a user_mode_helper thread
+   before it execs, but ptrace requires SIGSTOP to be delivered which can only
+   happen at user/kernel boundaries.
+
+3. /proc/*/task/*/syscall: this is perfectly happy to read pt_regs for
+   user_mode_helpers before the exec completes, but gp is not one of the
+   registers it returns.
+
+4. PERF_SAMPLE_REGS_USER: LOCKDOWN_PERF normally prevents access to kernel
+   addresses via PERF_SAMPLE_REGS_INTR, but due to this bug kernel addresses
+   are also exposed via PERF_SAMPLE_REGS_USER which is permitted under
+   LOCKDOWN_PERF. I have not attempted to write exploit code.
+
+5. Much of the tracing infrastructure allows access to user registers. I have
+   not attempted to determine which forms of tracing allow access to user
+   registers without already allowing access to kernel registers.
+
+Fixes: 7db91e57a0ac ("RISC-V: Task implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan O'Rear <sorear@fastmail.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240327061258.2370291-1-sorear@fastmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mediatek-ge-soc.c | 43 +++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 17 deletions(-)
+ arch/riscv/kernel/process.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/phy/mediatek-ge-soc.c b/drivers/net/phy/mediatek-ge-soc.c
-index 0f3a1538a8b8e..f4f9412d0cd7e 100644
---- a/drivers/net/phy/mediatek-ge-soc.c
-+++ b/drivers/net/phy/mediatek-ge-soc.c
-@@ -216,6 +216,9 @@
- #define   MTK_PHY_LED_ON_LINK1000		BIT(0)
- #define   MTK_PHY_LED_ON_LINK100		BIT(1)
- #define   MTK_PHY_LED_ON_LINK10			BIT(2)
-+#define   MTK_PHY_LED_ON_LINK			(MTK_PHY_LED_ON_LINK10 |\
-+						 MTK_PHY_LED_ON_LINK100 |\
-+						 MTK_PHY_LED_ON_LINK1000)
- #define   MTK_PHY_LED_ON_LINKDOWN		BIT(3)
- #define   MTK_PHY_LED_ON_FDX			BIT(4) /* Full duplex */
- #define   MTK_PHY_LED_ON_HDX			BIT(5) /* Half duplex */
-@@ -231,6 +234,12 @@
- #define   MTK_PHY_LED_BLINK_100RX		BIT(3)
- #define   MTK_PHY_LED_BLINK_10TX		BIT(4)
- #define   MTK_PHY_LED_BLINK_10RX		BIT(5)
-+#define   MTK_PHY_LED_BLINK_RX			(MTK_PHY_LED_BLINK_10RX |\
-+						 MTK_PHY_LED_BLINK_100RX |\
-+						 MTK_PHY_LED_BLINK_1000RX)
-+#define   MTK_PHY_LED_BLINK_TX			(MTK_PHY_LED_BLINK_10TX |\
-+						 MTK_PHY_LED_BLINK_100TX |\
-+						 MTK_PHY_LED_BLINK_1000TX)
- #define   MTK_PHY_LED_BLINK_COLLISION		BIT(6)
- #define   MTK_PHY_LED_BLINK_RX_CRC_ERR		BIT(7)
- #define   MTK_PHY_LED_BLINK_RX_IDLE_ERR		BIT(8)
-@@ -1247,11 +1256,9 @@ static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
- 	if (blink < 0)
- 		return -EIO;
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index d83d7761a157d..9dac6bec316e4 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -22,8 +22,6 @@
+ #include <asm/switch_to.h>
+ #include <asm/thread_info.h>
  
--	if ((on & (MTK_PHY_LED_ON_LINK1000 | MTK_PHY_LED_ON_LINK100 |
--		   MTK_PHY_LED_ON_LINK10)) ||
--	    (blink & (MTK_PHY_LED_BLINK_1000RX | MTK_PHY_LED_BLINK_100RX |
--		      MTK_PHY_LED_BLINK_10RX | MTK_PHY_LED_BLINK_1000TX |
--		      MTK_PHY_LED_BLINK_100TX | MTK_PHY_LED_BLINK_10TX)))
-+	if ((on & (MTK_PHY_LED_ON_LINK | MTK_PHY_LED_ON_FDX | MTK_PHY_LED_ON_HDX |
-+		   MTK_PHY_LED_ON_LINKDOWN)) ||
-+	    (blink & (MTK_PHY_LED_BLINK_RX | MTK_PHY_LED_BLINK_TX)))
- 		set_bit(bit_netdev, &priv->led_state);
- 	else
- 		clear_bit(bit_netdev, &priv->led_state);
-@@ -1269,7 +1276,7 @@ static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
- 	if (!rules)
- 		return 0;
+-register unsigned long gp_in_global __asm__("gp");
+-
+ #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_STACKPROTECTOR_PER_TASK)
+ #include <linux/stackprotector.h>
+ unsigned long __stack_chk_guard __read_mostly;
+@@ -117,7 +115,6 @@ int copy_thread(unsigned long clone_flags, unsigned long usp, unsigned long arg,
+ 	if (unlikely(p->flags & (PF_KTHREAD | PF_IO_WORKER))) {
+ 		/* Kernel thread */
+ 		memset(childregs, 0, sizeof(struct pt_regs));
+-		childregs->gp = gp_in_global;
+ 		/* Supervisor/Machine, irqs on: */
+ 		childregs->status = SR_PP | SR_PIE;
  
--	if (on & (MTK_PHY_LED_ON_LINK1000 | MTK_PHY_LED_ON_LINK100 | MTK_PHY_LED_ON_LINK10))
-+	if (on & MTK_PHY_LED_ON_LINK)
- 		*rules |= BIT(TRIGGER_NETDEV_LINK);
- 
- 	if (on & MTK_PHY_LED_ON_LINK10)
-@@ -1287,10 +1294,10 @@ static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
- 	if (on & MTK_PHY_LED_ON_HDX)
- 		*rules |= BIT(TRIGGER_NETDEV_HALF_DUPLEX);
- 
--	if (blink & (MTK_PHY_LED_BLINK_1000RX | MTK_PHY_LED_BLINK_100RX | MTK_PHY_LED_BLINK_10RX))
-+	if (blink & MTK_PHY_LED_BLINK_RX)
- 		*rules |= BIT(TRIGGER_NETDEV_RX);
- 
--	if (blink & (MTK_PHY_LED_BLINK_1000TX | MTK_PHY_LED_BLINK_100TX | MTK_PHY_LED_BLINK_10TX))
-+	if (blink & MTK_PHY_LED_BLINK_TX)
- 		*rules |= BIT(TRIGGER_NETDEV_TX);
- 
- 	return 0;
-@@ -1323,15 +1330,19 @@ static int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
- 		on |= MTK_PHY_LED_ON_LINK1000;
- 
- 	if (rules & BIT(TRIGGER_NETDEV_RX)) {
--		blink |= MTK_PHY_LED_BLINK_10RX  |
--			 MTK_PHY_LED_BLINK_100RX |
--			 MTK_PHY_LED_BLINK_1000RX;
-+		blink |= (on & MTK_PHY_LED_ON_LINK) ?
-+			  (((on & MTK_PHY_LED_ON_LINK10) ? MTK_PHY_LED_BLINK_10RX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK100) ? MTK_PHY_LED_BLINK_100RX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK1000) ? MTK_PHY_LED_BLINK_1000RX : 0)) :
-+			  MTK_PHY_LED_BLINK_RX;
- 	}
- 
- 	if (rules & BIT(TRIGGER_NETDEV_TX)) {
--		blink |= MTK_PHY_LED_BLINK_10TX  |
--			 MTK_PHY_LED_BLINK_100TX |
--			 MTK_PHY_LED_BLINK_1000TX;
-+		blink |= (on & MTK_PHY_LED_ON_LINK) ?
-+			  (((on & MTK_PHY_LED_ON_LINK10) ? MTK_PHY_LED_BLINK_10TX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK100) ? MTK_PHY_LED_BLINK_100TX : 0) |
-+			   ((on & MTK_PHY_LED_ON_LINK1000) ? MTK_PHY_LED_BLINK_1000TX : 0)) :
-+			  MTK_PHY_LED_BLINK_TX;
- 	}
- 
- 	if (blink || on)
-@@ -1344,9 +1355,7 @@ static int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
- 				MTK_PHY_LED0_ON_CTRL,
- 			     MTK_PHY_LED_ON_FDX     |
- 			     MTK_PHY_LED_ON_HDX     |
--			     MTK_PHY_LED_ON_LINK10  |
--			     MTK_PHY_LED_ON_LINK100 |
--			     MTK_PHY_LED_ON_LINK1000,
-+			     MTK_PHY_LED_ON_LINK,
- 			     on);
- 
- 	if (ret)
 -- 
 2.43.0
 
