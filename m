@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-41871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8726E8B701B
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 12:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA898B71EC
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 13:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E6C71F22DC1
-	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 10:43:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C84491F2378F
+	for <lists+stable@lfdr.de>; Tue, 30 Apr 2024 11:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5FE12C47A;
-	Tue, 30 Apr 2024 10:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C19B12C530;
+	Tue, 30 Apr 2024 11:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0Er+Ga4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAPIDLXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD8C12BF21;
-	Tue, 30 Apr 2024 10:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7C912B176;
+	Tue, 30 Apr 2024 11:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714473812; cv=none; b=pYK8v5I+ldJOSk1tK69+iEjMI+xmn7VQTBKoSkXohceXZvO2Wgnbs1kG52Phcp2rWmJ4/kzTzIgAln0jqhiVrvZPwo7RR4rjCGLiEBz099Vh/Rzfh8Wy7c/3P54bafKS0GiYAn+aOsjKVkT2QSL39buB7hoPESfsSkN4P8NRisQ=
+	t=1714474937; cv=none; b=JBO8kTtaI3wpnHDdDp/qd3VdRZwBda8gBg1gIZcn1JsvMANmFuYe6/uGmRsoPN1tsY33BfblHTR9uQv4kVZlcG8uKEYEPojtuajtA+aG7GhIwwCJ7U5vIeQKRVe/fvDsD55T8XomJOp+V7ujd0EVvG9LTdG9AwT4XAEQqXF4d0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714473812; c=relaxed/simple;
-	bh=5yoqcRVutnx1YYwRBoikWAR+M/kdqA5nFSpk2XTfxug=;
+	s=arc-20240116; t=1714474937; c=relaxed/simple;
+	bh=iD47SEU/2V2TrWZXX4MXalvpz9OGqsAKJbw2/FzWuu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3r3g41d+gdlDAcJbkWaw9bDXCdFXYZjzWeGyO2jBWICpFUUGV7Z7/N8xCF3Cjtzh9D28ujkAl4GG5b82ZhN/Ac0BY9Xkzxfq5UR7aW1f/73Y8m+r26Q7BzXl3R/e+bvFa2R92rlHe7yQxEuyG/gNPkXXVkTYa3Lf2ciVO/uSy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0Er+Ga4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D0FC2BBFC;
-	Tue, 30 Apr 2024 10:43:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r2ykIag0vDUxgb19qqpWpVLwvH672Ad4SxphRbRovI5kFvkw1jv8Un9xbNcKpTUsw5B0KeIlDkdXKkbVVgGnmg4p2JENUhzmcz7uxpvI4KvhXBg1tKq8MwNim36i3O7Y/66eV8oKLc6fY7LBTEbGJeASc92SeYcl1QTI218HuVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAPIDLXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70171C2BBFC;
+	Tue, 30 Apr 2024 11:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714473812;
-	bh=5yoqcRVutnx1YYwRBoikWAR+M/kdqA5nFSpk2XTfxug=;
+	s=korg; t=1714474936;
+	bh=iD47SEU/2V2TrWZXX4MXalvpz9OGqsAKJbw2/FzWuu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0Er+Ga4BZtEA79s45N/19U44QUen4KPGqVJgDiYpMh2lKA/gTKXrYIhut6qiF7gz
-	 XDpwawJUJ/Pm6Jd2M4aXytpwa2ABDcOybLbeaBRxeIKy95IByMM9UhjYoQ4CsuLBSC
-	 rgCe728ih8gYz/VZoIZhsxqynU2So3sA+BuQ9Idw=
+	b=aAPIDLXp7lRR1kRP2T0ABrgqVsI+JT9kmvTt3rh4M/upA2Embrakezdgni9gE59lZ
+	 8spFv6boH2mknK1e1H+nYyiAbIIaHSD9tlMR03pokK0GWo2w0vDKgCwdHdcuW/B2zN
+	 PJm9x7V99Mr7XLE+LliGWTLcRNOwNGsc8E6yu4lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 45/77] mlxsw: core: Unregister EMAD trap using FORWARD action
+Subject: [PATCH 5.10 079/138] arm64: dts: mediatek: mt7622: fix IR nodename
 Date: Tue, 30 Apr 2024 12:39:24 +0200
-Message-ID: <20240430103042.465881168@linuxfoundation.org>
+Message-ID: <20240430103051.749548547@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
-References: <20240430103041.111219002@linuxfoundation.org>
+In-Reply-To: <20240430103049.422035273@linuxfoundation.org>
+References: <20240430103049.422035273@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 976c44af48141cd8595601c0af2a19a43c5b228b ]
+[ Upstream commit 800dc93c3941e372c94278bf4059e6e82f60bd66 ]
 
-The device's manual (PRM - Programmer's Reference Manual) classifies the
-trap that is used to deliver EMAD responses as an "event trap". Among
-other things, it means that the only actions that can be associated with
-the trap are TRAP and FORWARD (NOP).
+Fix following validation error:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: cir@10009000: $nodename:0: 'cir@10009000' does not match '^ir(-receiver)?(@[a-f0-9]+)?$'
+        from schema $id: http://devicetree.org/schemas/media/mediatek,mt7622-cir.yaml#
 
-Currently, during driver de-initialization the driver unregisters the
-trap by setting its action to DISCARD, which violates the above
-guideline. Future firmware versions will prevent such misuses by
-returning an error. This does not prevent the driver from working, but
-an error will be printed to the kernel log during module removal /
-devlink reload:
-
-mlxsw_spectrum 0000:03:00.0: Reg cmd access status failed (status=7(bad parameter))
-mlxsw_spectrum 0000:03:00.0: Reg cmd access failed (reg_id=7003(hpkt),type=write)
-
-Suppress the error message by aligning the driver to the manual and use
-a FORWARD (NOP) action when unregistering the trap.
-
-Fixes: 4ec14b7634b2 ("mlxsw: Add interface to access registers and process events")
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Amit Cohen <amcohen@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/753a89e14008fde08cb4a2c1e5f537b81d8eb2d6.1713446092.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ae457b7679c4 ("arm64: dts: mt7622: add SoC and peripheral related device nodes")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240317221050.18595-3-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core.c | 2 +-
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core.c b/drivers/net/ethernet/mellanox/mlxsw/core.c
-index 049ca4ba49deb..2950c30ac1724 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core.c
-@@ -561,7 +561,7 @@ static void mlxsw_emad_rx_listener_func(struct sk_buff *skb, u8 local_port,
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index b590c2d3bc86f..bf0856d37eda8 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -244,7 +244,7 @@
+ 		clock-names = "hif_sel";
+ 	};
  
- static const struct mlxsw_listener mlxsw_emad_rx_listener =
- 	MLXSW_RXL(mlxsw_emad_rx_listener_func, ETHEMAD, TRAP_TO_CPU, false,
--		  EMAD, DISCARD);
-+		  EMAD, FORWARD);
- 
- static int mlxsw_emad_init(struct mlxsw_core *mlxsw_core)
- {
+-	cir: cir@10009000 {
++	cir: ir-receiver@10009000 {
+ 		compatible = "mediatek,mt7622-cir";
+ 		reg = <0 0x10009000 0 0x1000>;
+ 		interrupts = <GIC_SPI 175 IRQ_TYPE_LEVEL_LOW>;
 -- 
 2.43.0
 
