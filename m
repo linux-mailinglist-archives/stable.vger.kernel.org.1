@@ -1,121 +1,110 @@
-Return-Path: <stable+bounces-42919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30688B903E
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 21:50:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A548B905E
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 22:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83D401F220F7
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 19:50:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FBBC2842F9
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 20:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452E31635AC;
-	Wed,  1 May 2024 19:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F4216193B;
+	Wed,  1 May 2024 20:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZurD+k44"
+	dkim=pass (2048-bit key) header.d=mforney.org header.i=@mforney.org header.b="tyYUIcxU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AEC161B6A
-	for <stable@vger.kernel.org>; Wed,  1 May 2024 19:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48659161935
+	for <stable@vger.kernel.org>; Wed,  1 May 2024 20:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714593010; cv=none; b=t4IgC0Z8K0fuxwd2cUV+J55EyDrG3dWDT4C59tRYSARuRJFP4NtpLFMo+Wlbku4tYrBVQMd8zS3tluDCz/WZqBHVzFmabFi5dVeT3v812iB4WO2RxFgyFuRjXkR39sXWGJ1Qs7TJV5qa1JdCRGVlSNiPhquHxj6Je20qJSekNXA=
+	t=1714593884; cv=none; b=PcgtgciF/N9gynUszsRIqRevBBKNX5fCpvbueLwXVqgfEL6FhdmiXefUDsUCfvqTubjIHIy01P7e59MM46a9XaD8pO2VtUmAmpjL4GDSNgZ8RRmkKE1mKhVxL0hXD1L42aBkmhx70BscsfRuT76JmIe+7OCFN03NVI6zNfT4ihk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714593010; c=relaxed/simple;
-	bh=tKZ004RtdKJETP5n98R09dwUPz/Qdort2kmKS/z51/E=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=uOhIO2upEFirW51Ut9TVUUjd1uZobPkfkwZ/QUM8grZp8iOKCK9hX1cHnLxeKEM7ZuBww8TRBT4TYU+Jj+X5S/bs3atKyQRHnlVVyb1hM/J8z7I57LpsW13cf3UPcNHm5qiycnnw4NixAYWnxX/MJLxhRmOg8GQws+eR+BJR9Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZurD+k44; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-36c5d918d41so7188225ab.3
-        for <stable@vger.kernel.org>; Wed, 01 May 2024 12:50:08 -0700 (PDT)
+	s=arc-20240116; t=1714593884; c=relaxed/simple;
+	bh=Y0CK+l13J9hMie3EIzL6d+o5r8hwZWn1+a9iswKDlU0=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:Message-Id:
+	 MIME-Version:Content-Type; b=c9OYOl7hlact9h/5rDPrXmmvReoju1YsxqaXhod5LuyvkNC6InPn4W+KeGqm4TuA0KJ2Yx7wHjY5KDquS3jo1ns/HDra9JoQldbLQ79lU+tOfLMUNatQONq6ZnCg1XR+uJTabGekXDZPXocQYMfY9R9tBuWIZxtdy9EB8yHgG1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mforney.org; spf=pass smtp.mailfrom=mforney.org; dkim=pass (2048-bit key) header.d=mforney.org header.i=@mforney.org header.b=tyYUIcxU; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mforney.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mforney.org
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6ed691fb83eso6330914b3a.1
+        for <stable@vger.kernel.org>; Wed, 01 May 2024 13:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714593007; x=1715197807; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1pAKhUrQEae8Czl59Jfk/xPJriJIZ5vgV75ekQy0VfM=;
-        b=ZurD+k446KGipY2uvT7sIEplcql2sDkibHPT5zozEDy3LTABixc3MnZqKsyWwWxsaI
-         I/iZepB/U8bXTu9Gp1fmif6tA+PfxDhl0hcur1RUYhoRMgSZXhOeRSia+yRuVQkvLmeE
-         3k5SjhlBIfbqLHqaBKU34K4/3KgoSlYXVCChYfpI+PRL37GiIhvgfqKpCmqF0vCVm5dt
-         /sWBLCZPgoUU+9lqVjZ3qd+uXZgPvIP41gnRoP/pZeNOpjmSjO/DAMp8WCwF4NEObflZ
-         k1YBuqqIr3pxzcG+af6wLb8itgnAAZpEyFF6ZB1W3SWHZ/8goyQQhzyAerhXab1hZw57
-         PBXQ==
+        d=mforney.org; s=google; t=1714593881; x=1715198681; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:user-agent:message-id
+         :in-reply-to:references:from:subject:cc:to:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LnLzRmYxWQ0xWU0/l608+uhGlXGm+eTVFqBxpwekKbE=;
+        b=tyYUIcxUEBGHk/Nc6F5mPDEUBSAY2Jfhg9Z7I8teI5bh4oV57lSz8traKiM9jYF0ft
+         4VNWQN+yRmmrqHJkdcSeANIKHkoaHYF0JhS0d+RheRoZM8SSMVwlVJBeAVYaWPAT7Mc8
+         5PdHok4l1f3bCMZiratLb203xL8YfCE7V3bCnZWsUyxMyBsI/+N45GeGvsiDIQ8bKrTZ
+         lvyt8M+u7voCeO8QSuoM5ivCQ/geAORFzsAiCK+VtIURs+TMl+QUe2GWxYNjwIbTuKPp
+         xn3tqJPNxyisT2MKFdrCL2tr503LXhXZVV9p97Iy/hBHq5RZTbCY3QOBvtiFLuzjLUR9
+         jMvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714593007; x=1715197807;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1pAKhUrQEae8Czl59Jfk/xPJriJIZ5vgV75ekQy0VfM=;
-        b=G3biis8ltkgJUtuyCyJWXNclWo9mU8d4nYCbhdTiSJUbgv6OM0XznPX0Csg9Ivk1UI
-         q4KNV65TIt44b1zHW/o2oOJvzTUJC6KmLaX/ijucBwFX5v32/NcBuacFrvHOZ44qPigf
-         hCQuL6XRyJXNCCMdZJZuruslXa/YZSzzccvvjd4mAhike1f/8WwS762G99hHWHFGfLXh
-         +KEYqql5cGguSDo2xVHQhMCXCm3WUraJc2xeJ+lcXVT7aQESkPzFjtjUcMIAu5MnR31M
-         EQL3cyYmruEgvDawwVEUicWka7+PTJF5hPv9HSDUrwKEaBpX+2STGGsCF9V18PSNtA/F
-         ZXsw==
-X-Gm-Message-State: AOJu0YxGfuRXkuy6x3vY2UPbdZ+uEKbZ9R2EoFL1JdPlaaC/JYg5f4NI
-	5+hKv8kdZEKfz2VcNznvcCVLvZeOqsdZfLyTTsNYADtCDl2YXm3MT08DZuijYXPuOT0+/jl+bOD
-	W
-X-Google-Smtp-Source: AGHT+IFN+9QLAEqgkE2DcuwRghKpNwGnKvIHmr1MyP1ryIfK5wvSTKb5d8Eqz/u1k9ZR7wdjYp+8DQ==
-X-Received: by 2002:a05:6e02:1e0c:b0:36c:501e:d8da with SMTP id g12-20020a056e021e0c00b0036c501ed8damr4877360ila.5.1714593007342;
-        Wed, 01 May 2024 12:50:07 -0700 (PDT)
-Received: from [172.22.22.28] (c-73-228-159-35.hsd1.mn.comcast.net. [73.228.159.35])
-        by smtp.gmail.com with ESMTPSA id k10-20020ad4420a000000b0069b69c5f077sm42534qvp.102.2024.05.01.12.50.06
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 May 2024 12:50:06 -0700 (PDT)
-Message-ID: <c655924f-7c16-46af-8d1f-e201f82328ad@linaro.org>
-Date: Wed, 1 May 2024 14:50:05 -0500
+        d=1e100.net; s=20230601; t=1714593881; x=1715198681;
+        h=content-transfer-encoding:mime-version:user-agent:message-id
+         :in-reply-to:references:from:subject:cc:to:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LnLzRmYxWQ0xWU0/l608+uhGlXGm+eTVFqBxpwekKbE=;
+        b=eN5g/B6wACA4OLMP8juZcaW79GplV63TGLpu3LRJPhcvLRhPKVDF5v7toNBABmCgQV
+         j4PTDowPTHdXmxEuL7W3jstCDyDwIaKh5K+gC6wakWmGgVwg2zpGkruXSQzt5IfeLVZA
+         2TKbNEUazfe1T6GtRzmY8F2s9DDMBdMZnhB9G51LJmi+b+w0Rkz4l0UiKhYs2A2E+z8h
+         h7PWQ5l6p+petoDrucYnVgKGF7Cu2P6TBBf99QDQMJlUeCg7i7QgI9LGKOxwJ/UPVI7j
+         QCJM6NK/abv26FFB2ADnO4H+opTUquvuTEO5PK8VWkfAHNgZ4jxK/V9OagUdpsifOoAV
+         LYGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHpvSCvY43UXNSjVXbWPPKQOON9J1PBlRjOq5tJ7iLIb2g/Bfw0rABJqbw9pS5ylY2VCybKy41CRIuxCRSyFToqNayfG19
+X-Gm-Message-State: AOJu0Yz80sAVY8kVZ6gfryEOGwj0QoX54qqoVihyOoPjtMO8N02d/AF6
+	gxUJ87MlGVia625Yoi1ALVuoL8a0ayZNZ8K9O+5TOyJgo2Ui/ewxud65p781A/k=
+X-Google-Smtp-Source: AGHT+IGuIoUPm+qDmwyr9OZHb1tPZ+GL11t/9KEIjx32bGz5VlOlicXDFu+IUmeGYhOeZE8wgQAj4A==
+X-Received: by 2002:a05:6a00:b44:b0:6f3:e6ac:1a3f with SMTP id p4-20020a056a000b4400b006f3e6ac1a3fmr4013945pfo.11.1714593881446;
+        Wed, 01 May 2024 13:04:41 -0700 (PDT)
+Received: from localhost ([2601:647:6400:20b0:16dd:a9ff:fee7:6b79])
+        by smtp.gmail.com with ESMTPSA id s23-20020a62e717000000b006ed045e3a70sm22984102pfh.25.2024.05.01.13.04.40
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 01 May 2024 13:04:40 -0700 (PDT)
+Date: Wed, 01 May 2024 13:04:40 -0700
+To: Michael Forney <mforney@mforney.org>
+Cc: Max Kellermann <max.kellermann@ionos.com>, tytso@mit.edu,
+ adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, brauner@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "ext4: apply umask if ACL support is disabled"
+From: Michael Forney <mforney@mforney.org>
+References: <20240315142956.2420360-1-max.kellermann@ionos.com>
+ <3MDOTS1CN0V39.3MG49L9WIC8VM@mforney.org>
+In-Reply-To: <3MDOTS1CN0V39.3MG49L9WIC8VM@mforney.org>
+Message-Id: <3HNN4SNRB3DRD.39I8TYZWPN7S0@mforney.org>
+User-Agent: mblaze/1.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org
-From: Alex Elder <elder@linaro.org>
-Subject: Old commit back-port
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-This commit landed in Linux v5.16, and should have been back-ported
-to stable branches:
-   0ac10b291bee8 arm64: dts: qcom: Fix 'interrupt-map' parent address cells
+Michael Forney <mforney@mforney.org> wrote:
+> Max Kellermann <max.kellermann@ionos.com> wrote:
+> > This reverts commit 484fd6c1de13b336806a967908a927cc0356e312.  The
+> > commit caused a regression because now the umask was applied to
+> > symlinks and the fix is unnecessary because the umask/O_TMPFILE bug
+> > has been fixed somewhere else already.
+>=20
+> Thanks, Max! I've verified that this fixes symlink modes for me,
+> as well as the flatpak corruption error I was getting.
+>=20
+> > Fixes: https://lore.kernel.org/lkml/28DSITL9912E1.2LSZUVTGTO52Q@mforney=
+.org/
+> > Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+>=20
+> Tested-by: Michael Forney <mforney@mforney.org>
 
-It has three hunks, and the commit can be cherry-picked directly
-into the 5.15.y and 5.10.y stable branches.  The first hunk fixes
-a problem first introduced in Linux v5.2, so that hunk (only) should
-be back-ported to v5.4.y.
-
-Signed-off-by: Alex Elder <elder@linaro.org>
-
-Is there anything further I need to do?  If you'd prefer I send
-patches, I can do that also (just ask).  Thanks.
-
-					-Alex
-
-
-Rob's original fix in Linus' tree:
-   0ac10b291bee8 arm64: dts: qcom: Fix 'interrupt-map' parent address cells
-This first landed in v5.16.
-
-The commit that introduced the problem in the first hunk:
-   b84dfd175c098 arm64: dts: qcom: msm8998: Add PCIe PHY and RC nodes
-This first landed in v5.2, so back-port to v5.4.y, v5.10.y, v5.15.y.
-
-The commit that introduced the problem in the second hunk:
-   5c538e09cb19b arm64: dts: qcom: sdm845: Add first PCIe controller and PHY
-This first landed in v5.7, so back-port to v5.10.y, v5.15.y
-
-The commit that introduced the problem in the third hunk:
-   42ad231338c14 arm64: dts: qcom: sdm845: Add second PCIe PHY and 
-controller
-This first landed in v5.7 also
-
-
+Just checking in on this. I'd really like to see this regression
+fixed. It currently affects versions 6.5 through 6.9-rc6 as well
+as all longterm releases.
 
