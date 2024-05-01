@@ -1,277 +1,196 @@
-Return-Path: <stable+bounces-42874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17CFA8B8AD3
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 14:58:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7202A8B8B4A
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 15:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC8BD281D44
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 12:58:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 949361C215EF
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 13:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7F312B16A;
-	Wed,  1 May 2024 12:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF8012E1D9;
+	Wed,  1 May 2024 13:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ue/SI2Pq"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2739129E74;
-	Wed,  1 May 2024 12:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714568309; cv=none; b=a8GlMylWRZiuYu9n2grnqZxvwpCociWLNvBSRaawLjtlSFgWLvi+v9G7/PuezZ2RYpDUeMxxIEtMaAWt0x3x4FadLBwyRSi22fUZ1KyU+LmCXQILZgJ1DslzQ0QGG4GJmgazRedvEKmiNAWeOVopCDXWScthWLMOdtbcgAZlj5E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714568309; c=relaxed/simple;
-	bh=A1RyJVvHDFq7z1RG2AnVrS/Zc/sAfXIHM65N39THnYE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o0rDDkN1w8w5XvbApInlRj9CRVucRQfVrRygE62ifR/cz21fUVfK8nj+nDkANRJM3m/w7qZieIfyvoC87csLJy815fBsM5tnm1AbwtjnRTIbRX4xkU08Rs+EV07gM8NdBs3e217OirZUEdlWkgZKezSy+AvaAxLZmusnUH1Gf3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7868D2F4;
-	Wed,  1 May 2024 05:58:53 -0700 (PDT)
-Received: from [10.57.65.146] (unknown [10.57.65.146])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A03A43F73F;
-	Wed,  1 May 2024 05:58:25 -0700 (PDT)
-Message-ID: <2a1b4275-39c5-4c9e-830f-cde16e81c12c@arm.com>
-Date: Wed, 1 May 2024 13:58:24 +0100
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2047.outbound.protection.outlook.com [40.107.223.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395C5C14F;
+	Wed,  1 May 2024 13:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714570664; cv=fail; b=LpdHvfjI+5HQbRyKWkHphX7TDkIwHYzfRg3i9SCXQX97wesBWKEmtbCzoKbBCqTTD7EMTBK86JFd8HgWjgV3cqNplSfOan95vt1QyyR+RYVOsC/aus82mYxJvZIndqSErmUj481QYyHYZ3n6VY5YWT0eCLUWoV7GcnfRMom6zg0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714570664; c=relaxed/simple;
+	bh=LR0/cX5UZGwyCtip/Q+DwaTEg8oYyqrAWxZLphk++zc=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=OQDodSZYtQ0tJvI0rXjKHCW7Ug+6loKMS1CRWEjCoe+RJlUd0GkmmnAw4Aguj8NoEouiYTvXxVbDz6zsJB+XJNGlJiYFLWjYS3AdOBWaxtd6OPywWjYD/VG6qtMCIwZpw7tQv0GNEKOQoiUtrC6+l5qLFGfk5gDV9Ij1nEL88/Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ue/SI2Pq; arc=fail smtp.client-ip=40.107.223.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YDIqkd5+OwrijVwBZ91B71Mz3YJdx7iGJuEX3pDPLOOUSEszTh13lTbMRdxxx6cnssgD1oC3OUdloZzOWD884YSkcHbKXwvBnVyNRfuwfR9ER41qjbSNb4xj56x5gWCCPg24R9h9a2fnAHiRvOxyjB218z5JA6JgyjrVy8GQ2p46YSUr1WHlU5gEh8jfEoU526FcbDbx/vHJvzGh0LbJN1JIReByUIF8TKbmZJUroGknt6NyR6HCybaIIttEQV/DRZH4keMey31JIZiAWjAl2nNAI2EVejqTGSipG0CC9pPKZrmKXBJ3w7bbzmYYLv/gJymGlfdZ4E5Y2B4NrVeLEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iXlaz13NLSSwEWYjQIVHn7OuN7AtoU+yGDnjSVLOOco=;
+ b=ZuaSu+LVG9O9hpfrspMSzBXL0v8Un0n2DWLRtklKIg3NMf7OILlVzlfd/i0ItkuzXcr5/Pxwwat0e3egChMj4CVxax8o0FZy1sfXubGM7B1KPaqMpFW2QaEUiT7mqF08O7JprMavgX5B4Oz9hYuJ2G6aF8DdDEhGwu8PDQFhNomqAU68Wr3dX3vZSUwuAy4WmoK1z+PZlZ+q8S4fewq5U3RJ5eVnz9dlqtyIWm6QUdP+sEFuWMfbM1g7y2M3iWppskqwJJkQSEzObkqWBu5tOmwZf/LS9uwyUubP0fNQHMgTuYoicROnwMveRAHfZH2wDmb47WBia988WF2piyiAnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iXlaz13NLSSwEWYjQIVHn7OuN7AtoU+yGDnjSVLOOco=;
+ b=ue/SI2PqRWW0YlvtTRLn0JQhHAkdLZ+XESN4nnWs3gLbOwoONd+AQOwK8sLWkm9UviLZsDDE3Zul8tphGn0vjaDuzHsNbt7ev8pw0FFijX3YR9YJEm2ZoK2wxQC1lgiT0QT7f+a1TGrhpGfZdVcV4VZJ3uRj0sfSc2AY+wy1Lg1BJ+2JYkDZjzzhTgijhvzE/u7jjhkGEQnOATGo3BwfXRokWwwI1NniQaeXEsoXQv3ABNCOpRw7aNaFuSuFdaJKJwbViw7ZNo6H/AuXdr115x2rJRyMPWyCDx1X+qA9Zz1Sb5EInJsLNnc7xnCkgTY+fK23MuG23oPCj/9/QD2ipA==
+Received: from CH0P220CA0021.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:ef::11)
+ by SA0PR12MB4398.namprd12.prod.outlook.com (2603:10b6:806:9f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.29; Wed, 1 May
+ 2024 13:37:40 +0000
+Received: from CH2PEPF0000013D.namprd02.prod.outlook.com
+ (2603:10b6:610:ef:cafe::fe) by CH0P220CA0021.outlook.office365.com
+ (2603:10b6:610:ef::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.36 via Frontend
+ Transport; Wed, 1 May 2024 13:37:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH2PEPF0000013D.mail.protection.outlook.com (10.167.244.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7544.18 via Frontend Transport; Wed, 1 May 2024 13:37:39 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 1 May 2024
+ 06:37:29 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 1 May 2024 06:37:29 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Wed, 1 May 2024 06:37:29 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.19 00/77] 4.19.313-rc1 review
+In-Reply-To: <20240430103041.111219002@linuxfoundation.org>
+References: <20240430103041.111219002@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64/mm: pmd_mkinvalid() must handle swap pmds
-Content-Language: en-GB
-To: Zi Yan <ziy@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- David Hildenbrand <david@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240430133138.732088-1-ryan.roberts@arm.com>
- <9fb15315-6317-4bf4-a736-a8a44288b0c2@arm.com>
- <0dd7827a-6334-439a-8fd0-43c98e6af22b@arm.com>
- <4DDEF271-9DDE-4D24-9F0C-13046CE78C6C@nvidia.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <4DDEF271-9DDE-4D24-9F0C-13046CE78C6C@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-ID: <60fd6ad5-8b6e-4ed2-a8c4-2662608bd38a@drhqmail203.nvidia.com>
+Date: Wed, 1 May 2024 06:37:29 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000013D:EE_|SA0PR12MB4398:EE_
+X-MS-Office365-Filtering-Correlation-Id: c23a7926-869a-45d8-d844-08dc69e3df1d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|36860700004|376005|7416005|1800799015|82310400014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bEhUdEtiREZiMXg3Szl5d0dUdEQwVDVPN2ZYbUlhc21rSkplRlhWTVZacE1O?=
+ =?utf-8?B?WTAzOHhhK3NSSUd0djBtZlJ1TTliL3pNRkVMRVh1cHBnM1pCdjVJbFdwcnVD?=
+ =?utf-8?B?UXRWbXMxN20xNjZpUHJvQVVMR2ljcnFWbm93cmExSkRMZHNzemR4WkFrdHZq?=
+ =?utf-8?B?VFBGUDI3VE1xTlVxbmJCYmRtRzZDVklmR2ViMGVtSzBzZjY3Mmp3cGE1YmZ1?=
+ =?utf-8?B?bW5uTlR2bmRtb0hjb25Gb201RzczM0tmaERHRTJCdWtveG9qNzhoQ21VdEgr?=
+ =?utf-8?B?b0x0ZVlSTmE4Zks3aXVnd3FWckQ5d0k2d3U3dU5FRnRVS09UbjcyeXJwWit0?=
+ =?utf-8?B?NUpaaFlpWThCOVhHTXBUTUFEQW5vSEw2VnFNamhaK3dOdEhYM0pYOE9kSXFr?=
+ =?utf-8?B?S1RRajU3a0QxVy9YSU9ENkhQQ1o2OCtTaVhDQU1EUXlHaHl3d2lyU1FQQTNE?=
+ =?utf-8?B?N01CVzlKeURZRnhrZ1BwSFB5em1BWTRQQzlMOFMrQWN1ZmgwekFaVGRrS3hw?=
+ =?utf-8?B?cXAydEVHOTlRZFZYRXRvYWdlYnBKR2NSWktUSHdCVXMyTkVBWmVWa3dTelc0?=
+ =?utf-8?B?OStQbVVEOWhnWHBsNzExc1lka0xFZFFIOGdzeUUxb2hZWThFNWhGV3BPRmsx?=
+ =?utf-8?B?dllrN1hjYmhyL0ptS1NqR0E4NkxFcUhQRWJiWDNxUVJnb3FCMnBNZXJBa0tt?=
+ =?utf-8?B?UEJaL01MbVRZblA0aGhXK3dobjZXWHlFMnVYd2hhamx4NytGWWEyV0FjcFNp?=
+ =?utf-8?B?Y2xOK1lPQ1BpYnFZc2NFdE1Xc1l6Y0YvMEJVWWFUeUE2a3A3WkVRaWxqNE5G?=
+ =?utf-8?B?VDNNajBPY2tCR1VmR1B0SzJ1cHRQQkh4dmVZakFMQWZlRG5HdDJBZitVWWZR?=
+ =?utf-8?B?MmJsZVZYVDJkaVovMEdQS2Q5a1lsQk1GcGY1U1gyTGJJblRBVXlta1JFNTBs?=
+ =?utf-8?B?WnhXRDZIL1cxb1gyeFFDM2E5ekI3SXloNlYrMVV1bUUxNjE1Smdsa1Znbk9P?=
+ =?utf-8?B?a2tvQlZ4dWRlMjFVSlI4NFJRaGVPUjFtK2s2NHJDYmo2ZkVZMHQ4M2hBaXMv?=
+ =?utf-8?B?WGVNMXRYT1hmNkM2NU9UdW8raFRPNDY3VXRsT0pCRndNT2d5bE8xWS9ZMU9i?=
+ =?utf-8?B?dWx6U3V5RkJ3aW04UFdLQWtydEl1NjFzQ2E0Q215OWQ3djdZWEJsN3VRK2Vq?=
+ =?utf-8?B?WW9pL3V2bExrY2lLWTIvcitwWkJRWlVwbTYvdE5aNlpmSTBJOUVocXQxakY5?=
+ =?utf-8?B?RndwVDJDRGlsT2tZTTdlUnJST0E2aGNiVSsraGp5REp1emVSWWtkZXBPdjFK?=
+ =?utf-8?B?UzFIcEx2ckJLOVg3Ry9Dc1IwNlFDY1hHU1FCTDhHQjFJeGtGNytIbDdXZkpP?=
+ =?utf-8?B?Zk5EYllDeG5CY2N1UVYyY1lqYUJ4TzBTWFRZWW9IUmYvdGNZSFExbWNBWis2?=
+ =?utf-8?B?RHRyQXNOMzlrTW9jM2xjN3RjeHpCVjBOK211WCtqQTRORVlhSlNQVmxSYWdV?=
+ =?utf-8?B?ZVJhSHlyRDBDL2tmSHV3b3Uxb0dQUUdVMDB3ZEZlNGNHUFZpQXR6TFZLclFq?=
+ =?utf-8?B?ejEzSExJZWtKQmhqWFlsNVV0aGFBc0ZaRm1veG83WUdSa0M5cEZLdWtMb0F6?=
+ =?utf-8?B?Mnl0MlBEQ2tGMXMyMFA2cUthZUw1blZRczdNdG8rRDkyNTl4bmIrd1ArNmU1?=
+ =?utf-8?B?TXBialpXamlGb1BpbHNMcFdoNXhjZ0J6ZXl6dFBpemZSUktUdDdoNVRiUVdt?=
+ =?utf-8?B?ZU9sVnhWMzRZOVl3UmRKMlBIRGt4b1J2dHlrYjI0ZTZ5RXNIODVhdnMxWnhj?=
+ =?utf-8?B?aWxYUVowenkxNXlNamQyTloxbjhzL2E1Sm03Wkd0RkxROXpvYlkwU0lUQkdO?=
+ =?utf-8?Q?pvIdHq3emqRcP?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230031)(36860700004)(376005)(7416005)(1800799015)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2024 13:37:39.9973
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c23a7926-869a-45d8-d844-08dc69e3df1d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000013D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4398
 
-On 01/05/2024 13:07, Zi Yan wrote:
-> On 1 May 2024, at 7:38, Ryan Roberts wrote:
+On Tue, 30 Apr 2024 12:38:39 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.313 release.
+> There are 77 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
->> Pulling in David, who may be able to advise...
->>
->>
->> On 01/05/2024 12:35, Ryan Roberts wrote:
->>> Zi Yan, I'm hoping you might have some input on the below...
->>>
->>>
->>> On 30/04/2024 14:31, Ryan Roberts wrote:
->>>> __split_huge_pmd_locked() can be called for a present THP, devmap or
->>>> (non-present) migration entry. It calls pmdp_invalidate()
->>>> unconditionally on the pmdp and only determines if it is present or not
->>>> based on the returned old pmd.
->>>>
->>>> But arm64's pmd_mkinvalid(), called by pmdp_invalidate(),
->>>> unconditionally sets the PMD_PRESENT_INVALID flag, which causes future
->>>> pmd_present() calls to return true - even for a swap pmd. Therefore any
->>>> lockless pgtable walker could see the migration entry pmd in this state
->>>> and start interpretting the fields (e.g. pmd_pfn()) as if it were
->>>> present, leading to BadThings (TM). GUP-fast appears to be one such
->>>> lockless pgtable walker.
->>>>
->>>> While the obvious fix is for core-mm to avoid such calls for non-present
->>>> pmds (pmdp_invalidate() will also issue TLBI which is not necessary for
->>>> this case either), all other arches that implement pmd_mkinvalid() do it
->>>> in such a way that it is robust to being called with a non-present pmd.
->>>
->>> OK the plot thickens; The tests I wrote to check that pmd_mkinvalid() is safe for swap entries fails on x86_64. See below...
->>>
->>>> So it is simpler and safer to make arm64 robust too. This approach means
->>>> we can even add tests to debug_vm_pgtable.c to validate the required
->>>> behaviour.
->>>>
->>>> This is a theoretical bug found during code review. I don't have any
->>>> test case to trigger it in practice.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 53fa117bb33c ("arm64/mm: Enable THP migration")
->>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->>>> ---
->>>>
->>>> Hi all,
->>>>
->>>> v1 of this fix [1] took the approach of fixing core-mm to never call
->>>> pmdp_invalidate() on a non-present pmd. But Zi Yan highlighted that only arm64
->>>> suffers this problem; all other arches are robust. So his suggestion was to
->>>> instead make arm64 robust in the same way and add tests to validate it. Despite
->>>> my stated reservations in the context of the v1 discussion, having thought on it
->>>> for a bit, I now agree with Zi Yan. Hence this post.
->>>>
->>>> Andrew has v1 in mm-unstable at the moment, so probably the best thing to do is
->>>> remove it from there and have this go in through the arm64 tree? Assuming there
->>>> is agreement that this approach is right one.
->>>>
->>>> This applies on top of v6.9-rc5. Passes all the mm selftests on arm64.
->>>>
->>>> [1] https://lore.kernel.org/linux-mm/20240425170704.3379492-1-ryan.roberts@arm.com/
->>>>
->>>> Thanks,
->>>> Ryan
->>>>
->>>>
->>>>  arch/arm64/include/asm/pgtable.h | 12 +++++--
->>>>  mm/debug_vm_pgtable.c            | 61 ++++++++++++++++++++++++++++++++
->>>>  2 files changed, 71 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>>> index afdd56d26ad7..7d580271a46d 100644
->>>> --- a/arch/arm64/include/asm/pgtable.h
->>>> +++ b/arch/arm64/include/asm/pgtable.h
->>>> @@ -511,8 +511,16 @@ static inline int pmd_trans_huge(pmd_t pmd)
->>>>
->>>>  static inline pmd_t pmd_mkinvalid(pmd_t pmd)
->>>>  {
->>>> -	pmd = set_pmd_bit(pmd, __pgprot(PMD_PRESENT_INVALID));
->>>> -	pmd = clear_pmd_bit(pmd, __pgprot(PMD_SECT_VALID));
->>>> +	/*
->>>> +	 * If not valid then either we are already present-invalid or we are
->>>> +	 * not-present (i.e. none or swap entry). We must not convert
->>>> +	 * not-present to present-invalid. Unbelievably, the core-mm may call
->>>> +	 * pmd_mkinvalid() for a swap entry and all other arches can handle it.
->>>> +	 */
->>>> +	if (pmd_valid(pmd)) {
->>>> +		pmd = set_pmd_bit(pmd, __pgprot(PMD_PRESENT_INVALID));
->>>> +		pmd = clear_pmd_bit(pmd, __pgprot(PMD_SECT_VALID));
->>>> +	}
->>>>
->>>>  	return pmd;
->>>>  }
->>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
->>>> index 65c19025da3d..7e9c387d06b0 100644
->>>> --- a/mm/debug_vm_pgtable.c
->>>> +++ b/mm/debug_vm_pgtable.c
->>>> @@ -956,6 +956,65 @@ static void __init hugetlb_basic_tests(struct pgtable_debug_args *args) { }
->>>>  #endif /* CONFIG_HUGETLB_PAGE */
->>>>
->>>>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>>> +#if !defined(__HAVE_ARCH_PMDP_INVALIDATE) && defined(CONFIG_ARCH_ENABLE_THP_MIGRATION)
->>>> +static void __init swp_pmd_mkinvalid_tests(struct pgtable_debug_args *args)
->>>> +{
->>>
->>> Printing various values at different locations in this function for debug:
->>>
->>>> +	unsigned long max_swap_offset;
->>>> +	swp_entry_t swp_set, swp_clear, swp_convert;
->>>> +	pmd_t pmd_set, pmd_clear;
->>>> +
->>>> +	/*
->>>> +	 * See generic_max_swapfile_size(): probe the maximum offset, then
->>>> +	 * create swap entry will all possible bits set and a swap entry will
->>>> +	 * all bits clear.
->>>> +	 */
->>>> +	max_swap_offset = swp_offset(pmd_to_swp_entry(swp_entry_to_pmd(swp_entry(0, ~0UL))));
->>>> +	swp_set = swp_entry((1 << MAX_SWAPFILES_SHIFT) - 1, max_swap_offset);
->>>> +	swp_clear = swp_entry(0, 0);
->>>> +
->>>> +	/* Convert to pmd. */
->>>> +	pmd_set = swp_entry_to_pmd(swp_set);
->>>> +	pmd_clear = swp_entry_to_pmd(swp_clear);
->>>
->>> [    0.702163] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: valid: pmd_set=f800000000000000, pmd_clear=7fffffffffffe00
->>>
->>>> +
->>>> +	/*
->>>> +	 * Sanity check that the pmds are not-present, not-huge and swap entry
->>>> +	 * is recoverable without corruption.
->>>> +	 */
->>>> +	WARN_ON(pmd_present(pmd_set));
->>>> +	WARN_ON(pmd_trans_huge(pmd_set));
->>>> +	swp_convert = pmd_to_swp_entry(pmd_set);
->>>> +	WARN_ON(swp_type(swp_set) != swp_type(swp_convert));
->>>> +	WARN_ON(swp_offset(swp_set) != swp_offset(swp_convert));
->>>> +	WARN_ON(pmd_present(pmd_clear));
->>>> +	WARN_ON(pmd_trans_huge(pmd_clear));
->>>> +	swp_convert = pmd_to_swp_entry(pmd_clear);
->>>> +	WARN_ON(swp_type(swp_clear) != swp_type(swp_convert));
->>>> +	WARN_ON(swp_offset(swp_clear) != swp_offset(swp_convert));
->>>> +
->>>> +	/* Now invalidate the pmd. */
->>>> +	pmd_set = pmd_mkinvalid(pmd_set);
->>>> +	pmd_clear = pmd_mkinvalid(pmd_clear);
->>>
->>> [    0.704452] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: invalid: pmd_set=f800000000000000, pmd_clear=7ffffffffe00e00
->>>
->>>> +
->>>> +	/*
->>>> +	 * Since its a swap pmd, invalidation should effectively be a noop and
->>>> +	 * the checks we already did should give the same answer. Check the
->>>> +	 * invalidation didn't corrupt any fields.
->>>> +	 */
->>>> +	WARN_ON(pmd_present(pmd_set));
->>>> +	WARN_ON(pmd_trans_huge(pmd_set));
->>>> +	swp_convert = pmd_to_swp_entry(pmd_set);
->>>
->>> [    0.706461] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: set: swp=7c03ffffffffffff (1f, 3ffffffffffff), convert=7c03ffffffffffff (1f, 3ffffffffffff)
->>>
->>>> +	WARN_ON(swp_type(swp_set) != swp_type(swp_convert));
->>>> +	WARN_ON(swp_offset(swp_set) != swp_offset(swp_convert));
->>>> +	WARN_ON(pmd_present(pmd_clear));
->>>> +	WARN_ON(pmd_trans_huge(pmd_clear));
->>>> +	swp_convert = pmd_to_swp_entry(pmd_clear);
->>>
->>> [    0.708841] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: clear: swp=0 (0, 0), convert=ff8 (0, ff8)
->>>
->>>> +	WARN_ON(swp_type(swp_clear) != swp_type(swp_convert));
->>>> +	WARN_ON(swp_offset(swp_clear) != swp_offset(swp_convert));
->>>
->>> This line fails on x86_64.
->>>
->>> The logs show that the offset is indeed being corrupted by pmd_mkinvalid(); 0 -> 0xff8.
->>>
->>> I think this is due to x86's pmd_mkinvalid() assuming the pmd is present; pmd_flags() and pmd_pfn() do all sorts of weird and wonderful things.
->>>
->>> So does this take us full circle? Are we now back to modifying the core-mm to never call pmd_mkinvalid() on a non-present entry? If so, then I guess we should remove the arm64 fix from for-next/fixes.
+> Responses should be made by Thu, 02 May 2024 10:30:27 +0000.
+> Anything received after that time might be too late.
 > 
-> If x86_64's pmd_mkinvalid() also corrupts swap entries, yes, your original fix
-> is better. I will dig into the x86 code more to figure out what goes wrong.
-> Last time, I only checked PAGE_* bits in these pmd|pte_* operations.
-> Sorry for the misinformation.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.313-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-No worries, I'll do the amends we originally agreed for the original fix and resend.
+All tests passing for Tegra ...
 
-> 
->>>
->>>> +}
->>>> +#else
->>>> +static void __init swp_pmd_mkinvalid_tests(struct pgtable_debug_args *args) { }
->>>> +#endif /* !__HAVE_ARCH_PMDP_INVALIDATE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
->>>> +
->>>>  static void __init pmd_thp_tests(struct pgtable_debug_args *args)
->>>>  {
->>>>  	pmd_t pmd;
->>>> @@ -982,6 +1041,8 @@ static void __init pmd_thp_tests(struct pgtable_debug_args *args)
->>>>  	WARN_ON(!pmd_trans_huge(pmd_mkinvalid(pmd_mkhuge(pmd))));
->>>>  	WARN_ON(!pmd_present(pmd_mkinvalid(pmd_mkhuge(pmd))));
->>>>  #endif /* __HAVE_ARCH_PMDP_INVALIDATE */
->>>> +
->>>> +	swp_pmd_mkinvalid_tests(args);
->>>>  }
->>>>
->>>>  #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->>>> --
->>>> 2.25.1
->>>>
->>>
-> 
-> 
-> --
-> Best Regards,
-> Yan, Zi
+Test results for stable-v4.19:
+    10 builds:	10 pass, 0 fail
+    20 boots:	20 pass, 0 fail
+    37 tests:	37 pass, 0 fail
 
+Linux version:	4.19.313-rc1-gf656c346d44e
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
