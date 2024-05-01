@@ -1,99 +1,92 @@
-Return-Path: <stable+bounces-42853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8D28B8670
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 09:52:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE118B86BB
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 10:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C01FCB225B0
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 07:52:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C8D9B225E0
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 08:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B274D9FE;
-	Wed,  1 May 2024 07:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUGvPhFZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E3C4DA09;
+	Wed,  1 May 2024 08:05:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637BF4D13F;
-	Wed,  1 May 2024 07:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F95D28DC7;
+	Wed,  1 May 2024 08:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714549933; cv=none; b=CGm4qwG031pu8XJLEsKrgobL4YhzjBhFgZtlX2wQPGUrVgUlIkIy+vJct/L0TYDQ8cB4F4Wt5/uK6QzO92aP1qexDAJZsV1OCuG0//bimv8iPM58qi7LchZa3vUs/rLfCFIWbCdCT4NEPHEwmvfv/+T8nknb6TzB+kjpeckjD1c=
+	t=1714550723; cv=none; b=NJLpnn+PWtbQpsLNhbJJc1BndKrtWoZiD1pM8dQCXJoZY0N6okw4Q8xLkUru1bXfnooT/PI4V9j0BdoKiuqPQiUAGcyxeIDS4oGpJ7hSWv86UMerEj1T8wc5dizDJbAhQg8ckTPAM5cTgCnDEJ7hwKlZ/IjPRPiQABXep3hcSic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714549933; c=relaxed/simple;
-	bh=6DP1CpcEqv5NSAPjBMsu0vTBvBumydwSlw7nTPGBD+k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fKa/UjJXzjAGiM5BgFrz3sO5skDhpaFeZFIuR6Se9JowdnknMMiPzeXf1mElvjhppRn7y0NyxMU+sbZUA6MP4H+/wdde0XUN6fke5mlRHFQN/9aNIkWzTYdIi8TAkkOvf9xDDIj4DMuu6bFhgzvs7NPrg6g1CCAYpb0phC4Hj7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUGvPhFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF854C4AF18;
-	Wed,  1 May 2024 07:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714549932;
-	bh=6DP1CpcEqv5NSAPjBMsu0vTBvBumydwSlw7nTPGBD+k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=BUGvPhFZ5CmN0ftTHNfGyvAf5qpeJONoguTYFM1AejE+ZouPQkw/bixqXy/4VkbnI
-	 MQj07HW/M/DWSM5JMTl3Y9rCKH5zqJgxJtsobgLk+hfFfZo7fZoOCFoOsvMqGCrphY
-	 oEXnwaHuTYoBn4TI7TRVtdf4pzF6LnkSsr7JvHg56dbjjAAr7UPOUzFsRvglObQ7dj
-	 NuDCc2C0XM6WBqYfJ0Gcy64WXRf8/nMri6dSEvdiiliSt/3+M2Ig2jZa2dzgXkN+jY
-	 xBT3aETeNzzBcBObr/B1q91kZnANCms+EAOm8EqYJkHXicfUq7YLt8BFTjBUhLq6oi
-	 7QMHFzCvx2quA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1s24lC-000000001En-2z00;
-	Wed, 01 May 2024 09:52:14 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: qcs404: fix bluetooth device address
-Date: Wed,  1 May 2024 09:52:01 +0200
-Message-ID: <20240501075201.4732-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1714550723; c=relaxed/simple;
+	bh=2HevmY/Q4C4rLB+9s4SmfYOSFdV6Ae/J6fu9OaszjS0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CYCMtWxzQORBTLOn3rRuBoPWRL9i6Aj9qgHsMBmtL5qQs19PaS45F4/IiGOscT4lI/27kZ4SGBze57SDubf9UX+fvFeJTrK3LOZZ4q0d4RyCZze0nOti8MFVPUCohTpcUje+JJAnCBAnj4BsbBEY5/ehzwDBFKYGpb8N5YkBLaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 74D8B2F4;
+	Wed,  1 May 2024 01:05:46 -0700 (PDT)
+Received: from [10.57.65.146] (unknown [10.57.65.146])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B9D663F793;
+	Wed,  1 May 2024 01:05:18 -0700 (PDT)
+Message-ID: <e0624ca9-b321-479e-9b64-59a4cd242f6d@arm.com>
+Date: Wed, 1 May 2024 09:05:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64/mm: pmd_mkinvalid() must handle swap pmds
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <zi.yan@cs.rutgers.edu>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240430133138.732088-1-ryan.roberts@arm.com>
+ <171449974870.639201.3165060270571039049.b4-ty@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <171449974870.639201.3165060270571039049.b4-ty@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The 'local-bd-address' property is used to pass a unique Bluetooth
-device address from the boot firmware to the kernel and should otherwise
-be left unset so that the OS can prevent the controller from being used
-until a valid address has been provided through some other means (e.g.
-using btmgmt).
+On 30/04/2024 18:57, Catalin Marinas wrote:
+> On Tue, 30 Apr 2024 14:31:38 +0100, Ryan Roberts wrote:
+>> __split_huge_pmd_locked() can be called for a present THP, devmap or
+>> (non-present) migration entry. It calls pmdp_invalidate()
+>> unconditionally on the pmdp and only determines if it is present or not
+>> based on the returned old pmd.
+>>
+>> But arm64's pmd_mkinvalid(), called by pmdp_invalidate(),
+>> unconditionally sets the PMD_PRESENT_INVALID flag, which causes future
+>> pmd_present() calls to return true - even for a swap pmd. Therefore any
+>> lockless pgtable walker could see the migration entry pmd in this state
+>> and start interpretting the fields (e.g. pmd_pfn()) as if it were
+>> present, leading to BadThings (TM). GUP-fast appears to be one such
+>> lockless pgtable walker.
+>>
+>> [...]
+> 
+> Applied to arm64 (for-next/fixes), thanks! It should land in 6.9-rc7. I
+> removed the debug/test code, please send it as a separate patch for
+> 6.10.
 
-Fixes: 60f77ae7d1c1 ("arm64: dts: qcom: qcs404-evb: Enable uart3 and add Bluetooth")
-Cc: stable@vger.kernel.org	# 5.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- arch/arm64/boot/dts/qcom/qcs404-evb.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks Catalin! I'm guessing this will turn up in today's linux-next, so if I
+send the tests today and Andrew puts them straight in mm-unstable (which will
+goto linux-next) there is no risk that the tests are there without the fix? Or
+do I need to hold off until the fix is in v6.9-rc7?
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-index 10655401528e..a22b4501ce1e 100644
---- a/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs404-evb.dtsi
-@@ -62,7 +62,7 @@ bluetooth {
- 		vddrf-supply = <&vreg_l1_1p3>;
- 		vddch0-supply = <&vdd_ch0_3p3>;
- 
--		local-bd-address = [ 02 00 00 00 5a ad ];
-+		local-bd-address = [ 00 00 00 00 00 00 ];
- 
- 		max-speed = <3200000>;
- 	};
--- 
-2.43.2
+> 
+> [1/1] arm64/mm: pmd_mkinvalid() must handle swap pmds
+>       https://git.kernel.org/arm64/c/e783331c7720
+> 
 
 
