@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-42916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2628B9023
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 21:45:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAD78B9029
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 21:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6791E282D1C
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 19:45:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9831C214E8
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 19:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B883161309;
-	Wed,  1 May 2024 19:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861CB161336;
+	Wed,  1 May 2024 19:46:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B636182DF;
-	Wed,  1 May 2024 19:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F23182DF;
+	Wed,  1 May 2024 19:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714592726; cv=none; b=n/xy/xt8xiWokwB4ThABD84GyH5QNWUdYk8eh2dfB/fmiONI+HbtR5WQYwbFWZzOy+JvlRaawo5ZaueY5os2x09QOnzLCHGe4FuBFUT9e3B8y4e/Tz3ntNKO4fIbvspBdo3uhGy3dD2Q/atvitbFk0GCN5DvTnpztB5cN2ETVo4=
+	t=1714592771; cv=none; b=kCCzqnDjfyrDVjnbezTlide3SD7kQ4Mk44IAvq2QRufwghLd6HjYJlWx5+DI1zAUmfOKoZrKSToroq2jxi0kwptC3hP8xrYkgOwGJhF64jPYENunKo4of0mfRVDiAozgcEAEn2qcoFMpalgzxCeERTm7HV0jojh0c631XWLFvxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714592726; c=relaxed/simple;
-	bh=xnreSdsdbD6FtP4vdUNMdg0/Ay0B/FX9xAEZ+/zp/9s=;
+	s=arc-20240116; t=1714592771; c=relaxed/simple;
+	bh=xE83y+xHaqQdSCNORd7PmnVfWHhNR8scxxPakzCAZsQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X2lxbBa5zQpHUR6lIjWQicUTzxT6sjuw5zdTyYiV6V20hnOisc2yLv9s6Fw6FuBWZoAsPByb1YmXGFlJIpqCy7a8FEDI3jDOyxoPdSfb1Xei9ZyxFBQVqPfiJ3wFrlPS9vGbQtOW/FHUqzAsGV9YpdJZ2w88zB0wY75IysKchcw=
+	 Content-Type:Content-Disposition:In-Reply-To; b=DO1qW2Qc+4stKR/wKxAzzJLig+9vK9Fbb7WbUaXPADc6+KrAN09LSL7881NRwjbh88IFwNy8/E0AFZ+vFSErlI/HmfTBGNpyUvFRRfEcPAWqAEHLKD4rtKb+X46hg/GQ3lAF/XOAp+cX2SjZWL2jlPB1r4xBgY8WlYXU202l/R0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 9B3241C0084; Wed,  1 May 2024 21:45:23 +0200 (CEST)
-Date: Wed, 1 May 2024 21:45:23 +0200
+	id 0DD101C0084; Wed,  1 May 2024 21:46:07 +0200 (CEST)
+Date: Wed, 1 May 2024 21:46:06 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -41,9 +41,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/137] 5.10.216-rc2 review
-Message-ID: <ZjKb0+/CRMkSh6/6@duo.ucw.cz>
-References: <20240430134024.771744897@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 000/110] 6.1.90-rc1 review
+Message-ID: <ZjKb/jMkpBdMMI+X@duo.ucw.cz>
+References: <20240430103047.561802595@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,46 +51,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="s5+Lxu76gKpdbpd0"
+	protocol="application/pgp-signature"; boundary="ysKVk+w1ptpisRWf"
 Content-Disposition: inline
-In-Reply-To: <20240430134024.771744897@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
 
 
---s5+Lxu76gKpdbpd0
+--ysKVk+w1ptpisRWf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 5.10.216 release.
-> There are 137 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.1.90 release.
+> There are 110 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 CIP testing did not find any problems here:
 
 https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.10.y
+6.1.y
 
 Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
 Best regards,
                                                                 Pavel
-
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---s5+Lxu76gKpdbpd0
+--ysKVk+w1ptpisRWf
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZjKb0wAKCRAw5/Bqldv6
-8tuAAJ42uPjYnkwokEKPMxdsBxQou/dqxwCfTvyQ6MchtzZ+yJ6uMvHh5Ps2spY=
-=KwGI
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZjKb/gAKCRAw5/Bqldv6
+8qTkAJ0fGxDZTIeJ/32rZdVvdbfCRWhiHQCgwdQVVjrXCXzdv51ueYxfv2W+sKo=
+=XdeB
 -----END PGP SIGNATURE-----
 
---s5+Lxu76gKpdbpd0--
+--ysKVk+w1ptpisRWf--
 
