@@ -1,101 +1,277 @@
-Return-Path: <stable+bounces-42873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992608B8A10
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 14:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CFA8B8AD3
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 14:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D9B3284302
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 12:35:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC8BD281D44
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 12:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E606054FA1;
-	Wed,  1 May 2024 12:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qTMc7JsX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7F312B16A;
+	Wed,  1 May 2024 12:58:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960361DFFB;
-	Wed,  1 May 2024 12:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2739129E74;
+	Wed,  1 May 2024 12:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714566914; cv=none; b=KJkM/CD0gKlS9CCC7KBBY6zABTK9dT8yewXHtCusO65naXM5sbfO00g+a5F/c0Nt25oOTFuvnrduo6A6h7RjVK3L8ihHRXdqDUFgj4O3ThGI5+c2CTZusk3KvJRxOy2Xn9YUM3cE0IbLCO4qZDvwE7wsaDB84PtAyr8cgZw2tco=
+	t=1714568309; cv=none; b=a8GlMylWRZiuYu9n2grnqZxvwpCociWLNvBSRaawLjtlSFgWLvi+v9G7/PuezZ2RYpDUeMxxIEtMaAWt0x3x4FadLBwyRSi22fUZ1KyU+LmCXQILZgJ1DslzQ0QGG4GJmgazRedvEKmiNAWeOVopCDXWScthWLMOdtbcgAZlj5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714566914; c=relaxed/simple;
-	bh=+/0WsjYl9G9pdjlSPEHqHyblMh1LaeTcks5oxwjbiKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l022Pg06HiYCw2YTtfqaRl6UlbobVWpCPBjPbC3rnqQT7yh543Rx9PTRIJmOq/FSbH3sDq/egG3KyCMTkfquGPpERLy+9A13n3mlaKQVMMUpAyEfxEnPk3D2PGjRkTpjcGVEBKvIKIjAhdVaQ5hsz6hI5IA9VEm3C950rzh6UhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qTMc7JsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFE2C4AF19;
-	Wed,  1 May 2024 12:35:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714566914;
-	bh=+/0WsjYl9G9pdjlSPEHqHyblMh1LaeTcks5oxwjbiKk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTMc7JsXqc9iPsLa1w/O/X6JTsRjo3rYNdwrR59cQcgcEgNQM9Qujul5XXLjvZmgl
-	 GSJ7EGYwwj/L43ZXaXRmmv+L+BiUaCvZNvI8cjhv5iDWfPjnDUH+PNuCpmvtWlMj8y
-	 n7POqGaVo2pVNhqq79PstQIJppeG9vBk9oYitiYTwFsemN3/xgVC9ddytCIhgVmhcq
-	 GI8GB/XBWT1n+3B1VQhRmhCyBROKXQrh7LoqDeGwM0dG0awsl8B9ukmmctEHSDIicz
-	 0tQet3T9ga/PssvPV+EPrJfE7beYVxrWlLhYD9tlzqliHz+JJVx0prxTOCcBrBuqAx
-	 HQExJ3PfxT6uA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1s29B6-000000001l0-3yAb;
-	Wed, 01 May 2024 14:35:16 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Tim Jiang <quic_tjiang@quicinc.com>
-Subject: [PATCH 2/5] Bluetooth: qca: fix info leak when fetching board id
-Date: Wed,  1 May 2024 14:34:53 +0200
-Message-ID: <20240501123456.6712-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240501123456.6712-1-johan+linaro@kernel.org>
-References: <20240501123456.6712-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1714568309; c=relaxed/simple;
+	bh=A1RyJVvHDFq7z1RG2AnVrS/Zc/sAfXIHM65N39THnYE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o0rDDkN1w8w5XvbApInlRj9CRVucRQfVrRygE62ifR/cz21fUVfK8nj+nDkANRJM3m/w7qZieIfyvoC87csLJy815fBsM5tnm1AbwtjnRTIbRX4xkU08Rs+EV07gM8NdBs3e217OirZUEdlWkgZKezSy+AvaAxLZmusnUH1Gf3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7868D2F4;
+	Wed,  1 May 2024 05:58:53 -0700 (PDT)
+Received: from [10.57.65.146] (unknown [10.57.65.146])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A03A43F73F;
+	Wed,  1 May 2024 05:58:25 -0700 (PDT)
+Message-ID: <2a1b4275-39c5-4c9e-830f-cde16e81c12c@arm.com>
+Date: Wed, 1 May 2024 13:58:24 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64/mm: pmd_mkinvalid() must handle swap pmds
+Content-Language: en-GB
+To: Zi Yan <ziy@nvidia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ David Hildenbrand <david@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240430133138.732088-1-ryan.roberts@arm.com>
+ <9fb15315-6317-4bf4-a736-a8a44288b0c2@arm.com>
+ <0dd7827a-6334-439a-8fd0-43c98e6af22b@arm.com>
+ <4DDEF271-9DDE-4D24-9F0C-13046CE78C6C@nvidia.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <4DDEF271-9DDE-4D24-9F0C-13046CE78C6C@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add the missing sanity check when fetching the board id to avoid leaking
-slab data when later requesting the firmware.
+On 01/05/2024 13:07, Zi Yan wrote:
+> On 1 May 2024, at 7:38, Ryan Roberts wrote:
+> 
+>> Pulling in David, who may be able to advise...
+>>
+>>
+>> On 01/05/2024 12:35, Ryan Roberts wrote:
+>>> Zi Yan, I'm hoping you might have some input on the below...
+>>>
+>>>
+>>> On 30/04/2024 14:31, Ryan Roberts wrote:
+>>>> __split_huge_pmd_locked() can be called for a present THP, devmap or
+>>>> (non-present) migration entry. It calls pmdp_invalidate()
+>>>> unconditionally on the pmdp and only determines if it is present or not
+>>>> based on the returned old pmd.
+>>>>
+>>>> But arm64's pmd_mkinvalid(), called by pmdp_invalidate(),
+>>>> unconditionally sets the PMD_PRESENT_INVALID flag, which causes future
+>>>> pmd_present() calls to return true - even for a swap pmd. Therefore any
+>>>> lockless pgtable walker could see the migration entry pmd in this state
+>>>> and start interpretting the fields (e.g. pmd_pfn()) as if it were
+>>>> present, leading to BadThings (TM). GUP-fast appears to be one such
+>>>> lockless pgtable walker.
+>>>>
+>>>> While the obvious fix is for core-mm to avoid such calls for non-present
+>>>> pmds (pmdp_invalidate() will also issue TLBI which is not necessary for
+>>>> this case either), all other arches that implement pmd_mkinvalid() do it
+>>>> in such a way that it is robust to being called with a non-present pmd.
+>>>
+>>> OK the plot thickens; The tests I wrote to check that pmd_mkinvalid() is safe for swap entries fails on x86_64. See below...
+>>>
+>>>> So it is simpler and safer to make arm64 robust too. This approach means
+>>>> we can even add tests to debug_vm_pgtable.c to validate the required
+>>>> behaviour.
+>>>>
+>>>> This is a theoretical bug found during code review. I don't have any
+>>>> test case to trigger it in practice.
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 53fa117bb33c ("arm64/mm: Enable THP migration")
+>>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>> ---
+>>>>
+>>>> Hi all,
+>>>>
+>>>> v1 of this fix [1] took the approach of fixing core-mm to never call
+>>>> pmdp_invalidate() on a non-present pmd. But Zi Yan highlighted that only arm64
+>>>> suffers this problem; all other arches are robust. So his suggestion was to
+>>>> instead make arm64 robust in the same way and add tests to validate it. Despite
+>>>> my stated reservations in the context of the v1 discussion, having thought on it
+>>>> for a bit, I now agree with Zi Yan. Hence this post.
+>>>>
+>>>> Andrew has v1 in mm-unstable at the moment, so probably the best thing to do is
+>>>> remove it from there and have this go in through the arm64 tree? Assuming there
+>>>> is agreement that this approach is right one.
+>>>>
+>>>> This applies on top of v6.9-rc5. Passes all the mm selftests on arm64.
+>>>>
+>>>> [1] https://lore.kernel.org/linux-mm/20240425170704.3379492-1-ryan.roberts@arm.com/
+>>>>
+>>>> Thanks,
+>>>> Ryan
+>>>>
+>>>>
+>>>>  arch/arm64/include/asm/pgtable.h | 12 +++++--
+>>>>  mm/debug_vm_pgtable.c            | 61 ++++++++++++++++++++++++++++++++
+>>>>  2 files changed, 71 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>>> index afdd56d26ad7..7d580271a46d 100644
+>>>> --- a/arch/arm64/include/asm/pgtable.h
+>>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>>> @@ -511,8 +511,16 @@ static inline int pmd_trans_huge(pmd_t pmd)
+>>>>
+>>>>  static inline pmd_t pmd_mkinvalid(pmd_t pmd)
+>>>>  {
+>>>> -	pmd = set_pmd_bit(pmd, __pgprot(PMD_PRESENT_INVALID));
+>>>> -	pmd = clear_pmd_bit(pmd, __pgprot(PMD_SECT_VALID));
+>>>> +	/*
+>>>> +	 * If not valid then either we are already present-invalid or we are
+>>>> +	 * not-present (i.e. none or swap entry). We must not convert
+>>>> +	 * not-present to present-invalid. Unbelievably, the core-mm may call
+>>>> +	 * pmd_mkinvalid() for a swap entry and all other arches can handle it.
+>>>> +	 */
+>>>> +	if (pmd_valid(pmd)) {
+>>>> +		pmd = set_pmd_bit(pmd, __pgprot(PMD_PRESENT_INVALID));
+>>>> +		pmd = clear_pmd_bit(pmd, __pgprot(PMD_SECT_VALID));
+>>>> +	}
+>>>>
+>>>>  	return pmd;
+>>>>  }
+>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>>>> index 65c19025da3d..7e9c387d06b0 100644
+>>>> --- a/mm/debug_vm_pgtable.c
+>>>> +++ b/mm/debug_vm_pgtable.c
+>>>> @@ -956,6 +956,65 @@ static void __init hugetlb_basic_tests(struct pgtable_debug_args *args) { }
+>>>>  #endif /* CONFIG_HUGETLB_PAGE */
+>>>>
+>>>>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>> +#if !defined(__HAVE_ARCH_PMDP_INVALIDATE) && defined(CONFIG_ARCH_ENABLE_THP_MIGRATION)
+>>>> +static void __init swp_pmd_mkinvalid_tests(struct pgtable_debug_args *args)
+>>>> +{
+>>>
+>>> Printing various values at different locations in this function for debug:
+>>>
+>>>> +	unsigned long max_swap_offset;
+>>>> +	swp_entry_t swp_set, swp_clear, swp_convert;
+>>>> +	pmd_t pmd_set, pmd_clear;
+>>>> +
+>>>> +	/*
+>>>> +	 * See generic_max_swapfile_size(): probe the maximum offset, then
+>>>> +	 * create swap entry will all possible bits set and a swap entry will
+>>>> +	 * all bits clear.
+>>>> +	 */
+>>>> +	max_swap_offset = swp_offset(pmd_to_swp_entry(swp_entry_to_pmd(swp_entry(0, ~0UL))));
+>>>> +	swp_set = swp_entry((1 << MAX_SWAPFILES_SHIFT) - 1, max_swap_offset);
+>>>> +	swp_clear = swp_entry(0, 0);
+>>>> +
+>>>> +	/* Convert to pmd. */
+>>>> +	pmd_set = swp_entry_to_pmd(swp_set);
+>>>> +	pmd_clear = swp_entry_to_pmd(swp_clear);
+>>>
+>>> [    0.702163] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: valid: pmd_set=f800000000000000, pmd_clear=7fffffffffffe00
+>>>
+>>>> +
+>>>> +	/*
+>>>> +	 * Sanity check that the pmds are not-present, not-huge and swap entry
+>>>> +	 * is recoverable without corruption.
+>>>> +	 */
+>>>> +	WARN_ON(pmd_present(pmd_set));
+>>>> +	WARN_ON(pmd_trans_huge(pmd_set));
+>>>> +	swp_convert = pmd_to_swp_entry(pmd_set);
+>>>> +	WARN_ON(swp_type(swp_set) != swp_type(swp_convert));
+>>>> +	WARN_ON(swp_offset(swp_set) != swp_offset(swp_convert));
+>>>> +	WARN_ON(pmd_present(pmd_clear));
+>>>> +	WARN_ON(pmd_trans_huge(pmd_clear));
+>>>> +	swp_convert = pmd_to_swp_entry(pmd_clear);
+>>>> +	WARN_ON(swp_type(swp_clear) != swp_type(swp_convert));
+>>>> +	WARN_ON(swp_offset(swp_clear) != swp_offset(swp_convert));
+>>>> +
+>>>> +	/* Now invalidate the pmd. */
+>>>> +	pmd_set = pmd_mkinvalid(pmd_set);
+>>>> +	pmd_clear = pmd_mkinvalid(pmd_clear);
+>>>
+>>> [    0.704452] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: invalid: pmd_set=f800000000000000, pmd_clear=7ffffffffe00e00
+>>>
+>>>> +
+>>>> +	/*
+>>>> +	 * Since its a swap pmd, invalidation should effectively be a noop and
+>>>> +	 * the checks we already did should give the same answer. Check the
+>>>> +	 * invalidation didn't corrupt any fields.
+>>>> +	 */
+>>>> +	WARN_ON(pmd_present(pmd_set));
+>>>> +	WARN_ON(pmd_trans_huge(pmd_set));
+>>>> +	swp_convert = pmd_to_swp_entry(pmd_set);
+>>>
+>>> [    0.706461] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: set: swp=7c03ffffffffffff (1f, 3ffffffffffff), convert=7c03ffffffffffff (1f, 3ffffffffffff)
+>>>
+>>>> +	WARN_ON(swp_type(swp_set) != swp_type(swp_convert));
+>>>> +	WARN_ON(swp_offset(swp_set) != swp_offset(swp_convert));
+>>>> +	WARN_ON(pmd_present(pmd_clear));
+>>>> +	WARN_ON(pmd_trans_huge(pmd_clear));
+>>>> +	swp_convert = pmd_to_swp_entry(pmd_clear);
+>>>
+>>> [    0.708841] debug_vm_pgtable: [swp_pmd_mkinvalid_tests  ]: clear: swp=0 (0, 0), convert=ff8 (0, ff8)
+>>>
+>>>> +	WARN_ON(swp_type(swp_clear) != swp_type(swp_convert));
+>>>> +	WARN_ON(swp_offset(swp_clear) != swp_offset(swp_convert));
+>>>
+>>> This line fails on x86_64.
+>>>
+>>> The logs show that the offset is indeed being corrupted by pmd_mkinvalid(); 0 -> 0xff8.
+>>>
+>>> I think this is due to x86's pmd_mkinvalid() assuming the pmd is present; pmd_flags() and pmd_pfn() do all sorts of weird and wonderful things.
+>>>
+>>> So does this take us full circle? Are we now back to modifying the core-mm to never call pmd_mkinvalid() on a non-present entry? If so, then I guess we should remove the arm64 fix from for-next/fixes.
+> 
+> If x86_64's pmd_mkinvalid() also corrupts swap entries, yes, your original fix
+> is better. I will dig into the x86 code more to figure out what goes wrong.
+> Last time, I only checked PAGE_* bits in these pmd|pte_* operations.
+> Sorry for the misinformation.
 
-Fixes: a7f8dedb4be2 ("Bluetooth: qca: add support for QCA2066")
-Cc: stable@vger.kernel.org	# 6.7
-Cc: Tim Jiang <quic_tjiang@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/bluetooth/btqca.c | 5 +++++
- 1 file changed, 5 insertions(+)
+No worries, I'll do the amends we originally agreed for the original fix and resend.
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index a508d79d9aaa..638074992c82 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -252,6 +252,11 @@ static int qca_read_fw_board_id(struct hci_dev *hdev, u16 *bid)
- 		goto out;
- 	}
- 
-+	if (skb->len < 3) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
-+
- 	*bid = (edl->data[1] << 8) + edl->data[2];
- 	bt_dev_dbg(hdev, "%s: bid = %x", __func__, *bid);
- 
--- 
-2.43.2
+> 
+>>>
+>>>> +}
+>>>> +#else
+>>>> +static void __init swp_pmd_mkinvalid_tests(struct pgtable_debug_args *args) { }
+>>>> +#endif /* !__HAVE_ARCH_PMDP_INVALIDATE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
+>>>> +
+>>>>  static void __init pmd_thp_tests(struct pgtable_debug_args *args)
+>>>>  {
+>>>>  	pmd_t pmd;
+>>>> @@ -982,6 +1041,8 @@ static void __init pmd_thp_tests(struct pgtable_debug_args *args)
+>>>>  	WARN_ON(!pmd_trans_huge(pmd_mkinvalid(pmd_mkhuge(pmd))));
+>>>>  	WARN_ON(!pmd_present(pmd_mkinvalid(pmd_mkhuge(pmd))));
+>>>>  #endif /* __HAVE_ARCH_PMDP_INVALIDATE */
+>>>> +
+>>>> +	swp_pmd_mkinvalid_tests(args);
+>>>>  }
+>>>>
+>>>>  #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> --
+>>>> 2.25.1
+>>>>
+>>>
+> 
+> 
+> --
+> Best Regards,
+> Yan, Zi
 
 
