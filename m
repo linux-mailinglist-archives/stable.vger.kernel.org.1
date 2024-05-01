@@ -1,123 +1,128 @@
-Return-Path: <stable+bounces-42844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8DC8B842E
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 04:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1526C8B843A
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 04:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 184581C223A0
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 02:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C9CE1C2254D
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 02:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B396410962;
-	Wed,  1 May 2024 02:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007A710A19;
+	Wed,  1 May 2024 02:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8QUIDFp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdxV+vmO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CEBEAF1;
-	Wed,  1 May 2024 02:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F30EAF1;
+	Wed,  1 May 2024 02:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714529430; cv=none; b=AHOdgyU0cHCKSuxfBoHk5Je25eElREVSLQe1dOUPWIv0foWP8JeB6wJUsC0Y9PdaaGUSLYPrvckU+Oz/qyNaEWD0zxh8fmZ7/GXdD0IUBm2CtCSqKyG1EYB2w5SllDDnrgnCme95G72d46TTRTSrbXUjRhNJgYKPBnAojtCSRGk=
+	t=1714529566; cv=none; b=ViscAgbKXcRoCQ8yRYa1NPzx1XS2TX+h1hqrqrUCO07wv/BYOpP1CBP++Y1E6q91E657qoVepbk5SQIDpdPVOCp+nLkil23N+4GpagVXTGVZCoDVrPagZCSdvHTs1cI3P1rZZFrhP5cKHVjF8Q/KruSEpLJG2CslQB01uPxoTF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714529430; c=relaxed/simple;
-	bh=d5Ly5JcruZX8uh7wnlyCoDFFtXTCh2J0+FlPRg8u98k=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=laSft9RN+71TvXWL6Mj/guFdtvdgSd3dv9hq2eY2mySYadrkL+SxiwZisQxWqDXPnoMrBmY/8FUHuOTnpbr0OQsNi03YBWtAxFz2jitV2swnV8EjhsEyKbm7fk9jy8ncqxQ1zC5fCOXVmgRdRsPTQMD5jrR3ACRUwRJzdjVUzVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8QUIDFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E2F52C4AF19;
-	Wed,  1 May 2024 02:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714529430;
-	bh=d5Ly5JcruZX8uh7wnlyCoDFFtXTCh2J0+FlPRg8u98k=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=c8QUIDFpN4ES+LwmZvuqh5nBKVzoSHmPoPIMIwJsS1IsRQBerpRmB5S14a9Mji2kb
-	 jc2rA6YydyhyFulSzSbEJmg2T0HfSJL8L9sXUC90nQmwqj5Cwtxu61GZOS8jjxmPQ4
-	 LTf+X15+6uhSF2V6+h9rnR7nST4B2pvX/h6EwLK96wT6fBMbiEgOKKgtJIJuAYy8Xh
-	 A6iOs0ljUFz1l0QHGQPalJ7vw5/pSyiJ3bNrK94e6rzxQZHYpBbyPIZjEN8KJVwmk7
-	 Ov9S+udbg4dblM8RNZ5yDLDepOJCn21AGoHKOjSoVH3ntyooFKFiHlW7yP/t7dUU11
-	 TCrTfVZg5Knbg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CF2A2C43616;
-	Wed,  1 May 2024 02:10:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1714529566; c=relaxed/simple;
+	bh=3BgS9/AJBLqIe6NZ23UzhVBM7IJQLJanQj1HJ7kcSj4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BPW1f05ieu4XGSYiqHl5eLd9KDPuuXEbcnnChferuoxzFLD8EflSS29ANSLy3vLrHqaX21oy4UxaHmEEv+X3I4fFM+x2TB4Z9Pt/RCLqT7p25x2tvCvOnz+hFob0sJtpGXWy5GGlXwE48gYCxH5eqMFAsgcearcx5HaQBGwTpfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdxV+vmO; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1e86d56b3bcso58728875ad.1;
+        Tue, 30 Apr 2024 19:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714529565; x=1715134365; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RLvimjdrO9Jqv7W4cDqyYmgShWy3d76V8PjiL+KAV50=;
+        b=JdxV+vmOM5ALUzNbhFsVFX896Y/CNG3FTlpoULdG817mO5M7fvfyThTiUcKgWTz01I
+         GPPOjy25TsGAscp2Lz7vhMizQ5GVFvIPucFD+1dC3EDjje39X7rBg4374VQE7/hDq8Bc
+         wSHZ6S0CUvQlTOLvt61Jj5GcyXZYw3K9gGe+y4/ddzYuN4Bb3nyf2MwitTvfu5YveJLz
+         obZiEGXXwj/x+MSe4aBmM4T/qE0oP0XoiaJ5sYe/nJqct3l7GEEAdNE5BOKr6t0CCbp/
+         jTHMfgSmxyHj8GLpmqZw4dX43O+yXmx+ndvpNhTgfj6et+V4ixnRiRiiIs27l9XjyCjy
+         l8Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714529565; x=1715134365;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RLvimjdrO9Jqv7W4cDqyYmgShWy3d76V8PjiL+KAV50=;
+        b=Np1KE8dfjEpS6MS8YrTZdNI6S7SrhBh6QzSaE9XoEBgglUSFXrrdJTw6/G7iRKB/mX
+         eYBbik01QhX7So93hABwVcpUl15JMpP/WgLCPOUBQdzjPJ/yaEcOEBGeXdTVh8qqVqar
+         uGeqR78mK6y/uxAaOrnlNCBOgcBOkg2WFDH3Qf/cPth3/8nTVhgtN5TJTdileYWQKnGA
+         ovonGNMUxtBi6rJ7HREnKaQOMcnRBp0DGI3Xe832iHV0nFfBcziyGIDUCeGvGdRN0Umr
+         IVmjLfFVWZa+EWVr93wSHISYa65dz+Tg7HzWHRp8RQDiTLnXvvd6qfK4nWG6IejedHdF
+         751w==
+X-Forwarded-Encrypted: i=1; AJvYcCW1d+DhDSpyJeXUd9/rgv6kxs6MMtQiGJxNpQug/CDlfmxDKCE6EnjtT7Pq1rU3gtlGLqXqloJlZ824LqRsBrr+v1GoPHN80m6GY3z1CcHPdd26UOzeNmotwis9dcCo7EgiWnH6
+X-Gm-Message-State: AOJu0Yzw+/fYKKeOkmvkkEWxp8+gH1CifMxxE+0IH60gRJQWzmZSjxKO
+	K5GqcI1ut98XoA39ixtd025ZGvdWmDKKkFDJtxPem6eefs10YLzj
+X-Google-Smtp-Source: AGHT+IFU1CNEHqsVmvSlgmR45wcV27Yx06nSSBXJ6JaF28LU8QLf+Y0xNiTeih6ek4z7354TpTJIMg==
+X-Received: by 2002:a17:902:ec85:b0:1ea:b125:befa with SMTP id x5-20020a170902ec8500b001eab125befamr1316439plg.55.1714529564636;
+        Tue, 30 Apr 2024 19:12:44 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id bi2-20020a170902bf0200b001e27ad5199csm23050397plb.281.2024.04.30.19.12.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Apr 2024 19:12:44 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 08E3518462BD2; Wed, 01 May 2024 09:12:41 +0700 (WIB)
+Date: Wed, 1 May 2024 09:12:41 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.8 000/228] 6.8.9-rc1 review
+Message-ID: <ZjGlGbF325nZTjIe@archie.me>
+References: <20240430103103.806426847@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] mptcp: ensure snd_nxt is properly initialized on
- connect
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171452942984.31721.7901556762643554206.git-patchwork-notify@kernel.org>
-Date: Wed, 01 May 2024 02:10:29 +0000
-References: <20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-v1-1-59ceac0a7dcb@kernel.org>
-In-Reply-To: <20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-v1-1-59ceac0a7dcb@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- dcaratti@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, cpaasch@apple.com
-
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 29 Apr 2024 20:00:31 +0200 you wrote:
-> From: Paolo Abeni <pabeni@redhat.com>
-> 
-> Christoph reported a splat hinting at a corrupted snd_una:
-> 
->   WARNING: CPU: 1 PID: 38 at net/mptcp/protocol.c:1005 __mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
->   Modules linked in:
->   CPU: 1 PID: 38 Comm: kworker/1:1 Not tainted 6.9.0-rc1-gbbeac67456c9 #59
->   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
->   Workqueue: events mptcp_worker
->   RIP: 0010:__mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
->   Code: be 06 01 00 00 bf 06 01 00 00 e8 a8 12 e7 fe e9 00 fe ff ff e8
->   	8e 1a e7 fe 0f b7 ab 3e 02 00 00 e9 d3 fd ff ff e8 7d 1a e7 fe
->   	<0f> 0b 4c 8b bb e0 05 00 00 e9 74 fc ff ff e8 6a 1a e7 fe 0f 0b e9
->   RSP: 0018:ffffc9000013fd48 EFLAGS: 00010293
->   RAX: 0000000000000000 RBX: ffff8881029bd280 RCX: ffffffff82382fe4
->   RDX: ffff8881003cbd00 RSI: ffffffff823833c3 RDI: 0000000000000001
->   RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
->   R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888138ba8000
->   R13: 0000000000000106 R14: ffff8881029bd908 R15: ffff888126560000
->   FS:  0000000000000000(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
->   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->   CR2: 00007f604a5dae38 CR3: 0000000101dac002 CR4: 0000000000170ef0
->   Call Trace:
->    <TASK>
->    __mptcp_clean_una_wakeup net/mptcp/protocol.c:1055 [inline]
->    mptcp_clean_una_wakeup net/mptcp/protocol.c:1062 [inline]
->    __mptcp_retrans+0x7f/0x7e0 net/mptcp/protocol.c:2615
->    mptcp_worker+0x434/0x740 net/mptcp/protocol.c:2767
->    process_one_work+0x1e0/0x560 kernel/workqueue.c:3254
->    process_scheduled_works kernel/workqueue.c:3335 [inline]
->    worker_thread+0x3c7/0x640 kernel/workqueue.c:3416
->    kthread+0x121/0x170 kernel/kthread.c:388
->    ret_from_fork+0x44/0x50 arch/x86/kernel/process.c:147
->    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
->    </TASK>
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] mptcp: ensure snd_nxt is properly initialized on connect
-    https://git.kernel.org/netdev/net/c/fb7a0d334894
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="D4r5PoDmW8atS8hS"
+Content-Disposition: inline
+In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
 
 
+--D4r5PoDmW8atS8hS
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Apr 30, 2024 at 12:36:18PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.8.9 release.
+> There are 228 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--D4r5PoDmW8atS8hS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZjGlFQAKCRD2uYlJVVFO
+o5FqAPoD1n/DIgEveWXfDbsxiyA5LKJGy4n7/x5mvX1m30jTDgEAnWfO5SuWF0cM
+qpKAoRkPth+GeeT+JNDRdwJhaXEjHAk=
+=F/Lb
+-----END PGP SIGNATURE-----
+
+--D4r5PoDmW8atS8hS--
 
