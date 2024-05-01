@@ -1,140 +1,127 @@
-Return-Path: <stable+bounces-42913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF01C8B8FD4
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 20:42:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 020E18B8FF6
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 21:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3B61C212C1
-	for <lists+stable@lfdr.de>; Wed,  1 May 2024 18:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1A41284572
+	for <lists+stable@lfdr.de>; Wed,  1 May 2024 19:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE888161319;
-	Wed,  1 May 2024 18:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nn2/p6Vz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDB71607BC;
+	Wed,  1 May 2024 19:10:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425FA160792;
-	Wed,  1 May 2024 18:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+Received: from cae.in-ulm.de (cae.in-ulm.de [217.10.14.231])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF836A039
+	for <stable@vger.kernel.org>; Wed,  1 May 2024 19:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.14.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714588904; cv=none; b=uE911LV6n06MOHZj1FoJBKxsJO528ve/9viVVDVJm8fM6yAgGazawpvNDDmbkQrxaYHlfPi1V5BXfneXGQYyZDiHPVq9A9pA66l1oQWYPPBhD+uNf5aAlNY8dbAbq0JjmRs9NNSsntYvEPvtoXeNyf+rMS669mUiHwFlrEdTXPA=
+	t=1714590652; cv=none; b=kmHUGJl8kzdBglLnsZtKfb/DzpYmJnEqwASxlMu0liW+nUspYuy4t0XjOMe0EFRkKnwUdlpbgbGaHPVIaRJ9qJOHecmjbgOHeqgzSAa9Zkpe5wv5Ch4ETyWZVMpUe+aaOMdy2JnVFcw3CKMC8xh/ny07nlMb+MlQXY7DT+FWWK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714588904; c=relaxed/simple;
-	bh=ldV6eqjMHkA7pnDuadciUlUSR7uxTFbU+t6uj07W7eI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUFq2BiMncagHybSrplF9aV8Ug3Q45LI1tv9i0T0iIYBqZcQmZ9fXiSEaPEcxfBnp6Z1jAoVmQTn+sJy/qiD9Oc5t3xBwSYouptU07TAuiyERX3aXipUDNS+G+XwFFNgVIqBKRpokybr0xxQbGWfe46YyEgOwQEGF/+Z/rqAz5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nn2/p6Vz; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-6123726725eso2977214a12.3;
-        Wed, 01 May 2024 11:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714588902; x=1715193702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DW1VTdjf59OCmHwHUuv17YshCq4zF3bx4JUMK1itBpU=;
-        b=nn2/p6VzblLgXXveAXmuM0GZ8ttbYKjHzy63+rD28ppn8EYxjwUWyJ3dJwGu8n+9ZJ
-         ljW7tu1v1PduOD28NVqdYnFOkabSEMVnRyFFi00J+XCWv66VJ+jsxnacTLvr/8iMP/eu
-         o+Xeunin/pEMAcZPti2BcLO5kksb5EGc0qdmNlGiSlkjimGH/lAxPDhiPLO5029QWz5K
-         vz6UxFUSP5MSD7Du/i+zVK4JxT9iVi4ZGRxUP14wU7Urm9/Mu+BP4X+g5k9MVKnGSxoX
-         v+EObKtvwHGVu2Tz0+UHhmaM/XYviw1XwxM4870tcpCHYsHd/IyspgBi/aKHuqcHBiNj
-         N5+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714588902; x=1715193702;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DW1VTdjf59OCmHwHUuv17YshCq4zF3bx4JUMK1itBpU=;
-        b=p57jEICib/mwbZsb3XdrTYz5kadffPzIIjCMIby/hGa520siF7ZVJk6Pxg4QYZWEM2
-         Zm+A1EwR23mOyeEX5Ou7nRRUXSP0rOrNPVjMK1PMQunDJ3FV1PWA4EYVxPWaBCwsKPBN
-         +ij4CYe9Nz2qqIxVakGdTF7riQtFjfy7MqiMbsK2l6JNCI3PZCQKv3MA8Xs7w3QBgTMl
-         15xo9jt+m5skBuj3IvqpmJX1ZA4wW4ugMfbX28ObZ8+nsx4B1xIWqjCmOvAyJU+phyDt
-         mcTCdqXJ/18IPej9ByVUH8s31Ika7Ks0szFIHjPKtbp8wtY2QQiU3n5XCsm7DepHFOch
-         6W0g==
-X-Gm-Message-State: AOJu0Yy0cktKt6vPsxUZ4iqk/OAj27QCKv5SJLlz9WrsCi7dth3IoAYe
-	KQwIYxixKGtK8a6yhAU3Xg1R72swpcVXkMIFiStwCcnQOf1HqGhuu95nMnoU
-X-Google-Smtp-Source: AGHT+IEe6HTzKvI9UWjzr7vPnrxNNtOLX4Q0TvBSE7akpFkhvXqdirUiJuGHP958u9owedhTPdHKzA==
-X-Received: by 2002:a05:6a21:31cc:b0:1af:4e95:ff3b with SMTP id zb12-20020a056a2131cc00b001af4e95ff3bmr3253982pzb.39.1714588902504;
-        Wed, 01 May 2024 11:41:42 -0700 (PDT)
-Received: from lrumancik.svl.corp.google.com ([2620:15c:2a3:200:9dbc:724d:6e88:fb08])
-        by smtp.gmail.com with ESMTPSA id j18-20020a62e912000000b006e681769ee0sm23687369pfh.145.2024.05.01.11.41.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 May 2024 11:41:42 -0700 (PDT)
-From: Leah Rumancik <leah.rumancik@gmail.com>
-To: stable@vger.kernel.org
-Cc: linux-xfs@vger.kernel.org,
-	amir73il@gmail.com,
-	chandan.babu@oracle.com,
-	fred@cloudflare.com,
-	Eric Sandeen <sandeen@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 24/24] xfs: short circuit xfs_growfs_data_private() if delta is zero
-Date: Wed,  1 May 2024 11:41:12 -0700
-Message-ID: <20240501184112.3799035-24-leah.rumancik@gmail.com>
-X-Mailer: git-send-email 2.45.0.rc1.225.g2a3ae87e7f-goog
-In-Reply-To: <20240501184112.3799035-1-leah.rumancik@gmail.com>
-References: <20240501184112.3799035-1-leah.rumancik@gmail.com>
+	s=arc-20240116; t=1714590652; c=relaxed/simple;
+	bh=xZcwA5ae7kJsF2KgtTHObgD2Q0PCsAhBUrTUOy0mWwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=axfBlzYqiu8aCobX/rkqf03IehH4/zWujPxwwvkVCiLi1SrJtmZ9rGnQutK/I2COrU4Oga6xVjTEg+e34kPClUSRcyu3yVkUmjdwrbo+NYcg1YYg27zlFHCYIiy2T2ZFztG5PfOJuYsLZbw00ITu6fzQ5xYsMnat2QZCqDEppz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de; spf=pass smtp.mailfrom=c--e.de; arc=none smtp.client-ip=217.10.14.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c--e.de
+Received: by cae.in-ulm.de (Postfix, from userid 1000)
+	id 614121403D1; Wed,  1 May 2024 21:10:42 +0200 (CEST)
+Date: Wed, 1 May 2024 21:10:42 +0200
+From: "Christian A. Ehrhardt" <lk@c--e.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 6.1 251/272] usb: typec: ucsi: Check for notifications
+ after init
+Message-ID: <ZjKTsuw2/ZyzVYtN@cae.in-ulm.de>
+References: <20240401152530.237785232@linuxfoundation.org>
+ <20240401152538.859016197@linuxfoundation.org>
+ <ZgsWLUHW8nqUv7pi@cae.in-ulm.de>
+ <2024040216-cahoots-gizzard-4ffb@gregkh>
+ <ZgugfCVW2j1Uwm4J@cae.in-ulm.de>
+ <2024040223-steerable-regretful-a9f9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024040223-steerable-regretful-a9f9@gregkh>
 
-From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 84712492e6dab803bf595fb8494d11098b74a652 ]
+Hi Greg,
 
-Although xfs_growfs_data() doesn't call xfs_growfs_data_private()
-if in->newblocks == mp->m_sb.sb_dblocks, xfs_growfs_data_private()
-further massages the new block count so that we don't i.e. try
-to create a too-small new AG.
+On Tue, Apr 02, 2024 at 09:52:47AM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Apr 02, 2024 at 08:06:52AM +0200, Christian A. Ehrhardt wrote:
+> > 
+> > Hi Greg,
+> > 
+> > On Tue, Apr 02, 2024 at 07:40:43AM +0200, Greg Kroah-Hartman wrote:
+> > > On Mon, Apr 01, 2024 at 10:16:45PM +0200, Christian A. Ehrhardt wrote:
+> > > > 
+> > > > Hi Greg,
+> > > > 
+> > > > On Mon, Apr 01, 2024 at 05:47:21PM +0200, Greg Kroah-Hartman wrote:
+> > > > > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > > > > 
+> > > > > ------------------
+> > > > > 
+> > > > > From: Christian A. Ehrhardt <lk@c--e.de>
+> > > > > 
+> > > > > commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
+> > > > > 
+> > > > > The completion notification for the final SET_NOTIFICATION_ENABLE
+> > > > > command during initialization can include a connector change
+> > > > > notification.  However, at the time this completion notification is
+> > > > > processed, the ucsi struct is not ready to handle this notification.
+> > > > > As a result the notification is ignored and the controller
+> > > > > never sends an interrupt again.
+> > > > > 
+> > > > > Re-check CCI for a pending connector state change after
+> > > > > initialization is complete. Adjust the corresponding debug
+> > > > > message accordingly.
+> > > > > 
+> > > > > Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+> > > > > Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > > > > Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+> > > > > Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+> > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > > ---
+> > > > >  drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
+> > > > >  1 file changed, 9 insertions(+), 1 deletion(-)
+> > > > 
+> > > > This change has an out of bounds memory access. Please drop it from
+> > > > the stable trees until a fix is available.
+> > > 
+> > > Shouldn't we get a fix for Linus's tree too?  Have I missed that
+> > > somewhere?  Or should this just be reverted now?
+> > 
+> > I posted the fix a few hours after sending this mail. It is here:
+> >     https://lore.kernel.org/all/20240401210515.1902048-1-lk@c--e.de/
+> > 
+> > Either this should be fast tracked to Linus or the original change
+> > reverted, yes.
+> 
+> I've dropped the offending commit from the stable queues now.  Once this
+> fix gets into Linus's tree, let us know and I will add both in then.
 
-This may lead to a delta of "0" in xfs_growfs_data_private(), so
-we end up in the shrink case and emit the EXPERIMENTAL warning
-even if we're not changing anything at all.
+The fix for
+    808a8b9e0b87 ("usb: typec: ucsi: Check for notifications after init")
+has hit Linus's tree as 
+    ce4c8d21054a ("usb: typec: ucsi: Fix connector check on init")
 
-Fix this by returning straightaway if the block delta is zero.
+There is no urgency but this is to let you know that the original commit
+is eligible for -stable again, provided that the follow up commit is
+backported, too.
 
-(nb: in older kernels, the result of entering the shrink case
-with delta == 0 may actually let an -ENOSPC escape to userspace,
-which is confusing for users.)
-
-Fixes: fb2fc1720185 ("xfs: support shrinking unused space in the last AG")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
----
- fs/xfs/xfs_fsops.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/fs/xfs/xfs_fsops.c b/fs/xfs/xfs_fsops.c
-index 13851c0d640b..332da0d7b85c 100644
---- a/fs/xfs/xfs_fsops.c
-+++ b/fs/xfs/xfs_fsops.c
-@@ -129,6 +129,10 @@ xfs_growfs_data_private(
- 	if (delta < 0 && nagcount < 2)
- 		return -EINVAL;
- 
-+	/* No work to do */
-+	if (delta == 0)
-+		return 0;
-+
- 	oagcount = mp->m_sb.sb_agcount;
- 	/* allocate the new per-ag structures */
- 	if (nagcount > oagcount) {
--- 
-2.45.0.rc1.225.g2a3ae87e7f-goog
-
+Best regards,
+Christian
 
