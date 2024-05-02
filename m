@@ -1,177 +1,95 @@
-Return-Path: <stable+bounces-42985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C5C8B9D22
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 17:15:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C178B9D65
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 17:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA9CD1C21D52
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 15:15:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5A67B21E27
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 15:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6F515B55D;
-	Thu,  2 May 2024 15:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AC515CD52;
+	Thu,  2 May 2024 15:29:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F95615B13F;
-	Thu,  2 May 2024 15:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C8115AACC;
+	Thu,  2 May 2024 15:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714662934; cv=none; b=d+/pfJvScT963yngEXn7Sx0WtJqc+u42qIYwS7RYCyA+lMBCcjQ0Y+d6IN+7uS0vpeP0ozN0hm/lD6QE0Eb5NssKkfDtq/w2QAWW6qt5TUYBtPrgvBuak3KS0F9c8YAcKLxRnE49i+1X278R0JK0jtNGZUjQ7xXHvkCjqCvNWAg=
+	t=1714663758; cv=none; b=czBQKJRYigD42xOruHnu1A/wEBeWCMbxJF1VPa96JvnyEU0cXH/cRRVufQlnhUuF9uxgPWcKDuiKkvNhieG8ajuw4fJLAKIPUJbJvC7zvPgaq93ujOdYZZ1J+wwFqOcNWuipJqMRBqUtCHffyfgNUUnr6izX+F1n5EglevMeDns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714662934; c=relaxed/simple;
-	bh=X3ZZVdZWOdcjoe18hYCSjWceXc6V6boUtWZbJa/y5Us=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=m0pS0ELkOrw2VjkNr/e6gUbMN1zqvOFm4GybJgeli8HixACoUc4wsUokDq0jcnh92T43Z3cc1JtbZZYy9q1t1PH++F/I0fn+4zXCRlkUQGiDNRdrYPfJzXu2WnTgBXAqkmvwgBsEaFkCV7mouziwKD3R5qxw8duekkd4dJhKsf4=
+	s=arc-20240116; t=1714663758; c=relaxed/simple;
+	bh=NbmtV0Lpae5Kt6tHaBmqxRRz2KjCUuAoY8gQ9gznMjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uXbb5gz+iTbPoTeM0dEjrrJLpm24QtXndLhAZwCTNSEOsAoN6jUgmJkZkSuRMqDF8iMyDmeW/lAF9U2kD55iFrdZn6o4/D/zvDt4SiuPGdEulcBDYZq9hdri1nhsYjo4Bd5Pq1q1bQ03CQC91j/T8KpjC7CkNma75xDFHtefCTo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77929C4AF50;
-	Thu,  2 May 2024 15:15:34 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1s2YAX-00000003IUh-0hxq;
-	Thu, 02 May 2024 11:16:21 -0400
-Message-ID: <20240502151621.029168056@goodmis.org>
-User-Agent: quilt/0.67
-Date: Thu, 02 May 2024 11:15:52 -0400
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242F2C113CC;
+	Thu,  2 May 2024 15:29:17 +0000 (UTC)
+Date: Thu, 2 May 2024 11:30:03 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org
-Subject: [PATCH v2 5/5] eventfs: Have "events" directory get permissions from its parent
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland
+ <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] tracefs: Reset permissions on remount if
+ permissions are options
+Message-ID: <20240502113003.73c0fe38@gandalf.local.home>
+In-Reply-To: <20240502151620.400578783@goodmis.org>
 References: <20240502151547.973653253@goodmis.org>
+	<20240502151620.400578783@goodmis.org>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On Thu, 02 May 2024 11:15:48 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-The events directory gets its permissions from the root inode. But this
-can cause an inconsistency if the instances directory changes its
-permissions, as the permissions of the created directories under it should
-inherit the permissions of the instances directory when directories under
-it are created.
+> +/*
+> + * On a remount of tracefs, if UID or GID options are set, then
+> + * the mount point inode permissions should be used.
+> + * Reset the saved permission flags appropriately.
+> + */
+> +void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid)
+> +{
+> +	struct eventfs_inode *ei = ti->private;
 
-Currently the behavior is:
+And I just realized there's a race here too :-p
 
- # cd /sys/kernel/tracing
- # chgrp 1002 instances
- # mkdir instances/foo
- # ls -l instances/foo
-[..]
- -r--r-----  1 root lkp  0 May  1 18:55 buffer_total_size_kb
- -rw-r-----  1 root lkp  0 May  1 18:55 current_tracer
- -rw-r-----  1 root lkp  0 May  1 18:55 error_log
- drwxr-xr-x  1 root root 0 May  1 18:55 events
- --w-------  1 root lkp  0 May  1 18:55 free_buffer
- drwxr-x---  2 root lkp  0 May  1 18:55 options
- drwxr-x--- 10 root lkp  0 May  1 18:55 per_cpu
- -rw-r-----  1 root lkp  0 May  1 18:55 set_event
+I need to set ti->private = NULL before freeing the ei, and probably free
+the ei via RCU.
 
-All the files and directories under "foo" has the "lkp" group except the
-"events" directory. That's because its getting its default value from the
-mount point instead of its parent.
-
-Have the "events" directory make its default value based on its parent's
-permissions. That now gives:
-
- # ls -l instances/foo
-[..]
- -rw-r-----  1 root lkp 0 May  1 21:16 buffer_subbuf_size_kb
- -r--r-----  1 root lkp 0 May  1 21:16 buffer_total_size_kb
- -rw-r-----  1 root lkp 0 May  1 21:16 current_tracer
- -rw-r-----  1 root lkp 0 May  1 21:16 error_log
- drwxr-xr-x  1 root lkp 0 May  1 21:16 events
- --w-------  1 root lkp 0 May  1 21:16 free_buffer
- drwxr-x---  2 root lkp 0 May  1 21:16 options
- drwxr-x--- 10 root lkp 0 May  1 21:16 per_cpu
- -rw-r-----  1 root lkp 0 May  1 21:16 set_event
-
-Cc: stable@vger.kernel.org
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- fs/tracefs/event_inode.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index ff4ee3dad56a..3ea32159d556 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -37,6 +37,7 @@ static DEFINE_MUTEX(eventfs_mutex);
- 
- struct eventfs_root_inode {
- 	struct eventfs_inode		ei;
-+	struct inode			*parent_inode;
- 	struct dentry			*events_dir;
- };
- 
-@@ -219,12 +220,23 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 
- static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
- {
--	struct inode *root;
-+	struct eventfs_root_inode *rei;
-+	struct inode *parent;
-+
-+	rei = get_root_inode(ei);
-+
-+	/* Use the parent inode permissions unless root set its permissions */
-+	parent = rei->parent_inode;
- 
--	/* Get the tracefs root inode. */
--	root = d_inode(sb->s_root);
--	ei->attr.uid = root->i_uid;
--	ei->attr.gid = root->i_gid;
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_UID)
-+		ei->attr.uid = rei->ei.attr.uid;
-+	else
-+		ei->attr.uid = parent->i_uid;
-+
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_GID)
-+		ei->attr.gid = rei->ei.attr.gid;
-+	else
-+		ei->attr.gid = parent->i_gid;
- }
- 
- static void set_top_events_ownership(struct inode *inode)
-@@ -810,6 +822,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	// Note: we have a ref to the dentry from tracefs_start_creating()
- 	rei = get_root_inode(ei);
- 	rei->events_dir = dentry;
-+	rei->parent_inode = d_inode(dentry->d_sb->s_root);
- 
- 	ei->entries = entries;
- 	ei->nr_entries = size;
-@@ -819,10 +832,15 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
--	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
- 
-+	/*
-+	 * When the "events" directory is created, it takes on the
-+	 * permissions of its parent. But can be reset on remount.
-+	 */
-+	ei->attr.mode |= EVENTFS_SAVE_UID | EVENTFS_SAVE_GID;
-+
- 	INIT_LIST_HEAD(&ei->children);
- 	INIT_LIST_HEAD(&ei->list);
- 
--- 
-2.43.0
+-- Steve
 
 
+> +
+> +	if (!ei)
+> +		return;
+> +
+> +	if (update_uid)
+> +		ei->attr.mode &= ~EVENTFS_SAVE_UID;
+> +
+> +	if (update_gid)
+> +		ei->attr.mode &= ~EVENTFS_SAVE_GID;
+> +
+> +	if (!ei->entry_attrs)
+> +		return;
+> +
+> +	for (int i = 0; i < ei->nr_entries; i++) {
+> +		if (update_uid)
+> +			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_UID;
+> +		if (update_gid)
+> +			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_GID;
+> +	}
+> +}
+> +
 
