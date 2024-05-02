@@ -1,177 +1,190 @@
-Return-Path: <stable+bounces-43001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FE38BA160
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 22:08:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A038BA292
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 23:45:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7E42866C7
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 20:08:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CE871C209AD
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 21:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C23181CEC;
-	Thu,  2 May 2024 20:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB0357CBA;
+	Thu,  2 May 2024 21:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CvnPyn+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53589181BAA;
-	Thu,  2 May 2024 20:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F1757CB5;
+	Thu,  2 May 2024 21:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714680499; cv=none; b=bjzLh+5nMlt3dpDX5lp4FCzhTO3ZM/EJH+WW4zGaxV/9FWHzU2JrU25+MiCwEtCP+QTI5/IpfJFd2Kkm8TfsQI4cl8hCsrHlpzot99wCug6KeCUIv+WBsgb7lJVTycM9JkH1/fKRrgGij74w0f3q3LRpSbRO5yw1k0awvtKypD0=
+	t=1714686183; cv=none; b=BuJZpFxRZziZsBnou0F/0rGgCYCR047XbSqKj9haho3Xla3BQDgUtSMIC2kJG3RuRG2T+e71GsuUtt+JrbtLg380dKft0/xDuj+vRWLji4Ew8gcYUxpkACoLUR+/4yMQG35v6IawFj9ioLo+k+Jyf6cAbXcv41ODZMFqwMq9rvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714680499; c=relaxed/simple;
-	bh=rxMqV71humHqtFXm6yRvythtULUic6ZGWZAjWEIS5Jo=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=IaPivQMgU3RgOpTOnbzRFua/BvLXGonvzuD+pCVBjumP2sK4FOClOOqCbkWoI3P5jtbFi1RmnPI1WIlSEMU/8MEqvIDoIF9TkWDMoc3y7kdR901xxbHiNWZp42NqlVZ7TW5XNrfnCLc+AlH5vCTun7xIDSnixQS8I4AhTMdrCvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4E2C4AF52;
-	Thu,  2 May 2024 20:08:19 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1s2cjq-00000003M6A-1G6Y;
-	Thu, 02 May 2024 16:09:06 -0400
-Message-ID: <20240502200906.161887248@goodmis.org>
-User-Agent: quilt/0.67
-Date: Thu, 02 May 2024 16:08:27 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org
-Subject: [PATCH v3 6/6] eventfs: Have "events" directory get permissions from its parent
-References: <20240502200821.125580570@goodmis.org>
+	s=arc-20240116; t=1714686183; c=relaxed/simple;
+	bh=hU0rwDyItfrpYEKW9APHQwJSc/rZVbSW7HMod3rGJt0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=EwSA+vn1oIUK6eqnMnmh9zl22lkpkCqAnoiLu416eNwJBt2guohD/EBt9iZkW7vaWcb6wIc1GlV9AtqIdYJrsGeXFqZNXGLOaRzlhBS21FtwkzRqi3qyTzeG56zdujiqpNE+AX4QN18dlXAmlZtIjkl/cZdoDbHBrdSHwoHnZTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CvnPyn+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC32C113CC;
+	Thu,  2 May 2024 21:43:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714686182;
+	bh=hU0rwDyItfrpYEKW9APHQwJSc/rZVbSW7HMod3rGJt0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=CvnPyn+EX/NmZZdNbjM4BI2Dj6j9krHnP/4y7s7t38FK34ToT1ExioKiJAF5wty7S
+	 eDuI5KsHBDz92OjB4uTIaMNTqbwSj9mpmRdCe85pONeDODTjMmgEUceQwPAv0ehEo7
+	 6LKNDDQMuUGPf3S7B3Roq797esg1ODWseJa1fmJ7qP/a2ihXbXZXn+essmLA3TN/Pd
+	 hjCngZ5RBqgECPah0fCRfDxa1q4mgDuldJi/yiSx1rQ28wIvoVxGj0peHYKt7d8R5x
+	 jryC1p6YtUorrnsDSumPBRRbmm1wPwF9AOIC8j+8HNDoFy/nSNoSZj9KW1lduN/2l2
+	 9woaFVdcsLPBg==
+Date: Thu, 2 May 2024 16:43:00 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: linux-pci@vger.kernel.org
+Cc: Mateusz Kaduk <mateusz.kaduk@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, Tj <linux@iam.tj>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] x86/pci: Skip early E820 check for ECAM region
+Message-ID: <20240502214300.GA1547650@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240417204012.215030-2-helgaas@kernel.org>
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On Wed, Apr 17, 2024 at 03:40:12PM -0500, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Arul, Mateusz, Imcarneiro91, and Aman reported a regression caused by
+> 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map").  On the
+> Lenovo Legion 9i laptop, that commit removes the area containing ECAM from
+> E820, which means the early E820 validation started failing, which meant we
+> didn't enable ECAM in the "early MCFG" path
+> 
+> The lack of ECAM caused many ACPI methods to fail, resulting in the
+> embedded controller, PS/2, audio, trackpad, and battery devices not being
+> detected.  The _OSC method also failed, so Linux could not take control of
+> the PCIe hotplug, PME, and AER features:
+> 
+>   # pci_mmcfg_early_init()
+> 
+>   PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
+>   PCI: not using ECAM ([mem 0xc0000000-0xce0fffff] not reserved)
+> 
+>   ACPI Error: AE_ERROR, Returned by Handler for [PCI_Config] (20230628/evregion-300)
+>   ACPI: Interpreter enabled
+>   ACPI: Ignoring error and continuing table load
+>   ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
+>   ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
+>   ACPI: Skipping parse of AML opcode: OpcodeName unavailable (0x0010)
+>   ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PC00.RP01._SB.PC00], AE_NOT_FOUND (20230628/dswload2-162)
+>   ACPI Error: AE_NOT_FOUND, During name lookup/catalog (20230628/psobject-220)
+>   ...
+>   ACPI Error: Aborting method \_SB.PC00._OSC due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
+>   acpi PNP0A08:00: _OSC: platform retains control of PCIe features (AE_NOT_FOUND)
+> 
+>   # pci_mmcfg_late_init()
+> 
+>   PCI: ECAM [mem 0xc0000000-0xce0fffff] (base 0xc0000000) for domain 0000 [bus 00-e0]
+>   PCI: [Firmware Info]: ECAM [mem 0xc0000000-0xce0fffff] not reserved in ACPI motherboard resources
+>   PCI: ECAM [mem 0xc0000000-0xce0fffff] is EfiMemoryMappedIO; assuming valid
+>   PCI: ECAM [mem 0xc0000000-0xce0fffff] reserved to work around lack of ACPI motherboard _CRS
+> 
+> Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be reserved by a PNP0C02
+> resource, but it need not be mentioned in E820, so we shouldn't look at
+> E820 to validate the ECAM space described by MCFG.
+> 
+> 946f2ee5c731 ("[PATCH] i386/x86-64: Check that MCFG points to an e820
+> reserved area") added a sanity check of E820 to work around buggy MCFG
+> tables, but that over-aggressive validation causes failures like this one.
+> 
+> Keep the E820 validation check only for older BIOSes (pre-2016) so the
+> buggy 2006-era machines don't break.  Skip the early E820 check for 2016
+> and newer BIOSes.
+> 
+> Fixes: 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map")
+> Reported-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
+> Reported-by: Arul <...>
+> Reported-by: Imcarneiro91 <...>
+> Reported-by: Aman <...>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218444
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Tested-by: Mateusz Kaduk <mateusz.kaduk@gmail.com>
+> Cc: stable@vger.kernel.org
 
-The events directory gets its permissions from the root inode. But this
-can cause an inconsistency if the instances directory changes its
-permissions, as the permissions of the created directories under it should
-inherit the permissions of the instances directory when directories under
-it are created.
+I applied this to pci/enumeration for v6.10, thanks everybody for
+your testing and review.
 
-Currently the behavior is:
-
- # cd /sys/kernel/tracing
- # chgrp 1002 instances
- # mkdir instances/foo
- # ls -l instances/foo
-[..]
- -r--r-----  1 root lkp  0 May  1 18:55 buffer_total_size_kb
- -rw-r-----  1 root lkp  0 May  1 18:55 current_tracer
- -rw-r-----  1 root lkp  0 May  1 18:55 error_log
- drwxr-xr-x  1 root root 0 May  1 18:55 events
- --w-------  1 root lkp  0 May  1 18:55 free_buffer
- drwxr-x---  2 root lkp  0 May  1 18:55 options
- drwxr-x--- 10 root lkp  0 May  1 18:55 per_cpu
- -rw-r-----  1 root lkp  0 May  1 18:55 set_event
-
-All the files and directories under "foo" has the "lkp" group except the
-"events" directory. That's because its getting its default value from the
-mount point instead of its parent.
-
-Have the "events" directory make its default value based on its parent's
-permissions. That now gives:
-
- # ls -l instances/foo
-[..]
- -rw-r-----  1 root lkp 0 May  1 21:16 buffer_subbuf_size_kb
- -r--r-----  1 root lkp 0 May  1 21:16 buffer_total_size_kb
- -rw-r-----  1 root lkp 0 May  1 21:16 current_tracer
- -rw-r-----  1 root lkp 0 May  1 21:16 error_log
- drwxr-xr-x  1 root lkp 0 May  1 21:16 events
- --w-------  1 root lkp 0 May  1 21:16 free_buffer
- drwxr-x---  2 root lkp 0 May  1 21:16 options
- drwxr-x--- 10 root lkp 0 May  1 21:16 per_cpu
- -rw-r-----  1 root lkp 0 May  1 21:16 set_event
-
-Cc: stable@vger.kernel.org
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- fs/tracefs/event_inode.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 6e08405892ae..a878cea70f4c 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -37,6 +37,7 @@ static DEFINE_MUTEX(eventfs_mutex);
- 
- struct eventfs_root_inode {
- 	struct eventfs_inode		ei;
-+	struct inode			*parent_inode;
- 	struct dentry			*events_dir;
- };
- 
-@@ -226,12 +227,23 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 
- static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
- {
--	struct inode *root;
-+	struct eventfs_root_inode *rei;
-+	struct inode *parent;
-+
-+	rei = get_root_inode(ei);
-+
-+	/* Use the parent inode permissions unless root set its permissions */
-+	parent = rei->parent_inode;
- 
--	/* Get the tracefs root inode. */
--	root = d_inode(sb->s_root);
--	ei->attr.uid = root->i_uid;
--	ei->attr.gid = root->i_gid;
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_UID)
-+		ei->attr.uid = rei->ei.attr.uid;
-+	else
-+		ei->attr.uid = parent->i_uid;
-+
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_GID)
-+		ei->attr.gid = rei->ei.attr.gid;
-+	else
-+		ei->attr.gid = parent->i_gid;
- }
- 
- static void set_top_events_ownership(struct inode *inode)
-@@ -817,6 +829,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	// Note: we have a ref to the dentry from tracefs_start_creating()
- 	rei = get_root_inode(ei);
- 	rei->events_dir = dentry;
-+	rei->parent_inode = d_inode(dentry->d_sb->s_root);
- 
- 	ei->entries = entries;
- 	ei->nr_entries = size;
-@@ -826,10 +839,15 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
--	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
- 
-+	/*
-+	 * When the "events" directory is created, it takes on the
-+	 * permissions of its parent. But can be reset on remount.
-+	 */
-+	ei->attr.mode |= EVENTFS_SAVE_UID | EVENTFS_SAVE_GID;
-+
- 	INIT_LIST_HEAD(&ei->children);
- 	INIT_LIST_HEAD(&ei->list);
- 
--- 
-2.43.0
-
-
+> ---
+>  arch/x86/pci/mmconfig-shared.c | 35 +++++++++++++++++++++++++++-------
+>  1 file changed, 28 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
+> index 0cc9520666ef..53c7afa606c3 100644
+> --- a/arch/x86/pci/mmconfig-shared.c
+> +++ b/arch/x86/pci/mmconfig-shared.c
+> @@ -518,7 +518,34 @@ static bool __ref pci_mmcfg_reserved(struct device *dev,
+>  {
+>  	struct resource *conflict;
+>  
+> -	if (!early && !acpi_disabled) {
+> +	if (early) {
+> +
+> +		/*
+> +		 * Don't try to do this check unless configuration type 1
+> +		 * is available.  How about type 2?
+> +		 */
+> +
+> +		/*
+> +		 * 946f2ee5c731 ("Check that MCFG points to an e820
+> +		 * reserved area") added this E820 check in 2006 to work
+> +		 * around BIOS defects.
+> +		 *
+> +		 * Per PCI Firmware r3.3, sec 4.1.2, ECAM space must be
+> +		 * reserved by a PNP0C02 resource, but it need not be
+> +		 * mentioned in E820.  Before the ACPI interpreter is
+> +		 * available, we can't check for PNP0C02 resources, so
+> +		 * there's no reliable way to verify the region in this
+> +		 * early check.  Keep it only for the old machines that
+> +		 * motivated 946f2ee5c731.
+> +		 */
+> +		if (dmi_get_bios_year() < 2016 && raw_pci_ops)
+> +			return is_mmconf_reserved(e820__mapped_all, cfg, dev,
+> +						  "E820 entry");
+> +
+> +		return true;
+> +	}
+> +
+> +	if (!acpi_disabled) {
+>  		if (is_mmconf_reserved(is_acpi_reserved, cfg, dev,
+>  				       "ACPI motherboard resource"))
+>  			return true;
+> @@ -554,12 +581,6 @@ static bool __ref pci_mmcfg_reserved(struct device *dev,
+>  	if (pci_mmcfg_running_state)
+>  		return true;
+>  
+> -	/* Don't try to do this check unless configuration
+> -	   type 1 is available. how about type 2 ?*/
+> -	if (raw_pci_ops)
+> -		return is_mmconf_reserved(e820__mapped_all, cfg, dev,
+> -					  "E820 entry");
+> -
+>  	return false;
+>  }
+>  
+> -- 
+> 2.34.1
+> 
 
