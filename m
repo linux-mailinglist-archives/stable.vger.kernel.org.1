@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-42945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899088B94D0
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 08:47:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23C18B94C4
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 08:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46238282F50
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 06:47:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72C8C1F22952
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 06:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499228F6D;
-	Thu,  2 May 2024 06:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7B41527BD;
+	Thu,  2 May 2024 06:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="yl/qs0VU"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="u+9HfPLx"
 X-Original-To: stable@vger.kernel.org
 Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4FE1CAAE;
-	Thu,  2 May 2024 06:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C673B8C15;
+	Thu,  2 May 2024 06:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714632449; cv=none; b=Bkzqdx8OXzavWse7FIVfBFCbwviO9swCaPLulfyUwq42l7RxmcrypRAAQjr1vAsQ82CmR/ayYtaEAJjc3d62x7scW29NxueYz0aqbSHWFe7kXapgQ1mh8dXvj3/BCmR36taDYnNY3Bo3zJNgx6Rx7TfiOFRpytAGaIXwvnIi+GI=
+	t=1714632072; cv=none; b=MjQanTbvZlHStKvtNVVGFq+RWeVGXjPMJenCBtXtU4kuTb2cNIQTguR8epF4RtBxM1YNpuM4a7TP06vT3QJ9+wu1UJVfAmcmT5SWwBsKDwj/OEEwy83H9ZDErPjX0fzevU0JG8GwbA4YP+kb/JeWZhZT9XdJ6LEMVAfIg+9i/Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714632449; c=relaxed/simple;
-	bh=8nrCqHmR8DI15VzIKjBKRM4ja7aQLPI8bwpgUN0NccA=;
+	s=arc-20240116; t=1714632072; c=relaxed/simple;
+	bh=y16Kulm7GuIB4w0cXKXc95gA3DzzCvHJ4ghEutGBNoE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EAC3F2SfeF8XCFHzctDmIVuELrkyHC8MTtc39atruyGNAHr48hiCza465tMnAxT74GJMiNnIQWdWSnHaXTt6lKM4WlKiUXmLyQ8PQfYCtAHpvY9pRkGYKMguZSzwwtQ6y2YlnNDKNJQVmXhs31j4+/lQbG6FYYsntu3SeO+a+f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=yl/qs0VU; arc=none smtp.client-ip=213.190.28.75
+	 In-Reply-To:Content-Type; b=dG+7+ulsIjSC9wShWSkgfiy8lyphuF8IJlFz+aLVQVpOnU8LkAhBPOztxZqCws9kx+8pjyVwNq3xoetFgPJZnmR7/GZK3AsaAZVNlCqPJKxkkKRIiFxpn1e+2SDdMqYjhuqhyH1t+j/ksSzedaM62a2YEh9FiFKsN6jCC21Ze3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=u+9HfPLx; arc=none smtp.client-ip=213.190.28.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1714631893;
+	s=dkim_2024-02-03; t=1714632066;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8nrCqHmR8DI15VzIKjBKRM4ja7aQLPI8bwpgUN0NccA=;
-	b=yl/qs0VUbvzyk5o1aXLXLSenJ+rz9Hxn0mrMmQSXDflrLmM++bulrv+qWq60zzNG8uooKp
-	uqHLDYS0L7uOX9BQ==
-Message-ID: <81f04913-36c5-4ef6-8089-abef9c458cab@hardfalcon.net>
-Date: Thu, 2 May 2024 08:38:12 +0200
+	bh=10wXGK1h2+gkH0wUgW6fYCI4MjswRALv+lI2lWqR/MA=;
+	b=u+9HfPLxQcb02xn6DyAByDQuCAqXs3Id4LBWnHxNpvzcDKg8iIhYJA5YvcSEc4hwCUTdyJ
+	ejOYvMEIsf+FafBQ==
+Message-ID: <c565faef-bf23-4704-a3e4-b95abd964e35@hardfalcon.net>
+Date: Thu, 2 May 2024 08:41:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 5.15 00/80] 5.15.158-rc1 review
+Subject: Re: [PATCH 6.1 000/110] 6.1.90-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -56,27 +56,33 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
  f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
  rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240430103043.397234724@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
 Content-Language: en-US
 From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <20240430103043.397234724@linuxfoundation.org>
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
 
-WzIwMjQtMDQtMzAgMTI6MzldIEdyZWcgS3JvYWgtSGFydG1hbjoNCj4gVGhpcyBpcyB0aGUg
-c3RhcnQgb2YgdGhlIHN0YWJsZSByZXZpZXcgY3ljbGUgZm9yIHRoZSA1LjE1LjE1OCByZWxl
-YXNlLg0KPiBUaGVyZSBhcmUgODAgcGF0Y2hlcyBpbiB0aGlzIHNlcmllcywgYWxsIHdpbGwg
-YmUgcG9zdGVkIGFzIGEgcmVzcG9uc2UNCj4gdG8gdGhpcyBvbmUuICBJZiBhbnlvbmUgaGFz
-IGFueSBpc3N1ZXMgd2l0aCB0aGVzZSBiZWluZyBhcHBsaWVkLCBwbGVhc2UNCj4gbGV0IG1l
-IGtub3cuDQo+IA0KPiBSZXNwb25zZXMgc2hvdWxkIGJlIG1hZGUgYnkgVGh1LCAwMiBNYXkg
-MjAyNCAxMDozMDoyNyArMDAwMC4NCj4gQW55dGhpbmcgcmVjZWl2ZWQgYWZ0ZXIgdGhhdCB0
-aW1lIG1pZ2h0IGJlIHRvbyBsYXRlLg0KDQpIaSwgNS4xNS4xNTgtcmMxIGlzIHJ1bm5pbmcg
-ZmluZSBvbiBhIE5ldGdlYXIgR1MxMDhUIHYzICh0aGUgU29DIGlzIGEgDQpSZWFsdGVrIFJU
-TDgzODBNLCB3aGljaCBoYXMgYSBNSVBTIDRLRWMgY29yZSkuDQoNCk5vdGUgdGhhdCBJIGhh
-dmUgKm5vdCogdGVzdGVkIGJ1aWxkaW5nIHRoZSBrZXJuZWwgZG9jdW1lbnRhdGlvbiwgYW5k
-IEkgDQpzdXNwZWN0IHRoYXQgYnVpbGRpbmcgdGhlIGRvY3VtZW50YXRpb24gd2l0aCBkb2N1
-dGlscyA+PSAwLjIxIHdvdWxkIA0KbGlrZWx5IGZhaWwgd2l0aG91dCB0aGUgcGF0Y2ggZnJv
-bQ0KDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvZmFmNWZhNDUtMmE5ZC00NTczLTlk
-MmUtMzkzMGJkYzFlZDY1QGdtYWlsLmNvbS8NCg0KVGVzdGVkLWJ5OiBQYXNjYWwgRXJuc3Rl
-ciA8Z2l0QGhhcmRmYWxjb24ubmV0Pg0KDQpSZWdhcmRzDQpQYXNjYWwNCg==
+[2024-04-30 12:39] Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.90 release.
+> There are 110 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 02 May 2024 10:30:27 +0000.
+> Anything received after that time might be too late.
+
+Hi, 6.1.90-rc1 is running fine on a TP-Link Archer C7 v4 (the SoC is a 
+Qualcomm Atheros QCA9563, which has a 74Kc MIPS core).
+
+Note that I have *not* tested building the kernel documentation, and I 
+suspect that building the documentation with docutils >= 0.21 would 
+likely fail without the patch from
+
+https://lore.kernel.org/all/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com/
+
+Tested-by: Pascal Ernster <git@hardfalcon.net>
+
+Regards
+Pascal
 
