@@ -1,179 +1,210 @@
-Return-Path: <stable+bounces-42992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1728B9F2C
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 19:04:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673BD8B9F91
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 19:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B7072822F2
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 17:04:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8ED91F23FFF
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 17:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3DA15D5C4;
-	Thu,  2 May 2024 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89080171064;
+	Thu,  2 May 2024 17:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="a9Ys72wr"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GBt2AHgZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056811E89C;
-	Thu,  2 May 2024 17:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B7728FC;
+	Thu,  2 May 2024 17:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714669446; cv=none; b=Nq04RgfMniT8JWOuvhPkYYl/nwy7xmOhBxnH3KQjNTVDYReQ2QUTOPAMwqmy0e6/4tTPuSYCKLzeSnNVUoPoLvObDM4SHixz/klXnzTVoklAImTC5h5IWuoyHgMHiYiZ+TX/N0VfiWWmOCD5cYtAfdXZsi3QBwjB3GUFZK0yqhQ=
+	t=1714671176; cv=none; b=KZpgOINhvIQ5cq0LtE3yjQ3FluysqfcGZtK/blqlbPfPZbf5ksDLMftbSLwNjipjPvmZtP53+ujP8z1CdhNylWkL5vBTqv5XWCMpsbyKQdJBpxS61RR14TYFvnIDc75nBnYAwvoW00phk6aVldG3ppAbcxzLpAxBPYtA2nz7K00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714669446; c=relaxed/simple;
-	bh=oB0RDrDEtIWjVLq73ce+CqrzXi7+LNH3HONQYWQccgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=HeNO2RXTT3TCJunZZHndekwUwucVC9pzWV0OAlAamu75oxNQdSwJ2WO4NAuLpA187fBfnEMIQnVJZCC3Pl+MUj1LDkg8OXuH1roZtJOV4y+ZrafF3H6j2AuABUa+TeBUYGLzGTQ5YUjqb7kXwxOcKGcJ0JLU0Ho1pv+3jC1d9DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=a9Ys72wr; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 442CUgrn001262;
-	Thu, 2 May 2024 17:03:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=nsEoOqa3rM/YYYL2nhbF7/zMl102FfnPV6U/C/sL1V0=; b=a9
-	Ys72wrxwzaGTbIInPzwPzoWaFgFvTWR+gHwLcwXTQMzu4uiH41AWHkXg1QN7b6S2
-	m5K0aHnTYTBhu34c4Gb6+PPfAl3CQTt7tiKHkwn7iLdVDkJdj9Y01gJYdCqOZ2VX
-	7eA9dsindUYhHOoo28DlMTjgRJxQT82BQZvS07hmbH5WSEsgVPvuIi07VUyakbxo
-	EAJxHRM7LAk/vyEL7JBF9m8ZtnRFV9cU7vr8/eFvEpi5Ip+CHi5OaQh7PjvAvaPq
-	ZomJcRWxJoxdVyhIuo6Fenlin4MaDu89q2Y01Qwy1s5tM1B0U40Zp4cnm11TRJMp
-	y4h5+Igjs3nqG0s8b2zQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xvawbgn0y-1
+	s=arc-20240116; t=1714671176; c=relaxed/simple;
+	bh=LaCvykQvdmUOuzSwHmR3Avj+B1lxgk4vwyJwgGxaceo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rLUF6hQlX/iKdjM+PKXdV3+t566PWuEsVz1JKBPX4XJGpVQilnALJZ6pKiEKWEUwqTOsxJ62oUh9FH9z6wSAuZvZVGB8NFrZyVEktf6lFGRwVwKuz7TPoN+fOPAQkqif+pq6TWV5Cl5v+LFQT6itwoveQEJ75/BLt653VJXpqy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GBt2AHgZ; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 442HRCti021266;
+	Thu, 2 May 2024 17:32:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=JIL5lk6UNm+SMBzpIAyATQq6e3XKM7ByRDdvdp+Nd6U=;
+ b=GBt2AHgZy2ljW+aV4fCT/SgKow/iYqbWiusf4yRCqk/Z4b4nlO8dYhquVDp2Kds8FLqn
+ CI76xWPfVSd1WjGyzfNoXMejjii3/iZKJiFIqeFoZTbtzbSFKRbDiQ/ck90jIzGmZcKa
+ gCliM7lhw6sIPDVCDCXuvTD/h81CIb4AeJay//Mm3A7OUvqgcB+FXvux/SWixZ1iBACe
+ W0laFeQTPR5RaLdUh6jvHZMBBSyB8+bfHatBk4qsHEEQB4bc983z8FunJmWHc6A6l7k+
+ TeaOTLUoESXpR9NHXNdE7hlvvqDKEyHjLVQSa8nM2O5WfsWneNGpV77Hssfc2qkkU3fm Sw== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xvf87r0eb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 May 2024 17:03:54 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 442H3q4X007059
+	Thu, 02 May 2024 17:32:14 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 442EsJdi027556;
+	Thu, 2 May 2024 17:32:13 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xsc30sc95-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 2 May 2024 17:03:52 GMT
-Received: from [10.216.32.214] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 2 May 2024
- 10:03:48 -0700
-Message-ID: <1feddcbc-205d-4c9b-bde2-7a2daace71a9@quicinc.com>
-Date: Thu, 2 May 2024 22:33:34 +0530
+	Thu, 02 May 2024 17:32:13 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 442HW9wO30605740
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 May 2024 17:32:11 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A65BF20065;
+	Thu,  2 May 2024 17:32:09 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E144F2004D;
+	Thu,  2 May 2024 17:32:06 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.113.195])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 May 2024 17:32:06 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Martin KaFai Lau <martin.lau@linux.dev>, stable@vger.kernel.org
+Subject: [PATCH v4 1/2] powerpc64/bpf: fix tail calls for PCREL addressing
+Date: Thu,  2 May 2024 23:02:04 +0530
+Message-ID: <20240502173205.142794-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
-Content-Language: en-US
-To: Johan Hovold <johan@kernel.org>
-CC: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Doug Anderson
-	<dianders@chromium.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        "Marcel
- Holtmann" <marcel@holtmann.org>,
-        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, <quic_mohamull@quicinc.com>,
-        <quic_hbandi@quicinc.com>, <quic_anubhavg@quicinc.com>
-References: <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
- <ZizKmtcUIYAMpvOQ@hovoldconsulting.com>
- <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
- <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
- <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
- <CABBYNZJyRR9FA7TYN4+aWMtG9FPUBWMvCtMNUfvaEzxVcYOt-g@mail.gmail.com>
- <ZjCYu2pc8376rjXk@hovoldconsulting.com>
- <9eebd77b-c070-4260-a979-9b97f14eb5b1@quicinc.com>
- <ZjDtDRCHT3z-3nHh@hovoldconsulting.com>
- <a09ab4e3-699b-4eb7-bc64-44c9de6db78d@quicinc.com>
- <ZjNm3OnJ1fdHctaZ@hovoldconsulting.com>
-From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-In-Reply-To: <ZjNm3OnJ1fdHctaZ@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: -baOKr0WZWNnEEIPczUwcRvzZccyNcB2
-X-Proofpoint-ORIG-GUID: -baOKr0WZWNnEEIPczUwcRvzZccyNcB2
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jYrSV768ZNXbY9FSJdfTlD6fTHVxz4kW
+X-Proofpoint-GUID: jYrSV768ZNXbY9FSJdfTlD6fTHVxz4kW
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-02_08,2024-05-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- malwarescore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405020111
+ definitions=2024-05-02_09,2024-05-02_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 clxscore=1011
+ impostorscore=0 spamscore=0 bulkscore=0 mlxscore=0 adultscore=0
+ phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2404010000 definitions=main-2405020115
 
-Hi Johan,
+With PCREL addressing, there is no kernel TOC. So, it is not setup in
+prologue when PCREL addressing is used. But the number of instructions
+to skip on a tail call was not adjusted accordingly. That resulted in
+not so obvious failures while using tailcalls. 'tailcalls' selftest
+crashed the system with the below call trace:
 
-On 5/2/2024 3:41 PM, Johan Hovold wrote:
-> On Thu, May 02, 2024 at 12:35:19PM +0530, Janaki Ramaiah Thota wrote:
->> On 4/30/2024 6:37 PM, Johan Hovold wrote:
-> 
->>> But here we disagree. A non-unique address is not a valid one as it will
->>> cause collisions if you have more than one such controller.
->>>
->>> I understand that this may be convenient/good enough for developers in
->>> some cases, but this can hurt end users that do not realise why things
->>> break.
->>>
->>> And a developer can always configure an address manually or patch the
->>> driver as needed for internal use.
->>>
->>> Are there any other reasons that makes you want to keep the option to
->>> configure the device address through NVM files? I'm assuming you're not
->>> relying on patching NVM files to provision device-specific addresses
->>> after installation on target?
-> 
->> We prefer unique address to be flashed on OTP (persistent) memory of
->> BT-Chip, which is supported by almost all QC BT-chips.
-> 
-> Yes, that is certainly the best option for everyone.
-> 
->> If someone is not able to do that/ does not prefer that, they still
->> have an option to flash unique address in firmware binary (NVM)file.
->> This does not require setting BD address from user space.
->>
->> Also until a developer flashes OTP/ keep unique BD-Address in NVM,
->> he should be able to run most of the use cases from Device, that's
->> why we want to make it as configured.
-> 
-> Ok, but a developer can still do this since they can patch the driver to
-> disable the check temporarily or, alternatively, just update the
-> devicetree with a valid unique address.
-> 
->> In our opinion this provides best Out of box experience.
-> 
+  bpf_test_run+0xe8/0x3cc (unreliable)
+  bpf_prog_test_run_skb+0x348/0x778
+  __sys_bpf+0xb04/0x2b00
+  sys_bpf+0x28/0x38
+  system_call_exception+0x168/0x340
+  system_call_vectored_common+0x15c/0x2ec
 
-If a developer has to patch a code/update device-tree, that is not
-a "out of box" experience. By "out of box" we meant, things should
-work without much changes required.
+Also, as bpf programs are always module addresses and a bpf helper in
+general is a core kernel text address, using PC relative addressing
+often fails with "out of range of pcrel address" error. Switch to
+using kernel base for relative addressing to handle this better.
 
-> You can also look into improving support in user space (e.g. bluez) for
-> providing a valid unique address in a simple text-based configuration
-> file.
-> 
+Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
 
-We don't think putting a must-have dependency in user space is the
-right thing to do, especially when we own a code in kernel space.
+* Changes in v4:
+  - Fix out of range errors by switching to kernelbase instead of PC
+    for relative addressing.
 
-> That would be useful for all Linux users and not require having access
-> to Qualcomm specific tools to update the NVM configuration file (which
-> could also be in a read-only file system, e.g. on Android).
-> 
+* Changes in v3:
+  - New patch to fix tailcall issues with PCREL addressing.
 
-Having a non-unique valid address allows a developer to handle all
-scenarios where he/she is dealing with DUT + commercial device and
-in such case, default BD-Address from nvm file should also be okay.
-Only when 2/more similar devices are in the mix, they need unique
-address. In that case we are providing end developers with a NVM
-utility(part of Qcom build Not open source tool)to change this
-default BD-Address.
 
-> Johan
+ arch/powerpc/net/bpf_jit_comp64.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
--Janaki Ram
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index 79f23974a320..4de08e35e284 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -202,7 +202,8 @@ void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
+ 	EMIT(PPC_RAW_BLR());
+ }
+ 
+-static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u64 func)
++static int
++bpf_jit_emit_func_call_hlp(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
+ {
+ 	unsigned long func_addr = func ? ppc_function_entry((void *)func) : 0;
+ 	long reladdr;
+@@ -211,19 +212,20 @@ static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u
+ 		return -EINVAL;
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)) {
+-		reladdr = func_addr - CTX_NIA(ctx);
++		reladdr = func_addr - local_paca->kernelbase;
+ 
+ 		if (reladdr >= (long)SZ_8G || reladdr < -(long)SZ_8G) {
+-			pr_err("eBPF: address of %ps out of range of pcrel address.\n",
+-				(void *)func);
++			pr_err("eBPF: address of %ps out of range of 34-bit relative address.\n",
++			       (void *)func);
+ 			return -ERANGE;
+ 		}
+-		/* pla r12,addr */
+-		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(1) | IMM_H18(reladdr));
+-		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | IMM_L(reladdr));
+-		EMIT(PPC_RAW_MTCTR(_R12));
+-		EMIT(PPC_RAW_BCTR());
+-
++		EMIT(PPC_RAW_LD(_R12, _R13, offsetof(struct paca_struct, kernelbase)));
++		/* Align for subsequent prefix instruction */
++		if (!IS_ALIGNED((unsigned long)fimage + CTX_NIA(ctx), 8))
++			EMIT(PPC_RAW_NOP());
++		/* paddi r12,r12,addr */
++		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(0) | IMM_H18(reladdr));
++		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | ___PPC_RA(_R12) | IMM_L(reladdr));
+ 	} else {
+ 		reladdr = func_addr - kernel_toc_addr();
+ 		if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
+@@ -233,9 +235,9 @@ static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u
+ 
+ 		EMIT(PPC_RAW_ADDIS(_R12, _R2, PPC_HA(reladdr)));
+ 		EMIT(PPC_RAW_ADDI(_R12, _R12, PPC_LO(reladdr)));
+-		EMIT(PPC_RAW_MTCTR(_R12));
+-		EMIT(PPC_RAW_BCTRL());
+ 	}
++	EMIT(PPC_RAW_MTCTR(_R12));
++	EMIT(PPC_RAW_BCTRL());
+ 
+ 	return 0;
+ }
+@@ -285,7 +287,7 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
+ 	int b2p_index = bpf_to_ppc(BPF_REG_3);
+ 	int bpf_tailcall_prologue_size = 8;
+ 
+-	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
++	if (!IS_ENABLED(CONFIG_PPC_KERNEL_PCREL) && IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2))
+ 		bpf_tailcall_prologue_size += 4; /* skip past the toc load */
+ 
+ 	/*
+@@ -993,7 +995,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 				return ret;
+ 
+ 			if (func_addr_fixed)
+-				ret = bpf_jit_emit_func_call_hlp(image, ctx, func_addr);
++				ret = bpf_jit_emit_func_call_hlp(image, fimage, ctx, func_addr);
+ 			else
+ 				ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
+ 
+-- 
+2.44.0
+
 
