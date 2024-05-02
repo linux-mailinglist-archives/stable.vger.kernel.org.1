@@ -1,94 +1,179 @@
-Return-Path: <stable+bounces-42991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E638B9E68
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 18:21:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1728B9F2C
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 19:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 769AC1C2298D
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 16:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B7072822F2
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 17:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BDE15E5B7;
-	Thu,  2 May 2024 16:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3DA15D5C4;
+	Thu,  2 May 2024 17:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="YrIFh892"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="a9Ys72wr"
 X-Original-To: stable@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74A714A634;
-	Thu,  2 May 2024 16:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056811E89C;
+	Thu,  2 May 2024 17:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714666872; cv=none; b=uEYWGE4+yFEoSe/SQoOLXpwqU9YlvrtAXTfTPReDiXMEJMjG4XxT9/5fh6SsbOJlSId8VSYkSPP+H0LAobaJl0qJZPairXbzcqWfr7LtStNEsZMp3AvQkhGS1xyaqPpE1gh/P4BBWiWcaavGHCva1MfGSUycwdEJb2f8NdYXSug=
+	t=1714669446; cv=none; b=Nq04RgfMniT8JWOuvhPkYYl/nwy7xmOhBxnH3KQjNTVDYReQ2QUTOPAMwqmy0e6/4tTPuSYCKLzeSnNVUoPoLvObDM4SHixz/klXnzTVoklAImTC5h5IWuoyHgMHiYiZ+TX/N0VfiWWmOCD5cYtAfdXZsi3QBwjB3GUFZK0yqhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714666872; c=relaxed/simple;
-	bh=Z05WgU3aafLprgYV9IDNlMX9MUGyo1Jra7XKiJMpEHI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=m3Bdv2+yu6HuX5S8OcLktvepRwhio/hCU+G92JtOg3W72y2YcDNg1ZVXs+DzvcC2dZV5UjB6cw11zD0Aqyt7DGIB92iFK+XGcKvxq6Z7PfDhVzh8JDQwIfO4c4n4N0LTeFPqueeW3VLux0s2MmyDSn4VzkMqpq8397TeckbaF+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=YrIFh892; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B170947C39
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1714666869; bh=XMrTBMGLBVTy6sqrL3KsBhAdRcCXU7B5G0Wg6k9C0HM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YrIFh8925mWjDSdAqOvl4dt9FupkIPQbxNYQVv+ECsl4325j3DdLByH1BpF/Ik0yE
-	 tSzaM1ckgEOgz2wKPQecnVtcWH5KRhrJlkum8mW2GOyV6V56Ei+IhRU4oEx5/pY7Ju
-	 2oufhSRw1+1w4Mg//H1k04qJgrCL2IDl2AKrK8S/Hd0eg7FBvxGbM2igjOzEt2MEER
-	 VqlJGqanwzL+cBTXm5V3+wFsSh/LxGHxz5fBWP21aKbOeyt/6D4u8yO5SUqh6HzETW
-	 bUiAKFEES62jWx6WykwtXT1pt6lvOzxaQwmu8X9uFODW8axVwwJCa00PaMdD5Giv/i
-	 NkAZ3Xf8dmMnw==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id B170947C39;
-	Thu,  2 May 2024 16:21:09 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: "Bird, Tim" <Tim.Bird@sony.com>, Greg KroahHartman
- <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "workflows@vger.kernel.org" <workflows@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] docs: stable-kernel-rules: fix typo sent->send
-In-Reply-To: <SA3PR13MB63726A746C847D7C0919C25BFD162@SA3PR13MB6372.namprd13.prod.outlook.com>
-References: <SA3PR13MB63726A746C847D7C0919C25BFD162@SA3PR13MB6372.namprd13.prod.outlook.com>
-Date: Thu, 02 May 2024 10:21:08 -0600
-Message-ID: <877cgc6v7v.fsf@meer.lwn.net>
+	s=arc-20240116; t=1714669446; c=relaxed/simple;
+	bh=oB0RDrDEtIWjVLq73ce+CqrzXi7+LNH3HONQYWQccgY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HeNO2RXTT3TCJunZZHndekwUwucVC9pzWV0OAlAamu75oxNQdSwJ2WO4NAuLpA187fBfnEMIQnVJZCC3Pl+MUj1LDkg8OXuH1roZtJOV4y+ZrafF3H6j2AuABUa+TeBUYGLzGTQ5YUjqb7kXwxOcKGcJ0JLU0Ho1pv+3jC1d9DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=a9Ys72wr; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 442CUgrn001262;
+	Thu, 2 May 2024 17:03:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=nsEoOqa3rM/YYYL2nhbF7/zMl102FfnPV6U/C/sL1V0=; b=a9
+	Ys72wrxwzaGTbIInPzwPzoWaFgFvTWR+gHwLcwXTQMzu4uiH41AWHkXg1QN7b6S2
+	m5K0aHnTYTBhu34c4Gb6+PPfAl3CQTt7tiKHkwn7iLdVDkJdj9Y01gJYdCqOZ2VX
+	7eA9dsindUYhHOoo28DlMTjgRJxQT82BQZvS07hmbH5WSEsgVPvuIi07VUyakbxo
+	EAJxHRM7LAk/vyEL7JBF9m8ZtnRFV9cU7vr8/eFvEpi5Ip+CHi5OaQh7PjvAvaPq
+	ZomJcRWxJoxdVyhIuo6Fenlin4MaDu89q2Y01Qwy1s5tM1B0U40Zp4cnm11TRJMp
+	y4h5+Igjs3nqG0s8b2zQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xvawbgn0y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 May 2024 17:03:54 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 442H3q4X007059
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 2 May 2024 17:03:52 GMT
+Received: from [10.216.32.214] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 2 May 2024
+ 10:03:48 -0700
+Message-ID: <1feddcbc-205d-4c9b-bde2-7a2daace71a9@quicinc.com>
+Date: Thu, 2 May 2024 22:33:34 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Bluetooth: qca: generalise device address check
+Content-Language: en-US
+To: Johan Hovold <johan@kernel.org>
+CC: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Doug Anderson
+	<dianders@chromium.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        "Marcel
+ Holtmann" <marcel@holtmann.org>,
+        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, <quic_mohamull@quicinc.com>,
+        <quic_hbandi@quicinc.com>, <quic_anubhavg@quicinc.com>
+References: <CAD=FV=V-pG9+5fLonNvydmjS=ziUFUHAyF8T7YTkEHiO405aSA@mail.gmail.com>
+ <ZizKmtcUIYAMpvOQ@hovoldconsulting.com>
+ <dbba45d2-f955-4d3a-aeab-26b0900d5823@quicinc.com>
+ <Zi-ohCWv58d2h5VM@hovoldconsulting.com>
+ <CABBYNZJyqrNKebwPPPqjOAdrkpBJ0fqHyD2iVtypeQKCDcL+AQ@mail.gmail.com>
+ <CABBYNZJyRR9FA7TYN4+aWMtG9FPUBWMvCtMNUfvaEzxVcYOt-g@mail.gmail.com>
+ <ZjCYu2pc8376rjXk@hovoldconsulting.com>
+ <9eebd77b-c070-4260-a979-9b97f14eb5b1@quicinc.com>
+ <ZjDtDRCHT3z-3nHh@hovoldconsulting.com>
+ <a09ab4e3-699b-4eb7-bc64-44c9de6db78d@quicinc.com>
+ <ZjNm3OnJ1fdHctaZ@hovoldconsulting.com>
+From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+In-Reply-To: <ZjNm3OnJ1fdHctaZ@hovoldconsulting.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -baOKr0WZWNnEEIPczUwcRvzZccyNcB2
+X-Proofpoint-ORIG-GUID: -baOKr0WZWNnEEIPczUwcRvzZccyNcB2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-02_08,2024-05-02_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ malwarescore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 adultscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2405020111
 
-"Bird, Tim" <Tim.Bird@sony.com> writes:
+Hi Johan,
 
-> Change 'sent' to 'send'
->
-> Signed-off-by: Tim Bird <tim.bird@sony.com>
-> ---
->  Documentation/process/stable-kernel-rules.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/process/stable-kernel-rules.rst b/Documentation/process/stable-kernel-rules.rst
-> index 1704f1c686d0..3178bef6fca3 100644
-> --- a/Documentation/process/stable-kernel-rules.rst
-> +++ b/Documentation/process/stable-kernel-rules.rst
-> @@ -78,7 +78,7 @@ in the sign-off area. Once the patch is mainlined it will be applied to the
->  stable tree without anything else needing to be done by the author or
->  subsystem maintainer.
->  
-> -To sent additional instructions to the stable team, use a shell-style inline
-> +To send additional instructions to the stable team, use a shell-style inline
->  comment:
+On 5/2/2024 3:41 PM, Johan Hovold wrote:
+> On Thu, May 02, 2024 at 12:35:19PM +0530, Janaki Ramaiah Thota wrote:
+>> On 4/30/2024 6:37 PM, Johan Hovold wrote:
+> 
+>>> But here we disagree. A non-unique address is not a valid one as it will
+>>> cause collisions if you have more than one such controller.
+>>>
+>>> I understand that this may be convenient/good enough for developers in
+>>> some cases, but this can hurt end users that do not realise why things
+>>> break.
+>>>
+>>> And a developer can always configure an address manually or patch the
+>>> driver as needed for internal use.
+>>>
+>>> Are there any other reasons that makes you want to keep the option to
+>>> configure the device address through NVM files? I'm assuming you're not
+>>> relying on patching NVM files to provision device-specific addresses
+>>> after installation on target?
+> 
+>> We prefer unique address to be flashed on OTP (persistent) memory of
+>> BT-Chip, which is supported by almost all QC BT-chips.
+> 
+> Yes, that is certainly the best option for everyone.
+> 
+>> If someone is not able to do that/ does not prefer that, they still
+>> have an option to flash unique address in firmware binary (NVM)file.
+>> This does not require setting BD address from user space.
+>>
+>> Also until a developer flashes OTP/ keep unique BD-Address in NVM,
+>> he should be able to run most of the use cases from Device, that's
+>> why we want to make it as configured.
+> 
+> Ok, but a developer can still do this since they can patch the driver to
+> disable the check temporarily or, alternatively, just update the
+> devicetree with a valid unique address.
+> 
+>> In our opinion this provides best Out of box experience.
+> 
 
-Applied, thanks.
+If a developer has to patch a code/update device-tree, that is not
+a "out of box" experience. By "out of box" we meant, things should
+work without much changes required.
 
-jon
+> You can also look into improving support in user space (e.g. bluez) for
+> providing a valid unique address in a simple text-based configuration
+> file.
+> 
+
+We don't think putting a must-have dependency in user space is the
+right thing to do, especially when we own a code in kernel space.
+
+> That would be useful for all Linux users and not require having access
+> to Qualcomm specific tools to update the NVM configuration file (which
+> could also be in a read-only file system, e.g. on Android).
+> 
+
+Having a non-unique valid address allows a developer to handle all
+scenarios where he/she is dealing with DUT + commercial device and
+in such case, default BD-Address from nvm file should also be okay.
+Only when 2/more similar devices are in the mix, they need unique
+address. In that case we are providing end developers with a NVM
+utility(part of Qcom build Not open source tool)to change this
+default BD-Address.
+
+> Johan
+
+-Janaki Ram
 
