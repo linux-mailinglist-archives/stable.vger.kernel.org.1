@@ -1,234 +1,306 @@
-Return-Path: <stable+bounces-42988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521AF8B9DD3
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 17:52:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847D18B9DF5
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 17:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF881F21132
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 15:52:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF634B2358B
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 15:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC07115B554;
-	Thu,  2 May 2024 15:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8D115B96E;
+	Thu,  2 May 2024 15:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BqtxwPbd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="h7/t2Je8"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1DB15574D
-	for <stable@vger.kernel.org>; Thu,  2 May 2024 15:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779FA15B13A;
+	Thu,  2 May 2024 15:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714665173; cv=none; b=nUuZ4ZVpHiWW9aSKgm9P375mMQjzk/uUdoR4iUoVAQzcOoeJcZLOgNVq2Yu5jEX5PVb68y+77P2IyQHcGzaPTxbsoRxE+/O8c6rq0fcKGLnn1a7wuH2VE7CoFLjRiBUb8fAJmvIUQf7SY6B+S436+GYpueFLVR+0nE8JqknopXM=
+	t=1714665535; cv=none; b=NTBELj3DmmYBw33H+qB/UlkjHEbkrB1shmIJfEJS4HZztffYOfvTGLTzbttfwyMf+LoGGAKD8W0FhiS7is8e+awsOuNTpgtmleajJRsUSZxCDpGMIxxK+kAHzYGbAaMtrFAQyvRSv48Pb3Aegr9XHcOc3J1fRgjDHNoeN24Pmec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714665173; c=relaxed/simple;
-	bh=H88WDtnSl6TI7VAC9IgLhDXM4EViQ8EpmNDGb+5HQIk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GJPw0bxJUnBUbgfdO1Kw1CkLKxa6kroW29lRWzGcVBq1cFc9YVUpBB6G6tvC1f2zIhkLyMZ5JOSjaX/gW9fcOZZwKPfmTK7MiKO/jqvjtU/ZNg9ii0pohTqxLbhrC4ihJiEgTwEyVzY6lDM4edW6AwpIpywFb0+xkLElyhI+JDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BqtxwPbd; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714665171; x=1746201171;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=H88WDtnSl6TI7VAC9IgLhDXM4EViQ8EpmNDGb+5HQIk=;
-  b=BqtxwPbdQ25+6jbt0uvz0w+Ay7sizoK5I+HxiaxmqxEPiOiSgMqgFrAO
-   hRjjTee0jjcEbgeibCSwazqx62UirCUT3EmMgPGnEWvKBh4aK0Pu/BRha
-   T5W2GNXkyz8ezB1AAjG0pQ05bO//JtPQ3sScZdqTPLkgylSx87G4/vEQF
-   CfNq7nG95hbqw8m6Uxo21KK0aRlo3xhEdzihWBkehECS5yK0jadthLr+e
-   e7TiT1WpuTo7BP9wvNoyvjnpSRqe8sQSgSpEzL8+BjqDVj4WLV89wTADz
-   1XsQYRmP/K4u37laPNLp84xvrnLhgxBSx1+cAjBJFIIWmE/EZkKuTaU1j
-   Q==;
-X-CSE-ConnectionGUID: /tNf59bpQAavIezEEv2ouw==
-X-CSE-MsgGUID: DTaw2YrXQLadY0+op0QwLQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="21129968"
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="21129968"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 08:52:50 -0700
-X-CSE-ConnectionGUID: sX7iyOjSRimzMRLo/zuOfA==
-X-CSE-MsgGUID: 1Tb3OG2LQ6mpNg6NZSgDLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="31630377"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
-  by fmviesa005.fm.intel.com with ESMTP; 02 May 2024 08:52:49 -0700
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: 
-Cc: stable@vger.kernel.org
-Subject: [PATCH] drm/i915/audio: Fix audio time stamp programming for DP
-Date: Thu,  2 May 2024 21:16:55 +0530
-Message-Id: <20240502154655.980686-1-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1714665535; c=relaxed/simple;
+	bh=mQGQlwr6HpTffDf0/d8nFEKvFTG4IAJKMLEmG6OyMw4=;
+	h=Date:To:From:Subject:Message-Id; b=fArxesesYVuiMGenS6Fs6sMmGdhTRhP/OwvJHKBKp/FaJEQp+8o+qNNLN0OMCdnGOAhtMBLkmoInwiqO2m10tSZ4prtSzvHLb4kS19cf+WQbEdIdNUbCRyd6agdFDSgSKG+d1zn2B7HmOgT84G+5l0WmMRryeDtkpgnDv/F8t3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=h7/t2Je8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A154BC113CC;
+	Thu,  2 May 2024 15:58:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1714665534;
+	bh=mQGQlwr6HpTffDf0/d8nFEKvFTG4IAJKMLEmG6OyMw4=;
+	h=Date:To:From:Subject:From;
+	b=h7/t2Je8UpxPfYgpM4M+oWLotjl+lC6449bZkf7VV9FoaJBoKJ1aRmHWQfJrazikg
+	 H+AyClaelmYWDAG+NSzA69Dp+1+NV5948KbtomxMg/ATUocpWYjGa2aqwMTXg2rb95
+	 HKYYV2pLz4VmV1ArnQ0MxUpdLphGzUUqpYa16f4U=
+Date: Thu, 02 May 2024 08:58:53 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,will@kernel.org,tglx@linutronix.de,svens@linux.ibm.com,stable@vger.kernel.org,peterz@infradead.org,npiggin@gmail.com,naveen.n.rao@linux.ibm.com,mingo@redhat.com,mark.rutland@arm.com,luto@kernel.org,david@redhat.com,davem@davemloft.net,dave.hansen@linux.intel.com,corbet@lwn.net,christophe.leroy@csgroup.eu,catalin.marinas@arm.com,bp@alien8.de,borntraeger@linux.ibm.com,anshuman.khandual@arm.com,aneesh.kumar@kernel.org,andreas@gaisler.com,ryan.roberts@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast.patch added to mm-unstable branch
+Message-Id: <20240502155854.A154BC113CC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Intel hardware is capable of programming the Maud/Naud SDPs on its
-own based on real-time clocks. While doing so, it takes care
-of any deviations from the theoretical values. Programming the registers
-explicitly with static values can interfere with this logic. Therefore,
-let the HW decide the Maud and Naud SDPs on it's own.
 
-Cc: stable@vger.kernel.org # v5.17
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8097
-Co-developed-by: Kai Vehmanen <kai.vehmanen@intel.com>
-Signed-off-by: Kai Vehmanen <kai.vehmanen@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+The patch titled
+     Subject: mm: fix race between __split_huge_pmd_locked() and GUP-fast
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast.patch
+
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: fix race between __split_huge_pmd_locked() and GUP-fast
+Date: Wed, 1 May 2024 15:33:10 +0100
+
+__split_huge_pmd_locked() can be called for a present THP, devmap or
+(non-present) migration entry.  It calls pmdp_invalidate() unconditionally
+on the pmdp and only determines if it is present or not based on the
+returned old pmd.  This is a problem for the migration entry case because
+pmd_mkinvalid(), called by pmdp_invalidate() must only be called for a
+present pmd.
+
+On arm64 at least, pmd_mkinvalid() will mark the pmd such that any future
+call to pmd_present() will return true.  And therefore any lockless
+pgtable walker could see the migration entry pmd in this state and start
+interpretting the fields as if it were present, leading to BadThings (TM).
+GUP-fast appears to be one such lockless pgtable walker.
+
+x86 does not suffer the above problem, but instead pmd_mkinvalid() will
+corrupt the offset field of the swap entry within the swap pte.  See link
+below for discussion of that problem.
+
+Fix all of this by only calling pmdp_invalidate() for a present pmd.  And
+for good measure let's add a warning to all implementations of
+pmdp_invalidate[_ad]().  I've manually reviewed all other
+pmdp_invalidate[_ad]() call sites and believe all others to be conformant.
+
+This is a theoretical bug found during code review.  I don't have any test
+case to trigger it in practice.
+
+Link: https://lkml.kernel.org/r/20240501143310.1381675-1-ryan.roberts@arm.com
+Link: https://lore.kernel.org/all/0dd7827a-6334-439a-8fd0-43c98e6af22b@arm.com/
+Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_audio.c | 113 ++-------------------
- 1 file changed, 8 insertions(+), 105 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_audio.c b/drivers/gpu/drm/i915/display/intel_audio.c
-index 07e0c73204f3..ed81e1466c4b 100644
---- a/drivers/gpu/drm/i915/display/intel_audio.c
-+++ b/drivers/gpu/drm/i915/display/intel_audio.c
-@@ -76,19 +76,6 @@ struct intel_audio_funcs {
- 				       struct intel_crtc_state *crtc_state);
- };
- 
--/* DP N/M table */
--#define LC_810M	810000
--#define LC_540M	540000
--#define LC_270M	270000
--#define LC_162M	162000
--
--struct dp_aud_n_m {
--	int sample_rate;
--	int clock;
--	u16 m;
--	u16 n;
--};
--
- struct hdmi_aud_ncts {
- 	int sample_rate;
- 	int clock;
-@@ -96,60 +83,6 @@ struct hdmi_aud_ncts {
- 	int cts;
- };
- 
--/* Values according to DP 1.4 Table 2-104 */
--static const struct dp_aud_n_m dp_aud_n_m[] = {
--	{ 32000, LC_162M, 1024, 10125 },
--	{ 44100, LC_162M, 784, 5625 },
--	{ 48000, LC_162M, 512, 3375 },
--	{ 64000, LC_162M, 2048, 10125 },
--	{ 88200, LC_162M, 1568, 5625 },
--	{ 96000, LC_162M, 1024, 3375 },
--	{ 128000, LC_162M, 4096, 10125 },
--	{ 176400, LC_162M, 3136, 5625 },
--	{ 192000, LC_162M, 2048, 3375 },
--	{ 32000, LC_270M, 1024, 16875 },
--	{ 44100, LC_270M, 784, 9375 },
--	{ 48000, LC_270M, 512, 5625 },
--	{ 64000, LC_270M, 2048, 16875 },
--	{ 88200, LC_270M, 1568, 9375 },
--	{ 96000, LC_270M, 1024, 5625 },
--	{ 128000, LC_270M, 4096, 16875 },
--	{ 176400, LC_270M, 3136, 9375 },
--	{ 192000, LC_270M, 2048, 5625 },
--	{ 32000, LC_540M, 1024, 33750 },
--	{ 44100, LC_540M, 784, 18750 },
--	{ 48000, LC_540M, 512, 11250 },
--	{ 64000, LC_540M, 2048, 33750 },
--	{ 88200, LC_540M, 1568, 18750 },
--	{ 96000, LC_540M, 1024, 11250 },
--	{ 128000, LC_540M, 4096, 33750 },
--	{ 176400, LC_540M, 3136, 18750 },
--	{ 192000, LC_540M, 2048, 11250 },
--	{ 32000, LC_810M, 1024, 50625 },
--	{ 44100, LC_810M, 784, 28125 },
--	{ 48000, LC_810M, 512, 16875 },
--	{ 64000, LC_810M, 2048, 50625 },
--	{ 88200, LC_810M, 1568, 28125 },
--	{ 96000, LC_810M, 1024, 16875 },
--	{ 128000, LC_810M, 4096, 50625 },
--	{ 176400, LC_810M, 3136, 28125 },
--	{ 192000, LC_810M, 2048, 16875 },
--};
--
--static const struct dp_aud_n_m *
--audio_config_dp_get_n_m(const struct intel_crtc_state *crtc_state, int rate)
--{
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(dp_aud_n_m); i++) {
--		if (rate == dp_aud_n_m[i].sample_rate &&
--		    crtc_state->port_clock == dp_aud_n_m[i].clock)
--			return &dp_aud_n_m[i];
--	}
--
--	return NULL;
--}
--
- static const struct {
- 	int clock;
- 	u32 config;
-@@ -387,47 +320,17 @@ hsw_dp_audio_config_update(struct intel_encoder *encoder,
- 			   const struct intel_crtc_state *crtc_state)
+ Documentation/mm/arch_pgtable_helpers.rst |    6 +-
+ arch/powerpc/mm/book3s64/pgtable.c        |    1 
+ arch/s390/include/asm/pgtable.h           |    4 +
+ arch/sparc/mm/tlb.c                       |    1 
+ arch/x86/mm/pgtable.c                     |    2 
+ mm/huge_memory.c                          |   49 ++++++++++----------
+ mm/pgtable-generic.c                      |    2 
+ 7 files changed, 39 insertions(+), 26 deletions(-)
+
+--- a/arch/powerpc/mm/book3s64/pgtable.c~mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast
++++ a/arch/powerpc/mm/book3s64/pgtable.c
+@@ -170,6 +170,7 @@ pmd_t pmdp_invalidate(struct vm_area_str
  {
- 	struct drm_i915_private *i915 = to_i915(encoder->base.dev);
--	struct i915_audio_component *acomp = i915->display.audio.component;
- 	enum transcoder cpu_transcoder = crtc_state->cpu_transcoder;
--	enum port port = encoder->port;
--	const struct dp_aud_n_m *nm;
--	int rate;
--	u32 tmp;
--
--	rate = acomp ? acomp->aud_sample_rate[port] : 0;
--	nm = audio_config_dp_get_n_m(crtc_state, rate);
--	if (nm)
--		drm_dbg_kms(&i915->drm, "using Maud %u, Naud %u\n", nm->m,
--			    nm->n);
--	else
--		drm_dbg_kms(&i915->drm, "using automatic Maud, Naud\n");
--
--	tmp = intel_de_read(i915, HSW_AUD_CFG(cpu_transcoder));
--	tmp &= ~AUD_CONFIG_N_VALUE_INDEX;
--	tmp &= ~AUD_CONFIG_PIXEL_CLOCK_HDMI_MASK;
--	tmp &= ~AUD_CONFIG_N_PROG_ENABLE;
--	tmp |= AUD_CONFIG_N_VALUE_INDEX;
+ 	unsigned long old_pmd;
  
--	if (nm) {
--		tmp &= ~AUD_CONFIG_N_MASK;
--		tmp |= AUD_CONFIG_N(nm->n);
--		tmp |= AUD_CONFIG_N_PROG_ENABLE;
--	}
--
--	intel_de_write(i915, HSW_AUD_CFG(cpu_transcoder), tmp);
--
--	tmp = intel_de_read(i915, HSW_AUD_M_CTS_ENABLE(cpu_transcoder));
--	tmp &= ~AUD_CONFIG_M_MASK;
--	tmp &= ~AUD_M_CTS_M_VALUE_INDEX;
--	tmp &= ~AUD_M_CTS_M_PROG_ENABLE;
--
--	if (nm) {
--		tmp |= nm->m;
--		tmp |= AUD_M_CTS_M_VALUE_INDEX;
--		tmp |= AUD_M_CTS_M_PROG_ENABLE;
--	}
-+	/* Enable time stamps. Let HW calculate Maud/Naud values */
-+	intel_de_rmw(i915, HSW_AUD_CFG(cpu_transcoder),
-+		     AUD_CONFIG_N_VALUE_INDEX |
-+		     AUD_CONFIG_PIXEL_CLOCK_HDMI_MASK |
-+		     AUD_CONFIG_UPPER_N_MASK |
-+		     AUD_CONFIG_LOWER_N_MASK |
-+		     AUD_CONFIG_N_PROG_ENABLE,
-+		     AUD_CONFIG_N_VALUE_INDEX);
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID);
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	return __pmd(old_pmd);
+--- a/arch/s390/include/asm/pgtable.h~mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast
++++ a/arch/s390/include/asm/pgtable.h
+@@ -1769,8 +1769,10 @@ static inline pmd_t pmdp_huge_clear_flus
+ static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
+ 				   unsigned long addr, pmd_t *pmdp)
+ {
+-	pmd_t pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
++	pmd_t pmd;
  
--	intel_de_write(i915, HSW_AUD_M_CTS_ENABLE(cpu_transcoder), tmp);
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
++	pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
+ 	return pmdp_xchg_direct(vma->vm_mm, addr, pmdp, pmd);
  }
  
- static void
--- 
-2.25.1
+--- a/arch/sparc/mm/tlb.c~mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast
++++ a/arch/sparc/mm/tlb.c
+@@ -249,6 +249,7 @@ pmd_t pmdp_invalidate(struct vm_area_str
+ {
+ 	pmd_t old, entry;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	entry = __pmd(pmd_val(*pmdp) & ~_PAGE_VALID);
+ 	old = pmdp_establish(vma, address, pmdp, entry);
+ 	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+--- a/arch/x86/mm/pgtable.c~mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast
++++ a/arch/x86/mm/pgtable.c
+@@ -631,6 +631,8 @@ int pmdp_clear_flush_young(struct vm_are
+ pmd_t pmdp_invalidate_ad(struct vm_area_struct *vma, unsigned long address,
+ 			 pmd_t *pmdp)
+ {
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
++
+ 	/*
+ 	 * No flush is necessary. Once an invalid PTE is established, the PTE's
+ 	 * access and dirty bits cannot be updated.
+--- a/Documentation/mm/arch_pgtable_helpers.rst~mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast
++++ a/Documentation/mm/arch_pgtable_helpers.rst
+@@ -140,7 +140,8 @@ PMD Page Table Helpers
+ +---------------------------+--------------------------------------------------+
+ | pmd_swp_clear_soft_dirty  | Clears a soft dirty swapped PMD                  |
+ +---------------------------+--------------------------------------------------+
+-| pmd_mkinvalid             | Invalidates a mapped PMD [1]                     |
++| pmd_mkinvalid             | Invalidates a present PMD; do not call for       |
++|                           | non-present PMD [1]                              |
+ +---------------------------+--------------------------------------------------+
+ | pmd_set_huge              | Creates a PMD huge mapping                       |
+ +---------------------------+--------------------------------------------------+
+@@ -196,7 +197,8 @@ PUD Page Table Helpers
+ +---------------------------+--------------------------------------------------+
+ | pud_mkdevmap              | Creates a ZONE_DEVICE mapped PUD                 |
+ +---------------------------+--------------------------------------------------+
+-| pud_mkinvalid             | Invalidates a mapped PUD [1]                     |
++| pud_mkinvalid             | Invalidates a present PUD; do not call for       |
++|                           | non-present PUD [1]                              |
+ +---------------------------+--------------------------------------------------+
+ | pud_set_huge              | Creates a PUD huge mapping                       |
+ +---------------------------+--------------------------------------------------+
+--- a/mm/huge_memory.c~mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast
++++ a/mm/huge_memory.c
+@@ -2430,32 +2430,11 @@ static void __split_huge_pmd_locked(stru
+ 		return __split_huge_zero_page_pmd(vma, haddr, pmd);
+ 	}
+ 
+-	/*
+-	 * Up to this point the pmd is present and huge and userland has the
+-	 * whole access to the hugepage during the split (which happens in
+-	 * place). If we overwrite the pmd with the not-huge version pointing
+-	 * to the pte here (which of course we could if all CPUs were bug
+-	 * free), userland could trigger a small page size TLB miss on the
+-	 * small sized TLB while the hugepage TLB entry is still established in
+-	 * the huge TLB. Some CPU doesn't like that.
+-	 * See http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
+-	 * 383 on page 105. Intel should be safe but is also warns that it's
+-	 * only safe if the permission and cache attributes of the two entries
+-	 * loaded in the two TLB is identical (which should be the case here).
+-	 * But it is generally safer to never allow small and huge TLB entries
+-	 * for the same virtual address to be loaded simultaneously. So instead
+-	 * of doing "pmd_populate(); flush_pmd_tlb_range();" we first mark the
+-	 * current pmd notpresent (atomically because here the pmd_trans_huge
+-	 * must remain set at all times on the pmd until the split is complete
+-	 * for this pmd), then we flush the SMP TLB and finally we write the
+-	 * non-huge version of the pmd entry with pmd_populate.
+-	 */
+-	old_pmd = pmdp_invalidate(vma, haddr, pmd);
+-
+-	pmd_migration = is_pmd_migration_entry(old_pmd);
++	pmd_migration = is_pmd_migration_entry(*pmd);
+ 	if (unlikely(pmd_migration)) {
+ 		swp_entry_t entry;
+ 
++		old_pmd = *pmd;
+ 		entry = pmd_to_swp_entry(old_pmd);
+ 		page = pfn_swap_entry_to_page(entry);
+ 		write = is_writable_migration_entry(entry);
+@@ -2466,6 +2445,30 @@ static void __split_huge_pmd_locked(stru
+ 		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+ 		uffd_wp = pmd_swp_uffd_wp(old_pmd);
+ 	} else {
++		/*
++		 * Up to this point the pmd is present and huge and userland has
++		 * the whole access to the hugepage during the split (which
++		 * happens in place). If we overwrite the pmd with the not-huge
++		 * version pointing to the pte here (which of course we could if
++		 * all CPUs were bug free), userland could trigger a small page
++		 * size TLB miss on the small sized TLB while the hugepage TLB
++		 * entry is still established in the huge TLB. Some CPU doesn't
++		 * like that. See
++		 * http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
++		 * 383 on page 105. Intel should be safe but is also warns that
++		 * it's only safe if the permission and cache attributes of the
++		 * two entries loaded in the two TLB is identical (which should
++		 * be the case here). But it is generally safer to never allow
++		 * small and huge TLB entries for the same virtual address to be
++		 * loaded simultaneously. So instead of doing "pmd_populate();
++		 * flush_pmd_tlb_range();" we first mark the current pmd
++		 * notpresent (atomically because here the pmd_trans_huge must
++		 * remain set at all times on the pmd until the split is
++		 * complete for this pmd), then we flush the SMP TLB and finally
++		 * we write the non-huge version of the pmd entry with
++		 * pmd_populate.
++		 */
++		old_pmd = pmdp_invalidate(vma, haddr, pmd);
+ 		page = pmd_page(old_pmd);
+ 		folio = page_folio(page);
+ 		if (pmd_dirty(old_pmd)) {
+--- a/mm/pgtable-generic.c~mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast
++++ a/mm/pgtable-generic.c
+@@ -198,6 +198,7 @@ pgtable_t pgtable_trans_huge_withdraw(st
+ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 		     pmd_t *pmdp)
+ {
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	pmd_t old = pmdp_establish(vma, address, pmdp, pmd_mkinvalid(*pmdp));
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	return old;
+@@ -208,6 +209,7 @@ pmd_t pmdp_invalidate(struct vm_area_str
+ pmd_t pmdp_invalidate_ad(struct vm_area_struct *vma, unsigned long address,
+ 			 pmd_t *pmdp)
+ {
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	return pmdp_invalidate(vma, address, pmdp);
+ }
+ #endif
+_
+
+Patches currently in -mm which might be from ryan.roberts@arm.com are
+
+fs-proc-task_mmu-fix-loss-of-young-dirty-bits-during-pagemap-scan.patch
+fs-proc-task_mmu-fix-uffd-wp-confusion-in-pagemap_scan_pmd_entry.patch
+selftests-mm-soft-dirty-should-fail-if-a-testcase-fails.patch
+mm-debug_vm_pgtable-test-pmd_leaf-behavior-with-pmd_mkinvalid.patch
+mm-fix-race-between-__split_huge_pmd_locked-and-gup-fast.patch
 
 
