@@ -1,85 +1,128 @@
-Return-Path: <stable+bounces-42995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA27E8B9FEF
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 20:00:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAD98BA15A
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 22:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 262311C222BC
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 18:00:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AE1FB2147C
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 20:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23735171082;
-	Thu,  2 May 2024 18:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E968F180A98;
+	Thu,  2 May 2024 20:08:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED057171068;
-	Thu,  2 May 2024 18:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE8615B988;
+	Thu,  2 May 2024 20:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714672813; cv=none; b=i53exzSeloxaNCFPQsOy1bODzZuqUrd1ZDcPwPOIvfVPIdaLeWXzOPGPYd2RCmMrNhKymIyvxEk2JSvFxUh8QBdQfHwLxngmho+kpn7BxcF2L/n+1SrJIjNYmjWdA0vZbcXmSgr2YD/8j0kdcCKwdBfb2a0d24rOmGTgM9vLAMM=
+	t=1714680498; cv=none; b=n9cr/2Ddwy7HuUNg7H+wpqEbb1Jgfebq7yboIhuTLd8+Ek1VbGKc1nW3Jin3x3wzdDGZ+lfZN3joTKuAMUQJu2CKOCd7kYjj2PmPL18GsE244pv4ZeWEdI9D+9j2a26o7IO5A8h7eexReRqRPjCh90yGB+y/uNaw4nuViyUEeac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714672813; c=relaxed/simple;
-	bh=BwXhwwffklxOe2+TlmFS93TXrpMJq9ig2rSZlYauX/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S6D/zSaUMcPx5azwnNApvFPcsTnJEelGEUAxoN3+WXpf9SY6dRQa0tm3SoZihGPAqr2lIFwk+GrisLgEuidUz3TTE7/EvyBareRVDKM/ZEhqtYvTCRjtZU9bQdgGQ7UXJ1CI6cJfT/AxKbwkuoZz33VsgGkDfGHK1kFwlWHt1L0=
+	s=arc-20240116; t=1714680498; c=relaxed/simple;
+	bh=MCakG2B6n4zjAvJKZ7YmI2VlY9h2ill9CPIR0VUB0P0=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=oZsDkibiF9t55Wt5FizN1rY1Rcrg26o+99/kcw5CRiF9Z844SFok0Vs0xmCCvuo0H4oVQr520uY5syVz/dSlo9Veq5Ggo/DRtMSJkvk2NuQeoH/H5L4FJFl9mvF/4dpTBidpemDGMhQfUfBxMvyeAmeh3eI6PYtoLpe3YJNLNlw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C20C113CC;
-	Thu,  2 May 2024 18:00:10 +0000 (UTC)
-Date: Thu, 2 May 2024 19:00:08 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <zi.yan@cs.rutgers.edu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64/mm: pmd_mkinvalid() must handle swap pmds
-Message-ID: <ZjPUqKSE_CUVT3Y-@arm.com>
-References: <20240430133138.732088-1-ryan.roberts@arm.com>
- <171449974870.639201.3165060270571039049.b4-ty@arm.com>
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7881CC4AF1A;
+	Thu,  2 May 2024 20:08:18 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1s2cjp-00000003M3j-28cL;
+	Thu, 02 May 2024 16:09:05 -0400
+Message-ID: <20240502200905.370261163@goodmis.org>
+User-Agent: quilt/0.67
+Date: Thu, 02 May 2024 16:08:22 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org
+Subject: [PATCH v3 1/6] eventfs: Free all of the eventfs_inode after RCU
+References: <20240502200821.125580570@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <171449974870.639201.3165060270571039049.b4-ty@arm.com>
+Content-Type: text/plain; charset=UTF-8
 
-On Tue, Apr 30, 2024 at 06:57:52PM +0100, Catalin Marinas wrote:
-> On Tue, 30 Apr 2024 14:31:38 +0100, Ryan Roberts wrote:
-> > __split_huge_pmd_locked() can be called for a present THP, devmap or
-> > (non-present) migration entry. It calls pmdp_invalidate()
-> > unconditionally on the pmdp and only determines if it is present or not
-> > based on the returned old pmd.
-> > 
-> > But arm64's pmd_mkinvalid(), called by pmdp_invalidate(),
-> > unconditionally sets the PMD_PRESENT_INVALID flag, which causes future
-> > pmd_present() calls to return true - even for a swap pmd. Therefore any
-> > lockless pgtable walker could see the migration entry pmd in this state
-> > and start interpretting the fields (e.g. pmd_pfn()) as if it were
-> > present, leading to BadThings (TM). GUP-fast appears to be one such
-> > lockless pgtable walker.
-> > 
-> > [...]
-> 
-> Applied to arm64 (for-next/fixes), thanks! It should land in 6.9-rc7. I
-> removed the debug/test code, please send it as a separate patch for
-> 6.10.
-> 
-> [1/1] arm64/mm: pmd_mkinvalid() must handle swap pmds
->       https://git.kernel.org/arm64/c/e783331c7720
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-Since Andrew merged the generic mm fix, I dropped this patch from the
-arm64 for-next/fixes branch.
+The freeing of eventfs_inode via a kfree_rcu() callback. But the content
+of the eventfs_inode was being freed after the last kref. This is
+dangerous, as changes are being made that can access the content of an
+eventfs_inode from an RCU loop.
 
+Instead of using kfree_rcu() use call_rcu() that calls a function to do
+all the freeing of the eventfs_inode after a RCU grace period has expired.
+
+Cc: stable@vger.kernel.org
+Fixes: 43aa6f97c2d03 ("eventfs: Get rid of dentry pointers without refcounts")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ fs/tracefs/event_inode.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index f5510e26f0f6..cc8b838bbe62 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -73,6 +73,21 @@ enum {
+ 
+ #define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
+ 
++static void free_ei_rcu(struct rcu_head *rcu)
++{
++	struct eventfs_inode *ei = container_of(rcu, struct eventfs_inode, rcu);
++	struct eventfs_root_inode *rei;
++
++	kfree(ei->entry_attrs);
++	kfree_const(ei->name);
++	if (ei->is_events) {
++		rei = get_root_inode(ei);
++		kfree(rei);
++	} else {
++		kfree(ei);
++	}
++}
++
+ /*
+  * eventfs_inode reference count management.
+  *
+@@ -85,7 +100,6 @@ static void release_ei(struct kref *ref)
+ {
+ 	struct eventfs_inode *ei = container_of(ref, struct eventfs_inode, kref);
+ 	const struct eventfs_entry *entry;
+-	struct eventfs_root_inode *rei;
+ 
+ 	WARN_ON_ONCE(!ei->is_freed);
+ 
+@@ -95,14 +109,7 @@ static void release_ei(struct kref *ref)
+ 			entry->release(entry->name, ei->data);
+ 	}
+ 
+-	kfree(ei->entry_attrs);
+-	kfree_const(ei->name);
+-	if (ei->is_events) {
+-		rei = get_root_inode(ei);
+-		kfree_rcu(rei, ei.rcu);
+-	} else {
+-		kfree_rcu(ei, rcu);
+-	}
++	call_rcu(&ei->rcu, free_ei_rcu);
+ }
+ 
+ static inline void put_ei(struct eventfs_inode *ei)
 -- 
-Catalin
+2.43.0
+
+
 
