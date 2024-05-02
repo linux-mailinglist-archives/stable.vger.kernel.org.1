@@ -1,140 +1,115 @@
-Return-Path: <stable+bounces-42964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315618B9B7D
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 15:20:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8872F8B9BDA
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 15:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EA87282D82
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 13:20:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B98741C20E2F
+	for <lists+stable@lfdr.de>; Thu,  2 May 2024 13:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD7584A3F;
-	Thu,  2 May 2024 13:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="MxtNZwP0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AD013C660;
+	Thu,  2 May 2024 13:47:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BBD824AB;
-	Thu,  2 May 2024 13:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C6412DDBF;
+	Thu,  2 May 2024 13:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714656029; cv=none; b=PYrjzvhYJrJYhrs8WEOfXza79R+ZPd2NouhBrloWA8l/pdw6U+0WjEIvRv1LpzOxpZrOTpihk58oDWzMzZfAY+LYg1fzrUDXq4Fkg1kbiazMBt/CjGU9NRJfTVKwCOBOhTZcyzjwbGjCltXsTqSOzU8eGxJndhYWxWHYbYoTsvA=
+	t=1714657634; cv=none; b=et6hXQxDb1yaYh9tTgqc1GuE0QX5x46S+Y1lT13bohDSwnukCYMEl9+rKldu+OuYGJLmhi14BSKdKgDhEg1Ar53y69g7c7HX5a8afk8LSrjkKv/+n7ywt++nVh8F13lN8Fqx7BbDiEt9Lb79BJ5qNXAMxmHP6lEm2p1HpkUT2BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714656029; c=relaxed/simple;
-	bh=3uHsgWZTrL/IXcpPKrV8afjNRpKD9N10PimzAu5WZ40=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Srl7ilJHZBm1f+xzBi0M1LHpsznqF7gf2njXVFZmDkewu47huIa7cCnFEMVVWN+kTbO4gKdIQ6u0H+9/4S+f96BG4J81G4bckCUi8aXBTwE01ycRJEESIa8qxPYSpW126VE1UZtCCztAMbuFMYQy0bpbCxSpvhA35sdOI+uVKl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=MxtNZwP0; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=/VaCqMDL7p2NjINVVUIkM6kvbFvFFu2XNtolIuWclck=; b=MxtNZwP0MaJhFLB2Sekgvr1mHs
-	ijlFM8yBRxvZvEXbZDBztwj0cnPDISW3Rehl28INZauHzWuPgDhfENHo3zNvN+dp+2c1fBx8HfF9m
-	i4tUd2RMIvWWAG7n+ZVCangnlGpB/5jXucciFOEyIi/yvcgcP9i8vOwiCWW928LPIDzAdTTVjy7VV
-	jregaE+JYxXbmHVlhKnEER0a+ciPXvsvZ4NOUbx0IyG0UhM28GHksSxho4YuqN8gccUt78xYYVmRX
-	G9oOXF5TlInwc/5bb4AUhzO6/n2ICcsVHWZbQDIAmPzEyykqiGS0+3lgWuy+ILDPVLXCgVOq5M/5P
-	zfogWTvg==;
-Received: from 179-125-75-252-dinamico.pombonet.net.br ([179.125.75.252] helo=quatroqueijos.lan)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1s2WMG-002zu5-MV; Thu, 02 May 2024 15:20:20 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	kernel-dev@igalia.com,
-	stable@vger.kernel.org,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH net v3] net: fix out-of-bounds access in ops_init
-Date: Thu,  2 May 2024 10:20:06 -0300
-Message-Id: <20240502132006.3430840-1-cascardo@igalia.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1714657634; c=relaxed/simple;
+	bh=fBzUvqjwf3rMXOX/TEUF7dBRHEWsyfdKpPRDIqtC7V4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tlyo8JZXEWknXybs4HLUW86+4IqDFe+cEh9qRw5hVEHeHyFBpj6W7cHt7vWh7w0x6Y8gpkG02haWNc2pCM0t9M3X0SdhmSrSc+dhUUleJF5Pu3OQORHbljqTCThkXkZCRMbBUdfAQdVtJMfy7a0/pZgIdycU1dTq4zAE1VcOGAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C48D92F4;
+	Thu,  2 May 2024 06:47:36 -0700 (PDT)
+Received: from [10.1.37.181] (XHFQ2J9959.cambridge.arm.com [10.1.37.181])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11C9D3F73F;
+	Thu,  2 May 2024 06:47:06 -0700 (PDT)
+Message-ID: <60739cf6-42ff-44c7-8e33-6c42eed71a66@arm.com>
+Date: Thu, 2 May 2024 14:47:05 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: Fix race between __split_huge_pmd_locked() and
+ GUP-fast
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Zi Yan
+ <zi.yan@cs.rutgers.edu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Felix Kuehling <Felix.Kuehling@amd.com>
+References: <20240501143310.1381675-1-ryan.roberts@arm.com>
+ <3d88297b-ce6f-4b97-8a25-75f0987af6fd@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <3d88297b-ce6f-4b97-8a25-75f0987af6fd@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-net_alloc_generic is called by net_alloc, which is called without any
-locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
-is read twice, first to allocate an array, then to set s.len, which is
-later used to limit the bounds of the array access.
+On 02/05/2024 14:08, David Hildenbrand wrote:
+> On 01.05.24 16:33, Ryan Roberts wrote:
+>> __split_huge_pmd_locked() can be called for a present THP, devmap or
+>> (non-present) migration entry. It calls pmdp_invalidate()
+>> unconditionally on the pmdp and only determines if it is present or not
+>> based on the returned old pmd. This is a problem for the migration entry
+>> case because pmd_mkinvalid(), called by pmdp_invalidate() must only be
+>> called for a present pmd.
+>>
+>> On arm64 at least, pmd_mkinvalid() will mark the pmd such that any
+>> future call to pmd_present() will return true. And therefore any
+>> lockless pgtable walker could see the migration entry pmd in this state
+>> and start interpretting the fields as if it were present, leading to
+>> BadThings (TM). GUP-fast appears to be one such lockless pgtable walker.
+>>
+>> x86 does not suffer the above problem, but instead pmd_mkinvalid() will
+>> corrupt the offset field of the swap entry within the swap pte. See link
+>> below for discussion of that problem.
+> 
+> Could that explain:
+> 
+> https://lore.kernel.org/all/YjoGbhreg8lGCGIJ@linutronix.de/
+> 
+> Where the PFN of a migration entry might have been corrupted?
 
-It is possible that the array is allocated and another thread is
-registering a new pernet ops, increments max_gen_ptrs, which is then used
-to set s.len with a larger than allocated length for the variable array.
+Ahh interesting! Yes, it seems to fit...
 
-Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
-max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
+> 
+> Ccing Felix
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: stable@vger.kernel.org
----
-v3:
-  - Use reverse xmas order in local variable declaration.
-  - Use netdev multi-line comment style.
-  - Target to net tree.
-  - Cc stable.
-v2:
-  - Instead of delaying struct net_generic allocation to setup_net,
-    read max_gen_ptrs only once.
-v1: https://lore.kernel.org/netdev/20240430084253.3272177-1-cascardo@igalia.com/
----
- net/core/net_namespace.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+Are you able to reliably reproduce the bug, Felix? If so, would you mind trying
+with this patch to see if it goes away?
 
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index f0540c557515..9d690d32da33 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -69,12 +69,15 @@ DEFINE_COOKIE(net_cookie);
- 
- static struct net_generic *net_alloc_generic(void)
- {
-+	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
-+	unsigned int generic_size;
- 	struct net_generic *ng;
--	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
-+
-+	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
- 
- 	ng = kzalloc(generic_size, GFP_KERNEL);
- 	if (ng)
--		ng->s.len = max_gen_ptrs;
-+		ng->s.len = gen_ptrs;
- 
- 	return ng;
- }
-@@ -1307,7 +1310,11 @@ static int register_pernet_operations(struct list_head *list,
- 		if (error < 0)
- 			return error;
- 		*ops->id = error;
--		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
-+		/* This does not require READ_ONCE as writers already hold
-+		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
-+		 * net_alloc_generic.
-+		 */
-+		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
- 	}
- 	error = __register_pernet_operations(list, ops);
- 	if (error) {
--- 
-2.34.1
+> 
+> 
+> Patch itself looks good to me
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+
+Thanks!
 
 
