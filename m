@@ -1,104 +1,136 @@
-Return-Path: <stable+bounces-43028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39B98BB215
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 20:04:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB8B8BB2A5
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 20:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BE7F282710
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:04:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDA7F1C20F36
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64FE158D8F;
-	Fri,  3 May 2024 18:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72360158863;
+	Fri,  3 May 2024 18:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RNaMciG4"
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="mSnyl94K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F07158D7B;
-	Fri,  3 May 2024 18:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33901586F6;
+	Fri,  3 May 2024 18:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714759407; cv=none; b=W5AOToa9PYu/SoXz2csa2EsJzvRjRokvaJqv30naTXS5yGWhNHSX77m3eSDC640XI4Ax2PA6ASAWo1XDXGN7qvIvRf3K4UMagL8/fUtfRJ+Z6TBMPGh7Wb2iXKT+WPU3qWdbEZzGQEJplwu2iViclbTZ2fi8mjaY07AkuZkuOIE=
+	t=1714760197; cv=none; b=RqROgZQK3MBc6honKWDUl+ZyBpBEBpKLj4+oQ2/+QUw1Hnq3VDfBUHngppB0SjcSKq5/F9C5ORXJuUoKCbZeka/oxhuX5z0KxSjQOE/mw2vodZtsg74ig16F+Iw3beoKQ2zI0RqD4y9E+a3SVi2MNqmmPvtI4LV6Bj2jkrY+uWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714759407; c=relaxed/simple;
-	bh=KPWNhDHoK1WCiSSpG+hqPSsIhkDFJ5Gj7faBmjSb9kA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hOzSEVzkDcYiT1nb6Ew0MrQf5hC1ju1lc+UHyoodixdBmpcd+sbjyhadfj20ewiOFIRYYJxBukhBqCMbYb9r6bMJfwsx0dekJwX/zNw24ty9ecaOYjG7phbbFJvkB1Ps1EDjBsMxhb8/sPXZ4nA3omq2XGIE1NdSLdYwwQL4Lag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RNaMciG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14E9C4AF18;
-	Fri,  3 May 2024 18:03:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714759407;
-	bh=KPWNhDHoK1WCiSSpG+hqPSsIhkDFJ5Gj7faBmjSb9kA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNaMciG4+Dgw2+9RRQO/lsyLSTD1cz1ayVlCpEn3dwnyprRbglpLy1lfTg7rGhZ4j
-	 bSM9JZFtnPhK9QxYb3PnrI0Ry8Tq6wJyWtpu+oLasQN27ysClArNLObWsQVzWWSidn
-	 Lp5HshD0xLuIeOqjMDAkwyoiCc1WOm2bRIekRbJN8awSmkciQlznyYd0PHIGV6Ud4z
-	 LwWIFN2MQq4Ff2wfvdUT3xD/J5oBoP7ffRBCV/EApv/tW9s2Wd1jmp8m4nSkSI61Fm
-	 RW5ugV8nhg5yAGArxE5dolr6yhf3PI12Mu5zxXfU2NMW4moeZPisjWtm2X1J7nfIEo
-	 M5vX5WxitzZSg==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 07/10] Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
-Date: Fri,  3 May 2024 11:03:15 -0700
-Message-Id: <20240503180318.72798-8-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240503180318.72798-1-sj@kernel.org>
-References: <20240503180318.72798-1-sj@kernel.org>
+	s=arc-20240116; t=1714760197; c=relaxed/simple;
+	bh=YuRgDwOFHo66SVl5+SCvwWeWto7Qk5nbfcwDz1O6UBQ=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=RFgglWxf/c0/osCP90AF93s04VZ3iQFQrx+isbSJ3onNEJ21WYR/fLNYuObn1SHZUZ6OvnTPXoq9RJkt43QO/hs7kyGj7mIbafEHxPDdvKwuuNcKUun9DL9lez1I6NwR1lBn+G2fF/5H61HHS0ViBM28gUc4NBRoyNklkACEHYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=mSnyl94K; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=sAFxnK7BGsBGg9HqpwUU0A8H/9W2t7LhGrsEhpnHuUQ=; b=mSnyl94KADVMX7fkEMtww0mrBT
+	wXrY6eSlsHmS9awY7x6ft0WGungL98FL6lOQu/CzKSt/GTZfo8/S/SuIZtuiTgboRcnF1y7m3KojY
+	sOzwWW3pMS9xIh8+Y6NyKwYXFoLlLCfYncsmOneEZ1OPKfSAXQ3YJ3yuRr4ir2jssl10monTaRnG+
+	LjsyvvAdAdastKuqnoSiEgk934ttWKywRo5s0f8PrbXZsBqlP8E7V6aNJ86+L+VUrYrLvQEgO88vk
+	inTmAyfF0MU8H3yZNZdnGUcJzOjHEh6Ed7nyexoHZtXbtqV1ylCisVHF79pbqqfsRiX4uocKU+Y9b
+	OtCMb6vA==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1s2xRp-0008TC-H3; Fri, 03 May 2024 20:16:31 +0200
+Received: from [178.197.249.41] (helo=linux.home)
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1s2xSQ-000HZz-1q;
+	Fri, 03 May 2024 20:16:30 +0200
+Subject: Re: [PATCH stable, 6.1] net: sockmap, fix missing MSG_MORE causing
+ TCP disruptions
+To: John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org
+Cc: bpf@vger.kernel.org, dhowells@redhat.com
+References: <20240503164805.59970-1-john.fastabend@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <a84489f5-3336-e60a-02ac-5da05db53162@iogearbox.net>
+Date: Fri, 3 May 2024 20:16:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240503164805.59970-1-john.fastabend@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27264/Fri May  3 10:24:33 2024)
 
-To update effective size quota of DAMOS schemes on DAMON sysfs file
-interface, user should write 'update_schemes_effective_quotas' to the
-kdamond 'state' file.  But the document is mistakenly saying the input
-string as 'update_schemes_effective_bytes'.  Fix it (s/bytes/quotas/).
+On 5/3/24 6:48 PM, John Fastabend wrote:
+> [ Upstream commit ebf2e8860eea66e2c4764316b80c6a5ee5f336ee]
+> [ Upstream commit f8dd95b29d7ef08c19ec9720564acf72243ddcf6]
+> 
+> In the first patch,
+> 
+> ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now a wrapper around tcp_sendmsg")
+> 
+> This block of code is added to tcp_bpf_push(). The
+> tcp_bpf_push is the code used by BPF to submit messages into the TCP
+> stack.
+> 
+>   if (flags & MSG_SENDPAGE_NOTLAST)
+>       msghdr.msg_flags | MSG_MORE;
+> 
+> In the second patch,
+> 
+> f8dd95b29d7e ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
+> 
+> this logic was further changed to,
+> 
+>    if (flags & MSG_SENDPAGE_NOTLAST)
+>       msghdr.msg_flags |= MSG_MORE
+> 
+> This was done as part of an improvement to use the sendmsg() callbacks
+> and remove the sendpage usage inside the various sub systems.
+> 
+> However, these two patches together fixed a bug. The issue is without
+> MSG_MORE set we will break a msg up into many smaller sends. In some
+> case a lot because the operation loops over the scatter gather list.
+> Without the MSG_MORE set (the current 6.1 case) we see stalls in data
+> send/recv and sometimes applications failing to receive data. This
+> generally is the result of an application that gives up after calling
+> recv() or similar too many times. We introduce this because of how
+> we incorrectly change the TCP send pattern.
+> 
+> Now that we have both 6.5 and 6.1 stable kernels deployed we've
+> observed a series of issues related to this in real deployments. In 6.5
+> kernels all the HTTP and other compliance tests pass and we are not
+> observing any other issues. On 6.1 various compliance tests fail
+> (nginx for example), but more importantly in these clusters without
+> the flag set we observe stalled applications and increased retries in
+> other applications. Openssl users where we have annotations to monitor
+> retries and failures observed a significant increase in retries for
+> example.
+> 
+> For the backport we isolated the fix to the two lines in the above
+> patches that fixed the code. With this patch we deployed the workloads
+> again and error rates and stalls went away and 6.1 stable kernels
+> perform similar to 6.5 stable kernels. Similarly the compliance tests
+> also passed.
+> 
+> Cc: <stable@vger.kernel.org> # 6.1.x
+> Fixes: 604326b41a6fb ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
+> Signed-off-by: John Fastabend <john.fastabend@gmail.com>
 
-Fixes: a6068d6dfa2f ("Docs/admin-guide/mm/damon/usage: document effective_bytes file")
-Cc: <stable@vger.kernel.org> # 6.9.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- Documentation/admin-guide/mm/damon/usage.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 3ce3f0aaa1d5..e58ceb89ea2a 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -153,7 +153,7 @@ Users can write below commands for the kdamond to the ``state`` file.
- - ``clear_schemes_tried_regions``: Clear the DAMON-based operating scheme
-   action tried regions directory for each DAMON-based operation scheme of the
-   kdamond.
--- ``update_schemes_effective_bytes``: Update the contents of
-+- ``update_schemes_effective_quotas``: Update the contents of
-   ``effective_bytes`` files for each DAMON-based operation scheme of the
-   kdamond.  For more details, refer to :ref:`quotas directory <sysfs_quotas>`.
- 
-@@ -342,7 +342,7 @@ Based on the user-specified :ref:`goal <sysfs_schemes_quota_goals>`, the
- effective size quota is further adjusted.  Reading ``effective_bytes`` returns
- the current effective size quota.  The file is not updated in real time, so
- users should ask DAMON sysfs interface to update the content of the file for
--the stats by writing a special keyword, ``update_schemes_effective_bytes`` to
-+the stats by writing a special keyword, ``update_schemes_effective_quotas`` to
- the relevant ``kdamonds/<N>/state`` file.
- 
- Under ``weights`` directory, three files (``sz_permil``,
--- 
-2.39.2
-
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 
