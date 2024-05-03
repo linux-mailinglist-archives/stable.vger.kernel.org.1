@@ -1,136 +1,135 @@
-Return-Path: <stable+bounces-43029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB8B8BB2A5
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 20:19:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271078BB2FF
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 20:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDA7F1C20F36
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:19:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E3C2813F2
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72360158863;
-	Fri,  3 May 2024 18:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AD815886B;
+	Fri,  3 May 2024 18:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="mSnyl94K"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="iK2UPsdU"
 X-Original-To: stable@vger.kernel.org
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33901586F6;
-	Fri,  3 May 2024 18:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997A91586D2;
+	Fri,  3 May 2024 18:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714760197; cv=none; b=RqROgZQK3MBc6honKWDUl+ZyBpBEBpKLj4+oQ2/+QUw1Hnq3VDfBUHngppB0SjcSKq5/F9C5ORXJuUoKCbZeka/oxhuX5z0KxSjQOE/mw2vodZtsg74ig16F+Iw3beoKQ2zI0RqD4y9E+a3SVi2MNqmmPvtI4LV6Bj2jkrY+uWM=
+	t=1714760683; cv=none; b=gqKeEKi+VlO96ydKAZ8CyAYY08CT/qG6bGIN9oV6A9OUuASkvxEWjWXfhWO3thmD6ymxi7Y5o9/9ZwX7q1580ncV01X7hkrCxs2Q4vKsBJ6NI8ITn4XHm/6s0mXD4CdQ8pBhj0RUfAgpaeCMxp6psNHx9E2Q98gQogBj0sudLNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714760197; c=relaxed/simple;
-	bh=YuRgDwOFHo66SVl5+SCvwWeWto7Qk5nbfcwDz1O6UBQ=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=RFgglWxf/c0/osCP90AF93s04VZ3iQFQrx+isbSJ3onNEJ21WYR/fLNYuObn1SHZUZ6OvnTPXoq9RJkt43QO/hs7kyGj7mIbafEHxPDdvKwuuNcKUun9DL9lez1I6NwR1lBn+G2fF/5H61HHS0ViBM28gUc4NBRoyNklkACEHYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=mSnyl94K; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=sAFxnK7BGsBGg9HqpwUU0A8H/9W2t7LhGrsEhpnHuUQ=; b=mSnyl94KADVMX7fkEMtww0mrBT
-	wXrY6eSlsHmS9awY7x6ft0WGungL98FL6lOQu/CzKSt/GTZfo8/S/SuIZtuiTgboRcnF1y7m3KojY
-	sOzwWW3pMS9xIh8+Y6NyKwYXFoLlLCfYncsmOneEZ1OPKfSAXQ3YJ3yuRr4ir2jssl10monTaRnG+
-	LjsyvvAdAdastKuqnoSiEgk934ttWKywRo5s0f8PrbXZsBqlP8E7V6aNJ86+L+VUrYrLvQEgO88vk
-	inTmAyfF0MU8H3yZNZdnGUcJzOjHEh6Ed7nyexoHZtXbtqV1ylCisVHF79pbqqfsRiX4uocKU+Y9b
-	OtCMb6vA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1s2xRp-0008TC-H3; Fri, 03 May 2024 20:16:31 +0200
-Received: from [178.197.249.41] (helo=linux.home)
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1s2xSQ-000HZz-1q;
-	Fri, 03 May 2024 20:16:30 +0200
-Subject: Re: [PATCH stable, 6.1] net: sockmap, fix missing MSG_MORE causing
- TCP disruptions
-To: John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org
-Cc: bpf@vger.kernel.org, dhowells@redhat.com
-References: <20240503164805.59970-1-john.fastabend@gmail.com>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <a84489f5-3336-e60a-02ac-5da05db53162@iogearbox.net>
-Date: Fri, 3 May 2024 20:16:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+	s=arc-20240116; t=1714760683; c=relaxed/simple;
+	bh=nHVU+u9gtwqSD7LqYNk6t0SbgUJNB+nI7WkfNcanCyA=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Ju8HGjWUhJYJOugNTGd7vLprFts0ly3e49Yl3eEz7LVSEfdQkWzaalQ72LS6o6zC0qk+pk8wdXwY6qmvxE7tmiVdq/wN/OOWJNFBfHSa+0NVRCZL4S/gD3DUyQdzQBv/1X56QClnTTUnuIoGwbk3b4/990krrLWr15hRkTY6cgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=iK2UPsdU; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1714760672;
+	bh=nHVU+u9gtwqSD7LqYNk6t0SbgUJNB+nI7WkfNcanCyA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=iK2UPsdUeDGgzYC4aPzbt3fpyn39PM/C+qWPGYU+6SkJksSUvzq8USxZ/VRBzGQJF
+	 rG/hzFUiInQOW7DXDPAJyyJ/fHeLzyPugOLmFhxWPvLiLkykEV2kM+PJvZmlnR4r1j
+	 xwOrmZOoFQ0JfgOiMHK//Qr/P5C5LPyeAvnOPiBk=
+Date: Fri, 3 May 2024 20:24:24 +0200 (GMT+02:00)
+From: linux@weissschuh.net
+To: Kees Cook <keescook@chromium.org>
+Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Alexander Popov <alex.popov@linux.com>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+	Joel Granados <j.granados@samsung.com>
+Message-ID: <266bd6e1-d444-43f5-a98f-c7069819029b@weissschuh.net>
+In-Reply-To: <202405031054.9FFA75B@keescook>
+References: <20240503-sysctl-const-stackleak-v1-1-603fecb19170@weissschuh.net> <202405031054.9FFA75B@keescook>
+Subject: Re: [PATCH] stackleak: don't modify ctl_table argument
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240503164805.59970-1-john.fastabend@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27264/Fri May  3 10:24:33 2024)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <266bd6e1-d444-43f5-a98f-c7069819029b@weissschuh.net>
 
-On 5/3/24 6:48 PM, John Fastabend wrote:
-> [ Upstream commit ebf2e8860eea66e2c4764316b80c6a5ee5f336ee]
-> [ Upstream commit f8dd95b29d7ef08c19ec9720564acf72243ddcf6]
-> 
-> In the first patch,
-> 
-> ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now a wrapper around tcp_sendmsg")
-> 
-> This block of code is added to tcp_bpf_push(). The
-> tcp_bpf_push is the code used by BPF to submit messages into the TCP
-> stack.
-> 
->   if (flags & MSG_SENDPAGE_NOTLAST)
->       msghdr.msg_flags | MSG_MORE;
-> 
-> In the second patch,
-> 
-> f8dd95b29d7e ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
-> 
-> this logic was further changed to,
-> 
->    if (flags & MSG_SENDPAGE_NOTLAST)
->       msghdr.msg_flags |= MSG_MORE
-> 
-> This was done as part of an improvement to use the sendmsg() callbacks
-> and remove the sendpage usage inside the various sub systems.
-> 
-> However, these two patches together fixed a bug. The issue is without
-> MSG_MORE set we will break a msg up into many smaller sends. In some
-> case a lot because the operation loops over the scatter gather list.
-> Without the MSG_MORE set (the current 6.1 case) we see stalls in data
-> send/recv and sometimes applications failing to receive data. This
-> generally is the result of an application that gives up after calling
-> recv() or similar too many times. We introduce this because of how
-> we incorrectly change the TCP send pattern.
-> 
-> Now that we have both 6.5 and 6.1 stable kernels deployed we've
-> observed a series of issues related to this in real deployments. In 6.5
-> kernels all the HTTP and other compliance tests pass and we are not
-> observing any other issues. On 6.1 various compliance tests fail
-> (nginx for example), but more importantly in these clusters without
-> the flag set we observe stalled applications and increased retries in
-> other applications. Openssl users where we have annotations to monitor
-> retries and failures observed a significant increase in retries for
-> example.
-> 
-> For the backport we isolated the fix to the two lines in the above
-> patches that fixed the code. With this patch we deployed the workloads
-> again and error rates and stalls went away and 6.1 stable kernels
-> perform similar to 6.5 stable kernels. Similarly the compliance tests
-> also passed.
-> 
-> Cc: <stable@vger.kernel.org> # 6.1.x
-> Fixes: 604326b41a6fb ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
-> Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+May 3, 2024 19:55:37 Kees Cook <keescook@chromium.org>:
 
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+> On Fri, May 03, 2024 at 03:44:09PM +0200, Thomas Wei=C3=9Fschuh wrote:
+>> Sysctl handlers are not supposed to modify the ctl_table passed to them.
+>> Adapt the logic to work with a temporary
+>> variable, similar to how it is done in other parts of the kernel.
+>>
+>> This is also a prerequisite to enforce the immutability of the argument
+>> through the callbacks prototy.
+>>
+>> Fixes: 964c9dff0091 ("stackleak: Allow runtime disabling of kernel stack=
+ erasing")
+>> Cc: stable@vger.kernel.org
+>
+> I realize I've already Acked, but does this actually need to be CCed
+> to stable?
+
+You acked it without the Cc stable.
+I shouldn't have kept your Ack, sorry.
+
+Feel free to drop the Cc, it shouldn't be critical.
+I suspect the bots will pick it up anyways.
+
+>> Acked-by: Kees Cook <keescook@chromium.org>
+>> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+>> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+>> ---
+>> This was split out of my sysctl-const-handler series [0].
+>>
+>> As that series will take some more time, submit the patch on its own,
+>> as it is a generic bugfix that is valuable on its own.
+>> And I can get it out of my books.
+>>
+>> Changelog in contrast to the patch in the series:
+>> * Reword commit message to remove strong relation to the constification
+>> * Cc stable
+>>
+>> [0] https://lore.kernel.org/lkml/20240423-sysctl-const-handler-v3-0-e0be=
+ccb836e2@weissschuh.net/
+>>
+>> Cc: Joel Granados <j.granados@samsung.com>
+>> ---
+>> kernel/stackleak.c | 7 ++++---
+>> 1 file changed, 4 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/kernel/stackleak.c b/kernel/stackleak.c
+>> index 34c9d81eea94..b292e5ca0b7d 100644
+>> --- a/kernel/stackleak.c
+>> +++ b/kernel/stackleak.c
+>> @@ -27,10 +27,11 @@ static int stack_erasing_sysctl(struct ctl_table *ta=
+ble, int write,
+>> =C2=A0=C2=A0=C2=A0 int ret =3D 0;
+>> =C2=A0=C2=A0=C2=A0 int state =3D !static_branch_unlikely(&stack_erasing_=
+bypass);
+>> =C2=A0=C2=A0=C2=A0 int prev_state =3D state;
+>> +=C2=A0=C2=A0 struct ctl_table tmp =3D *table;
+>>
+>> -=C2=A0=C2=A0 table->data =3D &state;
+>> -=C2=A0=C2=A0 table->maxlen =3D sizeof(int);
+>> -=C2=A0=C2=A0 ret =3D proc_dointvec_minmax(table, write, buffer, lenp, p=
+pos);
+>> +=C2=A0=C2=A0 tmp.data =3D &state;
+>> +=C2=A0=C2=A0 tmp.maxlen =3D sizeof(int);
+>> +=C2=A0=C2=A0 ret =3D proc_dointvec_minmax(&tmp, write, buffer, lenp, pp=
+os);
+>> =C2=A0=C2=A0=C2=A0 state =3D !!state;
+>> =C2=A0=C2=A0=C2=A0 if (ret || !write || state =3D=3D prev_state)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+>
+> I can pick this up; thanks!
+
+Thanks!
 
