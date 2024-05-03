@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-43019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098D48BAFCF
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 17:30:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD068BB130
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B31BB214E6
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 15:30:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2963FB22364
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 16:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DCA15216C;
-	Fri,  3 May 2024 15:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3E156F2B;
+	Fri,  3 May 2024 16:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCn5q9u6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ugk+WlhV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B614F898;
-	Fri,  3 May 2024 15:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25956156F25;
+	Fri,  3 May 2024 16:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714750227; cv=none; b=GD2hqRN5cu6U0bt9P1C/ZqaQU37uE02lixgaEciu2mKNsFBJPQdmQsPTJksMj5Pjt5iOkemR6OSfm0oq1Vb04QxPLdL1SrJLDLQK1xYnQhww9oEPyuyujeSzMwReytWcbVKMunGmhkY6AvTAYYgk1/34YPOiPhzMIFRMB9KEcTE=
+	t=1714754818; cv=none; b=UJ1hKvm/pwz3DPnC89/w+sZFZq/SLldw0UEjWsFJ3iCuPNoMVnL4VSeJj0XxE+UuuqHgw5VHCXEAeIiiPpyUYEUzr+cEIMZ1ZZ/ecx/KHtETkzyc+kVWaRRDFUHFAHaqLhqUQeKnxXT3RhG0b3zaUs6/ZC3m/xclOtgg2rJ9VMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714750227; c=relaxed/simple;
-	bh=q5aFn3JJf8NzHICKfVTl+yVymYMpwR4aItacC58XDwY=;
+	s=arc-20240116; t=1714754818; c=relaxed/simple;
+	bh=5xBH8qzvo1lkGnwNzi04D+WYbyb9vRqEeRE4/Ponzjg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u6hHWKtRRDjcInK12/oyIwnepEYpyoKGaaV+sZf131GjwVI6GSd9EzaAQ6HMlDt5RWfAZwKo/pgAKWDT1zpxNLh7og60AV8Bh2tGDMiMr1lZzv17hI6J1KGG8xMPZvVDesPEhosLRm2qXIZGVFqBMInIgxCGZTZRnB/qxNGgAc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCn5q9u6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A0BC116B1;
-	Fri,  3 May 2024 15:30:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JDrmMu9Qe93ItBNZTfcShhIJL6GIkfrdaFMguwco+6B/i3RZn4Ft4RHWs3sBq9X9woq7FjO3HNtGwRvZ3CCOqW6gqSaWfSnFLi3+hBqdHu03GwcbFIvTWkaN+vLQJqZg8d6AAnAdbfmTEQtb6rx7Pj6NorwBlLqSuSBCZs3iVNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ugk+WlhV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C96C116B1;
+	Fri,  3 May 2024 16:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714750225;
-	bh=q5aFn3JJf8NzHICKfVTl+yVymYMpwR4aItacC58XDwY=;
+	s=k20201202; t=1714754818;
+	bh=5xBH8qzvo1lkGnwNzi04D+WYbyb9vRqEeRE4/Ponzjg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eCn5q9u6TmSuof6YDzAzekkGIyJ4/mkdBHclyN/0MGSTFcZ5zRvhAAccuWI6jon6r
-	 HMF4ZZZppqSNqggr005YEQ4ubWpvAtZXZr/H1zBjHUxfU4zJTo+ezoEPe9rdN0IOlQ
-	 bYvUoV7RE24ZWxCUQXhnvNyicW9Ksc3PDpkGDAsTLVsqtL1gt1/KE6Apc16jZI4znE
-	 CO9qxEQaBM08MFb164bLV3B1xOsy6WfA2Y2jFkEcKKEWrdaTiRhGiNWvz8ntambzC+
-	 u2jbx/xxdGXJ9WdDFLT6cV70mt2/tv2y8GqSmMgQRqfxA3VoG8uc7vrUCpNN47Ckmb
-	 SrnIDZDVhchkw==
-Date: Fri, 3 May 2024 08:30:23 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: fsverity@lists.linux.dev
-Cc: Luis Chamberlain <mcgrof@kernel.org>,
-	Joel Granados <j.granados@samsung.com>, stable@vger.kernel.org,
-	Yi Zhang <yi.zhang@redhat.com>
-Subject: Re: [PATCH] fsverity: use register_sysctl_init() to avoid kmemleak
- warning
-Message-ID: <20240503153023.GB1132@sol.localdomain>
-References: <CAHj4cs8oYFcN6ptCdLjc3vLWRgNHiS8X06OVj_HLbX-wPoT_Mg@mail.gmail.com>
- <20240501025331.594183-1-ebiggers@kernel.org>
+	b=Ugk+WlhVt8hCLjdZCjC+TeLXo5DAWWC5lF/enxi5vu/fo4nd2qVASKQTk/qmXrNO4
+	 ZnyjSuZ3uuM3Cjz0gLt9398nWBFg7rw25otUtro9BYKUKUPTrjIf3B0L1jo+dZjz4y
+	 wJBbSkG6nOnTpfYE6tp/Eo6LXJ+fDXz5X10yBo1m4Im59vBlxB+waM+qOr/JLxXPFk
+	 HqpPuNgdLr6eGeB0HJDD3bZ1Vojh4Ggw/35kMZML7lNwD4XK06llQVOAF+C4zcF/ee
+	 wLfMxMV3004vFMEhppEsl3w03UqM1jkq/MkZrPbRPvSO1Y7P06GJVCpvYVx9epRCRS
+	 jZT3/BcqdSDLA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1s2w3o-000000002bJ-1HAF;
+	Fri, 03 May 2024 18:47:00 +0200
+Date: Fri, 3 May 2024 18:47:00 +0200
+From: Johan Hovold <johan@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, johan+linaro@kernel.org,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Subject: Re: Patch "Bluetooth: qca: fix invalid device address check" has
+ been added to the 6.8-stable tree
+Message-ID: <ZjUVBBVk_WHUUMli@hovoldconsulting.com>
+References: <20240503163852.5938-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,26 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240501025331.594183-1-ebiggers@kernel.org>
+In-Reply-To: <20240503163852.5938-1-sashal@kernel.org>
 
-On Tue, Apr 30, 2024 at 07:53:31PM -0700, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
+Hi Sasha,
+
+On Fri, May 03, 2024 at 12:38:51PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> Since the fsverity sysctl registration runs as a builtin initcall, there
-> is no corresponding sysctl deregistration and the resulting struct
-> ctl_table_header is not used.  This can cause a kmemleak warning just
-> after the system boots up.  (A pointer to the ctl_table_header is stored
-> in the fsverity_sysctl_header static variable, which kmemleak should
-> detect; however, the compiler can optimize out that variable.)  Avoid
-> the kmemleak warning by using register_sysctl_init() which is intended
-> for use by builtin initcalls and uses kmemleak_not_leak().
+>     Bluetooth: qca: fix invalid device address check
 > 
-> Reported-by: Yi Zhang <yi.zhang@redhat.com>
-> Closes: https://lore.kernel.org/r/CAHj4cs8DTSvR698UE040rs_pX1k-WVe7aR6N2OoXXuhXJPDC-w@mail.gmail.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> to the 6.8-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      bluetooth-qca-fix-invalid-device-address-check.patch
+> and it can be found in the queue-6.8 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Applied to https://git.kernel.org/pub/scm/fs/fsverity/linux.git/log/?h=for-next
+Please drop this one temporarily from all stable queues as it needs to
+be backported together with some follow-up fixes that are on their way
+into mainline.
 
-- Eric
+> commit 2179ab410adb7c29e2feed5d1c15138e23b5e76e
+> Author: Johan Hovold <johan+linaro@kernel.org>
+> Date:   Tue Apr 16 11:15:09 2024 +0200
+> 
+>     Bluetooth: qca: fix invalid device address check
+>     
+>     [ Upstream commit 32868e126c78876a8a5ddfcb6ac8cb2fffcf4d27 ]
+
+Johan
 
