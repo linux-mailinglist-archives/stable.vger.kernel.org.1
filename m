@@ -1,210 +1,165 @@
-Return-Path: <stable+bounces-43005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02B28BA607
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 06:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AB28BA6CB
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 08:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D73D6B220BC
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 04:28:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E7F1B215EE
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 06:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9A7225CB;
-	Fri,  3 May 2024 04:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhzLLuaR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C9A139CEF;
+	Fri,  3 May 2024 06:01:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E3920B0F;
-	Fri,  3 May 2024 04:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92D6139CE8
+	for <stable@vger.kernel.org>; Fri,  3 May 2024 06:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714710534; cv=none; b=WkFb1f6VfhkVQwt7hB4ov2YNAhRgXekdll4UmTeETbqa/ndCZBSkPdNvX2ZXajIexzMg1yiLkZKalGvT3EtZIHuYkZ9fvz2AJqoiPpSJH5pRIKoW6oaY1VT/PiLWK8U3G+5z2EfxbvE+ZJKDHpj8xO9wSCDVyhNCaUXTefL+tv0=
+	t=1714716117; cv=none; b=uN59WvwdCZX3WrWYr9HOrAZ+PKCqfG+EgeyXpC7ary/g3ah3VbEMh/G6vxb1kFhSqNKmzoF7uBjtwqhvrswZ53W4x0YyuNBQDhI8ukzFtDDnWxQOpXBMUZ02pPbXWpRZ/21iSzEaODuQtb0vMVN6PxqabrB/D5uTCCfkt2vAW28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714710534; c=relaxed/simple;
-	bh=2xV9NOQM6JnXszAjujzCJmlL5ly3mPyIELep2v8PLtw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=BWpPIoxqLbvo2lpMIsd6kleWCZ1HYKUvOIBMXtov6PuX1vl8S2s3YDbwUamnKI9TyPTIkqOEAXC/zC6BmqGYTxqShIJfOUhMMZG+MJpS540HeZwFx/MDkNz5UjjyOcL/WCnQg9z5MRFxlm9CSGLdEvvy2gVe05JmKHUHEm/SpqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AhzLLuaR; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51f12ccff5eso2030473e87.1;
-        Thu, 02 May 2024 21:28:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714710530; x=1715315330; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5vRE4UTftWC5/qK/rODTF1hptCzDYS3g6nujGWa9udw=;
-        b=AhzLLuaRo7RrduFNyVErqE/kN6qy5KmYYf64GoPw++S6M6tOB3+X9zWFU/fQol9r7f
-         PIOtVp5OEMbwDiFXAVGfa1ZbeN0MIFYMSJcFWX9I8GDcniewlwJ9DXPm7If0RrcQi+oi
-         1rFv3tTd3MCTiXEJYbZUOhuB9sAZe+b2HouqeN5d2a4pSDYyOaw3nmWe7lt6AkwoODaN
-         TVnS7PdEX8gqNXMF9OORsfvL6BOTyxyc/0xz/Js11+3fsyUAfsds+k9zpCbbFz6wJydP
-         MwMBldv1MZFmLMekmnic++lkbB5sZnyk/AuWj2FKYDY7jsHULYT5N2mBTMHtZcsWdU93
-         WSJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714710530; x=1715315330;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5vRE4UTftWC5/qK/rODTF1hptCzDYS3g6nujGWa9udw=;
-        b=WHVj1gxFoJWr42uGucQcH/bB0qVUetHKSzPLkzBdtb8+bJNmOe9ESgldH48rzMiDQC
-         5GXJigsCdBCbLn3rRaOmn5sEdQ1UnXt+WOnVctlbsVx7PuETyxus6qcg8Cvc9dnaezK7
-         yM+XYCuaQA6KMkBWI2QIiL9UBbO+bGsepxyq5C4tOta+8AsnCbB46bpMXQN9eNTMoZ2e
-         yuI0ai6pA9YRyZZ6YT/J1lP1ZnvUeeHISIvMSAp5/zbLClsGLCy8wHsu9sKgQIHMq38T
-         Jos7F3gz7cIjj4tPpjDI3f4FRN0b9vZg0PxaooegMxjP66hdNWoG4uI33pmv7qgSOM7D
-         ngvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpwHHcYd6W//+QZSPL2vqnNOpP85XChA2TT63+R/53O11IH7xvXMzzOzHaoQgq2RObKXJCY5FYvqinCakv4B/HReGjla3gs8UHZA==
-X-Gm-Message-State: AOJu0YzQ/LI927u9iu4ZNERTp9RLtLDK4xJc0LbGpW2DTpNLXHk0WOBM
-	eQpoZeoIXx5L0Q387mNp8+qBuN8/MLYcFGHCTQ50OY/GvWmidjNhfCWkS25eJP4J8FhEtTuTskR
-	SPh3MVE4bNUVfE5shX757hN4ba2oK/Ffj
-X-Google-Smtp-Source: AGHT+IEBasq0TuZjBUYacKx/qUDxx2Jf2ayH2pdTq/vOldNcHF30LEDpREzz2G3rnHvRXBxCyLU87TWwLtqZaIQKzUA=
-X-Received: by 2002:a19:9118:0:b0:518:a55b:b612 with SMTP id
- t24-20020a199118000000b00518a55bb612mr950059lfd.54.1714710529824; Thu, 02 May
- 2024 21:28:49 -0700 (PDT)
+	s=arc-20240116; t=1714716117; c=relaxed/simple;
+	bh=Fv1b8s+ukYPxG3AZUxyciH21MyjJ88uPJz4qM67RoNA=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=I+aLCr0qOiJm9U0auFx3j7G3vDgW7SwqWBoSER3513kbOIy6vNmOGEPV2ZxXZMXLKze1dcbkkMUn0M1CTwIrp2gfv3hfIhXvHM7A6zl7zVbr34W1j6gbMOuNfbhTbDVceNPtdupA4mm1h2TsitSQv/EZRMmdcvzqsJmezhGoyQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from mchehab by linuxtv.org with local (Exim 4.96)
+	(envelope-from <mchehab@linuxtv.org>)
+	id 1s2lzW-0002ok-32;
+	Fri, 03 May 2024 06:01:54 +0000
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Date: Fri, 03 May 2024 06:00:14 +0000
+Subject: [git:media_stage/master] media: mxl5xx: Move xpt structures off stack
+To: linuxtv-commits@linuxtv.org
+Cc: stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1s2lzW-0002ok-32@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Steve French <smfrench@gmail.com>
-Date: Thu, 2 May 2024 23:28:38 -0500
-Message-ID: <CAH2r5mtC8NK=bH6qZfN6qwa=jot_scuLiDfYWSbFMwDWmkthOA@mail.gmail.com>
-Subject: backport of missing fs/smb patches not in 6.6.30 stable
-To: Stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, CIFS <linux-cifs@vger.kernel.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-6.6.30-rc1 has a large set of fs/smb (cifs.ko and ksmbd.ko) patches
-backported but was missing more than 30 fixes so I put together a safe
-backport of the remaining, leaving out patches that had dependencies
-on things outside of fs/smb
+This is an automatic generated email to let you know that the following patch were queued:
 
-The following changes since commit 488f7008e62890fae8c7a2d3583913c8074f1fc6:
+Subject: media: mxl5xx: Move xpt structures off stack
+Author:  Nathan Chancellor <nathan@kernel.org>
+Date:    Fri Jan 12 00:40:36 2024 +0000
 
-  smb3: fix lock ordering potential deadlock in cifs_sync_mid_result
-(2024-04-30 12:30:53 -0500)
+When building for LoongArch with clang 18.0.0, the stack usage of
+probe() is larger than the allowed 2048 bytes:
 
-are available in the Git repository at:
+  drivers/media/dvb-frontends/mxl5xx.c:1698:12: warning: stack frame size (2368) exceeds limit (2048) in 'probe' [-Wframe-larger-than]
+   1698 | static int probe(struct mxl *state, struct mxl5xx_cfg *cfg)
+        |            ^
+  1 warning generated.
 
-  git://git.samba.org/ksmbd.git tags/6.6.30-rc1-full-fs-smb-backport
+This is the result of the linked LLVM commit, which changes how the
+arrays of structures in config_ts() get handled with
+CONFIG_INIT_STACK_ZERO and CONFIG_INIT_STACK_PATTERN, which causes the
+above warning in combination with inlining, as config_ts() gets inlined
+into probe().
 
-for you to fetch changes up to 411b6f385ac2427ee9d70fae277a4ed6b9d3983f:
+This warning can be easily fixed by moving the array of structures off
+of the stackvia 'static const', which is a better location for these
+variables anyways because they are static data that is only ever read
+from, never modified, so allocating the stack space is wasteful.
 
-  smb: smb2pdu.h: Avoid -Wflex-array-member-not-at-end warnings
-(2024-05-01 02:18:25 -0500)
+This drops the stack usage from 2368 bytes to 256 bytes with the same
+compiler and configuration.
 
-----------------------------------------------------------------
-full backport for 6.6.30, includes all 80 (of the relevant) missing
-fs/smb changesets
+Link: https://lore.kernel.org/linux-media/20240111-dvb-mxl5xx-move-structs-off-stack-v1-1-ca4230e67c11@kernel.org
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1977
+Link: https://github.com/llvm/llvm-project/commit/afe8b93ffdfef5d8879e1894b9d7dda40dee2b8d
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Test results look good (and better than without the patches).  Here
-are the functional test results (they passed exhaustive set of tests
-to various server types):
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/3/builds/99
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/5/builds/117
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/9/builds/51
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/10/builds/63
+ drivers/media/dvb-frontends/mxl5xx.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-Note that 22 patches had dependencies and were not appropriate to
-backport and are not included, but here is the list of the additional
-80 fs/smb patches included, many of which fix bugs (the others reduce
-risk of backport, and help avoid merge conflicts):
-411b6f385ac2 (HEAD -> fs-smb-backport-linux-6.6.30-rc1, tag:
-6.6.30-rc1-full-fs-smb-backport,
-origin/fs-smb-backport-linux-6.6.30-rc1) smb: smb2pdu.h: Avoid
--Wflex-array-member-not-at-end warnings
-e97b85914501 ksmbd: add continuous availability share parameter
-c52ce70edb58 cifs: Add tracing for the cifs_tcon struct refcounting
-6fa6d5ed6a06 smb3: fix broken reconnect when password changing on the
-server by allowing password rotation
-d8833245b0f3 smb: client: instantiate when creating SFU files
-4c8cf606bdb9 smb: client: fix NULL ptr deref in
-cifs_mark_open_handles_for_deleted_file()
-e0727528f3be smb3: add trace event for mknod
-b71e6511fa98 smb311: additional compression flag defined in updated
-protocol spec
-0725c800685e smb311: correct incorrect offset field in compression header
-e25e2f027599 cifs: Move some extern decls from .c files to .h
-0d422616d36e ksmbd: fix potencial out-of-bounds when buffer offset is invalid
-3967f3e18d66 ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
-aec926736509 ksmbd: Fix spelling mistake "connction" -> "connection"
-43f609cc80a5 ksmbd: fix possible null-deref in smb_lazy_parent_lease_break_close
-3f1a838bc984 cifs: remove redundant variable assignment
-05415df6229c cifs: fixes for get_inode_info
-025b6f60cccc cifs: defer close file handles having RH lease
-f1907205b6d3 ksmbd: add support for durable handles v1/v2
-38b6f9391d64 ksmbd: mark SMB2_SESSION_EXPIRED to session when
-destroying previous session
-5ab62e6d22d1 cifs: update internal module version number for cifs.ko
-4dcd0fe0c185 smb: common: simplify compression headers
-0409ad4bad2b smb: common: fix fields sizes in compression_pattern_payload_v1
-25fc3d85adc6 smb: client: negotiate compression algorithms
-f3351838c269 smb3: add dynamic trace point for ioctls
-7716c6db1c3b smb: client: return reparse type in /proc/mounts
-1c3fbd8f92e9 smb: client: set correct d_type for reparse DFS/DFSR and
-mount point
-555e4ef34991 smb: client: parse uid, gid, mode and dev from WSL reparse points
-5232c56b469f smb: client: introduce SMB2_OP_QUERY_WSL_EA
-2bcfc0b089f7 smb: client: Fix a NULL vs IS_ERR() check in wsl_set_xattrs()
-7ef14e642141 smb: client: add support for WSL reparse points
-324c9dc5ab0b smb: client: reduce number of parameters in smb2_compound_op()
-8b52dc432b0a smb: client: fix potential broken compound request
-8f22fd9f0396 smb: client: move most of reparse point handling code to
-common file
-0ddb5bfd6f20 smb: client: introduce reparse mount option
-370c2c605121 smb: client: retry compound request without reusing lease
-6051d1b018ea smb: client: do not defer close open handles to deleted files
-6a9d47b768c4 smb: client: reuse file lease key in compound operations
-87eec3c54337 smb: client: get rid of smb311_posix_query_path_info()
-32fab0e3e9b9 smb: client: parse owner/group when creating reparse points
-df9a4c3f5db4 smb3: update allocation size more accurately on write completion
-4d7263b3bf67 smb: client: handle path separator of created SMB symlinks
-bd15b21c46c1 cifs: update the same create_guid on replay
-6feda182ccf0 ksmbd: Add kernel-doc for ksmbd_extract_sharename() function
-a12c76c3f311 cifs: set replay flag for retries of write command
-e0a86c86ec5f cifs: commands that are retried should have replay flag set
-207e9813ad88 smb: client: delete "true", "false" defines
-6eb8a67757c6 smb: Fix some kernel-doc comments
-3c21bffee62f cifs: new mount option called retrans
-005892f2a944 smb: client: don't clobber ->i_rdev from cached reparse points
-222edc9359a6 cifs: new nt status codes from MS-SMB2
-80e719af52b9 cifs: pick channel for tcon and tdis
-56c978ef1555 cifs: minor comment cleanup
-6008da8e76ac cifs: remove redundant variable tcon_exist
-95d9120fd9b0 cifs: update internal module version number for cifs.ko
-2bbd03ad1d98 ksmbd: vfs: fix all kernel-doc warnings
-0988e25500d0 ksmbd: auth: fix most kernel-doc warnings
-9198cebadcef cifs: remove unneeded return statement
-2b8222b46d92 cifs: get rid of dup length check in parse_reparse_point()
-a1975468bc0d cifs: Pass unbyteswapped eof value into SMB2_set_eof()
-b312f2d94a42 smb3: Improve exception handling in allocate_mr_list()
-b6a02523d103 cifs: fix in logging in cifs_chan_update_iface
-f7e60be64713 smb: client: handle special files and symlinks in SMB3 POSIX
-2f68be9f5e9d smb: client: cleanup smb2_query_reparse_point()
-eed182ebb134 smb: client: allow creating symlinks via reparse points
-95c6eac76fa5 smb: client: optimise reparse point querying
-8dbc76e94b4b smb: client: allow creating special files via reparse points
-a5a4a5bc172b smb: client: extend smb2_compound_op() to accept more commands
-778c2e03cbf4 smb: client: Fix minor whitespace errors and warnings
-757f636f8fb0 smb: client: introduce cifs_sfu_make_node()
-52740954fa81 cifs: fix use after free for iface while disabling
-secondary channels
-789f47984ddf cifs: update internal module version number for cifs.ko
-120608af2863 Missing field not being returned in ioctl CIFS_IOC_GET_MNT_INFO
-d1e9469bb4de smb3: minor cleanup of session handling code
-09f7cf2bba1b smb3: more minor cleanups for session handling routines
-6e19e4e86f02 smb3: minor RDMA cleanup
-d73d7f8d1faa cifs: print server capabilities in DebugData
-a88a5c2bf942 smb: use crypto_shash_digest() in symlink_hash()
-56ad4435b30b Add definition for new smb3.1.1 command type
-5900e9b37aa2 SMB3: clarify some of the unused CreateOption flags
-fdf07b15f7d7 cifs: Add client version details to NTLM authenticate message
+---
 
--- 
-Thanks,
-
-Steve
+diff --git a/drivers/media/dvb-frontends/mxl5xx.c b/drivers/media/dvb-frontends/mxl5xx.c
+index 4ebbcf05cc09..91e9c378397c 100644
+--- a/drivers/media/dvb-frontends/mxl5xx.c
++++ b/drivers/media/dvb-frontends/mxl5xx.c
+@@ -1381,57 +1381,57 @@ static int config_ts(struct mxl *state, enum MXL_HYDRA_DEMOD_ID_E demod_id,
+ 	u32 nco_count_min = 0;
+ 	u32 clk_type = 0;
+ 
+-	struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_sync_polarity[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700010, 8, 1}, {0x90700010, 9, 1},
+ 		{0x90700010, 10, 1}, {0x90700010, 11, 1},
+ 		{0x90700010, 12, 1}, {0x90700010, 13, 1},
+ 		{0x90700010, 14, 1}, {0x90700010, 15, 1} };
+-	struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_clock_polarity[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700010, 16, 1}, {0x90700010, 17, 1},
+ 		{0x90700010, 18, 1}, {0x90700010, 19, 1},
+ 		{0x90700010, 20, 1}, {0x90700010, 21, 1},
+ 		{0x90700010, 22, 1}, {0x90700010, 23, 1} };
+-	struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_valid_polarity[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700014, 0, 1}, {0x90700014, 1, 1},
+ 		{0x90700014, 2, 1}, {0x90700014, 3, 1},
+ 		{0x90700014, 4, 1}, {0x90700014, 5, 1},
+ 		{0x90700014, 6, 1}, {0x90700014, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_ts_clock_phase[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700018, 0, 3}, {0x90700018, 4, 3},
+ 		{0x90700018, 8, 3}, {0x90700018, 12, 3},
+ 		{0x90700018, 16, 3}, {0x90700018, 20, 3},
+ 		{0x90700018, 24, 3}, {0x90700018, 28, 3} };
+-	struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_lsb_first[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x9070000C, 16, 1}, {0x9070000C, 17, 1},
+ 		{0x9070000C, 18, 1}, {0x9070000C, 19, 1},
+ 		{0x9070000C, 20, 1}, {0x9070000C, 21, 1},
+ 		{0x9070000C, 22, 1}, {0x9070000C, 23, 1} };
+-	struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_sync_byte[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700010, 0, 1}, {0x90700010, 1, 1},
+ 		{0x90700010, 2, 1}, {0x90700010, 3, 1},
+ 		{0x90700010, 4, 1}, {0x90700010, 5, 1},
+ 		{0x90700010, 6, 1}, {0x90700010, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_enable_output[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x9070000C, 0, 1}, {0x9070000C, 1, 1},
+ 		{0x9070000C, 2, 1}, {0x9070000C, 3, 1},
+ 		{0x9070000C, 4, 1}, {0x9070000C, 5, 1},
+ 		{0x9070000C, 6, 1}, {0x9070000C, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_err_replace_sync[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x9070000C, 24, 1}, {0x9070000C, 25, 1},
+ 		{0x9070000C, 26, 1}, {0x9070000C, 27, 1},
+ 		{0x9070000C, 28, 1}, {0x9070000C, 29, 1},
+ 		{0x9070000C, 30, 1}, {0x9070000C, 31, 1} };
+-	struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_err_replace_valid[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700014, 8, 1}, {0x90700014, 9, 1},
+ 		{0x90700014, 10, 1}, {0x90700014, 11, 1},
+ 		{0x90700014, 12, 1}, {0x90700014, 13, 1},
+ 		{0x90700014, 14, 1}, {0x90700014, 15, 1} };
+-	struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_continuous_clock[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x907001D4, 0, 1}, {0x907001D4, 1, 1},
+ 		{0x907001D4, 2, 1}, {0x907001D4, 3, 1},
+ 		{0x907001D4, 4, 1}, {0x907001D4, 5, 1},
+ 		{0x907001D4, 6, 1}, {0x907001D4, 7, 1} };
+-	struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
++	static const struct MXL_REG_FIELD_T xpt_nco_clock_rate[MXL_HYDRA_DEMOD_MAX] = {
+ 		{0x90700044, 16, 80}, {0x90700044, 16, 81},
+ 		{0x90700044, 16, 82}, {0x90700044, 16, 83},
+ 		{0x90700044, 16, 84}, {0x90700044, 16, 85},
 
