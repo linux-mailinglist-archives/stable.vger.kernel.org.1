@@ -1,79 +1,53 @@
-Return-Path: <stable+bounces-43021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F088BB133
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:48:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7AE8BB153
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 19:00:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9403D1F2287B
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 16:48:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CFC11C215E2
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 17:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8015156C6A;
-	Fri,  3 May 2024 16:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3C9157A54;
+	Fri,  3 May 2024 17:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eQeuX4DM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzWyu3uo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABBE156C47;
-	Fri,  3 May 2024 16:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A987C78276
+	for <stable@vger.kernel.org>; Fri,  3 May 2024 17:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714754889; cv=none; b=G0Geiu7GHk0Bov8BZ9wFRjRPb7dX42as6/50kku3zRLv68bEp2oGRzYneVTAYq9u6KpHVgmLWO0kn0IO1iYdhlhzY5wK+DWDsDJ9iIKscBnqKI+AzlV+mJ4y65pzLwtZRDEp28E3oMOsJuJxjc2Qt82OLMlOnRDdI1TqDfM4QwQ=
+	t=1714755621; cv=none; b=CtjOHOnyPuaasnyPqiDRD6Xrh3d6CQ+sRz+A0QRNQ5iEUKqCr69Os7zG0VVWBMH16IGU6OvQNGiBeYY7sQh1U5lptBhs2LPfwbAOc6M7pJbjlA1htYjcEuUdykBz0SdPgE+l1Ajy4R7nR6fHcAEtU16RrZYt/23BIomkUzkDOC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714754889; c=relaxed/simple;
-	bh=ik8NzUfkbQh7WTppb3UIytikPKsoJLe7DZTjeyU0yNc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TClwUHeXpJqrZWeiWYuZ10GaameOUa1KyqhZLlDxRwZijexBd2WKpNBa9v3yawlOjHlKZ3tfEOHaOd5TZtNaZKCIPzihSIM+0/2N2OVRIRCYd+JknwNEyf5PwPNxJMPLL/+PSf1iic2mxs/T5iO/L+BoYvUf+czcJ4KDgriZhT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eQeuX4DM; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1ec5387aed9so37993095ad.3;
-        Fri, 03 May 2024 09:48:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714754887; x=1715359687; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oOaAAA400sxBj7Rt513jpfYioUpeWT2rZ/2CANbKUV8=;
-        b=eQeuX4DMUFHUq3sxD9fiTfxK3OTj7P/FAnihLFJuf9MGZOyNJx0UvBy5uj2fm9L1B5
-         qz/8F7VwIK5iIzlhyGdU6k1HY7R2T2TKkStdYLvidkgUZ2fbYUhXccYxmGS3+T69xzmj
-         mvIxpAEMj0eGn5zdj2e5XK+a0fGZ7cglclghEYHt6/YGS6bmtHJX7ogz/cf9ixm+X4Ph
-         I0JqrPB4B7GjarIIj89VbOKyhogryzkYVjCgjukXTvdF6OYrd16JDo+EAGYEi0Zg85De
-         3BGf3z7vpanddRjQIdqJopgx7ITRkbdmU2DwU+7bsZQSMR0bTrSs5sJyG2TeJ1iCWVc4
-         RGzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714754887; x=1715359687;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oOaAAA400sxBj7Rt513jpfYioUpeWT2rZ/2CANbKUV8=;
-        b=wAvY//UHrPA7ZVBiaC/jpD9TedyP+CXXUkNuNAhw5g1kNL4gatmNFZT8SOglLwfJA7
-         L4sE0JpGHL6O/SqsE1GE7FnCxECpcMUT36TV0JnFZw1PxdiGFgVd9rO7mgx7gXtkyPKT
-         dmcTTNX6UXvdXeXrIBjNX6jQY7hDg6tG1OJw+d0hV0Z8BpdoL8dVVRNNmwUbcEvtMMkT
-         Rzrg8knFvosIBSgEbIVOQ1mGP/FjQcm49bRgMhUiCD7Q599tVpotgvsm/HccD/JHl8xR
-         tYOGRrXwLTSnIq10lcswbNmhj7XGVUYgtG+sbqvnLpKnCchiBK6Y21JLkHjfxVS94Z+N
-         hqtg==
-X-Gm-Message-State: AOJu0Yy1mnoM07COJ/zLO3d+ZIs3u2bn0z3eCe9y8+A0Q+6FqbOBR57o
-	I02uuS9Yzf39iN//IDNbJmzsmNzG5gYKKCezobt88+rBl9dTSUoxSHiUo0p3
-X-Google-Smtp-Source: AGHT+IEV+lbScjEtPqb+6Le5rwHnLmbZyls2laR0sN6BCk3+IvPMFNPc+EIIgEaVqMX4V46wCutIYg==
-X-Received: by 2002:a17:902:efcb:b0:1eb:3daf:ebaf with SMTP id ja11-20020a170902efcb00b001eb3dafebafmr2883529plb.57.1714754887103;
-        Fri, 03 May 2024 09:48:07 -0700 (PDT)
-Received: from john.. ([98.97.32.52])
-        by smtp.gmail.com with ESMTPSA id r12-20020a170902c60c00b001ec7a1a8702sm3450873plr.271.2024.05.03.09.48.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 May 2024 09:48:06 -0700 (PDT)
-From: John Fastabend <john.fastabend@gmail.com>
-To: stable@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	daniel@iogearbox.net,
-	john.fastabend@gmail.com,
-	dhowells@redhat.com
-Subject: [PATCH stable, 6.1] net: sockmap, fix missing MSG_MORE causing TCP disruptions
-Date: Fri,  3 May 2024 09:48:05 -0700
-Message-Id: <20240503164805.59970-1-john.fastabend@gmail.com>
-X-Mailer: git-send-email 2.33.0
+	s=arc-20240116; t=1714755621; c=relaxed/simple;
+	bh=SXVk3YU4Szrz0k1TJPo0YtZVQHT+wYYG6i3bMtp6UbQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jmPgOF1XRjzZzoQDrGzxzXR+ZZjyOn7WVOlxEEtjHhV/KS5j1BIc62Gzc0q089bdfLU7U0JOBtWp7t4zK9rsEXQ/x2WXR0aujU4Kc/S1YjBWbUezcGczGMl0FWL3OZ9UaVVfLjOuzHbE7ipW0b+TOA5682fSDa1rwWSY2ni7B1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzWyu3uo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45D1C116B1;
+	Fri,  3 May 2024 17:00:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714755621;
+	bh=SXVk3YU4Szrz0k1TJPo0YtZVQHT+wYYG6i3bMtp6UbQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pzWyu3uoHOgEPRnhAXAH49s8rncihc0f0WUQ6e+j+6gus2zDGb+zVfE4Cnbqiqwzr
+	 cwnFFSFRE4SVSKCwwodIcK5eVRDhJvO1VbgC5jgh10GTTDpynSY2RFMzkOx+8Lkojx
+	 cNGsyMqjGZIYYmjJUXgNTRHd5vP9yS7o93KvEkJUaw0WKPPpygL31lNanRixChY/d9
+	 jBJJd9etBrbgZuLKdlO+Fr8is/YTkujfk6VYHE8PeUHT5d5tgd6fu966XBO/mlSw5+
+	 tuK1pTt0URt3paQJxU2B6N6nobMz1uLc/Zdx7nA/3kBPgfse260y8sQrdype659vOd
+	 aou62Vu3Vt+sg==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>
+Cc: NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v5.15.y] nfsd: don't allow nfsd threads to be signalled.
+Date: Fri,  3 May 2024 13:00:00 -0400
+Message-ID: <20240503170000.752108-1-cel@kernel.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,79 +56,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit ebf2e8860eea66e2c4764316b80c6a5ee5f336ee]
-[ Upstream commit f8dd95b29d7ef08c19ec9720564acf72243ddcf6]
+From: NeilBrown <neilb@suse.de>
 
-In the first patch,
+[ Upstream commit 3903902401451b1cd9d797a8c79769eb26ac7fe5 ]
 
-ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now a wrapper around tcp_sendmsg")
+The original implementation of nfsd used signals to stop threads during
+shutdown.
+In Linux 2.3.46pre5 nfsd gained the ability to shutdown threads
+internally it if was asked to run "0" threads.  After this user-space
+transitioned to using "rpc.nfsd 0" to stop nfsd and sending signals to
+threads was no longer an important part of the API.
 
-This block of code is added to tcp_bpf_push(). The
-tcp_bpf_push is the code used by BPF to submit messages into the TCP
-stack.
+In commit 3ebdbe5203a8 ("SUNRPC: discard svo_setup and rename
+svc_set_num_threads_sync()") (v5.17-rc1~75^2~41) we finally removed the
+use of signals for stopping threads, using kthread_stop() instead.
 
- if (flags & MSG_SENDPAGE_NOTLAST)
-     msghdr.msg_flags | MSG_MORE;
+This patch makes the "obvious" next step and removes the ability to
+signal nfsd threads - or any svc threads.  nfsd stops allowing signals
+and we don't check for their delivery any more.
 
-In the second patch,
+This will allow for some simplification in later patches.
 
-f8dd95b29d7e ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
+A change worth noting is in nfsd4_ssc_setup_dul().  There was previously
+a signal_pending() check which would only succeed when the thread was
+being shut down.  It should really have tested kthread_should_stop() as
+well.  Now it just does the latter, not the former.
 
-this logic was further changed to,
-
-  if (flags & MSG_SENDPAGE_NOTLAST)
-     msghdr.msg_flags |= MSG_MORE
-
-This was done as part of an improvement to use the sendmsg() callbacks
-and remove the sendpage usage inside the various sub systems.
-
-However, these two patches together fixed a bug. The issue is without
-MSG_MORE set we will break a msg up into many smaller sends. In some
-case a lot because the operation loops over the scatter gather list.
-Without the MSG_MORE set (the current 6.1 case) we see stalls in data
-send/recv and sometimes applications failing to receive data. This
-generally is the result of an application that gives up after calling
-recv() or similar too many times. We introduce this because of how
-we incorrectly change the TCP send pattern.
-
-Now that we have both 6.5 and 6.1 stable kernels deployed we've
-observed a series of issues related to this in real deployments. In 6.5
-kernels all the HTTP and other compliance tests pass and we are not
-observing any other issues. On 6.1 various compliance tests fail
-(nginx for example), but more importantly in these clusters without
-the flag set we observe stalled applications and increased retries in
-other applications. Openssl users where we have annotations to monitor
-retries and failures observed a significant increase in retries for
-example.
-
-For the backport we isolated the fix to the two lines in the above
-patches that fixed the code. With this patch we deployed the workloads
-again and error rates and stalls went away and 6.1 stable kernels
-perform similar to 6.5 stable kernels. Similarly the compliance tests
-also passed.
-
-Cc: <stable@vger.kernel.org> # 6.1.x
-Fixes: 604326b41a6fb ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/ipv4/tcp_bpf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfs/callback.c     |  9 +--------
+ fs/nfsd/nfs4proc.c    |  5 ++---
+ fs/nfsd/nfssvc.c      | 12 ------------
+ net/sunrpc/svc_xprt.c | 16 ++++++----------
+ 4 files changed, 9 insertions(+), 33 deletions(-)
 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index f8037d142bb7..20d94f67fde2 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -105,6 +105,9 @@ static int tcp_bpf_push(struct sock *sk, struct sk_msg *msg, u32 apply_bytes,
+diff --git a/fs/nfs/callback.c b/fs/nfs/callback.c
+index 456af7d230cf..46a0a2d6962e 100644
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -80,9 +80,6 @@ nfs4_callback_svc(void *vrqstp)
+ 	set_freezable();
  
- 		tcp_rate_check_app_limited(sk);
- retry:
-+		if (size < sge->length && msg->sg.start != msg->sg.end)
-+			flags |= MSG_SENDPAGE_NOTLAST;
-+
- 		has_tx_ulp = tls_sw_has_ctx_tx(sk);
- 		if (has_tx_ulp) {
- 			flags |= MSG_SENDPAGE_NOPOLICY;
+ 	while (!kthread_freezable_should_stop(NULL)) {
+-
+-		if (signal_pending(current))
+-			flush_signals(current);
+ 		/*
+ 		 * Listen for a request on the socket
+ 		 */
+@@ -112,11 +109,7 @@ nfs41_callback_svc(void *vrqstp)
+ 	set_freezable();
+ 
+ 	while (!kthread_freezable_should_stop(NULL)) {
+-
+-		if (signal_pending(current))
+-			flush_signals(current);
+-
+-		prepare_to_wait(&serv->sv_cb_waitq, &wq, TASK_INTERRUPTIBLE);
++		prepare_to_wait(&serv->sv_cb_waitq, &wq, TASK_IDLE);
+ 		spin_lock_bh(&serv->sv_cb_lock);
+ 		if (!list_empty(&serv->sv_cb_list)) {
+ 			req = list_first_entry(&serv->sv_cb_list,
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index c14f5ac1484c..6779291efca9 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1317,12 +1317,11 @@ static __be32 nfsd4_ssc_setup_dul(struct nfsd_net *nn, char *ipaddr,
+ 		/* found a match */
+ 		if (ni->nsui_busy) {
+ 			/*  wait - and try again */
+-			prepare_to_wait(&nn->nfsd_ssc_waitq, &wait,
+-				TASK_INTERRUPTIBLE);
++			prepare_to_wait(&nn->nfsd_ssc_waitq, &wait, TASK_IDLE);
+ 			spin_unlock(&nn->nfsd_ssc_lock);
+ 
+ 			/* allow 20secs for mount/unmount for now - revisit */
+-			if (signal_pending(current) ||
++			if (kthread_should_stop() ||
+ 					(schedule_timeout(20*HZ) == 0)) {
+ 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 				kfree(work);
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 4c1a0a1623e5..3d4fd40c987b 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -938,15 +938,6 @@ nfsd(void *vrqstp)
+ 
+ 	current->fs->umask = 0;
+ 
+-	/*
+-	 * thread is spawned with all signals set to SIG_IGN, re-enable
+-	 * the ones that will bring down the thread
+-	 */
+-	allow_signal(SIGKILL);
+-	allow_signal(SIGHUP);
+-	allow_signal(SIGINT);
+-	allow_signal(SIGQUIT);
+-
+ 	atomic_inc(&nfsdstats.th_cnt);
+ 
+ 	set_freezable();
+@@ -971,9 +962,6 @@ nfsd(void *vrqstp)
+ 		validate_process_creds();
+ 	}
+ 
+-	/* Clear signals before calling svc_exit_thread() */
+-	flush_signals(current);
+-
+ 	atomic_dec(&nfsdstats.th_cnt);
+ 
+ out:
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 67ccf1a6459a..b19592673eef 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -700,8 +700,8 @@ static int svc_alloc_arg(struct svc_rqst *rqstp)
+ 			/* Made progress, don't sleep yet */
+ 			continue;
+ 
+-		set_current_state(TASK_INTERRUPTIBLE);
+-		if (signalled() || kthread_should_stop()) {
++		set_current_state(TASK_IDLE);
++		if (kthread_should_stop()) {
+ 			set_current_state(TASK_RUNNING);
+ 			return -EINTR;
+ 		}
+@@ -736,7 +736,7 @@ rqst_should_sleep(struct svc_rqst *rqstp)
+ 		return false;
+ 
+ 	/* are we shutting down? */
+-	if (signalled() || kthread_should_stop())
++	if (kthread_should_stop())
+ 		return false;
+ 
+ 	/* are we freezing? */
+@@ -758,11 +758,7 @@ static struct svc_xprt *svc_get_next_xprt(struct svc_rqst *rqstp, long timeout)
+ 	if (rqstp->rq_xprt)
+ 		goto out_found;
+ 
+-	/*
+-	 * We have to be able to interrupt this wait
+-	 * to bring down the daemons ...
+-	 */
+-	set_current_state(TASK_INTERRUPTIBLE);
++	set_current_state(TASK_IDLE);
+ 	smp_mb__before_atomic();
+ 	clear_bit(SP_CONGESTED, &pool->sp_flags);
+ 	clear_bit(RQ_BUSY, &rqstp->rq_flags);
+@@ -784,7 +780,7 @@ static struct svc_xprt *svc_get_next_xprt(struct svc_rqst *rqstp, long timeout)
+ 	if (!time_left)
+ 		atomic_long_inc(&pool->sp_stats.threads_timedout);
+ 
+-	if (signalled() || kthread_should_stop())
++	if (kthread_should_stop())
+ 		return ERR_PTR(-EINTR);
+ 	return ERR_PTR(-EAGAIN);
+ out_found:
+@@ -882,7 +878,7 @@ int svc_recv(struct svc_rqst *rqstp, long timeout)
+ 	try_to_freeze();
+ 	cond_resched();
+ 	err = -EINTR;
+-	if (signalled() || kthread_should_stop())
++	if (kthread_should_stop())
+ 		goto out;
+ 
+ 	xprt = svc_get_next_xprt(rqstp, timeout);
+
+base-commit: b925f60c6ee7ec871d2d48575d0fde3872129c20
 -- 
-2.33.0
+2.44.0
 
 
