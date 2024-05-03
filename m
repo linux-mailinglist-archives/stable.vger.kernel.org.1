@@ -1,98 +1,160 @@
-Return-Path: <stable+bounces-43020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD068BB130
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:47:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F088BB133
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 18:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2963FB22364
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 16:47:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9403D1F2287B
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 16:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3E156F2B;
-	Fri,  3 May 2024 16:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8015156C6A;
+	Fri,  3 May 2024 16:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ugk+WlhV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eQeuX4DM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25956156F25;
-	Fri,  3 May 2024 16:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABBE156C47;
+	Fri,  3 May 2024 16:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714754818; cv=none; b=UJ1hKvm/pwz3DPnC89/w+sZFZq/SLldw0UEjWsFJ3iCuPNoMVnL4VSeJj0XxE+UuuqHgw5VHCXEAeIiiPpyUYEUzr+cEIMZ1ZZ/ecx/KHtETkzyc+kVWaRRDFUHFAHaqLhqUQeKnxXT3RhG0b3zaUs6/ZC3m/xclOtgg2rJ9VMo=
+	t=1714754889; cv=none; b=G0Geiu7GHk0Bov8BZ9wFRjRPb7dX42as6/50kku3zRLv68bEp2oGRzYneVTAYq9u6KpHVgmLWO0kn0IO1iYdhlhzY5wK+DWDsDJ9iIKscBnqKI+AzlV+mJ4y65pzLwtZRDEp28E3oMOsJuJxjc2Qt82OLMlOnRDdI1TqDfM4QwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714754818; c=relaxed/simple;
-	bh=5xBH8qzvo1lkGnwNzi04D+WYbyb9vRqEeRE4/Ponzjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JDrmMu9Qe93ItBNZTfcShhIJL6GIkfrdaFMguwco+6B/i3RZn4Ft4RHWs3sBq9X9woq7FjO3HNtGwRvZ3CCOqW6gqSaWfSnFLi3+hBqdHu03GwcbFIvTWkaN+vLQJqZg8d6AAnAdbfmTEQtb6rx7Pj6NorwBlLqSuSBCZs3iVNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ugk+WlhV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C96C116B1;
-	Fri,  3 May 2024 16:46:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714754818;
-	bh=5xBH8qzvo1lkGnwNzi04D+WYbyb9vRqEeRE4/Ponzjg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ugk+WlhVt8hCLjdZCjC+TeLXo5DAWWC5lF/enxi5vu/fo4nd2qVASKQTk/qmXrNO4
-	 ZnyjSuZ3uuM3Cjz0gLt9398nWBFg7rw25otUtro9BYKUKUPTrjIf3B0L1jo+dZjz4y
-	 wJBbSkG6nOnTpfYE6tp/Eo6LXJ+fDXz5X10yBo1m4Im59vBlxB+waM+qOr/JLxXPFk
-	 HqpPuNgdLr6eGeB0HJDD3bZ1Vojh4Ggw/35kMZML7lNwD4XK06llQVOAF+C4zcF/ee
-	 wLfMxMV3004vFMEhppEsl3w03UqM1jkq/MkZrPbRPvSO1Y7P06GJVCpvYVx9epRCRS
-	 jZT3/BcqdSDLA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1s2w3o-000000002bJ-1HAF;
-	Fri, 03 May 2024 18:47:00 +0200
-Date: Fri, 3 May 2024 18:47:00 +0200
-From: Johan Hovold <johan@kernel.org>
+	s=arc-20240116; t=1714754889; c=relaxed/simple;
+	bh=ik8NzUfkbQh7WTppb3UIytikPKsoJLe7DZTjeyU0yNc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TClwUHeXpJqrZWeiWYuZ10GaameOUa1KyqhZLlDxRwZijexBd2WKpNBa9v3yawlOjHlKZ3tfEOHaOd5TZtNaZKCIPzihSIM+0/2N2OVRIRCYd+JknwNEyf5PwPNxJMPLL/+PSf1iic2mxs/T5iO/L+BoYvUf+czcJ4KDgriZhT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eQeuX4DM; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1ec5387aed9so37993095ad.3;
+        Fri, 03 May 2024 09:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714754887; x=1715359687; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oOaAAA400sxBj7Rt513jpfYioUpeWT2rZ/2CANbKUV8=;
+        b=eQeuX4DMUFHUq3sxD9fiTfxK3OTj7P/FAnihLFJuf9MGZOyNJx0UvBy5uj2fm9L1B5
+         qz/8F7VwIK5iIzlhyGdU6k1HY7R2T2TKkStdYLvidkgUZ2fbYUhXccYxmGS3+T69xzmj
+         mvIxpAEMj0eGn5zdj2e5XK+a0fGZ7cglclghEYHt6/YGS6bmtHJX7ogz/cf9ixm+X4Ph
+         I0JqrPB4B7GjarIIj89VbOKyhogryzkYVjCgjukXTvdF6OYrd16JDo+EAGYEi0Zg85De
+         3BGf3z7vpanddRjQIdqJopgx7ITRkbdmU2DwU+7bsZQSMR0bTrSs5sJyG2TeJ1iCWVc4
+         RGzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714754887; x=1715359687;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oOaAAA400sxBj7Rt513jpfYioUpeWT2rZ/2CANbKUV8=;
+        b=wAvY//UHrPA7ZVBiaC/jpD9TedyP+CXXUkNuNAhw5g1kNL4gatmNFZT8SOglLwfJA7
+         L4sE0JpGHL6O/SqsE1GE7FnCxECpcMUT36TV0JnFZw1PxdiGFgVd9rO7mgx7gXtkyPKT
+         dmcTTNX6UXvdXeXrIBjNX6jQY7hDg6tG1OJw+d0hV0Z8BpdoL8dVVRNNmwUbcEvtMMkT
+         Rzrg8knFvosIBSgEbIVOQ1mGP/FjQcm49bRgMhUiCD7Q599tVpotgvsm/HccD/JHl8xR
+         tYOGRrXwLTSnIq10lcswbNmhj7XGVUYgtG+sbqvnLpKnCchiBK6Y21JLkHjfxVS94Z+N
+         hqtg==
+X-Gm-Message-State: AOJu0Yy1mnoM07COJ/zLO3d+ZIs3u2bn0z3eCe9y8+A0Q+6FqbOBR57o
+	I02uuS9Yzf39iN//IDNbJmzsmNzG5gYKKCezobt88+rBl9dTSUoxSHiUo0p3
+X-Google-Smtp-Source: AGHT+IEV+lbScjEtPqb+6Le5rwHnLmbZyls2laR0sN6BCk3+IvPMFNPc+EIIgEaVqMX4V46wCutIYg==
+X-Received: by 2002:a17:902:efcb:b0:1eb:3daf:ebaf with SMTP id ja11-20020a170902efcb00b001eb3dafebafmr2883529plb.57.1714754887103;
+        Fri, 03 May 2024 09:48:07 -0700 (PDT)
+Received: from john.. ([98.97.32.52])
+        by smtp.gmail.com with ESMTPSA id r12-20020a170902c60c00b001ec7a1a8702sm3450873plr.271.2024.05.03.09.48.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 May 2024 09:48:06 -0700 (PDT)
+From: John Fastabend <john.fastabend@gmail.com>
 To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, johan+linaro@kernel.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Subject: Re: Patch "Bluetooth: qca: fix invalid device address check" has
- been added to the 6.8-stable tree
-Message-ID: <ZjUVBBVk_WHUUMli@hovoldconsulting.com>
-References: <20240503163852.5938-1-sashal@kernel.org>
+Cc: bpf@vger.kernel.org,
+	daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	dhowells@redhat.com
+Subject: [PATCH stable, 6.1] net: sockmap, fix missing MSG_MORE causing TCP disruptions
+Date: Fri,  3 May 2024 09:48:05 -0700
+Message-Id: <20240503164805.59970-1-john.fastabend@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240503163852.5938-1-sashal@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+[ Upstream commit ebf2e8860eea66e2c4764316b80c6a5ee5f336ee]
+[ Upstream commit f8dd95b29d7ef08c19ec9720564acf72243ddcf6]
 
-On Fri, May 03, 2024 at 12:38:51PM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     Bluetooth: qca: fix invalid device address check
-> 
-> to the 6.8-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      bluetooth-qca-fix-invalid-device-address-check.patch
-> and it can be found in the queue-6.8 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+In the first patch,
 
-Please drop this one temporarily from all stable queues as it needs to
-be backported together with some follow-up fixes that are on their way
-into mainline.
+ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now a wrapper around tcp_sendmsg")
 
-> commit 2179ab410adb7c29e2feed5d1c15138e23b5e76e
-> Author: Johan Hovold <johan+linaro@kernel.org>
-> Date:   Tue Apr 16 11:15:09 2024 +0200
-> 
->     Bluetooth: qca: fix invalid device address check
->     
->     [ Upstream commit 32868e126c78876a8a5ddfcb6ac8cb2fffcf4d27 ]
+This block of code is added to tcp_bpf_push(). The
+tcp_bpf_push is the code used by BPF to submit messages into the TCP
+stack.
 
-Johan
+ if (flags & MSG_SENDPAGE_NOTLAST)
+     msghdr.msg_flags | MSG_MORE;
+
+In the second patch,
+
+f8dd95b29d7e ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
+
+this logic was further changed to,
+
+  if (flags & MSG_SENDPAGE_NOTLAST)
+     msghdr.msg_flags |= MSG_MORE
+
+This was done as part of an improvement to use the sendmsg() callbacks
+and remove the sendpage usage inside the various sub systems.
+
+However, these two patches together fixed a bug. The issue is without
+MSG_MORE set we will break a msg up into many smaller sends. In some
+case a lot because the operation loops over the scatter gather list.
+Without the MSG_MORE set (the current 6.1 case) we see stalls in data
+send/recv and sometimes applications failing to receive data. This
+generally is the result of an application that gives up after calling
+recv() or similar too many times. We introduce this because of how
+we incorrectly change the TCP send pattern.
+
+Now that we have both 6.5 and 6.1 stable kernels deployed we've
+observed a series of issues related to this in real deployments. In 6.5
+kernels all the HTTP and other compliance tests pass and we are not
+observing any other issues. On 6.1 various compliance tests fail
+(nginx for example), but more importantly in these clusters without
+the flag set we observe stalled applications and increased retries in
+other applications. Openssl users where we have annotations to monitor
+retries and failures observed a significant increase in retries for
+example.
+
+For the backport we isolated the fix to the two lines in the above
+patches that fixed the code. With this patch we deployed the workloads
+again and error rates and stalls went away and 6.1 stable kernels
+perform similar to 6.5 stable kernels. Similarly the compliance tests
+also passed.
+
+Cc: <stable@vger.kernel.org> # 6.1.x
+Fixes: 604326b41a6fb ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+---
+ net/ipv4/tcp_bpf.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index f8037d142bb7..20d94f67fde2 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -105,6 +105,9 @@ static int tcp_bpf_push(struct sock *sk, struct sk_msg *msg, u32 apply_bytes,
+ 
+ 		tcp_rate_check_app_limited(sk);
+ retry:
++		if (size < sge->length && msg->sg.start != msg->sg.end)
++			flags |= MSG_SENDPAGE_NOTLAST;
++
+ 		has_tx_ulp = tls_sw_has_ctx_tx(sk);
+ 		if (has_tx_ulp) {
+ 			flags |= MSG_SENDPAGE_NOPOLICY;
+-- 
+2.33.0
+
 
