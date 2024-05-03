@@ -1,196 +1,210 @@
-Return-Path: <stable+bounces-43004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A5F8BA38D
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 00:57:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F02B28BA607
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 06:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530171F22326
-	for <lists+stable@lfdr.de>; Thu,  2 May 2024 22:57:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D73D6B220BC
+	for <lists+stable@lfdr.de>; Fri,  3 May 2024 04:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2176C1C286;
-	Thu,  2 May 2024 22:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9A7225CB;
+	Fri,  3 May 2024 04:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F0FXAMxQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhzLLuaR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204748F5C;
-	Thu,  2 May 2024 22:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E3920B0F;
+	Fri,  3 May 2024 04:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714690643; cv=none; b=Mkjye+gNDGJiPKi0inYIoVvs9u8G/VC+nuZnnpCav1L+1R3uIeLHMPX/tyTxnr1QvOnqNUq6EZj4rVxWSAN32vL7apzCZBH7zh8cltnYXx84ZUE+yz0a1DTPPpr+oVHrh5L/SstnCddQyfAIVNLIzFaGKkvcNy3CHAu6Kwb23ss=
+	t=1714710534; cv=none; b=WkFb1f6VfhkVQwt7hB4ov2YNAhRgXekdll4UmTeETbqa/ndCZBSkPdNvX2ZXajIexzMg1yiLkZKalGvT3EtZIHuYkZ9fvz2AJqoiPpSJH5pRIKoW6oaY1VT/PiLWK8U3G+5z2EfxbvE+ZJKDHpj8xO9wSCDVyhNCaUXTefL+tv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714690643; c=relaxed/simple;
-	bh=Fmg57uEE4v11WR+5GNCzdhB87E5dXr1jA5UC3iRCnZI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dcsdrmN45v5ziw9w50nQfYVpRiJmYkN/PrMjQaQLman+XAQEJVUi4Q/My4sHCbFEvZmRnn69e6U3LtGeYSWVgt7lC2AN+bWzBtE/nGQDw/vKmsRoAZ5zwVmVpiywF1ikZyRWN23SQgu+oo4eI3wYlHgmlL/rCyygWUJkNpUCu9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F0FXAMxQ; arc=none smtp.client-ip=209.85.208.179
+	s=arc-20240116; t=1714710534; c=relaxed/simple;
+	bh=2xV9NOQM6JnXszAjujzCJmlL5ly3mPyIELep2v8PLtw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=BWpPIoxqLbvo2lpMIsd6kleWCZ1HYKUvOIBMXtov6PuX1vl8S2s3YDbwUamnKI9TyPTIkqOEAXC/zC6BmqGYTxqShIJfOUhMMZG+MJpS540HeZwFx/MDkNz5UjjyOcL/WCnQg9z5MRFxlm9CSGLdEvvy2gVe05JmKHUHEm/SpqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AhzLLuaR; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2e242b1df60so1622951fa.1;
-        Thu, 02 May 2024 15:57:21 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51f12ccff5eso2030473e87.1;
+        Thu, 02 May 2024 21:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714690640; x=1715295440; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+        d=gmail.com; s=20230601; t=1714710530; x=1715315330; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Fmg57uEE4v11WR+5GNCzdhB87E5dXr1jA5UC3iRCnZI=;
-        b=F0FXAMxQggnuJFMfoQz8sCHhLTxBMnJl5EokxSZ78TdxCXMJ8dSMo9Qovu64mA5X9R
-         gxIk453dyBXKQPOkZWFcMwb8qqBiCPiHaRADcU6oEvOtxaPtGyK4i5DVGb6fcAyteS3z
-         JG4Fx5fCN2PypoPvuRBH7JVmzwEQmKdvG1fELRXlNoYZ4zheFyFmna+eKCVqRtQtOQOz
-         FJ1e86w5mVZUnQTvjb2+wfGI4O54W1rwx655Z5LCeAfmteEO/bysiI8jV1hIzFdczndj
-         jbFs6C0wAbKiC7OXvK3z1KzRxO+Zg2pl+A5q7MZiVqkRSOw9ZnWeZ9ChEt7KU5hl82em
-         cUnQ==
+        bh=5vRE4UTftWC5/qK/rODTF1hptCzDYS3g6nujGWa9udw=;
+        b=AhzLLuaRo7RrduFNyVErqE/kN6qy5KmYYf64GoPw++S6M6tOB3+X9zWFU/fQol9r7f
+         PIOtVp5OEMbwDiFXAVGfa1ZbeN0MIFYMSJcFWX9I8GDcniewlwJ9DXPm7If0RrcQi+oi
+         1rFv3tTd3MCTiXEJYbZUOhuB9sAZe+b2HouqeN5d2a4pSDYyOaw3nmWe7lt6AkwoODaN
+         TVnS7PdEX8gqNXMF9OORsfvL6BOTyxyc/0xz/Js11+3fsyUAfsds+k9zpCbbFz6wJydP
+         MwMBldv1MZFmLMekmnic++lkbB5sZnyk/AuWj2FKYDY7jsHULYT5N2mBTMHtZcsWdU93
+         WSJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714690640; x=1715295440;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=1e100.net; s=20230601; t=1714710530; x=1715315330;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Fmg57uEE4v11WR+5GNCzdhB87E5dXr1jA5UC3iRCnZI=;
-        b=QBzXo7R9vKaGE8Id5polBkxgLulynWvrKVX1Eevuk7rltHea4Qvgc5j140nFVoMZa8
-         iFHTDOYdtI8PcfM3QEehYgve2E7vU6z927krHuSV8sf+nZ0aaCRVeyPWi7YlkVQlnDMB
-         L2v33jwilI3t6Zro2axAem7g51T8DiIZCq7hk0+4wZBHvJTATCk/esgIFAwcheQPxwAm
-         gg9MbJaz7Z7OAXfeUQS7JGzv4AhQh5HiFX9ZQQAXJ7Z3T9uM35Kxgq2sb4QwvAzLtMKf
-         EQtfgl1BupjZgO2AU+eFxMdxG1+P2N997nFBI8sPBFMwDlL7vGn0SMqaLJX61rvU9UX/
-         9njA==
-X-Forwarded-Encrypted: i=1; AJvYcCXMe4ntv/4shepNZlJ0IAedkJtGRbUSvLcTxi67ZnfrY7jT5fi8g55EHakrZUvczBFur8F0TF4TQsx5VruJRC5bXF9Jv1AD2T3fz1PxzAUyzFW5uZ2V290sbtid0UneKSyw4bE/CKWIkLuiEJzMrph4lY90wEPcv6B7193EzlZyG0x7kX0vqCsPsBvfnL44+Mxmca17IR5T
-X-Gm-Message-State: AOJu0Yy0QHc/s0k2gMypn6YjVRKFViXhFpiwWMecRqXGjNNLkVVrOJ0O
-	72NxEGOp9UU2R2V7sQL2YYKNcdkc/7gV8JwNmdtwEJavSBhYYXRJI5yeYehX
-X-Google-Smtp-Source: AGHT+IGz2WXlMsuHP46rBYigVBAkKsVg1u7pbr6yf+o0r7Xce8qU4Ipgphj697TJ9RVIDJHMdo8Dxg==
-X-Received: by 2002:a2e:9602:0:b0:2d9:fb60:9afa with SMTP id v2-20020a2e9602000000b002d9fb609afamr676609ljh.40.1714690640007;
-        Thu, 02 May 2024 15:57:20 -0700 (PDT)
-Received: from ?IPv6:2001:8a0:e622:f700:1ccc:88aa:cfeb:dfd7? ([2001:8a0:e622:f700:1ccc:88aa:cfeb:dfd7])
-        by smtp.gmail.com with ESMTPSA id t9-20020a05600c450900b0041bd920d41csm3402462wmo.1.2024.05.02.15.57.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 May 2024 15:57:19 -0700 (PDT)
-Message-ID: <5d5073766f20f9fd5c88d09a710def6e84904838.camel@gmail.com>
-Subject: Re: [PATCH v3] can: mcp251xfd: fix infinite loop when xmit fails
-From: Vitor Soares <ivitro@gmail.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Thomas Kopp
- <thomas.kopp@microchip.com>, Wolfgang Grandegger <wg@grandegger.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>, Vitor Soares <vitor.soares@toradex.com>,
- linux-can@vger.kernel.org,  netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 02 May 2024 23:57:17 +0100
-In-Reply-To: <20240430-curassow-of-improbable-poetry-1611f8-mkl@pengutronix.de>
-References: <20240311121143.306403-1-ivitro@gmail.com>
-	 <20240430-curassow-of-improbable-poetry-1611f8-mkl@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        bh=5vRE4UTftWC5/qK/rODTF1hptCzDYS3g6nujGWa9udw=;
+        b=WHVj1gxFoJWr42uGucQcH/bB0qVUetHKSzPLkzBdtb8+bJNmOe9ESgldH48rzMiDQC
+         5GXJigsCdBCbLn3rRaOmn5sEdQ1UnXt+WOnVctlbsVx7PuETyxus6qcg8Cvc9dnaezK7
+         yM+XYCuaQA6KMkBWI2QIiL9UBbO+bGsepxyq5C4tOta+8AsnCbB46bpMXQN9eNTMoZ2e
+         yuI0ai6pA9YRyZZ6YT/J1lP1ZnvUeeHISIvMSAp5/zbLClsGLCy8wHsu9sKgQIHMq38T
+         Jos7F3gz7cIjj4tPpjDI3f4FRN0b9vZg0PxaooegMxjP66hdNWoG4uI33pmv7qgSOM7D
+         ngvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpwHHcYd6W//+QZSPL2vqnNOpP85XChA2TT63+R/53O11IH7xvXMzzOzHaoQgq2RObKXJCY5FYvqinCakv4B/HReGjla3gs8UHZA==
+X-Gm-Message-State: AOJu0YzQ/LI927u9iu4ZNERTp9RLtLDK4xJc0LbGpW2DTpNLXHk0WOBM
+	eQpoZeoIXx5L0Q387mNp8+qBuN8/MLYcFGHCTQ50OY/GvWmidjNhfCWkS25eJP4J8FhEtTuTskR
+	SPh3MVE4bNUVfE5shX757hN4ba2oK/Ffj
+X-Google-Smtp-Source: AGHT+IEBasq0TuZjBUYacKx/qUDxx2Jf2ayH2pdTq/vOldNcHF30LEDpREzz2G3rnHvRXBxCyLU87TWwLtqZaIQKzUA=
+X-Received: by 2002:a19:9118:0:b0:518:a55b:b612 with SMTP id
+ t24-20020a199118000000b00518a55bb612mr950059lfd.54.1714710529824; Thu, 02 May
+ 2024 21:28:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Steve French <smfrench@gmail.com>
+Date: Thu, 2 May 2024 23:28:38 -0500
+Message-ID: <CAH2r5mtC8NK=bH6qZfN6qwa=jot_scuLiDfYWSbFMwDWmkthOA@mail.gmail.com>
+Subject: backport of missing fs/smb patches not in 6.6.30 stable
+To: Stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, CIFS <linux-cifs@vger.kernel.org>, 
+	Namjae Jeon <linkinjeon@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-SGVsbG8gTWFyYywKCgpUaGFua3MgZm9yIHlvdXIgZmVlZGJhY2suCgpPbiBUdWUsIDIwMjQtMDQt
-MzAgYXQgMTE6MTAgKzAyMDAsIE1hcmMgS2xlaW5lLUJ1ZGRlIHdyb3RlOgo+IE9uIDExLjAzLjIw
-MjQgMTI6MTE6NDMsIFZpdG9yIFNvYXJlcyB3cm90ZToKPiA+IEZyb206IFZpdG9yIFNvYXJlcyA8
-dml0b3Iuc29hcmVzQHRvcmFkZXguY29tPgo+ID4gCj4gPiBXaGVuIHRoZSBtY3AyNTF4ZmRfc3Rh
-cnRfeG1pdCgpIGZ1bmN0aW9uIGZhaWxzLCB0aGUgZHJpdmVyIHN0b3BzCj4gPiBwcm9jZXNzaW5n
-IG1lc3NhZ2VzLCBhbmQgdGhlIGludGVycnVwdCByb3V0aW5lIGRvZXMgbm90IHJldHVybiwKPiA+
-IHJ1bm5pbmcgaW5kZWZpbml0ZWx5IGV2ZW4gYWZ0ZXIga2lsbGluZyB0aGUgcnVubmluZyBhcHBs
-aWNhdGlvbi4KPiA+IAo+ID4gRXJyb3IgbWVzc2FnZXM6Cj4gPiBbwqAgNDQxLjI5ODgxOV0gbWNw
-MjUxeGZkIHNwaTIuMCBjYW4wOiBFUlJPUiBpbiBtY3AyNTF4ZmRfc3RhcnRfeG1pdDogLTE2Cj4g
-PiBbwqAgNDQxLjMwNjQ5OF0gbWNwMjUxeGZkIHNwaTIuMCBjYW4wOiBUcmFuc21pdCBFdmVudCBG
-SUZPIGJ1ZmZlciBub3QgZW1wdHkuIChzZXE9MHgwMDAwMTdjNywKPiA+IHRlZl90YWlsPTB4MDAw
-MDE3Y2YsIHRlZl9oZWFkPTB4MDAwMDE3ZDAsIHR4X2hlYWQ9MHgwMDAwMTdkMykuCj4gPiAuLi4g
-YW5kIHJlcGVhdCBmb3JldmVyLgo+ID4gCj4gPiBUaGUgaXNzdWUgY2FuIGJlIHRyaWdnZXJlZCB3
-aGVuIG11bHRpcGxlIGRldmljZXMgc2hhcmUgdGhlIHNhbWUKPiA+IFNQSSBpbnRlcmZhY2UuIEFu
-ZCB0aGVyZSBpcyBjb25jdXJyZW50IGFjY2VzcyB0byB0aGUgYnVzLgo+ID4gCj4gPiBUaGUgcHJv
-YmxlbSBvY2N1cnMgYmVjYXVzZSB0eF9yaW5nLT5oZWFkIGluY3JlbWVudHMgZXZlbiBpZgo+ID4g
-bWNwMjUxeGZkX3N0YXJ0X3htaXQoKSBmYWlscy4gQ29uc2VxdWVudGx5LCB0aGUgZHJpdmVyIHNr
-aXBzIG9uZQo+ID4gVFggcGFja2FnZSB3aGlsZSBzdGlsbCBleHBlY3RpbmcgYSByZXNwb25zZSBp
-bgo+ID4gbWNwMjUxeGZkX2hhbmRsZV90ZWZpZl9vbmUoKS4KPiA+IAo+ID4gVGhpcyBwYXRjaCBy
-ZXNvbHZlcyB0aGUgaXNzdWUgYnkgZGVjcmVhc2luZyB0eF9yaW5nLT5oZWFkIGlmCj4gPiBtY3Ay
-NTF4ZmRfc3RhcnRfeG1pdCgpIGZhaWxzLiBXaXRoIHRoZSBmaXgsIGlmIHdlIHRyaWdnZXIgdGhl
-IGlzc3VlIGFuZAo+ID4gdGhlIGVyciA9IC1FQlVTWSwgdGhlIGRyaXZlciByZXR1cm5zIE5FVERF
-Vl9UWF9CVVNZLiBUaGUgbmV0d29yayBzdGFjawo+ID4gcmV0cmllcyB0byB0cmFuc21pdCB0aGUg
-bWVzc2FnZS4KPiA+IE90aGVyd2lzZSwgaXQgcHJpbnRzIGFuIGVycm9yIGFuZCBkaXNjYXJkcyB0
-aGUgbWVzc2FnZS4KPiA+IAo+ID4gRml4ZXM6IDU1ZTViOTdmMDAzZSAoImNhbjogbWNwMjV4eGZk
-OiBhZGQgZHJpdmVyIGZvciBNaWNyb2NoaXAgTUNQMjV4eEZEIFNQSSBDQU4iKQo+ID4gQ2M6IHN0
-YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiA+IFNpZ25lZC1vZmYtYnk6IFZpdG9yIFNvYXJlcyA8dml0
-b3Iuc29hcmVzQHRvcmFkZXguY29tPgo+ID4gLS0tCj4gPiAKPiA+IFYyLT5WMzoKPiA+IMKgIC0g
-QWRkIHR4X2Ryb3BwZWQgc3RhdHMuCj4gPiDCoCAtIG5ldGRldl9zZW50X3F1ZXVlKCkgb25seSBp
-ZiBjYW5fcHV0X2VjaG9fc2tiKCkgc3VjY2VlZC4KPiA+IAo+ID4gVjEtPlYyOgo+ID4gwqAgLSBS
-ZXR1cm4gTkVUREVWX1RYX0JVU1kgaWYgbWNwMjUxeGZkX3R4X29ial93cml0ZSgpID09IC1FQlVT
-WS4KPiA+IMKgIC0gUmV3b3JrIHRoZSBjb21taXQgbWVzc2FnZSB0byBhZGRyZXNzIHRoZSBjaGFu
-Z2UgYWJvdmUuCj4gPiDCoCAtIENoYW5nZSBjYW5fcHV0X2VjaG9fc2tiKCkgdG8gYmUgY2FsbGVk
-IGFmdGVyIG1jcDI1MXhmZF90eF9vYmpfd3JpdGUoKSBzdWNjZWVkLgo+ID4gwqDCoMKgIE90aGVy
-d2lzZSwgd2UgZ2V0IEtlcm5lbCBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2UgZXJyb3IuCj4gPiAK
-PiA+IMKgZHJpdmVycy9uZXQvY2FuL3NwaS9tY3AyNTF4ZmQvbWNwMjUxeGZkLXR4LmMgfCAzNCAr
-KysrKysrKysrKystLS0tLS0tLQo+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMjEgaW5zZXJ0aW9ucygr
-KSwgMTMgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9jYW4v
-c3BpL21jcDI1MXhmZC9tY3AyNTF4ZmQtdHguYwo+ID4gYi9kcml2ZXJzL25ldC9jYW4vc3BpL21j
-cDI1MXhmZC9tY3AyNTF4ZmQtdHguYwo+ID4gaW5kZXggMTYwNTI4ZDNjYzI2Li4xNDZjNDRlNDdj
-NjAgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL25ldC9jYW4vc3BpL21jcDI1MXhmZC9tY3AyNTF4
-ZmQtdHguYwo+ID4gKysrIGIvZHJpdmVycy9uZXQvY2FuL3NwaS9tY3AyNTF4ZmQvbWNwMjUxeGZk
-LXR4LmMKPiA+IEBAIC0xNjYsNiArMTY2LDcgQEAgbmV0ZGV2X3R4X3QgbWNwMjUxeGZkX3N0YXJ0
-X3htaXQoc3RydWN0IHNrX2J1ZmYgKnNrYiwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IG5ldF9kZXZpY2Ug
-Km5kZXYpCj4gPiDCoHsKPiA+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgbWNwMjUxeGZkX3ByaXYg
-KnByaXYgPSBuZXRkZXZfcHJpdihuZGV2KTsKPiA+ICvCoMKgwqDCoMKgwqDCoHN0cnVjdCBuZXRf
-ZGV2aWNlX3N0YXRzICpzdGF0cyA9ICZuZGV2LT5zdGF0czsKPiA+IMKgwqDCoMKgwqDCoMKgwqBz
-dHJ1Y3QgbWNwMjUxeGZkX3R4X3JpbmcgKnR4X3JpbmcgPSBwcml2LT50eDsKPiA+IMKgwqDCoMKg
-wqDCoMKgwqBzdHJ1Y3QgbWNwMjUxeGZkX3R4X29iaiAqdHhfb2JqOwo+ID4gwqDCoMKgwqDCoMKg
-wqDCoHVuc2lnbmVkIGludCBmcmFtZV9sZW47Cj4gPiBAQCAtMTgxLDI1ICsxODIsMzIgQEAgbmV0
-ZGV2X3R4X3QgbWNwMjUxeGZkX3N0YXJ0X3htaXQoc3RydWN0IHNrX2J1ZmYgKnNrYiwKPiA+IMKg
-wqDCoMKgwqDCoMKgwqB0eF9vYmogPSBtY3AyNTF4ZmRfZ2V0X3R4X29ial9uZXh0KHR4X3Jpbmcp
-Owo+ID4gwqDCoMKgwqDCoMKgwqDCoG1jcDI1MXhmZF90eF9vYmpfZnJvbV9za2IocHJpdiwgdHhf
-b2JqLCBza2IsIHR4X3JpbmctPmhlYWQpOwo+ID4gwqAKPiA+IC3CoMKgwqDCoMKgwqDCoC8qIFN0
-b3AgcXVldWUgaWYgd2Ugb2NjdXB5IHRoZSBjb21wbGV0ZSBUWCBGSUZPICovCj4gPiDCoMKgwqDC
-oMKgwqDCoMKgdHhfaGVhZCA9IG1jcDI1MXhmZF9nZXRfdHhfaGVhZCh0eF9yaW5nKTsKPiA+IC3C
-oMKgwqDCoMKgwqDCoHR4X3JpbmctPmhlYWQrKzsKPiA+IC3CoMKgwqDCoMKgwqDCoGlmIChtY3Ay
-NTF4ZmRfZ2V0X3R4X2ZyZWUodHhfcmluZykgPT0gMCkKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBuZXRpZl9zdG9wX3F1ZXVlKG5kZXYpOwo+ID4gLQo+ID4gwqDCoMKgwqDCoMKg
-wqDCoGZyYW1lX2xlbiA9IGNhbl9za2JfZ2V0X2ZyYW1lX2xlbihza2IpOwo+ID4gLcKgwqDCoMKg
-wqDCoMKgZXJyID0gY2FuX3B1dF9lY2hvX3NrYihza2IsIG5kZXYsIHR4X2hlYWQsIGZyYW1lX2xl
-bik7Cj4gPiAtwqDCoMKgwqDCoMKgwqBpZiAoIWVycikKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBuZXRkZXZfc2VudF9xdWV1ZShwcml2LT5uZGV2LCBmcmFtZV9sZW4pOwo+ID4g
-Kwo+ID4gK8KgwqDCoMKgwqDCoMKgdHhfcmluZy0+aGVhZCsrOwo+ID4gwqAKPiA+IMKgwqDCoMKg
-wqDCoMKgwqBlcnIgPSBtY3AyNTF4ZmRfdHhfb2JqX3dyaXRlKHByaXYsIHR4X29iaik7Cj4gPiAt
-wqDCoMKgwqDCoMKgwqBpZiAoZXJyKQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGdvdG8gb3V0X2VycjsKPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChlcnIpIHsKPiA+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0eF9yaW5nLT5oZWFkLS07Cj4gPiDCoAo+ID4gLcKgwqDC
-oMKgwqDCoMKgcmV0dXJuIE5FVERFVl9UWF9PSzsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBpZiAoZXJyID09IC1FQlVTWSkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIE5FVERFVl9UWF9CVVNZOwo+ID4gwqAKPiA+IC0g
-b3V0X2VycjoKPiA+IC3CoMKgwqDCoMKgwqDCoG5ldGRldl9lcnIocHJpdi0+bmRldiwgIkVSUk9S
-IGluICVzOiAlZFxuIiwgX19mdW5jX18sIGVycik7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgc3RhdHMtPnR4X2Ryb3BwZWQrKzsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBpZiAobmV0X3JhdGVsaW1pdCgpKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBuZXRkZXZfZXJyKHByaXYtPm5kZXYsCj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgICJFUlJPUiBpbiAlczogJWRcbiIsIF9fZnVuY19fLCBlcnIpOwo+ID4gK8KgwqDC
-oMKgwqDCoMKgfSBlbHNlIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlcnIg
-PSBjYW5fcHV0X2VjaG9fc2tiKHNrYiwgbmRldiwgdHhfaGVhZCwgZnJhbWVfbGVuKTsKPiA+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoIWVycikKPiA+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbmV0ZGV2X3NlbnRfcXVldWUocHJpdi0+
-bmRldiwgZnJhbWVfbGVuKTsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAvKiBTdG9wIHF1ZXVlIGlmIHdlIG9jY3VweSB0aGUgY29tcGxldGUgVFggRklGTyAqLwo+ID4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChtY3AyNTF4ZmRfZ2V0X3R4X2ZyZWUo
-dHhfcmluZykgPT0gMCkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgbmV0aWZfc3RvcF9xdWV1ZShuZGV2KTsKPiA+ICvCoMKgwqDCoMKgwqDCoH0KPiAK
-PiBPbmNlIHlvdSBoYXZlIHNlbnQgdGhlIFRYIG9iamVjdHMgdG8gdGhlIGNoaXAsIGl0IGNhbiB0
-cmlnZ2VyIGEgVFgKPiBjb21wbGV0ZSBJUlEuIFRoaXMgaXMgbm90IHZlcnkgbGlrZWx5IGFzIHRo
-ZSBTUEkgc2VuZHMgYXN5bmNocm9ub3VzbHkKPiBhbmQgdGhlIHhtaXQgaGFuZGxlciBjYW5ub3Qg
-c2xlZXAuCj4gCj4gVGhpcyBtZWFucyB5b3UgaGF2ZSB0byBjYWxsIGNhbl9wdXRfZWNob19za2Io
-KSBhbmQgc3RvcCB0aGUgcXVldWUgaWYKPiBuZWVkZWQsIF9iZWZvcmVfIHlvdSBjYWxsIG1jcDI1
-MXhmZF90eF9vYmpfd3JpdGUoKS4gSW4gY2FzZSBvZiBhbiBlcnJvciwKPiB5b3UgaGF2ZSB0byBy
-b2xsLWJhY2sgdGhlc2UuCgpEb2luZyB0aGlzIHdheSwgSSBoYXZlIHRvIGNhbl9mcmVlX2VjaG9f
-c2tiKCkgYW5kIGl0IHdvbid0IGJlIHBvc3NpYmxlCnRvIHJldHVybiBORVRERVZfVFhfQlVTWS4K
-CkRvIHlvdSBrbm93IGhvdyBjYW4gd2UgcmV0dXJuIE5FVERFVl9UWF9CVVNZIHdoZW4gc3BpX2Fz
-eW5jKCkgPT0gRUJVU1kKdG8gYWxsb3cgdGhlIG5ldHdvcmsgc3RhY2sgdG8gcmV0cnkgdG8gdHJh
-bnNtaXQgdGhlIHBhY2thZ2U/CgpCZXN0IHJlZ2FyZHMsClZpdG9yIFNvYXJlcwoKPiAKPiByZWdh
-cmRzLAo+IE1hcmMKPiAKCg==
+6.6.30-rc1 has a large set of fs/smb (cifs.ko and ksmbd.ko) patches
+backported but was missing more than 30 fixes so I put together a safe
+backport of the remaining, leaving out patches that had dependencies
+on things outside of fs/smb
 
+The following changes since commit 488f7008e62890fae8c7a2d3583913c8074f1fc6:
+
+  smb3: fix lock ordering potential deadlock in cifs_sync_mid_result
+(2024-04-30 12:30:53 -0500)
+
+are available in the Git repository at:
+
+  git://git.samba.org/ksmbd.git tags/6.6.30-rc1-full-fs-smb-backport
+
+for you to fetch changes up to 411b6f385ac2427ee9d70fae277a4ed6b9d3983f:
+
+  smb: smb2pdu.h: Avoid -Wflex-array-member-not-at-end warnings
+(2024-05-01 02:18:25 -0500)
+
+----------------------------------------------------------------
+full backport for 6.6.30, includes all 80 (of the relevant) missing
+fs/smb changesets
+
+Test results look good (and better than without the patches).  Here
+are the functional test results (they passed exhaustive set of tests
+to various server types):
+http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/3/builds/99
+http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/5/builds/117
+http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/9/builds/51
+http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/10/builds/63
+
+Note that 22 patches had dependencies and were not appropriate to
+backport and are not included, but here is the list of the additional
+80 fs/smb patches included, many of which fix bugs (the others reduce
+risk of backport, and help avoid merge conflicts):
+411b6f385ac2 (HEAD -> fs-smb-backport-linux-6.6.30-rc1, tag:
+6.6.30-rc1-full-fs-smb-backport,
+origin/fs-smb-backport-linux-6.6.30-rc1) smb: smb2pdu.h: Avoid
+-Wflex-array-member-not-at-end warnings
+e97b85914501 ksmbd: add continuous availability share parameter
+c52ce70edb58 cifs: Add tracing for the cifs_tcon struct refcounting
+6fa6d5ed6a06 smb3: fix broken reconnect when password changing on the
+server by allowing password rotation
+d8833245b0f3 smb: client: instantiate when creating SFU files
+4c8cf606bdb9 smb: client: fix NULL ptr deref in
+cifs_mark_open_handles_for_deleted_file()
+e0727528f3be smb3: add trace event for mknod
+b71e6511fa98 smb311: additional compression flag defined in updated
+protocol spec
+0725c800685e smb311: correct incorrect offset field in compression header
+e25e2f027599 cifs: Move some extern decls from .c files to .h
+0d422616d36e ksmbd: fix potencial out-of-bounds when buffer offset is invalid
+3967f3e18d66 ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+aec926736509 ksmbd: Fix spelling mistake "connction" -> "connection"
+43f609cc80a5 ksmbd: fix possible null-deref in smb_lazy_parent_lease_break_close
+3f1a838bc984 cifs: remove redundant variable assignment
+05415df6229c cifs: fixes for get_inode_info
+025b6f60cccc cifs: defer close file handles having RH lease
+f1907205b6d3 ksmbd: add support for durable handles v1/v2
+38b6f9391d64 ksmbd: mark SMB2_SESSION_EXPIRED to session when
+destroying previous session
+5ab62e6d22d1 cifs: update internal module version number for cifs.ko
+4dcd0fe0c185 smb: common: simplify compression headers
+0409ad4bad2b smb: common: fix fields sizes in compression_pattern_payload_v1
+25fc3d85adc6 smb: client: negotiate compression algorithms
+f3351838c269 smb3: add dynamic trace point for ioctls
+7716c6db1c3b smb: client: return reparse type in /proc/mounts
+1c3fbd8f92e9 smb: client: set correct d_type for reparse DFS/DFSR and
+mount point
+555e4ef34991 smb: client: parse uid, gid, mode and dev from WSL reparse points
+5232c56b469f smb: client: introduce SMB2_OP_QUERY_WSL_EA
+2bcfc0b089f7 smb: client: Fix a NULL vs IS_ERR() check in wsl_set_xattrs()
+7ef14e642141 smb: client: add support for WSL reparse points
+324c9dc5ab0b smb: client: reduce number of parameters in smb2_compound_op()
+8b52dc432b0a smb: client: fix potential broken compound request
+8f22fd9f0396 smb: client: move most of reparse point handling code to
+common file
+0ddb5bfd6f20 smb: client: introduce reparse mount option
+370c2c605121 smb: client: retry compound request without reusing lease
+6051d1b018ea smb: client: do not defer close open handles to deleted files
+6a9d47b768c4 smb: client: reuse file lease key in compound operations
+87eec3c54337 smb: client: get rid of smb311_posix_query_path_info()
+32fab0e3e9b9 smb: client: parse owner/group when creating reparse points
+df9a4c3f5db4 smb3: update allocation size more accurately on write completion
+4d7263b3bf67 smb: client: handle path separator of created SMB symlinks
+bd15b21c46c1 cifs: update the same create_guid on replay
+6feda182ccf0 ksmbd: Add kernel-doc for ksmbd_extract_sharename() function
+a12c76c3f311 cifs: set replay flag for retries of write command
+e0a86c86ec5f cifs: commands that are retried should have replay flag set
+207e9813ad88 smb: client: delete "true", "false" defines
+6eb8a67757c6 smb: Fix some kernel-doc comments
+3c21bffee62f cifs: new mount option called retrans
+005892f2a944 smb: client: don't clobber ->i_rdev from cached reparse points
+222edc9359a6 cifs: new nt status codes from MS-SMB2
+80e719af52b9 cifs: pick channel for tcon and tdis
+56c978ef1555 cifs: minor comment cleanup
+6008da8e76ac cifs: remove redundant variable tcon_exist
+95d9120fd9b0 cifs: update internal module version number for cifs.ko
+2bbd03ad1d98 ksmbd: vfs: fix all kernel-doc warnings
+0988e25500d0 ksmbd: auth: fix most kernel-doc warnings
+9198cebadcef cifs: remove unneeded return statement
+2b8222b46d92 cifs: get rid of dup length check in parse_reparse_point()
+a1975468bc0d cifs: Pass unbyteswapped eof value into SMB2_set_eof()
+b312f2d94a42 smb3: Improve exception handling in allocate_mr_list()
+b6a02523d103 cifs: fix in logging in cifs_chan_update_iface
+f7e60be64713 smb: client: handle special files and symlinks in SMB3 POSIX
+2f68be9f5e9d smb: client: cleanup smb2_query_reparse_point()
+eed182ebb134 smb: client: allow creating symlinks via reparse points
+95c6eac76fa5 smb: client: optimise reparse point querying
+8dbc76e94b4b smb: client: allow creating special files via reparse points
+a5a4a5bc172b smb: client: extend smb2_compound_op() to accept more commands
+778c2e03cbf4 smb: client: Fix minor whitespace errors and warnings
+757f636f8fb0 smb: client: introduce cifs_sfu_make_node()
+52740954fa81 cifs: fix use after free for iface while disabling
+secondary channels
+789f47984ddf cifs: update internal module version number for cifs.ko
+120608af2863 Missing field not being returned in ioctl CIFS_IOC_GET_MNT_INFO
+d1e9469bb4de smb3: minor cleanup of session handling code
+09f7cf2bba1b smb3: more minor cleanups for session handling routines
+6e19e4e86f02 smb3: minor RDMA cleanup
+d73d7f8d1faa cifs: print server capabilities in DebugData
+a88a5c2bf942 smb: use crypto_shash_digest() in symlink_hash()
+56ad4435b30b Add definition for new smb3.1.1 command type
+5900e9b37aa2 SMB3: clarify some of the unused CreateOption flags
+fdf07b15f7d7 cifs: Add client version details to NTLM authenticate message
+
+-- 
+Thanks,
+
+Steve
 
