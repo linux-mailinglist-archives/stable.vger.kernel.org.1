@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-43064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A488BBD4F
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 18:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BF48BBD50
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 18:58:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B208D1F215A5
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 16:57:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B98131C20CBB
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 16:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9813C3D971;
-	Sat,  4 May 2024 16:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850775A4C0;
+	Sat,  4 May 2024 16:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSIQin0l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjXG4rIF"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5757B1E871
-	for <Stable@vger.kernel.org>; Sat,  4 May 2024 16:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464601E871
+	for <Stable@vger.kernel.org>; Sat,  4 May 2024 16:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714841832; cv=none; b=VboiUPszaIyKWonfZRJhg6o0yrZKfFS/ybxS/VVqQ9Oi5HDDTYDGaycp2IH7fxOEWqCdQqh6MswiEoo1l3Zqve9v5C4tjxjFIoaG7pHGWq7VJyf09fV4jPHOFFTTTRagDjbc9clVWrDSPjDmO2acviRNmVrQbAZg5dC9lSaERC0=
+	t=1714841907; cv=none; b=hjST1XPYKPoEk8UePPlc+Iib/IPV0VxYWP0f1VqdPaW+A10PEOwdhw6YafnTuzFmLvCS6cSIpUkny7q1vbuB7CwkweT2EYsZ7I3xMjFQWFCKRzEH8uRBV0M6Q5KzGADku1YurSdi08URtcmmsG+zNT/VkZTaFoQQHmW46FKKUGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714841832; c=relaxed/simple;
-	bh=8h6VtIYV36peudAg9wz8l+CDsl7T/RvpjS2r9qFO9hQ=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=McWf0fLmrIQp+ePfKz7OUYgFvx8AoeCdCzvMx9UbeJOT1y0HXMZIN9aHWJNWWEbgHtk+mzt9A+2jBBctO9nqjITph8tUaCdro+ZUxZ1OeY6GC4L0cJDhIXIU167b9Hg8pxCedJuWFXDsttbkX7Pgh19jxDHIkYkT2dZQc0ORrGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSIQin0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1C1C072AA;
-	Sat,  4 May 2024 16:57:11 +0000 (UTC)
+	s=arc-20240116; t=1714841907; c=relaxed/simple;
+	bh=0OETpdqFmiZsZQfia5vzI6GtuXGKoZjaMhc3cpwlH74=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=gtxksfpvjAo4eCBuBDTmXCijDIsl8Dv/DBR0gWpwDImN080yZ82gF7Usovvf9r9lZNV9XdYieNbNu65vwkN1VJZFiu9JYFR/cuAD26hKlbbd1x8rdF/kZiRLjR4/sYOK4tKx4n9Jh8QOVTe3rQoAdnioF3vMh9PYoBn4aeJUfcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjXG4rIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65591C072AA;
+	Sat,  4 May 2024 16:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714841831;
-	bh=8h6VtIYV36peudAg9wz8l+CDsl7T/RvpjS2r9qFO9hQ=;
+	s=korg; t=1714841907;
+	bh=0OETpdqFmiZsZQfia5vzI6GtuXGKoZjaMhc3cpwlH74=;
 	h=Subject:To:From:Date:From;
-	b=jSIQin0lJ61K6u0lWhMd/BY43GuVDScRwZ1oL8uvF64fGo4qns8e/i8b0b8ONpkxC
-	 u44W/21YSXTRreSPpNbDVCCYqfLKLLFyy3ZkmiS/bIX4hTs2nd6ZQVLpKvNktlZEUM
-	 Z25DxwkLEpcHigTzLc/EEEPHYcSpxsy0Y4pJFoI4=
-Subject: patch "iio: adc: axi-adc: make sure AXI clock is enabled" added to char-misc-next
-To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=NjXG4rIFynlGmLDH7IC+rOcqNL2Wr9mmgE+D5jYIoK+lCZHK18dAcnX/o4nw0nmPU
+	 lwJMrYNpP1Si1S8X8aZ5otGX0yhaA/pgaznBcwWGtucyjK2YGO7++TsBlndMATgSR1
+	 NJH6QYwMHPu/bO8Ns7FTcIvFoXEV119PhPiupbww=
+Subject: patch "iio: temperature: mcp9600: Fix temperature reading for negative" added to char-misc-next
+To: dima.fedrau@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andrew.hepp@ahepp.dev,marcelo.schmitt1@gmail.com
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 04 May 2024 18:56:23 +0200
-Message-ID: <2024050423-lunchroom-overfull-2063@gregkh>
+Date: Sat, 04 May 2024 18:56:38 +0200
+Message-ID: <2024050438-disfigure-sled-2751@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: axi-adc: make sure AXI clock is enabled
+    iio: temperature: mcp9600: Fix temperature reading for negative
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,50 +69,41 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 80721776c5af6f6dce7d84ba8df063957aa425a2 Mon Sep 17 00:00:00 2001
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Fri, 26 Apr 2024 17:42:13 +0200
-Subject: iio: adc: axi-adc: make sure AXI clock is enabled
+From 827dca3129708a8465bde90c86c2e3c38e62dd4f Mon Sep 17 00:00:00 2001
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
+Date: Wed, 24 Apr 2024 20:59:10 +0200
+Subject: iio: temperature: mcp9600: Fix temperature reading for negative
+ values
 
-We can only access the IP core registers if the bus clock is enabled. As
-such we need to get and enable it and not rely on anyone else to do it.
+Temperature is stored as 16bit value in two's complement format. Current
+implementation ignores the sign bit. Make it aware of the sign bit by
+using sign_extend32.
 
-Note this clock is a very fundamental one that is typically enabled
-pretty early during boot. Independently of that, we should really rely on
-it to be enabled.
-
-Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240426-ad9467-new-features-v2-4-6361fc3ba1cc@analog.com
+Fixes: 3f6b9598b6df ("iio: temperature: Add MCP9600 thermocouple EMF converter")
+Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Tested-by: Andrew Hepp <andrew.hepp@ahepp.dev>
+Link: https://lore.kernel.org/r/20240424185913.1177127-1-dima.fedrau@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/adi-axi-adc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/temperature/mcp9600.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index 9444b0c5a93c..f54830658da8 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -161,6 +161,7 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	struct adi_axi_adc_state *st;
- 	void __iomem *base;
- 	unsigned int ver;
-+	struct clk *clk;
- 	int ret;
+diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+index 46845804292b..7a3eef5d5e75 100644
+--- a/drivers/iio/temperature/mcp9600.c
++++ b/drivers/iio/temperature/mcp9600.c
+@@ -52,7 +52,8 @@ static int mcp9600_read(struct mcp9600_data *data,
  
- 	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
-@@ -181,6 +182,10 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	if (!expected_ver)
- 		return -ENODEV;
- 
-+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
+ 	if (ret < 0)
+ 		return ret;
+-	*val = ret;
 +
- 	/*
- 	 * Force disable the core. Up to the frontend to enable us. And we can
- 	 * still read/write registers...
++	*val = sign_extend32(ret, 15);
+ 
+ 	return 0;
+ }
 -- 
 2.45.0
 
