@@ -1,98 +1,163 @@
-Return-Path: <stable+bounces-43060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440088BBCE0
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 17:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 795BE8BBD06
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 18:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5B62820CE
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 15:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35BD72820AE
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 16:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F7941741;
-	Sat,  4 May 2024 15:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D46D54903;
+	Sat,  4 May 2024 16:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lVgSE3m2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nZgkTPHB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NqEOoucQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WFhAGns1"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26644225D0;
-	Sat,  4 May 2024 15:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F46850278;
+	Sat,  4 May 2024 16:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714837702; cv=none; b=ZBeZfK2CMhWhaAbJZ4EnZ+5+GyQkXqwtb8KkgKKG8pC7tSSic6+uYbupKZPDn0PRef5iFTnTRTi5jjc7iAa+FNWhIEkyucUyC35Yle00RXrTjL7bormLaJpiWbWAbzf0EnmoUC+IoX6WF09/K++k6SI5ZrIrQo72Hcn/Kx3Cyjk=
+	t=1714839331; cv=none; b=jvUeULy9YAGwN8lcXBSdOBK/Q7RXxrYwqKslxOBwsFC7Xkzv3VfqqPsAlpzrN6t6GIgQ13SvGQgA0wBsBdDdnY0GI6zAQ66cir7aG6zXh2TP5bXnd4wXtr05WDJauvnRSqXcICpcgOCJZsukJOp77woVbYaxuZLKuUKjjR59Eps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714837702; c=relaxed/simple;
-	bh=N7dQrrzlTJ++kwcKr2K8iINkTGGrKX9dIW9u5tuH/Xk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kTZjDRH6f62uYPtUnQtNawcQUN78koz/yh7YDC27zrSxPUBgApOsRKIElm2Zz1KSEeXHpDG7I4icMdviQxVPnEnYP6qZoAw2PIYVWWR1ZVK2SCAz9hfPs/dYZAOV8MSxtw0dRn0MWiIoGhwy2Yr6E6EBw3bBr0kaxtFIwUAM3NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lVgSE3m2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nZgkTPHB; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1714839331; c=relaxed/simple;
+	bh=ynKA0TbW/eeVOkfMLprMu6U1Y4Vg1QU1Wvm+5C8t2PI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uqh/dOwwcv1otnOu+k8c0epScMbHuECekzW0GkgOx3/OK6/iCGEGKaKbErwCBpQqBG+AYpYRNOM940ESOqNq+iyrHSVz6ycqs5d8j4TRe9aatUfJjJgotfCo54gI2cS6StsskkU7NURTde7qPEH5Js7J9dVl7OHJA+hYlVvJEtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NqEOoucQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WFhAGns1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 4 May 2024 17:48:06 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1714837691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4KBN0TKU29q7oTncF5x//I8JiIVxS6XRK8cMe/alR+k=;
-	b=lVgSE3m2E6R7yHoq1UG9d3tj1bAq+4qNMT895p8iaxqTJ9RZtgcGclq+Mxr92UaWEBQp+V
-	2UL9tep2y8E/5XRFvqRdMsuKMoL1ZXGdb2ZBbPwcv57EYVVjzD+MGV16UiQwkyCzjAuuGK
-	KLtTbOBOmmFVZnSwfk+CehcHwdaaHyAjjoERAWRfI2gdC/CMpf3lpMBvPuAatSLRkiC5Sy
-	gOleu83O0IbUSjUe69NL3Em8xwtH7UHrPYG6FctKNNfApt/jTPHIPEWkTweuXYlQaVZKo2
-	F8cSuBopDfqQbqLaLxqj8faauvfeM0f0IBsbL9n2D+YvQnb8VUDRvP86IOzUzw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1714837691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4KBN0TKU29q7oTncF5x//I8JiIVxS6XRK8cMe/alR+k=;
-	b=nZgkTPHBLQnlTx337VnCjY7JLKgwg+lemVQCUcfb06rqGzM0eLnLf07fhajq5AOEzCTvOf
-	eccKgI4ZmY9/rpDQ==
 From: Nam Cao <namcao@linutronix.de>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Yinghai Lu <yinghai@kernel.org>,
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1714839326;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T0/jNdGlbHp27Mj8XQFTHCx4HfIAIuVjRvaOghR15c0=;
+	b=NqEOoucQvg1OVNh28/NFxOnevnW3I249GJhQLlREoorGQoGlSa27ZVIQ5akLzSerjTiFAC
+	lnRW47JqtFrxrhx6uEvstSOy5NAI/u4bao3gu7REBKO9syOAYQQ7S6TIaXpDRP5DhwfmAY
+	VoFvOvpwZiX1ZhzvOoiA9s2dtq1++GQ3/L6sl9wcbfTpKksptozQz6BtKvtGfbLNjM5W5b
+	PysPoKrPbY9637+heEYzNEpbYMHlEa1/pj+JRnEECR1hxxSDMTbmxly9Wh/ZQAN3K7BvwL
+	K/rTioh1ZJ1xuHsVmM77fFxIzUeD8ZD8zYQQnzq0jPgksenX0gRujcjIGL357w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1714839326;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T0/jNdGlbHp27Mj8XQFTHCx4HfIAIuVjRvaOghR15c0=;
+	b=WFhAGns1CfSKCaR/YzYQZLgwXiCbQtZUjgdPif1UDFzlxli0wiDrOlcinPVVzwD5nAhBTl
+	jcCibPVyBakIuyCA==
+To: Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Yinghai Lu <yinghai@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rajesh Shah <rajesh.shah@intel.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/4] PCI: pciehp: bail out if pci_hp_add_bridge() fails
-Message-ID: <20240504154806.zpZEo__F@linutronix.de>
-References: <cover.1714762038.git.namcao@linutronix.de>
- <401e4044e05d52e4243ca7faa65d5ec8b19526b8.1714762038.git.namcao@linutronix.de>
- <ZjX3t1NerOlGBhzw@wunner.de>
- <20240504093529.p8pbGxuK@linutronix.de>
- <ZjYFOrGlluGW_GzV@wunner.de>
- <20240504105630.DPSzrgHe@linutronix.de>
- <ZjZOCj4Cxizsj3iY@wunner.de>
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] PCI: shpchp: Abort hot-plug if pci_hp_add_bridge() fails
+Date: Sat,  4 May 2024 18:15:21 +0200
+Message-Id: <e1968c2a5c0dc5eff3a757770d7a9cd81f7c7267.1714838173.git.namcao@linutronix.de>
+In-Reply-To: <cover.1714838173.git.namcao@linutronix.de>
+References: <cover.1714838173.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZjZOCj4Cxizsj3iY@wunner.de>
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 04, 2024 at 05:02:34PM +0200, Lukas Wunner wrote:
-> On Sat, May 04, 2024 at 12:56:30PM +0200, Nam Cao wrote:
-> > On Sat, May 04, 2024 at 11:51:54AM +0200, Lukas Wunner wrote:
-> > > Could you reproduce with pciehp instead of shpchp please?
-> > 
-> > Same thing for pciehp below. I think the problem is because without 
-> > pci_stop_and_remove_bus_device(), no one cleans up the device added in
-> > pci_scan_slot(). When another device get hot-added, pci_get_slot() wrongly
-> > thinks another device is already there, so the hot-plug fails.
-> 
-> pciehp powers down the slot because you're returning a negative errno
-> from pciehp_configure_device().  Please return 0 instead if
-> pci_hp_add_bridge() fails.
+If a bridge is hot-added without any bus number available for its
+downstream bus, pci_hp_add_bridge() will fail. However, the driver
+proceeds regardless, and the kernel crashes.
 
-Thanks for the suggestion. This is applicable to shpchp as well.
+This crash can be reproduced with the QEMU command:
+    qemu-system-x86_64 -machine pc-q35-2.10 \
+        -kernel bzImage \
+        -drive "file=img,format=raw" \
+        -m 2048 -smp 2 -enable-kvm \
+        -append "console=ttyS0 root=/dev/sda" \
+        -nographic \
+        -device pcie-root-port,bus=pcie.0,id=rp1,slot=1,bus-reserve=0 \
+        -device pcie-pci-bridge,id=br1,bus=rp1
 
-Best regards,
-Nam
+then hot-plug a bridge at runtime with the QEMU command:
+    device_add pci-bridge,id=br2,bus=br1,chassis_nr=1,addr=1
+
+and the kernel crashes:
+
+shpchp 0000:01:00.0: Latch close on Slot(1-1)
+shpchp 0000:01:00.0: Button pressed on Slot(1-1)
+shpchp 0000:01:00.0: Card present on Slot(1-1)
+shpchp 0000:01:00.0: PCI slot #1-1 - powering on due to button press
+pci 0000:02:01.0: [1b36:0001] type 01 class 0x060400 conventional PCI bridge
+pci 0000:02:01.0: BAR 0 [mem 0x00000000-0x000000ff 64bit]
+pci 0000:02:01.0: PCI bridge to [bus 00]
+pci 0000:02:01.0:   bridge window [io  0x0000-0x0fff]
+pci 0000:02:01.0:   bridge window [mem 0x00000000-0x000fffff]
+pci 0000:02:01.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
+pci 0000:02:01.0: No bus number available for hot-added bridge
+
+	(note: kernel should abort hot-plugging right here)
+
+pci 0000:02:01.0: BAR 0 [mem 0xfe600000-0xfe6000ff 64bit]: assigned
+shpchp 0000:01:00.0: PCI bridge to [bus 02]
+shpchp 0000:01:00.0:   bridge window [io  0xc000-0xcfff]
+shpchp 0000:01:00.0:   bridge window [mem 0xfe600000-0xfe7fffff]
+shpchp 0000:01:00.0:   bridge window [mem 0xfe000000-0xfe1fffff 64bit pref]
+shpchp 0000:02:01.0: HPC vendor_id 1b36 device_id 1 ss_vid 0 ss_did 0
+shpchp 0000:02:01.0: enabling device (0000 -> 0002)
+ACPI: \_SB_.GSIE: Enabled at IRQ 20
+BUG: kernel NULL pointer dereference, address: 00000000000000da
+PGD 0 P4D 0
+Oops: 0002 [#1] PREEMPT SMP NOPTI
+CPU: 1 PID: 66 Comm: kworker/1:2 Not tainted 6.9.0-rc1-00001-g2e0239d47d75 #33
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: shpchp-1 shpchp_pushbutton_thread
+RIP: 0010:shpc_init+0x3fb/0x9d0
+[stack dump and register dump cut out]
+
+Fix this by aborting the hot-plug if pci_hp_add_bridge() fails.
+
+Fixes: 7d01f70ac6f4 ("PCI: shpchp: use generic pci_hp_add_bridge()")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: Yinghai Lu <yinghai@kernel.org>
+Cc: <stable@vger.kernel.org>
+---
+v2:
+  - add more information to commit description
+  - return 0 instead of -EINVAL
+  - remove pci_stop_and_remove_bus_device()
+
+ drivers/pci/hotplug/shpchp_pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/hotplug/shpchp_pci.c b/drivers/pci/hotplug/shpchp_pci.c
+index 36db0c3c4ea6..ca105aed7eee 100644
+--- a/drivers/pci/hotplug/shpchp_pci.c
++++ b/drivers/pci/hotplug/shpchp_pci.c
+@@ -48,8 +48,10 @@ int shpchp_configure_device(struct slot *p_slot)
+ 	}
+ 
+ 	for_each_pci_bridge(dev, parent) {
+-		if (PCI_SLOT(dev->devfn) == p_slot->device)
+-			pci_hp_add_bridge(dev);
++		if (PCI_SLOT(dev->devfn) == p_slot->device) {
++			if (pci_hp_add_bridge(dev))
++				goto out;
++		}
+ 	}
+ 
+ 	pci_assign_unassigned_bridge_resources(bridge);
+-- 
+2.39.2
+
 
