@@ -1,182 +1,121 @@
-Return-Path: <stable+bounces-43050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD148BB7C8
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 00:51:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D4D8BB9CF
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 09:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 060B11F23A8A
-	for <lists+stable@lfdr.de>; Fri,  3 May 2024 22:51:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0244B22596
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 07:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2068594C;
-	Fri,  3 May 2024 22:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D8E1BF2A;
+	Sat,  4 May 2024 07:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NukuycHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9619885622;
-	Fri,  3 May 2024 22:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817691AACB;
+	Sat,  4 May 2024 07:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714776635; cv=none; b=aSb7rv340od29xLiONqnlurajNe0H6dzEtD4hoviQEYCqMchJNtoHl05b27ORolqZ9AabXsVUsC+0CrKZfOjhE86yozFHhOLZxbyav5WcileBo+GDr6VcQ3iHiVXA0bo118DPRDAdSNkT/RxVi4ctqk3RadZxhKhJ2iYkB2ugfg=
+	t=1714807855; cv=none; b=F2pYNX34NBOHAFkInxBiJfXmDC/0/P9cNBJqo79IBZLFbMgTX/N0zkCKd+OgibQNdNvcpdSZhLNsO8OaYCXVzMCaE4+ei7LHIw6/BDajSjXxGmbmY2sYXWV6qncC7/+4keYflDPSlAYhn1ZomDGL6rVOZT34DbhJ23dv0FiElls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714776635; c=relaxed/simple;
-	bh=u/EZgVZkDUDhIetTtuhbb5L70RCnlDqupCSWlJU3QQg=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=HUaLO6z8fGBvM4H7R4u3vtqnXZLDo5wGeoWHhMzah3lHMuAyfJxUUSvyZPd4l0Ka5ntQxv9RmZ5kHU/2zFjbG/Epuz+FldTtSzAIpx0s+/wXPVzFjivFR/d5tzhDWhFO+iyCa0xLozK+BPGkFrHCZ6mN8GLH3PHJNO40jxrcHsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DECDC116B1;
-	Fri,  3 May 2024 22:50:35 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1s31jf-00000000NO3-04VZ;
-	Fri, 03 May 2024 18:50:35 -0400
-Message-ID: <20240503225034.883634677@goodmis.org>
-User-Agent: quilt/0.68
-Date: Fri, 03 May 2024 18:50:22 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org
-Subject: [for-linus][PATCH 9/9] eventfs: Have "events" directory get permissions from its parent
-References: <20240503225013.519028385@goodmis.org>
+	s=arc-20240116; t=1714807855; c=relaxed/simple;
+	bh=MA9PQMcmoDQhgdI1pznvCMKM7+hJZYM5Q4/0TCm9gQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gf6y790JWcaEVo60v+mXgQk/yQdmiX0bNLl7BostGL+eVf/fLnsLgcsK/Rv7Vol/wH+u84Hp+A3q/mEnrdDfxkQ+3ptH0bWrE2uTcJAm7btJW3utgZeBBe1w3wQUbg3E/N5ykfpEFQIJg19rD0H6rsR5mc4TKMbeG5WFI7/VnC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NukuycHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B53C4AF1B;
+	Sat,  4 May 2024 07:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714807855;
+	bh=MA9PQMcmoDQhgdI1pznvCMKM7+hJZYM5Q4/0TCm9gQc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NukuycHa3iJ9USxvfH2CrbZq1dNDYuYi23BRfdnUC2TH/KaoBYm7ablE1uhnQd7JY
+	 nZbdZln/xrYDUH1phhLDPlGlYVhgzZOU3SMRht+LYxwnTtabJfu+re9Hqn+FFfeX+J
+	 MSMJ9OXZkeO9cUGkg3MwdfjZsaGuD6bwQcFnW2j8=
+Date: Sat, 4 May 2024 09:30:52 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: John Fastabend <john.fastabend@gmail.com>
+Cc: stable@vger.kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
+	dhowells@redhat.com
+Subject: Re: [PATCH stable, 6.1] net: sockmap, fix missing MSG_MORE causing
+ TCP disruptions
+Message-ID: <2024050458-deduce-ascend-f524@gregkh>
+References: <20240503164805.59970-1-john.fastabend@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240503164805.59970-1-john.fastabend@gmail.com>
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On Fri, May 03, 2024 at 09:48:05AM -0700, John Fastabend wrote:
+> [ Upstream commit ebf2e8860eea66e2c4764316b80c6a5ee5f336ee]
+> [ Upstream commit f8dd95b29d7ef08c19ec9720564acf72243ddcf6]
 
-The events directory gets its permissions from the root inode. But this
-can cause an inconsistency if the instances directory changes its
-permissions, as the permissions of the created directories under it should
-inherit the permissions of the instances directory when directories under
-it are created.
+Why are you mushing 2 patches together?  Why can't we just take the two
+as-is instead?  That makes tracking everything much simpler and
+possible.
 
-Currently the behavior is:
+> In the first patch,
+> 
+> ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now a wrapper around tcp_sendmsg")
+> 
+> This block of code is added to tcp_bpf_push(). The
+> tcp_bpf_push is the code used by BPF to submit messages into the TCP
+> stack.
+> 
+>  if (flags & MSG_SENDPAGE_NOTLAST)
+>      msghdr.msg_flags | MSG_MORE;
+> 
+> In the second patch,
+> 
+> f8dd95b29d7e ("tcp_bpf, smc, tls, espintcp, siw: Reduce MSG_SENDPAGE_NOTLAST usage")
+> 
+> this logic was further changed to,
+> 
+>   if (flags & MSG_SENDPAGE_NOTLAST)
+>      msghdr.msg_flags |= MSG_MORE
+> 
+> This was done as part of an improvement to use the sendmsg() callbacks
+> and remove the sendpage usage inside the various sub systems.
+> 
+> However, these two patches together fixed a bug. The issue is without
+> MSG_MORE set we will break a msg up into many smaller sends. In some
+> case a lot because the operation loops over the scatter gather list.
+> Without the MSG_MORE set (the current 6.1 case) we see stalls in data
+> send/recv and sometimes applications failing to receive data. This
+> generally is the result of an application that gives up after calling
+> recv() or similar too many times. We introduce this because of how
+> we incorrectly change the TCP send pattern.
+> 
+> Now that we have both 6.5 and 6.1 stable kernels deployed we've
+> observed a series of issues related to this in real deployments. In 6.5
+> kernels all the HTTP and other compliance tests pass and we are not
+> observing any other issues. On 6.1 various compliance tests fail
+> (nginx for example), but more importantly in these clusters without
+> the flag set we observe stalled applications and increased retries in
+> other applications. Openssl users where we have annotations to monitor
+> retries and failures observed a significant increase in retries for
+> example.
+> 
+> For the backport we isolated the fix to the two lines in the above
+> patches that fixed the code. With this patch we deployed the workloads
+> again and error rates and stalls went away and 6.1 stable kernels
+> perform similar to 6.5 stable kernels. Similarly the compliance tests
+> also passed.
 
- # cd /sys/kernel/tracing
- # chgrp 1002 instances
- # mkdir instances/foo
- # ls -l instances/foo
-[..]
- -r--r-----  1 root lkp  0 May  1 18:55 buffer_total_size_kb
- -rw-r-----  1 root lkp  0 May  1 18:55 current_tracer
- -rw-r-----  1 root lkp  0 May  1 18:55 error_log
- drwxr-xr-x  1 root root 0 May  1 18:55 events
- --w-------  1 root lkp  0 May  1 18:55 free_buffer
- drwxr-x---  2 root lkp  0 May  1 18:55 options
- drwxr-x--- 10 root lkp  0 May  1 18:55 per_cpu
- -rw-r-----  1 root lkp  0 May  1 18:55 set_event
+Can we just take the two original patches instead?
 
-All the files and directories under "foo" has the "lkp" group except the
-"events" directory. That's because its getting its default value from the
-mount point instead of its parent.
+thanks,
 
-Have the "events" directory make its default value based on its parent's
-permissions. That now gives:
-
- # ls -l instances/foo
-[..]
- -rw-r-----  1 root lkp 0 May  1 21:16 buffer_subbuf_size_kb
- -r--r-----  1 root lkp 0 May  1 21:16 buffer_total_size_kb
- -rw-r-----  1 root lkp 0 May  1 21:16 current_tracer
- -rw-r-----  1 root lkp 0 May  1 21:16 error_log
- drwxr-xr-x  1 root lkp 0 May  1 21:16 events
- --w-------  1 root lkp 0 May  1 21:16 free_buffer
- drwxr-x---  2 root lkp 0 May  1 21:16 options
- drwxr-x--- 10 root lkp 0 May  1 21:16 per_cpu
- -rw-r-----  1 root lkp 0 May  1 21:16 set_event
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200906.161887248@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- fs/tracefs/event_inode.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 6e08405892ae..a878cea70f4c 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -37,6 +37,7 @@ static DEFINE_MUTEX(eventfs_mutex);
- 
- struct eventfs_root_inode {
- 	struct eventfs_inode		ei;
-+	struct inode			*parent_inode;
- 	struct dentry			*events_dir;
- };
- 
-@@ -226,12 +227,23 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 
- static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
- {
--	struct inode *root;
-+	struct eventfs_root_inode *rei;
-+	struct inode *parent;
-+
-+	rei = get_root_inode(ei);
-+
-+	/* Use the parent inode permissions unless root set its permissions */
-+	parent = rei->parent_inode;
- 
--	/* Get the tracefs root inode. */
--	root = d_inode(sb->s_root);
--	ei->attr.uid = root->i_uid;
--	ei->attr.gid = root->i_gid;
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_UID)
-+		ei->attr.uid = rei->ei.attr.uid;
-+	else
-+		ei->attr.uid = parent->i_uid;
-+
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_GID)
-+		ei->attr.gid = rei->ei.attr.gid;
-+	else
-+		ei->attr.gid = parent->i_gid;
- }
- 
- static void set_top_events_ownership(struct inode *inode)
-@@ -817,6 +829,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	// Note: we have a ref to the dentry from tracefs_start_creating()
- 	rei = get_root_inode(ei);
- 	rei->events_dir = dentry;
-+	rei->parent_inode = d_inode(dentry->d_sb->s_root);
- 
- 	ei->entries = entries;
- 	ei->nr_entries = size;
-@@ -826,10 +839,15 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
--	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
- 
-+	/*
-+	 * When the "events" directory is created, it takes on the
-+	 * permissions of its parent. But can be reset on remount.
-+	 */
-+	ei->attr.mode |= EVENTFS_SAVE_UID | EVENTFS_SAVE_GID;
-+
- 	INIT_LIST_HEAD(&ei->children);
- 	INIT_LIST_HEAD(&ei->list);
- 
--- 
-2.43.0
-
-
+greg k-h
 
