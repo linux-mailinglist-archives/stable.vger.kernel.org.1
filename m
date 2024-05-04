@@ -1,111 +1,91 @@
-Return-Path: <stable+bounces-43053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A335D8BB9E0
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 09:52:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448638BBA2F
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 10:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60E65283582
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 07:52:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AFF3B21BA0
+	for <lists+stable@lfdr.de>; Sat,  4 May 2024 08:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66383748A;
-	Sat,  4 May 2024 07:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/M6HtYb"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A295812B7F;
+	Sat,  4 May 2024 08:54:28 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B6279C4
-	for <Stable@vger.kernel.org>; Sat,  4 May 2024 07:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5385912B72;
+	Sat,  4 May 2024 08:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714809120; cv=none; b=VWc++EVI3LneYFnzZEmuyKV7qwW5ShGr/9YUJ6aJvKlhfWEJblSnRN04N4Obf+D+KKLBiLzw0unHeq5q6vH5TYrcMLw0D5d6qJVWIhoqgNaJcLPD6/Nx/Bdn/GMbRmQc8BrP5vrUt8MLgQBPkFnASrkpnlyGN6GTZ1U3QTDlTNg=
+	t=1714812868; cv=none; b=Tr1L3d9GssFEVTPaktqIwk71EDoOpMYUVYKo5h6fzqvL9tlmSRvob5vkmKizE5cL2f58lNSj8ZsvjRE9i9hkxUJkJscTsftuYohOfQ/AIuAWC4WbgdfL/iqFlROelEfe+sA075dhHQLmB+fkLtrCjeJhw2mSqjRSPC+z/LaFYW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714809120; c=relaxed/simple;
-	bh=lB6BkNHbqmnzGkZd9RKBb/tft/zCCjjPV0SzuY0K8u0=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=M/2tVpufkUpzzXXxzsR7vqkibyRZwONgM5sRwA3wPxDnBJ+5BPvr1pJiMb24i8RK72r0ZXsytHrXeAi1Q3/t3e7lXSVeSm/R6h1Pk2hSUxsnp5m2zs9LrvZZMzj1upd+Y10fvafhyupasjDqv7Yo0GFcaAKK/IXoQzup5B5i9l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/M6HtYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29951C072AA;
-	Sat,  4 May 2024 07:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714809119;
-	bh=lB6BkNHbqmnzGkZd9RKBb/tft/zCCjjPV0SzuY0K8u0=;
-	h=Subject:To:From:Date:From;
-	b=I/M6HtYbq2bYyKU8qZAH9mS9eI9feq7P1dkhlm74h2nftVAzpOuF31K0DzjGfheQa
-	 CGjU8pbS9k1lp2kIVHbITS6DjoSrLyZmwa8BY5eUpLr5LIlVDjKOXbksI272hx0RAD
-	 jEwwsWsjbDpSGMIY+ThIlI3QIasQIJdK6pOjImqY=
-Subject: patch "iio: temperature: mcp9600: Fix temperature reading for negative" added to char-misc-testing
-To: dima.fedrau@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andrew.hepp@ahepp.dev,marcelo.schmitt1@gmail.com
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 04 May 2024 09:50:16 +0200
-Message-ID: <2024050415-badass-mute-6d3e@gregkh>
+	s=arc-20240116; t=1714812868; c=relaxed/simple;
+	bh=by3XQQG8YFnDKF4C662orwTdpQvrT8yA1UTPsBBsQuM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EnGgzfMq3dHTNQmHvu+Og3Th2tsnYFSUaVnySATbL45HIdN7m40/xoy5JWG0L7mpo7mN4rJrsKbrOerVQhhz3VVYEP7i/WeNPSgDmM2U0FZUf8ykGEFjNewzshmunXc2jTGW2+NbD0J6BWaXcBnDDF0Pd/O1+wEdeFNAlDNZg4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id C42543000E447;
+	Sat,  4 May 2024 10:54:15 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 9CF6148D184; Sat,  4 May 2024 10:54:15 +0200 (CEST)
+Date: Sat, 4 May 2024 10:54:15 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Nam Cao <namcao@linutronix.de>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Yinghai Lu <yinghai@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rajesh Shah <rajesh.shah@intel.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] PCI: pciehp: bail out if pci_hp_add_bridge() fails
+Message-ID: <ZjX3t1NerOlGBhzw@wunner.de>
+References: <cover.1714762038.git.namcao@linutronix.de>
+ <401e4044e05d52e4243ca7faa65d5ec8b19526b8.1714762038.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <401e4044e05d52e4243ca7faa65d5ec8b19526b8.1714762038.git.namcao@linutronix.de>
 
+On Fri, May 03, 2024 at 09:23:20PM +0200, Nam Cao wrote:
+> If there is no bus number available for the downstream bus of the
+> hot-plugged bridge, pci_hp_add_bridge() will fail. The driver proceeds
+> regardless, and the kernel crashes.
+> 
+> Abort if pci_hp_add_bridge() fails.
+[...]
+> --- a/drivers/pci/hotplug/pciehp_pci.c
+> +++ b/drivers/pci/hotplug/pciehp_pci.c
+> @@ -58,8 +58,13 @@ int pciehp_configure_device(struct controller *ctrl)
+>  		goto out;
+>  	}
+>  
+> -	for_each_pci_bridge(dev, parent)
+> -		pci_hp_add_bridge(dev);
+> +	for_each_pci_bridge(dev, parent) {
+> +		if (pci_hp_add_bridge(dev)) {
+> +			pci_stop_and_remove_bus_device(dev);
+> +			ret = -EINVAL;
+> +			goto out;
+> +		}
+> +	}
 
-This is a note to let you know that I've just added the patch titled
+Is the pci_stop_and_remove_bus_device() really necessary here?
+Why not just leave the bridge as is, without any child devices?
 
-    iio: temperature: mcp9600: Fix temperature reading for negative
+Thanks,
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
-
-If you have any questions about this process, please let me know.
-
-
-From 827dca3129708a8465bde90c86c2e3c38e62dd4f Mon Sep 17 00:00:00 2001
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-Date: Wed, 24 Apr 2024 20:59:10 +0200
-Subject: iio: temperature: mcp9600: Fix temperature reading for negative
- values
-
-Temperature is stored as 16bit value in two's complement format. Current
-implementation ignores the sign bit. Make it aware of the sign bit by
-using sign_extend32.
-
-Fixes: 3f6b9598b6df ("iio: temperature: Add MCP9600 thermocouple EMF converter")
-Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Tested-by: Andrew Hepp <andrew.hepp@ahepp.dev>
-Link: https://lore.kernel.org/r/20240424185913.1177127-1-dima.fedrau@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/temperature/mcp9600.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
-index 46845804292b..7a3eef5d5e75 100644
---- a/drivers/iio/temperature/mcp9600.c
-+++ b/drivers/iio/temperature/mcp9600.c
-@@ -52,7 +52,8 @@ static int mcp9600_read(struct mcp9600_data *data,
- 
- 	if (ret < 0)
- 		return ret;
--	*val = ret;
-+
-+	*val = sign_extend32(ret, 15);
- 
- 	return 0;
- }
--- 
-2.45.0
-
-
+Lukas
 
