@@ -1,113 +1,207 @@
-Return-Path: <stable+bounces-43067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A8D8BBF43
-	for <lists+stable@lfdr.de>; Sun,  5 May 2024 07:00:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C728BBF7C
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 08:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C14281F6E
-	for <lists+stable@lfdr.de>; Sun,  5 May 2024 05:00:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28FC4B20B73
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 06:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46281869;
-	Sun,  5 May 2024 05:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="wacr2QJ5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADDB1FC4;
+	Sun,  5 May 2024 06:24:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE932A35;
-	Sun,  5 May 2024 04:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3267B184D
+	for <stable@vger.kernel.org>; Sun,  5 May 2024 06:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714885202; cv=none; b=lbBSgutRsNNVXr9M18aYe1/TFKqyzm0ZXNTTHiV+DZ70wYJamdsOiho6G0H7kdd7gXBAlpr3u1UMNA1BB0lsZyx73v3QnhgTPZrviVYfLPo6AN+yTWZw82wyEO2EsyeQ0IEK9N2yPVWc+GXh6/NGjRoK+zH1dJDscxbo/iGximo=
+	t=1714890294; cv=none; b=RFlIrZshQBvQzZSK+wTsUbF/P+kU6oKAbqgQzWezc5l/3Bgf8ivLmZOJoPU3se6rODayNFP+oXlyz8WRG7kNBmGWCvUZqQjf5Pd+JuaG48VRovraTk2U7UsbQeCGzkz2skc5P2kEoORjZvaYFuDLLtrQGA7YGqbeEAODXR78njY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714885202; c=relaxed/simple;
-	bh=gZWYN8TIJRhzisv1ghmJGD7uF7Ek/ub2Pify1gP8OTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cQPj+0zJoBhl4ET/0iJK86FD5W4wT0fYspvWcZvUGTff8QSt4Tf+04OUjgBX4A8B+34Pci5kAPrPFVSkQso+6qlf8RTtLzENsT4Xu3cpiXaF/RZfbK1pJUF3GB0T5IDE9t1Pa+OYL+XMAKVlbY5+p0kGhwbyeKCeLBGd9zUKvxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=wacr2QJ5; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=FqdPLKiJZZINToP0SO0egCn3nMeBdaZBsgYm9Al6woM=;
-	t=1714885200; x=1715317200; b=wacr2QJ5e7ejSawzg3W4/7SoEO9vMizQP5Beqtghws31X5g
-	Q5h0jFhzg+iomDmxjA/b6lBqep2cOUpUs3YMQZizen89BoC7LTzqkAX7biavtx34io/0JiR6i1ZTK
-	cKgKmdkZ73dUg5XhTHHLlvazPipA8UZ1IbReQcN2lrTUYokTHzl9VcLx0GVxYULYrkxSqAF6celIV
-	Y6d6OyjFLZ1/4kYmNUJCMzSlWVjtbEKQHTbUWkGnJxZBV6A7dwLaDi/pg8LamBIbdPcgEIn2QRigC
-	/f6UpBzVKomrPQynBCo2f59tFbKu3eP0AO0GH2HXmlFteuqKtg9Pvx1hCvNz2zIA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s3Tyf-00055A-Fc; Sun, 05 May 2024 06:59:57 +0200
-Message-ID: <3f1f55cb-d8df-4834-b22f-c195d161cab5@leemhuis.info>
-Date: Sun, 5 May 2024 06:59:56 +0200
+	s=arc-20240116; t=1714890294; c=relaxed/simple;
+	bh=v2PD2tE+rlIiaeutK8uRy21trsM7eLGnDer23Q5MoZg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NtlsgVh2NejE1z2Uk+hTBC2nOv/6TQ6iEztlxLOsGb7I6+BpKUpJQKeoBGrRXmlz0Sqy9FYDFYxQti9IXlAiFqMLnvgdaOEsG4FW81ChvxtbAktqsEkMHqu+p7YN5Y89QuOEcDNnaLcPwwzzQF1C9iTKZHUP01rl7T6peIRaLk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4VXDvD6Q0QzxNfQ;
+	Sun,  5 May 2024 14:21:12 +0800 (CST)
+Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id 827AB18007F;
+	Sun,  5 May 2024 14:24:35 +0800 (CST)
+Received: from huawei.com (10.173.135.154) by canpemm500002.china.huawei.com
+ (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 5 May
+ 2024 14:24:35 +0800
+From: Miaohe Lin <linmiaohe@huawei.com>
+To: <stable@vger.kernel.org>
+CC: Miaohe Lin <linmiaohe@huawei.com>, Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6.y] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
+Date: Sun, 5 May 2024 14:21:46 +0800
+Message-ID: <20240505062146.2186433-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <2024042914-rectified-grab-1bbb@gregkh>
+References: <2024042914-rectified-grab-1bbb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Thunderbolt Host Reset Change Causes eGPU
- Disconnection from 6.8.7=>6.8.8
-To: Micha Albert <kernel@micha.zone>
-Cc: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Mario Limonciello <mario.limonciello@amd.com>
-References: <wL3vtEh_zTQSCqS6d5YCJReErDDy_dw-dW5L9TSpp9VFDVHfkSN8lNo8i1ZVUD9NU-eIvF2M84nhfdt2O7spGu2Nv5-oz9FLohYO7SuJzWQ=@micha.zone>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <wL3vtEh_zTQSCqS6d5YCJReErDDy_dw-dW5L9TSpp9VFDVHfkSN8lNo8i1ZVUD9NU-eIvF2M84nhfdt2O7spGu2Nv5-oz9FLohYO7SuJzWQ=@micha.zone>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1714885200;7b11026f;
-X-HE-SMSGID: 1s3Tyf-00055A-Fc
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ canpemm500002.china.huawei.com (7.192.104.244)
 
-[CCing Mario, who asked for the two suspected commits to be backported]
+When I did memory failure tests recently, below warning occurs:
 
-On 05.05.24 03:12, Micha Albert wrote:
-> 
->     I have an AMD Radeon 6600 XT GPU in a cheap Thunderbolt eGPU board.
-> In 6.8.7, this works as expected, and my Plymouth screen (including the
-> LUKS password prompt) shows on my 2 monitors connected to the GPU as
-> well as my main laptop screen. Upon entering the password, I'm put into
-> userspace as expected. However, upon upgrading to 6.8.8, I will be
-> greeted with the regular password prompt, but after entering my password
-> and waiting for it to be accepted, my eGPU will reset and not function.
-> I can tell that it resets since I can hear the click of my ATX power
-> supply turning off and on again, and the status LED of the eGPU board
-> goes from green to blue and back to green, all in less than a second.
-> 
->    I talked to a friend, and we found out that the kernel parameter
-> thunderbolt.host_reset=false fixes the issue. He also thinks that
-> commits cc4c94 (59a54c upstream) and 11371c (ec8162 upstream) look
-> suspicious. I've attached the output of dmesg when the error was
-> occurring, since I'm still able to use my laptop normally when this
-> happens, just not with my eGPU and its connected displays.
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 8 PID: 1011 at kernel/locking/lockdep.c:232 __lock_acquire+0xccb/0x1ca0
+Modules linked in: mce_inject hwpoison_inject
+CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire+0xccb/0x1ca0
+RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
+RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
+RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
+RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
+R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
+R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
+FS:  00007ff9f32aa740(0000) GS:ffffa1ce5fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff9f3134ba0 CR3: 00000008484e4000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ lock_acquire+0xbe/0x2d0
+ _raw_spin_lock_irqsave+0x3a/0x60
+ hugepage_subpool_put_pages.part.0+0xe/0xc0
+ free_huge_folio+0x253/0x3f0
+ dissolve_free_huge_page+0x147/0x210
+ __page_handle_poison+0x9/0x70
+ memory_failure+0x4e6/0x8c0
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xbc/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff9f3114887
+RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
+RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
+RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ panic+0x326/0x350
+ check_panic_on_warn+0x4f/0x50
+ __warn+0x98/0x190
+ report_bug+0x18e/0x1a0
+ handle_bug+0x3d/0x70
+ exc_invalid_op+0x18/0x70
+ asm_exc_invalid_op+0x1a/0x20
+RIP: 0010:__lock_acquire+0xccb/0x1ca0
+RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
+RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
+RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
+RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
+R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
+R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
+ lock_acquire+0xbe/0x2d0
+ _raw_spin_lock_irqsave+0x3a/0x60
+ hugepage_subpool_put_pages.part.0+0xe/0xc0
+ free_huge_folio+0x253/0x3f0
+ dissolve_free_huge_page+0x147/0x210
+ __page_handle_poison+0x9/0x70
+ memory_failure+0x4e6/0x8c0
+ hard_offline_page_store+0x55/0xa0
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xbc/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff9f3114887
+RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
+RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
+RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
+R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
+ </TASK>
 
-Thx for the report. Could you please test if 6.9-rc6 (or a later
-snapshot; or -rc7, which should be out in about ~18 hours) is affected
-as well? That would be really important to know.
+After git bisecting and digging into the code, I believe the root cause is
+that _deferred_list field of folio is unioned with _hugetlb_subpool field.
+In __update_and_free_hugetlb_folio(), folio->_deferred_list is
+initialized leading to corrupted folio->_hugetlb_subpool when folio is
+hugetlb.  Later free_huge_folio() will use _hugetlb_subpool and above
+warning happens.
 
-It would also be great if you could try reverting the two patches you
-mentioned and see if they are really what's causing this. There iirc are
-two more; maybe you might need to revert some or all of them in the
-order they were applied.
+But it is assumed hugetlb flag must have been cleared when calling
+folio_put() in update_and_free_hugetlb_folio().  This assumption is broken
+due to below race:
 
-Ciao, Thorsten
+CPU1					CPU2
+dissolve_free_huge_page			update_and_free_pages_bulk
+ update_and_free_hugetlb_folio		 hugetlb_vmemmap_restore_folios
+					  folio_clear_hugetlb_vmemmap_optimized
+  clear_flag = folio_test_hugetlb_vmemmap_optimized
+  if (clear_flag) <-- False, it's already cleared.
+   __folio_clear_hugetlb(folio) <-- Hugetlb is not cleared.
+  folio_put
+   free_huge_folio <-- free_the_page is expected.
+					 list_for_each_entry()
+					  __folio_clear_hugetlb <-- Too late.
 
-P.s.: To be sure the issue doesn't fall through the cracks unnoticed,
-I'm adding it to regzbot, the Linux kernel regression tracking bot:
+Fix this issue by checking whether folio is hugetlb directly instead of
+checking clear_flag to close the race window.
 
-#regzbot ^introduced v6.8.7..v6.8.8
-#regzbot title thunderbolt: eGPU disconnected during boot
+Link: https://lkml.kernel.org/r/20240419085819.1901645-1-linmiaohe@huawei.com
+Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 52ccdde16b6540abe43b6f8d8e1e1ec90b0983af)
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+---
+ mm/hugetlb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 555cf1a80eae..c2047608800f 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1747,8 +1747,6 @@ static void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+ static void __update_and_free_hugetlb_folio(struct hstate *h,
+ 						struct folio *folio)
+ {
+-	bool clear_dtor = folio_test_hugetlb_vmemmap_optimized(folio);
+-
+ 	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+ 		return;
+ 
+@@ -1782,7 +1780,7 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+ 	 * If vmemmap pages were allocated above, then we need to clear the
+ 	 * hugetlb destructor under the hugetlb lock.
+ 	 */
+-	if (clear_dtor) {
++	if (folio_test_hugetlb(folio)) {
+ 		spin_lock_irq(&hugetlb_lock);
+ 		__clear_hugetlb_destructor(h, folio);
+ 		spin_unlock_irq(&hugetlb_lock);
+-- 
+2.33.0
+
 
