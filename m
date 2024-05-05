@@ -1,206 +1,156 @@
-Return-Path: <stable+bounces-43069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0617A8BBF92
-	for <lists+stable@lfdr.de>; Sun,  5 May 2024 09:12:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215E98BC064
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 14:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A545AB2109F
-	for <lists+stable@lfdr.de>; Sun,  5 May 2024 07:12:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54397281F4C
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 12:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81477566A;
-	Sun,  5 May 2024 07:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1148B14A84;
+	Sun,  5 May 2024 12:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JH006p9c"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C7163AE
-	for <stable@vger.kernel.org>; Sun,  5 May 2024 07:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD7657C9A;
+	Sun,  5 May 2024 12:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714893146; cv=none; b=sttuu1fzYPpTIVgqdWReKyp4KYpobaTw7n9fFIpUEDbe6AZUd2LzzyXGDfQ8gLfa0gNdhF56AjPU7FLOLMjH11RJ8KZkNIg4kPRhUGKbr425n5RJLveNEvXNhG8cQ6SQRKk8YYmg6EIejnxJ8DQ51TyTaGPTZmjMe2mLvxnNUPU=
+	t=1714912632; cv=none; b=Hwa6xnEsH2puCgoqZb9nUZTSsDH3qKbYatoHJP41oEtEhFQokT7cMCUlEuxaakYWGwSZMxGgqKD2hOuGlBnC7QAq3QR1qtjPFemhO3FM7Nr+fiU7+inhrrG2yEO9h+Voy5OOD0LIjwyk5sWcis1U3f8ejmxEkXrbbWQFr2QZQbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714893146; c=relaxed/simple;
-	bh=+B/wHl85EAgni27JYoOuYQGcc7bm/aV2el+RerOesD0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iLPirFzX1S0in4bTjifPmzKKZ1llRDLyaiuaSuxnps6FEN2tS+0q0iDyAJZIqOc7ktTkpQTWYDDJSV1kAhgRV56cxw1BrUp1j5rx4Sfo/2jQsdtVD605U1v+ReYzJCTDKYuGXpRi8dB6X1A9oZU3KCl7rIrCZofUDd217suidgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4VXFyT1gPzz1RBxH;
-	Sun,  5 May 2024 15:09:05 +0800 (CST)
-Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id E506E140109;
-	Sun,  5 May 2024 15:12:20 +0800 (CST)
-Received: from huawei.com (10.173.135.154) by canpemm500002.china.huawei.com
- (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 5 May
- 2024 15:12:20 +0800
-From: Miaohe Lin <linmiaohe@huawei.com>
-To: <stable@vger.kernel.org>
-CC: Miaohe Lin <linmiaohe@huawei.com>, Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
-Date: Sun, 5 May 2024 15:09:31 +0800
-Message-ID: <20240505070931.2537338-1-linmiaohe@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <2024042912-visibly-carpool-70bd@gregkh>
-References: <2024042912-visibly-carpool-70bd@gregkh>
+	s=arc-20240116; t=1714912632; c=relaxed/simple;
+	bh=zDpolQWfbcUK7TyiyiEtd0WxsaMTnXf/81eP72pe0Dg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CXztAqRq1koD1t0HnEjE+QGQYAiNXfnxHvzeia73wvEnQ0R9S/8QsJ0XcMdygjmWkLQz+uc07haQCeuvwB2uaiLsExHP8UvAmWaYqX4n5rWqW2emgYVLn6eO4lP7RFQiSVcOfx68+2OAcgO4Gsxej9YBHcaQy5dmXfpDWVdwF/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JH006p9c; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6f04f01f29aso185999a34.0;
+        Sun, 05 May 2024 05:37:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714912630; x=1715517430; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q7UNaT1dFoDbZk1Tb2yzB1trkO0W5vpyMHkgqY156n0=;
+        b=JH006p9c7URMROm3EAHfDeQInPBK0lW6D1Vynbyeg3Kol1FQxkcN1zvGakcXJhHwSj
+         FvD0C6yVT3gqTJcPPZvdMZQjE5nX6L0ETkm2Qu4/vGhuiDJtI8XWEwLTJ1dGE1T7qD7Z
+         EdMQonnNOS7+ENi464Skhl3hJIoNfSqhY2Ig6027LsDGQNzadSYnRENp3zpg1YzDHPSj
+         cVAVYkzziTGat/E0DkERbguD7sno8unnaDRs6Gq7EJsPTDu4MgUfB4jdpANWuBySIerF
+         iTgW5pj1XxkLpZJDFVzhwfsObi1PxzUCUH/vlum3CZQsZLWqL8bf0npwJ/zG2X+voCDw
+         v9Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714912630; x=1715517430;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q7UNaT1dFoDbZk1Tb2yzB1trkO0W5vpyMHkgqY156n0=;
+        b=nxJDa7TAjIrhIYKWd2m5U1/XhR5h7ElVeVqNh8aCAZa9M0Je1vWlTbhstNLit064eZ
+         oD+9zWaDIRmSsvPS0NZ7isDRLX9NPBzk6LGGWhqiUwVm8MYjPbWO6eZ0ezeYy4UkK60R
+         RiMuxI+kcHBztMipgKm3hiZNQF1V8Lan+SqcEBKtuojJxeJENojbEe+0nHJuAo7tzV9G
+         QjMeVsG3m+dnAlgeVBZWn4lBp4SOmpzforLuyIKKU7cuCAEzIx6OdCB3i+ROgv27kptJ
+         Fl7olu+/jTHwL8k+tVe4ytym+Gl0R/I9GicLsdOwHSMVtK/aDNQuk8b0L/5giXvuRu8B
+         8lYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKjUi0Y0I6KWLfXtLQxQogp6n4YfE7dJZ5FIfcfghyYs94yGwaqCPFELRNTK/7L4VmdkAkWcqyMLTqSY6G4homA3dZ2ex4HgCFp6da
+X-Gm-Message-State: AOJu0YwgTUE0eqs4/7VXzP8innd1Wl1vzekJxHxdfvTc3ULvisbiBinr
+	GlngXxn5C+xzp7otbhHolvnq3wU0S8G7QZpTpDZqaZ1ba7UMEpBF
+X-Google-Smtp-Source: AGHT+IGmeBFls7M1T2mDkcdo593tJ529+B6AdsEDseoNn6Uj4zHGCr/ZveECxUPEZJG73iGmf+Ajag==
+X-Received: by 2002:a05:6830:144a:b0:6ee:4ecc:3c39 with SMTP id w10-20020a056830144a00b006ee4ecc3c39mr8998993otp.25.1714912630187;
+        Sun, 05 May 2024 05:37:10 -0700 (PDT)
+Received: from ?IPV6:2600:1700:70:f700:3634:a35:99df:3386? ([2600:1700:70:f700:3634:a35:99df:3386])
+        by smtp.gmail.com with ESMTPSA id cv7-20020a056830688700b006ee377bd3aesm1478999otb.44.2024.05.05.05.37.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 May 2024 05:37:09 -0700 (PDT)
+Message-ID: <1eb96465-0a81-4187-b8e7-607d85617d5f@gmail.com>
+Date: Sun, 5 May 2024 07:37:09 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Thunderbolt Host Reset Change Causes eGPU
+ Disconnection from 6.8.7=>6.8.8
+To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Micha Albert <kernel@micha.zone>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>
+References: <wL3vtEh_zTQSCqS6d5YCJReErDDy_dw-dW5L9TSpp9VFDVHfkSN8lNo8i1ZVUD9NU-eIvF2M84nhfdt2O7spGu2Nv5-oz9FLohYO7SuJzWQ=@micha.zone>
+ <3f1f55cb-d8df-4834-b22f-c195d161cab5@leemhuis.info>
+Content-Language: en-US
+From: Mario Limonciello <superm1@gmail.com>
+In-Reply-To: <3f1f55cb-d8df-4834-b22f-c195d161cab5@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500002.china.huawei.com (7.192.104.244)
 
-When I did memory failure tests recently, below warning occurs:
 
-DEBUG_LOCKS_WARN_ON(1)
-WARNING: CPU: 8 PID: 1011 at kernel/locking/lockdep.c:232 __lock_acquire+0xccb/0x1ca0
-Modules linked in: mce_inject hwpoison_inject
-CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-RIP: 0010:__lock_acquire+0xccb/0x1ca0
-RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
-RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
-RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
-RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
-R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
-R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
-FS:  00007ff9f32aa740(0000) GS:ffffa1ce5fc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff9f3134ba0 CR3: 00000008484e4000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- lock_acquire+0xbe/0x2d0
- _raw_spin_lock_irqsave+0x3a/0x60
- hugepage_subpool_put_pages.part.0+0xe/0xc0
- free_huge_folio+0x253/0x3f0
- dissolve_free_huge_page+0x147/0x210
- __page_handle_poison+0x9/0x70
- memory_failure+0x4e6/0x8c0
- hard_offline_page_store+0x55/0xa0
- kernfs_fop_write_iter+0x12c/0x1d0
- vfs_write+0x380/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xbc/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff9f3114887
-RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
-RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
-RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
-R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
- </TASK>
-Kernel panic - not syncing: kernel: panic_on_warn set ...
-CPU: 8 PID: 1011 Comm: bash Kdump: loaded Not tainted 6.9.0-rc3-next-20240410-00012-gdb69f219f4be #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- panic+0x326/0x350
- check_panic_on_warn+0x4f/0x50
- __warn+0x98/0x190
- report_bug+0x18e/0x1a0
- handle_bug+0x3d/0x70
- exc_invalid_op+0x18/0x70
- asm_exc_invalid_op+0x1a/0x20
-RIP: 0010:__lock_acquire+0xccb/0x1ca0
-RSP: 0018:ffffa7a1c7fe3bd0 EFLAGS: 00000082
-RAX: 0000000000000000 RBX: eb851eb853975fcf RCX: ffffa1ce5fc1c9c8
-RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffffa1ce5fc1c9c0
-RBP: ffffa1c6865d3280 R08: ffffffffb0f570a8 R09: 0000000000009ffb
-R10: 0000000000000286 R11: ffffffffb0f2ad50 R12: ffffa1c6865d3d10
-R13: ffffa1c6865d3c70 R14: 0000000000000000 R15: 0000000000000004
- lock_acquire+0xbe/0x2d0
- _raw_spin_lock_irqsave+0x3a/0x60
- hugepage_subpool_put_pages.part.0+0xe/0xc0
- free_huge_folio+0x253/0x3f0
- dissolve_free_huge_page+0x147/0x210
- __page_handle_poison+0x9/0x70
- memory_failure+0x4e6/0x8c0
- hard_offline_page_store+0x55/0xa0
- kernfs_fop_write_iter+0x12c/0x1d0
- vfs_write+0x380/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xbc/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff9f3114887
-RSP: 002b:00007ffecbacb458 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 000000000000000c RCX: 00007ff9f3114887
-RDX: 000000000000000c RSI: 0000564494164e10 RDI: 0000000000000001
-RBP: 0000564494164e10 R08: 00007ff9f31d1460 R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
-R13: 00007ff9f321b780 R14: 00007ff9f3217600 R15: 00007ff9f3216a00
- </TASK>
 
-After git bisecting and digging into the code, I believe the root cause is
-that _deferred_list field of folio is unioned with _hugetlb_subpool field.
-In __update_and_free_hugetlb_folio(), folio->_deferred_list is
-initialized leading to corrupted folio->_hugetlb_subpool when folio is
-hugetlb.  Later free_huge_folio() will use _hugetlb_subpool and above
-warning happens.
+On 5/4/24 23:59, Linux regression tracking (Thorsten Leemhuis) wrote:
+> [CCing Mario, who asked for the two suspected commits to be backported]
+> 
+> On 05.05.24 03:12, Micha Albert wrote:
+>>
+>>      I have an AMD Radeon 6600 XT GPU in a cheap Thunderbolt eGPU board.
+>> In 6.8.7, this works as expected, and my Plymouth screen (including the
+>> LUKS password prompt) shows on my 2 monitors connected to the GPU as
+>> well as my main laptop screen. Upon entering the password, I'm put into
+>> userspace as expected. However, upon upgrading to 6.8.8, I will be
+>> greeted with the regular password prompt, but after entering my password
+>> and waiting for it to be accepted, my eGPU will reset and not function.
+>> I can tell that it resets since I can hear the click of my ATX power
+>> supply turning off and on again, and the status LED of the eGPU board
+>> goes from green to blue and back to green, all in less than a second.
+>>
+>>     I talked to a friend, and we found out that the kernel parameter
+>> thunderbolt.host_reset=false fixes the issue. He also thinks that
+>> commits cc4c94 (59a54c upstream) and 11371c (ec8162 upstream) look
+>> suspicious. I've attached the output of dmesg when the error was
+>> occurring, since I'm still able to use my laptop normally when this
+>> happens, just not with my eGPU and its connected displays.
+> 
+> Thx for the report. Could you please test if 6.9-rc6 (or a later
+> snapshot; or -rc7, which should be out in about ~18 hours) is affected
+> as well? That would be really important to know.
+> 
+> It would also be great if you could try reverting the two patches you
+> mentioned and see if they are really what's causing this. There iirc are
+> two more; maybe you might need to revert some or all of them in the
+> order they were applied.
 
-But it is assumed hugetlb flag must have been cleared when calling
-folio_put() in update_and_free_hugetlb_folio().  This assumption is broken
-due to below race:
+There are two other things that I think would be good to understand this 
+issue.
 
-CPU1					CPU2
-dissolve_free_huge_page			update_and_free_pages_bulk
- update_and_free_hugetlb_folio		 hugetlb_vmemmap_restore_folios
-					  folio_clear_hugetlb_vmemmap_optimized
-  clear_flag = folio_test_hugetlb_vmemmap_optimized
-  if (clear_flag) <-- False, it's already cleared.
-   __folio_clear_hugetlb(folio) <-- Hugetlb is not cleared.
-  folio_put
-   free_huge_folio <-- free_the_page is expected.
-					 list_for_each_entry()
-					  __folio_clear_hugetlb <-- Too late.
+1) Is it related to trusted devices handling?
 
-Fix this issue by checking whether folio is hugetlb directly instead of
-checking clear_flag to close the race window.
+You can try to apply it both to 6.8.y or to 6.9-rc.
 
-Link: https://lkml.kernel.org/r/20240419085819.1901645-1-linmiaohe@huawei.com
-Fixes: 32c877191e02 ("hugetlb: do not clear hugetlb dtor until allocating vmemmap")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 52ccdde16b6540abe43b6f8d8e1e1ec90b0983af)
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
----
- mm/hugetlb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+https://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu.git/commit/?h=iommu/fixes&id=0f91d0795741c12cee200667648669a91b568735
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 37288a7f0fa6..87d87c34cdf5 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1761,7 +1761,6 @@ static void __update_and_free_page(struct hstate *h, struct page *page)
- {
- 	int i;
- 	struct page *subpage;
--	bool clear_dtor = HPageVmemmapOptimized(page);
- 
- 	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
- 		return;
-@@ -1796,7 +1795,7 @@ static void __update_and_free_page(struct hstate *h, struct page *page)
- 	 * If vmemmap pages were allocated above, then we need to clear the
- 	 * hugetlb destructor under the hugetlb lock.
- 	 */
--	if (clear_dtor) {
-+	if (PageHuge(page)) {
- 		spin_lock_irq(&hugetlb_lock);
- 		__clear_hugetlb_destructor(h, page);
- 		spin_unlock_irq(&hugetlb_lock);
--- 
-2.33.0
+2) Is it because you have amdgpu in your initramfs but not thunderbolt?
 
+If so; there's very likely an ordering issue.
+
+[    2.325788] [drm] GPU posting now...
+[   30.360701] ACPI: bus type thunderbolt registered
+
+Can you remove amdgpu from your initramfs and wait for it to startup 
+after you pivot rootfs?  Does this still happen?
+
+> 
+> Ciao, Thorsten
+> 
+> P.s.: To be sure the issue doesn't fall through the cracks unnoticed,
+> I'm adding it to regzbot, the Linux kernel regression tracking bot:
+> 
+> #regzbot ^introduced v6.8.7..v6.8.8
+> #regzbot title thunderbolt: eGPU disconnected during boot
+> 
 
