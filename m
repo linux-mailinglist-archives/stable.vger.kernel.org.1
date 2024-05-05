@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-43068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C728BBF7C
-	for <lists+stable@lfdr.de>; Sun,  5 May 2024 08:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0617A8BBF92
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 09:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28FC4B20B73
-	for <lists+stable@lfdr.de>; Sun,  5 May 2024 06:24:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A545AB2109F
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 07:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADDB1FC4;
-	Sun,  5 May 2024 06:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81477566A;
+	Sun,  5 May 2024 07:12:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3267B184D
-	for <stable@vger.kernel.org>; Sun,  5 May 2024 06:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C7163AE
+	for <stable@vger.kernel.org>; Sun,  5 May 2024 07:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714890294; cv=none; b=RFlIrZshQBvQzZSK+wTsUbF/P+kU6oKAbqgQzWezc5l/3Bgf8ivLmZOJoPU3se6rODayNFP+oXlyz8WRG7kNBmGWCvUZqQjf5Pd+JuaG48VRovraTk2U7UsbQeCGzkz2skc5P2kEoORjZvaYFuDLLtrQGA7YGqbeEAODXR78njY=
+	t=1714893146; cv=none; b=sttuu1fzYPpTIVgqdWReKyp4KYpobaTw7n9fFIpUEDbe6AZUd2LzzyXGDfQ8gLfa0gNdhF56AjPU7FLOLMjH11RJ8KZkNIg4kPRhUGKbr425n5RJLveNEvXNhG8cQ6SQRKk8YYmg6EIejnxJ8DQ51TyTaGPTZmjMe2mLvxnNUPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714890294; c=relaxed/simple;
-	bh=v2PD2tE+rlIiaeutK8uRy21trsM7eLGnDer23Q5MoZg=;
+	s=arc-20240116; t=1714893146; c=relaxed/simple;
+	bh=+B/wHl85EAgni27JYoOuYQGcc7bm/aV2el+RerOesD0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NtlsgVh2NejE1z2Uk+hTBC2nOv/6TQ6iEztlxLOsGb7I6+BpKUpJQKeoBGrRXmlz0Sqy9FYDFYxQti9IXlAiFqMLnvgdaOEsG4FW81ChvxtbAktqsEkMHqu+p7YN5Y89QuOEcDNnaLcPwwzzQF1C9iTKZHUP01rl7T6peIRaLk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+	 MIME-Version:Content-Type; b=iLPirFzX1S0in4bTjifPmzKKZ1llRDLyaiuaSuxnps6FEN2tS+0q0iDyAJZIqOc7ktTkpQTWYDDJSV1kAhgRV56cxw1BrUp1j5rx4Sfo/2jQsdtVD605U1v+ReYzJCTDKYuGXpRi8dB6X1A9oZU3KCl7rIrCZofUDd217suidgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4VXDvD6Q0QzxNfQ;
-	Sun,  5 May 2024 14:21:12 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4VXFyT1gPzz1RBxH;
+	Sun,  5 May 2024 15:09:05 +0800 (CST)
 Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id 827AB18007F;
-	Sun,  5 May 2024 14:24:35 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id E506E140109;
+	Sun,  5 May 2024 15:12:20 +0800 (CST)
 Received: from huawei.com (10.173.135.154) by canpemm500002.china.huawei.com
  (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 5 May
- 2024 14:24:35 +0800
+ 2024 15:12:20 +0800
 From: Miaohe Lin <linmiaohe@huawei.com>
 To: <stable@vger.kernel.org>
 CC: Miaohe Lin <linmiaohe@huawei.com>, Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
-Date: Sun, 5 May 2024 14:21:46 +0800
-Message-ID: <20240505062146.2186433-1-linmiaohe@huawei.com>
+Subject: [PATCH 6.1.y] mm/hugetlb: fix DEBUG_LOCKS_WARN_ON(1) when dissolve_free_hugetlb_folio()
+Date: Sun, 5 May 2024 15:09:31 +0800
+Message-ID: <20240505070931.2537338-1-linmiaohe@huawei.com>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <2024042914-rectified-grab-1bbb@gregkh>
-References: <2024042914-rectified-grab-1bbb@gregkh>
+In-Reply-To: <2024042912-visibly-carpool-70bd@gregkh>
+References: <2024042912-visibly-carpool-70bd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  canpemm500002.china.huawei.com (7.192.104.244)
 
 When I did memory failure tests recently, below warning occurs:
@@ -176,30 +176,29 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit 52ccdde16b6540abe43b6f8d8e1e1ec90b0983af)
 Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 ---
- mm/hugetlb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ mm/hugetlb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 555cf1a80eae..c2047608800f 100644
+index 37288a7f0fa6..87d87c34cdf5 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1747,8 +1747,6 @@ static void add_hugetlb_folio(struct hstate *h, struct folio *folio,
- static void __update_and_free_hugetlb_folio(struct hstate *h,
- 						struct folio *folio)
+@@ -1761,7 +1761,6 @@ static void __update_and_free_page(struct hstate *h, struct page *page)
  {
--	bool clear_dtor = folio_test_hugetlb_vmemmap_optimized(folio);
--
+ 	int i;
+ 	struct page *subpage;
+-	bool clear_dtor = HPageVmemmapOptimized(page);
+ 
  	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
  		return;
- 
-@@ -1782,7 +1780,7 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+@@ -1796,7 +1795,7 @@ static void __update_and_free_page(struct hstate *h, struct page *page)
  	 * If vmemmap pages were allocated above, then we need to clear the
  	 * hugetlb destructor under the hugetlb lock.
  	 */
 -	if (clear_dtor) {
-+	if (folio_test_hugetlb(folio)) {
++	if (PageHuge(page)) {
  		spin_lock_irq(&hugetlb_lock);
- 		__clear_hugetlb_destructor(h, folio);
+ 		__clear_hugetlb_destructor(h, page);
  		spin_unlock_irq(&hugetlb_lock);
 -- 
 2.33.0
