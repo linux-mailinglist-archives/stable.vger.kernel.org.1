@@ -1,142 +1,113 @@
-Return-Path: <stable+bounces-43066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06ADC8BBD91
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 20:17:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A8D8BBF43
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 07:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F49B1C20CED
-	for <lists+stable@lfdr.de>; Sat,  4 May 2024 18:17:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C14281F6E
+	for <lists+stable@lfdr.de>; Sun,  5 May 2024 05:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D126F513;
-	Sat,  4 May 2024 18:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46281869;
+	Sun,  5 May 2024 05:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xrq8EIbD"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="wacr2QJ5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49F36CDC1;
-	Sat,  4 May 2024 18:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE932A35;
+	Sun,  5 May 2024 04:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714846646; cv=none; b=SjHB2xF7XcSONL7pAzoNT7W52y0UxmItYiuYhZXnNA76MYpEVsnrMF+F6Uf+6t3JpbmouzXE8jQFa+1rtHGi8qD8z9LbsrH9k41gMc8t/BMjmj3URPDpZpIHxG7cpBXoHtcNTWs2sdx24wPej4MWLdmv2n3L4H14FO9CfqQRN/8=
+	t=1714885202; cv=none; b=lbBSgutRsNNVXr9M18aYe1/TFKqyzm0ZXNTTHiV+DZ70wYJamdsOiho6G0H7kdd7gXBAlpr3u1UMNA1BB0lsZyx73v3QnhgTPZrviVYfLPo6AN+yTWZw82wyEO2EsyeQ0IEK9N2yPVWc+GXh6/NGjRoK+zH1dJDscxbo/iGximo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714846646; c=relaxed/simple;
-	bh=8RoDxEZS1EWPFuivjRixRPBjVES0Fa7HfsNSHBuwUEI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VHh9IzXiGsiVhf741R22xf9jKgbOv5Wv0PBPF/gKMFcLnLu9Ex2KoXDiO4FkeHSuLzrtl5dWWL+t/K6D+9gz7xVTM84CvIGR4qCIyfh3qTrkjPtxWpVXt09b68CZlfnGjexiOt0ouzmoMIgURQWZdjls+kFKsFa6ttI1cIJ8g80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xrq8EIbD; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7928c351c6cso47566485a.3;
-        Sat, 04 May 2024 11:17:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714846644; x=1715451444; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=izpDu+BENOcJzlyZP2UkeXCJG5Y+B248VkQYYB3dY6M=;
-        b=Xrq8EIbDTw39ARLTXY6d0XJmwZJCVB1qyYiJPZNPGHlpWn8tqVvdScfAFkbwvZ2kzC
-         4DQMvNgRYHP4ytLzQmib7ygpXGYi4aMAiu/tbV3NHd8mwYEr2uR+qVtHlLOaTvg4JbZE
-         t2Jb0V6ElJoE+tn8yNB+0mVYj6yqDHQOqN41Gwmf518QI0Uoxbdjt7LeoliwFGTmC5Qm
-         HOwYeDjKBcHslBG0umm4Rpn4IXUPv9pXX+U7MtZAVSe7CTIvvfXQTjErji9JLJmaqiNm
-         aVFQ8vZnvi0vIRSN57QmxeiDVgHicHZck0LNPbZGc8Pkd5ydWqXN1y+LULmT5ts9x9cH
-         Zkug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714846644; x=1715451444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=izpDu+BENOcJzlyZP2UkeXCJG5Y+B248VkQYYB3dY6M=;
-        b=NAdT2AMLj60qH+lxm9LLFJQ3ehbmNE3EuQ+8BgpTUgnBOdln7i54RZp70VL8Sgz7c+
-         q42h90ASCEhpUNOg8YoKFut5jxSHmjbxN0j9onu/zItf9NWgtT2oLkzqfpbexX2ifumm
-         PND37hCogDjcKCSK5ZOczlNMObsoOhpUjA4A+vkpsIt91hxUpmJOyoiSXmFYbuQivsjn
-         LaVeNy60NdL6GIE96W6TekEe8d/F5JCch3hAn7uIzrfojd7JaO/RQO7Sd+dUMnHP2q+/
-         XuP6H2lq1wiVUosWxtfAIi5pe8wod7mwHLIHIwb4rF7Hct3fJMYT4tLtvYFQg2MNJmEH
-         8V/g==
-X-Forwarded-Encrypted: i=1; AJvYcCVWGYJjlaGpi3UZ6kmFpcR3p6md6+vsKb4hjBPDgNNc+DdrZBhgcXw+zmsV1gTLtVYvefJ7yGPBLQVytz5gidtz4UwtLnsPuO6Z7ieNc98mRXgta5VEnOhsOU8HzENz7AUw
-X-Gm-Message-State: AOJu0Yw/sIFncXj7+97toFtTvBh6Rd/g9kkNNI44ZCDqR0mtcf0EXPzu
-	SnUs5xH1UuzGLXspHD6AuIGWzEO4JetKrwQHD9ZQVUXLWRD+9z4FwFj2I8QXA4YW97/bWv9I0J/
-	1fpTXrNhOp7n08DvovL//qm/HJgA=
-X-Google-Smtp-Source: AGHT+IEN3jgFkasOgz7liCCSmgTx5BH17mYUVIPvp2HjKdGJRF2oFG92i38v65tb1jzNIpoBEkU/8r7Am90fQOeeIhc=
-X-Received: by 2002:a05:6214:1d2e:b0:6a0:a8f2:618b with SMTP id
- f14-20020a0562141d2e00b006a0a8f2618bmr8042117qvd.6.1714846643755; Sat, 04 May
- 2024 11:17:23 -0700 (PDT)
+	s=arc-20240116; t=1714885202; c=relaxed/simple;
+	bh=gZWYN8TIJRhzisv1ghmJGD7uF7Ek/ub2Pify1gP8OTg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cQPj+0zJoBhl4ET/0iJK86FD5W4wT0fYspvWcZvUGTff8QSt4Tf+04OUjgBX4A8B+34Pci5kAPrPFVSkQso+6qlf8RTtLzENsT4Xu3cpiXaF/RZfbK1pJUF3GB0T5IDE9t1Pa+OYL+XMAKVlbY5+p0kGhwbyeKCeLBGd9zUKvxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=wacr2QJ5; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=FqdPLKiJZZINToP0SO0egCn3nMeBdaZBsgYm9Al6woM=;
+	t=1714885200; x=1715317200; b=wacr2QJ5e7ejSawzg3W4/7SoEO9vMizQP5Beqtghws31X5g
+	Q5h0jFhzg+iomDmxjA/b6lBqep2cOUpUs3YMQZizen89BoC7LTzqkAX7biavtx34io/0JiR6i1ZTK
+	cKgKmdkZ73dUg5XhTHHLlvazPipA8UZ1IbReQcN2lrTUYokTHzl9VcLx0GVxYULYrkxSqAF6celIV
+	Y6d6OyjFLZ1/4kYmNUJCMzSlWVjtbEKQHTbUWkGnJxZBV6A7dwLaDi/pg8LamBIbdPcgEIn2QRigC
+	/f6UpBzVKomrPQynBCo2f59tFbKu3eP0AO0GH2HXmlFteuqKtg9Pvx1hCvNz2zIA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1s3Tyf-00055A-Fc; Sun, 05 May 2024 06:59:57 +0200
+Message-ID: <3f1f55cb-d8df-4834-b22f-c195d161cab5@leemhuis.info>
+Date: Sun, 5 May 2024 06:59:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240501184112.3799035-1-leah.rumancik@gmail.com> <2024050436-conceded-idealness-d2c5@gregkh>
-In-Reply-To: <2024050436-conceded-idealness-d2c5@gregkh>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Sat, 4 May 2024 21:17:12 +0300
-Message-ID: <CAOQ4uxhcFSPhnAfDxm-GQ8i-NmDonzLAq5npMh84EZxxr=qhjQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 01/24] xfs: write page faults in iomap are not
- buffered writes
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Leah Rumancik <leah.rumancik@gmail.com>, stable@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, chandan.babu@oracle.com, fred@cloudflare.com, 
-	Dave Chinner <dchinner@redhat.com>, Christoph Hellwig <hch@lst.de>, "Darrick J . Wong" <djwong@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Thunderbolt Host Reset Change Causes eGPU
+ Disconnection from 6.8.7=>6.8.8
+To: Micha Albert <kernel@micha.zone>
+Cc: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>
+References: <wL3vtEh_zTQSCqS6d5YCJReErDDy_dw-dW5L9TSpp9VFDVHfkSN8lNo8i1ZVUD9NU-eIvF2M84nhfdt2O7spGu2Nv5-oz9FLohYO7SuJzWQ=@micha.zone>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <wL3vtEh_zTQSCqS6d5YCJReErDDy_dw-dW5L9TSpp9VFDVHfkSN8lNo8i1ZVUD9NU-eIvF2M84nhfdt2O7spGu2Nv5-oz9FLohYO7SuJzWQ=@micha.zone>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1714885200;7b11026f;
+X-HE-SMSGID: 1s3Tyf-00055A-Fc
 
-On Sat, May 4, 2024 at 12:16=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, May 01, 2024 at 11:40:49AM -0700, Leah Rumancik wrote:
-> > From: Dave Chinner <dchinner@redhat.com>
-> >
-> > [ Upstream commit 118e021b4b66f758f8e8f21dc0e5e0a4c721e69e ]
->
-> Is this series "ok" to take?  I've lost track of who we should be taking
-> xfs stable patches from these days...
->
+[CCing Mario, who asked for the two suspected commits to be backported]
 
-Yes, because it was posted to xfs list and acked by Darrick:
-https://lore.kernel.org/linux-xfs/20240426231407.GQ360919@frogsfrogsfrogs/
+On 05.05.24 03:12, Micha Albert wrote:
+> 
+>     I have an AMD Radeon 6600 XT GPU in a cheap Thunderbolt eGPU board.
+> In 6.8.7, this works as expected, and my Plymouth screen (including the
+> LUKS password prompt) shows on my 2 monitors connected to the GPU as
+> well as my main laptop screen. Upon entering the password, I'm put into
+> userspace as expected. However, upon upgrading to 6.8.8, I will be
+> greeted with the regular password prompt, but after entering my password
+> and waiting for it to be accepted, my eGPU will reset and not function.
+> I can tell that it resets since I can hear the click of my ATX power
+> supply turning off and on again, and the status LED of the eGPU board
+> goes from green to blue and back to green, all in less than a second.
+> 
+>    I talked to a friend, and we found out that the kernel parameter
+> thunderbolt.host_reset=false fixes the issue. He also thinks that
+> commits cc4c94 (59a54c upstream) and 11371c (ec8162 upstream) look
+> suspicious. I've attached the output of dmesg when the error was
+> occurring, since I'm still able to use my laptop normally when this
+> happens, just not with my eGPU and its connected displays.
 
-I guess the cover letter that is missing from this series would have
-mentioned that.
+Thx for the report. Could you please test if 6.9-rc6 (or a later
+snapshot; or -rc7, which should be out in about ~18 hours) is affected
+as well? That would be really important to know.
 
-Anyway, how can you keep track, that is a good question.
+It would also be great if you could try reverting the two patches you
+mentioned and see if they are really what's causing this. There iirc are
+two more; maybe you might need to revert some or all of them in the
+order they were applied.
 
-There are some tell signs that you could rely on in the future:
-1. All the stable xfs patch series in the recent era, as this one, have bee=
-n
-    Acked-by: Darrick J. Wong <djwong@kernel.org>
-2. The majority of stable xfs patches in the recent era,
-    have been posted and Signed-off-by the xfs maintainer that is
-    listed in MAINTAINER in the respective LTS kernel:
+Ciao, Thorsten
 
-$ git diff stable/linux-5.10.y -- MAINTAINERS |grep -w XFS -A 2
- XFS FILESYSTEM
--M: Amir Goldstein <amir73il@gmail.com>
--M: Darrick J. Wong <djwong@kernel.org>
-amir@amir-ThinkPad-T480:~/src/linux$ git diff stable/linux-5.15.y --
-MAINTAINERS |grep -w XFS -A 2
- XFS FILESYSTEM
--C: irc://irc.oftc.net/xfs
--M: Leah Rumancik <leah.rumancik@gmail.com>
-amir@amir-ThinkPad-T480:~/src/linux$ git diff stable/linux-6.1.y --
-MAINTAINERS |grep -w XFS -A 2
- XFS FILESYSTEM
--C: irc://irc.oftc.net/xfs
--M: Darrick J. Wong <djwong@kernel.org>
-amir@amir-ThinkPad-T480:~/src/linux$ git diff stable/linux-6.6.y --
-MAINTAINERS |grep -w XFS -A 2
- XFS FILESYSTEM
--M: Catherine Hoang <catherine.hoang@oracle.com>
- M: Chandan Babu R <chandan.babu@oracle.com>
+P.s.: To be sure the issue doesn't fall through the cracks unnoticed,
+I'm adding it to regzbot, the Linux kernel regression tracking bot:
 
-Leah,
-
-I guess a patch to MAINTAINERS for 6.1.y is in order...
-
-Thanks,
-Amir.
+#regzbot ^introduced v6.8.7..v6.8.8
+#regzbot title thunderbolt: eGPU disconnected during boot
 
