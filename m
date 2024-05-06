@@ -1,134 +1,155 @@
-Return-Path: <stable+bounces-43101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9498BC735
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 07:59:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77958BC7B2
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 08:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4F51C20C43
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 05:59:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996F11F21A46
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 06:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460EC495CC;
-	Mon,  6 May 2024 05:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F89B45948;
+	Mon,  6 May 2024 06:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="T/HnHDU2"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hbWw03pc"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE9347F4A;
-	Mon,  6 May 2024 05:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9433BBE8;
+	Mon,  6 May 2024 06:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714975158; cv=none; b=GzpcsioOM6ecZoiMXHmE/Q7TS2gGmVXH7SwF4//ohWuhVTg2FOBvxhKi5UwCLejOZkjyMeDsryOVpICYwpM/00Yw6H+zstdoYDmppkkoqzCqfFXgVFjn6RZ2RIlX0XZ9I2HuQNTRlQB+cRTeDXQgtmoL6RiJwdbbLn0llhBrUW8=
+	t=1714977484; cv=none; b=cFwA+RO71izu064e6xMCzvvSf1F1Lou8syCu2H/tr0YrdzCBi8uw1ObZR0HNhh1XTVVTIin4Jgn5mQOv12YPAZz1ZwxeU6tkprcchQjDO5OFl8S1X8r8o4KahycArQxs6Le/GlBKaVQ0DR23skChYOXBZj1p7QvtIkXEJOCuAQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714975158; c=relaxed/simple;
-	bh=koI1sNIqKLDuNDuh6AXSWnfEH8YF3otZZ16U0c6dsdU=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=Z3lsrSPxxiSi4L1b2mZCOCkp8a3s6N31yU4QD85Tnrb6FOfIzHHI3f7CtMKMT/8CRnfisIxs/Be5dCIbHgNBhmTSvrlwv0OM6K3Z3tBfBw6jjof1UtD1o2HWQg3pMtdoCQ6TvfT/Yxe88st64R5eQOwKuTec7EubX9CLHBfP5Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=T/HnHDU2; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1714977484; c=relaxed/simple;
+	bh=WkuDHUy0Rpe3/0hm/IOKIERWznsN9LEpDgFyIbLyzGo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AVztglPM9ymnmll5MZG+B1Eu0gua/LiSSa7TmLRRLjHgMnnR4sYlv0Mb1Tjq5qFAwtWJuwYgVghNH1eGEhh648XnzCmR19efkneyLCSI/wS7XAQvuWpGxndxyiMbtpyo77W8rmNjP8Hy00FXnVoAxKu809xwEPHs8r8nmhr4c5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hbWw03pc; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4464XxDo021324;
-	Mon, 6 May 2024 05:59:11 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4463xesb020582;
+	Mon, 6 May 2024 06:37:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id; s=qcppdkim1; bh=Tdi6iZl5Ie3N
-	jA5KUJfNGAiZlVUpcEl7xfcMC74VT04=; b=T/HnHDU2qFbdVzSnsFx/akia7LE/
-	xivYuAbGIJjRzrgBXPhKe2wHcc3+/AtGktMcxH92AnNMXddiu0OPwx8P5OoQzldH
-	3fDxO7hKglA1ggGwqb2llOCpESNVmcBVcSwf/8XZRTC7BnvCU0dCrCc5JQXY/XOv
-	v/cB6Br1cTakBtjn3x54cmwDWLpN2FDq0sczNfq9YeN++cH8z8Os2Ixw8+CFPyd+
-	yWewa2qmzKHqYOuVHhU0BDW/KokuI7H1t7r3WfznsWAi2Hh261k0HzIsXcS5OG4D
-	g8WGc1ltVdJUxO0NJcO4b7WDWiVanFvFQ6eUEeCX45qM3ITW2cwX9qnmBA==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xwd3yark7-1
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=qcppdkim1; bh=Qkzc1RV3d+RExsQmBI/r
+	3vkO3Al2pizB5aSZEMiGVnc=; b=hbWw03pcMQ/nrdRVRVB86n0Zj8wDA8E6wiDj
+	oXb7dGFtzY0awJGx9WQqPv9gIh2zO9NXBIg814gHL2CvY6vDW/y8LgICsF9QCjoP
+	S2Guo6fecqCyRfLwoGdKhK4VISebM/2CxrCnm4ibfKwlp/E78KjbGN2QnCdsCJ6U
+	lejw/9U1SZcgNC0cva1JBDkMkg6hTTBhOpCPyNmeYR5fo4jp04c3uQA3epfXyVn2
+	8jYdPyx32FxKToOMU7biuF82hDj8tukBe5MNEi17FjAz+NC9ydUMT5jsdiTTVd1X
+	h+TnM42QPUSAUV1L3ZVaCLk+UvPK1x7RqnBvkZdoj6dq4ZoaXA==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xwd3yatvj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 05:59:11 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 4465vY2L009891;
-	Mon, 6 May 2024 05:59:07 GMT
+	Mon, 06 May 2024 06:37:58 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 4466bt0P016397;
+	Mon, 6 May 2024 06:37:55 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 3xwe3k7u63-1;
-	Mon, 06 May 2024 05:59:07 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4465x729013432;
-	Mon, 6 May 2024 05:59:07 GMT
-Received: from hu-sgudaval-hyd.qualcomm.com (hu-dikshita-hyd.qualcomm.com [10.213.110.13])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 4465x6vc013430;
-	Mon, 06 May 2024 05:59:07 +0000
-Received: by hu-sgudaval-hyd.qualcomm.com (Postfix, from userid 347544)
-	id 87322303D; Mon,  6 May 2024 11:29:05 +0530 (+0530)
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
-To: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hans.verkuil@cisco.com>
-Cc: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Dikshita Agarwal <quic_dikshita@quicinc.com>, stable@vger.kernel.org
-Subject: [PATCH v3] media: venus: fix use after free in vdec_close
-Date: Mon,  6 May 2024 11:28:53 +0530
-Message-Id: <1714975133-1777-1-git-send-email-quic_dikshita@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: TohBs7UZkK2NQCEaSzKufJMQTFHVDs56
-X-Proofpoint-GUID: TohBs7UZkK2NQCEaSzKufJMQTFHVDs56
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-06_02,2024-05-03_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- malwarescore=0 phishscore=0 mlxlogscore=999 adultscore=0 clxscore=1011
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405060035
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3xwe3kdrqv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 May 2024 06:37:55 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4466bte3016392;
+	Mon, 6 May 2024 06:37:55 GMT
+Received: from hu-devc-blr-u22-a.qualcomm.com (hu-mdalam-blr.qualcomm.com [10.131.36.157])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 4466bt6O016390
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 May 2024 06:37:55 +0000
+Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 466583)
+	id 4F4B9414B0; Mon,  6 May 2024 12:07:54 +0530 (+0530)
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
+To: andersson@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
+        quic_anusha@quicinc.com, bhupesh.sharma@linaro.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: quic_mdalam@quicinc.com, quic_srichara@quicinc.com,
+        quic_varada@quicinc.com, stable@vger.kernel.org
+Subject: [PATCH v2] clk: qcom: gcc-ipq9574: Add BRANCH_HALT_VOTED flag
+Date: Mon,  6 May 2024 12:07:51 +0530
+Message-Id: <20240506063751.346759-1-quic_mdalam@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: ErExOIK9WA1sqUCg2KsRqpd2IgRHsKFu
+X-Proofpoint-GUID: ErExOIK9WA1sqUCg2KsRqpd2IgRHsKFu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-06_03,2024-05-03_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 mlxlogscore=999 adultscore=0 clxscore=1011
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2405060041
 
-There appears to be a possible use after free with vdec_close().
-The firmware will add buffer release work to the work queue through
-HFI callbacks as a normal part of decoding. Randomly closing the
-decoder device from userspace during normal decoding can incur
-a read after free for inst.
+Add BRANCH_HALT_VOTED flag to inform clock framework
+don't check for CLK_OFF bit.
 
-Fix it by cancelling the work in vdec_close.
+CRYPTO_AHB_CLK_ENA and CRYPTO_AXI_CLK_ENA enable bit is
+present in other VOTE registers also, like TZ.
+If anyone else also enabled this clock, even if we turn
+off in GCC_APCS_CLOCK_BRANCH_ENA_VOTE | 0x180B004, it won't
+turn off.
+Also changes the CRYPTO_AHB_CLK_ENA & CRYPTO_AXI_CLK_ENA
+offset to 0xb004 from 0x16014.
 
 Cc: stable@vger.kernel.org
-Fixes: af2c3834c ("media: venus: adding core part and helper functions")
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Fixes: f6b2bd9cb29a ("clk: qcom: gcc-ipq9574: Enable crypto clocks")
+Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
 ---
-Changes since v2:
-- fixed email id
+Change in [v2]
 
-Changes since v1:
-- Added fixes and stable tags
+* Added Fixes tag and stable kernel tag
 
- drivers/media/platform/qcom/venus/vdec.c | 1 +
- 1 file changed, 1 insertion(+)
+* updated commit message about offset change
 
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 29130a9..56f8a25 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -1747,6 +1747,7 @@ static int vdec_close(struct file *file)
+ drivers/clk/qcom/gcc-ipq9574.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/clk/qcom/gcc-ipq9574.c b/drivers/clk/qcom/gcc-ipq9574.c
+index 0a3f846695b8..f8b9a1e93bef 100644
+--- a/drivers/clk/qcom/gcc-ipq9574.c
++++ b/drivers/clk/qcom/gcc-ipq9574.c
+@@ -2140,9 +2140,10 @@ static struct clk_rcg2 pcnoc_bfdcd_clk_src = {
  
- 	vdec_pm_get(inst);
+ static struct clk_branch gcc_crypto_axi_clk = {
+ 	.halt_reg = 0x16010,
++	.halt_check = BRANCH_HALT_VOTED,
+ 	.clkr = {
+-		.enable_reg = 0x16010,
+-		.enable_mask = BIT(0),
++		.enable_reg = 0xb004,
++		.enable_mask = BIT(15),
+ 		.hw.init = &(const struct clk_init_data) {
+ 			.name = "gcc_crypto_axi_clk",
+ 			.parent_hws = (const struct clk_hw *[]) {
+@@ -2156,9 +2157,10 @@ static struct clk_branch gcc_crypto_axi_clk = {
  
-+	cancel_work_sync(&inst->delayed_process_work);
- 	v4l2_m2m_ctx_release(inst->m2m_ctx);
- 	v4l2_m2m_release(inst->m2m_dev);
- 	vdec_ctrl_deinit(inst);
+ static struct clk_branch gcc_crypto_ahb_clk = {
+ 	.halt_reg = 0x16014,
++	.halt_check = BRANCH_HALT_VOTED,
+ 	.clkr = {
+-		.enable_reg = 0x16014,
+-		.enable_mask = BIT(0),
++		.enable_reg = 0xb004,
++		.enable_mask = BIT(16),
+ 		.hw.init = &(const struct clk_init_data) {
+ 			.name = "gcc_crypto_ahb_clk",
+ 			.parent_hws = (const struct clk_hw *[]) {
 -- 
-2.7.4
+2.34.1
 
 
