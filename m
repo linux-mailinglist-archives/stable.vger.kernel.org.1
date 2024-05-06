@@ -1,116 +1,140 @@
-Return-Path: <stable+bounces-43104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6958BC83A
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 09:19:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D1D8BC86A
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 09:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BFDE1C2130D
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 07:19:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27A4281DE9
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 07:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90F57580E;
-	Mon,  6 May 2024 07:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0BB13774B;
+	Mon,  6 May 2024 07:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="JhxBoYrH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOQe5kMT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B637F47F6A
-	for <stable@vger.kernel.org>; Mon,  6 May 2024 07:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE1D127E3B;
+	Mon,  6 May 2024 07:33:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714979937; cv=none; b=M+FCQXJFulTs9Y745L0xU7EW1OL4JxLY4dHeYv0rd3zEcMzO2ZWt1G7mbviG2xzCRoZMR+L6pxcJtetoeL2w9QTG5Pfb9k51RxXj+qgOO10F6p7/X8S1HIbhZnk0474FLZAocNjpdnyhmBv1l4SUtt59bX3CFQ7M4YyRrK+piHI=
+	t=1714980839; cv=none; b=nrN45KreTq99WaIWRgaad4Pfuq6utEM0STu5LZiWIa8oMIencsFqyM0rRqaY00CV6XI/PvpT4zhzQ44psq58I5yKLkwDO6+EvWe3r1Qcc9WEzYZ/34vMIBLGkauFd/36bfHHbUYxJjFbF99T5PkjKVRveCdgocnGzvLfLsZHC1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714979937; c=relaxed/simple;
-	bh=eVTyNWVG6FwlSAGpDj+R03GuC88vo4izmhgVKikfzxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pbE4IzA/Xr+LLm+XlkzMXOkYKswQdOeVX8MQoubfoswqm7wsjlq/aM/EMsFWC8hG44pJ/t2H5LGuI9aPgX5TpAvZziQVzYmVhMfmMPg4m8K627GMx+hl6u/NFPaTHOC4g7Ex3BK9ooP0GH81TITcCVR5O8Gs0SK+uwM4lSR7Ii0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=JhxBoYrH; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=eVTy
-	NWVG6FwlSAGpDj+R03GuC88vo4izmhgVKikfzxg=; b=JhxBoYrH9gMEZbzxsp3p
-	uOi0mx5fgUJVrmGlhh4bYE80DgrQZAFKA+aX+G73mpvFGa6gH48PNyvJovCHVnr5
-	64EENCZdBKiiv+bMNrZReHBgOMbGaRat/0P2FdphJqGYwbj40oF0SW/XTOxqxUNE
-	lLYLB+1GEHdE8Mixc9PX7GaaithkDjTeo8PUYTAS7nGLbzu/FjZ2PR9p19wwdytq
-	8AYyn21Vod8xziCgGXu+2fEXkD4t2Aw5PONomp/hrOGHbDqrzf1zZIXHesSbTq4W
-	aMlW4PU0KO6toYv79/z8NkqHAqjBqVhlvVkF4BoaOkzh934zhGf68ivd2eZ4e0O5
-	rQ==
-Received: (qmail 94516 invoked from network); 6 May 2024 09:18:53 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 6 May 2024 09:18:53 +0200
-X-UD-Smtp-Session: l3s3148p1@Bni84cMXMK8gAwDPXzrfAO1ieDVkyUqz
-Date: Mon, 6 May 2024 09:18:53 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Cc: mika.westerberg@linux.intel.com, linux-i2c@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4] i2c: acpi: Unbind mux adapters before delete
-Message-ID: <5c5zz3e5mgi5jr5f7htmjutyj47s2rbo6skvysvsze7i6ffvhl@ntc4bcqxc2kb>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>, mika.westerberg@linux.intel.com, linux-i2c@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>, stable@vger.kernel.org
-References: <20240312221632.859695-1-hamish.martin@alliedtelesis.co.nz>
+	s=arc-20240116; t=1714980839; c=relaxed/simple;
+	bh=6XLNTdDOjYZV+7BSZ8kYvHCZIOmfDSjbk8qhhZ/HN98=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tDKt+BtRhAI004FqlSStLGoZEBtvjt9ENFDROytLkZU1gHO5r9eHDcebIhoDVQobLlK5v29xYEtShdxO5etZGOqmKMBKhbnVDMaUIzay7cOVG5W/+Q9vw7h0ZMql0UQ70NVDSmjldQwqC1NJzopEczregH/Yjc2+0ry/IEgIwVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOQe5kMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6B6C116B1;
+	Mon,  6 May 2024 07:33:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714980838;
+	bh=6XLNTdDOjYZV+7BSZ8kYvHCZIOmfDSjbk8qhhZ/HN98=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oOQe5kMTblXJZ1LDCM4efVpiMDYgCPv9n4nmCcDqnsOCcoINVq/I8EYAU70iCFESU
+	 6iRbzA2fucAjcO4Y5v6Yh2RRUPXk/8yO4g4fkYljfz3F/4/LbZ2pbgkZSifQOrwzVC
+	 DtWG0CFNb6tksiEkIm5+/UYWKdX8v8U13M4r2QBkjzaofiVVlpJkpwxj07SOAqkZRE
+	 6xOGO2bCXFxCEsIwMXyiqQ0RV3T57ab8R9Osjqn4vmqKNNNvWHqitQ9FcBwi1sXgWj
+	 20UeGVq3oC1PLysvApckZumwIPjFquUgyomPXJQEKXIbKkqjh91BLyr40SOK5hmuTw
+	 9DPLK1r/TcoYA==
+Message-ID: <94e7366f-e791-4abf-b20d-4c7a1eed3b48@kernel.org>
+Date: Mon, 6 May 2024 09:33:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7ipd7aelxw36hwwg"
-Content-Disposition: inline
-In-Reply-To: <20240312221632.859695-1-hamish.martin@alliedtelesis.co.nz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] media: venus: fix use after free in vdec_close
+To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
+ Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+ Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hans.verkuil@cisco.com>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <1714975133-1777-1-git-send-email-quic_dikshita@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <1714975133-1777-1-git-send-email-quic_dikshita@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 06/05/2024 07:58, Dikshita Agarwal wrote:
+> There appears to be a possible use after free with vdec_close().
+> The firmware will add buffer release work to the work queue through
+> HFI callbacks as a normal part of decoding. Randomly closing the
+> decoder device from userspace during normal decoding can incur
+> a read after free for inst.
+> 
+> Fix it by cancelling the work in vdec_close.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: af2c3834c ("media: venus: adding core part and helper functions")
+
+Please run scripts/checkpatch.pl and fix reported warnings. Then please
+run `scripts/checkpatch.pl --strict` and (probably) fix more warnings.
+Some warnings can be ignored, especially from --strict run, but the code
+here looks like it needs a fix. Feel free to get in touch if the warning
+is not clear.
+
+This is written in your instruction - go/upstream - so be sure you
+always follow it fully.
 
 
---7ipd7aelxw36hwwg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Best regards,
+Krzysztof
 
-On Wed, Mar 13, 2024 at 11:16:32AM +1300, Hamish Martin wrote:
-> There is an issue with ACPI overlay table removal specifically related
-> to I2C multiplexers.
->=20
-> Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
-> existing I2C bus. When this table is loaded we see the creation of a
-> device for the overall PCA9548 chip and 8 further devices - one
-> i2c_adapter each for the mux channels. These are all bound to their
-> ACPI equivalents via an eventual invocation of acpi_bind_one().
->=20
-> When we unload the SSDT overlay we run into the problem. The ACPI
-> devices are deleted as normal via acpi_device_del_work_fn() and the
-> acpi_device_del_list.
->=20
-> However, the following warning and stack trace is output as the
-> deletion does not go smoothly:
-
-Applied to for-current, thanks!
-
-
---7ipd7aelxw36hwwg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmY4hF0ACgkQFA3kzBSg
-Kbb/mw/9FNXF8tZoRwNdXo0HKar/d3gR8KmlsY07fJuP1nF6VfLSkuQe0TkQ8h/h
-ZzQNh1irTczf65U/MrvWjjtlFofHW0jKP20+iN9Q2s6jkiMiuvztiIAi7sXHDY0a
-aZw77Iic8sRIQpRl+iOCjZzofJvbUKfUQt40FBqCBZX4rUYCJC6wJT2zWDG1jXWa
-e4smLJm4yw4p3fg3HfCtXvCSDSt1DuH2BzRCV2AQDOzW6VRI8JhxtJ3Y2uz/StXn
-nlJ7KRLRZtf500gpdGRKEIDbjhttSW3feTSX2Q+7FxtkF8V6kn5L9z+ad1eu+Ab7
-/5aVbSautddX04IuhpJyj1Jl2V7VIHvIfgTPKTbzJ8HjqpzSpZCyo7wQfMKomT3A
-zp2qcJ9dEu+LsK0otFpgrhbxYF52fdHOy0nJh6RvvgC1Sw3DkZesLXw5Me63SdJH
-mYBbjYHJ6mMrVhkvWrYK+n17o78vzG4ugHvQfa/2fc4da2YFfIl3R012sIS9UudB
-mUahkB6PG1eH1hHk2kM9HyjJ1OOCP6+pHYs5xFowK2qOBPvhZC476mebIXCIa18C
-AGTpA1ZO19F4uNB8Xrob5tbRLqUyIGqte1d5iQc9bkWuC9UDfpTTleDtNP/rRL/3
-aOwugtHSbSAQ7ShbUSvJzvKZlBnqa42B4+TlTLAWLQunIX85G8Y=
-=fih7
------END PGP SIGNATURE-----
-
---7ipd7aelxw36hwwg--
 
