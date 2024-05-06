@@ -1,146 +1,99 @@
-Return-Path: <stable+bounces-43130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5753B8BD36C
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 18:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD818BD37E
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 19:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12514284D91
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 16:58:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97F5E28114B
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 17:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6995715746B;
-	Mon,  6 May 2024 16:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B24156F43;
+	Mon,  6 May 2024 17:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="e6NUSV71"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CnKMmrDd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-42af.mail.infomaniak.ch (smtp-42af.mail.infomaniak.ch [84.16.66.175])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C72415A4A1
-	for <stable@vger.kernel.org>; Mon,  6 May 2024 16:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABBB2F2C
+	for <stable@vger.kernel.org>; Mon,  6 May 2024 17:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715014544; cv=none; b=KJMbxqqAYKfHpfPIKR6oMm9wy1Jnj0FH5W6FtSaE0/xQcnfFASIXnZMX9SBY6TtIT4iwNggnZfn+mm3RGkBCWZwlG9jBckadBPHcbF5t0wT2ER7k/1QwshnBxpfHZMdPcWLpXJ8+MM3QQO+ExOGq1s0hTpR4taXdbOpf8+wB70g=
+	t=1715014818; cv=none; b=A3zvkZzO3SvX1ZheqG6bgtYzSKuSGeGoRSSuFimhXmFIC0UcjfDiPHfZKJI+0j6aSQB/qQxNiIAJkBi3nEAAkWw0igcjYk7Qf9NlY1n5Xtz4w37y5iq2pUx9EtIPSbD2gBpgzWtiA5V4pW/VMjn7ooq1iomAW/Zb4+v5koqRAGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715014544; c=relaxed/simple;
-	bh=BB/R9QYU0sTJD/1/5meoYUG98o9LfMjjjUh7AtLA7CI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KkTuLRKaHsmDkUmIUnPje32XJHMduf0bcMzK/CO8NXELXnMkFFyZBLQ33PjxYnHFr0VjW7IG50ZlM6eBYVdQIr0eCFqeWI0Ufwo122IxSMYUYNuR5CYBXoAH5viHJ/teOWkmDD1ke25tMZqUCXuNvbl/ie1boPma/VnlSRKqYUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=e6NUSV71; arc=none smtp.client-ip=84.16.66.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4VY6wl1VG5z1Bk;
-	Mon,  6 May 2024 18:55:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
-	s=20191114; t=1715014535;
-	bh=BB/R9QYU0sTJD/1/5meoYUG98o9LfMjjjUh7AtLA7CI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6NUSV71Lz/Uw6XNJ1YY0EqMg/NSMSyRlEW7pkzFFN6aS6aP5RxHA7QtQno4Eoh6r
-	 cUvygZdyOVRmsrEg7/+nOw5Gd98pntS23YuZat1jPEk8GF38dTjaAuMRr9Hc7Y9Gc8
-	 JyGMERUFVwtKcCOxMAnbs31XXbE6KH1T5K5j291o=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4VY6wk4fKRzRPx;
-	Mon,  6 May 2024 18:55:34 +0200 (CEST)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Shengyu Li <shengyu.li.evgeny@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Brendan Higgins <brendanhiggins@google.com>,
-	David Gow <davidgow@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Ron Economos <re@w6rz.net>,
-	Ronald Warsow <rwarsow@gmx.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Will Drewry <wad@chromium.org>,
-	kernel test robot <oliver.sang@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v6 10/10] selftests/harness: Handle TEST_F()'s explicit exit codes
-Date: Mon,  6 May 2024 18:55:18 +0200
-Message-ID: <20240506165518.474504-11-mic@digikod.net>
-In-Reply-To: <20240506165518.474504-1-mic@digikod.net>
-References: <20240506165518.474504-1-mic@digikod.net>
+	s=arc-20240116; t=1715014818; c=relaxed/simple;
+	bh=rJcd5caZZhKGE6xxpCyv8yduuhfoNv6L1PORou0rdEc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=EeTIZ9FYo1Sea87I+lHOOvM4HM3OcGMDbMoH38KwS9YpPeeY52fg3lz0m4SZWAYNclARj+DpCEtsx6RW/DjWP/b8OIivrXdOvR9l4texV+uDk3sjDSJ7+fW/cIAnqgSs4oADDvCweD270ORSbqAkQWHCpy/owveXO59mFVOCRVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CnKMmrDd; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715014816; x=1746550816;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=rJcd5caZZhKGE6xxpCyv8yduuhfoNv6L1PORou0rdEc=;
+  b=CnKMmrDdcRZNiSZkm1E/sBMottOQuBlztkNSCOkVQ7h1OwapdsjIERsG
+   cwej2iBtkTRayOREHhs3ymPBq00xGPjZagXdf9SiELx4ao1wad4nD69Qu
+   6e7AJVBT0vF+iAmtXDb6MIXtwF6NMdKJBnO6MxGsZum7llO1Y6khEq53v
+   7NfKgodRtRXte2bfR96abynjEoQtCZbwxuY4dsTnxYHHhmgfXq88wtH6m
+   NacwcZLu7cnyy3MRuy5KG0t7De0oKf4qFRUkVhtTRGfYlU5+HdiH5eL3A
+   TTNVe6opW9/k4n5ROOSmAj8FbPcYOdStzmJjW9tOND37pt+gvHjRey++8
+   w==;
+X-CSE-ConnectionGUID: U9p3vChBTsun68X17fgEyw==
+X-CSE-MsgGUID: aK/2X9hNQc+OiXJHr6Of7w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10933870"
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="10933870"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 10:00:13 -0700
+X-CSE-ConnectionGUID: r+q5Y2VGQlOdGM6RrPnS5A==
+X-CSE-MsgGUID: +VuqpKQeQ9mchrFJkxho+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,258,1708416000"; 
+   d="scan'208";a="59082991"
+Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 06 May 2024 10:00:12 -0700
+Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s41hB-0000os-1K;
+	Mon, 06 May 2024 17:00:09 +0000
+Date: Tue, 7 May 2024 01:00:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v6 03/10] selftests/harness: Fix fixture teardown
+Message-ID: <ZjkMk3aG4A-swvNi@974e639ab07c>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240506165518.474504-4-mic@digikod.net>
 
-If TEST_F() explicitly calls exit(code) with code different than 0, then
-_metadata->exit_code is set to this code (e.g. KVM_ONE_VCPU_TEST()).  We
-need to keep in mind that _metadata->exit_code can be KSFT_SKIP while
-the process exit code is 0.
+Hi,
 
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Will Drewry <wad@chromium.org>
-Reported-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Sean Christopherson <seanjc@google.com>
-Closes: https://lore.kernel.org/r/ZjPelW6-AbtYvslu@google.com
-Fixes: 0710a1a73fb4 ("selftests/harness: Merge TEST_F_FORK() into TEST_F()")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Link: https://lore.kernel.org/r/20240506165518.474504-11-mic@digikod.net
----
+Thanks for your patch.
 
-Changes since v5:
-* Update commit message as suggested by Sean.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Changes since v4:
-* Check abort status when the grandchild exited.
-* Keep the _exit(0) calls because _metadata->exit_code is always
-  checked.
-* Only set _metadata->exit_code to WEXITSTATUS() if it is not zero.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Changes since v3:
-* New patch mainly from Sean Christopherson.
----
- tools/testing/selftests/kselftest_harness.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v6 03/10] selftests/harness: Fix fixture teardown
+Link: https://lore.kernel.org/stable/20240506165518.474504-4-mic%40digikod.net
 
-diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-index eb25f7c11949..7612bf09c5f8 100644
---- a/tools/testing/selftests/kselftest_harness.h
-+++ b/tools/testing/selftests/kselftest_harness.h
-@@ -462,9 +462,13 @@ static inline pid_t clone3_vfork(void)
- 		munmap(teardown, sizeof(*teardown)); \
- 		if (self && fixture_name##_teardown_parent) \
- 			munmap(self, sizeof(*self)); \
--		if (!WIFEXITED(status) && WIFSIGNALED(status)) \
-+		if (WIFEXITED(status)) { \
-+			if (WEXITSTATUS(status)) \
-+				_metadata->exit_code = WEXITSTATUS(status); \
-+		} else if (WIFSIGNALED(status)) { \
- 			/* Forward signal to __wait_for_test(). */ \
- 			kill(getpid(), WTERMSIG(status)); \
-+		} \
- 		__test_check_assert(_metadata); \
- 	} \
- 	static void __attribute__((constructor)) \
 -- 
-2.45.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
