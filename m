@@ -1,172 +1,109 @@
-Return-Path: <stable+bounces-43119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634138BD194
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 17:35:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E0A8BD24C
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 18:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942D21C21E86
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 15:35:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C55C9B2211E
+	for <lists+stable@lfdr.de>; Mon,  6 May 2024 16:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C24155385;
-	Mon,  6 May 2024 15:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1394156232;
+	Mon,  6 May 2024 16:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UBK+H4rj"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AGn0twPM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB9A2F2C;
-	Mon,  6 May 2024 15:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B68A15665E
+	for <stable@vger.kernel.org>; Mon,  6 May 2024 16:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715009739; cv=none; b=PoNYYDnPGeeenW8N1p4XVTUqr+4IXYxKXN0YbdggvDroX84xje7IU50qxYOgX4wDA+5IHE7fHvnzlDMF0H0P7MYgvlNc3xw/whpFxUOOD8fDzv9Sv1O2zKAiIj9AVYeJ882yF7l3eq1F63q5DLPNB/6/Jx0EBy1DTU5UxaXkSvg=
+	t=1715012134; cv=none; b=oWpzoNd9PtXjADblQ/Kz+D1HpAly3m5W20vFY+56TvpkdEZMK/Rvoc6wfW/YhLLu/k0QOPXgE4rj0aMzHGTT5hGpN088/JBnbWBuAaYAvSyWlt14JqG/9pY3ZESNnW0qIWe5vYwQC20TRYsxQyTAPDlNG3BZ5aUNowVmM1VOegk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715009739; c=relaxed/simple;
-	bh=oGVCWQDYjNsdrnj+qazvX1umQxTGlOb3a+h86Rhs1gQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WSbuGe9BuPTYDa88HjBrDSirHkfSro9NLhn8vCUCBXv6r0s8fSs0KO78/SaBJS2TPiVeqOJ/Pcv9G55g045cwcsGwOVW2r4vSJd97UuStNmrt4jThOnXms4Ny4EDKTswu4csh/RCe1/XUy9MqIFAZ7vNIIDI8Zpq68hWWszEEm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UBK+H4rj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B830C116B1;
-	Mon,  6 May 2024 15:35:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715009738;
-	bh=oGVCWQDYjNsdrnj+qazvX1umQxTGlOb3a+h86Rhs1gQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=UBK+H4rjTdYc4zvgYsp9IejhkCGq4Szntf3sTdCy0GrJJ8jEXsKN82s5Q5zzliUUw
-	 xF2791yhISGMTtPJuJJZIhq3gFcig/GElOOTEwrfFU1Jli8I8eLloTM9byk37OKiLo
-	 vhhz8clfYcEk9g6mTo//XJuJ1cO4U4IjI894pU3LKmRAEdjgLWKyr4FLSIhdL4lTm3
-	 GKZxJfyDC++EfklCLRug0QtKTpgX2gExt5XVLNK8NMVk70/NVVaHsJjWXESUSJo2EM
-	 Z+1QSpJKj2wgJTvo9ejCdc9SYBedYlupcUx5HWcwaGo3FGCvM1QkWhdN9eaYgG1L1X
-	 QXqJomxAAIl3g==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 06 May 2024 17:35:28 +0200
-Subject: [PATCH net] mptcp: only allow set existing scheduler for
- net.mptcp.scheduler
+	s=arc-20240116; t=1715012134; c=relaxed/simple;
+	bh=ioA0HGN434X5LfI1Q/glCw84Ax+UD4cQobrMiTiDEoA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nsnSyf171bYJ9/mO+6JTnORM8+X6L1qtTi8Yx336yca+M1m5/+yt53izqpFNP/3Q3Yq1HEMyF0gJHYzf0UtrYffnD0PtCePL1Qd6cRUsU1ZuU5q57SOVcmz3Q5klqjFhS3VLsAekZmuCuIejkVXAMbbJhfhUfmIxn575OywMFeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AGn0twPM; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1715012130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VQg5GnmyntnuTwJSymksMsk4lzmwO9PWXcLwJAirNTY=;
+	b=AGn0twPM8mhmFzjce9Zg2phkoHLhsynNSoenjc+yvob6ogHFKyDXBJ5jm95zPqJV9dUG6C
+	kwUGkz+9MaNPaQ4ZohphRJqe4u+HUmnSNLMd60Y9K89mdC00o9MT6zuFaxOer+NnVxX4K0
+	nkfkWmKUmv0kColXIUOYIIvPe2dpof8=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	linux-pci@vger.kernel.org
+Cc: Michal Simek <michal.simek@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>,
+	stable@vger.kernel.org,
+	Bharat Kumar Gogada <bharatku@xilinx.com>
+Subject: [PATCH v2 2/7] PCI: xilinx-nwl: Fix off-by-one
+Date: Mon,  6 May 2024 12:15:05 -0400
+Message-Id: <20240506161510.2841755-3-sean.anderson@linux.dev>
+In-Reply-To: <20240506161510.2841755-1-sean.anderson@linux.dev>
+References: <20240506161510.2841755-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240506-upstream-net-20240506-mptcp-sched-exist-v1-1-2ed1529e521e@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAL/4OGYC/z2NywqDMBBFf0Vm3YEkbe3jV6SLNF51FqYhE0UQ/
- 72hiy7PhXPPToosUHo2O2WsovKJFeypoTD5OIKlr0zOuIu5mpaXpCXDzxxR+L/OqYTEGib0jE2
- 0cOvt+2HvN+fPjupbyhhk+5U6qi69juMLcDNVzH4AAAA=
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gregory Detal <gregory.detal@gmail.com>, stable@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2527; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=0aZdfFi8skR4B7NuJvRMz6O7iszcw6HkWeXMMdh4f+c=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmOPjH9GWsrQ6Maigio6WZQWiyEbCPrOs+g2gYZ
- BjZMHog7wWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZjj4xwAKCRD2t4JPQmmg
- c0qyD/4k/KpuUjpD0HjQHOcfg/2jG9hTmpnqIxN4ug+hqg1rjDQNnQkf/VGV1TdXOQaiWtMn10l
- SpHnUXTHyKf50qDee1Ln6E0woxV1PtW/85n8AunmBGJ1jlaHjymv7ZznCdmL7R5PpKO3BA557Ln
- DRRpg9aB6NOMTgTNi+qq1WkvnoIPIwm/xZaY5QlyceX/K68Rmz7KQUSBWikKeH/3jD4TOZ5r3WC
- RwhrFUjKDI4+Y+sFt/aRWRlQ6KdaN5f22CZIMKcPp5am7FN1R1qLuWJvgvET4jtbz4M5GNen868
- hW5Ony8np6pE55wWex86PvWJgWgmczgq2R/cNrAicpL3yPLXo7V99efn6XWqqP5NUKLoFLBR6Cv
- EbR2BIgETHw4ofpxlKZ0cMutOxqX+SL7nUU36Cxl9q1VZCK2v2FDtWE72i0OFWaXSGXvjv2Rigc
- k0BIUDcTBdj4F8kAtaZtLPd4VKCtdHt9pyq35DOuq0AwE5ExwSIOF7I/CrgZJCWtJ7vjETyh+5B
- bNFnhBXx3kcEyfyMLWbZ9rSKA+gyWNdGWg4DRdf1nPOhOkBIAuNGW17CPos3xLmF1eR4UOnpuNT
- Atld84F0EFo6h/gqVsOSrxWTZYD1I7Ze/m3YP27gmA9qlJske8Bd/LC5sxysjWKy+s52pqyhf2J
- +dSfiB9bZbMkkHg==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Gregory Detal <gregory.detal@gmail.com>
+IRQs start at 0, so we don't need to subtract 1.
 
-The current behavior is to accept any strings as inputs, this results in
-an inconsistent result where an unexisting scheduler can be set:
-
-  # sysctl -w net.mptcp.scheduler=notdefault
-  net.mptcp.scheduler = notdefault
-
-This patch changes this behavior by checking for existing scheduler
-before accepting the input.
-
-Fixes: e3b2870b6d22 ("mptcp: add a new sysctl scheduler")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Detal <gregory.detal@gmail.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 ---
- net/mptcp/ctrl.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-index 13fe0748dde8..2963ba84e2ee 100644
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -96,6 +96,43 @@ static void mptcp_pernet_set_defaults(struct mptcp_pernet *pernet)
- }
+(no changes since v1)
+
+ drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 0408f4d612b5..437927e3bcca 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
  
- #ifdef CONFIG_SYSCTL
-+static int mptcp_set_scheduler(const struct net *net, const char *name)
-+{
-+	struct mptcp_pernet *pernet = mptcp_get_pernet(net);
-+	struct mptcp_sched_ops *sched;
-+	int ret = 0;
-+
-+	rcu_read_lock();
-+	sched = mptcp_sched_find(name);
-+	if (sched)
-+		strscpy(pernet->scheduler, name, MPTCP_SCHED_NAME_MAX);
-+	else
-+		ret = -ENOENT;
-+	rcu_read_unlock();
-+
-+	return ret;
-+}
-+
-+static int proc_scheduler(struct ctl_table *ctl, int write,
-+			  void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	const struct net *net = current->nsproxy->net_ns;
-+	char val[MPTCP_SCHED_NAME_MAX];
-+	struct ctl_table tbl = {
-+		.data = val,
-+		.maxlen = MPTCP_SCHED_NAME_MAX,
-+	};
-+	int ret;
-+
-+	strscpy(val, mptcp_get_scheduler(net), MPTCP_SCHED_NAME_MAX);
-+
-+	ret = proc_dostring(&tbl, write, buffer, lenp, ppos);
-+	if (write && ret == 0)
-+		ret = mptcp_set_scheduler(net, val);
-+
-+	return ret;
-+}
-+
- static struct ctl_table mptcp_sysctl_table[] = {
- 	{
- 		.procname = "enabled",
-@@ -148,7 +185,7 @@ static struct ctl_table mptcp_sysctl_table[] = {
- 		.procname = "scheduler",
- 		.maxlen	= MPTCP_SCHED_NAME_MAX,
- 		.mode = 0644,
--		.proc_handler = proc_dostring,
-+		.proc_handler = proc_scheduler,
- 	},
- 	{
- 		.procname = "close_timeout",
-
----
-base-commit: a26ff37e624d12e28077e5b24d2b264f62764ad6
-change-id: 20240506-upstream-net-20240506-mptcp-sched-exist-6a1b91872a32
-
-Best regards,
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
+@@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
+ 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
 -- 
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
+2.35.1.1320.gc452695387.dirty
 
 
