@@ -1,72 +1,62 @@
-Return-Path: <stable+bounces-43276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BED98BF12C
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:19:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D52A8BF130
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:19:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 069CA282C19
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:19:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D79F2B257EA
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568D380C16;
-	Tue,  7 May 2024 23:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C63B13D265;
+	Tue,  7 May 2024 23:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGHSAOdZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQL7O/oS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C4280C14;
-	Tue,  7 May 2024 23:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CF881205;
+	Tue,  7 May 2024 23:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122916; cv=none; b=a4bXtJpdpxZXzJT75fYwVPaAlA5jI4jToHLnhAR2safAPw55k9K9mWu9K+9cmEi9njKyXafRojWuFxvLTJ3N4D+qs+xD8d1k4m8dcwbyxuv3A+tEVvvgbXY5ABrnoazA2Y/HOXUweYkYIAFDZ+MuBevXo+IS6r6nFCtfFNeIH0M=
+	t=1715122922; cv=none; b=VA7J8PiUvqa0wbnpVJ2GNpKyhHIPumF2ec6NCMdzOqVF2/4nXNGLGS3o4o2l7IpMPUwQj75emP2ZsXi3InwxZbLVufRwQaZna1ooWp3qOWGloOx7pwsk5TvqzvN7jzF8LShV2Py/HRAqLWQLeTP6JIRoJZyr8lwqXdnFvxrxYB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122916; c=relaxed/simple;
-	bh=Ojbrq8calDDK6zre4KUhu3qnC0Lb+IpNjLh39EtbaRY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFmsKoIlPdkJFOebnXZVAcUgdgY7yv+G+qNvisSP+iCfeDRfjNpRXFlnCTH6pTNg7/ySGTlKcRO3pFiIYI9SIwlm6nAwIFSNZUOR0PR3adPQ4NJrfDfxzdf2dSjATl5xchWkzQYSpkoyEtQZzz0BVwcRaWHZ6vULNavvTculZIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGHSAOdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2012C3277B;
-	Tue,  7 May 2024 23:01:53 +0000 (UTC)
+	s=arc-20240116; t=1715122922; c=relaxed/simple;
+	bh=fr8H+7F/SOuz60ZDoNwcnUe+qkYwjSIJBBYn3IJQwao=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lykvIBMI7mIhMsp9Li+63H/C4TCLYufDukGNBbLbxmvuz2/8k6Y8rBb0Ij08CXmEPv9cY2bqPiEVfe+mtaAq7xE8KtyCZgXubN6qS0AAxXh+A4AwQ1BIPQcn1Js8IJ8d6NB2UnJXWRBy48vtogAb5zfzdK/hG/ca9MTAI3q769A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQL7O/oS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF330C2BBFC;
+	Tue,  7 May 2024 23:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122916;
-	bh=Ojbrq8calDDK6zre4KUhu3qnC0Lb+IpNjLh39EtbaRY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGHSAOdZ/X7nnaak5mDMKu67mOv7JJU0cVhp9iqEnhji1sy6pe62EFiBaTAr34JB3
-	 p1G4kODBoBubCAy1DWNNaoKpRULctkwiqDPmQBU0b2yBZIB4WN7fIEuE42bcB/pcmx
-	 ytSBusVpeUe0lFK+Lg5EhGqi0wUPghZxJapWFMMoAiWvU1freD7uKaDBBGDDVRAqnM
-	 jlYUcWUBM3uUFQfSErioLtVjyW6TQ2Kdf2kJgLJV1adzzaxyh4Cz1zWzLR9nDR12nZ
-	 +FG2HUZI8F7ETCkzlnemsGEHTtoZVMDfCDwC/Q2gmY+l1HTlc5fcDquwWQ7K//N2D5
-	 8mG/6QCS3DN4A==
+	s=k20201202; t=1715122922;
+	bh=fr8H+7F/SOuz60ZDoNwcnUe+qkYwjSIJBBYn3IJQwao=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BQL7O/oS+IamjWP2EbJFiDuqQQ73vHou8jGH36iQZ/bLj50a/hpyiKbtHcCQy4hgq
+	 C8FbaD11e+TX1T1qsVXlTkD8X358fPz78FMyerUUUj49eO9M+KPhPV9fznQa03/I9x
+	 Q4lTj4lzNZ+uShHL15PlVpxUlFCrgAj8S9VIpzBQvuKEPEfE9408agV3CwjsJt05S8
+	 +m9wk/oTL1Zx1IWCovAkIBJVQ9bKyKD+9aXi+l+t/6/BdmQdEmWKwnhRK7niXtriJT
+	 Xx57l1IZNqEB7IEQsLtbW6/Gp1bblNhX62P+MPONTyEEpDkYJwiHoykL4sz2tFLWOm
+	 jl879qMyFVjHw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Joshua Ashton <joshua@froggi.es>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	alex.hung@amd.com,
-	hamza.mahfooz@amd.com,
-	wayne.lin@amd.com,
-	srinivasan.shanmugam@amd.com,
-	mario.limonciello@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 3/3] drm/amd/display: Set color_mgmt_changed to true on unsuspend
-Date: Tue,  7 May 2024 19:01:43 -0400
-Message-ID: <20240507230146.391926-3-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 1/3] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
+Date: Tue,  7 May 2024 19:01:54 -0400
+Message-ID: <20240507230159.392002-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240507230146.391926-1-sashal@kernel.org>
-References: <20240507230146.391926-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,38 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.275
+X-stable-base: Linux 4.19.313
 Content-Transfer-Encoding: 8bit
 
-From: Joshua Ashton <joshua@froggi.es>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd ]
+[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
 
-Otherwise we can end up with a frame on unsuspend where color management
-is not applied when userspace has not committed themselves.
+The declarations of the tx_rx_evt class and the rdev_set_antenna event
+use the wrong order of arguments in the TP_ARGS macro.
 
-Fixes re-applying color management on Steam Deck/Gamescope on S3 resume.
+Fix the order of arguments in the TP_ARGS macro.
 
-Signed-off-by: Joshua Ashton <joshua@froggi.es>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 3f3242783e1c3..3bfc4aa328c6f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1251,6 +1251,7 @@ static int dm_resume(void *handle)
- 			dc_stream_release(dm_new_crtc_state->stream);
- 			dm_new_crtc_state->stream = NULL;
- 		}
-+		dm_new_crtc_state->base.color_mgmt_changed = true;
- 	}
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 54b0bb344cf93..68d547a4a5a53 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1591,7 +1591,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
  
- 	for_each_new_plane_in_state(dm->cached_state, plane, new_plane_state, i) {
+ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx),
++	TP_ARGS(wiphy, tx, rx),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		__field(u32, tx)
+@@ -1608,7 +1608,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
+ 
+ DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
+ 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
+-	TP_ARGS(wiphy, rx, tx)
++	TP_ARGS(wiphy, tx, rx)
+ );
+ 
+ DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
 -- 
 2.43.0
 
