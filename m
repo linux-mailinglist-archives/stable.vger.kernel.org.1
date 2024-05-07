@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-43289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B288BF164
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:24:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE588BF166
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB42C1C2306B
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:24:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBFCFB2522F
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963FB13172B;
-	Tue,  7 May 2024 23:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0DA131735;
+	Tue,  7 May 2024 23:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEjavXHz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sh+s92qy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0D61311BA;
-	Tue,  7 May 2024 23:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246EB13118D;
+	Tue,  7 May 2024 23:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123301; cv=none; b=NFKhU2OGQHiDp2NJKrE/UZKZIlYtay+tLr0paHf6VsMKeJaZ+n12wPO1+/2TMqnFJAKhgwl6gDjxC2IkRJllsfzgRdqP82oLV60bbIcx7Sg/nqef/SfbZfWZMwzAuPpPu1TqJMhY45xcaEeTlQXVNbyhtzSieCyYnYla6ypAv/4=
+	t=1715123303; cv=none; b=mUxl6W8RsllTW3PC7MWuYjxY4Db30VXjUi64s9S9ylpC9bLaVSwe6Ix3G5QQ3ixHwjGJ/T4WR2pXZlvwjnSBq2ZDqMfqwt3bCH+14bxKxNG5Wa85ACyHSgzpSgIDVLXNvJGXsc0/ReeXXdkuf7iWgGaJqpO2LB/48dPjvt9IikY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123301; c=relaxed/simple;
-	bh=V9xwPCi2BbHqvXbn+HBOTFHYtgRml7I7/V1s2BHN2qA=;
+	s=arc-20240116; t=1715123303; c=relaxed/simple;
+	bh=CIfsrnD0zsMUFHMqqLqP520fgGLcEzV+dxAOybbhrOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6gx6hsHnRQOYsalPlv3lyiRixe9OQlu/qPuYzBIlgNBJ1/u08TH202QTlGtBhUQmecM4WniavZMuabdz7g8MYiWQ6VAK8c+bs+RtPLQM1TEtQfi9vvU0HjWzTq2LQISOwPWgz/8SEq8J5GtQ+M/5ul/mKvvJCep4mlHPPsO3Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEjavXHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5832C3277B;
-	Tue,  7 May 2024 23:08:19 +0000 (UTC)
+	 MIME-Version; b=bU7lUboEwBZ39lZXlFOtk35ElOJimDBY3KsHiBqZOnJJvx6jt6e79IPc2ksO/ZIhDMqvpU5caAwfAytIz1hBHa0xUzYVHAVpX7MZIK4109fn4DMzmBVmwhw81NMCl8j1FAVlPa43iRoW3sZi9oKElvUThf8f8napH7NqaeZaF3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sh+s92qy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD31C3277B;
+	Tue,  7 May 2024 23:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123301;
-	bh=V9xwPCi2BbHqvXbn+HBOTFHYtgRml7I7/V1s2BHN2qA=;
+	s=k20201202; t=1715123302;
+	bh=CIfsrnD0zsMUFHMqqLqP520fgGLcEzV+dxAOybbhrOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEjavXHz+8lHS0DmRyyrHOEcB19RMa1gH8wbacYO+OCwApKlczbXWva1qqQ4wnenI
-	 F56u6xWy9XnA9E0cyun/uhrFdQwfLnEcUeu48GUUbnMRz8w8axMKe+GNwLFx+2Wsw+
-	 DY/NYh8UywrdJZBoehjQYNtNtEgy1A8JuMDQf443Qvllg+tv2CT9jQCFPAoC3g0S2c
-	 8sTrLfkOtN8u/j/O9g/AdDMZN1yyk9u+IGGbQ9oRXJpo6jm4KCN5i/YOO7m6xaClMv
-	 hj41sO9QI9yupgA6WFWwHZknE+3gnd/DKyHnbccX5rXTTHPcpCOoV5XFwAhSiSuJ1F
-	 xAQdCjBrwSjNA==
+	b=sh+s92qy9xj8FvbL1hhvwtsUMm1w/XKDsuG6pidO50kmOH7+XDvVzzQ9ojjbtUiOO
+	 kV0Vc91sQMoNl2XBSHQlhyFCrvnOugT1yzq4aiQV016xJr+kmFc7wcricJN0/uDxn/
+	 p0fD+8CqK/IGUv3Lapzs9+Q0Hy8PkpL0BNmH35S3owP5iXdlNEaPZQIOM02sE4gMgS
+	 PP6epzD3yyvpxsvWN52oCLgwXHATRzwii5SA1wounLP68WaA0IhWL26hxFPcBwXk2a
+	 n08mT09OC2HZ+n2rKTYb+2iEyrh+NmZ/5cmnR6ZW5I3qzO03OPEeg9FeczAO04t2VT
+	 thjwZgl1UxECg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Derek Fang <derek.fang@realtek.com>,
+Cc: Jack Yu <jack.yu@realtek.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	oder_chiou@realtek.com,
 	lgirdwood@gmail.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 10/52] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
-Date: Tue,  7 May 2024 19:06:36 -0400
-Message-ID: <20240507230800.392128-10-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 11/52] ASoC: rt722-sdca: modify channel number to support 4 channels
+Date: Tue,  7 May 2024 19:06:37 -0400
+Message-ID: <20240507230800.392128-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -70,46 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Derek Fang <derek.fang@realtek.com>
+From: Jack Yu <jack.yu@realtek.com>
 
-[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
+[ Upstream commit cb9946971d7cb717b726710e1a9fa4ded00b9135 ]
 
-Add an optional gpio property to control external CBJ circuits
-to avoid some electric noise caused by sleeve/ring2 contacts floating.
+Channel numbers of dmic supports 4 channels, modify channels_max
+regarding to this issue.
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
-
-Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
+Signed-off-by: Jack Yu <jack.yu@realtek.com>
+Link: https://msgid.link/r/6a9b1d1fb2ea4f04b2157799f04053b1@realtek.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/soc/codecs/rt722-sdca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
-index 41a62fd2ae1ff..c1fa379f5f3ea 100644
---- a/Documentation/devicetree/bindings/sound/rt5645.txt
-+++ b/Documentation/devicetree/bindings/sound/rt5645.txt
-@@ -20,6 +20,11 @@ Optional properties:
-   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
-   we will get the JD status by getting the value of hp-detect-gpios.
- 
-+- cbj-sleeve-gpios:
-+  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
-+  contacts to the ground or floating. It could avoid some electric noise from the
-+  active speaker jacks.
-+
- - realtek,in2-differential
-   Boolean. Indicate MIC2 input are differential, rather than single-ended.
- 
-@@ -68,6 +73,7 @@ codec: rt5650@1a {
- 	compatible = "realtek,rt5650";
- 	reg = <0x1a>;
- 	hp-detect-gpios = <&gpio 19 0>;
-+	cbj-sleeve-gpios = <&gpio 20 0>;
- 	interrupt-parent = <&gpio>;
- 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
- 	realtek,dmic-en = "true";
+diff --git a/sound/soc/codecs/rt722-sdca.c b/sound/soc/codecs/rt722-sdca.c
+index 0e1c65a20392a..4338cdb3a7917 100644
+--- a/sound/soc/codecs/rt722-sdca.c
++++ b/sound/soc/codecs/rt722-sdca.c
+@@ -1329,7 +1329,7 @@ static struct snd_soc_dai_driver rt722_sdca_dai[] = {
+ 		.capture = {
+ 			.stream_name = "DP6 DMic Capture",
+ 			.channels_min = 1,
+-			.channels_max = 2,
++			.channels_max = 4,
+ 			.rates = RT722_STEREO_RATES,
+ 			.formats = RT722_FORMATS,
+ 		},
 -- 
 2.43.0
 
