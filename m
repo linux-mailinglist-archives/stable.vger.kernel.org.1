@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-43221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9F58BF034
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A15738BF036
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0AD1F235E2
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:00:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410791F2371B
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4490B8615E;
-	Tue,  7 May 2024 22:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD4486628;
+	Tue,  7 May 2024 22:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxbAwJUv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJi+IDoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D197FBAA;
-	Tue,  7 May 2024 22:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD48686274;
+	Tue,  7 May 2024 22:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122675; cv=none; b=c/ueVWNpmb5p6Dd35YgX9rfJDir5tfkKLqWU1CtIcuk+113E+jnujoe5gAdDe89hWAyHt8w3ckHC/7ZPXUQ+XJWVCqWYlJxXkdWSUzeeRSNRQRJFGiibjAY+tu2Q7z/p1ReNCRMHMaEUGVAZqAp/4YaM9EiYJrI04Bi0Bs4ZENE=
+	t=1715122676; cv=none; b=cYPAmJ4V8DqlyqG8iXvEocknHzf7XvfNyatkUXtEAMgda1c+qEMGCEhWB83RF+jMN5ukgpHWefQfsMremxJPJmnUfyC/+mSNHBNERe5HWmf45ZNaEIsXaqBRvyOq0NP4ZMgcd7cWok2aVdXpwpXJZADs6v/Hv0B6+SkbKl79Kt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122675; c=relaxed/simple;
-	bh=udNWqAkvlsLASnmTFzv403Ly/z9YdIt7N7LlhQs4C2Q=;
+	s=arc-20240116; t=1715122676; c=relaxed/simple;
+	bh=45Ctv6QKcT69IleXOGmx/lkPXJ7GAVZJKpVT221zneY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWuMKvbEP/96YTKwrbjhcedRTPTAfJ0eHCqsXjoe/mqKgK3AcTwktM1u7589G6UHXGYgPdBZj6PHtZomkNZ7m+R3MiYPnJQP0kPzg00clWkOYMtZ36EDoY+SSy6dwxABwgbrLO9Fq/c2l6ZIzPZ9UYT+Q1ODoybiRi9n/UXC+/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxbAwJUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C27C3277B;
-	Tue,  7 May 2024 22:57:52 +0000 (UTC)
+	 MIME-Version; b=RJe1jNv1exv/eF1kFNgmc7RtcAim29c5ptitXe4+sJI7pJoLAsE7rBposU6Pj4nRYzzWpTHCGaIYCSJI/1rnDAJ0ZFJ8w4x05AwTlrraUF8W0SR3Ube0xBTU/Ugzy5X2GcKBruNXQFwGJtrHEd/a1SZAkAcwG3/BSK1aXZAe050=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJi+IDoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10017C2BBFC;
+	Tue,  7 May 2024 22:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122674;
-	bh=udNWqAkvlsLASnmTFzv403Ly/z9YdIt7N7LlhQs4C2Q=;
+	s=k20201202; t=1715122676;
+	bh=45Ctv6QKcT69IleXOGmx/lkPXJ7GAVZJKpVT221zneY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxbAwJUvTkBoW8QUHQPUrOKGKDbU7y5hLveb080WPQoxY1x8tO+ErUJ6BdSkuBaqT
-	 GkYX4Xgrfje7uEvtXJsCbeUCA1Ld8bPfDUqwqy3OrUqgxqwSWcifk0tcIfyOUJOrvC
-	 m1R/dFu/jv7jC9RB2vlKjNpE//y+LhdwwtFuEI0FlPKpcMl1bs7/S3IAoI3SDdeTPU
-	 B3VM7IUBm/3+NACSW2XBNODQ3d/2NlZmfpUm7Aa0hs/cKITFUQqHlcqVrlTVcjOmT5
-	 dRqs+fwukKdDm4MVyelPohzV9AVHqNkkmj+YqfP8jOFp0V2RX/9q84ivII6ZTpyFns
-	 8bbbM/kDBqrhA==
+	b=DJi+IDoPvzymqz6B8nXnSWPtU5Bskg8mxETGeQSBVlxWihdZx2eG5ZPl0oG0N6uHw
+	 LshG6mQjZ+txRUefyrFdJ5Q3Hrv4fWYcy1YcPZPv9IU7Y2meqRmT7lz479/vKiBzzr
+	 IrWE70Q27tmp4xeZJwz1Hz0X7gNy6mGM+ZlRst5b2/1n2sLHh2YJnlvTgx/KqW8CuJ
+	 2pEiHoEOvpmuQN8ZQLF6KQRnZXKY0JvZGYR1emCd38z5+4I5W+IDShze9iB7aGaF32
+	 L2Bb649/jLSL42ejAID2mWvQ0fXwDhkw0byPOS6t+Deb9AidsPJo2w+mBpqzrY6wHk
+	 9XXzZpiq0CcZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lijo Lazar <lijo.lazar@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
+Cc: Mukul Joshi <mukul.joshi@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	evan.quan@amd.com,
+	Felix.Kuehling@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	kevinyang.wang@amd.com,
-	le.ma@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.8 11/23] drm/amd/pm: Restore config space after reset
-Date: Tue,  7 May 2024 18:56:37 -0400
-Message-ID: <20240507225725.390306-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 12/23] drm/amdkfd: Add VRAM accounting for SVM migration
+Date: Tue,  7 May 2024 18:56:38 -0400
+Message-ID: <20240507225725.390306-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507225725.390306-1-sashal@kernel.org>
 References: <20240507225725.390306-1-sashal@kernel.org>
@@ -75,71 +72,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-[ Upstream commit 30d1cda8ce31ab49051ff7159280c542a738b23d ]
+[ Upstream commit 1e214f7faaf5d842754cd5cfcd76308bfedab3b5 ]
 
-During mode-2 reset, pci config space registers are affected at device
-side. However, certain platforms have switches which assign virtual BAR
-addresses and returns the same even after device is reset. This
-affects pci_restore_state() as it doesn't issue another config write, if
-the value read is same as the saved value.
+Do VRAM accounting when doing migrations to vram to make sure
+there is enough available VRAM and migrating to VRAM doesn't evict
+other possible non-unified memory BOs. If migrating to VRAM fails,
+driver can fall back to using system memory seamlessly.
 
-Add a workaround to write saved config space values from driver side.
-Presently, these switches are in platforms with SMU v13.0.6 SOCs, hence
-restrict the workaround only to those.
-
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c  | 25 +++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 16 +++++++++++++++-
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c     |  2 +-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-index 78491b04df108..ddb11eb8c3f53 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-@@ -2205,6 +2205,17 @@ static ssize_t smu_v13_0_6_get_gpu_metrics(struct smu_context *smu, void **table
- 	return sizeof(*gpu_metrics);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+index bdc01ca9609a7..5c8d81bfce7ab 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -509,10 +509,19 @@ svm_migrate_ram_to_vram(struct svm_range *prange, uint32_t best_loc,
+ 	start = start_mgr << PAGE_SHIFT;
+ 	end = (last_mgr + 1) << PAGE_SHIFT;
+ 
++	r = amdgpu_amdkfd_reserve_mem_limit(node->adev,
++					prange->npages * PAGE_SIZE,
++					KFD_IOC_ALLOC_MEM_FLAGS_VRAM,
++					node->xcp ? node->xcp->id : 0);
++	if (r) {
++		dev_dbg(node->adev->dev, "failed to reserve VRAM, r: %ld\n", r);
++		return -ENOSPC;
++	}
++
+ 	r = svm_range_vram_node_new(node, prange, true);
+ 	if (r) {
+ 		dev_dbg(node->adev->dev, "fail %ld to alloc vram\n", r);
+-		return r;
++		goto out;
+ 	}
+ 	ttm_res_offset = (start_mgr - prange->start + prange->offset) << PAGE_SHIFT;
+ 
+@@ -545,6 +554,11 @@ svm_migrate_ram_to_vram(struct svm_range *prange, uint32_t best_loc,
+ 		svm_range_vram_node_free(prange);
+ 	}
+ 
++out:
++	amdgpu_amdkfd_unreserve_mem_limit(node->adev,
++					prange->npages * PAGE_SIZE,
++					KFD_IOC_ALLOC_MEM_FLAGS_VRAM,
++					node->xcp ? node->xcp->id : 0);
+ 	return r < 0 ? r : 0;
  }
  
-+static void smu_v13_0_6_restore_pci_config(struct smu_context *smu)
-+{
-+	struct amdgpu_device *adev = smu->adev;
-+	int i;
-+
-+	for (i = 0; i < 16; i++)
-+		pci_write_config_dword(adev->pdev, i * 4,
-+				       adev->pdev->saved_config_space[i]);
-+	pci_restore_msi_state(adev->pdev);
-+}
-+
- static int smu_v13_0_6_mode2_reset(struct smu_context *smu)
- {
- 	int ret = 0, index;
-@@ -2226,6 +2237,20 @@ static int smu_v13_0_6_mode2_reset(struct smu_context *smu)
- 	/* Restore the config space saved during init */
- 	amdgpu_device_load_pci_state(adev->pdev);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index c50a0dc9c9c07..33205078202b5 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -3424,7 +3424,7 @@ svm_range_trigger_migration(struct mm_struct *mm, struct svm_range *prange,
+ 				mm, KFD_MIGRATE_TRIGGER_PREFETCH);
+ 	*migrated = !r;
  
-+	/* Certain platforms have switches which assign virtual BAR values to
-+	 * devices. OS uses the virtual BAR values and device behind the switch
-+	 * is assgined another BAR value. When device's config space registers
-+	 * are queried, switch returns the virtual BAR values. When mode-2 reset
-+	 * is performed, switch is unaware of it, and will continue to return
-+	 * the same virtual values to the OS.This affects
-+	 * pci_restore_config_space() API as it doesn't write the value saved if
-+	 * the current value read from config space is the same as what is
-+	 * saved. As a workaround, make sure the config space is restored
-+	 * always.
-+	 */
-+	if (!(adev->flags & AMD_IS_APU))
-+		smu_v13_0_6_restore_pci_config(smu);
-+
- 	dev_dbg(smu->adev->dev, "wait for reset ack\n");
- 	do {
- 		ret = smu_cmn_wait_for_response(smu);
+-	return r;
++	return 0;
+ }
+ 
+ int svm_range_schedule_evict_svm_bo(struct amdgpu_amdkfd_fence *fence)
 -- 
 2.43.0
 
