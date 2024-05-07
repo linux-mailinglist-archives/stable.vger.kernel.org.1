@@ -1,140 +1,145 @@
-Return-Path: <stable+bounces-43195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293928BE8A9
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 18:21:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05208BE973
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 18:43:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD0071F287CB
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 16:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 745D4292C75
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 16:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB9A16D4CF;
-	Tue,  7 May 2024 16:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2456116D4D8;
+	Tue,  7 May 2024 16:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="i2EWCR3b"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="B+KWgLH6"
 X-Original-To: stable@vger.kernel.org
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148B316C45D;
-	Tue,  7 May 2024 16:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C4D3E48F
+	for <stable@vger.kernel.org>; Tue,  7 May 2024 16:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715098766; cv=none; b=eyGEWAvnj5Q6Hqt4lDRvjpMJyaG8ejtU8sYRopPeTCsEeR6Q9TdWGUzt+w4R/XxYdn1nfla1so3WhD5luP0VZGcPaaravm6AsVk8iBBYQY5XBIDHywWHKAwntahyGcJt2k2+ioQ/c4ErSvMjB4jo/e5LpNBFWs68IlsJpZgZPvc=
+	t=1715099882; cv=none; b=thQgxVZiQrBzfFXMMHlcdRRRCeVp4J8rr5mRXQy/m87dxKSgrM/PnO7F0TuDmAoqEpvS8Jb4n73CSnhT9mVTdMqOo/9eHx8SiEFr5Dsje/y/ZrD8sz5ddvpB6IQEv3cxKeWNCglKoe5Mje4/vjoMboF/HDbiWxwV3/IVZRE3yVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715098766; c=relaxed/simple;
-	bh=wPfBBBqz4mWAHQz6NwLA3VhGyV0ey36YDnag2Ti6L8U=;
+	s=arc-20240116; t=1715099882; c=relaxed/simple;
+	bh=LV19r+RdCbS6VdMILFArPFDoxtY76IPBUlNtwHHns6M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nyb/ItFnLXZrBCqx8KU+JDnIY8ZOLIysI21pyJiqLawIhwQvDWWDpfR0Gnu/L9t53VLLPpAhpofGOPfiUZ0drCx+zyWG+e1jEetZgNcT3ovC9H43pUQBq52g4mIZmMVyVM2gpq5tlItW8RrZRrRz4TFuFtEPLx0xepRB1aO/DUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=i2EWCR3b; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1715098754; bh=wPfBBBqz4mWAHQz6NwLA3VhGyV0ey36YDnag2Ti6L8U=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=i2EWCR3bNy9bWRT9zukZaUGi24OmEe3DfnT3nOg9HZarTot8adruRC2klo9I3yCaY
-	 v1qz3xF8PmF1mfBwz8SkKd2yJE3D6wzt7nXo6y4xfDzk6H+K0xujtzOuo+u2h+sKBm
-	 Vg1wX2wooUyLByC0p64y4rpA+lafXjZszPkfphdk=
-Date: Tue, 7 May 2024 18:19:13 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Amit Sunil Dhamne <amitsd@google.com>
-Cc: linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org, badhri@google.com, rdbabiera@google.com, 
-	linux-usb@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1] usb: typec: tcpm: unregister existing source caps
- before re-registration
-Message-ID: <y4lla7vqsrl75qhesmyexq7yvcu6hl6kryh3ctwq5ci3r4mlpw@rsnhfkmlmtt7>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Amit Sunil Dhamne <amitsd@google.com>, linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org, badhri@google.com, rdbabiera@google.com, 
-	linux-usb@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <20240424223227.1807844-1-amitsd@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=sSJrSiQqCZ2DjuxeDBkMr4Ax4jIJt0JDxqkgaLOQXVbUKqVav7pmlzQdfL35me1XoqNFDMfADpNOJStxJfwfoToMi2O2czD3Z44rLHH8bR5LC21Dt1bF6mdZFRwWpDgM2qZElISxZfeZnFwjhBCK/Ee/1NVqXGBcg8uH708iS50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=B+KWgLH6; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3c96a298d5aso1556948b6e.3
+        for <stable@vger.kernel.org>; Tue, 07 May 2024 09:38:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1715099880; x=1715704680; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Rq3E+hsLGSN+5MIZB3XZU6auyIYe/okJXkhSxXH/gFE=;
+        b=B+KWgLH6/PDddvOApWbzfxjWnqHUuVinyluVIAySRCKE6nNiOTwugbzQit6wuPIRxW
+         ORB1QltB2KajfvmRCuArb6/jZJ38dg0G5ItWpVNWomSDJeT4Izwrb8tPRQ9h0cZ1KtCp
+         AIcQ7yHw0f8uOSQn89Du94eAR2+Zcxm+O/vFYKKSrfuDr+xYg2yd9y3Wzeb014r8YBSM
+         SfkIHYxBWBeGS5H0kbdB9jGIi5KN8Xf0lXzP2GDSSWfWArKTKstnGvvbYWDQ8XYl2tp9
+         Ny7vcuBtlpauQXWaHSQKZ1vDSSjJbM7khaIwjZRV8nhkggMiXHSxwTcYy12BeFVCNkuX
+         yp3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715099880; x=1715704680;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rq3E+hsLGSN+5MIZB3XZU6auyIYe/okJXkhSxXH/gFE=;
+        b=MXxJgS9HxSXkLVsaAtC+OlsyOJaPN9Od+xuuCG0aPDRdKeOOjX3Xth3d2Jm9jlQVmO
+         LhS7urgZMWUus08AppxZ0JOUJemvMO8K9erj+HXDX2tv4nlYQ8TVnzY+iVPuHce8Y1kK
+         cnVqqyy1CgirRU2kWkdeMgSC/E5cYyGuNJdqogF10vteFMLVTJFPr7fK5fwfz3v/66pD
+         D8eBeYs1yxk8s+fww9B28yM6UMEoamF5+tMA7tyCPHFjTykRZiGKeWd/aZ9FfrVx0y23
+         13e0jLKXM+x4JioY3HMDpLDroQ0abdiYheFS1UGeYuJ1Fcdci0+BjkSCTyrFYb/7X72P
+         U6rw==
+X-Forwarded-Encrypted: i=1; AJvYcCV9rSGVf5CQU8Q+ynwV7C+G746LnqytfhlFyn7X9sNXneHFwQJ5EANE3rQRkbuoXurFZbFjgWDetmkiOtXuor78syMIHdXF
+X-Gm-Message-State: AOJu0YwYzHwZDVanf3GeQ3gyAic7R1/0TIoILggwmpJ5lGXaxXtixhCU
+	I93PN/IwGRufCEKsq9do9rfNe73ha8czZtdY6qZYtt5zOnJG3fMggHLSACIMNKE=
+X-Google-Smtp-Source: AGHT+IE2aO/S3bXjWgK34KH3T6cSRhii++OQmAOeSN/94L/Njsbgg11/GQF1S4tybMrwZYT6KHLiBA==
+X-Received: by 2002:a05:6808:8f7:b0:3c9:68d4:22a7 with SMTP id 5614622812f47-3c9852d2f46mr91679b6e.35.1715099880581;
+        Tue, 07 May 2024 09:38:00 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
+        by smtp.gmail.com with ESMTPSA id v2-20020a0cf902000000b0069b69c5f077sm4766905qvn.102.2024.05.07.09.37.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 May 2024 09:37:59 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1s4NpH-0001Wi-6r;
+	Tue, 07 May 2024 13:37:59 -0300
+Date: Tue, 7 May 2024 13:37:59 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: Konstantin Taranov <kotaranov@microsoft.com>,
+	Brian Baboch <brian.baboch@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"florent.fourcot@wifirst.fr" <florent.fourcot@wifirst.fr>,
+	"brian.baboch@wifirst.fr" <brian.baboch@wifirst.fr>
+Subject: Re: Excessive memory usage when infiniband config is enabled
+Message-ID: <20240507163759.GF4718@ziepe.ca>
+References: <2b4f7f6e-9fe5-43a4-b62e-6e42be67d1d9@gmail.com>
+ <20240507112730.GB78961@unreal>
+ <8992c811-f8d9-4c95-8931-ee4a836d757e@gmail.com>
+ <PAXPR83MB0557451B4EA24A7D2800DF6AB4E42@PAXPR83MB0557.EURPRD83.prod.outlook.com>
+ <fa606d14-c35b-4d27-95fe-93e2192f1f52@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240424223227.1807844-1-amitsd@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fa606d14-c35b-4d27-95fe-93e2192f1f52@linux.dev>
 
-On Wed, Apr 24, 2024 at 03:32:16PM GMT, Amit Sunil Dhamne wrote:
-> Check and unregister existing source caps in tcpm_register_source_caps
-> function before registering new ones. This change fixes following
-> warning when port partner resends source caps after negotiating PD contract
-> for the purpose of re-negotiation.
+On Tue, May 07, 2024 at 05:24:51PM +0200, Zhu Yanjun wrote:
+> 在 2024/5/7 15:32, Konstantin Taranov 写道:
+> > > Hello Leon,
+> > > 
+> > > I feel that it's a bug because I don't understand why is this module/option
+> > > allocating 6GB of RAM without any explicit configuration or usage from us.
+> > > It's also worth mentioning that we are using the default linux-image from
+> > > Debian bookworm, and it took us a long time to understand the reason
+> > > behind this memory increase by bisecting the kernel's config file.
+> > > Moreover the documentation of the module doesn't mention anything
+> > > regarding additional memory usage, we're talking about an increase of 6Gb
+> > > which is huge since we're not using the option.
+> > > So is that an expected behavior, to have this much increase in the memory
+> > > consumption, when activating the RDMA option even if we're not using it ? If
+> > > that's the case, perhaps it would be good to mention this in the
+> > > documentation.
+> > > 
+> > > Thank you
+> > > 
+> > 
+> > Hi Brian,
+> > 
+> > I do not think it is a bug. The high memory usage seems to come from these lines:
+> > 	rsrc_size = irdma_calc_mem_rsrc_size(rf);
+> > 	rf->mem_rsrc = vzalloc(rsrc_size);
 > 
-> [  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
-> [  343.135071][  T151] Call trace:
-> [  343.135076][  T151]  dump_backtrace+0xe8/0x108
-> [  343.135099][  T151]  show_stack+0x18/0x24
-> [  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
-> [  343.135119][  T151]  dump_stack+0x18/0x24
-> [  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
-> [  343.135137][  T151]  kobject_add_internal+0x228/0x424
-> [  343.135146][  T151]  kobject_add+0x94/0x10c
-> [  343.135152][  T151]  device_add+0x1b0/0x4c0
-> [  343.135187][  T151]  device_register+0x20/0x34
-> [  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
-> [  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
-> [  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
-> [  343.135227][  T151]  kthread+0x114/0x1bc
-> [  343.135235][  T151]  ret_from_fork+0x10/0x20
-> [  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
+> Exactly. The memory usage is related with the number of QP.
+> When on irdma, the Queue Pairs is 4092, Completion Queues is 8189, the
+> memory usage is about 4194302.
 > 
-> Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
-> Cc: linux-usb@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> The command "modprobe irdma limits_sel" will change QP numbers.
+> 0 means minimum, up to 124 QPs.
 > 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index ab6ed6111ed0..d8eb89f4f0c3 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -2996,7 +2996,7 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
->  {
->  	struct usb_power_delivery_desc desc = { port->negotiated_rev };
->  	struct usb_power_delivery_capabilities_desc caps = { };
-> -	struct usb_power_delivery_capabilities *cap;
-> +	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
->  
->  	if (!port->partner_pd)
->  		port->partner_pd = usb_power_delivery_register(NULL, &desc);
-> @@ -3006,6 +3006,9 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
->  	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
->  	caps.role = TYPEC_SOURCE;
->  
-> +	if (cap)
-> +		usb_power_delivery_unregister_capabilities(cap);
+> Please use the command "modprobe irdma limits_sel=0" to make tests.
+> Please let us know the test results.
 
-This certainly looks like it's asking for use after free on port->partner_source_caps
-later on, since you're not clearing the pointer for the data that you just freed.
+It seems like a really unfortunate design choice in this driver to not
+have dynamic memory allocation.
 
-> +
->  	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
->  	if (IS_ERR(cap))
->  		return PTR_ERR(cap);
+Burning 6G on every server that has your HW, regardless if any RDMA
+apps are run, seems completely excessive.
 
-This can easily fail if caps contain invalid PDOs, resulting in keeping pointer
-to freed memory in port->partner_source_caps.
-
-Kind regards,
-	o.
-
-> base-commit: 0d31ea587709216d88183fe4ca0c8aba5e0205b8
-> -- 
-> 2.44.0.769.g3c40516874-goog
-> 
+Jason
 
