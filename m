@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-43263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE2A8BF0FF
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:14:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA458BF101
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB8931C219C8
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:14:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99F13283928
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B713AA4D;
-	Tue,  7 May 2024 23:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7234213B280;
+	Tue,  7 May 2024 23:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YjQtPh/w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqlLseaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D9413AA3C;
-	Tue,  7 May 2024 23:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F05413AD30;
+	Tue,  7 May 2024 23:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122865; cv=none; b=l/Hvjd6fqSb1qX/InDUYsEphvkxOW45Gses05T3RaXdYI2pNBJHSAbuULoW6NWjiFNyQXWOpPY7y4tSfCgxvv1DcWi2NYsU54D5E3AGPYBaIh6Kzlzu9FLY10qkiPl4UJcCL4puL9DnvQHWGnc1mZIPqXKaeh9Wj7EPs94QQndw=
+	t=1715122868; cv=none; b=oDG8q4xcy/dydXfFdtLUZfK139Q12+jeNfkRCG5d/uJEJbjDlhu45EMoraIcFYgG8UvtW9ejEhYBRXrBGDes499Lc3sC5oZ+Tgl4AAZO/nwnVFeH5uL9hxTnLeLLryt3d/AUORtWbvfvsdSr5QM+pkbo9ZLEv7du5rxjIyIXH+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122865; c=relaxed/simple;
-	bh=HfHC/IKjd29RyVoUIyYS/IWsYCa94QbsfVMu+nM6rjo=;
+	s=arc-20240116; t=1715122868; c=relaxed/simple;
+	bh=+c40Uhf6KzmTtn+fKaywtRA/07JP5WBu9P0At09HAK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sguLiqkOlKaH5VDfBxGeOFJKUzT+phdA3PUJ7r2/EDD18l874esYtxIRLHC4RPxYwY6ulj9uZVTcipDU1Dr3NPRMqcVCLiohkIzl5AfQ3jNMNaGsCIASeafBd04Juqb703FvthwGcsGCjzuM+yGnqpo2UhVQwGbs1l6bgxt23L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YjQtPh/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C3FC4AF17;
-	Tue,  7 May 2024 23:01:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ddqj0AUDFWlcqYzowKXb1Hlzj1lGD4sy993cdk351XfSrSGgBSafGvkqZ8ymdmtuweMny7BprSl2NMioIs7Df/OfK2ezuYHlSXgziPaORBbvjadNNXmSXmGQJqlLSW/0nuI8OiUELNq5plMYq93U1drQzQSziS3QNMiJK4Rbp84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqlLseaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94644C2BBFC;
+	Tue,  7 May 2024 23:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122865;
-	bh=HfHC/IKjd29RyVoUIyYS/IWsYCa94QbsfVMu+nM6rjo=;
+	s=k20201202; t=1715122867;
+	bh=+c40Uhf6KzmTtn+fKaywtRA/07JP5WBu9P0At09HAK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YjQtPh/wc73G9sIeF8iIwUWpChX14DizXYzxXkjx9qxQCCjFe+WiP/kQrfQZ/IsL1
-	 eh3fiXdmDZrUnu2OXNgtJe/dC4Y1GxbZvQqU+SMlKBScXef/KsVM4kok4Ug/aKW5RP
-	 WASWHgVYA3wnv0/AxPNbkM118Pp6EX2gOzLDhEUxAFi+Fk7QGSRAGaIcHHvK3MbvRF
-	 iD5pS3msY1DMcoIpOM10NxRbj8BrGkV8DfEybCNptzYIJ2t916KT/P+PQWEgujzG9O
-	 IiGYxVgQK6k2TljA3BMoLSn9ypiDo/kilRdcJJuXztpcHCbXLgWLKY//msoe/+1C+d
-	 75/SSiCpiJ8xQ==
+	b=nqlLseaKZ2lOQevOh/yv9opc6P/wPu6B655SSUNbNDV6+LFhnM5VgUvHyt6jak/4L
+	 zVVwHb6I41X51MYG5zwZCZMTGGNfNt4Sctw4u/YxmKB1YngXI+II/hKNB6q87ZAX+u
+	 xdd5oQ2hAoESNbF38Peae+dPnGMe2OpilhlzNTPS7xgK/MgRpWcIufgs0sv6wAAY07
+	 NSGYws4jxSD1qu0jVrfCHzADx6Q7MHUp8WpkmZ2iHGBFWfEwM5h1CpXLPhYJeK01J6
+	 gHJTsruDpBAlXZFxzXOm1JUxREXDVoO8vxIjr1IEs2tLRmBoRYVhNrkVt7ggslz9jN
+	 JMIRYOSp1jCQw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	chenhuacai@kernel.org,
-	linux-perf-users@vger.kernel.org,
-	loongarch@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 10/12] LoongArch: Lately init pmu after smp is online
-Date: Tue,  7 May 2024 19:00:12 -0400
-Message-ID: <20240507230031.391436-10-sashal@kernel.org>
+	shuah@kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-kselftest@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 11/12] selftests: sud_test: return correct emulated syscall value on RISC-V
+Date: Tue,  7 May 2024 19:00:13 -0400
+Message-ID: <20240507230031.391436-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230031.391436-1-sashal@kernel.org>
 References: <20240507230031.391436-1-sashal@kernel.org>
@@ -66,43 +65,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Clément Léger <cleger@rivosinc.com>
 
-[ Upstream commit f3334ebb8a2a1841c2824594dd992e66de19deb2 ]
+[ Upstream commit 17c67ed752d6a456602b3dbb25c5ae4d3de5deab ]
 
-There is an smp function call named reset_counters() to init PMU
-registers of every CPU in PMU initialization state. It requires that all
-CPUs are online. However there is an early_initcall() wrapper for the
-PMU init funciton init_hw_perf_events(), so that pmu init funciton is
-called in do_pre_smp_initcalls() which before function smp_init().
-Function reset_counters() cannot work on other CPUs since they haven't
-boot up still.
+Currently, the sud_test expects the emulated syscall to return the
+emulated syscall number. This assumption only works on architectures
+were the syscall calling convention use the same register for syscall
+number/syscall return value. This is not the case for RISC-V and thus
+the return value must be also emulated using the provided ucontext.
 
-Here replace the wrapper early_initcall() with pure_initcall(), so that
-the PMU init function is called after every cpu is online.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20231206134438.473166-1-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/perf_event.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/syscall_user_dispatch/sud_test.c     | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/loongarch/kernel/perf_event.c b/arch/loongarch/kernel/perf_event.c
-index 3a2edb157b65a..1563bf47f3e2c 100644
---- a/arch/loongarch/kernel/perf_event.c
-+++ b/arch/loongarch/kernel/perf_event.c
-@@ -884,4 +884,4 @@ static int __init init_hw_perf_events(void)
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+index b5d592d4099e8..d975a67673299 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+@@ -158,6 +158,20 @@ static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
  
- 	return 0;
+ 	/* In preparation for sigreturn. */
+ 	SYSCALL_DISPATCH_OFF(glob_sel);
++
++	/*
++	 * The tests for argument handling assume that `syscall(x) == x`. This
++	 * is a NOP on x86 because the syscall number is passed in %rax, which
++	 * happens to also be the function ABI return register.  Other
++	 * architectures may need to swizzle the arguments around.
++	 */
++#if defined(__riscv)
++/* REG_A7 is not defined in libc headers */
++# define REG_A7 (REG_A0 + 7)
++
++	((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A0] =
++			((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A7];
++#endif
  }
--early_initcall(init_hw_perf_events);
-+pure_initcall(init_hw_perf_events);
+ 
+ TEST(dispatch_and_return)
 -- 
 2.43.0
 
