@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-43252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D088BF09C
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:09:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 256088BF0A3
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AA311F2217C
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:09:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D45F1285212
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3907135A58;
-	Tue,  7 May 2024 23:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F29135A6E;
+	Tue,  7 May 2024 23:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQWDrCIC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5qctsaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC1F135A4D;
-	Tue,  7 May 2024 23:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60854135A6A;
+	Tue,  7 May 2024 23:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122811; cv=none; b=O2Mw3aRtSOdMiwUp8eiBBlJ+5WH6rUTMnhh2ynamll28wC0IpgqxYg1E0RPH1j+ctiCbvaPa4KGOiHZ3lPpnZhszSCq7DtqiX5imfk0kShYwBn+4PuL3LHjGoZVq49djL4P64qOZgsEBCTM6I5L2XIPxmPlftuQW7X8JaBYixOQ=
+	t=1715122813; cv=none; b=pwiVzno1rmo3uEIg6BQMfvTBsdcV+IOYe5/vEsq11zc4oq5KZgoHA7nEgenEv/iUajoQrihnISwIekdMuWx29v/FTIhqi5kyFG4aHK5pCVQTA6bub1qAVAc6i4BD9GW5GPajeQjUe+oCumMUNQX6ywiDtghr3090svAwYuIRlxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122811; c=relaxed/simple;
-	bh=+c40Uhf6KzmTtn+fKaywtRA/07JP5WBu9P0At09HAK4=;
+	s=arc-20240116; t=1715122813; c=relaxed/simple;
+	bh=c3Zrankq9kyXbpJ5b7Mar568CnEDDczmTAIpy0VNr7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZPRejgAePhrIvYk2Np+/PhxY+lc+/mB3xiIj0pkvoasxS0ypQmttaUJsNnbyWiVRUL2gfEgwj0cbhJH52aHhpemMTclSBeeGy5OugoEACfV1CrKuWPhUJZUMipoOiasWvxc6kcknjn6IngJ9mvM44irKPw7CJRFWFA906LLLXLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQWDrCIC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B72AC2BBFC;
-	Tue,  7 May 2024 23:00:10 +0000 (UTC)
+	 MIME-Version; b=uYIBfwrnaLioiDcKLkpDzWlTtgIM5AxSZ3jJCh0VUiY56ECeap47Sk6CO4XA10aFWv64r524Eokui+KqrE8VvlpTr8cFqQp7Rcm2/EVsDJ7YJXFqBpsxG+NPl3LqDEquFsMxxCYAl8N9aWQr9F3D8YBS/0misXw0IGNpb15fSMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5qctsaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED527C3277B;
+	Tue,  7 May 2024 23:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122811;
-	bh=+c40Uhf6KzmTtn+fKaywtRA/07JP5WBu9P0At09HAK4=;
+	s=k20201202; t=1715122813;
+	bh=c3Zrankq9kyXbpJ5b7Mar568CnEDDczmTAIpy0VNr7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQWDrCICenpho1cbg1yyMm2xbo9LJhZRahvfkzGxO/ned9oRRVm5Ztpe/qY5nzBsr
-	 4PeWELTBy0TFdjTqY4fH7e+V1HDTXGtTkOBHjdkiw2ERx095++p+ujRSAm4TWlaTih
-	 LO+6EYziWcrE3j/08kQ3DwgszSEfsQO/YNeCkOFd9fhNFcmpbexsjWJxiRG4k/x3Kj
-	 eAykwGRclA/z5xbFkgVR4gW9l2MFhGngfwZpkd0Xj8op29MoCXp3hU8t/J6V2uNzcK
-	 p3RssMoY96qZ2Spnejp7FCd9fQC06F2KP3fXgxtgMDtbRFDSXRhG5eCBfu7F0sEAsd
-	 35oiSZlumcCSg==
+	b=l5qctsaGeaFBFr3oItPi1kqgHQplckPrgemqbF598bs4h9Ufp3hgsgH6mXczXxDEu
+	 4l1Q75geAtsA7KxQB9a5eHEtYDtr0yjxWnaqfsi0qJLGB1xTFqh8yeRZAM4rilwtB3
+	 TaXz1OdEh+gV/cS97KHPPtLHthEokQ7dLyK6eehocnLeqplFfFH183QLgt2WcGMApc
+	 euQmIqgTYyeYafgXw6tHW6PZDn89K/vQWisLaL5z+W7EiTfSUsP6dLCoh/PAVywNYk
+	 8Rr25P7KcMIBVZem3WCKfPVUocuDhXH3axTcRPFT+CLjs8A1RCAifbrTnODj5DLmqG
+	 wgIX2Cr929qDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Phil Auld <pauld@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shuah@kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	linux-kselftest@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 18/19] selftests: sud_test: return correct emulated syscall value on RISC-V
-Date: Tue,  7 May 2024 18:58:40 -0400
-Message-ID: <20240507225910.390914-18-sashal@kernel.org>
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org
+Subject: [PATCH AUTOSEL 6.6 19/19] sched/isolation: Fix boot crash when maxcpus < first housekeeping CPU
+Date: Tue,  7 May 2024 18:58:41 -0400
+Message-ID: <20240507225910.390914-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507225910.390914-1-sashal@kernel.org>
 References: <20240507225910.390914-1-sashal@kernel.org>
@@ -65,57 +66,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 17c67ed752d6a456602b3dbb25c5ae4d3de5deab ]
+[ Upstream commit 257bf89d84121280904800acd25cc2c444c717ae ]
 
-Currently, the sud_test expects the emulated syscall to return the
-emulated syscall number. This assumption only works on architectures
-were the syscall calling convention use the same register for syscall
-number/syscall return value. This is not the case for RISC-V and thus
-the return value must be also emulated using the provided ucontext.
+housekeeping_setup() checks cpumask_intersects(present, online) to ensure
+that the kernel will have at least one housekeeping CPU after smp_init(),
+but this doesn't work if the maxcpus= kernel parameter limits the number of
+processors available after bootup.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/r/20231206134438.473166-1-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+For example, a kernel with "maxcpus=2 nohz_full=0-2" parameters crashes at
+boot time on a virtual machine with 4 CPUs.
+
+Change housekeeping_setup() to use cpumask_first_and() and check that the
+returned CPU number is valid and less than setup_max_cpus.
+
+Another corner case is "nohz_full=0" on a machine with a single CPU or with
+the maxcpus=1 kernel argument. In this case non_housekeeping_mask is empty
+and tick_nohz_full_setup() makes no sense. And indeed, the kernel hits the
+WARN_ON(tick_nohz_full_running) in tick_sched_do_timer().
+
+And how should the kernel interpret the "nohz_full=" parameter? It should
+be silently ignored, but currently cpulist_parse() happily returns the
+empty cpumask and this leads to the same problem.
+
+Change housekeeping_setup() to check cpumask_empty(non_housekeeping_mask)
+and do nothing in this case.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240413141746.GA10008@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/syscall_user_dispatch/sud_test.c     | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/sched/isolation.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-index b5d592d4099e8..d975a67673299 100644
---- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-+++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
-@@ -158,6 +158,20 @@ static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index 373d42c707bc5..82e2f7fc7c267 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -109,6 +109,7 @@ static void __init housekeeping_setup_type(enum hk_type type,
+ static int __init housekeeping_setup(char *str, unsigned long flags)
+ {
+ 	cpumask_var_t non_housekeeping_mask, housekeeping_staging;
++	unsigned int first_cpu;
+ 	int err = 0;
  
- 	/* In preparation for sigreturn. */
- 	SYSCALL_DISPATCH_OFF(glob_sel);
-+
-+	/*
-+	 * The tests for argument handling assume that `syscall(x) == x`. This
-+	 * is a NOP on x86 because the syscall number is passed in %rax, which
-+	 * happens to also be the function ABI return register.  Other
-+	 * architectures may need to swizzle the arguments around.
-+	 */
-+#if defined(__riscv)
-+/* REG_A7 is not defined in libc headers */
-+# define REG_A7 (REG_A0 + 7)
-+
-+	((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A0] =
-+			((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A7];
-+#endif
- }
+ 	if ((flags & HK_FLAG_TICK) && !(housekeeping.flags & HK_FLAG_TICK)) {
+@@ -129,7 +130,8 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+ 	cpumask_andnot(housekeeping_staging,
+ 		       cpu_possible_mask, non_housekeeping_mask);
  
- TEST(dispatch_and_return)
+-	if (!cpumask_intersects(cpu_present_mask, housekeeping_staging)) {
++	first_cpu = cpumask_first_and(cpu_present_mask, housekeeping_staging);
++	if (first_cpu >= nr_cpu_ids || first_cpu >= setup_max_cpus) {
+ 		__cpumask_set_cpu(smp_processor_id(), housekeeping_staging);
+ 		__cpumask_clear_cpu(smp_processor_id(), non_housekeeping_mask);
+ 		if (!housekeeping.flags) {
+@@ -138,6 +140,9 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+ 		}
+ 	}
+ 
++	if (cpumask_empty(non_housekeeping_mask))
++		goto free_housekeeping_staging;
++
+ 	if (!housekeeping.flags) {
+ 		/* First setup call ("nohz_full=" or "isolcpus=") */
+ 		enum hk_type type;
 -- 
 2.43.0
 
