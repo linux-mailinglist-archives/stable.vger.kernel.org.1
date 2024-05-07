@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-43305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3724C8BF18F
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:28:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C158BF191
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:28:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E4F1F21B5A
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:28:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126981C20948
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6E013EFE0;
-	Tue,  7 May 2024 23:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3850413F42C;
+	Tue,  7 May 2024 23:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JbIzx5eJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRP7M2Ws"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C95113E8B8;
-	Tue,  7 May 2024 23:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB10913F426;
+	Tue,  7 May 2024 23:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123331; cv=none; b=lXAwEtGSBCLkGzq0F/ndt6KunJCXLJW+mDJHieLO6YJJ5GovhCjiAzVz87zmuezI23h91I1jAYiGBLrmSE7hkzXC219I3yKTeC7pJnkQIZAJPzCl5rh6Jx98SZT980LiNarIzFJz7xE6DTedHHlAi1J1d4VpogqN9S4is4PLjcg=
+	t=1715123334; cv=none; b=S2lK31FkfcyfXsYhxNIHEfWCZE+LJS1/bkIry2gvLggWydnyPP6j/EU+A0FVjT2MmyZfV5083/v8I4YXCcLPTsFXGzXDEofIIz43Gil3qDH7CyMcpGDzT3EAhTwCBv81laG3HK+YdDlF/G2vIAijw0S9wIbCBIm9pWIUpVzZXAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123331; c=relaxed/simple;
-	bh=yqfzzvv4Vb9iFfLKiQtmvaF2w1b07asZiGiRgAATLho=;
+	s=arc-20240116; t=1715123334; c=relaxed/simple;
+	bh=zjAZlI1pbZ1tfO45FvuApgI5jyD/USyAPo18X3Wlq1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ji8d2Gw2oCjdfuL2qMChINza7PHSpwQ1RjnBHFUU9LKzUk4PW0In0rYqcDcyLFOntT8algfhaVkeIKK1N/yfM7Ova5/6WFJgBmrFIBjtaQWzg3TMUzVFZatm8MTgfoNemIK6ijJFxceuIu1T4LuXyDoPYsjya2bZCktKK73BaMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JbIzx5eJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19EEC2BBFC;
-	Tue,  7 May 2024 23:08:49 +0000 (UTC)
+	 MIME-Version; b=AcgQ+otYjmqR0dTCq12d48s4zkVYSSWNkz5uFTSLgfCfvUD609uZ5xlXFw0Yn7fRAmLzon6BcSVCAHK4g7K7sf0hUp9optqTaJXZvzhDK7zKlKgMFUdxAh1nwNjtzTLxqqZ9VUkBz+aRP9o9ihNbEX4VD2Fax8VxulGUais5fkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRP7M2Ws; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEC9C4AF17;
+	Tue,  7 May 2024 23:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123330;
-	bh=yqfzzvv4Vb9iFfLKiQtmvaF2w1b07asZiGiRgAATLho=;
+	s=k20201202; t=1715123333;
+	bh=zjAZlI1pbZ1tfO45FvuApgI5jyD/USyAPo18X3Wlq1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbIzx5eJKTFtd8mz8HF0R4R/P6SAOmLhIHt4kKOWURjuYoby+AnzZ8LRuBKzIY1wb
-	 Tk0Zs6dtIyXxYAGdFuWs5hoGGpzthL4lKN4Ft8sIvZEEda96aK+gdOHYuXkElXlJsq
-	 4BFKfolgOVLVcQNH106WiswGC4138586ZMJuYLfUrc+Dy0rU+PNzoMrTYRyil3QL4a
-	 Wb5QtgQ7++6QvgwKrrZMPKqj4MyPBaxuGnbQI3BLF+JN89lVEZ97TO0Vqm+rF2NrUV
-	 9aPqUAxnwuxdgVTzqFGAW/yjDg9Q4gxK/Jl1ed3DuHHY0YBSiWXsKcCYNQVF5yX9R6
-	 jq1xLURwTtpcQ==
+	b=FRP7M2WsPsbPKZeyFvORdG6I9geTzGZyicqPlSFwBrtEV7VTfogR/VzfBAho+0zGH
+	 3rtxf4XGXquAl+fUWgnFPf4MoZ3KF1hCqFnkqp6P4BwmxhUTO7cjSRmby2spnjUkZm
+	 /VuT29C4YiV9aGyWMpUPp9c7ZHPx2B33Z0FEAm1gHhsALE3MI9uii9I8Q7yrh1w63O
+	 2PCjQH3mEjgd1Ifw/snId6jF+veXRXTHlTuruG/hoZBOK3V2HZEtPNOiVcHgCsPDZ7
+	 k4o9dCAdYoxRH2hAaZiwvCcU3r+w8lkdf7IE9b90v32vUuhRRVT2GJ3X+VsATBu+hE
+	 f7eF9Uh55rVFQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>,
+Cc: Zqiang <qiang.zhang1211@gmail.com>,
+	syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	xiang@kernel.org,
-	linux-erofs@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.8 26/52] erofs: reliably distinguish block based and fscache mode
-Date: Tue,  7 May 2024 19:06:52 -0400
-Message-ID: <20240507230800.392128-26-sashal@kernel.org>
+	peterz@infradead.org,
+	tj@kernel.org,
+	edumazet@google.com,
+	bigeasy@linutronix.de,
+	pabeni@redhat.com,
+	CruzZhao@linux.alibaba.com
+Subject: [PATCH AUTOSEL 6.8 27/52] softirq: Fix suspicious RCU usage in __do_softirq()
+Date: Tue,  7 May 2024 19:06:53 -0400
+Message-ID: <20240507230800.392128-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -69,70 +71,100 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Christian Brauner <brauner@kernel.org>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 7af2ae1b1531feab5d38ec9c8f472dc6cceb4606 ]
+[ Upstream commit 1dd1eff161bd55968d3d46bc36def62d71fb4785 ]
 
-When erofs_kill_sb() is called in block dev based mode, s_bdev may not
-have been initialised yet, and if CONFIG_EROFS_FS_ONDEMAND is enabled,
-it will be mistaken for fscache mode, and then attempt to free an anon_dev
-that has never been allocated, triggering the following warning:
+Currently, the condition "__this_cpu_read(ksoftirqd) == current" is used to
+invoke rcu_softirq_qs() in ksoftirqd tasks context for non-RT kernels.
 
-============================================
-ida_free called for id=0 which is not allocated.
-WARNING: CPU: 14 PID: 926 at lib/idr.c:525 ida_free+0x134/0x140
-Modules linked in:
-CPU: 14 PID: 926 Comm: mount Not tainted 6.9.0-rc3-dirty #630
-RIP: 0010:ida_free+0x134/0x140
-Call Trace:
- <TASK>
- erofs_kill_sb+0x81/0x90
- deactivate_locked_super+0x35/0x80
- get_tree_bdev+0x136/0x1e0
- vfs_get_tree+0x2c/0xf0
- do_new_mount+0x190/0x2f0
- [...]
-============================================
+This works correctly as long as the context is actually task context but
+this condition is wrong when:
 
-Now when erofs_kill_sb() is called, erofs_sb_info must have been
-initialised, so use sbi->fsid to distinguish between the two modes.
+     - the current task is ksoftirqd
+     - the task is interrupted in a RCU read side critical section
+     - __do_softirq() is invoked on return from interrupt
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20240419123611.947084-3-libaokun1@huawei.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Syzkaller triggered the following scenario:
+
+  -> finish_task_switch()
+    -> put_task_struct_rcu_user()
+      -> call_rcu(&task->rcu, delayed_put_task_struct)
+        -> __kasan_record_aux_stack()
+          -> pfn_valid()
+            -> rcu_read_lock_sched()
+              <interrupt>
+                __irq_exit_rcu()
+                -> __do_softirq)()
+                   -> if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
+                     __this_cpu_read(ksoftirqd) == current)
+                     -> rcu_softirq_qs()
+                       -> RCU_LOCKDEP_WARN(lock_is_held(&rcu_sched_lock_map))
+
+The rcu quiescent state is reported in the rcu-read critical section, so
+the lockdep warning is triggered.
+
+Fix this by splitting out the inner working of __do_softirq() into a helper
+function which takes an argument to distinguish between ksoftirqd task
+context and interrupted context and invoke it from the relevant call sites
+with the proper context information and use that for the conditional
+invocation of rcu_softirq_qs().
+
+Reported-by: syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240427102808.29356-1-qiang.zhang1211@gmail.com
+Link: https://lore.kernel.org/lkml/8f281a10-b85a-4586-9586-5bbc12dc784f@paulmck-laptop/T/#mea8aba4abfcb97bbf499d169ce7f30c4cff1b0e3
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ kernel/softirq.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index 24788c230b494..020495168b124 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -800,17 +800,13 @@ static int erofs_init_fs_context(struct fs_context *fc)
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 210cf5f8d92c2..bd9716d7bb638 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -507,7 +507,7 @@ static inline bool lockdep_softirq_start(void) { return false; }
+ static inline void lockdep_softirq_end(bool in_hardirq) { }
+ #endif
  
- static void erofs_kill_sb(struct super_block *sb)
+-asmlinkage __visible void __softirq_entry __do_softirq(void)
++static void handle_softirqs(bool ksirqd)
  {
--	struct erofs_sb_info *sbi;
-+	struct erofs_sb_info *sbi = EROFS_SB(sb);
+ 	unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
+ 	unsigned long old_flags = current->flags;
+@@ -562,8 +562,7 @@ asmlinkage __visible void __softirq_entry __do_softirq(void)
+ 		pending >>= softirq_bit;
+ 	}
  
--	if (erofs_is_fscache_mode(sb))
-+	if (IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND) && sbi->fsid)
- 		kill_anon_super(sb);
- 	else
- 		kill_block_super(sb);
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
+-	    __this_cpu_read(ksoftirqd) == current)
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && ksirqd)
+ 		rcu_softirq_qs();
  
--	sbi = EROFS_SB(sb);
--	if (!sbi)
--		return;
--
- 	erofs_free_dev_context(sbi->devs);
- 	fs_put_dax(sbi->dax_dev, NULL);
- 	erofs_fscache_unregister_fs(sb);
+ 	local_irq_disable();
+@@ -583,6 +582,11 @@ asmlinkage __visible void __softirq_entry __do_softirq(void)
+ 	current_restore_flags(old_flags, PF_MEMALLOC);
+ }
+ 
++asmlinkage __visible void __softirq_entry __do_softirq(void)
++{
++	handle_softirqs(false);
++}
++
+ /**
+  * irq_enter_rcu - Enter an interrupt context with RCU watching
+  */
+@@ -918,7 +922,7 @@ static void run_ksoftirqd(unsigned int cpu)
+ 		 * We can safely run softirq on inline stack, as we are not deep
+ 		 * in the task stack here.
+ 		 */
+-		__do_softirq();
++		handle_softirqs(true);
+ 		ksoftirqd_run_end();
+ 		cond_resched();
+ 		return;
 -- 
 2.43.0
 
