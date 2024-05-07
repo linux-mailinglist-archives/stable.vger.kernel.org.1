@@ -1,176 +1,91 @@
-Return-Path: <stable+bounces-43172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733C08BE0A6
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 13:06:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F163E8BE0FF
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 13:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A700B229EF
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 11:06:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACB8628328E
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 11:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551391509BC;
-	Tue,  7 May 2024 11:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D5815217A;
+	Tue,  7 May 2024 11:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iNHtiz8n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1mNa/gE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422D6AD5D;
-	Tue,  7 May 2024 11:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF385522E;
+	Tue,  7 May 2024 11:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715079957; cv=none; b=HW1KK6g0Pdm87zh6lXnQHkPWV927VVdUtkvRVvcNKhvN47b2if0wtcVBg1F5fHNkffqH47ddCE0o+Srm4KwsGlMllCI6S8V2xZLTScKs3/2oS1OokaGlf9iEiQwjq7nLdC0EsPHM/uCouGFCxKo99qd/LyJZRYARlbT6wIXYlOM=
+	t=1715081254; cv=none; b=hmwgDV92LoVio/W2vfHHeVxs6SDlZOXW0e1qCsHzeD59kbILRaedNBm/dXxvIYlg0F4p6Zs1u2jjAn2dP0i6ejx7npb/FXNf0OwZQgAWHlDuRtbdDXMJG7jcMRltr1QKs4VYImhYJXenCYioNatM+B2HxzaCEm4jj+HEwIpC+oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715079957; c=relaxed/simple;
-	bh=qsiykdfT6HGbR0ILtz1HnDdybhnkI6RfpUXlO9B3Wak=;
+	s=arc-20240116; t=1715081254; c=relaxed/simple;
+	bh=WEWSfC7Gz68oRoxYdd0juQwDeu8SJZ34kb6UowW7I4M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PMb2FiqPcJztE0f2C7+R2lu71dQzERZEpuaCZ8LmhNSs6o7amYh0xp6KvZeGjIN4fg0awnZDUAdt818+VLquIX9ycdfjB9n+o93fGHiiLeUS1vtYHh7Y2VnM/QSdJ0OOXhkMhkzpjkrwnHIfru5hHEp+ujmIyrH0b/alEYTRUZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iNHtiz8n; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715079955; x=1746615955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=qsiykdfT6HGbR0ILtz1HnDdybhnkI6RfpUXlO9B3Wak=;
-  b=iNHtiz8noH76lGywmvHPsdKh3vMTMi5KcdaX3ifyjt5FHjjoN6tFgtw7
-   2IOEa4pixPWDCfD8oIuOjgLVo92O3mehkxRfd3s2HelZyEIvXdShbCofB
-   8384pkY2iLO37l6g4Xk5uoPAMvz6jDvh9hkkH5WgqDLsIltod9NM5UEcW
-   nbwzZta+tQ7x9veA4TdYXe4ZEh7aXLrlekaW55hgp6+X+c4yrWhSABdyg
-   LEeVfRch1Kxj61ibJYVtqAWV63g4qNP1GfMvP4x48htnleaGyr2fSpwo7
-   oTcRgCY83WAFUeNCurYrn4wXMfsZufsPfrXqimNxE2rqYlh4R2LVqfL4U
-   g==;
-X-CSE-ConnectionGUID: KSypa5y/R9OViAhP21rHcw==
-X-CSE-MsgGUID: orFPKtkGQfC/tWDG+bU8tw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="11406462"
-X-IronPort-AV: E=Sophos;i="6.07,261,1708416000"; 
-   d="scan'208";a="11406462"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 04:05:54 -0700
-X-CSE-ConnectionGUID: 365tfxiDTwaI0bkDHm+j9A==
-X-CSE-MsgGUID: cCnkjgeJSdact9Hn5hHLhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,261,1708416000"; 
-   d="scan'208";a="28458630"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 07 May 2024 04:05:49 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 07 May 2024 14:05:48 +0300
-Date: Tue, 7 May 2024 14:05:48 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
-	Jani Nikula <jani.nikula@intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH v2] drivers/i915/intel_bios: Fix parsing backlight BDB
- data
-Message-ID: <ZjoLDJJdfZKKcBFt@intel.com>
-References: <20240221180622.v2.1.I0690aa3e96a83a43b3fc33f50395d334b2981826@changeid>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tkVZPfRpzJS1QYAgChxqjMw79qOTlVNHHq9sZW5uy+UhbNw1D9SSc9HV8rbmboFVKFuAOjiLHq1OgwKg1csfjtWuV/TtTFgHb8PYVBbMeyjVbkWqukfyKTZx8xtttxgND/tNEuzohUoMYeEoSzrDOi/m/zlU+7HuGUKokQ06YCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1mNa/gE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5996C2BBFC;
+	Tue,  7 May 2024 11:27:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715081254;
+	bh=WEWSfC7Gz68oRoxYdd0juQwDeu8SJZ34kb6UowW7I4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W1mNa/gEJRNnSYVxqWNeMNcuHewFBzYLzV+U7JfasQNSJwcqalT67aUeY+B3hXv5C
+	 u3cDQ2zl9k9Vkf0S9oTMOsP7e+zPsb6Lx/o61Tbi17u6Z1YXUmESc5OjV6IsttRTSd
+	 OucVltt3jSFzxe6+cYrsIOEUjaitvlXTegKj0rkptNNQiiCKZa04l3xP/ZyW+7nXRB
+	 ZiukhZddb0HCstkzkRen4TBVTDK4fPPpaxLg6yr/3hy2RJyx4Bd4jhC2tV0+fOTzUE
+	 qWvx6/PPsuDMMJgtK2Gdn0kG7z1OqxGy8/S8hxkKcjElYX+RUl/7zLq78VMpPSaECJ
+	 0iJaaxfVJCyyA==
+Date: Tue, 7 May 2024 14:27:30 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Brian Baboch <brian.baboch@gmail.com>
+Cc: linux-rdma@vger.kernel.org, stable@vger.kernel.org,
+	florent.fourcot@wifirst.fr, brian.baboch@wifirst.fr
+Subject: Re: Excessive memory usage when infiniband config is enabled
+Message-ID: <20240507112730.GB78961@unreal>
+References: <2b4f7f6e-9fe5-43a4-b62e-6e42be67d1d9@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240221180622.v2.1.I0690aa3e96a83a43b3fc33f50395d334b2981826@changeid>
-X-Patchwork-Hint: comment
+In-Reply-To: <2b4f7f6e-9fe5-43a4-b62e-6e42be67d1d9@gmail.com>
 
-On Wed, Feb 21, 2024 at 06:06:24PM -0700, Karthikeyan Ramasubramanian wrote:
-> Starting BDB version 239, hdr_dpcd_refresh_timeout is introduced to
-> backlight BDB data. Commit 700034566d68 ("drm/i915/bios: Define more BDB
-> contents") updated the backlight BDB data accordingly. This broke the
-> parsing of backlight BDB data in VBT for versions 236 - 238 (both
-> inclusive) and hence the backlight controls are not responding on units
-> with the concerned BDB version.
+On Mon, May 06, 2024 at 05:15:55PM +0200, Brian Baboch wrote:
+> Hello,
 > 
-> backlight_control information has been present in backlight BDB data
-> from at least BDB version 191 onwards, if not before. Hence this patch
-> extracts the backlight_control information for BDB version 191 or newer.
-> Tested on Chromebooks using Jasperlake SoC (reports bdb->version = 236).
-> Tested on Chromebooks using Raptorlake SoC (reports bdb->version = 251).
 > 
-> Fixes: 700034566d68 ("drm/i915/bios: Define more BDB contents")
-> Cc: stable@vger.kernel.org
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-> ---
+> We discovered that the CONFIG_INFINIBAND_IRDMA configuration option in the
+> linux kernel is causing excessive memory usage on idle mode on specific
+> servers like the DELL VEP4600
+> (https://www.dell.com/en-us/shop/ipovw/virtual-edge-platform-4600.
 > 
-> Changes in v2:
-> - removed checking the block size of the backlight BDB data
+> By default we were using Debian's linux-image-6.1.0-13-amd64 which is the
+> stable 6.1.55-1 amd64, we then compiled the kernel again with the same
+> config file from the stable 6.1.55 tag and had the same problem. We were
+> able to resolve the memory problem by removing the `CONFIG_INFINIBAND_IRDMA`
+> option from the kernel config.
+> 
+> The tag used to reproduce the problem is v6.1.55.
+> adding the following config `CONFIG_INFINIBAND_IRDMA=m` causes the excessive
+> memory usage to go from 1.4Gb to 7Gb.
 
-I fixed up the formatting of the commit message a bit,
-added a note indicating why it's ok to remove the size
-checks, and pushed to drm-intel-next. Thanks.
+Hi Brian,
 
-> 
->  drivers/gpu/drm/i915/display/intel_bios.c     | 19 ++++---------------
->  drivers/gpu/drm/i915/display/intel_vbt_defs.h |  5 -----
->  2 files changed, 4 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
-> index aa169b0055e97..8c1eb05fe77d2 100644
-> --- a/drivers/gpu/drm/i915/display/intel_bios.c
-> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
-> @@ -1042,22 +1042,11 @@ parse_lfp_backlight(struct drm_i915_private *i915,
->  	panel->vbt.backlight.type = INTEL_BACKLIGHT_DISPLAY_DDI;
->  	panel->vbt.backlight.controller = 0;
->  	if (i915->display.vbt.version >= 191) {
-> -		size_t exp_size;
-> +		const struct lfp_backlight_control_method *method;
->  
-> -		if (i915->display.vbt.version >= 236)
-> -			exp_size = sizeof(struct bdb_lfp_backlight_data);
-> -		else if (i915->display.vbt.version >= 234)
-> -			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_234;
-> -		else
-> -			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_191;
-> -
-> -		if (get_blocksize(backlight_data) >= exp_size) {
-> -			const struct lfp_backlight_control_method *method;
-> -
-> -			method = &backlight_data->backlight_control[panel_type];
-> -			panel->vbt.backlight.type = method->type;
-> -			panel->vbt.backlight.controller = method->controller;
-> -		}
-> +		method = &backlight_data->backlight_control[panel_type];
-> +		panel->vbt.backlight.type = method->type;
-> +		panel->vbt.backlight.controller = method->controller;
->  	}
->  
->  	panel->vbt.backlight.pwm_freq_hz = entry->pwm_freq_hz;
-> diff --git a/drivers/gpu/drm/i915/display/intel_vbt_defs.h b/drivers/gpu/drm/i915/display/intel_vbt_defs.h
-> index a9f44abfc9fc2..b50cd0dcabda9 100644
-> --- a/drivers/gpu/drm/i915/display/intel_vbt_defs.h
-> +++ b/drivers/gpu/drm/i915/display/intel_vbt_defs.h
-> @@ -897,11 +897,6 @@ struct lfp_brightness_level {
->  	u16 reserved;
->  } __packed;
->  
-> -#define EXP_BDB_LFP_BL_DATA_SIZE_REV_191 \
-> -	offsetof(struct bdb_lfp_backlight_data, brightness_level)
-> -#define EXP_BDB_LFP_BL_DATA_SIZE_REV_234 \
-> -	offsetof(struct bdb_lfp_backlight_data, brightness_precision_bits)
-> -
->  struct bdb_lfp_backlight_data {
->  	u8 entry_size;
->  	struct lfp_backlight_data_entry data[16];
-> -- 
-> 2.44.0.rc0.258.g7320e95886-goog
+Why do you think that this is a bug?
+DELL VEP4600 supports RDMA, so by enabling CONFIG_INFINIBAND_IRDMA, you
+compiled RDMA support for Intel NIC.
+https://dl.dell.com/topicspdf/vep4600_tech_guide_en-us.pdf
 
--- 
-Ville Syrjälä
-Intel
+You can unload irdma.ko module and restore memory footprint.
+
+Thanks
 
