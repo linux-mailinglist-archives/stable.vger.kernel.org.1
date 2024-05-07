@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-43229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DBB8BF059
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:02:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDED48BF05C
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A59CB1F216BE
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:02:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CF3EB237BF
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB6812DD98;
-	Tue,  7 May 2024 22:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8DF823B8;
+	Tue,  7 May 2024 22:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tg5CH+9u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZlf+LmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2A512D1EF;
-	Tue,  7 May 2024 22:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BF312F389;
+	Tue,  7 May 2024 22:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122708; cv=none; b=VHytRpA56Uz4lnKOfmt16x0diRDwPAS8AJNK0bPLlRDuEQyYzXUlANp+NORLjr9UcGhADaNlj2GDMjHvjsuwCTJdU59e54zu9xf7TAxFVZ09YcwfEbZxwkDc0zPC3kWV4u7jo8crpu7A70MivX+Tc1beSAS6hpfp6Jhl7AvnIK8=
+	t=1715122711; cv=none; b=tw7CTa29JzffaKpFvFC0ua6e3QaeKjguydRsQVM18Cdv7cFCBy5DPx37E+UqJeiUl7HOpnFYn1KkKkJ1W1rbnCiTMo7NzmbxzMucHCCSECnZMpJbVxxzC7lVW25bNKWSbxsOg9bYw1qq2NFYlt6bcQFERvI3j+6L49zb7IZikqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122708; c=relaxed/simple;
-	bh=mpjbINDW+2/d3FdYR5rsR9d7Larq23IABHZvwgNlCbk=;
+	s=arc-20240116; t=1715122711; c=relaxed/simple;
+	bh=+c40Uhf6KzmTtn+fKaywtRA/07JP5WBu9P0At09HAK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxtKVBJ6tDQVFreJyw/FAaVHBChJcAdAL4ri4h+nY4RzB6fP6io3QdFWbuvl9AdPRDRMH8AfOl5C+sk4V+KemiRIMLVvyDL/y3Ir5zItszy36E6y600MR1JcfSywYhB0hVDLPPneFEQHcMVjAzB7JtoKsGwjMbNzDK+ZffJf2+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tg5CH+9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC18C4AF67;
-	Tue,  7 May 2024 22:58:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FPGmn4CKIGZehkdBzHFfZHNZ7kbpX2eR6/DUXfocr5KU+MSRDPzddJIGH1+uI4dnRDg2NNaFpW/G9uZrhV9gSrYwW2ELZhn0X0UIZzGczSdlIAUVzHy8zHJZ4Mjzz2+cVrzlSUAtPNVRcrAIvS+1IY+ymyCaqoX/ThSV80pvVAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZlf+LmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D79AC3277B;
+	Tue,  7 May 2024 22:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122708;
-	bh=mpjbINDW+2/d3FdYR5rsR9d7Larq23IABHZvwgNlCbk=;
+	s=k20201202; t=1715122711;
+	bh=+c40Uhf6KzmTtn+fKaywtRA/07JP5WBu9P0At09HAK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tg5CH+9utiASQl7G9wkgELfEEGYFcbzQiGydxi0L8Gp8f/VFlP5S/jRejv/S8Tub/
-	 pcIVjOG3Y4og1YbwED5PSM+Cn4D4FlKK3Uc4HmDLkz9UrTaW1Wz3YFeQ5EJBs/1z2z
-	 xKDGzS3lTS8/vNeLinvdVnl3siUtYmO69L8ZtxAySS7mjHooAiADPrQry9lA0YTlAw
-	 aNFi0EawUdVW9HGBJSHo4yYQ2cq/WFoPKq431vlJ/7HPt9i4il7TQqlbwPgAkzZkQh
-	 Mvd8Phkk8OYOx+WsL2/dq6L6oYZjrAAzFBrrXN2TuPPxgkQmm/8E2PLn1n2bkk3LSc
-	 gNVcTMU7uawkA==
+	b=CZlf+LmRKFrurKnLrbBW0seUavLy+h9UK8S9DGp+pV5gYQMYeSbE70YSqOgdoKuET
+	 FAA7485utsoS3MrP13vOMK7BJ3egEcZ3cQu0ejudz2GHAK7SX8toOKrbGB4r0k5g0R
+	 SHCe5BlaFvekhaM8pPbrQ/t3qweOA4cTX89vxMKDjrc5g9sH0sPjRGLGfHpT8HRhme
+	 qHgcTW+FMYWcvOMNjuaxakthKSrqlNzGy3GVxRM+4WwfgTwVSKnjbjhuzxBEhmiR/w
+	 MTgmL1KUwMNNmm39Hwx/4fgJUTw5l3tunT+HjIFv6RRXWQW2n2O6XYkrHAbUYVyuzH
+	 /AG4SYzkYVpdQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Derek Foreman <derek.foreman@collabora.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.8 19/23] drm/etnaviv: fix tx clock gating on some GC7000 variants
-Date: Tue,  7 May 2024 18:56:45 -0400
-Message-ID: <20240507225725.390306-19-sashal@kernel.org>
+	shuah@kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-kselftest@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.8 20/23] selftests: sud_test: return correct emulated syscall value on RISC-V
+Date: Tue,  7 May 2024 18:56:46 -0400
+Message-ID: <20240507225725.390306-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507225725.390306-1-sashal@kernel.org>
 References: <20240507225725.390306-1-sashal@kernel.org>
@@ -63,46 +65,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Derek Foreman <derek.foreman@collabora.com>
+From: Clément Léger <cleger@rivosinc.com>
 
-[ Upstream commit d7a5c9de99b3a9a43dce49f2084eb69b5f6a9752 ]
+[ Upstream commit 17c67ed752d6a456602b3dbb25c5ae4d3de5deab ]
 
-commit 4bce244272513 ("drm/etnaviv: disable tx clock gating for GC7000
-rev6203") accidentally applied the fix for i.MX8MN errata ERR050226 to
-GC2000 instead of GC7000, failing to disable tx clock gating for GC7000
-rev 0x6023 as intended.
+Currently, the sud_test expects the emulated syscall to return the
+emulated syscall number. This assumption only works on architectures
+were the syscall calling convention use the same register for syscall
+number/syscall return value. This is not the case for RISC-V and thus
+the return value must be also emulated using the provided ucontext.
 
-Additional clean-up further propagated this issue, partially breaking
-the clock gating fixes added for GC7000 rev 6202 in commit 432f51e7deeda
-("drm/etnaviv: add clock gating workaround for GC7000 r6202").
-
-Signed-off-by: Derek Foreman <derek.foreman@collabora.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20231206134438.473166-1-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../selftests/syscall_user_dispatch/sud_test.c     | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index 9b8445d2a128f..89cb6799b547f 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -632,8 +632,8 @@ static void etnaviv_gpu_enable_mlcg(struct etnaviv_gpu *gpu)
- 	/* Disable TX clock gating on affected core revisions. */
- 	if (etnaviv_is_model_rev(gpu, GC4000, 0x5222) ||
- 	    etnaviv_is_model_rev(gpu, GC2000, 0x5108) ||
--	    etnaviv_is_model_rev(gpu, GC2000, 0x6202) ||
--	    etnaviv_is_model_rev(gpu, GC2000, 0x6203))
-+	    etnaviv_is_model_rev(gpu, GC7000, 0x6202) ||
-+	    etnaviv_is_model_rev(gpu, GC7000, 0x6203))
- 		pmc |= VIVS_PM_MODULE_CONTROLS_DISABLE_MODULE_CLOCK_GATING_TX;
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+index b5d592d4099e8..d975a67673299 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+@@ -158,6 +158,20 @@ static void handle_sigsys(int sig, siginfo_t *info, void *ucontext)
  
- 	/* Disable SE and RA clock gating on affected core revisions. */
+ 	/* In preparation for sigreturn. */
+ 	SYSCALL_DISPATCH_OFF(glob_sel);
++
++	/*
++	 * The tests for argument handling assume that `syscall(x) == x`. This
++	 * is a NOP on x86 because the syscall number is passed in %rax, which
++	 * happens to also be the function ABI return register.  Other
++	 * architectures may need to swizzle the arguments around.
++	 */
++#if defined(__riscv)
++/* REG_A7 is not defined in libc headers */
++# define REG_A7 (REG_A0 + 7)
++
++	((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A0] =
++			((ucontext_t *)ucontext)->uc_mcontext.__gregs[REG_A7];
++#endif
+ }
+ 
+ TEST(dispatch_and_return)
 -- 
 2.43.0
 
