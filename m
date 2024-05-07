@@ -1,65 +1,71 @@
-Return-Path: <stable+bounces-43389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5BA8BF256
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:47:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 083B68BF259
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EBA11C20CA9
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:47:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D1011F21D6D
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31BB1C2328;
-	Tue,  7 May 2024 23:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8A31C65FB;
+	Tue,  7 May 2024 23:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlFasmUh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iL48KXiX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2EA1C0DC0;
-	Tue,  7 May 2024 23:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399868626F;
+	Tue,  7 May 2024 23:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123577; cv=none; b=eK8hSoWYm9SF2iiMCigcDzCBB9a4EJHa2vDaT6LlVJIqNxm1wgdz1zKtHtsF0FLoIoujfuqdreNTBXYSTHSqScDLbh1Ch8K38ggpKXsyWGuaQmRMV79iG3beH+/YZmjRrAmqbPT4bgsv6SL2iXAXUv+zTkyaxjkGx+li66FLBGs=
+	t=1715123581; cv=none; b=OIg04vl0RFmb4IcixHgdVeqaA3dorKCdWWSGUno/euqpD89cBBMetaRMr/2YoWWP3qmFhdhPyno8B74+N5cUqkOppCIs5Nw3B9HsaEbKL9UyISQDhXkTHgmjZQXkTukiMTnC26LjzKf9WUVmGycZYcUX2VRweJZ4+3KaY7l/jZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123577; c=relaxed/simple;
-	bh=nD0w/22aq4b8nk4rntXdXqgHFlPz5tq9tuVMyNskplQ=;
+	s=arc-20240116; t=1715123581; c=relaxed/simple;
+	bh=Gi3VbRMyTw3EF8ujztl7JDomLXTcKe3ICSALz5uLOA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G3vg+Nhh46kM51gy2mFuWjQq1LSp73JO1OEQZdpNFELtmGx2L/08gaVmVu6Ovg/atDP8dz8LghBaqmjE3Et2s0cZCODNYdW6T76vQF6HDdfsA0BMX4QZzTOJ4D48xIF4bmWr41iAlpuTtcj/o608HSQzicSDP6T1niZQFs9BIWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tlFasmUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E05C3277B;
-	Tue,  7 May 2024 23:12:55 +0000 (UTC)
+	 MIME-Version; b=XH7thinzgaHOqVtgL5qm0EPAlKTBuFFw5/JC3djQbi/623SyvrSQOc42YM2rGPmDG5bVPVsEfV5RLyysGk4UDtEfUDQ6uXCcvXaGPEq6wbuJXuy39kclIlVsTENi5FAyuVTcNO+ZUZZLg+ptf3M+9q1+GtZWG9EqokgkOlgui70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iL48KXiX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0644EC2BBFC;
+	Tue,  7 May 2024 23:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123577;
-	bh=nD0w/22aq4b8nk4rntXdXqgHFlPz5tq9tuVMyNskplQ=;
+	s=k20201202; t=1715123581;
+	bh=Gi3VbRMyTw3EF8ujztl7JDomLXTcKe3ICSALz5uLOA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlFasmUhk5BolA+mj+3J988ZvVJDa/Jt/rsZPYUGDGKGayIX2XuSLrZkJihp6ehkJ
-	 a8wRj+vQk+GCW9ptuCpzDTf9xBGbup4cbDBNvnzugGUEqI2HKVxy3MqNl5O1XESiNJ
-	 O3MyAelMoPZW1BrXHpNPiS/vyjH5GwpXz0Xx5TDNZRedaT8ujuo/eHaqZua8sk6SDc
-	 PoHaGafnYGzhFH+3LMkmz6GDnK2dgTUKzCZoXVXXm3wKSdoEDDcyuYapmR3wupf5Da
-	 GeQ3YOSQYdyDLfbdoPPY4ZKK04HbUeGYwUYJEmFEo6CakiBLTTIKrqgThe+6/nnEW8
-	 Lt+96rUwmaEQQ==
+	b=iL48KXiXOV1ug0UbUxhIlrKEtT6I2g2frLWs5BPGw2mRL1MFcTYlwMC5mkLY/fhv9
+	 mNgP1Bl89liQTT+coktBCxcFDeK5j6A5F7YazSZpYjoFG9yG1Z7s8ivgJpRv+6uAwz
+	 7UCQSv/vrWz6KDmGnPJ84UAdGtyNHuOYKPn1E9e+DJE0QR/7rZa36myYqHP2UywVm3
+	 +Mju4PP8e/CZ8ggn3vgt34emV+eEbOzP4Mb1SRLRs97bH67Ekcj9EgJGyD5qlhmNFY
+	 4kD5Rv8mCBSN0O2HcMd+kRRMWs6G8x9gMa/om5OeY8Y7tZq4b4VZi+NkObysea4KjH
+	 fvCEvJkoi20xw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Swapnil Patel <swapnil.patel@amd.com>,
+	Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	broonie@kernel.org,
-	amadeuszx.slawinski@linux.intel.com,
-	bradynorander@gmail.com,
-	markhas@chromium.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 14/25] ALSA: hda: intel-dsp-config: harden I2C/I2S codec detection
-Date: Tue,  7 May 2024 19:12:01 -0400
-Message-ID: <20240507231231.394219-14-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	chiahsuan.chung@amd.com,
+	charlene.liu@amd.com,
+	qingqing.zhuo@amd.com,
+	nicholas.kazlauskas@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 15/25] drm/amd/display: Add dtbclk access to dcn315
+Date: Tue,  7 May 2024 19:12:02 -0400
+Message-ID: <20240507231231.394219-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231231.394219-1-sashal@kernel.org>
 References: <20240507231231.394219-1-sashal@kernel.org>
@@ -69,85 +75,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Swapnil Patel <swapnil.patel@amd.com>
 
-[ Upstream commit 79ac4c1443eaec0d09355307043a9149287f23c1 ]
+[ Upstream commit a01b64f31d65bdc917d1afb4cec9915beb6931be ]
 
-The SOF driver is selected whenever specific I2C/I2S HIDs are reported
-as 'present' in the ACPI DSDT. In some cases, an HID is reported but
-the hardware does not actually rely on I2C/I2S.  This false positive
-leads to an invalid selection of the SOF driver and as a result an
-invalid topology is loaded.
+[Why & How]
 
-This patch hardens the detection with a check that the NHLT table is
-consistent with the report of an I2S-based codec in DSDT. This table
-should expose at least one SSP endpoint configured for an I2S-codec
-connection.
+Currently DCN315 clk manager is missing code to enable/disable dtbclk.
+Because of this, "optimized_required" flag is constantly set
+and this prevents FreeSync from engaging for certain high bandwidth
+display Modes which require DTBCLK.
 
-Tested on Huawei Matebook D14 (NBLB-WAX9N) using an HDaudio codec with
-an invalid ES8336 ACPI HID reported:
-
-[    7.858249] snd_hda_intel 0000:00:1f.3: DSP detected with PCI class/subclass/prog-if info 0x040380
-[    7.858312] snd_hda_intel 0000:00:1f.3: snd_intel_dsp_find_config: no valid SSP found for HID ESSX8336, skipped
-
-Reported-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Tested-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Closes: https://github.com/thesofproject/linux/issues/4934
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Message-ID: <20240426152818.38443-1-pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-dsp-config.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ .../drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c    | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index bc03b5692983c..f1de386604a10 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -511,9 +511,32 @@ static const struct config_entry *snd_intel_dsp_find_config
- 		if (table->codec_hid) {
- 			int i;
- 
--			for (i = 0; i < table->codec_hid->num_codecs; i++)
--				if (acpi_dev_present(table->codec_hid->codecs[i], NULL, -1))
-+			for (i = 0; i < table->codec_hid->num_codecs; i++) {
-+				struct nhlt_acpi_table *nhlt;
-+				bool ssp_found = false;
-+
-+				if (!acpi_dev_present(table->codec_hid->codecs[i], NULL, -1))
-+					continue;
-+
-+				nhlt = intel_nhlt_init(&pci->dev);
-+				if (!nhlt) {
-+					dev_warn(&pci->dev, "%s: NHLT table not found, skipped HID %s\n",
-+						 __func__, table->codec_hid->codecs[i]);
-+					continue;
-+				}
-+
-+				if (intel_nhlt_has_endpoint_type(nhlt, NHLT_LINK_SSP) &&
-+				    intel_nhlt_ssp_endpoint_mask(nhlt, NHLT_DEVICE_I2S))
-+					ssp_found = true;
-+
-+				intel_nhlt_free(nhlt);
-+
-+				if (ssp_found)
- 					break;
-+
-+				dev_warn(&pci->dev, "%s: no valid SSP found for HID %s, skipped\n",
-+					 __func__, table->codec_hid->codecs[i]);
-+			}
- 			if (i == table->codec_hid->num_codecs)
- 				continue;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+index 28b83133db910..09eb1bc9aa030 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+@@ -131,6 +131,10 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
+ 	 */
+ 	clk_mgr_base->clks.zstate_support = new_clocks->zstate_support;
+ 	if (safe_to_lower) {
++		if (clk_mgr_base->clks.dtbclk_en && !new_clocks->dtbclk_en) {
++			dcn315_smu_set_dtbclk(clk_mgr, false);
++			clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
++		}
+ 		/* check that we're not already in lower */
+ 		if (clk_mgr_base->clks.pwr_state != DCN_PWR_STATE_LOW_POWER) {
+ 			display_count = dcn315_get_active_display_cnt_wa(dc, context);
+@@ -146,6 +150,10 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
+ 			}
  		}
+ 	} else {
++		if (!clk_mgr_base->clks.dtbclk_en && new_clocks->dtbclk_en) {
++			dcn315_smu_set_dtbclk(clk_mgr, true);
++			clk_mgr_base->clks.dtbclk_en = new_clocks->dtbclk_en;
++		}
+ 		/* check that we're not already in D0 */
+ 		if (clk_mgr_base->clks.pwr_state != DCN_PWR_STATE_MISSION_MODE) {
+ 			union display_idle_optimization_u idle_info = { 0 };
 -- 
 2.43.0
 
