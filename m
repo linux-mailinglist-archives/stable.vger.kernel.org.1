@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-43342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45308BF1E4
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:37:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566E18BF205
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6E001C20991
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:37:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2A8AB25469
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E54B1494D9;
-	Tue,  7 May 2024 23:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30997149E06;
+	Tue,  7 May 2024 23:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sMIWyFHG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPxhBsxF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E9E149C76;
-	Tue,  7 May 2024 23:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12B7149DFC;
+	Tue,  7 May 2024 23:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123454; cv=none; b=P1Mloaw86sYcOTlPeOZYoCsrtAC3drc+goS7jIAtVCfpL6JFkgIOK29D+/ZYrYHT3TGubwytfFaIhRSq6QbkRJVS+JQYpaXPMnA1lzEJeDd+pwkoDDjuI4R0+YpcG34omeKuT5yyYPS6xAyHUUSiia90FAbJ2hYove8+FOzCGmg=
+	t=1715123456; cv=none; b=ixrFEdCkH6fySV3Vwuv7eaLkZOamhX4M35bcO4ddq2Is8THznVLpOHUFl1pEu3ONTxbAx+JdT2SllhWlQaM+c/FAIJZMSO/oU9jo5FJh1b88wBUwr8PgDs0A7Lxoa14BOxRChHOixGDudkPaObNkyi/6Yc9ow39ZgyNCQBBHOAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123454; c=relaxed/simple;
-	bh=Cq1lDh/SwHShDu5gZ2l0pbzVw0j1TWv3xedi2Bsxaso=;
+	s=arc-20240116; t=1715123456; c=relaxed/simple;
+	bh=sAAr9VYn+hvAOzBBZthjzXP3fDcDZfnu5BuEBB9blKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSUxANNxThQ0/HNryY1t4zHGMiwsk3x5b/sYpPjJ/diVxCZAxpgY/FVj9lUfl2fWziyCKKt2Ua621TvpTbqpA2YrR44olQf+6CKBf25Uci6XlNx1h1vUHls7jzNRHOyWSyZluPGmFOWKlcM9X0iQ+y6vHxNTRw8jJ00n3hz7+kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sMIWyFHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B1CC4AF17;
-	Tue,  7 May 2024 23:10:52 +0000 (UTC)
+	 MIME-Version; b=OU5XJX7nPNKXz4WSlB432Rz5vTRQMNGhXx20Oi8y0rIDnUZsHsv9F0pCJiVRCuOC9i9DCRYJQ+I2hKVS+uXI9cE4ADghpy03Kklk/DQrRZysFQtUETS8ygS1j6sVB79Irp9aGMsKnm1mbvq5eydc6s/Tffm6XGdFkFLt9yVJBPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPxhBsxF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ACD9C4AF17;
+	Tue,  7 May 2024 23:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123453;
-	bh=Cq1lDh/SwHShDu5gZ2l0pbzVw0j1TWv3xedi2Bsxaso=;
+	s=k20201202; t=1715123455;
+	bh=sAAr9VYn+hvAOzBBZthjzXP3fDcDZfnu5BuEBB9blKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMIWyFHGDXB/Q1Df9m2x7Eie6QvW3v9BoyBaun8uGH1kOktyn0CDwPeamp6h7klJz
-	 dlFgSaVQy6jxCHkwDuCdWl5aYiTUAXC8RVQSLX0m55/B2DEHQhbZRViOt+D77a6XW+
-	 HdQKSqE7QyKoVWtILXhXIl7fiXQp3EtssPv43Mf/uBDo5uO5trijx/RxAAJ0rwh11h
-	 4ysKW6oz866tpRIk7ToYedlRjB184ezU8/hkcgJc/7C4I8XkRZHgVxy+vQFuL0+GKW
-	 ib7mzo3ccsER0uuZcq1XJZriU5B6Ud1EEIC3rgSQwmRu0Y1KmM/ByEbGap9wfZY4AX
-	 lumKZRfsQTZLQ==
+	b=hPxhBsxFUAjNyDVILyASJ2Zh7QUDm9FKMj2Y8lFQCawg+ZqF2B7uIQqTPgjRm7YBt
+	 WmGlJaKPuwXXnN9rdXBTelxvj4vGpd6P3mZkIYpBa4G8Wkwmbjhqo8FdyYvWpISpaS
+	 nM+J/qFm+OrR+mRnkS9+7/6uMbZOms4fmJHf9IcYnkzBWYTjIZW9OBY37uBMqc1NDy
+	 aBRxXJ14HcPYwFSV61vxqX/UTP6v4NFJ9sSp/cALtZlk3LSp81K77vBx4dApUaaQaG
+	 63GtYANT/6Sj2daBgHCS7Riv+vc1czFplXov8JRUihbWo0JpiIggvkPsg9fiCmgWKx
+	 pqWPYqPscE6bA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+Cc: Stefan Binding <sbinding@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	robert.marko@sartura.hr,
-	luka.perkov@sartura.hr,
+	james.schulman@cirrus.com,
+	david.rhodes@cirrus.com,
 	lgirdwood@gmail.com,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 11/43] regulator: vqmmc-ipq4019: fix module autoloading
-Date: Tue,  7 May 2024 19:09:32 -0400
-Message-ID: <20240507231033.393285-11-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	patches@opensource.cirrus.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 12/43] ASoC: cs35l41: Update DSP1RX5/6 Sources for DSP config
+Date: Tue,  7 May 2024 19:09:33 -0400
+Message-ID: <20240507231033.393285-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231033.393285-1-sashal@kernel.org>
 References: <20240507231033.393285-1-sashal@kernel.org>
@@ -69,34 +73,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 68adb581a39ae63a0ed082c47f01fbbe515efa0e ]
+[ Upstream commit eefb831d2e4dd58d58002a2ef75ff989e073230d ]
 
-Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
-based on the alias from of_device_id table.
+Currently, all ASoC systems are set to use VPMON for DSP1RX5_SRC,
+however, this is required only for internal boost systems.
+External boost systems require VBSTMON instead of VPMON to be the
+input to DSP1RX5_SRC.
+Shared Boost Active acts like Internal boost (requires VPMON).
+Shared Boost Passive acts like External boost (requires VBSTMON)
+All systems require DSP1RX6_SRC to be set to VBSTMON.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://msgid.link/r/20240410172615.255424-2-krzk@kernel.org
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://msgid.link/r/20240411142648.650921-1-sbinding@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/vqmmc-ipq4019-regulator.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/cs35l41.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/regulator/vqmmc-ipq4019-regulator.c b/drivers/regulator/vqmmc-ipq4019-regulator.c
-index 086da36abc0b4..4955616517ce9 100644
---- a/drivers/regulator/vqmmc-ipq4019-regulator.c
-+++ b/drivers/regulator/vqmmc-ipq4019-regulator.c
-@@ -84,6 +84,7 @@ static const struct of_device_id regulator_ipq4019_of_match[] = {
- 	{ .compatible = "qcom,vqmmc-ipq4019-regulator", },
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, regulator_ipq4019_of_match);
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index 5456e6bfa242f..bc541293089f0 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -1095,6 +1095,7 @@ static int cs35l41_handle_pdata(struct device *dev, struct cs35l41_hw_cfg *hw_cf
+ static int cs35l41_dsp_init(struct cs35l41_private *cs35l41)
+ {
+ 	struct wm_adsp *dsp;
++	uint32_t dsp1rx5_src;
+ 	int ret;
  
- static struct platform_driver ipq4019_regulator_driver = {
- 	.probe = ipq4019_regulator_probe,
+ 	dsp = &cs35l41->dsp;
+@@ -1114,16 +1115,29 @@ static int cs35l41_dsp_init(struct cs35l41_private *cs35l41)
+ 		return ret;
+ 	}
+ 
+-	ret = regmap_write(cs35l41->regmap, CS35L41_DSP1_RX5_SRC,
+-			   CS35L41_INPUT_SRC_VPMON);
++	switch (cs35l41->hw_cfg.bst_type) {
++	case CS35L41_INT_BOOST:
++	case CS35L41_SHD_BOOST_ACTV:
++		dsp1rx5_src = CS35L41_INPUT_SRC_VPMON;
++		break;
++	case CS35L41_EXT_BOOST:
++	case CS35L41_SHD_BOOST_PASS:
++		dsp1rx5_src = CS35L41_INPUT_SRC_VBSTMON;
++		break;
++	default:
++		dev_err(cs35l41->dev, "wm_halo_init failed - Invalid Boost Type: %d\n",
++			cs35l41->hw_cfg.bst_type);
++		goto err_dsp;
++	}
++
++	ret = regmap_write(cs35l41->regmap, CS35L41_DSP1_RX5_SRC, dsp1rx5_src);
+ 	if (ret < 0) {
+-		dev_err(cs35l41->dev, "Write INPUT_SRC_VPMON failed: %d\n", ret);
++		dev_err(cs35l41->dev, "Write DSP1RX5_SRC: %d failed: %d\n", dsp1rx5_src, ret);
+ 		goto err_dsp;
+ 	}
+-	ret = regmap_write(cs35l41->regmap, CS35L41_DSP1_RX6_SRC,
+-			   CS35L41_INPUT_SRC_CLASSH);
++	ret = regmap_write(cs35l41->regmap, CS35L41_DSP1_RX6_SRC, CS35L41_INPUT_SRC_VBSTMON);
+ 	if (ret < 0) {
+-		dev_err(cs35l41->dev, "Write INPUT_SRC_CLASSH failed: %d\n", ret);
++		dev_err(cs35l41->dev, "Write CS35L41_INPUT_SRC_VBSTMON failed: %d\n", ret);
+ 		goto err_dsp;
+ 	}
+ 	ret = regmap_write(cs35l41->regmap, CS35L41_DSP1_RX7_SRC,
 -- 
 2.43.0
 
