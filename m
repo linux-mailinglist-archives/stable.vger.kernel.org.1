@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-43435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890968BF2C2
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:57:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE668BF2CD
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A15F1F21AB4
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:57:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A147C1C2234F
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE031A2C10;
-	Tue,  7 May 2024 23:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059BC13AA5A;
+	Tue,  7 May 2024 23:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="GDYRA7PX"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="FB66OVWl"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040F91A2C06;
-	Tue,  7 May 2024 23:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8931212BE80;
+	Tue,  7 May 2024 23:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123786; cv=none; b=O47M24ecYjpO5wgxAr/X+8prRSPkU6nJ+NoG9XgDMyFBiWsp74fkSI8kDZGTgvQwUb/vNaN+fW1tpDAHYDXOkwCEc+CboycPYKXT7SdbUVp2BOjIp7O6dBPohf5VEoUs86zNOyp2CSwn7gWBSmewASaNhS7/FIrHc6q7mQp4a3I=
+	t=1715124007; cv=none; b=Pn843AQun5nJK25kzNeZWMsFZymNvPNbut/z21WMujR6VAcp227n1NnGQsd0I+a4wKDgOcAo4pXBlhsuUC1gbgIS8WXtF4OwAv0I5/7JyNxJR0elKBSDuIjeCQBBQxivk9Z6Um2/gIYuY/nbrS85DQv+/N/sCUVoUhq8wLbjexw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123786; c=relaxed/simple;
-	bh=W4CvRIluG6tZP/2Olqj+oh3nl1PvWT5AaGD2q1molKc=;
+	s=arc-20240116; t=1715124007; c=relaxed/simple;
+	bh=kHS9g9RwmKOf15zpnBSFQy0orV9EnY5jccmGnQvCJl0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tMB0J/MoOVvw5jq3EARweuu/Xn1v6VX7uO88paWSf74iGp5r4sf6eMOe500VXtRXN2/1A9TNSiGS+IYCkRaxacPMnmR4dUrpakD4FeVhknIHuynwU+l5VmFT2WxU4m/CfWd88jKREhT+y+V/NSiAR/22GxfiAmp4i17cz4WihdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=GDYRA7PX; arc=none smtp.client-ip=115.124.30.97
+	 In-Reply-To:Content-Type; b=etBEq1fwnLcVkOTgDudGLpVyKCxIjj1BnYfJYveoBWvrjG7B0gxlQnY16WTGNseQ4aOcOH2zFyd8gnlBLnrjrK5eLNWPdYMLHwvOAsNUmUHmcr3X4cdJVvHUiM+DKYai8kuyU5ZMoSEf1VgCV2PLxj+mYe8Ep6UuZGoyEh2l+BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=FB66OVWl; arc=none smtp.client-ip=115.124.30.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1715123780; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ot252tbl7SBLqukvaIH9QV/q4GG5yoGHVQJ2MVuayfg=;
-	b=GDYRA7PX62xTD6CX6y0IbiRSSVXLxM7W905mUeY0+i7OK+8w4AdpN+l4kdlBf+5KH/tR2hr983Z3ujXv4Ioxk2UhUdIXPhJynWuQ8KRGk2KzvLISGeNAG1h42UUNVN7CnysJCLiNivj/QWs4yiK6ydEritLa8X3HvXOSwVP0sOU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033022160150;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W61JUjF_1715123777;
-Received: from 30.25.231.12(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W61JUjF_1715123777)
+	t=1715123996; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=e0zrxwPcAb6kwy18tLfS3CmdjXGu2j+7ybZ31BCE1es=;
+	b=FB66OVWllglJrtsVgitdr4BBAFSOJsBaZztYNNhtXW8dxHbHjVUuAsWqekWUXTz3pCER7z9lCNl0lxrDvK160MtUtI1/+OsEI+yk/0tf7V3hCHytjVEztSDPszc58oMe9uiK5sG4CN9CveCAkN1Qzcoth2IuaKHjdBcSVfjVNu4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067112;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0W61IPVB_1715123993;
+Received: from 30.25.231.12(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W61IPVB_1715123993)
           by smtp.aliyun-inc.com;
-          Wed, 08 May 2024 07:16:19 +0800
-Message-ID: <bcd90345-18ea-486b-9e6b-352b2f2d2e08@linux.alibaba.com>
-Date: Wed, 8 May 2024 07:16:17 +0800
+          Wed, 08 May 2024 07:19:55 +0800
+Message-ID: <aca15d22-e2f9-4d09-b022-f290d9c902c9@linux.alibaba.com>
+Date: Wed, 8 May 2024 07:19:52 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,23 +49,23 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.6 21/43] erofs: reliably distinguish block based
+Subject: Re: [PATCH AUTOSEL 6.8 26/52] erofs: reliably distinguish block based
  and fscache mode
 To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+ stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Christian Brauner <brauner@kernel.org>, Baokun Li <libaokun1@huawei.com>,
  Jingbo Xu <jefflexu@linux.alibaba.com>, Chao Yu <chao@kernel.org>,
  xiang@kernel.org, linux-erofs@lists.ozlabs.org
-References: <20240507231033.393285-1-sashal@kernel.org>
- <20240507231033.393285-21-sashal@kernel.org>
+References: <20240507230800.392128-1-sashal@kernel.org>
+ <20240507230800.392128-26-sashal@kernel.org>
 From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20240507231033.393285-21-sashal@kernel.org>
+In-Reply-To: <20240507230800.392128-26-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi,
 
-On 2024/5/8 07:09, Sasha Levin wrote:
+On 2024/5/8 07:06, Sasha Levin wrote:
 > From: Christian Brauner <brauner@kernel.org>
 > 
 > [ Upstream commit 7af2ae1b1531feab5d38ec9c8f472dc6cceb4606 ]
@@ -103,11 +103,14 @@ On 2024/5/8 07:09, Sasha Levin wrote:
 > Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Please help drop this patch, you should backport the dependency
-commit 07abe43a28b2 ("erofs: get rid of erofs_fs_context")
 
-in advance.
+Please help drop this patch for now too, you should backport
+the dependency commit
+07abe43a28b2 ("erofs: get rid of erofs_fs_context") in advance.
+
+Otherwise it doesn't work and break the functionality.
 
 Thanks,
 Gao Xiang
+
 
