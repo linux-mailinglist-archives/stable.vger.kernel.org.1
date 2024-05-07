@@ -1,125 +1,116 @@
-Return-Path: <stable+bounces-43184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5F58BE53A
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 16:08:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317558BE572
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 16:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B9F28A01E
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 14:08:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26F0B1C23C26
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 14:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D3115EFC8;
-	Tue,  7 May 2024 14:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9D516C87C;
+	Tue,  7 May 2024 14:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qqcv7LlC"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A51214EC64
-	for <stable@vger.kernel.org>; Tue,  7 May 2024 14:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3066C16D303
+	for <stable@vger.kernel.org>; Tue,  7 May 2024 14:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715090887; cv=none; b=G+gpGIpHN6JwVtg/TeErMKCDjHa6nI5SZl2ksMR17NcEocn8nH/3RMKXz+c7j+wUX7s6JRmR+FzucaF0xHg6hhcIf8amUZ7l0NKbivePHI0+b+HRIE+LgNfylSjvAnDXUUSUZ8KCPXEZ8LZSsSXD7Kxbc8HjXT/EMZNtjJIC4So=
+	t=1715091189; cv=none; b=IjwtM2WhB7MyFfSJ/Cx7ZXLR/eXcyjFbypZFX8huJnBcXBOYpezn1muWSLTCRWpCa7Un9oZTLZwULTxevYHNRd5gHx+PW1gOnZ+Kw/sCWPgyywaEEuyi0J5Mwh24Dl7oosMOA27EwNKaDKT2I4LL/rRNO9CmZmLVlbPZ0wSorfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715090887; c=relaxed/simple;
-	bh=/Z9ykdE/gw4RhCDa8pfbSV8Xayw3wLMDyf1VXe0/6iY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QdxJ67fhPW7Tx6N+vRdneR4U1hR3AJIR7Lr/GSuMumfUt9sLC01z6jhWyTxtoEp4Z0+3Xx/WGUYReUHeIM7NovuaZJ+IL3V4LOct16SjtKqeWYIda/5+6HcXN/xonJZZiE6UBHsu/uk0msNx+Posyao6mH1CTx2yKnqyOP0j7Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4LUB-0006vO-Td; Tue, 07 May 2024 16:08:03 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4LUA-0006tx-OR; Tue, 07 May 2024 16:08:02 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4LUA-00HPn5-2B;
-	Tue, 07 May 2024 16:08:02 +0200
-Date: Tue, 7 May 2024 16:08:02 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: David Lechner <dlechner@baylibre.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, 
-	Michael Hennerich <michael.hennerich@analog.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Mark Brown <broonie@kernel.org>
-Subject: Re: Patch "spi: axi-spi-engine: Convert to platform remove callback
- returning void" has been added to the 6.1-stable tree
-Message-ID: <xm5ghowrandbwib2osgihglhwief6buepdcht42uljj65apnya@qgshrnbi2s5r>
-References: <20240506193007.271745-1-sashal@kernel.org>
- <668fcb3c-d00c-4082-b55d-c8584f1b3f7a@baylibre.com>
- <xoadzhyfsjcmvrolb7smsjsvvhfb67m6rcata7sox54yeqm54n@neow3nvsxcti>
- <0ba14e0f-6808-45ae-a6cd-9b9610d119db@baylibre.com>
+	s=arc-20240116; t=1715091189; c=relaxed/simple;
+	bh=zchA9qCZkbTbiKP4dWASuNmwzS8UpJKwMcrmBhDATqo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RNznPScndlLgh6q8Kl//W4JOvRg++67BLfOPopY+g6neOnpfRnweTk81+mh3DI/jPZnkSjNF9J60sAlKYMXBBnFDJeFXGSJX/YKxXZdSQRdfKv4m7dpjCbZOqVbZTB4dtXncrNBc7h70rOv+6fgs+ouMcWUdcNSSVZsTlFAynww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qqcv7LlC; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61510f72bb3so70114507b3.0
+        for <stable@vger.kernel.org>; Tue, 07 May 2024 07:12:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715091173; x=1715695973; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WETraqwVUAnZYIOXp5ZtLEEE1VYRO8MGNkm01fdovIk=;
+        b=Qqcv7LlCIOJvBe8ClD5U2l4Vj91uUJ1zIUjEjaKr6vohBi/GFK/kCBkhW9qZZdGHpC
+         nxwyf2tAeD9my0a/qM1hJuFLQ5WLbt9BIL0qxKTsdW5atZMtIoDfpEumiMKhONL+q6GC
+         72o1+zEuLefO3WFSRbvMdj98ysyUkJMpfe7bhvl6A005A3nsrGayxqodnVvhsMT20pAt
+         yNYTWrA21yYGzTAFWGKYYldNzy6HfLhHLr9P8AMYSNlf/aDrueIH/wUsf3uXieIgzDX+
+         O5JA/bxh+xBYg6hbKTMR+zx9CtluRtqSpv7bEPdFtCNAqD41I+kZK/yYDSFaH5tcnybA
+         cKyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715091173; x=1715695973;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WETraqwVUAnZYIOXp5ZtLEEE1VYRO8MGNkm01fdovIk=;
+        b=UDVxYr9QofxgkB12hkVgnEKP5jHnSlrTpVAlizKV3/K5OliAfWQbuLoJAlOHSMp18m
+         h+3pWVTz8F1fpKRuzoL2lR6PL15MTgVTy19y24Ts3wFSKQHRDZb8PkGuGlGJhais+vKC
+         tJLKxjSHtT3WyXfMtNvE3Fs/C0P+2LY4oLxnIWXM1nKae56rkqsSCZL6Ti5MZLYxuufD
+         9Xl7romT3gKIIoa2FII/RHaN4X9HXkQbd0areTFVjKARDC00AYvHIZRXlsOdRwxjQKB2
+         FTlQu2GBj6eICwNuFAn0SiJSC6/7e9v/Lh6mHAAtOFRxnQnt0JtwTsjnvF0VBmkQFOqM
+         foyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVw1cH1RHMrL8KnoxHZv1zDcgmmIFyX/zPsZynz7JRitrdrB0627PZsnaEDbIEBLs/lhDSrAPAWSLMVF9N3p8ls0lt2WqMv
+X-Gm-Message-State: AOJu0Yza+hOVNiCrvqal1mbsDVRX4IJNiq4J58ftafncZGeBzmXJVqb1
+	aRDQjv9zmFufUgYqk8aHPm6iCHHtTkXBIB4/ie9dRdZUHJjSJFPaGz7whjtZ1sGtFwzeIlmtF64
+	nEQ==
+X-Google-Smtp-Source: AGHT+IGplKwNSTSkBTAvhdXpqfJnr+yrgmgSEfcIAM5opFxBtA3BpCgSqdbY3obOQsQH1wjTlAweJ+rLPgI=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:69cc:0:b0:de5:5225:c3a4 with SMTP id
+ e195-20020a2569cc000000b00de55225c3a4mr3998230ybc.7.1715091172929; Tue, 07
+ May 2024 07:12:52 -0700 (PDT)
+Date: Tue, 7 May 2024 07:12:51 -0700
+In-Reply-To: <202405061002.01D399877A@keescook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ybbp2rswycy36rqm"
-Content-Disposition: inline
-In-Reply-To: <0ba14e0f-6808-45ae-a6cd-9b9610d119db@baylibre.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-
-
---ybbp2rswycy36rqm
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <20240506165518.474504-1-mic@digikod.net> <202405061002.01D399877A@keescook>
+Message-ID: <Zjo1xyhjmehsRhZ2@google.com>
+Subject: Re: [PATCH v6 00/10] Fix Kselftest's vfork() side effects
+From: Sean Christopherson <seanjc@google.com>
+To: Kees Cook <keescook@chromium.org>
+Cc: "=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?=" <mic@digikod.net>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Mark Brown <broonie@kernel.org>, 
+	Sasha Levin <sashal@kernel.org>, Shengyu Li <shengyu.li.evgeny@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Bagas Sanjaya <bagasdotme@gmail.com>, Brendan Higgins <brendanhiggins@google.com>, 
+	David Gow <davidgow@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	"=?utf-8?Q?G=C3=BCnther?= Noack" <gnoack@google.com>, Jon Hunter <jonathanh@nvidia.com>, Ron Economos <re@w6rz.net>, 
+	Ronald Warsow <rwarsow@gmx.de>, Stephen Rothwell <sfr@canb.auug.org.au>, Will Drewry <wad@chromium.org>, 
+	kernel test robot <oliver.sang@intel.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hello David,
-
-On Tue, May 07, 2024 at 08:59:16AM -0500, David Lechner wrote:
-> On 5/7/24 1:13 AM, Uwe Kleine-K=F6nig wrote:
-> > On Mon, May 06, 2024 at 03:43:47PM -0500, David Lechner wrote:
-> >> Does not meet the criteria for stable.
-> >=20
-> > It was identified as a dependency of another patch. But I agree to
-> > David, it should be trivial to back this patch out. If you need help,
-> > please tell me.
-> >=20
+On Mon, May 06, 2024, Kees Cook wrote:
+> On Mon, May 06, 2024 at 06:55:08PM +0200, Micka=C3=ABl Sala=C3=BCn wrote:
+> > Shuah, I think this should be in -next really soon to make sure
+> > everything works fine for the v6.9 release, which is not currently the
+> > case.  I cannot test against all kselftests though.  I would prefer to
+> > let you handle this, but I guess you're not able to do so and I'll push
+> > it on my branch without reply from you.  Even if I push it on my branch=
+,
+> > please push it on yours too as soon as you see this and I'll remove it
+> > from mine.
 >=20
-> The "fix" patch isn't something that should be backported to stable
-> either, so we shouldn't need to do anything here other than drop
-> the whole series from the stable queue.
+> Yes, please. Getting this into v6.9 is preferred,
 
-Maybe it's just me, but for me backporting commit 0064db9ce4aa ("spi:
-axi-spi-engine: fix version format string") looks sensible. (Or what do
-you mean with "the \"fix\" patch"?) It's a small fix for a small
-annoyance, but looks harmless enough that I'd tend to include it in
-stable.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ybbp2rswycy36rqm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmY6NcEACgkQj4D7WH0S
-/k5dlQf/d8K+BKX+wDX01Ls4bEhbK7D0BKyMS/NdPvxwTj1Iv7t4KjutninAmnj4
-2wlw3YDinQGBpqYOdz7VmiZVJu/B1mdjWRbirqareocttxmyZ6xEKUKVe9nZw7Du
-b1b7JC47zaYpi/0kC2oIvJFNVA9RssRiuQo3gMU3GiJW7+RysjncQhCg65eo+nCb
-mbhNrH0n2vV7xXoMIYOr38NJEW3VHqZbdqn3dly+EDPnAiXJnjLypfpU6c+wPR6E
-j2/IufN2TZIVO89qEhkD9FXaFo2SpvuuAqOEJ6XUToQp/kvsufHsOaH6tdathYec
-KOQUHXoXzG8QBUhqvTEaLIOyQuhqEA==
-=Jo0l
------END PGP SIGNATURE-----
-
---ybbp2rswycy36rqm--
+Very strongly prefered for KVM selftests.  The negative impact on KVM isn't=
+ that
+the bugs cause failures, it's that they cause false passes, which is far wo=
+rse
+(and why the bugs went unnoticed for most of the cycle).
 
