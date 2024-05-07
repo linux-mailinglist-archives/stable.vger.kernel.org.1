@@ -1,100 +1,116 @@
-Return-Path: <stable+bounces-43164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EED58BDC29
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 09:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7799B8BDC88
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 09:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 931211F21BF1
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 07:11:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D8351F2394C
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 07:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D277113BAF1;
-	Tue,  7 May 2024 07:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73CA13BC30;
+	Tue,  7 May 2024 07:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZNKiet2y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9gF+7FZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3371013BAE9
-	for <stable@vger.kernel.org>; Tue,  7 May 2024 07:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B3A59;
+	Tue,  7 May 2024 07:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715065908; cv=none; b=CLF01OmW9QrKHhDBorcXtyqscrkhw02LBHTiBF2Mn0GIvJ7PV34mN2EXsSEvZksXaLaDl09X0ytkY9fZhKfnmiOqzds9Xv8dANiw31b3U59N8kJBR6tbSF0KNxP6EEtrphAyfZ1/uxWEtUmWiGawMctoIpnPjufGmRr7cj6OhB4=
+	t=1715067575; cv=none; b=b02KVfIbHs80DEWx0iGuZoVFV9LPsvtd3S1soAOaI53e6X7VYYb4Rd8wLVmgKr9J2ozR0dC/i4EbCj4gvXBqRZemjHQpumFpbDk0As8i/VdB9jGn8xHc3QQGpAvbcOW/K6is1wU7l5UdB5Nxz8SQX/Ts/nKa/rP7aNI/y2R8Zns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715065908; c=relaxed/simple;
-	bh=jOjJgk+C6qM8SRiOLIXC5KSmW3EnYW1nZhDW3oBevEc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=p44wi8iVKYKGzILYiHCHBfMnxAiEjnZXYgcgo9K/VyWqlf+84onQeYNC7pVrprV7eL/F5umGCsCjGagjFKdYhy90/eyPW3RmwQMWhHrx499i19iF7nQbKwC/Pr9KbqdKPpsMqo34PLuPccEMjtlGGhYg5CeRSTER0aFm8GBCivY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZNKiet2y; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715065908; x=1746601908;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=jOjJgk+C6qM8SRiOLIXC5KSmW3EnYW1nZhDW3oBevEc=;
-  b=ZNKiet2yLAxsXOYz6mM/juHIcxCc9k2rH6rNa4JZyNjXr6EEGGbFLBo3
-   /n2Rlhq4VW8AhvntSrnj5zSBHIyHJpm2tsQv1udmlvnQpar2Vdb9fz2rj
-   kXYUgjWQWXc1rrE8RZJ1P1RQDE+nLbSPgysBI0MWH5mPB2UmdrSud4WkD
-   uD8MEPruHFdDW60iLnl1WtX5k9udp/gL8CG9Pa2IerIdkiyax4ZRA2tZ4
-   h4n4ZwzcWZq/SpAiGCnxgPVKLJHlOLVR/GtwFkJKt3CXjIa0Sbqaj6pGW
-   cVUs2pAewb3qB13yYuWHRwRNK6ZE2vtDQmQd1H9HnzjNgoORi2XxUjUAv
-   Q==;
-X-CSE-ConnectionGUID: ryuAfdCQQOSmLR7caubINg==
-X-CSE-MsgGUID: IEeHitwuS7uUJwVUy5xxUQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10996635"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="10996635"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 00:11:47 -0700
-X-CSE-ConnectionGUID: eRlJ8V5dSM2IB5x6Agmy+w==
-X-CSE-MsgGUID: mvT36/vKRaGPQX9ZHETYFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="28819545"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 07 May 2024 00:11:45 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s4EzH-0001VH-1G;
-	Tue, 07 May 2024 07:11:43 +0000
-Date: Tue, 7 May 2024 15:10:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: xu.xin16@zte.com.cn
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH linux-next] jff2:fix potential illegal address access in
- jffs2_free_inode
-Message-ID: <ZjnT9SJYoZAHt_rv@974e639ab07c>
+	s=arc-20240116; t=1715067575; c=relaxed/simple;
+	bh=rJpFn1AO9QkoOchyzDCE9TfU4pQm9RHy9KJ9ICU1PyM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D1EsRuKe4uhCEikRUaPWhztRojkrB7Z+GmIYLVPy/9hKsbuIgZVWN7EINiKkkjn375uOOklZW6OXiQQU8YKLY3nNGZJM6UtwxOY6cOw4KN6ZHNc1ANqAhcJtjPFACc0SZ5TWPbXofUylUbvxPonjL0grn4BKIC1ZPU19UvJ7HVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9gF+7FZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609DCC2BBFC;
+	Tue,  7 May 2024 07:39:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715067575;
+	bh=rJpFn1AO9QkoOchyzDCE9TfU4pQm9RHy9KJ9ICU1PyM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=L9gF+7FZ6nHYPWp4shMqyCWwss9CfOmgX3yR+TzEemeEu6/MM9FfL5tmUoHUnJxC/
+	 Ee0P8hN8UE31H1Lezd8mAQ/SOUYZfehRwVYz0o9KQthH2+fnknhPPlNdflrL1mruLJ
+	 nPQTRja9UDNtTkqRDZH4yhbiJu9444DCGyxQFI/99Cuje6MKfp9Q3+9VuTAn+qIucx
+	 6EPNF8uPXyEHP2vkM6Z6gfq7RcFbeES9fuwpjlpR/zdX0uS0HMV9vmRc0lPYOb63vU
+	 P3oyxFFRNCb1sJvxbK/7Q9GJgE/cPxrWjBqzhBL2qSDgfGTUchkmFvdcE/O/uKkJVw
+	 9G9UXN9PNqeLQ==
+Message-ID: <41e54b6e-7848-415f-b913-d481509d5e8a@kernel.org>
+Date: Tue, 7 May 2024 16:39:32 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240507150046826ZGsq8VfvyxBzczJHMtBxQ@zte.com.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
+To: Rick Wertenbroek <rick.wertenbroek@gmail.com>, rick.wertenbroek@heig-vd.ch
+Cc: stable@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240403144508.489835-1-rick.wertenbroek@gmail.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20240403144508.489835-1-rick.wertenbroek@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 4/3/24 23:45, Rick Wertenbroek wrote:
+> Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
+> Vendor ID are u16 variables and are written to a u32 register of the
+> controller. The Subsystem Vendor ID was always 0 because the u16 value
+> was masked incorrectly with GENMASK(31,16) resulting in all lower 16
+> bits being set to 0 prior to the shift.
+> 
+> Remove both masks as they are unnecessary and set the register correctly
+> i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
+> Subsystem Vendor ID.
+> 
+> This is documented in the RK3399 TRM section 17.6.7.1.17
+> 
+> Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+> Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+> Cc: stable@vger.kernel.org
 
-Thanks for your patch.
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH linux-next] jff2:fix potential illegal address access in jffs2_free_inode
-Link: https://lore.kernel.org/stable/20240507150046826ZGsq8VfvyxBzczJHMtBxQ%40zte.com.cn
+> ---
+>  drivers/pci/controller/pcie-rockchip-ep.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+> index c9046e97a1d2..37d4bcb8bd5b 100644
+> --- a/drivers/pci/controller/pcie-rockchip-ep.c
+> +++ b/drivers/pci/controller/pcie-rockchip-ep.c
+> @@ -98,10 +98,9 @@ static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn, u8 vfn,
+>  
+>  	/* All functions share the same vendor ID with function 0 */
+>  	if (fn == 0) {
+> -		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
+> -			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
+> -
+> -		rockchip_pcie_write(rockchip, vid_regs,
+> +		rockchip_pcie_write(rockchip,
+> +				    hdr->vendorid |
+> +				    hdr->subsys_vendor_id << 16,
+>  				    PCIE_CORE_CONFIG_VENDOR);
+>  	}
+>  
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Damien Le Moal
+Western Digital Research
 
 
