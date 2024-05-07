@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-43291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692498BF169
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:24:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 708C48BF16C
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9748D1C222D3
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:24:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1FF283AE0
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8C3131E24;
-	Tue,  7 May 2024 23:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE97132494;
+	Tue,  7 May 2024 23:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tIgxBHFs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7VTY5YN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD80F131BD0;
-	Tue,  7 May 2024 23:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5795D13118D;
+	Tue,  7 May 2024 23:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123305; cv=none; b=Yf5PFmB9nglKj4MDs/DrtpfAcSZ4MNB6AIkFO4XLvpvhL1RMpZjDGmujGkyEt6p/ddFUWseUl3p9xhnzOKep0q81kfkMAr7Ybho0RjcbHNahqi97LIciQqOnJO4eaQwpXMsyj1ImH2564J8SNTDF1useUSZcnHppO97RIk3nq4s=
+	t=1715123306; cv=none; b=rNZNJDDvTPTOBwNorVHJkw+VPMdAbedvKLMfhVlQj3cHeu9kmNaupiAuSQaGJ3IRqy7cNxkqbjtGC5atjrcEUT/TaBxIR1OIdqZC4MfY1edYjGF2/Eu9j4yqOa+sgK2CLcdBnFHCvzzRBBplJaeU0t5ACDYmPbZaa9NSLlB5kGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123305; c=relaxed/simple;
-	bh=8flEoGuR5cknPXB6dawqgRqhe1hzDJzH/am2PZMz4Cg=;
+	s=arc-20240116; t=1715123306; c=relaxed/simple;
+	bh=wSkfnaPITX5qLw6RyeCyK9vxuYtr6G5t5yRD+6IUEHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpsEjosx6tusgwc9ASfHq10rsMRo2Y+UN5sP1V1fkNmlLNxNc0ZzeiETL/ydJwxGEsErFd3Zhe98xbmhuBCSCcNv6mvBQRv68diS7RxMeNwer73Nl9d8+v0iOehbmejS6aGNUc1ZsKDGVnFNkeo7TTGL424aC9xR8YGE36JjeHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tIgxBHFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CF7C2BBFC;
-	Tue,  7 May 2024 23:08:23 +0000 (UTC)
+	 MIME-Version; b=rKl1V4Md23CP7l7cbiOzm812HfwibrGR2kPBHCm4xIyIMe3Z4cNHvuScuonuapB8z+zJzGfz0ynkAA8uNt6hO7nXapy7HNTzz9edPvPu+fPmago2jjRCEWjbKoGSCXukLrMb73tVZmnRZkGiEyYjECO/lvBcQZCJL09mm6X+4y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7VTY5YN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6820C4AF63;
+	Tue,  7 May 2024 23:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123304;
-	bh=8flEoGuR5cknPXB6dawqgRqhe1hzDJzH/am2PZMz4Cg=;
+	s=k20201202; t=1715123305;
+	bh=wSkfnaPITX5qLw6RyeCyK9vxuYtr6G5t5yRD+6IUEHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIgxBHFsL27ydIYjy00uUpdNBraMgQB9Ecf9VKscxeYPsw1Eg7WuYRm4Y8LEvutTO
-	 CJWOkGX8LGvMvqD5lhLufhL92UYLiN0L6jb/OQLuddfhCWZBB4Zrww0g9C6D8Y6gXn
-	 ZrWiMHFlUmTa7FNJzVxhk6z/gRXdoc/xeZ42d6YfxNoPfeBum+aSIJDnBEm9MVdQ0R
-	 WIwTmZMzP1WpsvZMBlarcZqsoSMg3GsLIbpybqVx3JD4pcGfXlxwZ4xmgPjVvAg+Wj
-	 MfvTnKgeiogaaPo2VEuCc+gvHp/179YN4b3IGF3vuni7t17Cuxfz50Z4rEE/J2Z1al
-	 9YGjoQWU7TQcw==
+	b=a7VTY5YN+cAecIUbj7Vt1Pcota2X2eaE6tewsHi4Af0dOuaSwbcC9Ktu5mnD9DXvy
+	 YXwMFPZeyuouNq6R4y8SeMJnLALvrckYkBXG55XLbOUNaadTcdFLJv15qofQYqebkp
+	 eLI4flqYGsK4x1pk5VMfupiT9FLcRt17V7MBBYWtZOtbc1ynn8mg0s8iYsoBIAde9R
+	 0aaMJnzuGF6Cuwy/Pt02Vy8053h0ZsqcCwe9BgtRaCkp7vS1RoW4KZgsnq1wnBg/6b
+	 tmIsxzZobPEl2/X1qKEkVmzbxFQhsZfYkaoZ51uM6ufW2YG4d8BMe5gUeuI7uHAjyA
+	 g83arCsyx7qeg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jack Yu <jack.yu@realtek.com>,
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	oder_chiou@realtek.com,
+	andersson@kernel.org,
 	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 12/52] ASoC: rt722-sdca: add headset microphone vrefo setting
-Date: Tue,  7 May 2024 19:06:38 -0400
-Message-ID: <20240507230800.392128-12-sashal@kernel.org>
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 13/52] regulator: qcom-refgen: fix module autoloading
+Date: Tue,  7 May 2024 19:06:39 -0400
+Message-ID: <20240507230800.392128-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -69,94 +68,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit 140e0762ca055d1aa84b17847cde5d9e47f56f76 ]
+[ Upstream commit ddd3f34c10002e41ed3cd89c9bd8f1d05a22506a ]
 
-Add vrefo settings to fix jd and headset mic recording issue.
+Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
+based on the alias from of_device_id table.
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://msgid.link/r/727219ed45d3485ba8f4646700aaa8a8@realtek.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://msgid.link/r/20240410172615.255424-1-krzk@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt722-sdca.c | 25 +++++++++++++++++++------
- sound/soc/codecs/rt722-sdca.h |  3 +++
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ drivers/regulator/qcom-refgen-regulator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/rt722-sdca.c b/sound/soc/codecs/rt722-sdca.c
-index 4338cdb3a7917..9ff607984ea19 100644
---- a/sound/soc/codecs/rt722-sdca.c
-+++ b/sound/soc/codecs/rt722-sdca.c
-@@ -1438,9 +1438,12 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
- 	int loop_check, chk_cnt = 100, ret;
- 	unsigned int calib_status = 0;
+diff --git a/drivers/regulator/qcom-refgen-regulator.c b/drivers/regulator/qcom-refgen-regulator.c
+index 656fe330d38f0..063e12c08e75f 100644
+--- a/drivers/regulator/qcom-refgen-regulator.c
++++ b/drivers/regulator/qcom-refgen-regulator.c
+@@ -140,6 +140,7 @@ static const struct of_device_id qcom_refgen_match_table[] = {
+ 	{ .compatible = "qcom,sm8250-refgen-regulator", .data = &sm8250_refgen_desc },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, qcom_refgen_match_table);
  
--	/* Read eFuse */
--	rt722_sdca_index_write(rt722, RT722_VENDOR_SPK_EFUSE, RT722_DC_CALIB_CTRL,
--		0x4808);
-+	/* Config analog bias */
-+	rt722_sdca_index_write(rt722, RT722_VENDOR_REG, RT722_ANALOG_BIAS_CTL3,
-+		0xa081);
-+	/* GE related settings */
-+	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_GE_RELATED_CTL2,
-+		0xa009);
- 	/* Button A, B, C, D bypass mode */
- 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_UMP_HID_CTL4,
- 		0xcf00);
-@@ -1474,9 +1477,6 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
- 		if ((calib_status & 0x0040) == 0x0)
- 			break;
- 	}
--	/* Release HP-JD, EN_CBJ_TIE_GL/R open, en_osw gating auto done bit */
--	rt722_sdca_index_write(rt722, RT722_VENDOR_REG, RT722_DIGITAL_MISC_CTRL4,
--		0x0010);
- 	/* Set ADC09 power entity floating control */
- 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_ADC0A_08_PDE_FLOAT_CTL,
- 		0x2a12);
-@@ -1489,8 +1489,21 @@ static void rt722_sdca_jack_preset(struct rt722_sdca_priv *rt722)
- 	/* Set DAC03 and HP power entity floating control */
- 	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_DAC03_HP_PDE_FLOAT_CTL,
- 		0x4040);
-+	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_ENT_FLOAT_CTRL_1,
-+		0x4141);
-+	rt722_sdca_index_write(rt722, RT722_VENDOR_HDA_CTL, RT722_FLOAT_CTRL_1,
-+		0x0101);
- 	/* Fine tune PDE40 latency */
- 	regmap_write(rt722->regmap, 0x2f58, 0x07);
-+	regmap_write(rt722->regmap, 0x2f03, 0x06);
-+	/* MIC VRefo */
-+	rt722_sdca_index_update_bits(rt722, RT722_VENDOR_REG,
-+		RT722_COMBO_JACK_AUTO_CTL1, 0x0200, 0x0200);
-+	rt722_sdca_index_update_bits(rt722, RT722_VENDOR_REG,
-+		RT722_VREFO_GAT, 0x4000, 0x4000);
-+	/* Release HP-JD, EN_CBJ_TIE_GL/R open, en_osw gating auto done bit */
-+	rt722_sdca_index_write(rt722, RT722_VENDOR_REG, RT722_DIGITAL_MISC_CTRL4,
-+		0x0010);
- }
- 
- int rt722_sdca_io_init(struct device *dev, struct sdw_slave *slave)
-diff --git a/sound/soc/codecs/rt722-sdca.h b/sound/soc/codecs/rt722-sdca.h
-index 44af8901352eb..2464361a7958c 100644
---- a/sound/soc/codecs/rt722-sdca.h
-+++ b/sound/soc/codecs/rt722-sdca.h
-@@ -69,6 +69,7 @@ struct rt722_sdca_dmic_kctrl_priv {
- #define RT722_COMBO_JACK_AUTO_CTL2		0x46
- #define RT722_COMBO_JACK_AUTO_CTL3		0x47
- #define RT722_DIGITAL_MISC_CTRL4		0x4a
-+#define RT722_VREFO_GAT				0x63
- #define RT722_FSM_CTL				0x67
- #define RT722_SDCA_INTR_REC			0x82
- #define RT722_SW_CONFIG1			0x8a
-@@ -127,6 +128,8 @@ struct rt722_sdca_dmic_kctrl_priv {
- #define RT722_UMP_HID_CTL6			0x66
- #define RT722_UMP_HID_CTL7			0x67
- #define RT722_UMP_HID_CTL8			0x68
-+#define RT722_FLOAT_CTRL_1			0x70
-+#define RT722_ENT_FLOAT_CTRL_1		0x76
- 
- /* Parameter & Verb control 01 (0x1a)(NID:20h) */
- #define RT722_HIDDEN_REG_SW_RESET (0x1 << 14)
+ static struct platform_driver qcom_refgen_driver = {
+ 	.probe = qcom_refgen_probe,
 -- 
 2.43.0
 
