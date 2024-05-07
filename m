@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-43348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0CC8BF1F1
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:38:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082A78BF1F4
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24042283680
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:38:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B807C2835C9
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1D214A630;
-	Tue,  7 May 2024 23:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE6514AD1A;
+	Tue,  7 May 2024 23:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avVUBa04"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JaNUWpLK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A6314A62B;
-	Tue,  7 May 2024 23:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA1214AD0A;
+	Tue,  7 May 2024 23:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123464; cv=none; b=h89dx9J6+eUi3fSgIgMQdOMCPrNgOiJ5t9ZiL7DsmP0yKwoQ2DQS/fd6RMdUbjf84jM2beWWtyaf2Wsfgiptmf33akKaIFGEJ3CxqtasX+y9dNnz8uVmrHeMVi8XX6Bd1gGiP3TaoS0VZqQRTfjmVg6KiOzSmkRvSe+AeyigAq8=
+	t=1715123466; cv=none; b=CNYUTxNZicjsip61lysYQZRU5vU+4xGG5XkDJBDIXazq1WjPCriOtEyRRr2StUuSIFe2pi7O+e/65Nj5t1G6bnIUY+RxJwBKvSX99A0J6YmCkpYmqnZ0VQ1WldK5UAf9qQq7VB/THzwv2pyDEFcWKASWhPj2OJtR2WTMAWJwDg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123464; c=relaxed/simple;
-	bh=91OSAVcq8c3ZAQ/ZXNJN5YVGla1vrLOT0Ct0XJll44w=;
+	s=arc-20240116; t=1715123466; c=relaxed/simple;
+	bh=/CV7Z6rF391rfbdBV98VvbhtFxwBt+jxT5UoV7D8kvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOxM/tZOKPXYludS7L1e2/rtyyD5glj3Wcbv9YEi/FLyzOjYPh/NqFolzYk9aD10aOTB3G9Ip0aMXcMMkBub9F475iXIAIOYm/xgHcybBXgzcBArGVyYaMxWZRL1iuNIbXtqiige82IyfS3/7CclB4J/IvT2oJ/ayTi0CzIazfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avVUBa04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C9FC4AF17;
-	Tue,  7 May 2024 23:11:02 +0000 (UTC)
+	 MIME-Version; b=S1G4p+zec+sM35WIPk5r5B/2TobqOlMdx8wMEULZcJBXeYaKRoc95TiHw9+zaMHKbwYmDL8VodTBKwy5KXl7ND1LrQooXV0xT+TgVolul5ZeGxXsoIYL80gajnTI8s0n5Rioz0JxZMNZ/3ryf0z1HfK71HcmnBtO7xguFYhmOtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JaNUWpLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AF8C4AF63;
+	Tue,  7 May 2024 23:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123463;
-	bh=91OSAVcq8c3ZAQ/ZXNJN5YVGla1vrLOT0Ct0XJll44w=;
+	s=k20201202; t=1715123465;
+	bh=/CV7Z6rF391rfbdBV98VvbhtFxwBt+jxT5UoV7D8kvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avVUBa04+gk7y0ENhy7f+ujOrnLSeaECqsOWvIP3A2SD7qZy9zt7/Cf78k3nZpHiJ
-	 AIYNT2oYQ//2UJwZcLIOgs5AuGoMIBM6torqUP7B5tV2Mju6r4731iRZdPqnD7u84N
-	 YFU4e9BS51ChBpyOxO67LSxnLQjIWInlK/2TWfFt86XfwS0XL9X41rQC6yufrXdG5t
-	 PrjTQMQdg9y8AEp11HcQIPPqUEEdIqPRi5C1sp0FHgCK0CKFs8qm3ADsmC0PsZ3Q+C
-	 txrjfHVSKvyhRpKbzYBSnfCl1CfxPWFn2zfS1iBKrliBKsZAOWyDyhioxu3KTsEfcc
-	 h51l5ntb1vWhw==
+	b=JaNUWpLKwphTOQzIkLOZ0HTSTophQWs0GY9qTQlKopR8FTi9K+JkYqaUtmOfFNSsz
+	 vN+dwwbWubOFPqPPXx87v6YLklGmuGSmMOPD64ZtY/ImeZmMJoJP6qfoSUQpdjxjQ1
+	 qFjS5ufq0WhqH9tjlhqccAIXuFvQ2VjMqcEsa0QhChOwskEeMXr/hMeOdxbb/DhGrt
+	 lqqHKx7La+x/t/C0KKJZqWBOQBPB5qFEaCghxOEXrNJBx8/Mq/YydGJ7AI17oeTrfb
+	 +BXJ22JKF2Jf+XSQliyd8BNTTmwf8AQrTfRYP6BgwyHO4rh7XpyG6Z5RnmJADOn8AP
+	 lI5oJ+pMI7O1w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vicki Pfau <vi@endrift.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Peter Colberg <peter.colberg@intel.com>,
+	Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	appsforartists@google.com,
-	maxwell.nguyen@hp.com,
-	carl.ng@hp.com,
-	swyterzone@gmail.com,
-	slouken@libsdl.org,
-	christophe.jaillet@wanadoo.fr,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 16/43] Input: xpad - add support for ASUS ROG RAIKIRI
-Date: Tue,  7 May 2024 19:09:37 -0400
-Message-ID: <20240507231033.393285-16-sashal@kernel.org>
+	hao.wu@intel.com,
+	mdf@kernel.org,
+	linux-fpga@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 17/43] fpga: dfl-pci: add PCI subdevice ID for Intel D5005 card
+Date: Tue,  7 May 2024 19:09:38 -0400
+Message-ID: <20240507231033.393285-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231033.393285-1-sashal@kernel.org>
 References: <20240507231033.393285-1-sashal@kernel.org>
@@ -71,40 +69,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Vicki Pfau <vi@endrift.com>
+From: Peter Colberg <peter.colberg@intel.com>
 
-[ Upstream commit be81415a32ef6d8a8a85529fcfac03d05b3e757d ]
+[ Upstream commit bb1dbeceb1c20cfd81271e1bd69892ebd1ee38e0 ]
 
-Add the VID/PID for ASUS ROG RAIKIRI to xpad_device and the VID to xpad_table
+Add PCI subdevice ID for the Intel D5005 Stratix 10 FPGA card as
+used with the Open FPGA Stack (OFS) FPGA Interface Manager (FIM).
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20240404035345.159643-1-vi@endrift.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Unlike the Intel D5005 PAC FIM which exposed a separate PCI device ID,
+the OFS FIM reuses the same device ID for all DFL-based FPGA cards
+and differentiates on the subdevice ID. The subdevice ID values were
+chosen as the numeric part of the FPGA card names in hexadecimal.
+
+Signed-off-by: Peter Colberg <peter.colberg@intel.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20240422230257.1959-1-peter.colberg@intel.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/fpga/dfl-pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 9206253422016..cd97a7a9f812d 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -207,6 +207,7 @@ static const struct xpad_device {
- 	{ 0x0738, 0xcb29, "Saitek Aviator Stick AV8R02", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xf738, "Super SFIV FightStick TE S", 0, XTYPE_XBOX360 },
- 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
-+	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", 0, XTYPE_XBOXONE },
- 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
-@@ -482,6 +483,7 @@ static const struct usb_device_id xpad_table[] = {
- 	{ USB_DEVICE(0x0738, 0x4540) },		/* Mad Catz Beat Pad */
- 	XPAD_XBOXONE_VENDOR(0x0738),		/* Mad Catz FightStick TE 2 */
- 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
-+	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
- 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x0e6f),		/* 0x0e6f Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x0e6f),		/* 0x0e6f Xbox One controllers */
+diff --git a/drivers/fpga/dfl-pci.c b/drivers/fpga/dfl-pci.c
+index 98b8fd16183e4..80cac3a5f9767 100644
+--- a/drivers/fpga/dfl-pci.c
++++ b/drivers/fpga/dfl-pci.c
+@@ -78,6 +78,7 @@ static void cci_pci_free_irq(struct pci_dev *pcidev)
+ #define PCIE_DEVICE_ID_SILICOM_PAC_N5011	0x1001
+ #define PCIE_DEVICE_ID_INTEL_DFL		0xbcce
+ /* PCI Subdevice ID for PCIE_DEVICE_ID_INTEL_DFL */
++#define PCIE_SUBDEVICE_ID_INTEL_D5005		0x138d
+ #define PCIE_SUBDEVICE_ID_INTEL_N6000		0x1770
+ #define PCIE_SUBDEVICE_ID_INTEL_N6001		0x1771
+ #define PCIE_SUBDEVICE_ID_INTEL_C6100		0x17d4
+@@ -101,6 +102,8 @@ static struct pci_device_id cci_pcie_id_tbl[] = {
+ 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_PAC_D5005_VF),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5010),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5011),},
++	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
++			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_D5005),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
+ 			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_N6000),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL_VF,
 -- 
 2.43.0
 
