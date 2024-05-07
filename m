@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-43354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E708BF200
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:40:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C53A8BF203
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3FA286D63
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:40:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04AC2287048
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CAA14D296;
-	Tue,  7 May 2024 23:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B47514EC40;
+	Tue,  7 May 2024 23:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WgTImgCR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALOE7BSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062DB14D28E;
-	Tue,  7 May 2024 23:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A8314D2B4;
+	Tue,  7 May 2024 23:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123477; cv=none; b=gZP9rGdrmr1IM3y9KiOuqik00nR9g/XCQgla/YKsO0IClxrm6mb4tn1fB42NojXzuaAh5dshxnhELLsZ9LNFQeHjI/+k1z8ISJ5c3a6dNCDOITQX3+vIxSKqN1uURX7dpBGEQ19NoyuQFRRBNgB3QrC46JyVI+Yf6zBbQPq0L9I=
+	t=1715123479; cv=none; b=GuRu5ZR55px00jk9j1OZVV30hiIrWBG4UGwniW0lttaHjWTbXz0WqgEi3PnRnMkE5/laCkVq5VrAgl3TUSESy8aMox7AkasL80MUbqeUbFhUlbW8HFCeDwQIbatH/fGIBG+ZpRvR6DsLVIDxuhsJFrEvLXe5fcXccTQfeyp+Hy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123477; c=relaxed/simple;
-	bh=zjAZlI1pbZ1tfO45FvuApgI5jyD/USyAPo18X3Wlq1o=;
+	s=arc-20240116; t=1715123479; c=relaxed/simple;
+	bh=P9+Xv74RFVSFodo/2jDBWm/cubv4cnUm6GU0sms+K4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVLmOYQ0k8FsfkvaWpDl5daSv8KfHgmvncxJasBDHScwQ2YiaJlPXsxZqYMDUfzgbKFPzQESZh/ntE46lvnkpxA91S08v+VQwgQFUULWBuXzHlYBAFvgAm9FGBYtwCqto/EBu6aQgTvIw0UzCsqZanDc+hDeE0b2GMedrytD0bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WgTImgCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB836C2BBFC;
-	Tue,  7 May 2024 23:11:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YW8GYkJfwdE+xNTJBcf3D2qg6O5Ca5ghPy5hOog5J0qWWduf70RxD7zXCFY523GyEU97T3WCbGo0aXr5YU2D5qDi4Vd+k4g3PJ05UPXhda0XrbqmRe9mmaVQxanDfi350eDD5bc1HGLkl6ulBkYKA/2nx3lArkIFSaTB1rrvUms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALOE7BSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524D5C2BBFC;
+	Tue,  7 May 2024 23:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123476;
-	bh=zjAZlI1pbZ1tfO45FvuApgI5jyD/USyAPo18X3Wlq1o=;
+	s=k20201202; t=1715123478;
+	bh=P9+Xv74RFVSFodo/2jDBWm/cubv4cnUm6GU0sms+K4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgTImgCRuG5eohgXSSLXm9NyHs8Hb6n5XmTwL0wJLhm41/L+6Bsn0EFGsa0OygZuO
-	 zsoEqs7DXdSrc7GnJBxlp0bogd30x+UMfTzGs3J0GMXD8Tn0tfzQeIgu/+zwwKUFsG
-	 lNnDpNw7j6o/RI3asAcZ3eJIiFjU/YVPMIC+J/eKdsZ9bdKlTtFqjPG9zRcZjyxakK
-	 25sne9L93IPLdxQ/+C79mN96QyUleN9hPK01XCwwFkw5aKqbbH9b3QknKfe8SVkcIC
-	 j6Tp7VB8hYBxdZr5vFgDatVWd3VS7J9CsnlyfWhE7hdPpJlNJR+bGY2xOPbIOlaqsX
-	 LweTNoKX7q81g==
+	b=ALOE7BSBDL0X3wIPJqLiAQGTMav/0Y8vedhnAHw/pGm+tfE4e2NuNN7v2wlvW9ox7
+	 MssKT6kE0PyDqNrz2VfBkOtUL/iRZBn2TBHRTvPQlNwliZh6r70C6LHozpuLjNExa8
+	 exD+djQdluPiCIxlH145LoI/mGHVKH5BSY79hJCZVUCmWjSxOWIrkyoxe4pDDEpXG0
+	 2T1c7/KVIygmewX2tKPnTb0yX9BK3OzZHox/f37Z8yP20juC8YrfUNU50x9d1nTIdC
+	 lGFGKRRL47F4PnbxgroqsB/cDHV1wmFebQ/3iNzNCAT4uz5zf1XMmu5WQDEQiias6a
+	 P6xRQOFLoJ7JA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zqiang <qiang.zhang1211@gmail.com>,
-	syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Simon Horman <horms@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	peterz@infradead.org,
-	tj@kernel.org,
-	jiangshanlai@gmail.com,
+	manishc@marvell.com,
+	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	CruzZhao@linux.alibaba.com
-Subject: [PATCH AUTOSEL 6.6 22/43] softirq: Fix suspicious RCU usage in __do_softirq()
-Date: Tue,  7 May 2024 19:09:43 -0400
-Message-ID: <20240507231033.393285-22-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 23/43] net: qede: sanitize 'rc' in qede_add_tc_flower_fltr()
+Date: Tue,  7 May 2024 19:09:44 -0400
+Message-ID: <20240507231033.393285-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231033.393285-1-sashal@kernel.org>
 References: <20240507231033.393285-1-sashal@kernel.org>
@@ -65,105 +65,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-[ Upstream commit 1dd1eff161bd55968d3d46bc36def62d71fb4785 ]
+[ Upstream commit e25714466abd9d96901b15efddf82c60a38abd86 ]
 
-Currently, the condition "__this_cpu_read(ksoftirqd) == current" is used to
-invoke rcu_softirq_qs() in ksoftirqd tasks context for non-RT kernels.
+Explicitly set 'rc' (return code), before jumping to the
+unlock and return path.
 
-This works correctly as long as the context is actually task context but
-this condition is wrong when:
+By not having any code depend on that 'rc' remains at
+it's initial value of -EINVAL, then we can re-use 'rc' for
+the return code of function calls in subsequent patches.
 
-     - the current task is ksoftirqd
-     - the task is interrupted in a RCU read side critical section
-     - __do_softirq() is invoked on return from interrupt
+Only compile tested.
 
-Syzkaller triggered the following scenario:
-
-  -> finish_task_switch()
-    -> put_task_struct_rcu_user()
-      -> call_rcu(&task->rcu, delayed_put_task_struct)
-        -> __kasan_record_aux_stack()
-          -> pfn_valid()
-            -> rcu_read_lock_sched()
-              <interrupt>
-                __irq_exit_rcu()
-                -> __do_softirq)()
-                   -> if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
-                     __this_cpu_read(ksoftirqd) == current)
-                     -> rcu_softirq_qs()
-                       -> RCU_LOCKDEP_WARN(lock_is_held(&rcu_sched_lock_map))
-
-The rcu quiescent state is reported in the rcu-read critical section, so
-the lockdep warning is triggered.
-
-Fix this by splitting out the inner working of __do_softirq() into a helper
-function which takes an argument to distinguish between ksoftirqd task
-context and interrupted context and invoke it from the relevant call sites
-with the proper context information and use that for the conditional
-invocation of rcu_softirq_qs().
-
-Reported-by: syzbot+dce04ed6d1438ad69656@syzkaller.appspotmail.com
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240427102808.29356-1-qiang.zhang1211@gmail.com
-Link: https://lore.kernel.org/lkml/8f281a10-b85a-4586-9586-5bbc12dc784f@paulmck-laptop/T/#mea8aba4abfcb97bbf499d169ce7f30c4cff1b0e3
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/softirq.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_filter.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 210cf5f8d92c2..bd9716d7bb638 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -507,7 +507,7 @@ static inline bool lockdep_softirq_start(void) { return false; }
- static inline void lockdep_softirq_end(bool in_hardirq) { }
- #endif
- 
--asmlinkage __visible void __softirq_entry __do_softirq(void)
-+static void handle_softirqs(bool ksirqd)
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+index a5ac21a0ee33f..8ecdfa36a6854 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+@@ -1868,8 +1868,8 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 			    struct flow_cls_offload *f)
  {
- 	unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
- 	unsigned long old_flags = current->flags;
-@@ -562,8 +562,7 @@ asmlinkage __visible void __softirq_entry __do_softirq(void)
- 		pending >>= softirq_bit;
+ 	struct qede_arfs_fltr_node *n;
+-	int min_hlen, rc = -EINVAL;
+ 	struct qede_arfs_tuple t;
++	int min_hlen, rc;
+ 
+ 	__qede_lock(edev);
+ 
+@@ -1879,8 +1879,10 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
  	}
  
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) &&
--	    __this_cpu_read(ksoftirqd) == current)
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && ksirqd)
- 		rcu_softirq_qs();
+ 	/* parse flower attribute and prepare filter */
+-	if (qede_parse_flow_attr(edev, proto, f->rule, &t))
++	if (qede_parse_flow_attr(edev, proto, f->rule, &t)) {
++		rc = -EINVAL;
+ 		goto unlock;
++	}
  
- 	local_irq_disable();
-@@ -583,6 +582,11 @@ asmlinkage __visible void __softirq_entry __do_softirq(void)
- 	current_restore_flags(old_flags, PF_MEMALLOC);
- }
+ 	/* Validate profile mode and number of filters */
+ 	if ((edev->arfs->filter_count && edev->arfs->mode != t.mode) ||
+@@ -1888,12 +1890,15 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 		DP_NOTICE(edev,
+ 			  "Filter configuration invalidated, filter mode=0x%x, configured mode=0x%x, filter count=0x%x\n",
+ 			  t.mode, edev->arfs->mode, edev->arfs->filter_count);
++		rc = -EINVAL;
+ 		goto unlock;
+ 	}
  
-+asmlinkage __visible void __softirq_entry __do_softirq(void)
-+{
-+	handle_softirqs(false);
-+}
-+
- /**
-  * irq_enter_rcu - Enter an interrupt context with RCU watching
-  */
-@@ -918,7 +922,7 @@ static void run_ksoftirqd(unsigned int cpu)
- 		 * We can safely run softirq on inline stack, as we are not deep
- 		 * in the task stack here.
- 		 */
--		__do_softirq();
-+		handle_softirqs(true);
- 		ksoftirqd_run_end();
- 		cond_resched();
- 		return;
+ 	/* parse tc actions and get the vf_id */
+-	if (qede_parse_actions(edev, &f->rule->action, f->common.extack))
++	if (qede_parse_actions(edev, &f->rule->action, f->common.extack)) {
++		rc = -EINVAL;
+ 		goto unlock;
++	}
+ 
+ 	if (qede_flow_find_fltr(edev, &t)) {
+ 		rc = -EEXIST;
 -- 
 2.43.0
 
