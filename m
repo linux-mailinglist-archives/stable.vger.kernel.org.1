@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FD88BF206
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:40:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E478BF209
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65B1C2873C1
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:40:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49AE01F21228
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54ACB16C87D;
-	Tue,  7 May 2024 23:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533B116D4EA;
+	Tue,  7 May 2024 23:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FelSheqh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlPpkkCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AB515F3E1;
-	Tue,  7 May 2024 23:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102C316D4CA;
+	Tue,  7 May 2024 23:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123480; cv=none; b=onUJtWOUByi69BJGH/rulN9fL/Vxk5meFKN3mpdvlt5NrtkPR/fcrWEqwhMIGfwyVvrC1hTdsi3jGAL+eOUDt4OCJWQJ8hDrgsrxiWt6KaQPGlCX9fPEq4BvfABGeMydh1rndQ4AT0eYM823ErKeJ5Pg4YGJ4fHNrVUpi9KsGFs=
+	t=1715123481; cv=none; b=oYGqeh1fj7XExaVnWI/s7+zRL+c4euQJTRAl4ou2At8+SoJO+RLxWnCCL2dV2Un9u4EoHQ0NKjwnAPCdMFV8E1DcnJJs/FtVrQTfLThhwewVkYeZrMu3q4qftl5x1MauByc3MbaHYU8nlG6j9PUDc5KzvGvmr3Kbpr3t7dHQvls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123480; c=relaxed/simple;
-	bh=f43ozCLdsfglP1LAVYw8NC7+1NYU/w/xvIQAowU7pjQ=;
+	s=arc-20240116; t=1715123481; c=relaxed/simple;
+	bh=Vjg4Fmi6G6fzx0gO2iQTTiPmXRNi21IOpym6rx+7TWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0ZpDbsuumdSeEgjCde8BR9n6UAkdf2np91OExUZPI1KvRye0HE1IWYHmtpJr0nMhIDdDyaIPfDmJu0Zdr7vA8w7M7vU2V0QGy/vuubIiR7sHe22kwdy3m3/7meTvPtptRrQm3ZgxSq1aci8fw3/tMkO9Wvj0IxvtiKeJiNudzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FelSheqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4DFC4AF67;
-	Tue,  7 May 2024 23:11:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gI9G4mU3Ouup0eCEv4W6Q2gzwQA+H8oXdti8rtodZpMAxRoI4FqW/2fDZJI0rkjT2cPET1OlIYIPu5ptxyoGX6WKZ6Xn38fI0vNojcCSSp4UwB3Bhh1B+Cu15F9V3KKWv2eDB9uLXFtp2Lmomsyrg+xVABsXepqDdsWx+LEiASI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlPpkkCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21512C3277B;
+	Tue,  7 May 2024 23:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123479;
-	bh=f43ozCLdsfglP1LAVYw8NC7+1NYU/w/xvIQAowU7pjQ=;
+	s=k20201202; t=1715123480;
+	bh=Vjg4Fmi6G6fzx0gO2iQTTiPmXRNi21IOpym6rx+7TWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FelSheqhBAC4ZvNSr0pcF5c7swSjrQYqKReAEqsytkQeCb1WP/OCF/zJXKX2GiFps
-	 36O8sB8DpAiyG151UwLcV9pezCKUU1QoYDdIsLl36Uv5sTifG0h3zrqyCrWxN/FZRR
-	 zZ5wsUxtCHb4+h4oidjNz+bp3q7BjYnpuNNNIRqntPD8R6XDYPDNxDjrodfoi6z7SR
-	 JrA+X9bTGWwr2Nfm4x4XkKksvnWdC8owC67EXy3FKtcqYEHXWspHF2TVOBKD+OBUCi
-	 CLAL4tORCQ74KuRGSuv+TUYU6X3dL3SNM0brwI3zHGdML70v02NOf7tTtxmS9Vp7Zj
-	 PnOZ7APyGHlNA==
+	b=LlPpkkCTS9sBO5WOCizTxXbCHIuZJ5J0qZztFgz37aP73OVeCUaLKAf4TBNaBhn4H
+	 E88SjCQT/jqlpf/VZ4uHJYlHLmBJQdO5+QLSFP99ovpRaOCTrLCGuR8yVMKt6oy1j+
+	 3zRCVy72MN+XeEI5ZDMDuaGjJEGg+NqzGK1JgdeH8OwAISwtAXp8Q8F9Jt8y02l6gH
+	 oZNcLxGjzNZCg4X6XNWLBBFyTB7N49D3hVcCLBVfT+8DHfFQiAGTUg+kjmb+kPC/jY
+	 QJB/wCVAXkd6YKXLh7TdpMYQMzvUnVi2/kerLbz3pVOq0R1dSWyZcraCMzG1GKNYvb
+	 iDQ8VwISngyDg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux1394-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.6 24/43] firewire: nosy: ensure user_length is taken into account when fetching packet contents
-Date: Tue,  7 May 2024 19:09:45 -0400
-Message-ID: <20240507231033.393285-24-sashal@kernel.org>
+	hdegoede@redhat.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 25/43] platform/x86: ISST: Add Grand Ridge to HPM CPU list
+Date: Tue,  7 May 2024 19:09:46 -0400
+Message-ID: <20240507231033.393285-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231033.393285-1-sashal@kernel.org>
 References: <20240507231033.393285-1-sashal@kernel.org>
@@ -60,46 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 38762a0763c10c24a4915feee722d7aa6e73eb98 ]
+[ Upstream commit 515a3c3a5489a890c7c3c1df3855eb4868a27598 ]
 
-Ensure that packet_buffer_get respects the user_length provided. If
-the length of the head packet exceeds the user_length, packet_buffer_get
-will now return 0 to signify to the user that no data were read
-and a larger buffer size is required. Helps prevent user space overflows.
+Add Grand Ridge (ATOM_CRESTMONT) to hpm_cpu_ids, so that MSR 0x54 can be
+used.
 
-Signed-off-by: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20240422212222.3881606-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/nosy.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/speed_select_if/isst_if_common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index b0d671db178a8..ea31ac7ac1ca9 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -148,10 +148,12 @@ packet_buffer_get(struct client *client, char __user *data, size_t user_length)
- 	if (atomic_read(&buffer->size) == 0)
- 		return -ENODEV;
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+index 08df9494603c5..84fe2e5a06044 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -720,6 +720,7 @@ static struct miscdevice isst_if_char_driver = {
  
--	/* FIXME: Check length <= user_length. */
-+	length = buffer->head->length;
-+
-+	if (length > user_length)
-+		return 0;
- 
- 	end = buffer->data + buffer->capacity;
--	length = buffer->head->length;
- 
- 	if (&buffer->head->data[length] < end) {
- 		if (copy_to_user(data, buffer->head->data, length))
+ static const struct x86_cpu_id hpm_cpu_ids[] = {
+ 	X86_MATCH_INTEL_FAM6_MODEL(GRANITERAPIDS_X,	NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_CRESTMONT,	NULL),
+ 	X86_MATCH_INTEL_FAM6_MODEL(ATOM_CRESTMONT_X,	NULL),
+ 	{}
+ };
 -- 
 2.43.0
 
