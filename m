@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-43302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286188BF188
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:27:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B898BF18B
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A93C51F220E1
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C231C210D6
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9539B13E3E0;
-	Tue,  7 May 2024 23:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B6513E417;
+	Tue,  7 May 2024 23:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERYejF+P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qi3gBeVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B22A13E054;
-	Tue,  7 May 2024 23:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C7113E405;
+	Tue,  7 May 2024 23:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123324; cv=none; b=GAXv2oy7yo7MzXOQDgOI6jOgSrVZb/NFfGeBJg4K+2jiKxj4ZOmFP7hPShny3zpBJpvPPWTm2XOwqXR7WNdkxN7HRqnPBjycAX6P4bJaHzgAK2W0tyfuZ+I/kUrug9crdJjQAxtCmP4+Xt8GvcqAdpsoPNodSCuwRc51/a4/Kks=
+	t=1715123326; cv=none; b=t2i0loLZ2fwb3EwXrsNPp4GR9QPOFEI269hkdD+6QbZpr1USlyWiwgUfbUPDN3RB/sQtilwv7xYqpz6VIQe62yAexAcWdJkY0h7enPme3hIFt8DNVqn3jTNEJ5uyzD3z/ZvImf9nkZtPcwECndrm8ej6YshWgk35kDvyU0X3qsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123324; c=relaxed/simple;
-	bh=94NJJLJqQOWhkUetOC3eDu9jUS6rglVC4ci4xw4oJRo=;
+	s=arc-20240116; t=1715123326; c=relaxed/simple;
+	bh=Hh/1C4AKF94JLe48CVZQ/4GOW6QNUCJrBJ9s/sd1IQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAESezqxNfsBqkuTImV1pIazHZBfCqgK6FIH9tIKGVxrlXUf778g8q7qOX+rnuikZ4CGoE+Mb6KIKlfwxv3CiEUykaUrqDRH0kB2yPSbO8bqRc7/XQT3h2sen2uGRsx0uN/swaARfMeA9PcGSnISYxFuOowzpvtk0va7dF0dTKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERYejF+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F18C4AF67;
-	Tue,  7 May 2024 23:08:42 +0000 (UTC)
+	 MIME-Version; b=CUo2D5e4jfL5h6d1YhmWYlf6J8Ly6UJno95rH3jsk2Kjd3XFIRUuy3HD7P5lb8wRqtdeZWgpjezpYZSgb45jKnPQIX66xj47obZ8Y5wuhTt6Mp+qrSgEW1vqnVwu67e9bz6yeghXJWF6ciG/wTOlu3hxchTdfVQAPiUAIVntEII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qi3gBeVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B388DC3277B;
+	Tue,  7 May 2024 23:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123324;
-	bh=94NJJLJqQOWhkUetOC3eDu9jUS6rglVC4ci4xw4oJRo=;
+	s=k20201202; t=1715123326;
+	bh=Hh/1C4AKF94JLe48CVZQ/4GOW6QNUCJrBJ9s/sd1IQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERYejF+PuzXC6k3axBPQpTt5HS4KqufOQqq8hkaoAGSfUPTihhkW6EvHvXN66uWxV
-	 oM0aV4WeBDOeYqbMj0gphyWw5FYyXJ1PUmifiCTTDkpS9f048JQIN4aABN8YTUs6tu
-	 e/sYkAuUyfi7SEf/7R1bCeFYz+9Znon7q6/VUZIQJP1H+GpiNThactdWzjKonCC0Ic
-	 Hy6wS1fRVSAACQBma/BLKJMeP6ULAvpXRXRa/bTFNu26V/ZmivzHqIYG9Ovf1BeCO+
-	 V3DoWL3yEYOyvmwrVhXBl9dN83NVu6TrM0GH2vc6jtnEPteKWpUg8a7a6eZgOM7q89
-	 XizA2bJ5c8PXw==
+	b=qi3gBeVYup+jpBmaHNqPRY3PnA90y2cC2SoQTtmFpcclnzZEsR2BVCemKp65gijAP
+	 RHXeykmLJ+NDocOnY30tNpMklGXiFTUFDlefFGP5ZEG+srTWUvXEPAYnM28VEZoZT9
+	 Nk7fNURdFBgoweaP6pSUnaP8P9j1WoUWstLZO9JPTZkxYaAJiAaAN6TwH1olip3bih
+	 lMIbu6rdrlEL2UsRUuK+3awDeSDixsTiTmHkGTPw3E62fw9mcCgrSc2ek4od50/vy0
+	 hEM3apdPSubMeVU5Oo7DYGMflRksJvHhG7cIYcR3LsduBlgmUfgglfFoM87j5UlA0S
+	 FA/jOai33fbZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Puranjay Mohan <puranjay@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 23/52] bpf, x86: Fix PROBE_MEM runtime load check
-Date: Tue,  7 May 2024 19:06:49 -0400
-Message-ID: <20240507230800.392128-23-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 24/52] ALSA: emu10k1: factor out snd_emu1010_load_dock_firmware()
+Date: Tue,  7 May 2024 19:06:50 -0400
+Message-ID: <20240507230800.392128-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -75,164 +67,124 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-[ Upstream commit b599d7d26d6ad1fc9975218574bc2ca6d0293cfd ]
+[ Upstream commit 28deafd0fbdc45cc9c63bd7dd4efc35137958862 ]
 
-When a load is marked PROBE_MEM - e.g. due to PTR_UNTRUSTED access - the
-address being loaded from is not necessarily valid. The BPF jit sets up
-exception handlers for each such load which catch page faults and 0 out
-the destination register.
+Pulled out of the next patch to improve its legibility.
 
-If the address for the load is outside kernel address space, the load
-will escape the exception handling and crash the kernel. To prevent this
-from happening, the emits some instruction to verify that addr is > end
-of userspace addresses.
+As the function is now available, call it directly from
+snd_emu10k1_emu1010_init(), thus making the MicroDock firmware loading
+synchronous - there isn't really a reason not to. Note that this does
+not affect the AudioDocks of rev1 cards, as these have no independent
+power supplies, and thus come up only a while after the main card is
+initialized.
 
-x86 has a legacy vsyscall ABI where a page at address 0xffffffffff600000
-is mapped with user accessible permissions. The addresses in this page
-are considered userspace addresses by the fault handler. Therefore, a
-BPF program accessing this page will crash the kernel.
+As a drive-by, adjust the priorities of two messages to better reflect
+their impact.
 
-This patch fixes the runtime checks to also check that the PROBE_MEM
-address is below VSYSCALL_ADDR.
-
-Example BPF program:
-
- SEC("fentry/tcp_v4_connect")
- int BPF_PROG(fentry_tcp_v4_connect, struct sock *sk)
- {
-	*(volatile unsigned long *)&sk->sk_tsq_flags;
-	return 0;
- }
-
-BPF Assembly:
-
- 0: (79) r1 = *(u64 *)(r1 +0)
- 1: (79) r1 = *(u64 *)(r1 +344)
- 2: (b7) r0 = 0
- 3: (95) exit
-
-			       x86-64 JIT
-			       ==========
-
-            BEFORE                                    AFTER
-	    ------                                    -----
-
- 0:   nopl   0x0(%rax,%rax,1)             0:   nopl   0x0(%rax,%rax,1)
- 5:   xchg   %ax,%ax                      5:   xchg   %ax,%ax
- 7:   push   %rbp                         7:   push   %rbp
- 8:   mov    %rsp,%rbp                    8:   mov    %rsp,%rbp
- b:   mov    0x0(%rdi),%rdi               b:   mov    0x0(%rdi),%rdi
--------------------------------------------------------------------------------
- f:   movabs $0x100000000000000,%r11      f:   movabs $0xffffffffff600000,%r10
-19:   add    $0x2a0,%rdi                 19:   mov    %rdi,%r11
-20:   cmp    %r11,%rdi                   1c:   add    $0x2a0,%r11
-23:   jae    0x0000000000000029          23:   sub    %r10,%r11
-25:   xor    %edi,%edi                   26:   movabs $0x100000000a00000,%r10
-27:   jmp    0x000000000000002d          30:   cmp    %r10,%r11
-29:   mov    0x0(%rdi),%rdi              33:   ja     0x0000000000000039
---------------------------------\        35:   xor    %edi,%edi
-2d:   xor    %eax,%eax           \       37:   jmp    0x0000000000000040
-2f:   leave                       \      39:   mov    0x2a0(%rdi),%rdi
-30:   ret                          \--------------------------------------------
-                                         40:   xor    %eax,%eax
-                                         42:   leave
-                                         43:   ret
-
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20240424100210.11982-3-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Message-ID: <20240428093716.3198666-3-oswald.buddenhagen@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c | 57 ++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 32 deletions(-)
+ sound/pci/emu10k1/emu10k1_main.c | 66 +++++++++++++++++---------------
+ 1 file changed, 36 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index df484885ccd4a..f415c2cf53582 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -1585,36 +1585,41 @@ st:			if (is_imm8(insn->off))
- 			if (BPF_MODE(insn->code) == BPF_PROBE_MEM ||
- 			    BPF_MODE(insn->code) == BPF_PROBE_MEMSX) {
- 				/* Conservatively check that src_reg + insn->off is a kernel address:
--				 *   src_reg + insn->off >= TASK_SIZE_MAX + PAGE_SIZE
--				 * src_reg is used as scratch for src_reg += insn->off and restored
--				 * after emit_ldx if necessary
-+				 *   src_reg + insn->off > TASK_SIZE_MAX + PAGE_SIZE
-+				 *   and
-+				 *   src_reg + insn->off < VSYSCALL_ADDR
- 				 */
+diff --git a/sound/pci/emu10k1/emu10k1_main.c b/sound/pci/emu10k1/emu10k1_main.c
+index de5c41e578e1f..a6b91597ea544 100644
+--- a/sound/pci/emu10k1/emu10k1_main.c
++++ b/sound/pci/emu10k1/emu10k1_main.c
+@@ -732,11 +732,43 @@ static int snd_emu1010_load_firmware(struct snd_emu10k1 *emu, int dock,
+ 	return snd_emu1010_load_firmware_entry(emu, *fw);
+ }
  
--				u64 limit = TASK_SIZE_MAX + PAGE_SIZE;
-+				u64 limit = TASK_SIZE_MAX + PAGE_SIZE - VSYSCALL_ADDR;
- 				u8 *end_of_jmp;
- 
--				/* At end of these emitted checks, insn->off will have been added
--				 * to src_reg, so no need to do relative load with insn->off offset
--				 */
--				insn_off = 0;
-+				/* movabsq r10, VSYSCALL_ADDR */
-+				emit_mov_imm64(&prog, BPF_REG_AX, (long)VSYSCALL_ADDR >> 32,
-+					       (u32)(long)VSYSCALL_ADDR);
- 
--				/* movabsq r11, limit */
--				EMIT2(add_1mod(0x48, AUX_REG), add_1reg(0xB8, AUX_REG));
--				EMIT((u32)limit, 4);
--				EMIT(limit >> 32, 4);
-+				/* mov src_reg, r11 */
-+				EMIT_mov(AUX_REG, src_reg);
- 
- 				if (insn->off) {
--					/* add src_reg, insn->off */
--					maybe_emit_1mod(&prog, src_reg, true);
--					EMIT2_off32(0x81, add_1reg(0xC0, src_reg), insn->off);
-+					/* add r11, insn->off */
-+					maybe_emit_1mod(&prog, AUX_REG, true);
-+					EMIT2_off32(0x81, add_1reg(0xC0, AUX_REG), insn->off);
- 				}
- 
--				/* cmp src_reg, r11 */
--				maybe_emit_mod(&prog, src_reg, AUX_REG, true);
--				EMIT2(0x39, add_2reg(0xC0, src_reg, AUX_REG));
-+				/* sub r11, r10 */
-+				maybe_emit_mod(&prog, AUX_REG, BPF_REG_AX, true);
-+				EMIT2(0x29, add_2reg(0xC0, AUX_REG, BPF_REG_AX));
++static void snd_emu1010_load_dock_firmware(struct snd_emu10k1 *emu)
++{
++	u32 tmp, tmp2;
++	int err;
 +
-+				/* movabsq r10, limit */
-+				emit_mov_imm64(&prog, BPF_REG_AX, (long)limit >> 32,
-+					       (u32)(long)limit);
++	dev_info(emu->card->dev, "emu1010: Loading Audio Dock Firmware\n");
++	/* Return to Audio Dock programming mode */
++	snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG,
++			       EMU_HANA_FPGA_CONFIG_AUDIODOCK);
++	err = snd_emu1010_load_firmware(emu, 1, &emu->dock_fw);
++	if (err < 0)
++		return;
++	snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG, 0);
 +
-+				/* cmp r10, r11 */
-+				maybe_emit_mod(&prog, AUX_REG, BPF_REG_AX, true);
-+				EMIT2(0x39, add_2reg(0xC0, AUX_REG, BPF_REG_AX));
++	snd_emu1010_fpga_read(emu, EMU_HANA_ID, &tmp);
++	dev_dbg(emu->card->dev, "emu1010: EMU_HANA+DOCK_ID = 0x%x\n", tmp);
++	if ((tmp & 0x1f) != 0x15) {
++		/* FPGA failed to be programmed */
++		dev_err(emu->card->dev,
++			"emu1010: Loading Audio Dock Firmware failed, reg = 0x%x\n",
++			tmp);
++		return;
++	}
++	dev_info(emu->card->dev, "emu1010: Audio Dock Firmware loaded\n");
++
++	snd_emu1010_fpga_read(emu, EMU_DOCK_MAJOR_REV, &tmp);
++	snd_emu1010_fpga_read(emu, EMU_DOCK_MINOR_REV, &tmp2);
++	dev_info(emu->card->dev, "Audio Dock ver: %u.%u\n", tmp, tmp2);
++
++	/* Allow DLL to settle, to sync clocking between 1010 and Dock */
++	msleep(10);
++}
++
+ static void emu1010_firmware_work(struct work_struct *work)
+ {
+ 	struct snd_emu10k1 *emu;
+-	u32 tmp, tmp2, reg;
+-	int err;
++	u32 reg;
  
--				/* if unsigned '>=', goto load */
--				EMIT2(X86_JAE, 0);
-+				/* if unsigned '>', goto load */
-+				EMIT2(X86_JA, 0);
- 				end_of_jmp = prog;
- 
- 				/* xor dst_reg, dst_reg */
-@@ -1640,18 +1645,6 @@ st:			if (is_imm8(insn->off))
- 				/* populate jmp_offset for JMP above */
- 				start_of_ldx[-1] = prog - start_of_ldx;
- 
--				if (insn->off && src_reg != dst_reg) {
--					/* sub src_reg, insn->off
--					 * Restore src_reg after "add src_reg, insn->off" in prev
--					 * if statement. But if src_reg == dst_reg, emit_ldx
--					 * above already clobbered src_reg, so no need to restore.
--					 * If add src_reg, insn->off was unnecessary, no need to
--					 * restore either.
--					 */
--					maybe_emit_1mod(&prog, src_reg, true);
--					EMIT2_off32(0x81, add_1reg(0xE8, src_reg), insn->off);
--				}
--
- 				if (!bpf_prog->aux->extable)
- 					break;
- 
+ 	emu = container_of(work, struct snd_emu10k1,
+ 			   emu1010.firmware_work);
+@@ -749,33 +781,7 @@ static void emu1010_firmware_work(struct work_struct *work)
+ 	snd_emu1010_fpga_read(emu, EMU_HANA_OPTION_CARDS, &reg); /* OPTIONS: Which cards are attached to the EMU */
+ 	if (reg & EMU_HANA_OPTION_DOCK_OFFLINE) {
+ 		/* Audio Dock attached */
+-		/* Return to Audio Dock programming mode */
+-		dev_info(emu->card->dev,
+-			 "emu1010: Loading Audio Dock Firmware\n");
+-		snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG,
+-				       EMU_HANA_FPGA_CONFIG_AUDIODOCK);
+-		err = snd_emu1010_load_firmware(emu, 1, &emu->dock_fw);
+-		if (err < 0)
+-			return;
+-		snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG, 0);
+-		snd_emu1010_fpga_read(emu, EMU_HANA_ID, &tmp);
+-		dev_info(emu->card->dev,
+-			 "emu1010: EMU_HANA+DOCK_ID = 0x%x\n", tmp);
+-		if ((tmp & 0x1f) != 0x15) {
+-			/* FPGA failed to be programmed */
+-			dev_info(emu->card->dev,
+-				 "emu1010: Loading Audio Dock Firmware file failed, reg = 0x%x\n",
+-				 tmp);
+-			return;
+-		}
+-		dev_info(emu->card->dev,
+-			 "emu1010: Audio Dock Firmware loaded\n");
+-		snd_emu1010_fpga_read(emu, EMU_DOCK_MAJOR_REV, &tmp);
+-		snd_emu1010_fpga_read(emu, EMU_DOCK_MINOR_REV, &tmp2);
+-		dev_info(emu->card->dev, "Audio Dock ver: %u.%u\n", tmp, tmp2);
+-		/* Sync clocking between 1010 and Dock */
+-		/* Allow DLL to settle */
+-		msleep(10);
++		snd_emu1010_load_dock_firmware(emu);
+ 		/* Unmute all. Default is muted after a firmware load */
+ 		snd_emu1010_fpga_write(emu, EMU_HANA_UNMUTE, EMU_UNMUTE);
+ 	}
+@@ -889,7 +895,7 @@ static int snd_emu10k1_emu1010_init(struct snd_emu10k1 *emu)
+ 	snd_emu1010_fpga_read(emu, EMU_HANA_OPTION_CARDS, &reg);
+ 	dev_info(emu->card->dev, "emu1010: Card options = 0x%x\n", reg);
+ 	if (reg & EMU_HANA_OPTION_DOCK_OFFLINE)
+-		schedule_work(&emu->emu1010.firmware_work);
++		snd_emu1010_load_dock_firmware(emu);
+ 	if (emu->card_capabilities->no_adat) {
+ 		emu->emu1010.optical_in = 0; /* IN_SPDIF */
+ 		emu->emu1010.optical_out = 0; /* OUT_SPDIF */
 -- 
 2.43.0
 
