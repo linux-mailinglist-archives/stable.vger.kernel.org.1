@@ -1,63 +1,79 @@
-Return-Path: <stable+bounces-43222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15738BF036
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA8D8BF042
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410791F2371B
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:00:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D5E41F23B16
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD4486628;
-	Tue,  7 May 2024 22:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74FC80631;
+	Tue,  7 May 2024 22:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJi+IDoP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lps4k72C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD48686274;
-	Tue,  7 May 2024 22:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E2086AF4;
+	Tue,  7 May 2024 22:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122676; cv=none; b=cYPAmJ4V8DqlyqG8iXvEocknHzf7XvfNyatkUXtEAMgda1c+qEMGCEhWB83RF+jMN5ukgpHWefQfsMremxJPJmnUfyC/+mSNHBNERe5HWmf45ZNaEIsXaqBRvyOq0NP4ZMgcd7cWok2aVdXpwpXJZADs6v/Hv0B6+SkbKl79Kt4=
+	t=1715122685; cv=none; b=AIBEA1J79XRDW5ZPG0QcBIfGYD+l8HfdxhkVZwAiKvlSsGDdD3IiRX04wt0lzQauIOOrE2MDnULLq0bFtcvvVZ/cjKf6j8tLH4bhJeG0A9EySMnyXRvecMnygitoe7xujxVpAG+oA7ew7NCnJWHKIdqjAqf6uJ2bT4GgLQ5WmNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122676; c=relaxed/simple;
-	bh=45Ctv6QKcT69IleXOGmx/lkPXJ7GAVZJKpVT221zneY=;
+	s=arc-20240116; t=1715122685; c=relaxed/simple;
+	bh=YJMLBlX1bu6lVkrWHVTwaDJYZNchL3z069Sz1R+pnKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJe1jNv1exv/eF1kFNgmc7RtcAim29c5ptitXe4+sJI7pJoLAsE7rBposU6Pj4nRYzzWpTHCGaIYCSJI/1rnDAJ0ZFJ8w4x05AwTlrraUF8W0SR3Ube0xBTU/Ugzy5X2GcKBruNXQFwGJtrHEd/a1SZAkAcwG3/BSK1aXZAe050=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJi+IDoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10017C2BBFC;
-	Tue,  7 May 2024 22:57:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kkZtqO62zvBBsfZDZjnSXxbYJd8Rdc81mcVHW+pc0gP6rVM8BSgY9ePyDerak4bTLDQJWnf5CTrl80hTsLk1eeQX2g9bARS7Az8yzidMzj0KCGqgpcypnKg415Zgi+ggRUL7Bncbw9A1Olo9BfqYUR9nEHE8TfJO6uET6lExzFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lps4k72C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341E3C3277B;
+	Tue,  7 May 2024 22:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122676;
-	bh=45Ctv6QKcT69IleXOGmx/lkPXJ7GAVZJKpVT221zneY=;
+	s=k20201202; t=1715122685;
+	bh=YJMLBlX1bu6lVkrWHVTwaDJYZNchL3z069Sz1R+pnKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJi+IDoPvzymqz6B8nXnSWPtU5Bskg8mxETGeQSBVlxWihdZx2eG5ZPl0oG0N6uHw
-	 LshG6mQjZ+txRUefyrFdJ5Q3Hrv4fWYcy1YcPZPv9IU7Y2meqRmT7lz479/vKiBzzr
-	 IrWE70Q27tmp4xeZJwz1Hz0X7gNy6mGM+ZlRst5b2/1n2sLHh2YJnlvTgx/KqW8CuJ
-	 2pEiHoEOvpmuQN8ZQLF6KQRnZXKY0JvZGYR1emCd38z5+4I5W+IDShze9iB7aGaF32
-	 L2Bb649/jLSL42ejAID2mWvQ0fXwDhkw0byPOS6t+Deb9AidsPJo2w+mBpqzrY6wHk
-	 9XXzZpiq0CcZQ==
+	b=lps4k72CCFIYikh66jb9n+uAXxUfADYvhK8bpVwb56SkX9vOUotZmo0G35t0l9hzF
+	 uwFY3C2D5dbQAXcYaS9pS0JqVK9GljrnpgfTH7wfxg5nfT3hYD347YNu8+3DKIh81N
+	 WtVj5lSLwgXgLAAhLP7cuHPvTw67qwxp33UHvLHZXfdPQqMLbVyQcDuz8bpJx2RnRs
+	 qmZEnHiBUxwXmy3qobpMZXtVCkTB/pakRe8WAKZr1MVY+wAHbZJEaNYYwnHvPkWKRV
+	 63AxP8FtYyv0puqyLy5yyeZqXvS2/XwToCc80iyzNCIAbGP7oz9Pie2L7j4jFLppGq
+	 ggj5UJxW4Ra5w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mukul Joshi <mukul.joshi@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+Cc: Prike Liang <Prike.Liang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
+	Hawking.Zhang@amd.com,
+	Felix.Kuehling@amd.com,
+	Jun.Ma2@amd.com,
+	zhenguo.yin@amd.com,
+	sukrut.bellary@linux.com,
+	mukul.joshi@amd.com,
+	srinivasan.shanmugam@amd.com,
+	lijo.lazar@amd.com,
+	jonathan.kim@amd.com,
+	Lang.Yu@amd.com,
+	guchun.chen@amd.com,
+	yifan1.zhang@amd.com,
+	Tim.Huang@amd.com,
+	Jack.Xiao@amd.com,
+	aaron.liu@amd.com,
+	Hongkun.Zhang@amd.com,
+	Jiadong.Zhu@amd.com,
+	jesse.zhang@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.8 12/23] drm/amdkfd: Add VRAM accounting for SVM migration
-Date: Tue,  7 May 2024 18:56:38 -0400
-Message-ID: <20240507225725.390306-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 13/23] drm/amdgpu: Fix the ring buffer size for queue VM flush
+Date: Tue,  7 May 2024 18:56:39 -0400
+Message-ID: <20240507225725.390306-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507225725.390306-1-sashal@kernel.org>
 References: <20240507225725.390306-1-sashal@kernel.org>
@@ -67,79 +83,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Mukul Joshi <mukul.joshi@amd.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit 1e214f7faaf5d842754cd5cfcd76308bfedab3b5 ]
+[ Upstream commit fe93b0927bc58cb1d64230f45744e527d9d8482c ]
 
-Do VRAM accounting when doing migrations to vram to make sure
-there is enough available VRAM and migrating to VRAM doesn't evict
-other possible non-unified memory BOs. If migrating to VRAM fails,
-driver can fall back to using system memory seamlessly.
+Here are the corrections needed for the queue ring buffer size
+calculation for the following cases:
+- Remove the KIQ VM flush ring usage.
+- Add the invalidate TLBs packet for gfx10 and gfx11 queue.
+- There's no VM flush and PFP sync, so remove the gfx9 real
+  ring and compute ring buffer usage.
 
-Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 16 +++++++++++++++-
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c     |  2 +-
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 3 +--
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 3 +--
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 2 --
+ 3 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-index bdc01ca9609a7..5c8d81bfce7ab 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -509,10 +509,19 @@ svm_migrate_ram_to_vram(struct svm_range *prange, uint32_t best_loc,
- 	start = start_mgr << PAGE_SHIFT;
- 	end = (last_mgr + 1) << PAGE_SHIFT;
- 
-+	r = amdgpu_amdkfd_reserve_mem_limit(node->adev,
-+					prange->npages * PAGE_SIZE,
-+					KFD_IOC_ALLOC_MEM_FLAGS_VRAM,
-+					node->xcp ? node->xcp->id : 0);
-+	if (r) {
-+		dev_dbg(node->adev->dev, "failed to reserve VRAM, r: %ld\n", r);
-+		return -ENOSPC;
-+	}
-+
- 	r = svm_range_vram_node_new(node, prange, true);
- 	if (r) {
- 		dev_dbg(node->adev->dev, "fail %ld to alloc vram\n", r);
--		return r;
-+		goto out;
- 	}
- 	ttm_res_offset = (start_mgr - prange->start + prange->offset) << PAGE_SHIFT;
- 
-@@ -545,6 +554,11 @@ svm_migrate_ram_to_vram(struct svm_range *prange, uint32_t best_loc,
- 		svm_range_vram_node_free(prange);
- 	}
- 
-+out:
-+	amdgpu_amdkfd_unreserve_mem_limit(node->adev,
-+					prange->npages * PAGE_SIZE,
-+					KFD_IOC_ALLOC_MEM_FLAGS_VRAM,
-+					node->xcp ? node->xcp->id : 0);
- 	return r < 0 ? r : 0;
- }
- 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index c50a0dc9c9c07..33205078202b5 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -3424,7 +3424,7 @@ svm_range_trigger_migration(struct mm_struct *mm, struct svm_range *prange,
- 				mm, KFD_MIGRATE_TRIGGER_PREFETCH);
- 	*migrated = !r;
- 
--	return r;
-+	return 0;
- }
- 
- int svm_range_schedule_evict_svm_bo(struct amdgpu_amdkfd_fence *fence)
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index dcdecb18b2306..42392a97daff2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -9194,7 +9194,7 @@ static const struct amdgpu_ring_funcs gfx_v10_0_ring_funcs_gfx = {
+ 		7 + /* PIPELINE_SYNC */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* VM_FLUSH */
++		4 + /* VM_FLUSH */
+ 		8 + /* FENCE for VM_FLUSH */
+ 		20 + /* GDS switch */
+ 		4 + /* double SWITCH_BUFFER,
+@@ -9285,7 +9285,6 @@ static const struct amdgpu_ring_funcs gfx_v10_0_ring_funcs_kiq = {
+ 		7 + /* gfx_v10_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v10_0_ring_emit_vm_flush */
+ 		8 + 8 + 8, /* gfx_v10_0_ring_emit_fence_kiq x3 for user fence, vm fence */
+ 	.emit_ib_size =	7, /* gfx_v10_0_ring_emit_ib_compute */
+ 	.emit_ib = gfx_v10_0_ring_emit_ib_compute,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 0afe86bcc932b..6a6fc422e44da 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -6110,7 +6110,7 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_gfx = {
+ 		7 + /* PIPELINE_SYNC */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* VM_FLUSH */
++		4 + /* VM_FLUSH */
+ 		8 + /* FENCE for VM_FLUSH */
+ 		20 + /* GDS switch */
+ 		5 + /* COND_EXEC */
+@@ -6195,7 +6195,6 @@ static const struct amdgpu_ring_funcs gfx_v11_0_ring_funcs_kiq = {
+ 		7 + /* gfx_v11_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v11_0_ring_emit_vm_flush */
+ 		8 + 8 + 8, /* gfx_v11_0_ring_emit_fence_kiq x3 for user fence, vm fence */
+ 	.emit_ib_size =	7, /* gfx_v11_0_ring_emit_ib_compute */
+ 	.emit_ib = gfx_v11_0_ring_emit_ib_compute,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 3bc6943365a4f..153932c1f64f3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -6991,7 +6991,6 @@ static const struct amdgpu_ring_funcs gfx_v9_0_ring_funcs_compute = {
+ 		7 + /* gfx_v9_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v9_0_ring_emit_vm_flush */
+ 		8 + 8 + 8 + /* gfx_v9_0_ring_emit_fence x3 for user fence, vm fence */
+ 		7 + /* gfx_v9_0_emit_mem_sync */
+ 		5 + /* gfx_v9_0_emit_wave_limit for updating mmSPI_WCL_PIPE_PERCENT_GFX register */
+@@ -7029,7 +7028,6 @@ static const struct amdgpu_ring_funcs gfx_v9_0_ring_funcs_kiq = {
+ 		7 + /* gfx_v9_0_ring_emit_pipeline_sync */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 5 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 7 +
+-		2 + /* gfx_v9_0_ring_emit_vm_flush */
+ 		8 + 8 + 8, /* gfx_v9_0_ring_emit_fence_kiq x3 for user fence, vm fence */
+ 	.emit_ib_size =	7, /* gfx_v9_0_ring_emit_ib_compute */
+ 	.emit_fence = gfx_v9_0_ring_emit_fence_kiq,
 -- 
 2.43.0
 
