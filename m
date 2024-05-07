@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-43257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C448BF0D9
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:12:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C67FB8BF0DF
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EF6B1C21B97
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:12:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 523A3B22F23
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188C080032;
-	Tue,  7 May 2024 23:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5CF1384AC;
+	Tue,  7 May 2024 23:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="knJ4GvmE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T31qBHFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C9B137C54;
-	Tue,  7 May 2024 23:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCA7138490;
+	Tue,  7 May 2024 23:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122840; cv=none; b=I5ROAoE5xm91LB0jyU7ZUPI0CiddkOLTNIHC1ULGuZkjk8gmbAg/dT6vtK6D47EkEkFAgjaRSjz7txsGidoOSTabDoK4nIqFf/l0spl2q7WIxSsauLsxea312fc2V1gVCH+Z25FNpA+S5f2FwghgQfYjQtKCTAJ2sR21XzwOWkM=
+	t=1715122842; cv=none; b=hVqdNj26u4XIP8RzqdNaUs2N5QpQKM/teoH7JciI8w1s5EVVexFC1FoanNYUGLfc1OUWZel/cGhVR6E+CzEqKzFQNojokljfWUlG5KaOEWT+IjEfx6CLit2OMjXKmzA8br7VaZi0mDgTWdERgmPLlHY/GSI1kWtKHAmyHpZwcI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122840; c=relaxed/simple;
-	bh=VyDzfSvgygGoJ6vgcUYx97XIpCc+SJbIDApetEfwgow=;
+	s=arc-20240116; t=1715122842; c=relaxed/simple;
+	bh=rDMQPHDoB03bdP4QlTOdWJdW4uHXvKfD8Pt+oQc6o7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlY0qLBcL+qdI7rKCMwY1LwI+SK4mMJ6g3Jhb7OZk6qreKiQDmNq939C5rvX73kOApS96pEb0XqM0zb/s36tSu39YdiRaJZVOoGhzRAAzYcQOXpcWgS/A7IkpWBwmbEM+ULLGJa7v1TqFTzTqghwjHDj5acbcvt4gAyVHRI27aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=knJ4GvmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19E0C2BBFC;
-	Tue,  7 May 2024 23:00:38 +0000 (UTC)
+	 MIME-Version; b=dvwLwsR4rDvMZBJFLEiR2NJ+ofUeMrhqBgEwG/SzZspLLisRaORtvy9Eywr9G2td36w7cPxDSlVfr1PtVmgGOksbGl39muNDFqd22r1OPaSXcku+1LWAVzMZRByjT2zl81W9/37P1H6HhMy1/mX4xFb3Kuq+60fTuT4e8jdBJIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T31qBHFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FEEC3277B;
+	Tue,  7 May 2024 23:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122840;
-	bh=VyDzfSvgygGoJ6vgcUYx97XIpCc+SJbIDApetEfwgow=;
+	s=k20201202; t=1715122841;
+	bh=rDMQPHDoB03bdP4QlTOdWJdW4uHXvKfD8Pt+oQc6o7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knJ4GvmEM6d5YJ7Wx3Nqh7G0CIFr64pbuARoobRbPKTKQL7LxBDh2LWPmxqxTpyXE
-	 2B8IENtKNg9OqzXsYIeV/2fwmWqudwdhki27OpDkdxHZnhMyw0PFUtmoyCOviTKbBG
-	 nHCz+zm8U12wmxbGhYQWAZBJBvR9X0oDAQ6vPOGd/hxegv0lebFlSpkYXqEacgPCrn
-	 7xrsDb2iAyEYTiDn/txAB/ebNYGyh5jeYxLde1DjgWi6lCr1roq7z9hQoq2CCxMzw0
-	 m8g3RFy9NOg85ehxaOh4mS0C7umtYrY7OiYt1fxzFM7ViVZgKdrYGzqliA1r3Hg9Mz
-	 Nz5oZtD+kaT0A==
+	b=T31qBHFTMq90aHA9HM0vp27TIHrXkjILAQ2YLzqON5u0vKB9DW6bKwK1oEF0uiA/d
+	 XVuNHH3QoUIbggoiwnoheXYj17tB62DiZ3h3doU4tS8HmkRoxOj3nzqMptNQyLIK+n
+	 zJIXzDSv+ox2OhkfF59t9m/tYGS+Pf3vJFjZiOMv3YCdWu8NCCabnNcQqBmRb3avSx
+	 FmRr/GxJ1DwiRdqgdGyhWUinFKdp30Gll4S2hu70OW4g/KQaSsV3OQxVnjGFHs6Kky
+	 REl5tfRYwznTHpj66tD2TsLM0NFhwi1GZy7YmiaUmmxvRggs4pApBaCGXiDrYXWRFV
+	 NEP2LKqWDM6QA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Conor Dooley <conor.dooley@microchip.com>,
+Cc: Daniele Palmas <dnlplm@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	sebastian.reichel@collabora.com,
-	s.hauer@pengutronix.de,
-	cristian.ciocaltea@collabora.com,
-	andy.yan@rock-chips.com,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 04/12] dt-bindings: rockchip: grf: Add missing type to 'pcie-phy' node
-Date: Tue,  7 May 2024 19:00:06 -0400
-Message-ID: <20240507230031.391436-4-sashal@kernel.org>
+	bjorn@mork.no,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 05/12] net: usb: qmi_wwan: add Telit FN920C04 compositions
+Date: Tue,  7 May 2024 19:00:07 -0400
+Message-ID: <20240507230031.391436-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230031.391436-1-sashal@kernel.org>
 References: <20240507230031.391436-1-sashal@kernel.org>
@@ -74,35 +70,106 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Rob Herring <robh@kernel.org>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit d41201c90f825f19a46afbfb502f22f612d8ccc4 ]
+[ Upstream commit 0b8fe5bd73249dc20be2e88a12041f8920797b59 ]
 
-'pcie-phy' is missing any type. Add 'type: object' to indicate it's a
-node.
+Add the following Telit FN920C04 compositions:
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240401204959.1698106-1-robh@kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+0x10a0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a0 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10a4: rmnet + tty (AT) + tty (AT) + tty (diag)
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a4 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10a9: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
+T:  Bus=03 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.01 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a9 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=92c4c4d8
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/soc/rockchip/grf.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/qmi_wwan.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-index 2ed8cca79b59c..e4eade2661f6b 100644
---- a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-+++ b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-@@ -151,6 +151,7 @@ allOf:
-           unevaluatedProperties: false
- 
-         pcie-phy:
-+          type: object
-           description:
-             Documentation/devicetree/bindings/phy/rockchip-pcie-phy.txt
- 
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 2d82481d34e6b..856b850ae6ecc 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1367,6 +1367,9 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
+ 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
 -- 
 2.43.0
 
