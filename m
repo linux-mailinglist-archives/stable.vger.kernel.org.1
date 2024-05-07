@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-43429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F688BF2B5
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:56:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB768BF2B6
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E41A283838
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F3D61F22695
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA60A145A05;
-	Tue,  7 May 2024 23:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799851A123D;
+	Tue,  7 May 2024 23:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBzBCNkQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNN2dBaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0661844B5;
-	Tue,  7 May 2024 23:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36851A122C;
+	Tue,  7 May 2024 23:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123674; cv=none; b=OHVroCJo9N2KYh54k8dD9/0Xwadz5eky5iNcBjvu2XJvt+2kpbqqQSOpqBng7AAOuhX1PSM3tdizC8PmXCfFlTRuQzbd6Xz8pAT5kce9qNAm92fizQVgeT86VRGpourktjqFbHZj/4e4+BWxUOwTyflHUDv/pVUtlxpgEynXAQM=
+	t=1715123675; cv=none; b=hqkZm+mn5rjxPg6HWt1Rx723K/0TLA8LJ40gAAQFZTYKHk9xxiNWTjZo6PaL6Ey4un4IUM6nRdlEmWq+2yru7SfpWELoJSIDrfuSifdDVliumguWPC+CRUOuLQggPFRMId6wTzuMJPbl0vKxNcvYLgQTqPMrg1PXkSjk5oJgQ7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123674; c=relaxed/simple;
-	bh=uGaz81u//ikxr+CCjdWRrcxgzw6GnAiHPyHKN2atUig=;
+	s=arc-20240116; t=1715123675; c=relaxed/simple;
+	bh=NaNESS57i+/Yb9mqNOeglTPm9x3q0vcCjPQtoo5La+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeXv0dfOeTBMsUY1SRwH4FtyRTFZma9HSNMcHxedAhBmTYo/co3QR7xHUV7tp2IcUffKdf5Ixwy5zAF0jE9dK87zpQghaZqxMrwx5o80kR+5rQq7j7sbUgIWzLdW5klrF1QUDgMGkMyomBemQRrdg2kguBdr17uGIlNHEjLCYr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBzBCNkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F026DC4AF17;
-	Tue,  7 May 2024 23:14:31 +0000 (UTC)
+	 MIME-Version; b=dkfIraIdpmxUcbjd+beElLQi/aWJuGJ8g5n0Afi97w93J7feJqZAiqv/GLWvbnbZu+0VmmqrskuF9THjTwTR45+rV7/3fgRHCslYD9osswhagu9aDTfOzY0OlW2l2J3ehikdzCI/bAnGQTx4fnZ6RwK0AyJ1EuCFRMzzkjGbQnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNN2dBaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F126BC2BBFC;
+	Tue,  7 May 2024 23:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123673;
-	bh=uGaz81u//ikxr+CCjdWRrcxgzw6GnAiHPyHKN2atUig=;
+	s=k20201202; t=1715123675;
+	bh=NaNESS57i+/Yb9mqNOeglTPm9x3q0vcCjPQtoo5La+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBzBCNkQs2bocHhupLvuKIr+bQ2a05qDl1vhlaBlY9OEgj6082hD5QksQNyYkUilH
-	 qY9R7y++b05zxHaYUoYjuZGkBpPapMXcy+tyP5MJWUx4gcTxpTiw0gmk/iwIAHhCtS
-	 cw4weMLvtBmXJfMSCdKmEgZCyAumIUQ5n6TadJwznRzv3Rv8Ho4zQ6kABNf7OhBRTk
-	 dIVd9ShZMxR3K+64Q42DdGbh4xn9jCpyJVxLLZxNs2/gwDTzKNsadqwJf54o+3wkqk
-	 OMJystvlTwDMchZMw/IxjL2bT9a2H3B39ZonzYPueM+/nd4z6yHMJpTqah4QxF0lWJ
-	 qe7eWJA6Jt7lA==
+	b=gNN2dBaMXXvRFR0tLNzVWbfjXeC3CtTAgpIIBLRLOD6nUXhNtNGxvdYcUmrDS+lfL
+	 CJ7aqLT6IQUByyjdrzSVvL95jHaCRgW0tE9cJYrNrIDpw2cSGE1CtJ0rfHor2Simuh
+	 tWtZ5oPxDQ7x0oVBHOxMFArd8eByz8QN54fZG/UWVAmK92Awjy6V0+K+8O3Hqa8zFt
+	 wLA4HomT/r7VUxB36FMdPbn6zjd6MXIlTKaY2fnV0GhVhm/TgKX8hx1iFfYBK0elOy
+	 LoyKhpcC7UWo+tTcnpYJTUgueHvhvvBtc0zdhnlhdb56DxwWQrakke/oNK9bxfJ4em
+	 lmkiBduPvp6sg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lancelot SIX <lancelot.six@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Nilay Shroff <nilay@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 5/6] drm/amdkfd: Flush the process wq before creating a kfd_process
-Date: Tue,  7 May 2024 19:14:21 -0400
-Message-ID: <20240507231424.395315-5-sashal@kernel.org>
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.4 6/6] nvme: find numa distance only if controller has valid numa id
+Date: Tue,  7 May 2024 19:14:22 -0400
+Message-ID: <20240507231424.395315-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231424.395315-1-sashal@kernel.org>
 References: <20240507231424.395315-1-sashal@kernel.org>
@@ -72,59 +68,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.275
 Content-Transfer-Encoding: 8bit
 
-From: Lancelot SIX <lancelot.six@amd.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-[ Upstream commit f5b9053398e70a0c10aa9cb4dd5910ab6bc457c5 ]
+[ Upstream commit 863fe60ed27f2c85172654a63c5b827e72c8b2e6 ]
 
-There is a race condition when re-creating a kfd_process for a process.
-This has been observed when a process under the debugger executes
-exec(3).  In this scenario:
-- The process executes exec.
- - This will eventually release the process's mm, which will cause the
-   kfd_process object associated with the process to be freed
-   (kfd_process_free_notifier decrements the reference count to the
-   kfd_process to 0).  This causes kfd_process_ref_release to enqueue
-   kfd_process_wq_release to the kfd_process_wq.
-- The debugger receives the PTRACE_EVENT_EXEC notification, and tries to
-  re-enable AMDGPU traps (KFD_IOC_DBG_TRAP_ENABLE).
- - When handling this request, KFD tries to re-create a kfd_process.
-   This eventually calls kfd_create_process and kobject_init_and_add.
+On system where native nvme multipath is configured and iopolicy
+is set to numa but the nvme controller numa node id is undefined
+or -1 (NUMA_NO_NODE) then avoid calculating node distance for
+finding optimal io path. In such case we may access numa distance
+table with invalid index and that may potentially refer to incorrect
+memory. So this patch ensures that if the nvme controller numa node
+id is -1 then instead of calculating node distance for finding optimal
+io path, we set the numa node distance of such controller to default 10
+(LOCAL_DISTANCE).
 
-At this point the call to kobject_init_and_add can fail because the
-old kfd_process.kobj has not been freed yet by kfd_process_wq_release.
-
-This patch proposes to avoid this race by making sure to drain
-kfd_process_wq before creating a new kfd_process object.  This way, we
-know that any cleanup task is done executing when we reach
-kobject_init_and_add.
-
-Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/all/20240413090614.678353-1-nilay@linux.ibm.com/
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/nvme/host/multipath.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index aa0a617b8d445..662e4d973f13a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -289,6 +289,14 @@ struct kfd_process *kfd_create_process(struct file *filep)
- 	if (process) {
- 		pr_debug("Process already found\n");
- 	} else {
-+		/* If the process just called exec(3), it is possible that the
-+		 * cleanup of the kfd_process (following the release of the mm
-+		 * of the old process image) is still in the cleanup work queue.
-+		 * Make sure to drain any job before trying to recreate any
-+		 * resource for this process.
-+		 */
-+		flush_workqueue(kfd_process_wq);
-+
- 		process = create_process(thread);
- 		if (IS_ERR(process))
- 			goto out;
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 811f7b96b5517..4f3220aef7c47 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -180,7 +180,8 @@ static struct nvme_ns *__nvme_find_path(struct nvme_ns_head *head, int node)
+ 		if (nvme_path_is_disabled(ns))
+ 			continue;
+ 
+-		if (READ_ONCE(head->subsys->iopolicy) == NVME_IOPOLICY_NUMA)
++		if (ns->ctrl->numa_node != NUMA_NO_NODE &&
++		    READ_ONCE(head->subsys->iopolicy) == NVME_IOPOLICY_NUMA)
+ 			distance = node_distance(node, ns->ctrl->numa_node);
+ 		else
+ 			distance = LOCAL_DISTANCE;
 -- 
 2.43.0
 
