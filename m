@@ -1,434 +1,174 @@
-Return-Path: <stable+bounces-43201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7CF8BEDD6
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 22:09:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F0B8BEE81
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D25A11C24C64
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 20:09:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2A3EB20FEF
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 21:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A8A187348;
-	Tue,  7 May 2024 20:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D40E73196;
+	Tue,  7 May 2024 21:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YFKgktAx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WHrajR/4"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5B918733D;
-	Tue,  7 May 2024 20:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6017318733E
+	for <stable@vger.kernel.org>; Tue,  7 May 2024 21:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715112422; cv=none; b=dOn7RSEJTP2BMiJGjlsy6AhY/G4Slf3b0zW+F/C331/g/8o9g89sHUbYO1ACexsIamXgp5l8PMEYC1xjajmVAzZhkzlofgy5zgnu7NH7Vo9/ou5gadtS6cTpn/AOZv268sZq2v3qbXD0LF8YBFoMAl5umgmgAfstPVLXuijvhWM=
+	t=1715115761; cv=none; b=FX+nN00PU9HTn3sgFIMMudpcD13dti2ByLCRlq8a3mZEmZXyX0oSLB9ystMV4N8MLJ8YcrJSeiXY1lEThm3DIQhfk23zyKRynCDw0JfmAi9e2kEZR6N3rlnpNSVaajhbzbGa620c1iP40sBpVo4egE9lTbIbTCcGW+mqqvGkcMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715112422; c=relaxed/simple;
-	bh=i7Z1HNtJG37JLhdjWG8mqhFn64dp16Fl/8geNmVF/G8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pCUspA5qgWKVeP6yldnw8I+UzTWf4gvq39Y07JuAgJkmG7Ge+wa2Vx8AY4yEzMOthl5hK74KN7B1GmV7qOpca2zKsNWuk10lJcPBpaFTuxympuDnCJGhfgHMWReWJuYloSHoZnZ+cKJ4omrgGoGSo/5Ze3MyBiyzmlW7jzwaGAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YFKgktAx; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715112421; x=1746648421;
-  h=date:from:to:cc:subject:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=i7Z1HNtJG37JLhdjWG8mqhFn64dp16Fl/8geNmVF/G8=;
-  b=YFKgktAxD433sIyf4orDRlzKTndD5oeAI/OzYxlBG5t7wWyA0mUFkMOi
-   TrZoIC60PBipXYX+rlwiMOH2bpH/I5R+PtaX83xJuHOxNr232o477N8jk
-   6TLYjG3WQhbLpnizAHQ0eLCrxtB+JDTwfX7POzOX+ZqkLsNQG0KIyKiW3
-   KG5vILxm/NfS7+V+MsNWiE/iKQ7wbKZSij/1mSbfpaf88W9peHrE7tc81
-   cDulIhTuAUBpFYq6KWWovUCmAvvmXTSUuWRgOIh52XGD2X9ZHdUU4Bqyc
-   2ZHr8x+OgM0G4FX+MDqM5gxVUaWeh5N5ADrWMe5QysN6KJrH5fzO/bUOQ
-   g==;
-X-CSE-ConnectionGUID: i5P38uGTSVSwpzupz4Bo0g==
-X-CSE-MsgGUID: snqFt1IyTCih5L4oAjZPqA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="11091603"
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
-   d="scan'208";a="11091603"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 13:07:00 -0700
-X-CSE-ConnectionGUID: NXEFWf9QRgW1mw17iqtcTQ==
-X-CSE-MsgGUID: u69ADPL+R5Om6IN4WCjPig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
-   d="scan'208";a="28607425"
-Received: from patelni-desk.amr.corp.intel.com (HELO localhost) ([10.2.132.135])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 13:06:58 -0700
-Date: Tue, 7 May 2024 13:06:57 -0700
-From: Nirmal Patel <nirmal.patel@linux.intel.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- ilpo.jarvinen@linux.intel.com, Minghuan Lian <minghuan.Lian@nxp.com>,
- Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Lorenzo
- Pieralisi <lpieralisi@kernel.org>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>, Rob Herring <robh@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>,
- Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, Ray Jui <rjui@broadcom.com>, Scott
- Branden <sbranden@broadcom.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Marek Vasut
- <marek.vasut+renesas@gmail.com>, Yoshihiro Shimoda
- <yoshihiro.shimoda.uh@renesas.com>, Jonathan Derrick
- <jonathan.derrick@linux.dev>
-Subject: Re: Patch "PCI: Use PCI_HEADER_TYPE_* instead of literals" has been
- added to the 6.6-stable tree
-Message-ID: <20240507130657.00000df3@linux.intel.com>
-In-Reply-To: <20240422223629.1576683-1-sashal@kernel.org>
-References: <20240422223629.1576683-1-sashal@kernel.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-w64-mingw32)
+	s=arc-20240116; t=1715115761; c=relaxed/simple;
+	bh=dcQifiRnXyza9FW3AFxD5R6V5brxDJJNyh8xJafA31M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=h8QWFdH58wGm73hdGHYJfysPYhCk6rnxddtX4+BO1CMGRbf3ysyOhtu2xn9qmvoTt/0f7d1yjT4hPvYhc3rvNkgz1qU1tsLBzp1HVZzUkCjpKzdWqNkhStzSu4xgCdtMR9OGZn2oLNQeqEYUvlqUPTEwKLZ/k0/AV9si6zipPS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WHrajR/4; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1ec76185c0fso15305ad.1
+        for <stable@vger.kernel.org>; Tue, 07 May 2024 14:02:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715115758; x=1715720558; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7PXKFoq0ULEX3xHp8L36jXb3EJwEiOL/fywMVJVG9EM=;
+        b=WHrajR/4mTPdVWLUxjY7VmaVQHGq6UnoFgvXR2adb1Z0QZXwzqCsyZfuUExndYDV16
+         t1gD3WizvKEatxalEFMvWygzuCGy4Ss35y+PRNoTDzOZyQMnOBjrBaRr14KxgK84Wbmp
+         3Z1k9MqmALDuXBA1ce6tEWVQDU/vRdxGBfZpUjscoCZVOGvusH5cxeAtHW9bVwG21q2X
+         uIShYsQQosvT+06h0HW8U+Rihe9C5ydFNe0uY7Ga75l4u5HuB5DquDynxD05hBR+6KBO
+         MDmq80fJyrl8Npec1c+7GAuPdLlPLjKfZI/dYXTXgGS4Lsm3LyJ8kU0EG17pY1VP4KBl
+         RBIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715115758; x=1715720558;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7PXKFoq0ULEX3xHp8L36jXb3EJwEiOL/fywMVJVG9EM=;
+        b=XHzpNeYca2dri/2YWOrbwUQdSlzZ9UdishxLnEvyNbHhIqUx00B1/3ogcu8XEWDDga
+         pX45JWHInhQvExOiNoM4SLS0XRJ0KjR+/J2GSV5NnbT+7Tg348tiAqLDPhjME2Zng1oE
+         MA3u/P7FgH/sOgtqHZBB01hwD2VwmViy9ceIuMzgQMr0yHk/KLd1geNRyRzQrZqrsPeU
+         Q7hsPZZ1FzeH9xerakE5KPgrD71CprJYDJDKsODFjCvWy+8iU6RlkqZfe+oG6MiDONoa
+         v1CZggQrJW187gIYagvkbPxEVz6KqoT/q8Y+AUVoyDMUdX5zHbORoHl/H4+ZrRu2a4K9
+         vdVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUj/ScpN0QU582Ppo+Sk6woMUp6USg76jQfJoHnB9eZGwZ8XGgWbdOv0KpRYnAyPpDsB5J2V0Y8HjZPDiShIZ/Z0Pqj7CHp
+X-Gm-Message-State: AOJu0YzXeCeegcBcuRCAPqldv2Y0PZpYF+6CVZFg5zi9IFlWjnmg1MtQ
+	eh7SNe8k3s0tfk8ays8HAegScPkANgH35AZ0DAmkgjBo7SUppE8eITwXV5SPAg==
+X-Google-Smtp-Source: AGHT+IFcx/zsGsoDBaEiKVAbBojnCcKrrO7wSjP8pFBrW3hvSPSIk4fhXYgzXGfwU+OuYarW72LzoA==
+X-Received: by 2002:a17:903:947:b0:1e3:e08c:5a98 with SMTP id d9443c01a7336-1eebe6a7a10mr95045ad.29.1715115757192;
+        Tue, 07 May 2024 14:02:37 -0700 (PDT)
+Received: from ?IPV6:2620:0:1000:8411:3fc2:a19c:5e57:eee5? ([2620:0:1000:8411:3fc2:a19c:5e57:eee5])
+        by smtp.gmail.com with ESMTPSA id u10-20020a170902e80a00b001e826e4d087sm10453005plg.142.2024.05.07.14.02.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 May 2024 14:02:36 -0700 (PDT)
+Message-ID: <d174e5cf-402d-48a0-b077-89740b873b73@google.com>
+Date: Tue, 7 May 2024 14:02:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] usb: typec: tcpm: unregister existing source caps
+ before re-registration
+To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, linux@roeck-us.net,
+ heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+ badhri@google.com, rdbabiera@google.com, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>
+References: <20240424223227.1807844-1-amitsd@google.com>
+ <y4lla7vqsrl75qhesmyexq7yvcu6hl6kryh3ctwq5ci3r4mlpw@rsnhfkmlmtt7>
+Content-Language: en-US
+From: Amit Sunil Dhamne <amitsd@google.com>
+In-Reply-To: <y4lla7vqsrl75qhesmyexq7yvcu6hl6kryh3ctwq5ci3r4mlpw@rsnhfkmlmtt7>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 22 Apr 2024 18:36:27 -0400
-Sasha Levin <sashal@kernel.org> wrote:
+Hi Ondřej,
 
-> This is a note to let you know that I've just added the patch titled
->=20
->     PCI: Use PCI_HEADER_TYPE_* instead of literals
->=20
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
->=20
-> The filename of the patch is:
->      pci-use-pci_header_type_-instead-of-literals.patch
-> and it can be found in the queue-6.6 subdirectory.
->=20
-> If you, or anyone else, feels it should not be added to the stable
-> tree, please let <stable@vger.kernel.org> know about it.
->=20
->=20
->=20
-> commit 47a6faa3158d5013c24f05c59c3d3b84f273d9dd
-> Author: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-> Date:   Tue Oct 3 15:53:00 2023 +0300
->=20
->     PCI: Use PCI_HEADER_TYPE_* instead of literals
->    =20
->     [ Upstream commit 83c088148c8e5c439eec6c7651692f797547e1a8 ]
->    =20
->     Replace literals under drivers/pci/ with PCI_HEADER_TYPE_MASK,
->     PCI_HEADER_TYPE_NORMAL, and PCI_HEADER_TYPE_MFD.
->    =20
->     Also replace !! boolean conversions with FIELD_GET().
->    =20
->     Link:
-> https://lore.kernel.org/r/20231003125300.5541-4-ilpo.jarvinen@linux.intel=
-.com
-> Signed-off-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com> Reviewed-by:
-> Wolfram Sang <wsa+renesas@sang-engineering.com> # for Renesas R-Car
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
->=20
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c
-> b/drivers/pci/controller/dwc/pci-layerscape.c index
-> b931d597656f6..37956e09c65bd 100644 ---
-> a/drivers/pci/controller/dwc/pci-layerscape.c +++
-> b/drivers/pci/controller/dwc/pci-layerscape.c @@ -58,7 +58,7 @@
-> static bool ls_pcie_is_bridge(struct ls_pcie *pcie) u32 header_type;
-> =20
->  	header_type =3D ioread8(pci->dbi_base + PCI_HEADER_TYPE);
-> -	header_type &=3D 0x7f;
-> +	header_type &=3D PCI_HEADER_TYPE_MASK;
-> =20
->  	return header_type =3D=3D PCI_HEADER_TYPE_BRIDGE;
->  }
-> diff --git a/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c
-> b/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c index
-> 45b97a4b14dbd..32951f7d6d6d6 100644 ---
-> a/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c +++
-> b/drivers/pci/controller/mobiveil/pcie-mobiveil-host.c @@ -539,7
-> +539,7 @@ static bool mobiveil_pcie_is_bridge(struct mobiveil_pcie
-> *pcie) u32 header_type;=20
->  	header_type =3D mobiveil_csr_readb(pcie, PCI_HEADER_TYPE);
-> -	header_type &=3D 0x7f;
-> +	header_type &=3D PCI_HEADER_TYPE_MASK;
-> =20
->  	return header_type =3D=3D PCI_HEADER_TYPE_BRIDGE;
->  }
-> diff --git a/drivers/pci/controller/pcie-iproc.c
-> b/drivers/pci/controller/pcie-iproc.c index
-> bd1c98b688516..97f739a2c9f8f 100644 ---
-> a/drivers/pci/controller/pcie-iproc.c +++
-> b/drivers/pci/controller/pcie-iproc.c @@ -783,7 +783,7 @@ static int
-> iproc_pcie_check_link(struct iproc_pcie *pcie)=20
->  	/* make sure we are not in EP mode */
->  	iproc_pci_raw_config_read32(pcie, 0, PCI_HEADER_TYPE, 1,
-> &hdr_type);
-> -	if ((hdr_type & 0x7f) !=3D PCI_HEADER_TYPE_BRIDGE) {
-> +	if ((hdr_type & PCI_HEADER_TYPE_MASK) !=3D
-> PCI_HEADER_TYPE_BRIDGE) { dev_err(dev, "in EP mode, hdr=3D%#02x\n",
-> hdr_type); return -EFAULT;
->  	}
-> diff --git a/drivers/pci/controller/pcie-rcar-ep.c
-> b/drivers/pci/controller/pcie-rcar-ep.c index
-> f9682df1da619..7034c0ff23d0d 100644 ---
-> a/drivers/pci/controller/pcie-rcar-ep.c +++
-> b/drivers/pci/controller/pcie-rcar-ep.c @@ -43,7 +43,7 @@ static void
-> rcar_pcie_ep_hw_init(struct rcar_pcie *pcie) rcar_rmw32(pcie,
-> REXPCAP(0), 0xff, PCI_CAP_ID_EXP); rcar_rmw32(pcie,
-> REXPCAP(PCI_EXP_FLAGS), PCI_EXP_FLAGS_TYPE, PCI_EXP_TYPE_ENDPOINT <<
-> 4);
-> -	rcar_rmw32(pcie, RCONF(PCI_HEADER_TYPE), 0x7f,
-> +	rcar_rmw32(pcie, RCONF(PCI_HEADER_TYPE),
-> PCI_HEADER_TYPE_MASK, PCI_HEADER_TYPE_NORMAL);
-> =20
->  	/* Write out the physical slot number =3D 0 */
-> diff --git a/drivers/pci/controller/pcie-rcar-host.c
-> b/drivers/pci/controller/pcie-rcar-host.c index
-> 88975e40ee2fb..bf7cc0b6a6957 100644 ---
-> a/drivers/pci/controller/pcie-rcar-host.c +++
-> b/drivers/pci/controller/pcie-rcar-host.c @@ -460,7 +460,7 @@ static
-> int rcar_pcie_hw_init(struct rcar_pcie *pcie) rcar_rmw32(pcie,
-> REXPCAP(0), 0xff, PCI_CAP_ID_EXP); rcar_rmw32(pcie,
-> REXPCAP(PCI_EXP_FLAGS), PCI_EXP_FLAGS_TYPE, PCI_EXP_TYPE_ROOT_PORT <<
-> 4);
-> -	rcar_rmw32(pcie, RCONF(PCI_HEADER_TYPE), 0x7f,
-> +	rcar_rmw32(pcie, RCONF(PCI_HEADER_TYPE),
-> PCI_HEADER_TYPE_MASK, PCI_HEADER_TYPE_BRIDGE);
-> =20
->  	/* Enable data link layer active state reporting */
-> diff --git a/drivers/pci/controller/vmd.c
-> b/drivers/pci/controller/vmd.c index 6ac0afae0ca18..2af46e6587aff
-> 100644 --- a/drivers/pci/controller/vmd.c
-> +++ b/drivers/pci/controller/vmd.c
-> @@ -527,7 +527,7 @@ static void vmd_domain_reset(struct vmd_dev *vmd)
-> =20
->  			hdr_type =3D readb(base + PCI_HEADER_TYPE);
-> =20
-> -			functions =3D (hdr_type & 0x80) ? 8 : 1;
-> +			functions =3D (hdr_type & PCI_HEADER_TYPE_MFD)
+On 5/7/24 09:19, Ondřej Jirman wrote:
+> On Wed, Apr 24, 2024 at 03:32:16PM GMT, Amit Sunil Dhamne wrote:
+>> Check and unregister existing source caps in tcpm_register_source_caps
+>> function before registering new ones. This change fixes following
+>> warning when port partner resends source caps after negotiating PD contract
+>> for the purpose of re-negotiation.
+>>
+>> [  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
+>> [  343.135071][  T151] Call trace:
+>> [  343.135076][  T151]  dump_backtrace+0xe8/0x108
+>> [  343.135099][  T151]  show_stack+0x18/0x24
+>> [  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
+>> [  343.135119][  T151]  dump_stack+0x18/0x24
+>> [  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
+>> [  343.135137][  T151]  kobject_add_internal+0x228/0x424
+>> [  343.135146][  T151]  kobject_add+0x94/0x10c
+>> [  343.135152][  T151]  device_add+0x1b0/0x4c0
+>> [  343.135187][  T151]  device_register+0x20/0x34
+>> [  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
+>> [  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
+>> [  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
+>> [  343.135227][  T151]  kthread+0x114/0x1bc
+>> [  343.135235][  T151]  ret_from_fork+0x10/0x20
+>> [  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
+>>
+>> Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
+>> Cc: linux-usb@vger.kernel.org
+>> Cc: stable@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: Mark Brown <broonie@kernel.org>
+>> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+>> ---
+>>   drivers/usb/typec/tcpm/tcpm.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+>> index ab6ed6111ed0..d8eb89f4f0c3 100644
+>> --- a/drivers/usb/typec/tcpm/tcpm.c
+>> +++ b/drivers/usb/typec/tcpm/tcpm.c
+>> @@ -2996,7 +2996,7 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
+>>   {
+>>   	struct usb_power_delivery_desc desc = { port->negotiated_rev };
+>>   	struct usb_power_delivery_capabilities_desc caps = { };
+>> -	struct usb_power_delivery_capabilities *cap;
+>> +	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
+>>   
+>>   	if (!port->partner_pd)
+>>   		port->partner_pd = usb_power_delivery_register(NULL, &desc);
+>> @@ -3006,6 +3006,9 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
+>>   	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
+>>   	caps.role = TYPEC_SOURCE;
+>>   
+>> +	if (cap)
+>> +		usb_power_delivery_unregister_capabilities(cap);
+> This certainly looks like it's asking for use after free on port->partner_source_caps
+> later on, since you're not clearing the pointer for the data that you just freed.
+>
+>> +
+>>   	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+>>   	if (IS_ERR(cap))
+>>   		return PTR_ERR(cap);
+> This can easily fail if caps contain invalid PDOs, resulting in keeping pointer
+> to freed memory in port->partner_source_caps.
 
-Acked-by: Nirmal Patel <nirmal.patel@linux.intel.com>
+Makes sense. I will send a fix for this. Thanks for the review.
 
-> ? 8 : 1; for (fn =3D 0; fn < functions; fn++) {
->  				base =3D vmd->cfgbar +
-> PCIE_ECAM_OFFSET(bus, PCI_DEVFN(dev, fn), 0);
-> diff --git a/drivers/pci/hotplug/cpqphp_ctrl.c
-> b/drivers/pci/hotplug/cpqphp_ctrl.c index
-> e429ecddc8feb..c01968ef0bd7b 100644 ---
-> a/drivers/pci/hotplug/cpqphp_ctrl.c +++
-> b/drivers/pci/hotplug/cpqphp_ctrl.c @@ -2059,7 +2059,7 @@ int
-> cpqhp_process_SS(struct controller *ctrl, struct pci_func *func)
-> return rc;=20
->  			/* If it's a bridge, check the VGA Enable
-> bit */
-> -			if ((header_type & 0x7F) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) {
-> +			if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { rc =3D pci_bus_read_config_byte(pci_bus,
-> devfn, PCI_BRIDGE_CONTROL, &BCR); if (rc)
->  					return rc;
-> @@ -2342,7 +2342,7 @@ static int configure_new_function(struct
-> controller *ctrl, struct pci_func *func if (rc)
->  		return rc;
-> =20
-> -	if ((temp_byte & 0x7F) =3D=3D PCI_HEADER_TYPE_BRIDGE) {
-> +	if ((temp_byte & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { /* set Primary bus */
->  		dbg("set Primary bus =3D %d\n", func->bus);
->  		rc =3D pci_bus_write_config_byte(pci_bus, devfn,
-> PCI_PRIMARY_BUS, func->bus); @@ -2739,7 +2739,7 @@ static int
-> configure_new_function(struct controller *ctrl, struct pci_func *func
->  					 *   PCI_BRIDGE_CTL_SERR |
->  					 *   PCI_BRIDGE_CTL_NO_ISA */
->  		rc =3D pci_bus_write_config_word(pci_bus, devfn,
-> PCI_BRIDGE_CONTROL, command);
-> -	} else if ((temp_byte & 0x7F) =3D=3D PCI_HEADER_TYPE_NORMAL) {
-> +	} else if ((temp_byte & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_NORMAL) { /* Standard device */
->  		rc =3D pci_bus_read_config_byte(pci_bus, devfn, 0x0B,
-> &class_code);=20
-> diff --git a/drivers/pci/hotplug/cpqphp_pci.c
-> b/drivers/pci/hotplug/cpqphp_pci.c index 3b248426a9f42..e9f1fb333a718
-> 100644 --- a/drivers/pci/hotplug/cpqphp_pci.c
-> +++ b/drivers/pci/hotplug/cpqphp_pci.c
-> @@ -363,7 +363,7 @@ int cpqhp_save_config(struct controller *ctrl,
-> int busnumber, int is_hot_plug) return rc;
-> =20
->  		/* If multi-function device, set max_functions to 8
-> */
-> -		if (header_type & 0x80)
-> +		if (header_type & PCI_HEADER_TYPE_MFD)
->  			max_functions =3D 8;
->  		else
->  			max_functions =3D 1;
-> @@ -372,7 +372,7 @@ int cpqhp_save_config(struct controller *ctrl,
-> int busnumber, int is_hot_plug)=20
->  		do {
->  			DevError =3D 0;
-> -			if ((header_type & 0x7F) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) {
-> +			if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { /* Recurse the subordinate bus
->  				 * get the subordinate bus number
->  				 */
-> @@ -487,13 +487,13 @@ int cpqhp_save_slot_config(struct controller
-> *ctrl, struct pci_func *new_slot)
-> pci_bus_read_config_byte(ctrl->pci_bus, PCI_DEVFN(new_slot->device,
-> 0), 0x0B, &class_code); pci_bus_read_config_byte(ctrl->pci_bus,
-> PCI_DEVFN(new_slot->device, 0), PCI_HEADER_TYPE, &header_type);=20
-> -	if (header_type & 0x80)	/* Multi-function device */
-> +	if (header_type & PCI_HEADER_TYPE_MFD)
->  		max_functions =3D 8;
->  	else
->  		max_functions =3D 1;
-> =20
->  	while (function < max_functions) {
-> -		if ((header_type & 0x7F) =3D=3D PCI_HEADER_TYPE_BRIDGE) {
-> +		if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { /*  Recurse the subordinate bus */
->  			pci_bus_read_config_byte(ctrl->pci_bus,
-> PCI_DEVFN(new_slot->device, function), PCI_SECONDARY_BUS,
-> &secondary_bus); @@ -571,7 +571,7 @@ int
-> cpqhp_save_base_addr_length(struct controller *ctrl, struct pci_func
-> *func) /* Check for Bridge */ pci_bus_read_config_byte(pci_bus,
-> devfn, PCI_HEADER_TYPE, &header_type);=20
-> -		if ((header_type & 0x7F) =3D=3D PCI_HEADER_TYPE_BRIDGE) {
-> +		if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { pci_bus_read_config_byte(pci_bus, devfn,
-> PCI_SECONDARY_BUS, &secondary_bus);=20
->  			sub_bus =3D (int) secondary_bus;
-> @@ -625,7 +625,7 @@ int cpqhp_save_base_addr_length(struct controller
-> *ctrl, struct pci_func *func)=20
->  			}	/* End of base register loop */
-> =20
-> -		} else if ((header_type & 0x7F) =3D=3D 0x00) {
-> +		} else if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_NORMAL) { /* Figure out IO and memory base lengths */
->  			for (cloop =3D 0x10; cloop <=3D 0x24; cloop +=3D
-> 4) { temp_register =3D 0xFFFFFFFF;
-> @@ -723,7 +723,7 @@ int cpqhp_save_used_resources(struct controller
-> *ctrl, struct pci_func *func) /* Check for Bridge */
->  		pci_bus_read_config_byte(pci_bus, devfn,
-> PCI_HEADER_TYPE, &header_type);=20
-> -		if ((header_type & 0x7F) =3D=3D PCI_HEADER_TYPE_BRIDGE) {
-> +		if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { /* Clear Bridge Control Register */
->  			command =3D 0x00;
->  			pci_bus_write_config_word(pci_bus, devfn,
-> PCI_BRIDGE_CONTROL, command); @@ -858,7 +858,7 @@ int
-> cpqhp_save_used_resources(struct controller *ctrl, struct pci_func
-> *func) } }	/* End of base register loop */
->  		/* Standard header */
-> -		} else if ((header_type & 0x7F) =3D=3D 0x00) {
-> +		} else if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_NORMAL) { /* Figure out IO and memory base lengths */
->  			for (cloop =3D 0x10; cloop <=3D 0x24; cloop +=3D
-> 4) { pci_bus_read_config_dword(pci_bus, devfn, cloop, &save_base);
-> @@ -975,7 +975,7 @@ int cpqhp_configure_board(struct controller
-> *ctrl, struct pci_func *func) pci_bus_read_config_byte(pci_bus,
-> devfn, PCI_HEADER_TYPE, &header_type);=20
->  		/* If this is a bridge device, restore subordinate
-> devices */
-> -		if ((header_type & 0x7F) =3D=3D PCI_HEADER_TYPE_BRIDGE) {
-> +		if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { pci_bus_read_config_byte(pci_bus, devfn,
-> PCI_SECONDARY_BUS, &secondary_bus);=20
->  			sub_bus =3D (int) secondary_bus;
-> @@ -1067,7 +1067,7 @@ int cpqhp_valid_replace(struct controller
-> *ctrl, struct pci_func *func) /* Check for Bridge */
->  		pci_bus_read_config_byte(pci_bus, devfn,
-> PCI_HEADER_TYPE, &header_type);=20
-> -		if ((header_type & 0x7F) =3D=3D PCI_HEADER_TYPE_BRIDGE) {
-> +		if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) { /* In order to continue checking, we must
-> program the
->  			 * bus registers in the bridge to respond to
-> accesses
->  			 * for its subordinate bus(es)
-> @@ -1090,7 +1090,7 @@ int cpqhp_valid_replace(struct controller
-> *ctrl, struct pci_func *func)=20
->  		}
->  		/* Check to see if it is a standard config header */
-> -		else if ((header_type & 0x7F) =3D=3D
-> PCI_HEADER_TYPE_NORMAL) {
-> +		else if ((header_type & PCI_HEADER_TYPE_MASK) =3D=3D
-> PCI_HEADER_TYPE_NORMAL) { /* Check subsystem vendor and ID */
->  			pci_bus_read_config_dword(pci_bus, devfn,
-> PCI_SUBSYSTEM_VENDOR_ID, &temp_register);=20
-> diff --git a/drivers/pci/hotplug/ibmphp.h
-> b/drivers/pci/hotplug/ibmphp.h index 41eafe511210f..c248a09be7b5d
-> 100644 --- a/drivers/pci/hotplug/ibmphp.h
-> +++ b/drivers/pci/hotplug/ibmphp.h
-> @@ -17,6 +17,7 @@
->   */
-> =20
->  #include <linux/pci_hotplug.h>
-> +#include <linux/pci_regs.h>
-> =20
->  extern int ibmphp_debug;
-> =20
-> @@ -286,8 +287,8 @@ int ibmphp_register_pci(void);
-> =20
->  /* pci specific defines */
->  #define PCI_VENDOR_ID_NOTVALID		0xFFFF
-> -#define PCI_HEADER_TYPE_MULTIDEVICE	0x80
-> -#define PCI_HEADER_TYPE_MULTIBRIDGE	0x81
-> +#define PCI_HEADER_TYPE_MULTIDEVICE
-> (PCI_HEADER_TYPE_MFD|PCI_HEADER_TYPE_NORMAL) +#define
-> PCI_HEADER_TYPE_MULTIBRIDGE
-> (PCI_HEADER_TYPE_MFD|PCI_HEADER_TYPE_BRIDGE) #define LATENCY
-> 	0x64 #define CACHE		64
-> diff --git a/drivers/pci/hotplug/ibmphp_pci.c
-> b/drivers/pci/hotplug/ibmphp_pci.c index 50038e5f9ca40..eeb412cbd9fe3
-> 100644 --- a/drivers/pci/hotplug/ibmphp_pci.c
-> +++ b/drivers/pci/hotplug/ibmphp_pci.c
-> @@ -1087,7 +1087,7 @@ static struct res_needed
-> *scan_behind_bridge(struct pci_func *func, u8 busno)
-> pci_bus_read_config_dword(ibmphp_pci_bus, devfn, PCI_CLASS_REVISION,
-> &class); debug("hdr_type behind the bridge is %x\n", hdr_type);
-> -				if ((hdr_type & 0x7f) =3D=3D
-> PCI_HEADER_TYPE_BRIDGE) {
-> +				if ((hdr_type &
-> PCI_HEADER_TYPE_MASK) =3D=3D PCI_HEADER_TYPE_BRIDGE) { err("embedded
-> bridges not supported for hot-plugging.\n"); amount->not_correct =3D 1;
->  					return amount;
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 06fc6f532d6c4..dae9d9e2826f0 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -534,7 +534,7 @@ u8 pci_bus_find_capability(struct pci_bus *bus,
-> unsigned int devfn, int cap)=20
->  	pci_bus_read_config_byte(bus, devfn, PCI_HEADER_TYPE,
-> &hdr_type);=20
-> -	pos =3D __pci_bus_find_cap_start(bus, devfn, hdr_type & 0x7f);
-> +	pos =3D __pci_bus_find_cap_start(bus, devfn, hdr_type &
-> PCI_HEADER_TYPE_MASK); if (pos)
->  		pos =3D __pci_find_next_cap(bus, devfn, pos, cap);
-> =20
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index b3976dcb71f10..675f77ac1968d 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -1849,8 +1849,8 @@ static void quirk_jmicron_ata(struct pci_dev
-> *pdev)=20
->  	/* Update pdev accordingly */
->  	pci_read_config_byte(pdev, PCI_HEADER_TYPE, &hdr);
-> -	pdev->hdr_type =3D hdr & 0x7f;
-> -	pdev->multifunction =3D !!(hdr & 0x80);
-> +	pdev->hdr_type =3D hdr & PCI_HEADER_TYPE_MASK;
-> +	pdev->multifunction =3D FIELD_GET(PCI_HEADER_TYPE_MFD, hdr);
-> =20
->  	pci_read_config_dword(pdev, PCI_CLASS_REVISION, &class);
->  	pdev->class =3D class >> 8;
-> @@ -5710,7 +5710,7 @@ static void quirk_nvidia_hda(struct pci_dev
-> *gpu)=20
->  	/* The GPU becomes a multi-function device when the HDA is
-> enabled */ pci_read_config_byte(gpu, PCI_HEADER_TYPE, &hdr_type);
-> -	gpu->multifunction =3D !!(hdr_type & 0x80);
-> +	gpu->multifunction =3D FIELD_GET(PCI_HEADER_TYPE_MFD,
-> hdr_type); }
->  DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
->  			       PCI_BASE_CLASS_DISPLAY, 16,
-> quirk_nvidia_hda);
+Thanks,
+
+Amit
+
+>
+> Kind regards,
+> 	o.
+>
+>> base-commit: 0d31ea587709216d88183fe4ca0c8aba5e0205b8
+>> -- 
+>> 2.44.0.769.g3c40516874-goog
+>>
 
