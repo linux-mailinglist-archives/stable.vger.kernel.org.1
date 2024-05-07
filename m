@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-43236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2B98BF06E
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714228BF073
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B8B61F2134A
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D74F283D80
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F162F130E32;
-	Tue,  7 May 2024 22:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07241311B9;
+	Tue,  7 May 2024 22:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBZ84uHN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Flrksmiy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7900130AFF;
-	Tue,  7 May 2024 22:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB5C1311A9;
+	Tue,  7 May 2024 22:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122756; cv=none; b=JH0sCLPTZTkiPj/7/vR25XHm+UDHKLs5TT49swC6Qc3rBzXUedaLLineG7NpdxT3ZGdpMMjccKseanfwhSTLWCwDojn8pVe5EFPzXkGrj0S1TxwuCpQwQCTBLKurWxljdL8pIMS+aXIhBXZs9vnkWetU8IJ/YnkqzzKg5dnceCw=
+	t=1715122759; cv=none; b=LmhpeZKs7OHnQtXYNf/8BxjjOlSbX15+pFq+bEfIX/hDEF51NWWs3tZ4PCeKEp8QHBtinmINm1LWDHStmJ+FgW7dqfzbDZYrYi3TSz9pSgxLDbmOgVHKLE1vheHTWev/DOXP1pIjWUuGYrzAtMhVMtmK0jiMbvDuTPIdBnGkNqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122756; c=relaxed/simple;
-	bh=Z0nBQAKgx03CRJ0iYriHi2duVA4l1ZIJOhuz5ALaiZM=;
+	s=arc-20240116; t=1715122759; c=relaxed/simple;
+	bh=uHVexuiQEyLGa/+Bpi1sAob8fjUD7bOIr0rbWd3nEPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRo8/F68e3q4FgLWEYDtYuVEOmr//rmw+kNNdp0qJwGNGUyZrfHJ55byaCgDSH9iu5Si8RzYf/9pvkBTq8jizr6G3Ezgd1yZdeNVAA2B6g9YvKbXt0ORHRuNdcloJpm4PWGGbQn7rCm8O68aUvlI8qFjkh3qHn+MkaeJkRF5MQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBZ84uHN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BABC2BBFC;
-	Tue,  7 May 2024 22:59:14 +0000 (UTC)
+	 MIME-Version; b=KrTNiR1NCkecDXsZ9Vj/itrU6Euf5t2o2Ve7wFRdjkuZLEt7eOpFXMBjmnip646FU1FQyooYU27Mz5gcQeJJIyZrIYfFy+tNvurf/tFePBEdNVyFS1TPux3km5gssX7SUquP4Y9tvRGdcGzJyic8p1VdGB2n3hsmh547WituAyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Flrksmiy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF198C4AF17;
+	Tue,  7 May 2024 22:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122756;
-	bh=Z0nBQAKgx03CRJ0iYriHi2duVA4l1ZIJOhuz5ALaiZM=;
+	s=k20201202; t=1715122759;
+	bh=uHVexuiQEyLGa/+Bpi1sAob8fjUD7bOIr0rbWd3nEPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBZ84uHNimT1iYUEu/m6Cu7uDv0zOSMg6VXX02TwYUF0a2vSGpzvs6kBt9GYC6H9u
-	 bVpB6b9ubJXQiVSQAe3M+Tuu/XBVBJ5FB3YlYlS0GSr1fYhkwNZjHw2va+TNYMFPgb
-	 MMymHnoz4U/cPyxNM1JXVEvlQuEYKq4Mwvlh2jVaOB2i+iefoxykpMln6zsi3RDmV3
-	 70MFkkZKYfuU/s3M3kN8PZMmia6wsq5yLm+oMQmBk329XiCQo/yEwmQKGTos6BXzpU
-	 +uk/L8rXBVeTOcZOyf4W0E7bHpEKvtvDwfy3ye6kMVrUM8CiQAR883XxNxWhrp12Ja
-	 MhYnnk8j/gWdQ==
+	b=Flrksmiy0kJfG0XNQgHAHx1dcjBWBYFfBucjydqW8zAnj/Awuwgte2RN+kO4TRPuB
+	 2TXegU7ktZzy9bJzazljjqltpUXi12zNBddQNYrjYkpejR86pNkqxZUbmF/CTftp3t
+	 KMqKF7HtH/BcvR4aqMMBKzivWlaYEjaepf3rOiHy0h2QOC4spllF/fuojEps1xIGMK
+	 zav2Hohp9hYm3DdWJzMMTD9rSke/kls4pTMU5thUM9byVvTG+xW+eAqq/oKCNTshTe
+	 JSoPLORgkD9Lu89yDX298d4wSukLup46r6IKMQafriIozj4BlwFPr4QlahxwkH7Vxy
+	 /Y+TB9QaH+Hkg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Rob Herring <robh@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 03/19] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
-Date: Tue,  7 May 2024 18:58:25 -0400
-Message-ID: <20240507225910.390914-3-sashal@kernel.org>
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	sebastian.reichel@collabora.com,
+	s.hauer@pengutronix.de,
+	cristian.ciocaltea@collabora.com,
+	andy.yan@rock-chips.com,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 04/19] dt-bindings: rockchip: grf: Add missing type to 'pcie-phy' node
+Date: Tue,  7 May 2024 18:58:26 -0400
+Message-ID: <20240507225910.390914-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507225910.390914-1-sashal@kernel.org>
 References: <20240507225910.390914-1-sashal@kernel.org>
@@ -71,47 +74,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
+[ Upstream commit d41201c90f825f19a46afbfb502f22f612d8ccc4 ]
 
-The declarations of the tx_rx_evt class and the rdev_set_antenna event
-use the wrong order of arguments in the TP_ARGS macro.
+'pcie-phy' is missing any type. Add 'type: object' to indicate it's a
+node.
 
-Fix the order of arguments in the TP_ARGS macro.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240401204959.1698106-1-robh@kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/soc/rockchip/grf.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 617c0d0dfa963..9c767b91e15d1 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1747,7 +1747,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
+diff --git a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
+index e4fa6a07b4fa2..be6ffec2b0749 100644
+--- a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
++++ b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
+@@ -163,6 +163,7 @@ allOf:
+           unevaluatedProperties: false
  
- DECLARE_EVENT_CLASS(tx_rx_evt,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx),
-+	TP_ARGS(wiphy, tx, rx),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		__field(u32, tx)
-@@ -1764,7 +1764,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
+         pcie-phy:
++          type: object
+           description:
+             Documentation/devicetree/bindings/phy/rockchip-pcie-phy.txt
  
- DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx)
-+	TP_ARGS(wiphy, tx, rx)
- );
- 
- DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
 -- 
 2.43.0
 
