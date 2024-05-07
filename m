@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-43288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF358BF161
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:23:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B288BF164
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BABB284ACC
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB42C1C2306B
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA7C131198;
-	Tue,  7 May 2024 23:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963FB13172B;
+	Tue,  7 May 2024 23:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z277DVy4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEjavXHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D933E13118D;
-	Tue,  7 May 2024 23:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0D61311BA;
+	Tue,  7 May 2024 23:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123300; cv=none; b=JuOCznZg2eTh7zMgr2zUW4703m5Zdux9pzya0ZD7CwTurKsd4bYDVLix1Nu3uPusRVj8OU54CDuQ91X1tsfP7ssbBjD3tEuKxi7tTEECxhjs30CrzuTKy6Z548krEXqTDXaStm9z4a4desvgKdubdKwmsGG1nfqR/SmhJI1N/kA=
+	t=1715123301; cv=none; b=NFKhU2OGQHiDp2NJKrE/UZKZIlYtay+tLr0paHf6VsMKeJaZ+n12wPO1+/2TMqnFJAKhgwl6gDjxC2IkRJllsfzgRdqP82oLV60bbIcx7Sg/nqef/SfbZfWZMwzAuPpPu1TqJMhY45xcaEeTlQXVNbyhtzSieCyYnYla6ypAv/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123300; c=relaxed/simple;
-	bh=AvjrPyvmFhJZfmlxFq+m9FvNqx0Qr/xq4HFcl9/BkK4=;
+	s=arc-20240116; t=1715123301; c=relaxed/simple;
+	bh=V9xwPCi2BbHqvXbn+HBOTFHYtgRml7I7/V1s2BHN2qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlWRtwKEskyJx2RizXyldc+NvFxbYDGyQtdEV9nufYzUBXFoVm8nsmJOJ9TahguFo7zaqE6b29G7rn5fBY5reC4033twkGx0/3dlzllfmiI4FIQ4hMM6viNgDp3/dYEUrDErEzGyOmz1UrB350+zl0WX7R16NLnsdD2SRe+wKUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z277DVy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D53C2BBFC;
-	Tue,  7 May 2024 23:08:18 +0000 (UTC)
+	 MIME-Version; b=u6gx6hsHnRQOYsalPlv3lyiRixe9OQlu/qPuYzBIlgNBJ1/u08TH202QTlGtBhUQmecM4WniavZMuabdz7g8MYiWQ6VAK8c+bs+RtPLQM1TEtQfi9vvU0HjWzTq2LQISOwPWgz/8SEq8J5GtQ+M/5ul/mKvvJCep4mlHPPsO3Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEjavXHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5832C3277B;
+	Tue,  7 May 2024 23:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123299;
-	bh=AvjrPyvmFhJZfmlxFq+m9FvNqx0Qr/xq4HFcl9/BkK4=;
+	s=k20201202; t=1715123301;
+	bh=V9xwPCi2BbHqvXbn+HBOTFHYtgRml7I7/V1s2BHN2qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z277DVy46sP616JN+sK9bcVsvJtfBSQcrmg9zq2ZBFmkIr0OC1+pbgp5611YKDP2K
-	 chAQadIkP1ZUC8Yk0G/zr5zTFH9xPUGTmD9OhJIIIXsn52lfemSYL13FJu/qnWyoFI
-	 7U/l84t7CBwB/fR7lgAfxFXTK3qCNZ5iUgpnjqiM7vzvZB0dKqx8LhFfTbL8wwpFV5
-	 SuaxT+9MvAQz70TOLVr6QbkfVAfsYHB+2L8Aa2qnpSncTsGwk1DTI3JY/QEBIf9jbu
-	 HnjVchI0eQmMG9aUuhNn1dbhpKAsabgKbTtvQdV2xd27KOqgiSuaYjUehI5pGJ/5j/
-	 0yy8m7RajnBrA==
+	b=hEjavXHz+8lHS0DmRyyrHOEcB19RMa1gH8wbacYO+OCwApKlczbXWva1qqQ4wnenI
+	 F56u6xWy9XnA9E0cyun/uhrFdQwfLnEcUeu48GUUbnMRz8w8axMKe+GNwLFx+2Wsw+
+	 DY/NYh8UywrdJZBoehjQYNtNtEgy1A8JuMDQf443Qvllg+tv2CT9jQCFPAoC3g0S2c
+	 8sTrLfkOtN8u/j/O9g/AdDMZN1yyk9u+IGGbQ9oRXJpo6jm4KCN5i/YOO7m6xaClMv
+	 hj41sO9QI9yupgA6WFWwHZknE+3gnd/DKyHnbccX5rXTTHPcpCOoV5XFwAhSiSuJ1F
+	 xAQdCjBrwSjNA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Derek Fang <derek.fang@realtek.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	oder_chiou@realtek.com,
 	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 09/52] ASoC: rt5645: Fix the electric noise due to the CBJ contacts floating
-Date: Tue,  7 May 2024 19:06:35 -0400
-Message-ID: <20240507230800.392128-9-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 10/52] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
+Date: Tue,  7 May 2024 19:06:36 -0400
+Message-ID: <20240507230800.392128-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -71,101 +72,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Derek Fang <derek.fang@realtek.com>
 
-[ Upstream commit 103abab975087e1f01b76fcb54c91dbb65dbc249 ]
+[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
 
-The codec leaves tie combo jack's sleeve/ring2 to floating status
-default. It would cause electric noise while connecting the active
-speaker jack during boot or shutdown.
-This patch requests a gpio to control the additional jack circuit
-to tie the contacts to the ground or floating.
+Add an optional gpio property to control external CBJ circuits
+to avoid some electric noise caused by sleeve/ring2 contacts floating.
 
 Signed-off-by: Derek Fang <derek.fang@realtek.com>
 
-Link: https://msgid.link/r/20240408091057.14165-1-derek.fang@realtek.com
+Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index 20191a4473c2d..0384e237a548e 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -444,6 +444,7 @@ struct rt5645_priv {
- 	struct regmap *regmap;
- 	struct i2c_client *i2c;
- 	struct gpio_desc *gpiod_hp_det;
-+	struct gpio_desc *gpiod_cbj_sleeve;
- 	struct snd_soc_jack *hp_jack;
- 	struct snd_soc_jack *mic_jack;
- 	struct snd_soc_jack *btn_jack;
-@@ -3186,6 +3187,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 		regmap_update_bits(rt5645->regmap, RT5645_IN1_CTRL2,
- 			RT5645_CBJ_MN_JD, 0);
+diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
+index 41a62fd2ae1ff..c1fa379f5f3ea 100644
+--- a/Documentation/devicetree/bindings/sound/rt5645.txt
++++ b/Documentation/devicetree/bindings/sound/rt5645.txt
+@@ -20,6 +20,11 @@ Optional properties:
+   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
+   we will get the JD status by getting the value of hp-detect-gpios.
  
-+		if (rt5645->gpiod_cbj_sleeve)
-+			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 1);
++- cbj-sleeve-gpios:
++  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
++  contacts to the ground or floating. It could avoid some electric noise from the
++  active speaker jacks.
 +
- 		msleep(600);
- 		regmap_read(rt5645->regmap, RT5645_IN1_CTRL3, &val);
- 		val &= 0x7;
-@@ -3202,6 +3206,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
- 			snd_soc_dapm_sync(dapm);
- 			rt5645->jack_type = SND_JACK_HEADPHONE;
-+			if (rt5645->gpiod_cbj_sleeve)
-+				gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
- 		}
- 		if (rt5645->pdata.level_trigger_irq)
- 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
-@@ -3229,6 +3235,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 		if (rt5645->pdata.level_trigger_irq)
- 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
- 				RT5645_JD_1_1_MASK, RT5645_JD_1_1_INV);
-+
-+		if (rt5645->gpiod_cbj_sleeve)
-+			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
- 	}
+ - realtek,in2-differential
+   Boolean. Indicate MIC2 input are differential, rather than single-ended.
  
- 	return rt5645->jack_type;
-@@ -4012,6 +4021,16 @@ static int rt5645_i2c_probe(struct i2c_client *i2c)
- 			return ret;
- 	}
- 
-+	rt5645->gpiod_cbj_sleeve = devm_gpiod_get_optional(&i2c->dev, "cbj-sleeve",
-+							   GPIOD_OUT_LOW);
-+
-+	if (IS_ERR(rt5645->gpiod_cbj_sleeve)) {
-+		ret = PTR_ERR(rt5645->gpiod_cbj_sleeve);
-+		dev_info(&i2c->dev, "failed to initialize gpiod, ret=%d\n", ret);
-+		if (ret != -ENOENT)
-+			return ret;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(rt5645->supplies); i++)
- 		rt5645->supplies[i].supply = rt5645_supply_names[i];
- 
-@@ -4259,6 +4278,9 @@ static void rt5645_i2c_remove(struct i2c_client *i2c)
- 	cancel_delayed_work_sync(&rt5645->jack_detect_work);
- 	cancel_delayed_work_sync(&rt5645->rcclock_work);
- 
-+	if (rt5645->gpiod_cbj_sleeve)
-+		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
-+
- 	regulator_bulk_disable(ARRAY_SIZE(rt5645->supplies), rt5645->supplies);
- }
- 
-@@ -4274,6 +4296,9 @@ static void rt5645_i2c_shutdown(struct i2c_client *i2c)
- 		0);
- 	msleep(20);
- 	regmap_write(rt5645->regmap, RT5645_RESET, 0);
-+
-+	if (rt5645->gpiod_cbj_sleeve)
-+		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
- }
- 
- static int __maybe_unused rt5645_sys_suspend(struct device *dev)
+@@ -68,6 +73,7 @@ codec: rt5650@1a {
+ 	compatible = "realtek,rt5650";
+ 	reg = <0x1a>;
+ 	hp-detect-gpios = <&gpio 19 0>;
++	cbj-sleeve-gpios = <&gpio 20 0>;
+ 	interrupt-parent = <&gpio>;
+ 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+ 	realtek,dmic-en = "true";
 -- 
 2.43.0
 
