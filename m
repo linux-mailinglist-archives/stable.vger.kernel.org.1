@@ -1,111 +1,186 @@
-Return-Path: <stable+bounces-43248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CAE8BF08F
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:08:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DDF8BF0B7
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BAA5B2357B
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:08:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58BD31F213A1
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BBD8592E;
-	Tue,  7 May 2024 23:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398B285950;
+	Tue,  7 May 2024 23:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vvo2wprl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKoPkmRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43868134723;
-	Tue,  7 May 2024 23:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E342D8615A;
+	Tue,  7 May 2024 23:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122805; cv=none; b=Ws/VqsRWtYEhUJ5oxX3XDHCXpeI/fpuQq7pAz3YFsI8qgrIKhWM0Mep+uHV+5sKYJtU58z40NDTxNrmT+NWJgQMdpXSTwnowqTNp8uCPVpCkcQkTtE0/J5XpWiLeqt7QbDqEufA0t47dqpuKe3fpTWULm+wCKqtn/VW+W5hh6uQ=
+	t=1715122834; cv=none; b=uUA/9L9Ee0R7kT6hv5hZM3BiGxcGpGjDzqFKCu18BQnl1pmn2+rahe31CnYBSSLzeeSSg0ny22kd2sRXMSJV78oLF4mRdrDsJ6S1SgolTI35K2ezApkmDRpTzhsYy5H52xfYxU6JFfJ41w5vZCIgllcQlzdkaaaVtJp7DJ3Kf2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122805; c=relaxed/simple;
-	bh=fdNl1HTTWF8d1DW1R+Tpk0YH1BP2PoIdU3FmdFefWuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gq1naWNpaAASQ1JyGLt0js1blhnkw9wo2/Z3936qzCOCU5vyRpVpUhay3FbQM/f4IdhX7SbKbBYiFPPobaVZg9LP8k24BwIYq1VwxnxCHZsKv+ixF867393LZOlgLup4eIbd5wytKyidCMh0FeVwSMPif4M7cF0O7Uo9vNBtfHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vvo2wprl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9590C2BBFC;
-	Tue,  7 May 2024 23:00:04 +0000 (UTC)
+	s=arc-20240116; t=1715122834; c=relaxed/simple;
+	bh=98HYj9zMKjJs+cuYRpU9Bwz/MbyiZQ0aL8seVXY3MRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rh8YqfTEP+QIW+ClCReqlcMZSOS8Ikzb4Z7C4tn+HjLd6QKWsl7dRp3zxifiPOwxdLYnBY+3D5/sQgFW7Ejge4OfOevryxAXKUW6TfP3Ftx0T4o/6OZO98ofU2Pg3/5bnQrdQZqWBvh/e0MwNdB+d35UDQwGgVAO9an0DV6n16E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qKoPkmRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664E1C2BBFC;
+	Tue,  7 May 2024 23:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122805;
-	bh=fdNl1HTTWF8d1DW1R+Tpk0YH1BP2PoIdU3FmdFefWuo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vvo2wprl+CzeS/H/772F4aDjkA6p4eH/j+GcAFFtSEaB+gCME2dBWRGUAnnqAlLQL
-	 b1cRWkjUKxq7ROpHQats2WJCD7BEgnuyrd82tSY+iRzmpj05nTMZgslwSBSdy+gXQ1
-	 JQqAFvyZodxfIDm64fiVTx0+5OGkqduYxrlmtmC40hXu7u4RPgYZbxtC3ANp6oHvs9
-	 IATQaLvCYG0B0+1Y7VO8Bbtxx67Zvm7gttDLdnO1yknyKuikgSKeCVmT0OgPc8VJ+v
-	 ysowMCDCE3w0+I4YfBYDGCLd4gx7PObUdtgf83JkL3Zcze0EzBN/uYwMEDuaMkpXO6
-	 kEm/LAfe+4q4g==
-Date: Tue, 7 May 2024 19:00:03 -0400
+	s=k20201202; t=1715122833;
+	bh=98HYj9zMKjJs+cuYRpU9Bwz/MbyiZQ0aL8seVXY3MRs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qKoPkmRvpxYijXUMbfwJpZVYoT6hS99sYmkVL+ClaYd4nuC0nwhIhOyfoA5cx62Ji
+	 +Pwz2FUqFSJINpyUppBOiMOB4AueZpZh4ciprQyyXOZJQa4rG3AT0Fypif5RFEvhz0
+	 3V0UVGGjOZi8UU1m50Qs4OvLS/Q9yp7/9vqx/nFRLFf689Kmt6ZMSzR3hngoezzCWG
+	 2dunvAJ6U0UHT70a4zJ96tnhqdJXzaLhWt8WeSO6F1jHcDpTpp7e1JxTsIN0tfUqZ7
+	 NzrPF3T8dr8ft+PAjbcHbVahmNWlYXVv0yUfNk4V8j6BqPrGiBLuOIGnOQnjWFmUOV
+	 Xk8RpG+9God6w==
 From: Sasha Levin <sashal@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	ojeda@kernel.org, Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: Re: Patch "kbuild: rust: force `alloc` extern to allow "empty" Rust
- files" has been added to the 6.1-stable tree
-Message-ID: <Zjqyc-hu1GDlbGBa@sashalap>
-References: <20240503164220.9073-1-sashal@kernel.org>
- <CANiq72=V1=D-X5ncqN1pyfE4L1bz5zFRdBot6HpkCYie-EQnPA@mail.gmail.com>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 01/12] wifi: mac80211: don't use rate mask for scanning
+Date: Tue,  7 May 2024 19:00:03 -0400
+Message-ID: <20240507230031.391436-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=V1=D-X5ncqN1pyfE4L1bz5zFRdBot6HpkCYie-EQnPA@mail.gmail.com>
 
-On Fri, May 03, 2024 at 07:10:35PM +0200, Miguel Ojeda wrote:
->On Fri, May 3, 2024 at 6:42 PM Sasha Levin <sashal@kernel.org> wrote:
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->
->I don't think it should be added since it requires upgrading the
->compiler to Rust 1.71 (from 1.62) at least, given:
->
->>     be fairly confusing for kernel developers [1], thus use the unstable
->>     `force` option of `--extern` [2] (added in Rust 1.71 [3]) to force the
->>     compiler to resolve `alloc`.
->
->Now, we have upgraded the compiler in the past (in 6.6 LTS), so it
->could be done, but the issue here was small enough (it should only
->really affect kernel developers if they happen to create a new file or
->similar) that it felt too minor to warrant it (especially since it
->would a bigger compiler jump this time, with more changes required
->too), so I asked for doing it only in 6.6 and 6.8 since those were
->straightforward:
->
->    https://lore.kernel.org/stable/2024042909-whimsical-drapery-40d1@gregkh/
->
->If someone is actually doing development in 6.1 LTS with Rust enabled,
->we may create bigger problems for them (even if it is just time used)
->by upgrading the compiler than what this fix fixes here (which is an
->issue they may not even care about or ever notice).
+From: Johannes Berg <johannes.berg@intel.com>
 
-Dropped, thanks!
+[ Upstream commit ab9177d83c040eba58387914077ebca56f14fae6 ]
 
-In general, it would be nice to have a mechanism that matches supported
-Rust compilers with whatever is in the kernel tree. This logic of "6.6
-is ok but 6.1 is too old" feels so 90s.
+The rate mask is intended for use during operation, and
+can be set to only have masks for the currently active
+band. As such, it cannot be used for scanning which can
+be on other bands as well.
 
+Simply ignore the rate masks during scanning to avoid
+warnings from incorrect settings.
+
+Reported-by: syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
+Co-developed-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240326220854.9594cbb418ca.I7f86c0ba1f98cf7e27c2bacf6c2d417200ecea5c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/mac80211.h |  3 +++
+ net/mac80211/rate.c    |  6 +++++-
+ net/mac80211/scan.c    |  1 +
+ net/mac80211/tx.c      | 13 +++++++++----
+ 4 files changed, 18 insertions(+), 5 deletions(-)
+
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 43173204d6d5e..87a4f334c22a8 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -885,6 +885,8 @@ enum mac80211_tx_info_flags {
+  *	of their QoS TID or other priority field values.
+  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly internally
+  *	for sequence number assignment
++ * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
++ *	due to scanning, not in normal operation on the interface.
+  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
+  *	frame should be transmitted on the specific link. This really is
+  *	only relevant for frames that do not have data present, and is
+@@ -905,6 +907,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_CTRL_NO_SEQNO		= BIT(7),
+ 	IEEE80211_TX_CTRL_DONT_REORDER		= BIT(8),
+ 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	= BIT(9),
++	IEEE80211_TX_CTRL_SCAN_TX		= BIT(10),
+ 	IEEE80211_TX_CTRL_MLO_LINK		= 0xf0000000,
+ };
+ 
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 9d33fd2377c88..a2bc9c5d92b8b 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -877,6 +877,7 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_supported_band *sband;
++	u32 mask = ~0;
+ 
+ 	rate_control_fill_sta_table(sta, info, dest, max_rates);
+ 
+@@ -889,9 +890,12 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	if (ieee80211_is_tx_data(skb))
+ 		rate_control_apply_mask(sdata, sta, sband, dest, max_rates);
+ 
++	if (!(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX))
++		mask = sdata->rc_rateidx_mask[info->band];
++
+ 	if (dest[0].idx < 0)
+ 		__rate_control_send_low(&sdata->local->hw, sband, sta, info,
+-					sdata->rc_rateidx_mask[info->band]);
++					mask);
+ 
+ 	if (sta)
+ 		rate_fixup_ratelist(vif, sband, info, dest, max_rates);
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index c37e2576f1c13..933d02d7c1284 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -647,6 +647,7 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
+ 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
+ 		}
+ 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
++		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_SCAN_TX;
+ 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
+ 	}
+ }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 3d62e8b718740..419baf8efddea 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -720,11 +720,16 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
+ 	txrc.bss_conf = &tx->sdata->vif.bss_conf;
+ 	txrc.skb = tx->skb;
+ 	txrc.reported_rate.idx = -1;
+-	txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
+ 
+-	if (tx->sdata->rc_has_mcs_mask[info->band])
+-		txrc.rate_idx_mcs_mask =
+-			tx->sdata->rc_rateidx_mcs_mask[info->band];
++	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX)) {
++		txrc.rate_idx_mask = ~0;
++	} else {
++		txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
++
++		if (tx->sdata->rc_has_mcs_mask[info->band])
++			txrc.rate_idx_mcs_mask =
++				tx->sdata->rc_rateidx_mcs_mask[info->band];
++	}
+ 
+ 	txrc.bss = (tx->sdata->vif.type == NL80211_IFTYPE_AP ||
+ 		    tx->sdata->vif.type == NL80211_IFTYPE_MESH_POINT ||
 -- 
-Thanks,
-Sasha
+2.43.0
+
 
