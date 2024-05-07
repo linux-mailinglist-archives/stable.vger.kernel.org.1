@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-43383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1803C8BF246
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9D58BF249
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54201F22294
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:46:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5631F21FC0
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DFE184479;
-	Tue,  7 May 2024 23:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E84D184EDD;
+	Tue,  7 May 2024 23:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1sLw39p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dYkqOn6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB4C18446B;
-	Tue,  7 May 2024 23:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C82E184ED2;
+	Tue,  7 May 2024 23:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123566; cv=none; b=avsI6FdHkBEIh6KubgU5/cTm+i1KNQUikpbRjncohQXDbqwsFk/LbZNaQQ0BhAXUz8Fm/bcNyVEdwXCW0N47Ueww8iIo4EdbzVdI/aY4g17PS0tbhIajhgRsNNFYpOGz3J7mxPgeRRHBWlFStXe5XcbC7odSDrGOdzlteBE8JuI=
+	t=1715123567; cv=none; b=LTZC/3WmZFzzbYhtSA9Gg0aPI9MEJ9zh6xyfATVOTir4XHO33gFaTqLMdwl9wG+hZtRqw04PkJvxiiAafjWA+aqgg3PWTdIUdGhxGL2+PMfKdQBwWfZK6wWQ7mpxzjyhYZDxXyXPpqn4QXVw14udMVexj/8rLgeRJA/VtHGEpj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123566; c=relaxed/simple;
-	bh=5YIQjL4D61WZLH/t1LGV7NQyrRXXqmCiRTHtIYplpbA=;
+	s=arc-20240116; t=1715123567; c=relaxed/simple;
+	bh=fDF6lM2cAfNf/rlyLk/Rk9ZdSTxH8KQ00xXfazcDtzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Va2KG4RCyB/k3Yoi3eoqPCgaNAB0NCmU3xwIlzuGR1EqL2Gq/ZScplnjx6PrdK7C/sxijS/ElrzMoRg0o6KYgdPC/X9ERgPvl+AqAQoS9Ja0xUArtj6HwVrKE61MZR0IhPhrl/SjsrjjYM5Aym1EhIiYQnbds2Lx9806GSbur2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1sLw39p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1E1C4AF17;
-	Tue,  7 May 2024 23:12:44 +0000 (UTC)
+	 MIME-Version; b=qwJxs9qMb5KQwD8oyiRAU2NrDfNmhojbOrvq0NGyyWWSTkCBLuyDYKmza0bp9an9I1KfbbJrdcKaDDau9iBFz4LM16T+PjEpukMshHukyRChSAiPzliTw27rH5DOoWz+zdUlacuwANd22MqY+xdCeMNPyE+n6jdxNUPtZGq70ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYkqOn6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C9DC4AF63;
+	Tue,  7 May 2024 23:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123565;
-	bh=5YIQjL4D61WZLH/t1LGV7NQyrRXXqmCiRTHtIYplpbA=;
+	s=k20201202; t=1715123567;
+	bh=fDF6lM2cAfNf/rlyLk/Rk9ZdSTxH8KQ00xXfazcDtzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1sLw39pv8SC3n3/3yvv8VZa4KoNSdSNoULxOwN/mEPFcJPtMYubSfmsSfKpFUY/Y
-	 tT7cKHAklLSUznsF9QsMS3KEXbmER91/I/N0BnuaKe7aMZL3KwaZUXb+TtIePiR2X0
-	 MU9FJ0HQbg3V8i3UtWvpMF++DlhOEtoTs5Zwx/FFsTeQc9402krV1mEHoDtHMu5h2s
-	 5XFdhAa7MqWsKHlCXPckHAlTcxk9NDf/+5DWuGGs+4kq0Aq+Ur+HSyQtmkjwyJdDsQ
-	 AGS1zT4+qwwcN1jRVdwHbmREaMemMFOnA5ID9NkAb6GIlHLUsaLonbn59lD1AQF+iV
-	 7pGX+QAvdZMeA==
+	b=dYkqOn6d7uGVE8gEvYmTHQkVXqc4t2sjOl8abvHhBIvfZKE94x5VZ6RSGkAyiQdbe
+	 2rH5Kjh/4N+wtIzhYxs09p3BSTZ+hcbU3emm06f/T32QQHEqkxLV6zMbEZQhH0heuw
+	 VVUuijHu1AxEcyy8aoy2O/VI5xbN9SIJ/VXJ7EgicvczzT+kWNTqbr7kKRCsrG8dZI
+	 Oo9B80QdLmoZvJfQYX0AqMoOTHdMWCh+M9UJrQxWT/q83EXQsxk0KuuMsfsorjD0k6
+	 R8I6CBgC1MVsyUd4rQjUIfOYiY6L9piInXJ3SnV9zzBAoHg+iNoJWKnhFS1ol52gim
+	 c+hZyUQ7V9X3A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
+Cc: Peter Colberg <peter.colberg@intel.com>,
+	Matthew Gerlach <matthew.gerlach@linux.intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	pbonzini@redhat.com,
-	shuah@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 08/25] KVM: selftests: Add test for uaccesses to non-existent vgic-v2 CPUIF
-Date: Tue,  7 May 2024 19:11:55 -0400
-Message-ID: <20240507231231.394219-8-sashal@kernel.org>
+	hao.wu@intel.com,
+	mdf@kernel.org,
+	linux-fpga@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 09/25] fpga: dfl-pci: add PCI subdevice ID for Intel D5005 card
+Date: Tue,  7 May 2024 19:11:56 -0400
+Message-ID: <20240507231231.394219-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231231.394219-1-sashal@kernel.org>
 References: <20240507231231.394219-1-sashal@kernel.org>
@@ -70,100 +69,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Peter Colberg <peter.colberg@intel.com>
 
-[ Upstream commit 160933e330f4c5a13931d725a4d952a4b9aefa71 ]
+[ Upstream commit bb1dbeceb1c20cfd81271e1bd69892ebd1ee38e0 ]
 
-Assert that accesses to a non-existent vgic-v2 CPU interface
-consistently fail across the various KVM device attr ioctls. This also
-serves as a regression test for a bug wherein KVM hits a NULL
-dereference when the CPUID specified in the ioctl is invalid.
+Add PCI subdevice ID for the Intel D5005 Stratix 10 FPGA card as
+used with the Open FPGA Stack (OFS) FPGA Interface Manager (FIM).
 
-Note that there is no need to print the observed errno, as TEST_ASSERT()
-will take care of it.
+Unlike the Intel D5005 PAC FIM which exposed a separate PCI device ID,
+the OFS FIM reuses the same device ID for all DFL-based FPGA cards
+and differentiates on the subdevice ID. The subdevice ID values were
+chosen as the numeric part of the FPGA card names in hexadecimal.
 
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240424173959.3776798-3-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Peter Colberg <peter.colberg@intel.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20240422230257.1959-1-peter.colberg@intel.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/kvm/aarch64/vgic_init.c | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ drivers/fpga/dfl-pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/aarch64/vgic_init.c b/tools/testing/selftests/kvm/aarch64/vgic_init.c
-index 9c131d977a1b5..ef737d0ed8fcb 100644
---- a/tools/testing/selftests/kvm/aarch64/vgic_init.c
-+++ b/tools/testing/selftests/kvm/aarch64/vgic_init.c
-@@ -86,6 +86,18 @@ static struct vm_gic vm_gic_create_with_vcpus(uint32_t gic_dev_type,
- 	return v;
- }
- 
-+static struct vm_gic vm_gic_create_barebones(uint32_t gic_dev_type)
-+{
-+	struct vm_gic v;
-+
-+	v.gic_dev_type = gic_dev_type;
-+	v.vm = vm_create_barebones();
-+	v.gic_fd = kvm_create_device(v.vm, gic_dev_type);
-+
-+	return v;
-+}
-+
-+
- static void vm_gic_destroy(struct vm_gic *v)
- {
- 	close(v->gic_fd);
-@@ -359,6 +371,40 @@ static void test_vcpus_then_vgic(uint32_t gic_dev_type)
- 	vm_gic_destroy(&v);
- }
- 
-+#define KVM_VGIC_V2_ATTR(offset, cpu) \
-+	(FIELD_PREP(KVM_DEV_ARM_VGIC_OFFSET_MASK, offset) | \
-+	 FIELD_PREP(KVM_DEV_ARM_VGIC_CPUID_MASK, cpu))
-+
-+#define GIC_CPU_CTRL	0x00
-+
-+static void test_v2_uaccess_cpuif_no_vcpus(void)
-+{
-+	struct vm_gic v;
-+	u64 val = 0;
-+	int ret;
-+
-+	v = vm_gic_create_barebones(KVM_DEV_TYPE_ARM_VGIC_V2);
-+	subtest_dist_rdist(&v);
-+
-+	ret = __kvm_has_device_attr(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0));
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+	ret = __kvm_device_attr_get(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+	ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
-+				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
-+	TEST_ASSERT(ret && errno == EINVAL,
-+		    "accessed non-existent CPU interface, want errno: %i",
-+		    EINVAL);
-+
-+	vm_gic_destroy(&v);
-+}
-+
- static void test_v3_new_redist_regions(void)
- {
- 	struct kvm_vcpu *vcpus[NR_VCPUS];
-@@ -677,6 +723,9 @@ void run_tests(uint32_t gic_dev_type)
- 	test_vcpus_then_vgic(gic_dev_type);
- 	test_vgic_then_vcpus(gic_dev_type);
- 
-+	if (VGIC_DEV_IS_V2(gic_dev_type))
-+		test_v2_uaccess_cpuif_no_vcpus();
-+
- 	if (VGIC_DEV_IS_V3(gic_dev_type)) {
- 		test_v3_new_redist_regions();
- 		test_v3_typer_accesses();
+diff --git a/drivers/fpga/dfl-pci.c b/drivers/fpga/dfl-pci.c
+index 0914e7328b1a5..4220ef00a555e 100644
+--- a/drivers/fpga/dfl-pci.c
++++ b/drivers/fpga/dfl-pci.c
+@@ -79,6 +79,7 @@ static void cci_pci_free_irq(struct pci_dev *pcidev)
+ #define PCIE_DEVICE_ID_SILICOM_PAC_N5011	0x1001
+ #define PCIE_DEVICE_ID_INTEL_DFL		0xbcce
+ /* PCI Subdevice ID for PCIE_DEVICE_ID_INTEL_DFL */
++#define PCIE_SUBDEVICE_ID_INTEL_D5005		0x138d
+ #define PCIE_SUBDEVICE_ID_INTEL_N6000		0x1770
+ #define PCIE_SUBDEVICE_ID_INTEL_N6001		0x1771
+ #define PCIE_SUBDEVICE_ID_INTEL_C6100		0x17d4
+@@ -102,6 +103,8 @@ static struct pci_device_id cci_pcie_id_tbl[] = {
+ 	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_PAC_D5005_VF),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5010),},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_SILICOM_DENMARK, PCIE_DEVICE_ID_SILICOM_PAC_N5011),},
++	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
++			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_D5005),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL,
+ 			PCI_VENDOR_ID_INTEL, PCIE_SUBDEVICE_ID_INTEL_N6000),},
+ 	{PCI_DEVICE_SUB(PCI_VENDOR_ID_INTEL, PCIE_DEVICE_ID_INTEL_DFL_VF,
 -- 
 2.43.0
 
