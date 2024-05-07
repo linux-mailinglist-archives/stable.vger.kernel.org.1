@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-43329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1E28BF1C6
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:34:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CD98BF1C8
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B8001F232EE
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:34:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FDF1282EBA
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5904147C81;
-	Tue,  7 May 2024 23:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13341482E2;
+	Tue,  7 May 2024 23:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWgU2iMI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBdHeOPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615BB147C77;
-	Tue,  7 May 2024 23:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD84F147C9A;
+	Tue,  7 May 2024 23:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123400; cv=none; b=FjGzTmE3n3NBrsRCmcO8Yoyjau8eaUBy5LNs8Wq8MnAXjjhDoDh9gNJCafuG4dGmTEallNOOrncKtZIBbVuJoieKfkC2F4ZsyAbZT4JUI2RHfh4jbB3PEcNZ19FPlR/88USbGaoXzb5WcaKZe+G3CwmCpE2bHHLIfR0M3GdwZhg=
+	t=1715123401; cv=none; b=l4WQo/b9MWac5PMqasYY13QOq8bIBNJkm7YK2YmIuORZxnNKmN56DXTM0Bpf6R6oBgGKaUKPRTK6UQNnE5YtFo3AML3oAk/86VimJslKivPCqmioY0zWylaRdsfJaFzUfHwg+Nlny995NwhHI5JB7gH+/hKCor8g5U7SSijEuOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123400; c=relaxed/simple;
-	bh=WuKHMzHmfeavA/ODjXfv1tfreNkvMC2a5zUZGsav9ww=;
+	s=arc-20240116; t=1715123401; c=relaxed/simple;
+	bh=eo1c5Avq+ijbEULoGJKldihoAOoaAEFxOcxVHPr11w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/SKRjY4BuW0m55tNKgtJKP2EdaBHiKIyyPxG+Kjp/tLMUMNfmbxxN6UOu7m1EjgPfh1Tckglk68cpfSUFvAFzIu3WBibfhCxBh6ZlIZ3ic6SuM5JWXrgI32obqjnxD0iuWCsLUDlq095fvA4lRteyhEMdg+x+e95ObClKe6jB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWgU2iMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4229BC3277B;
-	Tue,  7 May 2024 23:09:59 +0000 (UTC)
+	 MIME-Version; b=BNFzFNeCxLAzWx/M9qBnSIwA0LciWg7nwEMcWVa9WM7+lD54UX9UDOGSKEVsxma1L38oFqDPBrr7c6rmff6hF/u2Vy53cMXAGEqc+LLjM37QKVutP9dKTlTiAJI59Ulfyhm2okIYcYiOg29ffukKFrz7iFEfrvRSbRE2DpEwlyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBdHeOPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A46C4AF17;
+	Tue,  7 May 2024 23:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123400;
-	bh=WuKHMzHmfeavA/ODjXfv1tfreNkvMC2a5zUZGsav9ww=;
+	s=k20201202; t=1715123401;
+	bh=eo1c5Avq+ijbEULoGJKldihoAOoaAEFxOcxVHPr11w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWgU2iMIPGsvrY9fe7bEZ3XzZTSuiJCryyhMo3z4tTJVJlpZErsFlMDKaTISBz0tB
-	 EURLWTJp/f59/GJx92QaqOYN6kAIypOiiom/yOjWMpLgc7Mmg+X0ODzL0Bj9hMkfgH
-	 4hJhZM9kMZrwySf2GeiPWYlkH+fg5rJ2kZjnWga489ag3/m3U1UP0yEWBuu6n60Xx8
-	 32zV5u/cexEsSweiVgCLgCE4plFQ6Lgvy3LixyTss9ZHzdVwxhpctWB0y3U2PEFNHA
-	 hXvBpeXI4OwHMkkifNq2uR1aK2SIcmsuzIdSBteEAa4RcBDnncVnQHDTVVAO7Hfjuw
-	 oEdWl46rfJ6DQ==
+	b=eBdHeOPpT+Zf6ZyyvqF/BOykw7hJomq4KZ00JQVGUazh2/i0SpWFCqLP5OWZfZeuj
+	 UiYtkOp3/GP1+ywWtkWc+lzJU5qcvT89fLr2tNC+SNdeDjLqjZpNrPn49m9N+h6Sb9
+	 O+VlEIu3k0dzT1QUDucED/dW4gTyfG3cFVZtssfN4/3M5/3RpljRlRKDphVi5tZfEL
+	 GlVjzYSFTdzx5NMjkwnAWlR+zkHcEt0wUkhngH0n2wrLJTtAb8uc/LX97lIWN9fFvz
+	 KU+6NCsyeNi6Y8bIuj7KJ4QemGqbK04DiZ93S0oT6lJ3tfnoI1FxYiF2qAG5sLI7Up
+	 59F4N+8DsrNJg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sagi Grimberg <sagi@grimberg.me>,
-	Jirong Feng <jirong.feng@easystack.cn>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Hannes Reinecke <hare@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kch@nvidia.com,
 	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.8 50/52] nvmet: fix nvme status code when namespace is disabled
-Date: Tue,  7 May 2024 19:07:16 -0400
-Message-ID: <20240507230800.392128-50-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 51/52] nvme-tcp: strict pdu pacing to avoid send stalls on TLS
+Date: Tue,  7 May 2024 19:07:17 -0400
+Message-ID: <20240507230800.392128-51-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -68,92 +66,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit 505363957fad35f7aed9a2b0d8dad73451a80fb5 ]
+[ Upstream commit 50abcc179e0c9ca667feb223b26ea406d5c4c556 ]
 
-If the user disabled a nvmet namespace, it is removed from the subsystem
-namespaces list. When nvmet processes a command directed to an nsid that
-was disabled, it cannot differentiate between a nsid that is disabled
-vs. a non-existent namespace, and resorts to return NVME_SC_INVALID_NS
-with the dnr bit set.
+TLS requires a strict pdu pacing via MSG_EOR to signal the end
+of a record and subsequent encryption. If we do not set MSG_EOR
+at the end of a sequence the record won't be closed, encryption
+doesn't start, and we end up with a send stall as the message
+will never be passed on to the TCP layer.
+So do not check for the queue status when TLS is enabled but
+rather make the MSG_MORE setting dependent on the current
+request only.
 
-This translates to a non-retryable status for the host, which translates
-to a user error. We should expect disabled namespaces to not cause an
-I/O error in a multipath environment.
-
-Address this by searching a configfs item for the namespace nvmet failed
-to find, and if we found one, conclude that the namespace is disabled
-(perhaps temporarily). Return NVME_SC_INTERNAL_PATH_ERROR in this case
-and keep DNR bit cleared.
-
-Reported-by: Jirong Feng <jirong.feng@easystack.cn>
-Tested-by: Jirong Feng <jirong.feng@easystack.cn>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 13 +++++++++++++
- drivers/nvme/target/core.c     |  5 ++++-
- drivers/nvme/target/nvmet.h    |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ drivers/nvme/host/tcp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index 2482a0db25043..b7bfee4b77a84 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -728,6 +728,19 @@ static struct configfs_attribute *nvmet_ns_attrs[] = {
- 	NULL,
- };
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index a6d596e056021..6eeb96578d1b4 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -352,12 +352,18 @@ static inline void nvme_tcp_send_all(struct nvme_tcp_queue *queue)
+ 	} while (ret > 0);
+ }
  
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid)
+-static inline bool nvme_tcp_queue_more(struct nvme_tcp_queue *queue)
++static inline bool nvme_tcp_queue_has_pending(struct nvme_tcp_queue *queue)
+ {
+ 	return !list_empty(&queue->send_list) ||
+ 		!llist_empty(&queue->req_list);
+ }
+ 
++static inline bool nvme_tcp_queue_more(struct nvme_tcp_queue *queue)
 +{
-+	struct config_item *ns_item;
-+	char name[4] = {};
-+
-+	if (sprintf(name, "%u", nsid) <= 0)
-+		return false;
-+	mutex_lock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	ns_item = config_group_find_item(&subsys->namespaces_group, name);
-+	mutex_unlock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	return ns_item != NULL;
++	return !nvme_tcp_tls(&queue->ctrl->ctrl) &&
++		nvme_tcp_queue_has_pending(queue);
 +}
 +
- static void nvmet_ns_release(struct config_item *item)
+ static inline void nvme_tcp_queue_request(struct nvme_tcp_request *req,
+ 		bool sync, bool last)
  {
- 	struct nvmet_ns *ns = to_nvmet_ns(item);
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 8658e9c08534d..7a6b3d37cca70 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -425,10 +425,13 @@ void nvmet_stop_keep_alive_timer(struct nvmet_ctrl *ctrl)
- u16 nvmet_req_find_ns(struct nvmet_req *req)
- {
- 	u32 nsid = le32_to_cpu(req->cmd->common.nsid);
-+	struct nvmet_subsys *subsys = nvmet_req_subsys(req);
- 
--	req->ns = xa_load(&nvmet_req_subsys(req)->namespaces, nsid);
-+	req->ns = xa_load(&subsys->namespaces, nsid);
- 	if (unlikely(!req->ns)) {
- 		req->error_loc = offsetof(struct nvme_common_command, nsid);
-+		if (nvmet_subsys_nsid_exists(subsys, nsid))
-+			return NVME_SC_INTERNAL_PATH_ERROR;
- 		return NVME_SC_INVALID_NS | NVME_SC_DNR;
+@@ -378,7 +384,7 @@ static inline void nvme_tcp_queue_request(struct nvme_tcp_request *req,
+ 		mutex_unlock(&queue->send_mutex);
  	}
  
-diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
-index 6c8acebe1a1a6..477416abf85ab 100644
---- a/drivers/nvme/target/nvmet.h
-+++ b/drivers/nvme/target/nvmet.h
-@@ -542,6 +542,7 @@ void nvmet_subsys_disc_changed(struct nvmet_subsys *subsys,
- 		struct nvmet_host *host);
- void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
- 		u8 event_info, u8 log_page);
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid);
+-	if (last && nvme_tcp_queue_more(queue))
++	if (last && nvme_tcp_queue_has_pending(queue))
+ 		queue_work_on(queue->io_cpu, nvme_tcp_wq, &queue->io_work);
+ }
  
- #define NVMET_QUEUE_SIZE	1024
- #define NVMET_NR_QUEUES		128
 -- 
 2.43.0
 
