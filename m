@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-43382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FC28BF244
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:46:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1803C8BF246
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6DFD1C235D3
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:45:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54201F22294
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AF3184458;
-	Tue,  7 May 2024 23:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DFE184479;
+	Tue,  7 May 2024 23:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhKhcgoa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1sLw39p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B659184100;
-	Tue,  7 May 2024 23:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB4C18446B;
+	Tue,  7 May 2024 23:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123564; cv=none; b=eQeqoFixlznM4yEw4biHmmU4uhCTcugeUnxf9KgMFxJkg4/aAvUs4c6rmnDIoU9ScOv34Qvpt817x2lu17JISmhYKzYf2LQyT5ETHnt9ppUwMCLphjeY1VhEHHeM5gFhfDVbkLoEoA0AijBBu4hVKxmevQR4yb/pHvzqI3t0B/0=
+	t=1715123566; cv=none; b=avsI6FdHkBEIh6KubgU5/cTm+i1KNQUikpbRjncohQXDbqwsFk/LbZNaQQ0BhAXUz8Fm/bcNyVEdwXCW0N47Ueww8iIo4EdbzVdI/aY4g17PS0tbhIajhgRsNNFYpOGz3J7mxPgeRRHBWlFStXe5XcbC7odSDrGOdzlteBE8JuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123564; c=relaxed/simple;
-	bh=wcr67WjBHGsoFyRA+Ugka7Qpslo7HQlnBoOoXbbgHAs=;
+	s=arc-20240116; t=1715123566; c=relaxed/simple;
+	bh=5YIQjL4D61WZLH/t1LGV7NQyrRXXqmCiRTHtIYplpbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfWvpzFCOjf57Guj2Acp3G08sJccnJdmOejofQR2IlMerhE+8CIMUB29OM/lerAqRcZkGd+pfCy6X0ke2X4nKbPuhLWI4tOexwJxpqpL6cX2JSTnpKeUNUm31dqEznhROhQc8hBjpty0LKyZSYBJjMSLBNZNMMQN4mv8yrGlknQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhKhcgoa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A6CC4AF63;
-	Tue,  7 May 2024 23:12:42 +0000 (UTC)
+	 MIME-Version; b=Va2KG4RCyB/k3Yoi3eoqPCgaNAB0NCmU3xwIlzuGR1EqL2Gq/ZScplnjx6PrdK7C/sxijS/ElrzMoRg0o6KYgdPC/X9ERgPvl+AqAQoS9Ja0xUArtj6HwVrKE61MZR0IhPhrl/SjsrjjYM5Aym1EhIiYQnbds2Lx9806GSbur2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1sLw39p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1E1C4AF17;
+	Tue,  7 May 2024 23:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123563;
-	bh=wcr67WjBHGsoFyRA+Ugka7Qpslo7HQlnBoOoXbbgHAs=;
+	s=k20201202; t=1715123565;
+	bh=5YIQjL4D61WZLH/t1LGV7NQyrRXXqmCiRTHtIYplpbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhKhcgoaVBmGCSX8KV65682K/lvMwgS9Uua94zgd4/QxvIjx7JpvG4JBpbBvt7Hrf
-	 +6kZMVR+2F5yMFD61frOxBpbn+g9XuEqBfPl4lZ9feJGARE4WQm5mBh7md3PdQCTAc
-	 bR+/Oa1TSSMZ8wBIzJOl/VDBZAt0Siei+9FrT00+xRLEgVDTYC8ZilQjazJWdPzedx
-	 w0iF51rEqiI8xdyHsKhGr8JWr0lq7YNs+GJjdrIttYvp+u2XFlu+y48G2ws81zWsEz
-	 lRysBjEKUP2LwKyBKZkvbLBxrdnViPnuS+Ji/ev5oFnT0qR8yczkZyD/s6ym0P/A11
-	 q1ZnWXbEzDp3g==
+	b=b1sLw39pv8SC3n3/3yvv8VZa4KoNSdSNoULxOwN/mEPFcJPtMYubSfmsSfKpFUY/Y
+	 tT7cKHAklLSUznsF9QsMS3KEXbmER91/I/N0BnuaKe7aMZL3KwaZUXb+TtIePiR2X0
+	 MU9FJ0HQbg3V8i3UtWvpMF++DlhOEtoTs5Zwx/FFsTeQc9402krV1mEHoDtHMu5h2s
+	 5XFdhAa7MqWsKHlCXPckHAlTcxk9NDf/+5DWuGGs+4kq0Aq+Ur+HSyQtmkjwyJdDsQ
+	 AGS1zT4+qwwcN1jRVdwHbmREaMemMFOnA5ID9NkAb6GIlHLUsaLonbn59lD1AQF+iV
+	 7pGX+QAvdZMeA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jack Yu <jack.yu@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	oder_chiou@realtek.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/25] ASoC: rt715-sdca: volume step modification
-Date: Tue,  7 May 2024 19:11:54 -0400
-Message-ID: <20240507231231.394219-7-sashal@kernel.org>
+	pbonzini@redhat.com,
+	shuah@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 08/25] KVM: selftests: Add test for uaccesses to non-existent vgic-v2 CPUIF
+Date: Tue,  7 May 2024 19:11:55 -0400
+Message-ID: <20240507231231.394219-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231231.394219-1-sashal@kernel.org>
 References: <20240507231231.394219-1-sashal@kernel.org>
@@ -69,59 +70,100 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Jack Yu <jack.yu@realtek.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit bda16500dd0b05e2e047093b36cbe0873c95aeae ]
+[ Upstream commit 160933e330f4c5a13931d725a4d952a4b9aefa71 ]
 
-Volume step (dB/step) modification to fix format error
-which shown in amixer control.
+Assert that accesses to a non-existent vgic-v2 CPU interface
+consistently fail across the various KVM device attr ioctls. This also
+serves as a regression test for a bug wherein KVM hits a NULL
+dereference when the CPUID specified in the ioctl is invalid.
 
-Signed-off-by: Jack Yu <jack.yu@realtek.com>
-Link: https://lore.kernel.org/r/b1f546ad16dc4c7abb7daa7396e8345c@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Note that there is no need to print the observed errno, as TEST_ASSERT()
+will take care of it.
+
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240424173959.3776798-3-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt715-sdca.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../testing/selftests/kvm/aarch64/vgic_init.c | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-diff --git a/sound/soc/codecs/rt715-sdca.c b/sound/soc/codecs/rt715-sdca.c
-index ce8bbc76199a8..3377846a87539 100644
---- a/sound/soc/codecs/rt715-sdca.c
-+++ b/sound/soc/codecs/rt715-sdca.c
-@@ -315,7 +315,7 @@ static int rt715_sdca_set_amp_gain_8ch_get(struct snd_kcontrol *kcontrol,
- 	return 0;
+diff --git a/tools/testing/selftests/kvm/aarch64/vgic_init.c b/tools/testing/selftests/kvm/aarch64/vgic_init.c
+index 9c131d977a1b5..ef737d0ed8fcb 100644
+--- a/tools/testing/selftests/kvm/aarch64/vgic_init.c
++++ b/tools/testing/selftests/kvm/aarch64/vgic_init.c
+@@ -86,6 +86,18 @@ static struct vm_gic vm_gic_create_with_vcpus(uint32_t gic_dev_type,
+ 	return v;
  }
  
--static const DECLARE_TLV_DB_SCALE(in_vol_tlv, -17625, 375, 0);
-+static const DECLARE_TLV_DB_SCALE(in_vol_tlv, -1725, 75, 0);
- static const DECLARE_TLV_DB_SCALE(mic_vol_tlv, 0, 1000, 0);
++static struct vm_gic vm_gic_create_barebones(uint32_t gic_dev_type)
++{
++	struct vm_gic v;
++
++	v.gic_dev_type = gic_dev_type;
++	v.vm = vm_create_barebones();
++	v.gic_fd = kvm_create_device(v.vm, gic_dev_type);
++
++	return v;
++}
++
++
+ static void vm_gic_destroy(struct vm_gic *v)
+ {
+ 	close(v->gic_fd);
+@@ -359,6 +371,40 @@ static void test_vcpus_then_vgic(uint32_t gic_dev_type)
+ 	vm_gic_destroy(&v);
+ }
  
- static int rt715_sdca_get_volsw(struct snd_kcontrol *kcontrol,
-@@ -476,7 +476,7 @@ static const struct snd_kcontrol_new rt715_sdca_snd_controls[] = {
- 			RT715_SDCA_FU_VOL_CTRL, CH_01),
- 		SDW_SDCA_CTL(FUN_MIC_ARRAY, RT715_SDCA_FU_ADC7_27_VOL,
- 			RT715_SDCA_FU_VOL_CTRL, CH_02),
--			0x2f, 0x7f, 0,
-+			0x2f, 0x3f, 0,
- 		rt715_sdca_set_amp_gain_get, rt715_sdca_set_amp_gain_put,
- 		in_vol_tlv),
- 	RT715_SDCA_EXT_TLV("FU02 Capture Volume",
-@@ -484,13 +484,13 @@ static const struct snd_kcontrol_new rt715_sdca_snd_controls[] = {
- 			RT715_SDCA_FU_VOL_CTRL, CH_01),
- 		rt715_sdca_set_amp_gain_4ch_get,
- 		rt715_sdca_set_amp_gain_4ch_put,
--		in_vol_tlv, 4, 0x7f),
-+		in_vol_tlv, 4, 0x3f),
- 	RT715_SDCA_EXT_TLV("FU06 Capture Volume",
- 		SDW_SDCA_CTL(FUN_MIC_ARRAY, RT715_SDCA_FU_ADC10_11_VOL,
- 			RT715_SDCA_FU_VOL_CTRL, CH_01),
- 		rt715_sdca_set_amp_gain_4ch_get,
- 		rt715_sdca_set_amp_gain_4ch_put,
--		in_vol_tlv, 4, 0x7f),
-+		in_vol_tlv, 4, 0x3f),
- 	/* MIC Boost Control */
- 	RT715_SDCA_BOOST_EXT_TLV("FU0E Boost",
- 		SDW_SDCA_CTL(FUN_MIC_ARRAY, RT715_SDCA_FU_DMIC_GAIN_EN,
++#define KVM_VGIC_V2_ATTR(offset, cpu) \
++	(FIELD_PREP(KVM_DEV_ARM_VGIC_OFFSET_MASK, offset) | \
++	 FIELD_PREP(KVM_DEV_ARM_VGIC_CPUID_MASK, cpu))
++
++#define GIC_CPU_CTRL	0x00
++
++static void test_v2_uaccess_cpuif_no_vcpus(void)
++{
++	struct vm_gic v;
++	u64 val = 0;
++	int ret;
++
++	v = vm_gic_create_barebones(KVM_DEV_TYPE_ARM_VGIC_V2);
++	subtest_dist_rdist(&v);
++
++	ret = __kvm_has_device_attr(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
++				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0));
++	TEST_ASSERT(ret && errno == EINVAL,
++		    "accessed non-existent CPU interface, want errno: %i",
++		    EINVAL);
++	ret = __kvm_device_attr_get(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
++				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
++	TEST_ASSERT(ret && errno == EINVAL,
++		    "accessed non-existent CPU interface, want errno: %i",
++		    EINVAL);
++	ret = __kvm_device_attr_set(v.gic_fd, KVM_DEV_ARM_VGIC_GRP_CPU_REGS,
++				    KVM_VGIC_V2_ATTR(GIC_CPU_CTRL, 0), &val);
++	TEST_ASSERT(ret && errno == EINVAL,
++		    "accessed non-existent CPU interface, want errno: %i",
++		    EINVAL);
++
++	vm_gic_destroy(&v);
++}
++
+ static void test_v3_new_redist_regions(void)
+ {
+ 	struct kvm_vcpu *vcpus[NR_VCPUS];
+@@ -677,6 +723,9 @@ void run_tests(uint32_t gic_dev_type)
+ 	test_vcpus_then_vgic(gic_dev_type);
+ 	test_vgic_then_vcpus(gic_dev_type);
+ 
++	if (VGIC_DEV_IS_V2(gic_dev_type))
++		test_v2_uaccess_cpuif_no_vcpus();
++
+ 	if (VGIC_DEV_IS_V3(gic_dev_type)) {
+ 		test_v3_new_redist_regions();
+ 		test_v3_typer_accesses();
 -- 
 2.43.0
 
