@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-43233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA488BF062
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 814D98BF066
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77CA72810FD
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:04:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C06D28334B
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29433130A64;
-	Tue,  7 May 2024 22:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A78881AAB;
+	Tue,  7 May 2024 22:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qO4Gl5U/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qrqi1D3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB039130A61;
-	Tue,  7 May 2024 22:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30057EF1F;
+	Tue,  7 May 2024 22:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122721; cv=none; b=LO0rSXXOJ7Lufl9itEOgWZmNwA3j8NVZ3IdfBEcZ5Cvyyzz0nNZVAQFEXOxcp0HJDkeeCZs6lMUm7tlye2Hh7y/eau3I3mLTCkHLCMb/jhFtBCmef9uUheOcJNUV0S4z8IMwwhUXY2h2wjhwZ3cGhwcU8bsQfj0EgIZD3PYuskI=
+	t=1715122753; cv=none; b=U7sl7JS6TR1QE1UGSg9DzNwfDF8/7AppxOmgLMlSSHSyGYfktYMKE5sjBYPyIUlm+YPR6hqPXfd2M/+M+J/EmUpUJaqe9wnX3MbUtXo+/dgeqHUQm7K0dFyyrcPhJRLr6AT8iexGQ6FhBzEAByy3oPTtIzcn/JjF11qBLDCvNpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122721; c=relaxed/simple;
-	bh=c3Zrankq9kyXbpJ5b7Mar568CnEDDczmTAIpy0VNr7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F1iXdJkaTHsuXo6DCsoPNufv/zV8wZy4RUizZc7mPFO65HmAqOE3mIcG5L3A8xEg5dMLcziWHg9ZVdjHfPRIoBEZCb0rmfd9IJ4f/oW/ivspR3mzY70d+VBys9PTJroCin3IhlxaPSa35STiAFvxCbX/4UiUCRPpyyNs5bx3IOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qO4Gl5U/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8D9C3277B;
-	Tue,  7 May 2024 22:58:39 +0000 (UTC)
+	s=arc-20240116; t=1715122753; c=relaxed/simple;
+	bh=/gwbIbp8a6r+iZdpA5zQG/OUP6iPP5MDBaszErJJRTc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sLcMq/okezmOzVHcedp67ze0SSMnivzbXVaKmmGeyGtZ2kwG/SeVTRFJyzD0vSgEa3I2teNdxc1oMN8EA74WCnc7Fj7ZFMloNUp5ssYqGW4DHcoik12qHTmw4rJpH5gPfS0Aefr5NRAK5fO5iWTDCJTqJ4qE5gt3C97Bibzord8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qrqi1D3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FFDC2BBFC;
+	Tue,  7 May 2024 22:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122720;
-	bh=c3Zrankq9kyXbpJ5b7Mar568CnEDDczmTAIpy0VNr7s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qO4Gl5U/iQswwiqGF0es7stQykr9cj4hkkUMEPSMgHK54R38Sf2amVC9aRqoAB1mt
-	 UTxlNHiQF/r7rusbInho/jr/h2onF/HAUG6hb9efS7YBxlc3Qcq6oczjrFd++hCZiN
-	 Cq9bMh61jn/R93gmmoy/QfGsGDWapjUVG5Qt3Tzz8KuQ00CkBH2FB1yrByPpzjYc02
-	 vxGT2wzb5LZkCfDFW3YjYo2aujVYPoI3ysqzp0/wNiuXBlPk4Rzbv7Rp/7zb3Or/or
-	 MW3pU5YX+O6NZLt2OQzumkN+WVnZkOu1rnINXvO4sgkRCwMws44y3Za5bFwAnq77iV
-	 urxZEJWHgD5aA==
+	s=k20201202; t=1715122752;
+	bh=/gwbIbp8a6r+iZdpA5zQG/OUP6iPP5MDBaszErJJRTc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qrqi1D3VeFaMkwIAuHvC8P38YmjVDrtjFy66quQHTMIFEWZ1FuFs/t+cUyJl9zAV9
+	 WspF+Ou+C5rvbO57l0JwQEfe4AmxfE1F3CCfl9WAiOrGq8v+tdwVMOR+RFINBWa86u
+	 tk6qVFGtEJyipC8DmGfeSuZn3k1yyQ+k3QCxaRqdU+KIjACvaBlAbee+N7wAKxIifu
+	 nAwZHAxYdAPMNlwh0o2QBASNfMSYkjJiRCpJ21EO20n2SBOCBzjL66ta8tSRGEyyYg
+	 7+sJZQGpUoCkjsTAA3wsB4eSkge/PMiW4WBkPFrlIM8KhMWb/1gBVAyMQWzhB5ImCl
+	 dU3gTpc/u9uHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Phil Auld <pauld@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org
-Subject: [PATCH AUTOSEL 6.8 23/23] sched/isolation: Fix boot crash when maxcpus < first housekeeping CPU
-Date: Tue,  7 May 2024 18:56:49 -0400
-Message-ID: <20240507225725.390306-23-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/19] wifi: mac80211: don't use rate mask for scanning
+Date: Tue,  7 May 2024 18:58:23 -0400
+Message-ID: <20240507225910.390914-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240507225725.390306-1-sashal@kernel.org>
-References: <20240507225725.390306-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,79 +66,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.9
+X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 257bf89d84121280904800acd25cc2c444c717ae ]
+[ Upstream commit ab9177d83c040eba58387914077ebca56f14fae6 ]
 
-housekeeping_setup() checks cpumask_intersects(present, online) to ensure
-that the kernel will have at least one housekeeping CPU after smp_init(),
-but this doesn't work if the maxcpus= kernel parameter limits the number of
-processors available after bootup.
+The rate mask is intended for use during operation, and
+can be set to only have masks for the currently active
+band. As such, it cannot be used for scanning which can
+be on other bands as well.
 
-For example, a kernel with "maxcpus=2 nohz_full=0-2" parameters crashes at
-boot time on a virtual machine with 4 CPUs.
+Simply ignore the rate masks during scanning to avoid
+warnings from incorrect settings.
 
-Change housekeeping_setup() to use cpumask_first_and() and check that the
-returned CPU number is valid and less than setup_max_cpus.
-
-Another corner case is "nohz_full=0" on a machine with a single CPU or with
-the maxcpus=1 kernel argument. In this case non_housekeeping_mask is empty
-and tick_nohz_full_setup() makes no sense. And indeed, the kernel hits the
-WARN_ON(tick_nohz_full_running) in tick_sched_do_timer().
-
-And how should the kernel interpret the "nohz_full=" parameter? It should
-be silently ignored, but currently cpulist_parse() happily returns the
-empty cpumask and this leads to the same problem.
-
-Change housekeeping_setup() to check cpumask_empty(non_housekeeping_mask)
-and do nothing in this case.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240413141746.GA10008@redhat.com
+Reported-by: syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
+Co-developed-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240326220854.9594cbb418ca.I7f86c0ba1f98cf7e27c2bacf6c2d417200ecea5c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/isolation.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/net/mac80211.h |  3 +++
+ net/mac80211/rate.c    |  6 +++++-
+ net/mac80211/scan.c    |  1 +
+ net/mac80211/tx.c      | 13 +++++++++----
+ 4 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 373d42c707bc5..82e2f7fc7c267 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -109,6 +109,7 @@ static void __init housekeeping_setup_type(enum hk_type type,
- static int __init housekeeping_setup(char *str, unsigned long flags)
- {
- 	cpumask_var_t non_housekeeping_mask, housekeeping_staging;
-+	unsigned int first_cpu;
- 	int err = 0;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 7c707358d15c8..a39bd4169f292 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -936,6 +936,8 @@ enum mac80211_tx_info_flags {
+  *	of their QoS TID or other priority field values.
+  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly internally
+  *	for sequence number assignment
++ * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
++ *	due to scanning, not in normal operation on the interface.
+  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
+  *	frame should be transmitted on the specific link. This really is
+  *	only relevant for frames that do not have data present, and is
+@@ -956,6 +958,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_CTRL_NO_SEQNO		= BIT(7),
+ 	IEEE80211_TX_CTRL_DONT_REORDER		= BIT(8),
+ 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	= BIT(9),
++	IEEE80211_TX_CTRL_SCAN_TX		= BIT(10),
+ 	IEEE80211_TX_CTRL_MLO_LINK		= 0xf0000000,
+ };
  
- 	if ((flags & HK_FLAG_TICK) && !(housekeeping.flags & HK_FLAG_TICK)) {
-@@ -129,7 +130,8 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
- 	cpumask_andnot(housekeeping_staging,
- 		       cpu_possible_mask, non_housekeeping_mask);
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 9d33fd2377c88..a2bc9c5d92b8b 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -877,6 +877,7 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_supported_band *sband;
++	u32 mask = ~0;
  
--	if (!cpumask_intersects(cpu_present_mask, housekeeping_staging)) {
-+	first_cpu = cpumask_first_and(cpu_present_mask, housekeeping_staging);
-+	if (first_cpu >= nr_cpu_ids || first_cpu >= setup_max_cpus) {
- 		__cpumask_set_cpu(smp_processor_id(), housekeeping_staging);
- 		__cpumask_clear_cpu(smp_processor_id(), non_housekeeping_mask);
- 		if (!housekeeping.flags) {
-@@ -138,6 +140,9 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
- 		}
- 	}
+ 	rate_control_fill_sta_table(sta, info, dest, max_rates);
  
-+	if (cpumask_empty(non_housekeeping_mask))
-+		goto free_housekeeping_staging;
+@@ -889,9 +890,12 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	if (ieee80211_is_tx_data(skb))
+ 		rate_control_apply_mask(sdata, sta, sband, dest, max_rates);
+ 
++	if (!(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX))
++		mask = sdata->rc_rateidx_mask[info->band];
 +
- 	if (!housekeeping.flags) {
- 		/* First setup call ("nohz_full=" or "isolcpus=") */
- 		enum hk_type type;
+ 	if (dest[0].idx < 0)
+ 		__rate_control_send_low(&sdata->local->hw, sband, sta, info,
+-					sdata->rc_rateidx_mask[info->band]);
++					mask);
+ 
+ 	if (sta)
+ 		rate_fixup_ratelist(vif, sband, info, dest, max_rates);
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index a52813f2b08cb..b68214f159838 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -636,6 +636,7 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
+ 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
+ 		}
+ 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
++		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_SCAN_TX;
+ 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
+ 	}
+ }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 5c6c5254d987f..46b02a6ae0a36 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -705,11 +705,16 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
+ 	txrc.bss_conf = &tx->sdata->vif.bss_conf;
+ 	txrc.skb = tx->skb;
+ 	txrc.reported_rate.idx = -1;
+-	txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
+ 
+-	if (tx->sdata->rc_has_mcs_mask[info->band])
+-		txrc.rate_idx_mcs_mask =
+-			tx->sdata->rc_rateidx_mcs_mask[info->band];
++	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX)) {
++		txrc.rate_idx_mask = ~0;
++	} else {
++		txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
++
++		if (tx->sdata->rc_has_mcs_mask[info->band])
++			txrc.rate_idx_mcs_mask =
++				tx->sdata->rc_rateidx_mcs_mask[info->band];
++	}
+ 
+ 	txrc.bss = (tx->sdata->vif.type == NL80211_IFTYPE_AP ||
+ 		    tx->sdata->vif.type == NL80211_IFTYPE_MESH_POINT ||
 -- 
 2.43.0
 
