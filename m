@@ -1,150 +1,162 @@
-Return-Path: <stable+bounces-43174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891558BE170
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 13:54:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB128BE2D6
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 14:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7D91F23AD7
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 11:54:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29FE1B268ED
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 12:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC02156885;
-	Tue,  7 May 2024 11:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IGaHRBuu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF9715EFC0;
+	Tue,  7 May 2024 12:57:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2339A1509B0;
-	Tue,  7 May 2024 11:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1302715ECD3
+	for <stable@vger.kernel.org>; Tue,  7 May 2024 12:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715082876; cv=none; b=iMe9738mNEOOcyKHvzSbagZYd0V3ALyt1mZd7NdgylL9L7nNuZWkcyVNt76iPxUDxXKfTnwT0c8pyj/nZxEksRRcR9kyTG24jdmYeLbVaci/3WMw288I/iVyID4cZmkxdAQuCoLc2blbsMVjhmvHDl+PNyFZA/Sc8Yp92GAyq84=
+	t=1715086650; cv=none; b=tpIA1UPB6QBC1P5T+qlbeIc8gYviJXnOC02mvtKbl3/SPdbecWTN9haLDP0+YxVbRrx9/eQBggGXgPHDkkYtaC+rdeuaYmUqX2DxpyM2arug0KkGz5vWt6PecS2yRcmwiqnogFzmLyiLk8kDFbW9Ur3S0VcO4xWpEGRaLiMvQYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715082876; c=relaxed/simple;
-	bh=dTHlifqT8rTPMbPEVR3X+UNuN6wPypI1d/rW8hGvkNk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Mime-Version; b=Aqa69Eu+aabuXCr9OlNA+p5NbfwGmEaHHrCBQscSPy9I1IIeXe2kdPMWsQXC8tbE+7T6WGktqRq2VnjrtyPF7cDk1CyUjb1KqjC/Jc9MX4Dx0/Uw9PI38fO63yw9uL9v+G+1v6tMLM6rxXpdappY7Nyv1kr2po7hIvQn0x70U4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IGaHRBuu; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 447BgHOG006505;
-	Tue, 7 May 2024 11:54:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=2AhXXN/V3wCElifhaMO+4M4/JQCST6uMKGpBgF1i3N0=;
- b=IGaHRBuurVHUC0n3co4OAgwkn0LDLk+f/xCtJPOsM6Aze5l1xHHdAwM7tiqjqdLgz1IP
- TBLBLQgkbq3sfzI8eELlLaVuehJuWGJQW0iQ5VicLAIXyu0V5DLo4uDFO8LoQfNNOo0N
- s/6UbCSMYxppRDg3Ohbt3qIUsYzf4YprZhOHCAXP5w1wbMujGPaw5XyzvNiwNm/FfkKv
- LWW7PER415nnri6j7HQDrmN7x1PznLtuh4JzYUR8TpZTWToMzp2tsLpRkJK8//kF4XrP
- H6d9AFQ2/fdkz4KGhpp1BLXwC+v8eu3+W6uR35IwkrcDizcddykdlugOZrbEQucW8x8D 9A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xykncg0xe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 May 2024 11:54:11 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 447BsAa9024552;
-	Tue, 7 May 2024 11:54:11 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xykncg0x8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 May 2024 11:54:10 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 447B6jiA005882;
-	Tue, 7 May 2024 11:54:09 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xx5yh4gkb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 May 2024 11:54:09 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 447Bs6HF51380660
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 May 2024 11:54:08 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C8FD158065;
-	Tue,  7 May 2024 11:54:06 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BC2158057;
-	Tue,  7 May 2024 11:54:06 +0000 (GMT)
-Received: from li-5cd3c5cc-21f9-11b2-a85c-a4381f30c2f3.ibm.com (unknown [9.61.105.150])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 May 2024 11:54:06 +0000 (GMT)
-Message-ID: <baff6527d8d1e1f7287e33d6a8570bd242d5cadf.camel@linux.ibm.com>
-Subject: Re: [PATCH] ima: fix deadlock when traversing "ima_default_rules".
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: GUO Zihua <guozihua@huawei.com>, dmitry.kasatkin@gmail.com,
-        jmorris@namei.org, serge@hallyn.com
-Cc: linux-integrity@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 07 May 2024 07:54:05 -0400
-In-Reply-To: <20240507093714.1031820-1-guozihua@huawei.com>
-References: <20240507093714.1031820-1-guozihua@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-25.el8_9) 
+	s=arc-20240116; t=1715086650; c=relaxed/simple;
+	bh=1BCQZJCDcXux4QEChiI3vQsNmAXCSe00oWP7zDKgitE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YRp034VhOzrP1HNNA9AtJbC4FFMqX9BJpeTxnGbSoSfiWwjvllCUXNDD60RyWduvheilXkciSzXQKMbb5ZkK02wGX1es4j3VCIrfLuKxEpBaj04/nHmLat7O5U3y+Wj6CUQPnHMziFwpy2v68C2H1KR0n/ulZImoALTCR3QWQG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s4K4i-00039G-Cp; Tue, 07 May 2024 14:37:40 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s4K4g-00065t-US; Tue, 07 May 2024 14:37:38 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s4K4g-00GQDk-2g;
+	Tue, 07 May 2024 14:37:38 +0200
+Date: Tue, 7 May 2024 14:37:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <michael@walle.cc>, linux-mtd@lists.infradead.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mtd: rawnand: Ensure ECC configuration is propagated to
+ upper layers
+Message-ID: <ZjogkgrQ46H1hXSi@pengutronix.de>
+References: <20240507085842.108844-1-miquel.raynal@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: f2H7xKIE5oj-CNtTXPVsPtH1VAdwA9by
-X-Proofpoint-GUID: Zz0LFyf-Myp0bDtHdEkceTM9USe5-7Nf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-07_06,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- adultscore=0 mlxscore=0 malwarescore=0 spamscore=0 clxscore=1011
- mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2405070081
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240507085842.108844-1-miquel.raynal@bootlin.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Tue, 2024-05-07 at 09:37 +0000, GUO Zihua wrote:
-> From: liqiong <liqiong@nfschina.com>
-> 
-> [ Upstream commit eb0782bbdfd0d7c4786216659277c3fd585afc0e ]
-> 
-> The current IMA ruleset is identified by the variable "ima_rules"
-> that default to "&ima_default_rules". When loading a custom policy
-> for the first time, the variable is updated to "&ima_policy_rules"
-> instead. That update isn't RCU-safe, and deadlocks are possible.
-> Indeed, some functions like ima_match_policy() may loop indefinitely
-> when traversing "ima_default_rules" with list_for_each_entry_rcu().
-> 
-> When iterating over the default ruleset back to head, if the list
-> head is "ima_default_rules", and "ima_rules" have been updated to
-> "&ima_policy_rules", the loop condition (&entry->list != ima_rules)
-> stays always true, traversing won't terminate, causing a soft lockup
-> and RCU stalls.
-> 
-> Introduce a temporary value for "ima_rules" when iterating over
-> the ruleset to avoid the deadlocks.
-> 
-> Addition:
-> 
-> A rcu_read_lock pair is added within ima_update_policy_flag to avoid
-> suspicious RCU usage warning. This pair of RCU lock was added with
-> commit 4f2946aa0c45 ("IMA: introduce a new policy option
-> func=SETXATTR_CHECK") on mainstream.
-> 
-> Signed-off-by: liqiong <liqiong@nfschina.com>
-> Reviewed-by: THOBY Simon <Simon.THOBY@viveris.fr>
-> Fixes: 38d859f991f3 ("IMA: policy can now be updated multiple times")
-> Reported-by: kernel test robot <lkp@intel.com> (Fix sparse: incompatible types in comparison expression.)
-> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-> Sig=ned-off-by: GUO Zihua <guozihua@huawei.com>
+Hi Miquel,
 
-Hi Scott,
+On Tue, May 07, 2024 at 10:58:42AM +0200, Miquel Raynal wrote:
+> Until recently the "upper layer" was MTD. But following incremental
+> reworks to bring spi-nand support and more recently generic ECC support,
+> there is now an intermediate "generic NAND" layer that also needs to get
+> access to some values. When using "converted" ECC engines, like the
+> software ones, these values are already propagated correctly. But
+> otherwise when using good old raw NAND controller drivers, we need to
+> manually set these values ourselves at the end of the "scan" operation,
+> once these values have been negotiated.
+> 
+> Without this propagation, later (generic) checks like the one warning
+> users that the ECC strength is not high enough might simply no longer
+> work.
+> 
+> Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
+> Cc: stable@vger.kernel.org
+> Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+> 
+> Hello Sascha, this is only compile tested, would you mind checking if
+> that fixes your setup?
 
-I'm confused by this patch.  Is it meant for upstream?
+Works as expected:
 
-thanks,
+Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Mimi
+Sascha
 
+> Thanks, Miquèl
+> 
+>  drivers/mtd/nand/raw/nand_base.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+> index d7dbbd469b89..acd137dd0957 100644
+> --- a/drivers/mtd/nand/raw/nand_base.c
+> +++ b/drivers/mtd/nand/raw/nand_base.c
+> @@ -6301,6 +6301,7 @@ static const struct nand_ops rawnand_ops = {
+>  static int nand_scan_tail(struct nand_chip *chip)
+>  {
+>  	struct mtd_info *mtd = nand_to_mtd(chip);
+> +	struct nand_device *base = &chip->base;
+>  	struct nand_ecc_ctrl *ecc = &chip->ecc;
+>  	int ret, i;
+>  
+> @@ -6445,9 +6446,13 @@ static int nand_scan_tail(struct nand_chip *chip)
+>  	if (!ecc->write_oob_raw)
+>  		ecc->write_oob_raw = ecc->write_oob;
+>  
+> -	/* propagate ecc info to mtd_info */
+> +	/* Propagate ECC info to the generic NAND and MTD layers */
+>  	mtd->ecc_strength = ecc->strength;
+> +	if (!base->ecc.ctx.conf.strength)
+> +		base->ecc.ctx.conf.strength = ecc->strength;
+>  	mtd->ecc_step_size = ecc->size;
+> +	if (!base->ecc.ctx.conf.step_size)
+> +		base->ecc.ctx.conf.step_size = ecc->size;
+>  
+>  	/*
+>  	 * Set the number of read / write steps for one page depending on ECC
+> @@ -6455,6 +6460,8 @@ static int nand_scan_tail(struct nand_chip *chip)
+>  	 */
+>  	if (!ecc->steps)
+>  		ecc->steps = mtd->writesize / ecc->size;
+> +	if (!base->ecc.ctx.nsteps)
+> +		base->ecc.ctx.nsteps = ecc->steps;
+>  	if (ecc->steps * ecc->size != mtd->writesize) {
+>  		WARN(1, "Invalid ECC parameters\n");
+>  		ret = -EINVAL;
+> -- 
+> 2.40.1
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
