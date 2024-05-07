@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-43216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3837B8BF018
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 00:59:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FD98BF01B
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 00:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2BD82817DA
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 22:59:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854041C21E3D
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 22:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488C684DF0;
-	Tue,  7 May 2024 22:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2BC84E0E;
+	Tue,  7 May 2024 22:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TfNMyBoZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3eVclrG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EA084DE6;
-	Tue,  7 May 2024 22:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B868884E0D;
+	Tue,  7 May 2024 22:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122659; cv=none; b=oHhDPhXsiH+vtDVFjMYAg38dLu480NcODbR64ZZ80lcoEDpRLj6PsBuADQ6DGVl6XgrjljKZsavTHmZ/XmSS3B6Heu4J56lpP3w3nSSRRrwE3x9yz2XMwfMAO6WN1erx+23R3w3ShJQ8EbqOnp3+GxSmWGirxkJTNJMj3msKOxU=
+	t=1715122660; cv=none; b=Ba+sxi//bkFEDBiKPCYlGN8P8GMO73DJOFUc3sfEOx8PyCZYYx3r2EH331P/cxwA87bORDKD3VmhcizQ0AaYqgMy/I6L+p6odf8DxougwgnJg2+Bl3bRiqIyLa4b8xTR041rWB8kAbYZKnayY6b4WCPOinCjpirzWrN7gKqMZ1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122659; c=relaxed/simple;
-	bh=rl58UGSDXiOQtAtALxX1AesGxhJWgrq4HBhX/WX/mTM=;
+	s=arc-20240116; t=1715122660; c=relaxed/simple;
+	bh=srp+0voWpZpnFxnV8w6Oid1p/ImC/tZG1yH9vsuUfAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tg8RQ1RXlmERkDpd/EK9K6y1l1uwO7OTjYkgr9sJ7En7bQV1hXzwBIHVOi/JuAFolsbT8Zms1V3qxXiAyJ83/8Svu5FpHVGORsMW+yvVnEaIZfWpSKWlhzmP3nDDkqlHcFvbBr9G39XfzEPGnbpgYhNCYa+w8Mr7PnrnbiXSSbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TfNMyBoZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDC8C2BBFC;
-	Tue,  7 May 2024 22:57:37 +0000 (UTC)
+	 MIME-Version; b=ooZGKaRYVFHMqeXGvS7LrC5J30b4qiMBFcQVoI1nl9MKihE7xc4kr7o0CY7xdq/BhATUHS3P53HSJlCtL1tKnyvVqV36ArslJzPGlD5u6wkluzpotMirqnQaK8DulgrFM67NQ7ppwaqbTriiQFkR5KDNJQrZLBwhtyE178F27pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3eVclrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532F2C3277B;
+	Tue,  7 May 2024 22:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122658;
-	bh=rl58UGSDXiOQtAtALxX1AesGxhJWgrq4HBhX/WX/mTM=;
+	s=k20201202; t=1715122660;
+	bh=srp+0voWpZpnFxnV8w6Oid1p/ImC/tZG1yH9vsuUfAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfNMyBoZAhMgD47ZLQN/r1wGsNff1TDtcoKWmDCFX/cXWUfkFrL6fzjWGC9pUTUZk
-	 ZLth9qDKKIN8lLtJa+2PlKQzgVzVuAR4hkAo2j0PzxfSjUWc24icvwSixor8AN8nJV
-	 i2vFx0ICMPqAzuGFhrhijKi9Qn5I/ibrKBXdF+k7uYzbrGP95V37WJ8REEAsVBbomi
-	 jQuNwx/hhWrGDPF40/nE8Mps7d6rCBPIlr11O9yo1Y0/kDyRbElrA0pMNeBCv0QFv4
-	 7sTWOoCSoQCsoRevczt46XGzf8BmM7vukwayOLr+MdbuDMFFT/ZTJzzIXjoRybQiqL
-	 lqqJbEbhcYuSw==
+	b=T3eVclrGmJRkdjvDHUoj67vcA+lwC2gvQmu107n4A0ohYlW+JMw8eYA9tF8OdtyZw
+	 Gejg9RNNuwAPkCua4FoPFD7edbBJo2saCdAAR6Vq+piYjR7gc7UmBwLRymlxJfDLKm
+	 whG/UamcMKZ8UlkAyYYfQ3XkDU0fxQ7J53IQvBbEVNw7tFtDgjoXEmgawnHv7scMuj
+	 LM2NFPjcVNJtWPvzg9lPTNECjTOwAVkj46fhPzXROUgtKZIgQOrEkzxvg9ik/2m+bB
+	 wmV95B6mYmGn3sdhIoTW1ooo0+LNvv/SjqmtNB3HhX1PF2TUu1eE+j0iSzdqRYsHAv
+	 lLvPoS8W9YfOg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Conor Dooley <conor.dooley@microchip.com>,
+Cc: Abdelrahman Morsy <abdelrahmanhesham94@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	sebastian.reichel@collabora.com,
-	andy.yan@rock-chips.com,
-	cristian.ciocaltea@collabora.com,
-	s.hauer@pengutronix.de,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.8 06/23] dt-bindings: rockchip: grf: Add missing type to 'pcie-phy' node
-Date: Tue,  7 May 2024 18:56:32 -0400
-Message-ID: <20240507225725.390306-6-sashal@kernel.org>
+	gupt21@gmail.com,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 07/23] HID: mcp-2221: cancel delayed_work only when CONFIG_IIO is enabled
+Date: Tue,  7 May 2024 18:56:33 -0400
+Message-ID: <20240507225725.390306-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507225725.390306-1-sashal@kernel.org>
 References: <20240507225725.390306-1-sashal@kernel.org>
@@ -74,35 +69,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Rob Herring <robh@kernel.org>
+From: Abdelrahman Morsy <abdelrahmanhesham94@gmail.com>
 
-[ Upstream commit d41201c90f825f19a46afbfb502f22f612d8ccc4 ]
+[ Upstream commit 3cba9cfcc1520a2307a29f6fab887bcfc121c417 ]
 
-'pcie-phy' is missing any type. Add 'type: object' to indicate it's a
-node.
+If the device is unplugged and CONFIG_IIO is not supported, this will
+result in a warning message at kernel/workqueue.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240401204959.1698106-1-robh@kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Only cancel delayed work in mcp2221_remove(), when CONFIG_IIO is enabled.
+
+Signed-off-by: Abdelrahman Morsy <abdelrahmanhesham94@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/soc/rockchip/grf.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-mcp2221.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-index 9793ea6f0fe65..575555810c2c2 100644
---- a/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-+++ b/Documentation/devicetree/bindings/soc/rockchip/grf.yaml
-@@ -165,6 +165,7 @@ allOf:
-           unevaluatedProperties: false
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index f9cceaeffd081..da5ea5a23b087 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -944,9 +944,11 @@ static void mcp2221_hid_unregister(void *ptr)
+ /* This is needed to be sure hid_hw_stop() isn't called twice by the subsystem */
+ static void mcp2221_remove(struct hid_device *hdev)
+ {
++#if IS_REACHABLE(CONFIG_IIO)
+ 	struct mcp2221 *mcp = hid_get_drvdata(hdev);
  
-         pcie-phy:
-+          type: object
-           description:
-             Documentation/devicetree/bindings/phy/rockchip-pcie-phy.txt
+ 	cancel_delayed_work_sync(&mcp->init_work);
++#endif
+ }
  
+ #if IS_REACHABLE(CONFIG_IIO)
 -- 
 2.43.0
 
