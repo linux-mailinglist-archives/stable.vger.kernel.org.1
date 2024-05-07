@@ -1,51 +1,85 @@
-Return-Path: <stable+bounces-43169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A4F8BDECD
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 11:49:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5049F8BDF49
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 12:02:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E4C1F22B85
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 09:49:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A35E8B21489
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 10:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDE5158A38;
-	Tue,  7 May 2024 09:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80AAD14E2CD;
+	Tue,  7 May 2024 10:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P+9WF2m6"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD3114E2EF;
-	Tue,  7 May 2024 09:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6DA13BAC3
+	for <stable@vger.kernel.org>; Tue,  7 May 2024 10:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715074955; cv=none; b=q4/5spE7t0A/M3lMkDhbFco1+oHXYIuu4SXhs3GIL2Gg9VZC9B5qFB4+U00x5ORE6yEoLcHzjJJRaQSPFI3fcSmAvQwGzQflcU7+1OgkgqNP1uhIDpj0Ge2+oK01dIdQ8iVEOhmbCxfzTgFi4P12Rgcu6LATjxOiCg08FG6HdiI=
+	t=1715076136; cv=none; b=ObsJnyDOFUCShiP6BDHNIS8+ayIwKcn0hoSVccC3A8HUzCmdBv/I67xyvJqs/CFHYUXSFUsEVhmi+1SImEKHHrcGvptPn9YgKfRHlIDUKFNjGMO63i76xFS3j09OIbsa88/JI6PYsHM4Y7s9zwfpzd19KLvGVlXI6PIbM/yB7uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715074955; c=relaxed/simple;
-	bh=VdSWCPQAIn9GwQc51HcOBACWo1FZmzZEpgWE+jpnrXM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nSeKooPUsDGlZKkfdH3Fl0iepDK6vLzUIkci7LqRuyzcfI3/aHjJEKhSsE/HsGAiaC5UFIh+Z1ZH8DVTlu4SUA4JRopT41SxTioKcSUtxza9qlGuOwbjjt2JAcVv82JM5iW2B7aLmqmedVFwvqq04iHPssJF9ye9k8TLc3RDCy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VYYFB1DP5zCrNJ;
-	Tue,  7 May 2024 17:41:18 +0800 (CST)
-Received: from dggpemm500024.china.huawei.com (unknown [7.185.36.203])
-	by mail.maildlp.com (Postfix) with ESMTPS id C513B14011B;
-	Tue,  7 May 2024 17:42:13 +0800 (CST)
-Received: from huawei.com (10.67.174.60) by dggpemm500024.china.huawei.com
- (7.185.36.203) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 7 May
- 2024 17:42:13 +0800
-From: GUO Zihua <guozihua@huawei.com>
-To: <zohar@linux.ibm.com>, <dmitry.kasatkin@gmail.com>, <jmorris@namei.org>,
-	<serge@hallyn.com>
-CC: <linux-integrity@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH] ima: fix deadlock when traversing "ima_default_rules".
-Date: Tue, 7 May 2024 09:37:14 +0000
-Message-ID: <20240507093714.1031820-1-guozihua@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1715076136; c=relaxed/simple;
+	bh=jxrbP51ApwB+nB6k7droxBtoZKEplqH7fzVFkVtvoqM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lplcdfc+4uIlVR8pz7js5CW1TdVVJIKAO6H5W92jtkehPNr3hT/t4+1+ldBEnRmU+PhFVq5LbHfiu8KHIB4rDbp/2iYeWquuSXCI9YtSkgGUUjspiC2RdzatUglcco0+K8mV6Fdagk3TuzrE8dcsoXG3Xbu6xNN22xKMtq3mk0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P+9WF2m6; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a59a934ad50so648098366b.1
+        for <stable@vger.kernel.org>; Tue, 07 May 2024 03:02:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1715076133; x=1715680933; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xh7EFY8Q7bV9bAL/jh9gBCI67O6P18pHtiY/L20Df14=;
+        b=P+9WF2m6Emwn3JDxXyLaM8QqaHtR/Q3qWaG9wtr8+XBpY6F2Nyf/vFAZra2GRg9zwN
+         j381UFzEGFY/E6nqKVEMm55v6rBH6s6BM2TK9R2LT5TtbdE38jVonK4sAUtscUnlHcQx
+         xANP19lb8T8eIduQv6PS56zyuSyPJXMGwmhJEQaHq9aLFECScs3UYPUnAeep+pkFTJO/
+         TPN3A92qIwS7ChNl1QWciW3H4JwTmzpGfKBMUIZYUttQJbv0kcgV9v/K3DFTG8bk6T2A
+         5HJuqxJQxahHcfLg2awFxMwjoCZ9gmpy4Ysic9c/tvRbsYUNmmYbu/ZeY1mV9jtbf63S
+         rI5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715076133; x=1715680933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xh7EFY8Q7bV9bAL/jh9gBCI67O6P18pHtiY/L20Df14=;
+        b=VCnT3vsntD7MNFMdpscurqM3o77tbAokA3opXE2/6RyCFprSXHeArVtJIgp80kS4dI
+         hEnXaaNVenDuSBN2Be9Vk/e1RoSwaMmRQq2xVTWLy4gL8N3zDXnY8xH4akcwTFHZgR25
+         POjVWJMW61c7Led0ymJwyezNtrDlx0JjWIFHGT9zLjkCEDQY+65oREvbKtUNW7F4i1We
+         VLDmG/xzB0YnrBGOUmxMau4eCVX6GCqbYl1H30njweCWEKpaSOkqhO4ECyoc2pr15MQD
+         arFjAMfsrqB8F5RPdl9r+k3p2vAPgAHX4MHM9I+M+aw7A0YZrRKge2FV7TAcO8TAcUDW
+         sxfw==
+X-Gm-Message-State: AOJu0Yy0/5DXBqkawoY+OpzI4uDLSov+vDqQcx/A3x50YVaiURu32C9G
+	VRZ6Ez2Et3dF+gJvcSDSAWjFkfyGN87twagBlbsjFfb3lFRsuih6mlXaPK8Wo0A=
+X-Google-Smtp-Source: AGHT+IGdTeYrrvQuiHJ267AFGQGOr/InjQ1hSYK78u1GMZuzU7Nd8dK+zAN8gjqU0ku58bn2t42Wow==
+X-Received: by 2002:a17:907:1b06:b0:a59:9a68:7283 with SMTP id mp6-20020a1709071b0600b00a599a687283mr9092604ejc.12.1715076133185;
+        Tue, 07 May 2024 03:02:13 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.206.169])
+        by smtp.gmail.com with ESMTPSA id qy29-20020a170907689d00b00a59adb12790sm3792651ejc.27.2024.05.07.03.02.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 May 2024 03:02:12 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] ASoC: qcom: audioreach: Correct mapping of back speakers
+Date: Tue,  7 May 2024 12:02:09 +0200
+Message-ID: <20240507100209.610436-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,157 +87,46 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500024.china.huawei.com (7.185.36.203)
 
-From: liqiong <liqiong@nfschina.com>
+Qualcomm DSP, according to downstream sources, expects back speakers to
+be mapped as "back", not "surround".  The surround is used only for 8+
+speakers configuration.
 
-[ Upstream commit eb0782bbdfd0d7c4786216659277c3fd585afc0e ]
-
-The current IMA ruleset is identified by the variable "ima_rules"
-that default to "&ima_default_rules". When loading a custom policy
-for the first time, the variable is updated to "&ima_policy_rules"
-instead. That update isn't RCU-safe, and deadlocks are possible.
-Indeed, some functions like ima_match_policy() may loop indefinitely
-when traversing "ima_default_rules" with list_for_each_entry_rcu().
-
-When iterating over the default ruleset back to head, if the list
-head is "ima_default_rules", and "ima_rules" have been updated to
-"&ima_policy_rules", the loop condition (&entry->list != ima_rules)
-stays always true, traversing won't terminate, causing a soft lockup
-and RCU stalls.
-
-Introduce a temporary value for "ima_rules" when iterating over
-the ruleset to avoid the deadlocks.
-
-Addition:
-
-A rcu_read_lock pair is added within ima_update_policy_flag to avoid
-suspicious RCU usage warning. This pair of RCU lock was added with
-commit 4f2946aa0c45 ("IMA: introduce a new policy option
-func=SETXATTR_CHECK") on mainstream.
-
-Signed-off-by: liqiong <liqiong@nfschina.com>
-Reviewed-by: THOBY Simon <Simon.THOBY@viveris.fr>
-Fixes: 38d859f991f3 ("IMA: policy can now be updated multiple times")
-Reported-by: kernel test robot <lkp@intel.com> (Fix sparse: incompatible types in comparison expression.)
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: GUO Zihua <guozihua@huawei.com>
+Reported-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Fixes: 3c5fcb20e07e ("ASoC: qcom: audioreach: Add 4 channel support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- security/integrity/ima/ima_policy.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ sound/soc/qcom/qdsp6/audioreach.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index 1c403e8a8044..4f5d44037081 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -210,7 +210,7 @@ static struct ima_rule_entry *arch_policy_entry __ro_after_init;
- static LIST_HEAD(ima_default_rules);
- static LIST_HEAD(ima_policy_rules);
- static LIST_HEAD(ima_temp_rules);
--static struct list_head *ima_rules = &ima_default_rules;
-+static struct list_head __rcu *ima_rules = (struct list_head __rcu *)(&ima_default_rules);
- 
- static int ima_policy __initdata;
- 
-@@ -648,12 +648,14 @@ int ima_match_policy(struct inode *inode, const struct cred *cred, u32 secid,
- {
- 	struct ima_rule_entry *entry;
- 	int action = 0, actmask = flags | (flags << 1);
-+	struct list_head *ima_rules_tmp;
- 
- 	if (template_desc)
- 		*template_desc = ima_template_desc_current();
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(entry, ima_rules, list) {
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 
- 		if (!(entry->action & actmask))
- 			continue;
-@@ -701,11 +703,15 @@ int ima_match_policy(struct inode *inode, const struct cred *cred, u32 secid,
- void ima_update_policy_flag(void)
- {
- 	struct ima_rule_entry *entry;
-+	struct list_head *ima_rules_tmp;
- 
--	list_for_each_entry(entry, ima_rules, list) {
-+	rcu_read_lock();
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 		if (entry->action & IMA_DO_MASK)
- 			ima_policy_flag |= entry->action;
+diff --git a/sound/soc/qcom/qdsp6/audioreach.c b/sound/soc/qcom/qdsp6/audioreach.c
+index 5291deac0a0b..c655f0213723 100644
+--- a/sound/soc/qcom/qdsp6/audioreach.c
++++ b/sound/soc/qcom/qdsp6/audioreach.c
+@@ -277,8 +277,8 @@ static void audioreach_set_channel_mapping(u8 *ch_map, int num_channels)
+ 	} else if (num_channels == 4) {
+ 		ch_map[0] =  PCM_CHANNEL_FL;
+ 		ch_map[1] =  PCM_CHANNEL_FR;
+-		ch_map[2] =  PCM_CHANNEL_LS;
+-		ch_map[3] =  PCM_CHANNEL_RS;
++		ch_map[2] =  PCM_CHANNEL_LB;
++		ch_map[3] =  PCM_CHANNEL_RB;
  	}
-+	rcu_read_unlock();
- 
- 	ima_appraise |= (build_ima_appraise | temp_ima_appraise);
- 	if (!ima_appraise)
-@@ -898,10 +904,10 @@ void ima_update_policy(void)
- 
- 	list_splice_tail_init_rcu(&ima_temp_rules, policy, synchronize_rcu);
- 
--	if (ima_rules != policy) {
-+	if (ima_rules != (struct list_head __rcu *)policy) {
- 		ima_policy_flag = 0;
--		ima_rules = policy;
- 
-+		rcu_assign_pointer(ima_rules, policy);
- 		/*
- 		 * IMA architecture specific policy rules are specified
- 		 * as strings and converted to an array of ima_entry_rules
-@@ -989,7 +995,7 @@ static int ima_lsm_rule_init(struct ima_rule_entry *entry,
- 		pr_warn("rule for LSM \'%s\' is undefined\n",
- 			entry->lsm[lsm_rule].args_p);
- 
--		if (ima_rules == &ima_default_rules) {
-+		if (ima_rules == (struct list_head __rcu *)(&ima_default_rules)) {
- 			kfree(entry->lsm[lsm_rule].args_p);
- 			entry->lsm[lsm_rule].args_p = NULL;
- 			result = -EINVAL;
-@@ -1598,9 +1604,11 @@ void *ima_policy_start(struct seq_file *m, loff_t *pos)
- {
- 	loff_t l = *pos;
- 	struct ima_rule_entry *entry;
-+	struct list_head *ima_rules_tmp;
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(entry, ima_rules, list) {
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 		if (!l--) {
- 			rcu_read_unlock();
- 			return entry;
-@@ -1619,7 +1627,8 @@ void *ima_policy_next(struct seq_file *m, void *v, loff_t *pos)
- 	rcu_read_unlock();
- 	(*pos)++;
- 
--	return (&entry->list == ima_rules) ? NULL : entry;
-+	return (&entry->list == &ima_default_rules ||
-+		&entry->list == &ima_policy_rules) ? NULL : entry;
  }
  
- void ima_policy_stop(struct seq_file *m, void *v)
-@@ -1823,6 +1832,7 @@ bool ima_appraise_signature(enum kernel_read_file_id id)
- 	struct ima_rule_entry *entry;
- 	bool found = false;
- 	enum ima_hooks func;
-+	struct list_head *ima_rules_tmp;
+@@ -851,8 +851,8 @@ static int audioreach_mfc_set_media_format(struct q6apm_graph *graph,
+ 	} else if (num_channels == 4) {
+ 		media_format->channel_mapping[0] = PCM_CHANNEL_FL;
+ 		media_format->channel_mapping[1] = PCM_CHANNEL_FR;
+-		media_format->channel_mapping[2] = PCM_CHANNEL_LS;
+-		media_format->channel_mapping[3] = PCM_CHANNEL_RS;
++		media_format->channel_mapping[2] = PCM_CHANNEL_LB;
++		media_format->channel_mapping[3] = PCM_CHANNEL_RB;
+ 	}
  
- 	if (id >= READING_MAX_ID)
- 		return false;
-@@ -1834,7 +1844,8 @@ bool ima_appraise_signature(enum kernel_read_file_id id)
- 	func = read_idmap[id] ?: FILE_CHECK;
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(entry, ima_rules, list) {
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 		if (entry->action != APPRAISE)
- 			continue;
- 
+ 	rc = q6apm_send_cmd_sync(graph->apm, pkt, 0);
 -- 
-2.34.1
+2.43.0
 
 
