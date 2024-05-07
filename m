@@ -1,110 +1,160 @@
-Return-Path: <stable+bounces-43162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC1A8BDB34
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 08:14:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09498BDC17
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 09:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBE5F1F2517A
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 06:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0A11C223E1
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 07:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4396F505;
-	Tue,  7 May 2024 06:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E0A13BAE9;
+	Tue,  7 May 2024 07:08:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [58.251.27.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB366F08E
-	for <stable@vger.kernel.org>; Tue,  7 May 2024 06:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03FA13B78A;
+	Tue,  7 May 2024 07:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=58.251.27.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715062445; cv=none; b=Qac+nNetkG1ynWRzGayEGFBxrDXjEimi9AM04PGMTes0oyvt9fsI3HgbMdtNpFeY8/ueUIAl7HOrU6mnR+2J7qaSosHnRTbvNbzBccgt8pd095EwTmWuq0GMXjjbkYoj5fJ41wMD7wwjONkgVvCferqzOi5jrnfyaR1nOaRqnsw=
+	t=1715065732; cv=none; b=mkL+ODKlmpXIRZ4Rpj5dC91SDlVjmYF99ImvauT9kjpX7N4fMdPopRRVcbeUc4G3Z2Xjod1Jgjadj7VXQ4xo4+KIxEAM6fo2Gdf0hn1rSwcBkWp0QISVtKXhJSPB2CquB782vN+BWbpF55+IXNCwr2/mMziR3E8JWZ3XzIHsxEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715062445; c=relaxed/simple;
-	bh=GPWjKdirB7629q7V+10hJwf8/ObSz24j7C9OV4mHhPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e9Vi69BXHo1ZeYGZk+Tv6+6Rd7HzyuN5tu3rqu2dDcBcZ5PJ7mjkyC7iZE9xCaPRicuiCAjhhU/dxCsBQ7ODtyf/iCAsRA8LJsquTd4z2yT9dc3o5iCiwM9icHoi8HmQXbRBD/IfCDtBLGjsUBlIPTw0E6auk/2d/YWgHcVgXsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4E5Q-0003wx-Md; Tue, 07 May 2024 08:14:00 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4E5P-0002vS-Bj; Tue, 07 May 2024 08:13:59 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s4E5P-00H9K2-0u;
-	Tue, 07 May 2024 08:13:59 +0200
-Date: Tue, 7 May 2024 08:13:59 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: David Lechner <dlechner@baylibre.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, 
-	Michael Hennerich <michael.hennerich@analog.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Mark Brown <broonie@kernel.org>
-Subject: Re: Patch "spi: axi-spi-engine: Convert to platform remove callback
- returning void" has been added to the 6.1-stable tree
-Message-ID: <xoadzhyfsjcmvrolb7smsjsvvhfb67m6rcata7sox54yeqm54n@neow3nvsxcti>
-References: <20240506193007.271745-1-sashal@kernel.org>
- <668fcb3c-d00c-4082-b55d-c8584f1b3f7a@baylibre.com>
+	s=arc-20240116; t=1715065732; c=relaxed/simple;
+	bh=HhIO9q2RC6AL+ZdN38tHyxgIXQsJwRDBxquAnk/Fcj4=;
+	h=Date:Message-ID:Mime-Version:From:To:Cc:Subject:Content-Type; b=HtQr311dTNTq4Vw2d+QjjzdupUkwNdH0xaEPaGfU7HbP5M9sa5ZTHWeZz8XSxBnfoIIcZCZUV3sG91C4zkQZjQzY1ZzTCaadyxQ+sW7VqAo0JQ94QpC9nJl89kFyjF/w/hNpFX2iukNaV7OnY7/bPf6X+M+mjSzNOiPJ64UN6O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=58.251.27.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mxde.zte.com.cn (unknown [10.35.20.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4VYThS4L1Xz9yXD;
+	Tue,  7 May 2024 15:01:12 +0800 (CST)
+Received: from mxhk.zte.com.cn (unknown [192.168.250.137])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mxde.zte.com.cn (FangMail) with ESMTPS id 4VYThK54g3z4xCtV;
+	Tue,  7 May 2024 15:01:05 +0800 (CST)
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4VYTh61gZzz8XrXL;
+	Tue,  7 May 2024 15:00:54 +0800 (CST)
+Received: from xaxapp03.zte.com.cn ([10.88.97.17])
+	by mse-fl1.zte.com.cn with SMTP id 44770ibD087732;
+	Tue, 7 May 2024 15:00:44 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 7 May 2024 15:00:46 +0800 (CST)
+Date: Tue, 7 May 2024 15:00:46 +0800 (CST)
+X-Zmail-TransId: 2af96639d19effffffffd7c-0e6a2
+X-Mailer: Zmail v1.0
+Message-ID: <20240507150046826ZGsq8VfvyxBzczJHMtBxQ@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="epjpwzes5w6i7m3k"
-Content-Disposition: inline
-In-Reply-To: <668fcb3c-d00c-4082-b55d-c8584f1b3f7a@baylibre.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <dwmw2@infradead.org>, <richard@nod.at>, <dev@elkcl.ru>
+Cc: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>, <wang.yong12@zte.com.cn>,
+        <lu.zhongjun@zte.com.cn>, <yang.tao172@zte.com.cn>,
+        <xu.xin16@zte.com.cn>, <yang.yang29@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIGxpbnV4LW5leHRdIGpmZjI6Zml4IHBvdGVudGlhbCBpbGxlZ2FsIGFkZHJlc3MgYWNjZXNzIGluIGpmZnMyX2ZyZWVfaW5vZGU=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 44770ibD087732
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6639D1B6.000/4VYThS4L1Xz9yXD
 
+From: Wang Yong <wang.yong12@zte.com.cn>
 
---epjpwzes5w6i7m3k
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+During the stress testing of the jffs2 file system,the following
+abnormal printouts were found:
+[ 2430.649000] Unable to handle kernel paging request at virtual address 0069696969696948
+[ 2430.649622] Mem abort info:
+[ 2430.649829]   ESR = 0x96000004
+[ 2430.650115]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 2430.650564]   SET = 0, FnV = 0
+[ 2430.650795]   EA = 0, S1PTW = 0
+[ 2430.651032]   FSC = 0x04: level 0 translation fault
+[ 2430.651446] Data abort info:
+[ 2430.651683]   ISV = 0, ISS = 0x00000004
+[ 2430.652001]   CM = 0, WnR = 0
+[ 2430.652558] [0069696969696948] address between user and kernel address ranges
+[ 2430.653265] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+[ 2430.654512] CPU: 2 PID: 20919 Comm: cat Not tainted 5.15.25-g512f31242bf6 #33
+[ 2430.655008] Hardware name: linux,dummy-virt (DT)
+[ 2430.655517] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 2430.656142] pc : kfree+0x78/0x348
+[ 2430.656630] lr : jffs2_free_inode+0x24/0x48
+[ 2430.657051] sp : ffff800009eebd10
+[ 2430.657355] x29: ffff800009eebd10 x28: 0000000000000001 x27: 0000000000000000
+[ 2430.658327] x26: ffff000038f09d80 x25: 0080000000000000 x24: ffff800009d38000
+[ 2430.658919] x23: 5a5a5a5a5a5a5a5a x22: ffff000038f09d80 x21: ffff8000084f0d14
+[ 2430.659434] x20: ffff0000bf9a6ac0 x19: 0169696969696940 x18: 0000000000000000
+[ 2430.659969] x17: ffff8000b6506000 x16: ffff800009eec000 x15: 0000000000004000
+[ 2430.660637] x14: 0000000000000000 x13: 00000001000820a1 x12: 00000000000d1b19
+[ 2430.661345] x11: 0004000800000000 x10: 0000000000000001 x9 : ffff8000084f0d14
+[ 2430.662025] x8 : ffff0000bf9a6b40 x7 : ffff0000bf9a6b48 x6 : 0000000003470302
+[ 2430.662695] x5 : ffff00002e41dcc0 x4 : ffff0000bf9aa3b0 x3 : 0000000003470342
+[ 2430.663486] x2 : 0000000000000000 x1 : ffff8000084f0d14 x0 : fffffc0000000000
+[ 2430.664217] Call trace:
+[ 2430.664528]  kfree+0x78/0x348
+[ 2430.664855]  jffs2_free_inode+0x24/0x48
+[ 2430.665233]  i_callback+0x24/0x50
+[ 2430.665528]  rcu_do_batch+0x1ac/0x448
+[ 2430.665892]  rcu_core+0x28c/0x3c8
+[ 2430.666151]  rcu_core_si+0x18/0x28
+[ 2430.666473]  __do_softirq+0x138/0x3cc
+[ 2430.666781]  irq_exit+0xf0/0x110
+[ 2430.667065]  handle_domain_irq+0x6c/0x98
+[ 2430.667447]  gic_handle_irq+0xac/0xe8
+[ 2430.667739]  call_on_irq_stack+0x28/0x54
+The parameter passed to kfree was 5a5a5a5a, which corresponds to the target field of
+the jffs_inode_info structure. It was found that all variables in the jffs_inode_info
+structure were 5a5a5a5a, except for the first member sem. It is suspected that these
+variables are not initialized because they were set to 5a5a5a5a during memory testing,
+which is meant to detect uninitialized memory.The sem variable is initialized in the
+function jffs2_i_init_once, while other members are initialized in
+the function jffs2_init_inode_info.
 
-Hello,
+The function jffs2_init_inode_info is called after iget_locked,
+but in the iget_locked function, the destroy_inode process is triggered,
+which releases the inode and consequently, the target member of the inode
+is not initialized.In concurrent high pressure scenarios, iget_locked
+may enter the destroy_inode branch as described in the code.
 
-On Mon, May 06, 2024 at 03:43:47PM -0500, David Lechner wrote:
-> Does not meet the criteria for stable.
+Since the destroy_inode functionality of jffs2 only releases the target,
+the fix method is to set target to NULL in jffs2_i_init_once.
 
-It was identified as a dependency of another patch. But I agree to
-David, it should be trivial to back this patch out. If you need help,
-please tell me.
+Signed-off-by: Wang Yong <wang.yong12@zte.com.cn>
+Reviewed-by: Lu Zhongjun <lu.zhongjun@zte.com.cn>
+Reviewed-by: Yang Tao <yang.tao172@zte.com.cn>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+---
+ fs/jffs2/super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards
-Uwe
+diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
+index 81ca58c..40cc5e6 100644
+--- a/fs/jffs2/super.c
++++ b/fs/jffs2/super.c
+@@ -58,6 +58,7 @@ static void jffs2_i_init_once(void *foo)
+ 	struct jffs2_inode_info *f = foo;
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+ 	mutex_init(&f->sem);
++	f->target = NULL;
+ 	inode_init_once(&f->vfs_inode);
+ }
 
---epjpwzes5w6i7m3k
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmY5xqEACgkQj4D7WH0S
-/k6GJwf/SUPmCwGd/jefUWr5lE8Xn483F7HTy60MXQSd5AxzTwVR86l+4Bh884JL
-KcgIkm+Kbw8QjwTAX627vvct0WwA12h8c94YVoHnWuBbUhHODCIVOzKkn+qLFDoI
-we89apvjKzYt7I6gvXbPvtiixh3dq9uf8vk5QuPb3LTPX8ITIq1F1gLff3dMYA9A
-KvqycjjaVv+qsoxyv8NcQRhw96wu85g58p2Fw1i5oDnJnfYlvkKTKoJ8bSIA+yha
-2tggQ3WVywo24gVDFpZ1p9/NMCYExqSen7uPMmm2nRWXyj24/+SVEcZhIwnfTNx8
-QpXBocnJnR7doo8k/G2iithAfegxLQ==
-=5/v7
------END PGP SIGNATURE-----
-
---epjpwzes5w6i7m3k--
+-- 
+2.15.2
 
