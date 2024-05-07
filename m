@@ -1,112 +1,89 @@
-Return-Path: <stable+bounces-43160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7DC8BD812
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 01:11:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9C38BD85D
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 02:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F2001C20473
-	for <lists+stable@lfdr.de>; Mon,  6 May 2024 23:11:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD93F1F24046
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 00:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAA015B158;
-	Mon,  6 May 2024 23:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B85C622;
+	Tue,  7 May 2024 00:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L7i7wD3M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OtTd+I4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368B115AD90;
-	Mon,  6 May 2024 23:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC56717C;
+	Tue,  7 May 2024 00:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715037092; cv=none; b=X3egm2DKPsTySt6kq3JuTgsSSOJ2/z20lefeKKL6p9fnICOIwvNAlYXOkSCWAYhh2Bjz3J5FZKdj2KQhGvsYv001WSdi6bysfssWIMoqGrjFPxl3+lHhe1E1avH6gRtY7d7WRycYH9qfXIsczlNoJgce0tWQDN/kx9UviWYagu8=
+	t=1715040277; cv=none; b=BpbDRQprj69ulrIhKHdW5OFNxo5tCuUd0mfIK1LaCxoTKOJercAVlsv6VkQQFFPmiwOXKImlKz/1ExuBVRxvOzyOK/aEuFJZO0W6bwYU6eM5a2daEDnz125hk0VLmJno9Sj4BHefevydALB7HK/nw6DHz382hj9m6tE23jTRT3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715037092; c=relaxed/simple;
-	bh=qpYWJFEvBlxDIikDTcBC3mTe3tKzXg3f7B/YglwL+I4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h8jC2eWy2Ag2PL0q/1oXj7gxfbYFRNZGwEJBgQjXQSi8FfrLduC9O6xf4XEmkNlwJ96kLCA2gEdNKgO0Z+FzbA+pUSu+aTnUbzkasc1M5eJemYYfxL+G23Q2B+nIh2ZLwtnzEn6W9IvuKstZqD1NWtffDfWXmY/CSwWTO+nvExA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L7i7wD3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE44C116B1;
-	Mon,  6 May 2024 23:11:31 +0000 (UTC)
+	s=arc-20240116; t=1715040277; c=relaxed/simple;
+	bh=CnpWjYWf0nEtcCfe4MoiuANX57ZSPXjhuiL2jphhHww=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=bl+3BsymGjUTOT7+IVGgLrC52h5mJj1q7uLiXHQ3jKHMwmTYnloOw+nRuhysNPkpBKqhRsmhM51Q3I2JNplG85LYrZaDX+HWpbShGrvG4cuKlOhD+4Mg/v0gsj19S+yuo7c0eIowoTXkYGlTeTDaO1Mdv91lmvtttqWCfzABa8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OtTd+I4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4CFC116B1;
+	Tue,  7 May 2024 00:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715037091;
-	bh=qpYWJFEvBlxDIikDTcBC3mTe3tKzXg3f7B/YglwL+I4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L7i7wD3Mh3TesasIjjUJ57kvs/3m2tfUrVCv5jZVGKtGgBDzcoYY+xXbMBg1IagRl
-	 Qmbfe+kkg1D+pFHALim6MC/vIxyh6fqbEVwsRufSorJJEXkrcJ5kktCXbmN+sE3WZv
-	 6nonD3epsvYal9tYPZz2+mxhx4aOL0fFDVVcNj21mxvYdFSVRuW2I1d3mKLMK1r8MZ
-	 oFCmhZ4VBEquVWmSufZHZLzsP9HirPbWZWkGMS2kXIaDOoBlAAM15J+QNX1A3QUjU/
-	 4S0E6eIGb0jRXgQQ36V+hoBiVG9N6DKU86nXGa1n6YyfjXRjchItegp4o5UOfUwwPO
-	 6yXO/nXuKC3vg==
-Date: Mon, 6 May 2024 19:11:30 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Steve French <smfrench@gmail.com>
-Cc: Stable <stable@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
-	CIFS <linux-cifs@vger.kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: Re: backport of missing fs/smb patches not in 6.6.30 stable
-Message-ID: <Zjljol_GiXW3bKid@sashalap>
-References: <CAH2r5mtC8NK=bH6qZfN6qwa=jot_scuLiDfYWSbFMwDWmkthOA@mail.gmail.com>
+	s=k20201202; t=1715040277;
+	bh=CnpWjYWf0nEtcCfe4MoiuANX57ZSPXjhuiL2jphhHww=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=OtTd+I4bjsXdhE2KzPujqPkMlyaOqwCE4xpPHoQ1clZiQYe1O2bhtjK6rzySYkzuu
+	 1WmFdGyWIFQ4tNGQIV2v+7f/9eiZTeXEgEFbWULhBmsg6M8WEgvs9vFcPUYBoFHve9
+	 rRzW4rjZ+gI/5ZkjNShbOOOWhuRJJAPBl7rECC6k6Q0qEslDWkE2tPHIW55/51bhEF
+	 WhpWeXf0P91WICXePiDPWBr5A3i+21hT+d6AI8etrOPn1cNOXsQrsDi/wjgtlEK84+
+	 Dn5GfK9ttarZ+xARqrIE0RIoyLcEeJZsojlNRijpq0Fl6XKXxh8kf70JUqlkmuUrEI
+	 0ORwJxtwQReWw==
+Message-ID: <ee18e89b77f0c08ef45cbcc75e2361bf.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAH2r5mtC8NK=bH6qZfN6qwa=jot_scuLiDfYWSbFMwDWmkthOA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240506063751.346759-1-quic_mdalam@quicinc.com>
+References: <20240506063751.346759-1-quic_mdalam@quicinc.com>
+Subject: Re: [PATCH v2] clk: qcom: gcc-ipq9574: Add BRANCH_HALT_VOTED flag
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: quic_mdalam@quicinc.com, quic_srichara@quicinc.com, quic_varada@quicinc.com, stable@vger.kernel.org
+To: Md Sadre Alam <quic_mdalam@quicinc.com>, andersson@kernel.org, bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, mturquette@baylibre.com, quic_anusha@quicinc.com
+Date: Mon, 06 May 2024 17:04:35 -0700
+User-Agent: alot/0.10
 
-On Thu, May 02, 2024 at 11:28:38PM -0500, Steve French wrote:
->6.6.30-rc1 has a large set of fs/smb (cifs.ko and ksmbd.ko) patches
->backported but was missing more than 30 fixes so I put together a safe
->backport of the remaining, leaving out patches that had dependencies
->on things outside of fs/smb
->
->The following changes since commit 488f7008e62890fae8c7a2d3583913c8074f1fc6:
->
->  smb3: fix lock ordering potential deadlock in cifs_sync_mid_result
->(2024-04-30 12:30:53 -0500)
->
->are available in the Git repository at:
->
->  git://git.samba.org/ksmbd.git tags/6.6.30-rc1-full-fs-smb-backport
->
->for you to fetch changes up to 411b6f385ac2427ee9d70fae277a4ed6b9d3983f:
->
->  smb: smb2pdu.h: Avoid -Wflex-array-member-not-at-end warnings
->(2024-05-01 02:18:25 -0500)
->
->----------------------------------------------------------------
->full backport for 6.6.30, includes all 80 (of the relevant) missing
->fs/smb changesets
->
->Test results look good (and better than without the patches).  Here
->are the functional test results (they passed exhaustive set of tests
->to various server types):
->http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/3/builds/99
->http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/5/builds/117
->http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/9/builds/51
->http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/10/builds/63
->
->Note that 22 patches had dependencies and were not appropriate to
->backport and are not included, but here is the list of the additional
->80 fs/smb patches included, many of which fix bugs (the others reduce
->risk of backport, and help avoid merge conflicts):
->411b6f385ac2 (HEAD -> fs-smb-backport-linux-6.6.30-rc1, tag:
->6.6.30-rc1-full-fs-smb-backport,
->origin/fs-smb-backport-linux-6.6.30-rc1) smb: smb2pdu.h: Avoid
->-Wflex-array-member-not-at-end warnings
+Quoting Md Sadre Alam (2024-05-05 23:37:51)
+> Add BRANCH_HALT_VOTED flag to inform clock framework
+> don't check for CLK_OFF bit.
+>=20
+> CRYPTO_AHB_CLK_ENA and CRYPTO_AXI_CLK_ENA enable bit is
+> present in other VOTE registers also, like TZ.
+> If anyone else also enabled this clock, even if we turn
+> off in GCC_APCS_CLOCK_BRANCH_ENA_VOTE | 0x180B004, it won't
+> turn off.
+> Also changes the CRYPTO_AHB_CLK_ENA & CRYPTO_AXI_CLK_ENA
+> offset to 0xb004 from 0x16014.
 
-Thanks Steve, I'll pick these up.
+How about this?
 
-In the future, if the patches don't need massaging, just a list of the
-upstream commit ids would be great :)
+ The crypto_ahb and crypto_axi clks are hardware voteable. This means
+ that the halt bit isn't reliable because some other voter in the
+ system, e.g. TrustZone, could be keeping the clk enabled when the
+ kernel turns it off from clk_disable(). Make these clks use voting mode
+ by changing the halt check to BRANCH_HALT_VOTED and toggle the voting
+ bit in the voting register instead of directly controlling the branch
+ by writing to the branch register. This fixes stuck clk warnings seen
+ on ipq9574 and saves power by actually turning the clk off.
 
--- 
-Thanks,
-Sasha
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: f6b2bd9cb29a ("clk: qcom: gcc-ipq9574: Enable crypto clocks")
+> Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
 
