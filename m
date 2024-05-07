@@ -1,69 +1,68 @@
-Return-Path: <stable+bounces-43318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2248BF1AE
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:31:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 008998BF1B0
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 245781C20C6A
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:31:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF4282827D1
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF8E145B0B;
-	Tue,  7 May 2024 23:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD66F145B23;
+	Tue,  7 May 2024 23:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uI/gZx5W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etq0V/d9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6D5135A6E;
-	Tue,  7 May 2024 23:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6E2145B1C;
+	Tue,  7 May 2024 23:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123372; cv=none; b=Pxb5zay7US6bmoxqCJXOW00ilYRi1xeJ2MlrO3zqfQ7p49YxoVurusn4zfbPMsbhZVeGVvgIFWrVJb10KgIjD74KYi2RA6X6e2Nt5FVHKBOTaNV66u7yFHtKw0qTLGyJcEKi+fxRrmTNXyqR7uNypuOtF3H0FTWVQWmW/Ex/sKA=
+	t=1715123375; cv=none; b=T1FcU/aj4WuqhOiNaqZCnfKiYnBexQGaghx1p+lvU9puB5Ifa69AfH7mYmesqNKbkztSRhrPJ20gXU4Dm2HjW9i7q8OkZ/130+0iTNfdMynAHAH6bBnoDTlFM28n0FsXCyN8BVAxN2+JUVYtYIk2gDVMtMYgUZWRJv4NyDmjT4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123372; c=relaxed/simple;
-	bh=qsBXv4eT55IdMwxy9x8mbzOnTPPBcW0txYfRfwsRTOg=;
+	s=arc-20240116; t=1715123375; c=relaxed/simple;
+	bh=Oee1mEmDe4fJORTNYlBmozOCK+/EOLdQWjbFJ7XwXko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7wVk/oHtZR1t5u5dM2uBb2Y8CwebPXQpuHAmf4Qv3+DO0HXd8DLWN8jf3Bw36HEhGnVVsb3wmlcypEh3AJeE7ivAiptuyrUMFJ/gk63JI3JLl3B+T6/Wt906o4CJMHulsN2gBdASGmtUTMz1unwdXTrTKJxbrX/aaPbcwZOqGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uI/gZx5W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24218C3277B;
-	Tue,  7 May 2024 23:09:29 +0000 (UTC)
+	 MIME-Version; b=FmZulrLu07sDk2NW4ixBBV8pF7APc1Vme3kIZoegsFGicbcs6X30KDzsUwsDqvVkukTeXejdQOQLPud3aRFBdSNx/Okyju4/Rn9tlPJSPElYuB4gXUm6BlGnyQOddzTbcde8J0iSbrtWNHCB9Us/xqIXRjPUgYsr41ZlBsjI9ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etq0V/d9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AF5C4AF68;
+	Tue,  7 May 2024 23:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123371;
-	bh=qsBXv4eT55IdMwxy9x8mbzOnTPPBcW0txYfRfwsRTOg=;
+	s=k20201202; t=1715123375;
+	bh=Oee1mEmDe4fJORTNYlBmozOCK+/EOLdQWjbFJ7XwXko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uI/gZx5WnRWJC+6PMPlWeY135Tysx0JsP5biVBNj4LNFlolwJuDwvyrt08VoFemIN
-	 rVbYaEhEXCaZMagmvT+b0W8J9bseUWn6QDyr21cBsERJHVy/zSBn5vJZKrQQxrpNXB
-	 bmraCeI65R3GDcqsc4x3o9X1rz9n2OBDejcHpbK3n3U7GUMs2ULgarOdE9/OnTGC4g
-	 4SiXRVcI3aSzfexZgATV+uRF8iJrESXMb8dBF7BHW1VsxKPa3/mlzHaABbHEMIayzd
-	 ZNggkyBsHUXhgIwO1IjbVEdKVlTePUo3vzL7cqFBpBFt5VSkgau9j6ff9RruyWfDOq
-	 VkGdc9Ccdotow==
+	b=etq0V/d902xB9AL2itmz70DwzPiV+siGHoOJnka5A0LUV4TfoeDDd/9nNseQpOFOK
+	 aDaPCvrIBBMwkMAGgpRdQBm06NuDwbgzEobfbQxoWNKb3mdyeoC0lPx98BdcmhaVCn
+	 Q6x6MBp4Qv3wNukQQ3HMBqHw0f5Z96CuODNUzbh0T5muyoCDNcp9NLsHA55mYa26cF
+	 jAfdadt+rGJbDHDqf2my1zSPlPgz9YGziyROhXvhGb2UTXdErTwZvMfDh09iL3IgH8
+	 Lpj+vo+VoCgWeE/r95Jx6aEoUBnDG5mNMMpVevKGluZgGfLFguc2oLzmMjvJGq8e3j
+	 Pb6MM/f2xYwZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
-	PeiChen Huang <peichen.huang@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	srinivasan.shanmugam@amd.com,
-	nathan@kernel.org,
+	eric.bernstein@amd.com,
+	chiahsuan.chung@amd.com,
+	qingqing.zhuo@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.8 39/52] drm/amd/display: Allocate zero bw after bw alloc enable
-Date: Tue,  7 May 2024 19:07:05 -0400
-Message-ID: <20240507230800.392128-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 40/52] drm/amd/display: Add VCO speed parameter for DCN31 FPU
+Date: Tue,  7 May 2024 19:07:06 -0400
+Message-ID: <20240507230800.392128-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -78,60 +77,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 46fe9cb1a9e62f4e6229f48ae303ef8e6c1fdc64 ]
+[ Upstream commit 0e62103bdcbc88281e16add299a946fb3bd02fbe ]
 
-[Why]
-During DP tunnel creation, CM preallocates BW and reduces
-estimated BW of other DPIA. CM release preallocation only
-when allocation is complete. Display mode validation logic
-validates timings based on bw available per host router.
-In multi display setup, this causes bw allocation failure
-when allocation greater than estimated bw.
+Add VCO speed parameters in the bounding box array.
 
-[How]
-Do zero alloc to make the CM to release preallocation and
-update estimated BW correctly for all DPIAs per host router.
-
-Reviewed-by: PeiChen Huang <peichen.huang@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/link/protocols/link_dp_dpia_bw.c    | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-index 5491b707cec88..5a965c26bf209 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-@@ -270,7 +270,7 @@ static void set_usb4_req_bw_req(struct dc_link *link, int req_bw)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
+index deb6d162a2d5c..7307b7b8d8ad7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/dcn31_fpu.c
+@@ -291,6 +291,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_15_soc = {
+ 	.do_urgent_latency_adjustment = false,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+ 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.dispclk_dppclk_vco_speed_mhz = 2400.0,
+ 	.num_chans = 4,
+ 	.dummy_pstate_latency_us = 10.0
+ };
+@@ -438,6 +439,7 @@ static struct _vcs_dpi_soc_bounding_box_st dcn3_16_soc = {
+ 	.do_urgent_latency_adjustment = false,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+ 	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.dispclk_dppclk_vco_speed_mhz = 2500.0,
+ };
  
- 	/* Error check whether requested and allocated are equal */
- 	req_bw = requested_bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
--	if (req_bw == link->dpia_bw_alloc_config.allocated_bw) {
-+	if (req_bw && (req_bw == link->dpia_bw_alloc_config.allocated_bw)) {
- 		DC_LOG_ERROR("%s: Request bw equals to allocated bw for link(%d)\n",
- 			__func__, link->link_index);
- 	}
-@@ -341,6 +341,14 @@ bool link_dp_dpia_set_dptx_usb4_bw_alloc_support(struct dc_link *link)
- 			ret = true;
- 			init_usb4_bw_struct(link);
- 			link->dpia_bw_alloc_config.bw_alloc_enabled = true;
-+
-+			/*
-+			 * During DP tunnel creation, CM preallocates BW and reduces estimated BW of other
-+			 * DPIA. CM release preallocation only when allocation is complete. Do zero alloc
-+			 * to make the CM to release preallocation and update estimated BW correctly for
-+			 * all DPIAs per host router
-+			 */
-+			link_dp_dpia_allocate_usb4_bandwidth_for_stream(link, 0);
- 		}
- 	}
- 
+ void dcn31_zero_pipe_dcc_fraction(display_e2e_pipe_params_st *pipes,
 -- 
 2.43.0
 
