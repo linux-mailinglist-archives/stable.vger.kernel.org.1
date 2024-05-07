@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-43298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9638BF17B
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:26:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F608BF17E
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FBE81C23248
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:26:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9334CB269B0
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF443134CC2;
-	Tue,  7 May 2024 23:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5C913DDA3;
+	Tue,  7 May 2024 23:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLeaQWyp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMqG+1Mw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AD613DBA5;
-	Tue,  7 May 2024 23:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C2113DDA2;
+	Tue,  7 May 2024 23:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123317; cv=none; b=D2LRYF5qyFNSBzir1OcOaNyjCUqNSfFvX52MTWXOmJBnuXEUvPMYtUsPml9N7oHgiLbm6I3iW8rDCBznQYCGV+KO60mhYbUIkre8+7Fk6k+S6Fru/ufDhhb4SNUXMaNhQE5s6uzoAikX1JlyDsySp9H+IuUkvzUlyM3CqgngNAg=
+	t=1715123319; cv=none; b=pKwZZqqzPE4+n9492aR41i2o69VUP8NGd4Sgj7ANxr5GMG4NtGWmYvloILrI45rzlAFlxfv4k6e2ZMfB7cLvnMVRvmHgSQnygURRHnoxEMebCWsQrLG5Jx+JiD89HwiOz7+UU+Ks+aPLXhRXIPE3IsoaGjP6FGbrvHyvxZ+7WiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123317; c=relaxed/simple;
-	bh=kBfJ4CUGpAFe5MU2hCmU5LmTT/VhLSzeTL0LWRn4emQ=;
+	s=arc-20240116; t=1715123319; c=relaxed/simple;
+	bh=EWWYwbIVCZ66WJjawg5ySQK7sSXV/yL0Mpy1THGUOf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=seVbvc/GGSsen4hhiwF0Ui9Gn5dm2RgeUUKK9tOJ2E5hiFCrr7w7btexTDl9ixkkRNbRKlfX2GLACv+luf4SmLcJPa3kyDXE9bZZJavX76nhHd8zfAvQ9HRZ514LiWnsdsam4h+7Vrrc4nhvDo+oJwq550n/FrBDa8f5Yf8/5ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLeaQWyp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DBAC2BBFC;
-	Tue,  7 May 2024 23:08:36 +0000 (UTC)
+	 MIME-Version; b=jVd4TQczuK9uHgRfdTUA/u6vzzA9pslg6PkexYzQ4Fcy4bgj0plLm+bSpa0b8wyfVHglu4mSTY+nlIQ0CWgXrLKSdr2Q8fLo+Se9UVClSrjJhu3dUt8jufR0iNkh4zDU94oHRoKGRVxDwFCsi8pjT+4FwzU3KheTALRjbJDi7es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMqG+1Mw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCF7C3277B;
+	Tue,  7 May 2024 23:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123317;
-	bh=kBfJ4CUGpAFe5MU2hCmU5LmTT/VhLSzeTL0LWRn4emQ=;
+	s=k20201202; t=1715123319;
+	bh=EWWYwbIVCZ66WJjawg5ySQK7sSXV/yL0Mpy1THGUOf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLeaQWypdZVA+Mt4C7o1kNvg/0TXZ9Bi76d+L6KsvoK6Ebr2ZVm0yPol5xUjsB6s2
-	 wzeB7dba/spSL4dZHPkbRUr66B0Bf5xJtB5cSCR+WdKFyXIx2lIu6jINhhueOLh6C+
-	 oTayS8KrrQx0fLdEB9s1kPdemHX8GIFoDl736oFvu1qZXNg65sm3qQKJjh/QRboj/j
-	 8s4F9kcS0+V0dD9v/kU5ng5NElAX2ats3zxT446LC1Kkf+rjDN+o057+efk6ryb8jI
-	 9fdEWCvE1R5HHNLO1uIIPFyDG+f44qtWk+CeAUDEWTS+Rtmj85oSZapltdoexu0pHA
-	 cbfGeueZpZFYg==
+	b=UMqG+1Mwq6iUYyAujCYBH8JQSlWARViK1BBua8/rwZ+ordEV+FhmDSdb2WkMlAYxx
+	 AXpESyoq9tl0Ln9lRPFTHu/OdjJUtKzwEL/Ji9W4+dAMsaCoNARnJcVpG2l8FtgZrg
+	 vd3EDB2B28N3Bl4PFPd/Nt8fjE9S7dwLhNnohCq0IRPu2tdYxRtlj6snLm+qQBCNSU
+	 wV+UYpQKhITxme4up5ClrRjMrleXmwko78YaISv24aWUpP5iMPDO71Vzqs2xhVkv8Y
+	 t1omAtGshISHv3GXVaeYrjf90JKCybkor/Ib2LDMpSE605KFtLcEzi5tLbxtvZPdL4
+	 HvNG3SSyRhT7w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vicki Pfau <vi@endrift.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	maxwell.nguyen@hp.com,
-	carl.ng@hp.com,
-	appsforartists@google.com,
-	swyterzone@gmail.com,
-	luca@z3ntu.xyz,
-	christophe.jaillet@wanadoo.fr,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 19/52] Input: xpad - add support for ASUS ROG RAIKIRI
-Date: Tue,  7 May 2024 19:06:45 -0400
-Message-ID: <20240507230800.392128-19-sashal@kernel.org>
+	clm@fb.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 20/52] btrfs: take the cleaner_mutex earlier in qgroup disable
+Date: Tue,  7 May 2024 19:06:46 -0400
+Message-ID: <20240507230800.392128-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -71,40 +67,261 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.8.9
 Content-Transfer-Encoding: 8bit
 
-From: Vicki Pfau <vi@endrift.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit be81415a32ef6d8a8a85529fcfac03d05b3e757d ]
+[ Upstream commit 0f2b8098d72a93890e69aa24ec549ef4bc34f4db ]
 
-Add the VID/PID for ASUS ROG RAIKIRI to xpad_device and the VID to xpad_table
+One of my CI runs popped the following lockdep splat
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20240404035345.159643-1-vi@endrift.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+======================================================
+WARNING: possible circular locking dependency detected
+6.9.0-rc4+ #1 Not tainted
+------------------------------------------------------
+btrfs/471533 is trying to acquire lock:
+ffff92ba46980850 (&fs_info->cleaner_mutex){+.+.}-{3:3}, at: btrfs_quota_disable+0x54/0x4c0
+
+but task is already holding lock:
+ffff92ba46980bd0 (&fs_info->subvol_sem){++++}-{3:3}, at: btrfs_ioctl+0x1c8f/0x2600
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #2 (&fs_info->subvol_sem){++++}-{3:3}:
+       down_read+0x42/0x170
+       btrfs_rename+0x607/0xb00
+       btrfs_rename2+0x2e/0x70
+       vfs_rename+0xaf8/0xfc0
+       do_renameat2+0x586/0x600
+       __x64_sys_rename+0x43/0x50
+       do_syscall_64+0x95/0x180
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+-> #1 (&sb->s_type->i_mutex_key#16){++++}-{3:3}:
+       down_write+0x3f/0xc0
+       btrfs_inode_lock+0x40/0x70
+       prealloc_file_extent_cluster+0x1b0/0x370
+       relocate_file_extent_cluster+0xb2/0x720
+       relocate_data_extent+0x107/0x160
+       relocate_block_group+0x442/0x550
+       btrfs_relocate_block_group+0x2cb/0x4b0
+       btrfs_relocate_chunk+0x50/0x1b0
+       btrfs_balance+0x92f/0x13d0
+       btrfs_ioctl+0x1abf/0x2600
+       __x64_sys_ioctl+0x97/0xd0
+       do_syscall_64+0x95/0x180
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+-> #0 (&fs_info->cleaner_mutex){+.+.}-{3:3}:
+       __lock_acquire+0x13e7/0x2180
+       lock_acquire+0xcb/0x2e0
+       __mutex_lock+0xbe/0xc00
+       btrfs_quota_disable+0x54/0x4c0
+       btrfs_ioctl+0x206b/0x2600
+       __x64_sys_ioctl+0x97/0xd0
+       do_syscall_64+0x95/0x180
+       entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+other info that might help us debug this:
+
+Chain exists of:
+  &fs_info->cleaner_mutex --> &sb->s_type->i_mutex_key#16 --> &fs_info->subvol_sem
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&fs_info->subvol_sem);
+                               lock(&sb->s_type->i_mutex_key#16);
+                               lock(&fs_info->subvol_sem);
+  lock(&fs_info->cleaner_mutex);
+
+ *** DEADLOCK ***
+
+2 locks held by btrfs/471533:
+ #0: ffff92ba4319e420 (sb_writers#14){.+.+}-{0:0}, at: btrfs_ioctl+0x3b5/0x2600
+ #1: ffff92ba46980bd0 (&fs_info->subvol_sem){++++}-{3:3}, at: btrfs_ioctl+0x1c8f/0x2600
+
+stack backtrace:
+CPU: 1 PID: 471533 Comm: btrfs Kdump: loaded Not tainted 6.9.0-rc4+ #1
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x77/0xb0
+ check_noncircular+0x148/0x160
+ ? lock_acquire+0xcb/0x2e0
+ __lock_acquire+0x13e7/0x2180
+ lock_acquire+0xcb/0x2e0
+ ? btrfs_quota_disable+0x54/0x4c0
+ ? lock_is_held_type+0x9a/0x110
+ __mutex_lock+0xbe/0xc00
+ ? btrfs_quota_disable+0x54/0x4c0
+ ? srso_return_thunk+0x5/0x5f
+ ? lock_acquire+0xcb/0x2e0
+ ? btrfs_quota_disable+0x54/0x4c0
+ ? btrfs_quota_disable+0x54/0x4c0
+ btrfs_quota_disable+0x54/0x4c0
+ btrfs_ioctl+0x206b/0x2600
+ ? srso_return_thunk+0x5/0x5f
+ ? __do_sys_statfs+0x61/0x70
+ __x64_sys_ioctl+0x97/0xd0
+ do_syscall_64+0x95/0x180
+ ? srso_return_thunk+0x5/0x5f
+ ? reacquire_held_locks+0xd1/0x1f0
+ ? do_user_addr_fault+0x307/0x8a0
+ ? srso_return_thunk+0x5/0x5f
+ ? lock_acquire+0xcb/0x2e0
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ ? find_held_lock+0x2b/0x80
+ ? srso_return_thunk+0x5/0x5f
+ ? lock_release+0xca/0x2a0
+ ? srso_return_thunk+0x5/0x5f
+ ? do_user_addr_fault+0x35c/0x8a0
+ ? srso_return_thunk+0x5/0x5f
+ ? trace_hardirqs_off+0x4b/0xc0
+ ? srso_return_thunk+0x5/0x5f
+ ? lockdep_hardirqs_on_prepare+0xde/0x190
+ ? srso_return_thunk+0x5/0x5f
+
+This happens because when we call rename we already have the inode mutex
+held, and then we acquire the subvol_sem if we are a subvolume.  This
+makes the dependency
+
+inode lock -> subvol sem
+
+When we're running data relocation we will preallocate space for the
+data relocation inode, and we always run the relocation under the
+->cleaner_mutex.  This now creates the dependency of
+
+cleaner_mutex -> inode lock (from the prealloc) -> subvol_sem
+
+Qgroup delete is doing this in the opposite order, it is acquiring the
+subvol_sem and then it is acquiring the cleaner_mutex, which results in
+this lockdep splat.  This deadlock can't happen in reality, because we
+won't ever rename the data reloc inode, nor is the data reloc inode a
+subvolume.
+
+However this is fairly easy to fix, simply take the cleaner mutex in the
+case where we are disabling qgroups before we take the subvol_sem.  This
+resolves the lockdep splat.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/ioctl.c  | 33 ++++++++++++++++++++++++++++++---
+ fs/btrfs/qgroup.c | 21 ++++++++-------------
+ 2 files changed, 38 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 1fad51b51b0e1..c2de2f063cb8d 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -207,6 +207,7 @@ static const struct xpad_device {
- 	{ 0x0738, 0xcb29, "Saitek Aviator Stick AV8R02", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xf738, "Super SFIV FightStick TE S", 0, XTYPE_XBOX360 },
- 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
-+	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", 0, XTYPE_XBOXONE },
- 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
-@@ -482,6 +483,7 @@ static const struct usb_device_id xpad_table[] = {
- 	{ USB_DEVICE(0x0738, 0x4540) },		/* Mad Catz Beat Pad */
- 	XPAD_XBOXONE_VENDOR(0x0738),		/* Mad Catz FightStick TE 2 */
- 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
-+	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
- 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x0e6f),		/* 0x0e6f Xbox 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x0e6f),		/* 0x0e6f Xbox One controllers */
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 6b93fae74403d..8851ba7a1e271 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3722,15 +3722,43 @@ static long btrfs_ioctl_quota_ctl(struct file *file, void __user *arg)
+ 		goto drop_write;
+ 	}
+ 
+-	down_write(&fs_info->subvol_sem);
+-
+ 	switch (sa->cmd) {
+ 	case BTRFS_QUOTA_CTL_ENABLE:
+ 	case BTRFS_QUOTA_CTL_ENABLE_SIMPLE_QUOTA:
++		down_write(&fs_info->subvol_sem);
+ 		ret = btrfs_quota_enable(fs_info, sa);
++		up_write(&fs_info->subvol_sem);
+ 		break;
+ 	case BTRFS_QUOTA_CTL_DISABLE:
++		/*
++		 * Lock the cleaner mutex to prevent races with concurrent
++		 * relocation, because relocation may be building backrefs for
++		 * blocks of the quota root while we are deleting the root. This
++		 * is like dropping fs roots of deleted snapshots/subvolumes, we
++		 * need the same protection.
++		 *
++		 * This also prevents races between concurrent tasks trying to
++		 * disable quotas, because we will unlock and relock
++		 * qgroup_ioctl_lock across BTRFS_FS_QUOTA_ENABLED changes.
++		 *
++		 * We take this here because we have the dependency of
++		 *
++		 * inode_lock -> subvol_sem
++		 *
++		 * because of rename.  With relocation we can prealloc extents,
++		 * so that makes the dependency chain
++		 *
++		 * cleaner_mutex -> inode_lock -> subvol_sem
++		 *
++		 * so we must take the cleaner_mutex here before we take the
++		 * subvol_sem.  The deadlock can't actually happen, but this
++		 * quiets lockdep.
++		 */
++		mutex_lock(&fs_info->cleaner_mutex);
++		down_write(&fs_info->subvol_sem);
+ 		ret = btrfs_quota_disable(fs_info);
++		up_write(&fs_info->subvol_sem);
++		mutex_unlock(&fs_info->cleaner_mutex);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -3738,7 +3766,6 @@ static long btrfs_ioctl_quota_ctl(struct file *file, void __user *arg)
+ 	}
+ 
+ 	kfree(sa);
+-	up_write(&fs_info->subvol_sem);
+ drop_write:
+ 	mnt_drop_write_file(file);
+ 	return ret;
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 132802bd80999..9b8a61aa390eb 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1342,16 +1342,10 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	lockdep_assert_held_write(&fs_info->subvol_sem);
+ 
+ 	/*
+-	 * Lock the cleaner mutex to prevent races with concurrent relocation,
+-	 * because relocation may be building backrefs for blocks of the quota
+-	 * root while we are deleting the root. This is like dropping fs roots
+-	 * of deleted snapshots/subvolumes, we need the same protection.
+-	 *
+-	 * This also prevents races between concurrent tasks trying to disable
+-	 * quotas, because we will unlock and relock qgroup_ioctl_lock across
+-	 * BTRFS_FS_QUOTA_ENABLED changes.
++	 * Relocation will mess with backrefs, so make sure we have the
++	 * cleaner_mutex held to protect us from relocate.
+ 	 */
+-	mutex_lock(&fs_info->cleaner_mutex);
++	lockdep_assert_held(&fs_info->cleaner_mutex);
+ 
+ 	mutex_lock(&fs_info->qgroup_ioctl_lock);
+ 	if (!fs_info->quota_root)
+@@ -1373,9 +1367,13 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	clear_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags);
+ 	btrfs_qgroup_wait_for_completion(fs_info, false);
+ 
++	/*
++	 * We have nothing held here and no trans handle, just return the error
++	 * if there is one.
++	 */
+ 	ret = flush_reservations(fs_info);
+ 	if (ret)
+-		goto out_unlock_cleaner;
++		return ret;
+ 
+ 	/*
+ 	 * 1 For the root item
+@@ -1439,9 +1437,6 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 		btrfs_end_transaction(trans);
+ 	else if (trans)
+ 		ret = btrfs_commit_transaction(trans);
+-out_unlock_cleaner:
+-	mutex_unlock(&fs_info->cleaner_mutex);
+-
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
