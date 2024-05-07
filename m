@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-43403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898C58BF279
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:50:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD46F8BF27C
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBDE41C2258A
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:50:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D6641F2355D
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F163913A269;
-	Tue,  7 May 2024 23:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB5313A276;
+	Tue,  7 May 2024 23:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDek9ubd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDxJRBhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C91201255;
-	Tue,  7 May 2024 23:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A1920FA85;
+	Tue,  7 May 2024 23:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123618; cv=none; b=e/Xk9be49LoVbpNywA0dG+YlwzRI3fdtf1t5zqYOUZVTLYjNSosSRT9DxKRGr2pXSHq6E0hRnqt574WULw4CNBEHTVlL2zqfrtUdTQDQwPW/d/xylFqa+cwbDZyDzyzZUi+rIOUYoNaUGKQnDEZxZ7Kg4WNgJUZrmBo3t7j3q/Q=
+	t=1715123620; cv=none; b=n+4gARD1h5FMDeONU9XDxoY5tWxMJDthUCLv3JQ1fvwjsbIVzdj0Ka+VC7SkoJ65beTLQ6VsNWQ9081R85hIIytl8k6n5AV4OKV9VQ+ZUzObdfK6H1TQaxhZ1cmuO52TUhDHCWzPnEtP8vuvw9z5hScgSJs3K3+mJ8uXM+zA4aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123618; c=relaxed/simple;
-	bh=V9xwPCi2BbHqvXbn+HBOTFHYtgRml7I7/V1s2BHN2qA=;
+	s=arc-20240116; t=1715123620; c=relaxed/simple;
+	bh=M1gaNMrrm9Iv1t0efvYS1c+/seipl5ULjiiMEx4oQFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJ6kinWwL27WR1b4keY/BaAMZJUVpWRJH5LfmjrzEZh4RxHlyfXZ19nTZEYC+lfhTdi9pxGVhHKGTB0UHoBc9fBYyZhjcUTJFXxkO5Ba1IqWYTjGB0Y6RdFQE1Xo7hwKB43PldJCGo9kMqdldj/nS5kQahLnrPhbxRsCVRUeXcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDek9ubd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECF0C2BBFC;
-	Tue,  7 May 2024 23:13:37 +0000 (UTC)
+	 MIME-Version; b=e2PmqEt417Ji3rhCjZhXHj8WyGRGGV2XhqdRGB1t7xbXpiXgwXMPXc3u/SePhlau+JgR5ZJZYhdYB94SL1eCeTF8+jP6ernFeVX1oGAYfU4B4pxtXll3EozS5puTWQcBAABeDtBLDIRFnLEUnvV95A2mdBBF7mscpoGIOTNxMT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDxJRBhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0525AC2BBFC;
+	Tue,  7 May 2024 23:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123618;
-	bh=V9xwPCi2BbHqvXbn+HBOTFHYtgRml7I7/V1s2BHN2qA=;
+	s=k20201202; t=1715123620;
+	bh=M1gaNMrrm9Iv1t0efvYS1c+/seipl5ULjiiMEx4oQFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDek9ubdtnmpydOIP6XxdPUjEjKpCb+qDPrffLG8OiyC1SgBrBiK/QPM2u56ZoPz9
-	 Hr7Z1B8O9JCljGsgiU8yYV1B3tY+UaV907XoevznjeOEcofLwD9TP8BDrBryUVTKeM
-	 MydkcixPYA696OET4QvlRtROHKMTbePctaNcjCaAi/hTN6XB1mEEZQj6v5p4zdymL0
-	 jVx3mAbCdcYTJuyFJdwXkf8Ug4isHysqtH58t1w+H3Cb4ShkIZQC++Pj3mECnDxrEh
-	 iRQtibtaWCfVv7L4kJGlvuCtR5a++t6HXHYxzNI6GYt4/yTvqiJV0Szz+pICFwEBRh
-	 ByoQvCYosNDJQ==
+	b=RDxJRBhHNJHqCTwSGa+AyVtNKB0OsR0fmlrrDZcNgO80KBV58oAavHld+8TACM3ui
+	 LG5Gpcn3BryhSyaV2P0SyuYeNy4K8Gm0j0wPNc6tnWkVFHomy0XUihpyfeDZTSoHbE
+	 m90rU6EAHri5fho6hhFisEVjEfAAPmBCrK0/NAmWxpcd8pD9E8ZJPXDX4N0g8rgGkM
+	 k/e6crpeMdVzZ1N81nhnyJVI6grOvPUPD91TV8DBNtGZaSilicNtX1rMiuJux9ijlZ
+	 KJeG8UVxTZlh3MQwo0MrL+/gJnOWQhnT3GvnJnIroM2oiKn3F0iQqeMYqBItd0Tcp9
+	 BMtkDvdV9atsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Derek Fang <derek.fang@realtek.com>,
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	robert.marko@sartura.hr,
+	luka.perkov@sartura.hr,
 	lgirdwood@gmail.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 03/15] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
-Date: Tue,  7 May 2024 19:13:12 -0400
-Message-ID: <20240507231333.394765-3-sashal@kernel.org>
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 04/15] regulator: vqmmc-ipq4019: fix module autoloading
+Date: Tue,  7 May 2024 19:13:13 -0400
+Message-ID: <20240507231333.394765-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231333.394765-1-sashal@kernel.org>
 References: <20240507231333.394765-1-sashal@kernel.org>
@@ -70,46 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.158
 Content-Transfer-Encoding: 8bit
 
-From: Derek Fang <derek.fang@realtek.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
+[ Upstream commit 68adb581a39ae63a0ed082c47f01fbbe515efa0e ]
 
-Add an optional gpio property to control external CBJ circuits
-to avoid some electric noise caused by sleeve/ring2 contacts floating.
+Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
+based on the alias from of_device_id table.
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
-
-Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://msgid.link/r/20240410172615.255424-2-krzk@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/regulator/vqmmc-ipq4019-regulator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
-index 41a62fd2ae1ff..c1fa379f5f3ea 100644
---- a/Documentation/devicetree/bindings/sound/rt5645.txt
-+++ b/Documentation/devicetree/bindings/sound/rt5645.txt
-@@ -20,6 +20,11 @@ Optional properties:
-   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
-   we will get the JD status by getting the value of hp-detect-gpios.
+diff --git a/drivers/regulator/vqmmc-ipq4019-regulator.c b/drivers/regulator/vqmmc-ipq4019-regulator.c
+index 6d5ae25d08d1e..e2a28788d8a22 100644
+--- a/drivers/regulator/vqmmc-ipq4019-regulator.c
++++ b/drivers/regulator/vqmmc-ipq4019-regulator.c
+@@ -86,6 +86,7 @@ static const struct of_device_id regulator_ipq4019_of_match[] = {
+ 	{ .compatible = "qcom,vqmmc-ipq4019-regulator", },
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, regulator_ipq4019_of_match);
  
-+- cbj-sleeve-gpios:
-+  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
-+  contacts to the ground or floating. It could avoid some electric noise from the
-+  active speaker jacks.
-+
- - realtek,in2-differential
-   Boolean. Indicate MIC2 input are differential, rather than single-ended.
- 
-@@ -68,6 +73,7 @@ codec: rt5650@1a {
- 	compatible = "realtek,rt5650";
- 	reg = <0x1a>;
- 	hp-detect-gpios = <&gpio 19 0>;
-+	cbj-sleeve-gpios = <&gpio 20 0>;
- 	interrupt-parent = <&gpio>;
- 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
- 	realtek,dmic-en = "true";
+ static struct platform_driver ipq4019_regulator_driver = {
+ 	.probe = ipq4019_regulator_probe,
 -- 
 2.43.0
 
