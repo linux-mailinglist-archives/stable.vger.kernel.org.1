@@ -1,122 +1,113 @@
-Return-Path: <stable+bounces-43434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B216C8BF2BE
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 890968BF2C2
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 416331F20F0E
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:57:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A15F1F21AB4
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E2C1A125B;
-	Tue,  7 May 2024 23:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE031A2C10;
+	Tue,  7 May 2024 23:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HI0nzPmW"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="GDYRA7PX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8941A1A55;
-	Tue,  7 May 2024 23:14:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040F91A2C06;
+	Tue,  7 May 2024 23:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123684; cv=none; b=iUlzQ1O+x402VkBjOmos4E8M6YaGGufDoSZG9y3w2yNOKTprCKzrnIN0WU+m+nZ8u39ttT4rnbSXvjsi3DAcGsdUFimloJ3x4+RDO5j4ohV7L5pyYMaHScWYv3EfGh7uevGJtYc3RsGdeBFdx1zAGACp5eCiZ8kKW0RxqlOJd7s=
+	t=1715123786; cv=none; b=O47M24ecYjpO5wgxAr/X+8prRSPkU6nJ+NoG9XgDMyFBiWsp74fkSI8kDZGTgvQwUb/vNaN+fW1tpDAHYDXOkwCEc+CboycPYKXT7SdbUVp2BOjIp7O6dBPohf5VEoUs86zNOyp2CSwn7gWBSmewASaNhS7/FIrHc6q7mQp4a3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123684; c=relaxed/simple;
-	bh=O7QeIx8IfjjR0rfzi6cLm3Gwg7F1iSnuL1pU/5yQQv0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFz2VUkTe58TLkTVYWe0fzFcqt5cZfrWcKsWSq3PYWhafriB6Ui86vcW4z5v9ZFjJmUnbmInhjeTAXUJGUTkMfkgx6/sjJTKzN6afXOUmp7/7kbR4wHPSZbRZcW9JICk7VL03m3mObjBgoVwv/uujkJ7E34zmUHzsJT5Uo3a2i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HI0nzPmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B10FC4AF63;
-	Tue,  7 May 2024 23:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123684;
-	bh=O7QeIx8IfjjR0rfzi6cLm3Gwg7F1iSnuL1pU/5yQQv0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HI0nzPmWjj39YL3crlDWeg4Y+uXaHC6vnTiHka5kRvAjzOU2WgZnBxTx5KgUHU1tK
-	 scUgzuWChSvv4e/lK/PstBxbv31XSBhEcYrULLj2teQEOTwTpBbbIg+5cQ++6KFlE3
-	 fR6S1iVxz3JcBnXtIGrsNGSDSAMXrhG/j0La2Lf2ulFr0559pJB+l/npXuP3XsqCvI
-	 JrcxlVTl/0eFnpWf2jQepNiiVnh6Ef4gF8eEaR4RuGgfeUwZC2niJWQezHHlM0DXOk
-	 YIKLN/CTAjVjxBN/AQbY5u2anZbmNRkkJPzGOgPFHTWmIWJ4gquxbznpgQ60oGgqLP
-	 lQX9TiItn764g==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	support.opensource@diasemi.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 4/4] ASoC: da7219-aad: fix usage of device_get_named_child_node()
-Date: Tue,  7 May 2024 19:14:35 -0400
-Message-ID: <20240507231436.395448-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240507231436.395448-1-sashal@kernel.org>
-References: <20240507231436.395448-1-sashal@kernel.org>
+	s=arc-20240116; t=1715123786; c=relaxed/simple;
+	bh=W4CvRIluG6tZP/2Olqj+oh3nl1PvWT5AaGD2q1molKc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tMB0J/MoOVvw5jq3EARweuu/Xn1v6VX7uO88paWSf74iGp5r4sf6eMOe500VXtRXN2/1A9TNSiGS+IYCkRaxacPMnmR4dUrpakD4FeVhknIHuynwU+l5VmFT2WxU4m/CfWd88jKREhT+y+V/NSiAR/22GxfiAmp4i17cz4WihdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=GDYRA7PX; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1715123780; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ot252tbl7SBLqukvaIH9QV/q4GG5yoGHVQJ2MVuayfg=;
+	b=GDYRA7PX62xTD6CX6y0IbiRSSVXLxM7W905mUeY0+i7OK+8w4AdpN+l4kdlBf+5KH/tR2hr983Z3ujXv4Ioxk2UhUdIXPhJynWuQ8KRGk2KzvLISGeNAG1h42UUNVN7CnysJCLiNivj/QWs4yiK6ydEritLa8X3HvXOSwVP0sOU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033022160150;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W61JUjF_1715123777;
+Received: from 30.25.231.12(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W61JUjF_1715123777)
+          by smtp.aliyun-inc.com;
+          Wed, 08 May 2024 07:16:19 +0800
+Message-ID: <bcd90345-18ea-486b-9e6b-352b2f2d2e08@linux.alibaba.com>
+Date: Wed, 8 May 2024 07:16:17 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.313
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.6 21/43] erofs: reliably distinguish block based
+ and fscache mode
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>, Baokun Li <libaokun1@huawei.com>,
+ Jingbo Xu <jefflexu@linux.alibaba.com>, Chao Yu <chao@kernel.org>,
+ xiang@kernel.org, linux-erofs@lists.ozlabs.org
+References: <20240507231033.393285-1-sashal@kernel.org>
+ <20240507231033.393285-21-sashal@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <20240507231033.393285-21-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Hi,
 
-[ Upstream commit e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76 ]
+On 2024/5/8 07:09, Sasha Levin wrote:
+> From: Christian Brauner <brauner@kernel.org>
+> 
+> [ Upstream commit 7af2ae1b1531feab5d38ec9c8f472dc6cceb4606 ]
+> 
+> When erofs_kill_sb() is called in block dev based mode, s_bdev may not
+> have been initialised yet, and if CONFIG_EROFS_FS_ONDEMAND is enabled,
+> it will be mistaken for fscache mode, and then attempt to free an anon_dev
+> that has never been allocated, triggering the following warning:
+> 
+> ============================================
+> ida_free called for id=0 which is not allocated.
+> WARNING: CPU: 14 PID: 926 at lib/idr.c:525 ida_free+0x134/0x140
+> Modules linked in:
+> CPU: 14 PID: 926 Comm: mount Not tainted 6.9.0-rc3-dirty #630
+> RIP: 0010:ida_free+0x134/0x140
+> Call Trace:
+>   <TASK>
+>   erofs_kill_sb+0x81/0x90
+>   deactivate_locked_super+0x35/0x80
+>   get_tree_bdev+0x136/0x1e0
+>   vfs_get_tree+0x2c/0xf0
+>   do_new_mount+0x190/0x2f0
+>   [...]
+> ============================================
+> 
+> Now when erofs_kill_sb() is called, erofs_sb_info must have been
+> initialised, so use sbi->fsid to distinguish between the two modes.
+> 
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+> Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Reviewed-by: Chao Yu <chao@kernel.org>
+> Link: https://lore.kernel.org/r/20240419123611.947084-3-libaokun1@huawei.com
+> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-The documentation for device_get_named_child_node() mentions this
-important point:
+Please help drop this patch, you should backport the dependency
+commit 07abe43a28b2 ("erofs: get rid of erofs_fs_context")
 
-"
-The caller is responsible for calling fwnode_handle_put() on the
-returned fwnode pointer.
-"
+in advance.
 
-Add fwnode_handle_put() to avoid a leaked reference.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240426153033.38500-1-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/soc/codecs/da7219-aad.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index e3515ac8b223f..c7c800f8133b6 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -634,8 +634,10 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct snd_soc_component
- 		return NULL;
- 
- 	aad_pdata = devm_kzalloc(dev, sizeof(*aad_pdata), GFP_KERNEL);
--	if (!aad_pdata)
-+	if (!aad_pdata) {
-+		fwnode_handle_put(aad_np);
- 		return NULL;
-+	}
- 
- 	aad_pdata->irq = i2c->irq;
- 
-@@ -710,6 +712,8 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct snd_soc_component
- 	else
- 		aad_pdata->adc_1bit_rpt = DA7219_AAD_ADC_1BIT_RPT_1;
- 
-+	fwnode_handle_put(aad_np);
-+
- 	return aad_pdata;
- }
- 
--- 
-2.43.0
-
+Thanks,
+Gao Xiang
 
