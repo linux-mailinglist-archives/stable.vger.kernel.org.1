@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-43310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9348BF19B
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF07F8BF19D
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D0041C20948
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:29:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F241C2017F
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C63714290A;
-	Tue,  7 May 2024 23:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45ADD143891;
+	Tue,  7 May 2024 23:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOw+Nm6W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWT34EwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B9D1428F0;
-	Tue,  7 May 2024 23:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6801350FE;
+	Tue,  7 May 2024 23:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123340; cv=none; b=KqDYgK5/oMkxneq/mdvRwT14ZTarbtLjF9d0Xv75olSyS1xgJ92hwSIvIiUXb+vnL7LLpjYJFek+JnwurM4wtKzBJkOaLv5LUhQhHzBsV65IqLhhIgLWmH2R3SyQOcOj1ILh33ayfMHZNK8BsRxMcIl4jO2cen5Yzy2CS9cT1KQ=
+	t=1715123342; cv=none; b=lS0cT2E7m9OuOfuP2l/cfQ3NsDaezCLd8tLSiNtnpGoUkqWnjDnPKXyOGCtLgYELvA82Z95fBgSHQelnSyvGq4tNOESzZZi8+uwJi28jb1zAeHhlRjyVF4s414ocNdRR6NrQNVJo1uV5b815ZwsGGzSJFNFVcfe5fyhg5YMBRNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123340; c=relaxed/simple;
-	bh=OYk/SNP9waEvg4CJG+FcCKBNcvA+ivNahBseQJQNfLY=;
+	s=arc-20240116; t=1715123342; c=relaxed/simple;
+	bh=pPFNJgP3ExZbYzaB6+JINPbSJcoMbjgUMEOefaHD+I4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EC8IvJJhR6IglZTNxit6UJqcZ46JLkClgjKVVsXuBDShacnEKGM6Wq3jMiqnG1aRdw1hhAHAf8tKDlT0WEpteHtPAD9X/S6Pu6aIHMm1hdkMQq+TmmW+Ys6jeIoLKQkmJiHBylHFRcvmJRUX7OzJeK5TbpTOWkjnd5EDCAB6P1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOw+Nm6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74008C4AF68;
-	Tue,  7 May 2024 23:08:58 +0000 (UTC)
+	 MIME-Version; b=YbxHERJdQvtCwYw+5KhE6XsymeuYZMv/qhELCSRnYGXU7UMO+7P030eCWopc+Hvg14U9sQzaOm3p80WNw4G1cp0/AZZ4IuozxA9HuytbYLq3OAmbOYOEEkd8Z6t60oVDPmcdW5/7ICCttA0L8lffG8TOeOrG38aXcaoWrvHkwvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWT34EwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E47C4AF67;
+	Tue,  7 May 2024 23:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123339;
-	bh=OYk/SNP9waEvg4CJG+FcCKBNcvA+ivNahBseQJQNfLY=;
+	s=k20201202; t=1715123341;
+	bh=pPFNJgP3ExZbYzaB6+JINPbSJcoMbjgUMEOefaHD+I4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOw+Nm6W9KXanPK1YtDXRntVZR8K3BCNhpAlqqkFetjIGtnvyNSYJaTuuEwBEYrHn
-	 +drlawEC9illhYr5/xpYfUOwdcgDwDX2ewH4DRLMNoGbXQqWQAHB4P+r69uQfbPlWg
-	 LhmSx1U/ZGqDTr6f3p/QEhoxoFemI7ocNu8vCKOTpMeCsiWwHvYaoK3guFcCD42cPL
-	 rm60wLW60V/SJoJpEqWeekSRK8nb/9I1lPleReAg80RqZzxfpfNt56Iz+aztGaaJxw
-	 roxR6HPy1aTema1Ads6MaJsd1G/M6NIy+Jfut9UIk9F4RGc885J8w1Uwmt88B11Ya2
-	 FtXSCAD2ssidw==
+	b=bWT34EwKl5Byc5O8ZWi4tiAeMrq/FpFMfinQpQlgBPUkZymd7NgDOU/4kNFO0jgNS
+	 aODF2YXynBnhn4Tl14FhQZX+AOS0FIIEEv87oxU95ktCm3oZ59OVvfZUj6lGxwnGBb
+	 YeHgQXLBd9aSni8ridvUtoKzsIXwaf4JKLmJmysEEjsAa4rHTpm9X7lEjxVBGDVQ6X
+	 KEqKzsmGORkzv3N3E6Z0B7tpoXj+DK7wfUktma/ggTUraqwVooVBEtRfiikBOHPh7Q
+	 BLMAHuLheYRGdGkl3AbTFnAwj+0+IYsIhnXT8K3ugrV2FY2rRGxgqods3j1uOssAKX
+	 JmLAGUa+N037Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	support.opensource@diasemi.com,
+	james.schulman@cirrus.com,
+	david.rhodes@cirrus.com,
+	rf@opensource.cirrus.com,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	patches@opensource.cirrus.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 31/52] ASoC: da7219-aad: fix usage of device_get_named_child_node()
-Date: Tue,  7 May 2024 19:06:57 -0400
-Message-ID: <20240507230800.392128-31-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.8 32/52] ASoC: cs35l56: fix usages of device_get_named_child_node()
+Date: Tue,  7 May 2024 19:06:58 -0400
+Message-ID: <20240507230800.392128-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
 References: <20240507230800.392128-1-sashal@kernel.org>
@@ -71,7 +75,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76 ]
+[ Upstream commit fbd741f0993203d07b2b6562d68d1e5e4745b59b ]
 
 The documentation for device_get_named_child_node() mentions this
 important point:
@@ -81,40 +85,76 @@ The caller is responsible for calling fwnode_handle_put() on the
 returned fwnode pointer.
 "
 
-Add fwnode_handle_put() to avoid a leaked reference.
+Add fwnode_handle_put() to avoid leaked references.
 
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240426153033.38500-1-pierre-louis.bossart@linux.intel.com
+Link: https://lore.kernel.org/r/20240426152939.38471-1-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219-aad.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/codecs/cs35l56.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index 6bc068cdcbe2a..15e5e3eb592b3 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -671,8 +671,10 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
- 		return NULL;
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index 6dd0319bc843c..ea72afe3f906f 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -1297,6 +1297,7 @@ static int cs35l56_try_get_broken_sdca_spkid_gpio(struct cs35l56_private *cs35l5
+ 				    "spk-id-gpios", ACPI_TYPE_PACKAGE, &obj);
+ 	if (ret) {
+ 		dev_dbg(cs35l56->base.dev, "Could not get spk-id-gpios package: %d\n", ret);
++		fwnode_handle_put(af01_fwnode);
+ 		return -ENOENT;
+ 	}
  
- 	aad_pdata = devm_kzalloc(dev, sizeof(*aad_pdata), GFP_KERNEL);
--	if (!aad_pdata)
-+	if (!aad_pdata) {
-+		fwnode_handle_put(aad_np);
- 		return NULL;
+@@ -1304,6 +1305,7 @@ static int cs35l56_try_get_broken_sdca_spkid_gpio(struct cs35l56_private *cs35l5
+ 	if (obj->package.count != 4) {
+ 		dev_warn(cs35l56->base.dev, "Unexpected spk-id element count %d\n",
+ 			 obj->package.count);
++		fwnode_handle_put(af01_fwnode);
+ 		return -ENOENT;
+ 	}
+ 
+@@ -1318,6 +1320,7 @@ static int cs35l56_try_get_broken_sdca_spkid_gpio(struct cs35l56_private *cs35l5
+ 		 */
+ 		ret = acpi_dev_add_driver_gpios(adev, cs35l56_af01_spkid_gpios_mapping);
+ 		if (ret) {
++			fwnode_handle_put(af01_fwnode);
+ 			return dev_err_probe(cs35l56->base.dev, ret,
+ 					     "Failed to add gpio mapping to AF01\n");
+ 		}
+@@ -1325,14 +1328,17 @@ static int cs35l56_try_get_broken_sdca_spkid_gpio(struct cs35l56_private *cs35l5
+ 		ret = devm_add_action_or_reset(cs35l56->base.dev,
+ 					       cs35l56_acpi_dev_release_driver_gpios,
+ 					       adev);
+-		if (ret)
++		if (ret) {
++			fwnode_handle_put(af01_fwnode);
+ 			return ret;
++		}
+ 
+ 		dev_dbg(cs35l56->base.dev, "Added spk-id-gpios mapping to AF01\n");
+ 	}
+ 
+ 	desc = fwnode_gpiod_get_index(af01_fwnode, "spk-id", 0, GPIOD_IN, NULL);
+ 	if (IS_ERR(desc)) {
++		fwnode_handle_put(af01_fwnode);
+ 		ret = PTR_ERR(desc);
+ 		return dev_err_probe(cs35l56->base.dev, ret, "Get GPIO from AF01 failed\n");
+ 	}
+@@ -1341,9 +1347,12 @@ static int cs35l56_try_get_broken_sdca_spkid_gpio(struct cs35l56_private *cs35l5
+ 	gpiod_put(desc);
+ 
+ 	if (ret < 0) {
++		fwnode_handle_put(af01_fwnode);
+ 		dev_err_probe(cs35l56->base.dev, ret, "Error reading spk-id GPIO\n");
+ 		return ret;
+-		}
 +	}
- 
- 	aad_pdata->irq = i2c->irq;
- 
-@@ -753,6 +755,8 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
- 	else
- 		aad_pdata->adc_1bit_rpt = DA7219_AAD_ADC_1BIT_RPT_1;
- 
-+	fwnode_handle_put(aad_np);
 +
- 	return aad_pdata;
- }
++	fwnode_handle_put(af01_fwnode);
+ 
+ 	dev_info(cs35l56->base.dev, "Got spk-id from AF01\n");
  
 -- 
 2.43.0
