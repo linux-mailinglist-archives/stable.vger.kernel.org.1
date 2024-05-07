@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-43415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299D88BF294
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:53:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9728BF297
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6B71C20D8F
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:53:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94A8FB25A26
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9D519D436;
-	Tue,  7 May 2024 23:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8826183C2C;
+	Tue,  7 May 2024 23:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ho3BVj7G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwTCo7Gz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC2D19D42D;
-	Tue,  7 May 2024 23:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C0F183C28;
+	Tue,  7 May 2024 23:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123644; cv=none; b=ZzuAypMzn3SjOoyDnh+DGKp5suV3kEpf6nWofHXTHSwefWkGtwJqtqRyqM7RsTZGk+e755OvBRkMVJDXHAQz+LcsdcSpx19XsxvntwE1O5VcbkRcPcPCeWuw/Kq6NJ9XB8tbj1bb3pOIeknUayzhMc5HyDLMlnOBHmQrZA9NRjA=
+	t=1715123650; cv=none; b=OFc2aWp7SB2tq1eidzZFZyS403kgd9eZzhUegdgieWRYR07ew2gXhgoEIsH9f58r/xaXR4sQ4WlbZcqMzuu7weuoW6TNzuFwDdvrLsDu4pvLMpAKNr8nW8BXHpRZ0J3Wy5iDx/sXDB0Zn+O+SoiIVkuMC1A0Rma6Y+8RKFT1c4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123644; c=relaxed/simple;
-	bh=Mz8Q6nscvxWSF22rQIxoe3uPByARdyh+B/R4vfV92Ek=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/rpP6J7FK97QlmAdocVczxrc+FZvG7mVqzbXf80eRYxFTw1tWYIuU4JGEOJBYU1ei2kWS8ynI6Sp3Ykr4iYZQBboEjEduJMXpIS+ZMAmllUElCobUed9d1tSxBR1EoGpgBXJex1Qe9aZEqRQJ4Pl6qArLHlZP6Z1hStC0MP+3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ho3BVj7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E374C2BBFC;
-	Tue,  7 May 2024 23:14:03 +0000 (UTC)
+	s=arc-20240116; t=1715123650; c=relaxed/simple;
+	bh=j6DRlyt+V4SRldi8fPDjSanxQNYW4PLUuoPUdkG7EkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tQlgFHw9z2bQIGvqtoIvHTt9ilFpXzaRaWBfIWmou1XFLk7EcE+QjtmA3AdCi/uHrwVfEaUP2P4WfRyeNoOpr0otbjZAtKykumsm601SuVs6I4zf7FsioqylhjFUtjiHwJUgUeRnhejaAPhdy74QzNcxe7Evdxvt8oa8kMwnlxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwTCo7Gz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF4EC3277B;
+	Tue,  7 May 2024 23:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123644;
-	bh=Mz8Q6nscvxWSF22rQIxoe3uPByARdyh+B/R4vfV92Ek=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ho3BVj7GBbjCRu8g0PoHSsmfYvmHeH7Hc/8zoZjdhJ+X16CvoB4yHRh7/2a51XFJE
-	 wYzMEO9qwqq4yBP45DA91shaYghQOL2mRdyS0MX7Ye5Vk1iA7fJb+QDGWUlq0CWvDD
-	 y/kys3jy1m2T4MuVDqUO3pDo9rU+4Z1PnCeKikjw22dGSr162vrN9QKiw+uuRyR+XC
-	 HJKmnQnN3QYDBCDdbg0ZfUrQpWNhOguUPfI9v+vrC3T1n7qvaP7yEI4GIDwk4jBLSU
-	 MvhV9a5GPHKT5tsU2EsaDUxXGTpczUdcJvGzSpoTg/rPkWXI/4O6lL69oWPUhbG2Is
-	 18C93xvuGmP7w==
+	s=k20201202; t=1715123649;
+	bh=j6DRlyt+V4SRldi8fPDjSanxQNYW4PLUuoPUdkG7EkM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nwTCo7Gz74RMjHZ5INynbJtFkz6fguMmFkGad5QYypVTkMPfQQpdRu14qhFVCEoFl
+	 GxAqtb9miFf+2wkOBz3zsijjcrEeVf6//4pdlxsWCj0rRWAdl+t0VG/US60e6mmaVd
+	 JE65iVuDbHPcVUvA3fNWS5qqaDmH7LC+qwAwVOFGYC3hsiZLXoqM3R5KGaY1I+EkUo
+	 kiKNbYvS3MzLub2UhMHU5dJrq6/nJbd7xm3foXlY/99njOJhkfCliLOMEBDTUzMDVl
+	 SrwuMetg4y6PKUa5/Mwe+I/s/sXb/xhbkjJRR84c2kRJO4RHfplDX+YWwy80+XAD9U
+	 ZFYL7JuGvT5AQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Derek Fang <derek.fang@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 15/15] epoll: be better about file lifetimes
-Date: Tue,  7 May 2024 19:13:24 -0400
-Message-ID: <20240507231333.394765-15-sashal@kernel.org>
+	oder_chiou@realtek.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/9] ASoC: rt5645: Fix the electric noise due to the CBJ contacts floating
+Date: Tue,  7 May 2024 19:13:56 -0400
+Message-ID: <20240507231406.395123-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240507231333.394765-1-sashal@kernel.org>
-References: <20240507231333.394765-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,95 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.158
+X-stable-base: Linux 5.10.216
 Content-Transfer-Encoding: 8bit
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Derek Fang <derek.fang@realtek.com>
 
-[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
+[ Upstream commit 103abab975087e1f01b76fcb54c91dbb65dbc249 ]
 
-epoll can call out to vfs_poll() with a file pointer that may race with
-the last 'fput()'. That would make f_count go down to zero, and while
-the ep->mtx locking means that the resulting file pointer tear-down will
-be blocked until the poll returns, it means that f_count is already
-dead, and any use of it won't actually get a reference to the file any
-more: it's dead regardless.
+The codec leaves tie combo jack's sleeve/ring2 to floating status
+default. It would cause electric noise while connecting the active
+speaker jack during boot or shutdown.
+This patch requests a gpio to control the additional jack circuit
+to tie the contacts to the ground or floating.
 
-Make sure we have a valid ref on the file pointer before we call down to
-vfs_poll() from the epoll routines.
+Signed-off-by: Derek Fang <derek.fang@realtek.com>
 
-Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
-Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://msgid.link/r/20240408091057.14165-1-derek.fang@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ sound/soc/codecs/rt5645.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 1c254094c4c36..b60edddf17870 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -832,6 +832,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- 	return res;
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index 5db63ef33f1a2..ac403827a2290 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -414,6 +414,7 @@ struct rt5645_priv {
+ 	struct regmap *regmap;
+ 	struct i2c_client *i2c;
+ 	struct gpio_desc *gpiod_hp_det;
++	struct gpio_desc *gpiod_cbj_sleeve;
+ 	struct snd_soc_jack *hp_jack;
+ 	struct snd_soc_jack *mic_jack;
+ 	struct snd_soc_jack *btn_jack;
+@@ -3169,6 +3170,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 		regmap_update_bits(rt5645->regmap, RT5645_IN1_CTRL2,
+ 			RT5645_CBJ_MN_JD, 0);
+ 
++		if (rt5645->gpiod_cbj_sleeve)
++			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 1);
++
+ 		msleep(600);
+ 		regmap_read(rt5645->regmap, RT5645_IN1_CTRL3, &val);
+ 		val &= 0x7;
+@@ -3185,6 +3189,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
+ 			snd_soc_dapm_sync(dapm);
+ 			rt5645->jack_type = SND_JACK_HEADPHONE;
++			if (rt5645->gpiod_cbj_sleeve)
++				gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
+ 		}
+ 		if (rt5645->pdata.level_trigger_irq)
+ 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
+@@ -3210,6 +3216,9 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 		if (rt5645->pdata.level_trigger_irq)
+ 			regmap_update_bits(rt5645->regmap, RT5645_IRQ_CTRL2,
+ 				RT5645_JD_1_1_MASK, RT5645_JD_1_1_INV);
++
++		if (rt5645->gpiod_cbj_sleeve)
++			gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
+ 	}
+ 
+ 	return rt5645->jack_type;
+@@ -3882,6 +3891,16 @@ static int rt5645_i2c_probe(struct i2c_client *i2c,
+ 			return ret;
+ 	}
+ 
++	rt5645->gpiod_cbj_sleeve = devm_gpiod_get_optional(&i2c->dev, "cbj-sleeve",
++							   GPIOD_OUT_LOW);
++
++	if (IS_ERR(rt5645->gpiod_cbj_sleeve)) {
++		ret = PTR_ERR(rt5645->gpiod_cbj_sleeve);
++		dev_info(&i2c->dev, "failed to initialize gpiod, ret=%d\n", ret);
++		if (ret != -ENOENT)
++			return ret;
++	}
++
+ 	for (i = 0; i < ARRAY_SIZE(rt5645->supplies); i++)
+ 		rt5645->supplies[i].supply = rt5645_supply_names[i];
+ 
+@@ -4125,6 +4144,9 @@ static int rt5645_i2c_remove(struct i2c_client *i2c)
+ 	cancel_delayed_work_sync(&rt5645->jack_detect_work);
+ 	cancel_delayed_work_sync(&rt5645->rcclock_work);
+ 
++	if (rt5645->gpiod_cbj_sleeve)
++		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
++
+ 	regulator_bulk_disable(ARRAY_SIZE(rt5645->supplies), rt5645->supplies);
+ 
+ 	return 0;
+@@ -4142,6 +4164,9 @@ static void rt5645_i2c_shutdown(struct i2c_client *i2c)
+ 		0);
+ 	msleep(20);
+ 	regmap_write(rt5645->regmap, RT5645_RESET, 0);
++
++	if (rt5645->gpiod_cbj_sleeve)
++		gpiod_set_value(rt5645->gpiod_cbj_sleeve, 0);
  }
  
-+/*
-+ * The ffd.file pointer may be in the process of being torn down due to
-+ * being closed, but we may not have finished eventpoll_release() yet.
-+ *
-+ * Normally, even with the atomic_long_inc_not_zero, the file may have
-+ * been free'd and then gotten re-allocated to something else (since
-+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-+ *
-+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
-+ * the process of being free'd will block in eventpoll_release_file()
-+ * and thus the underlying file allocation will not be free'd, and the
-+ * file re-use cannot happen.
-+ *
-+ * For the same reason we can avoid a rcu_read_lock() around the
-+ * operation - 'ffd.file' cannot go away even if the refcount has
-+ * reached zero (but we must still not call out to ->poll() functions
-+ * etc).
-+ */
-+static struct file *epi_fget(const struct epitem *epi)
-+{
-+	struct file *file;
-+
-+	file = epi->ffd.file;
-+	if (!atomic_long_inc_not_zero(&file->f_count))
-+		file = NULL;
-+	return file;
-+}
-+
- /*
-  * Differs from ep_eventpoll_poll() in that internal callers already have
-  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
-@@ -840,14 +868,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
- 				 int depth)
- {
--	struct file *file = epi->ffd.file;
-+	struct file *file = epi_fget(epi);
- 	__poll_t res;
- 
-+	/*
-+	 * We could return EPOLLERR | EPOLLHUP or something, but let's
-+	 * treat this more as "file doesn't exist, poll didn't happen".
-+	 */
-+	if (!file)
-+		return 0;
-+
- 	pt->_key = epi->event.events;
- 	if (!is_file_epoll(file))
- 		res = vfs_poll(file, pt);
- 	else
- 		res = __ep_eventpoll_poll(file, pt, depth);
-+	fput(file);
- 	return res & epi->event.events;
- }
- 
+ static struct i2c_driver rt5645_i2c_driver = {
 -- 
 2.43.0
 
