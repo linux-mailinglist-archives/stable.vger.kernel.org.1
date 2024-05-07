@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-43380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D428BF23E
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:45:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6302B8BF240
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 465471F22294
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:45:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D76728756D
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B25E182CB9;
-	Tue,  7 May 2024 23:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A331218411C;
+	Tue,  7 May 2024 23:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o68KAl6E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dATvq3H0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6EA182CB1;
-	Tue,  7 May 2024 23:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5051836F2;
+	Tue,  7 May 2024 23:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123560; cv=none; b=gxTKVzdatHpKXrZb8B7aAl7MJ7WGkblGG8AHj3UnH8QJA7E8JMlXypSLqSOqHx0/oNXTTs2tAivkWczziNhm9vuXWT08WYymbiecp1xCQMV6g6ka4N8CR931p5wWm3GolhMC9pRoQU+WiLlZA1g7gWIigNcL1L0DK85JLEJOz+k=
+	t=1715123562; cv=none; b=LGeNH4k2ytURUlTUA1XISC0Y/CAcE3MSvcPU5eJksUsEQBu5N9eLOWn70qxqnkApj8iZDgntYHLL/RW6qoQ9sglm1d/TWjVnwgsATYz8HP/oGTVm+qVBWWlTM8V2QrXMg7Cp9uWo+l7u5mP82ciM3OqU6mD7N8LiMJ6TjbWQfD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123560; c=relaxed/simple;
-	bh=vrVJHhflsxwPsqTQF9ADxFICweJpY+fATogbX3yxrBk=;
+	s=arc-20240116; t=1715123562; c=relaxed/simple;
+	bh=zkELOI9O64LD5jzBowEzb4myEdmcyY37JkD+dD3ZeOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ls/i3RWnKCH7GZQxrrBkuxmyLv2XL2ngHI+DRRVVAx3HyzIJmi0LXyYcX38CXyA82DSBGpyzFtaJ6KfxbVFr8Dkl8rLGbV0jWVGtbBEF6PSmMp6Tnhgov3jxnMoCOoL2INMSYdqnx7goYeTp805eyzxFNRW/ky1k16lo+XVj+nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o68KAl6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA7BC4AF17;
-	Tue,  7 May 2024 23:12:39 +0000 (UTC)
+	 MIME-Version; b=gONr+vwKzDB453BZmzb2oONRqsb04Lhj4PASsrPACkEEtiuvqZUaaZ3Exrsy+2cHowKUvu52ByYihCnfScRxzFjVGThkNDzy9RkPifKHOEnsaUK7G5Ghjy9hXYY/7DV+wn/wtR+mzEfK6TKrkOM05VIQhS0+za7U1uuKVWvjUes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dATvq3H0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AC9C4AF17;
+	Tue,  7 May 2024 23:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123560;
-	bh=vrVJHhflsxwPsqTQF9ADxFICweJpY+fATogbX3yxrBk=;
+	s=k20201202; t=1715123562;
+	bh=zkELOI9O64LD5jzBowEzb4myEdmcyY37JkD+dD3ZeOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o68KAl6EiRex+KM68VrLqVky07pWqxJQookHR+GS1SFZSnpbKFzK74E5NCQXeigS6
-	 Gwa8+rFWHcsiZto/F5Zauc2BOQpMb0nm9ZYq4yS1HOPXGeq0jDyfRB4/ESzZI+Gx/k
-	 58FnnwX5hpmSjqgCFqLhQxqyrw9lwQUwzcRzSFuuaafiNPemmJ+IEVeT15kgzHGBtN
-	 93gB9AQNbn8YEBntykGm6sZy2lOe8XO/c8ZOCL+jKKmK7E2Mvv0eP7bKtV1jL0SFef
-	 G12qk7aTSikTJiokHUZW93HEhs9RwOvWhZqd+Q/LQaPnNG34Bw0Dg5TqeJFejy95Ma
-	 IV7Qdxgap2RaQ==
+	b=dATvq3H0WSTuAbbMlAw2SFev/gv8XGV/qVPC6czPuhFQ9UJC7C66Pr5RJxROXWceG
+	 UpBvZMHVpY/Vdf5dvj9krSrL2oPYDmMggrEHrYdc+g5mhPU+0lmYVMiGdxVYGSUNt2
+	 5ao9IU+pPhNSPm/3N4Pn090AnwRf1yltc0OgBpTWpefoi0SMnO0QUpukp89tBbuOxv
+	 TkU3XTeC73A0bk/G10y0RFFaYSK2mCCQCsYw8ptTfipokjtpt/v7NEw7QCh7KmSg4h
+	 LnuZqnZI/Lh4bCRO4sZ7C+mTjlnGsUn7YueJduTguy4lWOwUnI5Lc+mZl8/FXHVBnD
+	 AyH1jK2TN2TfA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+Cc: Jack Yu <jack.yu@realtek.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	robert.marko@sartura.hr,
-	luka.perkov@sartura.hr,
+	oder_chiou@realtek.com,
 	lgirdwood@gmail.com,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 05/25] regulator: vqmmc-ipq4019: fix module autoloading
-Date: Tue,  7 May 2024 19:11:52 -0400
-Message-ID: <20240507231231.394219-5-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 06/25] ASoC: rt715: add vendor clear control register
+Date: Tue,  7 May 2024 19:11:53 -0400
+Message-ID: <20240507231231.394219-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231231.394219-1-sashal@kernel.org>
 References: <20240507231231.394219-1-sashal@kernel.org>
@@ -69,34 +70,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Jack Yu <jack.yu@realtek.com>
 
-[ Upstream commit 68adb581a39ae63a0ed082c47f01fbbe515efa0e ]
+[ Upstream commit cebfbc89ae2552dbb58cd9b8206a5c8e0e6301e9 ]
 
-Add MODULE_DEVICE_TABLE(), so the module could be properly autoloaded
-based on the alias from of_device_id table.
+Add vendor clear control register in readable register's
+callback function. This prevents an access failure reported
+in Intel CI tests.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://msgid.link/r/20240410172615.255424-2-krzk@kernel.org
+Signed-off-by: Jack Yu <jack.yu@realtek.com>
+Closes: https://github.com/thesofproject/linux/issues/4860
+Tested-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/6a103ce9134d49d8b3941172c87a7bd4@realtek.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/vqmmc-ipq4019-regulator.c | 1 +
+ sound/soc/codecs/rt715-sdw.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/regulator/vqmmc-ipq4019-regulator.c b/drivers/regulator/vqmmc-ipq4019-regulator.c
-index c4213f096fe57..4f470b2d66c97 100644
---- a/drivers/regulator/vqmmc-ipq4019-regulator.c
-+++ b/drivers/regulator/vqmmc-ipq4019-regulator.c
-@@ -84,6 +84,7 @@ static const struct of_device_id regulator_ipq4019_of_match[] = {
- 	{ .compatible = "qcom,vqmmc-ipq4019-regulator", },
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, regulator_ipq4019_of_match);
- 
- static struct platform_driver ipq4019_regulator_driver = {
- 	.probe = ipq4019_regulator_probe,
+diff --git a/sound/soc/codecs/rt715-sdw.c b/sound/soc/codecs/rt715-sdw.c
+index 4e61e16470eda..4e35b67b01ce8 100644
+--- a/sound/soc/codecs/rt715-sdw.c
++++ b/sound/soc/codecs/rt715-sdw.c
+@@ -111,6 +111,7 @@ static bool rt715_readable_register(struct device *dev, unsigned int reg)
+ 	case 0x839d:
+ 	case 0x83a7:
+ 	case 0x83a9:
++	case 0x752001:
+ 	case 0x752039:
+ 		return true;
+ 	default:
 -- 
 2.43.0
 
