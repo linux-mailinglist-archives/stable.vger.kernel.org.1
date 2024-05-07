@@ -1,160 +1,95 @@
-Return-Path: <stable+bounces-43375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86DB8BF233
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:44:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5BD8BF1EF
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8B1F1C22845
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:44:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3CFB1F220AE
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A64137C55;
-	Tue,  7 May 2024 23:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mw5YEZCA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A6B14A624;
+	Tue,  7 May 2024 23:11:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEFF1802B9;
-	Tue,  7 May 2024 23:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBEF14A612
+	for <stable@vger.kernel.org>; Tue,  7 May 2024 23:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123532; cv=none; b=s62//80lRHwXX7i6jV4AF1zJAnQFc8P8t8j7fC2pJuepnwKIT2P8JVgDy8uTWTeHFaPpkgRMkHbb7QEEb/Vbh5V9im4DOQChPyvhaGv9YJa4R38/0j6oWr/zJ1xjDvu4foq8ijn+YvlXfpOabDWvTbq1NBxDjoOQ5VNXHyStkJM=
+	t=1715123463; cv=none; b=LZ5pM+1jIbKtaIho18Ril2vivuVcBhqCh2+yho3hax2KPwlrIaDM3ARhOLLhsSA2m5iUNy15UUDAxIQ+Cvu+1h2/Q2DUKf1wXV636fh5WSZE7heq2F/nZdMaETh59YlgyMrRq4+YUi7wRnr7r/GYDfGVV2/D0Lca5JuYwDYelHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123532; c=relaxed/simple;
-	bh=/nBKgpfChelk2SWz1tzhxnvoEXltEphE4iQB999gYxI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYTT26gK17t93X1eKqkqLNDwbHKLknjwtiZHtekCVOByxa/MT7NKTuwtkroFZO/XZPZeNpC54w+hQpgcQNNbvWu8WNZCLJdOuDk42hv4zm7EcUPGBS1IJNGrt82TpMOHBQ/BwtHpz4A7Hf2UyIhJSqTYeSyVCiw/LgoRJRoN8l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mw5YEZCA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B44AC3277B;
-	Tue,  7 May 2024 23:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123532;
-	bh=/nBKgpfChelk2SWz1tzhxnvoEXltEphE4iQB999gYxI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mw5YEZCAVQVgS5c6a3iPzIGoKohZ/KWKKI3jPBxVVBKjkvHEbFGvbcx0xvtp8rpfr
-	 JJfKgKJK2gDUxE9ZKAG8QvG1WXxmFciOfwwsCLFR+V9uuqJrPkYy7j0WT4KfHmAEk8
-	 ZNUuY19mhfA543l6W+W5g7cj1Rbf4S3nEwcP8X/5UivhClOGTaYL6qJKeabTV5WrC0
-	 PGZybv6h7aXHJlE0eyfheXTAd83uZD2yohgyPNvGGVcPhXSEXyQdoCF9UNlfdNsSxo
-	 m2e9gLGBFEvtnAanN1Osk+tDxIGB5f5Jh8/8bh1ilhpE3cxYSYHJZNJHXq8cnahtBF
-	 9TMGmLBBq/2yw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 43/43] epoll: be better about file lifetimes
-Date: Tue,  7 May 2024 19:10:04 -0400
-Message-ID: <20240507231033.393285-43-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240507231033.393285-1-sashal@kernel.org>
-References: <20240507231033.393285-1-sashal@kernel.org>
+	s=arc-20240116; t=1715123463; c=relaxed/simple;
+	bh=Ix5RUDdVzg0D8TD3Izd1hf056IHKHF36irpkqWOSE04=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Oszm4/LZe0/88KDav6WNqQGUxCxioaqmu8SnhfchCAAq50Ymrfsz7M7QDH5eVLfEDxezP8lfZx/en2HiFXeYmN4Xl6RiiMxMI7GOo+bYeKl+4tDsK6j50HThdTgmbratz1j44DQYmHdohDFt8WpN8e41LOxh61Oks0F31R4FHdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2b33d011e5dso206794a91.0
+        for <stable@vger.kernel.org>; Tue, 07 May 2024 16:11:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715123462; x=1715728262;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bcxuu2iR2geqpxEwYn/Rrs+7MknSdtPWXgTbZ0p1GYg=;
+        b=ditphuVsy+CgprrxWpjhzu2u1UoHMGUR8TJ1pbldGD0aIHaD7qs1i0cS4xAMwqS1qa
+         uBF/vyZpob4AAu7wENkN5C8tMHHI4stGdZTDe+Gn/K/6pxTTVFiKQ+O87Pkfd42q1QcY
+         JAaeqeZXDEgaUXZMZohmgfTgbZl2wvJvPukLOHJVhDE06p7wbtWEXOUzNF8W2+PIZ5Tt
+         TlwBiChwMc2q124Mcodh4rM91ThVQYC5qFwwjfQqgLq4Z4BPKzeVOo++bHjMgdS/sxtc
+         eDFvUi0NN9In7u2A8kR79KGt1r6TA8XZIhqLr9F1Qi4jXtR6txG84BAs1EE9A8kmRsoJ
+         14Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCXR8dpDnfv3DAe+nwPUDg7C0tt7CcbpKOb/bZikPNxMfj32NdfewgnTYgBn7bZf5bfcpIZwfXnUReYX+X2AD9w/kiCrdqPl
+X-Gm-Message-State: AOJu0YwovGGDfFQ34VX/vCzaUcsKFtGbpCDu15CYA61w73jVpjeWOHql
+	T/TS81U9WUFWH8K5f5hneTH7SBc2mnufjquvAGBIcjKFvzTl21r8lTgSMxQX/Njgv5wmKIdH36A
+	02BmmgtEro0+Argr7jCp3AybrTCjAEix+
+X-Google-Smtp-Source: AGHT+IF8sKlbPm+bS2DwjS1ROqN/7XvW2ufEqvS3s2mkR4zhOiaqWIIoCye4K6LXTiNH9avgRI9TqmYs37X1G0s7Eko=
+X-Received: by 2002:a17:90a:bd05:b0:2b4:32c0:d7d7 with SMTP id
+ 98e67ed59e1d1-2b5bc2ad5b0mr5717174a91.16.1715123461590; Tue, 07 May 2024
+ 16:11:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.30
-Content-Transfer-Encoding: 8bit
+References: <CAM9d7cgVCqYVirivv3ApCq18eSCUuJjUoq7hbhw7X9AaTwNf+w@mail.gmail.com>
+In-Reply-To: <CAM9d7cgVCqYVirivv3ApCq18eSCUuJjUoq7hbhw7X9AaTwNf+w@mail.gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Tue, 7 May 2024 16:10:50 -0700
+Message-ID: <CAM9d7cjkv9VvV=NAxdsnFKcjq1ti-cAdxFn5KkisAi-yE6Sb0Q@mail.gmail.com>
+Subject: Re: 6.1-stable backport request
+To: stable@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, sashal@kernel.org
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Pablo Galindo Salgado <pablogsal@gmail.com>, 
+	stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+Hello,
 
-[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
+On Fri, Feb 2, 2024 at 3:29=E2=80=AFPM Namhyung Kim <namhyung@gmail.com> wr=
+ote:
+>
+> Hello,
+>
+> Please queue up these commits for 6.1-stable:
+>
+> * commit: 4fb54994b2360ab5029ee3a959161f6fe6bbb349
+>   ("perf unwind-libunwind: Fix base address for .eh_frame")
+>
+> * commit: c966d23a351a33f8a977fd7efbb6f467132f7383
+>   ("perf unwind-libdw: Handle JIT-generated DSOs properly")
+>
+> They are needed to support JIT code in the perf tools.
+> I think there will be some conflicts, I will send backports soon.
 
-epoll can call out to vfs_poll() with a file pointer that may race with
-the last 'fput()'. That would make f_count go down to zero, and while
-the ep->mtx locking means that the resulting file pointer tear-down will
-be blocked until the poll returns, it means that f_count is already
-dead, and any use of it won't actually get a reference to the file any
-more: it's dead regardless.
+Have you received my backport patches?  I'm wondering if
+they're missing or have other problems.
 
-Make sure we have a valid ref on the file pointer before we call down to
-vfs_poll() from the epoll routines.
-
-Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
-Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
-
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 1d9a71a0c4c16..0ed73bc7d4652 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -876,6 +876,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- 	return res;
- }
- 
-+/*
-+ * The ffd.file pointer may be in the process of being torn down due to
-+ * being closed, but we may not have finished eventpoll_release() yet.
-+ *
-+ * Normally, even with the atomic_long_inc_not_zero, the file may have
-+ * been free'd and then gotten re-allocated to something else (since
-+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-+ *
-+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
-+ * the process of being free'd will block in eventpoll_release_file()
-+ * and thus the underlying file allocation will not be free'd, and the
-+ * file re-use cannot happen.
-+ *
-+ * For the same reason we can avoid a rcu_read_lock() around the
-+ * operation - 'ffd.file' cannot go away even if the refcount has
-+ * reached zero (but we must still not call out to ->poll() functions
-+ * etc).
-+ */
-+static struct file *epi_fget(const struct epitem *epi)
-+{
-+	struct file *file;
-+
-+	file = epi->ffd.file;
-+	if (!atomic_long_inc_not_zero(&file->f_count))
-+		file = NULL;
-+	return file;
-+}
-+
- /*
-  * Differs from ep_eventpoll_poll() in that internal callers already have
-  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
-@@ -884,14 +912,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
- 				 int depth)
- {
--	struct file *file = epi->ffd.file;
-+	struct file *file = epi_fget(epi);
- 	__poll_t res;
- 
-+	/*
-+	 * We could return EPOLLERR | EPOLLHUP or something, but let's
-+	 * treat this more as "file doesn't exist, poll didn't happen".
-+	 */
-+	if (!file)
-+		return 0;
-+
- 	pt->_key = epi->event.events;
- 	if (!is_file_epoll(file))
- 		res = vfs_poll(file, pt);
- 	else
- 		res = __ep_eventpoll_poll(file, pt, depth);
-+	fput(file);
- 	return res & epi->event.events;
- }
- 
--- 
-2.43.0
-
+Thanks,
+Namhyung
 
