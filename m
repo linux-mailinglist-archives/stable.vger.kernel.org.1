@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-43399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D50D8BF26E
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:49:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2996D8BF270
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3741C2234F
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:49:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BB7A1C21BBA
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4C31CB33D;
-	Tue,  7 May 2024 23:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E32200124;
+	Tue,  7 May 2024 23:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khLgtBr1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGRBHtBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386EB1CB334;
-	Tue,  7 May 2024 23:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64451200118;
+	Tue,  7 May 2024 23:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123603; cv=none; b=Nly4K0lc50z7czZ1URIS7lsxlwPUOWv0hkgN0ayMAWhCq6kN9ibLhw8C//CSCwsIKcrdIkfguK6k67ClaiY/V4+ELQYkE2p85YhZrsdjg30CLhFwIv0SSSnvxbLJYFrHGFCqROvKUacHiv56u/nBUOaX5Qbz3ys+j7F1gZzPvkQ=
+	t=1715123604; cv=none; b=HRMm7avJ8ghnKtkCUrlRORFWB1cUZO/nxUl4ju+X0PG2r5wMuQt45Pl0Qn48KHjMpcla1+dfjR3RKrudNjhZWwBDyLvLbRuGIebJaDL/cNvp8AilHqBHAjmNtKe2qpwvp2v5OLzT3wIC7lwWsOozcu4OGU8fl5OWH27rHZYX7Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123603; c=relaxed/simple;
-	bh=tgwO8+CtUOQsoly9s6IDZYRIIboOPrGDOnhdcbpSfOo=;
+	s=arc-20240116; t=1715123604; c=relaxed/simple;
+	bh=Kkn5Q1zAH2ZDxZMDU2NxkdDU68U1JVkpW8MrlekulRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKvS8yLQociKh243havmgwtUJaoaXzvzNWSbQqmKqTKmZ+YfyHbdbBdgE893LjK14bCaDDT7Bq6fTeOFLDMWHz9QIjWfDqrlwuc5ws1B9/ki+NKt7Y9Aq32jeNQ01k3QF3V5WqoDsz0LxT5nalarUq07HVyNvF/wzSgRbqw3zzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khLgtBr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFDBC4AF67;
-	Tue,  7 May 2024 23:13:21 +0000 (UTC)
+	 MIME-Version; b=jfXXqf7NDUT7wazWs6R+sIIo+YLZC6JFK3PkzU2rznxUSWMb9RhXc+a4u7mDFNkao/8zZn1gJ9zCnfgNdcmp3+515ZHwyytg2GFghNIDXBGLa2UY460bPGHTUEfUrEJ16gpZRSI++bYWuBvxIIxBA7AKrPo/C/wBvD4Oi7SfUNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGRBHtBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493FCC3277B;
+	Tue,  7 May 2024 23:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123602;
-	bh=tgwO8+CtUOQsoly9s6IDZYRIIboOPrGDOnhdcbpSfOo=;
+	s=k20201202; t=1715123604;
+	bh=Kkn5Q1zAH2ZDxZMDU2NxkdDU68U1JVkpW8MrlekulRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khLgtBr1+dRwfQC4gpXJSQFWwlhC6PEW98+HULdVfE4D2d3HmmCOzpvDqNih/ZEwQ
-	 ubtC6YSXR5J2z/ROTO6hef3h6t9jWXnKHKCeXbGIyUMcLcfnMb9eC/ybEgxsH2FI4n
-	 f01ux4KxOPaG3y4qGoB2kBH7ZC1tMTML6kcyxvOg132qHnDv39o2G1ixvBarrQLJkc
-	 llgGNInPSvYVBsNBz3hf8n0xAlBR5Cndhh+UN8BpAv3mF2UD7M9vyx7HXJNkmEMrAU
-	 ICyZx3CQL+vUsYu2ik5bnIaoyeFYhxNJ/Sn/a4xxNGAeWmFyTIFR3ebORBgkK1IAQZ
-	 7uB4hzxlF5DAQ==
+	b=FGRBHtBRuQFuWTZm9jwvtJpc0Ia4uqX8TEl0KEzHCHuerBDDSolecjmWuhpdiZMTB
+	 eZbf7lwOkaqqHlAxYz121LUfKFLRJAZ/jNgXIVSXz0TGF9l+tx9vATmt1HglKtOq9q
+	 AJCbN/wCggDDTl+o6HfqxfIkqNNRNXa9HnKuMUGwSokibD4Grvwo1mgElqiBR61enr
+	 SgB9WJ7Je8EVoyLOWEHAza/NTAAJyPgF5DHp7Tt721zZGNtjHeMIdf4tLOylAMolQe
+	 rjIEsvRzVK7ScLazr9A/6t9WtPObdSd4ACfAa/aoQj7tmFxBB5wClGGCZ239Bp5Kt0
+	 ZOlTkQFeVd6AA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sagi Grimberg <sagi@grimberg.me>,
-	Jirong Feng <jirong.feng@easystack.cn>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	kch@nvidia.com,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 24/25] nvmet: fix nvme status code when namespace is disabled
-Date: Tue,  7 May 2024 19:12:11 -0400
-Message-ID: <20240507231231.394219-24-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 25/25] epoll: be better about file lifetimes
+Date: Tue,  7 May 2024 19:12:12 -0400
+Message-ID: <20240507231231.394219-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231231.394219-1-sashal@kernel.org>
 References: <20240507231231.394219-1-sashal@kernel.org>
@@ -68,92 +68,92 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 505363957fad35f7aed9a2b0d8dad73451a80fb5 ]
+[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
 
-If the user disabled a nvmet namespace, it is removed from the subsystem
-namespaces list. When nvmet processes a command directed to an nsid that
-was disabled, it cannot differentiate between a nsid that is disabled
-vs. a non-existent namespace, and resorts to return NVME_SC_INVALID_NS
-with the dnr bit set.
+epoll can call out to vfs_poll() with a file pointer that may race with
+the last 'fput()'. That would make f_count go down to zero, and while
+the ep->mtx locking means that the resulting file pointer tear-down will
+be blocked until the poll returns, it means that f_count is already
+dead, and any use of it won't actually get a reference to the file any
+more: it's dead regardless.
 
-This translates to a non-retryable status for the host, which translates
-to a user error. We should expect disabled namespaces to not cause an
-I/O error in a multipath environment.
+Make sure we have a valid ref on the file pointer before we call down to
+vfs_poll() from the epoll routines.
 
-Address this by searching a configfs item for the namespace nvmet failed
-to find, and if we found one, conclude that the namespace is disabled
-(perhaps temporarily). Return NVME_SC_INTERNAL_PATH_ERROR in this case
-and keep DNR bit cleared.
-
-Reported-by: Jirong Feng <jirong.feng@easystack.cn>
-Tested-by: Jirong Feng <jirong.feng@easystack.cn>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
+Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 13 +++++++++++++
- drivers/nvme/target/core.c     |  5 ++++-
- drivers/nvme/target/nvmet.h    |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index 73ae16059a1cb..b1f5fa45bb4ac 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -615,6 +615,19 @@ static struct configfs_attribute *nvmet_ns_attrs[] = {
- 	NULL,
- };
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index eccecd3fac90c..7221072f39fad 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -839,6 +839,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
+ 	return res;
+ }
  
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid)
++/*
++ * The ffd.file pointer may be in the process of being torn down due to
++ * being closed, but we may not have finished eventpoll_release() yet.
++ *
++ * Normally, even with the atomic_long_inc_not_zero, the file may have
++ * been free'd and then gotten re-allocated to something else (since
++ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
++ *
++ * But for epoll, users hold the ep->mtx mutex, and as such any file in
++ * the process of being free'd will block in eventpoll_release_file()
++ * and thus the underlying file allocation will not be free'd, and the
++ * file re-use cannot happen.
++ *
++ * For the same reason we can avoid a rcu_read_lock() around the
++ * operation - 'ffd.file' cannot go away even if the refcount has
++ * reached zero (but we must still not call out to ->poll() functions
++ * etc).
++ */
++static struct file *epi_fget(const struct epitem *epi)
 +{
-+	struct config_item *ns_item;
-+	char name[4] = {};
++	struct file *file;
 +
-+	if (sprintf(name, "%u", nsid) <= 0)
-+		return false;
-+	mutex_lock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	ns_item = config_group_find_item(&subsys->namespaces_group, name);
-+	mutex_unlock(&subsys->namespaces_group.cg_subsys->su_mutex);
-+	return ns_item != NULL;
++	file = epi->ffd.file;
++	if (!atomic_long_inc_not_zero(&file->f_count))
++		file = NULL;
++	return file;
 +}
 +
- static void nvmet_ns_release(struct config_item *item)
+ /*
+  * Differs from ep_eventpoll_poll() in that internal callers already have
+  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
+@@ -847,14 +875,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
+ static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
+ 				 int depth)
  {
- 	struct nvmet_ns *ns = to_nvmet_ns(item);
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 3235baf7cc6b1..7b74926c50f9b 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -423,10 +423,13 @@ void nvmet_stop_keep_alive_timer(struct nvmet_ctrl *ctrl)
- u16 nvmet_req_find_ns(struct nvmet_req *req)
- {
- 	u32 nsid = le32_to_cpu(req->cmd->common.nsid);
-+	struct nvmet_subsys *subsys = nvmet_req_subsys(req);
+-	struct file *file = epi->ffd.file;
++	struct file *file = epi_fget(epi);
+ 	__poll_t res;
  
--	req->ns = xa_load(&nvmet_req_subsys(req)->namespaces, nsid);
-+	req->ns = xa_load(&subsys->namespaces, nsid);
- 	if (unlikely(!req->ns)) {
- 		req->error_loc = offsetof(struct nvme_common_command, nsid);
-+		if (nvmet_subsys_nsid_exists(subsys, nsid))
-+			return NVME_SC_INTERNAL_PATH_ERROR;
- 		return NVME_SC_INVALID_NS | NVME_SC_DNR;
- 	}
++	/*
++	 * We could return EPOLLERR | EPOLLHUP or something, but let's
++	 * treat this more as "file doesn't exist, poll didn't happen".
++	 */
++	if (!file)
++		return 0;
++
+ 	pt->_key = epi->event.events;
+ 	if (!is_file_epoll(file))
+ 		res = vfs_poll(file, pt);
+ 	else
+ 		res = __ep_eventpoll_poll(file, pt, depth);
++	fput(file);
+ 	return res & epi->event.events;
+ }
  
-diff --git a/drivers/nvme/target/nvmet.h b/drivers/nvme/target/nvmet.h
-index 273cca49a040f..6aee0ce60a4ba 100644
---- a/drivers/nvme/target/nvmet.h
-+++ b/drivers/nvme/target/nvmet.h
-@@ -527,6 +527,7 @@ void nvmet_subsys_disc_changed(struct nvmet_subsys *subsys,
- 		struct nvmet_host *host);
- void nvmet_add_async_event(struct nvmet_ctrl *ctrl, u8 event_type,
- 		u8 event_info, u8 log_page);
-+bool nvmet_subsys_nsid_exists(struct nvmet_subsys *subsys, u32 nsid);
- 
- #define NVMET_QUEUE_SIZE	1024
- #define NVMET_NR_QUEUES		128
 -- 
 2.43.0
 
