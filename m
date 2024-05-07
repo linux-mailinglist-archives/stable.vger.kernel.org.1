@@ -1,116 +1,137 @@
-Return-Path: <stable+bounces-43165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7799B8BDC88
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 09:39:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99388BDD96
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 10:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D8351F2394C
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 07:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6974F28480D
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 08:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73CA13BC30;
-	Tue,  7 May 2024 07:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835F714D433;
+	Tue,  7 May 2024 08:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9gF+7FZ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bTVq2gkS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B3A59;
-	Tue,  7 May 2024 07:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C43610E3
+	for <stable@vger.kernel.org>; Tue,  7 May 2024 08:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715067575; cv=none; b=b02KVfIbHs80DEWx0iGuZoVFV9LPsvtd3S1soAOaI53e6X7VYYb4Rd8wLVmgKr9J2ozR0dC/i4EbCj4gvXBqRZemjHQpumFpbDk0As8i/VdB9jGn8xHc3QQGpAvbcOW/K6is1wU7l5UdB5Nxz8SQX/Ts/nKa/rP7aNI/y2R8Zns=
+	t=1715072329; cv=none; b=Q033UA3hVKrPNZHoU52E9fFyY+mUgF/QKeU88qsA+VAUbcQd3XzcqCTPf7Z0DnlZqlk6JP1SZ8OPaoSW//WWVjyCKztmUnlJxHaTiQFsqp0jcNGm/tXgQWTxJci+sB22N1oO4u/GWL2M6UjBFV1AdIL4ybU+FzIX65N7UVa93R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715067575; c=relaxed/simple;
-	bh=rJpFn1AO9QkoOchyzDCE9TfU4pQm9RHy9KJ9ICU1PyM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D1EsRuKe4uhCEikRUaPWhztRojkrB7Z+GmIYLVPy/9hKsbuIgZVWN7EINiKkkjn375uOOklZW6OXiQQU8YKLY3nNGZJM6UtwxOY6cOw4KN6ZHNc1ANqAhcJtjPFACc0SZ5TWPbXofUylUbvxPonjL0grn4BKIC1ZPU19UvJ7HVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9gF+7FZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609DCC2BBFC;
-	Tue,  7 May 2024 07:39:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715067575;
-	bh=rJpFn1AO9QkoOchyzDCE9TfU4pQm9RHy9KJ9ICU1PyM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L9gF+7FZ6nHYPWp4shMqyCWwss9CfOmgX3yR+TzEemeEu6/MM9FfL5tmUoHUnJxC/
-	 Ee0P8hN8UE31H1Lezd8mAQ/SOUYZfehRwVYz0o9KQthH2+fnknhPPlNdflrL1mruLJ
-	 nPQTRja9UDNtTkqRDZH4yhbiJu9444DCGyxQFI/99Cuje6MKfp9Q3+9VuTAn+qIucx
-	 6EPNF8uPXyEHP2vkM6Z6gfq7RcFbeES9fuwpjlpR/zdX0uS0HMV9vmRc0lPYOb63vU
-	 P3oyxFFRNCb1sJvxbK/7Q9GJgE/cPxrWjBqzhBL2qSDgfGTUchkmFvdcE/O/uKkJVw
-	 9G9UXN9PNqeLQ==
-Message-ID: <41e54b6e-7848-415f-b913-d481509d5e8a@kernel.org>
-Date: Tue, 7 May 2024 16:39:32 +0900
+	s=arc-20240116; t=1715072329; c=relaxed/simple;
+	bh=xgERL5NTmRREmCY5g/81EWDbZVYhwjZciYutb7aF1f8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=F8NdG2xdh6Jr4J0gxedbYsQPz3dE/dwF7gtUWXAnMTPTIdMTFb8wePgBjdRZbuWV1l0sNCpzG6IFjQikzXqgWQqm2snNdSCsrpCL/k+Wx4Ps8fiE9tyjyEdp/gefSdmf4sVdPzwMaEzyekm/QVirtQad6F8wk9alqICn3ZQUZ1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bTVq2gkS; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 525711BF208;
+	Tue,  7 May 2024 08:58:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1715072324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a2sHF3ypEAiEpeHREQw270xHX0lb0//dUYs40hlXNE8=;
+	b=bTVq2gkSqk6FKob/jyCEmCCnfPOvQ8h/4EGY7Zxu9FmE/5MAShOQd3K3Nnjz642jMgVVgc
+	nhMb4ZrwKUJVMKuZbwAwBxgeCtCi9mxHDy4miCjkugz2kftrYmualM6ISAF1FvvS5cSlHu
+	oDubIS3KuhWqxy+8Rh5KPyNdwg6CHGnGnIWtR2SYMpUY5e3p+YRNfhfyK1TqNMJYf//v65
+	n9iT+M6bvWKXI2EfKC1ZZTxKczPkEYeyxDJ3DtrkHcOeEdv/k5yhINfzI1ugFfqe/0732n
+	+DIrV2UQxtCpflT+0yngNyVLqQCesFxyRxot2c9z3b5e/V0I55F9La4cNPHegw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	<linux-mtd@lists.infradead.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	stable@vger.kernel.org,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] mtd: rawnand: Ensure ECC configuration is propagated to upper layers
+Date: Tue,  7 May 2024 10:58:42 +0200
+Message-Id: <20240507085842.108844-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
-To: Rick Wertenbroek <rick.wertenbroek@gmail.com>, rick.wertenbroek@heig-vd.ch
-Cc: stable@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240403144508.489835-1-rick.wertenbroek@gmail.com>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20240403144508.489835-1-rick.wertenbroek@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On 4/3/24 23:45, Rick Wertenbroek wrote:
-> Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
-> Vendor ID are u16 variables and are written to a u32 register of the
-> controller. The Subsystem Vendor ID was always 0 because the u16 value
-> was masked incorrectly with GENMASK(31,16) resulting in all lower 16
-> bits being set to 0 prior to the shift.
-> 
-> Remove both masks as they are unnecessary and set the register correctly
-> i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
-> Subsystem Vendor ID.
-> 
-> This is documented in the RK3399 TRM section 17.6.7.1.17
-> 
-> Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-> Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-> Cc: stable@vger.kernel.org
+Until recently the "upper layer" was MTD. But following incremental
+reworks to bring spi-nand support and more recently generic ECC support,
+there is now an intermediate "generic NAND" layer that also needs to get
+access to some values. When using "converted" ECC engines, like the
+software ones, these values are already propagated correctly. But
+otherwise when using good old raw NAND controller drivers, we need to
+manually set these values ourselves at the end of the "scan" operation,
+once these values have been negotiated.
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Without this propagation, later (generic) checks like the one warning
+users that the ECC strength is not high enough might simply no longer
+work.
 
-> ---
->  drivers/pci/controller/pcie-rockchip-ep.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
-> index c9046e97a1d2..37d4bcb8bd5b 100644
-> --- a/drivers/pci/controller/pcie-rockchip-ep.c
-> +++ b/drivers/pci/controller/pcie-rockchip-ep.c
-> @@ -98,10 +98,9 @@ static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn, u8 vfn,
->  
->  	/* All functions share the same vendor ID with function 0 */
->  	if (fn == 0) {
-> -		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
-> -			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
-> -
-> -		rockchip_pcie_write(rockchip, vid_regs,
-> +		rockchip_pcie_write(rockchip,
-> +				    hdr->vendorid |
-> +				    hdr->subsys_vendor_id << 16,
->  				    PCIE_CORE_CONFIG_VENDOR);
->  	}
->  
+Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
+Cc: stable@vger.kernel.org
+Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
+Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
 
+Hello Sascha, this is only compile tested, would you mind checking if
+that fixes your setup?
+Thanks, Miquèl
+
+ drivers/mtd/nand/raw/nand_base.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+index d7dbbd469b89..acd137dd0957 100644
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -6301,6 +6301,7 @@ static const struct nand_ops rawnand_ops = {
+ static int nand_scan_tail(struct nand_chip *chip)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct nand_device *base = &chip->base;
+ 	struct nand_ecc_ctrl *ecc = &chip->ecc;
+ 	int ret, i;
+ 
+@@ -6445,9 +6446,13 @@ static int nand_scan_tail(struct nand_chip *chip)
+ 	if (!ecc->write_oob_raw)
+ 		ecc->write_oob_raw = ecc->write_oob;
+ 
+-	/* propagate ecc info to mtd_info */
++	/* Propagate ECC info to the generic NAND and MTD layers */
+ 	mtd->ecc_strength = ecc->strength;
++	if (!base->ecc.ctx.conf.strength)
++		base->ecc.ctx.conf.strength = ecc->strength;
+ 	mtd->ecc_step_size = ecc->size;
++	if (!base->ecc.ctx.conf.step_size)
++		base->ecc.ctx.conf.step_size = ecc->size;
+ 
+ 	/*
+ 	 * Set the number of read / write steps for one page depending on ECC
+@@ -6455,6 +6460,8 @@ static int nand_scan_tail(struct nand_chip *chip)
+ 	 */
+ 	if (!ecc->steps)
+ 		ecc->steps = mtd->writesize / ecc->size;
++	if (!base->ecc.ctx.nsteps)
++		base->ecc.ctx.nsteps = ecc->steps;
+ 	if (ecc->steps * ecc->size != mtd->writesize) {
+ 		WARN(1, "Invalid ECC parameters\n");
+ 		ret = -EINVAL;
 -- 
-Damien Le Moal
-Western Digital Research
+2.40.1
 
 
