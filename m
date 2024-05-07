@@ -1,55 +1,51 @@
-Return-Path: <stable+bounces-43168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8721A8BDE4C
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 11:31:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A4F8BDECD
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 11:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EB41F24CB5
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 09:31:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E4C1F22B85
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 09:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9305B1E0;
-	Tue,  7 May 2024 09:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDE5158A38;
+	Tue,  7 May 2024 09:42:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E5314E2F9
-	for <stable@vger.kernel.org>; Tue,  7 May 2024 09:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD3114E2EF;
+	Tue,  7 May 2024 09:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715074293; cv=none; b=NYXJ+XtRSvScJU095wN0SkFPoMCdQMKIm4/Fv6pgC7pQn3HUHz1M7vqbGQZ0EpyKTqNIZc/l05kaLhh4iSRZpXDnnjooiuXNoNYGuoUB+Q49YJmIDrNW6/ZP83nuMNFlxIxRPNiS9uvHYWGizCsuegDfUqkQEPvWwSm1cDdA2V4=
+	t=1715074955; cv=none; b=q4/5spE7t0A/M3lMkDhbFco1+oHXYIuu4SXhs3GIL2Gg9VZC9B5qFB4+U00x5ORE6yEoLcHzjJJRaQSPFI3fcSmAvQwGzQflcU7+1OgkgqNP1uhIDpj0Ge2+oK01dIdQ8iVEOhmbCxfzTgFi4P12Rgcu6LATjxOiCg08FG6HdiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715074293; c=relaxed/simple;
-	bh=qPcu/tMjAKmy1Aj6W2x8vRKev65bx1i2ASvblVvwneY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z86ReyhwwqON0Rk2ikg5JiaMzy2MpBf60KZ4nzkPXjmD+1cWb1oLmrWfNghy/wAhhQ3NxRh6AXTaQsPdx7IfOoI3wnPPWhAji/nkFIYOFZiEOk9RIdighpFbV+TC6jcl1/mEXNxoT0iCdCjtU7kKS3w2kb9vlj0/yobW2/O94+s=
+	s=arc-20240116; t=1715074955; c=relaxed/simple;
+	bh=VdSWCPQAIn9GwQc51HcOBACWo1FZmzZEpgWE+jpnrXM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nSeKooPUsDGlZKkfdH3Fl0iepDK6vLzUIkci7LqRuyzcfI3/aHjJEKhSsE/HsGAiaC5UFIh+Z1ZH8DVTlu4SUA4JRopT41SxTioKcSUtxza9qlGuOwbjjt2JAcVv82JM5iW2B7aLmqmedVFwvqq04iHPssJF9ye9k8TLc3RDCy8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VYY0D5G3wzCrN8;
-	Tue,  7 May 2024 17:30:04 +0800 (CST)
-Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5A22D180073;
-	Tue,  7 May 2024 17:31:15 +0800 (CST)
-Received: from huawei.com (10.173.135.154) by canpemm500002.china.huawei.com
- (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VYYFB1DP5zCrNJ;
+	Tue,  7 May 2024 17:41:18 +0800 (CST)
+Received: from dggpemm500024.china.huawei.com (unknown [7.185.36.203])
+	by mail.maildlp.com (Postfix) with ESMTPS id C513B14011B;
+	Tue,  7 May 2024 17:42:13 +0800 (CST)
+Received: from huawei.com (10.67.174.60) by dggpemm500024.china.huawei.com
+ (7.185.36.203) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 7 May
- 2024 17:31:14 +0800
-From: Miaohe Lin <linmiaohe@huawei.com>
-To: <stable@vger.kernel.org>
-CC: Oscar Salvador <osalvador@suse.de>, Tony Luck <tony.luck@intel.com>, Peter
- Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, Miaohe Lin
-	<linmiaohe@huawei.com>, Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y] mm,swapops: update check in is_pfn_swap_entry for hwpoison entries
-Date: Tue, 7 May 2024 17:28:22 +0800
-Message-ID: <20240507092822.3460106-1-linmiaohe@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <2024042309-rural-overlying-190b@gregkh>
-References: <2024042309-rural-overlying-190b@gregkh>
+ 2024 17:42:13 +0800
+From: GUO Zihua <guozihua@huawei.com>
+To: <zohar@linux.ibm.com>, <dmitry.kasatkin@gmail.com>, <jmorris@namei.org>,
+	<serge@hallyn.com>
+CC: <linux-integrity@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH] ima: fix deadlock when traversing "ima_default_rules".
+Date: Tue, 7 May 2024 09:37:14 +0000
+Message-ID: <20240507093714.1031820-1-guozihua@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,183 +54,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- canpemm500002.china.huawei.com (7.192.104.244)
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500024.china.huawei.com (7.185.36.203)
 
-From: Oscar Salvador <osalvador@suse.de>
+From: liqiong <liqiong@nfschina.com>
 
-Tony reported that the Machine check recovery was broken in v6.9-rc1, as
-he was hitting a VM_BUG_ON when injecting uncorrectable memory errors to
-DRAM.
+[ Upstream commit eb0782bbdfd0d7c4786216659277c3fd585afc0e ]
 
-After some more digging and debugging on his side, he realized that this
-went back to v6.1, with the introduction of 'commit 0d206b5d2e0d
-("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")'.  That
-commit, among other things, introduced swp_offset_pfn(), replacing
-hwpoison_entry_to_pfn() in its favour.
+The current IMA ruleset is identified by the variable "ima_rules"
+that default to "&ima_default_rules". When loading a custom policy
+for the first time, the variable is updated to "&ima_policy_rules"
+instead. That update isn't RCU-safe, and deadlocks are possible.
+Indeed, some functions like ima_match_policy() may loop indefinitely
+when traversing "ima_default_rules" with list_for_each_entry_rcu().
 
-The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(), but
-is_pfn_swap_entry() never got updated to cover hwpoison entries, which
-means that we would hit the VM_BUG_ON whenever we would call
-swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM
-set.  Fix this by updating the check to cover hwpoison entries as well,
-and update the comment while we are it.
+When iterating over the default ruleset back to head, if the list
+head is "ima_default_rules", and "ima_rules" have been updated to
+"&ima_policy_rules", the loop condition (&entry->list != ima_rules)
+stays always true, traversing won't terminate, causing a soft lockup
+and RCU stalls.
 
-Link: https://lkml.kernel.org/r/20240407130537.16977-1-osalvador@suse.de
-Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
-Reported-by: Tony Luck <tony.luck@intel.com>
-Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
-Tested-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.1.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 07a57a338adb6ec9e766d6a6790f76527f45ceb5)
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Introduce a temporary value for "ima_rules" when iterating over
+the ruleset to avoid the deadlocks.
+
+Addition:
+
+A rcu_read_lock pair is added within ima_update_policy_flag to avoid
+suspicious RCU usage warning. This pair of RCU lock was added with
+commit 4f2946aa0c45 ("IMA: introduce a new policy option
+func=SETXATTR_CHECK") on mainstream.
+
+Signed-off-by: liqiong <liqiong@nfschina.com>
+Reviewed-by: THOBY Simon <Simon.THOBY@viveris.fr>
+Fixes: 38d859f991f3 ("IMA: policy can now be updated multiple times")
+Reported-by: kernel test robot <lkp@intel.com> (Fix sparse: incompatible types in comparison expression.)
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: GUO Zihua <guozihua@huawei.com>
 ---
- include/linux/swapops.h | 105 ++++++++++++++++++++--------------------
- 1 file changed, 53 insertions(+), 52 deletions(-)
+ security/integrity/ima/ima_policy.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index b07b277d6a16..1f59f9edcc24 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -409,6 +409,55 @@ static inline bool is_migration_entry_dirty(swp_entry_t entry)
- }
- #endif	/* CONFIG_MIGRATION */
+diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+index 1c403e8a8044..4f5d44037081 100644
+--- a/security/integrity/ima/ima_policy.c
++++ b/security/integrity/ima/ima_policy.c
+@@ -210,7 +210,7 @@ static struct ima_rule_entry *arch_policy_entry __ro_after_init;
+ static LIST_HEAD(ima_default_rules);
+ static LIST_HEAD(ima_policy_rules);
+ static LIST_HEAD(ima_temp_rules);
+-static struct list_head *ima_rules = &ima_default_rules;
++static struct list_head __rcu *ima_rules = (struct list_head __rcu *)(&ima_default_rules);
  
-+#ifdef CONFIG_MEMORY_FAILURE
-+
-+extern atomic_long_t num_poisoned_pages __read_mostly;
-+
-+/*
-+ * Support for hardware poisoned pages
-+ */
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	BUG_ON(!PageLocked(page));
-+	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
-+}
-+
-+static inline int is_hwpoison_entry(swp_entry_t entry)
-+{
-+	return swp_type(entry) == SWP_HWPOISON;
-+}
-+
-+static inline void num_poisoned_pages_inc(void)
-+{
-+	atomic_long_inc(&num_poisoned_pages);
-+}
-+
-+static inline void num_poisoned_pages_sub(long i)
-+{
-+	atomic_long_sub(i, &num_poisoned_pages);
-+}
-+
-+#else  /* CONFIG_MEMORY_FAILURE */
-+
-+static inline swp_entry_t make_hwpoison_entry(struct page *page)
-+{
-+	return swp_entry(0, 0);
-+}
-+
-+static inline int is_hwpoison_entry(swp_entry_t swp)
-+{
-+	return 0;
-+}
-+
-+static inline void num_poisoned_pages_inc(void)
-+{
-+}
-+
-+static inline void num_poisoned_pages_sub(long i)
-+{
-+}
-+#endif  /* CONFIG_MEMORY_FAILURE */
-+
- typedef unsigned long pte_marker;
+ static int ima_policy __initdata;
  
- #define  PTE_MARKER_UFFD_WP  BIT(0)
-@@ -503,8 +552,9 @@ static inline struct page *pfn_swap_entry_to_page(swp_entry_t entry)
- 
- /*
-  * A pfn swap entry is a special type of swap entry that always has a pfn stored
-- * in the swap offset. They are used to represent unaddressable device memory
-- * and to restrict access to a page undergoing migration.
-+ * in the swap offset. They can either be used to represent unaddressable device
-+ * memory, to restrict access to a page undergoing migration or to represent a
-+ * pfn which has been hwpoisoned and unmapped.
-  */
- static inline bool is_pfn_swap_entry(swp_entry_t entry)
+@@ -648,12 +648,14 @@ int ima_match_policy(struct inode *inode, const struct cred *cred, u32 secid,
  {
-@@ -512,7 +562,7 @@ static inline bool is_pfn_swap_entry(swp_entry_t entry)
- 	BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
+ 	struct ima_rule_entry *entry;
+ 	int action = 0, actmask = flags | (flags << 1);
++	struct list_head *ima_rules_tmp;
  
- 	return is_migration_entry(entry) || is_device_private_entry(entry) ||
--	       is_device_exclusive_entry(entry);
-+	       is_device_exclusive_entry(entry) || is_hwpoison_entry(entry);
- }
+ 	if (template_desc)
+ 		*template_desc = ima_template_desc_current();
  
- struct page_vma_mapped_walk;
-@@ -581,55 +631,6 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
- }
- #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
+ 	rcu_read_lock();
+-	list_for_each_entry_rcu(entry, ima_rules, list) {
++	ima_rules_tmp = rcu_dereference(ima_rules);
++	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
  
--#ifdef CONFIG_MEMORY_FAILURE
--
--extern atomic_long_t num_poisoned_pages __read_mostly;
--
--/*
-- * Support for hardware poisoned pages
-- */
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	BUG_ON(!PageLocked(page));
--	return swp_entry(SWP_HWPOISON, page_to_pfn(page));
--}
--
--static inline int is_hwpoison_entry(swp_entry_t entry)
--{
--	return swp_type(entry) == SWP_HWPOISON;
--}
--
--static inline void num_poisoned_pages_inc(void)
--{
--	atomic_long_inc(&num_poisoned_pages);
--}
--
--static inline void num_poisoned_pages_sub(long i)
--{
--	atomic_long_sub(i, &num_poisoned_pages);
--}
--
--#else  /* CONFIG_MEMORY_FAILURE */
--
--static inline swp_entry_t make_hwpoison_entry(struct page *page)
--{
--	return swp_entry(0, 0);
--}
--
--static inline int is_hwpoison_entry(swp_entry_t swp)
--{
--	return 0;
--}
--
--static inline void num_poisoned_pages_inc(void)
--{
--}
--
--static inline void num_poisoned_pages_sub(long i)
--{
--}
--#endif  /* CONFIG_MEMORY_FAILURE */
--
- static inline int non_swap_entry(swp_entry_t entry)
+ 		if (!(entry->action & actmask))
+ 			continue;
+@@ -701,11 +703,15 @@ int ima_match_policy(struct inode *inode, const struct cred *cred, u32 secid,
+ void ima_update_policy_flag(void)
  {
- 	return swp_type(entry) >= MAX_SWAPFILES;
+ 	struct ima_rule_entry *entry;
++	struct list_head *ima_rules_tmp;
+ 
+-	list_for_each_entry(entry, ima_rules, list) {
++	rcu_read_lock();
++	ima_rules_tmp = rcu_dereference(ima_rules);
++	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
+ 		if (entry->action & IMA_DO_MASK)
+ 			ima_policy_flag |= entry->action;
+ 	}
++	rcu_read_unlock();
+ 
+ 	ima_appraise |= (build_ima_appraise | temp_ima_appraise);
+ 	if (!ima_appraise)
+@@ -898,10 +904,10 @@ void ima_update_policy(void)
+ 
+ 	list_splice_tail_init_rcu(&ima_temp_rules, policy, synchronize_rcu);
+ 
+-	if (ima_rules != policy) {
++	if (ima_rules != (struct list_head __rcu *)policy) {
+ 		ima_policy_flag = 0;
+-		ima_rules = policy;
+ 
++		rcu_assign_pointer(ima_rules, policy);
+ 		/*
+ 		 * IMA architecture specific policy rules are specified
+ 		 * as strings and converted to an array of ima_entry_rules
+@@ -989,7 +995,7 @@ static int ima_lsm_rule_init(struct ima_rule_entry *entry,
+ 		pr_warn("rule for LSM \'%s\' is undefined\n",
+ 			entry->lsm[lsm_rule].args_p);
+ 
+-		if (ima_rules == &ima_default_rules) {
++		if (ima_rules == (struct list_head __rcu *)(&ima_default_rules)) {
+ 			kfree(entry->lsm[lsm_rule].args_p);
+ 			entry->lsm[lsm_rule].args_p = NULL;
+ 			result = -EINVAL;
+@@ -1598,9 +1604,11 @@ void *ima_policy_start(struct seq_file *m, loff_t *pos)
+ {
+ 	loff_t l = *pos;
+ 	struct ima_rule_entry *entry;
++	struct list_head *ima_rules_tmp;
+ 
+ 	rcu_read_lock();
+-	list_for_each_entry_rcu(entry, ima_rules, list) {
++	ima_rules_tmp = rcu_dereference(ima_rules);
++	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
+ 		if (!l--) {
+ 			rcu_read_unlock();
+ 			return entry;
+@@ -1619,7 +1627,8 @@ void *ima_policy_next(struct seq_file *m, void *v, loff_t *pos)
+ 	rcu_read_unlock();
+ 	(*pos)++;
+ 
+-	return (&entry->list == ima_rules) ? NULL : entry;
++	return (&entry->list == &ima_default_rules ||
++		&entry->list == &ima_policy_rules) ? NULL : entry;
+ }
+ 
+ void ima_policy_stop(struct seq_file *m, void *v)
+@@ -1823,6 +1832,7 @@ bool ima_appraise_signature(enum kernel_read_file_id id)
+ 	struct ima_rule_entry *entry;
+ 	bool found = false;
+ 	enum ima_hooks func;
++	struct list_head *ima_rules_tmp;
+ 
+ 	if (id >= READING_MAX_ID)
+ 		return false;
+@@ -1834,7 +1844,8 @@ bool ima_appraise_signature(enum kernel_read_file_id id)
+ 	func = read_idmap[id] ?: FILE_CHECK;
+ 
+ 	rcu_read_lock();
+-	list_for_each_entry_rcu(entry, ima_rules, list) {
++	ima_rules_tmp = rcu_dereference(ima_rules);
++	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
+ 		if (entry->action != APPRAISE)
+ 			continue;
+ 
 -- 
-2.33.0
+2.34.1
 
 
