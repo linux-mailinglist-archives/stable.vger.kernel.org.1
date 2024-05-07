@@ -1,63 +1,70 @@
-Return-Path: <stable+bounces-43412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18DF8BF28C
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC89B8BF28E
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C4EC2866C0
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72C5E287504
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354B7182AA3;
-	Tue,  7 May 2024 23:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FAD13A3FD;
+	Tue,  7 May 2024 23:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhImjyoN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLtaxPlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80B1182A9C;
-	Tue,  7 May 2024 23:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA0386278;
+	Tue,  7 May 2024 23:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123637; cv=none; b=ZubWwoSSu73DUAYsUSkh5Syqjbp4FUFoyuudK5RZwNPKml3rHSFQDTxgHO5kfcI1f4VPAE3pOd42ouVWawvDKI5HC8qmC21suupgHLiyKJNyCxhTNBHqOPNzM4mMZcvQRblHFX3alVgfr4cCgwqbcpLcEl0CpTl94Nwfr0ZHGl4=
+	t=1715123641; cv=none; b=FW/CUcWhdrKCGz+gPq3J9FuFLc5P/PyfZ5V6OtomEbfqCOtA/LysuE4PHgODuOj5s7/KYOLNt7EDtEOpTwkvcyuBH/6/lygoFurK3z2pVG9K4A/4rO03Gfxo8Gfzj+IVGqhhZqea6H1XiJ4AaRI0pKOZ2WLl+SM/Jf97TKOxXqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123637; c=relaxed/simple;
-	bh=nX2Q8d5M67ZzlNPUVhA1JAV+ik1sAKhF1gl+RTTa0aI=;
+	s=arc-20240116; t=1715123641; c=relaxed/simple;
+	bh=KbVCOFHLcEa/8Y6Eb2j5Y6XPf1/h3zsATp8sxGIpVXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBiL6CjOIxpq1npjzIkdmdBKzgnjzZbzR00fVjULjMjcl/+4Lxb8CIHWR0FTHafCoo9IZqoNBzQRW2zHfCmXOIqzNrKga0vPelmefiia5tTScZ+N1LrIo8j6O/rjA2U6TZVl7cZh9eLEOulIchVYBr1+jHdqAi3fZdmZa1iKtwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhImjyoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA45C2BBFC;
-	Tue,  7 May 2024 23:13:54 +0000 (UTC)
+	 MIME-Version; b=SLJfiEV3b0mHwDYrn99OHUWANVuwnXdwFC74UE2fQ/aGp3gMKWsLkQ5AUSCmsIyKLkdyEFLvoyRfmI8XmX1PAfYq3nc3e6dPdtxoujdiM8towqj+mWu+FRX5U/hMYxf+gsaJOqx/6oP/UEnXsonlXDYOJXinwiejh6GigeL8Kik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLtaxPlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382D2C4AF67;
+	Tue,  7 May 2024 23:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123636;
-	bh=nX2Q8d5M67ZzlNPUVhA1JAV+ik1sAKhF1gl+RTTa0aI=;
+	s=k20201202; t=1715123641;
+	bh=KbVCOFHLcEa/8Y6Eb2j5Y6XPf1/h3zsATp8sxGIpVXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhImjyoNAuaOhwoPgANywrGfK3cQJnRhScBJsyBVKJAO9xeva/82qXoTlYlnau8mF
-	 Kgz1AKsBGwJifwgEXdV69yiHVSLCGthimwzgXvFgGHJ60yhIWabD73y1M4f7F2qDv9
-	 thviEOo02/dnLT4KGGXMMPJQaaIEN+WDCQUv6Cm2DHezlefDHQE9C086QQxtmOoWb7
-	 rSyIqq4R6kADpF4QpqW4AfMTzRN3VLXp0Qnrih8kk+347lhzDkod0iz8EFQvD0hvR/
-	 j8m+PUnPNg0C1+GMai80QUiwVOA1c3D6qU1LLtGDViTRXObJQWhZcg5abiGne4XO5l
-	 Zr6iz3lqnUSeQ==
+	b=OLtaxPlPbsqlf8dFtVIP1JPmZ/mW7xicgpL+ckxYF6xtBtTu1eSzu2FbFpafpLcML
+	 WGy26yKbllPUeBEjwLYM3un1uRNyRjA0RMav2l6gQ2TWcvawA7kRWcFLo4IKA6T44q
+	 FgxpZy44M0Kx02tz4FV8GsPptcPr7KIw+EU+1z/kGgJC05Jaqez7zMS3UQAduhqWZT
+	 TrL1FONsS719SHeKFmbKNuteJAZh8a82Z25sPuNVe1vC9yJAQfTSlICiWPgaIxeL02
+	 4j0jGNP1GeGH6yM/OHulxL8xOjezWBJVB0lql/BmbjdUtoaplzs8DTZ1Y6VXaHAczi
+	 VgzcrSR0I++OA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lancelot SIX <lancelot.six@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 12/15] drm/amdkfd: Flush the process wq before creating a kfd_process
-Date: Tue,  7 May 2024 19:13:21 -0400
-Message-ID: <20240507231333.394765-12-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	peterz@infradead.org,
+	xin3.li@intel.com,
+	ubizjak@gmail.com,
+	arnd@arndb.de,
+	rick.p.edgecombe@intel.com,
+	mjguzik@gmail.com,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 13/15] x86/mm: Remove broken vsyscall emulation code from the page fault code
+Date: Tue,  7 May 2024 19:13:22 -0400
+Message-ID: <20240507231333.394765-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231333.394765-1-sashal@kernel.org>
 References: <20240507231333.394765-1-sashal@kernel.org>
@@ -72,59 +79,229 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.158
 Content-Transfer-Encoding: 8bit
 
-From: Lancelot SIX <lancelot.six@amd.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit f5b9053398e70a0c10aa9cb4dd5910ab6bc457c5 ]
+[ Upstream commit 02b670c1f88e78f42a6c5aee155c7b26960ca054 ]
 
-There is a race condition when re-creating a kfd_process for a process.
-This has been observed when a process under the debugger executes
-exec(3).  In this scenario:
-- The process executes exec.
- - This will eventually release the process's mm, which will cause the
-   kfd_process object associated with the process to be freed
-   (kfd_process_free_notifier decrements the reference count to the
-   kfd_process to 0).  This causes kfd_process_ref_release to enqueue
-   kfd_process_wq_release to the kfd_process_wq.
-- The debugger receives the PTRACE_EVENT_EXEC notification, and tries to
-  re-enable AMDGPU traps (KFD_IOC_DBG_TRAP_ENABLE).
- - When handling this request, KFD tries to re-create a kfd_process.
-   This eventually calls kfd_create_process and kobject_init_and_add.
+The syzbot-reported stack trace from hell in this discussion thread
+actually has three nested page faults:
 
-At this point the call to kobject_init_and_add can fail because the
-old kfd_process.kobj has not been freed yet by kfd_process_wq_release.
+  https://lore.kernel.org/r/000000000000d5f4fc0616e816d4@google.com
 
-This patch proposes to avoid this race by making sure to drain
-kfd_process_wq before creating a new kfd_process object.  This way, we
-know that any cleanup task is done executing when we reach
-kobject_init_and_add.
+... and I think that's actually the important thing here:
 
-Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+ - the first page fault is from user space, and triggers the vsyscall
+   emulation.
+
+ - the second page fault is from __do_sys_gettimeofday(), and that should
+   just have caused the exception that then sets the return value to
+   -EFAULT
+
+ - the third nested page fault is due to _raw_spin_unlock_irqrestore() ->
+   preempt_schedule() -> trace_sched_switch(), which then causes a BPF
+   trace program to run, which does that bpf_probe_read_compat(), which
+   causes that page fault under pagefault_disable().
+
+It's quite the nasty backtrace, and there's a lot going on.
+
+The problem is literally the vsyscall emulation, which sets
+
+        current->thread.sig_on_uaccess_err = 1;
+
+and that causes the fixup_exception() code to send the signal *despite* the
+exception being caught.
+
+And I think that is in fact completely bogus.  It's completely bogus
+exactly because it sends that signal even when it *shouldn't* be sent -
+like for the BPF user mode trace gathering.
+
+In other words, I think the whole "sig_on_uaccess_err" thing is entirely
+broken, because it makes any nested page-faults do all the wrong things.
+
+Now, arguably, I don't think anybody should enable vsyscall emulation any
+more, but this test case clearly does.
+
+I think we should just make the "send SIGSEGV" be something that the
+vsyscall emulation does on its own, not this broken per-thread state for
+something that isn't actually per thread.
+
+The x86 page fault code actually tried to deal with the "incorrect nesting"
+by having that:
+
+                if (in_interrupt())
+                        return;
+
+which ignores the sig_on_uaccess_err case when it happens in interrupts,
+but as shown by this example, these nested page faults do not need to be
+about interrupts at all.
+
+IOW, I think the only right thing is to remove that horrendously broken
+code.
+
+The attached patch looks like the ObviouslyCorrect(tm) thing to do.
+
+NOTE! This broken code goes back to this commit in 2011:
+
+  4fc3490114bb ("x86-64: Set siginfo and context on vsyscall emulation faults")
+
+... and back then the reason was to get all the siginfo details right.
+Honestly, I do not for a moment believe that it's worth getting the siginfo
+details right here, but part of the commit says:
+
+    This fixes issues with UML when vsyscall=emulate.
+
+... and so my patch to remove this garbage will probably break UML in this
+situation.
+
+I do not believe that anybody should be running with vsyscall=emulate in
+2024 in the first place, much less if you are doing things like UML. But
+let's see if somebody screams.
+
+Reported-and-tested-by: syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/r/CAHk-=wh9D6f7HUkDgZHKmDCHUQmp+Co89GP+b8+z+G56BKeyNg@mail.gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 28 ++---------------------
+ arch/x86/include/asm/processor.h      |  1 -
+ arch/x86/mm/fault.c                   | 33 +--------------------------
+ 3 files changed, 3 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 21ec8a18cad29..7f69031f2b61a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -818,6 +818,14 @@ struct kfd_process *kfd_create_process(struct file *filep)
- 	if (process) {
- 		pr_debug("Process already found\n");
- 	} else {
-+		/* If the process just called exec(3), it is possible that the
-+		 * cleanup of the kfd_process (following the release of the mm
-+		 * of the old process image) is still in the cleanup work queue.
-+		 * Make sure to drain any job before trying to recreate any
-+		 * resource for this process.
-+		 */
-+		flush_workqueue(kfd_process_wq);
-+
- 		process = create_process(thread);
- 		if (IS_ERR(process))
- 			goto out;
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index fd2ee9408e914..ba3172d5b3286 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -98,11 +98,6 @@ static int addr_to_vsyscall_nr(unsigned long addr)
+ 
+ static bool write_ok_or_segv(unsigned long ptr, size_t size)
+ {
+-	/*
+-	 * XXX: if access_ok, get_user, and put_user handled
+-	 * sig_on_uaccess_err, this could go away.
+-	 */
+-
+ 	if (!access_ok((void __user *)ptr, size)) {
+ 		struct thread_struct *thread = &current->thread;
+ 
+@@ -120,10 +115,8 @@ static bool write_ok_or_segv(unsigned long ptr, size_t size)
+ bool emulate_vsyscall(unsigned long error_code,
+ 		      struct pt_regs *regs, unsigned long address)
+ {
+-	struct task_struct *tsk;
+ 	unsigned long caller;
+ 	int vsyscall_nr, syscall_nr, tmp;
+-	int prev_sig_on_uaccess_err;
+ 	long ret;
+ 	unsigned long orig_dx;
+ 
+@@ -172,8 +165,6 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		goto sigsegv;
+ 	}
+ 
+-	tsk = current;
+-
+ 	/*
+ 	 * Check for access_ok violations and find the syscall nr.
+ 	 *
+@@ -234,12 +225,8 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		goto do_ret;  /* skip requested */
+ 
+ 	/*
+-	 * With a real vsyscall, page faults cause SIGSEGV.  We want to
+-	 * preserve that behavior to make writing exploits harder.
++	 * With a real vsyscall, page faults cause SIGSEGV.
+ 	 */
+-	prev_sig_on_uaccess_err = current->thread.sig_on_uaccess_err;
+-	current->thread.sig_on_uaccess_err = 1;
+-
+ 	ret = -EFAULT;
+ 	switch (vsyscall_nr) {
+ 	case 0:
+@@ -262,23 +249,12 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		break;
+ 	}
+ 
+-	current->thread.sig_on_uaccess_err = prev_sig_on_uaccess_err;
+-
+ check_fault:
+ 	if (ret == -EFAULT) {
+ 		/* Bad news -- userspace fed a bad pointer to a vsyscall. */
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall fault (exploit attempt?)");
+-
+-		/*
+-		 * If we failed to generate a signal for any reason,
+-		 * generate one here.  (This should be impossible.)
+-		 */
+-		if (WARN_ON_ONCE(!sigismember(&tsk->pending.signal, SIGBUS) &&
+-				 !sigismember(&tsk->pending.signal, SIGSEGV)))
+-			goto sigsegv;
+-
+-		return true;  /* Don't emulate the ret. */
++		goto sigsegv;
+ 	}
+ 
+ 	regs->ax = ret;
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index bbbf27cfe7015..0702e0c5dbb8d 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -519,7 +519,6 @@ struct thread_struct {
+ 	unsigned long		iopl_emul;
+ 
+ 	unsigned int		iopl_warn:1;
+-	unsigned int		sig_on_uaccess_err:1;
+ 
+ 	/*
+ 	 * Protection Keys Register for Userspace.  Loaded immediately on
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index abc6fbc3d5f21..31afd82b95245 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -716,39 +716,8 @@ kernelmode_fixup_or_oops(struct pt_regs *regs, unsigned long error_code,
+ 	WARN_ON_ONCE(user_mode(regs));
+ 
+ 	/* Are we prepared to handle this kernel fault? */
+-	if (fixup_exception(regs, X86_TRAP_PF, error_code, address)) {
+-		/*
+-		 * Any interrupt that takes a fault gets the fixup. This makes
+-		 * the below recursive fault logic only apply to a faults from
+-		 * task context.
+-		 */
+-		if (in_interrupt())
+-			return;
+-
+-		/*
+-		 * Per the above we're !in_interrupt(), aka. task context.
+-		 *
+-		 * In this case we need to make sure we're not recursively
+-		 * faulting through the emulate_vsyscall() logic.
+-		 */
+-		if (current->thread.sig_on_uaccess_err && signal) {
+-			sanitize_error_code(address, &error_code);
+-
+-			set_signal_archinfo(address, error_code);
+-
+-			if (si_code == SEGV_PKUERR) {
+-				force_sig_pkuerr((void __user *)address, pkey);
+-			} else {
+-				/* XXX: hwpoison faults will set the wrong code. */
+-				force_sig_fault(signal, si_code, (void __user *)address);
+-			}
+-		}
+-
+-		/*
+-		 * Barring that, we can do the fixup and be happy.
+-		 */
++	if (fixup_exception(regs, X86_TRAP_PF, error_code, address))
+ 		return;
+-	}
+ 
+ 	/*
+ 	 * AMD erratum #91 manifests as a spurious page fault on a PREFETCH
 -- 
 2.43.0
 
