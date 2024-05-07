@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-43433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B84C8BF2BD
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:57:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264FA8BF2BC
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00621F22C24
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:57:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6B3D284430
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7000613A878;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BEB126F1B;
 	Tue,  7 May 2024 23:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/S2XvUi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qakxCW2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58801A1A6B;
-	Tue,  7 May 2024 23:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6211A1A6A;
+	Tue,  7 May 2024 23:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123682; cv=none; b=uQs+goO6B1hXn41J4UwL75ARpOCMLZvUGKzRFeGNS+8j8zPGiTzZq+wAjrLo2TWSy8rLWM7r36NoGpTa50q1iXylb6pZV9cPrFZZLWoOf0eLrvxMgZAIpwWWBUn023YWeL98CA2VqwQGPtnLPcRlMVV7n0SansHK6fnheHkKBJU=
+	t=1715123682; cv=none; b=XltMihuKPyJTLtpFaOAVpC3PDo8VxrYP7HnEEz5GxgJ4pkbpJkiimScFTQt2kNqK10YNL/coqC/InExtFUHbaoXd/rj7SQvqIcvu0glva15y53Iv7HM1/sOc7wTTJ4g5OjqgFqtrREXGZMYNC4dlQW6WYYhZoRWt3PTTtsD/j6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1715123682; c=relaxed/simple;
-	bh=DLyN2r9encUr8sDr7IL9hDMF/WiK1le1ynlyYCtHKX4=;
+	bh=FFq1YsZ4lWDlVgX98/DsdDyntB51ZyHmLHMXwbuEUO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UENzs6DU1FX1M7MHMBW18Mc4tXJTwSs5eLQ44nb+yyTAl2CXQrWvB5RPO+gn8hjIDB1Pglk6Hc7FpwHyNOU+zrz3fxJXVMDnaMGWQeY5OgzqZQv8Q65SFmxsFdlivpCK09X4vMIc79+BxLpzHl3dKGARnOHKbt84eQDHh/PaVJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/S2XvUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F49DC2BBFC;
-	Tue,  7 May 2024 23:14:39 +0000 (UTC)
+	 MIME-Version; b=U9be/bxlIXzhcVpfCG0bcw5flnexUSpiHShUCvgqU4kN7P3n80JmXNw+ojs4bCWSYFIsZA8LiAEATjlUOEXwNge2GOEG4u5KATDhF9M9Ltb9PHK1BzCukOkOlTm7uXznxN+9I4xSdLhGdju2uj/ffU61wRLcddCsnYj28VyvZB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qakxCW2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C35C4AF17;
+	Tue,  7 May 2024 23:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123680;
-	bh=DLyN2r9encUr8sDr7IL9hDMF/WiK1le1ynlyYCtHKX4=;
+	s=k20201202; t=1715123682;
+	bh=FFq1YsZ4lWDlVgX98/DsdDyntB51ZyHmLHMXwbuEUO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/S2XvUiXZRGqerf52Cx2Tu1sEVaI3Z1TponUbRGu2Vh2TdihZXzAc8xrYs6DEoWr
-	 QRYglVyr01ImRWHlgv0a2XvPk5/81IHlrbaLTB1dD7cgskW4hGS3Eh9q5O7fBjatlM
-	 716OSumw8NffAevtlGXdBtEeZtXS/j2hs8UQgbb/nh4zgUwKd0zoS46+kX/3LgvAZ5
-	 eIGC2oK7pyh2So1w2ERz0Sr1rnBbxEBuFb5FqPGvtfN64sh8t2oNYIqouCKeNue/IE
-	 wA6NUp9CkOB6wHLFjYh/oXXTFx5cUNLe7MzN6dHSsiarYoPvlTJ/CqjbRnkQReLK9r
-	 sHAd684E5P8yQ==
+	b=qakxCW2ewMbjqW1a7ej3hFcYrZnwxGUpG2WVrDw7v6YemDixruuosnq+o/dwgVJ1v
+	 KlQqHFiiVV5a14msSq3ElNUrEPWmF4ysTkCK2bCBo+Tm4UAppAKkM2nt6Wtvpsq6Vy
+	 Yj2kST2dXeodLgC7ezJGz13U3g4DrvJoigC6/6lW9v7fo6RlXa1o25SqKc54WSoc5a
+	 4jKYk3gr5WC4YhytF+6C4/ZuLsZMozpRK7fSE1TCeJPyBvv2N/dCXh9qNjdB4mLTET
+	 6thSPjA7JEvNOUkMEskKbWGJMvfhAe2p9NaOGZy9Bl7L5i+4E+skFrDmS+JY25ITSl
+	 evJR7u2sw63/A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Derek Fang <derek.fang@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/4] ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
-Date: Tue,  7 May 2024 19:14:33 -0400
-Message-ID: <20240507231436.395448-2-sashal@kernel.org>
+	linux1394-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 4.19 3/4] firewire: nosy: ensure user_length is taken into account when fetching packet contents
+Date: Tue,  7 May 2024 19:14:34 -0400
+Message-ID: <20240507231436.395448-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231436.395448-1-sashal@kernel.org>
 References: <20240507231436.395448-1-sashal@kernel.org>
@@ -70,46 +65,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.313
 Content-Transfer-Encoding: 8bit
 
-From: Derek Fang <derek.fang@realtek.com>
+From: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
 
-[ Upstream commit 306b38e3fa727d22454a148a364123709e356600 ]
+[ Upstream commit 38762a0763c10c24a4915feee722d7aa6e73eb98 ]
 
-Add an optional gpio property to control external CBJ circuits
-to avoid some electric noise caused by sleeve/ring2 contacts floating.
+Ensure that packet_buffer_get respects the user_length provided. If
+the length of the head packet exceeds the user_length, packet_buffer_get
+will now return 0 to signify to the user that no data were read
+and a larger buffer size is required. Helps prevent user space overflows.
 
-Signed-off-by: Derek Fang <derek.fang@realtek.com>
-
-Link: https://msgid.link/r/20240408091057.14165-2-derek.fang@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/sound/rt5645.txt | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/firewire/nosy.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/rt5645.txt b/Documentation/devicetree/bindings/sound/rt5645.txt
-index a03f9a872a716..bfb2217a9a658 100644
---- a/Documentation/devicetree/bindings/sound/rt5645.txt
-+++ b/Documentation/devicetree/bindings/sound/rt5645.txt
-@@ -16,6 +16,11 @@ Optional properties:
-   a GPIO spec for the external headphone detect pin. If jd-mode = 0,
-   we will get the JD status by getting the value of hp-detect-gpios.
+diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
+index ac85e03e88e16..f3784c054dd6e 100644
+--- a/drivers/firewire/nosy.c
++++ b/drivers/firewire/nosy.c
+@@ -161,10 +161,12 @@ packet_buffer_get(struct client *client, char __user *data, size_t user_length)
+ 	if (atomic_read(&buffer->size) == 0)
+ 		return -ENODEV;
  
-+- cbj-sleeve-gpios:
-+  a GPIO spec to control the external combo jack circuit to tie the sleeve/ring2
-+  contacts to the ground or floating. It could avoid some electric noise from the
-+  active speaker jacks.
+-	/* FIXME: Check length <= user_length. */
++	length = buffer->head->length;
 +
- - realtek,in2-differential
-   Boolean. Indicate MIC2 input are differential, rather than single-ended.
++	if (length > user_length)
++		return 0;
  
-@@ -64,6 +69,7 @@ codec: rt5650@1a {
- 	compatible = "realtek,rt5650";
- 	reg = <0x1a>;
- 	hp-detect-gpios = <&gpio 19 0>;
-+	cbj-sleeve-gpios = <&gpio 20 0>;
- 	interrupt-parent = <&gpio>;
- 	interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
- 	realtek,dmic-en = "true";
+ 	end = buffer->data + buffer->capacity;
+-	length = buffer->head->length;
+ 
+ 	if (&buffer->head->data[length] < end) {
+ 		if (copy_to_user(data, buffer->head->data, length))
 -- 
 2.43.0
 
