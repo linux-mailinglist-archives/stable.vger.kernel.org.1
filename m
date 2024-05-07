@@ -1,72 +1,63 @@
-Return-Path: <stable+bounces-43411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E5F8BF28A
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:52:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E18DF8BF28C
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7CFC1F23094
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:52:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C4EC2866C0
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56051182A8C;
-	Tue,  7 May 2024 23:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354B7182AA3;
+	Tue,  7 May 2024 23:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q3f7bK/+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhImjyoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1361A182A87;
-	Tue,  7 May 2024 23:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80B1182A9C;
+	Tue,  7 May 2024 23:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123635; cv=none; b=cJX1oYFivZrg8icIoGJYiv2CSTxtp3Otja3Ro3zGNWVgFdfgJ7cgNE21agtjELjeRyKogeS9aOnwHkCozrez/jFEJwu+EGynBM+ijmC4eW/nKM4/nVwpaDQpOmrK99M/5+E2AJcawSnSsXbriEK11Z4QfgYmbAihSj6quJwFIns=
+	t=1715123637; cv=none; b=ZubWwoSSu73DUAYsUSkh5Syqjbp4FUFoyuudK5RZwNPKml3rHSFQDTxgHO5kfcI1f4VPAE3pOd42ouVWawvDKI5HC8qmC21suupgHLiyKJNyCxhTNBHqOPNzM4mMZcvQRblHFX3alVgfr4cCgwqbcpLcEl0CpTl94Nwfr0ZHGl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123635; c=relaxed/simple;
-	bh=7XUdhYBuP3PUPxg1+fCt2aEcoCZ3e46AEM3flJ/HOJU=;
+	s=arc-20240116; t=1715123637; c=relaxed/simple;
+	bh=nX2Q8d5M67ZzlNPUVhA1JAV+ik1sAKhF1gl+RTTa0aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxbK+bKR2QcVnHzXszc1XwnC4n2baLfplI5AK5kTuV88mA113Tzk7+qtXlH+pthkC+I3X9nI/UOsF+3mvpabxaaVLgnNZa4c8NeWid61PT8bH0QCm2cZTKobVwtRglQZPbIyUS369i0/xZ086cxEAllgHDPaTFwWS9a7p8PFC90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q3f7bK/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628E4C3277B;
-	Tue,  7 May 2024 23:13:52 +0000 (UTC)
+	 MIME-Version; b=SBiL6CjOIxpq1npjzIkdmdBKzgnjzZbzR00fVjULjMjcl/+4Lxb8CIHWR0FTHafCoo9IZqoNBzQRW2zHfCmXOIqzNrKga0vPelmefiia5tTScZ+N1LrIo8j6O/rjA2U6TZVl7cZh9eLEOulIchVYBr1+jHdqAi3fZdmZa1iKtwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhImjyoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA45C2BBFC;
+	Tue,  7 May 2024 23:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123634;
-	bh=7XUdhYBuP3PUPxg1+fCt2aEcoCZ3e46AEM3flJ/HOJU=;
+	s=k20201202; t=1715123636;
+	bh=nX2Q8d5M67ZzlNPUVhA1JAV+ik1sAKhF1gl+RTTa0aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3f7bK/+YcEhTQauWzSdJhpq5cBRLZAiQEFZZ7XOV8lbU65UdJjklVq2wf63GgJwY
-	 HT5VhmwKeR6Ho0+wBDXSvYxoY4+SVKaoE4WZR3T1FHHThSVNb6rL+RLshy7Gw6gJHI
-	 1KtVplMExwx4X7BRaERCDnfQH1npB4WcQBf85Mj61AsX8UxVF9Bh0PZTujxzYMHyJD
-	 bBgWfbVkzOWnLxsWRvEWqQmPtjkIzDY04wGxEpw07SEbFwMRwflk397reKa+d9wkFt
-	 CJyDHnBxJqUHYmgTnRBej5zorE6xHrE06fWp2ptmwV+yoSILKFtIAGg+3zNtO7DhsI
-	 b3DBA6HDab7ZA==
+	b=hhImjyoNAuaOhwoPgANywrGfK3cQJnRhScBJsyBVKJAO9xeva/82qXoTlYlnau8mF
+	 Kgz1AKsBGwJifwgEXdV69yiHVSLCGthimwzgXvFgGHJ60yhIWabD73y1M4f7F2qDv9
+	 thviEOo02/dnLT4KGGXMMPJQaaIEN+WDCQUv6Cm2DHezlefDHQE9C086QQxtmOoWb7
+	 rSyIqq4R6kADpF4QpqW4AfMTzRN3VLXp0Qnrih8kk+347lhzDkod0iz8EFQvD0hvR/
+	 j8m+PUnPNg0C1+GMai80QUiwVOA1c3D6qU1LLtGDViTRXObJQWhZcg5abiGne4XO5l
+	 Zr6iz3lqnUSeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gabe Teeger <gabe.teeger@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Lancelot SIX <lancelot.six@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
+	Felix.Kuehling@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	wayne.lin@amd.com,
-	alvin.lee2@amd.com,
-	sohaib.nadeem@amd.com,
-	charlene.liu@amd.com,
-	sunran001@208suo.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 11/15] drm/amd/display: Atom Integrated System Info v2_2 for DCN35
-Date: Tue,  7 May 2024 19:13:20 -0400
-Message-ID: <20240507231333.394765-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 12/15] drm/amdkfd: Flush the process wq before creating a kfd_process
+Date: Tue,  7 May 2024 19:13:21 -0400
+Message-ID: <20240507231333.394765-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231333.394765-1-sashal@kernel.org>
 References: <20240507231333.394765-1-sashal@kernel.org>
@@ -81,40 +72,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.158
 Content-Transfer-Encoding: 8bit
 
-From: Gabe Teeger <gabe.teeger@amd.com>
+From: Lancelot SIX <lancelot.six@amd.com>
 
-[ Upstream commit 9a35d205f466501dcfe5625ca313d944d0ac2d60 ]
+[ Upstream commit f5b9053398e70a0c10aa9cb4dd5910ab6bc457c5 ]
 
-New request from KMD/VBIOS in order to support new UMA carveout
-model. This fixes a null dereference from accessing
-Ctx->dc_bios->integrated_info while it was NULL.
+There is a race condition when re-creating a kfd_process for a process.
+This has been observed when a process under the debugger executes
+exec(3).  In this scenario:
+- The process executes exec.
+ - This will eventually release the process's mm, which will cause the
+   kfd_process object associated with the process to be freed
+   (kfd_process_free_notifier decrements the reference count to the
+   kfd_process to 0).  This causes kfd_process_ref_release to enqueue
+   kfd_process_wq_release to the kfd_process_wq.
+- The debugger receives the PTRACE_EVENT_EXEC notification, and tries to
+  re-enable AMDGPU traps (KFD_IOC_DBG_TRAP_ENABLE).
+ - When handling this request, KFD tries to re-create a kfd_process.
+   This eventually calls kfd_create_process and kobject_init_and_add.
 
-DAL parses through the BIOS and extracts the necessary
-integrated_info but was missing a case for the new BIOS
-version 2.3.
+At this point the call to kobject_init_and_add can fail because the
+old kfd_process.kobj has not been freed yet by kfd_process_wq_release.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Gabe Teeger <gabe.teeger@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+This patch proposes to avoid this race by making sure to drain
+kfd_process_wq before creating a new kfd_process object.  This way, we
+know that any cleanup task is done executing when we reach
+kobject_init_and_add.
+
+Signed-off-by: Lancelot SIX <lancelot.six@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 228f098e5d88f..6bc8c6bee411e 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -2303,6 +2303,7 @@ static enum bp_result construct_integrated_info(
- 				result = get_integrated_info_v2_1(bp, info);
- 				break;
- 			case 2:
-+			case 3:
- 				result = get_integrated_info_v2_2(bp, info);
- 				break;
- 			default:
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 21ec8a18cad29..7f69031f2b61a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -818,6 +818,14 @@ struct kfd_process *kfd_create_process(struct file *filep)
+ 	if (process) {
+ 		pr_debug("Process already found\n");
+ 	} else {
++		/* If the process just called exec(3), it is possible that the
++		 * cleanup of the kfd_process (following the release of the mm
++		 * of the old process image) is still in the cleanup work queue.
++		 * Make sure to drain any job before trying to recreate any
++		 * resource for this process.
++		 */
++		flush_workqueue(kfd_process_wq);
++
+ 		process = create_process(thread);
+ 		if (IS_ERR(process))
+ 			goto out;
 -- 
 2.43.0
 
