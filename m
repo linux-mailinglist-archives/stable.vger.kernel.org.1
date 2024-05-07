@@ -1,129 +1,140 @@
-Return-Path: <stable+bounces-43193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A328BE854
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 18:08:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293928BE8A9
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 18:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40BB31C24D44
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 16:08:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD0071F287CB
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 16:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509B916ABC4;
-	Tue,  7 May 2024 16:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB9A16D4CF;
+	Tue,  7 May 2024 16:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="L07Er9Z9"
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="i2EWCR3b"
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0515716190C
-	for <stable@vger.kernel.org>; Tue,  7 May 2024 16:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148B316C45D;
+	Tue,  7 May 2024 16:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715097955; cv=none; b=lj0Goxa8eaXFHRk3Fj1egNDhrYnBXeZX4DNY66Xttjsll2HvVNPPKKx7yZlugKsC8qXJfw6rs3eF4rreu8Sw+Ecbul1HrZT6nXP1+UL1zaQ8bllAhXORZDyDJ32aU5Kp3NVWXjZqb2+wouRPvigc82PJBFPOUicNw1n2Kqe9vis=
+	t=1715098766; cv=none; b=eyGEWAvnj5Q6Hqt4lDRvjpMJyaG8ejtU8sYRopPeTCsEeR6Q9TdWGUzt+w4R/XxYdn1nfla1so3WhD5luP0VZGcPaaravm6AsVk8iBBYQY5XBIDHywWHKAwntahyGcJt2k2+ioQ/c4ErSvMjB4jo/e5LpNBFWs68IlsJpZgZPvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715097955; c=relaxed/simple;
-	bh=IBDmMCQDsB8MlYzMT2whLMg/8mQ9+RU3Yo3BVwlADnU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IB5xTRJ6v0q9A7HsFPm9+xXkR3ocVGbN/5QNPZYPjztq2o/gJh4+BP15TpNy4+9QAiFpMANoJ43zebtkZJXHb80Yzl92aE7CRhpApF2peM0kEUTwvlBxwsY1A/z8kKtkH3tLGZ0WD0q2MzHAOaYTkTtFk4dCUqIGTP4mwqrEWOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=L07Er9Z9; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 38F09C0006;
-	Tue,  7 May 2024 16:05:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1715097949;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q/VgyGaJjH+jEEQ1nJwlL4A4AubzyPoAEJvUeqkn8bc=;
-	b=L07Er9Z9stSHoo9MSAtJzXk75Mxy8k0lbzfFwZu1G2C9oQ07D6oCePF+FjgQuttwPRchEP
-	hsD2oDTqZknNDSdIW53dqPOUgBxjg4NXucHCu7+pnKkaypZfa1s0WbGk5JGMY4C/YO34Lv
-	aCfPc26dZGcC4K9huI5bUeEIgowHCfiEAL9XYliKQG/tjo+bhr1HHZtl5KEB8t+gw1tlMo
-	QR1/fVhN2ELyRVVfRwa7yhukZaTmGzE2GKDLc08bwR1M1yT1iK16eiJkv4WiC43uXuhez5
-	eNvxPLKS8ETQoXlxe252MqcHnAhlcfmYJ9/5+06xdEm8wmuaGNEWdwS+AqAZHA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	<linux-mtd@lists.infradead.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org,
-	Alexander Dahl <ada@thorsis.com>,
-	Steven Seeger <steven.seeger@flightsystems.net>
-Subject: [PATCH 2/2] mtd: rawnand: Bypass a couple of sanity checks during NAND identification
-Date: Tue,  7 May 2024 18:05:46 +0200
-Message-Id: <20240507160546.130255-3-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240507160546.130255-1-miquel.raynal@bootlin.com>
-References: <20240507160546.130255-1-miquel.raynal@bootlin.com>
+	s=arc-20240116; t=1715098766; c=relaxed/simple;
+	bh=wPfBBBqz4mWAHQz6NwLA3VhGyV0ey36YDnag2Ti6L8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nyb/ItFnLXZrBCqx8KU+JDnIY8ZOLIysI21pyJiqLawIhwQvDWWDpfR0Gnu/L9t53VLLPpAhpofGOPfiUZ0drCx+zyWG+e1jEetZgNcT3ovC9H43pUQBq52g4mIZmMVyVM2gpq5tlItW8RrZRrRz4TFuFtEPLx0xepRB1aO/DUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=i2EWCR3b; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1715098754; bh=wPfBBBqz4mWAHQz6NwLA3VhGyV0ey36YDnag2Ti6L8U=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=i2EWCR3bNy9bWRT9zukZaUGi24OmEe3DfnT3nOg9HZarTot8adruRC2klo9I3yCaY
+	 v1qz3xF8PmF1mfBwz8SkKd2yJE3D6wzt7nXo6y4xfDzk6H+K0xujtzOuo+u2h+sKBm
+	 Vg1wX2wooUyLByC0p64y4rpA+lafXjZszPkfphdk=
+Date: Tue, 7 May 2024 18:19:13 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: Amit Sunil Dhamne <amitsd@google.com>
+Cc: linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
+	gregkh@linuxfoundation.org, badhri@google.com, rdbabiera@google.com, 
+	linux-usb@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v1] usb: typec: tcpm: unregister existing source caps
+ before re-registration
+Message-ID: <y4lla7vqsrl75qhesmyexq7yvcu6hl6kryh3ctwq5ci3r4mlpw@rsnhfkmlmtt7>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	Amit Sunil Dhamne <amitsd@google.com>, linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
+	gregkh@linuxfoundation.org, badhri@google.com, rdbabiera@google.com, 
+	linux-usb@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <20240424223227.1807844-1-amitsd@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240424223227.1807844-1-amitsd@google.com>
 
-Early during NAND identification, mtd_info fields have not yet been
-initialized (namely, writesize and oobsize) and thus cannot be used for
-sanity checks yet. Of course if there is a misuse of
-nand_change_read_column_op() so early we won't be warned, but there is
-anyway no actual check to perform at this stage as we do not yet know
-the NAND geometry.
+On Wed, Apr 24, 2024 at 03:32:16PM GMT, Amit Sunil Dhamne wrote:
+> Check and unregister existing source caps in tcpm_register_source_caps
+> function before registering new ones. This change fixes following
+> warning when port partner resends source caps after negotiating PD contract
+> for the purpose of re-negotiation.
+> 
+> [  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
+> [  343.135071][  T151] Call trace:
+> [  343.135076][  T151]  dump_backtrace+0xe8/0x108
+> [  343.135099][  T151]  show_stack+0x18/0x24
+> [  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
+> [  343.135119][  T151]  dump_stack+0x18/0x24
+> [  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
+> [  343.135137][  T151]  kobject_add_internal+0x228/0x424
+> [  343.135146][  T151]  kobject_add+0x94/0x10c
+> [  343.135152][  T151]  device_add+0x1b0/0x4c0
+> [  343.135187][  T151]  device_register+0x20/0x34
+> [  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
+> [  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
+> [  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
+> [  343.135227][  T151]  kthread+0x114/0x1bc
+> [  343.135235][  T151]  ret_from_fork+0x10/0x20
+> [  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
+> 
+> Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
+> Cc: linux-usb@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index ab6ed6111ed0..d8eb89f4f0c3 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -2996,7 +2996,7 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
+>  {
+>  	struct usb_power_delivery_desc desc = { port->negotiated_rev };
+>  	struct usb_power_delivery_capabilities_desc caps = { };
+> -	struct usb_power_delivery_capabilities *cap;
+> +	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
+>  
+>  	if (!port->partner_pd)
+>  		port->partner_pd = usb_power_delivery_register(NULL, &desc);
+> @@ -3006,6 +3006,9 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
+>  	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
+>  	caps.role = TYPEC_SOURCE;
+>  
+> +	if (cap)
+> +		usb_power_delivery_unregister_capabilities(cap);
 
-So, if the fields are empty, especially mtd->writesize which is *always*
-set quite rapidly after identification, let's skip the sanity checks.
+This certainly looks like it's asking for use after free on port->partner_source_caps
+later on, since you're not clearing the pointer for the data that you just freed.
 
-nand_change_read_column_op() is subject to be used early for ONFI/JEDEC
-identification in the very unlikely case of:
-- bitflips appearing in the parameter page,
-- the controller driver not supporting simple DATA_IN cycles.
+> +
+>  	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+>  	if (IS_ERR(cap))
+>  		return PTR_ERR(cap);
 
-Fixes: c27842e7e11f ("mtd: rawnand: onfi: Adapt the parameter page read to constraint controllers")
-Fixes: daca31765e8b ("mtd: rawnand: jedec: Adapt the parameter page read to constraint controllers")
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Dahl <ada@thorsis.com>
-Closes: https://lore.kernel.org/linux-mtd/20240306-shaky-bunion-d28b65ea97d7@thorsis.com/
-Reported-by: Steven Seeger <steven.seeger@flightsystems.net>
-Closes: https://lore.kernel.org/linux-mtd/DM6PR05MB4506554457CF95191A670BDEF7062@DM6PR05MB4506.namprd05.prod.outlook.com/
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/mtd/nand/raw/nand_base.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+This can easily fail if caps contain invalid PDOs, resulting in keeping pointer
+to freed memory in port->partner_source_caps.
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 248e654ecefd..a66e73cd68cb 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -1440,12 +1440,14 @@ int nand_change_read_column_op(struct nand_chip *chip,
- 	if (len && !buf)
- 		return -EINVAL;
- 
--	if (offset_in_page + len > mtd->writesize + mtd->oobsize)
--		return -EINVAL;
-+	if (mtd->writesize) {
-+		if ((offset_in_page + len > mtd->writesize + mtd->oobsize))
-+			return -EINVAL;
- 
--	/* Small page NANDs do not support column change. */
--	if (mtd->writesize <= 512)
--		return -ENOTSUPP;
-+		/* Small page NANDs do not support column change. */
-+		if (mtd->writesize <= 512)
-+			return -ENOTSUPP;
-+	}
- 
- 	if (nand_has_exec_op(chip)) {
- 		const struct nand_interface_config *conf =
--- 
-2.40.1
+Kind regards,
+	o.
 
+> base-commit: 0d31ea587709216d88183fe4ca0c8aba5e0205b8
+> -- 
+> 2.44.0.769.g3c40516874-goog
+> 
 
