@@ -1,132 +1,168 @@
-Return-Path: <stable+bounces-43170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5049F8BDF49
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 12:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 860328BDFDD
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 12:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A35E8B21489
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 10:02:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC75CB23275
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 10:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80AAD14E2CD;
-	Tue,  7 May 2024 10:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF0014F123;
+	Tue,  7 May 2024 10:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P+9WF2m6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvUm8W89"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6DA13BAC3
-	for <stable@vger.kernel.org>; Tue,  7 May 2024 10:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3ED14EC7E;
+	Tue,  7 May 2024 10:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715076136; cv=none; b=ObsJnyDOFUCShiP6BDHNIS8+ayIwKcn0hoSVccC3A8HUzCmdBv/I67xyvJqs/CFHYUXSFUsEVhmi+1SImEKHHrcGvptPn9YgKfRHlIDUKFNjGMO63i76xFS3j09OIbsa88/JI6PYsHM4Y7s9zwfpzd19KLvGVlXI6PIbM/yB7uw=
+	t=1715078313; cv=none; b=NXfQn+0kNEHEuaKsEA+N7o6rgfm5sJzZPPeeaK/J/XCEyAmhR4z3wXD3H7t2crtUFKqOtdTFA1fAK2ogPzyCnHo6V39IClywddBznyHEipzlXiqAyBBn++GC2OwjjMlDtU475ttkdAHo3lyERbid7w9j69kg9Wy4sDfFcAX5gT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715076136; c=relaxed/simple;
-	bh=jxrbP51ApwB+nB6k7droxBtoZKEplqH7fzVFkVtvoqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lplcdfc+4uIlVR8pz7js5CW1TdVVJIKAO6H5W92jtkehPNr3hT/t4+1+ldBEnRmU+PhFVq5LbHfiu8KHIB4rDbp/2iYeWquuSXCI9YtSkgGUUjspiC2RdzatUglcco0+K8mV6Fdagk3TuzrE8dcsoXG3Xbu6xNN22xKMtq3mk0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P+9WF2m6; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a59a934ad50so648098366b.1
-        for <stable@vger.kernel.org>; Tue, 07 May 2024 03:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1715076133; x=1715680933; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xh7EFY8Q7bV9bAL/jh9gBCI67O6P18pHtiY/L20Df14=;
-        b=P+9WF2m6Emwn3JDxXyLaM8QqaHtR/Q3qWaG9wtr8+XBpY6F2Nyf/vFAZra2GRg9zwN
-         j381UFzEGFY/E6nqKVEMm55v6rBH6s6BM2TK9R2LT5TtbdE38jVonK4sAUtscUnlHcQx
-         xANP19lb8T8eIduQv6PS56zyuSyPJXMGwmhJEQaHq9aLFECScs3UYPUnAeep+pkFTJO/
-         TPN3A92qIwS7ChNl1QWciW3H4JwTmzpGfKBMUIZYUttQJbv0kcgV9v/K3DFTG8bk6T2A
-         5HJuqxJQxahHcfLg2awFxMwjoCZ9gmpy4Ysic9c/tvRbsYUNmmYbu/ZeY1mV9jtbf63S
-         rI5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715076133; x=1715680933;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xh7EFY8Q7bV9bAL/jh9gBCI67O6P18pHtiY/L20Df14=;
-        b=VCnT3vsntD7MNFMdpscurqM3o77tbAokA3opXE2/6RyCFprSXHeArVtJIgp80kS4dI
-         hEnXaaNVenDuSBN2Be9Vk/e1RoSwaMmRQq2xVTWLy4gL8N3zDXnY8xH4akcwTFHZgR25
-         POjVWJMW61c7Led0ymJwyezNtrDlx0JjWIFHGT9zLjkCEDQY+65oREvbKtUNW7F4i1We
-         VLDmG/xzB0YnrBGOUmxMau4eCVX6GCqbYl1H30njweCWEKpaSOkqhO4ECyoc2pr15MQD
-         arFjAMfsrqB8F5RPdl9r+k3p2vAPgAHX4MHM9I+M+aw7A0YZrRKge2FV7TAcO8TAcUDW
-         sxfw==
-X-Gm-Message-State: AOJu0Yy0/5DXBqkawoY+OpzI4uDLSov+vDqQcx/A3x50YVaiURu32C9G
-	VRZ6Ez2Et3dF+gJvcSDSAWjFkfyGN87twagBlbsjFfb3lFRsuih6mlXaPK8Wo0A=
-X-Google-Smtp-Source: AGHT+IGdTeYrrvQuiHJ267AFGQGOr/InjQ1hSYK78u1GMZuzU7Nd8dK+zAN8gjqU0ku58bn2t42Wow==
-X-Received: by 2002:a17:907:1b06:b0:a59:9a68:7283 with SMTP id mp6-20020a1709071b0600b00a599a687283mr9092604ejc.12.1715076133185;
-        Tue, 07 May 2024 03:02:13 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.206.169])
-        by smtp.gmail.com with ESMTPSA id qy29-20020a170907689d00b00a59adb12790sm3792651ejc.27.2024.05.07.03.02.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 May 2024 03:02:12 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] ASoC: qcom: audioreach: Correct mapping of back speakers
-Date: Tue,  7 May 2024 12:02:09 +0200
-Message-ID: <20240507100209.610436-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1715078313; c=relaxed/simple;
+	bh=f6wbMbCLTQCjpEEEl/TaVKzRMwt6S9ZGL8N+Xi6Q5NM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uHHYpEABQCJ8NBm+2q1Xd0qqsmgzNrHdVrKvczZYZsjG1SWf4vFWtlPcto6lcGsVwin1WRYd4Zt3VRtphbeXBvrFAbKgDV4AgYcW5ipAGBPVcmZRknudstTep9CIIzHS9tUAwfE6yBY7HorLeOdW2W9hQZv+R0oF63JpdBl2uqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvUm8W89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0249C2BBFC;
+	Tue,  7 May 2024 10:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715078311;
+	bh=f6wbMbCLTQCjpEEEl/TaVKzRMwt6S9ZGL8N+Xi6Q5NM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PvUm8W89kxquA0pPXEj7m6Sd2oIh4lI5FGDMNvoptYIx/XRYpMxtD8o+6YrYqq/Ls
+	 4OXkLIvASechkYU8LDUHw0gdDxWZupzv7UN5e4Gr7E84MBiWFNbti2V3IBtEAuZJ4V
+	 HwGg38stsWj7M6N17msxiReG5UZfbGB7lggvjFtrc/nL8t0nFtF9hUXkmw6bmQba9l
+	 0Gh2bheNmsXZv78rcoHimombn83Z52GMonaYxsFWsFnOvh3MX2gS+BiH/Yde+dKeSZ
+	 DFKBRbLSyi3G6pnvSu/ATxG/x79AYJP9erE1+82rCgCuZO52V/kUkscXKLrCZ561Vb
+	 3SwthMUU1d68g==
+Date: Tue, 7 May 2024 16:02:04 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org, 
+	Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@linux.dev>
+Subject: Re: [PATCH v4 1/2] powerpc64/bpf: fix tail calls for PCREL addressing
+Message-ID: <ziidl5jisk3szmhoe6ncs52gtftp45juyq2zn72fisdprlazyg@dy5wmue7q4i6>
+References: <20240502173205.142794-1-hbathini@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240502173205.142794-1-hbathini@linux.ibm.com>
 
-Qualcomm DSP, according to downstream sources, expects back speakers to
-be mapped as "back", not "surround".  The surround is used only for 8+
-speakers configuration.
+On Thu, May 02, 2024 at 11:02:04PM GMT, Hari Bathini wrote:
+> With PCREL addressing, there is no kernel TOC. So, it is not setup in
+> prologue when PCREL addressing is used. But the number of instructions
+> to skip on a tail call was not adjusted accordingly. That resulted in
+> not so obvious failures while using tailcalls. 'tailcalls' selftest
+> crashed the system with the below call trace:
+> 
+>   bpf_test_run+0xe8/0x3cc (unreliable)
+>   bpf_prog_test_run_skb+0x348/0x778
+>   __sys_bpf+0xb04/0x2b00
+>   sys_bpf+0x28/0x38
+>   system_call_exception+0x168/0x340
+>   system_call_vectored_common+0x15c/0x2ec
+> 
+> Also, as bpf programs are always module addresses and a bpf helper in
+> general is a core kernel text address, using PC relative addressing
+> often fails with "out of range of pcrel address" error. Switch to
+> using kernel base for relative addressing to handle this better.
+> 
+> Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+> 
+> * Changes in v4:
+>   - Fix out of range errors by switching to kernelbase instead of PC
+>     for relative addressing.
+> 
+> * Changes in v3:
+>   - New patch to fix tailcall issues with PCREL addressing.
+> 
+> 
+>  arch/powerpc/net/bpf_jit_comp64.c | 30 ++++++++++++++++--------------
+>  1 file changed, 16 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 79f23974a320..4de08e35e284 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -202,7 +202,8 @@ void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
+>  	EMIT(PPC_RAW_BLR());
+>  }
+>  
+> -static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u64 func)
+> +static int
+> +bpf_jit_emit_func_call_hlp(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
+>  {
+>  	unsigned long func_addr = func ? ppc_function_entry((void *)func) : 0;
+>  	long reladdr;
+> @@ -211,19 +212,20 @@ static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u
+>  		return -EINVAL;
+>  
+>  	if (IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)) {
+> -		reladdr = func_addr - CTX_NIA(ctx);
+> +		reladdr = func_addr - local_paca->kernelbase;
+>  
+>  		if (reladdr >= (long)SZ_8G || reladdr < -(long)SZ_8G) {
+> -			pr_err("eBPF: address of %ps out of range of pcrel address.\n",
+> -				(void *)func);
+> +			pr_err("eBPF: address of %ps out of range of 34-bit relative address.\n",
+> +			       (void *)func);
+>  			return -ERANGE;
+>  		}
+> -		/* pla r12,addr */
+> -		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(1) | IMM_H18(reladdr));
+> -		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | IMM_L(reladdr));
+> -		EMIT(PPC_RAW_MTCTR(_R12));
+> -		EMIT(PPC_RAW_BCTR());
+> -
+> +		EMIT(PPC_RAW_LD(_R12, _R13, offsetof(struct paca_struct, kernelbase)));
+> +		/* Align for subsequent prefix instruction */
+> +		if (!IS_ALIGNED((unsigned long)fimage + CTX_NIA(ctx), 8))
+> +			EMIT(PPC_RAW_NOP());
 
-Reported-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Fixes: 3c5fcb20e07e ("ASoC: qcom: audioreach: Add 4 channel support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- sound/soc/qcom/qdsp6/audioreach.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+We don't need the prefix instruction to be aligned to a doubleword 
+boundary - it just shouldn't cross a 64-byte boundary. Since we know the 
+exact address of the instruction here, we should be able to check for 
+that case.
 
-diff --git a/sound/soc/qcom/qdsp6/audioreach.c b/sound/soc/qcom/qdsp6/audioreach.c
-index 5291deac0a0b..c655f0213723 100644
---- a/sound/soc/qcom/qdsp6/audioreach.c
-+++ b/sound/soc/qcom/qdsp6/audioreach.c
-@@ -277,8 +277,8 @@ static void audioreach_set_channel_mapping(u8 *ch_map, int num_channels)
- 	} else if (num_channels == 4) {
- 		ch_map[0] =  PCM_CHANNEL_FL;
- 		ch_map[1] =  PCM_CHANNEL_FR;
--		ch_map[2] =  PCM_CHANNEL_LS;
--		ch_map[3] =  PCM_CHANNEL_RS;
-+		ch_map[2] =  PCM_CHANNEL_LB;
-+		ch_map[3] =  PCM_CHANNEL_RB;
- 	}
- }
- 
-@@ -851,8 +851,8 @@ static int audioreach_mfc_set_media_format(struct q6apm_graph *graph,
- 	} else if (num_channels == 4) {
- 		media_format->channel_mapping[0] = PCM_CHANNEL_FL;
- 		media_format->channel_mapping[1] = PCM_CHANNEL_FR;
--		media_format->channel_mapping[2] = PCM_CHANNEL_LS;
--		media_format->channel_mapping[3] = PCM_CHANNEL_RS;
-+		media_format->channel_mapping[2] = PCM_CHANNEL_LB;
-+		media_format->channel_mapping[3] = PCM_CHANNEL_RB;
- 	}
- 
- 	rc = q6apm_send_cmd_sync(graph->apm, pkt, 0);
--- 
-2.43.0
+> +		/* paddi r12,r12,addr */
+> +		EMIT(PPC_PREFIX_MLS | __PPC_PRFX_R(0) | IMM_H18(reladdr));
+> +		EMIT(PPC_INST_PADDI | ___PPC_RT(_R12) | ___PPC_RA(_R12) | IMM_L(reladdr));
+>  	} else {
+>  		reladdr = func_addr - kernel_toc_addr();
+>  		if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
+> @@ -233,9 +235,9 @@ static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u
+>  
+>  		EMIT(PPC_RAW_ADDIS(_R12, _R2, PPC_HA(reladdr)));
+>  		EMIT(PPC_RAW_ADDI(_R12, _R12, PPC_LO(reladdr)));
+> -		EMIT(PPC_RAW_MTCTR(_R12));
+> -		EMIT(PPC_RAW_BCTRL());
+>  	}
+> +	EMIT(PPC_RAW_MTCTR(_R12));
+> +	EMIT(PPC_RAW_BCTRL());
+
+This change shouldn't be necessary since these instructions are moved 
+back into the conditional in the next patch.
+
+Other than those minor comments:
+Reviewed-by: Naveen N Rao <naveen@kernel.org>
+
+
+- Naveen
 
 
