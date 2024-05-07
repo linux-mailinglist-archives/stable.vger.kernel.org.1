@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-43331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F2E8BF1CA
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBAC8BF1CD
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 373831C23393
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:35:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E08F1C22E12
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D02813698A;
-	Tue,  7 May 2024 23:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B9585959;
+	Tue,  7 May 2024 23:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lup6xZXF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrLFjPaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1851482FE;
-	Tue,  7 May 2024 23:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F44A7FBA6;
+	Tue,  7 May 2024 23:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123403; cv=none; b=NrUcI8YXAPwUvffDFcMiMRgKAqJ25WilGppLJ4CIZYt7KNulXL4Rcz3u2fVfDfMj0XqfGOvTDOt9UrrA4Lt//doemNNMdv0XLQv2eBYRpxcTBlEzPRLiFjC8nKC6vhORvpV5LEpwxIhQ82sLtzElbugNZir0ifeF6ezz44XHRx4=
+	t=1715123436; cv=none; b=EtG0Do653801mD/bjwLy3B8+/WUoQDkCO830Vw743PrFO836rBkHZ8eFND7uDfkeFP9YTbtaGtKLCXTwnpQWfL4oCGKXbJQK9PWuPCJK2voPVUd+2fhktFj2blXmCELgh6FIOc6ZrefT6EHd2Y8oy1Nd5fapjFz/lyNOL0JWqZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123403; c=relaxed/simple;
-	bh=KkfjDOzCjuo4G0ptW4GbKhoE2FZMfGdLBMqlhs1mn80=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOrBlshnbmYOpFYhmjotHRV+GLa4fbEVpDJSoqIs/scFNlj9jeaMwDkHpOzguB5XbEfhjNhTF3fIWqo18e/o0SqexH+uO1lXhJN20Xdvwhcl9kjrZcRAhbJll1G8TQd2E4Et6fnRvtPjalsAWJm7WG8u+197h49migH5nKDTJ90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lup6xZXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9E0C3277B;
-	Tue,  7 May 2024 23:10:01 +0000 (UTC)
+	s=arc-20240116; t=1715123436; c=relaxed/simple;
+	bh=mlO1AB1Iz8VdqHcNQzJ0eSmS0bKUqYyoUn6XIjE4TJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=crKyXivCvcFx+Mp0qV70zLY0lJ0ciiKJq2Mmu7tSkwTRr+Da3Ke9oUbhJcXswZErFyOPpJXGQ/xnpLx537fPqN9scGECKuO2BKJXYYtyldLjnzfr2SjaBJM9qWOzG8NL5dOXLeTji+/2ls5vfjuXjx2abwYL2mhA0Hozm4vTT8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrLFjPaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900ABC2BBFC;
+	Tue,  7 May 2024 23:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123403;
-	bh=KkfjDOzCjuo4G0ptW4GbKhoE2FZMfGdLBMqlhs1mn80=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lup6xZXFfFRqV4DvwMcWc4rYF4KFVPO7epiDhKGLIvp7HgVaFbZCQWaZ83jx+JkyX
-	 OALdDns+oRcFLIftILiSUv+YGoCREn6Bk67VbnouKx4DiQo0wSLZoKE9FWFRYC1bMl
-	 w+qy06ngNlr7dBKYlrkT42KYZFep5/MRxcGA6iZmu7WwJodR6GOKHlU+a0m5AofwlL
-	 X9+Awf2KIG884rUIN6sU4vSpEIMp/tenCI3LRbdxyRqq2B4DPTizRB17o4Gnmz9G1Y
-	 1RfRf/1V7nxJLqckFVd4vhmCqUuKblGkUNnrKSL/xEyPIB962l8tY+w7hiJLNH+52b
-	 wk2RQKsMm7wPQ==
+	s=k20201202; t=1715123436;
+	bh=mlO1AB1Iz8VdqHcNQzJ0eSmS0bKUqYyoUn6XIjE4TJM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JrLFjPaOdJ6/C1eBKUy1ozF8req+Fdq64njZH5RtwZXxUnCzCs1Gz8uAU6gXTPSMj
+	 svjPJo2txJuZ5/8LAkWA6yJD3KLyNqDuZSY1iR1eaquGu+S4K9hcy7+CK3AQHCIm56
+	 emoAv0L1noh+nhDBP2IKo/gdm4VDp48G1EGgPpJqU4iJ+7I6G7g9WeX2JtKRVzxrFk
+	 UhNlbwfgBGnCYx0u3gMWCsCuC+hxWsgqy7+oGkS1BdsMf2ZV8Y7/rjZ+OUKtCROwza
+	 QQE+LKXM4WwDZKL4CoyfcO9gsQaSYB8QRnwl3yiLQQSfn6OMZr/6YG2fyTxsgQ0CS2
+	 I/7VCZDseSqsw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 52/52] epoll: be better about file lifetimes
-Date: Tue,  7 May 2024 19:07:18 -0400
-Message-ID: <20240507230800.392128-52-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	pierre-louis.bossart@linux.intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	kuninori.morimoto.gx@renesas.com,
+	alban.boye@protonmail.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/43] ASoC: Intel: bytcr_rt5640: Apply Asus T100TA quirk to Asus T100TAM too
+Date: Tue,  7 May 2024 19:09:22 -0400
+Message-ID: <20240507231033.393285-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240507230800.392128-1-sashal@kernel.org>
-References: <20240507230800.392128-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,95 +71,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.9
+X-stable-base: Linux 6.6.30
 Content-Transfer-Encoding: 8bit
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 4efaa5acf0a1d2b5947f98abb3acf8bfd966422b ]
+[ Upstream commit e50729d742ec364895f1c389c32315984a987aa5 ]
 
-epoll can call out to vfs_poll() with a file pointer that may race with
-the last 'fput()'. That would make f_count go down to zero, and while
-the ep->mtx locking means that the resulting file pointer tear-down will
-be blocked until the poll returns, it means that f_count is already
-dead, and any use of it won't actually get a reference to the file any
-more: it's dead regardless.
+The Asus T100TA quirk has been using an exact match on a product-name of
+"T100TA" but there are also T100TAM variants with a slightly higher
+clocked CPU and a metal backside which need the same quirk.
 
-Make sure we have a valid ref on the file pointer before we call down to
-vfs_poll() from the epoll routines.
+Sort the existing T100TA (stereo speakers) below the more specific
+T100TAF (mono speaker) quirk and switch from exact matching to
+substring matching so that the T100TA quirk will also match on
+the T100TAM models.
 
-Link: https://lore.kernel.org/lkml/0000000000002d631f0615918f1e@google.com/
-Reported-by: syzbot+045b454ab35fd82a35fb@syzkaller.appspotmail.com
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://msgid.link/r/20240407191559.21596-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 3534d36a14740..c5a9a483fb538 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -875,6 +875,34 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- 	return res;
- }
- 
-+/*
-+ * The ffd.file pointer may be in the process of being torn down due to
-+ * being closed, but we may not have finished eventpoll_release() yet.
-+ *
-+ * Normally, even with the atomic_long_inc_not_zero, the file may have
-+ * been free'd and then gotten re-allocated to something else (since
-+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-+ *
-+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
-+ * the process of being free'd will block in eventpoll_release_file()
-+ * and thus the underlying file allocation will not be free'd, and the
-+ * file re-use cannot happen.
-+ *
-+ * For the same reason we can avoid a rcu_read_lock() around the
-+ * operation - 'ffd.file' cannot go away even if the refcount has
-+ * reached zero (but we must still not call out to ->poll() functions
-+ * etc).
-+ */
-+static struct file *epi_fget(const struct epitem *epi)
-+{
-+	struct file *file;
-+
-+	file = epi->ffd.file;
-+	if (!atomic_long_inc_not_zero(&file->f_count))
-+		file = NULL;
-+	return file;
-+}
-+
- /*
-  * Differs from ep_eventpoll_poll() in that internal callers already have
-  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
-@@ -883,14 +911,22 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- static __poll_t ep_item_poll(const struct epitem *epi, poll_table *pt,
- 				 int depth)
- {
--	struct file *file = epi->ffd.file;
-+	struct file *file = epi_fget(epi);
- 	__poll_t res;
- 
-+	/*
-+	 * We could return EPOLLERR | EPOLLHUP or something, but let's
-+	 * treat this more as "file doesn't exist, poll didn't happen".
-+	 */
-+	if (!file)
-+		return 0;
-+
- 	pt->_key = epi->event.events;
- 	if (!is_file_epoll(file))
- 		res = vfs_poll(file, pt);
- 	else
- 		res = __ep_eventpoll_poll(file, pt, depth);
-+	fput(file);
- 	return res & epi->event.events;
- }
- 
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index e609249cc38d5..651408c6f399d 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -636,28 +636,30 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_USE_AMCR0F28),
+ 	},
+ 	{
++		/* Asus T100TAF, unlike other T100TA* models this one has a mono speaker */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T100TA"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T100TAF"),
+ 		},
+ 		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
+ 					BYT_RT5640_JD_SRC_JD2_IN4N |
+ 					BYT_RT5640_OVCD_TH_2000UA |
+ 					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_MONO_SPEAKER |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+ 	{
++		/* Asus T100TA and T100TAM, must come after T100TAF (mono spk) match */
+ 		.matches = {
+-			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T100TAF"),
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "T100TA"),
+ 		},
+ 		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
+ 					BYT_RT5640_JD_SRC_JD2_IN4N |
+ 					BYT_RT5640_OVCD_TH_2000UA |
+ 					BYT_RT5640_OVCD_SF_0P75 |
+-					BYT_RT5640_MONO_SPEAKER |
+-					BYT_RT5640_DIFF_MIC |
+-					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+ 	{
 -- 
 2.43.0
 
