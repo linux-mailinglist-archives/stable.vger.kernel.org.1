@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-43409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062208BF286
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:51:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5198BF288
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:52:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AB761F231F5
-	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:51:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C88E1C235A5
+	for <lists+stable@lfdr.de>; Tue,  7 May 2024 23:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA6621C19C;
-	Tue,  7 May 2024 23:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF9A3DABFD;
+	Tue,  7 May 2024 23:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHqAMuA+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLBV3IZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB7921C195;
-	Tue,  7 May 2024 23:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997433DABF2;
+	Tue,  7 May 2024 23:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715123629; cv=none; b=kHG1jBNMt1WNNDCSbebXNgA0udXFCulkr54kOlw2+MTbDTsxUaogcjqJMJnzXwi9nJJeRIhiUUp0f87YRYkoAEXG0Yd01hQUiMkeUBZruahLrLanXVsWRFJUnu8a6YcomjfQmkmIgrOYLV9HkHvTLajUX3SlHYxFzr13mymKY6w=
+	t=1715123630; cv=none; b=dDZ0sVtUypIt4r9uElS8p83BR+HlizVKkTFtHVNrbrtM6lJqa3wma0Pdqwm9UCpcb4dYoCEYvdXkIB/v4iJeo5vlqFU27KlvToBqIEQ9q2MUmzDBQekkbaCaZBNFTKckY6vQE7MWhx7dKQkXTDFDJZw7Jrq7Ax46op1/1w8Ktag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715123629; c=relaxed/simple;
-	bh=f43ozCLdsfglP1LAVYw8NC7+1NYU/w/xvIQAowU7pjQ=;
+	s=arc-20240116; t=1715123630; c=relaxed/simple;
+	bh=4Y7M1xTEGQHbVyYlH9eP0GGf9X/mGQlRD9Mm9W1YTxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmW78sR5XQ/e+ntPmvSr8EjHa2C5S4FHKSvKibhWcK3u2HGzue7sdiWdUVS002Wz+WD/Q/dM+WaeKTc1IWGdyKlB/max9SLN0JtmaqVxJRILZ8TYC16Dip1Vmfmc0j79+msHJfmcNEmQ2wz+hI5mHBcteYJxnhBaVqzZDjMyllc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHqAMuA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26996C3277B;
-	Tue,  7 May 2024 23:13:48 +0000 (UTC)
+	 MIME-Version; b=AAvqFhP2J6yOPnSMEQ/th+ytfd1ZETblJl/AloysKmNtDK/wvHNp00FYWcB28ghajjp4XhqSL9tDD61cEnTMSTH45eSInMpwImh/vuCjYcIyKR5wJbr1bh6h+3iSl+UfwuK5elv0xxvhgR0BQuY0crrpCggzo0YZ2oQR3aIXg3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLBV3IZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600AAC4AF63;
+	Tue,  7 May 2024 23:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715123628;
-	bh=f43ozCLdsfglP1LAVYw8NC7+1NYU/w/xvIQAowU7pjQ=;
+	s=k20201202; t=1715123630;
+	bh=4Y7M1xTEGQHbVyYlH9eP0GGf9X/mGQlRD9Mm9W1YTxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHqAMuA+BZ3KG3+SoaR2fF/dbuXB3SFxEI9VCpCK+c6b09TIRmJHbvi9j3LkCd0AC
-	 dWk7gR7ZrCiO3axrQEWSB67IcyV4BFeui3qf+4b4d2o2/oGMtZHVvNiDY8+HxlmsKJ
-	 VoeMqLrVku+n8nDRbqaUuLoUcNoKXH8xBy/t+kWfTOhqcCHLhuPqdy1r0mM7dxiC6B
-	 xJaUXy5M6UhslQoXS++GI2KzBWBPEqBH9Sf0Pssi2dHxpvAwTMtYg1EJBfz7iuxH3B
-	 Ug9IyEqDNO3Xdv3J63MEBSceXAFsr02JS4ryhlMIoEyIFC6LZPGtcZyed6M7cg3YTN
-	 zxd+o1HXh3Nag==
+	b=nLBV3IZCpykgXAJ8CDMpBuU20dynOoha2nMGLTbSuTb0ZMuju8bsRc8nRAIaDBc6d
+	 raUtMKs0P3j4TOkPb50QkI9IzpvD+7loRCCyXdB40+XYLItr0niweqx96+5cfzoEYH
+	 5MGgopTbg91pb+ta+txW3L/MUj1OkbEa60el6u7lnZnDdvfpk799JM6K5gBxX9JAt0
+	 tFJoxZqyWD4zz7oTTGXDa+GH/T1MKnnkiqfJLrOP1u4EBIfv0MTdGsxegU23yOSFt0
+	 bmUYMTvhh6y7CjUpIgeMgdtF30JZb/EbbRqy/RH9M968qA1v/D3q0HKlqROhLefUAd
+	 cvJuCKhnbBGog==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux1394-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 5.15 09/15] firewire: nosy: ensure user_length is taken into account when fetching packet contents
-Date: Tue,  7 May 2024 19:13:18 -0400
-Message-ID: <20240507231333.394765-9-sashal@kernel.org>
+	support.opensource@diasemi.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 10/15] ASoC: da7219-aad: fix usage of device_get_named_child_node()
+Date: Tue,  7 May 2024 19:13:19 -0400
+Message-ID: <20240507231333.394765-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240507231333.394765-1-sashal@kernel.org>
 References: <20240507231333.394765-1-sashal@kernel.org>
@@ -65,41 +69,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.158
 Content-Transfer-Encoding: 8bit
 
-From: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 38762a0763c10c24a4915feee722d7aa6e73eb98 ]
+[ Upstream commit e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76 ]
 
-Ensure that packet_buffer_get respects the user_length provided. If
-the length of the head packet exceeds the user_length, packet_buffer_get
-will now return 0 to signify to the user that no data were read
-and a larger buffer size is required. Helps prevent user space overflows.
+The documentation for device_get_named_child_node() mentions this
+important point:
 
-Signed-off-by: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
+
+Add fwnode_handle_put() to avoid a leaked reference.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240426153033.38500-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/nosy.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/codecs/da7219-aad.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index b0d671db178a8..ea31ac7ac1ca9 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -148,10 +148,12 @@ packet_buffer_get(struct client *client, char __user *data, size_t user_length)
- 	if (atomic_read(&buffer->size) == 0)
- 		return -ENODEV;
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index 4dc6eed6c18aa..99676c426f781 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -629,8 +629,10 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 		return NULL;
  
--	/* FIXME: Check length <= user_length. */
-+	length = buffer->head->length;
+ 	aad_pdata = devm_kzalloc(dev, sizeof(*aad_pdata), GFP_KERNEL);
+-	if (!aad_pdata)
++	if (!aad_pdata) {
++		fwnode_handle_put(aad_np);
+ 		return NULL;
++	}
+ 
+ 	aad_pdata->irq = i2c->irq;
+ 
+@@ -705,6 +707,8 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 	else
+ 		aad_pdata->adc_1bit_rpt = DA7219_AAD_ADC_1BIT_RPT_1;
+ 
++	fwnode_handle_put(aad_np);
 +
-+	if (length > user_length)
-+		return 0;
+ 	return aad_pdata;
+ }
  
- 	end = buffer->data + buffer->capacity;
--	length = buffer->head->length;
- 
- 	if (&buffer->head->data[length] < end) {
- 		if (copy_to_user(data, buffer->head->data, length))
 -- 
 2.43.0
 
