@@ -1,101 +1,131 @@
-Return-Path: <stable+bounces-43460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54148C0158
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 17:47:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58928C0227
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 18:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 733A51F23F2E
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 15:47:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6DB61C211F7
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 16:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106A8127E34;
-	Wed,  8 May 2024 15:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F35ECC;
+	Wed,  8 May 2024 16:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BTBS1PAz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cbpWtO5K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC35126F39;
-	Wed,  8 May 2024 15:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A4C633
+	for <stable@vger.kernel.org>; Wed,  8 May 2024 16:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715183234; cv=none; b=YkWYXLa9ccoqYfuLuBa6zICuHywKXMcNj83AfogbVLplUNlLY5my6fdNLcUCkH8IELKefOtM74DfhZAr2QOzIcp2Q5rTc7c3vWTtSZT45UI6U38PYPKJdFDhpnqxn2VG4bJ08ahkWzFOLsmATogTqcXJZkL6lfsDofyxisgVhtI=
+	t=1715186349; cv=none; b=pNjb4g6p1SdK+HmVYm6G9BzjcdEQR4uqcurRYApiepiGtnNeZ+FjlhA8iwhizb6FdyGEFZzqrM6HGIYMPgM2XxXj4kwYSh3J656HLkHrcGEPrX7A4yOwol10YPlCZAhoIotqUjw4J7seqcXQNvYh8pT8pW8q96KenvScINPdRSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715183234; c=relaxed/simple;
-	bh=0HR6q0zl75bMlgfU7A1SNZdUSz2U26CMH4Khc6e3wVY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nVuUnhpHDQg1Xdlwixgo3TYH3NVk6TGkO2cmqWTjUkrpEOaY9pG+c6IxIZy28a/lQDK0Yd3qr5XpwgrJ1/qLGX274/AfhC95jKo9vi134OPKydNdDVMfJzqisC0VGpyaa591ppZ5IsFVGYMwMDTNYxvR0pmnZu2rRBNeMvwnpPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BTBS1PAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE5AC113CC;
-	Wed,  8 May 2024 15:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715183234;
-	bh=0HR6q0zl75bMlgfU7A1SNZdUSz2U26CMH4Khc6e3wVY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=BTBS1PAzbNf5tz9Ylffd4s0oku6UWlAlm3kmSVwkXAO3ZZzbNmrXVpugY9mtYHqdn
-	 /XdXhjBsBEa+TUINBTB2B2en7R3j+TtPNvonFvbDTdZBLEEP8WFzlTz9d1Qe6c+h2C
-	 2bBe2OBE7a8lDLgcqtWnzFOwOT8imZwETAiPED54GqjZrhZ2yC8lS060tN/kWjh9RD
-	 5wlaoTeI6ccvR+9z0aXsdXIPwhk4C53T7fdORfUk19uUSPq7R+rTX0YbHiUkn4w3jD
-	 pVQDZactcwSIJegW1XYIXUNMv5Hcukemwo6AdvLzTMCVLj400ZHlWqHuIdP0pURcw4
-	 X9c6Vi/T6AhYA==
-From: Conor Dooley <conor@kernel.org>
-To: linux-spi@vger.kernel.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	stable@vger.kernel.org,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] spi: microchip-core-qspi: fix setting spi bus clock rate
-Date: Wed,  8 May 2024 16:46:51 +0100
-Message-ID: <20240508-fox-unpiloted-b97e1535627b@spud>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1715186349; c=relaxed/simple;
+	bh=eXSo6LODCjadFOS+EQ+S+4IbdWK65dyA5w3m9oMB4lI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UIxTICQRRRzmNoQdLS2kUKs3dioreh/hAg++WqIhKtp6H0PPsEjZn0HSg5lABEG+byJIY+rmlLoykmvd126KySJadXcEyRp1eQsXmwA8VluqlBS6cuwKT1GKdLsfcn0acffPbmT4CgcTUnn7r6VY+qpHlce8U6AnEjm9dl+cFYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cbpWtO5K; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a59c5c9c6aeso993070366b.2
+        for <stable@vger.kernel.org>; Wed, 08 May 2024 09:39:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1715186346; x=1715791146; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SJhRl2DGBF5j+0kWEi1ldoyZEE3ffy3xPMEl3BQlZ74=;
+        b=cbpWtO5KKdePbR3iyzQjMsTieilQhwZBts5QbZsrvyKd5lbrQQLl30wHoOhm2Tk+Na
+         1kySECIGN8nBBKBLMtCnsTTxfzsl+IV8LABU1iCF29a8GR6gSxiqeBdHUzJwgwAFMrbE
+         jR17tDVwF9NG0lmgRTGxKh7xvVOWx9Gksq+8jY+uSj+fZDLVabNpEo+4n1ILgUt+N6Dx
+         nK5BtmTw9AIVXQJrALNFT/y5p9MZVa0qG0C9/AsSiL5wNwjph7lOhuJ6Jr9fB8awZam3
+         UgPfB4oWkE3OwVx2GHT6JmHeWZwZPc14J2QlxBhiRbX+A7fFlZ7/i/eVUFGXMZxNVl1N
+         06DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715186346; x=1715791146;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SJhRl2DGBF5j+0kWEi1ldoyZEE3ffy3xPMEl3BQlZ74=;
+        b=hfLbqIHjJqnAjGNUIMXltU/mROifESQnpWfqAq/gp3OSwdBZzBafAZxMR3ONvACG+1
+         JybS0IvhQ0fSkRmjR1+kl9A7cXIE6ksz6YBCcYN5XRXg8kBdcu29IXu6v0/T7N3KHpp9
+         K2Y3cef0Wp6yt7vepM7wq7kQ+lOzLquoSsn5fSt+6/hw358pSVeja833Cd5BcO+0kwVX
+         BCvDyvf+ROX8k5H9drYZw8WrZeFHgdZgPeCxGduyljn/4qNQq+++fLye2gkWfHQ2TOpG
+         RggYhBJe+JpMMH60kxWTue0E8VKTUEk/bVl5gjxseor1rrYnRAONB4XuW3RlKTHwWMBC
+         HSUw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlzxp//pgvBZHnyARjOfZJUoreglvWtB6sTuqKmEbJqtEUKQ0mLmPA/YroiTFnXyO6CAH8pem1aOqg5/1i3QHzP8NKw4It
+X-Gm-Message-State: AOJu0Yxia4NlrThiB46JJJa8rnv4LyX4YkDdknnHhr1455yd3gO6cMhx
+	iAFYZrYR0VsyKUWxYzYgSgy4HhFSXDKBAINE3BU6pkq+mjwHdBNRnsbKVrFLItc=
+X-Google-Smtp-Source: AGHT+IHCZyqVbpsx0DOVZ1A4z4AqaM4SNm2yM5sWSBx/6eRKLtXlUNVtYwQb5CKbqyEuaYhh+TU9Ig==
+X-Received: by 2002:a17:907:78cf:b0:a59:ca33:6841 with SMTP id a640c23a62f3a-a59fb9588bamr195153966b.32.1715186346181;
+        Wed, 08 May 2024 09:39:06 -0700 (PDT)
+Received: from [172.20.10.10] ([46.97.168.217])
+        by smtp.gmail.com with ESMTPSA id fw17-20020a170906c95100b00a59cfc54756sm3716424ejb.210.2024.05.08.09.39.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 May 2024 09:39:05 -0700 (PDT)
+Message-ID: <f7528434-6780-48f6-87a4-3d56d87f44fe@linaro.org>
+Date: Wed, 8 May 2024 17:39:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1341; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=JZge+HWuFL69hQ2rSaeYyYwg1fwwg6/w4PlilwD4sWM=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDGnW87IY6wvjcvbd3lc5s9/aYuKZvvjm3zweQikcjRv66 /ctvsnQUcrCIMbBICumyJJ4u69Fav0flx3OPW9h5rAygQxh4OIUgIlcncrIsPFnWtJWd4OtphIv ylmefL970ExKTr392aGbuWIBFxlZ2hj+u9uo3583L3LLvj2WExIS+68aJopO6H/8T/nr/8/mnOx uXAA=
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] spi: microchip-core-qspi: fix setting spi bus clock
+ rate
+To: Conor Dooley <conor@kernel.org>, linux-spi@vger.kernel.org
+Cc: Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org,
+ Daire McNamara <daire.mcnamara@microchip.com>,
+ Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
+ Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
+References: <20240508-fox-unpiloted-b97e1535627b@spud>
+Content-Language: en-US
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20240508-fox-unpiloted-b97e1535627b@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Conor Dooley <conor.dooley@microchip.com>
 
-Before ORing the new clock rate with the control register value read
-from the hardware, the existing clock rate needs to be masked off as
-otherwise the existing value will interfere with the new one.
 
-CC: stable@vger.kernel.org
-Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
-CC: Conor Dooley <conor.dooley@microchip.com>
-CC: Daire McNamara <daire.mcnamara@microchip.com>
-CC: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
-CC: Mark Brown <broonie@kernel.org>
-CC: linux-spi@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
----
- drivers/spi/spi-microchip-core-qspi.c | 1 +
- 1 file changed, 1 insertion(+)
+On 5/8/24 16:46, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
+> 
+> Before ORing the new clock rate with the control register value read
+> from the hardware, the existing clock rate needs to be masked off as
+> otherwise the existing value will interfere with the new one.
+> 
+> CC: stable@vger.kernel.org
+> Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 
-diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
-index 03d125a71fd9..09f16471c537 100644
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -283,6 +283,7 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
- 	}
- 
- 	control = readl_relaxed(qspi->regs + REG_CONTROL);
-+	control &= ~CONTROL_CLKRATE_MASK;
- 	control |= baud_rate_val << CONTROL_CLKRATE_SHIFT;
- 	writel_relaxed(control, qspi->regs + REG_CONTROL);
- 	control = readl_relaxed(qspi->regs + REG_CONTROL);
--- 
-2.43.0
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 
+> ---
+> CC: Conor Dooley <conor.dooley@microchip.com>
+> CC: Daire McNamara <daire.mcnamara@microchip.com>
+> CC: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+> CC: Mark Brown <broonie@kernel.org>
+> CC: linux-spi@vger.kernel.org
+> CC: linux-kernel@vger.kernel.org
+> ---
+>  drivers/spi/spi-microchip-core-qspi.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
+> index 03d125a71fd9..09f16471c537 100644
+> --- a/drivers/spi/spi-microchip-core-qspi.c
+> +++ b/drivers/spi/spi-microchip-core-qspi.c
+> @@ -283,6 +283,7 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
+>  	}
+>  
+>  	control = readl_relaxed(qspi->regs + REG_CONTROL);
+> +	control &= ~CONTROL_CLKRATE_MASK;
+>  	control |= baud_rate_val << CONTROL_CLKRATE_SHIFT;
+>  	writel_relaxed(control, qspi->regs + REG_CONTROL);
+>  	control = readl_relaxed(qspi->regs + REG_CONTROL);
 
