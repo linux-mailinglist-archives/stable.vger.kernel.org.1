@@ -1,93 +1,89 @@
-Return-Path: <stable+bounces-43463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2BA8C02A5
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 19:09:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EA98C0361
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 19:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FDB71F23598
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 17:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68CDD2896D6
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 17:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07C310A11;
-	Wed,  8 May 2024 17:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC047127E34;
+	Wed,  8 May 2024 17:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=80x24.org header.i=@80x24.org header.b="ddtdl6os"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="gWvQOHvt"
 X-Original-To: stable@vger.kernel.org
-Received: from dcvr.yhbt.net (dcvr.yhbt.net [173.255.242.215])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DCA79F6
-	for <stable@vger.kernel.org>; Wed,  8 May 2024 17:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.255.242.215
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC89E1E529;
+	Wed,  8 May 2024 17:41:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715188169; cv=none; b=j5W9TQEElseJIKxzYk0jRg24GkzQjsnXes6DHkaHosI/1iuEfUNKZXqEhQkxCkD+9QgrAZdhbhpAxfmKs8DYVCC8QxfFn7jwlGcwbXGUledKjDzsbXx12YJVcmv0HTX3weqInK6fIgkyL+bEsTyCOhKLfv4+Zuxpp3xtysSN5w0=
+	t=1715190064; cv=none; b=ZyHwdkWZYOYXbO4ly7huoXvFDNf260L+N19b3PMj8P+kk1bLHaGHHmAQK30rVa1EoG3o/oESS650bLL6ZFqEAka01XzuqSSzclsJVQKK39KE9duK0ixi8+f2W1/9Wi/v91JZUih85uKI+ZSItoicJnVZA8By/M9iaIUVDi9r8jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715188169; c=relaxed/simple;
-	bh=5g3YO49XlIUU24NL8KitPYP5DAPbN/hPKLwuTE+S3Cs=;
+	s=arc-20240116; t=1715190064; c=relaxed/simple;
+	bh=+U1RLFKF/zn7hMLbbVtxwTGlZgQo/cGDB0xuxsC+IbU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VPzVZmIi7o9t13U3h1t6WCrCWSFOfIPwjjomr4wB7I7MWcMieYo7EbP3McVDZoQ1SqJ90p8nFXhEExPHiUvsUZ+bJgn7jrvLkrs2hjxn6Ws9ij54Awl7qzXOvnWIb0A5UHQ8O1nJ//6efP5kCZv09gVCeurlo0OlwewQJ0CWmQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=80x24.org; spf=pass smtp.mailfrom=80x24.org; dkim=pass (1024-bit key) header.d=80x24.org header.i=@80x24.org header.b=ddtdl6os; arc=none smtp.client-ip=173.255.242.215
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=80x24.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=80x24.org
-Received: from localhost (dcvr.yhbt.net [127.0.0.1])
-	by dcvr.yhbt.net (Postfix) with ESMTP id 5C4C71F44D;
-	Wed,  8 May 2024 17:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=80x24.org;
-	s=selector1; t=1715188167;
-	bh=5g3YO49XlIUU24NL8KitPYP5DAPbN/hPKLwuTE+S3Cs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ddtdl6ospSXvtTRte3hv6TX5JmmBWr92GMfKClc96062/2LKtCloTfxRb8qv2L2w1
-	 vvCqdroa5CNp6ljaXtuNhGSwj2xhy2DgD3tpK/1CIghOYXyqS9AN1AfVrcRiEe8pYB
-	 vKk+7lmxhvq2lnOlMV6nqb1+zTioj7wYR+lqt97M=
-Date: Wed, 8 May 2024 17:09:27 +0000
-From: Eric Wong <e@80x24.org>
-To: Konstantin Ryabitsev <mricon@kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, tools@linux.kernel.org,
-	stable@vger.kernel.org, meta@public-inbox.org, sashal@kernel.org,
-	gregkh@linuxfoundation.org, krzk@kernel.org
-Subject: Re: filtering stable patches in lore queries
-Message-ID: <20240508170927.M233061@dcvr>
-References: <ZixGx_sTyDmdUlaV@zx2c4.com>
- <20240427071921.M438650@dcvr>
- <20240429-antique-hyena-of-glee-d9e4ac@lemur>
- <20240508113314.M238016@dcvr>
- <20240508-optimal-peach-bustard-a49160@meerkat>
+	 Content-Type:Content-Disposition:In-Reply-To; b=rzIcQSmfvPd9RJFr3Knp4Hzmix33QFdhEQDzdSmN8C0MIT4DeV13b0rz/AI5gXBkpcqhYs54iIMAyhFbjFZqe5psN3JsQj6XW8Yz53G3laNSRfqNHyWj5vJMjNs3VMOLZTTw7WjoePtSRNqhi8z5Bf1QzWqTJU/ohqvXdHi2nfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=gWvQOHvt; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 94CBC2027A;
+	Wed,  8 May 2024 19:40:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1715190053;
+	bh=rOCYAYk/4JwmzqnbBL/qv10PJF5H7DRT2QaXA8QKZKA=; h=From:To:Subject;
+	b=gWvQOHvtFnCkkls7PJZAYF+0R/A9QYWTqFX07pcxlLCgjeEawofMOJp8lazlWcYfh
+	 G1y7AM8De7TyqCsDvlZGz1/tx0JxvOnqQhcBl1JovI36BTXGgcUxUfZrphW4URn+fS
+	 1Xw5altysHgPsjIsag5coRiK4eUV0MMwMCmPrfeOFVC6E2m0ApAjH13dLTfftpJ4gf
+	 j6J+oz/sMi2P3gNsP1pTlxNFxDgddY/eUQogWmX2Xb6tko+A9eF39MGvOc1zhP0KvE
+	 FZbjaGdv3gX90hh87gUwHb17jPM7VBAjhJzEucq/zK9FnaXwtRNhMGZTxLJvcy1bA8
+	 iXDj8dL4NYZFA==
+Date: Wed, 8 May 2024 19:40:48 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Vitor Soares <ivitro@gmail.com>, Adam Ford <aford173@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vitor Soares <vitor.soares@toradex.com>, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH v1] pmdomain: imx8m-blk-ctrl: fix suspend/resume order
+Message-ID: <20240508174048.GA5257@francesco-nb>
+References: <20240418155151.355133-1-ivitro@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240508-optimal-peach-bustard-a49160@meerkat>
+In-Reply-To: <20240418155151.355133-1-ivitro@gmail.com>
 
-Konstantin Ryabitsev <mricon@kernel.org> wrote:
-> On Wed, May 08, 2024 at 11:33:14AM GMT, Eric Wong wrote:
-> > https://public-inbox.org/meta/20240508110957.3108196-1-e@80x24.org/
-
-> > Yeah, though there's 3 ways of indexing strings, currently :x
-> > I've decided to keep some options open and support boolean_term,
-> > text, and phrase for now.
+On Thu, Apr 18, 2024 at 04:51:51PM +0100, Vitor Soares wrote:
+> From: Vitor Soares <vitor.soares@toradex.com>
 > 
-> What's the difference between "text" and "phrase"?
-
-text is like indexlevel=medium (case-insensitive and sortable
-by relevance), while phrase is like indexlevel=full so
-adds positions to allow searching phrases via "double quotesk
-
-(also documented in the proposed public-inbox-config.pod change,
-not sure how clear it was for non-Xapian-internals-aware
-folks...)
-
-> > boolean_term is the cheapest and probably best for exactly
-> > matching labels/enums and such.
+> During the probe, the genpd power_dev is added to the dpm_list after
+> blk_ctrl due to its parent/child relationship. Making the blk_ctrl
+> suspend after and resume before the genpd power_dev.
 > 
-> So, this is for "X-Ignore-Me: Yes" type of headers?
+> As a consequence, the system hangs when resuming the VPU due to the
+> power domain dependency.
+> 
+> To ensure the proper suspend/resume order, add a device link betweem
+> blk_ctrl and genpd power_dev. It guarantees genpd power_dev is suspended
+> after and resumed before blk-ctrl.
+> 
 
-Yes.  Though I just remembered it's case-sensitive (same
-treatment as Message-ID with "m:"), so I guess that needs to be
-documented.
+Cc: Adam Ford
+
+Francesco
+
 
