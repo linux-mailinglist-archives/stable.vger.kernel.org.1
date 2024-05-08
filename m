@@ -1,115 +1,79 @@
-Return-Path: <stable+bounces-43457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A74B8BFDAC
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 14:51:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CDC8BFF19
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 15:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFE241F223C0
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 12:51:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A12D4B2476F
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 13:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EBA56B70;
-	Wed,  8 May 2024 12:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="BkR85RNs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C18D8663A;
+	Wed,  8 May 2024 13:42:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A422071;
-	Wed,  8 May 2024 12:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF92584E04;
+	Wed,  8 May 2024 13:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715172678; cv=none; b=PSSsROc2rLG/kmtiFt5FMRaA1L64bNqEGTOgPHrPrALJUhjVKPqnlG5AKZvWKDPbK3SZyfZn9SWyIUzi7SUyT64uMdcsI4IXCvyeMoq3HUTuu5ad7q7ZDhi0d8SGbM1coapZfVeyHN0CcPVSmRYSxLsL9lV3OnvOmxBD5OVeTa4=
+	t=1715175721; cv=none; b=EnLCnnGU9ZM/8iXhLmSvnAMeZPev7XI6BLzLkISlb/pZ1eOFE/LLAjMUoZzJjGLQGmMktUdn+cEjaMj+mgxq7QnQWDClAYc18oTKyxiG84aiwJ0qhV6yXbcS44ijpEbbiHIbJfX44KxlEbXIibqs0K6hc+78yQkLQ/ZGaV+5Rtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715172678; c=relaxed/simple;
-	bh=zjLlvB+WbJijsa7Xq2sGoO7LgZnL7gRVI2UA3wsYzcY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=geN/5VNbdH8GTK1diKdVxyoZZgNg5vvSEWXIsjkTzSpn9n9rtlGjkRCazZmEAgm+mJNNtaoEXKTBFH0anbIvmk6LBlIW8T0RxozZZg6pTnreZ2rBk7dXufm17g7HSGpjbAsDrvrVHlhwdMxhUDWfJKZY9YikbOf2nnz9PDXvnSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=BkR85RNs; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=zjLlvB+WbJijsa7Xq2sGoO7LgZnL7gRVI2UA3wsYzcY=;
-	t=1715172676; x=1715604676; b=BkR85RNsJiheEHp4jencaeLhwFiknHBpEcEwEG6g/9FugG1
-	DHRX6V5j0wmaijOjWzC2ylJr2jo3MNzJFKHDX4J77455GieigLGDxVDTQGDv3ayDtAQXbHJH7VjbQ
-	jLz8UmQAx8QK0Sh6UazeUdKOhdl8G7Hm66WrbI2w8K72EJtzFvPbSkkY84mYInFQypdnwo0ACDuM6
-	uiQFt6Shmx+Dtfz7bNW+dVbSNMMCPrZUpFNda8xdf/NYPNQJmgdIXzLU8rs3RReKYrCv6Lf96rMxg
-	zyy/9Ls6Ni7lJ0DmC/mXqFHBtsZV3vUD7nJO4S074nOYe3/zw+cCRCWBTMgU1y8w==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s4glL-0003Db-Ck; Wed, 08 May 2024 14:51:11 +0200
-Message-ID: <7e3fdac4-e0bc-42f4-9bb3-a6b16f323491@leemhuis.info>
-Date: Wed, 8 May 2024 14:51:10 +0200
+	s=arc-20240116; t=1715175721; c=relaxed/simple;
+	bh=AYzT8wAUdtGeTkTOdCcgz0/5nuiVd/wcZb8NwNWX1SI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qPbV3iAihrVuAtljHI2w3C4AJVsyiD66VohZZD1orZja+15G8zc/IOiEPquBi7eqvSAwhtFlfAcIwvjya4csulqX5pnvp080Lh9QDVOthAyjz8pcSxTIO/hsbUpR/ssRshlmi5b3CzumRGtrOLJf1P7VxPObbjPzIPD5mL17spQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZGXP6RJ9z4xG1;
+	Wed,  8 May 2024 23:41:57 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org, Hari Bathini <hbathini@linux.ibm.com>
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Martin KaFai Lau <martin.lau@linux.dev>, stable@vger.kernel.org
+In-Reply-To: <20240502173205.142794-1-hbathini@linux.ibm.com>
+References: <20240502173205.142794-1-hbathini@linux.ibm.com>
+Subject: Re: [PATCH v4 1/2] powerpc64/bpf: fix tail calls for PCREL addressing
+Message-Id: <171517558549.165093.12896481227430118737.b4-ty@ellerman.id.au>
+Date: Wed, 08 May 2024 23:39:45 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Regression] 6.9.0: WARNING: workqueue: WQ_MEM_RECLAIM
- ttm:ttm_bo_delayed_delete [ttm] is flushing !WQ_MEM_RECLAIM
- events:qxl_gc_work [qxl]
-To: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Cc: airlied@gmail.com, airlied@redhat.com, daniel@ffwll.ch,
- dreaming.about.electric.sheep@gmail.com, dri-devel@lists.freedesktop.org,
- kraxel@redhat.com, linux-kernel@vger.kernel.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- spice-devel@lists.freedesktop.org, tzimmermann@suse.de,
- virtualization@lists.linux.dev, Anders Blomdell <anders.blomdell@gmail.com>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- David Wang <00107082@163.com>
-References: <20240430061337.764633-1-00107082@163.com>
- <20240506143003.4855-1-00107082@163.com>
- <ac41c761-27c9-48c3-bd80-d94d4db291e8@leemhuis.info>
- <b57f8ede-5de6-4d3d-96a0-d2fdc6c31174@gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <b57f8ede-5de6-4d3d-96a0-d2fdc6c31174@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1715172676;62cce3d8;
-X-HE-SMSGID: 1s4glL-0003Db-Ck
 
-On 08.05.24 14:35, Anders Blomdell wrote:
-> On 2024-05-07 07:04, Linux regression tracking (Thorsten Leemhuis) wrote:
->> On 06.05.24 16:30, David Wang wrote:
->>>> On 30.04.24 08:13, David Wang wrote:
->>
->>>> And confirmed that the warning is caused by
->>>> 07ed11afb68d94eadd4ffc082b97c2331307c5ea and reverting it can fix.
->>>
->>> The kernel warning still shows up in 6.9.0-rc7.
->>> (I think 4 high load processes on a 2-Core VM could easily trigger
->>> the kernel warning.)
->>
->> Thx for the report. Linus just reverted the commit 07ed11afb68 you
->> mentioned in your initial mail (I put that quote in again, see above):
->>
->> 3628e0383dd349 ("Reapply "drm/qxl: simplify qxl_fence_wait"")
->> https://git.kernel.org/torvalds/c/3628e0383dd349f02f882e612ab6184e4bb3dc10
->>
->> So this hopefully should be history now.
->>
-> Since this affects the 6.8 series (6.8.7 and onwards), I made a CC to
-> stable@vger.kernel.org
+On Thu, 02 May 2024 23:02:04 +0530, Hari Bathini wrote:
+> With PCREL addressing, there is no kernel TOC. So, it is not setup in
+> prologue when PCREL addressing is used. But the number of instructions
+> to skip on a tail call was not adjusted accordingly. That resulted in
+> not so obvious failures while using tailcalls. 'tailcalls' selftest
+> crashed the system with the below call trace:
+> 
+>   bpf_test_run+0xe8/0x3cc (unreliable)
+>   bpf_prog_test_run_skb+0x348/0x778
+>   __sys_bpf+0xb04/0x2b00
+>   sys_bpf+0x28/0x38
+>   system_call_exception+0x168/0x340
+>   system_call_vectored_common+0x15c/0x2ec
+> 
+> [...]
 
-Ohh, good idea, I thought Linus had added a stable tag, but that is not
-the case. Adding Greg as well and making things explicit:
+Applied to powerpc/next.
 
-@Greg: you might want to add 3628e0383dd349 ("Reapply "drm/qxl: simplify
-qxl_fence_wait"") to all branches that received 07ed11afb68d94 ("Revert
-"drm/qxl: simplify qxl_fence_wait"") (which afaics went into v6.8.7,
-v6.6.28, v6.1.87, and v5.15.156).
+[1/2] powerpc64/bpf: fix tail calls for PCREL addressing
+      https://git.kernel.org/powerpc/c/2ecfe59cd7de1f202e9af2516a61fbbf93d0bd4d
+[2/2] powerpc/bpf: enable kfunc call
+      https://git.kernel.org/powerpc/c/61688a82e047a4166436bf2665716cc070572ffa
 
-Ciao, Thorsten
+cheers
 
