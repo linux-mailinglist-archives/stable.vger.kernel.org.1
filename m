@@ -1,140 +1,147 @@
-Return-Path: <stable+bounces-43465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBAA8C037A
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 19:43:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B808C039A
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 19:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2819A2890B6
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 17:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF6751F23D2E
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 17:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02BA128806;
-	Wed,  8 May 2024 17:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="INisVFej"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFE412F5B3;
+	Wed,  8 May 2024 17:46:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262B820309
-	for <stable@vger.kernel.org>; Wed,  8 May 2024 17:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F171613048C
+	for <stable@vger.kernel.org>; Wed,  8 May 2024 17:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715190227; cv=none; b=ePtv4hnVcfUomjb0iHg6lbT6MdoTkIqUgN2U1fe1Ja3swoyajZv8WNGuhGIJIOU/2Dx5m+BO4G7FxY37afBm9kWB7iGUI56s386WZdTYCg2fvIz+hax1jT+FwUQo1pIyyegI/KAh19XabHHHtKs5YozPKHvbMZbb7MycSRDGKz8=
+	t=1715190376; cv=none; b=EG7sULVSbrU7U7EJJFK9QK0Cau5wQ41Z9v1yfFLd+h8m057CTR1yePvRtTAOKJhUpETSUgS7KrULwIJzyHjigA/OxXVovLTzTWjq63h/nBm9yvHPOZtBr85faTJ1cSsyyo+TuYmVXNS0vt3sHCh+RmQf6IDzbNdvdezn9tY22a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715190227; c=relaxed/simple;
-	bh=31XmwO5nXS1nwEapBk2NNksodlmCulY6cmDlawgK3qs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qeq5iMlzRGWosLnI7LXYQ0VqqzvVcp3vt4tbeCv86I59M7nuD1q1rb0e8JQHi1ol/QNByraJqLTKRQ0k6vPtZFPyi6IEtTcmJxhYsYtGCwkkyNSFNLCNV9I7P5Ta9itr3as5kEgfvm+6fqggp3tmMdyNcrdEw2B9boOXdy7Zlr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=INisVFej; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41ebcf01013so350425e9.0
-        for <stable@vger.kernel.org>; Wed, 08 May 2024 10:43:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1715190224; x=1715795024; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=idEaMcbGFaK4BQgFvbB0b5BDKYmvMsNLNj6qCW0EDH0=;
-        b=INisVFejlQ1rTtIijaKpKsCM5C1LOXcWblW7Bfb9xL147+SQECDaaNw61uoWiMfvfS
-         /KmnYfmYLJNqwVQpMlEciNglye3xUFw77UEbWETf5tskPxn1EvidTyJQ9anvTf8A+J+Y
-         mJSHELJ4eTpMmnHWvsj4JMYdlkMEsifxTMM3erwilUZYZ6QHg58KC7VV0hZk2fVcTcEQ
-         9HuZMONxY+SDRFVSvVrOYFddpAO1h8oVsg49ewi03G902Uf+o34e7EOnbutFxORzXgzD
-         MSk7bwpCdzqhRUvEYrXdiCH8TuQxFsthtpqIhJcyLXzoocv8lWS0cFG8XGxMC+MsDT6n
-         TKBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715190224; x=1715795024;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=idEaMcbGFaK4BQgFvbB0b5BDKYmvMsNLNj6qCW0EDH0=;
-        b=RlL+NvzzO07a8leJ7bNULLSwrYj0Xm1bYRo+LdfVjd16E2XpAh3V6a67Qdq4gEP9Fn
-         FMhsA5HiFMqltfPu/Qq+zi1rU/OF0D+LRT0AeNt6Au2nisD0Hc1x+d+ZYvELSshx9yin
-         3X7uGI9EvodPd2Y0p4j6MvpHBrCTA7BkbOhpeUOSWwP0EfsLXLE7sbJ3xpB+OOWoCLBK
-         6QWgYNPMXUODpojJ5w+glQS2GbH7lt1P5n+F9BLF+CcX9kvS+RRdyk44TtMRiBeL+Z3l
-         oFGZ5TwyT3f/oLh3YjbM72pwhq62513+ge0HbE0Wc0npYyIX93nfUhEACP06Wkg6+Xdc
-         zZew==
-X-Forwarded-Encrypted: i=1; AJvYcCUPdr+ws6G3UNkyw2U1Yc26QRCBvMrAfBqtY2iBnu11q+621TucVTcT8xdMHCdKR8nz/MKqTU5g+3GnARrt1Yw1ftszalqa
-X-Gm-Message-State: AOJu0Yz3SEeePydJeqCKLjr+GtPztwzrkF0/NMUHQrjG1FiqGD+9gdGc
-	nnVDTvjXrtHDqaJTnZ+Sj8TVxMXHA8Fs+3tx8wZC4J7+sR/alD9sMT6feglQKXQ=
-X-Google-Smtp-Source: AGHT+IEu1aW4a8E99d+7lWp9ZffFtuGe8/3woIj3ozR0DQZMe/xC4frcR0jBIUcfvK8mmbuAyGoGxQ==
-X-Received: by 2002:a05:600c:1d05:b0:418:d3f4:677b with SMTP id 5b1f17b1804b1-41fbce7ddc9mr2866845e9.17.1715190224639;
-        Wed, 08 May 2024 10:43:44 -0700 (PDT)
-Received: from [192.168.0.3] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41f882086f0sm30355515e9.42.2024.05.08.10.43.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 May 2024 10:43:44 -0700 (PDT)
-Message-ID: <613657e3-0ddb-47f7-b66b-e1462b6a6282@linaro.org>
-Date: Wed, 8 May 2024 18:43:43 +0100
+	s=arc-20240116; t=1715190376; c=relaxed/simple;
+	bh=f8PbXGqF82lXHQlKyIX8tEfHkeLPJzChVRHjKD0oLGg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iVYuk0A6gsgqAPrqoSuO3/qt+zfBchGxtoltw8p5n98HqqKE0VBVwsIwMReJ/hUf7ZY6lTkcR3yIAXavNbvGNnEfpXtqhw/elrHwmxXsClM/ACSTHmXBSiILcfcRIt36VZdvN9SS5SQUeA2xIqKTGWdW3PzJiwIPk0DvvTmgyuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1s4lMg-0007oy-75; Wed, 08 May 2024 19:46:02 +0200
+Message-ID: <a08ac1e225d29797cf8d375c5cf4c331f66c92a8.camel@pengutronix.de>
+Subject: Re: [PATCH v1] pmdomain: imx8m-blk-ctrl: fix suspend/resume order
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Vitor Soares <ivitro@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, linux-pm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 08 May 2024 19:46:01 +0200
+In-Reply-To: <20240418155151.355133-1-ivitro@gmail.com>
+References: <20240418155151.355133-1-ivitro@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/13] pinctrl: qcom: spmi-gpio: drop broken pm8008
- support
-To: Johan Hovold <johan+linaro@kernel.org>, Lee Jones <lee@kernel.org>,
- Mark Brown <broonie@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Das Srinagesh <quic_gurus@quicinc.com>,
- Satya Priya <quic_c_skakit@quicinc.com>, Stephen Boyd <swboyd@chromium.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240506150830.23709-1-johan+linaro@kernel.org>
- <20240506150830.23709-10-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20240506150830.23709-10-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On 06/05/2024 16:08, Johan Hovold wrote:
-> The SPMI GPIO driver assumes that the parent device is an SPMI device
-> and accesses random data when backcasting the parent struct device
-> pointer for non-SPMI devices.
-> 
-> Fortunately this does not seem to cause any issues currently when the
-> parent device is an I2C client like the PM8008, but this could change if
-> the structures are reorganised (e.g. using structure randomisation).
-> 
-> Notably the interrupt implementation is also broken for non-SPMI devices.
-> 
-> Also note that the two GPIO pins on PM8008 are used for interrupts and
-> reset so their practical use should be limited.
-> 
-> Drop the broken GPIO support for PM8008 for now.
-> 
-> Fixes: ea119e5a482a ("pinctrl: qcom-pmic-gpio: Add support for pm8008")
-> Cc: stable@vger.kernel.org	# 5.13
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Am Donnerstag, dem 18.04.2024 um 16:51 +0100 schrieb Vitor Soares:
+> From: Vitor Soares <vitor.soares@toradex.com>
+>=20
+> During the probe, the genpd power_dev is added to the dpm_list after
+> blk_ctrl due to its parent/child relationship. Making the blk_ctrl
+> suspend after and resume before the genpd power_dev.
+>=20
+> As a consequence, the system hangs when resuming the VPU due to the
+> power domain dependency.
+>=20
+> To ensure the proper suspend/resume order, add a device link betweem
+> blk_ctrl and genpd power_dev. It guarantees genpd power_dev is suspended
+> after and resumed before blk-ctrl.
+>=20
+> Cc: <stable@vger.kernel.org>
+> Closes: https://lore.kernel.org/all/fccbb040330a706a4f7b34875db1d896a0bf8=
+1c8.camel@gmail.com/
+> Link: https://lore.kernel.org/all/20240409085802.290439-1-ivitro@gmail.co=
+m/
+> Fixes: 2684ac05a8c4 ("soc: imx: add i.MX8M blk-ctrl driver")
+> Suggested-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+
 > ---
->   drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> index f4e2c88a7c82..e61be7d05494 100644
-> --- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> +++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> @@ -1206,7 +1206,6 @@ static const struct of_device_id pmic_gpio_of_match[] = {
->   	{ .compatible = "qcom,pm7325-gpio", .data = (void *) 10 },
->   	{ .compatible = "qcom,pm7550ba-gpio", .data = (void *) 8},
->   	{ .compatible = "qcom,pm8005-gpio", .data = (void *) 4 },
-> -	{ .compatible = "qcom,pm8008-gpio", .data = (void *) 2 },
->   	{ .compatible = "qcom,pm8019-gpio", .data = (void *) 6 },
->   	/* pm8150 has 10 GPIOs with holes on 2, 5, 7 and 8 */
->   	{ .compatible = "qcom,pm8150-gpio", .data = (void *) 10 },
+>=20
+> This is a new patch, but is a follow-up of:
+> https://lore.kernel.org/all/20240409085802.290439-1-ivitro@gmail.com/
+>=20
+> As suggested by Lucas, we are addressing this PM issue in the imx8m-blk-c=
+trl
+> driver instead of in the imx8mm.dtsi.
+>=20
+>  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>=20
+> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx=
+/imx8m-blk-ctrl.c
+> index ca942d7929c2..cd0d2296080d 100644
+> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> @@ -283,6 +283,20 @@ static int imx8m_blk_ctrl_probe(struct platform_devi=
+ce *pdev)
+>  			goto cleanup_pds;
+>  		}
+> =20
+> +		/*
+> +		 * Enforce suspend/resume ordering by making genpd power_dev a
+> +		 * provider of blk-ctrl. Genpd power_dev is suspended after and
+> +		 * resumed before blk-ctrl.
+> +		 */
+> +		if (!device_link_add(dev, domain->power_dev, DL_FLAG_STATELESS)) {
+> +			ret =3D -EINVAL;
+> +			dev_err_probe(dev, ret,
+> +				      "failed to link to %s\n", data->name);
+> +			pm_genpd_remove(&domain->genpd);
+> +			dev_pm_domain_detach(domain->power_dev, true);
+> +			goto cleanup_pds;
+> +		}
+> +
+>  		/*
+>  		 * We use runtime PM to trigger power on/off of the upstream GPC
+>  		 * domain, as a strict hierarchical parent/child power domain
+> @@ -324,6 +338,7 @@ static int imx8m_blk_ctrl_probe(struct platform_devic=
+e *pdev)
+>  	of_genpd_del_provider(dev->of_node);
+>  cleanup_pds:
+>  	for (i--; i >=3D 0; i--) {
+> +		device_link_remove(dev, bc->domains[i].power_dev);
+>  		pm_genpd_remove(&bc->domains[i].genpd);
+>  		dev_pm_domain_detach(bc->domains[i].power_dev, true);
+>  	}
+> @@ -343,6 +358,7 @@ static void imx8m_blk_ctrl_remove(struct platform_dev=
+ice *pdev)
+>  	for (i =3D 0; bc->onecell_data.num_domains; i++) {
+>  		struct imx8m_blk_ctrl_domain *domain =3D &bc->domains[i];
+> =20
+> +		device_link_remove(&pdev->dev, domain->power_dev);
+>  		pm_genpd_remove(&domain->genpd);
+>  		dev_pm_domain_detach(domain->power_dev, true);
+>  	}
 
-Since there are no upstream dtsi users there's no harm in dropping and 
-re-adding when i2c can be taken account of.
-
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
