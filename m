@@ -1,52 +1,46 @@
-Return-Path: <stable+bounces-43445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C83D8BF66F
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 08:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6249D8BF6BF
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 09:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5A01C2117E
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 06:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 938D91C21429
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 07:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1E61EB3F;
-	Wed,  8 May 2024 06:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="YZlV4hOC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F6D23778;
+	Wed,  8 May 2024 07:06:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433EF17C72;
-	Wed,  8 May 2024 06:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB36529421;
+	Wed,  8 May 2024 07:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715150559; cv=none; b=YQ3mevV23QfgmdAg9f7kJ2EpBQVQY31yAmIg7/uv4y0GAFgB98s+PZphNcoeUHQqOVhbDda786ZIx7SXmtvJALhR1x3sNlXaJZ8qc/XW6C20ThQzVvfkvhVYqj3AyWhCHPZ9RyZXMcptEtW0kRGdiZtcWuBh83/N0WYv0LZl3wQ=
+	t=1715152012; cv=none; b=LJ0X2yo6Rt9/BTOMt33MS11Oqu1u6vJLKSiRH4ad0qziJuCtwN8thqpyw7UZzp4bxjPukAYAEjzN9lNHjTNm3BCYHmsArhdNLY8vXH7uUTiN4rguXE+j4BtbYk+kIWEwDMBzONnf6zHS8nzdsHagQZ4JKM0KbeWZoR9AfqqKaeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715150559; c=relaxed/simple;
-	bh=W5+RjvQrupUOshzo05DQOeCYGN1gl2cnaHf1ncfmML0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=YXL2Rk2qPPxp46G7Bsy9NW6p+Z6sNklaTWNBQ+iKBsZtF7YtBAjEzJ5dMoXjKoKGW8JmQutoZ2hzHMFN8gKmHcoaWZXUuIFPFCDuZi0sWpABI9xBjgODLv7Czs1WQVrjEotP70dClV/8a16Ww6w3S2oDdE/i7A234FjPooJzIcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=YZlV4hOC; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:
-	From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=3+lk1i0Pfak7ZUTq9+6fHflYwuqG8pna7IWBla3+L6c=; t=1715150557;
-	x=1715582557; b=YZlV4hOCq16H/QThAduqKCZm2T3WZDx/oOegXPyijmIv3iywTXOiqfWYXZekx
-	azPopif4b3sw38+lG09vXZVAF055A3zROywayUUVr8wEFWrkFr9I90zX4x4fsfl3tYdGI1qYyzdDr
-	1kP9t0U4JPFkiIEQ8cfOdMlzPKI2wVOnW6TOosImhsYjlxsjqP98dd4I8TXcDWa0sOhU/kYbkwE5n
-	AF6OaPhU55mJGY/DUkhlEgV9bT0byLMFLNyhPyeJPSi7G916q9LfiaYOv7udLG0GQtMv25ALbeBLE
-	7zDRJoBDvEA2WAkLAtL2+3B+y4fU/5xVVBi1RqRPlAkKOkC2WA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s4b0X-0008EH-FZ; Wed, 08 May 2024 08:42:29 +0200
-Message-ID: <b93c9141-b749-4dd3-b448-17c1f30e74b9@leemhuis.info>
-Date: Wed, 8 May 2024 08:42:28 +0200
+	s=arc-20240116; t=1715152012; c=relaxed/simple;
+	bh=5/UJZYJXNz+8XLH5dRucsgsKHR8Bj3oTUM78MUpez3Q=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=hxd0vLkBfzNSv0ToRRnQdKaRgCf+cBl3JCkt6rxXJ65ItSvc5MPJtL6kgHL7lfk3KFs7H547JRfX8Aw0ByXkJQsWGB9FpuDToQnZBrTRUWto6iMKmcxmAe+4yCbGSoKTLpPXIIjaFOQlC5dGjeNUl13R/3ZiaKQGLVHEGlTeafs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VZ5h01X2dzdg2w;
+	Wed,  8 May 2024 15:02:56 +0800 (CST)
+Received: from dggpemm500024.china.huawei.com (unknown [7.185.36.203])
+	by mail.maildlp.com (Postfix) with ESMTPS id B15711404F1;
+	Wed,  8 May 2024 15:06:31 +0800 (CST)
+Received: from [10.67.110.173] (10.67.110.173) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 8 May 2024 15:06:30 +0800
+Message-ID: <af9692da-dede-bedd-a373-70981da41dee@huawei.com>
+Date: Wed, 8 May 2024 15:06:30 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,37 +48,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Issue with Ubuntu 22.04 Kernel Update
-To: Mandar Deshpande <mdman2257@gmail.com>, stable@vger.kernel.org,
- regressions@lists.linux.dev
-References: <CAOi43pJoOvhMaYh-ArfDAVv+bOA+yMQXGxZmiL9xEwxtJPRzkw@mail.gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAOi43pJoOvhMaYh-ArfDAVv+bOA+yMQXGxZmiL9xEwxtJPRzkw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] ima: fix deadlock when traversing "ima_default_rules".
+Content-Language: en-US
+From: "Guozihua (Scott)" <guozihua@huawei.com>
+To: Mimi Zohar <zohar@linux.ibm.com>, <dmitry.kasatkin@gmail.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>
+CC: <linux-integrity@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20240507093714.1031820-1-guozihua@huawei.com>
+ <baff6527d8d1e1f7287e33d6a8570bd242d5cadf.camel@linux.ibm.com>
+ <3a155ac1-b97a-9ee3-a609-469502653f28@huawei.com>
+In-Reply-To: <3a155ac1-b97a-9ee3-a609-469502653f28@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1715150557;35118d01;
-X-HE-SMSGID: 1s4b0X-0008EH-FZ
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500024.china.huawei.com (7.185.36.203)
 
-On 07.05.24 19:47, Mandar Deshpande wrote:
+On 2024/5/8 10:06, Guozihua (Scott) wrote:
+> On 2024/5/7 19:54, Mimi Zohar wrote:
+>> On Tue, 2024-05-07 at 09:37 +0000, GUO Zihua wrote:
+>>> From: liqiong <liqiong@nfschina.com>
+>>>
+>>> [ Upstream commit eb0782bbdfd0d7c4786216659277c3fd585afc0e ]
+>>>
+>>> The current IMA ruleset is identified by the variable "ima_rules"
+>>> that default to "&ima_default_rules". When loading a custom policy
+>>> for the first time, the variable is updated to "&ima_policy_rules"
+>>> instead. That update isn't RCU-safe, and deadlocks are possible.
+>>> Indeed, some functions like ima_match_policy() may loop indefinitely
+>>> when traversing "ima_default_rules" with list_for_each_entry_rcu().
+>>>
+>>> When iterating over the default ruleset back to head, if the list
+>>> head is "ima_default_rules", and "ima_rules" have been updated to
+>>> "&ima_policy_rules", the loop condition (&entry->list != ima_rules)
+>>> stays always true, traversing won't terminate, causing a soft lockup
+>>> and RCU stalls.
+>>>
+>>> Introduce a temporary value for "ima_rules" when iterating over
+>>> the ruleset to avoid the deadlocks.
+>>>
+>>> Addition:
+>>>
+>>> A rcu_read_lock pair is added within ima_update_policy_flag to avoid
+>>> suspicious RCU usage warning. This pair of RCU lock was added with
+>>> commit 4f2946aa0c45 ("IMA: introduce a new policy option
+>>> func=SETXATTR_CHECK") on mainstream.
+>>>
+>>> Signed-off-by: liqiong <liqiong@nfschina.com>
+>>> Reviewed-by: THOBY Simon <Simon.THOBY@viveris.fr>
+>>> Fixes: 38d859f991f3 ("IMA: policy can now be updated multiple times")
+>>> Reported-by: kernel test robot <lkp@intel.com> (Fix sparse: incompatible types in comparison expression.)
+>>> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+>>> Sig=ned-off-by: GUO Zihua <guozihua@huawei.com>
+>>
+>> Hi Scott,
+>>
+>> I'm confused by this patch.  Is it meant for upstream?
+>>
+>> thanks,
+>>
+>> Mimi
+>>
+> It's a backport from upstream.
 > 
-> I hope this message finds you well. I'm reaching out regarding an issue
-> I've encountered with my Ubuntu 22.04 installation.
-> 
-> Up until kernel version linux-image-5.15.0-84-generic, my laptop has
-> been running smoothly. However, after updating to subsequent kernels,
-> including the latest one, linux-image-5.15.0-106-generic, I've been
-> experiencing a significant problem.
-> [...]
+To clarify, it's meant for Linux-5.10.y.
 
-Hi, thx for your report. But the thing is: you need to report this to
-the Ubuntu developers, as your problem might be caused by a change they
-made between those versions (which are ubuntu specific numbers, so it's
-not even obvious which upstream 5.15.y versions they are based on). If
-you want to find help here by the upstream developers, you have to check
-if the problem happens with vanilla kernels.
+-- 
+Best
+GUO Zihua
 
-Ciao, Thorsten
 
