@@ -1,118 +1,115 @@
-Return-Path: <stable+bounces-43439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3E58BF44B
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 03:59:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739E88BF456
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 04:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FC801C22D5A
-	for <lists+stable@lfdr.de>; Wed,  8 May 2024 01:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E55B2842A1
+	for <lists+stable@lfdr.de>; Wed,  8 May 2024 02:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E12AD5B;
-	Wed,  8 May 2024 01:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZEWofxm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424F19470;
+	Wed,  8 May 2024 02:06:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A125F947A;
-	Wed,  8 May 2024 01:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535E71A2C2A;
+	Wed,  8 May 2024 02:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715133560; cv=none; b=DMdW9Oe7MllOqeIyn/pIvxGhtBKJ+1Bnp6f+Nn7pZkHWQ3CmBDl+3kLFzcPjqiUlTLLrQFCUMJb2KIcs1Ypr55LqhUKyl5kspsthGSed1tTVMKEYXRIPMLRVjNPeMdxJrgkizvtYEbSi3yCAGDoupoikjDAyhmbutJ/Wm6YoVOM=
+	t=1715133976; cv=none; b=JTLnArgIXg0FCGl+Ge132gZRlxRCdQtyLKW5tjExBNhHbkepPqHm+powZ7gi9AHFGYiddNE28s2OvIG3/KIow0fkpq5caFSVoVYUZV/z2c15EHH23TIFzUs1+6YgNHWX8Kfbxgf6mfFlzJiZ/5Idq/mJq9CQLyOW/asekTR0I0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715133560; c=relaxed/simple;
-	bh=OT5JakQt19xF8U1yLXWAVT404ZDx+aEIBvSlyMks/00=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=aJOMjSb2oRjj0Y8ylqOZab5KiZlkTlSiH26jBItDpkJ1Lt8R7zKwALVKY9+B6rvWG3ItNNmCnCtzNioY/KzQTJpdRwRnNhBqi98vRArXdjSB+iUZBxIDuZJ/6pnuhsOhBBuxSo6WDu/+WsGHllPeiwZ2EJz+n7hXVMtvBmm4wd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZEWofxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D316C2BBFC;
-	Wed,  8 May 2024 01:59:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715133559;
-	bh=OT5JakQt19xF8U1yLXWAVT404ZDx+aEIBvSlyMks/00=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=BZEWofxm4dginQL+bIA1eqQEoyel0G+G/WB9CeXJex8G5YJVB+pMLPACIAUo/SlNL
-	 aJdcwlaaX6GYYfbEnNUrTXYE2kVEKhSbfJMpMJJX9HRQdNhSuVw25mTE4ib2vFPmIy
-	 y7NPpBh9H9bsPEnpR/tW82mSJbc2Vfyw5aGIEspgSBKkOIG9N6NuCsONhUSRRDxnlk
-	 +mT+aHE+mWgSvcUlt05qqCb5Wrql5gVyujSmVdgodBbdwT/3D7CZE8egOviz+8Fbq6
-	 vyRVb1REvqoXHwq1ukgaq2Jm7Gg6eeOFVUrgdCt9gkEspbDsx+GAZf2yLDaNuF8FZn
-	 Nsr5LZY56dJhw==
-Date: Tue, 7 May 2024 20:59:17 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
-	Michal Simek <michal.simek@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Bharat Kumar Gogada <bharatku@xilinx.com>
-Subject: Re: [PATCH v2 2/7] PCI: xilinx-nwl: Fix off-by-one
-Message-ID: <20240508015917.GA1746057@bhelgaas>
+	s=arc-20240116; t=1715133976; c=relaxed/simple;
+	bh=LWh+Ql9WBOZdrwbmzXuSsBh5Ua7/PlFQqSGwkjor1ek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ahNBGuXzxbH5dRJRNZmHxOgDhMY+GXb2ZcbTSmq4rKeHzBPPupijW0dmUhvy7J8TI86HgJ/rWjabu6KAGnx3CA54eQqhsy9zJWehfmNf/2cSzg00/OWLd9fVcGxXNOFQdUBn575y/+7H0NQE6JnW1doS5HKr5/iEQ3Y2l3nMibc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4VYz4565Mzz1HBjw;
+	Wed,  8 May 2024 10:04:53 +0800 (CST)
+Received: from dggpemm500024.china.huawei.com (unknown [7.185.36.203])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2C1071A016C;
+	Wed,  8 May 2024 10:06:10 +0800 (CST)
+Received: from [10.67.110.173] (10.67.110.173) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 8 May 2024 10:06:09 +0800
+Message-ID: <3a155ac1-b97a-9ee3-a609-469502653f28@huawei.com>
+Date: Wed, 8 May 2024 10:06:09 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240506161510.2841755-3-sean.anderson@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ima: fix deadlock when traversing "ima_default_rules".
+To: Mimi Zohar <zohar@linux.ibm.com>, <dmitry.kasatkin@gmail.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>
+CC: <linux-integrity@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20240507093714.1031820-1-guozihua@huawei.com>
+ <baff6527d8d1e1f7287e33d6a8570bd242d5cadf.camel@linux.ibm.com>
+Content-Language: en-US
+From: "Guozihua (Scott)" <guozihua@huawei.com>
+In-Reply-To: <baff6527d8d1e1f7287e33d6a8570bd242d5cadf.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500024.china.huawei.com (7.185.36.203)
 
-Maybe the subject could include something about why this is important,
-e.g., it's IRQ-related, we mask/unmask the wrong thing, etc?
-
-On Mon, May 06, 2024 at 12:15:05PM -0400, Sean Anderson wrote:
-> IRQs start at 0, so we don't need to subtract 1.
-
-What does "IRQ" refer to here?  Something to do with INTx, I guess,
-but apparently not PCI_INTERRUPT_PIN, since 0 in that register means
-the device doesn't use INTx, and 1=INTA, 2=INTB, etc.
-
-I assume this fixes a bug, e.g., we mask/unmask the wrong INTx?  What
-does this look like for a user?  Unexpected IRQs?
-
-9a181e1093af is from seven years ago.  Should we be surprised that we
-haven't tripped over this before?
-
-> Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> ---
+On 2024/5/7 19:54, Mimi Zohar wrote:
+> On Tue, 2024-05-07 at 09:37 +0000, GUO Zihua wrote:
+>> From: liqiong <liqiong@nfschina.com>
+>>
+>> [ Upstream commit eb0782bbdfd0d7c4786216659277c3fd585afc0e ]
+>>
+>> The current IMA ruleset is identified by the variable "ima_rules"
+>> that default to "&ima_default_rules". When loading a custom policy
+>> for the first time, the variable is updated to "&ima_policy_rules"
+>> instead. That update isn't RCU-safe, and deadlocks are possible.
+>> Indeed, some functions like ima_match_policy() may loop indefinitely
+>> when traversing "ima_default_rules" with list_for_each_entry_rcu().
+>>
+>> When iterating over the default ruleset back to head, if the list
+>> head is "ima_default_rules", and "ima_rules" have been updated to
+>> "&ima_policy_rules", the loop condition (&entry->list != ima_rules)
+>> stays always true, traversing won't terminate, causing a soft lockup
+>> and RCU stalls.
+>>
+>> Introduce a temporary value for "ima_rules" when iterating over
+>> the ruleset to avoid the deadlocks.
+>>
+>> Addition:
+>>
+>> A rcu_read_lock pair is added within ima_update_policy_flag to avoid
+>> suspicious RCU usage warning. This pair of RCU lock was added with
+>> commit 4f2946aa0c45 ("IMA: introduce a new policy option
+>> func=SETXATTR_CHECK") on mainstream.
+>>
+>> Signed-off-by: liqiong <liqiong@nfschina.com>
+>> Reviewed-by: THOBY Simon <Simon.THOBY@viveris.fr>
+>> Fixes: 38d859f991f3 ("IMA: policy can now be updated multiple times")
+>> Reported-by: kernel test robot <lkp@intel.com> (Fix sparse: incompatible types in comparison expression.)
+>> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+>> Sig=ned-off-by: GUO Zihua <guozihua@huawei.com>
 > 
-> (no changes since v1)
+> Hi Scott,
 > 
->  drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> I'm confused by this patch.  Is it meant for upstream?
 > 
-> diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
-> index 0408f4d612b5..437927e3bcca 100644
-> --- a/drivers/pci/controller/pcie-xilinx-nwl.c
-> +++ b/drivers/pci/controller/pcie-xilinx-nwl.c
-> @@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
->  	u32 mask;
->  	u32 val;
->  
-> -	mask = 1 << (data->hwirq - 1);
-> +	mask = 1 << data->hwirq;
->  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
->  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
->  	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
-> @@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
->  	u32 mask;
->  	u32 val;
->  
-> -	mask = 1 << (data->hwirq - 1);
-> +	mask = 1 << data->hwirq;
->  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
->  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
->  	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
-> -- 
-> 2.35.1.1320.gc452695387.dirty
+> thanks,
 > 
+> Mimi
+> 
+It's a backport from upstream.
+
+-- 
+Best
+GUO Zihua
+
 
