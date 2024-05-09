@@ -1,162 +1,131 @@
-Return-Path: <stable+bounces-43496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A648C0E35
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 12:32:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882728C0E58
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 12:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F0B1C21396
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 10:32:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E44E8B22449
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 10:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEDD41C79;
-	Thu,  9 May 2024 10:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC8712F386;
+	Thu,  9 May 2024 10:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kL99DF7W"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FF31361;
-	Thu,  9 May 2024 10:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE01322E;
+	Thu,  9 May 2024 10:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715250771; cv=none; b=lCDRimTWjRsD+VVrLmgp48QuLb5GytHXDTAeM6lmC/McFMR7PtUm9Jeg3WIft7D3XHo3AeyLO6frcEqj3AtyTT3E7/1PRWBkxYJk6+Bzk0/qML3jeGTMJvq2KwnciXi2KRkW7mcZU/CTGdweDbcvd2fe5ujguQ3I3ZB8U3RhvZM=
+	t=1715251519; cv=none; b=LP0kEhwxUV6KrXj2DHAb//hSrs948uEFbfbr+jMediNt3PfWNVCDekLT/DHE9uFg8eSA/FMcZ3TxTvq1IYLPbx0pWS8+qUW7aBfNsnnmuii5iaOkkxpYC4d395lt6yITzDDiwz/FC0BDPIGiVMjZk6k+/aZwLc9P26Ps1Slmxmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715250771; c=relaxed/simple;
-	bh=2lxyu2hLVfeAwz1VtGgAmtW/z0G0oGotVbQhWW5bTso=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jagkx0wvz0M53ziV4uk1OvRGRuRMwnQIE0ZYd/FP7Kp6XCvVwRg13OkE6EbqWqVpRq81zw2y+/J8COLPNlEaFinyY6uUfu3VJ0Epoi8871pgRSZHmUqLIsalPU+K+H28RhFjpcsMa/KxBEiG5NIIBaadTKwTgMbUYtNg3hecKLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id BA0D42F20231; Thu,  9 May 2024 10:32:44 +0000 (UTC)
-X-Spam-Level: 
-Received: from [192.168.0.102] (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id 073EF2F20226;
-	Thu,  9 May 2024 10:32:43 +0000 (UTC)
-Message-ID: <face96b8-6e69-0f2d-1cb0-a20acd906338@basealt.ru>
-Date: Thu, 9 May 2024 13:32:43 +0300
+	s=arc-20240116; t=1715251519; c=relaxed/simple;
+	bh=NooN6Le1pfCs/b+vZSamTLg83Aj5on0toG2qH551j7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kTu36J3jZFeQhxaP9XAmOGPWQFgycC2/NNXWEMoEvUVfHKlXmAUc4gNUhNhAln84/E3LlO42rds3T0j8X+Hgg+iJ5boCloObpj055Ue6lD6EHYf57jKVWf+kmtQygSJ3qLnw+xETVz4jInU7P+wm05JW0RzXoONWaWJ0TWtxNWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kL99DF7W; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4491lrgt018636;
+	Thu, 9 May 2024 10:45:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=e3TRns1ea43wjwX35zCcMk6SohrYc0PP3ZPLnQfDtjI=; b=kL
+	99DF7WL+T21NuBmkyhP4mPs1iQ14RjwtvfVoMsTOZU96QBMyyATI3uvRCEEjrbGI
+	JEQRBgj7lk9oxCHz0u5ZUPXBf9T2t4hKkHECxVF4QXWtD15/xNXNRHDjQsRkQ7Mt
+	ENMTX5+sUnacgezykHVHySdRScG2lMw01om3SBCPshywni9zawYrDIVNeOqJHEBt
+	dcyvEqEYFQ3oNtRkhDwmyz8o0IaKF5zSmyKJRaQXkDoxWZxHB0dk6JO+hkdLy+nu
+	ILDmkfUd48ClDJKIPvw2wCSOdlsIbYSuLLxz0eclgH1Uzj5nLw6bPiMuDyP0pltt
+	q7k+HlP8wMSSH15pv/LQ==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y09ejtdxa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 May 2024 10:45:14 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 449AjDS4004640
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 9 May 2024 10:45:13 GMT
+Received: from [10.151.37.94] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 9 May 2024
+ 03:45:09 -0700
+Message-ID: <cb905f6f-9d88-4ea7-f4c7-5b0baaf8290d@quicinc.com>
+Date: Thu, 9 May 2024 16:14:58 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] tty: Fix possible deadlock in tty_buffer_flush
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v2] clk: qcom: gcc-ipq9574: Add BRANCH_HALT_VOTED flag
+To: Stephen Boyd <sboyd@kernel.org>, <andersson@kernel.org>,
+        <bhupesh.sharma@linaro.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <mturquette@baylibre.com>, <quic_anusha@quicinc.com>
+CC: <quic_srichara@quicinc.com>, <quic_varada@quicinc.com>,
+        <stable@vger.kernel.org>
+References: <20240506063751.346759-1-quic_mdalam@quicinc.com>
+ <ee18e89b77f0c08ef45cbcc75e2361bf.sboyd@kernel.org>
 Content-Language: en-US
-To: Jiri Slaby <jirislaby@kernel.org>, kovalev@altlinux.org,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org
-Cc: lvc-project@linuxtesting.org, dutyrok@altlinux.org,
- oficerovas@altlinux.org, stable@vger.kernel.org
-References: <20240508093005.1044815-1-kovalev@altlinux.org>
- <e167d14c-76d3-46b4-aca5-b6003f9cbfc1@kernel.org>
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-In-Reply-To: <e167d14c-76d3-46b4-aca5-b6003f9cbfc1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
+In-Reply-To: <ee18e89b77f0c08ef45cbcc75e2361bf.sboyd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: P_6tuIu2k6DI8EK9KvoByLgrTR3xsKzO
+X-Proofpoint-ORIG-GUID: P_6tuIu2k6DI8EK9KvoByLgrTR3xsKzO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-09_06,2024-05-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 adultscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
+ priorityscore=1501 clxscore=1015 mlxlogscore=774 malwarescore=0
+ bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405090070
 
-09.05.2024 09:41, Jiri Slaby wrote:
-> On 08. 05. 24, 11:30, kovalev@altlinux.org wrote:
->> From: Vasiliy Kovalev <kovalev@altlinux.org>
+
+
+On 5/7/2024 5:34 AM, Stephen Boyd wrote:
+> Quoting Md Sadre Alam (2024-05-05 23:37:51)
+>> Add BRANCH_HALT_VOTED flag to inform clock framework
+>> don't check for CLK_OFF bit.
 >>
->> A possible scenario in which a deadlock may occur is as follows:
->>
->> flush_to_ldisc() {
->>
->>    mutex_lock(&buf->lock);
->>
->>    tty_port_default_receive_buf() {
->>      tty_ldisc_receive_buf() {
->>        n_tty_receive_buf2() {
->>     n_tty_receive_buf_common() {
->>       n_tty_receive_char_special() {
->>         isig() {
->>           tty_driver_flush_buffer() {
->>         pty_flush_buffer() {
->>           tty_buffer_flush() {
->>
->>             mutex_lock(&buf->lock); (DEADLOCK)
->>
->> flush_to_ldisc() and tty_buffer_flush() functions they use the same mutex
->> (&buf->lock), but not necessarily the same struct tty_bufhead object.
- >
-> "not necessarily" -- so does it mean that it actually can happen (and we 
-> should fix it) or not at all (and we should annotate the mutex)?
-
-During debugging, when running the reproducer multiple times, I failed 
-to catch a situation where these mutexes have the same address in memory 
-in the above call scenario, so I'm not sure that such a situation is 
-possible. But earlier, a thread is triggered that accesses the same 
-structure (and mutex), so LOCKDEP tools throw a warning:
-
-thread 0:
-flush_to_ldisc() {
-
-   mutex_lock(&buf->lock) // Address mutex == 0xA
-
-   n_tty_receive_buf_common();
-
-   mutex_unlock(&buf->lock) // Address mutex == 0xA
-}
-
-thread 1:
-flush_to_ldisc() {
-
-   mutex_lock(&buf->lock) // Address mutex == 0xB
-
-   n_tty_receive_buf_common() {
-     isig() {
-       tty_driver_flush_buffer() {
-         pty_flush_buffer() {
-           tty_buffer_flush() {
-
-              mutex_lock(&buf->lock) // Address  mutex == 0xA    -> 
-throw Warning
-              // successful continuation
-...
-}
-
-
->> However, you should probably use a separate mutex for the
->> tty_buffer_flush() function to exclude such a situation.
-> ...
+>> CRYPTO_AHB_CLK_ENA and CRYPTO_AXI_CLK_ENA enable bit is
+>> present in other VOTE registers also, like TZ.
+>> If anyone else also enabled this clock, even if we turn
+>> off in GCC_APCS_CLOCK_BRANCH_ENA_VOTE | 0x180B004, it won't
+>> turn off.
+>> Also changes the CRYPTO_AHB_CLK_ENA & CRYPTO_AXI_CLK_ENA
+>> offset to 0xb004 from 0x16014.
 > 
+> How about this?
+> 
+>   The crypto_ahb and crypto_axi clks are hardware voteable. This means
+>   that the halt bit isn't reliable because some other voter in the
+>   system, e.g. TrustZone, could be keeping the clk enabled when the
+>   kernel turns it off from clk_disable(). Make these clks use voting mode
+>   by changing the halt check to BRANCH_HALT_VOTED and toggle the voting
+>   bit in the voting register instead of directly controlling the branch
+>   by writing to the branch register. This fixes stuck clk warnings seen
+>   on ipq9574 and saves power by actually turning the clk off.
+
+  Ok , will update commit message in next patch.
+> 
+>>
 >> Cc: stable@vger.kernel.org
+>> Fixes: f6b2bd9cb29a ("clk: qcom: gcc-ipq9574: Enable crypto clocks")
+>> Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
 > 
-> What commit does this fix?
-
-I will assume that the commit of introducing mutexes in these functions: 
-e9975fdec013 ("tty: Ensure single-threaded flip buffer consumer with mutex")
-
->> --- a/drivers/tty/tty_buffer.c
->> +++ b/drivers/tty/tty_buffer.c
->> @@ -226,7 +226,7 @@ void tty_buffer_flush(struct tty_struct *tty, 
->> struct tty_ldisc *ld)
->>       atomic_inc(&buf->priority);
->> -    mutex_lock(&buf->lock);
->> +    mutex_lock(&buf->flush_mtx);
-> 
-> Hmm, how does this protect against concurrent buf pickup. We free it 
-> here and the racing thread can start using it, or?
-
-Yes, assuming that such a scenario is possible..
-
-Otherwise, if such a scenario is not possible and the patch is 
-inappropriate, then you need to mark this mutex in some way to tell 
-lockdep tools to ignore this place..
-
->>       /* paired w/ release in __tty_buffer_request_room; ensures there 
->> are
->>        * no pending memory accesses to the freed buffer
->>        */
-> 
-> thanks,
-
--- 
-Regards,
-Vasiliy Kovalev
 
