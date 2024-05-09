@@ -1,61 +1,52 @@
-Return-Path: <stable+bounces-43494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30438C0B9E
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 08:41:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8938C0E34
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 12:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8809E2845A2
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 06:41:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3346F1F231A3
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 10:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16EB824BB;
-	Thu,  9 May 2024 06:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D97912EBE7;
+	Thu,  9 May 2024 10:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="irByPIf7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF17624;
-	Thu,  9 May 2024 06:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F120C12DDA4;
+	Thu,  9 May 2024 10:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715236883; cv=none; b=La7A0/Bv3hlbpQIWR5/cJgRAjA2gls3cTflowjMLLiGWyTUwssYGCxUKE5eT4AFX94m+m7MA7hz8MhII9Gl0+5ICmzaWDU1ya/zVHRkiWZaQ80Rpu55BP1kcAfbEX3ks8bA9mcSzetejfTie4gHra2+dtgfEFx8Aqfv2gdHpQ4A=
+	t=1715250697; cv=none; b=sCD2uRPHR82KWPqLGEKZ7hJQGe7WUlt1jQmJtoyn60Yfg93XN3eRMSZNv9d6mBNsG1Wj4Rd6l+kvzJXKvch22C4znVBRC2zSL2yKt+LeoVJogmPuiLXRDLPas7yeId6eCZvQOyLjZaqRd2AFN3ID0S9jpdNZc3EuQbsPMb4hVxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715236883; c=relaxed/simple;
-	bh=oRK+r+QFI/xe8d51/zCXf0KG6fsVEb0onJS00AWFRMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fgix6I2wyaEdVHYpsCaoWn2dNqfrIY+t6FwrLYymLui+F5SmBc3oN81KtQm7xFZKiTGcATJ1SyBGMNbX+hD/QkyZ6/k4kqiurLAlvJplYVnzGZxrAdpnILqutibOYHHkECmujTNN7ic3lgSqF3kdTS1wFZdxd/uGtyCouMc0KU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-41adf155cffso4231015e9.2;
-        Wed, 08 May 2024 23:41:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715236880; x=1715841680;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OtZke5GvRA5Q1ygOLdEqDZhz3gKzUkn+WkX6FZdmhDA=;
-        b=KkH2SE1VP/3U5raiAwmLeDaE+6FqcfFE+v7FoHedoCCHiILLdk7XsjfOcxTCJK4jb1
-         hkYOJ5KY8tbMA21iXehBiTm+s01JAqJO423WCgtpNWihZ2fm9EBEumFzU0BjQCbPLrSA
-         1NY0foNlgGRMY3gmxPFybZXh0Lq23sN2/6XDx5AmM08ED+WOzF4X39rTMpv+3/QM6iTf
-         JxRIrsR7PGPSiVXq0Qr433czIjak1JIgvpxMU6Ktsk9H9lTx3/pYg57T9nDQC8u1Blgr
-         G0xKkk5sZtblaICUM/aY+n5aj1GzjqJDzwpDWKLDAmzZClwkaueCejNSkNOksTs+3nTU
-         rYkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVIott+ugw3MhU8GnPT/mAYDSnzuKyLj9lv5NfohFy78T9t2N9i28xnpEgLnR9xwzmpkjzZ0DkYSSTI6mUy7T3S6M59on4/+anO6esYjpbCAvZfJwScL7fpaB7wHh7ZkgnkQ/+WLyudMUyoB4pBCGpCZ6sD7fy+gzjF6Z44g/QJFmL
-X-Gm-Message-State: AOJu0Yzpp/OGiUJFKpmzV9xTxvBweTZTQIO4ZJJtqfyNvonZGL5K36Mv
-	rEbO+u7Dkj8uR4jw6YJLkpNTZX0SgoI0n/duULPzYFOWMHyBqOUInhvnzA==
-X-Google-Smtp-Source: AGHT+IHM0oiKR2ualZSIpF7ByJMGe0bpbn4VxgTpK1NX2n4lzsiPH/7eTUFazXmgoVk9hUf8oVtwaw==
-X-Received: by 2002:a05:600c:4706:b0:41e:7a1a:d626 with SMTP id 5b1f17b1804b1-41f721b046emr40784725e9.31.1715236880236;
-        Wed, 08 May 2024 23:41:20 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41f87d2045asm47797715e9.27.2024.05.08.23.41.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 May 2024 23:41:19 -0700 (PDT)
-Message-ID: <e167d14c-76d3-46b4-aca5-b6003f9cbfc1@kernel.org>
-Date: Thu, 9 May 2024 08:41:18 +0200
+	s=arc-20240116; t=1715250697; c=relaxed/simple;
+	bh=KoMm0YU3T88+9AC2ELVkihs99CbEDDgkFpX6P120Ppc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=qPBYkj5DR/vAkRpZzyJEgfxNhKNrt+JvTY826k+jB8X20xzpM6YbkHbzNxVRQm/AnHa9afia+gFoM8wRPmyfmIeb39WZ8m2JuGtFygGaqq1FYSRBCfJpDE+K5k0WOAHBmZ73deRna0utN1c3zeOYtGRQ9jLzFQxDoPPntq2lBJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=irByPIf7; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Cc:To:Reply-To:Subject:From:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=/EtjPJ49eLErfTct4IwKUEDvnMD7g5S++qk8eNGdasU=;
+	t=1715250695; x=1715682695; b=irByPIf7KQfKaSvKLNsAO5ws/qH4Tm7aEJZ2uN3wepdh3cg
+	weocolkOnaFeQxTaWgClob8fL0klHKjmKRfuHL9ZYq41TUHfAHxvsbKwmEX8DNGzcVb69121hAU0L
+	yQGghK8Y/5jJI46At+J0+O2e7H9EZJ9gmN5EgUgxh2I5iL+d+G/nIlYVc1w9coTV6lo0J6u1QWTp5
+	FTYo+G9FQA+zQy9U/gF2qPjN6tOjJZpkG0IYTVNKVXS+MyuuTPsl5cVnYZX//yHOdzvTcldXuYlYT
+	BKwlyW2TWqIpASAY8XgsKZ19KHTigUJ0d3Jm8/tQv/uYyDuQBhtQOCfoLVHWveQw==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1s513e-0006hG-9J; Thu, 09 May 2024 12:31:26 +0200
+Message-ID: <ba0bc464-a06a-4c54-945a-202dca2c4e49@leemhuis.info>
+Date: Thu, 9 May 2024 12:31:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,114 +54,64 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tty: Fix possible deadlock in tty_buffer_flush
-To: kovalev@altlinux.org, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Cc: lvc-project@linuxtesting.org, dutyrok@altlinux.org,
- oficerovas@altlinux.org, stable@vger.kernel.org
-References: <20240508093005.1044815-1-kovalev@altlinux.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20240508093005.1044815-1-kovalev@altlinux.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Subject: Re: [REGRESSION] v6.9-rc7: nouveau: init failed, no display output
+ from kernel; successfully bisected
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+To: lyude@redhat.com
+Cc: kherbst@redhat.com, dakr@redhat.com, airlied@redhat.com,
+ stable@vger.kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ Dan Moulding <dan@danm.net>, nouveau@lists.freedesktop.org
+References: <20240506182331.8076-1-dan@danm.net>
+Content-Language: en-US, de-DE
+In-Reply-To: <20240506182331.8076-1-dan@danm.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1715250695;dede88c9;
+X-HE-SMSGID: 1s513e-0006hG-9J
 
-On 08. 05. 24, 11:30, kovalev@altlinux.org wrote:
-> From: Vasiliy Kovalev <kovalev@altlinux.org>
+On 06.05.24 20:23, Dan Moulding wrote:
+> After upgrading to rc7 from rc6 on a system with NVIDIA GP104 using
+> the nouveau driver, I get no display output from the kernel (only the
+> output from GRUB shows on the primary display). Nonetheless, I was
+> able to SSH to the system and get the kernel log from dmesg. I found
+> errors from nouveau in it. Grepping it for nouveau gives me this:
 > 
-> A possible scenario in which a deadlock may occur is as follows:
+> [    0.367379] nouveau 0000:01:00.0: NVIDIA GP104 (134000a1)
+> [    0.474499] nouveau 0000:01:00.0: bios: version 86.04.50.80.13
+> [    0.474620] nouveau 0000:01:00.0: pmu: firmware unavailable
+> [    0.474977] nouveau 0000:01:00.0: fb: 8192 MiB GDDR5
+> [    0.484371] nouveau 0000:01:00.0: sec2(acr): mbox 00000001 00000000
+> [    0.484377] nouveau 0000:01:00.0: sec2(acr):load: boot failed: -5
+> [    0.484379] nouveau 0000:01:00.0: acr: init failed, -5
+> [    0.484466] nouveau 0000:01:00.0: init failed with -5
+> [    0.484468] nouveau: DRM-master:00000000:00000080: init failed with -5
+> [    0.484470] nouveau 0000:01:00.0: DRM-master: Device allocation failed: -5
+> [    0.485078] nouveau 0000:01:00.0: probe with driver nouveau failed with error -50
 > 
-> flush_to_ldisc() {
+> I bisected between v6.9-rc6 and v6.9-rc7 and that identified commit
+> 52a6947bf576 ("drm/nouveau/firmware: Fix SG_DEBUG error with
+> nvkm_firmware_ctor()") as the first bad commit.
+
+Lyude, that's a commit of yours.
+
+Given that 6.9 is due a quick question: I assume there is no easy fix
+for this in sight? Or is a quick revert something that might be
+appropriate to prevent this from entering 6.9?
+
+Ciao, Thorsten
+
+> I then rebuilt
+> v6.9-rc7 with just that commit reverted and the problem does not
+> occur.
 > 
->    mutex_lock(&buf->lock);
+> Please let me know if there are any additional details I can provide
+> that would be helpful, or if I should reproduce the failure with
+> additional debugging options enabled, etc.
 > 
->    tty_port_default_receive_buf() {
->      tty_ldisc_receive_buf() {
->        n_tty_receive_buf2() {
-> 	n_tty_receive_buf_common() {
-> 	  n_tty_receive_char_special() {
-> 	    isig() {
-> 	      tty_driver_flush_buffer() {
-> 		pty_flush_buffer() {
-> 		  tty_buffer_flush() {
+> Cheers,
 > 
-> 		    mutex_lock(&buf->lock); (DEADLOCK)
-> 
-> flush_to_ldisc() and tty_buffer_flush() functions they use the same mutex
-> (&buf->lock), but not necessarily the same struct tty_bufhead object.
-
-"not necessarily" -- so does it mean that it actually can happen (and we 
-should fix it) or not at all (and we should annotate the mutex)?
-
-> However, you should probably use a separate mutex for the
-> tty_buffer_flush() function to exclude such a situation.
-...
-
-> Cc: stable@vger.kernel.org
-
-What commit does this fix?
-
-> --- a/drivers/tty/tty_buffer.c
-> +++ b/drivers/tty/tty_buffer.c
-> @@ -226,7 +226,7 @@ void tty_buffer_flush(struct tty_struct *tty, struct tty_ldisc *ld)
->   
->   	atomic_inc(&buf->priority);
->   
-> -	mutex_lock(&buf->lock);
-> +	mutex_lock(&buf->flush_mtx);
-
-Hmm, how does this protect against concurrent buf pickup. We free it 
-here and the racing thread can start using it, or?
-
->   	/* paired w/ release in __tty_buffer_request_room; ensures there are
->   	 * no pending memory accesses to the freed buffer
->   	 */
-
-thanks,
--- 
-js
-suse labs
-
+> -- Dan
 
