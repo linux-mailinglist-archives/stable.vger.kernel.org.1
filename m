@@ -1,160 +1,202 @@
-Return-Path: <stable+bounces-43498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983B78C0E97
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 12:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31F18C0FCD
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 14:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C83BE1C20F1A
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 10:54:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E76FA1C22482
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 12:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D394612FF8C;
-	Thu,  9 May 2024 10:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B5D13B5B6;
+	Thu,  9 May 2024 12:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eDsOq3NB"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="ZVBL+1Xh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FA814A8C;
-	Thu,  9 May 2024 10:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CD91FAA;
+	Thu,  9 May 2024 12:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715252065; cv=none; b=A4Ozjq2b5dFF1djS2ezou+iz86TFIXydUyzv6sN8FAePAJ0kHxKtDuireuk6a4NwuYa3eGgnmnYQ46U8DVr1BDSqY1nik0Ly6zS6+iEb8S2iB5dtf9rSR0knoDxE82kgLdCJcSe/n/B6q2TrwuuuUZ3S7Lb1xqPTbRHSPHKLEpU=
+	t=1715258603; cv=none; b=bG/Bv4t9fmvozsKTxkNdKmBfcxq0Aio9zIZvUmmoKT9PYGtlqhPm9w4wFzWJch87hzvGehigcPQJg3eNVtqqHMYvNOVwD67G+c8YHVuqsS/gymO+L4tiUIGqzDloftBc1G/vyknHIyRgnO3iAsGxaeapbJ72eH3nWfp3qQFLAvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715252065; c=relaxed/simple;
-	bh=GhAkWlfDq0KUJdDXBafOgj0BDEHLVL5It8am1v+i5SY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bbeZBrmnRch10pkSzQmJYN76MbsjK6KPbCMiAvJBuOWes1HP8MTyh9hdURjJXjgXfnb766D1XKtcFo0oipZjGMIdVYf2pGe4aXOATVQ9SVxLPqOjMT4bpYWKifA/N5lwqXNXlIli1Co5G9qcTtVvoRa0P4XUyhEfULXqc0g62TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eDsOq3NB; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4490t8F8006648;
-	Thu, 9 May 2024 10:54:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=qcppdkim1; bh=K0DS4Wi6YJock2WlpckO
-	IAjEvBVRpuyG1EjlTD3n45s=; b=eDsOq3NBom7+cZzuIogVbrZJmle7hjTyMhkF
-	36t+y2Y6uqZNlORvA/0IfCPnOoXS1tqI00ByvfBbU7/7649ZUI8gu7FSLwkP81RA
-	BsYswzRo6LypIVRiA5peJyV6jeWIOAPIdOX4Fj8xEIG/Dkm3MGM3MesBK7/NGwB3
-	DU5df1bIEP5NZzDY+I/DnjTaZGqA0tXqke87sq+eew570/oAz+3mQt9eR0zbg8d7
-	76LzAvsh2GpPJAlRlTNVdhhCKN9KurojsThsr/YwAqs8Ni6vZ6BLhUMQ3BfIOrmM
-	smMzmk+BrZFgZBEo0oML5Y+ugQ4tD7hoOIZq7aNv6jNJHX7KYA==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y07wftnee-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 10:54:19 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 449AsF9L000679;
-	Thu, 9 May 2024 10:54:15 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 3xwe3kn449-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 10:54:15 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 449AsESm000670;
-	Thu, 9 May 2024 10:54:14 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-mdalam-blr.qualcomm.com [10.131.36.157])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 449AsEqZ000666
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 10:54:14 +0000
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 466583)
-	id B3AC1412F1; Thu,  9 May 2024 16:24:13 +0530 (+0530)
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
-To: andersson@kernel.org, mturquette@baylibre.com, sboyd@kernel.org,
-        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: quic_srichara@quicinc.com, quic_varada@quicinc.com,
-        quic_mdalam@quicinc.com, stable@vger.kernel.org
-Subject: [PATCH v3] clk: qcom: gcc-ipq9574: Add BRANCH_HALT_VOTED flag
-Date: Thu,  9 May 2024 16:24:05 +0530
-Message-Id: <20240509105405.1262369-1-quic_mdalam@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1715258603; c=relaxed/simple;
+	bh=Om+BDgaPCw0iL+muHtQNoJmPf5Hq2QpY3SBFrHv7wgc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UtJrLugwA2Zf6sDdp/eP1lwQ5nT81tjibhJZnUopbdfIy3nHeksgNReMyNXfQHB5y/5hqDJ38lqQ7/JvzLEf1zklQiKfjBt4SuWCSaO+hRNsL8XycSgywp2AMnXawyzuyLZJ7yARFFTlkFECWRxXgHuI+vjmTF+egVG+AaxZpKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=ZVBL+1Xh; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=gpCe6LjXBhGLTjURAG6pCgVHAv6LRa6xLP8t9gn2lQM=;
+	t=1715258601; x=1715690601; b=ZVBL+1XhBBYZCBqTbIh/Qe8EeZOtLDoDxi/O/uKEDIhsVw4
+	zxE4c2dQWltor/cDB76cGXqJ1xAMGsYSJ9hI9kQZUnJGArYZz3/4WAAVoo1h3CvrQPBlNDEH95b42
+	kk550On/L52SNZlxJ+ph+y1ll8FwGXTu5WZYnr4mt75cuPXN5tE4z38lnWm4Xc/6SUisYuvJc4/Mk
+	XixCYjC2OWd+lHF+n4ANGO75OU1IS8V69OmrMoT0UyfbHA0bWH+8F2qTlAP5XMwdMEtPoOAQjpADk
+	RdnrxIKi5hT60mJ5i8cBTNOZ+4S+wvc3eWp8dNXnWwV//WtF4X2LrUWM2XUAOlZA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1s537E-0007dX-TB; Thu, 09 May 2024 14:43:16 +0200
+Message-ID: <41b87510-7abf-47e8-b28a-9ccc91bbd3c1@leemhuis.info>
+Date: Thu, 9 May 2024 14:43:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at
+ drm_dp_add_payload_part2
+To: Harry Wentland <harry.wentland@amd.com>, Wayne Lin <Wayne.Lin@amd.com>
+Cc: lyude@redhat.com, imre.deak@intel.com,
+ =?UTF-8?Q?Leon_Wei=C3=9F?= <leon.weiss@ruhr-uni-bochum.de>,
+ stable@vger.kernel.org, regressions@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org
+References: <20240307062957.2323620-1-Wayne.Lin@amd.com>
+ <0847dc03-c7db-47d7-998b-bda2e82ed442@amd.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <0847dc03-c7db-47d7-998b-bda2e82ed442@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 0DJkuBkjxvMN1bALeppFh6gZm8PjRNNG
-X-Proofpoint-ORIG-GUID: 0DJkuBkjxvMN1bALeppFh6gZm8PjRNNG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-09_06,2024-05-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- spamscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
- definitions=main-2405090071
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1715258601;09692b8d;
+X-HE-SMSGID: 1s537E-0007dX-TB
 
-The crypto_ahb and crypto_axi clks are hardware voteable.
-This means that the halt bit isn't reliable because some
-other voter in the system, e.g. TrustZone, could be keeping
-the clk enabled when the kernel turns it off from clk_disable().
-Make these clks use voting mode by changing the halt check to
-BRANCH_HALT_VOTED and toggle the voting bit in the voting register
-instead of directly controlling the branch by writing to the branch
-register. This fixes stuck clk warnings seen on ipq9574 and saves
-power by actually turning the clk off.
+On 18.04.24 21:43, Harry Wentland wrote:
+> On 2024-03-07 01:29, Wayne Lin wrote:
+>> [Why]
+>> Commit:
+>> - commit 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/removement")
+>> accidently overwrite the commit
+>> - commit 54d217406afe ("drm: use mgr->dev in drm_dbg_kms in drm_dp_add_payload_part2")
+>> which cause regression.
+>>
+>> [How]
+>> Recover the original NULL fix and remove the unnecessary input parameter 'state' for
+>> drm_dp_add_payload_part2().
+>>
+>> Fixes: 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/removement")
+>> Reported-by: Leon Weiß <leon.weiss@ruhr-uni-bochum.de>
+>> Link: https://lore.kernel.org/r/38c253ea42072cc825dc969ac4e6b9b600371cc8.camel@ruhr-uni-bochum.de/
+>> Cc: lyude@redhat.com
+>> Cc: imre.deak@intel.com
+>> Cc: stable@vger.kernel.org
+>> Cc: regressions@lists.linux.dev
+>> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+> 
+> I haven't been deep in MST code in a while but this all looks
+> pretty straightforward and good.
+> 
+> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 
-Also changes the CRYPTO_AHB_CLK_ENA & CRYPTO_AXI_CLK_ENA
-offset to 0xb004 from 0x16014.
+Hmmm, that was three weeks ago, but it seems since then nothing happened
+to fix the linked regression through this or some other patch. Is there
+a reason? The build failure report from the CI maybe?
 
-Cc: stable@vger.kernel.org
-Fixes: f6b2bd9cb29a ("clk: qcom: gcc-ipq9574: Enable crypto clocks")
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
----
-Change in [v3]
+Wayne Lin, do you know what's up?
 
-* Updated commit message
+Ciao, Thorsten
 
-Change in [v2]
-
-* Added Fixes tag and stable kernel tag
-
-* updated commit message about offset change
-
- drivers/clk/qcom/gcc-ipq9574.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/clk/qcom/gcc-ipq9574.c b/drivers/clk/qcom/gcc-ipq9574.c
-index 0a3f846695b8..f8b9a1e93bef 100644
---- a/drivers/clk/qcom/gcc-ipq9574.c
-+++ b/drivers/clk/qcom/gcc-ipq9574.c
-@@ -2140,9 +2140,10 @@ static struct clk_rcg2 pcnoc_bfdcd_clk_src = {
- 
- static struct clk_branch gcc_crypto_axi_clk = {
- 	.halt_reg = 0x16010,
-+	.halt_check = BRANCH_HALT_VOTED,
- 	.clkr = {
--		.enable_reg = 0x16010,
--		.enable_mask = BIT(0),
-+		.enable_reg = 0xb004,
-+		.enable_mask = BIT(15),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_crypto_axi_clk",
- 			.parent_hws = (const struct clk_hw *[]) {
-@@ -2156,9 +2157,10 @@ static struct clk_branch gcc_crypto_axi_clk = {
- 
- static struct clk_branch gcc_crypto_ahb_clk = {
- 	.halt_reg = 0x16014,
-+	.halt_check = BRANCH_HALT_VOTED,
- 	.clkr = {
--		.enable_reg = 0x16014,
--		.enable_mask = BIT(0),
-+		.enable_reg = 0xb004,
-+		.enable_mask = BIT(16),
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_crypto_ahb_clk",
- 			.parent_hws = (const struct clk_hw *[]) {
--- 
-2.34.1
-
+>> ---
+>>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c | 2 +-
+>>  drivers/gpu/drm/display/drm_dp_mst_topology.c             | 4 +---
+>>  drivers/gpu/drm/i915/display/intel_dp_mst.c               | 2 +-
+>>  drivers/gpu/drm/nouveau/dispnv50/disp.c                   | 2 +-
+>>  include/drm/display/drm_dp_mst_helper.h                   | 1 -
+>>  5 files changed, 4 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+>> index c27063305a13..2c36f3d00ca2 100644
+>> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+>> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+>> @@ -363,7 +363,7 @@ void dm_helpers_dp_mst_send_payload_allocation(
+>>  	mst_state = to_drm_dp_mst_topology_state(mst_mgr->base.state);
+>>  	new_payload = drm_atomic_get_mst_payload_state(mst_state, aconnector->mst_output_port);
+>>  
+>> -	ret = drm_dp_add_payload_part2(mst_mgr, mst_state->base.state, new_payload);
+>> +	ret = drm_dp_add_payload_part2(mst_mgr, new_payload);
+>>  
+>>  	if (ret) {
+>>  		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+>> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+>> index 03d528209426..95fd18f24e94 100644
+>> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+>> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+>> @@ -3421,7 +3421,6 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part2);
+>>  /**
+>>   * drm_dp_add_payload_part2() - Execute payload update part 2
+>>   * @mgr: Manager to use.
+>> - * @state: The global atomic state
+>>   * @payload: The payload to update
+>>   *
+>>   * If @payload was successfully assigned a starting time slot by drm_dp_add_payload_part1(), this
+>> @@ -3430,14 +3429,13 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part2);
+>>   * Returns: 0 on success, negative error code on failure.
+>>   */
+>>  int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
+>> -			     struct drm_atomic_state *state,
+>>  			     struct drm_dp_mst_atomic_payload *payload)
+>>  {
+>>  	int ret = 0;
+>>  
+>>  	/* Skip failed payloads */
+>>  	if (payload->payload_allocation_status != DRM_DP_MST_PAYLOAD_ALLOCATION_DFP) {
+>> -		drm_dbg_kms(state->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
+>> +		drm_dbg_kms(mgr->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
+>>  			    payload->port->connector->name);
+>>  		return -EIO;
+>>  	}
+>> diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+>> index 53aec023ce92..2fba66aec038 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+>> @@ -1160,7 +1160,7 @@ static void intel_mst_enable_dp(struct intel_atomic_state *state,
+>>  	if (first_mst_stream)
+>>  		intel_ddi_wait_for_fec_status(encoder, pipe_config, true);
+>>  
+>> -	drm_dp_add_payload_part2(&intel_dp->mst_mgr, &state->base,
+>> +	drm_dp_add_payload_part2(&intel_dp->mst_mgr,
+>>  				 drm_atomic_get_mst_payload_state(mst_state, connector->port));
+>>  
+>>  	if (DISPLAY_VER(dev_priv) >= 12)
+>> diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+>> index 0c3d88ad0b0e..88728a0b2c25 100644
+>> --- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
+>> +++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+>> @@ -915,7 +915,7 @@ nv50_msto_cleanup(struct drm_atomic_state *state,
+>>  		msto->disabled = false;
+>>  		drm_dp_remove_payload_part2(mgr, new_mst_state, old_payload, new_payload);
+>>  	} else if (msto->enabled) {
+>> -		drm_dp_add_payload_part2(mgr, state, new_payload);
+>> +		drm_dp_add_payload_part2(mgr, new_payload);
+>>  		msto->enabled = false;
+>>  	}
+>>  }
+>> diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
+>> index 9b19d8bd520a..6c9145abc7e2 100644
+>> --- a/include/drm/display/drm_dp_mst_helper.h
+>> +++ b/include/drm/display/drm_dp_mst_helper.h
+>> @@ -851,7 +851,6 @@ int drm_dp_add_payload_part1(struct drm_dp_mst_topology_mgr *mgr,
+>>  			     struct drm_dp_mst_topology_state *mst_state,
+>>  			     struct drm_dp_mst_atomic_payload *payload);
+>>  int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
+>> -			     struct drm_atomic_state *state,
+>>  			     struct drm_dp_mst_atomic_payload *payload);
+>>  void drm_dp_remove_payload_part1(struct drm_dp_mst_topology_mgr *mgr,
+>>  				 struct drm_dp_mst_topology_state *mst_state,
+> 
+> 
+> 
 
