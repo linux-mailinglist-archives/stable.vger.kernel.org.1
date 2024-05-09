@@ -1,135 +1,92 @@
-Return-Path: <stable+bounces-43501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA6A8C106F
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 15:34:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720548C1183
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 16:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F148DB23ACE
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 13:34:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A35911C20C39
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 14:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A611527A3;
-	Thu,  9 May 2024 13:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953F915E1F8;
+	Thu,  9 May 2024 14:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujzz7B1i"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="dqCnAh1B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBA814A62A;
-	Thu,  9 May 2024 13:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD4913C668
+	for <stable@vger.kernel.org>; Thu,  9 May 2024 14:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715261643; cv=none; b=WjCgWYCPILHoTdgOSHYEJTRgf+eVJZJRolgRqbizb4b7CDFfX57pmQbozfBKAtTNyDhVlhaKU9eTk72O4d6ZcEy33Zdu0BQLALrkC6DE5asDQfDQ3VnFilAEV+IRVSR+ZOnGh2mvYJO8X23zYc0KvM5BOGYS/btBSIc9uPIlFqc=
+	t=1715266304; cv=none; b=m7sC5cs84nUFMCNcASRoYEsSnaRsTVrhd2uIiod47/+M9l0MwF4JdRmx3zfkqX2qUzR5QXJJQUao401+XR5hUwRSOCIHsbgP7pK5+EX4wcaNJgSTLOJk5w3wwekU0wbgstt0/kMTflWTWwc1YTiNfRCxkfWiJUH2bH6+kqPyn+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715261643; c=relaxed/simple;
-	bh=2+YHYFlsCfhJDdkXDf1ER0vd6Y27waqfJtG7Kf2YXBo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AYtAMeiHSjg4S/ma0novLnBr0z3ySryHjYe9db2ujrixAX/TJjsW8yPtt1AcX0L2M41v9PB6BtR52NinY8va7nVkjdw4yrtNuWAvPg5rjweZlr8MOED4dvIiyS/vhqfkzzLNDuqhxbvtyKIDzWCpDDGvKWGnYcoyKvIjuqB+k9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujzz7B1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F104C116B1;
-	Thu,  9 May 2024 13:34:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715261643;
-	bh=2+YHYFlsCfhJDdkXDf1ER0vd6Y27waqfJtG7Kf2YXBo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ujzz7B1i+33eE8tAYa7zkh51+XgGAs/n39T/ILyKsvJwAIofrrPBIaQHDjrFROHOc
-	 tnYWwWBeVd56IS9J06SiiOSuaAwPc+HKff8RXp07BmRkYBeXxMMYwYWaPLWge8R6BO
-	 Tp/xDL0EFFPMRXT1TSEUwu9OZG5+0/lMeb/ZdoW6yCzcIfmLatL+rTNcURF7DhcdQT
-	 ADvte6L8om6PgP5bP6t8N3w4CB6AOXA9JfqEpM9UzGm4Xway828Zj7zQMNU7gJpj2E
-	 NPFfkVilMGvrKU92Cgooqjmutj/WizB/SFBrKTYI33YytbAz8vk5zUZ5z1AxXEdCKG
-	 OnUzgndFe/eVg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1s53uR-000000002Ko-0fMi;
-	Thu, 09 May 2024 15:34:07 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] regulator: core: fix debugfs creation regression
-Date: Thu,  9 May 2024 15:33:04 +0200
-Message-ID: <20240509133304.8883-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1715266304; c=relaxed/simple;
+	bh=ROuxEhTpbRtsfE1hnzOUvo+e32DRlMNGBViWysD4b0A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ne0Q+3V0NTT9k6daYdZuqyGduDacEqEZv2dwrKqZM1/nVoYe1zWfnEW8Y+7FYviOcZKzVu3VBf0QieddVDRpBkFKGWKyYRAaUSIlhJCgLfNcqBYBf/1wFPGdKaNXqroBZ8pNDkuNncsQ8gzaXwvckaET5vqTe5+f41xfcMCSVn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=dqCnAh1B; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-113-2.bstnma.fios.verizon.net [173.48.113.2])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 449EpO0m025071
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 9 May 2024 10:51:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1715266288; bh=2rkEFPmAsmSs8bT9V5fpjO3Bmf+kooXnTHTcPwtoDyU=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=dqCnAh1BbLC4UUZqacrs2RhKEUbD1BMQI787FnPh0381EMB0HKLqo/8ChzOndcjFF
+	 Ff7f6DQ79rxj/usVfMc3B0mk0FHLqezX4AW8zcALNEN2n5Gaj6clKYcoFkR21J+vhk
+	 +PH6O+XX5Wp5CP+pbN+sqgVYSJtPWGmKC26Ecu2dE/QTZimw3AdYNVNBhGyfS1qfZE
+	 QYxDkG4Ey+vMUYe24LNge+fRZ/QyuOuPlMmeEibZgdrq91HigjePWCflbW6LCU/7vJ
+	 Eq3ehcZsTsF0EUMZ2cxGxWKOwXD7b6N1Y0X9FZEwQ4E2df02Z8zx8lkjbVkCAO0jc9
+	 rQY8thg16H7QQ==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id A812215C026D; Thu, 09 May 2024 10:51:24 -0400 (EDT)
+Date: Thu, 9 May 2024 10:51:24 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Cc: stable@vger.kernel.org, Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Michail Ivanov <iwanov-23@bk.ru>,
+        Pavel Koshutin <koshutin.pavel@yandex.ru>,
+        lvc-project@linuxtesting.org, Ritesh Harjani <ritesh.list@gmail.com>,
+        Artem Sadovnikov <ancowi69@gmail.com>
+Subject: Re: [PATCH v2] ext4: fix i_data_sem unlock order in
+ ext4_ind_migrate()
+Message-ID: <20240509145124.GH3620298@mit.edu>
+References: <20240405210803.9152-1-mish.uxin2012@yandex.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240405210803.9152-1-mish.uxin2012@yandex.ru>
 
-regulator_get() may sometimes be called more than once for the same
-consumer device, something which before commit dbe954d8f163 ("regulator:
-core: Avoid debugfs: Directory ...  already present! error") resulted in
-errors being logged.
+On Sat, Apr 06, 2024 at 12:08:03AM +0300, Mikhail Ukhin wrote:
+> Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
+> 
+> The problem occurs in ext4_ind_migrate due to an incorrect order of
+> unlocking of the journal and write semaphores - the order of unlocking
+> must be the reverse of the order of locking.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+> 
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+> Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
 
-A couple of recent commits broke the handling of such cases so that
-attributes are now erroneously created in the debugfs root directory the
-second time a regulator is requested and the log is filled with errors
-like:
+Thanks.  This has been addressed by commit 00d873c17e29 ("ext4: avoid
+deadlock in fs reclaim with page writeback"), with the same code
+change.
 
-	debugfs: File 'uA_load' in directory '/' already present!
-	debugfs: File 'min_uV' in directory '/' already present!
-	debugfs: File 'max_uV' in directory '/' already present!
-	debugfs: File 'constraint_flags' in directory '/' already present!
-
-on any further calls.
-
-Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugfs_create_dir()")
-Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
-Cc: stable@vger.kernel.org
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/regulator/core.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index dabac9772741..2c33653ffdea 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1911,19 +1911,24 @@ static struct regulator *create_regulator(struct regulator_dev *rdev,
- 		}
- 	}
- 
--	if (err != -EEXIST)
-+	if (err != -EEXIST) {
- 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
--	if (IS_ERR(regulator->debugfs))
--		rdev_dbg(rdev, "Failed to create debugfs directory\n");
-+		if (IS_ERR(regulator->debugfs)) {
-+			rdev_dbg(rdev, "Failed to create debugfs directory\n");
-+			regulator->debugfs = NULL;
-+		}
-+	}
- 
--	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
--			   &regulator->uA_load);
--	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
--			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
--	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
--			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
--	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
--			    regulator, &constraint_flags_fops);
-+	if (regulator->debugfs) {
-+		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
-+				   &regulator->uA_load);
-+		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
-+				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
-+		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
-+				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
-+		debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
-+				    regulator, &constraint_flags_fops);
-+	}
- 
- 	/*
- 	 * Check now if the regulator is an always on regulator - if
--- 
-2.43.2
-
+						- Ted
 
