@@ -1,95 +1,135 @@
-Return-Path: <stable+bounces-43500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329CA8C0FDD
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 14:47:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA6A8C106F
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 15:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 381181C2231C
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 12:47:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F148DB23ACE
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 13:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCBC146D7B;
-	Thu,  9 May 2024 12:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A611527A3;
+	Thu,  9 May 2024 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQoXxdBT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujzz7B1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B672913BAE3;
-	Thu,  9 May 2024 12:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBA814A62A;
+	Thu,  9 May 2024 13:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715258817; cv=none; b=V9dXHcQXRxgEfOl13z0i3S92LEPhl9RZTbVOKSAbKJzou0iVSZNeX59kEnqK7ANKFbd+gr/EvH3qcaVzGPLIPC9t0GDJod34jAEbtHOmlFKRtBF03yGztAlebWZiDqlWqEkeaeBy9EryXNnpFWJZbgSnv2FyhBHt4ygwyQ+ilQ4=
+	t=1715261643; cv=none; b=WjCgWYCPILHoTdgOSHYEJTRgf+eVJZJRolgRqbizb4b7CDFfX57pmQbozfBKAtTNyDhVlhaKU9eTk72O4d6ZcEy33Zdu0BQLALrkC6DE5asDQfDQ3VnFilAEV+IRVSR+ZOnGh2mvYJO8X23zYc0KvM5BOGYS/btBSIc9uPIlFqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715258817; c=relaxed/simple;
-	bh=Y1puUf3Rn4PFEIfYWjo05C5VlGgGVxqEMZoIhApAwoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dJmO1sxx8jCR1DM2/MaECwS1fxcpxzDcFxeR3I0KkZFHcXlKNxAfT2Oec/HnH5frzFSMvZ+Voe/6kZyQNc0WrxsB5a92rIUPeb2P9gmdBIKPBa6NwLVPbDJ0JK+SqYNALztuiY6DlJBScvThtdbV3oijvMpCuayAxIK4SqUn7hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQoXxdBT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D71C116B1;
-	Thu,  9 May 2024 12:46:56 +0000 (UTC)
+	s=arc-20240116; t=1715261643; c=relaxed/simple;
+	bh=2+YHYFlsCfhJDdkXDf1ER0vd6Y27waqfJtG7Kf2YXBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AYtAMeiHSjg4S/ma0novLnBr0z3ySryHjYe9db2ujrixAX/TJjsW8yPtt1AcX0L2M41v9PB6BtR52NinY8va7nVkjdw4yrtNuWAvPg5rjweZlr8MOED4dvIiyS/vhqfkzzLNDuqhxbvtyKIDzWCpDDGvKWGnYcoyKvIjuqB+k9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujzz7B1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F104C116B1;
+	Thu,  9 May 2024 13:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715258817;
-	bh=Y1puUf3Rn4PFEIfYWjo05C5VlGgGVxqEMZoIhApAwoE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AQoXxdBT+Gf6/1FnwrPKEUEL8un/LA/u/2/sGpDCC3rxgKcoqyWXiIYW010ItlUum
-	 CLW5mYm545cimXqZBYmCGhgG0TDtnkqwrORVR4iSIbEqIRhyhcrt3kwfXNkXg6K64O
-	 w/OV3lp+KVg/vrgpg6Otpk5K6rEE7UjvK0+ZQ/3ke7FMj3+1HjaVBF4DAXoz4gPzwI
-	 0n+UHl6L4pv6WqF0RUQ69KZCeD51zRNa7aM9mIiyeZyDaYmsZpsgrROCD8g6oq1W5t
-	 bWTjyIxOyJS//5RBCY/Nlq3g0oX9RTKZSdE+TICUdGYgN2wahiJLQ61bVw8OeIOqkv
-	 DvX0r1wcBJS5w==
-Date: Thu, 9 May 2024 08:46:55 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Joerg Roedel <jroedel@suse.de>, yong.wu@mediatek.com,
-	joro@8bytes.org, will@kernel.org, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, iommu@lists.linux.dev,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 4.19 7/7] iommu: mtk: fix module autoloading
-Message-ID: <ZjzFv38K2fudS_zQ@sashalap>
-References: <20240422232040.1616527-1-sashal@kernel.org>
- <20240422232040.1616527-7-sashal@kernel.org>
- <Zied1/2cELhaQupG@duo.ucw.cz>
+	s=k20201202; t=1715261643;
+	bh=2+YHYFlsCfhJDdkXDf1ER0vd6Y27waqfJtG7Kf2YXBo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ujzz7B1i+33eE8tAYa7zkh51+XgGAs/n39T/ILyKsvJwAIofrrPBIaQHDjrFROHOc
+	 tnYWwWBeVd56IS9J06SiiOSuaAwPc+HKff8RXp07BmRkYBeXxMMYwYWaPLWge8R6BO
+	 Tp/xDL0EFFPMRXT1TSEUwu9OZG5+0/lMeb/ZdoW6yCzcIfmLatL+rTNcURF7DhcdQT
+	 ADvte6L8om6PgP5bP6t8N3w4CB6AOXA9JfqEpM9UzGm4Xway828Zj7zQMNU7gJpj2E
+	 NPFfkVilMGvrKU92Cgooqjmutj/WizB/SFBrKTYI33YytbAz8vk5zUZ5z1AxXEdCKG
+	 OnUzgndFe/eVg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1s53uR-000000002Ko-0fMi;
+	Thu, 09 May 2024 15:34:07 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] regulator: core: fix debugfs creation regression
+Date: Thu,  9 May 2024 15:33:04 +0200
+Message-ID: <20240509133304.8883-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <Zied1/2cELhaQupG@duo.ucw.cz>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 23, 2024 at 01:39:03PM +0200, Pavel Machek wrote:
->Hi!
->
->> [ Upstream commit 7537e31df80cb58c27f3b6fef702534ea87a5957 ]
->>
->> Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
->> based on the alias from of_device_id table.
->
->This patch is queued for 4.19 and 5.15, but not 5.10. I believe that's
->wrong.
+regulator_get() may sometimes be called more than once for the same
+consumer device, something which before commit dbe954d8f163 ("regulator:
+core: Avoid debugfs: Directory ...  already present! error") resulted in
+errors being logged.
 
-Heh, this is funny. It fails to build on 5.10:
+A couple of recent commits broke the handling of such cases so that
+attributes are now erroneously created in the debugfs root directory the
+second time a regulator is requested and the log is filled with errors
+like:
 
-drivers/iommu/mtk_iommu.c:872:1: warning: data definition has no type or storage class
-   872 | MODULE_DEVICE_TABLE(of, mtk_iommu_of_ids);
-       | ^~~~~~~~~~~~~~~~~~~
-drivers/iommu/mtk_iommu.c:872:1: error: type defaults to 'int' in declaration of 'MODULE_DEVICE_TABLE' [-Werror=implicit-int]
-drivers/iommu/mtk_iommu.c:872:1: warning: parameter names (without types) in function declaration
-cc1: some warnings being treated as errors
-make[2]: *** [scripts/Makefile.build:286: drivers/iommu/mtk_iommu.o] Error 1
+	debugfs: File 'uA_load' in directory '/' already present!
+	debugfs: File 'min_uV' in directory '/' already present!
+	debugfs: File 'max_uV' in directory '/' already present!
+	debugfs: File 'constraint_flags' in directory '/' already present!
 
-But not on any of the older trees.
+on any further calls.
 
+Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugfs_create_dir()")
+Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
+Cc: stable@vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/regulator/core.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index dabac9772741..2c33653ffdea 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1911,19 +1911,24 @@ static struct regulator *create_regulator(struct regulator_dev *rdev,
+ 		}
+ 	}
+ 
+-	if (err != -EEXIST)
++	if (err != -EEXIST) {
+ 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
+-	if (IS_ERR(regulator->debugfs))
+-		rdev_dbg(rdev, "Failed to create debugfs directory\n");
++		if (IS_ERR(regulator->debugfs)) {
++			rdev_dbg(rdev, "Failed to create debugfs directory\n");
++			regulator->debugfs = NULL;
++		}
++	}
+ 
+-	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
+-			   &regulator->uA_load);
+-	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
+-	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
+-	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
+-			    regulator, &constraint_flags_fops);
++	if (regulator->debugfs) {
++		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
++				   &regulator->uA_load);
++		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
++		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
++		debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
++				    regulator, &constraint_flags_fops);
++	}
+ 
+ 	/*
+ 	 * Check now if the regulator is an always on regulator - if
 -- 
-Thanks,
-Sasha
+2.43.2
+
 
