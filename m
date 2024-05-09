@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-43481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851708C09C8
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 04:30:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C4B8C09C9
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 04:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B751282DAF
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 02:30:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 842F3B21DAB
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 02:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594E98121F;
-	Thu,  9 May 2024 02:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1080983CB2;
+	Thu,  9 May 2024 02:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WwSzok//"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="S9d6+6FU"
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3800E3D96D
-	for <stable@vger.kernel.org>; Thu,  9 May 2024 02:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F312B5D74C
+	for <stable@vger.kernel.org>; Thu,  9 May 2024 02:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715221817; cv=none; b=DiYK4GmXoC4OfWVGuEedXrcmbwiVkLJN2Wtup8MJodKnF1PEr3baeeApsVv6QSpD2dWbkrewro9HJq4667Hi8Nlm1zigMfYL0KcSpAbOOmg3Za4CSmjAbR7UVQKPZphOcScY8tZPDWmbxITrdDYhnrUaTwrYPfYqj0d4P10cSH8=
+	t=1715221820; cv=none; b=JuvhOGFdIt1d1Yqtcf1JztZ6U7RAziiLIrdjYCpwVr+gTzHOAp71ZIQtjDOa0cTsv2vSHqI4FNUIISNGTO2/wX5Xo7+I0y1sjIFRQPhW01oD5f/8nYeuTAn/sLpF1scktdo8nHRBeefhqrtHWf6EDlFT5Pf47RhsT4RtBZ0ZC1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715221817; c=relaxed/simple;
-	bh=6pmIkdSItIeLdxGGdzX811JHFZ1KkYB0w/FZXTeZOB4=;
+	s=arc-20240116; t=1715221820; c=relaxed/simple;
+	bh=96G+pxgiivRuhhZiBDXzLsiCdPIRBdtNExIs4klSNOs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mp0xWfYbPNBXP3+WZj4B5fqsLB+4oZvIZVJJo+VRkar9zt6r1g905MfQHvCJhmx0Ib2UtAmzB1oAQlhAgxhudvIRg+WNQC3gS245xzGF/fbpa0G6hboPeZsQnIhRNuX8lg+Q03dJDKfkESLs+sq3wZydu/oub8dHvClOREMLli8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WwSzok//; arc=none smtp.client-ip=91.218.175.182
+	 MIME-Version; b=H9da8CpX8FFbVxSRHSZqrLlHsT7n1+WlThPeQQ5Vl7l2+zXU2dfPMnTswPiGpqOYirxV3nigeXuLvo6bagQfxyJ37wjp51M4pz9YpUWh8+JtX43rgk10FPjjeFp3mInuvT89Uil1oKfkZrzHrAVfC82ACVejP2fppLJJ0YzAINE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=S9d6+6FU; arc=none smtp.client-ip=91.218.175.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1715221812;
+	t=1715221815;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DzVIXrekGv5cFQPUgqitIQ1NRxvl8fUmILmr5W3Yn38=;
-	b=WwSzok//j99afa+0KSVBUahWTVfA968Kmgi2FJITiwF8ftW/IJ0V+aTciTpMhRsUfu3xI9
-	8zr5Qh+UJdfIa5SqKwtJScT+mulvyw3op8nGkn4KGo0adWHTVAc8LbGZkuUUw7L1qZQ82I
-	/WT21v+GiHr88oiW/9wIqt/yUj1JmXw=
+	bh=n0JkrosJyE9tyU8ag45IGeUbEuZZuNQYNnEKiEH/KiU=;
+	b=S9d6+6FUTUQOclmmeQlvPdUDoc1fCQ/R9QJgA0fnv3cfdA/4KDHW+kJvg4biFwLqQcRcK3
+	s7jNSx3o9eGnYCg5piDjlWrraHPk+rB9tQxUvXdOwWXoRR7qz5CEadEsHNOot941AgMMHx
+	uoreNMy+qrFwOzglga3gknRZXmkbHoo=
 From: George Guo <dongtai.guo@linux.dev>
 To: gregkh@linuxfoundation.org,
 	rostedt@goodmis.org,
@@ -49,9 +49,9 @@ To: gregkh@linuxfoundation.org,
 	tom.zanussi@linux.intel.com
 Cc: stable@vger.kernel.org,
 	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19.y 04/13] tracing: Remove unneeded synth_event_mutex
-Date: Thu,  9 May 2024 10:29:22 +0800
-Message-Id: <20240509022931.3513365-5-dongtai.guo@linux.dev>
+Subject: [PATCH 4.19.y 05/13] tracing: Consolidate trace_add/remove_event_call back to the nolock functions
+Date: Thu,  9 May 2024 10:29:23 +0800
+Message-Id: <20240509022931.3513365-6-dongtai.guo@linux.dev>
 In-Reply-To: <20240509022931.3513365-1-dongtai.guo@linux.dev>
 References: <20240509022931.3513365-1-dongtai.guo@linux.dev>
 Precedence: bulk
@@ -63,194 +63,135 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-From: Masami Hiramatsu <mhiramat@kernel.org>
+From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 
-commit 0e2b81f7b52a1c1a8c46986f9ca01eb7b3c421f8 upstream.
+commit 7e1413edd6194a9807aa5f3ac0378b9b4b9da879 upstream.
 
-Rmove unneeded synth_event_mutex. This mutex protects the reference
-count in synth_event, however, those operational points are already
-protected by event_mutex.
+The trace_add/remove_event_call_nolock() functions were added to allow
+the tace_add/remove_event_call() code be called when the event_mutex
+lock was already taken. Now that all callers are done within the
+event_mutex, there's no reason to have two different interfaces.
 
-1. In __create_synth_event() and create_or_delete_synth_event(),
- those synth_event_mutex clearly obtained right after event_mutex.
+Remove the current wrapper trace_add/remove_event_call()s and rename the
+_nolock versions back to the original names.
 
-2. event_hist_trigger_func() is trigger_hist_cmd.func() which is
- called by trigger_process_regex(), which is a part of
- event_trigger_regex_write() and this function takes event_mutex.
+Link: http://lkml.kernel.org/r/154140866955.17322.2081425494660638846.stgit@devbox
 
-3. hist_unreg_all() is trigger_hist_cmd.unreg_all() which is called
- by event_trigger_regex_open() and it takes event_mutex.
-
-4. onmatch_destroy() and onmatch_create() have long call tree,
- but both are finally invoked from event_trigger_regex_write()
- and event_trace_del_tracer(), former takes event_mutex, and latter
- ensures called under event_mutex locked.
-
-Finally, I ensured there is no resource conflict. For safety,
-I added lockdep_assert_held(&event_mutex) for each function.
-
-Link: http://lkml.kernel.org/r/154140864134.17322.4796059721306031894.stgit@devbox
-
-Reviewed-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Tested-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 Signed-off-by: George Guo <guodongtai@kylinos.cn>
 ---
- kernel/trace/trace_events_hist.c | 30 +++++++-----------------------
- 1 file changed, 7 insertions(+), 23 deletions(-)
+ include/linux/trace_events.h     |  2 --
+ kernel/trace/trace_events.c      | 30 ++++--------------------------
+ kernel/trace/trace_events_hist.c |  6 +++---
+ 3 files changed, 7 insertions(+), 31 deletions(-)
 
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 755daada7def..f4077379420f 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -529,8 +529,6 @@ extern int trace_event_raw_init(struct trace_event_call *call);
+ extern int trace_define_field(struct trace_event_call *call, const char *type,
+ 			      const char *name, int offset, int size,
+ 			      int is_signed, int filter_type);
+-extern int trace_add_event_call_nolock(struct trace_event_call *call);
+-extern int trace_remove_event_call_nolock(struct trace_event_call *call);
+ extern int trace_add_event_call(struct trace_event_call *call);
+ extern int trace_remove_event_call(struct trace_event_call *call);
+ extern int trace_event_get_offsets(struct trace_event_call *call);
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 2830a9cbe648..949eac9362a6 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2312,7 +2312,8 @@ __trace_early_add_new_event(struct trace_event_call *call,
+ struct ftrace_module_file_ops;
+ static void __add_event_to_tracers(struct trace_event_call *call);
+ 
+-int trace_add_event_call_nolock(struct trace_event_call *call)
++/* Add an additional event_call dynamically */
++int trace_add_event_call(struct trace_event_call *call)
+ {
+ 	int ret;
+ 	lockdep_assert_held(&event_mutex);
+@@ -2327,17 +2328,6 @@ int trace_add_event_call_nolock(struct trace_event_call *call)
+ 	return ret;
+ }
+ 
+-/* Add an additional event_call dynamically */
+-int trace_add_event_call(struct trace_event_call *call)
+-{
+-	int ret;
+-
+-	mutex_lock(&event_mutex);
+-	ret = trace_add_event_call_nolock(call);
+-	mutex_unlock(&event_mutex);
+-	return ret;
+-}
+-
+ /*
+  * Must be called under locking of trace_types_lock, event_mutex and
+  * trace_event_sem.
+@@ -2383,8 +2373,8 @@ static int probe_remove_event_call(struct trace_event_call *call)
+ 	return 0;
+ }
+ 
+-/* no event_mutex version */
+-int trace_remove_event_call_nolock(struct trace_event_call *call)
++/* Remove an event_call */
++int trace_remove_event_call(struct trace_event_call *call)
+ {
+ 	int ret;
+ 
+@@ -2399,18 +2389,6 @@ int trace_remove_event_call_nolock(struct trace_event_call *call)
+ 	return ret;
+ }
+ 
+-/* Remove an event_call */
+-int trace_remove_event_call(struct trace_event_call *call)
+-{
+-	int ret;
+-
+-	mutex_lock(&event_mutex);
+-	ret = trace_remove_event_call_nolock(call);
+-	mutex_unlock(&event_mutex);
+-
+-	return ret;
+-}
+-
+ #define for_each_event(event, start, end)			\
+ 	for (event = start;					\
+ 	     (unsigned long)event < (unsigned long)end;		\
 diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 1996da54f2b2..1a32b64d350b 100644
+index 1a32b64d350b..1139075a6395 100644
 --- a/kernel/trace/trace_events_hist.c
 +++ b/kernel/trace/trace_events_hist.c
-@@ -443,8 +443,6 @@ static bool have_hist_err(void)
- 	return false;
- }
+@@ -980,7 +980,7 @@ static int register_synth_event(struct synth_event *event)
+ 	call->data = event;
+ 	call->tp = event->tp;
  
--static DEFINE_MUTEX(synth_event_mutex);
--
- struct synth_trace_event {
- 	struct trace_entry	ent;
- 	u64			fields[];
-@@ -1097,7 +1095,6 @@ static int __create_synth_event(int argc, const char *name, const char **argv)
- 		return -EINVAL;
+-	ret = trace_add_event_call_nolock(call);
++	ret = trace_add_event_call(call);
+ 	if (ret) {
+ 		pr_warn("Failed to register synthetic event: %s\n",
+ 			trace_event_name(call));
+@@ -989,7 +989,7 @@ static int register_synth_event(struct synth_event *event)
  
- 	mutex_lock(&event_mutex);
--	mutex_lock(&synth_event_mutex);
- 
- 	event = find_synth_event(name);
- 	if (event) {
-@@ -1139,7 +1136,6 @@ static int __create_synth_event(int argc, const char *name, const char **argv)
- 	else
- 		free_synth_event(event);
+ 	ret = set_synth_event_print_fmt(call);
+ 	if (ret < 0) {
+-		trace_remove_event_call_nolock(call);
++		trace_remove_event_call(call);
+ 		goto err;
+ 	}
   out:
--	mutex_unlock(&synth_event_mutex);
- 	mutex_unlock(&event_mutex);
+@@ -1004,7 +1004,7 @@ static int unregister_synth_event(struct synth_event *event)
+ 	struct trace_event_call *call = &event->call;
+ 	int ret;
+ 
+-	ret = trace_remove_event_call_nolock(call);
++	ret = trace_remove_event_call(call);
  
  	return ret;
-@@ -1159,7 +1155,6 @@ static int create_or_delete_synth_event(int argc, char **argv)
- 	/* trace_run_command() ensures argc != 0 */
- 	if (name[0] == '!') {
- 		mutex_lock(&event_mutex);
--		mutex_lock(&synth_event_mutex);
- 		event = find_synth_event(name + 1);
- 		if (event) {
- 			if (event->ref)
-@@ -1173,7 +1168,6 @@ static int create_or_delete_synth_event(int argc, char **argv)
- 			}
- 		} else
- 			ret = -ENOENT;
--		mutex_unlock(&synth_event_mutex);
- 		mutex_unlock(&event_mutex);
- 		return ret;
- 	}
-@@ -3660,7 +3654,7 @@ static void onmatch_destroy(struct action_data *data)
- {
- 	unsigned int i;
- 
--	mutex_lock(&synth_event_mutex);
-+	lockdep_assert_held(&event_mutex);
- 
- 	kfree(data->onmatch.match_event);
- 	kfree(data->onmatch.match_event_system);
-@@ -3673,8 +3667,6 @@ static void onmatch_destroy(struct action_data *data)
- 		data->onmatch.synth_event->ref--;
- 
- 	kfree(data);
--
--	mutex_unlock(&synth_event_mutex);
  }
- 
- static void destroy_field_var(struct field_var *field_var)
-@@ -3810,15 +3802,14 @@ static int onmatch_create(struct hist_trigger_data *hist_data,
- 	struct synth_event *event;
- 	int ret = 0;
- 
--	mutex_lock(&synth_event_mutex);
-+	lockdep_assert_held(&event_mutex);
-+
- 	event = find_synth_event(data->onmatch.synth_event_name);
- 	if (!event) {
- 		hist_err("onmatch: Couldn't find synthetic event: ", data->onmatch.synth_event_name);
--		mutex_unlock(&synth_event_mutex);
- 		return -EINVAL;
- 	}
- 	event->ref++;
--	mutex_unlock(&synth_event_mutex);
- 
- 	var_ref_idx = hist_data->n_var_refs;
- 
-@@ -3892,9 +3883,7 @@ static int onmatch_create(struct hist_trigger_data *hist_data,
-  out:
- 	return ret;
-  err:
--	mutex_lock(&synth_event_mutex);
- 	event->ref--;
--	mutex_unlock(&synth_event_mutex);
- 
- 	goto out;
- }
-@@ -5611,6 +5600,8 @@ static void hist_unreg_all(struct trace_event_file *file)
- 	struct synth_event *se;
- 	const char *se_name;
- 
-+	lockdep_assert_held(&event_mutex);
-+
- 	if (hist_file_check_refs(file))
- 		return;
- 
-@@ -5620,12 +5611,10 @@ static void hist_unreg_all(struct trace_event_file *file)
- 			list_del_rcu(&test->list);
- 			trace_event_trigger_enable_disable(file, 0);
- 
--			mutex_lock(&synth_event_mutex);
- 			se_name = trace_event_name(file->event_call);
- 			se = find_synth_event(se_name);
- 			if (se)
- 				se->ref--;
--			mutex_unlock(&synth_event_mutex);
- 
- 			update_cond_flag(file);
- 			if (hist_data->enable_timestamps)
-@@ -5651,6 +5640,8 @@ static int event_hist_trigger_func(struct event_command *cmd_ops,
- 	char *trigger, *p;
- 	int ret = 0;
- 
-+	lockdep_assert_held(&event_mutex);
-+
- 	if (glob && strlen(glob)) {
- 		last_cmd_set(param);
- 		hist_err_clear();
-@@ -5741,14 +5732,10 @@ static int event_hist_trigger_func(struct event_command *cmd_ops,
- 		}
- 
- 		cmd_ops->unreg(glob+1, trigger_ops, trigger_data, file);
--
--		mutex_lock(&synth_event_mutex);
- 		se_name = trace_event_name(file->event_call);
- 		se = find_synth_event(se_name);
- 		if (se)
- 			se->ref--;
--		mutex_unlock(&synth_event_mutex);
--
- 		ret = 0;
- 		goto out_free;
- 	}
-@@ -5787,13 +5774,10 @@ static int event_hist_trigger_func(struct event_command *cmd_ops,
- 	if (ret)
- 		goto out_unreg;
- 
--	mutex_lock(&synth_event_mutex);
- 	se_name = trace_event_name(file->event_call);
- 	se = find_synth_event(se_name);
- 	if (se)
- 		se->ref++;
--	mutex_unlock(&synth_event_mutex);
--
- 	/* Just return zero, not the number of registered triggers */
- 	ret = 0;
-  out:
 -- 
 2.34.1
 
