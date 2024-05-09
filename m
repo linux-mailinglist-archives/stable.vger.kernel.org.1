@@ -1,534 +1,217 @@
-Return-Path: <stable+bounces-43474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3618C08F0
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 03:11:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E748C093F
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 03:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C186E1F21F81
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 01:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E70831F2226B
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 01:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A5E126F1B;
-	Thu,  9 May 2024 01:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDD73F9FC;
+	Thu,  9 May 2024 01:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qnz1uRRw";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Nd8Yol9Q";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BY859Evy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="tmiK9vYk"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Eke43LxP";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="rWrgDayO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F12B13A3E7;
-	Thu,  9 May 2024 01:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715217090; cv=none; b=d31Em9Q0xSKFUVqJ4WBesaCZlGZ2AIGbnnexqPDoIn1MMXcSqJ+xJGdLZws9Vcemk7eSOc1+W7/PNzk/CdACwsoAVDgYBshEmCekDoOg0sGgDhbwnCD5TPgcAYUiFy7sZSFQj6LNoee2yQ0/W2AieFqcE3WodTsUW3avT1LpOjQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715217090; c=relaxed/simple;
-	bh=UaNte5JPTHCBPoL1fdmeZIFpcAGk1byCGG2f5HRqeaw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cn4ruzUflPLI2agE1A3mZjCsRopQ8bh02z4Oqs5tkD4xduEwBsToWsaZdQaunLQvtkh3G6wBcPreR6eu1Cg7ERa04y/jvxAXLNYY/zE36MmK760HiFRvx/tCUk1KsC1jSE00kkV2f4ZeYk+DP/OtYWKnE8IvJG3f8CI0f7ekwLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qnz1uRRw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Nd8Yol9Q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BY859Evy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=tmiK9vYk; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from suse-arm.lan (unknown [10.149.192.130])
-	by smtp-out1.suse.de (Postfix) with ESMTP id D8BE437911;
-	Thu,  9 May 2024 01:11:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715217087; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B/6rAQcYjSPqGojRbTrUizjqIOYMle5KQxIkGdDT8/Q=;
-	b=qnz1uRRwFzOZu1iO05CRheJ+scJq0Ppa91bLXVKT4fF7+86NFNaxDm83J/ypitTqTpT9VD
-	ZNH6S7+O2gJ+HmRBHZHuGv6fNHLtei9KK4kiwEk3dHhAQ44OqcYViQT50PvBRqrPFWL0/j
-	iDNBFuqvw2CuGdicNXPkh7UJHyhkdVY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715217087;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B/6rAQcYjSPqGojRbTrUizjqIOYMle5KQxIkGdDT8/Q=;
-	b=Nd8Yol9QVKuoRAJU6hNd00rUlCTojmAicR0qOBqRwhBHW+DGQRC1JKMzOlOE0NgBDEAluu
-	CVrfKvb/5Kr2qeBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715217086; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B/6rAQcYjSPqGojRbTrUizjqIOYMle5KQxIkGdDT8/Q=;
-	b=BY859EvyvK0CAhurOTqsXP8pw84I0d36L1n30oeXUuemLkE9VcT0QqAfpsJmYX2sovEO15
-	wtQS5Kg1l7xE9cHCwygdeZEat4TSBEz/Vv7xnJF0B3TCxpqEvuBWnpi9EQ49lLqVgk0VUP
-	mnSxPaVfuYd6nJJ4CSJpv/3pbT5USdo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715217086;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B/6rAQcYjSPqGojRbTrUizjqIOYMle5KQxIkGdDT8/Q=;
-	b=tmiK9vYkuMC5dYQmVU8VpwjeAdWh7ncSN6NLt72L1UmvXKHi4D10QVLnQlICeaJakqjcMr
-	FaRR5q58TVSElHAQ==
-From: Coly Li <colyli@suse.de>
-To: axboe@kernel.dk
-Cc: linux-block@vger.kernel.org,
-	linux-bcache@vger.kernel.org,
-	Matthew Mirvish <matthew@mm12.xyz>,
-	stable@vger.kernel.org,
-	Coly Li <colyli@suse.de>
-Subject: [PATCH 2/2] bcache: fix variable length array abuse in btree_iter
-Date: Thu,  9 May 2024 09:11:17 +0800
-Message-Id: <20240509011117.2697-3-colyli@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240509011117.2697-1-colyli@suse.de>
-References: <20240509011117.2697-1-colyli@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846A62C184;
+	Thu,  9 May 2024 01:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715218936; cv=fail; b=Nq/9b4Soay8D1vmYPm2QL0rf0AHYdBrCiKKYg6EZIUMLg4Rov2y8jqpUqNbtesmrgNMLaeNipxeBKVFt9CAbYFUvnIzo0WrWz5EWi+zcjl7oVv7x1qlOOvB0R8D3q3hBsvV5kQDR5M2OQCiO4XTVSpqdPFmAXBcYBP6GYy+IOos=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715218936; c=relaxed/simple;
+	bh=q3kR4uL6zL50SdSmCPmB7wC3y6crMpRjjY+CFzHU73k=;
+	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
+	 Content-Type:MIME-Version; b=p107tzYrIZwd2VZ2LEJTTBfxNWCGWCVbXL3yh3yARL0zXHEViB157n7jpJTuN0CLQLRTbdUrtJwtXG/60Wpt0b4kOfUpNdUDigvF1SObj1O5yG4B8UPU2T/0VT8RoJCGYwuJoeoOBRRfYox+sLOS1xnlmsLhuYA13imxhLepWsM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Eke43LxP; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=rWrgDayO; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44916htc003182;
+	Thu, 9 May 2024 01:42:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : in-reply-to : message-id : references : date : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=JWzklMINp+heb/V/zdy2gkLchdYaSyrehrIRWju51Fc=;
+ b=Eke43LxP/5Fekpz80CaGwZjT2+1VcIbOwnxzt1+08gOPfKpywTECyAchYeUgRwfS5u5O
+ OMke3L4nbCzPVl9eviWJSE7XtVIMkScxGmarANa+SsfLbTa9iGvEeH3z1+5DxTihZG7D
+ MCS0LZ8mdOVJC5PuZgfptkyyhM1W//ZL71Kb47a7LEDVzal3H0mAsjYNXCWZGKQ8ysJd
+ CxZ3C2xDyaXq3KZLVs56ckpCj905kVytWNIyE4uze5buX5MoCMduX/RxvGozYF+iDZRA
+ oh4pWQ5pGii4PgOZtpEoeaZnSjM3l4NFRqxYaAJRCsNs7KUTYju8niYKH12lQhNXXEJb lg== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3y0mhg00y5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 09 May 2024 01:42:11 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 44902mFX020216;
+	Thu, 9 May 2024 01:38:42 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3xysfmupwj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 09 May 2024 01:38:42 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=O/hloBkXH8uO5WwyYSeJAMfvI3jor1LCTKeBraMW87rKNZQdrt7qi9wfaiBidi0+kNcFr3I5GMPEZ+aIZK9QOfORMu54eH4YxXsMEggyKR8wwIphUXnXwi6wQb40fYbyZ26npx+8gDS0lqrUoBESBsfoazT7xIk/5H0n/QrjFTBc0XTLYByhUz0p6bJEZhbHPnyJBOhV7a/+kGDQ5ewzT5wHiklIbaddvTI+wY4BtB4hp6VgPl7iqPQU8GUt6JDGo9lR+jeLBCEAvz71T68+T8qaT0ZR7NkDDsFh5t8dPMFbOrQ7MoPczhFIGbhnsMrwiUr4DxUX6Dko+oAXnTMLmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JWzklMINp+heb/V/zdy2gkLchdYaSyrehrIRWju51Fc=;
+ b=bWMf5xa4HoYhqZgK5fk0QJvjC5NJxXELMigcrDqIRsxh2Tj429Em/ezorszJUgnbOjfb+coAnnx2eqDksVAED1yIl+bDpY285Z2YmuOKq3HfMJEzqNTUEjcW1RMErg7XBDwZRJVZ1YMjuQ1r2WqwXKiv6r6V0PykYkHJcMpWWaDKdjuISNjgzRKVpwbCzAZUXEoD9zbEm3SZGEQtwur8JN/FNvT0lxx4uUgM/uz2RjV/HInNW49Xl7KmXHQtMDG8vhKtx7JJZTnqWguNv8Zn7zUdkbrDwkiw9IdVf0jDEBMMSADFYpb4A9iCTdlOvtaMdTBsNbem++MRBhlQHouLIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JWzklMINp+heb/V/zdy2gkLchdYaSyrehrIRWju51Fc=;
+ b=rWrgDayOYXRgXd13DsiwVMQPDej0Y0pBw68xZWzhHx0iUl3bg0KfT3lXdQkuFE3pR9G7uQ6ufU/G/LuV65LbHoI77gN8GAsGHd7q2OKxFsGQCYeNF1bCwfIiMDTg/wI4MZd3Znk0aYBjEBfg3AMtIxn6XFzfJUEvLDI17GmdIXY=
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by SA3PR10MB7042.namprd10.prod.outlook.com (2603:10b6:806:317::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.43; Thu, 9 May
+ 2024 01:38:40 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::5c74:6a24:843e:e8f7]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::5c74:6a24:843e:e8f7%4]) with mapi id 15.20.7544.045; Thu, 9 May 2024
+ 01:38:40 +0000
+To: Peter Schneider <pschneider1968@googlemail.com>
+Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Martin K. Petersen"
+ <martin.petersen@oracle.com>
+Subject: Re: Kernel 6.8.4 regression: aacraid controller not initialized any
+ more, system boot hangs
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+In-Reply-To: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com> (Peter
+	Schneider's message of "Mon, 6 May 2024 07:19:59 +0200")
+Organization: Oracle Corporation
+Message-ID: <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
+References: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com>
+Date: Wed, 08 May 2024 21:38:38 -0400
+Content-Type: text/plain
+X-ClientProxiedBy: BL6PEPF00016417.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:22e:400:0:1004:0:5) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_ZERO(0.00)[0];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
-X-Spam-Score: -6.80
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|SA3PR10MB7042:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9530e936-3273-4cf3-8f39-08dc6fc8c0d2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|1800799015|376005;
+X-Microsoft-Antispam-Message-Info: 
+	=?us-ascii?Q?BDxW2+5cq9kUaa1TMNm+GLNa/M5tkEyed2ViCE4VcLwgTVQVVQVTy/RZx3Bi?=
+ =?us-ascii?Q?sF6I9BkxOWSmCAn077+vflu1mAtQpOZfBp39YhXnY8Hao6yoi4U2JFQYq7Ar?=
+ =?us-ascii?Q?/+a0ay06WwzGB3rVchmU1c8F28ZIjVKR/mXeYZAfKmO9IPdzA5ZNFCASRpZd?=
+ =?us-ascii?Q?rbSv1KzOKI/b0TIuXGrMQ5Ueq8ggQ27ggfkO6XmGPE+s4RrBpSLZE6Uzfq2f?=
+ =?us-ascii?Q?sdOCuh6kQOiFljybnTpp96o95YaJOTYqiIV3/StK0MFcW3bfe8/4HK290VtL?=
+ =?us-ascii?Q?Ic6WjaCXrj+rzxyPYb5HWzbFvWcLF/Yc01KfXl/l9EJFasz4RGwTBYpJy6It?=
+ =?us-ascii?Q?vHNLxk1t35dLoRJYKiG32v1udIFET7nUcuspyB+MSB1n8V8fJdb7hhi9RM3a?=
+ =?us-ascii?Q?ZKXj/oyCqoQGeqCZmNDQaBtvJxoCyjs4hW7LpeOmRf/FLmKNJ+IUeksX+rn8?=
+ =?us-ascii?Q?0nO6PyGdUfFlYYaQi3etA3o9PFNfAoVDeeXHVm1G6KOyd8DS1QBIwCNRZCk6?=
+ =?us-ascii?Q?AiA02p0RGkm4p82A5oJwA2zL21foZOWv/lQQs4bHAumW/deJwkIdzXREhH2h?=
+ =?us-ascii?Q?/2+bg+f0tDgff5GLJ7ykzahWNqKezpvAgUL/3TNgTdkQDGTPIwMVs0tC4aUV?=
+ =?us-ascii?Q?l/o/xx5l+UZWp2wS08XxqsW8xx1uqXoiGc3dCmoo8c2U1fVYk0E65j0i/i37?=
+ =?us-ascii?Q?xEOWR4cwyWz3zSkc9jx4hVN9/DhQYEADsUQcOka0sAVrunyu0gYUYGDEn0qu?=
+ =?us-ascii?Q?uy9Utw9ZLnjRKWM+JG7tiFRQsG/5N7UtQEYoa+CJ5wHBBlMSjxwuHc4V8LQB?=
+ =?us-ascii?Q?i2eqCrAcwbCfWhsyCTSj+HJqj1b0NWEAAYqrXwBKLhBGFZ/2dqPyZtBpWfAC?=
+ =?us-ascii?Q?xd5AKpuQM8ZnrGH9gFX1zjMKnD0BiANNxpWONTYW43VAtNfhKQ07RKd9vu2b?=
+ =?us-ascii?Q?fQf2eho9H3t7g6047raQcUV4WwYW84dLboBvZKwk4H98pHVCIEY0I3RS+0m0?=
+ =?us-ascii?Q?K+qJXrIA+FY0RmWcb6UxcZ5RLj9S/qFBD6T4vQ/mgNenbvBzwtJz0C/+RsNr?=
+ =?us-ascii?Q?OFbiIM/E1QIJnAssAp4Q3W4x5LKiHdGSL8ZRs/PJ2GXsLH+a2ZKqQETTkTws?=
+ =?us-ascii?Q?JqiqV3AazbaXSLDcQvxTjkJ683g1Pz5PzBZ7YfAIf8P7V/6SDza0YKs0cj0E?=
+ =?us-ascii?Q?3dqZb3VnNPYBNtXzzDQDgAb1yszj9QfpGF+3GhEnqVigN2LkrLZBwAkngHc9?=
+ =?us-ascii?Q?/8hrnjgXbSVsLIgHhOYHQKbNnlOVL6A0kQFLIkTmZQ=3D=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?9p21H0HRha0y+eCwQTrLw5WOjMvW5CIQ2FHzrAAcd3nkXUBp0dSjqCTezlSu?=
+ =?us-ascii?Q?f2ah/C9npkiXtj1eakS/EhtO6luQhyQMcxCS+H6d2moWKgqOiAAKQ4c4Jap9?=
+ =?us-ascii?Q?50gRz6KeMEiy1RiHw1KHVVk9Sx14dk97/IwfgnNLV8807bApjDs81ozTj9Nk?=
+ =?us-ascii?Q?H1R65fNj468NzXFz9kkq7rhMxVn/sjBEB8CEC+89a3u2QYiUpdFoGr/ozi9N?=
+ =?us-ascii?Q?7RG1AcoSB+w2oBYlkc6lSztG6yAIBce7K0ap/F5GkPq+OS1mp8e09rV88J77?=
+ =?us-ascii?Q?3NzWXCGRzzIEH/hJoY4FgXjS+9cEUPzM2mmTpheYtC4ewYjekRv/R8YVt2Wh?=
+ =?us-ascii?Q?XVuN4vjHlWjBXxySeo+M98tGKUd7q/TTAX3ODLtc78ri1MrQrWUzTMbodakF?=
+ =?us-ascii?Q?yfd15xAyvlgTP4rTAkk+pk7zX4oDhRd3Hz9kiAwDQFUGcaqyA/leCE6gFcbP?=
+ =?us-ascii?Q?xbe0Y2HE+CS9QWari31vquZlnRiqACJ2wRoauCFzjDX/eaRXDmVhY2ymsFcj?=
+ =?us-ascii?Q?dMM/8D/B4YDhKWfHcMpI43o1ArFw89J2sNpTlWC8RhJhw4rXupWBUlRZvMIE?=
+ =?us-ascii?Q?hZJRBpLH4T3yR/NM7PZ9j0erNgilJFNtsT1RIBJXJdWEugH5UrAbfvYth1pU?=
+ =?us-ascii?Q?8C42Jv5+NwtubNeNPriPxY+OkVDSNj0hdludQ9x1OJL0oGr8sxqagTFp+ix6?=
+ =?us-ascii?Q?LHvCe5NG8Y9sfarzg5oDVlqlLdaSfn32ofh3JLkxKffH/7X2f922FOipYFrw?=
+ =?us-ascii?Q?1hGzs6j2zwCg4X5si1OWivVmmUWhBQZLL8H16SUDR5INWrPjjaFMVq61AWhn?=
+ =?us-ascii?Q?MZd0lWMAgyrd9GSnqc4rkLO/AaYN/ytCNo/g9xRgQe9CguRYVp91ve9QPkaE?=
+ =?us-ascii?Q?EvbMQ+SWpn+i6QK61oh14S4iNAx75Xsxpv7JGZ0Je7cTBBTRE6CQEtvY8AeE?=
+ =?us-ascii?Q?I8zNmH9McIUO5dWRWVdV18FGMTLi4HwkHuaNWEPVuGNnzrIzJh9mEZSdVSoO?=
+ =?us-ascii?Q?W+jOWOhotPMLZiz6xBYBYyqmxhW1pr3DorOJeGgZPh76LquZ26VuJzIdhwrF?=
+ =?us-ascii?Q?t0AO75kPp3OU+/V+n3EZ/JL0wxiK4V/QgA8ijpHRHqgYYCP0USjQBR+s2dIM?=
+ =?us-ascii?Q?5dPMdirJNDDMIadze/L3BQHGQh7bf1HH86NC2zrp4SwA8o/+zbfAmGW2+rqd?=
+ =?us-ascii?Q?W2AXZpS2eBZQZ8NbKSWDYiLwtPYoJxD0dYVDaLo+B0H1af62ju/ge0CI+t+Y?=
+ =?us-ascii?Q?z+Of2fq6F+cw2rdPla9bL9N2wAFaQxcNyVViq+V6Jwj12I9JaAS1ZlBad39Z?=
+ =?us-ascii?Q?Ot4BC8elnrzGptZptbpdlyaBYU7d/g4kULK/YILIrcqOtybLB5zbTkXPwXb4?=
+ =?us-ascii?Q?JhOtH0woBjYrrnzBUFWzYc8gemWP4TM91Mc/gVkqldS7qgYSDjvswri7Z/kD?=
+ =?us-ascii?Q?lErWuuNQ+7Rombb/wFCevMdcu0/2kygxaFgJewS4dUfto3t9M+wUHZT5XSBo?=
+ =?us-ascii?Q?CYboWAWOo+OF8Nr55fuBWucnLB/hfxv0Tt8EESVTr+S2eYOM0B/VXNiNF1lu?=
+ =?us-ascii?Q?7WeZ2gPuEQ0MQ6jIyR0De1OhOO0TSoi1rt7JOQHMsvC9MkUUPht/HBmK0Cao?=
+ =?us-ascii?Q?lA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	rApmkzTatK6xEumhWQjIwIUhpYow6dNYPQ5EHVO9mi6Njj/ZeYEv2uMUUCqS3T5kvaPSImhGibi+KU+gg4cto3wOy0uA3Es+oadC/KkWf3RZirjbFCcZC9H/ry32DW+KAPyeAmtQy1Bp2RkS41mB+zOYPSEXGdaiaAGhB7NlGPWOn6DJQOPoTNCAQrzlMkrbWS2dOZkb/ojnKhe4VbmoZHg5LgZVKVrx8cjR47L+Edzv1cLjWNHjSi7P2EqkVGo3vLno15fYhJSC2R2ZwA6DLycIWuFfZwBrXa6KPNdox2E5jGvcvUkkoIibwka/e+Y59bV+b/7qlrw0OeGez3a+I2/5DU0ntHXW3N3pweu9nHpa2ruuxS/T/x9eyckOh8Dydo3CxtP9wkFftlywjJJcfrkO4opnTGSwtrSuyFcCWT7TtXQ0tMFn+7TTq9Lw3E1H65Rcer8ja7XFIjtv+mGqLAcadzrFtaa4cJ7U9IiLWQIO6QtMc2QSWE3kF8/ijHF0dbPdF9w/DL6RiZLVRBdboRrurFo0jf7DvLDSp6FN8BHPAPZ7ku5n1EYMb3bf0v7IwEUal9ClQ3+7P2TA9rZ6jGxfruAvzAec6i0h5vCvBsc=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9530e936-3273-4cf3-8f39-08dc6fc8c0d2
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2024 01:38:39.9747
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KZnPSctludc5OGMSTtHPToij7iCBIJVTUMX212HFpmrFyXmMxqhqwrIp+ATy3T/XkjdLDsAg6dn6Jlsx/LLdR91N9uzygOO9igzsvH9a224=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB7042
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-08_10,2024-05-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 malwarescore=0
+ mlxlogscore=782 phishscore=0 mlxscore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405090010
+X-Proofpoint-GUID: ycLsiy3Bl7mboUxyBvhX2UqJshj_-sEn
+X-Proofpoint-ORIG-GUID: ycLsiy3Bl7mboUxyBvhX2UqJshj_-sEn
 
-From: Matthew Mirvish <matthew@mm12.xyz>
 
-btree_iter is used in two ways: either allocated on the stack with a
-fixed size MAX_BSETS, or from a mempool with a dynamic size based on the
-specific cache set. Previously, the struct had a fixed-length array of
-size MAX_BSETS which was indexed out-of-bounds for the dynamically-sized
-iterators, which causes UBSAN to complain.
+Hi Peter!
 
-This patch uses the same approach as in bcachefs's sort_iter and splits
-the iterator into a btree_iter with a flexible array member and a
-btree_iter_stack which embeds a btree_iter as well as a fixed-length
-data array.
+Thanks for the detailed bug report.
 
-Cc: stable@vger.kernel.org
-Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2039368
-Signed-off-by: Matthew Mirvish <matthew@mm12.xyz>
-Signed-off-by: Coly Li <colyli@suse.de>
----
- drivers/md/bcache/bset.c      | 44 +++++++++++++++++------------------
- drivers/md/bcache/bset.h      | 28 ++++++++++++++--------
- drivers/md/bcache/btree.c     | 40 ++++++++++++++++---------------
- drivers/md/bcache/super.c     |  5 ++--
- drivers/md/bcache/sysfs.c     |  2 +-
- drivers/md/bcache/writeback.c | 10 ++++----
- 6 files changed, 70 insertions(+), 59 deletions(-)
+> 6.8.8+          WORKS   Revert "scsi: core: Consult supported VPD page
+> list prior to fetching page" - This reverts commit
+> b5fc07a5fb56216a49e6c1d0b172d5464d99a89b (this is the first bad commit
+> of my bisect session, see below, and a single patch as part of the
+> above merged tag 'scsi-fixes')
 
-diff --git a/drivers/md/bcache/bset.c b/drivers/md/bcache/bset.c
-index 2bba4d6aaaa2..463eb13bd0b2 100644
---- a/drivers/md/bcache/bset.c
-+++ b/drivers/md/bcache/bset.c
-@@ -54,7 +54,7 @@ void bch_dump_bucket(struct btree_keys *b)
- int __bch_count_data(struct btree_keys *b)
- {
- 	unsigned int ret = 0;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct bkey *k;
- 
- 	if (b->ops->is_extents)
-@@ -67,7 +67,7 @@ void __bch_check_keys(struct btree_keys *b, const char *fmt, ...)
- {
- 	va_list args;
- 	struct bkey *k, *p = NULL;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	const char *err;
- 
- 	for_each_key(b, k, &iter) {
-@@ -879,7 +879,7 @@ unsigned int bch_btree_insert_key(struct btree_keys *b, struct bkey *k,
- 	unsigned int status = BTREE_INSERT_STATUS_NO_INSERT;
- 	struct bset *i = bset_tree_last(b)->data;
- 	struct bkey *m, *prev = NULL;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct bkey preceding_key_on_stack = ZERO_KEY;
- 	struct bkey *preceding_key_p = &preceding_key_on_stack;
- 
-@@ -895,9 +895,9 @@ unsigned int bch_btree_insert_key(struct btree_keys *b, struct bkey *k,
- 	else
- 		preceding_key(k, &preceding_key_p);
- 
--	m = bch_btree_iter_init(b, &iter, preceding_key_p);
-+	m = bch_btree_iter_stack_init(b, &iter, preceding_key_p);
- 
--	if (b->ops->insert_fixup(b, k, &iter, replace_key))
-+	if (b->ops->insert_fixup(b, k, &iter.iter, replace_key))
- 		return status;
- 
- 	status = BTREE_INSERT_STATUS_INSERT;
-@@ -1100,33 +1100,33 @@ void bch_btree_iter_push(struct btree_iter *iter, struct bkey *k,
- 				 btree_iter_cmp));
- }
- 
--static struct bkey *__bch_btree_iter_init(struct btree_keys *b,
--					  struct btree_iter *iter,
--					  struct bkey *search,
--					  struct bset_tree *start)
-+static struct bkey *__bch_btree_iter_stack_init(struct btree_keys *b,
-+						struct btree_iter_stack *iter,
-+						struct bkey *search,
-+						struct bset_tree *start)
- {
- 	struct bkey *ret = NULL;
- 
--	iter->size = ARRAY_SIZE(iter->data);
--	iter->used = 0;
-+	iter->iter.size = ARRAY_SIZE(iter->stack_data);
-+	iter->iter.used = 0;
- 
- #ifdef CONFIG_BCACHE_DEBUG
--	iter->b = b;
-+	iter->iter.b = b;
- #endif
- 
- 	for (; start <= bset_tree_last(b); start++) {
- 		ret = bch_bset_search(b, start, search);
--		bch_btree_iter_push(iter, ret, bset_bkey_last(start->data));
-+		bch_btree_iter_push(&iter->iter, ret, bset_bkey_last(start->data));
- 	}
- 
- 	return ret;
- }
- 
--struct bkey *bch_btree_iter_init(struct btree_keys *b,
--				 struct btree_iter *iter,
-+struct bkey *bch_btree_iter_stack_init(struct btree_keys *b,
-+				 struct btree_iter_stack *iter,
- 				 struct bkey *search)
- {
--	return __bch_btree_iter_init(b, iter, search, b->set);
-+	return __bch_btree_iter_stack_init(b, iter, search, b->set);
- }
- 
- static inline struct bkey *__bch_btree_iter_next(struct btree_iter *iter,
-@@ -1293,10 +1293,10 @@ void bch_btree_sort_partial(struct btree_keys *b, unsigned int start,
- 			    struct bset_sort_state *state)
- {
- 	size_t order = b->page_order, keys = 0;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	int oldsize = bch_count_data(b);
- 
--	__bch_btree_iter_init(b, &iter, NULL, &b->set[start]);
-+	__bch_btree_iter_stack_init(b, &iter, NULL, &b->set[start]);
- 
- 	if (start) {
- 		unsigned int i;
-@@ -1307,7 +1307,7 @@ void bch_btree_sort_partial(struct btree_keys *b, unsigned int start,
- 		order = get_order(__set_bytes(b->set->data, keys));
- 	}
- 
--	__btree_sort(b, &iter, start, order, false, state);
-+	__btree_sort(b, &iter.iter, start, order, false, state);
- 
- 	EBUG_ON(oldsize >= 0 && bch_count_data(b) != oldsize);
- }
-@@ -1323,11 +1323,11 @@ void bch_btree_sort_into(struct btree_keys *b, struct btree_keys *new,
- 			 struct bset_sort_state *state)
- {
- 	uint64_t start_time = local_clock();
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 
--	bch_btree_iter_init(b, &iter, NULL);
-+	bch_btree_iter_stack_init(b, &iter, NULL);
- 
--	btree_mergesort(b, new->set->data, &iter, false, true);
-+	btree_mergesort(b, new->set->data, &iter.iter, false, true);
- 
- 	bch_time_stats_update(&state->time, start_time);
- 
-diff --git a/drivers/md/bcache/bset.h b/drivers/md/bcache/bset.h
-index d795c84246b0..011f6062c4c0 100644
---- a/drivers/md/bcache/bset.h
-+++ b/drivers/md/bcache/bset.h
-@@ -321,7 +321,14 @@ struct btree_iter {
- #endif
- 	struct btree_iter_set {
- 		struct bkey *k, *end;
--	} data[MAX_BSETS];
-+	} data[];
-+};
-+
-+/* Fixed-size btree_iter that can be allocated on the stack */
-+
-+struct btree_iter_stack {
-+	struct btree_iter iter;
-+	struct btree_iter_set stack_data[MAX_BSETS];
- };
- 
- typedef bool (*ptr_filter_fn)(struct btree_keys *b, const struct bkey *k);
-@@ -333,9 +340,9 @@ struct bkey *bch_btree_iter_next_filter(struct btree_iter *iter,
- 
- void bch_btree_iter_push(struct btree_iter *iter, struct bkey *k,
- 			 struct bkey *end);
--struct bkey *bch_btree_iter_init(struct btree_keys *b,
--				 struct btree_iter *iter,
--				 struct bkey *search);
-+struct bkey *bch_btree_iter_stack_init(struct btree_keys *b,
-+				       struct btree_iter_stack *iter,
-+				       struct bkey *search);
- 
- struct bkey *__bch_bset_search(struct btree_keys *b, struct bset_tree *t,
- 			       const struct bkey *search);
-@@ -350,13 +357,14 @@ static inline struct bkey *bch_bset_search(struct btree_keys *b,
- 	return search ? __bch_bset_search(b, t, search) : t->data->start;
- }
- 
--#define for_each_key_filter(b, k, iter, filter)				\
--	for (bch_btree_iter_init((b), (iter), NULL);			\
--	     ((k) = bch_btree_iter_next_filter((iter), (b), filter));)
-+#define for_each_key_filter(b, k, stack_iter, filter)                      \
-+	for (bch_btree_iter_stack_init((b), (stack_iter), NULL);           \
-+	     ((k) = bch_btree_iter_next_filter(&((stack_iter)->iter), (b), \
-+					       filter));)
- 
--#define for_each_key(b, k, iter)					\
--	for (bch_btree_iter_init((b), (iter), NULL);			\
--	     ((k) = bch_btree_iter_next(iter));)
-+#define for_each_key(b, k, stack_iter)                           \
-+	for (bch_btree_iter_stack_init((b), (stack_iter), NULL); \
-+	     ((k) = bch_btree_iter_next(&((stack_iter)->iter)));)
- 
- /* Sorting */
- 
-diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
-index 196cdacce38f..d011a7154d33 100644
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1309,7 +1309,7 @@ static bool btree_gc_mark_node(struct btree *b, struct gc_stat *gc)
- 	uint8_t stale = 0;
- 	unsigned int keys = 0, good_keys = 0;
- 	struct bkey *k;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct bset_tree *t;
- 
- 	gc->nodes++;
-@@ -1570,7 +1570,7 @@ static int btree_gc_rewrite_node(struct btree *b, struct btree_op *op,
- static unsigned int btree_gc_count_keys(struct btree *b)
- {
- 	struct bkey *k;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	unsigned int ret = 0;
- 
- 	for_each_key_filter(&b->keys, k, &iter, bch_ptr_bad)
-@@ -1611,17 +1611,18 @@ static int btree_gc_recurse(struct btree *b, struct btree_op *op,
- 	int ret = 0;
- 	bool should_rewrite;
- 	struct bkey *k;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct gc_merge_info r[GC_MERGE_NODES];
- 	struct gc_merge_info *i, *last = r + ARRAY_SIZE(r) - 1;
- 
--	bch_btree_iter_init(&b->keys, &iter, &b->c->gc_done);
-+	bch_btree_iter_stack_init(&b->keys, &iter, &b->c->gc_done);
- 
- 	for (i = r; i < r + ARRAY_SIZE(r); i++)
- 		i->b = ERR_PTR(-EINTR);
- 
- 	while (1) {
--		k = bch_btree_iter_next_filter(&iter, &b->keys, bch_ptr_bad);
-+		k = bch_btree_iter_next_filter(&iter.iter, &b->keys,
-+					       bch_ptr_bad);
- 		if (k) {
- 			r->b = bch_btree_node_get(b->c, op, k, b->level - 1,
- 						  true, b);
-@@ -1911,7 +1912,7 @@ static int bch_btree_check_recurse(struct btree *b, struct btree_op *op)
- {
- 	int ret = 0;
- 	struct bkey *k, *p = NULL;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 
- 	for_each_key_filter(&b->keys, k, &iter, bch_ptr_invalid)
- 		bch_initial_mark_key(b->c, b->level, k);
-@@ -1919,10 +1920,10 @@ static int bch_btree_check_recurse(struct btree *b, struct btree_op *op)
- 	bch_initial_mark_key(b->c, b->level + 1, &b->key);
- 
- 	if (b->level) {
--		bch_btree_iter_init(&b->keys, &iter, NULL);
-+		bch_btree_iter_stack_init(&b->keys, &iter, NULL);
- 
- 		do {
--			k = bch_btree_iter_next_filter(&iter, &b->keys,
-+			k = bch_btree_iter_next_filter(&iter.iter, &b->keys,
- 						       bch_ptr_bad);
- 			if (k) {
- 				btree_node_prefetch(b, k);
-@@ -1950,7 +1951,7 @@ static int bch_btree_check_thread(void *arg)
- 	struct btree_check_info *info = arg;
- 	struct btree_check_state *check_state = info->state;
- 	struct cache_set *c = check_state->c;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct bkey *k, *p;
- 	int cur_idx, prev_idx, skip_nr;
- 
-@@ -1959,8 +1960,8 @@ static int bch_btree_check_thread(void *arg)
- 	ret = 0;
- 
- 	/* root node keys are checked before thread created */
--	bch_btree_iter_init(&c->root->keys, &iter, NULL);
--	k = bch_btree_iter_next_filter(&iter, &c->root->keys, bch_ptr_bad);
-+	bch_btree_iter_stack_init(&c->root->keys, &iter, NULL);
-+	k = bch_btree_iter_next_filter(&iter.iter, &c->root->keys, bch_ptr_bad);
- 	BUG_ON(!k);
- 
- 	p = k;
-@@ -1978,7 +1979,7 @@ static int bch_btree_check_thread(void *arg)
- 		skip_nr = cur_idx - prev_idx;
- 
- 		while (skip_nr) {
--			k = bch_btree_iter_next_filter(&iter,
-+			k = bch_btree_iter_next_filter(&iter.iter,
- 						       &c->root->keys,
- 						       bch_ptr_bad);
- 			if (k)
-@@ -2051,7 +2052,7 @@ int bch_btree_check(struct cache_set *c)
- 	int ret = 0;
- 	int i;
- 	struct bkey *k = NULL;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct btree_check_state check_state;
- 
- 	/* check and mark root node keys */
-@@ -2547,11 +2548,11 @@ static int bch_btree_map_nodes_recurse(struct btree *b, struct btree_op *op,
- 
- 	if (b->level) {
- 		struct bkey *k;
--		struct btree_iter iter;
-+		struct btree_iter_stack iter;
- 
--		bch_btree_iter_init(&b->keys, &iter, from);
-+		bch_btree_iter_stack_init(&b->keys, &iter, from);
- 
--		while ((k = bch_btree_iter_next_filter(&iter, &b->keys,
-+		while ((k = bch_btree_iter_next_filter(&iter.iter, &b->keys,
- 						       bch_ptr_bad))) {
- 			ret = bcache_btree(map_nodes_recurse, k, b,
- 				    op, from, fn, flags);
-@@ -2580,11 +2581,12 @@ int bch_btree_map_keys_recurse(struct btree *b, struct btree_op *op,
- {
- 	int ret = MAP_CONTINUE;
- 	struct bkey *k;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 
--	bch_btree_iter_init(&b->keys, &iter, from);
-+	bch_btree_iter_stack_init(&b->keys, &iter, from);
- 
--	while ((k = bch_btree_iter_next_filter(&iter, &b->keys, bch_ptr_bad))) {
-+	while ((k = bch_btree_iter_next_filter(&iter.iter, &b->keys,
-+					       bch_ptr_bad))) {
- 		ret = !b->level
- 			? fn(op, b, k)
- 			: bcache_btree(map_keys_recurse, k,
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 38e41039edb8..cba09660148a 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1914,8 +1914,9 @@ struct cache_set *bch_cache_set_alloc(struct cache_sb *sb)
- 	INIT_LIST_HEAD(&c->btree_cache_freed);
- 	INIT_LIST_HEAD(&c->data_buckets);
- 
--	iter_size = ((meta_bucket_pages(sb) * PAGE_SECTORS) / sb->block_size + 1) *
--		sizeof(struct btree_iter_set);
-+	iter_size = sizeof(struct btree_iter) +
-+		    ((meta_bucket_pages(sb) * PAGE_SECTORS) / sb->block_size) *
-+			    sizeof(struct btree_iter_set);
- 
- 	c->devices = kcalloc(c->nr_uuids, sizeof(void *), GFP_KERNEL);
- 	if (!c->devices)
-diff --git a/drivers/md/bcache/sysfs.c b/drivers/md/bcache/sysfs.c
-index 6956beb55326..826b14cae4e5 100644
---- a/drivers/md/bcache/sysfs.c
-+++ b/drivers/md/bcache/sysfs.c
-@@ -660,7 +660,7 @@ static unsigned int bch_root_usage(struct cache_set *c)
- 	unsigned int bytes = 0;
- 	struct bkey *k;
- 	struct btree *b;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 
- 	goto lock_root;
- 
-diff --git a/drivers/md/bcache/writeback.c b/drivers/md/bcache/writeback.c
-index 8827a6f130ad..792e070ccf38 100644
---- a/drivers/md/bcache/writeback.c
-+++ b/drivers/md/bcache/writeback.c
-@@ -908,15 +908,15 @@ static int bch_dirty_init_thread(void *arg)
- 	struct dirty_init_thrd_info *info = arg;
- 	struct bch_dirty_init_state *state = info->state;
- 	struct cache_set *c = state->c;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct bkey *k, *p;
- 	int cur_idx, prev_idx, skip_nr;
- 
- 	k = p = NULL;
- 	prev_idx = 0;
- 
--	bch_btree_iter_init(&c->root->keys, &iter, NULL);
--	k = bch_btree_iter_next_filter(&iter, &c->root->keys, bch_ptr_bad);
-+	bch_btree_iter_stack_init(&c->root->keys, &iter, NULL);
-+	k = bch_btree_iter_next_filter(&iter.iter, &c->root->keys, bch_ptr_bad);
- 	BUG_ON(!k);
- 
- 	p = k;
-@@ -930,7 +930,7 @@ static int bch_dirty_init_thread(void *arg)
- 		skip_nr = cur_idx - prev_idx;
- 
- 		while (skip_nr) {
--			k = bch_btree_iter_next_filter(&iter,
-+			k = bch_btree_iter_next_filter(&iter.iter,
- 						       &c->root->keys,
- 						       bch_ptr_bad);
- 			if (k)
-@@ -979,7 +979,7 @@ void bch_sectors_dirty_init(struct bcache_device *d)
- 	int i;
- 	struct btree *b = NULL;
- 	struct bkey *k = NULL;
--	struct btree_iter iter;
-+	struct btree_iter_stack iter;
- 	struct sectors_dirty_init op;
- 	struct cache_set *c = d->c;
- 	struct bch_dirty_init_state state;
+The puzzling thing is that the patch in question restores the original
+behavior in which we do not attempt to query any pages not explicitly
+reported by the device.
+
+Can you please send me the output of:
+
+# sg_vpd -a /dev/sda
+# sg_readcap -l /dev/sda
+
+where sda is one of the aacraid volumes.
+
+Thanks!
+
 -- 
-2.35.3
-
+Martin K. Petersen	Oracle Linux Engineering
 
