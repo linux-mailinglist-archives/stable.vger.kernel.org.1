@@ -1,199 +1,184 @@
-Return-Path: <stable+bounces-43476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FAF8C09AA
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 04:12:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C0B8C09C4
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 04:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5D52B20F76
-	for <lists+stable@lfdr.de>; Thu,  9 May 2024 02:12:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F6DC1C217CD
+	for <lists+stable@lfdr.de>; Thu,  9 May 2024 02:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C341A10979;
-	Thu,  9 May 2024 02:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F34213CAB4;
+	Thu,  9 May 2024 02:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="c7BUuaKc"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pI3ahndY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03572C87C;
-	Thu,  9 May 2024 02:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0075213CAB9
+	for <stable@vger.kernel.org>; Thu,  9 May 2024 02:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715220762; cv=none; b=EZ1Bj+faHzqH8v3p4YbxLD40m1BDpfVW//UhdSQbeLgc7SYNA23FgcE08OPfRnmwSXxpcOC0nRf4urPtV6L4m2LrL7uSoNRm6kuUlkvzaxdp2W2FC1hXpj95K+Au4qbcjH8omPnWvGRqDD3IhBW2vkt+Hkv82pJmCUDJcxUKRVg=
+	t=1715221805; cv=none; b=WyGdPul3KpClqyDueZPLY3e9wNYkqhnKKbM9zx4etimioIkhHvZ08GplrIh+S4txHVE8j7ThN0483hQIZZnGnIyyj0pkOy7TVQPhUiOYfDApwqNkv9fhFGP+nDMkienkl+35rLR5bUxxVU5fMIszrPg7WHZlkYlklWBM4lRsqgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715220762; c=relaxed/simple;
-	bh=/uVroRiOxF+R0oE6nrBdHJHTO1ppc5bIKNcNE0c6FIE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WNsmndNQRnijfStSiTQNnrxfX2okLlfBNAFQBqzIX845cxcA6kZmxhXroejPgiPFdI11LSzvSYcmRhDYc9HiJy2VMMZGhRYmJD7fieccqmFFqJx5nT/j8IZKsxGyLP0gk8ucqx74BqCkZkFFQAIv3CypoQ1DYo1o91Cvsi8FWew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=c7BUuaKc; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a59a609dd3fso68956566b.0;
-        Wed, 08 May 2024 19:12:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1715220759; x=1715825559; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:content-language
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/uVroRiOxF+R0oE6nrBdHJHTO1ppc5bIKNcNE0c6FIE=;
-        b=c7BUuaKcFMfa6QpdF3ZqCl8dz0Aev+btZn+4UfWJHfQrHsnb3PXrjir6AvYH3ZzSnG
-         DHYaaKPQGfT+t3tcxjlkwak9OnQUCJhUviIcpKDu5InTli1Oo9AVKflAI+UGHYrla79t
-         TpSA0GNEgmfDSUB0cWQYdRoh8IODlOjV8lgVbS6UzFzyrzgwxzCCkuInRVgyG5+5EPY5
-         soanAzQlsSG/oaGfwX70Rt9I9vbmn8aebux0k/OQotnQxOL1/Jsgkbhm0VR57sgDMIXx
-         CIMyHiTKrLIR0AG3mhhYWOm6Mg4BPOyKfoEkRzjIxpUXYWKlsFRt5wXOB5lacIoSeNxz
-         Jf9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715220759; x=1715825559;
-        h=in-reply-to:autocrypt:from:references:cc:to:content-language
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/uVroRiOxF+R0oE6nrBdHJHTO1ppc5bIKNcNE0c6FIE=;
-        b=EmSrTFoGSvuMWhP0on6R593FqZHVRoquyMsBJJw8qf85PtFiByqEu12G2SSk2J3/dJ
-         wqcu4Qkqgp2KqJxxLWiUcI8e+Ng12yV0/hjYi7QpNqpI7xxC7Y4skJZfvljf/bUp82v7
-         ya3RAhqcWEdVEHrPNWTQsnxuBloUMcvSBEVOcZas+qrXlioumLn/8O5wmmKyrLtUrQOk
-         OcwZ1I+5YPdz8+LgPEMErQ7F8/xntn2e2z6Lo+7a8tIDBPDiGz+E98+WsS2n1l2dPhin
-         4w+N1Nuk4GXhl+tLv5MiOzcCOwHl8d7FM39Oj9/jNwNmCR3YEjUUhtzzV9c6UnrXgtgx
-         c5hg==
-X-Forwarded-Encrypted: i=1; AJvYcCUvtFmRIeFRJizinST+o0K2VUT71FVzSP0ziox+xZ6UUUE3sl3mHL0EEdsupnOpMKpA7XHcgmyh0c9xlnhyguq+njt+Pw/ZzQJaY/GONAUspWRad20w/y9n0YfX5PsX0WBC+jFv
-X-Gm-Message-State: AOJu0YxXfizH3LeMItXJvKWq1V7WagQWCg06JGL6UwQBUygQxRzog1t5
-	MJcgwxy88z6MtbN6ckhA4av4KtSWxiQzBYE2ElZMZxxWdetaqMM=
-X-Google-Smtp-Source: AGHT+IEv1To3WKcCXF4IZYX+eZGt5q9jhPlEMNAhblrtluvAEEmhPegE1njyo4Th1V9WHIGFeovlVw==
-X-Received: by 2002:a17:907:76f4:b0:a59:a85c:a5ca with SMTP id a640c23a62f3a-a5a115bd150mr96847266b.7.1715220759028;
-        Wed, 08 May 2024 19:12:39 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b48dd.dip0.t-ipconnect.de. [91.43.72.221])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a1781d548sm22676966b.34.2024.05.08.19.12.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 May 2024 19:12:38 -0700 (PDT)
-Message-ID: <5c354987-e373-4d6c-aa55-4030f1a31503@googlemail.com>
-Date: Thu, 9 May 2024 04:12:36 +0200
+	s=arc-20240116; t=1715221805; c=relaxed/simple;
+	bh=UHPFayB9JXTJeaWTz7RsCqk184Vzz2PuHjicpRZ4C6U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TCaQhv0694FCjEVYivawk8A4Qd+18x41ytH2fAAv0jdp+agiSANIA8E9hGAJXF05Jb4j/5Pw/atjJyG1LaZVZe/zgV0v/HKQVmP7No+iKHRmxBvUucPzFY5VFwgg7c6vUNwQfdaAEC/Vn6m2eiAAvuLZs8fmA1qANfXcXSqmjQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pI3ahndY; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1715221800;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ojF7PkPgVf7BMmg8CSTeSCVmMI8c8xPzmQZwYyZbNOU=;
+	b=pI3ahndY0/jZhJquB9xlgmfy8Lz5uETOE4GpTlaiZGJQXzcogikfJtcSKBpyx/xXOqMUhG
+	675cFlZcqDtKpitq/rxzuOkydkevrUzT2NOdYRaOnikk/ZZHOHJRQfIHt6evkoPxN5Kwk/
+	cI0Dazm//C1atT/XP8khoWnser67MK8=
+From: George Guo <dongtai.guo@linux.dev>
+To: gregkh@linuxfoundation.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	tom.zanussi@linux.intel.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 4.19.y 00/13] fix double-free bug causing by destroy_hist_field(data->onmax.var, 0)
+Date: Thu,  9 May 2024 10:29:18 +0800
+Message-Id: <20240509022931.3513365-1-dongtai.guo@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: Kernel 6.8.4 regression: aacraid controller not initialized any
- more, system boot hangs
-Content-Language: de-DE
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@leemhuis.info,
- regressions@lists.linux.dev
-References: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com>
- <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
-From: Peter Schneider <pschneider1968@googlemail.com>
-Autocrypt: addr=pschneider1968@googlemail.com; keydata=
- xjMEY58biBYJKwYBBAHaRw8BAQdADPnoGTrfCUCyH7SZVkFtnlzsFpeKANckofR4WVLMtMzN
- L1BldGVyIFNjaG5laWRlciA8cHNjaG5laWRlcjE5NjhAZ29vZ2xlbWFpbC5jb20+wpwEExYK
- AEQCGyMFCQW15qgFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSjgovXlszhGoyt6IZu
- OpLJLD/yRAUCY58b8AIZAQAKCRBuOpLJLD/yRIeIAQD0+/LMdKHM6AJdPCt+e9Z92BMybfnN
- RtGqkdZWtvdhDQD9FJkGh/3PFtDinimB8UOB7Gi6AGxt9Nu9ne7PvHa0KQXOOARjnxuIEgor
- BgEEAZdVAQUBAQdAw2GRwTf5HJlO6CCigzqH6GUKOjqR1xJ+3nR5EbBze0sDAQgHwn4EGBYK
- ACYWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCY58biAIbDAUJBbXmqAAKCRBuOpLJLD/yRONS
- AQCwB9qiEQoSnxHodu8kRuvUxXKIqN7701W+INXtFGtJygEAyPZH3/vSBJ4A7GUG7BZyQRcr
- ryS0CUq77B7ZkcI1Nwo=
-In-Reply-To: <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------0vf3HL9Ft144MVPrbYb3Y7ZK"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------0vf3HL9Ft144MVPrbYb3Y7ZK
-Content-Type: multipart/mixed; boundary="------------6sr3i0pFB7m39sU7z2d4VxOW";
- protected-headers="v1"
-From: Peter Schneider <pschneider1968@googlemail.com>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@leemhuis.info,
- regressions@lists.linux.dev
-Message-ID: <5c354987-e373-4d6c-aa55-4030f1a31503@googlemail.com>
-Subject: Re: Kernel 6.8.4 regression: aacraid controller not initialized any
- more, system boot hangs
-References: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com>
- <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
-In-Reply-To: <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
+Hi,
+ 
+There are 3 points about this bug:
 
---------------6sr3i0pFB7m39sU7z2d4VxOW
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+1)
+The onmax_destroy() destroyed the onmax var, casusing a double-free error
+flagged by KASAN.
 
-SGkgTWFydGluLA0KDQpBbSAwOS4wNS4yMDI0IHVtIDAzOjM4IHNjaHJpZWIgTWFydGluIEsu
-IFBldGVyc2VuOg0KID4NCiA+IEhpIFBldGVyIQ0KID4NCiA+IFRoYW5rcyBmb3IgdGhlIGRl
-dGFpbGVkIGJ1ZyByZXBvcnQuDQoNClRoYW5rcyB0aGF0IHlvdSBhcmUgbG9va2luZyBpbnRv
-IHRoZSBpc3N1ZSEgSSB0aG91Z2h0IEknZCBiZSBhbHNvIENDJ2luZyB0aGUgcmVsZXZhbnQg
-DQpyZWdyZXNzaW9ucyB0cmFja2VyK21haWxpbmcgbGlzdC4gRm9yIHJlZmVyZW5jZSwgbXkg
-b3JpZ2luYWwgbWVzc2FnZSBjYW4gYmUgZm91bmQgaGVyZToNCg0KaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvYWxsL2VlYzZlYmJmLTA2MWItNGE3Yi05NmRjLWVhNzQ4YWE0ZDAzNUBnb29n
-bGVtYWlsLmNvbS8NCg0KWy4uLl0NCg0KID4gQ2FuIHlvdSBwbGVhc2Ugc2VuZCBtZSB0aGUg
-b3V0cHV0IG9mOg0KID4NCiA+ICMgc2dfdnBkIC1hIC9kZXYvc2RhDQogPiAjIHNnX3JlYWRj
-YXAgLWwgL2Rldi9zZGENCiA+DQogPiB3aGVyZSBzZGEgaXMgb25lIG9mIHRoZSBhYWNyYWlk
-IHZvbHVtZXMuDQoNCg0KSGVyZSB5b3UgZ28uLi4gc2RhIGlzIHRoZSAxVGlCIFJBSUQxIGFy
-cmF5LCBzZGIgaXMgdGhlIDVUaUIgUkFJRDUgYXJyYXkuDQoNCg0Kcm9vdEBsaW51czp+IyB1
-bmFtZSAtcg0KNi41LjEzLTUtcHZlDQpyb290QGxpbnVzOn4jIHNnX3ZwZCAtYSAvZGV2L3Nk
-YQ0KU3VwcG9ydGVkIFZQRCBwYWdlcyBWUEQgcGFnZToNCiAgIFN1cHBvcnRlZCBWUEQgcGFn
-ZXMgW3N2XQ0KICAgVW5pdCBzZXJpYWwgbnVtYmVyIFtzbl0NCiAgIERldmljZSBpZGVudGlm
-aWNhdGlvbiBbZGldDQoNClVuaXQgc2VyaWFsIG51bWJlciBWUEQgcGFnZToNCiAgIFVuaXQg
-c2VyaWFsIG51bWJlcjogNTBDMEI4MkQNCg0KRGV2aWNlIElkZW50aWZpY2F0aW9uIFZQRCBw
-YWdlOg0KICAgQWRkcmVzc2VkIGxvZ2ljYWwgdW5pdDoNCiAgICAgZGVzaWduYXRvciB0eXBl
-OiBUMTAgdmVuZG9yIGlkZW50aWZpY2F0aW9uLCAgY29kZSBzZXQ6IEFTQ0lJDQogICAgICAg
-dmVuZG9yIGlkOiBBREFQVEVDDQogICAgICAgdmVuZG9yIHNwZWNpZmljOiBBUlJBWSAgICAg
-ICAgICAgNTBDMEI4MkQNCiAgICAgZGVzaWduYXRvciB0eXBlOiBFVUktNjQgYmFzZWQsICBj
-b2RlIHNldDogQmluYXJ5DQogICAgICAgMHgyZGI4YzA1MDAwZDAwMDAwDQpyb290QGxpbnVz
-On4jIHNnX3JlYWRjYXAgLWwgL2Rldi9zZGENClJlYWQgQ2FwYWNpdHkgcmVzdWx0czoNCiAg
-ICBQcm90ZWN0aW9uOiBwcm90X2VuPTAsIHBfdHlwZT0wLCBwX2lfZXhwb25lbnQ9MA0KICAg
-IExvZ2ljYWwgYmxvY2sgcHJvdmlzaW9uaW5nOiBsYnBtZT0wLCBsYnByej0wDQogICAgTGFz
-dCBMQkE9MTk5ODU2NTM3NSAoMHg3NzFmYWZmZiksIE51bWJlciBvZiBsb2dpY2FsIGJsb2Nr
-cz0xOTk4NTY1Mzc2DQogICAgTG9naWNhbCBibG9jayBsZW5ndGg9NTEyIGJ5dGVzDQogICAg
-TG9naWNhbCBibG9ja3MgcGVyIHBoeXNpY2FsIGJsb2NrIGV4cG9uZW50PTANCiAgICBMb3dl
-c3QgYWxpZ25lZCBMQkE9MA0KSGVuY2U6DQogICAgRGV2aWNlIHNpemU6IDEwMjMyNjU0NzI1
-MTIgYnl0ZXMsIDk3NTg2Mi4wIE1pQiwgMTAyMy4yNyBHQg0Kcm9vdEBsaW51czp+IyBzZ192
-cGQgLWEgL2Rldi9zZGINClN1cHBvcnRlZCBWUEQgcGFnZXMgVlBEIHBhZ2U6DQogICBTdXBw
-b3J0ZWQgVlBEIHBhZ2VzIFtzdl0NCiAgIFVuaXQgc2VyaWFsIG51bWJlciBbc25dDQogICBE
-ZXZpY2UgaWRlbnRpZmljYXRpb24gW2RpXQ0KDQpVbml0IHNlcmlhbCBudW1iZXIgVlBEIHBh
-Z2U6DQogICBVbml0IHNlcmlhbCBudW1iZXI6IDg3MTgxNjJEDQoNCkRldmljZSBJZGVudGlm
-aWNhdGlvbiBWUEQgcGFnZToNCiAgIEFkZHJlc3NlZCBsb2dpY2FsIHVuaXQ6DQogICAgIGRl
-c2lnbmF0b3IgdHlwZTogVDEwIHZlbmRvciBpZGVudGlmaWNhdGlvbiwgIGNvZGUgc2V0OiBB
-U0NJSQ0KICAgICAgIHZlbmRvciBpZDogQURBUFRFQw0KICAgICAgIHZlbmRvciBzcGVjaWZp
-YzogQVJSQVkgICAgICAgICAgIDg3MTgxNjJEDQogICAgIGRlc2lnbmF0b3IgdHlwZTogRVVJ
-LTY0IGJhc2VkLCAgY29kZSBzZXQ6IEJpbmFyeQ0KICAgICAgIDB4MmQxNjE4ODcwMGQwMDAw
-MA0Kcm9vdEBsaW51czp+IyBzZ19yZWFkY2FwIC1sIC9kZXYvc2RiDQpSZWFkIENhcGFjaXR5
-IHJlc3VsdHM6DQogICAgUHJvdGVjdGlvbjogcHJvdF9lbj0wLCBwX3R5cGU9MCwgcF9pX2V4
-cG9uZW50PTANCiAgICBMb2dpY2FsIGJsb2NrIHByb3Zpc2lvbmluZzogbGJwbWU9MCwgbGJw
-cno9MA0KICAgIExhc3QgTEJBPTk3NjIyMjIwNzkgKDB4MjQ1ZGZhZmZmKSwgTnVtYmVyIG9m
-IGxvZ2ljYWwgYmxvY2tzPTk3NjIyMjIwODANCiAgICBMb2dpY2FsIGJsb2NrIGxlbmd0aD01
-MTIgYnl0ZXMNCiAgICBMb2dpY2FsIGJsb2NrcyBwZXIgcGh5c2ljYWwgYmxvY2sgZXhwb25l
-bnQ9MA0KICAgIExvd2VzdCBhbGlnbmVkIExCQT0wDQpIZW5jZToNCiAgICBEZXZpY2Ugc2l6
-ZTogNDk5ODI1NzcwNDk2MCBieXRlcywgNDc2NjcxMC4wIE1pQiwgNDk5OC4yNiBHQiwgNS4w
-MCBUQg0KDQoNCkJlc3RlIEdyw7zDn2UsDQpQZXRlciBTY2huZWlkZXINCg0KLS0gDQpDbGlt
-YiB0aGUgbW91bnRhaW4gbm90IHRvIHBsYW50IHlvdXIgZmxhZywgYnV0IHRvIGVtYnJhY2Ug
-dGhlIGNoYWxsZW5nZSwNCmVuam95IHRoZSBhaXIgYW5kIGJlaG9sZCB0aGUgdmlldy4gQ2xp
-bWIgaXQgc28geW91IGNhbiBzZWUgdGhlIHdvcmxkLA0Kbm90IHNvIHRoZSB3b3JsZCBjYW4g
-c2VlIHlvdS4gICAgICAgICAgICAgICAgICAgIC0tIERhdmlkIE1jQ3VsbG91Z2ggSnIuDQoN
-Ck9wZW5QR1A6ICAweEEzODI4QkQ3OTZDQ0UxMUE4Q0FERTg4NjZFM0E5MkM5MkMzRkYyNDQN
-CkRvd25sb2FkOiBodHRwczovL3d3dy5wZXRlcnMtbmV0enBsYXR6LmRlL2Rvd25sb2FkL3Bz
-Y2huZWlkZXIxOTY4X3B1Yi5hc2MNCmh0dHBzOi8va2V5cy5tYWlsdmVsb3BlLmNvbS9wa3Mv
-bG9va3VwP29wPWdldCZzZWFyY2g9cHNjaG5laWRlcjE5NjhAZ29vZ2xlbWFpbC5jb20NCmh0
-dHBzOi8va2V5cy5tYWlsdmVsb3BlLmNvbS9wa3MvbG9va3VwP29wPWdldCZzZWFyY2g9cHNj
-aG5laWRlcjE5NjhAZ21haWwuY29tDQoNCg==
+This is tested via "./ftracetest test.d/trigger/inter-event/trigger-onmatch-onmax-action-hist.tc".
 
---------------6sr3i0pFB7m39sU7z2d4VxOW--
+==================================================================
+BUG: KASAN: use-after-free in destroy_hist_field+0x1c2/0x200
+Read of size 8 at addr ffff88800a4ad100 by task ftracetest/4731
 
---------------0vf3HL9Ft144MVPrbYb3Y7ZK
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+CPU: 0 PID: 4731 Comm: ftracetest Kdump: loaded Tainted: GE 4.19.90-89 #77
+Source Version: Unknown
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0
+Call Trace:
+ dump_stack+0xcb/0x10b
+ print_address_description.cold+0x54/0x249
+ kasan_report_error.cold+0x63/0xab
+ ? destroy_hist_field+0x1c2/0x200
+ ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
+ __asan_report_load8_noabort+0x8d/0xa0
+ ? destroy_hist_field+0x1c2/0x200
+ destroy_hist_field+0x1c2/0x200
+ onmax_destroy+0x72/0x1e0
+ ? hist_trigger_elt_data_alloc+0x5a0/0x5a0
+ destroy_hist_data+0x236/0xa40
+ event_hist_trigger_free+0x212/0x2f0
+ ? update_cond_flag+0x128/0x170
+ ? event_hist_trigger_func+0x2880/0x2880
+ hist_unregister_trigger+0x2f2/0x4f0
+ event_hist_trigger_func+0x168c/0x2880
+ ? tracing_map_cmp_u64+0xa0/0xa0
+ ? onmatch_create.constprop.0+0xf50/0xf50
+ ? __mutex_lock_slowpath+0x10/0x10
+ event_trigger_write+0x2f4/0x490
+ ? trigger_start+0x180/0x180
+ ? __fget_light+0x369/0x5d0
+ ? count_memcg_event_mm+0x104/0x2b0
+ ? trigger_start+0x180/0x180
+ __vfs_write+0x81/0x100
+ vfs_write+0x1e1/0x540
+ ksys_write+0x12a/0x290
+ ? __ia32_sys_read+0xb0/0xb0
+ ? __close_fd+0x1d3/0x280
+ do_syscall_64+0xe3/0x2d0
+ entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+RIP: 0033:0x7fd7f4c44e04
+Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 
+48 8d 05 39 34 0c 00 8b 00 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 
+f0 ff ff 77 54 f3 c3 66 90 41 54 55 49 89 d4 53 48 89 f5
+RSP: 002b:00007fff10370df8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000000000000010f RCX: 00007fd7f4c44e04
+RDX: 000000000000010f RSI: 000055fa765df650 RDI: 0000000000000001
+RBP: 000055fa765df650 R08: 000000000000000a R09: 0000000000000000
+R10: 000000000000000a R11: 0000000000000246 R12: 00007fd7f4d035c0
+R13: 000000000000010f R14: 00007fd7f4d037c0 R15: 000000000000010f
+==================================================================
 
------BEGIN PGP SIGNATURE-----
+2)
+So remove the onmax_destroy() destroy_hist_field() call for that var.
 
-wnsEABYIACMWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCZjwxFAUDAAAAAAAKCRBuOpLJLD/yRHt8
-AP0ZMUE5HT5W4eXGolfab8zPa3WiCAdmmPE/CexEU5ZSFAD9HlRhacx4D5/jl6naYaKlBMRJevmv
-RpcTxqTjrT3oYg0=
-=rNP1
------END PGP SIGNATURE-----
+just like this demo patch:
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 7dcb96305e56..58b8a2575b8c 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -3489,7 +3488,6 @@ static void onmax_destroy(struct action_data *data)
+ 	unsigned int i;
+ 
+ 	destroy_hist_field(data->onmax.max_var, 0);
+-	destroy_hist_field(data->onmax.var, 0);
+ 
+ 	kfree(data->onmax.var_str);
+ 	kfree(data->onmax.fn_name);
+-- 
 
---------------0vf3HL9Ft144MVPrbYb3Y7ZK--
+3) 
+And I found it has been fixed by upstream commit ff9d31d0d466.
+So I am backporting these patches to linux-4.19.y.
+
+
+Masami Hiramatsu (4):
+  tracing: Simplify creation and deletion of synthetic events
+  tracing: Add unified dynamic event framework
+  tracing: Use dyn_event framework for synthetic events
+  tracing: Remove unneeded synth_event_mutex
+
+Steven Rostedt (VMware) (5):
+  tracing: Consolidate trace_add/remove_event_call back to the nolock
+    functions
+  string.h: Add str_has_prefix() helper function
+  tracing: Use str_has_prefix() helper for histogram code
+  tracing: Use str_has_prefix() instead of using fixed sizes
+  tracing: Have the historgram use the result of str_has_prefix() for
+    len of prefix
+
+Tom Zanussi (4):
+  tracing: Refactor hist trigger action code
+  tracing: Split up onmatch action data
+  tracing: Generalize hist trigger onmax and save action
+  tracing: Remove unnecessary var_ref destroy in track_data_destroy()
+
+ include/linux/string.h           |   20 +
+ include/linux/trace_events.h     |    2 -
+ kernel/trace/Kconfig             |    4 +
+ kernel/trace/Makefile            |    1 +
+ kernel/trace/trace.c             |   26 +-
+ kernel/trace/trace_dynevent.c    |  210 ++++++
+ kernel/trace/trace_dynevent.h    |  119 ++++
+ kernel/trace/trace_events.c      |   32 +-
+ kernel/trace/trace_events_hist.c | 1048 ++++++++++++++++++------------
+ kernel/trace/trace_probe.c       |    2 +-
+ kernel/trace/trace_stack.c       |    2 +-
+ 11 files changed, 1008 insertions(+), 458 deletions(-)
+ create mode 100644 kernel/trace/trace_dynevent.c
+ create mode 100644 kernel/trace/trace_dynevent.h
+
+-- 
+2.34.1
+
 
