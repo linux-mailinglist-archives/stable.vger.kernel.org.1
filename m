@@ -1,142 +1,253 @@
-Return-Path: <stable+bounces-43523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078968C1F70
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 10:08:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2B08C203A
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 11:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1190283504
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 08:08:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A20E21C216DF
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 09:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC7715F330;
-	Fri, 10 May 2024 08:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E5C77119;
+	Fri, 10 May 2024 09:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iebstXhD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gLuJtcW+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3030D12AAE5
-	for <stable@vger.kernel.org>; Fri, 10 May 2024 08:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D2714901F
+	for <stable@vger.kernel.org>; Fri, 10 May 2024 09:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715328499; cv=none; b=OrIfmhgNxAOAIo7c5nvreL1DHtOwdSr7O/MgKvWy0UosjrtpUB/ZidawRAFfTUzEycGH/N2isSWjRUhBG2HtB0uZgePMRpVfe9hA9FWGMruRO5WJwtA8MnE/GRhok3UES17c+8f/aW+AYrc3gc1rT5uJrhfpXSHM10T0xIsuiX0=
+	t=1715332139; cv=none; b=fWVYpAgyRzFLKRZ1EcCXJElEUv8YT7rdDX5ysbWbEvT3Hx6RG5zj34Vn3XbPZVJHhpCePP1LMqeKG0Xtkedpm+/W5bSr+dsUHwI0FUD6yPFiJrmJQzNKtnk2lJAqGuWqaezARa4AAdo5rh/z7rcsQhlV/CE8a6xe+6vz2zoRlDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715328499; c=relaxed/simple;
-	bh=eg/VPqJA7e2U3aszVYp1nFRt98coZ5ufHlodbmxg+Fk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KDiFjLjwYZpfwpst9KC+IzRcQqfs+/aCn8swylvx8oSB0HAKvUuPaLTwJNf4JDf1grPU9wixhfcdJ3g0Pizb9EZ46DfZM2sVvR9uN1X3nnvsxuTZjBbOz3tPEvbaMYqEdMj56eoeObHxgtvLkXYhdFpCdbmculWTUEV7/2qgtGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iebstXhD; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44A82NB1020425;
-	Fri, 10 May 2024 08:08:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=Yb/vjD8glsfq1SlBLic5YblLSj4cuO72sCftFNzR4Is=;
- b=iebstXhDp5oERp8z25g1LkwTcjwRRINFrQEc6P3gi74lT00gEpW2hZHCv0/g97WBtfmW
- 6df5C3iCWGbEyvinq7YmZVGdJRce9/9zIVoWakov7LonW32AQboDjdoXYRBu4rIporm+
- A+KhcKkhn3Qs379fvnvaZ/M2yRIFKkYCgxHp9WpSADWHinEOS/f3tIQ8XfmZChFcyyQn
- lCe1233N1RkLixeX7AB/kybCMar3Zoh8jb7KebRmQqCXRwZOWxnDJxjrWM7xWIeVgmuh
- m7WnSrTEhVBC7VbamhIT8hlh0klYLxKJDckJIWdlOpZtp9+eLnPTrRi8E2Wb7RJ95pxx JQ== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y1fqf00c4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 08:08:05 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44A7YODI009470;
-	Fri, 10 May 2024 08:08:04 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xysfxr233-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 08:08:03 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44A880o751380730
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 May 2024 08:08:02 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E9F222004D;
-	Fri, 10 May 2024 08:07:59 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B18262004E;
-	Fri, 10 May 2024 08:07:58 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.203.115.195])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 May 2024 08:07:58 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org,
-        Christian Zigotzky <chzigotzky@xenosoft.de>
-Subject: [PATCH] powerpc/85xx: fix compile error without CONFIG_CRASH_DUMP
-Date: Fri, 10 May 2024 13:37:57 +0530
-Message-ID: <20240510080757.560159-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.45.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: coLCGXngZv6SWSWuRM0Avfe4Vqkeb-Cr
-X-Proofpoint-GUID: coLCGXngZv6SWSWuRM0Avfe4Vqkeb-Cr
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1715332139; c=relaxed/simple;
+	bh=I04nZi4eDHjXV0NwFmOXhSYav1tj+JZIjFxquAOBChw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PL7DP5IpJgxHRPr0kEkVxRZdnp2Vp0UNR9ebZUy7QNbzVmbyKXfZjIE8dAJhS7qrdlZOjb20dqqN6xrF/SSvfChMNbDtSvE9M0fqm1sPnMnT+KoiM4ZCaCcedLRUV1pAKEDV/DwIIhB7CmV+sqS2axp+TasEAwCXTRcgrilbvE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gLuJtcW+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1715332136;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=G0EvWCNfwA9x7KaIVr6ruCAINAZy8qYnlw/yafFrBXk=;
+	b=gLuJtcW+NhBYTPLyyGhBr6zJIvJETDkMKPvlvIkO4Kk4zNz1bPFb0MA6AjqCEck1Wfx/EW
+	FX4yN1cGgk3nm8bkvoSW9qX+NkUsemym+GzIceKb13MIC5e4pUEj617Teilh5K3k/s6DXY
+	B+aOGqcYJTMf1Pmsh2ZO/9bgbMl8zdw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-117-P6WCIJl4MZWzY1hAMHkBrA-1; Fri, 10 May 2024 05:08:54 -0400
+X-MC-Unique: P6WCIJl4MZWzY1hAMHkBrA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3EBE7800206;
+	Fri, 10 May 2024 09:08:54 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.192.109])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0A6A9200A612;
+	Fri, 10 May 2024 09:08:51 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	stable@vger.kernel.org,
+	Isaac Ganoung <inventor500@vivaldi.net>,
+	Yongqin Liu <yongqin.liu@linaro.org>
+Subject: [PATCH] net: usb: ax88179_178a: fix link status when link is set to down/up
+Date: Fri, 10 May 2024 11:08:28 +0200
+Message-ID: <20240510090846.328201-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-10_04,2024-05-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 lowpriorityscore=0 malwarescore=0 impostorscore=0
- clxscore=1011 mlxscore=0 phishscore=0 spamscore=0 adultscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405100057
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-Since commit 5c4233cc0920 ("powerpc/kdump: Split KEXEC_CORE and
-CRASH_DUMP dependency"), crashing_cpu is not available without
-CONFIG_CRASH_DUMP. Fix compile error on 64-BIT 85xx owing to this
-change.
+The idea was to keep only one reset at initialization stage in order to
+reduce the total delay, or the reset from usbnet_probe or the reset from
+usbnet_open.
 
-Cc: stable@vger.kernel.org
-Fixes: 5c4233cc0920 ("powerpc/kdump: Split KEXEC_CORE and CRASH_DUMP dependency")
-Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Closes: https://lore.kernel.org/all/fa247ae4-5825-4dbe-a737-d93b7ab4d4b9@xenosoft.de/
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+I have seen that restarting from usbnet_probe is necessary to avoid doing
+too complex things. But when the link is set to down/up (for example to
+configure a different mac address) the link is not correctly recovered
+unless a reset is commanded from usbnet_open.
+
+So, detect the initialization stage (first call) to not reset from
+usbnet_open after the reset from usbnet_probe and after this stage, always
+reset from usbnet_open too (when the link needs to be rechecked).
+
+Apply to all the possible devices, the behavior now is going to be the same.
+
+cc: stable@vger.kernel.org # 6.6+
+Fixes: 56f78615bcb1 ("net: usb: ax88179_178a: avoid writing the mac address before first reading")
+Reported-by: Isaac Ganoung <inventor500@vivaldi.net>
+Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
- arch/powerpc/platforms/85xx/smp.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 37 ++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/platforms/85xx/smp.c b/arch/powerpc/platforms/85xx/smp.c
-index 40aa58206888..e52b848b64b7 100644
---- a/arch/powerpc/platforms/85xx/smp.c
-+++ b/arch/powerpc/platforms/85xx/smp.c
-@@ -398,6 +398,7 @@ static void mpc85xx_smp_kexec_cpu_down(int crash_shutdown, int secondary)
- 	hard_irq_disable();
- 	mpic_teardown_this_cpu(secondary);
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 377be0d9ef14..a0edb410f746 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -174,6 +174,7 @@ struct ax88179_data {
+ 	u32 wol_supported;
+ 	u32 wolopts;
+ 	u8 disconnecting;
++	u8 initialized;
+ };
  
-+#ifdef CONFIG_CRASH_DUMP
- 	if (cpu == crashing_cpu && cpu_thread_in_core(cpu) != 0) {
- 		/*
- 		 * We enter the crash kernel on whatever cpu crashed,
-@@ -406,9 +407,11 @@ static void mpc85xx_smp_kexec_cpu_down(int crash_shutdown, int secondary)
- 		 */
- 		disable_threadbit = 1;
- 		disable_cpu = cpu_first_thread_sibling(cpu);
--	} else if (sibling != crashing_cpu &&
--		   cpu_thread_in_core(cpu) == 0 &&
--		   cpu_thread_in_core(sibling) != 0) {
-+	} else if (sibling == crashing_cpu) {
-+		return;
-+	}
-+#endif
-+	if (cpu_thread_in_core(cpu) == 0 && cpu_thread_in_core(sibling) != 0) {
- 		disable_threadbit = 2;
- 		disable_cpu = sibling;
- 	}
+ struct ax88179_int_data {
+@@ -1672,6 +1673,18 @@ static int ax88179_reset(struct usbnet *dev)
+ 	return 0;
+ }
+ 
++static int ax88179_net_reset(struct usbnet *dev)
++{
++	struct ax88179_data *ax179_data = dev->driver_priv;
++
++	if (ax179_data->initialized)
++		ax88179_reset(dev);
++	else
++		ax179_data->initialized = 1;
++
++	return 0;
++}
++
+ static int ax88179_stop(struct usbnet *dev)
+ {
+ 	u16 tmp16;
+@@ -1691,6 +1704,7 @@ static const struct driver_info ax88179_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1703,6 +1717,7 @@ static const struct driver_info ax88178a_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1715,7 +1730,7 @@ static const struct driver_info cypress_GX3_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1728,7 +1743,7 @@ static const struct driver_info dlink_dub1312_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1741,7 +1756,7 @@ static const struct driver_info sitecom_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1754,7 +1769,7 @@ static const struct driver_info samsung_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1767,7 +1782,7 @@ static const struct driver_info lenovo_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1780,7 +1795,7 @@ static const struct driver_info belkin_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset	= ax88179_reset,
++	.reset	= ax88179_net_reset,
+ 	.stop	= ax88179_stop,
+ 	.flags	= FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1793,7 +1808,7 @@ static const struct driver_info toshiba_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset	= ax88179_reset,
++	.reset	= ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags	= FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1806,7 +1821,7 @@ static const struct driver_info mct_info = {
+ 	.unbind	= ax88179_unbind,
+ 	.status	= ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset	= ax88179_reset,
++	.reset	= ax88179_net_reset,
+ 	.stop	= ax88179_stop,
+ 	.flags	= FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1819,7 +1834,7 @@ static const struct driver_info at_umc2000_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset  = ax88179_reset,
++	.reset  = ax88179_net_reset,
+ 	.stop   = ax88179_stop,
+ 	.flags  = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1832,7 +1847,7 @@ static const struct driver_info at_umc200_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset  = ax88179_reset,
++	.reset  = ax88179_net_reset,
+ 	.stop   = ax88179_stop,
+ 	.flags  = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1845,7 +1860,7 @@ static const struct driver_info at_umc2000sp_info = {
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset  = ax88179_reset,
++	.reset  = ax88179_net_reset,
+ 	.stop   = ax88179_stop,
+ 	.flags  = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
 -- 
-2.45.0
+2.44.0
 
 
