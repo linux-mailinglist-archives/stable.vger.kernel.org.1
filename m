@@ -1,175 +1,244 @@
-Return-Path: <stable+bounces-43528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23ED8C2106
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 11:35:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845158C2185
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 12:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67E9A281A02
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 09:35:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAFDBB20CA8
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 10:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C4D161B6A;
-	Fri, 10 May 2024 09:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256FE165FA0;
+	Fri, 10 May 2024 10:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dfo5KVau"
+	dkim=pass (1024-bit key) header.d=oppo.com header.i=@oppo.com header.b="jkhq5wjO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2043.outbound.protection.outlook.com [40.107.117.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC96C161337
-	for <stable@vger.kernel.org>; Fri, 10 May 2024 09:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715333725; cv=none; b=DyhenB/Ja57UKy8h2sK4aXZhpLbU0dE3BNcgytHens3yoZWHlSSmTlibLQFUnb2M+n4Wp8zatkE7FRzNzzH/MvjszYLJDFAvHewd4IkU1gWp4faFLxy+ChJZdYqP81dwv/DrUne+P+q5PPxDbFlDbqw4jgtDE4/4+vdz30zrZXs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715333725; c=relaxed/simple;
-	bh=74mWvHLl9kkJWCjJ9c/58+OLihHsC5x2Bv4lj2v1YJw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uWopl1xVo+uDEBmTD7dUoXjHqVPfGBrNiN8g+dJZxKwx4MAGBlSuV0kIBOfKh//tGy1QSU8y45gyuVqFjHYcVtQZ/jlt+b9Qbq7G890RtIqYcOdjTSL6z1dl9XhnsD0lxW53xyOyfilT8QOZK1XmL+E7cwiGcwF8ia4yg8E0HV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dfo5KVau; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-dcc6fc978ddso1541194276.0
-        for <stable@vger.kernel.org>; Fri, 10 May 2024 02:35:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1715333722; x=1715938522; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ddAlHrV+azsymE+SBA7AG/w8GBAmFQuP9eNGcQBlcU4=;
-        b=dfo5KVaubq5BNK8KxOFO6OpXSqVEzSSNKPTtJJv3fFzCERqmY76eqwz9L3BfWmebDr
-         I9iy13RfJq8ACb+U2WT6fN9L4cyoBKYeRZnjZlYwlYWNlYWt0oDFbedAbT0xu/Tbvh78
-         lBuIEgnodFKPijQ+YjNWqFAOeB69WeV8hgy/2BE8JDqDNkkUaX+NDsu5F/mkdcsotnKb
-         3izG1hFNFy/e0HtBgMYX+leWCAtNzXyqGDUXXzimBQBvzXXhbyD7TqCtCpApXqdyyp9n
-         IWFTu936lXj7BHTlQZBCIvhemrRyNEonNoidkA0YBsOijVetEOoa0cjRleqvRsLeXb35
-         EM/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715333722; x=1715938522;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ddAlHrV+azsymE+SBA7AG/w8GBAmFQuP9eNGcQBlcU4=;
-        b=mOCVXxbRgaOk+QZQXArqDe+tWcckliOsr/DIWL+BNpUWncnNKA9vAdFKBtcXWTh4Gv
-         1xXiQBL9GCpW/v5x9RVVlwN9EgEdMs/eHqU5jhUO7kiZn7Q3j+c1Lo2OS81Gizxz9unt
-         GrrSAAFX/0GQofeXhrsZH6SvFtJnAZTjfVGKH1K7NOEqzY4vpG9MomgK+v/WoKRc+t4g
-         oHX6DEggQ36bcKBy31cvJie1F4B55sDB5hnvtT5PMYy+ANrcZ3ZEzqB5q9ojs0ShJobh
-         LMZq541X8aDgbqHT+6JMPdsddwC+VbkhUxM0JL5RhwhD8qSAEyW6OWN+YbS0Kmrh8y58
-         RZdg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ9LBjvStu+QN238h2Ct3J2LXXAf0oOgDZjLNbUqI9lLRAGvf8K1FfkkZh5eWSUbFJM8+WBCOdEPcc56kEo9NR14tO/6VA
-X-Gm-Message-State: AOJu0YzLvqftOjKoF9S4XtA0jOZvzDsd60Z9Lf7ojWZK+B2x6DhdeMlv
-	rmKIi13PgUgUSoXjkR+daTyv/6WEK55stQ8ZCc6ssxkYSb+Zp3Qdajczf0/8SRm6QU03HaJ5C4v
-	uYHeNAOqFyM0CNyMdSLauPd/6JiqL4NqqcHsuUQ==
-X-Google-Smtp-Source: AGHT+IHe8KfUCxU0IUa3DtzKN6/EJhPBEHnlzpdRmt0ugkIOFNcugGXnt2P8F6W7CAtLpVfZDsqHHaqcjOrR3KSrOQ0=
-X-Received: by 2002:a5b:2d1:0:b0:de5:bc2e:467e with SMTP id
- 3f1490d57ef6-debcfb4e0b0mr3992499276.3.1715333722592; Fri, 10 May 2024
- 02:35:22 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B577F4AEFA;
+	Fri, 10 May 2024 10:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.117.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715335314; cv=fail; b=a/DiTRMtkEGVVkYgqxQvUMa0s6y+XJfdRPaj1cqMLS3OHuCrk/badRkVIw5NT91wY3llsiWVUxMeMvsbbIrDBb5QvQ5kUxaPxl62ApeReLDM6S4RjWtKiIWiHmpzjG4r2j7y8l7/57juxjKmh4L+8WBgTLmDe4khGxuDZ5AS5rQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715335314; c=relaxed/simple;
+	bh=JGXVP3NkGWZ8c53BS/ygyeWVONyrdRcIEzpgczXEeg4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=koaxZfze5cBSpIBhV0viXkvbJQ5bmDtugpm5JqkQkk5oiFS56ou3TUIiqeQlxrNnvVFdJ+4lVNHX5TkHz2Us45ioNFXxvoPujb40zV7rMnalgHYl25qHnp08HWEMuFSyMJQzINoq9QQZ6eaYIHGXncbLV+O4LZ3NANIarjfhYDQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oppo.com; spf=pass smtp.mailfrom=oppo.com; dkim=pass (1024-bit key) header.d=oppo.com header.i=@oppo.com header.b=jkhq5wjO; arc=fail smtp.client-ip=40.107.117.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oppo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oppo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XuTDO2qLskf141dEw6aN0mplcGa/HezeVoWvZsoXKBlEqrEssKfDeBnT4mHSRLLpR13dSQDYSNo5hiKu2RI5nIWCjkptfaU8X7I+qhRX4vPECyopWB2YFTuIkmMN5cCCSJ0TmAaRYHUOF4Pa/zLlOiLZB7LrlLQKoh5gv0uApe6T+mi+6jw210Cz5ncX59LjMhmcvGNPUB5YXOepoFTUh6jlLqPLskVlr85ZfwmDnyjbbDMcu7Cf9iEuJqTSzgmGvZPSUIHOQkXsJ8Cunls80DIFrlube8/BBd34H/q37g4AoGBHx4ESRLJr5StgmzYaXSgmMEyD5ihDNAFWVCUPFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uKLdzosIdGgv2QIDSek4xu8G6B6eszpULhk2vpR/8V0=;
+ b=Z8+WEyMbCn79JRO4vKTr9J7A0mSB5HKjUzcm0ZDRZciocnHynlGORayS0+bFLT18PzNV+T8qeWXCsN0gdZo0kTCwQgPOxjq0Oa/9IyZ6rbE59PXFeeKuGKGH9jlHMvqPD+vcWm7zZ4Mi9T1P8LF7LbhHyc9QX8rVkNNM2oB+dNxxgwDpDtFaFLIjGVrcLQ7WulMFbhe90Sq2HI8AD6TKESBR+GEB3MtYQ7Tk3DYxcvqcT9FNXtlZq8oTyKMIDdiOfAAQy8EE/nJqVuFhEB2ae5mrEzwx9MWXSrdIg8zOfIhZqCKqf6aLcVk8alcGt5sltFrcRrBkX5MzUijEZkaO5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 58.252.5.68) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=oppo.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=oppo.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oppo.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uKLdzosIdGgv2QIDSek4xu8G6B6eszpULhk2vpR/8V0=;
+ b=jkhq5wjOc3FA9o0JSljxEXySM2DKNRLDdgd7t0RywNs7kj6aXd/IUq6sdNn2uHdrYfTklQP57KVTNIg2cqvaIwUs/lCq3wZnqny04zHMTIZ3tYHh+acLA9gAE+MA3I+I6klmF609MVy9ZWp0qsh7rBhOeJjvt7w1AYlqQ+dbN2g=
+Received: from SI2PR06CA0011.apcprd06.prod.outlook.com (2603:1096:4:186::16)
+ by PUZPR02MB6307.apcprd02.prod.outlook.com (2603:1096:301:f9::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.45; Fri, 10 May
+ 2024 10:01:47 +0000
+Received: from SG1PEPF000082E8.apcprd02.prod.outlook.com
+ (2603:1096:4:186:cafe::3b) by SI2PR06CA0011.outlook.office365.com
+ (2603:1096:4:186::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.49 via Frontend
+ Transport; Fri, 10 May 2024 10:01:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 58.252.5.68)
+ smtp.mailfrom=oppo.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=oppo.com;
+Received-SPF: Pass (protection.outlook.com: domain of oppo.com designates
+ 58.252.5.68 as permitted sender) receiver=protection.outlook.com;
+ client-ip=58.252.5.68; helo=mail.oppo.com; pr=C
+Received: from mail.oppo.com (58.252.5.68) by
+ SG1PEPF000082E8.mail.protection.outlook.com (10.167.240.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7544.18 via Frontend Transport; Fri, 10 May 2024 10:01:46 +0000
+Received: from PH80250894.adc.com (172.16.40.118) by mailappw31.adc.com
+ (172.16.56.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 10 May
+ 2024 18:01:46 +0800
+From: <hailong.liu@oppo.com>
+To: <akpm@linux-foundation.org>
+CC: <urezki@gmail.com>, <hch@infradead.org>, <lstoakes@gmail.com>,
+	<21cnbao@gmail.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<xiang@kernel.org>, <chao@kernel.org>, <mhocko@suse.com>, Hailong.Liu
+	<hailong.liu@oppo.com>, <stable@vger.kernel.org>, Oven
+	<liyangouwen1@oppo.com>
+Subject: [PATCH v2] mm/vmalloc: fix vmalloc which may return null if called with __GFP_NOFAIL
+Date: Fri, 10 May 2024 18:01:31 +0800
+Message-ID: <20240510100131.1865-1-hailong.liu@oppo.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240418155151.355133-1-ivitro@gmail.com>
-In-Reply-To: <20240418155151.355133-1-ivitro@gmail.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 10 May 2024 11:34:46 +0200
-Message-ID: <CAPDyKFr9Vzgm2C6Z57Bg5mUQxg5LK6goN2og3+RC3BkTZjiqJw@mail.gmail.com>
-Subject: Re: [PATCH v1] pmdomain: imx8m-blk-ctrl: fix suspend/resume order
-To: Vitor Soares <ivitro@gmail.com>, Lucas Stach <l.stach@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Vitor Soares <vitor.soares@toradex.com>, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mailappw31.adc.com (172.16.56.198) To mailappw31.adc.com
+ (172.16.56.198)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SG1PEPF000082E8:EE_|PUZPR02MB6307:EE_
+X-MS-Office365-Filtering-Correlation-Id: 23494940-940c-4c52-9147-08dc70d83426
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|82310400017|36860700004|7416005|376005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?DwffEpv7IPxFQp9+odnMvj11TR7agAqakRvnRVBODm+sP3jNqLNFNmfsWPv3?=
+ =?us-ascii?Q?taWsxU3tSwxUHmtRgKwoMKnrxMqKMQ2FmKmAdMwg+0FT1fsaf8NluNiqVNu9?=
+ =?us-ascii?Q?5aHEK16pRHFMS2zCO7yYGfsj8NMpniX3+Ei1VVO4zFdD3bH36uICuP16EPig?=
+ =?us-ascii?Q?PkCD36dTtZqmlqMIAtka4HlR5wNyCYrM9G6/iGQQadU2VPM2CS6d+t1zjnym?=
+ =?us-ascii?Q?6goZvZ9owT2CwW4W0/t11t5jUa4HKnp/qtAZ9pKS81gK7zDLk1PpVT57h4Ul?=
+ =?us-ascii?Q?8jEfyC1/JDsVfIAmT74BFat3hgVyaO5yIFJufgH9dGT1vgA6X5MGV2jA+ShZ?=
+ =?us-ascii?Q?FLkZ7WlozqFu3R7U6NO2eZdBopcZpanOoGZ4aNq86BXk0kZj+HFukZyTHO7S?=
+ =?us-ascii?Q?eL+rKgL3DjA64HFp+igEVCMaAs34HMF1r5JxzOtEgepPHcgBfr/jndkcjNjs?=
+ =?us-ascii?Q?G17lCcAMtuQojR51jcYUP84y8e1/xcjURANu/WJZcRjLFCn6qYcr4+3XXIEF?=
+ =?us-ascii?Q?GT2G4GuHJRluik7dEjKX1bU5S9uF91yuSjg1kSLUxKRjZt/6Lxd23Nk/EyRy?=
+ =?us-ascii?Q?oAWodcpsFRumrh17+ABnSGfcFNr3w+gQ+tL7TW119W+3C6xjiDNgtE0fM7gV?=
+ =?us-ascii?Q?1fFNHC8kq/YfhQ5Rf5aZhPFhCmpy9IzKHoAHyWtfhGD2lzhLutLCtt/OreoA?=
+ =?us-ascii?Q?094/ZUP0dVOIcNM9iPpctwuLnRVizDIe/yH+3HdoHMH00ixVOlZDx77GbEEO?=
+ =?us-ascii?Q?3eqALR6d2PZha+KabuhpOW8ZpH5DQZy5QAcN8gzhBox2UjKTY9tf0nVUrmz5?=
+ =?us-ascii?Q?QcxdrBhnN6u9CCojw2oURy5h9GewJn4tIg6zBYxdL0c0NzaQ3/RVkF5AV2aS?=
+ =?us-ascii?Q?dsvChOmfhbD2GdGIw2cCjNzlWcZSGlh90fBLogg3e6VI0vBuo2DKFRpN1DdY?=
+ =?us-ascii?Q?f4aSB1zOzybgTjkL1stXcGmSj58NMeRHUjrKA3pamWRyz5Zd1Qqh3N1Pq2g9?=
+ =?us-ascii?Q?NfKZmfHINbvFOcmkUHnn7XhIVzHX9WMdcVHqaLB/YKcq90jwPkjUXrc2miLu?=
+ =?us-ascii?Q?s0EwEVHvYHhUnvjzbbpz3gW0gMY2XcpJpYqPyukb0lPBnr2G3XZKCaF0rQeg?=
+ =?us-ascii?Q?bRRKW27wOoT1c4MjyLz5jyBbkcaBJPae7wejmguGc4bbb5PCNGN67NvywIiH?=
+ =?us-ascii?Q?BL5iPkWFFprUyyLuUXFunfYVfF9WBHpdSxM/gI8C2IeCBI6CrK/XdZbQ05/N?=
+ =?us-ascii?Q?XIhK7cyECvP9gWI/5IQEufXgXvkL3vH3+D2QifevBuI9E+XNVUQ3q62C+nVV?=
+ =?us-ascii?Q?4dEkw7VQq8/3vgjlLUc+U0MQ?=
+X-Forefront-Antispam-Report:
+	CIP:58.252.5.68;CTRY:CN;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.oppo.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(82310400017)(36860700004)(7416005)(376005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: oppo.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2024 10:01:46.9019
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23494940-940c-4c52-9147-08dc70d83426
+X-MS-Exchange-CrossTenant-Id: f1905eb1-c353-41c5-9516-62b4a54b5ee6
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f1905eb1-c353-41c5-9516-62b4a54b5ee6;Ip=[58.252.5.68];Helo=[mail.oppo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SG1PEPF000082E8.apcprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR02MB6307
 
-On Thu, 18 Apr 2024 at 17:52, Vitor Soares <ivitro@gmail.com> wrote:
->
-> From: Vitor Soares <vitor.soares@toradex.com>
->
-> During the probe, the genpd power_dev is added to the dpm_list after
-> blk_ctrl due to its parent/child relationship. Making the blk_ctrl
-> suspend after and resume before the genpd power_dev.
->
-> As a consequence, the system hangs when resuming the VPU due to the
-> power domain dependency.
->
-> To ensure the proper suspend/resume order, add a device link betweem
-> blk_ctrl and genpd power_dev. It guarantees genpd power_dev is suspended
-> after and resumed before blk-ctrl.
+From: "Hailong.Liu" <hailong.liu@oppo.com>
 
-Before discussing $subject patch, would you mind explaining to me why
-imx8m-blk-ctrl needs to use the ->suspend() callback at all?
+commit a421ef303008 ("mm: allow !GFP_KERNEL allocations for kvmalloc")
+includes support for __GFP_NOFAIL, but it presents a conflict with
+commit dd544141b9eb ("vmalloc: back off when the current task is
+OOM-killed"). A possible scenario is as follows:
 
-Looking closer at that code (imx8m_blk_ctrl_suspend()), it calls
-pm_runtime_get_sync() for devices to power on "everything". Why isn't
-that managed by the consumer drivers (on a case by case basis) that
-are managing the devices that are attached to the genpds instead?
+process-a
+__vmalloc_node_range(GFP_KERNEL | __GFP_NOFAIL)
+    __vmalloc_area_node()
+        vm_area_alloc_pages()
+		--> oom-killer send SIGKILL to process-a
+        if (fatal_signal_pending(current)) break;
+--> return NULL;
 
-Kind regards
-Uffe
+To fix this, do not check fatal_signal_pending() in vm_area_alloc_pages()
+if __GFP_NOFAIL set.
 
->
-> Cc: <stable@vger.kernel.org>
-> Closes: https://lore.kernel.org/all/fccbb040330a706a4f7b34875db1d896a0bf81c8.camel@gmail.com/
-> Link: https://lore.kernel.org/all/20240409085802.290439-1-ivitro@gmail.com/
-> Fixes: 2684ac05a8c4 ("soc: imx: add i.MX8M blk-ctrl driver")
-> Suggested-by: Lucas Stach <l.stach@pengutronix.de>
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> ---
->
-> This is a new patch, but is a follow-up of:
-> https://lore.kernel.org/all/20240409085802.290439-1-ivitro@gmail.com/
->
-> As suggested by Lucas, we are addressing this PM issue in the imx8m-blk-ctrl
-> driver instead of in the imx8mm.dtsi.
->
->  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> index ca942d7929c2..cd0d2296080d 100644
-> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-> @@ -283,6 +283,20 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
->                         goto cleanup_pds;
->                 }
->
-> +               /*
-> +                * Enforce suspend/resume ordering by making genpd power_dev a
-> +                * provider of blk-ctrl. Genpd power_dev is suspended after and
-> +                * resumed before blk-ctrl.
-> +                */
-> +               if (!device_link_add(dev, domain->power_dev, DL_FLAG_STATELESS)) {
-> +                       ret = -EINVAL;
-> +                       dev_err_probe(dev, ret,
-> +                                     "failed to link to %s\n", data->name);
-> +                       pm_genpd_remove(&domain->genpd);
-> +                       dev_pm_domain_detach(domain->power_dev, true);
-> +                       goto cleanup_pds;
-> +               }
-> +
->                 /*
->                  * We use runtime PM to trigger power on/off of the upstream GPC
->                  * domain, as a strict hierarchical parent/child power domain
-> @@ -324,6 +338,7 @@ static int imx8m_blk_ctrl_probe(struct platform_device *pdev)
->         of_genpd_del_provider(dev->of_node);
->  cleanup_pds:
->         for (i--; i >= 0; i--) {
-> +               device_link_remove(dev, bc->domains[i].power_dev);
->                 pm_genpd_remove(&bc->domains[i].genpd);
->                 dev_pm_domain_detach(bc->domains[i].power_dev, true);
->         }
-> @@ -343,6 +358,7 @@ static void imx8m_blk_ctrl_remove(struct platform_device *pdev)
->         for (i = 0; bc->onecell_data.num_domains; i++) {
->                 struct imx8m_blk_ctrl_domain *domain = &bc->domains[i];
->
-> +               device_link_remove(&pdev->dev, domain->power_dev);
->                 pm_genpd_remove(&domain->genpd);
->                 dev_pm_domain_detach(domain->power_dev, true);
->         }
-> --
-> 2.34.1
->
+Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
+Cc: <stable@vger.kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Suggested-by: Barry Song <21cnbao@gmail.com>
+Reported-by: Oven <liyangouwen1@oppo.com>
+Signed-off-by: Hailong.Liu <hailong.liu@oppo.com>
+---
+ mm/vmalloc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 125427cbdb87..109272b8ee2e 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3492,7 +3492,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ {
+ 	unsigned int nr_allocated = 0;
+ 	gfp_t alloc_gfp = gfp;
+-	bool nofail = false;
++	bool nofail = gfp & __GFP_NOFAIL;
+ 	struct page *page;
+ 	int i;
+
+@@ -3549,12 +3549,11 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 		 * and compaction etc.
+ 		 */
+ 		alloc_gfp &= ~__GFP_NOFAIL;
+-		nofail = true;
+ 	}
+
+ 	/* High-order pages or fallback path if "bulk" fails. */
+ 	while (nr_allocated < nr_pages) {
+-		if (fatal_signal_pending(current))
++		if (!nofail && fatal_signal_pending(current))
+ 			break;
+
+ 		if (nid == NUMA_NO_NODE)
+---
+Changes since RFC v1 [1]:
+- Remove RFC tag
+- Add fixes, per Michal
+- Use nofail instead of gfp & __GFP_NOFAIL, per Barry & Michal
+- Modify commit log, per Barry
+
+[1] https://lore.kernel.org/all/20240508125808.28882-1-hailong.liu@oppo.com/
+
+This issue occurred during OPLUS KASAN TEST. Below is part of the log
+-> oom-killer sends signal to process
+[65731.222840] [ T1308] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/apps/uid_10198,task=gs.intelligence,pid=32454,uid=10198
+
+[65731.259685] [T32454] Call trace:
+[65731.259698] [T32454]  dump_backtrace+0xf4/0x118
+[65731.259734] [T32454]  show_stack+0x18/0x24
+[65731.259756] [T32454]  dump_stack_lvl+0x60/0x7c
+[65731.259781] [T32454]  dump_stack+0x18/0x38
+[65731.259800] [T32454]  mrdump_common_die+0x250/0x39c [mrdump]
+[65731.259936] [T32454]  ipanic_die+0x20/0x34 [mrdump]
+[65731.260019] [T32454]  atomic_notifier_call_chain+0xb4/0xfc
+[65731.260047] [T32454]  notify_die+0x114/0x198
+[65731.260073] [T32454]  die+0xf4/0x5b4
+[65731.260098] [T32454]  die_kernel_fault+0x80/0x98
+[65731.260124] [T32454]  __do_kernel_fault+0x160/0x2a8
+[65731.260146] [T32454]  do_bad_area+0x68/0x148
+[65731.260174] [T32454]  do_mem_abort+0x151c/0x1b34
+[65731.260204] [T32454]  el1_abort+0x3c/0x5c
+[65731.260227] [T32454]  el1h_64_sync_handler+0x54/0x90
+[65731.260248] [T32454]  el1h_64_sync+0x68/0x6c
+
+[65731.260269] [T32454]  z_erofs_decompress_queue+0x7f0/0x2258
+--> be->decompressed_pages = kvcalloc(be->nr_pages, sizeof(struct page *), GFP_KERNEL | __GFP_NOFAIL);
+	kernel panic by NULL pointer dereference.
+	erofs assume kvmalloc with __GFP_NOFAIL never return NULL.
+[65731.260293] [T32454]  z_erofs_runqueue+0xf30/0x104c
+[65731.260314] [T32454]  z_erofs_readahead+0x4f0/0x968
+[65731.260339] [T32454]  read_pages+0x170/0xadc
+[65731.260364] [T32454]  page_cache_ra_unbounded+0x874/0xf30
+[65731.260388] [T32454]  page_cache_ra_order+0x24c/0x714
+[65731.260411] [T32454]  filemap_fault+0xbf0/0x1a74
+[65731.260437] [T32454]  __do_fault+0xd0/0x33c
+[65731.260462] [T32454]  handle_mm_fault+0xf74/0x3fe0
+[65731.260486] [T32454]  do_mem_abort+0x54c/0x1b34
+[65731.260509] [T32454]  el0_da+0x44/0x94
+[65731.260531] [T32454]  el0t_64_sync_handler+0x98/0xb4
+[65731.260553] [T32454]  el0t_64_sync+0x198/0x19c
+--
+2.34.1
+
 
