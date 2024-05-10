@@ -1,186 +1,211 @@
-Return-Path: <stable+bounces-43545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E2D8C29BF
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 20:16:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B7D8C2A51
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 21:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99CEF283EDD
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 18:16:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002101C20B3C
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 19:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8718822EE3;
-	Fri, 10 May 2024 18:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673E045945;
+	Fri, 10 May 2024 19:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OSYfiAhy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LQ4n766e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198AEEAF6;
-	Fri, 10 May 2024 18:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8693D968;
+	Fri, 10 May 2024 19:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715364993; cv=none; b=cBCdTz6ekQ57dKuvUiZTiUKT28LmslTyg0CrAqMZY0TVVU9po+oh8dLU/qVFMl1Ml4tYLquPGeKVwrzlBaEP9UMkXBM1C1zUARMNd6MImlLFGgYmPWfP7gF0UaJkGlXdaFc5zbvwZCxtid7+iSeH1W0sceZjz4hNJoE6Z7e+PZg=
+	t=1715367834; cv=none; b=c0nEgWUbjRTqYTxbCJ61guZ/c6tW9BhyABKsHsFG912vYll0ZUitsfasmk87otUcwj9OcEhK7so3yyGnEVZ/sEuQea13jt0dTUCvgniWgQYOgICXPGUXKX8tOPosd5FUwdRbxwt6Hckh9BofBhEzo4+LCisVk9a0NNIegd3QJOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715364993; c=relaxed/simple;
-	bh=4yxNTyObo4rsI+83ptNnPplb61179hsyTMqh2NJ82Gc=;
-	h=Date:To:From:Subject:Message-Id; b=SiWTJ4rmn6uVGW0vSUabHKUnAki1UVmYsKJ77esY4GK1pzWma2IDLiBi/Y2kg8js8NtJBp3uh2O/WRlT/z02epec7Cbb3KPBehqRjqRF6c+WX3qdwcBGBmc+jPkvJ6zOSwjqNaCbOjPrt/Us7uYCyu84yrurMUDPcYUButQyu1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OSYfiAhy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECEEC113CC;
-	Fri, 10 May 2024 18:16:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1715364992;
-	bh=4yxNTyObo4rsI+83ptNnPplb61179hsyTMqh2NJ82Gc=;
-	h=Date:To:From:Subject:From;
-	b=OSYfiAhy7Rdl+01cxtJuyV+nmRGACCAwFKlpw3mnwpukBMZxzUB46jiGbep1rp9ti
-	 +j/NoQgOdCquGkXmwH7PxiqSC21ArxfJT64ryDF4WPdr1skAcHWFS2yCSavDLOiRU4
-	 B7GdNULCQ7NjvyyAm25R1JCWFgyHIm7/seZpZqRc=
-Date: Fri, 10 May 2024 11:16:31 -0700
-To: mm-commits@vger.kernel.org,xiang@kernel.org,urezki@gmail.com,stable@vger.kernel.org,mhocko@suse.com,lstoakes@gmail.com,liyangouwen1@oppo.com,hch@infradead.org,chao@kernel.org,baohua@kernel.org,21cnbao@gmail.com,hailong.liu@oppo.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmalloc-fix-vmalloc-which-may-return-null-if-called-with-__gfp_nofail.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240510181632.8ECEEC113CC@smtp.kernel.org>
+	s=arc-20240116; t=1715367834; c=relaxed/simple;
+	bh=Y4vh2N4jqljg2BMvNoIwwrVvViw9wRY1YxdZzay6vbI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UGUdV9cDlhf9FzeK8SOiryUTAErJQn6H3BnP+Czl9t1NlQPtTsYB+sVJvEaV31H4y3x8RIX0FCD7eGigYnVmzhKsm8CxTHjqx+Lnl2++YmiET5g6mrCglYZA/ihc3Hp+OqFta2gK7faWmoDJA4mMldXUx5eQjORalQ+wIjzzppg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LQ4n766e; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-434c695ec3dso13729981cf.0;
+        Fri, 10 May 2024 12:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715367831; x=1715972631; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=RpKObjyoYGAzF55h49XjF90ue0R++WjDXWQv+BTMvTc=;
+        b=LQ4n766eK+SK8MFsve2S4CDiE1A01q2aapi7cmshDMIeDdqX9iTKXM/8Vg+IR0PDy4
+         EQ8fKdxxZJbbsAqr9HbMay/j/mpRPF0G5MPYP8I0Sfql3cU+drCIzcwpCJIl3YFkZvDL
+         MiBaag9f1XvH5lhrhJlbmbNelIUiaT+OZroCwSau5GSfiPAhSYKd6jdhcLtZfotP+9iB
+         uQDvjEidUtaIDd1Hcn8gDF2n3Bcr/ri93V9/T6asgeviEPSmDkfmoBIE+5IEMD7R9Xj4
+         avK9qyGHNJrApy72tLW3VC1RCY0oaj9R0w/Mn4kzS+HEDyW276Nq5mEMUAQOCTeoBEK/
+         +UnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715367831; x=1715972631;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RpKObjyoYGAzF55h49XjF90ue0R++WjDXWQv+BTMvTc=;
+        b=nabrRji2lXwganR/08u105duSL3UxBfyHNzGwgT8E6sA2ibk7J4A89XCNJFDv+VOMO
+         P2uvbBvvMNskjgtpaq2CkTJtnH/Df9VfHwAeqXV3KjP3jveNj+L+e+/TX+tMMwY/JwTu
+         x229m3VW9KcchrgCLKoacdEJxscFDEb/IJsm/1o2az5ZYQENvJhi2fK8F1EqWVCa40vD
+         1vRwOqkfTekUi+2GNr+bWt9/kND+RxlgrNHivyWtPuF8dT2oaokb1T1tWDaVrNQqaXaz
+         JVZPh9Ebc9w2+MOrsZPCMw2Yrj3ZZskPoQhvhXjrtx1WJg3eV9hQeZJSmU2ZbhZKvFfr
+         Bzbw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPho3j1T1N5TyAh8pledcYSVI8yUjg3ZVGIBjJpBU/oORHQEORiK9OTk1GrA+6CDKAqKsxkHXj7bch385DzJOI/3UTaR+3drVpiYNENQBq2+ylPml5nRX53umnJRP16AN3UqpEk+izwaE=
+X-Gm-Message-State: AOJu0YxFsWfsTHYy2/qYEHgpz7x+DJCMpTkReoJPHYiea+NQC9i8+Iqk
+	NWlZdCWfJTexRkAuJKpQCEL7ZzIYF5uOwLwZk8+35jExhu7zqKoi
+X-Google-Smtp-Source: AGHT+IGnp0V9aDjqW2gQ1mmfcrtzBJcGOxcOWJpsBmWOddvm2DRQg8j8lUOoD7prJ1kBNLxYC5+ffg==
+X-Received: by 2002:a05:622a:4d1:b0:43a:ea67:fe91 with SMTP id d75a77b69052e-43dfdb7ff7amr30680151cf.52.1715367831535;
+        Fri, 10 May 2024 12:03:51 -0700 (PDT)
+Received: from localhost.localdomain (bras-base-rdwyon0600w-grc-16-74-12-5-183.dsl.bell.ca. [74.12.5.183])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-43e069a24basm4962671cf.67.2024.05.10.12.03.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 May 2024 12:03:51 -0700 (PDT)
+Sender: John Kacur <jkacur@gmail.com>
+From: John Kacur <jkacur@redhat.com>
+To: Daniel Bristot de Oliveria <bristot@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-trace-devel@vger.kernel.org
+Cc: lkml <linux-kernel@vger.kernel.org>,
+	stable@vger.kernel.org,
+	John Kacur <jkacur@redhat.com>
+Subject: [PATCH] rtla: Fix reporting when a cpu count is 0
+Date: Fri, 10 May 2024 15:03:18 -0400
+Message-ID: <20240510190318.44295-1-jkacur@redhat.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+On short runs it is possible to get no samples on a cpu, like this
 
-The patch titled
-     Subject: mm/vmalloc: fix vmalloc which may return null if called with __GFP_NOFAIL
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmalloc-fix-vmalloc-which-may-return-null-if-called-with-__gfp_nofail.patch
+rtla timerlat hist -P f:95 -u -c0-11 -E3500 -T50'
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-fix-vmalloc-which-may-return-null-if-called-with-__gfp_nofail.patch
+Index   IRQ-001   Thr-001   Usr-001   IRQ-002   Thr-002   Usr-002
+2             1         0         0         0         0         0
+33            0         1         0         0         0         0
+36            0         0         1         0         0         0
+49            0         0         0         1         0         0
+52            0         0         0         0         1         0
+over:         0         0         0         0         0         0
+count:        1         1         1         1         1         0
+min:          2        33        36        49        52 18446744073709551615
+avg:          2        33        36        49        52         -
+max:          2        33        36        49        52         0
+rtla timerlat hit stop tracing
+  IRQ handler delay:		(exit from idle)	    48.21 us (91.09 %)
+  IRQ latency:						    49.11 us
+  Timerlat IRQ duration:				     2.17 us (4.09 %)
+  Blocking thread:					     1.01 us (1.90 %)
+	               swapper/2:0        		     1.01 us
+------------------------------------------------------------------------
+  Thread latency:					    52.93 us (100%)Max timerlat IRQ latency from idle: 49.11 us in cpu 2
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Note, the value 18446744073709551615 is the same as ~0
+Fix this by reporting no results for the min, avg and max if the count
+is 0
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+This solution came from Daniel Bristot de Oliveria <bristot@kernel.org>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "Hailong.Liu" <hailong.liu@oppo.com>
-Subject: mm/vmalloc: fix vmalloc which may return null if called with __GFP_NOFAIL
-Date: Fri, 10 May 2024 18:01:31 +0800
-
-commit a421ef303008 ("mm: allow !GFP_KERNEL allocations for kvmalloc")
-includes support for __GFP_NOFAIL, but it presents a conflict with commit
-dd544141b9eb ("vmalloc: back off when the current task is OOM-killed").  A
-possible scenario is as follows:
-
-process-a
-__vmalloc_node_range(GFP_KERNEL | __GFP_NOFAIL)
-    __vmalloc_area_node()
-        vm_area_alloc_pages()
-		--> oom-killer send SIGKILL to process-a
-        if (fatal_signal_pending(current)) break;
---> return NULL;
-
-To fix this, do not check fatal_signal_pending() in vm_area_alloc_pages()
-if __GFP_NOFAIL set.
-
-This issue occurred during OPLUS KASAN TEST. Below is part of the log
--> oom-killer sends signal to process
-[65731.222840] [ T1308] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/apps/uid_10198,task=gs.intelligence,pid=32454,uid=10198
-
-[65731.259685] [T32454] Call trace:
-[65731.259698] [T32454]  dump_backtrace+0xf4/0x118
-[65731.259734] [T32454]  show_stack+0x18/0x24
-[65731.259756] [T32454]  dump_stack_lvl+0x60/0x7c
-[65731.259781] [T32454]  dump_stack+0x18/0x38
-[65731.259800] [T32454]  mrdump_common_die+0x250/0x39c [mrdump]
-[65731.259936] [T32454]  ipanic_die+0x20/0x34 [mrdump]
-[65731.260019] [T32454]  atomic_notifier_call_chain+0xb4/0xfc
-[65731.260047] [T32454]  notify_die+0x114/0x198
-[65731.260073] [T32454]  die+0xf4/0x5b4
-[65731.260098] [T32454]  die_kernel_fault+0x80/0x98
-[65731.260124] [T32454]  __do_kernel_fault+0x160/0x2a8
-[65731.260146] [T32454]  do_bad_area+0x68/0x148
-[65731.260174] [T32454]  do_mem_abort+0x151c/0x1b34
-[65731.260204] [T32454]  el1_abort+0x3c/0x5c
-[65731.260227] [T32454]  el1h_64_sync_handler+0x54/0x90
-[65731.260248] [T32454]  el1h_64_sync+0x68/0x6c
-
-[65731.260269] [T32454]  z_erofs_decompress_queue+0x7f0/0x2258
---> be->decompressed_pages = kvcalloc(be->nr_pages, sizeof(struct page *), GFP_KERNEL | __GFP_NOFAIL);
-	kernel panic by NULL pointer dereference.
-	erofs assume kvmalloc with __GFP_NOFAIL never return NULL.
-[65731.260293] [T32454]  z_erofs_runqueue+0xf30/0x104c
-[65731.260314] [T32454]  z_erofs_readahead+0x4f0/0x968
-[65731.260339] [T32454]  read_pages+0x170/0xadc
-[65731.260364] [T32454]  page_cache_ra_unbounded+0x874/0xf30
-[65731.260388] [T32454]  page_cache_ra_order+0x24c/0x714
-[65731.260411] [T32454]  filemap_fault+0xbf0/0x1a74
-[65731.260437] [T32454]  __do_fault+0xd0/0x33c
-[65731.260462] [T32454]  handle_mm_fault+0xf74/0x3fe0
-[65731.260486] [T32454]  do_mem_abort+0x54c/0x1b34
-[65731.260509] [T32454]  el0_da+0x44/0x94
-[65731.260531] [T32454]  el0t_64_sync_handler+0x98/0xb4
-[65731.260553] [T32454]  el0t_64_sync+0x198/0x19c
-
-Link: https://lkml.kernel.org/r/20240510100131.1865-1-hailong.liu@oppo.com
-Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
-Signed-off-by: Hailong.Liu <hailong.liu@oppo.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Suggested-by: Barry Song <21cnbao@gmail.com>
-Reported-by: Oven <liyangouwen1@oppo.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Chao Yu <chao@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Gao Xiang <xiang@kernel.org>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
+Cc: stable@vger.kernel.org
+Tested-by: John Kacur <jkacur@redhat.com>
+Signed-off-by: John Kacur <jkacur@redhat.com>
 ---
+ tools/tracing/rtla/src/timerlat_hist.c | 60 ++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 18 deletions(-)
 
- mm/vmalloc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
---- a/mm/vmalloc.c~mm-vmalloc-fix-vmalloc-which-may-return-null-if-called-with-__gfp_nofail
-+++ a/mm/vmalloc.c
-@@ -3492,7 +3492,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- {
- 	unsigned int nr_allocated = 0;
- 	gfp_t alloc_gfp = gfp;
--	bool nofail = false;
-+	bool nofail = gfp & __GFP_NOFAIL;
- 	struct page *page;
- 	int i;
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index 8bd51aab6513..5b869caed10d 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -324,17 +324,29 @@ timerlat_print_summary(struct timerlat_hist_params *params,
+ 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
+ 			continue;
  
-@@ -3549,12 +3549,11 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 		 * and compaction etc.
- 		 */
- 		alloc_gfp &= ~__GFP_NOFAIL;
--		nofail = true;
+-		if (!params->no_irq)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].min_irq);
++		if (!params->no_irq) {
++			if (data->hist[cpu].irq_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].min_irq);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
+ 
+-		if (!params->no_thread)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].min_thread);
++		if (!params->no_thread) {
++			if (data->hist[cpu].thread_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].min_thread);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
+ 
+-		if (params->user_hist)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].min_user);
++		if (params->user_hist) {
++			if (data->hist[cpu].user_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].min_user);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
  	}
+ 	trace_seq_printf(trace->seq, "\n");
  
- 	/* High-order pages or fallback path if "bulk" fails. */
- 	while (nr_allocated < nr_pages) {
--		if (fatal_signal_pending(current))
-+		if (!nofail && fatal_signal_pending(current))
- 			break;
+@@ -384,17 +396,29 @@ timerlat_print_summary(struct timerlat_hist_params *params,
+ 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
+ 			continue;
  
- 		if (nid == NUMA_NO_NODE)
-_
-
-Patches currently in -mm which might be from hailong.liu@oppo.com are
-
-mm-vmalloc-fix-vmalloc-which-may-return-null-if-called-with-__gfp_nofail.patch
+-		if (!params->no_irq)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].max_irq);
++		if (!params->no_irq) {
++			if (data->hist[cpu].irq_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						 data->hist[cpu].max_irq);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
+ 
+-		if (!params->no_thread)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].max_thread);
++		if (!params->no_thread) {
++			if (data->hist[cpu].thread_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].max_thread);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
+ 
+-		if (params->user_hist)
+-			trace_seq_printf(trace->seq, "%9llu ",
+-					data->hist[cpu].max_user);
++		if (params->user_hist) {
++			if (data->hist[cpu].user_count)
++				trace_seq_printf(trace->seq, "%9llu ",
++						data->hist[cpu].max_user);
++			else
++				trace_seq_printf(trace->seq, "        - ");
++		}
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
+ 	trace_seq_do_printf(trace->seq);
+-- 
+2.44.0
 
 
