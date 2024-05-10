@@ -1,210 +1,99 @@
-Return-Path: <stable+bounces-43542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50C08C28BE
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 18:26:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3E78C28C2
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 18:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE1261C209A8
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 16:26:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04BC6287027
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 16:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0056817557E;
-	Fri, 10 May 2024 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFA5175558;
+	Fri, 10 May 2024 16:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RaE2QnwU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c0V62YL+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3614E17556D;
-	Fri, 10 May 2024 16:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D4B15E81F
+	for <stable@vger.kernel.org>; Fri, 10 May 2024 16:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715358401; cv=none; b=J4Bd9ggDvIp51+YWVRq+/2HbnSph0tRURB7wwBdogU34Jliff85zIBgo28fLbFVht0J3JODla9DF/+ypEZ5mk7jOHp+ddszApFZuz8j4Oq9o3LgdWQAxB65gPkU3xB6FNkiiF7G+7LLvtUa1Z9RMiPBD0g8iD/dbSKzo0GPVTvI=
+	t=1715358503; cv=none; b=WQKOBgjWlflnHBfFn5bTcXiFdLgsd2G80UPSK0sHVgjW67o9lSoyFOao4YLnKMSAkRy22PXtnFhHu7MUMGju1YZjrnF3SxbJtL5fCimP9T7wl8fE460CUBmx0+3omnEaa938Eiaj7NYZ0zmvBdpnw6bWnEvhxp6GmyPa/jXcRvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715358401; c=relaxed/simple;
-	bh=oonXHbg2KhBW9RZ+Rvo2vSdZHQiB0Wn1HguIuEl89Wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T9zb8PK5gBDrINAvwPc0ou0w1puHaQd36bMC8sRNBAsNksIZsQkAJ4vb5kmRt0Cm4yhk4Yl/3FxZBsmnQVhK0ljqpOb7Qk7N/kKGNbxpQ6xldi0y2WiRSNGGQAOpTM5z2sQL/hZg68ztZcGjlv/OT/nuRj6uBbDzHLLrvH2hi4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RaE2QnwU; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-792b934de39so174301685a.3;
-        Fri, 10 May 2024 09:26:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715358399; x=1715963199; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rz28DuNSZQjFl8RAwmtdo8KD28yac4guG+V7e+ZRJ4s=;
-        b=RaE2QnwUSnNe5kBSJRUTQEbVdQd79wlLOkfPFKLk3jl+Z0wigNlBgITT9W0Mkp4SCE
-         KVId5z/RoyUfaZ6ynFSdQEhr2wwjmaudHLvXJ5uG1HD5zRHNelDddxFrVgDHB9pymW+I
-         nl9KogyTkGz5o4FZPgrg1VDamlge/A9icGblYVc6WEMTrgJ1SUeUBFzKwKtV8sPLzXm4
-         ioU8HaTMk8VFHWxjUGnQAmf9Vscxyv+zz9ovT++b426CtT60KHrddmj6RIW/5+QJPxgA
-         WF78NGk2d9tjX7iPXrc73mXYhrKyA2MY8zM+Nvz2p0dtF2Z/oMQLjBpPr3ccfyEXosPd
-         mpTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715358399; x=1715963199;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rz28DuNSZQjFl8RAwmtdo8KD28yac4guG+V7e+ZRJ4s=;
-        b=tpeGZedWrKmUs/6C2yq6/ISmwNAZXt/eYMjVVCaHhRTeBf5Cqu9lEzD3UXjZUhpLAR
-         ltfWpD0YZln2ZGq+ktm1cXdQa25/Z6Y2FboorkgNZuQnoc5j5k6McFA9S4BgBsOdylnZ
-         ORyJApqJA9h72A+9Yy+dY2O0YSh339ultlyKv15lJgmW+SmvdLqwzDKbZNSZCTWxroh6
-         O4UsUSI4kYvdPExm6JT6wmLWZjRa/2UGzkJ6/VDy3y0TBqvrtVEHZu9bWs1L7TI8aon6
-         hKwjGVKx5t3N3r9bR7qQvM+aKVOeQ56NHYBFuGSpcuRcdsgdbHvFXhJU0+MRoDRpOSO/
-         /0RQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLtWZFCv6r53pt3xTFN3FCXmNWuheskWybMR+Mr5szKmHBQ+pA99Uv8Jk0KoN6g7+uncsH4VCGxbzTOVGX9sQfOdzY5lNfAe87gSY8J4Wmy5N5ho5Nw4XhTezSYB1auaAl5Vl0N7XmsYw=
-X-Gm-Message-State: AOJu0YykBZRfhFL5pEhgKUKejwrXZFli9hY96QDSUSis5g0lHz/2ysp9
-	3gLR2W3D3fMfJB2LPH/1TlOuVcjdvZabMr57Z27rmEHx+C29qs3Fijerjg==
-X-Google-Smtp-Source: AGHT+IFeJTPzixcTATWsrxoXajVTKdM3YJfH2cngx4/IBf6scasq3GLmbYBrpTEio3usBbWVItGNVg==
-X-Received: by 2002:a05:620a:e88:b0:790:c7f6:595f with SMTP id af79cd13be357-792c7574885mr297066285a.12.1715358399065;
-        Fri, 10 May 2024 09:26:39 -0700 (PDT)
-Received: from localhost.localdomain (bras-base-rdwyon0600w-grc-16-74-12-5-183.dsl.bell.ca. [74.12.5.183])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-792bf275b07sm194853985a.24.2024.05.10.09.26.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 May 2024 09:26:38 -0700 (PDT)
-Sender: John Kacur <jkacur@gmail.com>
-From: John Kacur <jkacur@redhat.com>
-To: Daniel Bristot de Oliveria <bristot@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-trace-devel@vger.kernel.org
-Cc: lkml <linux-kernel@vger.kernel.org>,
-	stable@vger.kernel.org,
-	John Kacur <jkacur@redhat.com>
-Subject: [PATCH] Fix reporting when a cpu count is 0
-Date: Fri, 10 May 2024 12:26:05 -0400
-Message-ID: <20240510162605.28050-1-jkacur@redhat.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1715358503; c=relaxed/simple;
+	bh=/TEGs37r+5/A3KkqbGPr9dFQFcU8FjytMMmJoLxblg4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Nc98mGXtmIHTSmZTZdG5Xj1enBlSUyhiZ4nTE/d8dQMWDhU8JJfDhA/o2lnqjStVS8ZOqG8dXbI4z+0ajvz8rpq2NdjmAkm9Fs30SimFh/Mh42MPpzb/8FOkfaueHZWW5nPxPnqWpBAHhyu85iX0DakAmOHefpJBXx7hihVC4pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c0V62YL+; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715358502; x=1746894502;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=/TEGs37r+5/A3KkqbGPr9dFQFcU8FjytMMmJoLxblg4=;
+  b=c0V62YL+RDrA7fAyaj2KT6LUfIlgUdBs/+DaUxXPYIe/J2K0mlFkhGyu
+   H0tRygjeR//W3ew0m7dgosTReOxaExWqTZDmOt3CwePcPq894RNEePXTj
+   pRvlKorCOD+dBVGhEQoWQ1WVACmNqEy2BoclVJu1U9xcqFgw0yCQNyKQi
+   qArq8XewmPDzeLz84KeqotcitolOS/RJre2cAyNUvzgw1TPbLEOtNoB0l
+   UC66TBdZqVINf/30NKLFWQI1p4TCLlfEPOYy7+Hfay9s812QtuyNwuH8Z
+   Xi0ZKDeF+sUYpDny+cvy/Z/o0EJIryPqR1odUq5jhNdaehjNluUuJuoaj
+   A==;
+X-CSE-ConnectionGUID: eEBXX2zLSA+AUXxSfuyzdA==
+X-CSE-MsgGUID: IQ+W+LUuQ4CUp17Pbb/R9A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="28833860"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
+   d="scan'208";a="28833860"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 09:28:22 -0700
+X-CSE-ConnectionGUID: WQxnJyQMQ9ioRsmVLsWPWw==
+X-CSE-MsgGUID: 2A9v6NC0QnurDKYhhzzhlw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
+   d="scan'208";a="34317251"
+Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 10 May 2024 09:28:21 -0700
+Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s5T6Y-0006LJ-0J;
+	Fri, 10 May 2024 16:28:18 +0000
+Date: Sat, 11 May 2024 00:27:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: John Kacur <jkacur@redhat.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] Fix reporting when a cpu count is 0
+Message-ID: <Zj5K8_tlAFldTZp1@974e639ab07c>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240510162605.28050-1-jkacur@redhat.com>
 
-On short runs it is possible to get no samples on a cpu, like this
+Hi,
 
-rtla timerlat hist -P f:95 -u -c0-11 -E3500 -T50'
+Thanks for your patch.
 
-Index   IRQ-001   Thr-001   Usr-001   IRQ-002   Thr-002   Usr-002
-2             1         0         0         0         0         0
-33            0         1         0         0         0         0
-36            0         0         1         0         0         0
-49            0         0         0         1         0         0
-52            0         0         0         0         1         0
-over:         0         0         0         0         0         0
-count:        1         1         1         1         1         0
-min:          2        33        36        49        52 18446744073709551615
-avg:          2        33        36        49        52         -
-max:          2        33        36        49        52         0
-rtla timerlat hit stop tracing
-  IRQ handler delay:		(exit from idle)	    48.21 us (91.09 %)
-  IRQ latency:						    49.11 us
-  Timerlat IRQ duration:				     2.17 us (4.09 %)
-  Blocking thread:					     1.01 us (1.90 %)
-	               swapper/2:0        		     1.01 us
-------------------------------------------------------------------------
-  Thread latency:					    52.93 us (100%)Max timerlat IRQ latency from idle: 49.11 us in cpu 2
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Note, the value 18446744073709551615 is the same as ~0
-Fix this by reporting no results for the min, avg and max if the count
-is 0
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-This solution came from Daniel Bristot de Oliveria <bristot@kernel.org>
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] Fix reporting when a cpu count is 0
+Link: https://lore.kernel.org/stable/20240510162605.28050-1-jkacur%40redhat.com
 
-Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
-Tested-by: John Kacur <jkacur@redhat.com>
-Signed-off-by: John Kacur <jkacur@redhat.com>
----
- tools/tracing/rtla/src/timerlat_hist.c | 60 ++++++++++++++++++--------
- 1 file changed, 42 insertions(+), 18 deletions(-)
-
-diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
-index 8bd51aab6513..5b869caed10d 100644
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -324,17 +324,29 @@ timerlat_print_summary(struct timerlat_hist_params *params,
- 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
- 			continue;
- 
--		if (!params->no_irq)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].min_irq);
-+		if (!params->no_irq) {
-+			if (data->hist[cpu].irq_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].min_irq);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 
--		if (!params->no_thread)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].min_thread);
-+		if (!params->no_thread) {
-+			if (data->hist[cpu].thread_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].min_thread);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 
--		if (params->user_hist)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].min_user);
-+		if (params->user_hist) {
-+			if (data->hist[cpu].user_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].min_user);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 	}
- 	trace_seq_printf(trace->seq, "\n");
- 
-@@ -384,17 +396,29 @@ timerlat_print_summary(struct timerlat_hist_params *params,
- 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
- 			continue;
- 
--		if (!params->no_irq)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].max_irq);
-+		if (!params->no_irq) {
-+			if (data->hist[cpu].irq_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						 data->hist[cpu].max_irq);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 
--		if (!params->no_thread)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].max_thread);
-+		if (!params->no_thread) {
-+			if (data->hist[cpu].thread_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].max_thread);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 
--		if (params->user_hist)
--			trace_seq_printf(trace->seq, "%9llu ",
--					data->hist[cpu].max_user);
-+		if (params->user_hist) {
-+			if (data->hist[cpu].user_count)
-+				trace_seq_printf(trace->seq, "%9llu ",
-+						data->hist[cpu].max_user);
-+			else
-+				trace_seq_printf(trace->seq, "        - ");
-+		}
- 	}
- 	trace_seq_printf(trace->seq, "\n");
- 	trace_seq_do_printf(trace->seq);
 -- 
-2.44.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
