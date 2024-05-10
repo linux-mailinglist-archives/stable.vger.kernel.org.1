@@ -1,182 +1,164 @@
-Return-Path: <stable+bounces-43540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DDE8C2827
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 17:48:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96ED48C2884
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 18:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9849281736
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 15:48:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E74D1F22DF5
+	for <lists+stable@lfdr.de>; Fri, 10 May 2024 16:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C20712D219;
-	Fri, 10 May 2024 15:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4484171E75;
+	Fri, 10 May 2024 16:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e4TEWcYT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wzbIPKCh";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e4TEWcYT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wzbIPKCh"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="NT3Xf77F"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7190A171647
-	for <stable@vger.kernel.org>; Fri, 10 May 2024 15:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448FB171648;
+	Fri, 10 May 2024 16:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715356128; cv=none; b=P9bH5sGpCEtZ0Wyk/Vg4AZ3NCm+76q36fBNwM3psx/fQf36dezG8XyAcf84Fc+m+tErjWyPfa3WKCUL+QFEauV//kXtaCQ4TgL3g4EVmoQdn+1HmIGSwvU1vkMPo8wSOo/Y30sK6+iZogacefXIm4AOUluWlRF92jOmI0awGDDc=
+	t=1715357414; cv=none; b=ki51NPNhxilju1UvB4soqx6AYl2v5ggbUAJlxoVHrzkvAonHQG/QnX8rec5pqVNt/UL8Tw2REsVn6WBtl9RUoio7KFoUcgT/fAXxIZXc2o5W9mgJO06B1B88GzodeMNxqEgOm3M+57REG7ZLmGX7TzH1GrVI05FBe6bP508E5d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715356128; c=relaxed/simple;
-	bh=2hJ2/Q0tkdR8RyQk9TiFcOgQpK6hRSEFgxkYS2FqGgE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvVlVeLkC3J3tuyJNyZ5p/7YOj99Nyrtvl/OCCRNcdlut8yna98fem/3KfiwtLfjyX8F0W+FProZpekJFZcC2jjgBXPTJgIjuV8g2K9sAG7KJMT1Y2+Aq6lTGjvbRbiKM1waYHyrSDOQNpgvxXMycOXrl/mahVfGE8fAmpRqPy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e4TEWcYT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wzbIPKCh; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e4TEWcYT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wzbIPKCh; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1715357414; c=relaxed/simple;
+	bh=sJkSoIYsMgVLugxKHGmrUMUikx/KOPtmGSW1VK5xJPs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HMxattJ8aD3WMftsN0Yu2NwsSDKzmDHRUW/u1Hj3sTfOsItO5IifxeHWM58xC49b2uvO1syeUov6UgmiU824jO3taOch9f1+ZeEhHDa12CNLpYmxZ4s/+1mq30yzcVs1f/bf7PvVTKI+8Wn7v4UG7CoyP+yrk/bdzs66TVgVHUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=NT3Xf77F; arc=none smtp.client-ip=185.125.188.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from [10.8.193.2] (unknown [50.39.103.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 371743F013;
-	Fri, 10 May 2024 15:48:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715356124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QM0LYxHq/vG2N1y5Q69p+T1ksRwKT8ZVqhLmxMXFA9Q=;
-	b=e4TEWcYTJbfDctQVST6WaD0FQYov1fRn6Oa6L/3wxXR1Ht/vr80qGA6dLWlYadSVbNshOP
-	79/E3Ckz6/u8tHw93VccCc741HVzyE3O7m+Xrs8Hz5/VgIuTeeo3hB7R6WtpeqXqcpwWUn
-	WOxmag3TjlgpS9WPeyDnxvnRNBywND4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715356124;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QM0LYxHq/vG2N1y5Q69p+T1ksRwKT8ZVqhLmxMXFA9Q=;
-	b=wzbIPKChaIRRxhlAqCLjAebNvrx+2uZyPMci1gpUXyVP4Q4EOyITLyUKXaDtitcvFvZuTe
-	5uTLFJYNZwsTT/Aw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e4TEWcYT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wzbIPKCh
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715356124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QM0LYxHq/vG2N1y5Q69p+T1ksRwKT8ZVqhLmxMXFA9Q=;
-	b=e4TEWcYTJbfDctQVST6WaD0FQYov1fRn6Oa6L/3wxXR1Ht/vr80qGA6dLWlYadSVbNshOP
-	79/E3Ckz6/u8tHw93VccCc741HVzyE3O7m+Xrs8Hz5/VgIuTeeo3hB7R6WtpeqXqcpwWUn
-	WOxmag3TjlgpS9WPeyDnxvnRNBywND4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715356124;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QM0LYxHq/vG2N1y5Q69p+T1ksRwKT8ZVqhLmxMXFA9Q=;
-	b=wzbIPKChaIRRxhlAqCLjAebNvrx+2uZyPMci1gpUXyVP4Q4EOyITLyUKXaDtitcvFvZuTe
-	5uTLFJYNZwsTT/Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E8D1F13A31;
-	Fri, 10 May 2024 15:48:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oOabN9tBPma7MgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 10 May 2024 15:48:43 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	jani.nikula@linux.intel.com,
-	airlied@redhat.com,
-	sean@poorly.run
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Robert Tarasov <tutankhamen@chromium.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 1/5] drm/udl: Remove DRM_CONNECTOR_POLL_HPD
-Date: Fri, 10 May 2024 17:47:08 +0200
-Message-ID: <20240510154841.11370-2-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240510154841.11370-1-tzimmermann@suse.de>
-References: <20240510154841.11370-1-tzimmermann@suse.de>
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 4A02041D96;
+	Fri, 10 May 2024 16:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1715357410;
+	bh=tYT0vaoGgD7nyqVmqjNAAmm6y89hogcsUK6Tq7LqzP0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type;
+	b=NT3Xf77FVrjr68YXYs2EWcmUHktLkeW5tFmC5Jl9WJKThrcW5ZlTuKNhjspUnr5d4
+	 InGVyef+6wGsmCv9ifhZOc0IiK5a01kZsBmu6wrYvXXoQ4cPfeN2BAThB/JKH68kPx
+	 E2u0CbOzhmW47iRT2Ammjxswo/106bUOSUoRyd99voYTICM9twq2VIfZllNAKvpKUD
+	 s8WRXficY5urxMIwuI9q+dnB7VLoYsCdWYPv7UOGgneL7eZuBnE4gWCAlT/RL0neL4
+	 OCaeXIgHZeUq7+cAcFXR4UVe4wJHyj65Z1RSU2qH0pToXHPh3UjsCJ2DqVOkKudiSw
+	 TY2pM+n9NCvGQ==
+Message-ID: <147b0637-7423-4abc-b7fe-3d8da2c1e57c@canonical.com>
+Date: Fri, 10 May 2024 09:10:03 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] AppArmor: Fix lsm_get_self_attr()
+To: Paul Moore <paul@paul-moore.com>, =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?=
+ <mic@digikod.net>
+Cc: Casey Schaufler <casey@schaufler-ca.com>, James Morris
+ <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240223190546.3329966-1-mic@digikod.net>
+ <20240223190546.3329966-2-mic@digikod.net>
+ <CAHC9VhQGLmeL4Buh3ZzS3LuZ9Grut9s7KEq2q04DYUMCftrVkg@mail.gmail.com>
+ <CAHC9VhTUux1j9awg8pBhHv_4-ZZH0_txnEp5jQuiRpAcZy79uQ@mail.gmail.com>
+ <CAHC9VhQHpZZDOoPcCqRQJeDc_DOh8XGvhFF3M2wZse4ygCXZJA@mail.gmail.com>
+Content-Language: en-US
+From: John Johansen <john.johansen@canonical.com>
+Autocrypt: addr=john.johansen@canonical.com; keydata=
+ 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 lT9Q
+Organization: Canonical
+In-Reply-To: <CAHC9VhQHpZZDOoPcCqRQJeDc_DOh8XGvhFF3M2wZse4ygCXZJA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 371743F013
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
 
-DisplayLink devices do not generate hotplug events. Remove the poll
-flag DRM_CONNECTOR_POLL_HPD, as it may not be specified together with
-DRM_CONNECTOR_POLL_CONNECT or DRM_CONNECTOR_POLL_DISCONNECT.
+On 2/27/24 08:01, Paul Moore wrote:
+> On Mon, Feb 26, 2024 at 2:59 PM Paul Moore <paul@paul-moore.com> wrote:
+>> On Fri, Feb 23, 2024 at 4:07 PM Paul Moore <paul@paul-moore.com> wrote:
+>>> On Fri, Feb 23, 2024 at 2:06 PM Mickaël Salaün <mic@digikod.net> wrote:
+>>>>
+>>>> aa_getprocattr() may not initialize the value's pointer in some case.
+>>>> As for proc_pid_attr_read(), initialize this pointer to NULL in
+>>>> apparmor_getselfattr() to avoid an UAF in the kfree() call.
+>>>>
+>>>> Cc: Casey Schaufler <casey@schaufler-ca.com>
+>>>> Cc: John Johansen <john.johansen@canonical.com>
+>>>> Cc: Paul Moore <paul@paul-moore.com>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 223981db9baf ("AppArmor: Add selfattr hooks")
+>>>> Signed-off-by: Mickaël Salaün <mic@digikod.net>
+>>>> ---
+>>>>   security/apparmor/lsm.c | 2 +-
+>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> If you like John, I can send this up to Linus with the related SELinux
+>>> fix, I would just need an ACK from you.
+>>
+>> Reviewed-by: Paul Moore <paul@paul-moore.com>
+>>
+>> This patch looks good to me, and while we've still got at least two
+>> (maybe three?) more weeks before v6.8 is tagged, I think it would be
+>> good to get this up to Linus ASAP.  I'll hold off for another day, but
+>> if we don't see any comment from John I'll go ahead and merge this and
+>> send it up to Linus with the SELinux fix; I'm sure John wouldn't be
+>> happy if v6.8 went out the door without this fix.
+> 
+> I just merged this into lsm/stable-6.8 and once the automated
+> build/test has done it's thing and come back clean I'll send this,
+> along with the associated SELinux fix, up to Linus.  Thanks all.
+> 
+> John, if this commit is problematic please let me know and I'll send a
+> fix or a revert.
+> 
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: afdfc4c6f55f ("drm/udl: Fixed problem with UDL adpater reconnection")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Cc: Robert Tarasov <tutankhamen@chromium.org>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Sean Paul <sean@poorly.run>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.15+
----
- drivers/gpu/drm/udl/udl_modeset.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/udl_modeset.c
-index 7702359c90c22..751da3a294c44 100644
---- a/drivers/gpu/drm/udl/udl_modeset.c
-+++ b/drivers/gpu/drm/udl/udl_modeset.c
-@@ -527,8 +527,7 @@ struct drm_connector *udl_connector_init(struct drm_device *dev)
- 
- 	drm_connector_helper_add(connector, &udl_connector_helper_funcs);
- 
--	connector->polled = DRM_CONNECTOR_POLL_HPD |
--			    DRM_CONNECTOR_POLL_CONNECT |
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT |
- 			    DRM_CONNECTOR_POLL_DISCONNECT;
- 
- 	return connector;
--- 
-2.44.0
+sorry, I am still trying to dig out of my backlog. This is good, you can
+certainly have my ACK, I know its already in tree so no point in adding
+it there but wanted to just make sure its on list
 
 
