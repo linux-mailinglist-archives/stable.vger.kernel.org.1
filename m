@@ -1,411 +1,375 @@
-Return-Path: <stable+bounces-43554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDE28C2DAE
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 01:48:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3008C2F76
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 06:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3AF1F23AC9
-	for <lists+stable@lfdr.de>; Fri, 10 May 2024 23:48:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4628C1F22726
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 04:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AF217557B;
-	Fri, 10 May 2024 23:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8949E38382;
+	Sat, 11 May 2024 04:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HTO/pG7+"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GLtfYqpK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9D018EA1;
-	Fri, 10 May 2024 23:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715384878; cv=fail; b=kMauAz9WId/kwzG2Nt9lBKlLrHaQ3yxEtSae0avVn0SIB+0dE/zyBFMeEWaHAddChpgG8dbhJ33VW2zz0s3Fk8bdIjkbaDql5hVCP/fX9ZBRFjZFXmqGXwU8BcfMczgEJJ2u4EUFpem9TYWAIEersdtVLTzL8+ekZL10Um0gP7E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715384878; c=relaxed/simple;
-	bh=bM925SuFiUxv3FYYb8WU63Ax/Nh2gxhsPXeI6Vatfmw=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=QHqGGX39HYbXHIT3acOxzBVHFTS1UVr3Uw6gV5Nk5qTVhFUhokIIWsGjn1NegckO6j9X24PcRgvwWTSvupvgwawgSvuMlC7SNRnk9jn2LYTAX8QrR07tcRjxKGKuRCdQFdW1BmoCt0VWUu+QpaPOUwyH7KfpU+cJpcPLEyjvSAM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HTO/pG7+; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715384877; x=1746920877;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=bM925SuFiUxv3FYYb8WU63Ax/Nh2gxhsPXeI6Vatfmw=;
-  b=HTO/pG7+bV3BzzHyOkonNENHd3U6LE2Sruft+UPmiWIDIV5n1oQlYBlG
-   W12maOA4u2aKNfQGCakwZyk5Fh/kcQw7awYemV0fqH9LeXdqS3RENwGjh
-   /yTStCEcQ35c+rvUjrBs50YlOxpj8Dx1WSEI06ST3y0KzgFi/v4Plgeiu
-   W4IgnvPFwn4N4tPdEU0Re4VwvaydeDjR5Y2A08TBBB4SiHbhrUUKA1DR+
-   EffvTvOANW46SPZgcqW9QUGVCQl/by/GItAwmWUOt/UzFlbi6ocZctqJN
-   CwOCKpsCegXB3Byexq6UpuGFxWuWxutIFn0t3kSHHjMB5MdwmonVrETTZ
-   w==;
-X-CSE-ConnectionGUID: 5uSI8oI+SWuYTh52Qaz7Iw==
-X-CSE-MsgGUID: T3JpDVe9Tbu9fPLLq7KB1A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="11252816"
-X-IronPort-AV: E=Sophos;i="6.08,152,1712646000"; 
-   d="scan'208";a="11252816"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 16:47:56 -0700
-X-CSE-ConnectionGUID: p/oVwvIXSD+mur6gDxV7kw==
-X-CSE-MsgGUID: ySLgozQnR3ylloaVaUB4KA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,152,1712646000"; 
-   d="scan'208";a="34312262"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 10 May 2024 16:47:56 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 10 May 2024 16:47:55 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 10 May 2024 16:47:55 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Fri, 10 May 2024 16:47:55 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 10 May 2024 16:47:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d4WQUJba9vyH9kCszKLP6qriEQP51ZwaFyTpiuX1vO0vKodutnxr1V1+S0OMbZVtL8IAxprFzNkuZIoFStVTJ+UmXVS7guetLcTMdGqh0yoFI89IFBs+Yx7gGEDFRs2u3igigSxQCKEJRy2OzZKDRYEyeZNvcoBQggtk4msuNMRpjFNDO14MLdI1FThmL6NlUO6AlpnZReitWPAhhLeF4ipsGLApJZO0jD1Ep6Vpi+OEuFIDgGf+H/TaB0Ub9UVnPyFML5EspVTiGzxSc0+EbJOHwE1hLrDJeyCXpq9DUyvoVizzMmo/ZNPuG4HBXJBvuW5JZXomKWYlEVcbvREpfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MSFFjQIhL9MlJyDDgmOBeUcJqJLpea2UsE3uGUfREmA=;
- b=ConAUoxkysPqWC2Xaaq2h1qULIftI9O3VitX5Mp87V9pmbVRLuG27QGWWDJ/F6mAZcRLxi48gPYYMWpGD9C/Mxl8+SLCqg01AzXKFY7+saQgVnAd51c0EsoUMlSKtRx/cKvyjZ70NqCqeL1lSAG7Y1KH7BqMWiJPwm2qM7vKSCm3szNaehCThjxD1SI4kFOwRCycZo55mBdzaKHvOqWkDqQdVJwV24qRlnFm5PlpDJBZPIL6AjNYaHJW7p4odnC8zVsT6dGSGvw9BO4yQ4CPNn/3p21OBgNrN+g0g6DNnQis/8aG7DuwTwyiAws8xeuH+smxwuN6K8SdsN7koymuiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com (2603:10b6:a03:4d2::10)
- by CO1PR11MB4881.namprd11.prod.outlook.com (2603:10b6:303:91::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.49; Fri, 10 May
- 2024 23:47:52 +0000
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::b394:287f:b57e:2519]) by SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::b394:287f:b57e:2519%4]) with mapi id 15.20.7544.046; Fri, 10 May 2024
- 23:47:52 +0000
-Message-ID: <22eaec04-a950-413e-b9a0-885a077475e8@intel.com>
-Date: Fri, 10 May 2024 16:47:50 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/sgx: Resolve EREMOVE page vs EAUG page data race
-To: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>, <jarkko@kernel.org>
-CC: <dave.hansen@linux.intel.com>, <haitao.huang@linux.intel.com>,
-	<kai.huang@intel.com>, <kailun.qin@intel.com>,
-	<linux-kernel@vger.kernel.org>, <linux-sgx@vger.kernel.org>,
-	<mona.vij@intel.com>, <stable@vger.kernel.org>
-References: <D0WMR6UESTUC.IMBRWMJ80RHQ@kernel.org>
- <20240430143816.913292-1-dmitrii.kuvaiskii@intel.com>
-Content-Language: en-US
-From: Reinette Chatre <reinette.chatre@intel.com>
-In-Reply-To: <20240430143816.913292-1-dmitrii.kuvaiskii@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4P221CA0013.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:303:8b::18) To SJ2PR11MB7573.namprd11.prod.outlook.com
- (2603:10b6:a03:4d2::10)
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4694621345;
+	Sat, 11 May 2024 04:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715400667; cv=none; b=pe48gAE0eInMLqr3zbUG+MceO5IuqNF79JbtVXilWPj9xMe612Bu+KnbOUEoDlR7kHY4aCutIoHM5yR2wnphjj1DkcYASiwQAqFUP/azfg60Zrd3/hgGsv/8p3fBQttMy9D8Y4zdACDXDTcW3lkcG2+UIAZuidpRyRDraU+jOsk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715400667; c=relaxed/simple;
+	bh=0toZUhGF8FJX7UXdtVZTp+PiWoBQGdQKjqcT/9LHNbQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gTUvHVyC0QKmvg8hPAQIBqSj9dh+ddlMwHyCUP6TXYZRHZqVEqZJMGXn2N6vZ/OTI+aSySyagg9iYjgZmBjhyN0T/yOMIDeYsQJyy+QMHy94cRudgOGlVCYqb8+bBEzL4lIaWaJuBdIavnSJILQc1qKrfgGFWPZ5dlxNpQoAZeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GLtfYqpK; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=wW/THnZT9ev5Ooy1RcXrjVT3wCbr+5nAAFKRvIdwNLA=;
+	b=GLtfYqpKNfk5O2xgA/nflpEVg05YLc/2xgp/p40p7JS7LSYq6xG/w/mnT+1aRd
+	AEPZ3LQAaoj6Wd9VRapDkYLJ477tK2q8NbUE7VrTpQiFsX14F8QdauxVc21NuK27
+	h0cLML0z0LQK8g4yk7A+6j5KpWjTvNNTPN8QzxN/LP4vw=
+Received: from [192.168.1.14] (unknown [183.195.4.13])
+	by gzga-smtp-mta-g1-1 (Coremail) with SMTP id _____wDHdouE7z5m7C1OEA--.49919S2;
+	Sat, 11 May 2024 12:09:41 +0800 (CST)
+Message-ID: <a80e0da7-be55-4cb0-92c9-51fa258788f0@163.com>
+Date: Sat, 11 May 2024 12:09:40 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB7573:EE_|CO1PR11MB4881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e8c3ab2-b838-4e22-f38b-08dc714b9b80
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TzJnTGdFV1prL2dIR1h1V244SEJJNkZac0dTNWlIaUdwUVd5a0RXMVdRSHg5?=
- =?utf-8?B?dC9jR2pPWUV3b1lXRWFQWEdzMzk1aHlqSWx2Q25HZHBCTUFTSzg3Q1B6UVoy?=
- =?utf-8?B?bjBrUEtGM2xiRUZ0eVEvQ1BIb0w3OW5raUFGUktoemR6OHR3ejByWUdCZzJk?=
- =?utf-8?B?cnZyenRwajNjaG5CcTVUWm1uYVBOakc1QlV3ZFNBdkI0WUhtOUxlTWZjOE12?=
- =?utf-8?B?NDFKWGVLbnk2TzdGaFlFc1JyUFdNL2hjelFBZXpXUmRGN0l4MXZWY2VBa0RB?=
- =?utf-8?B?MzVLODRRektiOFBOcHo4eXU4alViNDZubDBPK2IzbXBCUWFpY2kxNmgybFdF?=
- =?utf-8?B?aW9ZcVd6UCtBdDBrYU1FVFFLWnlFWnRaYU43cjY3QS9KRXVMWVpSOGxHOTVm?=
- =?utf-8?B?bVYrOTJHc0QvNTdWZnIyY3UrTEJzZ1ZvRW9VRDE4V2V5Ym5SdnR1MlNCNklU?=
- =?utf-8?B?SFZ4MFgvbDVzekluVFRydi8yZk8zVmlKUG1BYVliM1hUMTJqL05uam1CUXl6?=
- =?utf-8?B?UzJ5R01UdlpxTmFwZWxnclBFQVU0bjFRNkJlUGlCTTFxTVRyb0NtV2dzTEt2?=
- =?utf-8?B?a3FXTlFpZ1phenBEYkw1T3J1bWRnTTFZRUlUZUMvRllkRFVrSE9Mb0U2dXl3?=
- =?utf-8?B?dWdZVkhwNTFsMkJ1RnRQOTBTN240dVhWOHM3T05SR1hqeCszZU9JR0dnYlcx?=
- =?utf-8?B?WUw1RUkvekp4MmI4aXJqOFZEL3VqbU1jMGNqQXl4UHZSYTREZlVpQnR3VWRz?=
- =?utf-8?B?YTBwcUoxV3pBWmZod3liaGFxMG1kdW5Fa05hQUp4NFpzaC9wVGhjZGc1VE1R?=
- =?utf-8?B?RWcrbm1nZHNIZ2VMUms1YnR1TDFKSmpxcHAxaWxxVk9KV1JidnpYWlRiNEtU?=
- =?utf-8?B?YXVMQW9KWWVKa3BaRlZKZzl3OUZjY2MwSkNucmhyL1VxVXBtUllHdDlXdklV?=
- =?utf-8?B?TVZTSXE5S1ZPeWh1WFF3LytCMTZsRmxKL0FJcm1YanZ5dGd1UlVVVzNScHp2?=
- =?utf-8?B?TDVLMTY0bnJBUEkyb2Y3anladWhsTkw1QVkwNnc5THBQdms4VEg4QTdTazlT?=
- =?utf-8?B?amkrc0xlSUJVQmlBNnNFT0N3TEcyUm82cXVFeVJzSzFUSFF6RmRHM2JhRmtt?=
- =?utf-8?B?RS95YXp5V1I2M0hWc1NzUjJhMUFLTG9Oa3NjUmpneUdKc1JuMVM5YXpLWWtq?=
- =?utf-8?B?L0EwTklLMHYzeFJ2bzUvcW9HaFBuMWMreC9jRUZHVUtSV2xQb0JQSkg3clBP?=
- =?utf-8?B?OTJqNUM0bUk4YTJVK1ZZOEZkMkFkMXdpM1hiNGRRWHV1Vm5HVmhkK0JMOThv?=
- =?utf-8?B?L3Rqd1V4dU9VTFlvaG9lR3QxRC9MSXdDemVralVkNXZwMEpCc0ROKzdUTFBN?=
- =?utf-8?B?anpHdzZQOEt2T3krYUVtbUk5RUZmblh4cE5NM1BkcGs1UmJXNU1WR1cyMEpB?=
- =?utf-8?B?d1RUbVFBWTJGWktXTXhMaXlyY3FvTUwzSjBjSDE3RUZ3ZDVpNElLUlhGTTRa?=
- =?utf-8?B?QkdTcmFxYzZyZEVSVC9wR2VTYTFULzdTdUgxd0dDYmFwL1ZrbEIrcWxKVk1r?=
- =?utf-8?B?QVgrTFNvRTVXL2NQa3NVZUVaVlU1Mks4Ly85cCtBQmtmNFdVTDhGMkprdHZE?=
- =?utf-8?B?dmhCdmhKMUZ6b3lsb0UxWlloN25PVXc9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7573.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SzJvK09CZ2pWVCtNQUNiZjg5ZlJic1RBNyt4Q2lIMksvczJWTFBscGNJb3FH?=
- =?utf-8?B?TXJ5NVd5cHA3alVTUFpIMkQ3VGYyb1FMUFhSVW8zT2pIWk5VZzlGdWprL2Js?=
- =?utf-8?B?aWd6ZERRRi9za2VQTFlwYTlYMkc4UW1NUktoK21uR21uQzFyYkNFR0JaNWVL?=
- =?utf-8?B?QlBTdzFiRXFRT1A1Slg4eXdscWYyS3ppYUtxQk5vSVZxUnBuZ1o4dTNNU3lH?=
- =?utf-8?B?bWljV29jM0VGRXJXYzk3V2Myb0JxS3FLVHBKQzZSaTE5Wmp5Z2NsVkNtSnY2?=
- =?utf-8?B?YTlEblJMbW1iclJVY1h4aVdWc0xBeE5vaitoUlRldjhRMWFFdGZ1VTREaVRs?=
- =?utf-8?B?ekN0MUVoTlNKRFdYVTIybjVrOEYvWFZmQnFoT0pvZ3NSQ0JXSXVxTitNZFE2?=
- =?utf-8?B?cDc1akMvWFM3YytuNlhsQWVHRk1EUFFGb0xJL1JaNnE1UGEwTmxVMEQ5NWE5?=
- =?utf-8?B?S2lwbXlqbkxpc01BMVQ3YlEvQUoyM0VyT1IvN2hQZy9JVFRCdHEyMllaYk5W?=
- =?utf-8?B?aTZUNkN6WTBmdE1DSXRJNTlFbktkU25vZ2IrOVdPUWdZL3Btc2srZVpjb0pr?=
- =?utf-8?B?cGw4WHBub0ZKa09QNWZOUThockdhNjFXdm5IODg3TlgzbmZYaFZHQlQ1WmVy?=
- =?utf-8?B?eGFFRTJiOVh6YXczQlpLVjVlellsTGowaTA2SXpXMHo5dVpXaHByTms1U0tU?=
- =?utf-8?B?WjFUWWtPcjMyMDF2NFBkNEQ3T2VEWnVleHl0TTA2dzBOeDkxclZQdWZKUzY0?=
- =?utf-8?B?QUZ4bzhzV3ZsMVBGNTJNa3MzVFE1dHhlekNxdnFYNW1GNXAwbk5LSkZ4SjVR?=
- =?utf-8?B?N3cvd21nQmFSZ0hta2RFZEhVWmNNbVJ5ZGFDc3VrU1JTc3FYYzhwSmt4Z0Fq?=
- =?utf-8?B?NytKRExob0ZONEZlSTdxZmN0NzBCdnY3blZOK292VDBrbW02MlNDa202WFlx?=
- =?utf-8?B?MVRCbWZQWGtiaHF2WTZnQmhnOW1vcUlJenU5SUZ5QktxYTBnZjdmUXhQeUVq?=
- =?utf-8?B?UVA4K2ZjdnUyZkRPMG82dDlsTzdwTHpQa1JkNHBLWDNRWHlrVTRLVm9PVzlM?=
- =?utf-8?B?d2V0SHNiSGhvTVNSWE5zcUV4aElxK3NXTUVhUHR2YTN4SUtOV0tGQ29RYTZC?=
- =?utf-8?B?TnRqREgzSnRsc2lqMXhRZElUcHVMZnNEM0RYNWdOUG9yMDBoa2JETkpmM0Mz?=
- =?utf-8?B?Q0dRV2FnU1dTOHVLZ2JJK2VpdkVwVmlkVVczeU4vaTFmYUxSRnBvMENMekQr?=
- =?utf-8?B?YTA3YUFwYjQ0S2tIMkh1TEVVRktISnNmQUgvWmozNUtXTzhkdHJBU2ptMjVP?=
- =?utf-8?B?d2VFVWdMWXZ5ZnVRTkF2eXFTeVluWXAzZ1dVdDVwYUpkaWZ1K1hJc3N0NCtI?=
- =?utf-8?B?N2IzcHUxcW5xZzdTWE54dnNwend4QXJFSy9INjliNVhrYnc3aDVnb3VPa1Jq?=
- =?utf-8?B?UHVDTFhNMVJmbHlOaWh4R3I0VnF6RVAySk0wU0ExY3hwUFcrTTZVdTdESkd0?=
- =?utf-8?B?anI0RjBvMmR6bitsMmtlMUxTZzhyN2k0R2xTOXRXMjhEOEEvaWlIdFYzZ2ZP?=
- =?utf-8?B?TWxVaUdpSVJxbDBYemhhT3FzYTNsUk1DV0JRN2NIQVhmUGdXMi9QUmZmR1Nv?=
- =?utf-8?B?Q0NKWGdDUWhXVkVReVdzQ3o2M1B0d1AwR2svWXJRMUFtYXVhbGRqWUExT2M1?=
- =?utf-8?B?VzAyMGRnZ3g0S01EcTVUV1lHUHlRN3o4eFgwd2NONVUwV2hyNllVQ0xFWlU0?=
- =?utf-8?B?eU9aOTNNNkRnNjBLTTdtS21TSzZzTWhuNzRtbVpkVW9rZGEwcWwrMkxYaW5K?=
- =?utf-8?B?VkQvQXBMMHhlQ3BpT3NQa1p4cW1nVlBiSFdDTUdOOUUweE5uV0I5c1psOVFK?=
- =?utf-8?B?NHNXTVdFUEZlekJlcG12U2M0bGhvSkIyUUdUM2grcjY5RS81R2VMZWZ2djZi?=
- =?utf-8?B?OXJ5N04reFU0b3IyWXU0dnBIc1NaZTdOWWdxTDk2NlN0Mk9CcUs0dWtSWXVz?=
- =?utf-8?B?aE02OVI0WHA5UmFoTXB6NEdhRjFrNHc5YVBOZEhqSUVod09NVVlYV3JOQVlI?=
- =?utf-8?B?R1orRWd0TDkwVHM4T2M5cEdWSSs2YlZGNVR0Q3Vka3pVc2F1eXBmMW5WL1V5?=
- =?utf-8?B?L3JnMjk2VUlrN1FUU2VZWG1DNERueWM0MlVvYmJManp5Z1U1bStmcmpwSVFN?=
- =?utf-8?B?ekE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e8c3ab2-b838-4e22-f38b-08dc714b9b80
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7573.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 May 2024 23:47:52.6133
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5PCqfWDBuH6vb/whW1N0gb5p0idCoWOIypNhft/idNmDGokA9f7vk2dsYqofKRzG4FavUSqQaO5hHeRI9CZoz/VSuEt433RxYCzE01GyHE0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4881
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] Bluetooth: qca: Fix BT enable failure again for
+ QCA6390 after warm reboot
+To: Wren Turkal <wt@penguintechs.org>, quic_zijuhu <quic_zijuhu@quicinc.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: luiz.von.dentz@intel.com, marcel@holtmann.org,
+ linux-bluetooth@vger.kernel.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <1714658761-15326-1-git-send-email-quic_zijuhu@quicinc.com>
+ <CABBYNZJc=Pzt02f0L3KOSLqkJ+2SwO=OZibA=0S0T3vKPDwPyw@mail.gmail.com>
+ <c5998fbd-bd63-4f7d-8f51-3dd081913449@quicinc.com>
+ <CABBYNZJOVnBShpgbWEpFBcu_MnHW+TKLndLKnZkkB9C71EfJNA@mail.gmail.com>
+ <b8cc1486-b627-4186-a53c-8331b84e2318@quicinc.com>
+ <d553edef-c1a4-4d52-a892-715549d31ebe@163.com>
+ <5b9e0b36-4d6f-49d2-a810-dc59f8312e03@penguintechs.org>
+Content-Language: en-US
+From: Lk Sii <lk_sii@163.com>
+In-Reply-To: <5b9e0b36-4d6f-49d2-a810-dc59f8312e03@penguintechs.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHdouE7z5m7C1OEA--.49919S2
+X-Coremail-Antispam: 1Uf129KBjvAXoW3Cr4UuF48XrWxtFWkZr1rXrb_yoW8JrW8Wo
+	WfXw4xZa18Jr1UCF1UAa4DJFy3J3s8Aw1rJrW7tr4rAr1vq345Xw18Cw15XFW3JF4Fgr4U
+	J34UArnxZry3tFs5n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3zBTUUUUU
+X-CM-SenderInfo: 5onb2xrl6rljoofrz/1tbisgDbNWVODIWv8AABsg
 
-Hi Dmitrii,
 
-Thank you very much for uncovering and fixing this issue.
 
-On 4/30/2024 7:38 AM, Dmitrii Kuvaiskii wrote:
-> On Mon, Apr 29, 2024 at 04:11:03PM +0300, Jarkko Sakkinen wrote:
->> On Mon Apr 29, 2024 at 1:43 PM EEST, Dmitrii Kuvaiskii wrote:
->>> Two enclave threads may try to add and remove the same enclave page
->>> simultaneously (e.g., if the SGX runtime supports both lazy allocation
->>> and `MADV_DONTNEED` semantics). Consider this race:
+On 2024/5/11 04:45, Wren Turkal wrote:
+> On 5/7/24 6:48 AM, Lk Sii wrote:
+>> On 2024/5/4 05:51, quic_zijuhu wrote:
+>>> On 5/4/2024 5:25 AM, Luiz Augusto von Dentz wrote:
+>>>> Hi,
+>>>>
+>>>> On Fri, May 3, 2024 at 4:18 PM quic_zijuhu <quic_zijuhu@quicinc.com>
+>>>> wrote:
+>>>>>
+>>>>> On 5/4/2024 3:22 AM, Luiz Augusto von Dentz wrote:
+>>>>>> Hi Zijun,
+>>>>>>
+>>>>>> On Thu, May 2, 2024 at 10:06 AM Zijun Hu <quic_zijuhu@quicinc.com>
+>>>>>> wrote:
+>>>>>>>
+>>>>>>> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on
+>>>>>>> closed
+>>>>>>> serdev") will cause below regression issue:
+>>>>>>>
+>>>>>>> BT can't be enabled after below steps:
+>>>>>>> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable
+>>>>>>> failure
+>>>>>>> if property enable-gpios is not configured within DT|ACPI for
+>>>>>>> QCA6390.
+>>>>>>>
+>>>>>>> The commit is to fix a use-after-free issue within
+>>>>>>> qca_serdev_shutdown()
+>>>>>>> during reboot, but also introduces this regression issue
+>>>>>>> regarding above
+>>>>>>> steps since the VSC is not sent to reset controller during warm
+>>>>>>> reboot.
+>>>>>>>
+>>>>>>> Fixed by sending the VSC to reset controller within
+>>>>>>> qca_serdev_shutdown()
+>>>>>>> once BT was ever enabled, and the use-after-free issue is also be
+>>>>>>> fixed
+>>>>>>> by this change since serdev is still opened when send to serdev.
+>>>>>>>
+>>>>>>> Fixes: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on
+>>>>>>> closed serdev")
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Reported-by: Wren Turkal <wt@penguintechs.org>
+>>>>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218726
+>>>>>>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+>>>>>>> Tested-by: Wren Turkal <wt@penguintechs.org>
+>>>>>>> ---
+>>>>>>>   drivers/bluetooth/hci_qca.c | 5 ++---
+>>>>>>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/bluetooth/hci_qca.c
+>>>>>>> b/drivers/bluetooth/hci_qca.c
+>>>>>>> index 0c9c9ee56592..8e35c9091486 100644
+>>>>>>> --- a/drivers/bluetooth/hci_qca.c
+>>>>>>> +++ b/drivers/bluetooth/hci_qca.c
+>>>>>>> @@ -2450,13 +2450,12 @@ static void qca_serdev_shutdown(struct
+>>>>>>> device *dev)
+>>>>>>>          struct qca_serdev *qcadev =
+>>>>>>> serdev_device_get_drvdata(serdev);
+>>>>>>>          struct hci_uart *hu = &qcadev->serdev_hu;
+>>>>>>>          struct hci_dev *hdev = hu->hdev;
+>>>>>>> -       struct qca_data *qca = hu->priv;
+>>>>>>>          const u8 ibs_wake_cmd[] = { 0xFD };
+>>>>>>>          const u8 edl_reset_soc_cmd[] = { 0x01, 0x00, 0xFC, 0x01,
+>>>>>>> 0x05 };
+>>>>>>>
+>>>>>>>          if (qcadev->btsoc_type == QCA_QCA6390) {
+>>>>>>> -               if (test_bit(QCA_BT_OFF, &qca->flags) ||
+>>>>>>> -                   !test_bit(HCI_RUNNING, &hdev->flags))
+>>>>>>
+>>>>>> This probably deserves a comment on why you end up with
+>>>>>> HCI_QUIRK_NON_PERSISTENT_SETUP and HCI_SETUP flags here, also why you
+>>>>>> are removing the flags above since that was introduce to prevent
+>>>>>> use-after-free this sort of revert it so I do wonder how serdev can
+>>>>>> still be open if you haven't tested for QCA_BT_OFF for example?
+>>>>>>
+>>>>> okay, let me give comments at next version.
+>>>>> this design logic is shown below. you maybe review it.
+>>>>>
+>>>>> if HCI_QUIRK_NON_PERSISTENT_SETUP is set, it means that hdev->setup()
+>>>>> is able to be invoked by every open() to initializate SoC without any
+>>>>> help. so we don't need to send the VSC to reset SoC into initial and
+>>>>> clean state for the next hdev->setup() call success.
+>>>>>
+>>>>> otherwise, namely, HCI_QUIRK_NON_PERSISTENT_SETUP is not set.
+>>>>>
+>>>>> if HCI_SETUP is set, it means hdev->setup() was never be invoked,
+>>>>> so the
+>>>>> SOC is already in the initial and clean state, so we also don't
+>>>>> need to
+>>>>> send the VSC to reset SOC.
+>>>>>
+>>>>> otherwise, we need to send the VSC to reset Soc into a initial and
+>>>>> clean
+>>>>> state for hdev->setup() call success after "warm reboot -> enable BT"
+>>>>>
+>>>>> for the case commit message cares about, the only factor which
+>>>>> decide to
+>>>>> send the VSC is that SoC is a initial and clean state or not after
+>>>>> warm
+>>>>> reboot, any other factors are irrelevant to this decision.
+>>>>>
+>>>>> why the serdev is still open after go through
+>>>>> (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)
+>>>>> || hci_dev_test_flag(hdev, HCI_SETUP) checking is that
+>>>>> serdev is not closed by hci_uart_close().
+>>>>
+>>>> Sounds like a logical jump to me, in fact hci_uart_close doesn't
+>>>> really change any of those flags, beside these flags are not really
+>>>> meant to tell the driver if serdev_device_close has been called or not
+>>>> which seems to be the intention with HCI_UART_PROTO_READY so how about
+>>>> we use that instead?
+>>>>
+>>> sorry for that i maybe not give good explanation, let me explain again.
+>>> hci_uart_close() is the only point which maybe close serdev before
+>>> qca_serdev_shutdown() is called, but for our case that
+>>> HCI_QUIRK_NON_PERSISTENT_SETUP is NOT set, hci_uart_close() will not
+>>> close serdev for our case, so serdev must be open state before sending
+>>> the VSC. so should not need other checking.
 >>>
->>> 1. T1 performs page removal in sgx_encl_remove_pages() and stops right
->>>    after removing the page table entry and right before re-acquiring the
->>>    enclave lock to EREMOVE and xa_erase(&encl->page_array) the page.
->>> 2. T2 tries to access the page, and #PF[not_present] is raised. The
->>>    condition to EAUG in sgx_vma_fault() is not satisfied because the
->>>    page is still present in encl->page_array, thus the SGX driver
->>>    assumes that the fault happened because the page was swapped out. The
->>>    driver continues on a code path that installs a page table entry
->>>    *without* performing EAUG.
->>> 3. The enclave page metadata is in inconsistent state: the PTE is
->>>    installed but there was no EAUG. Thus, T2 in userspace infinitely
->>>    receives SIGSEGV on this page (and EACCEPT always fails).
->>>
->>> Fix this by making sure that T1 (the page-removing thread) always wins
->>> this data race. In particular, the page-being-removed is marked as such,
->>> and T2 retries until the page is fully removed.
->>>
->>> Fixes: 9849bb27152c ("x86/sgx: Support complete page removal")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
->>> ---
->>>  arch/x86/kernel/cpu/sgx/encl.c  | 3 ++-
->>>  arch/x86/kernel/cpu/sgx/encl.h  | 3 +++
->>>  arch/x86/kernel/cpu/sgx/ioctl.c | 1 +
->>>  3 files changed, 6 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
->>> index 41f14b1a3025..7ccd8b2fce5f 100644
->>> --- a/arch/x86/kernel/cpu/sgx/encl.c
->>> +++ b/arch/x86/kernel/cpu/sgx/encl.c
->>> @@ -257,7 +257,8 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
->>>  
->>>  	/* Entry successfully located. */
->>>  	if (entry->epc_page) {
->>> -		if (entry->desc & SGX_ENCL_PAGE_BEING_RECLAIMED)
->>> +		if (entry->desc & (SGX_ENCL_PAGE_BEING_RECLAIMED |
->>> +				   SGX_ENCL_PAGE_BEING_REMOVED))
->>>  			return ERR_PTR(-EBUSY);
->>>  
->>>  		return entry;
->>> diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
->>> index f94ff14c9486..fff5f2293ae7 100644
->>> --- a/arch/x86/kernel/cpu/sgx/encl.h
->>> +++ b/arch/x86/kernel/cpu/sgx/encl.h
->>> @@ -25,6 +25,9 @@
->>>  /* 'desc' bit marking that the page is being reclaimed. */
->>>  #define SGX_ENCL_PAGE_BEING_RECLAIMED	BIT(3)
->>>  
->>> +/* 'desc' bit marking that the page is being removed. */
->>> +#define SGX_ENCL_PAGE_BEING_REMOVED	BIT(2)
->>> +
->>>  struct sgx_encl_page {
->>>  	unsigned long desc;
->>>  	unsigned long vm_max_prot_bits:8;
->>> diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
->>> index b65ab214bdf5..c542d4dd3e64 100644
->>> --- a/arch/x86/kernel/cpu/sgx/ioctl.c
->>> +++ b/arch/x86/kernel/cpu/sgx/ioctl.c
->>> @@ -1142,6 +1142,7 @@ static long sgx_encl_remove_pages(struct sgx_encl *encl,
->>>  		 * Do not keep encl->lock because of dependency on
->>>  		 * mmap_lock acquired in sgx_zap_enclave_ptes().
->>>  		 */
->>> +		entry->desc |= SGX_ENCL_PAGE_BEING_REMOVED;
->>>  		mutex_unlock(&encl->lock);
->>>  
->>>  		sgx_zap_enclave_ptes(encl, addr);
+>> hello, i have paid attention to your discussion for a long time, i would
+>> like to join this discussion now.
 >>
->> It is somewhat trivial to NAK this as the commit message does
->> not do any effort describing the new flag. By default at least
->> I have strong opposition against any new flags related to
->> reclaiming even if it needs a bit of extra synchronization
->> work in the user space.
+>> The serdev is still open before sending the VSC for this patch.
 >>
->> One way to describe concurrency scenarios would be to take
->> example from https://www.kernel.org/doc/Documentation/memory-barriers.txt
+>> are you agree with above Zijun's point?
+> 
+> I will say that this part of the discussion seems to be addressing KK's
+> concerns.
+> 
+> @KK, is this accurate?
+> 
+> @Zijun, this description along with the info about the baud rate issues
+> should probably be part of the commit message. In these last two
+> messages, you have been much clearer about why this logic is needed and
+> correct. I wish you'd provided this description from the beginning when
+> KK asked for more information about the logic change.
+> 
+>>>> Another thing that is troubling me is that having traffic on shutdown
+>>>> is not common, specially if you are going to reboot, etc, and even if
+>>>> it doesn't get power cycle why don't you reset on probe rather than
+>>>> shutdown? That way we don't have to depend on what has been done in a
+>>>> previous boot, which can really become a problem in case of multi-OS
+>>>> where you have another system that may not be doing what you expect.
+>>> as you know, BT UART are working at 3M baudrate for normal usage.
+>>> we can't distinguish if SoC expects 3M or default 11.52K baudarate
+>>> during probe() after reboot. so we send the VSC within shutdown to make
+>>> sure SoC enter a initial state with 11.52 baudrate.
+>>>
+>>> for cold boot, SOC expects default 11.52K baudrate for probe().
+>>> for Enable BT -> warm boot, SOC expects 3M baudrate for probe().
+>>> we can't tell these two case within probe(). so need to send the VSC
+>>> within shutdown().
+>>>
+>> it seems the traffic within qca_serdev_shutdown() actually does software
+>> reset for BT SOC.
 >>
->> I.e. see the examples with CPU 1 and CPU 2.
+>>  From Zijun's points. the reasons why to do software reset within
+>> shutdown() instead of probe() maybe be shown below
+>> 1) it is impossible to do software reset within probe().
+>> 2) it seems it is easier to do it within shutdown() than probe.
+>>
+>> Zijun's simple fix only change the condition and does NOT change the
+>> location to send the VSC, i think it maybe be other topic about location
+>> where(probe() or shutdown()) to do software reset.
+>>
+>> are you agree with this point?
 > 
-> Thank you for the suggestion. Here is my new attempt at describing the racy
-> scenario:
-> 
-> Consider some enclave page added to the enclave. User space decides to
-> temporarily remove this page (e.g., emulating the MADV_DONTNEED semantics)
-> on CPU1. At the same time, user space performs a memory access on the same
-> page on CPU2, which results in a #PF and ultimately in sgx_vma_fault().
-> Scenario proceeds as follows:
-> 
-> /*
->  * CPU1: User space performs
->  * ioctl(SGX_IOC_ENCLAVE_REMOVE_PAGES)
->  * on a single enclave page
->  */
-> sgx_encl_remove_pages() {
-> 
->   mutex_lock(&encl->lock);
-> 
->   entry = sgx_encl_load_page(encl);
->   /*
->    * verify that page is
->    * trimmed and accepted
->    */
-> 
->   mutex_unlock(&encl->lock);
-> 
->   /*
->    * remove PTE entry; cannot
->    * be performed under lock
->    */
->   sgx_zap_enclave_ptes(encl);
->                                    /*
->                                     * Fault on CPU2
->                                     */
+> From a practical standpoint, this change does seem to fix the warm boot
+> issue on my laptop. I do not think that it would fix the issue of
+> booting from an OS that puts the hardware into an unknown state.
+>
+we may not need to focus on below multi-OS issue Luiz assume
 
-Please highlight that this fault is related to the page that
-is in process of being removed on CPU1.
+Other OS such as Windows -> warm boot -> boot linux OS -> enable BT failure.
 
->                                    sgx_vma_fault() {
->                                      /*
->                                       * PTE entry was removed, but the
->                                       * page is still in enclave's xarray
->                                       */
->                                      xa_load(&encl->page_array) != NULL ->
->                                      /*
->                                       * SGX driver thinks that this page
->                                       * was swapped out and loads it
->                                       */
->                                      mutex_lock(&encl->lock);
->                                      /*
->                                       * this is effectively a no-op
->                                       */
->                                      entry = sgx_encl_load_page_in_vma();
->                                      /*
->                                       * add PTE entry
->                                       */
+firstly, we don't know and can't confirm that other OS don't the similar
+jobs as linux kernel do, so can't confirm if the assumed issue is a real
+and valid issue.
 
-It may be helpful to highlight that this is a problem: "BUG: A PTE
-is installed for a page in process of being removed." (please feel free
-to expand)
+secondary, if other OS is supported as announced by vendor Qualcomm,
+their BT driver for other OS maybe have contained solution for Multi-OS
+relevant concerns.
 
->                                      vmf_insert_pfn(...);
+>> For concern about multi-OS, i would like to show my points.
+>>
+>> the patch is for linux kernel, we maybe only need to care about linux
+>> OS. it maybe out-of-scope to make assumptions about other OSs vendor
+>> announced supported such as Windows OS we don't known much about.
+>>
+>> are you agree with this point?
 > 
->                                      mutex_unlock(&encl->lock);
->                                      return VM_FAULT_NOPAGE;
->                                    }
->   /*
->    * continue with page removal
->    */
->   mutex_lock(&encl->lock);
+> I would not fully agree with this point. However, I would agree
+> completely with your proposal for moving forward (i.e. landing the change).
 > 
->   sgx_encl_free_epc_page(epc_page) {
->     /*
->      * remove page via EREMOVE
->      */
->     /*
->      * free EPC page
->      */
->     sgx_free_epc_page(epc_page);
->   }
+i agree with above Wren's point about moving forward.
+
+> I would say that it is a problem if the kernel is not doing something to
+> setup the hardware correctly in any case where it is technically
+> possible. That is clearly a bug in the driver and Qualcomm should take
+> responsibility for fixing this poor design. Luiz is totally right here.
+>i don't agree with your above point that it is a bug and driver's poor
+design, i don't actually understand how|who to conclude that present
+design is clearly a bug and is poor design.
+
+it seems this design(software reset within shutdown()) is dedicated
+for the scenario that HOST doesn't have H/W resource to reset SOC if you
+noticed below link
+https://patchwork.kernel.org/project/bluetooth/patch/1713947712-4307-1-git-send-email-quic_zijuhu@quicinc.com/
+
+For the scenario, perhaps, vendor Qualcomm have had more considerations
+than you can image and finally selected this doable design.
+
+as i commented previously. this patch doesn't touch software reset
+location designed. so it maybe be out-of-scope to discuss why probe()
+does not do the job.
+
+> Having said that, I don't see that bug as a blocker for a logic fix that
+> creates an obvious (in my mind) UX improvement.
 > 
->   xa_erase(&encl->page_array);
+> Here's my view of the situation. Right now, I experience a bug on every
+> single warm boot or module reload).
 > 
->   mutex_unlock(&encl->lock);
-> }
+> After Zijun's improvement commit, I might experience this problem iif
+> the right set of rare circumstances occurs (i.e. whenever I warm boot
+> from an OS that puts the hardware in an unknown state, like the current
+> mainline kernel to a kernel with the improvement).
+> > In the world where the design problem of the init/shutdown sequences are
+> fixed AND this logic change is applied, I might never see this problem
+> again.
 > 
-> CPU1 removed the page. However CPU2 installed the PTE entry on the
-> same page. This enclave page becomes perpetually inaccessible (until
-> another SGX_IOC_ENCLAVE_REMOVE_PAGES ioctl). This is because the page is
-> marked accessible in the PTE entry but is not EAUGed. Because of this
-> combination, any subsequent access to this page raises a fault, and the #PF
-> handler sees the SGX bit set in the #PF error code and does not call
-
-Which #PF handler?
-
-> sgx_vma_fault() but instead raises a SIGSEGV. The userspace SIGSEGV handler
-> cannot perform EACCEPT because the page was not EAUGed. Thus, the user
-> space is stuck with the inaccessible page.
+> These seem like two different problems in my head. They don't seem
+> directly logically related, and the blast radii of the problems are very
+> different.
 > 
-> This race can be fixed by forcing the fault handler on CPU2 to back off if
-> the page is currently being removed (on CPU1). Thus a simple change is to
-> introduce a new flag SGX_ENCL_PAGE_BEING_REMOVED, which is unset by default
-> and set only right-before the first mutex_unlock() in
-> sgx_encl_remove_pages(). Upon loading the page, CPU2 checks whether this
-> page is being removed, and if yes then CPU2 backs off and waits until the
-> page is completely removed. After that, any memory access to this page
-> results in a normal "allocate and EAUG a page on #PF" flow.
-
-I have been tripped by these page flags before so would appreciate
-another opinion. From my side this looks like an appropriate fix.
-
-Reinette
-
+> Here's the facts as I see them:
+> 1. Logic improvement problem and init/shutdown sequence problem are 2
+> orthogonal problems
+> 2. Logic improvement greatly users' chances of running into the bad UX
+> of the current code.
+> 3. Init/shutdown isn't a trivial extension from the logic improvement.
+> 4. Logic improvement has a pretty low cost to apply.
+> 5. Init/shutdown sequence fix seems to be more fundamental and more
+> intrusive.
+> 
+> All of these together indicate to me that the logic improvement should
+> be landed. The init/shutdown issue should also be fixed, but a fix for
+> that issue should not block the logic improvement.
+> 
+> My basic reasoning for this is that a visible UX fix should not e
+> blocked for a change like the init/shutdown logic fix when the logic fix
+> will help users.
+> 
+> However, Qualcomm does need to feel some pressure to fix their driver
+> code. I would like to think that user's will not be held hostage for
+> putting pressure on a vendor in this case as the balance seems very
+> intrusive for users. It certainly feels intrusive as a user to have to
+> be very careful about how I reboot my laptop.
+> 
+>>>>> see hci_uart_close() within drivers/bluetooth/hci_serdev.c
+>>>>> static int hci_uart_close(struct hci_dev *hdev)
+>>>>> {
+>>>>> ......
+>>>>>          /* When QUIRK HCI_QUIRK_NON_PERSISTENT_SETUP is set by
+>>>>> driver,
+>>>>>           * BT SOC is completely powered OFF during BT OFF, holding
+>>>>> port
+>>>>>           * open may drain the battery.
+>>>>>           */
+>>>>>          if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP,
+>>>>> &hdev->quirks)) {
+>>>>>                  clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+>>>>>                  serdev_device_close(hu->serdev);
+>>>>>          }
+>>>>>
+>>>>>          return 0;
+>>>>> }
+>>>>>
+>>>>>>> +               if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP,
+>>>>>>> &hdev->quirks) ||
+>>>>>>> +                   hci_dev_test_flag(hdev, HCI_SETUP))
+>>>>>>>                          return;
+>>>>>>>
+>>>>>>>                  serdev_device_write_flush(serdev);
+>>>>>>> -- 
+>>>>>>> 2.7.4
+>>>>>>>
+>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>>
+>>>
+>>>
+>>>
+>>
+> 
 
 
