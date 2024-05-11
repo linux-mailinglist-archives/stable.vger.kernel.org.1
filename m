@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-43581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973B98C3482
-	for <lists+stable@lfdr.de>; Sun, 12 May 2024 00:42:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99F98C3496
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 00:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C83901C20756
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 22:42:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79B7F1F21BE8
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 22:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D1F29428;
-	Sat, 11 May 2024 22:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12F436AF8;
+	Sat, 11 May 2024 22:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="b3MCZSEk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GI8zwWrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64346A921;
-	Sat, 11 May 2024 22:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F20817BA8;
+	Sat, 11 May 2024 22:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715467333; cv=none; b=nseeO+AbZie04qm+Fu6SBmNT6wbJRuy49s5vnKsl/TNNij5mthrwlNu0Zc3qzCEq4EqfYnCc2p9iap20W5fpmXz2YhBdsB7qIui0+8JdWaLx66stBE6489xs1rhTL9rx2xe1tHEPQlgNVaQNRv6IU11Y9K4ECpXxQvgAIS3yClQ=
+	t=1715467944; cv=none; b=nOnsch9qXH1lpS1bFoDhHswRn0pzu5is3CFxz5HHAxlkgK1lf3XfytFB7wG5usyDL2V23VGjnYPrvPAUi/0TiOF/ZXIfZ2Q6TasjzOVG6kdbSLGZylNWYt9MMQnf6ApIjGjqTgQeTzNH4LVmjm4h3QJ6VuKRylwpcLJIhI0SfXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715467333; c=relaxed/simple;
-	bh=51wgTNHC2oE+4wLjFJTbhN9WW+lWN+Wl5SnoS4DnUjA=;
-	h=Date:To:From:Subject:Message-Id; b=uGOuBFnl3g0fn+Y89sl+BSWv9bR91pA4mmsUCQjgdx/QqzDE2Z/k0teZjoAmFojpxI2saTPn1KNbCwl/Rj+uUMwXWyEcXmduvzuGRE/F6FgihcY6ZaBS4ADqWQLosFtMl1D/eaYQsYiI5Q9xNFm+Py9P8kIckCFnZofbJRuZ8nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=b3MCZSEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390B2C4AF08;
-	Sat, 11 May 2024 22:42:13 +0000 (UTC)
+	s=arc-20240116; t=1715467944; c=relaxed/simple;
+	bh=pSJ4NP0XOIqUdlgPwwowpqr7iVHGSTHUoLZQ2UOgdDI=;
+	h=Date:To:From:Subject:Message-Id; b=NNq5Th3TxveI5VlommqtlvzNvJJBKAkwpJptmrvxloMemWlDTXimq+/1ozqpUQinFRpYkR2t1JwyDu4jR2CPVZ3AMZqJPTY5ujDBzObU4lwvlDAC5W7lwIDp9YwuHLh8Mt2HjpnAjPuEg0cIqbfQmTm/NZZIK2Hr32TF9fe/qoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GI8zwWrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313E6C32781;
+	Sat, 11 May 2024 22:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1715467333;
-	bh=51wgTNHC2oE+4wLjFJTbhN9WW+lWN+Wl5SnoS4DnUjA=;
+	s=korg; t=1715467944;
+	bh=pSJ4NP0XOIqUdlgPwwowpqr7iVHGSTHUoLZQ2UOgdDI=;
 	h=Date:To:From:Subject:From;
-	b=b3MCZSEkUX8jqaHVXZFYwh0hN3zDETzSBk8VIdMiUlI5K3TC3Tv/DO2o7FffOB++L
-	 ALjiweysGfFPhmDQ56FBaLPw/NfZjoRI856PuQypijE4EpeB+w8Kty4QUH3rUKPRf5
-	 Dr5nUEiIkkkM8ZcdIQB2kQgZW3F77Dlh1HvaLvXc=
-Date: Sat, 11 May 2024 15:42:12 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,corbet@lwn.net,sj@kernel.org,akpm@linux-foundation.org
+	b=GI8zwWrkvZjSjs4dAFmon6QONjSYqpIDpPdXGVryUJKGFeMMihV7EBhT0SKTde6tb
+	 7BI6/m7sDGvAiJ+5DxBfPabk8D9lgR/syRofrATIVAdMcii9m6o3ajJZ65I9jyEFAg
+	 kSYANmtU7Q92qvxXUsArWTQjLxVppa/vUWVJdjww=
+Date: Sat, 11 May 2024 15:52:23 -0700
+To: mm-commits@vger.kernel.org,vgoyal@redhat.com,stable@vger.kernel.org,dyoung@redhat.com,bhe@redhat.com,riel@surriel.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] docs-admin-guide-mm-damon-usage-fix-wrong-schemes-effective-quota-update-command.patch removed from -mm tree
-Message-Id: <20240511224213.390B2C4AF08@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] fs-proc-fix-softlockup-in-__read_vmcore.patch removed from -mm tree
+Message-Id: <20240511225224.313E6C32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,58 +50,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
+     Subject: fs/proc: fix softlockup in __read_vmcore
 has been removed from the -mm tree.  Its filename was
-     docs-admin-guide-mm-damon-usage-fix-wrong-schemes-effective-quota-update-command.patch
+     fs-proc-fix-softlockup-in-__read_vmcore.patch
 
-This patch was dropped because it was merged into the mm-stable branch
+This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
-Date: Fri, 3 May 2024 11:03:15 -0700
+From: Rik van Riel <riel@surriel.com>
+Subject: fs/proc: fix softlockup in __read_vmcore
+Date: Tue, 7 May 2024 09:18:58 -0400
 
-To update effective size quota of DAMOS schemes on DAMON sysfs file
-interface, user should write 'update_schemes_effective_quotas' to the
-kdamond 'state' file.  But the document is mistakenly saying the input
-string as 'update_schemes_effective_bytes'.  Fix it (s/bytes/quotas/).
+While taking a kernel core dump with makedumpfile on a larger system,
+softlockup messages often appear.
 
-Link: https://lkml.kernel.org/r/20240503180318.72798-8-sj@kernel.org
-Fixes: a6068d6dfa2f ("Docs/admin-guide/mm/damon/usage: document effective_bytes file")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.9.x]
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <shuah@kernel.org>
+While softlockup warnings can be harmless, they can also interfere with
+things like RCU freeing memory, which can be problematic when the kdump
+kexec image is configured with as little memory as possible.
+
+Avoid the softlockup, and give things like work items and RCU a chance to
+do their thing during __read_vmcore by adding a cond_resched.
+
+Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- Documentation/admin-guide/mm/damon/usage.rst |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Documentation/admin-guide/mm/damon/usage.rst~docs-admin-guide-mm-damon-usage-fix-wrong-schemes-effective-quota-update-command
-+++ a/Documentation/admin-guide/mm/damon/usage.rst
-@@ -153,7 +153,7 @@ Users can write below commands for the k
- - ``clear_schemes_tried_regions``: Clear the DAMON-based operating scheme
-   action tried regions directory for each DAMON-based operation scheme of the
-   kdamond.
--- ``update_schemes_effective_bytes``: Update the contents of
-+- ``update_schemes_effective_quotas``: Update the contents of
-   ``effective_bytes`` files for each DAMON-based operation scheme of the
-   kdamond.  For more details, refer to :ref:`quotas directory <sysfs_quotas>`.
+--- a/fs/proc/vmcore.c~fs-proc-fix-softlockup-in-__read_vmcore
++++ a/fs/proc/vmcore.c
+@@ -383,6 +383,8 @@ static ssize_t __read_vmcore(struct iov_
+ 		/* leave now if filled buffer already */
+ 		if (!iov_iter_count(iter))
+ 			return acc;
++
++		cond_resched();
+ 	}
  
-@@ -342,7 +342,7 @@ Based on the user-specified :ref:`goal <
- effective size quota is further adjusted.  Reading ``effective_bytes`` returns
- the current effective size quota.  The file is not updated in real time, so
- users should ask DAMON sysfs interface to update the content of the file for
--the stats by writing a special keyword, ``update_schemes_effective_bytes`` to
-+the stats by writing a special keyword, ``update_schemes_effective_quotas`` to
- the relevant ``kdamonds/<N>/state`` file.
- 
- Under ``weights`` directory, three files (``sz_permil``,
+ 	list_for_each_entry(m, &vmcore_list, list) {
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from riel@surriel.com are
 
 
 
