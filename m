@@ -1,111 +1,141 @@
-Return-Path: <stable+bounces-43556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0818C307F
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 12:02:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1C58C30BA
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 12:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7AF51F2170E
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 10:02:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27AA1C22501
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 10:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D3753E33;
-	Sat, 11 May 2024 10:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2306C53390;
+	Sat, 11 May 2024 10:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Og4bmphZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC162D600;
-	Sat, 11 May 2024 10:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C884204F
+	for <stable@vger.kernel.org>; Sat, 11 May 2024 10:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715421743; cv=none; b=Mk0LmkCIv/Zpp//pJPfBdjYb8HSO7wjh0umMQFZeG0Yc/9sl/39mS5Tzzg4p3eIBVh+qemFgazNEYTN5EErEq+c4z++5Z/mGWEwTfrwhYoqMEJFsMHiqbGPX00VsB7QybnS9vk+NwKajCvFdvA8yM4N+Wv92IN7C2aF9gqGxUPA=
+	t=1715424603; cv=none; b=g5E5Njdpv80EJoFjwrRPRJD6xMpI3Biw1VcPg/sy/QZ/LNSIixHnL3QWfdp8P/t/olQzpX3gt4vY7KyShOa3GEfoqomhC33AcTVguT3ewLEMVPgk+INnSUv5gKWuyJxUXBv1tOF9W8VYU2w/hMh8lM9/6yo6JvBT+ttPUch3ffg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715421743; c=relaxed/simple;
-	bh=SFHbHpo72eV/0cisApcS/CTZAxVbNx20NHHUp3VFlGY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ngDWR+4ZbvnRXxjfGx9xpIJdJJTfNAtJ/gESjDpsGXPEpMVYlAK2VqgSBXG8i4p9VxFtxpysYwJlPc9z5uwoPOBxZ/EnmUKPFDXr2YdiJ8iUWQKSxpIUKpA6pG+OK6uBqUiFSq2akmpYfCOrrFax9UbUPBJNG8iCP+L/x33J7vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8CFC2BBFC;
-	Sat, 11 May 2024 10:02:19 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	linux-arch@vger.kernel.org,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-Date: Sat, 11 May 2024 18:01:57 +0800
-Message-ID: <20240511100157.2334539-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1715424603; c=relaxed/simple;
+	bh=4y7Qf+jN6LlUE0OdF/F/rEDDNHszeU8elr9PJ2tH+iE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k+p9QXqhK1/UhBOEJUP1lWvC0dslazDepueoRfPakr8emZzr++zVqJkt31xP2G1vDFoNtLn2QXNq3YUasOdHFsvgW7yvGIr7P4JtOGH4u/POEprCc/W7jbYvQphrxKIrSK0qe+9+oU93wqAtUQXYIOcu/Gb8K7djrosrazGJQ/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Og4bmphZ; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-522297f91bcso1419114e87.3
+        for <stable@vger.kernel.org>; Sat, 11 May 2024 03:50:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1715424600; x=1716029400; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x9tzUVfN0KhpYmc4a0OVLANN4g1WHLu0Epz797hO85s=;
+        b=Og4bmphZI9rr20GWN+Xl33+7kr0bo1eHMhH8/WMLCX1m7yfQFoMvmrdVErqxZc6739
+         k+c0rxYPTlo3mhs7dDcZM0bzrIrTY4PZvu1hmowPEV9JrWQvaUrFuOspqJVF8JqPoncu
+         6u+3baLS5w/uaoFVWRThu0NuqREOkB36aCr8CrEDmom49J4fgzE5VJ4ztsCX1OMjBMf0
+         Mo0UODSVunHYlhbFKxf3n7HjcmBTxT65+Vp4tJXxeXgq9g9cxXosMHUV7a2jeueEnJPh
+         P/k3Ogn4fttby8MYzl8ymVbbXDlgz3PG+Shj3sucMiwfs0WS/JtZDXj0ejJTZ41DTOdi
+         dW2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715424600; x=1716029400;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x9tzUVfN0KhpYmc4a0OVLANN4g1WHLu0Epz797hO85s=;
+        b=pZMXJvPc+1cFcD6/iJSn4tpJ7yEnDpe6I0FOSh5iHs+z4dqv6a3aFjUxuAKO2EpSKJ
+         qqfLEGWG3P5c41MQlZAXXS2V6xL/BLemX/PSh+4yN3ZJzJ0M66DDjhikBUFjNWmaYwFL
+         KTv/eg9L2mDHFEyMdcJQo6YutNOP3XPLdXjM8rPDPBCDWGzkJXiGNfJkVy91mqr1qhcl
+         DyWzW86P2xT/7CUa7cwJQVkp9uJ5WC5smNEq0yjsITmheZLGVI7EQmc3XMJSQ6OwpOYB
+         DsU+xP5oLj9T48QCuRpOdzHST6gDdttwASWGT0XMGLooVHuW2VL8LuzGStrstMnnb3Ux
+         5VXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhariBxkG+Co1ePwBvjqI3A78+zElmZMncJbIfnkzjVyZNQjYsl75tN9vseRl3ZDFfN94LeBe54E+gHzUQIu7AOC3Z24im
+X-Gm-Message-State: AOJu0YzdJvdlgTenSPMffkgMN+yJbY9Pjeis9+Pzf55PL7XBc36eTPL/
+	Vv0R0E16gNEfMLz5x9CDa9xqBbvefzesmh9t2iMkk1zMjT4mGdqtg7HY0wQv1c8=
+X-Google-Smtp-Source: AGHT+IGg+LWGczogLtLGUqJNhxQs6r274MI2gwKo2vyNt3nMaj1fq1HgKXfUA3uoPSWXwMPjRHzuzQ==
+X-Received: by 2002:ac2:4d84:0:b0:517:87ba:aff3 with SMTP id 2adb3069b0e04-5221016e7f3mr3060938e87.43.1715424600467;
+        Sat, 11 May 2024 03:50:00 -0700 (PDT)
+Received: from umbar.lan ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-521f35ad59asm996021e87.45.2024.05.11.03.49.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 May 2024 03:49:59 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Sat, 11 May 2024 13:49:59 +0300
+Subject: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAFZNP2YC/x3MTQqAIBBA4avErBtQqaiuEi38mXIINDQiCO+et
+ PwW772QKTFlmJsXEt2cOYYK2TZgvQ47IbtqUEJ1opcS9eWlODCHaNHRieOg9OS0osEYqNWZaOP
+ nPy5rKR8f52+UYQAAAA==
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
+ Stephen Boyd <swboyd@chromium.org>, 
+ Rakesh Pillai <quic_pillair@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1558;
+ i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
+ bh=4y7Qf+jN6LlUE0OdF/F/rEDDNHszeU8elr9PJ2tH+iE=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmP01XglM6PDpJ5FKRfpGy+Q6xENazUhdYgRoDQ
+ //KWcLhheaJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZj9NVwAKCRCLPIo+Aiko
+ 1UIQB/49CRde93czh84lwUe7x1+pSFX90yrLwvtSOJXkI28HtFMfoiuu1exAppUo1eypZPewm0V
+ MbiceretlnNrsNuh2ac19xj2SWWJjhxLwGVsUzP7BPuqk+u1o5Dg9nTGIBD9gMqt8VrYJodpFBf
+ 3TjBdR/HjcZRPAXteOsDXzLNU3DWZC3w3blS3jlXOIJ9tihUQq29OHqIDlrTYhkx6DE04Jaavm2
+ bOLwrClPDvn3VTK/Yh7DZnQBFRtnNQQ8F/czV+oTxF8EO03m1/QgJSOjRTBP8XJtNmSurL4SlcF
+ LHCnykEkypVGalLOetMDKiKiQNom/6J2fWakD55YJc86mMAO
+X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
+ fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-Chromium sandbox apparently wants to deny statx [1] so it could properly
-inspect arguments after the sandboxed process later falls back to fstat.
-Because there's currently not a "fd-only" version of statx, so that the
-sandbox has no way to ensure the path argument is empty without being
-able to peek into the sandboxed process's memory. For architectures able
-to do newfstatat though, glibc falls back to newfstatat after getting
--ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
-inspecting the path argument, transforming allowed newfstatat's into
-fstat instead which is allowed and has the same type of return value.
+If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
+modules, compilation fails with:
 
-But, as LoongArch is the first architecture to not have fstat nor
-newfstatat, the LoongArch glibc does not attempt falling back at all
-when it gets -ENOSYS for statx -- and you see the problem there!
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
+drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
+/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
+drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
 
-Actually, back when the LoongArch port was under review, people were
-aware of the same problem with sandboxing clone3 [3], so clone was
-eventually kept. Unfortunately it seemed at that time no one had noticed
-statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
-postponing the problem further), it seems inevitable that we would need
-to tackle seccomp deep argument inspection.
+Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
+built as module if QCOM_RPROC_COMMON is built as module too.
 
-However, this is obviously a decision that shouldn't be taken lightly,
-so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STAT
-in unistd.h. This is the simplest solution for now, and so we hope the
-community will tackle the long-standing problem of seccomp deep argument
-inspection in the future [4][5].
-
-More infomation please reading this thread [6].
-
-[1] https://chromium-review.googlesource.com/c/chromium/src/+/2823150
-[2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b51940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
-[3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@brightrain.aerifal.cx/
-[4] https://lwn.net/Articles/799557/
-[5] https://lpc.events/event/4/contributions/560/attachments/397/640/deep-arg-inspection.pdf
-[6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-eccc2433014d@brauner/T/#t
-
+Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- arch/loongarch/include/uapi/asm/unistd.h | 1 +
+ drivers/net/wireless/ath/ath10k/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/include/uapi/asm/unistd.h b/arch/loongarch/include/uapi/asm/unistd.h
-index fcb668984f03..b344b1f91715 100644
---- a/arch/loongarch/include/uapi/asm/unistd.h
-+++ b/arch/loongarch/include/uapi/asm/unistd.h
-@@ -1,4 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#define __ARCH_WANT_NEW_STAT
- #define __ARCH_WANT_SYS_CLONE
- #define __ARCH_WANT_SYS_CLONE3
- 
+diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
+index e6ea884cafc1..4f385f4a8cef 100644
+--- a/drivers/net/wireless/ath/ath10k/Kconfig
++++ b/drivers/net/wireless/ath/ath10k/Kconfig
+@@ -45,6 +45,7 @@ config ATH10K_SNOC
+ 	depends on ATH10K
+ 	depends on ARCH_QCOM || COMPILE_TEST
+ 	depends on QCOM_SMEM
++	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
+ 	select QCOM_SCM
+ 	select QCOM_QMI_HELPERS
+ 	help
+
+---
+base-commit: 75fa778d74b786a1608d55d655d42b480a6fa8bd
+change-id: 20240511-ath10k-snoc-dep-862a9da2e6bb
+
+Best regards,
 -- 
-2.43.0
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 
