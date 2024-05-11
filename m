@@ -1,99 +1,100 @@
-Return-Path: <stable+bounces-43577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D848C32E1
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 19:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF058C3481
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 00:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13ADE2820C5
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 17:19:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED082822F8
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 22:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFB31BC3F;
-	Sat, 11 May 2024 17:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C253F8D1;
+	Sat, 11 May 2024 22:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mmRu4fiy"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vIz9Bojb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63EA1BC44
-	for <stable@vger.kernel.org>; Sat, 11 May 2024 17:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4C8A921;
+	Sat, 11 May 2024 22:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715447841; cv=none; b=pain1SFsxSTKYpfFb6hX7qCuH2qeUqxx3q8UWSngwoK0enRC/byaNnEEWA2B0YKMRWb1jVHMwF6N6O3zL+LD1JjJcIgqLR3dGsXLM22LYHWnvrWlCS+Wg88ZQvhQZ8WVRWO7yTd4tjC7bssWrZHtkE9jSnK++f8RACSvRXiB14M=
+	t=1715467332; cv=none; b=rhet0RQYWOxaIREBIHZLiqpyZ7BP1fjOh0hSZO0FvGlO+VGx6z4glDXF7uB28sJB7DzOCtZQ+FjdQjDkHvvZJMYBq6GoSUn7X1buU3A/n8Hg0RhNEdxrw87KXDR4HPyWrAN6hS3MqgH0tGcQJUEasMdGo2h+pXzpCYVpzxFP/sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715447841; c=relaxed/simple;
-	bh=dlK3Vn7cwWFT6IKPUmgebw8I+1P3ezGKvtLYuQCc0dM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Zdw5xJfPym6KPz7VOfensYXwE5nf1exo8JpZ5DPCxmMHkO/YASqfCbP+qDq6qBohvNRb9AMKtnqCgffZI9I5HH/7iihQGpJDSMr92zCdxaug1AOjXzOa7Dt7gMHgtoMG93ZJdDzmXAwmtaN6FG5WLaC2Po5iFee9vPVNd77UhmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mmRu4fiy; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715447840; x=1746983840;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=dlK3Vn7cwWFT6IKPUmgebw8I+1P3ezGKvtLYuQCc0dM=;
-  b=mmRu4fiynvvU6WN3geKLVBraSvv4U7raaBGwY0DzkWDHdswR+C7FdNmY
-   B+0QZK9g5F+oiu+x2O99GAYKcD7hnzOf32A/7PcA9kW7lXr/nWD7Hcorl
-   NTVfQVt1zVJZwqV2W+nNavqt+4nUa0KP18XhQk7rP6TCkApMQYKgSgXJz
-   KpkgQnnHqAII2dJ5zYF8FvvGA5covY5FfVQ3ZGs37hEsUV/NGTwKh6FAq
-   lYabNl2OgyQGbh9K2zB7jvEZSkZXgSS1UjURAGlNT28F91od6e3sYkYut
-   DumtOph3zJyWuWUSI0T6uQ7v4KZCtRzYklXiJnULAOqPrEaUI5L3TvZuj
-   w==;
-X-CSE-ConnectionGUID: OfSTqLrqRDW4b6q2N7ZBbQ==
-X-CSE-MsgGUID: g/Mp2JFCTq+4I8V6yN1XkA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11070"; a="22578659"
-X-IronPort-AV: E=Sophos;i="6.08,154,1712646000"; 
-   d="scan'208";a="22578659"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 10:17:19 -0700
-X-CSE-ConnectionGUID: IZ2GS8NXTxOTiAQ1hGB91w==
-X-CSE-MsgGUID: FIgFfqJPTEOQSbpPK5SoYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,154,1712646000"; 
-   d="scan'208";a="34805413"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 11 May 2024 10:17:18 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s5qLT-0007fv-2B;
-	Sat, 11 May 2024 17:17:15 +0000
-Date: Sun, 12 May 2024 01:16:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v7 07/10] selftests/pidfd: Fix wrong expectation
-Message-ID: <Zj-oCo7mQoUVP__W@974e639ab07c>
+	s=arc-20240116; t=1715467332; c=relaxed/simple;
+	bh=F/m0IggXEhP0wpyArqqqpuwi3/I3Vw3UaaV6QJ88RCw=;
+	h=Date:To:From:Subject:Message-Id; b=iHqK4FN1siamO+cAdobHg74SHPkHCNfVTD/dKc4T0nuJcRNF9wvKOX9h6UsRaON2JjrpGexnuUpioT1Vr/h5AofimzNEbKX9HGKtPJmYO7Msd79nGSrZWKSVIINDdPJKOIE/wiXQK32meujX75sfaqwxaHd/qolikd8A9UV47/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vIz9Bojb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277E6C32781;
+	Sat, 11 May 2024 22:42:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1715467332;
+	bh=F/m0IggXEhP0wpyArqqqpuwi3/I3Vw3UaaV6QJ88RCw=;
+	h=Date:To:From:Subject:From;
+	b=vIz9BojbUNMorVnuPmWlW9CtQP6TDcpxUOvIPf/N2ZQPd7EMRK0Vwgu69j+bZ0cs3
+	 RAX59YppNfFEP+xeqX8C8fzPPRfAH2DYmOy0tOhzNPD8ZKt+mVzHEvUABOxjbCnmy+
+	 LhwNs2VBxRTse74wGF/xAhqJpWUQ0f+adTnJpy3Q=
+Date: Sat, 11 May 2024 15:42:11 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,corbet@lwn.net,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] docs-admin-guide-mm-damon-usage-fix-wrong-example-of-damos-filter-matching-sysfs-file.patch removed from -mm tree
+Message-Id: <20240511224212.277E6C32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240511171445.904356-8-mic@digikod.net>
 
-Hi,
 
-Thanks for your patch.
+The quilt patch titled
+     Subject: Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
+has been removed from the -mm tree.  Its filename was
+     docs-admin-guide-mm-damon-usage-fix-wrong-example-of-damos-filter-matching-sysfs-file.patch
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
+Date: Fri, 3 May 2024 11:03:14 -0700
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v7 07/10] selftests/pidfd: Fix wrong expectation
-Link: https://lore.kernel.org/stable/20240511171445.904356-8-mic%40digikod.net
+The example usage of DAMOS filter sysfs files, specifically the part of
+'matching' file writing for memcg type filter, is wrong.  The intention is
+to exclude pages of a memcg that already getting enough care from a given
+scheme, but the example is setting the filter to apply the scheme to only
+the pages of the memcg.  Fix it.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Link: https://lkml.kernel.org/r/20240503180318.72798-7-sj@kernel.org
+Fixes: 9b7f9322a530 ("Docs/admin-guide/mm/damon/usage: document DAMOS filters of sysfs")
+Closes: https://lore.kernel.org/r/20240317191358.97578-1-sj@kernel.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.3.x]
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
+ Documentation/admin-guide/mm/damon/usage.rst |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/Documentation/admin-guide/mm/damon/usage.rst~docs-admin-guide-mm-damon-usage-fix-wrong-example-of-damos-filter-matching-sysfs-file
++++ a/Documentation/admin-guide/mm/damon/usage.rst
+@@ -434,7 +434,7 @@ pages of all memory cgroups except ``/ha
+     # # further filter out all cgroups except one at '/having_care_already'
+     echo memcg > 1/type
+     echo /having_care_already > 1/memcg_path
+-    echo N > 1/matching
++    echo Y > 1/matching
+ 
+ Note that ``anon`` and ``memcg`` filters are currently supported only when
+ ``paddr`` :ref:`implementation <sysfs_context>` is being used.
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
 
 
 
