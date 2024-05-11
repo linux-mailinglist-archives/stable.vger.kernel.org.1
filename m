@@ -1,141 +1,133 @@
-Return-Path: <stable+bounces-43557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1C58C30BA
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 12:50:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBBD8C3139
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 14:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27AA1C22501
-	for <lists+stable@lfdr.de>; Sat, 11 May 2024 10:50:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BA3B281F0F
+	for <lists+stable@lfdr.de>; Sat, 11 May 2024 12:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2306C53390;
-	Sat, 11 May 2024 10:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7060655E45;
+	Sat, 11 May 2024 12:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Og4bmphZ"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="PSDrpsSd";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QUgEcDBM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfhigh1-smtp.messagingengine.com (wfhigh1-smtp.messagingengine.com [64.147.123.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C884204F
-	for <stable@vger.kernel.org>; Sat, 11 May 2024 10:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCC941C60;
+	Sat, 11 May 2024 12:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715424603; cv=none; b=g5E5Njdpv80EJoFjwrRPRJD6xMpI3Biw1VcPg/sy/QZ/LNSIixHnL3QWfdp8P/t/olQzpX3gt4vY7KyShOa3GEfoqomhC33AcTVguT3ewLEMVPgk+INnSUv5gKWuyJxUXBv1tOF9W8VYU2w/hMh8lM9/6yo6JvBT+ttPUch3ffg=
+	t=1715429854; cv=none; b=MxNpsiKS9nuPr9p5IzRe1elJ77Tu+yeKorRGtO37jHzXNgIcSlybavtivykh7R6LEfYLIt5Yix+hraoRRTOxSiZ6Ru2mVx7knCQVlDw6W3UnagYosdQBxziumVPzdcaKCcLZplO5suG3+sBULOivZBD7+1x2esf+GAfXEoOfwYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715424603; c=relaxed/simple;
-	bh=4y7Qf+jN6LlUE0OdF/F/rEDDNHszeU8elr9PJ2tH+iE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k+p9QXqhK1/UhBOEJUP1lWvC0dslazDepueoRfPakr8emZzr++zVqJkt31xP2G1vDFoNtLn2QXNq3YUasOdHFsvgW7yvGIr7P4JtOGH4u/POEprCc/W7jbYvQphrxKIrSK0qe+9+oU93wqAtUQXYIOcu/Gb8K7djrosrazGJQ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Og4bmphZ; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-522297f91bcso1419114e87.3
-        for <stable@vger.kernel.org>; Sat, 11 May 2024 03:50:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1715424600; x=1716029400; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x9tzUVfN0KhpYmc4a0OVLANN4g1WHLu0Epz797hO85s=;
-        b=Og4bmphZI9rr20GWN+Xl33+7kr0bo1eHMhH8/WMLCX1m7yfQFoMvmrdVErqxZc6739
-         k+c0rxYPTlo3mhs7dDcZM0bzrIrTY4PZvu1hmowPEV9JrWQvaUrFuOspqJVF8JqPoncu
-         6u+3baLS5w/uaoFVWRThu0NuqREOkB36aCr8CrEDmom49J4fgzE5VJ4ztsCX1OMjBMf0
-         Mo0UODSVunHYlhbFKxf3n7HjcmBTxT65+Vp4tJXxeXgq9g9cxXosMHUV7a2jeueEnJPh
-         P/k3Ogn4fttby8MYzl8ymVbbXDlgz3PG+Shj3sucMiwfs0WS/JtZDXj0ejJTZ41DTOdi
-         dW2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715424600; x=1716029400;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x9tzUVfN0KhpYmc4a0OVLANN4g1WHLu0Epz797hO85s=;
-        b=pZMXJvPc+1cFcD6/iJSn4tpJ7yEnDpe6I0FOSh5iHs+z4dqv6a3aFjUxuAKO2EpSKJ
-         qqfLEGWG3P5c41MQlZAXXS2V6xL/BLemX/PSh+4yN3ZJzJ0M66DDjhikBUFjNWmaYwFL
-         KTv/eg9L2mDHFEyMdcJQo6YutNOP3XPLdXjM8rPDPBCDWGzkJXiGNfJkVy91mqr1qhcl
-         DyWzW86P2xT/7CUa7cwJQVkp9uJ5WC5smNEq0yjsITmheZLGVI7EQmc3XMJSQ6OwpOYB
-         DsU+xP5oLj9T48QCuRpOdzHST6gDdttwASWGT0XMGLooVHuW2VL8LuzGStrstMnnb3Ux
-         5VXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhariBxkG+Co1ePwBvjqI3A78+zElmZMncJbIfnkzjVyZNQjYsl75tN9vseRl3ZDFfN94LeBe54E+gHzUQIu7AOC3Z24im
-X-Gm-Message-State: AOJu0YzdJvdlgTenSPMffkgMN+yJbY9Pjeis9+Pzf55PL7XBc36eTPL/
-	Vv0R0E16gNEfMLz5x9CDa9xqBbvefzesmh9t2iMkk1zMjT4mGdqtg7HY0wQv1c8=
-X-Google-Smtp-Source: AGHT+IGg+LWGczogLtLGUqJNhxQs6r274MI2gwKo2vyNt3nMaj1fq1HgKXfUA3uoPSWXwMPjRHzuzQ==
-X-Received: by 2002:ac2:4d84:0:b0:517:87ba:aff3 with SMTP id 2adb3069b0e04-5221016e7f3mr3060938e87.43.1715424600467;
-        Sat, 11 May 2024 03:50:00 -0700 (PDT)
-Received: from umbar.lan ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-521f35ad59asm996021e87.45.2024.05.11.03.49.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 May 2024 03:49:59 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Sat, 11 May 2024 13:49:59 +0300
-Subject: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
+	s=arc-20240116; t=1715429854; c=relaxed/simple;
+	bh=46W3fTICTGrthJr7L6elr6OVRTQPMvqGMm/y2zppHdY=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=LzqkL6BGjUdyew5iwQp6l9cfNucp36Eyt8IJmE+mfQ1PvpyTiq7+WTnrkR3sljfn+419uO6m/W6wOgKzQjeMG4JcMEg77PjP8nzJ6YjOqDjLqt6n8I7cGJq1VW0wIej8a9BZoJcXQfeSF0O1VEg5+urUNt1WGFGPQe5EPqjfNLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=PSDrpsSd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QUgEcDBM; arc=none smtp.client-ip=64.147.123.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 1F58C18000B8;
+	Sat, 11 May 2024 08:17:31 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Sat, 11 May 2024 08:17:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1715429850; x=1715516250; bh=nQapRunCIK
+	PyLoW5EHEE6WHUzqa1pjN4Xbv9f+7hyYY=; b=PSDrpsSdf3q1bBScc2cOGXW6ja
+	Wf2ByElBM+jEzneUaW3JS1S0pcIM221CuViyuW4d+9kiYzhGUIa5wH+oqzjh2L1+
+	O16AyfHsUdG7+uGnqaUOK8Mnk9QG1MRn9QBtjDDfWubAQX1QKi0GmvWYYttcCsOt
+	V0QV3vL6EVt/0xYt9mDlZ0nysGB7e3A/A/i2dvAfgq2xp2KNzXTV7DWaU4r4wZah
+	nbXRyOpUW5xgXQcO5dKaDHMblUjtd+dMkkWXkkCdEtAY08+dazGaHV/xg+lP3Ls3
+	YHF7nHSelPdmcX0Zn1k4/pj18boaNgiWl0a1M4hlSVrQPUv08WNUYphtY04Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1715429850; x=1715516250; bh=nQapRunCIKPyLoW5EHEE6WHUzqa1
+	pjN4Xbv9f+7hyYY=; b=QUgEcDBMZzJOAiGILsGp8xooIEyCn2bXuAq7L89TPiQz
+	BhATkpCOM/Z1cxkuUuyB72zvMxBJv80CYW0XUCIyk9ImN/j+6lUeYhYS2jOgWpng
+	W0LNzkB0XeYTYZY1C1MNpSlXz2IxLQogum5ACVxn8BYr6xRam3g8qYbIt65TzCE1
+	IDaFmW+JfOFxvqIPiDc6eNdWX273f+Q/GC4bx5fuDJsDy+yU8cdt64Eg0L6yjnOg
+	/YozLWo/HvSUloV2C/0RgsCfjMq3EJSQqUTGmAUdoMLZIi4SWqhRrwEsdn5Jsmx1
+	txUtEeF/D4e1o58zvs330Qn+WOONmCusW2pt+JGz9w==
+X-ME-Sender: <xms:2GE_ZlgLAmfczIt-S7tCCJ5LzKQF3szTaafMt1WUKq19M9zDceH-_g>
+    <xme:2GE_ZqAAJr-SyEe5oN_J8RTLntADVgxlJ3as0T018Frcz3yNptrIjguAqTc7vqCpm
+    n6Loi2_ce4r9wLeZks>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegtddghedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:2GE_ZlFcntK3Gc9FYDhIqY_m2s_Xz3t4-mQcGc2LFohLTBAIUJtjZA>
+    <xmx:2GE_ZqSA7ZGFv5WeIdJTd0fOq9ldA-xro7igJtX103lg9RfucKBc3g>
+    <xmx:2GE_ZiziJo_ZPQK3gPeyF_KS2zihuVU-J8JmwKowsjlrUYCNaJj4yQ>
+    <xmx:2GE_Zg5xOAwGqaxhFsqMp5j-eu9kANNWirGoNXWe1YQF9Is0dKBJrA>
+    <xmx:2mE_ZnpX-jLEGJ6Lf_YXl8eBx-F50ZrSvPJv20wZ6_6ruKDVkEZQf-aL>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 9F0A8B6008D; Sat, 11 May 2024 08:17:28 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-443-g0dc955c2a-fm-20240507.001-g0dc955c2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAFZNP2YC/x3MTQqAIBBA4avErBtQqaiuEi38mXIINDQiCO+et
- PwW772QKTFlmJsXEt2cOYYK2TZgvQ47IbtqUEJ1opcS9eWlODCHaNHRieOg9OS0osEYqNWZaOP
- nPy5rKR8f52+UYQAAAA==
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
- Stephen Boyd <swboyd@chromium.org>, 
- Rakesh Pillai <quic_pillair@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1558;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=4y7Qf+jN6LlUE0OdF/F/rEDDNHszeU8elr9PJ2tH+iE=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmP01XglM6PDpJ5FKRfpGy+Q6xENazUhdYgRoDQ
- //KWcLhheaJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZj9NVwAKCRCLPIo+Aiko
- 1UIQB/49CRde93czh84lwUe7x1+pSFX90yrLwvtSOJXkI28HtFMfoiuu1exAppUo1eypZPewm0V
- MbiceretlnNrsNuh2ac19xj2SWWJjhxLwGVsUzP7BPuqk+u1o5Dg9nTGIBD9gMqt8VrYJodpFBf
- 3TjBdR/HjcZRPAXteOsDXzLNU3DWZC3w3blS3jlXOIJ9tihUQq29OHqIDlrTYhkx6DE04Jaavm2
- bOLwrClPDvn3VTK/Yh7DZnQBFRtnNQQ8F/czV+oTxF8EO03m1/QgJSOjRTBP8XJtNmSurL4SlcF
- LHCnykEkypVGalLOetMDKiKiQNom/6J2fWakD55YJc86mMAO
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+Message-Id: <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
+In-Reply-To: <20240511100157.2334539-1-chenhuacai@loongson.cn>
+References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
+Date: Sat, 11 May 2024 14:17:08 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Huacai Chen" <chenhuacai@loongson.cn>,
+ "Huacai Chen" <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev, Linux-Arch <linux-arch@vger.kernel.org>,
+ "Xuefeng Li" <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>,
+ "WANG Xuerui" <kernel@xen0n.name>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
+Content-Type: text/plain
 
-If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
-modules, compilation fails with:
+On Sat, May 11, 2024, at 12:01, Huacai Chen wrote:
+> Chromium sandbox apparently wants to deny statx [1] so it could properly
+> inspect arguments after the sandboxed process later falls back to fstat.
+> Because there's currently not a "fd-only" version of statx, so that the
+> sandbox has no way to ensure the path argument is empty without being
+> able to peek into the sandboxed process's memory. For architectures able
+> to do newfstatat though, glibc falls back to newfstatat after getting
+> -ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
+> inspecting the path argument, transforming allowed newfstatat's into
+> fstat instead which is allowed and has the same type of return value.
+>
+> But, as LoongArch is the first architecture to not have fstat nor
+> newfstatat, the LoongArch glibc does not attempt falling back at all
+> when it gets -ENOSYS for statx -- and you see the problem there!
 
-/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
-drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
-/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
-drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
+My main objection here is that this is inconsistent with 32-bit
+architectures: we normally have newfstatat() on 64-bit
+architectures but fstatat64() on 32-bit ones. While loongarch64
+is the first 64-bit one that is missing newfstatat(), we have
+riscv32 already without fstatat64().
 
-Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
-built as module if QCOM_RPROC_COMMON is built as module too.
+Importantly, we can't just add fstatat64() on riscv32 because
+there is no time64 version for it other than statx(), and I don't
+want the architectures to diverge more than necessary.
+I would not mind adding a variant of statx() that works for
+both riscv32 and loongarch64 though, if it gets added to all
+architectures.
 
-Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/net/wireless/ath/ath10k/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
-index e6ea884cafc1..4f385f4a8cef 100644
---- a/drivers/net/wireless/ath/ath10k/Kconfig
-+++ b/drivers/net/wireless/ath/ath10k/Kconfig
-@@ -45,6 +45,7 @@ config ATH10K_SNOC
- 	depends on ATH10K
- 	depends on ARCH_QCOM || COMPILE_TEST
- 	depends on QCOM_SMEM
-+	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
- 	select QCOM_SCM
- 	select QCOM_QMI_HELPERS
- 	help
-
----
-base-commit: 75fa778d74b786a1608d55d655d42b480a6fa8bd
-change-id: 20240511-ath10k-snoc-dep-862a9da2e6bb
-
-Best regards,
--- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
+      Arnd
 
