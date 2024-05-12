@@ -1,113 +1,125 @@
-Return-Path: <stable+bounces-43586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B628C365A
-	for <lists+stable@lfdr.de>; Sun, 12 May 2024 14:12:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF07F8C3689
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 14:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6FAC2816B2
-	for <lists+stable@lfdr.de>; Sun, 12 May 2024 12:12:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D8B71F21F6A
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 12:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAA021360;
-	Sun, 12 May 2024 12:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1kxCrPb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D2118641;
+	Sun, 12 May 2024 12:35:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wxsgout04.xfusion.com (wxsgout04.xfusion.com [36.139.87.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5501E894;
-	Sun, 12 May 2024 12:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FDF9445
+	for <stable@vger.kernel.org>; Sun, 12 May 2024 12:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=36.139.87.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715515938; cv=none; b=lEiRlen9REFhzXdipxtOR4HH5Px/uY7O7TXr1D3dJOtrdYzUsVTSOy13mgfkAj0DB3axCJ2zuetlKCdyuYQpSvvDxRW7FhEUqq6xgDZJn42x8+z66C88k8wxOx+fa0oNxKhge8HtiskqPylGMu9sOScWjT8j9ND8QpIEMhiOEgI=
+	t=1715517349; cv=none; b=Otfkwe7fPeTzrfOzuUclVXb9v3S1gMXuLvNFBHperZzaTh65Ufo6MohLCIC9r8VvXLmsDiUJS5frYJb1LdzUTuAzZFwm8fxUUY7msIpaA0xZVWb9w1YqbOXfgp+I4+ueow68Ewr0Y7XHsPr2AdDvZSWzOP8dmaINuO4HSm/eOQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715515938; c=relaxed/simple;
-	bh=RIszvsmJIXjPFOCmrGRuen1Lj7EN27J+tC33ksTn8fA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qNJSUf5L3bLTGLMOVyI6lv/xM+mdjbMgSkx2jyDmgZa4VuQX7Ri+tsWaPHw0xdupAZvKyaOpEwS5pwam1nB15l0VY0hfIrBbAEM9ysGQysQOUd+tl1g01gQtB74/1ffTHMkAocN2s2J0zEhOEtbusfJTzoCwosGHGKUKb6vfuRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1kxCrPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D9747C2BD11;
-	Sun, 12 May 2024 12:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715515937;
-	bh=RIszvsmJIXjPFOCmrGRuen1Lj7EN27J+tC33ksTn8fA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=m1kxCrPbWk4pD1M10r4K82HllO3xF7FYIruQbCYniV5cIFiXGnZVbBF5twYg30pFe
-	 CKRKuc7d9QRUi9NDbo9Ir6DFzEH5GWGn63dGSZrbYq+DWUL6crjsmr2frCk82ESgyK
-	 9pya8EH7OxRu9eQjpTfpvWRQRSVp8RwY3HOez+XvDF75i3VmomXDBhD+tbVuZbH1EE
-	 l1ydIduXuqVLHHV4QATNBG8JzshIxJIckSOP+haDJKWFKGue60NH5qJ7Qrf+KQIgl5
-	 rODZkgsKHMC+MOcLLhfWpA/epCafQvIgH3VExiDl/0hSeCMfqiffkWowlZk2oZ26bh
-	 O+VgaI84/VBlA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D21FFC25B77;
-	Sun, 12 May 2024 12:12:17 +0000 (UTC)
-From: Sven Peter via B4 Relay <devnull+sven.svenpeter.dev@kernel.org>
-Date: Sun, 12 May 2024 12:12:08 +0000
-Subject: [PATCH 2/2] Bluetooth: hci_bcm4377: Fix msgid release
+	s=arc-20240116; t=1715517349; c=relaxed/simple;
+	bh=hShI9i/MxDROhw5ouvixjH+MmJ+PWoRJeFR2q+Uv5uA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ePaWkNP15Dg77Rtt+3U/xfVzkyq1CLHSujXyosb0AUx1pnanUPpbvw5pMVCDIzOWdqMjxYK1HsGkYiELxC+St/0Tf0bkMUYPeCL7Ic0AThWf5Ffe3/ih5Fap2Nho+xN+/kEwJ7mBM2A2yfV8b8HlVAPyGs89BD+Wjivg1z1hzYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xfusion.com; spf=pass smtp.mailfrom=xfusion.com; arc=none smtp.client-ip=36.139.87.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xfusion.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xfusion.com
+Received: from wuxshcsitd00600.xfusion.com (unknown [10.32.133.213])
+	by wxsgout04.xfusion.com (SkyGuard) with ESMTPS id 4VchPW6YmdzB35qy;
+	Sun, 12 May 2024 20:14:23 +0800 (CST)
+Received: from wsip-70-182-158-199.br.br.cox.net (10.81.22.2) by
+ wuxshcsitd00600.xfusion.com (10.32.133.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sun, 12 May 2024 20:16:44 +0800
+From: Wang Jinchao <wangjinchao@xfusion.com>
+To: <wangjinchao@xfusion.com>
+CC: Dave Airlie <airlied@redhat.com>, Dan Moulding <dan@danm.net>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] Revert "drm/nouveau/firmware: Fix SG_DEBUG error with nvkm_firmware_ctor()"
+Date: Sun, 12 May 2024 20:16:13 +0800
+Message-ID: <20240512121630.23898-1-wangjinchao@xfusion.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240512-btfix-msgid-v1-2-ab1bd938a7f4@svenpeter.dev>
-References: <20240512-btfix-msgid-v1-0-ab1bd938a7f4@svenpeter.dev>
-In-Reply-To: <20240512-btfix-msgid-v1-0-ab1bd938a7f4@svenpeter.dev>
-To: Hector Martin <marcan@marcan.st>, 
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
- Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sven Peter <sven@svenpeter.dev>, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1715515936; l=963;
- i=sven@svenpeter.dev; s=20240512; h=from:subject:message-id;
- bh=jmwV6wL7bQ7AC4V+W+yysWv9DtBZLTuAd0ES/PoP/v8=;
- b=7ui0qeOF+oHKDon5u5ak3Eh73AiQcV5LdfOLkQQVlohhDLtZ3KrwJxR+9srljp9ec98oAlQhL
- u3GwBfq3Cr0CPEfC86uW9tBlIhCnUzivu8IAebQ4U/BKta51vjqQsbj
-X-Developer-Key: i=sven@svenpeter.dev; a=ed25519;
- pk=jIiCK29HFM4fFOT2YTiA6N+4N7W+xZYQDGiO0E37bNU=
-X-Endpoint-Received: by B4 Relay for sven@svenpeter.dev/20240512 with
- auth_id=159
-X-Original-From: Sven Peter <sven@svenpeter.dev>
-Reply-To: sven@svenpeter.dev
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: wuxshcsitd00602.xfusion.com (10.32.132.250) To
+ wuxshcsitd00600.xfusion.com (10.32.133.213)
 
-From: Hector Martin <marcan@marcan.st>
+From: Dave Airlie <airlied@redhat.com>
 
-We are releasing a single msgid, so the order argument to
-bitmap_release_region must be zero.
+This reverts commit 52a6947bf576b97ff8e14bb0a31c5eaf2d0d96e2.
 
-Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
+This causes loading failures in
+[    0.367379] nouveau 0000:01:00.0: NVIDIA GP104 (134000a1)
+[    0.474499] nouveau 0000:01:00.0: bios: version 86.04.50.80.13
+[    0.474620] nouveau 0000:01:00.0: pmu: firmware unavailable
+[    0.474977] nouveau 0000:01:00.0: fb: 8192 MiB GDDR5
+[    0.484371] nouveau 0000:01:00.0: sec2(acr): mbox 00000001 00000000
+[    0.484377] nouveau 0000:01:00.0: sec2(acr):load: boot failed: -5
+[    0.484379] nouveau 0000:01:00.0: acr: init failed, -5
+[    0.484466] nouveau 0000:01:00.0: init failed with -5
+[    0.484468] nouveau: DRM-master:00000000:00000080: init failed with -5
+[    0.484470] nouveau 0000:01:00.0: DRM-master: Device allocation failed: -5
+[    0.485078] nouveau 0000:01:00.0: probe with driver nouveau failed with error -50
+
+I tried tracking it down but ran out of time this week, will revisit next week.
+
+Reported-by: Dan Moulding <dan@danm.net>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Reviewed-by: Sven Peter <sven@svenpeter.dev>
-Signed-off-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
 ---
- drivers/bluetooth/hci_bcm4377.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/core/firmware.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
-index 5b818a0e33d6..92d734f02e00 100644
---- a/drivers/bluetooth/hci_bcm4377.c
-+++ b/drivers/bluetooth/hci_bcm4377.c
-@@ -717,7 +717,7 @@ static void bcm4377_handle_ack(struct bcm4377_data *bcm4377,
- 		ring->events[msgid] = NULL;
- 	}
+diff --git a/drivers/gpu/drm/nouveau/nvkm/core/firmware.c b/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
+index 141b0a513bf5..adc60b25f8e6 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
++++ b/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
+@@ -205,9 +205,7 @@ nvkm_firmware_dtor(struct nvkm_firmware *fw)
+ 		break;
+ 	case NVKM_FIRMWARE_IMG_DMA:
+ 		nvkm_memory_unref(&memory);
+-		dma_unmap_single(fw->device->dev, fw->phys, sg_dma_len(&fw->mem.sgl),
+-				 DMA_TO_DEVICE);
+-		kfree(fw->img);
++		dma_free_coherent(fw->device->dev, sg_dma_len(&fw->mem.sgl), fw->img, fw->phys);
+ 		break;
+ 	case NVKM_FIRMWARE_IMG_SGT:
+ 		nvkm_memory_unref(&memory);
+@@ -237,17 +235,14 @@ nvkm_firmware_ctor(const struct nvkm_firmware_func *func, const char *name,
+ 		fw->img = kmemdup(src, fw->len, GFP_KERNEL);
+ 		break;
+ 	case NVKM_FIRMWARE_IMG_DMA: {
+-		len = ALIGN(fw->len, PAGE_SIZE);
++		dma_addr_t addr;
  
--	bitmap_release_region(ring->msgids, msgid, ring->n_entries);
-+	bitmap_release_region(ring->msgids, msgid, 0);
+-		fw->img = kmalloc(len, GFP_KERNEL);
+-		if (!fw->img)
+-			return -ENOMEM;
++		len = ALIGN(fw->len, PAGE_SIZE);
  
- unlock:
- 	spin_unlock_irqrestore(&ring->lock, flags);
-
+-		memcpy(fw->img, src, fw->len);
+-		fw->phys = dma_map_single(fw->device->dev, fw->img, len, DMA_TO_DEVICE);
+-		if (dma_mapping_error(fw->device->dev, fw->phys)) {
+-			kfree(fw->img);
+-			return -EFAULT;
++		fw->img = dma_alloc_coherent(fw->device->dev, len, &addr, GFP_KERNEL);
++		if (fw->img) {
++			memcpy(fw->img, src, fw->len);
++			fw->phys = addr;
+ 		}
+ 
+ 		sg_init_one(&fw->mem.sgl, fw->img, len);
 -- 
-2.34.1
-
+2.45.0
 
 
