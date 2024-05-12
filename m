@@ -1,125 +1,85 @@
-Return-Path: <stable+bounces-43592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF07F8C3689
-	for <lists+stable@lfdr.de>; Sun, 12 May 2024 14:35:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AD58C3667
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 14:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D8B71F21F6A
-	for <lists+stable@lfdr.de>; Sun, 12 May 2024 12:35:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81FAA1C20901
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 12:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D2118641;
-	Sun, 12 May 2024 12:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822F5208DA;
+	Sun, 12 May 2024 12:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hviUTSVe"
 X-Original-To: stable@vger.kernel.org
-Received: from wxsgout04.xfusion.com (wxsgout04.xfusion.com [36.139.87.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FDF9445
-	for <stable@vger.kernel.org>; Sun, 12 May 2024 12:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=36.139.87.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276D5C142
+	for <stable@vger.kernel.org>; Sun, 12 May 2024 12:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715517349; cv=none; b=Otfkwe7fPeTzrfOzuUclVXb9v3S1gMXuLvNFBHperZzaTh65Ufo6MohLCIC9r8VvXLmsDiUJS5frYJb1LdzUTuAzZFwm8fxUUY7msIpaA0xZVWb9w1YqbOXfgp+I4+ueow68Ewr0Y7XHsPr2AdDvZSWzOP8dmaINuO4HSm/eOQU=
+	t=1715516495; cv=none; b=qOBfeEqr94+2f45S46oxKv0h79sdyznNn4W/C5G53Lpni4nWPrem3e4MkbN7bl2iL0XSzcDx3QSHTZvAwSbEvyHGcupeiA7vWMbqtn5Fk++JADNHSncYx2OyBvEoyJfdzVQGSu+Z2sqtDVy6r02Pjf5/Gar+QTOrvuCRS/rH7VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715517349; c=relaxed/simple;
-	bh=hShI9i/MxDROhw5ouvixjH+MmJ+PWoRJeFR2q+Uv5uA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ePaWkNP15Dg77Rtt+3U/xfVzkyq1CLHSujXyosb0AUx1pnanUPpbvw5pMVCDIzOWdqMjxYK1HsGkYiELxC+St/0Tf0bkMUYPeCL7Ic0AThWf5Ffe3/ih5Fap2Nho+xN+/kEwJ7mBM2A2yfV8b8HlVAPyGs89BD+Wjivg1z1hzYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xfusion.com; spf=pass smtp.mailfrom=xfusion.com; arc=none smtp.client-ip=36.139.87.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xfusion.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xfusion.com
-Received: from wuxshcsitd00600.xfusion.com (unknown [10.32.133.213])
-	by wxsgout04.xfusion.com (SkyGuard) with ESMTPS id 4VchPW6YmdzB35qy;
-	Sun, 12 May 2024 20:14:23 +0800 (CST)
-Received: from wsip-70-182-158-199.br.br.cox.net (10.81.22.2) by
- wuxshcsitd00600.xfusion.com (10.32.133.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 12 May 2024 20:16:44 +0800
-From: Wang Jinchao <wangjinchao@xfusion.com>
-To: <wangjinchao@xfusion.com>
-CC: Dave Airlie <airlied@redhat.com>, Dan Moulding <dan@danm.net>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] Revert "drm/nouveau/firmware: Fix SG_DEBUG error with nvkm_firmware_ctor()"
-Date: Sun, 12 May 2024 20:16:13 +0800
-Message-ID: <20240512121630.23898-1-wangjinchao@xfusion.com>
-X-Mailer: git-send-email 2.45.0
+	s=arc-20240116; t=1715516495; c=relaxed/simple;
+	bh=Eg8efUSsKeulqKPOG2gLqkandoYOfmySFe2dFJf37oo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E5rGOTbI3ZSwDTjlsfgbPu+5vOK2nC4m9VKUPixhPKOEc/FyOoyn5AN+p6RPMlm+mtgzEf5l/wcX7JovjYnOFGiSaiRAI1IIPYqczMPBlFIHZqguP6YXsulg8OYm8rLU9bPfCIX68JiVBO2GkksXYYhYMWEQulaUjNCb17nZjnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hviUTSVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089FEC116B1;
+	Sun, 12 May 2024 12:21:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715516494;
+	bh=Eg8efUSsKeulqKPOG2gLqkandoYOfmySFe2dFJf37oo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hviUTSVeCLGYckFAEkNTp1Avq4Xq+WVtLHau3TNkiIKdHAyWbcuFSNWSw4fPao3DK
+	 LmmxV6a64DDfX9mm3x/2UhMf/oYeknm95/dJyrKn8CygiUq7WfT3ECsJXfx7Z6z39V
+	 Tl0adCADHYpZMu/2b3tQ0wrjogkHE9FvP5Ggp6DM=
+Date: Sun, 12 May 2024 13:21:30 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ronnie Sahlberg <rsahlberg@ciq.com>
+Cc: stable@vger.kernel.org
+Subject: Re: commits for stable 2024-05-11
+Message-ID: <2024051256-joyfully-unframed-dd66@gregkh>
+References: <CAK4epfysW+3vA9BM94iQVUaH3k-DNoyHAwUeYaCeGdbZ3dOyQQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: wuxshcsitd00602.xfusion.com (10.32.132.250) To
- wuxshcsitd00600.xfusion.com (10.32.133.213)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK4epfysW+3vA9BM94iQVUaH3k-DNoyHAwUeYaCeGdbZ3dOyQQ@mail.gmail.com>
 
-From: Dave Airlie <airlied@redhat.com>
+On Sat, May 11, 2024 at 09:13:25PM -0400, Ronnie Sahlberg wrote:
+> Please find attached a report generated by keyword matching commits
+> from upstream that may be suitable for stable and probably as CVEs as
+> well.
 
-This reverts commit 52a6947bf576b97ff8e14bb0a31c5eaf2d0d96e2.
+This is great, thanks for looking into this and sending this out!
 
-This causes loading failures in
-[    0.367379] nouveau 0000:01:00.0: NVIDIA GP104 (134000a1)
-[    0.474499] nouveau 0000:01:00.0: bios: version 86.04.50.80.13
-[    0.474620] nouveau 0000:01:00.0: pmu: firmware unavailable
-[    0.474977] nouveau 0000:01:00.0: fb: 8192 MiB GDDR5
-[    0.484371] nouveau 0000:01:00.0: sec2(acr): mbox 00000001 00000000
-[    0.484377] nouveau 0000:01:00.0: sec2(acr):load: boot failed: -5
-[    0.484379] nouveau 0000:01:00.0: acr: init failed, -5
-[    0.484466] nouveau 0000:01:00.0: init failed with -5
-[    0.484468] nouveau: DRM-master:00000000:00000080: init failed with -5
-[    0.484470] nouveau 0000:01:00.0: DRM-master: Device allocation failed: -5
-[    0.485078] nouveau 0000:01:00.0: probe with driver nouveau failed with error -50
+> I exclude commits that are already tagged with CC stable in upstream
+> and also commits already in
+> stable/linux-rolling-stable.
 
-I tried tracking it down but ran out of time this week, will revisit next week.
+I took a very short look, and just picked one commit at random on the
+bottom of the list:
+	cf2df0080bd59cb97a15
 
-Reported-by: Dan Moulding <dan@danm.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Airlie <airlied@redhat.com>
----
- drivers/gpu/drm/nouveau/nvkm/core/firmware.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+And it's included in 6.8.2 already, as commit 9c68e3497b61 ("wifi:
+ath11k: fix a possible dead lock caused by ab->base_lock").
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/core/firmware.c b/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
-index 141b0a513bf5..adc60b25f8e6 100644
---- a/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
-@@ -205,9 +205,7 @@ nvkm_firmware_dtor(struct nvkm_firmware *fw)
- 		break;
- 	case NVKM_FIRMWARE_IMG_DMA:
- 		nvkm_memory_unref(&memory);
--		dma_unmap_single(fw->device->dev, fw->phys, sg_dma_len(&fw->mem.sgl),
--				 DMA_TO_DEVICE);
--		kfree(fw->img);
-+		dma_free_coherent(fw->device->dev, sg_dma_len(&fw->mem.sgl), fw->img, fw->phys);
- 		break;
- 	case NVKM_FIRMWARE_IMG_SGT:
- 		nvkm_memory_unref(&memory);
-@@ -237,17 +235,14 @@ nvkm_firmware_ctor(const struct nvkm_firmware_func *func, const char *name,
- 		fw->img = kmemdup(src, fw->len, GFP_KERNEL);
- 		break;
- 	case NVKM_FIRMWARE_IMG_DMA: {
--		len = ALIGN(fw->len, PAGE_SIZE);
-+		dma_addr_t addr;
- 
--		fw->img = kmalloc(len, GFP_KERNEL);
--		if (!fw->img)
--			return -ENOMEM;
-+		len = ALIGN(fw->len, PAGE_SIZE);
- 
--		memcpy(fw->img, src, fw->len);
--		fw->phys = dma_map_single(fw->device->dev, fw->img, len, DMA_TO_DEVICE);
--		if (dma_mapping_error(fw->device->dev, fw->phys)) {
--			kfree(fw->img);
--			return -EFAULT;
-+		fw->img = dma_alloc_coherent(fw->device->dev, len, &addr, GFP_KERNEL);
-+		if (fw->img) {
-+			memcpy(fw->img, src, fw->len);
-+			fw->phys = addr;
- 		}
- 
- 		sg_init_one(&fw->mem.sgl, fw->img, len);
--- 
-2.45.0
+So is your tooling working?
 
+Also, give us a chance to catch up on commits that are in Linus's tree,
+but not in a -rc release, which you list a few at the top of the list.
+We aren't allowed to apply them until after they hit a -rc release.
+
+thanks,
+
+greg k-h
 
