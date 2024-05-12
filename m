@@ -1,111 +1,136 @@
-Return-Path: <stable+bounces-43584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7F38C34EC
-	for <lists+stable@lfdr.de>; Sun, 12 May 2024 05:11:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656BA8C3561
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 09:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78B3BB20ECC
-	for <lists+stable@lfdr.de>; Sun, 12 May 2024 03:11:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 789ED1C20A90
+	for <lists+stable@lfdr.de>; Sun, 12 May 2024 07:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A24C138;
-	Sun, 12 May 2024 03:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E611168B8;
+	Sun, 12 May 2024 07:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIdQ5QKN"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="IWHYpZkF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R528yBLu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wfout3-smtp.messagingengine.com (wfout3-smtp.messagingengine.com [64.147.123.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6341FBA55;
-	Sun, 12 May 2024 03:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6FD3D6A;
+	Sun, 12 May 2024 07:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715483484; cv=none; b=YrkgWRQrNfydJotYjHEN2oD963qWfiAXoQzfAlmIh8VpYvl5kV1tG084eNbX0aFTNZTCu3+1jV8YCLcw87A/cHL5d1/SZ7fHU1StGSKV/NVtkztJzZkdviRoZN2Vn96KwaSe9tPkv7IUceQArFBQiIl7zlqsvo/BrDc6CnHuLNs=
+	t=1715500400; cv=none; b=oLxdQMhO2kj5QmSxIa/DolEM/G6NC6qVV7YCYTqlcIqdk5OvTtOreVxr3b26OxzcgvhBKsTJHaVLkp9w6pAtvr255NsSpKrndXD7Qn79sjXjsENu4djvM6gSxIOICVUrcVb5v8//PLt02NHQqkTHKZtf6iXI51rowYfBgcT5/CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715483484; c=relaxed/simple;
-	bh=GnE0N9IiKS/rZSXWZH1oKPV8RtXcCBleeY98LXa792w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oe3m4S0BbENCgJb7OtKaVI6yr5s5P/FvpicT+HiWxx37EKzBS+PWYttLr0tqID4JbGSj8xgvrhu8Lf7kK+U6t0Yp0U3I8KPshdhJDRDXeUkHQMOPe43qnToL39Qv0989tfJih8UoCCqXqadrdfKJldTbEbhZ6yVp6qXbz8f4L7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIdQ5QKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51D3C4AF08;
-	Sun, 12 May 2024 03:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715483483;
-	bh=GnE0N9IiKS/rZSXWZH1oKPV8RtXcCBleeY98LXa792w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NIdQ5QKNZjoJkMPF2uCcTDfU83i8uPf2IpuUWEPg1hYUDatxUO8bgXZtr+tNUZBjO
-	 K9BA1B+vRlGc01dHqDf+rGObGO/rtSMn16grHr+DfQQLu95SEqY7PEENsXG5zB/w69
-	 I8QbuQjTr8iQD/R3ngocD+ABehzgyYQjqAtBftcIUaYz/H+ANEt2j+UEykmKmBQfad
-	 q36dBnn9oNtA23mPXHNndrLzypfbjfaTyx7L0GCfd2i2JfJp+7CO7s7GKofmSyRoPi
-	 uPNNvDNvmguzPw3G3IpGiT2bUdHSghjjq08pErpZIdvz4x8E3y2SnLZu5wU29cohao
-	 OyyVRlEOLqiFQ==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-51aa6a8e49aso4226194e87.3;
-        Sat, 11 May 2024 20:11:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWXRLDeni0Nu9/DCVHhRP+clz6Hqhf73WoSSxZDdu+ksEwVzT6XKJ3IE86v7H73TPE0WnVWo+3lDAn6JTFHc62cyr20ltMnCDV7x8Ysy3BAaETZCmeML7bloI15zCHFUSQaTfvI3UlfS5rSlPGw+6IskZFAW7rHrFDcqQUN1ptTow==
-X-Gm-Message-State: AOJu0YzGtuLjr06kpPJs80DmBY2YLWkCm/nAlLnW0MhklwtGHQhbGjfr
-	dgTzJdU5HbRK3fS2F4YnB/rxS7MmBOEaPMhWgwdua2CI1UfvnHgcSVgq2tyyqse9SN+KkWnM8pw
-	MbocXhCEcbI+HOlKuE5KiPbm3yCQ=
-X-Google-Smtp-Source: AGHT+IF1HfRmR2om2m2YXEbvA0UfRg45ZcRiPADa6rYbMlyON2dmk3egmaCwmRglGobipizyfXagI057ltyyezW2eQ0=
-X-Received: by 2002:a19:381e:0:b0:51c:c1a3:a4f9 with SMTP id
- 2adb3069b0e04-5220ff72f76mr3513970e87.64.1715483482254; Sat, 11 May 2024
- 20:11:22 -0700 (PDT)
+	s=arc-20240116; t=1715500400; c=relaxed/simple;
+	bh=G32PthKcIMwHOlkSEv+ql7S5hSRmLbPeS6AmqWGaEG8=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=VVIWQd2i3DhxsP3g7bBA8gr+tRmBqPDCoJhGfL2FtnzmJ7guBT1YxSJj9EPFijVDJdue//kXIVATtwUHC9xfVIZQIM3EumLLKjStpsnsh02Afju2e5Dbxxu1Cf/PveoJvh/EOuWj6bRN0NRnQfnOyu+LJ+3JJZRvvO4c2AtMR/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=IWHYpZkF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R528yBLu; arc=none smtp.client-ip=64.147.123.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id CDF5C1C00195;
+	Sun, 12 May 2024 03:53:16 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Sun, 12 May 2024 03:53:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1715500396;
+	 x=1715586796; bh=qkvLE2hnnj9QTESFKiTg5ShrclNoU8nl5K0MOg/ShQU=; b=
+	IWHYpZkF9MbMCtAfW8nCtmSedLJaoK/FvVEPy543lIE81xa3hy7xqxVrDpk4sHcN
+	5opFJmE0ZjexrAiz6GJbIGYufpi/nUnPZnlj0/mUkBLdo7ty5pmKjVMSwHYstcYN
+	CASDsBjPuBwHQcpnGOTe3zX85DSG6AamySWPLD1h2HVGLaodFaoFoOclVriXEeNP
+	Hoh0IviCD5GBkIaFFEk6xlJxZWZWg3UNrhibDQWYZY4fum9QRfGHgFm+JgAo2c1x
+	zRX/xhhQpZW5+forrLnIl9Bj2ycuH/YvU2005Jo02HErXQmiB9wrabDrd1+7T5u+
+	xOCBh9AwfobZ6rr+FCrfdQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715500396; x=
+	1715586796; bh=qkvLE2hnnj9QTESFKiTg5ShrclNoU8nl5K0MOg/ShQU=; b=R
+	528yBLuuhm/CGTv8ufRb38zYxhAnYYur6J0CJB9pDiLZCbd2esi9e+l1gM5eDDWn
+	ygcjdytUJgQqWfUP/PrjnpGaPpvtJ9i3La2fWyBC7vBcFwznIQFbCiavFS23mrcm
+	rDvurobynOP6p8KgH3RQ+wYJTjjABFsYFLgqHiGbGt7LL1jdv9ifgFmfX9sLHUDR
+	GyqX7NYxR31EIPNzT7YynWHEE59o1o/XK89UEC27r3QfbIPEBopClhWQMeC21UA3
+	pqFdDPuWA90oPlFU5Q2iK6Gviy8qawBC5j5o88TS7EnDJEWWOMcHDLBaEi0GOEcI
+	e+8R4sUKLDWahXYIR7OeQ==
+X-ME-Sender: <xms:anVAZtgTwvuKQRm9GUStMLW5Ak-cAlj9HRki9p-c9L8rJOjlNTgF2g>
+    <xme:anVAZiCfjHJBqdNwUGy1gRx4ZUZuW6EySA1P2QAomLu3wMQZP9n6j2G3qf-P-LMgd
+    PDxmzA7hsEQjsQjFbs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeguddgudduudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudek
+    tdfgjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:anVAZtHYtoWzHifZAEStLM51wBHyvkDObwNmsV-jzRkXCfyTNTaZJQ>
+    <xmx:anVAZiSDNZlEo75dhzu5CrNkvt-rMPy-fJLwxU0Tcu35F-ptupNw-w>
+    <xmx:anVAZqzyDqn4ao1giOftgxEh_kl6x63Qb5DWJ6wZJrUEBBOTQ5Q7rw>
+    <xmx:anVAZo532shZbNuo-hw9Q_cTPo25Wze8FfCU3v2DMGTqb_Qy_f5TSg>
+    <xmx:bHVAZvqHBxEFTqAxp7llGHheMuEYb1ZqePt7x-EDAT7Ya6OC4z3V69xa>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 47EE9B6008D; Sun, 12 May 2024 03:53:14 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-443-g0dc955c2a-fm-20240507.001-g0dc955c2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-Id: <a21a0878-021e-4990-a59d-b10f204a018b@app.fastmail.com>
+In-Reply-To: 
+ <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
 References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
- <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com> <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
+ <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
+ <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
  <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com>
-In-Reply-To: <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 12 May 2024 11:11:10 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
-Message-ID: <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
+ <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
+Date: Sun, 12 May 2024 09:52:53 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Huacai Chen" <chenhuacai@kernel.org>
+Cc: "Huacai Chen" <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ "Xuefeng Li" <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>,
+ "WANG Xuerui" <kernel@xen0n.name>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
+ stable@vger.kernel.org
 Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
-	Linux-Arch <linux-arch@vger.kernel.org>, Xuefeng Li <lixuefeng@loongson.cn>, 
-	guoren <guoren@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org, 
-	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 11, 2024 at 11:39=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrot=
-e:
->
-> On Sat, May 11, 2024, at 16:28, Huacai Chen wrote:
-> > On Sat, May 11, 2024 at 8:17=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> w=
-rote:
->
-> >> Importantly, we can't just add fstatat64() on riscv32 because
-> >> there is no time64 version for it other than statx(), and I don't
-> >> want the architectures to diverge more than necessary.
-> >> I would not mind adding a variant of statx() that works for
-> >> both riscv32 and loongarch64 though, if it gets added to all
-> >> architectures.
-> >
-> > As far as I know, Ren Guo is trying to implement riscv64 kernel +
-> > riscv32 userspace, so I think riscv32 kernel won't be widely used?
->
-> I was talking about the ABI, so it doesn't actually matter
-> what the kernel is: any userspace ABI without
-> CONFIG_COMPAT_32BIT_TIME is equally affected here. On riscv32
-> this is the only allowed configuration, while on others (arm32
-> or x86-32 userland) you can turn off COMPAT_32BIT_TIME on
-> both 32-bit kernel and on 64-bit kernels with compat mode.
-I don't know too much detail, but I think riscv32 can do something
-similar to arm32 and x86-32, or we can wait for Xuerui to improve
-seccomp. But there is no much time for loongarch because the Debian
-loong64 port is coming soon.
+On Sun, May 12, 2024, at 05:11, Huacai Chen wrote:
+> On Sat, May 11, 2024 at 11:39=E2=80=AFPM Arnd Bergmann <arnd@arndb.de>=
+ wrote:
+>> On Sat, May 11, 2024, at 16:28, Huacai Chen wrote:
+>> > On Sat, May 11, 2024 at 8:17=E2=80=AFPM Arnd Bergmann <arnd@arndb.d=
+e> wrote:
+>> CONFIG_COMPAT_32BIT_TIME is equally affected here. On riscv32
+>> this is the only allowed configuration, while on others (arm32
+>> or x86-32 userland) you can turn off COMPAT_32BIT_TIME on
+>> both 32-bit kernel and on 64-bit kernels with compat mode.
+> I don't know too much detail, but I think riscv32 can do something
+> similar to arm32 and x86-32, or we can wait for Xuerui to improve
+> seccomp. But there is no much time for loongarch because the Debian
+> loong64 port is coming soon.
 
-Huacai
+What I meant is that the other architectures only work by
+accident if COMPAT_32BIT_TIME is enabled and statx() gets
+blocked, but then they truncate the timestamps to the tim32
+range, which is not acceptable behavior. Actually mips64 is
+in the same situation because it also only supports 32-bit
+timestamps in newstatat(), despite being a 64-bit
+architecture with a 64-bit time_t in all other syscalls.
 
->
->      Arnd
->
+      Arnd
 
