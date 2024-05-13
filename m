@@ -1,109 +1,96 @@
-Return-Path: <stable+bounces-43749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289FA8C4995
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 00:24:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F868C49D0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 01:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4627E1C214EA
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 22:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E90EF283042
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 23:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD63884A5B;
-	Mon, 13 May 2024 22:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4210084FC3;
+	Mon, 13 May 2024 23:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kwrxbcA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOEaI03q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEDD2AF09
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 22:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FA884DF5;
+	Mon, 13 May 2024 23:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715639085; cv=none; b=GG2XioES5aO23MKJK7Z6MSpfFecigxObRq9XbuoTkV40NwFN2HYLqPfI+kkmXItWxLWXLQEROKB+EH7/ZC9pK0ekDcPFNGLtec9T0XqDlt+kjZQGHCoF3tUaa2RZ19jAp7pzZ29lZfBk9KbTdlrIwuRRCCFnST4adGcAXKxDemA=
+	t=1715641230; cv=none; b=mxsJwH9MiGr55PjSTl4N005jETmfB+tgxKTEeKVqhaekjGJoRbYorDMJBQATwJB7PjindNwdSfnMmqHTn3Kz0XxNg3qu/T7YUUgNoqrYCuVoc++pD7GKS3+eV9ropb1Dvsb/bRj8oRo8dI9k8Q2nzwiOfGqJfNBOusYyLv+b2HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715639085; c=relaxed/simple;
-	bh=nwdJEEu3vuQLP6pF0fB6Zn1KbdLic0n8pYBM9dOL+20=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S3Q+7IpgQ3szflYtPBT7WPfhzBvnG67Ja6ZdPdGiv1YUsrPj+CVd/I6oDpNY01vjv1oop8voQGEZeQS31ZDetSpBpO/c8urqO6W/LGWsqDizx5mWFlvAq4FOaeZtQtciOO7JfXbwimaNrYKZktUHR5dB6axTzK4E2o5Cq+rerpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kwrxbcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C6DC113CC;
-	Mon, 13 May 2024 22:24:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715639085;
-	bh=nwdJEEu3vuQLP6pF0fB6Zn1KbdLic0n8pYBM9dOL+20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2kwrxbcAYfCT6IbhMg4kX7XEbH0ocE52NnhdVSybMLlkqL/2EQ9d8FvODfQaBQpdF
-	 9LvCwCEGSCqkit2Mmg6vFYRAh57fvXm2WxLq9WuO6TiV1NeGLEqgzVREr4i4Ngdygc
-	 dNFeQnZhvNuGkIfF8Mq9GsiBxx1OLgHMV8qAcC5A=
-Date: Tue, 14 May 2024 00:24:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jeremy Bongio <bongiojp@gmail.com>
-Cc: stable@vger.kernel.org, Li Nan <linan122@huawei.com>,
-	Song Liu <song@kernel.org>, Jeremy Bongio <jbongio@google.com>
-Subject: Re: [PATCH] md: fix kmemleak of rdev->serial
-Message-ID: <2024051453-blah-pushpin-3d0b@gregkh>
-References: <20240513213938.626201-1-bongiojp@gmail.com>
+	s=arc-20240116; t=1715641230; c=relaxed/simple;
+	bh=QWrQMMenbKUQZ4QzgI8cJC76I4htY/Ol5+3qgfUWMtg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=odASRdCTUX2BQOLs3Qn1J6fEAle/gmsHDOvM/LetIzCf0I9LdSeGwYPdOEAEmotq21P27gh7HN58iJ0xymF+zKYhEKn05VJrkahpA4v/IEmpa05gCODI1x/JshOMjiodOlN5HIyojo5reEOeB3B4633yyAllx7fJlI8hoBwkFe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOEaI03q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9CC0FC4AF08;
+	Mon, 13 May 2024 23:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715641229;
+	bh=QWrQMMenbKUQZ4QzgI8cJC76I4htY/Ol5+3qgfUWMtg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=YOEaI03qFecQxBfmfNecZiuwK11A9mZnBfo9LB+k7+i66pjQCAau16LEcmd5TKKl6
+	 nJieIM1rL6Z8qGtrZfZgQWJPb+ykjkFO5TkE2ZkTVOnMRlRrb0WBg30FxWLFuPz7XL
+	 zaLEY9V8jxbc4eGOJizXA8IxAeZjqhEb5rs8s5rLEczhqGMavWW4D/DV/Du3jRlLMA
+	 R+6LW98J+xgktd+vVBwr5xm5pE0SdyqvhltAxfMMZ9CVjhxH/pFfE1awqsC0dGxi9S
+	 pTUy3kkj7sxPgCQxbQrXNDNOES7sca2HaOQSBeQin+IhsHFK19vlBsCYUxG79oYhVf
+	 ZSmu8jIEvdkGw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 87AF7C43443;
+	Mon, 13 May 2024 23:00:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240513213938.626201-1-bongiojp@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: usb: ax88179_178a: fix link status when link is set to
+ down/up
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171564122955.1634.5508968909715338167.git-patchwork-notify@kernel.org>
+Date: Mon, 13 May 2024 23:00:29 +0000
+References: <20240510090846.328201-1-jtornosm@redhat.com>
+In-Reply-To: <20240510090846.328201-1-jtornosm@redhat.com>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ inventor500@vivaldi.net, yongqin.liu@linaro.org
 
-On Mon, May 13, 2024 at 02:39:38PM -0700, Jeremy Bongio wrote:
-> From: Li Nan <linan122@huawei.com>
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 10 May 2024 11:08:28 +0200 you wrote:
+> The idea was to keep only one reset at initialization stage in order to
+> reduce the total delay, or the reset from usbnet_probe or the reset from
+> usbnet_open.
 > 
-> commit 6cf350658736681b9d6b0b6e58c5c76b235bb4c4 upstream.
+> I have seen that restarting from usbnet_probe is necessary to avoid doing
+> too complex things. But when the link is set to down/up (for example to
+> configure a different mac address) the link is not correctly recovered
+> unless a reset is commanded from usbnet_open.
 > 
-> If kobject_add() is fail in bind_rdev_to_array(), 'rdev->serial' will be
-> alloc not be freed, and kmemleak occurs.
-> 
-> unreferenced object 0xffff88815a350000 (size 49152):
->   comm "mdadm", pid 789, jiffies 4294716910
->   hex dump (first 32 bytes):
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace (crc f773277a):
->     [<0000000058b0a453>] kmemleak_alloc+0x61/0xe0
->     [<00000000366adf14>] __kmalloc_large_node+0x15e/0x270
->     [<000000002e82961b>] __kmalloc_node.cold+0x11/0x7f
->     [<00000000f206d60a>] kvmalloc_node+0x74/0x150
->     [<0000000034bf3363>] rdev_init_serial+0x67/0x170
->     [<0000000010e08fe9>] mddev_create_serial_pool+0x62/0x220
->     [<00000000c3837bf0>] bind_rdev_to_array+0x2af/0x630
->     [<0000000073c28560>] md_add_new_disk+0x400/0x9f0
->     [<00000000770e30ff>] md_ioctl+0x15bf/0x1c10
->     [<000000006cfab718>] blkdev_ioctl+0x191/0x3f0
->     [<0000000085086a11>] vfs_ioctl+0x22/0x60
->     [<0000000018b656fe>] __x64_sys_ioctl+0xba/0xe0
->     [<00000000e54e675e>] do_syscall_64+0x71/0x150
->     [<000000008b0ad622>] entry_SYSCALL_64_after_hwframe+0x6c/0x74
-> 
-> backport change:
-> mddev_destroy_serial_pool third parameter was removed in mainline,
-> where there is no need to suspend within this function anymore.
-> 
-> Fixes: 963c555e75b0 ("md: introduce mddev_create/destroy_wb_pool for the change of member device")
-> Signed-off-by: Li Nan <linan122@huawei.com>
-> Signed-off-by: Song Liu <song@kernel.org>
-> Link: https://lore.kernel.org/r/20240208085556.2412922-1-linan666@huaweicloud.com
-> Change-Id: Icc4960dcaffedc663797e2d8b18a24c23e201932
+> [...]
 
-Why the change-id?
+Here is the summary with links:
+  - net: usb: ax88179_178a: fix link status when link is set to down/up
+    https://git.kernel.org/netdev/net/c/ecf848eb934b
 
-And what kernel tree(s) is this backport for?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> Signed-off-by: Jeremy Bongio <jbongio@google.com>
 
-This doesn't match the From: line of your email :(
-
-thanks,
-
-greg k-h
 
