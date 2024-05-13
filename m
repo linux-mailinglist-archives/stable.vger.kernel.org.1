@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323408C4272
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:48:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9358C4274
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1D501F21312
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:48:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82EC31C20F3D
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA646153571;
-	Mon, 13 May 2024 13:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F252153572;
+	Mon, 13 May 2024 13:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTRIhmp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onIK9uRC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88ADF15356A
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E629153511
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715607974; cv=none; b=lhADziQbtQKvpjJyXi3v3N+RkUwJXykXGCvcQCvmXyzGCbRF0rgxLUDG4CTQ8+dN02cFyUEOzCdVLx002yra5QDx0J3BwMKmS/TbblpekNpALm+dSw6djFjP/Pn1BT9mVLqExjRrWfYU/mjEALg+8HRkZEyBWxImqKlmsN6nsXs=
+	t=1715607985; cv=none; b=Y5kqTIb4vG7bYsfVcKgeHarxcZAoztfkElH64q42E41K+tpIwoqGrPMAbIlTG2ONci8dc5IuP7b00x3ZLv+rM3zJniNWuj3SU4PvN7B+kMuqFvtsC+qQsWxupM6ITNxLL3BjFWiAz3JpZi3IWSENJeRcs6eaPrWki+bx1+Sz9xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715607974; c=relaxed/simple;
-	bh=Jqi4TIUm1n4EhmNL+1L0+dBHy4N578CMk7u+yn5Qyq8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UtWIT8sSwGynKJrxWYOPIGbUhYG/BsxFLUBKEmBZ3/k3mB1o6ld3fizI+OaGDkBPAObQHzVf49/RxJcWOBEN/qad64op/zBhsMrFFtlAeBflBkuXnFCZT2jjoxeJVMkJq36UbXXXr2loxcscB0/7UXKoGwND4YOeLlyrGW+3SKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTRIhmp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3BFC4AF07;
-	Mon, 13 May 2024 13:46:13 +0000 (UTC)
+	s=arc-20240116; t=1715607985; c=relaxed/simple;
+	bh=QgGzJ/yRa6x5VWFqEG75Fke+VJBulfzwMLhiiq13OGU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FyTVtWyjkZ0tAJkhITGLr5MjCnYGn6Yw+/dHaTdMLDCM/hmHrMFqfVey/fN8bOgtSmD+uHYn8U4TKG9hicUIuB56/+cuNorSEaTkHnRvJylHLf9+9uKf5ozD+qceGZ+LZT9ooyecStmAXktE2eiAcK5ALI0IYRxS18/jnatiswI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onIK9uRC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E61C4AF07;
+	Mon, 13 May 2024 13:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715607974;
-	bh=Jqi4TIUm1n4EhmNL+1L0+dBHy4N578CMk7u+yn5Qyq8=;
+	s=korg; t=1715607984;
+	bh=QgGzJ/yRa6x5VWFqEG75Fke+VJBulfzwMLhiiq13OGU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tTRIhmp2hq4WleX8QXDBxdYUi0Hh4Pigt5DclhzvbwKXzuZd2sECeAiGctCdIawD3
-	 VpNsGbREBVtg6CYirmfpY4E/wi5H+oixEc051JOHDWP8TIALDQIL0QpfcWXmnogWxP
-	 BsvTV6ZFe+WHr1Vc/+dC910+I32q+EppK5jgl7rQ=
-Subject: FAILED: patch "[PATCH] drm/xe: Use ordered WQ for G2H handler" failed to apply to 6.8-stable tree
-To: matthew.brost@intel.com,francois.dugast@intel.com,lucas.demarchi@intel.com,stable@vger.kernel.org
+	b=onIK9uRCtxe3gkZ2Y+Dkkj5VtXWqig0VUOcPVE72HjeCW4HTwoa5vSjYWNQsmkWVA
+	 STRsVfWyKXomqDze8ytGDhn9NgcDtp/7MjQbRxPQsaVs/3Q/khHAid7kOjcJtNlMKM
+	 DYpDQ6CvCGcfUhN77EwRW5+Mk7pnGrEDBwPLA2L4=
+Subject: FAILED: patch "[PATCH] drm/xe/vm: prevent UAF in rebind_work_func()" failed to apply to 6.8-stable tree
+To: matthew.auld@intel.com,lucas.demarchi@intel.com,matthew.brost@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:46:11 +0200
-Message-ID: <2024051310-legacy-papaya-0d01@gregkh>
+Date: Mon, 13 May 2024 15:46:21 +0200
+Message-ID: <2024051321-bonehead-slang-4a7c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,16 +62,18 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
 git checkout FETCH_HEAD
-git cherry-pick -x c002bfe644a29ba600c571f2abba13a155a12dcd
+git cherry-pick -x 98957360563e7ffdc0c2b3a314655eff8bc1cb5a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051310-legacy-papaya-0d01@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051321-bonehead-slang-4a7c@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
 
 Possible dependencies:
 
-c002bfe644a2 ("drm/xe: Use ordered WQ for G2H handler")
-7bd9c9f962eb ("drm/xe/guc: Check error code when initializing the CT mutex")
-5030e16140b6 ("drm/xe/guc: Only take actions in CT irq handler if CTs are enabled")
+98957360563e ("drm/xe/vm: prevent UAF in rebind_work_func()")
+0eb2a18a8fad ("drm/xe: Implement VM snapshot support for BO's and userptr")
+be7d51c5b468 ("drm/xe: Add batch buffer addresses to devcoredump")
+4376cee62092 ("drm/xe: Print more device information in devcoredump")
+98fefec8c381 ("drm/xe: Change devcoredump functions parameters to xe_sched_job")
 
 thanks,
 
@@ -79,70 +81,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c002bfe644a29ba600c571f2abba13a155a12dcd Mon Sep 17 00:00:00 2001
-From: Matthew Brost <matthew.brost@intel.com>
-Date: Sun, 5 May 2024 20:47:58 -0700
-Subject: [PATCH] drm/xe: Use ordered WQ for G2H handler
+From 98957360563e7ffdc0c2b3a314655eff8bc1cb5a Mon Sep 17 00:00:00 2001
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Tue, 23 Apr 2024 08:47:23 +0100
+Subject: [PATCH] drm/xe/vm: prevent UAF in rebind_work_func()
 
-System work queues are shared, use a dedicated work queue for G2H
-processing to avoid G2H processing getting block behind system tasks.
+We flush the rebind worker during the vm close phase, however in places
+like preempt_fence_work_func() we seem to queue the rebind worker
+without first checking if the vm has already been closed.  The concern
+here is the vm being closed with the worker flushed, but then being
+rearmed later, which looks like potential uaf, since there is no actual
+refcounting to track the queued worker. We can't take the vm->lock here
+in preempt_rebind_work_func() to first check if the vm is closed since
+that will deadlock, so instead flush the worker again when the vm
+refcount reaches zero.
+
+v2:
+ - Grabbing vm->lock in the preempt worker creates a deadlock, so
+   checking the closed state is tricky. Instead flush the worker when
+   the refcount reaches zero. It should be impossible to queue the
+   preempt worker without already holding vm ref.
 
 Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240506034758.3697397-1-matthew.brost@intel.com
-(cherry picked from commit 50aec9665e0babd62b9eee4e613d9a1ef8d2b7de)
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1676
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1591
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1364
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1304
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1249
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240423074721.119633-4-matthew.auld@intel.com
+(cherry picked from commit 3d44d67c441a9fe6f81a1d705f7de009a32a5b35)
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index c62dbd6420db..8bbfa45798e2 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -120,6 +120,7 @@ static void guc_ct_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc_ct *ct = arg;
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 3d4c8f342e21..32cd0c978aa2 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1606,6 +1606,9 @@ static void vm_destroy_work_func(struct work_struct *w)
+ 	/* xe_vm_close_and_put was not called? */
+ 	xe_assert(xe, !vm->size);
  
-+	destroy_workqueue(ct->g2h_wq);
- 	xa_destroy(&ct->fence_lookup);
- }
- 
-@@ -145,6 +146,10 @@ int xe_guc_ct_init(struct xe_guc_ct *ct)
- 
- 	xe_assert(xe, !(guc_ct_size() % PAGE_SIZE));
- 
-+	ct->g2h_wq = alloc_ordered_workqueue("xe-g2h-wq", 0);
-+	if (!ct->g2h_wq)
-+		return -ENOMEM;
++	if (xe_vm_in_preempt_fence_mode(vm))
++		flush_work(&vm->preempt.rebind_work);
 +
- 	spin_lock_init(&ct->fast_lock);
- 	xa_init(&ct->fence_lookup);
- 	INIT_WORK(&ct->g2h_worker, g2h_worker_func);
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.h b/drivers/gpu/drm/xe/xe_guc_ct.h
-index 5083e099064f..105bb8e99a8d 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.h
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.h
-@@ -34,7 +34,7 @@ static inline void xe_guc_ct_irq_handler(struct xe_guc_ct *ct)
- 		return;
+ 	mutex_destroy(&vm->snap_mutex);
  
- 	wake_up_all(&ct->wq);
--	queue_work(system_unbound_wq, &ct->g2h_worker);
-+	queue_work(ct->g2h_wq, &ct->g2h_worker);
- 	xe_guc_ct_fast_path(ct);
- }
- 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct_types.h b/drivers/gpu/drm/xe/xe_guc_ct_types.h
-index d29144c9f20b..fede4c6e93cb 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct_types.h
-+++ b/drivers/gpu/drm/xe/xe_guc_ct_types.h
-@@ -120,6 +120,8 @@ struct xe_guc_ct {
- 	wait_queue_head_t wq;
- 	/** @g2h_fence_wq: wait queue used for G2H fencing */
- 	wait_queue_head_t g2h_fence_wq;
-+	/** @g2h_wq: used to process G2H */
-+	struct workqueue_struct *g2h_wq;
- 	/** @msg: Message buffer */
- 	u32 msg[GUC_CTB_MSG_MAX_LEN];
- 	/** @fast_msg: Message buffer */
+ 	if (!(vm->flags & XE_VM_FLAG_MIGRATION))
 
 
