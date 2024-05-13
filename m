@@ -1,51 +1,92 @@
-Return-Path: <stable+bounces-43741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8678C4884
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 22:53:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092D08C4885
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 22:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FA1F1C20D56
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 20:53:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74A451F21D5D
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 20:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A2880BE3;
-	Mon, 13 May 2024 20:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7EC80BE3;
+	Mon, 13 May 2024 20:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CG77KQJ/"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="ZvQHPYp5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eX6Ldby1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868096F067
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 20:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B766F067
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 20:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715633587; cv=none; b=FGjkTTSJk2cndOuWK7TReJv5C/FkW33UpFp8p5QqiNOdGZJfab7zJPeuSf3ppM7LTblINx5fUpGxrC9IdKhxEbpBL9uCsOel16CASjEr3LSbxqv6HaqLlWn/2wFNjYu+76rnreQWsGTEw0X+Cii6UdFPa44xr7WIA00GYilIh+k=
+	t=1715633602; cv=none; b=MYTOP3S6XpRnyBxMG+tmRpoW2SPQe/Pmf4X9ysMiI1WXrnXhDYotK/BrtXLPbHwlVA8npn0/908ZOnYF5c5sK82jLRoGdGpDR83u7RrSjBwN8ZwjajqHwT+GZ2huqMojMBrvoQOquKAgK4+C4L8YgYQrv41PIWu0Yj+wB4GazKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715633587; c=relaxed/simple;
-	bh=iZ4X8n9c8/17Dizc8QMCV3OpLhP3TDJYu3fAAYBbdsA=;
+	s=arc-20240116; t=1715633602; c=relaxed/simple;
+	bh=ZXvVW/IkDm+MWFZjvqPD6xW9FHnMNrCnZuT3x4lZwnY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ShNnESRe/Cg7mwJQOFKBPm+3Stc+u7dWCiaOxzpfWK9qpyWIQxYuaG8PIk7ulJbXC3rQ8HKEC37+G0KXJ1yj9JD51JIlkadAVOP8hBEAh7ee+k9CDnwQ44CLwatn5HD0lqGaICZ3cSKd50+0A/6WhCIEJ365bvYgDZR+uLQgS1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CG77KQJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA28C113CC;
-	Mon, 13 May 2024 20:53:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715633587;
-	bh=iZ4X8n9c8/17Dizc8QMCV3OpLhP3TDJYu3fAAYBbdsA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CG77KQJ//8bAYtSmfoxfcFHxD3Jx3wte4xlhlfJ5oVb42w/eYFG7R12ayMF7oRXLn
-	 oEqcipY/0YZyjm81PXnmtWYSvGJIjhzDfq2Bkbzndk4LZB92gJCCID9teFLq0fe2K9
-	 YfsLYXsAJdsEa3+PBIOwPfKvclgNd725iSBZQUo8=
-Date: Mon, 13 May 2024 22:53:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kDd7R7jqX04nvRt60S8eThKQlNPv35WoGKT1JqrXxfNqSGmW5/C6vEIH5pnZg1jkpL10HcqJhyEYJ0tcLPqACAsnaMje16Ux0JJmGTIe8M4uOJb2X1Aj5RnQikRxU9zdh1dV8QmAZaiYMCfm7IbR9UPPQEWaAm5ev0cbUojH0JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=ZvQHPYp5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eX6Ldby1; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 8B70B1380F80;
+	Mon, 13 May 2024 16:53:19 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 13 May 2024 16:53:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1715633599; x=1715719999; bh=6zKblBGV2v
+	epNESo2RhU0/pp+dOyUKzDaQhvAht1FJk=; b=ZvQHPYp5WbFiA36/ecide1DmYs
+	jk71vQliCme671UHhvQE5STuq0boNZB9m6nCvtqQOespk4812Ogtg/lVlxHCOkMl
+	FweMVr4TZj2qkKw5T2qrw4r1D/RXtvtcJfF7mDGMnULTbIlVtHxxiCePCT/IUzAo
+	mivJiZBgZA03rqiKW8WB+jJIEvSoSgtltR1xpJKe1RT7eAi2lGnBy5yiWRXqMjxX
+	d95CfxMR/lXPrTuTPTSEJLjGm3fUREFodrBin9QeLLx5JFrbArMo6RK8VwLSmp4c
+	nqoQ4/Hx52thn6ckf66jlfiqdzVjNhM1ODr7B2zWWKkJbSSo7WLSq2VWceAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1715633599; x=1715719999; bh=6zKblBGV2vepNESo2RhU0/pp+dOy
+	UKzDaQhvAht1FJk=; b=eX6Ldby1qHsB7YXeHBTyrSvQFMOowZLxiQ7MdzB834T6
+	Ur2R8QTZ4h+9Eo/TLuhzhr5QcdjDaztLnmbTbNcCUhfXLEZj1FwMVv1H/AuR0hAJ
+	Nw2IQ8ixe9+A91PDhYn97E1ObUtpIu10TyiHZVA+i5WuSYTt58G/sph4gO9jXaYw
+	5nO8L7ugoHWOL6omj22urR268YQVYnpAD5FhtLcMG7iUD5IKIwqxjU3S98Fj+aKP
+	+K0aaFBjHOUwcD5Vzm2/iJxzRW6NrJu4rR7XvUb2cF6Eq0qOOwR2ry7n+kSjzpvV
+	pWN2yOeOsips5Hkq6aXDL4HEAlanv0FX2YOkjQU0dw==
+X-ME-Sender: <xms:v31CZrKeB6N6B5rp9b9O6vdDsuwbjnB8FjD33QFWYrw5-OhVuK5HFA>
+    <xme:v31CZvKZ4DI1BgW2BeUh91ZIMSbBpMohRPtlGPESuOywJRuxG0hjZDrT9FNmyhNEY
+    YEPOvDOUBBvqQ>
+X-ME-Received: <xmr:v31CZjtQaTJPwJ1WnH04kqAv6y7v4wybi6p-fkbDfrfJWziNpkeWyva3HO-Qp6K1cp-we-sUawTP641MgWByqx-HDuMcuR2FoYw9gw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeggedgudehfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeghe
+    euhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:v31CZkaXM3q--B0g-WrwfnKOK0HfpxbzkVv-t9xYTSDi-xY6Yywp9A>
+    <xmx:v31CZiYRrMbHuU9hGjwMf6HI_pZUmvP5tLWiKORI5Ai7rL_1S-Fi0A>
+    <xmx:v31CZoANmnLL39tyr1w2Nofv0MiYUj_EvWmQ43G3b_pmZ0YmEYa8Ng>
+    <xmx:v31CZgZRVhifroLPXp_25hWf04U6TeXvmn3d5AzSwAPcaZEM_ztA9A>
+    <xmx:v31CZoO9yFGuGeQNRMkHLvecw-LB8VQtz6cvoaCGGyoK8z3frh1KUMyS>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 13 May 2024 16:53:18 -0400 (EDT)
+Date: Mon, 13 May 2024 22:53:15 +0200
+From: Greg KH <greg@kroah.com>
 To: Jeremy Bongio <bongiojp@gmail.com>
 Cc: stable@vger.kernel.org, Li Nan <linan122@huawei.com>,
 	Song Liu <song@kernel.org>
 Subject: Re: [PATCH] md: fix kmemleak of rdev->serial
-Message-ID: <2024051346-numerous-recognize-8a0a@gregkh>
-References: <20240513192024.568296-1-bongiojp@gmail.com>
+Message-ID: <2024051307-nintendo-collected-ceed@gregkh>
+References: <20240513192030.568328-1-bongiojp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,9 +95,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240513192024.568296-1-bongiojp@gmail.com>
+In-Reply-To: <20240513192030.568328-1-bongiojp@gmail.com>
 
-On Mon, May 13, 2024 at 12:20:24PM -0700, Jeremy Bongio wrote:
+On Mon, May 13, 2024 at 12:20:30PM -0700, Jeremy Bongio wrote:
 > From: Li Nan <linan122@huawei.com>
 > 
 > If kobject_add() is fail in bind_rdev_to_array(), 'rdev->serial' will be
@@ -91,7 +132,23 @@ On Mon, May 13, 2024 at 12:20:24PM -0700, Jeremy Bongio wrote:
 > ---
 >  drivers/md/md.c | 1 +
 >  1 file changed, 1 insertion(+)
-
+> 
+> diff --git a/drivers/md/md.c b/drivers/md/md.c
+> index 09c7f52156f3f..67ceab4573be4 100644
+> --- a/drivers/md/md.c
+> +++ b/drivers/md/md.c
+> @@ -2532,6 +2532,7 @@ static int bind_rdev_to_array(struct md_rdev *rdev, struct mddev *mddev)
+>   fail:
+>  	pr_warn("md: failed to register dev-%s for %s\n",
+>  		b, mdname(mddev));
+> +	mddev_destroy_serial_pool(mddev, rdev, false);
+>  	return err;
+>  }
+>  
+> -- 
+> 2.45.0.118.g7fe29c98d7-goog
+> 
+> 
 
 <formletter>
 
