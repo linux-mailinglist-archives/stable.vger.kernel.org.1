@@ -1,140 +1,104 @@
-Return-Path: <stable+bounces-43597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AAB8C3BB2
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 09:05:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63BDA8C3CF3
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 10:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D80481C20FB0
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 07:05:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DF5028229E
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 08:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E481146A61;
-	Mon, 13 May 2024 07:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13343146D62;
+	Mon, 13 May 2024 08:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="I/Wsb2GW"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="lAUvX962"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D1E1FA1
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 07:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3218F26AC8;
+	Mon, 13 May 2024 08:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715583931; cv=none; b=ZGLPJq14EA2b00NHCspiJs4yvJlzRl3nbUdCbxpPw0XVYn63Swd2ZWAP6kASqQ6XevLvdyS99slL/pN/h1+grJTmaSNfIxVPSGgneasdXRx6+ACGMcJhnHexOdJziYyVTSHxmzfESqftmCdNLagA4B2lZmeDVrgLuGtQx8T+Qdc=
+	t=1715588107; cv=none; b=MviRZAAA3TP20WRe5Xc/1KV4TPKdpp8f7pKtL7uKfivCXeATqFkw0bo6724rvp9XnuWDCB9LGzCzL1nu2wftMAOoIe6zWwRptp+x6yd6x6w/iIS6MwwxKQBUGzejNtArDK23+b1HMKSBcL3U0r8srMfyxLvmo1nv2/072mLRDPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715583931; c=relaxed/simple;
-	bh=hLe9t6L9RmIOeK3PAtEKlDVP+GKSvBz2Z2/alF2xSBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mdCNuLLyyGCpN8WT0ScgTJrlMLLiv62CnGhori+4YhA0DuACzpezOcOD+2ChhiexfqdmYez0Jcl1BcytGd6O1t5Axq6wwoh9ccLhAUOlgPAIVw7usIPHyt2z2Z/w+fmUZT92Col9LJ40X6iZ1z8ESx8vW7OFWcpBlUPrWieyazc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=I/Wsb2GW; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 59D0F1BF206;
-	Mon, 13 May 2024 07:05:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1715583925;
+	s=arc-20240116; t=1715588107; c=relaxed/simple;
+	bh=nWTsCaqEbYJVfqtjWMFj+S9jlUSh9KVsdAYjy1jyLC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z63DJWQE8vAIBLBemmyb/+vPqwluQEVhvBySa+4GvYtuD3PmmxCN/dyELlmXeMmUkkwn/X6YbjWwBZicTjSq+2PIBGLSCqPfyPakjHNfc8vdZEISyqyX/jDzloO3MEUhIUcmr6sSMQtyhuDUSmXF99ITsGpOJ+ncdgYxqwK/9b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=lAUvX962; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 43C571C0081; Mon, 13 May 2024 10:14:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1715588097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+hKAuHOrxtaW6B++O9Akco8z16LZrZFOupClPDMqqQE=;
-	b=I/Wsb2GWCsVeCGeCaO7LSprRYioI+PVBXrCI0H+8i5OuGD35Dto8wVEt1PSthxd35VbqMT
-	iGO9QHKnml4oeBX4BGlWTLzsQFidPe4E+XkRstYGjUqujt/8NrNuZSE8Ry7ofXt+ckoXUx
-	vDXJOmOEi2Z/yh1Npr9Trm5peea3swHfozRG8kwSVGycmp0bZIRa+q3v12lhdjzj4RAH0b
-	Q6nLQk9jPfjnLQhL2m5uSOkkAeEDajTCMBUcKaVBbTu/Ypk8VJ/84DUVHVAr5wB4obFSIK
-	m9lcRXTB94QXVAJrdKPC5JBKCeHVXIcnLA0FrJ4hdXzs8nvm+9h9jQf49kcRuw==
-Date: Mon, 13 May 2024 09:05:23 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Alexander Dahl <ada@thorsis.com>
-Cc: Richard Weinberger <richard@nod.at>, Vignesh Raghavendra
- <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@linaro.org>, Pratyush Yadav
- <pratyush@kernel.org>, Michael Walle <michael@walle.cc>,
- linux-mtd@lists.infradead.org, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, Steven Seeger
- <steven.seeger@flightsystems.net>
-Subject: Re: [PATCH 2/2] mtd: rawnand: Bypass a couple of sanity checks
- during NAND identification
-Message-ID: <20240513090523.687ad7f4@xps-13>
-In-Reply-To: <20240508-patient-cover-54085f1981d8@thorsis.com>
-References: <20240507160546.130255-1-miquel.raynal@bootlin.com>
-	<20240507160546.130255-3-miquel.raynal@bootlin.com>
-	<20240508-patient-cover-54085f1981d8@thorsis.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	bh=vYm7twR3pfErY73ktn97NY63Rk+NhUxzi7k2RinLgho=;
+	b=lAUvX962VDZKnzhE6GmBDcD3Q0FjCw3+d62OCLLdvIApX2HIan9sIlkjuN9gzD+gDI1a5v
+	+J6KLZktniU6qvqZ/M5XV17Hk1Alu9QJzN+7KanmqD3VKgYjRa8AfAfAfy9SPYFyBtxatz
+	Ye0LmnHT5B0NDeD/zesdDjaCtjietEQ=
+Date: Mon, 13 May 2024 10:14:56 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Derek Fang <derek.fang@realtek.com>,
+	Mark Brown <broonie@kernel.org>, oder_chiou@realtek.com,
+	lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.1 03/25] ASoC: rt5645: Fix the electric noise
+ due to the CBJ contacts floating
+Message-ID: <ZkHMAP48JapqBfGb@duo.ucw.cz>
+References: <20240507231231.394219-1-sashal@kernel.org>
+ <20240507231231.394219-3-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="uRgOcYeDul5ZV0Sy"
+Content-Disposition: inline
+In-Reply-To: <20240507231231.394219-3-sashal@kernel.org>
+
+
+--uRgOcYeDul5ZV0Sy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
 
-Hi Alexander,
+Hi!
 
-ada@thorsis.com wrote on Wed, 8 May 2024 08:41:44 +0200:
-
-> Hello Miquel,
+> The codec leaves tie combo jack's sleeve/ring2 to floating status
+> default. It would cause electric noise while connecting the active
+> speaker jack during boot or shutdown.
+> This patch requests a gpio to control the additional jack circuit
+> to tie the contacts to the ground or floating.
 >=20
-> Am Tue, May 07, 2024 at 06:05:46PM +0200 schrieb Miquel Raynal:
-> > Early during NAND identification, mtd_info fields have not yet been
-> > initialized (namely, writesize and oobsize) and thus cannot be used for
-> > sanity checks yet. Of course if there is a misuse of
-> > nand_change_read_column_op() so early we won't be warned, but there is
-> > anyway no actual check to perform at this stage as we do not yet know
-> > the NAND geometry.
-> >=20
-> > So, if the fields are empty, especially mtd->writesize which is *always*
-> > set quite rapidly after identification, let's skip the sanity checks.
-> >=20
-> > nand_change_read_column_op() is subject to be used early for ONFI/JEDEC
-> > identification in the very unlikely case of:
-> > - bitflips appearing in the parameter page,
-> > - the controller driver not supporting simple DATA_IN cycles.
-> >=20
-> > Fixes: c27842e7e11f ("mtd: rawnand: onfi: Adapt the parameter page read=
- to constraint controllers")
-> > Fixes: daca31765e8b ("mtd: rawnand: jedec: Adapt the parameter page rea=
-d to constraint controllers")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Alexander Dahl <ada@thorsis.com>
-> > Closes: https://lore.kernel.org/linux-mtd/20240306-shaky-bunion-d28b65e=
-a97d7@thorsis.com/
-> > Reported-by: Steven Seeger <steven.seeger@flightsystems.net>
-> > Closes: https://lore.kernel.org/linux-mtd/DM6PR05MB4506554457CF95191A67=
-0BDEF7062@DM6PR05MB4506.namprd05.prod.outlook.com/
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> > ---
-> >  drivers/mtd/nand/raw/nand_base.c | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/na=
-nd_base.c
-> > index 248e654ecefd..a66e73cd68cb 100644
-> > --- a/drivers/mtd/nand/raw/nand_base.c
-> > +++ b/drivers/mtd/nand/raw/nand_base.c
-> > @@ -1440,12 +1440,14 @@ int nand_change_read_column_op(struct nand_chip=
- *chip,
-> >  	if (len && !buf)
-> >  		return -EINVAL;
-> > =20
-> > -	if (offset_in_page + len > mtd->writesize + mtd->oobsize)
-> > -		return -EINVAL;
-> > +	if (mtd->writesize) {
-> > +		if ((offset_in_page + len > mtd->writesize + mtd->oobsize))
-> > +			return -EINVAL; =20
->=20
-> These doubled (( )) are new and I think not necessary?
+> Signed-off-by: Derek Fang <derek.fang@realtek.com>
 
-Oops, true.
+AFAICT this is unused in -stable, as we don't have corresponding dts
+change. Please drop.
 
-Any chances you'll be able to test the patchset?
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
-Same question for Steven!
+--uRgOcYeDul5ZV0Sy
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cheers,
-Miqu=C3=A8l
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZkHMAAAKCRAw5/Bqldv6
+8hh5AKCI1g0ZjEvt7PsMAzpOOXSPwWFX7wCgkIbRWyUCA2djK679LJ9lojqnkog=
+=ypKm
+-----END PGP SIGNATURE-----
+
+--uRgOcYeDul5ZV0Sy--
 
