@@ -1,50 +1,59 @@
-Return-Path: <stable+bounces-43622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D808C4152
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:01:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903B38C4155
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73EC4281C80
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:01:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18DE1C228A3
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7720314F9FB;
-	Mon, 13 May 2024 13:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE8515098F;
+	Mon, 13 May 2024 13:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUPsnSEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRVplcMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3542B35F0C
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2068914C5A3;
+	Mon, 13 May 2024 13:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715605285; cv=none; b=DKGySxVxg2PhDPpr/bpGJnummVhYrb7myEXRFtWRdM7BCLZGv9/Xgg+fI8XpsfBEOFKcsKB5cd6UKmAKTPjXLX5l9N7z0/T3vR47cwBEsGfdbtOIbBn+VRjLDiFNJp0sVRFryuFEy16VhIoycbsxdVudirIAttmkot8HmQQRJWc=
+	t=1715605351; cv=none; b=g4nPQ3imKFfYa79wvLH+E9MpNv7VWcJLo40OCM9VvDx7hNT4bS8MqOhzC/mAAqczO7zulJ5bgym3pMYoOaLe4dFRcakQeOp/WEAyqDTUzmN2nNCUPX5W5UVZOxlhaJL401sRf2AW+O1OLM/IWGxa/VRbIihEE4Lmd+79MHwfjiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715605285; c=relaxed/simple;
-	bh=6ON4LUEE+Rbq1NLk/ZnRoa6bjMKnWHbZPKy30eOyaNg=;
+	s=arc-20240116; t=1715605351; c=relaxed/simple;
+	bh=unu2bcr+QOslnGcsSu84g6oQGRqK01Q/I7nKU+QPcwQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zbinm2Qj+n3+1h+M4V2/gXceSJR2xpwMOT/XAdB20INBQ1RMVXir+q6wZHZZHAfZ1XHbQdt003lrDkIipk5RfSL7zy26vvUBVwhOR8JPeZksAJPbKMDwa/arxycd6ookd0Ow9dYy9UoATAo5uCH5SHw4ZA7V9hLeKJh4U8ub4Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUPsnSEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A99C32781;
-	Mon, 13 May 2024 13:01:24 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0RJypUERFVVWnJ3PG9l4N1FZiNpnaN8mxXOTRwhzJu6eG4DhCw9/SWGrsxsl+FFF/VD7+6m2TAQE931kn6a5rSuoHEV3Au8A0Zele4tsXLs6mwYGUiOVcDYZVyP6uDHtodxXrXPCuHLDnpao881zZ9p0PKfGdzvCZXY8kELFW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRVplcMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFA0C113CC;
+	Mon, 13 May 2024 13:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715605284;
-	bh=6ON4LUEE+Rbq1NLk/ZnRoa6bjMKnWHbZPKy30eOyaNg=;
+	s=korg; t=1715605350;
+	bh=unu2bcr+QOslnGcsSu84g6oQGRqK01Q/I7nKU+QPcwQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cUPsnSEjVJBxFIQsIMspZlh2JvZCVN3rGATx/KmhpEUrjBfI+ulfqDnayqL0JhUC9
-	 2yrHDJlimdATZy9FcK09pniSvtZgTzr9SO7zc63nOSrZ4NWWTPGlgZsT5uc4AA3FA/
-	 hTrcLncPvVJ39z5ohJJWzb2/hAH7YOScppVHtbvY=
-Date: Mon, 13 May 2024 15:01:21 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alex Elder <elder@linaro.org>
-Cc: stable@vger.kernel.org
-Subject: Re: Old commit back-port
-Message-ID: <2024051337-illusion-cannot-34af@gregkh>
-References: <c655924f-7c16-46af-8d1f-e201f82328ad@linaro.org>
+	b=eRVplcMc9Nq3hLquSHorT2/50e4+ttDNN8aenzyV2SCtqPDg2jHbUhwwumJ0dVh10
+	 9rgwK9AtGn12pJAIhxAP+eqXWKDah3j0NkmDLGPAJl2l+oj4N3m0xwCNiD47LWzTAL
+	 OptFyCHpXy0R7xPEabtkOJU4tfUQbdavBSMLN/fM=
+Date: Mon, 13 May 2024 15:02:27 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Christian A. Ehrhardt" <lk@c--e.de>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH 6.1 251/272] usb: typec: ucsi: Check for notifications
+ after init
+Message-ID: <2024051320-expansive-acid-c651@gregkh>
+References: <20240401152530.237785232@linuxfoundation.org>
+ <20240401152538.859016197@linuxfoundation.org>
+ <ZgsWLUHW8nqUv7pi@cae.in-ulm.de>
+ <2024040216-cahoots-gizzard-4ffb@gregkh>
+ <ZgugfCVW2j1Uwm4J@cae.in-ulm.de>
+ <2024040223-steerable-regretful-a9f9@gregkh>
+ <ZjKTsuw2/ZyzVYtN@cae.in-ulm.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,51 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c655924f-7c16-46af-8d1f-e201f82328ad@linaro.org>
+In-Reply-To: <ZjKTsuw2/ZyzVYtN@cae.in-ulm.de>
 
-On Wed, May 01, 2024 at 02:50:05PM -0500, Alex Elder wrote:
-> This commit landed in Linux v5.16, and should have been back-ported
-> to stable branches:
->   0ac10b291bee8 arm64: dts: qcom: Fix 'interrupt-map' parent address cells
+On Wed, May 01, 2024 at 09:10:42PM +0200, Christian A. Ehrhardt wrote:
 > 
-> It has three hunks, and the commit can be cherry-picked directly
-> into the 5.15.y and 5.10.y stable branches.  The first hunk fixes
-> a problem first introduced in Linux v5.2, so that hunk (only) should
-> be back-ported to v5.4.y.
+> Hi Greg,
 > 
-> Signed-off-by: Alex Elder <elder@linaro.org>
+> On Tue, Apr 02, 2024 at 09:52:47AM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, Apr 02, 2024 at 08:06:52AM +0200, Christian A. Ehrhardt wrote:
+> > > 
+> > > Hi Greg,
+> > > 
+> > > On Tue, Apr 02, 2024 at 07:40:43AM +0200, Greg Kroah-Hartman wrote:
+> > > > On Mon, Apr 01, 2024 at 10:16:45PM +0200, Christian A. Ehrhardt wrote:
+> > > > > 
+> > > > > Hi Greg,
+> > > > > 
+> > > > > On Mon, Apr 01, 2024 at 05:47:21PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > > > > > 
+> > > > > > ------------------
+> > > > > > 
+> > > > > > From: Christian A. Ehrhardt <lk@c--e.de>
+> > > > > > 
+> > > > > > commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
+> > > > > > 
+> > > > > > The completion notification for the final SET_NOTIFICATION_ENABLE
+> > > > > > command during initialization can include a connector change
+> > > > > > notification.  However, at the time this completion notification is
+> > > > > > processed, the ucsi struct is not ready to handle this notification.
+> > > > > > As a result the notification is ignored and the controller
+> > > > > > never sends an interrupt again.
+> > > > > > 
+> > > > > > Re-check CCI for a pending connector state change after
+> > > > > > initialization is complete. Adjust the corresponding debug
+> > > > > > message accordingly.
+> > > > > > 
+> > > > > > Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+> > > > > > Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> > > > > > Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+> > > > > > Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+> > > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > > > ---
+> > > > > >  drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
+> > > > > >  1 file changed, 9 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > This change has an out of bounds memory access. Please drop it from
+> > > > > the stable trees until a fix is available.
+> > > > 
+> > > > Shouldn't we get a fix for Linus's tree too?  Have I missed that
+> > > > somewhere?  Or should this just be reverted now?
+> > > 
+> > > I posted the fix a few hours after sending this mail. It is here:
+> > >     https://lore.kernel.org/all/20240401210515.1902048-1-lk@c--e.de/
+> > > 
+> > > Either this should be fast tracked to Linus or the original change
+> > > reverted, yes.
+> > 
+> > I've dropped the offending commit from the stable queues now.  Once this
+> > fix gets into Linus's tree, let us know and I will add both in then.
 > 
-> Is there anything further I need to do?  If you'd prefer I send
-> patches, I can do that also (just ask).  Thanks.
+> The fix for
+>     808a8b9e0b87 ("usb: typec: ucsi: Check for notifications after init")
+> has hit Linus's tree as 
+>     ce4c8d21054a ("usb: typec: ucsi: Fix connector check on init")
 > 
-> 					-Alex
-> 
-> 
-> Rob's original fix in Linus' tree:
->   0ac10b291bee8 arm64: dts: qcom: Fix 'interrupt-map' parent address cells
-> This first landed in v5.16.
-> 
-> The commit that introduced the problem in the first hunk:
->   b84dfd175c098 arm64: dts: qcom: msm8998: Add PCIe PHY and RC nodes
-> This first landed in v5.2, so back-port to v5.4.y, v5.10.y, v5.15.y.
-> 
-> The commit that introduced the problem in the second hunk:
->   5c538e09cb19b arm64: dts: qcom: sdm845: Add first PCIe controller and PHY
-> This first landed in v5.7, so back-port to v5.10.y, v5.15.y
-> 
-> The commit that introduced the problem in the third hunk:
->   42ad231338c14 arm64: dts: qcom: sdm845: Add second PCIe PHY and controller
-> This first landed in v5.7 also
-> 
-> 
-> 
+> There is no urgency but this is to let you know that the original commit
+> is eligible for -stable again, provided that the follow up commit is
+> backported, too.
 
-I'm confused, I applied this to 5.10.y and 5.15.y now, but it did not
-apply to 5.4.y, and I did not understand the "first-third" type comments
-about hunks here, sorry.  Can you just provide a working backport for
-5.4.y?
-
-thanks,
+Thanks, all now queued up.
 
 greg k-h
 
