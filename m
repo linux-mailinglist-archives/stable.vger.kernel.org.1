@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30B28C42AC
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:57:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DB38C42AD
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52A3F1F223C5
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:57:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3291286D5D
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7731A153585;
-	Mon, 13 May 2024 13:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D38153572;
+	Mon, 13 May 2024 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5pDDQ1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGqm/kIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CD8153580
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DC0153581
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715608668; cv=none; b=U+wyhE56gTj9iuU84n30fkQBHrmTvV+amC4s9UzP2OsWkc1E2V8ngB5/Eq2zvzWMWOzduNM0kdUriusA6UwohctOF1UsS1Bub4A7erAVCro4zkSTQcDbnXJnHDIPQZ6bYVYlFFQLhb2rzt0Yj42R4hxE8qsT+V6zSOCg5HRbrjU=
+	t=1715608679; cv=none; b=KOGl743E/WWpSYAhyfrlMtH84RmyvckdrYB1ykFAYwmjJ9WZ4S77C7/PvYdZIhPNsCPbznZQg+2/t95vdmFByzsgax4JMEYbncRPMXwgp5ZyIQfDjU+IizvI8JTyTx6gss0qzF9L11XbSWPVb9p6K1WHO5oKjeKw1trghLw7oyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715608668; c=relaxed/simple;
-	bh=ognlrjetEmwDxBFmIUhlmXN7Si/ypGSVopNFzJQdeF8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HhtHiDkkrB5p0+LxFXLdqsbEFhmtTJPVKB5LHz7KoRN7Elv0SVyC4DAhLflwG3V9ksbMj6c9dzbD2Y1t5ZGHMUU3D4yvgFz8n4Ke/ENZY2cn8oznl4e6lrsD9+o1f+w0ku8jjUAKgzbhpsAmUZK3fY/6ByRoipg3muvraCUhJFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5pDDQ1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F50FC4AF10;
-	Mon, 13 May 2024 13:57:47 +0000 (UTC)
+	s=arc-20240116; t=1715608679; c=relaxed/simple;
+	bh=SIM2K6p0CBiVvo6IQGoKX2Fif2QwO1HaD5dVj4udvdk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rDYboOWJ1cmGZkbK6G2J6G5a7L2Gxnmu45UphOJra3qIZCU0+qk+Dk0w6DUL8JWGYHJMhimSnxigXNhhXaX1PRjv+gZW2KjFAZ9z/BQ4SW7p5e6YP83TJKMNHdxmScTymMxVBDkffkyi/zjVh5r8YhPTnsbmCNihig0GZknEq24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGqm/kIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC33C4AF0C;
+	Mon, 13 May 2024 13:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715608668;
-	bh=ognlrjetEmwDxBFmIUhlmXN7Si/ypGSVopNFzJQdeF8=;
+	s=korg; t=1715608679;
+	bh=SIM2K6p0CBiVvo6IQGoKX2Fif2QwO1HaD5dVj4udvdk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=l5pDDQ1PmmR3xrAZaAE0GMfWZJfhO/5x44wtEAR0Twx9+0xPvcx361rApQz3nZLko
-	 MCmNAbrVmhbUvM9U15/utORP1w7O3k0vkWjbcEv9xgRgN/Cq4SAyL+zyAnQBstbzrd
-	 e0nDbHNfmuyHLrQf7eygkVrNlMcXZ4OO4iW/FvXU=
-Subject: FAILED: patch "[PATCH] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access" failed to apply to 5.15-stable tree
+	b=BGqm/kIiNfYFkB9korcjiyqz/mGOdyxKvKd13nNWW95xcTFo5WDob4M0bxa7KSsd5
+	 yd6T2FQPp5m7rcYxFT75BVSle0hHmF+fkAhxC2ZHJLcLKXidiG8VomhgKTP88ERmoZ
+	 cbKzDnhm9BSeOUsmtVCZNAy536tX7ya/f000hcSM=
+Subject: FAILED: patch "[PATCH] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access" failed to apply to 5.10-stable tree
 To: opendmb@gmail.com,davem@davemloft.net,florian.fainelli@broadcom.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:57:44 +0200
-Message-ID: <2024051343-casket-astride-c192@gregkh>
+Date: Mon, 13 May 2024 15:57:47 +0200
+Message-ID: <2024051347-buddhism-hunting-5c42@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d85cf67a339685beae1d0aee27b7f61da95455be
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051343-casket-astride-c192@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051347-buddhism-hunting-5c42@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,8 @@ fc13d8c03773 ("net: bcmgenet: pull mac_config from adjust_link")
 fcb5dfe7dc40 ("net: bcmgenet: remove old link state values")
 50e356686fa9 ("net: bcmgenet: remove netif_carrier_off from adjust_link")
 b972b54a68b2 ("net: bcmgenet: Patch PHY interface for dedicated PHY driver")
+28e303da55b3 ("net: broadcom: share header defining UniMAC registers")
+12cf8e75727a ("bgmac: add bgmac_umac_*() helpers for accessing UniMAC registers")
 
 thanks,
 
