@@ -1,74 +1,119 @@
-Return-Path: <stable+bounces-43735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECAF8C4661
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 19:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 808DE8C46F4
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 20:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C7B41C21469
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:44:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1BFD1C226AE
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 18:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF36B224CF;
-	Mon, 13 May 2024 17:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF5639FE5;
+	Mon, 13 May 2024 18:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Md8uiXbQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdUm4mLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A97A2869B
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 17:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA0A2E631;
+	Mon, 13 May 2024 18:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715622251; cv=none; b=OOi7JJWspsMu8Feqgp2b+kfOR6xsdYvSTEADJxm4dqz3C9udlIJ793ib8cH8RlqsZcKKjzSB1S4N2DbzfyyYfjTx5pteJSfGwJvx2dsvjtYWmacs4sYYrGsFfR7W9vL6PviDvEccWmzZs5+R9qaBmxGlPSMjXruT/1cPex97NRo=
+	t=1715625328; cv=none; b=IYby7TbTNFjVUhBQwADROvk27K64T2+oqbvGONBjLv5NwkrIwaYfrENOckQ8s3yLJh/THXs46pGck7WZvWNuFEYOvkSRfXU52Sj94VIoBsogU2sus8foGr08SzybwF7q+6qdbqYRFXv/fNFiIOJA6e2hL3DAz7Ps3pNXCsUJK4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715622251; c=relaxed/simple;
-	bh=WKQMkTia0LeeqPU2KnbotVMMJgEAgODCFfMcVJO2kpI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WyMfOBycdSQh5aAFgivGG2wPTdCsPECDJIck2mGNxI4Oj1z02jv1xVbtwbMg/aE7S2FEHQ21ReKpvgLE0BVDaSkjMopmQ/fkITVit1V6RW7iwkPYlOsStsmLxd3Q3kQKEAhT34yLLP/slxFrzLOq1yUZ19rvlQtIyr0IrohaMcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Md8uiXbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC56C113CC;
-	Mon, 13 May 2024 17:44:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715622251;
-	bh=WKQMkTia0LeeqPU2KnbotVMMJgEAgODCFfMcVJO2kpI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Md8uiXbQsYcPF4V43PE/9OjSmEvfE4eoh0DwZn6kVDmneazof8JGmVMy4Eqbmrnfi
-	 n6XwNnMv1X/siWpy/+ezDN0tfus9SutptEcFBX1LzLhFVFtmp5S6j1LEL6Pjf5FzX3
-	 kNNvNx5TELHipr2qOj4a55WAFzOfZnxlAdolpPpA=
-Date: Mon, 13 May 2024 19:44:08 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jeremy Bongio <bongiojp@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: Security fix from mainline: CVE-2024-26900: md: fix kmemleak of
- rdev->serial
-Message-ID: <2024051333-unsolved-diaphragm-29e0@gregkh>
-References: <CANfQU3y36Yz9cvh+1Vy4GTV9cB1PjwTMfoFSXWBdDmHMChRjjg@mail.gmail.com>
+	s=arc-20240116; t=1715625328; c=relaxed/simple;
+	bh=YKbPkKlqAwoRaNZqki6fpfGRkig5wtpfRBksExN/W+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GyEn7lw523Mjm3Sf1bd5N0EHQrexyruyxNfoM/BYPjTmgG7Gs6jwbgWSHSRt26O1vPCYBWHe2ZufXgxZ5337Py3OyYXI4/Wfe4kswyNKIZmV5vusSTW64ovuFGaiFuo+XCSDygThhL37V+DE6/9u/v2WWAibnKLO1Mkbw0PkeA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdUm4mLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3E4C113CC;
+	Mon, 13 May 2024 18:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715625328;
+	bh=YKbPkKlqAwoRaNZqki6fpfGRkig5wtpfRBksExN/W+4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kdUm4mLdt6zonDi2uj1fC/4yvUuFv7+8Yf1ocwHVZVTXuoGnZ1WetV+VPrITiJ00/
+	 0ArlywI8B0iDrEvkfZaMVc+Gd6cDtnD3nnlD2sT3ut3tfJ+gjzgtRXlvI0DhQ2N1Wb
+	 yRcv/KFQUloyZ6eDmhGQlKxZHP/TVwagCOVArll6rUlUWcaz2yxxjgcnvtwxkOtG8C
+	 4M1v47TFLU8EKmW9BDwdDkzpn29CqRZoCnXbFJH3G4t9zDP2r98iHWvQhPHHLPF9Qf
+	 ckas1s2zW6jNAP0wWeqNsNxt90ijUwYzEuz92SyUmAkM6vhY/naqjDZhZQfi9rX6eG
+	 9BobUVT2+XpDg==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.org,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	keyrings@vger.kernel.org (open list:KEYS-TRUSTED),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] KEYS: trusted: Do not use WARN when encode fails
+Date: Mon, 13 May 2024 21:35:17 +0300
+Message-ID: <20240513183518.10922-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANfQU3y36Yz9cvh+1Vy4GTV9cB1PjwTMfoFSXWBdDmHMChRjjg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 13, 2024 at 10:39:18AM -0700, Jeremy Bongio wrote:
-> Please backport this security fix.
-> 
-> Subject: CVE-2024-26900: md: fix kmemleak of rdev->serial
-> sha1: 6cf350658736681b9d6b0b6e58c5c76b235bb4c4
-> Why: This vulnerability exists in LTS kernels.
-> kernel versions to apply: 5.10, 5.15, 6.1, 6.6
-> 
+Error on asn1_encode_sequence() is handled with a WARN incorrectly
+because:
 
-Please provide a working version of that commit backported after you
-have tested it out, and we will be glad to apply it.
+1. asn1_encode_sequence() is not an internal function (located
+   in lib/asn1_encode.c).
+2. Location on known, which makes the stack trace useless.
+3. Results a crash if panic_on_warn is set.
 
-thanks,
+It is also noteworthy that the use of WARN is undocumented, and it
+should be avoided unless there is carefully considered rationale to use
+it, which is now non-existent.
 
-greg k-h
+Replace WARN with pr_err, and print the return value instead, which is
+only useful piece of information (and was not printed).
+
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ security/keys/trusted-keys/trusted_tpm2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index c8d8fdefbd8d..e31fe53822a1 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -39,6 +39,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	u8 *end_work = scratch + SCRATCH_SIZE;
+ 	u8 *priv, *pub;
+ 	u16 priv_len, pub_len;
++	int ret;
+ 
+ 	priv_len = get_unaligned_be16(src) + 2;
+ 	priv = src;
+@@ -80,8 +81,11 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+-		return PTR_ERR(work1);
++	if (IS_ERR(work1)) {
++		ret = PTR_ERR(work1);
++		pr_err("ASN.1 encode error %d\n", ret);
++		return ret;
++	}
+ 
+ 	return work1 - payload->blob;
+ }
+-- 
+2.45.0
+
 
