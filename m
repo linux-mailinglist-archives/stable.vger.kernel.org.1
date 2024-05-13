@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40618C4413
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:22:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EED28C4414
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB5CF2814A2
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:22:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40F9C1C21720
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB1E6AC0;
-	Mon, 13 May 2024 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A49F539C;
+	Mon, 13 May 2024 15:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tJVL9Il"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0yjlLCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2A5539C
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06021EB5C
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715613726; cv=none; b=Td5CGlH5QyRbQLncTNFOhUSJTdeUYR2pQ+/KovlkzbdDDfxkWKXdsr62gAC5rwsrOoZU8AfJ2FrJzYGXD36F3ZsBUoJmDMxh5uoKBsStL2HYUXYOy5Kmm3a9OI9RUoNXh5ZIKqFjj84Ab5dNx9BqyvegxIjBfrZbsMxv591bQG4=
+	t=1715613729; cv=none; b=kjSEAR2O+I9UzEEMPrbvIRoDruhXeEPZj67VyOLOPqfwV/a3NW3qwwPeBYQgFn8MgDfgCHjZfyrhqcivqlDW+I1EkoCWHOOzWsz3mZqJ6MB1Ric3axAYxa/CBLIQ6asbtQ/fdwgbJV+f2Ghu+8XugvDV2xNcpShEknI4HnU1gt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715613726; c=relaxed/simple;
-	bh=LkRHiWx7NQmZgNmsjyHdbXnCg/WmTC5lY1uOVnE/1vI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YGUbZJA9m101LqvAoVPNIcKt93k9/3sRREYXT6R4fEiLJ4iNDaJcrgz850StT7MtbAAEYIgILSjcNdwYLoCy8MEc316xZZGE1poT/ZKpHP/9JUK/YuJneO/1hDNcPVlhNf/i2x/XYTXA9NgqN2WKtUro8Xt8TVITIERWLS9SUAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tJVL9Il; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971D3C113CC;
-	Mon, 13 May 2024 15:22:05 +0000 (UTC)
+	s=arc-20240116; t=1715613729; c=relaxed/simple;
+	bh=VH/rChWlqvCuKOwZPmDMxefsBeNIb58D/3EYopsdxR8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=soBUYYMabsZIydnBjy1R4wDQVpoPEGAtMRtC4mmx3kIplCQ0wbDrbXQLGKI5LiKCqnzlpCJ2sqjXusrrTm6j0tQ8B8SdLEeKXIfiHuO3e6KQu+WPWkfKPDNQbwycGtbQVZGXNRrSfEibmDBdBbIXzhyaj5J5f69K1js3I0Kkek4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0yjlLCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77520C2BD11;
+	Mon, 13 May 2024 15:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715613725;
-	bh=LkRHiWx7NQmZgNmsjyHdbXnCg/WmTC5lY1uOVnE/1vI=;
+	s=korg; t=1715613728;
+	bh=VH/rChWlqvCuKOwZPmDMxefsBeNIb58D/3EYopsdxR8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0tJVL9Il0aowYXsaNQi8DyXZySlwU/1yVpInzXRU+FjLKeUb74+TyReCOGzCWQdjl
-	 X5CijbOSfV/6jl1aqlDDcoqEw7dlG7WKOQ/siWVQLGJzwlu2N64e0y0LZkNLLmdhFF
-	 ulvAOFFyezknku3aIe03Fn+MYaNBQ2g7ty7Hb4Hc=
-Subject: FAILED: patch "[PATCH] ksmbd: use rwsem instead of rwlock for lease break" failed to apply to 6.6-stable tree
+	b=M0yjlLCaoeT/9UrqbGVS9IIdXCFLqxQuiigb7ImN1kx8/FTdgxPvk2AZXkofZVswp
+	 LUwzESwUlVYzls4clQnDwTzudrbfpMsOCCY2Rlr6eoLDgIZrM/1JrkjnCflsPbQa/6
+	 5L/ZFg5HEocJOzVpO4Hw8+Wmj48f3uZP/9GQ7bRI=
+Subject: FAILED: patch "[PATCH] ksmbd: use rwsem instead of rwlock for lease break" failed to apply to 6.1-stable tree
 To: linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 17:21:54 +0200
-Message-ID: <2024051354-eastward-undivided-3e1b@gregkh>
+Date: Mon, 13 May 2024 17:21:55 +0200
+Message-ID: <2024051355-hypnotize-anchor-2de7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x d1c189c6cb8b0fb7b5ee549237d27889c40c2f8b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051354-eastward-undivided-3e1b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051355-hypnotize-anchor-2de7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,17 @@ eb547407f357 ("ksmbd: downgrade RWH lease caching state to RH for directory")
 2e450920d58b ("ksmbd: move oplock handling after unlock parent dir")
 4274a9dc6aeb ("ksmbd: separately allocate ci per dentry")
 864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
+5a7ee91d1154 ("ksmbd: fix race condition with fp")
+e2b76ab8b5c9 ("ksmbd: add support for read compound")
+e202a1e8634b ("ksmbd: no response from compound read")
+2b57a4322b1b ("ksmbd: check if a mount point is crossed during path lookup")
+7b7d709ef7cf ("ksmbd: add missing compound request handing in some commands")
+81a94b27847f ("ksmbd: use kvzalloc instead of kvmalloc")
+40b268d384a2 ("ksmbd: add mnt_want_write to ksmbd vfs functions")
+fc6c6a3c324c ("ksmbd: fix out-of-bound read in parse_lease_state()")
+6fe55c2799bc ("ksmbd: call putname after using the last component")
+36322523dddb ("ksmbd: fix UAF issue from opinfo->conn")
+df14afeed2e6 ("ksmbd: fix uninitialized pointer read in smb2_create_link()")
 
 thanks,
 
