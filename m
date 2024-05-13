@@ -1,155 +1,125 @@
-Return-Path: <stable+bounces-43615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6D08C400C
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:46:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEAC8C4085
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 14:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EE601F22BD7
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 11:46:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB423286107
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 12:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7B114D2AA;
-	Mon, 13 May 2024 11:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="h02zrtwJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1491F14F120;
+	Mon, 13 May 2024 12:17:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C2314F102;
-	Mon, 13 May 2024 11:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF1614EC7C;
+	Mon, 13 May 2024 12:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715600718; cv=none; b=qIdiFVm8QQvMmIe9/eNwZyOE8ewbWIbxLHLadmLVMwfH6+k+zc16WEtRCFrkxY0sfmmb66sq3TUH4iamIZ5V8H5OBoYOrTe6NeI9Cu5AYQMLbkKSdfHBgDF0wCM5vGUW0C/ysxA+RryYq7U2QhXAO52YmfvpZ23RZpFE2P2qkG0=
+	t=1715602673; cv=none; b=inwhWpy36e72A2sg3djpvagPnU5IqUcH4mZVE/wsKfFUSnYuTgef2g64EmY4A9v1P+q8PqL6tHpQ4sMw/CD8wb75GW8DRxnXdI6sy8wOW8O3UjdO1Aa7EhTvGsjw0D7Lzv6FIGG6oZmywSGfD2FSs6Qoo7TeKlsTzO+m18iIU2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715600718; c=relaxed/simple;
-	bh=eAyTMUMGGuqdLpsBgzQWqQ1HResoKyZy1l6rRRccU3g=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=acEYlAjWFqwwOLtgs0aUk0yH8Mc2qtM6sSWVLqtUc+MM3cZcvau2EixEYpW1WC0qBe0TjapZoxuoaspAlXghLvgSwyHUoseyTOzq6EfWL1P6kcdVvZNUCsSjIZUH4IRPZohhA57oQN7x7fjTjb4dfMEELidTzxd/incKvFI6H7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=h02zrtwJ; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1715600716; x=1747136716;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eAyTMUMGGuqdLpsBgzQWqQ1HResoKyZy1l6rRRccU3g=;
-  b=h02zrtwJZyDDMuzOEnq/jEE9jZ2f+N0PnhzxjGCl05YUrAmpU14AyDVX
-   JQ76mnVd6HeKDdLOMiwiIiIjpvmZxkVmfiepKuGlNcY6zfZ+WRNFyxUos
-   R71tqeym9NSYkhbL6rxS/s6Nlqk3+KiuOscZQEu2An3r8W1RZNQOXUuOd
-   DPAAknzJXWwfYsXkW1LFZd8dQntremg8mCbYE0RTo8SdcQbUVn250+FCl
-   wA8j2WGSpuLTMgvbuTsxKDy4XEJUHzPUmnizeLCIavqlmNbJEuwIgpuhi
-   cjh6toa+hJ6wQPHrd/tX1iC2BJdY6mqL18epah7G3YVPEOc8zrl/3SSbn
-   Q==;
-X-CSE-ConnectionGUID: bvZzCf3dQ5+hvTmN+nHzBQ==
-X-CSE-MsgGUID: C9csftaRRSujjB9EEGCyAw==
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; 
-   d="scan'208";a="24493015"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 May 2024 04:44:09 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 13 May 2024 04:44:08 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Mon, 13 May 2024 04:44:08 -0700
-Date: Mon, 13 May 2024 13:44:07 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Herve Codina <herve.codina@bootlin.com>
-CC: <UNGLinuxDriver@microchip.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Allan Nielsen
-	<allan.nielsen@microchip.com>, Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net v2] net: lan966x: remove debugfs directory in probe()
- error path
-Message-ID: <20240513114407.t2iqcx7txoxkbnlj@DEN-DL-M31836.microchip.com>
-References: <20240513111853.58668-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1715602673; c=relaxed/simple;
+	bh=XudyOy0huXXsWE114Tie9lRpToFHKlMNTnQ/P4ZyNRU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cMctDd2kyP9wUItN3h9ID8xoDgaYpaSGOtwQSzpt6teOkjQI6ZfYsp15GU2YuwSDiqYm4UVxm3uXDn49vkdNl0/+4vEYR3tCNEaDdLe2eIXT/SAD0BQ3hN0KkXA4QEZX2E/dOIQKqkoec3Nil67vlPxO+5z2d2CU9CLYlfIsziE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-de607ab52f4so4508910276.2;
+        Mon, 13 May 2024 05:17:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715602671; x=1716207471;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H9Ap844dmCuN2yhrZbST2/sYCrTDfuB5uNKh6TGhbNc=;
+        b=hLOR3ooNZvMO9f4MRNCrDAljZsgayLeJPiC1re+mbfe3p1IIQDnEqxuMDTphbE6qBp
+         4bFeRYq7svnSvVGMh2V3LL8PiH9rIdlhUV4cTcP7+XCTMlUurhpdtDJhj0HLfOZefGZe
+         s9drlibmjTyidwxjrgBYmkfysydNSTg54V5ANvxss8WKjfLReDtACTSm9C31TqxQQHom
+         h6Hp4ySGh2I5AZXE4BqNwxXFFGr7Vo5XDNR2pi/N8aTM6DcnMFCnMHJh+iYMc2SXWflw
+         rHde9c/PSd8wV87n5vRpftIQ4FY71Pfkh6Ag4gredkKSzTRD+63LgJ4ueOfYakdIJIll
+         epXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/dYvP+/z6QcRN6ddJv/ln7qrkEK9lN3kd+6egZ01QjpjzCuSAfTraJ8/LFskqgLgpa9R+hVADHTeO5s9OJHKgXDBDgqsZaqKhA19SPRHum370DRLatJhMDGZgTFmUNslDcWFE
+X-Gm-Message-State: AOJu0YzHp6YO2gmBPEN6vXzP9shAtF21oxz4Ckw9EZKt4pWM2XTEDCRg
+	+dimv9zvjTUXuDWmOp6wt4UsPnIipOfy96MsVgEk7ULjvICh26Pv3NqE0+DK
+X-Google-Smtp-Source: AGHT+IE4ide/2ftw2u3Nj85PX2TxmQfL6xuau3SkoPTdXq7dOwcilAjd3gmuF8WP0amq5J//nFU6Zg==
+X-Received: by 2002:a25:204:0:b0:de6:1083:1fc0 with SMTP id 3f1490d57ef6-dee4f368fa0mr8089922276.33.1715602671040;
+        Mon, 13 May 2024 05:17:51 -0700 (PDT)
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com. [209.85.128.181])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-debd374517asm2041195276.33.2024.05.13.05.17.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 May 2024 05:17:49 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-61d35d266e7so49995507b3.1;
+        Mon, 13 May 2024 05:17:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVfZ27TWpvQC4ysLA6QCGmGDKytCA+2Yy73CGwPXH0nYvv0NyK/bcVYhScKDc7t9cRkYUcqWH3muyUSkT8ltJ2lXywbTGuXT8liME6kAlFKgOFyXDv5heTKFfzag5jscHYKHljW
+X-Received: by 2002:a25:ef05:0:b0:de4:7603:e888 with SMTP id
+ 3f1490d57ef6-dee4f368604mr8264777276.29.1715602669176; Mon, 13 May 2024
+ 05:17:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20240513111853.58668-1-herve.codina@bootlin.com>
+References: <20240509133304.8883-1-johan+linaro@kernel.org>
+In-Reply-To: <20240509133304.8883-1-johan+linaro@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 13 May 2024 14:17:37 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXrJkYYyCM72pYjFwCDbfO3W6HjSTEiMu_M8yH4Wsf9mQ@mail.gmail.com>
+Message-ID: <CAMuHMdXrJkYYyCM72pYjFwCDbfO3W6HjSTEiMu_M8yH4Wsf9mQ@mail.gmail.com>
+Subject: Re: [PATCH] regulator: core: fix debugfs creation regression
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, May 9, 2024 at 3:34=E2=80=AFPM Johan Hovold <johan+linaro@kernel.or=
+g> wrote:
+> regulator_get() may sometimes be called more than once for the same
+> consumer device, something which before commit dbe954d8f163 ("regulator:
+> core: Avoid debugfs: Directory ...  already present! error") resulted in
+> errors being logged.
+>
+> A couple of recent commits broke the handling of such cases so that
+> attributes are now erroneously created in the debugfs root directory the
+> second time a regulator is requested and the log is filled with errors
+> like:
+>
+>         debugfs: File 'uA_load' in directory '/' already present!
+>         debugfs: File 'min_uV' in directory '/' already present!
+>         debugfs: File 'max_uV' in directory '/' already present!
+>         debugfs: File 'constraint_flags' in directory '/' already present=
+!
+>
+> on any further calls.
+>
+> Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugf=
+s_create_dir()")
+> Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
+> Cc: stable@vger.kernel.org
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
-The 05/13/2024 13:18, Herve Codina wrote:
-> 
-> A debugfs directory entry is create early during probe(). This entry is
-> not removed on error path leading to some "already present" issues in
-> case of EPROBE_DEFER.
-> 
-> Create this entry later in the probe() code to avoid the need to change
-> many 'return' in 'goto' and add the removal in the already present error
-> path.
-> 
-> Fixes: 942814840127 ("net: lan966x: Add VCAP debugFS support")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+FTR,
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-This looks OK to me. As the debugfs_root is used inside lan966x_vcap_init
-which is called at the end of the probe.
+Gr{oetje,eeting}s,
 
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+                        Geert
 
-> ---
->  drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> index 2635ef8958c8..61d88207eed4 100644
-> --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> @@ -1087,8 +1087,6 @@ static int lan966x_probe(struct platform_device *pdev)
->         platform_set_drvdata(pdev, lan966x);
->         lan966x->dev = &pdev->dev;
-> 
-> -       lan966x->debugfs_root = debugfs_create_dir("lan966x", NULL);
-> -
->         if (!device_get_mac_address(&pdev->dev, mac_addr)) {
->                 ether_addr_copy(lan966x->base_mac, mac_addr);
->         } else {
-> @@ -1179,6 +1177,8 @@ static int lan966x_probe(struct platform_device *pdev)
->                 return dev_err_probe(&pdev->dev, -ENODEV,
->                                      "no ethernet-ports child found\n");
-> 
-> +       lan966x->debugfs_root = debugfs_create_dir("lan966x", NULL);
-> +
->         /* init switch */
->         lan966x_init(lan966x);
->         lan966x_stats_init(lan966x);
-> @@ -1257,6 +1257,8 @@ static int lan966x_probe(struct platform_device *pdev)
->         destroy_workqueue(lan966x->stats_queue);
->         mutex_destroy(&lan966x->stats_lock);
-> 
-> +       debugfs_remove_recursive(lan966x->debugfs_root);
-> +
->         return err;
->  }
-> 
-> --
-> 
-> This patch was previously sent as part of a bigger series:
->   https://lore.kernel.org/lkml/20240430083730.134918-9-herve.codina@bootlin.com/
-> As it is a simple fix, this v2 is the patch extracted from the series
-> and sent alone to net.
-> 
-> Changes v1 -> v2
->   Add 'Reviewed-by: Andrew Lunn <andrew@lunn.ch>'
-> 
-> 2.44.0
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
--- 
-/Horatiu
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
