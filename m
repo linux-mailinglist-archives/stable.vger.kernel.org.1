@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822D98C43FE
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:17:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507088C43FF
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9731F210CC
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:17:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05BCD2840CF
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2351DDF5;
-	Mon, 13 May 2024 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D571DFFD;
+	Mon, 13 May 2024 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q885lnzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUUWof4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C29C290F
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B82290F
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715613432; cv=none; b=cE5/ZeyxcFgCMVbPx7NEr7HcQv4ORMv8kML2WE23TYxo2RTzaKLfsxq6yYMsXuwt4TKVVT4Vg6XnQMotaTNyqPROyIMAKwzDxYvwsNGLEhfnQ/PR4zV8MwczR4pOd7Ty/COTvTJOBsDZOr/CovlLXzvemyLYy4dCUoBXv68iEdQ=
+	t=1715613435; cv=none; b=WRyZxFG8ufIesBRotfiwTnb9pb63PhgunJs0ych7sPpCVUMGW1vfeppcm9E6pqUxaGhsKo4UziSWXLlvInkms8aovlrh+8qxjg3RfwDQRgaQOEK5DRUFY8LPxIYVl5gnuA2J4vHPHIiuyvntfMyySnK8Zxt59jJqxzGFwO4S82A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715613432; c=relaxed/simple;
-	bh=7r6KgzMaw35/tHCQl1nZZrPCv4l0E0aMujMeFQTbS78=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jyO8Wcmp7dzX+7sxlhPTYaqaUarDzIi81wJ1O3mn32BnLS1RpK+izEAr2Mo/ytt1UKKKj0dnHXsVVkUaVqPPg3QGU+YpM3GM+D1IbHyAbuhHhf3h6XlJkTCHK4c+4x+Y/LNg7Nd92w3Y6/o2WAg78TNNQAINcCK/E1m/AocFFEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q885lnzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B7EC32781;
-	Mon, 13 May 2024 15:17:11 +0000 (UTC)
+	s=arc-20240116; t=1715613435; c=relaxed/simple;
+	bh=S7RK6ybm4TwBXPx8MvhnuTnYHsTsL/vC2TC7x1yvvjk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RshZ4XXo87wprq3EmKmPIr5M/L0PMxDfAEBSn131ZR1uVxJsslLT/REwAKlcq3Qcoxd19NfCyBx/51+WoExGOG6jPcW1gTp0q/UH2PrybU9lj/kscGP7US00iG6uo+aQG37xdzSEIRcbAX/ExtvRF1OFiUuXYKkC+A6VEOe92B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUUWof4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8799C113CC;
+	Mon, 13 May 2024 15:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715613432;
-	bh=7r6KgzMaw35/tHCQl1nZZrPCv4l0E0aMujMeFQTbS78=;
+	s=korg; t=1715613435;
+	bh=S7RK6ybm4TwBXPx8MvhnuTnYHsTsL/vC2TC7x1yvvjk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=q885lnzW/2CVsNUrDlAobN2vFHwZ7e98aZROipm0qi2jEfr3pEms74Hu9JhWUzXUH
-	 J0nDjXJmlnt42Ng2jH6eg84UdTkpVsCEHy/oNlJdr831VGY7RJFGvXMFlnPe8rN0nl
-	 /1+f8aSgA8IbZGvXl9TlnMRgmVNEwhBS8ExCZUbw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix incorrect DSC instance for MST" failed to apply to 5.15-stable tree
+	b=NUUWof4b6c6pBy++CQzTU98DgzqvsgHBYmPXR6lKZbMosIzzMOwNEfmuDtA0synV4
+	 NiDvI94EZKYQ1HuqC41NsZ6V9a5x+w9+xpD+vvpOxNmQ33n0KnAqqsxOzyTQ0Q4o3j
+	 aQxBRT7q0HjkJs6pfta20p2OEsIoHThpMukxrSIA=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix incorrect DSC instance for MST" failed to apply to 5.10-stable tree
 To: hersenxs.wu@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,daniel.wheeler@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 17:17:04 +0200
-Message-ID: <2024051304-resonant-pruning-3657@gregkh>
+Date: Mon, 13 May 2024 17:17:05 +0200
+Message-ID: <2024051305-onslaught-twins-2da3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 892b41b16f6163e6556545835abba668fcab4eea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051304-resonant-pruning-3657@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051305-onslaught-twins-2da3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,22 @@ Possible dependencies:
 f8e12e770e80 ("drm/amd/display: drop unnecessary NULL checks in debugfs")
 e3b0079be8f0 ("drm/amd/display: Clean up some inconsistent indenting")
 5d5c6dba2b43 ("drm/amd/display: Fix memory leak")
+712343cd21ea ("drm/amd/display: Add function and debugfs to dump DCC_EN bit")
+46a83eba276c ("drm/amd/display: Add debugfs to control DMUB trace buffer events")
+0dd795323405 ("drm/amdgpu/display: Implement functions to let DC allocate GPU memory")
+0b7421f0a6a4 ("drm/amd/display: Old sequence for HUBP blank")
+e7a30ade740f ("Revert "drm/amd/display: Unblank hubp based on plane visibility"")
+afd3a359c452 ("drm/amd/display: do not use drm middle layer for debugfs")
+dbb7898ac1bc ("drm/amd/display: Drop SOC bounding box hookup in DM/DC")
+d209124ddae3 ("drm/amd/display: enable HUBP blank behaviour")
+985faf2c4ecb ("drm/amd/display: New sequence for HUBP blank")
+fd1c85d3ac2c ("drm/amd/display: Unblank hubp based on plane visibility")
+5a83bf80723d ("drm/amd/display: Use provided offset for DPG generation")
+9a3e698c0758 ("drm/amd/display: init soc bounding box for dcn3.01.")
+20f2ffe50472 ("drm/amdgpu: fold CONFIG_DRM_AMD_DC_DCN3* into CONFIG_DRM_AMD_DC_DCN (v3)")
+4dbcdc9cada2 ("drm/amd/display: fix the NULL pointer that missed set_disp_pattern_generator callback")
+b15bfd0d8613 ("drm/amd/display: Revert HUBP blank behaviour for now")
+dbf5256bbf19 ("drm/amd/display: Blank HUBP during pixel data blank for DCN30 v2")
 
 thanks,
 
