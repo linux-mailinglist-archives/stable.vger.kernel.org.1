@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9778C4264
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:47:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AD38C426D
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8735286CDC
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:47:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9511F20C27
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF5D1534F5;
-	Mon, 13 May 2024 13:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6268915444E;
+	Mon, 13 May 2024 13:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INfJCtQs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiE4nhvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8731474BB
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2170215444A
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715607809; cv=none; b=am1Rx9NywkN5N3NqIwFjg9wNDyMCos6yt4OP0wDClwJbby/AACBVqsL75ggBeS/dOlkVDTIR27cq+nWc11hlNSIpPs1sFjtUFuqbBArBSXLXftMFpCUL7Y5h+yvMShU8gmZgJ+Bir9heYz2CiM8UQMfzxPyRtvvuKrYnDb74AZ0=
+	t=1715607933; cv=none; b=lmH8/gTf+600De1HXDIKNHYPUMLUce2CTxrHUnWd9R+TQrLNqflbmXTGrC0tfqz29Go4U+jkbNdLQpCmuqlTqYGqoLwmEDmtHCYbig59x93ryj6HpSv9SN3i9CFhydqFV9y93doFX1E3hfiinadfPceNIVIiT2Ky9xcVI0YarNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715607809; c=relaxed/simple;
-	bh=1nPiLjM48WxluV6sYzgabZGX95Dfa5FerW0D5jCBwiU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kL4SlHtRawhueYcqAkXxkoVWllbN6FrZOQuR/WFmjJ2s4DKAZoO/rW/mGAItk1wzZbB2rqzlPk+EsFKPqRS3bLgxHH7r1BFtbN+3H6HF7AOTJyW4x3Uh6DsFbmMeXxHShVwPx84HnDCwIW7PamhZ9+gzz/ejG6DRGEcJADPIj6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INfJCtQs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6CDC113CC;
-	Mon, 13 May 2024 13:43:28 +0000 (UTC)
+	s=arc-20240116; t=1715607933; c=relaxed/simple;
+	bh=7bVSSTbOIG8jrldqJ/2XWJ24MalQP8wtlS6jEVcy6qk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m6/JMed5o6Lu5AsGgJuFFbvxjby2EQ/Y8gaqQlZ7sABqLbEtrJcCdDgzmpiDZCAiQLsfKOShkoBRkK4/5ZRj0ZlqRYTZqdUgaho72zSceKR8PpNDPrllBy0Dr5JAZdybDC+k/V0e8zavyAaT4tEqaN/xKRw/4ghywNmB6YENaWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiE4nhvy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A10C32781;
+	Mon, 13 May 2024 13:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715607809;
-	bh=1nPiLjM48WxluV6sYzgabZGX95Dfa5FerW0D5jCBwiU=;
+	s=korg; t=1715607933;
+	bh=7bVSSTbOIG8jrldqJ/2XWJ24MalQP8wtlS6jEVcy6qk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=INfJCtQssjGgoxmecapcUdHmdSLB2f5vvWuezRUqjT8q9wjQO4GUmehVNh9lsU0yT
-	 qcSuLqU0MrsXRWmWqOmsyWjSI8FobQZ4QQjnprmTFKH8L5XECXec3jQBA1fOpiZwR1
-	 HhYzIR2D+Dc45sRDSI/AeJIVNHUcoMdgsI/SfDfY=
-Subject: FAILED: patch "[PATCH] mptcp: ensure snd_nxt is properly initialized on connect" failed to apply to 5.10-stable tree
-To: pabeni@redhat.com,cpaasch@apple.com,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
+	b=SiE4nhvyyH9KvCJHxwr1ir2vy71kOoioKsm8GS0TCQTWCZZFF82YmDp3AeAexhUJj
+	 56C8sZkP0JVd59qoPGzFHX6crDs07eKpRqh1N+C+D/4GWb8ZUjsyq3ipB7S1dAgmZw
+	 y6wMt7t19thd4CJIvubaN/o+oVsoiJbW6oj75LjE=
+Subject: FAILED: patch "[PATCH] workqueue: Fix divide error in wq_update_node_max_active()" failed to apply to 6.8-stable tree
+To: jiangshan.ljs@antgroup.com,samsun1006219@gmail.com,tj@kernel.org,xrivendell7@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:43:26 +0200
-Message-ID: <2024051325-dreamt-freebee-5563@gregkh>
+Date: Mon, 13 May 2024 15:45:29 +0200
+Message-ID: <2024051329-golf-handwoven-298c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,32 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.8-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
 git checkout FETCH_HEAD
-git cherry-pick -x fb7a0d334894206ae35f023a82cad5a290fd7386
+git cherry-pick -x 91f098704c25106d88706fc9f8bcfce01fdb97df
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051325-dreamt-freebee-5563@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051329-golf-handwoven-298c@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
 
 Possible dependencies:
 
-fb7a0d334894 ("mptcp: ensure snd_nxt is properly initialized on connect")
-54f1944ed6d2 ("mptcp: factor out mptcp_connect()")
-a42cf9d18278 ("mptcp: poll allow write call before actual connect")
-d98a82a6afc7 ("mptcp: handle defer connect in mptcp_sendmsg")
-3e5014909b56 ("mptcp: cleanup MPJ subflow list handling")
-3d1d6d66e156 ("mptcp: implement support for user-space disconnect")
-b29fcfb54cd7 ("mptcp: full disconnect implementation")
-3ce0852c86b9 ("mptcp: enforce HoL-blocking estimation")
-7cd2802d7496 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+91f098704c25 ("workqueue: Fix divide error in wq_update_node_max_active()")
+5797b1c18919 ("workqueue: Implement system-wide nr_active enforcement for unbound workqueues")
+91ccc6e7233b ("workqueue: Introduce struct wq_node_nr_active")
+9f66cff212bb ("workqueue: RCU protect wq->dfl_pwq and implement accessors for it")
+c5404d4e6df6 ("workqueue: Make wq_adjust_max_active() round-robin pwqs while activating")
+1c270b79ce0b ("workqueue: Move nr_active handling into helpers")
+4c6380305d21 ("workqueue: Replace pwq_activate_inactive_work() with [__]pwq_activate_work()")
+afa87ce85379 ("workqueue: Factor out pwq_is_empty()")
+a045a272d887 ("workqueue: Move pwq->max_active to wq->max_active")
+31c89007285d ("workqueue.c: Increase workqueue name length")
 
 thanks,
 
@@ -85,82 +86,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fb7a0d334894206ae35f023a82cad5a290fd7386 Mon Sep 17 00:00:00 2001
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Mon, 29 Apr 2024 20:00:31 +0200
-Subject: [PATCH] mptcp: ensure snd_nxt is properly initialized on connect
+From 91f098704c25106d88706fc9f8bcfce01fdb97df Mon Sep 17 00:00:00 2001
+From: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+Date: Wed, 24 Apr 2024 21:51:54 +0800
+Subject: [PATCH] workqueue: Fix divide error in wq_update_node_max_active()
 
-Christoph reported a splat hinting at a corrupted snd_una:
+Yue Sun and xingwei lee reported a divide error bug in
+wq_update_node_max_active():
 
-  WARNING: CPU: 1 PID: 38 at net/mptcp/protocol.c:1005 __mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
-  Modules linked in:
-  CPU: 1 PID: 38 Comm: kworker/1:1 Not tainted 6.9.0-rc1-gbbeac67456c9 #59
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-  Workqueue: events mptcp_worker
-  RIP: 0010:__mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
-  Code: be 06 01 00 00 bf 06 01 00 00 e8 a8 12 e7 fe e9 00 fe ff ff e8
-  	8e 1a e7 fe 0f b7 ab 3e 02 00 00 e9 d3 fd ff ff e8 7d 1a e7 fe
-  	<0f> 0b 4c 8b bb e0 05 00 00 e9 74 fc ff ff e8 6a 1a e7 fe 0f 0b e9
-  RSP: 0018:ffffc9000013fd48 EFLAGS: 00010293
-  RAX: 0000000000000000 RBX: ffff8881029bd280 RCX: ffffffff82382fe4
-  RDX: ffff8881003cbd00 RSI: ffffffff823833c3 RDI: 0000000000000001
-  RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-  R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888138ba8000
-  R13: 0000000000000106 R14: ffff8881029bd908 R15: ffff888126560000
-  FS:  0000000000000000(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f604a5dae38 CR3: 0000000101dac002 CR4: 0000000000170ef0
-  Call Trace:
-   <TASK>
-   __mptcp_clean_una_wakeup net/mptcp/protocol.c:1055 [inline]
-   mptcp_clean_una_wakeup net/mptcp/protocol.c:1062 [inline]
-   __mptcp_retrans+0x7f/0x7e0 net/mptcp/protocol.c:2615
-   mptcp_worker+0x434/0x740 net/mptcp/protocol.c:2767
-   process_one_work+0x1e0/0x560 kernel/workqueue.c:3254
-   process_scheduled_works kernel/workqueue.c:3335 [inline]
-   worker_thread+0x3c7/0x640 kernel/workqueue.c:3416
-   kthread+0x121/0x170 kernel/kthread.c:388
-   ret_from_fork+0x44/0x50 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
-   </TASK>
+divide error: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 PID: 21 Comm: cpuhp/1 Not tainted 6.9.0-rc5 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:wq_update_node_max_active+0x369/0x6b0 kernel/workqueue.c:1605
+Code: 24 bf 00 00 00 80 44 89 fe e8 83 27 33 00 41 83 fc ff 75 0d 41
+81 ff 00 00 00 80 0f 84 68 01 00 00 e8 fb 22 33 00 44 89 f8 99 <41> f7
+fc 89 c5 89 c7 44 89 ee e8 a8 24 33 00 89 ef 8b 5c 24 04 89
+RSP: 0018:ffffc9000018fbb0 EFLAGS: 00010293
+RAX: 00000000000000ff RBX: 0000000000000001 RCX: ffff888100ada500
+RDX: 0000000000000000 RSI: 00000000000000ff RDI: 0000000080000000
+RBP: 0000000000000001 R08: ffffffff815b1fcd R09: 1ffff1100364ad72
+R10: dffffc0000000000 R11: ffffed100364ad73 R12: 0000000000000000
+R13: 0000000000000100 R14: 0000000000000000 R15: 00000000000000ff
+FS:  0000000000000000(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb8c06ca6f8 CR3: 000000010d6c6000 CR4: 0000000000750ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ workqueue_offline_cpu+0x56f/0x600 kernel/workqueue.c:6525
+ cpuhp_invoke_callback+0x4e1/0x870 kernel/cpu.c:194
+ cpuhp_thread_fun+0x411/0x7d0 kernel/cpu.c:1092
+ smpboot_thread_fn+0x544/0xa10 kernel/smpboot.c:164
+ kthread+0x2ed/0x390 kernel/kthread.c:388
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:244
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
 
-When fallback to TCP happens early on a client socket, snd_nxt
-is not yet initialized and any incoming ack will copy such value
-into snd_una. If the mptcp worker (dumbly) tries mptcp-level
-re-injection after such ack, that would unconditionally trigger a send
-buffer cleanup using 'bad' snd_una values.
+After analysis, it happens when all of the CPUs in a workqueue's affinity
+get offine.
 
-We could easily disable re-injection for fallback sockets, but such
-dumb behavior already helped catching a few subtle issues and a very
-low to zero impact in practice.
+The problem can be easily reproduced by:
 
-Instead address the issue always initializing snd_nxt (and write_seq,
-for consistency) at connect time.
+ # echo 8 > /sys/devices/virtual/workqueue/<any-wq-name>/cpumask
+ # echo 0 > /sys/devices/system/cpu/cpu3/online
 
-Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
+Use the default max_actives for nodes when all of the CPUs in the
+workqueue's affinity get offline to fix the problem.
+
+Reported-by: Yue Sun <samsun1006219@gmail.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Link: https://lore.kernel.org/lkml/CAEkJfYPGS1_4JqvpSo0=FM0S1ytB8CEbyreLTtWpR900dUZymw@mail.gmail.com/
+Fixes: 5797b1c18919 ("workqueue: Implement system-wide nr_active enforcement for unbound workqueues")
 Cc: stable@vger.kernel.org
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
-Tested-by: Christoph Paasch <cpaasch@apple.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-v1-1-59ceac0a7dcb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 7e74b812e366..965eb69dc5de 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3723,6 +3723,9 @@ static int mptcp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
- 		MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_TOKENFALLBACKINIT);
- 		mptcp_subflow_early_fallback(msk, subflow);
- 	}
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 5f536c63a48d..d2dbe099286b 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -1598,6 +1598,15 @@ static void wq_update_node_max_active(struct workqueue_struct *wq, int off_cpu)
+ 	if (off_cpu >= 0)
+ 		total_cpus--;
+ 
++	/* If all CPUs of the wq get offline, use the default values */
++	if (unlikely(!total_cpus)) {
++		for_each_node(node)
++			wq_node_nr_active(wq, node)->max = min_active;
 +
-+	WRITE_ONCE(msk->write_seq, subflow->idsn);
-+	WRITE_ONCE(msk->snd_nxt, subflow->idsn);
- 	if (likely(!__mptcp_check_fallback(msk)))
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVE);
++		wq_node_nr_active(wq, NUMA_NO_NODE)->max = max_active;
++		return;
++	}
++
+ 	for_each_node(node) {
+ 		int node_cpus;
  
 
 
