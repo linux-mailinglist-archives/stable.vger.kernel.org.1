@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5435A8C441E
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:24:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954878C442C
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEAF71F224A7
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:24:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C57F71C2310A
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1D81DA20;
-	Mon, 13 May 2024 15:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B0757CA6;
+	Mon, 13 May 2024 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usbDDF9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1Axh4/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB9E5240
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289CD3C2D
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715613882; cv=none; b=tXIG2IqgF6bWrk8HnsLKwU/cbRn8j6t4dW48OoG8cQFYch2qtzLaG/9u64+T7+VQ2g+R1bF5hd+IZHx7X6FyTSxaGJVGtwSKRcJN4bYIgWVMbqEYhpcfbbvvCL6JDGblu6KqA6P3KbkzK2v+uBXByPgBxmx1CBaYqTQM6/Cy8PU=
+	t=1715614267; cv=none; b=Hc5t4wqyFNnk25Si2rLlnrIcpuulwjwbiRuiXOjT7JImmLG6tCuohmH13OQLgdvHnD6nnkLjV0AVG8F6qh5eeGxY1ANwmjra1V3cPeovE1Ra+Zns0hkZbymkWPRU6Lt+/JVJiyVFjbG4WfVShFGVq5NNYUC0C7LkygDMrJYP8zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715613882; c=relaxed/simple;
-	bh=h2iJpObsQs3T74xMyRPTFmrNKvp5JTw5AduUgWE4NAY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Wpg0p3OXJqRiWBGtC5xh06+deRM/tJWMdOCUh3AkiA7j7DupI4a7A/clSQ6tx7Sq2mKey10glYIuVw/DHNhlMpKV5nXhOpghPNK0i7cNXXdGTpIecczYGgmsojf91jzd+E8QKDV3Ek0i80zuAcDFtk77nPVMUSVFB+MJnDXRoQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usbDDF9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8932CC113CC;
-	Mon, 13 May 2024 15:24:41 +0000 (UTC)
+	s=arc-20240116; t=1715614267; c=relaxed/simple;
+	bh=1HtSJFt90RaqaGeRBDchac1k8ZcGCAzJeUdHemrwB5s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=J8KbRMeCe2e/RlwNpE3Jujn6mXCy8wjSFOKwFZKaEi1tFFCdEdLmkyOG9OLqCjZYHPzdfb8t4B24EJ4N+uB6DIqy8vUJtgctJ/nDRhJYx8gMB+31Aup53GEu0X/OPOJvqj7J8scFjsaxCY/q61JuF3/wWjP4vKrjQe+UX+CyyBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1Axh4/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E38C32782;
+	Mon, 13 May 2024 15:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715613881;
-	bh=h2iJpObsQs3T74xMyRPTFmrNKvp5JTw5AduUgWE4NAY=;
+	s=korg; t=1715614267;
+	bh=1HtSJFt90RaqaGeRBDchac1k8ZcGCAzJeUdHemrwB5s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=usbDDF9HI0Td2oDD6jkZPoEX6Zz6fEByuCREPMca13wrd71Cos5R0ZFE6Iympyvml
-	 ksazeVwvoWbmbCtnAh9NNXh3zcjVlEJImWdG+41KHOyge1FXzV4nyt4vRvod19sDwp
-	 LIRdk2e5liTR/Iv8646eSjnE75ltG3zt7Hhe0RGg=
-Subject: FAILED: patch "[PATCH] eventfs: Have "events" directory get permissions from its" failed to apply to 6.8-stable tree
-To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
+	b=P1Axh4/7b05vZvjr3l6yc18jBUq1VrOrn+aYHNl05SjFIK6d05IHPwA6xjg4JwdSd
+	 6all+V+PI6/vRt4BGnwwK88juQoHQrPu1cvgsmq2JV2ocSXMnOtGbzqlOBfSjMNRRw
+	 qCFsOEcOeWoN1HmecbgFVw8m3TRFAgbGSE/7Lh1A=
+Subject: FAILED: patch "[PATCH] mm/userfaultfd: reset ptes when close() for wr-protected ones" failed to apply to 6.1-stable tree
+To: peterx@redhat.com,akpm@linux-foundation.org,david@redhat.com,nadav.amit@gmail.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 17:24:31 +0200
-Message-ID: <2024051331-sediment-viewable-33bc@gregkh>
+Date: Mon, 13 May 2024 17:31:04 +0200
+Message-ID: <2024051304-turkey-underfed-40fe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x d57cf30c4c07837799edec949102b0adf58bae79
+git cherry-pick -x c88033efe9a391e72ba6b5df4b01d6e628f4e734
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051331-sediment-viewable-33bc@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051304-turkey-underfed-40fe@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-d57cf30c4c07 ("eventfs: Have "events" directory get permissions from its parent")
-d53891d348ac ("eventfs: Do not differentiate the toplevel events directory")
-c3137ab6318d ("eventfs: Create eventfs_root_inode to store dentry")
+c88033efe9a3 ("mm/userfaultfd: reset ptes when close() for wr-protected ones")
 
 thanks,
 
@@ -79,128 +77,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d57cf30c4c07837799edec949102b0adf58bae79 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Thu, 2 May 2024 16:08:27 -0400
-Subject: [PATCH] eventfs: Have "events" directory get permissions from its
- parent
+From c88033efe9a391e72ba6b5df4b01d6e628f4e734 Mon Sep 17 00:00:00 2001
+From: Peter Xu <peterx@redhat.com>
+Date: Mon, 22 Apr 2024 09:33:11 -0400
+Subject: [PATCH] mm/userfaultfd: reset ptes when close() for wr-protected ones
 
-The events directory gets its permissions from the root inode. But this
-can cause an inconsistency if the instances directory changes its
-permissions, as the permissions of the created directories under it should
-inherit the permissions of the instances directory when directories under
-it are created.
+Userfaultfd unregister includes a step to remove wr-protect bits from all
+the relevant pgtable entries, but that only covered an explicit
+UFFDIO_UNREGISTER ioctl, not a close() on the userfaultfd itself.  Cover
+that too.  This fixes a WARN trace.
 
-Currently the behavior is:
+The only user visible side effect is the user can observe leftover
+wr-protect bits even if the user close()ed on an userfaultfd when
+releasing the last reference of it.  However hopefully that should be
+harmless, and nothing bad should happen even if so.
 
- # cd /sys/kernel/tracing
- # chgrp 1002 instances
- # mkdir instances/foo
- # ls -l instances/foo
-[..]
- -r--r-----  1 root lkp  0 May  1 18:55 buffer_total_size_kb
- -rw-r-----  1 root lkp  0 May  1 18:55 current_tracer
- -rw-r-----  1 root lkp  0 May  1 18:55 error_log
- drwxr-xr-x  1 root root 0 May  1 18:55 events
- --w-------  1 root lkp  0 May  1 18:55 free_buffer
- drwxr-x---  2 root lkp  0 May  1 18:55 options
- drwxr-x--- 10 root lkp  0 May  1 18:55 per_cpu
- -rw-r-----  1 root lkp  0 May  1 18:55 set_event
+This change is now more important after the recent page-table-check
+patch we merged in mm-unstable (446dd9ad37d0 ("mm/page_table_check:
+support userfault wr-protect entries")), as we'll do sanity check on
+uffd-wp bits without vma context.  So it's better if we can 100%
+guarantee no uffd-wp bit leftovers, to make sure each report will be
+valid.
 
-All the files and directories under "foo" has the "lkp" group except the
-"events" directory. That's because its getting its default value from the
-mount point instead of its parent.
+Link: https://lore.kernel.org/all/000000000000ca4df20616a0fe16@google.com/
+Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
+Analyzed-by: David Hildenbrand <david@redhat.com>
+Link: https://lkml.kernel.org/r/20240422133311.2987675-1-peterx@redhat.com
+Reported-by: syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Have the "events" directory make its default value based on its parent's
-permissions. That now gives:
-
- # ls -l instances/foo
-[..]
- -rw-r-----  1 root lkp 0 May  1 21:16 buffer_subbuf_size_kb
- -r--r-----  1 root lkp 0 May  1 21:16 buffer_total_size_kb
- -rw-r-----  1 root lkp 0 May  1 21:16 current_tracer
- -rw-r-----  1 root lkp 0 May  1 21:16 error_log
- drwxr-xr-x  1 root lkp 0 May  1 21:16 events
- --w-------  1 root lkp 0 May  1 21:16 free_buffer
- drwxr-x---  2 root lkp 0 May  1 21:16 options
- drwxr-x--- 10 root lkp 0 May  1 21:16 per_cpu
- -rw-r-----  1 root lkp 0 May  1 21:16 set_event
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200906.161887248@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 6e08405892ae..a878cea70f4c 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -37,6 +37,7 @@ static DEFINE_MUTEX(eventfs_mutex);
- 
- struct eventfs_root_inode {
- 	struct eventfs_inode		ei;
-+	struct inode			*parent_inode;
- 	struct dentry			*events_dir;
- };
- 
-@@ -226,12 +227,23 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 
- static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
- {
--	struct inode *root;
-+	struct eventfs_root_inode *rei;
-+	struct inode *parent;
- 
--	/* Get the tracefs root inode. */
--	root = d_inode(sb->s_root);
--	ei->attr.uid = root->i_uid;
--	ei->attr.gid = root->i_gid;
-+	rei = get_root_inode(ei);
-+
-+	/* Use the parent inode permissions unless root set its permissions */
-+	parent = rei->parent_inode;
-+
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_UID)
-+		ei->attr.uid = rei->ei.attr.uid;
-+	else
-+		ei->attr.uid = parent->i_uid;
-+
-+	if (rei->ei.attr.mode & EVENTFS_SAVE_GID)
-+		ei->attr.gid = rei->ei.attr.gid;
-+	else
-+		ei->attr.gid = parent->i_gid;
- }
- 
- static void set_top_events_ownership(struct inode *inode)
-@@ -817,6 +829,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	// Note: we have a ref to the dentry from tracefs_start_creating()
- 	rei = get_root_inode(ei);
- 	rei->events_dir = dentry;
-+	rei->parent_inode = d_inode(dentry->d_sb->s_root);
- 
- 	ei->entries = entries;
- 	ei->nr_entries = size;
-@@ -826,10 +839,15 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
--	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
- 
-+	/*
-+	 * When the "events" directory is created, it takes on the
-+	 * permissions of its parent. But can be reset on remount.
-+	 */
-+	ei->attr.mode |= EVENTFS_SAVE_UID | EVENTFS_SAVE_GID;
-+
- 	INIT_LIST_HEAD(&ei->children);
- 	INIT_LIST_HEAD(&ei->list);
- 
+diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+index 60dcfafdc11a..292f5fd50104 100644
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -895,6 +895,10 @@ static int userfaultfd_release(struct inode *inode, struct file *file)
+ 			prev = vma;
+ 			continue;
+ 		}
++		/* Reset ptes for the whole vma range if wr-protected */
++		if (userfaultfd_wp(vma))
++			uffd_wp_range(vma, vma->vm_start,
++				      vma->vm_end - vma->vm_start, false);
+ 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
+ 		vma = vma_modify_flags_uffd(&vmi, prev, vma, vma->vm_start,
+ 					    vma->vm_end, new_flags,
 
 
