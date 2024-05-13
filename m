@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761138C4458
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:35:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEC88C4459
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FF452811FE
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:35:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F36E61F2158D
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26BF57CBD;
-	Mon, 13 May 2024 15:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A77D57CBD;
+	Mon, 13 May 2024 15:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdleJebb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ia0NMXud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F9557CA2
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BACC63C1
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715614523; cv=none; b=DKnmiBt3jzgDCjy/NONaD4KLBhd2f6WaX+gPvfmJSU8ARDveob8nvBQ5rVZOMmWySK2Zty906LjXGI8k9h95/rDnNnp6pYSXgacN180vWbAJkYAtSOHGp5Ghy2iuIGFFMCIS1AjeoRe0URGV1d8Y7W5WFUktsfcsdl0hX3ohIsM=
+	t=1715614532; cv=none; b=rgh8cyhTYB8NgrFjcnqh8hKb5/Y0s8fg7IhBXAfKM+AD817OC3rr/dfUh8R3xQa6G+hwUjDjsFPEs5g5nH+MjfPYmEWgH89DkPU/R/uRM2i8yB/s/JEc2EC359C36WH1HAIllepcFrZeuCDrAwbnH6O6vwIncWgUNa+cTs9MFGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715614523; c=relaxed/simple;
-	bh=Oxh0iL+4r/aqMO6tcpWrvr7vD/NSbFQgnNvaCpG3QsU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TF1tfXBtqdVs2BFGKY8SZM1q804btqgfiaQDrDh9oAuYxoY/a825qe+r8xyVXAdgNsVJMmUDge2glI+Ip/sn3OMSmy7jsdZbXRqrBuMfyUqw720KCZiYeLsaMTIK+gK4m3WP2nrP7sA6wZRZbvCUz1m7/5KDMaFPt1ttFrqm1FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdleJebb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B3BC2BD11;
-	Mon, 13 May 2024 15:35:22 +0000 (UTC)
+	s=arc-20240116; t=1715614532; c=relaxed/simple;
+	bh=9rR/T7tw1Am1sNPxMBieppqkD4LTESVqHFTwF5Uw4Y0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OWsot0v40Q++3dc37tn9V8vjHp+dfUNDEDo+RIFsJLjQwSsKcldRCnAOnUqRYTnxL8c003iEawWyECBys1bdGflVBHd7x7rpymqcwzdCay/9mlDaLHC+n5LBhOqtqU5Wrqq7U9ge2gwX88/Ka2mAOgOB19vFOv5YRpuvnQHjaas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ia0NMXud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E19C113CC;
+	Mon, 13 May 2024 15:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715614523;
-	bh=Oxh0iL+4r/aqMO6tcpWrvr7vD/NSbFQgnNvaCpG3QsU=;
+	s=korg; t=1715614532;
+	bh=9rR/T7tw1Am1sNPxMBieppqkD4LTESVqHFTwF5Uw4Y0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BdleJebbBW3vbeI07SKf5TH2SnAfQmuIwikZNbWGzndXKYxSB/nT/mdM2uX7JgFXz
-	 t2OSl9GGg3T0p3nqlDAaIFBoqD0l1oZhFe9VsRMcpMaY0e7rg1kT9iZhHQGjWv5sE+
-	 CJVaktuRwPDM2KXwPfyn3rqOAtOY1GHDAtJW4Ews=
-Subject: FAILED: patch "[PATCH] Bluetooth: qca: fix firmware check error path" failed to apply to 5.10-stable tree
+	b=Ia0NMXudB7bDrNqBjkYJdWR22SNntaiEvaFNHvvhS5rnI4kfFxWg+PkLW58FfuECs
+	 KCK5C2KTt7Ol5NX/vzPV0250s//UYbK2MiUHt82IT0fiS0vmyvCefmmT6d12s3/VIx
+	 q14RS84YBkGBHoXtoy7eS2Wj73NH5fSnEc4/1ApU=
+Subject: FAILED: patch "[PATCH] Bluetooth: qca: fix firmware check error path" failed to apply to 5.4-stable tree
 To: johan+linaro@kernel.org,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 17:35:20 +0200
-Message-ID: <2024051320-majority-visiting-2bf1@gregkh>
+Date: Mon, 13 May 2024 17:35:21 +0200
+Message-ID: <2024051321-festival-sprint-9288@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 40d442f969fb1e871da6fca73d3f8aef1f888558
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051320-majority-visiting-2bf1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051321-festival-sprint-9288@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,17 @@ c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
 eaf19b0c47d1 ("Bluetooth: btqca: Enable MSFT extension for Qualcomm WCN399x")
 c0187b0bd3e9 ("Bluetooth: btqca: Add support to read FW build version for WCN3991 BTSoC")
 99719449a4a6 ("Bluetooth: hci_qca: resolve various warnings")
+054ec5e94a46 ("Bluetooth: hci_qca: Remove duplicate power off in proto close")
+590deccf4c06 ("Bluetooth: hci_qca: Disable SoC debug logging for WCN3991")
+37aee136f8c4 ("Bluetooth: hci_qca: allow max-speed to be set for QCA9377 devices")
+e5d6468fe9d8 ("Bluetooth: hci_qca: Add support for Qualcomm Bluetooth SoC QCA6390")
+77131dfec6af ("Bluetooth: hci_qca: Replace devm_gpiod_get() with devm_gpiod_get_optional()")
+8a208b24d770 ("Bluetooth: hci_qca: Make bt_en and susclk not mandatory for QCA Rome")
+b63882549b2b ("Bluetooth: btqca: Fix the NVM baudrate tag offcet for wcn3991")
+4f9ed5bd63dc ("Bluetooth: hci_qca: Not send vendor pre-shutdown command for QCA Rome")
+66cb70513564 ("Bluetooth: hci_qca: Enable clocks required for BT SOC")
+ae563183b647 ("Bluetooth: hci_qca: Enable power off/on support during hci down/up for QCA Rome")
+5559904ccc08 ("Bluetooth: hci_qca: Add QCA Rome power off support to the qca_power_shutdown()")
 
 thanks,
 
