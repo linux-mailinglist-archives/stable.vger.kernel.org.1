@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E688C4457
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:35:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761138C4458
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79A321C2346F
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:35:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FF452811FE
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7690957CB7;
-	Mon, 13 May 2024 15:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26BF57CBD;
+	Mon, 13 May 2024 15:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jC5bXmxT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdleJebb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3748557CA4
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F9557CA2
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715614504; cv=none; b=p/ZJ2n/QNbbQT+Ehho6Tb5yW8uHLogc9U+BgWnXRZxaR1HfEwTp/0Mf1tvFVU07VLd7jAlGDIxZXEvlIiF28PzN1SfQqSbmwv0EkgfRKzz16DKLqur3gBpX738gS0VTEEcEWCTFJvuq59Ft1N1scCH0bj+d308ngxO61o/p1WaM=
+	t=1715614523; cv=none; b=DKnmiBt3jzgDCjy/NONaD4KLBhd2f6WaX+gPvfmJSU8ARDveob8nvBQ5rVZOMmWySK2Zty906LjXGI8k9h95/rDnNnp6pYSXgacN180vWbAJkYAtSOHGp5Ghy2iuIGFFMCIS1AjeoRe0URGV1d8Y7W5WFUktsfcsdl0hX3ohIsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715614504; c=relaxed/simple;
-	bh=/bFMkXquJ77F6dAQZ1ww2FIWdSqiYpl1wE494ZbfLUM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GxwxfMxJWgEr9/at07umpEbFhRJXazsxPQy6/gTIuCIykJBAx00PHJ7xP1TL1A+NXaTel8n05ZnNLubspWigMavaRO1THSfhxVup1Fojb7Maffximcp1nH9dzjPHERbbk6ukWtOaPE7g8XX7r7YNdLx7vC2RwX5Mjc6ton5iYeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jC5bXmxT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023C1C2BD11;
-	Mon, 13 May 2024 15:35:02 +0000 (UTC)
+	s=arc-20240116; t=1715614523; c=relaxed/simple;
+	bh=Oxh0iL+4r/aqMO6tcpWrvr7vD/NSbFQgnNvaCpG3QsU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TF1tfXBtqdVs2BFGKY8SZM1q804btqgfiaQDrDh9oAuYxoY/a825qe+r8xyVXAdgNsVJMmUDge2glI+Ip/sn3OMSmy7jsdZbXRqrBuMfyUqw720KCZiYeLsaMTIK+gK4m3WP2nrP7sA6wZRZbvCUz1m7/5KDMaFPt1ttFrqm1FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdleJebb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B3BC2BD11;
+	Mon, 13 May 2024 15:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715614503;
-	bh=/bFMkXquJ77F6dAQZ1ww2FIWdSqiYpl1wE494ZbfLUM=;
+	s=korg; t=1715614523;
+	bh=Oxh0iL+4r/aqMO6tcpWrvr7vD/NSbFQgnNvaCpG3QsU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jC5bXmxTx28bxAWtTu3jfk063BgxUs9nigpSH2KBFZs5RaOdrI0IUhCUISObKQZDc
-	 4kXcvgwq/T53aNWnkOrl4Pxf+/tgOULDTHN2KZBi0GpHrQAV5efPvD2AwpNpqQxWth
-	 3wwk7H/LcHNIl3zfhcneKqUVLAXWZs3wykw9YHn4=
-Subject: FAILED: patch "[PATCH] Bluetooth: qca: fix info leak when fetching fw build id" failed to apply to 5.15-stable tree
+	b=BdleJebbBW3vbeI07SKf5TH2SnAfQmuIwikZNbWGzndXKYxSB/nT/mdM2uX7JgFXz
+	 t2OSl9GGg3T0p3nqlDAaIFBoqD0l1oZhFe9VsRMcpMaY0e7rg1kT9iZhHQGjWv5sE+
+	 CJVaktuRwPDM2KXwPfyn3rqOAtOY1GHDAtJW4Ews=
+Subject: FAILED: patch "[PATCH] Bluetooth: qca: fix firmware check error path" failed to apply to 5.10-stable tree
 To: johan+linaro@kernel.org,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 17:35:00 +0200
-Message-ID: <2024051300-commute-overall-7fed@gregkh>
+Date: Mon, 13 May 2024 17:35:20 +0200
+Message-ID: <2024051320-majority-visiting-2bf1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x cda0d6a198e2a7ec6f176c36173a57bdd8af7af2
+git cherry-pick -x 40d442f969fb1e871da6fca73d3f8aef1f888558
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051300-commute-overall-7fed@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051320-majority-visiting-2bf1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-cda0d6a198e2 ("Bluetooth: qca: fix info leak when fetching fw build id")
-a7f8dedb4be2 ("Bluetooth: qca: add support for QCA2066")
-691d54d0f7cb ("Bluetooth: qca: use switch case for soc type behavior")
-f904feefe60c ("Bluetooth: btqca: Add WCN3988 support")
-8153b738bc54 ("Bluetooth: btqca: use le32_to_cpu for ver.soc_id")
-095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
-44fac8a2fd2f ("Bluetooth: hci_qca: mark OF related data as maybe unused")
-6845667146a2 ("Bluetooth: hci_qca: Fix NULL vs IS_ERR_OR_NULL check in qca_serdev_probe")
+40d442f969fb ("Bluetooth: qca: fix firmware check error path")
+2e4edfa1e2bd ("Bluetooth: qca: add missing firmware sanity checks")
+ecf6b2d95666 ("Bluetooth: btqca: Add support for firmware image with mbn type for WCN6750")
+d8f97da1b92d ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6750")
+b43ca511178e ("Bluetooth: btqca: Don't modify firmware contents in-place")
+c1a74160eaf1 ("Bluetooth: hci_qca: Add device_may_wakeup support")
+eaf19b0c47d1 ("Bluetooth: btqca: Enable MSFT extension for Qualcomm WCN399x")
+c0187b0bd3e9 ("Bluetooth: btqca: Add support to read FW build version for WCN3991 BTSoC")
+99719449a4a6 ("Bluetooth: hci_qca: resolve various warnings")
 
 thanks,
 
@@ -84,87 +85,34 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cda0d6a198e2a7ec6f176c36173a57bdd8af7af2 Mon Sep 17 00:00:00 2001
+From 40d442f969fb1e871da6fca73d3f8aef1f888558 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan+linaro@kernel.org>
-Date: Wed, 1 May 2024 14:34:52 +0200
-Subject: [PATCH] Bluetooth: qca: fix info leak when fetching fw build id
+Date: Wed, 1 May 2024 08:37:40 +0200
+Subject: [PATCH] Bluetooth: qca: fix firmware check error path
 
-Add the missing sanity checks and move the 255-byte build-id buffer off
-the stack to avoid leaking stack data through debugfs in case the
-build-info reply is malformed.
+A recent commit fixed the code that parses the firmware files before
+downloading them to the controller but introduced a memory leak in case
+the sanity checks ever fail.
 
-Fixes: c0187b0bd3e9 ("Bluetooth: btqca: Add support to read FW build version for WCN3991 BTSoC")
-Cc: stable@vger.kernel.org	# 5.12
+Make sure to free the firmware buffer before returning on errors.
+
+Fixes: f905ae0be4b7 ("Bluetooth: qca: add missing firmware sanity checks")
+Cc: stable@vger.kernel.org      # 4.19
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
 diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index c6b2dd4d1716..664db524b1dd 100644
+index 8d8a664620a3..638074992c82 100644
 --- a/drivers/bluetooth/btqca.c
 +++ b/drivers/bluetooth/btqca.c
-@@ -99,7 +99,8 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
- {
- 	struct sk_buff *skb;
- 	struct edl_event_hdr *edl;
--	char cmd, build_label[QCA_FW_BUILD_VER_LEN];
-+	char *build_label;
-+	char cmd;
- 	int build_lbl_len, err = 0;
+@@ -605,7 +605,7 @@ static int qca_download_firmware(struct hci_dev *hdev,
  
- 	bt_dev_dbg(hdev, "QCA read fw build info");
-@@ -114,6 +115,11 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
- 		return err;
- 	}
- 
-+	if (skb->len < sizeof(*edl)) {
-+		err = -EILSEQ;
+ 	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
+ 	if (ret)
+-		return ret;
 +		goto out;
-+	}
-+
- 	edl = (struct edl_event_hdr *)(skb->data);
- 	if (!edl) {
- 		bt_dev_err(hdev, "QCA read fw build info with no header");
-@@ -129,14 +135,25 @@ static int qca_read_fw_build_info(struct hci_dev *hdev)
- 		goto out;
- 	}
  
--	build_lbl_len = edl->data[0];
--	if (build_lbl_len <= QCA_FW_BUILD_VER_LEN - 1) {
--		memcpy(build_label, edl->data + 1, build_lbl_len);
--		*(build_label + build_lbl_len) = '\0';
-+	if (skb->len < sizeof(*edl) + 1) {
-+		err = -EILSEQ;
-+		goto out;
- 	}
- 
-+	build_lbl_len = edl->data[0];
-+
-+	if (skb->len < sizeof(*edl) + 1 + build_lbl_len) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
-+
-+	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
-+	if (!build_label)
-+		goto out;
-+
- 	hci_set_fw_info(hdev, "%s", build_label);
- 
-+	kfree(build_label);
- out:
- 	kfree_skb(skb);
- 	return err;
-diff --git a/drivers/bluetooth/btqca.h b/drivers/bluetooth/btqca.h
-index 49ad668d0d0b..215433fd76a1 100644
---- a/drivers/bluetooth/btqca.h
-+++ b/drivers/bluetooth/btqca.h
-@@ -48,7 +48,6 @@
- #define get_soc_ver(soc_id, rom_ver)	\
- 	((le32_to_cpu(soc_id) << 16) | (le16_to_cpu(rom_ver)))
- 
--#define QCA_FW_BUILD_VER_LEN		255
- #define QCA_HSP_GF_SOC_ID			0x1200
- #define QCA_HSP_GF_SOC_MASK			0x0000ff00
- 
+ 	segment = data;
+ 	remain = size;
 
 
