@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-43603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CEF8C3D0E
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 10:20:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB918C3D15
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 10:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BEE31F21EBC
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 08:20:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16F0BB21927
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 08:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE1E1474AA;
-	Mon, 13 May 2024 08:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EDC1474A2;
+	Mon, 13 May 2024 08:22:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42046146A60;
-	Mon, 13 May 2024 08:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CB1EA8F;
+	Mon, 13 May 2024 08:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715588441; cv=none; b=eFuTJ/IpM2o/Hb05uncRCXJidpdA/C3lgTGNR5DVEVV1JMe1tWRCEfmNqjnKhCuKHdI/hNNZOjxYhPpzolwLbwNx18vHV9RTY2YMq0rL3fGE2LmkCNbzHCcx4CdB2brXF6JPNd5u9HJI7lgd87olpGzukHIoohaMcx89hwXlWpI=
+	t=1715588575; cv=none; b=XHenWgjLkvlJoj6pvyapQb41IOmBdrd8+uphTlpgwAnMRlPT5vfwfdJ5MHjfNzJgLndEnRTGHuoOzY9m7F3YHbPmFOChYckdMHfZa4vO9B2NJGdnW/r1wEwShv8SvNVS3MWBDuPB/W66TaHU7h5pg4I6EC3bhR756Ez06JZGcmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715588441; c=relaxed/simple;
-	bh=2NTXXEv4W0FORRgMaOhp6PQvg0PL8AwY7zxFlKX1Kn8=;
+	s=arc-20240116; t=1715588575; c=relaxed/simple;
+	bh=VdT02T+KafGvezTn4Q1x+u/4j/Y6V8DADyO6zaYJDI4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NuPpUu1rcyfAhF+PQL4I5Zwcg14WrJqhPIc2tqWHX4KQ+CjggfJsLHXT+zJKs+nVIWMCAri6YbuQns87l5cOxXAU8/n2pDdjVC60qWtUksxdG13Dgit2OVspN7mG0vN6ea95Frdh7MmtdXpEYnr6LSNtFpPqB1dVZZNhvYQzdCk=
+	 Content-Type:Content-Disposition:In-Reply-To; b=QykCY8HNSS7aozQTQEiNqcGLIUOrgEoFtAdrDQLdvkCFZWvZRn+YFiA0UhpSBt4TuZnZZVZ1XiZpY/0uDh4o0iumYgJIXvr6dJeHYhby5hnnv5HPGOjZaucywVp7vFM3NaEciT8jNfGTTSY65FxROVjUbBQjKyMn9i6UCQcKmhU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 9A5471C0084; Mon, 13 May 2024 10:20:38 +0200 (CEST)
-Date: Mon, 13 May 2024 10:20:38 +0200
+	id B41411C008E; Mon, 13 May 2024 10:22:51 +0200 (CEST)
+Date: Mon, 13 May 2024 10:22:51 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>, pbonzini@redhat.com,
-	shuah@kernel.org, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.1 08/25] KVM: selftests: Add test for uaccesses
- to non-existent vgic-v2 CPUIF
-Message-ID: <ZkHNVtwcrf91k+dR@duo.ucw.cz>
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com,
+	Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, peterz@infradead.org, xin3.li@intel.com,
+	ubizjak@gmail.com, rick.p.edgecombe@intel.com, arnd@arndb.de,
+	mjguzik@gmail.com, bpf@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.1 19/25] x86/mm: Remove broken vsyscall
+ emulation code from the page fault code
+Message-ID: <ZkHN25mewwQsCSVl@duo.ucw.cz>
 References: <20240507231231.394219-1-sashal@kernel.org>
- <20240507231231.394219-8-sashal@kernel.org>
+ <20240507231231.394219-19-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,28 +55,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="P98zZM4op0/acSa9"
+	protocol="application/pgp-signature"; boundary="WWCtX4pqoop62PeZ"
 Content-Disposition: inline
-In-Reply-To: <20240507231231.394219-8-sashal@kernel.org>
+In-Reply-To: <20240507231231.394219-19-sashal@kernel.org>
 
 
---P98zZM4op0/acSa9
+--WWCtX4pqoop62PeZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> Assert that accesses to a non-existent vgic-v2 CPU interface
-> consistently fail across the various KVM device attr ioctls. This also
-> serves as a regression test for a bug wherein KVM hits a NULL
-> dereference when the CPUID specified in the ioctl is invalid.
+> From: Linus Torvalds <torvalds@linux-foundation.org>
 >=20
-> Note that there is no need to print the observed errno, as TEST_ASSERT()
-> will take care of it.
+> [ Upstream commit 02b670c1f88e78f42a6c5aee155c7b26960ca054 ]
+=2E..
+> IOW, I think the only right thing is to remove that horrendously broken
+> code.
+>=20
+> The attached patch looks like the ObviouslyCorrect(tm) thing to do.
+>=20
+> NOTE! This broken code goes back to this commit in 2011:
+>=20
+>   4fc3490114bb ("x86-64: Set siginfo and context on vsyscall emulation fa=
+ults")
+>=20
+> .. and back then the reason was to get all the siginfo details right.
+> Honestly, I do not for a moment believe that it's worth getting the sigin=
+fo
+> details right here, but part of the commit says:
+>=20
+>     This fixes issues with UML when vsyscall=3Demulate.
+>=20
+> .. and so my patch to remove this garbage will probably break UML in this
+> situation.
+>=20
+> I do not believe that anybody should be running with vsyscall=3Demulate in
+> 2024 in the first place, much less if you are doing things like UML. But
+> let's see if somebody screams.
 
-I don't think this fixes the bug... and thus we should not need it in
-stable.
+Surely this should not go to stable with just 14days in mainline? We
+don't want stable users to scream.
 
 Best regards,
 								Pavel
@@ -81,15 +104,15 @@ Best regards,
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---P98zZM4op0/acSa9
+--WWCtX4pqoop62PeZ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZkHNVgAKCRAw5/Bqldv6
-8n9/AJ9yPe/a5Tb1+iIlDBMPfK4qcPQrVACeNRSDmf0pWoYVHMxMJ7/sJYTC9Q8=
-=HZDl
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZkHN2wAKCRAw5/Bqldv6
+8v7TAKCYmhtelhRRukx/Uu3Lrg8bHYnsIQCgi4ELc23Gr4P2w85lRLVFAGxcYbg=
+=mLrd
 -----END PGP SIGNATURE-----
 
---P98zZM4op0/acSa9--
+--WWCtX4pqoop62PeZ--
 
