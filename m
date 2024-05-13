@@ -1,87 +1,219 @@
-Return-Path: <stable+bounces-43745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCC48C488E
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 22:57:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 621598C489B
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 23:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCA4F1C214B4
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 20:57:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 842361C229D7
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 21:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA8E80BE3;
-	Mon, 13 May 2024 20:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979AF81741;
+	Mon, 13 May 2024 21:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Pp9ClIVQ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="p0olTG/k"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426C31DA24
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 20:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3C01DA24
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 21:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715633847; cv=none; b=dPgyF4Y6BNemoi3dyo2H1gr59zdT36PL1Na7ON5i0eAXN4AMpoaT6+JZFBR9JbEFy5XuIcjQwLbgbGBurmThzQ0+keXxEx/b5XgQ9EbJ0dcG0P+VE1dOkjLWG2DSXWFviEuO1AbliJ1lm9CiaaRNiRGTtc+YLTBab5IB9chgRBQ=
+	t=1715634140; cv=none; b=oMeMhLX7G1GpQsD1qITCDxZub+hqMzFovja+4yqFkloUvllSjR4eAMtXSVUep6tr7HYjnjL0VyQycIT+7JcaGVh287K2Yc4ocp+gicwR+kzjbqIcWMdP04VeuaRHea4JHQvRRlBPIN9CVfgxZaak2mBhkHIwQSqBACQPATHfGgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715633847; c=relaxed/simple;
-	bh=OdaUMpvJC4qw6Sd6UQHgJsCRM1OgLUgoObtDmD+845Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XtInrsNYh5vvufY+hMHPGzQUU3tIYWgMPVjUNttMZ5FdW+T2jLbPqIj0Ou2kE1+Oi3DgWiqwKjCc6R8sWw84yGyCR4MFMS12OQYrwoP8ZGnVyi1N2+lDy3C2zRsPnI7N3GezlQ8OdZ7P2pDJ3ZZl8hZpnlGfYYU8idZNuX4Rh7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Pp9ClIVQ; arc=none smtp.client-ip=178.60.130.6
+	s=arc-20240116; t=1715634140; c=relaxed/simple;
+	bh=IsjoZlYJGB6NGy0XNzfstJAzCx4msWe60bC9UqH3/vU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gx3eGqI6851TDkLzdAzIc75dNcBS35irvcLy9siA5iHjiPaCBeNroUZHNwSZSeII3PV/rc/+0ei7HSAyv9Lsl8w+bagyuBF9fUa+L973DnuzzgrOZh3BhJ4Ghsa6Ia1s5/tQAOWzlCtsb/FT0sBIQJmun2EEgsdApfFej10sp1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=p0olTG/k; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lfe+OWdjNzWkgj4KIbXXDFhWBB8bEKk07UfsUVVhSOg=; b=Pp9ClIVQpuKBLqpxFfH4kEgiZg
-	NmAcidWb5muATME01utRgoCps6ftVGnSQwtCIA4k5s1g0op3slluDekla63X/GWHGeelBAWQcVH+u
-	1jz4oMSsIcpVBTwZVwidJd0S9VH8zHjB42yzjKD3Cyz8srhL8Ulh4Ev79OTli9Pg70fpT0t9TgGsX
-	W+UknI4zO/xMpEIQFdpTHWsYVWV/vUwRDM1fLiFR8PRFCXJsQAcPY82k0YcIv0YJJayBpYdavpE3c
-	7WVMtWvcXRscD089/0dxAfZwRCSLlexKV1wBHSdvdJJ7OSzKgfIxq9CbyLFgPwfm7BcFjZJoTqWKf
-	7YF20lyA==;
-Received: from [179.232.147.2] (helo=[192.168.0.12])
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ULpkvNsnZwH++hjYzakPaKSEwmuHo7DfaEuyX+DsGWg=; b=p0olTG/khvYmJApFDPe+Q0VTcw
+	iv2LwpU3HL7MGWsKZAs5cxbsxwRNUhZHR9fzHl+dxeZ1wEYBkClg76zVY3bn7C3e5QUGq7FcbRU89
+	egGRpBW563/B+6NBsagjbpmc7ttKmmXJUpj/ZFssV8lwvI7Tn0HdGKvSV3kjzICZLmTjtXiAjdGSj
+	yZAYZHxFsXViUFhoOjXdWLaBgLPXrkiAvkMXWdzwbj+9eftVtEz0VhQlpH4wdYiuESak7AKl8BKlH
+	QTMbvIo9D/xCfGyuW4vdUb4t2ShSIBj/3A+o542Og7AOph5FpDs3KcyP3lOf5HXHLD1ri+a0+FKCc
+	yhRRNX+g==;
+Received: from [179.232.147.2] (helo=localhost)
 	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1s6cjY-007hKS-PI; Mon, 13 May 2024 22:57:21 +0200
-Message-ID: <355bbe14-ed7e-e5a2-12cc-d14d49f0639e@igalia.com>
-Date: Mon, 13 May 2024 17:57:16 -0300
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1s6coI-007hTZ-8M; Mon, 13 May 2024 23:02:14 +0200
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	kernel@gpiccoli.net,
+	kernel-dev@igalia.com
+Subject: [PATCH RESEND 5.4.y] ext4: fix bug_on in __es_tree_search
+Date: Mon, 13 May 2024 17:59:31 -0300
+Message-ID: <20240513210211.929582-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 5.4.y] ext4: fix bug_on in __es_tree_search
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, sashal@kernel.org, kernel@gpiccoli.net,
- kernel-dev@igalia.com
-References: <20240511211306.895465-1-gpiccoli@igalia.com>
- <fc7a7af9-b8b9-5fa5-288d-f04d1d7a6437@igalia.com>
- <2024051303-footpath-scraggly-823c@gregkh>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <2024051303-footpath-scraggly-823c@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 13/05/2024 17:54, Greg KH wrote:
-> 
-> Having a forwarded patch doesn't really help, can we get the real
-> backport please?
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: Baokun Li <libaokun1@huawei.com>
 
-OK sure, I understand you want me to resend, so I'll do it right now =)
+commit d36f6ed761b53933b0b4126486c10d3da7751e7f upstream.
+
+Hulk Robot reported a BUG_ON:
+==================================================================
+kernel BUG at fs/ext4/extents_status.c:199!
+[...]
+RIP: 0010:ext4_es_end fs/ext4/extents_status.c:199 [inline]
+RIP: 0010:__es_tree_search+0x1e0/0x260 fs/ext4/extents_status.c:217
+[...]
+Call Trace:
+ ext4_es_cache_extent+0x109/0x340 fs/ext4/extents_status.c:766
+ ext4_cache_extents+0x239/0x2e0 fs/ext4/extents.c:561
+ ext4_find_extent+0x6b7/0xa20 fs/ext4/extents.c:964
+ ext4_ext_map_blocks+0x16b/0x4b70 fs/ext4/extents.c:4384
+ ext4_map_blocks+0xe26/0x19f0 fs/ext4/inode.c:567
+ ext4_getblk+0x320/0x4c0 fs/ext4/inode.c:980
+ ext4_bread+0x2d/0x170 fs/ext4/inode.c:1031
+ ext4_quota_read+0x248/0x320 fs/ext4/super.c:6257
+ v2_read_header+0x78/0x110 fs/quota/quota_v2.c:63
+ v2_check_quota_file+0x76/0x230 fs/quota/quota_v2.c:82
+ vfs_load_quota_inode+0x5d1/0x1530 fs/quota/dquot.c:2368
+ dquot_enable+0x28a/0x330 fs/quota/dquot.c:2490
+ ext4_quota_enable fs/ext4/super.c:6137 [inline]
+ ext4_enable_quotas+0x5d7/0x960 fs/ext4/super.c:6163
+ ext4_fill_super+0xa7c9/0xdc00 fs/ext4/super.c:4754
+ mount_bdev+0x2e9/0x3b0 fs/super.c:1158
+ mount_fs+0x4b/0x1e4 fs/super.c:1261
+[...]
+==================================================================
+
+Above issue may happen as follows:
+-------------------------------------
+ext4_fill_super
+ ext4_enable_quotas
+  ext4_quota_enable
+   ext4_iget
+    __ext4_iget
+     ext4_ext_check_inode
+      ext4_ext_check
+       __ext4_ext_check
+        ext4_valid_extent_entries
+         Check for overlapping extents does't take effect
+   dquot_enable
+    vfs_load_quota_inode
+     v2_check_quota_file
+      v2_read_header
+       ext4_quota_read
+        ext4_bread
+         ext4_getblk
+          ext4_map_blocks
+           ext4_ext_map_blocks
+            ext4_find_extent
+             ext4_cache_extents
+              ext4_es_cache_extent
+               ext4_es_cache_extent
+                __es_tree_search
+                 ext4_es_end
+                  BUG_ON(es->es_lblk + es->es_len < es->es_lblk)
+
+The error ext4 extents is as follows:
+0af3 0300 0400 0000 00000000    extent_header
+00000000 0100 0000 12000000     extent1
+00000000 0100 0000 18000000     extent2
+02000000 0400 0000 14000000     extent3
+
+In the ext4_valid_extent_entries function,
+if prev is 0, no error is returned even if lblock<=prev.
+This was intended to skip the check on the first extent, but
+in the error image above, prev=0+1-1=0 when checking the second extent,
+so even though lblock<=prev, the function does not return an error.
+As a result, bug_ON occurs in __es_tree_search and the system panics.
+
+To solve this problem, we only need to check that:
+1. The lblock of the first extent is not less than 0.
+2. The lblock of the next extent  is not less than
+   the next block of the previous extent.
+The same applies to extent_idx.
+
+Cc: stable@kernel.org
+Fixes: 5946d089379a ("ext4: check for overlapping extents in ext4_valid_extent_entries()")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20220518120816.1541863-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: syzbot+2a58d88f0fb315c85363@syzkaller.appspotmail.com
+[gpiccoli: Manual backport due to unrelated missing patches.]
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
+
+
+Hey folks, this one should have been backported but due to merge
+issues [0], it ended-up not being on 5.4.y . So here is a working version!
 Cheers,
 
 Guilherme
+
+[0] https://lore.kernel.org/stable/165451751147179@kroah.com/
+
+
+ fs/ext4/extents.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 98e1b1ddb4ec..90b12c7c0f20 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -409,7 +409,7 @@ static int ext4_valid_extent_entries(struct inode *inode,
+ {
+ 	unsigned short entries;
+ 	ext4_lblk_t lblock = 0;
+-	ext4_lblk_t prev = 0;
++	ext4_lblk_t cur = 0;
+ 
+ 	if (eh->eh_entries == 0)
+ 		return 1;
+@@ -435,12 +435,12 @@ static int ext4_valid_extent_entries(struct inode *inode,
+ 
+ 			/* Check for overlapping extents */
+ 			lblock = le32_to_cpu(ext->ee_block);
+-			if ((lblock <= prev) && prev) {
++			if (lblock < cur) {
+ 				pblock = ext4_ext_pblock(ext);
+ 				es->s_last_error_block = cpu_to_le64(pblock);
+ 				return 0;
+ 			}
+-			prev = lblock + ext4_ext_get_actual_len(ext) - 1;
++			cur = lblock + ext4_ext_get_actual_len(ext);
+ 			ext++;
+ 			entries--;
+ 		}
+@@ -460,13 +460,13 @@ static int ext4_valid_extent_entries(struct inode *inode,
+ 
+ 			/* Check for overlapping index extents */
+ 			lblock = le32_to_cpu(ext_idx->ei_block);
+-			if ((lblock <= prev) && prev) {
++			if (lblock < cur) {
+ 				*pblk = ext4_idx_pblock(ext_idx);
+ 				return 0;
+ 			}
+ 			ext_idx++;
+ 			entries--;
+-			prev = lblock;
++			cur = lblock + 1;
+ 		}
+ 	}
+ 	return 1;
+-- 
+2.43.2
+
 
