@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567308C4276
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:48:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77708C4277
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C809286F2B
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:48:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 073151C20FE4
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB862152192;
-	Mon, 13 May 2024 13:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA5A1534F4;
+	Mon, 13 May 2024 13:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6yFEKQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6UMaiGi"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7C41E497
-	for <Stable@vger.kernel.org>; Mon, 13 May 2024 13:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE1B152192
+	for <Stable@vger.kernel.org>; Mon, 13 May 2024 13:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715608113; cv=none; b=ID0Mr0ly+SYs9B18VvZox5lN5D7/DnrUSEvIu675vtZXwhTNxdvV4XebmgYe9HoTJmfADzDF1HMt+ooN0s3daLq6hvn6tiZLbJqWv4iLhGJ/O44sGxhoFRfqFRXuvrDUSDZ5QM5SHfF3aaf050tQcHRXhFL+pop8lWDA4dzmy7A=
+	t=1715608120; cv=none; b=jvl06FSJ4Rh3LkmfIAeUf66dnFZ8me90xj5VAmqD4s1O4bPtmvnIQnnXwMKDKlu2GLjKKKh0Do5CKb6RrKWHcDDElGB9qUi1Hh2GvbDTU9wGzNPohJPxt8f44aa1rbCcnPVFC3qqZz5G68gGGokhJ8sXYpMQUf1gN1Huuql+hhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715608113; c=relaxed/simple;
-	bh=I45ov0IT2PyKMwqcjsopE8qZU4EL89EA6+WSESeeGpM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q8X9UUxbszjKifhQSQYTJaRJD+AAe6zWgSb8o1ukwlIYeY0FgjYSzXAx3sJkj/IUnT2SG01f6sEd/iowuYzH/25mEZdhXF2vVj7HtkJJ2UZI2BsViydVbPAVf0ymOTvyPii+8eDG2RDfBy1xkUptJpbQR7nEdIpSXA7m8E6LbCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6yFEKQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD118C113CC;
-	Mon, 13 May 2024 13:48:32 +0000 (UTC)
+	s=arc-20240116; t=1715608120; c=relaxed/simple;
+	bh=SZoTzV7PB2KDy3NTmXMgQWMiVz0MPMCsljZd5QiIKNs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZT+ZDFxrzirPs608GiQEI4pW1Ak9zpeOS1llNGyYKmjo4s+XbYg6AkFKPFIa9gxxAM/v8jZyKebnTX4W5aGH7/xKYCQU6e95+slGZvBn3enWGQlkPitPegOVVb4XK5jEtDJRJ/4RopjWoDI6XcU1WHHc9F/O222mlba68wthe9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6UMaiGi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593CAC32781;
+	Mon, 13 May 2024 13:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715608113;
-	bh=I45ov0IT2PyKMwqcjsopE8qZU4EL89EA6+WSESeeGpM=;
+	s=korg; t=1715608119;
+	bh=SZoTzV7PB2KDy3NTmXMgQWMiVz0MPMCsljZd5QiIKNs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=M6yFEKQfaPe/7fCU8ne3pBycPY58vbaNINZsn/is3mys3ns7Tf4tOTUrFtCHaGR0m
-	 7svG9Z583FXzAa976Z5RDn5zOQ5vv5p0C8ByR5vJXVxLRZhdkxLYhDiK+uKGbIsGrG
-	 3bsK3xOJIXWz1bEtyTG/OCa/RfwE1SUUDKE9+Jt8=
-Subject: FAILED: patch "[PATCH] iio: accel: mxc4005: Reset chip on probe() and resume()" failed to apply to 5.15-stable tree
+	b=X6UMaiGi6K/p6UqDIvxL8qspvLvZgWdZ1bsBbKISdkXNZ0tX1pHuQFgRLs+mNKSOa
+	 8C0DWhldwCm8z2jamHqhrqBo2ca2O/DRH8Znm5PovdqT13T45KOveUAmvYRPDv0ISs
+	 UGflxCxXWO9XyhAet/xZ7g6zbmyg8jgTGAT56bpE=
+Subject: FAILED: patch "[PATCH] iio: accel: mxc4005: Reset chip on probe() and resume()" failed to apply to 5.10-stable tree
 To: hdegoede@redhat.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:48:22 +0200
-Message-ID: <2024051322-alabaster-reliably-95ba@gregkh>
+Date: Mon, 13 May 2024 15:48:23 +0200
+Message-ID: <2024051323-pueblo-release-140e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6b8cffdc4a31e4a72f75ecd1bc13fbf0dafee390
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051322-alabaster-reliably-95ba@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051323-pueblo-release-140e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
