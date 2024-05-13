@@ -1,118 +1,107 @@
-Return-Path: <stable+bounces-43604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB918C3D15
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 10:23:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE8B8C3D1F
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 10:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16F0BB21927
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 08:23:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95F6D282432
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 08:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EDC1474A2;
-	Mon, 13 May 2024 08:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6571474B2;
+	Mon, 13 May 2024 08:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ruLKaRup"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CB1EA8F;
-	Mon, 13 May 2024 08:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B6A1EA8F;
+	Mon, 13 May 2024 08:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715588575; cv=none; b=XHenWgjLkvlJoj6pvyapQb41IOmBdrd8+uphTlpgwAnMRlPT5vfwfdJ5MHjfNzJgLndEnRTGHuoOzY9m7F3YHbPmFOChYckdMHfZa4vO9B2NJGdnW/r1wEwShv8SvNVS3MWBDuPB/W66TaHU7h5pg4I6EC3bhR756Ez06JZGcmI=
+	t=1715588880; cv=none; b=NB+LMrDbICuZAdaTyCGQziosp7JTr370NO2u8F6dT5RkhHbQAoGCBbc28+HQwgK5aTDoyPfYwSwCTfURVDu/uL1dToYfgq13Ji9MlzJ6+QF0lc1dhVxYbFiq76RvsV4IVPmTPgMhtFj5r5ixNekTpX1BFkKaY/9Aq8UFR1af4Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715588575; c=relaxed/simple;
-	bh=VdT02T+KafGvezTn4Q1x+u/4j/Y6V8DADyO6zaYJDI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QykCY8HNSS7aozQTQEiNqcGLIUOrgEoFtAdrDQLdvkCFZWvZRn+YFiA0UhpSBt4TuZnZZVZ1XiZpY/0uDh4o0iumYgJIXvr6dJeHYhby5hnnv5HPGOjZaucywVp7vFM3NaEciT8jNfGTTSY65FxROVjUbBQjKyMn9i6UCQcKmhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id B41411C008E; Mon, 13 May 2024 10:22:51 +0200 (CEST)
-Date: Mon, 13 May 2024 10:22:51 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	syzbot+83e7f982ca045ab4405c@syzkaller.appspotmail.com,
-	Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, peterz@infradead.org, xin3.li@intel.com,
-	ubizjak@gmail.com, rick.p.edgecombe@intel.com, arnd@arndb.de,
-	mjguzik@gmail.com, bpf@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.1 19/25] x86/mm: Remove broken vsyscall
- emulation code from the page fault code
-Message-ID: <ZkHN25mewwQsCSVl@duo.ucw.cz>
+	s=arc-20240116; t=1715588880; c=relaxed/simple;
+	bh=KvcnjCyjTkeTtXOV8cNt7JFpqH6iplwYmt5RghSUA4E=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cIfIL0eAP8jSw3S7BDaYI3Ed9BTGagdf/9587vrZBdx0G3PKxyxMFckqLooJB/d9OUxJ0YbwQAs4vbpXv0paILNmoryn3b5I7hBYhxUWtwvzrKlV00hYXLWkb6SuC/wdgesPbeWiFD1K5bqkPxeWPxFfYBFJuXx+KT+Gaseqbmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ruLKaRup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D66C113CC;
+	Mon, 13 May 2024 08:28:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715588880;
+	bh=KvcnjCyjTkeTtXOV8cNt7JFpqH6iplwYmt5RghSUA4E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ruLKaRup83lDJ1pnNLz4iugrEQJ1No9G22zd9XXPU1JLSc2oa9bTOlyGMyU9bgO9d
+	 /03IrvzoHFAbJmV141tyaUbGkOSPH/kFMKu6xosLfiTIUwH/BRwrKD87ZU9b/1s11k
+	 7jkKt/Ynnwcj25e0Q7sTAqmYjFlo+GoPOZLGxRg9njdOgpjMwAye/+IBz4/QredsCM
+	 aEJKL6TMJlFflcgmtVVVoUxdAqkdOdIC3809gaqZxLE3c+lCZV8MpYxljU5t8DYc9S
+	 tyqJcBs3KZLxz8Qu+0dUxLTEJuKjlPH+LDj2t+q4sF66kfHeYcLsRQpTRb9hODmT1c
+	 WGal839zOIrQg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1s6R2L-00ClXb-OX;
+	Mon, 13 May 2024 09:27:57 +0100
+Date: Mon, 13 May 2024 09:27:57 +0100
+Message-ID: <86zfsum7zm.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Pavel Machek <pavel@denx.de>
+Cc: Sasha Levin <sashal@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Oliver Upton <oliver.upton@linux.dev>,
+	pbonzini@redhat.com,
+	shuah@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.1 08/25] KVM: selftests: Add test for uaccesses to non-existent vgic-v2 CPUIF
+In-Reply-To: <ZkHNVtwcrf91k+dR@duo.ucw.cz>
 References: <20240507231231.394219-1-sashal@kernel.org>
- <20240507231231.394219-19-sashal@kernel.org>
+	<20240507231231.394219-8-sashal@kernel.org>
+	<ZkHNVtwcrf91k+dR@duo.ucw.cz>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="WWCtX4pqoop62PeZ"
-Content-Disposition: inline
-In-Reply-To: <20240507231231.394219-19-sashal@kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pavel@denx.de, sashal@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+On Mon, 13 May 2024 09:20:38 +0100,
+Pavel Machek <pavel@denx.de> wrote:
+> 
+> Hi!
+> 
+> > Assert that accesses to a non-existent vgic-v2 CPU interface
+> > consistently fail across the various KVM device attr ioctls. This also
+> > serves as a regression test for a bug wherein KVM hits a NULL
+> > dereference when the CPUID specified in the ioctl is invalid.
+> > 
+> > Note that there is no need to print the observed errno, as TEST_ASSERT()
+> > will take care of it.
+> 
+> I don't think this fixes the bug... and thus we should not need it in
+> stable.
 
---WWCtX4pqoop62PeZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Given that this goes together with an actually bug fix that was
+backported, it *is*, for once, actually useful to have it in stable.
 
-Hi!
+	M.
 
-> From: Linus Torvalds <torvalds@linux-foundation.org>
->=20
-> [ Upstream commit 02b670c1f88e78f42a6c5aee155c7b26960ca054 ]
-=2E..
-> IOW, I think the only right thing is to remove that horrendously broken
-> code.
->=20
-> The attached patch looks like the ObviouslyCorrect(tm) thing to do.
->=20
-> NOTE! This broken code goes back to this commit in 2011:
->=20
->   4fc3490114bb ("x86-64: Set siginfo and context on vsyscall emulation fa=
-ults")
->=20
-> .. and back then the reason was to get all the siginfo details right.
-> Honestly, I do not for a moment believe that it's worth getting the sigin=
-fo
-> details right here, but part of the commit says:
->=20
->     This fixes issues with UML when vsyscall=3Demulate.
->=20
-> .. and so my patch to remove this garbage will probably break UML in this
-> situation.
->=20
-> I do not believe that anybody should be running with vsyscall=3Demulate in
-> 2024 in the first place, much less if you are doing things like UML. But
-> let's see if somebody screams.
-
-Surely this should not go to stable with just 14days in mainline? We
-don't want stable users to scream.
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---WWCtX4pqoop62PeZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZkHN2wAKCRAw5/Bqldv6
-8v7TAKCYmhtelhRRukx/Uu3Lrg8bHYnsIQCgi4ELc23Gr4P2w85lRLVFAGxcYbg=
-=mLrd
------END PGP SIGNATURE-----
-
---WWCtX4pqoop62PeZ--
+-- 
+Without deviation from the norm, progress is not possible.
 
