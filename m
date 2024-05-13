@@ -1,112 +1,85 @@
-Return-Path: <stable+bounces-43654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BE68C420B
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:37:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0644A8C4215
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F4031F21669
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:37:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15EF1F22501
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B4C1534F4;
-	Mon, 13 May 2024 13:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4494415357A;
+	Mon, 13 May 2024 13:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ob4NdlqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keR+sE7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9806E1534EC
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A39153572
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715607421; cv=none; b=jJPYZUsw/av9l8ZbSAXcEhNYWjbsgl9LRuoS5v4ULsgTo0vpEN4i0GqcYx2qnlCAbT5AHVzfS1ML9h8gFevIG8vFKJe1Bdv7I0DhQ4nXqZDH8GdTBpRHc0edc3JIPHIQXa2RC9LuzOrQebstVpoALruZDJFWN9CB+ntLb+YIW44=
+	t=1715607537; cv=none; b=Lq1jgKEU8geudqJblPjFR/c68B1Lv8vLPBF2snzF6zbi6L2xFXDp4RKWuXvPk+1Q5emrEBNgi5mySrQo0/WRjQyb4C+VOMOTP1PRlBIFYAwDc9/O9Jof+zjFhgL37ejKyfcSo31ApCkXjPC3ID/BQ6vPG56r8jNCyWUVoT5N2WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715607421; c=relaxed/simple;
-	bh=stgORpcctC2/lPVA5xiuFvUD4vO7tLe+sBcaALwN0bQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eoeQ/xZJ46JeNM9VZ3qYMGa6befX4dJTKfX1mLlLEwvUiMfjnAhZmAqE17OikP/nbCbQZx/zyBBS+uPkkCTVJAxuBHhXZSwzTLzae8fS0Je395vUnwfazWY+rVcY2DZmfEXxlmdnGScqRocwq28pMWcSj4S+9ks7w/DCr2c9HBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ob4NdlqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0987EC32786;
-	Mon, 13 May 2024 13:37:00 +0000 (UTC)
+	s=arc-20240116; t=1715607537; c=relaxed/simple;
+	bh=6oORK3K/jND4g9/0GobikbJ2wrVBGIF6CxhyVVIPlAY=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c8y/VinouGwG65Qsz1juXo2oiwVynlq+QvVQRu+ff5iyxxUBWVEUPTuJa/WI3MSKKK4xQgzV8RK1kLxs6UEBu4N2APPWTEACnf1uekyqQlJOUAQUWb6jMC6tgsgK/lBjNXLIAiQSA/LL6utw8q8hs9DUR9pcjore3gQpQ2LVPiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keR+sE7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220B1C4AF0E;
+	Mon, 13 May 2024 13:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715607421;
-	bh=stgORpcctC2/lPVA5xiuFvUD4vO7tLe+sBcaALwN0bQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Ob4NdlqBUrL/lRN7By9GHLq4l05WE0nLkNJ4TG34ISp5RON7sVwvKgK0a7elfUL/6
-	 cXdR/BIB3t3Zlq1Iv4XIHXYqBau5LXkFDZzj5IE92MA58Sop6mdHyAkk7RU0CMKTTf
-	 88bBxpKqEvVy0+uir+jZj3467XMHpLGEadPtDkMY=
-Subject: FAILED: patch "[PATCH] btrfs: add missing mutex_unlock in" failed to apply to 5.4-stable tree
-To: dominique.martinet@atmark-techno.com,dsterba@suse.com,pavel@denx.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:36:47 +0200
-Message-ID: <2024051346-vintage-pull-0a38@gregkh>
+	s=korg; t=1715607536;
+	bh=6oORK3K/jND4g9/0GobikbJ2wrVBGIF6CxhyVVIPlAY=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=keR+sE7ygrJXJRRNBi8RFevTrimenMyEbRawjb+ccUc4mpfQYWI6CNvLDZfCt0aZ/
+	 CHMlOd3XaUI3tQcm/ijIkFtujFZgR8hljWk8eutnshhDQkLQuS1kwzdZIA1Ler5lAp
+	 dZM+O9WDIRnxnWWMjE1ugeSbMPK9Ogyviu4aKod8=
+Date: Mon, 13 May 2024 15:38:53 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: dan.carpenter@linaro.org, rientjes@google.com, stable@vger.kernel.org,
+	vbabka@suse.cz
+Subject: Re: FAILED: patch "[PATCH] mm/slab: make __free(kfree) accept error
+ pointers" failed to apply to 6.1-stable tree
+Message-ID: <2024051337-facelift-bakeshop-cbba@gregkh>
+References: <2024051335-aversion-endearing-7ab9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024051335-aversion-endearing-7ab9@gregkh>
 
+On Mon, May 13, 2024 at 03:31:35PM +0200, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x cd7eb8f83fcf258f71e293f7fc52a70be8ed0128
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051335-aversion-endearing-7ab9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> cd7eb8f83fcf ("mm/slab: make __free(kfree) accept error pointers")
+> a67d74a4b163 ("mm/slab: Add __free() support for kvfree")
+> 54da6a092431 ("locking: Introduce __cleanup() based infrastructure")
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9af503d91298c3f2945e73703f0e00995be08c30
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051346-vintage-pull-0a38@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-9af503d91298 ("btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()")
-7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
-
-thanks,
+Nevermind, I got this to work here and 6.6.y already, sorry for the
+noise.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9af503d91298c3f2945e73703f0e00995be08c30 Mon Sep 17 00:00:00 2001
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Date: Fri, 19 Apr 2024 11:22:48 +0900
-Subject: [PATCH] btrfs: add missing mutex_unlock in
- btrfs_relocate_sys_chunks()
-
-The previous patch that replaced BUG_ON by error handling forgot to
-unlock the mutex in the error path.
-
-Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
-Reported-by: Pavel Machek <pavel@denx.de>
-Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
-CC: stable@vger.kernel.org
-Reviewed-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index dedec3d9b111..c72c351fe7eb 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3419,6 +3419,7 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
- 			 * alignment and size).
- 			 */
- 			ret = -EUCLEAN;
-+			mutex_unlock(&fs_info->reclaim_bgs_lock);
- 			goto error;
- 		}
- 
-
 
