@@ -1,107 +1,112 @@
-Return-Path: <stable+bounces-43605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE8B8C3D1F
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 10:28:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E397F8C3D62
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 10:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95F6D282432
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 08:28:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C019B20AA3
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 08:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6571474B2;
-	Mon, 13 May 2024 08:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1F7147C78;
+	Mon, 13 May 2024 08:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ruLKaRup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4weYjVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B6A1EA8F;
-	Mon, 13 May 2024 08:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5B11474BF;
+	Mon, 13 May 2024 08:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715588880; cv=none; b=NB+LMrDbICuZAdaTyCGQziosp7JTr370NO2u8F6dT5RkhHbQAoGCBbc28+HQwgK5aTDoyPfYwSwCTfURVDu/uL1dToYfgq13Ji9MlzJ6+QF0lc1dhVxYbFiq76RvsV4IVPmTPgMhtFj5r5ixNekTpX1BFkKaY/9Aq8UFR1af4Kk=
+	t=1715589498; cv=none; b=NJqoYJhSSgqx2ppuVaYCsFsqE7Mb/2ROsoDgYzOLp0FUBH+NIudLFLlXQFL6rFzh4I/ve6y66L+LN9ElcM4MvtY4bIMvMMsaA0quKfjTVdJrMh0RvvVkhtG6Z6cOd07fTYDHzApr5hqQ+RxUSunschAzekd1vMMSz51430qEYZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715588880; c=relaxed/simple;
-	bh=KvcnjCyjTkeTtXOV8cNt7JFpqH6iplwYmt5RghSUA4E=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cIfIL0eAP8jSw3S7BDaYI3Ed9BTGagdf/9587vrZBdx0G3PKxyxMFckqLooJB/d9OUxJ0YbwQAs4vbpXv0paILNmoryn3b5I7hBYhxUWtwvzrKlV00hYXLWkb6SuC/wdgesPbeWiFD1K5bqkPxeWPxFfYBFJuXx+KT+Gaseqbmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ruLKaRup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D66C113CC;
-	Mon, 13 May 2024 08:28:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715588880;
-	bh=KvcnjCyjTkeTtXOV8cNt7JFpqH6iplwYmt5RghSUA4E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ruLKaRup83lDJ1pnNLz4iugrEQJ1No9G22zd9XXPU1JLSc2oa9bTOlyGMyU9bgO9d
-	 /03IrvzoHFAbJmV141tyaUbGkOSPH/kFMKu6xosLfiTIUwH/BRwrKD87ZU9b/1s11k
-	 7jkKt/Ynnwcj25e0Q7sTAqmYjFlo+GoPOZLGxRg9njdOgpjMwAye/+IBz4/QredsCM
-	 aEJKL6TMJlFflcgmtVVVoUxdAqkdOdIC3809gaqZxLE3c+lCZV8MpYxljU5t8DYc9S
-	 tyqJcBs3KZLxz8Qu+0dUxLTEJuKjlPH+LDj2t+q4sF66kfHeYcLsRQpTRb9hODmT1c
-	 WGal839zOIrQg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1s6R2L-00ClXb-OX;
-	Mon, 13 May 2024 09:27:57 +0100
-Date: Mon, 13 May 2024 09:27:57 +0100
-Message-ID: <86zfsum7zm.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Oliver Upton <oliver.upton@linux.dev>,
-	pbonzini@redhat.com,
-	shuah@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.1 08/25] KVM: selftests: Add test for uaccesses to non-existent vgic-v2 CPUIF
-In-Reply-To: <ZkHNVtwcrf91k+dR@duo.ucw.cz>
-References: <20240507231231.394219-1-sashal@kernel.org>
-	<20240507231231.394219-8-sashal@kernel.org>
-	<ZkHNVtwcrf91k+dR@duo.ucw.cz>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1715589498; c=relaxed/simple;
+	bh=wxX6epJ94bMOYJl9YPKz2h6+jsBH/JG6qIrcbGFB17M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KqW/Wx4R6fs1vkAoCJOE+M8jg59JivPYM68KAo7HByQZ4MnVvgFpmVn3xyfivwhG3mXenwvpNQjuvDCl5PRfytV5W59vmuRUXdbIGiOFcmCnIcXM5xgoN0ZzfX9FeF3LQj8saPLQO6ukmtP493FJ7i0GAgn16bb0Zvx3nk9Czvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4weYjVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC85DC113CC;
+	Mon, 13 May 2024 08:38:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715589498;
+	bh=wxX6epJ94bMOYJl9YPKz2h6+jsBH/JG6qIrcbGFB17M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O4weYjVZizCTiyGN8eF1EJ5eav/g1PEJjLp7FaJ/qI4r3IaBt3P8ggX8QzJNIwo2Q
+	 SqAUu5gRv4R0dgM+89psX3VI/ggFa+7pVxvMb2tWk0F2U1JPdHooIZQL2YKNaSmWHE
+	 j2z9+/q9Q8UUOpEcst3ov4DrMe+WKQFb3/dowoLQ=
+Date: Mon, 13 May 2024 10:38:15 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, roger.pau@citrix.com,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Subject: Re: Patch "x86/xen: attempt to inflate the memory balloon on PVH"
+ has been added to the 6.1-stable tree
+Message-ID: <2024051341-drearily-quaintly-3ea0@gregkh>
+References: <20240509173637.559165-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pavel@denx.de, sashal@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240509173637.559165-1-sashal@kernel.org>
 
-On Mon, 13 May 2024 09:20:38 +0100,
-Pavel Machek <pavel@denx.de> wrote:
+On Thu, May 09, 2024 at 01:36:36PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> Hi!
+>     x86/xen: attempt to inflate the memory balloon on PVH
 > 
-> > Assert that accesses to a non-existent vgic-v2 CPU interface
-> > consistently fail across the various KVM device attr ioctls. This also
-> > serves as a regression test for a bug wherein KVM hits a NULL
-> > dereference when the CPUID specified in the ioctl is invalid.
-> > 
-> > Note that there is no need to print the observed errno, as TEST_ASSERT()
-> > will take care of it.
+> to the 6.1-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > 
-> I don't think this fixes the bug... and thus we should not need it in
-> stable.
+> The filename of the patch is:
+>      x86-xen-attempt-to-inflate-the-memory-balloon-on-pvh.patch
+> and it can be found in the queue-6.1 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Given that this goes together with an actually bug fix that was
-backported, it *is*, for once, actually useful to have it in stable.
+This breaks the build on 6.1.y kernels:
 
-	M.
+In file included from ./include/linux/ioport.h:15,
+                 from ./include/linux/acpi.h:12,
+                 from arch/x86/xen/enlighten_pvh.c:2:
+arch/x86/xen/enlighten_pvh.c: In function ‘xen_reserve_extra_memory’:
+./include/linux/minmax.h:20:35: error: comparison of distinct pointer types lacks a cast [-Werror]
+   20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+      |                                   ^~
+./include/linux/minmax.h:26:18: note: in expansion of macro ‘__typecheck’
+   26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
+      |                  ^~~~~~~~~~~
+./include/linux/minmax.h:36:31: note: in expansion of macro ‘__safe_cmp’
+   36 |         __builtin_choose_expr(__safe_cmp(x, y), \
+      |                               ^~~~~~~~~~
+./include/linux/minmax.h:45:25: note: in expansion of macro ‘__careful_cmp’
+   45 | #define min(x, y)       __careful_cmp(x, y, <)
+      |                         ^~~~~~~~~~~~~
+arch/x86/xen/enlighten_pvh.c:117:25: note: in expansion of macro ‘min’
+  117 |                 pages = min(extra_pages,
+      |                         ^~~
+cc1: all warnings being treated as errors
 
--- 
-Without deviation from the norm, progress is not possible.
+
+So I'm dropping it for now.
+
+thanks,
+
+greg k-h
 
