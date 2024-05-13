@@ -1,88 +1,106 @@
-Return-Path: <stable+bounces-43609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DB48C3E06
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 11:22:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92AA8C3E52
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 11:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB581F2271C
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 09:22:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72D9D283108
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 09:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFBB1487D9;
-	Mon, 13 May 2024 09:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F1C148FE7;
+	Mon, 13 May 2024 09:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="p0H3BHkH"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2E91474CF;
-	Mon, 13 May 2024 09:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00144148833;
+	Mon, 13 May 2024 09:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715592147; cv=none; b=XXF1V1c+g855/EjAeli+YM4eqHu5I+vpz5JyfxLs/08y7Mw2g45Q2HmkEAFSSfKTtWkcmyyhDn670SUmXV4fEcvxQV+GuAAYwhYtCqck5MzAVCxlcsNrgyZFJmEemqfZk1LP5dS3LRePHnJ5sYBViT3VOA/SW14MXRmKcyfV6bA=
+	t=1715593578; cv=none; b=fZSnV5BK2HW2tUDx1Yjng/JR166A/brmf0NOHSyBI6OTtmIceuVBXsUIx9gC3bxpUb5F8deknBEtarIMtgOCHi2tiLieo89Xz9Y9tU0g0NNbFzCD0v9PAMpiwFuMSTL1q4ObXN4qJbG6aZBNI5K18zHaIQ62G52NIrvQ06fFo84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715592147; c=relaxed/simple;
-	bh=5dfdm9Vk9P5CiArU2QhD4a6bzcQ7+TFM9CMFHzaxjVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G0mStU40oUPu6oE4iRUhoVvMNyQbzetzBJBaZCNGfYh57rvDbe6CdZPrUpmggGDTDJ9aU+sszjP7eNESSRfu7a20tzqV/U4609mOQCjo0NJCHlpYyhVvMrIr2NXFSkWG7kiDtxh50n2ta3Sa13tw+lW1rP5BWyjcMCSK0RJ/KT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B36B1007;
-	Mon, 13 May 2024 02:22:50 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D7353F762;
-	Mon, 13 May 2024 02:22:24 -0700 (PDT)
-Date: Mon, 13 May 2024 10:22:21 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>
-Subject: Re: [PATCH 5.4 / 5.10] firmware: arm_scmi: Harden accesses to the
- reset domains
-Message-ID: <ZkHbzRahnQgptrVr@bogus>
-References: <20240513003837.810709-1-dominique.martinet@atmark-techno.com>
+	s=arc-20240116; t=1715593578; c=relaxed/simple;
+	bh=78JACrpwAIJUzYoSzz7DFXvGbWIB1h/emV8sTNs8WJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VMGzcOG+otdgxJBLdjUoHixvNcLa8v4Nom/9gt9WdXp0MR9VYyK8S/sfs75ihOgBDpasztTulg+cRCs/Yr5yqyfGjz6sUblq98+/w0o20Cd488vb0rMwrXz4Srvxxkalyx33xX7Xz+oWpt9MR5hsq67EGTmXsmB6Qtoau1JyIPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=p0H3BHkH; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 20651600A2;
+	Mon, 13 May 2024 09:46:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1715593567;
+	bh=78JACrpwAIJUzYoSzz7DFXvGbWIB1h/emV8sTNs8WJ8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=p0H3BHkHa1+VvaLOC6d0yomZXawT6XotRgEQvHOncpF2JprfpLoVLURmLXzIzM8rl
+	 6frgSiMW586WJKv8ogFTn7km7PQ3AVBs/xNjc+ar31gParFkzipPOYTZjexUgjhm11
+	 3LTiSIyrMZxzLSwItQNL9TIS7wu9TxCKVixtDVx7LxbHG6siKX4mtUCr3KSu9iE0RW
+	 NNyLb80DzaWQZoyfiWhL8DuqBOQK0FSGKGCWDD1GJdzP6YizNN2rshsEbvHdyFEYFs
+	 cForyHpnDHxrJIwGTK982CdChYZonIuiB13oGPhcZnebd2G+1IqsPFn/GsbnqKwB+y
+	 rQwF4fWbmbXGA==
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by x201s (Postfix) with ESMTP id 6EB5C202E4D;
+	Mon, 13 May 2024 09:46:02 +0000 (UTC)
+Message-ID: <ea7ae0c4-a582-42ce-9bc9-5f3df1915ca0@fiberby.net>
+Date: Mon, 13 May 2024 09:46:02 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240513003837.810709-1-dominique.martinet@atmark-techno.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 5.10 5/9] net: qede: sanitize 'rc' in
+ qede_add_tc_flower_fltr()
+To: Pavel Machek <pavel@denx.de>, Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Simon Horman <horms@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ manishc@marvell.com, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org
+References: <20240507231406.395123-1-sashal@kernel.org>
+ <20240507231406.395123-5-sashal@kernel.org> <ZkHMvNFzwPfMeJL3@duo.ucw.cz>
+Content-Language: en-US
+From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
+In-Reply-To: <ZkHMvNFzwPfMeJL3@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 13, 2024 at 09:38:37AM +0900, Dominique Martinet wrote:
-> From: Cristian Marussi <cristian.marussi@arm.com>
->
-> [ Upstream commit e9076ffbcaed5da6c182b144ef9f6e24554af268 ]
->
-> Accessing reset domains descriptors by the index upon the SCMI drivers
-> requests through the SCMI reset operations interface can potentially
-> lead to out-of-bound violations if the SCMI driver misbehave.
->
-> Add an internal consistency check before any such domains descriptors
-> accesses.
->
-> Link: https://lore.kernel.org/r/20220817172731.1185305-5-cristian.marussi@arm.com
-> Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-> ---
-> This is the backport I promised for CVE-2022-48655[1]
-> [1] https://lkml.kernel.org/r/Zj4t4q_w6gqzdvhz@codewreck.org
->
+Hi Pavel and Sasha,
 
-The backport looks good and thanks for doing that. Sometimes since we
-know all the users are in the kernel, we tend to ignore the facts that
-they need to be backport as this was considered as theoretical issue when
-we pushed the fix. We try to keep that in mind and add fixes tag more
-carefully in the future. Thanks for your effort and bring this to our
-attention.
+On 5/13/24 8:18 AM, Pavel Machek wrote:
+>> Explicitly set 'rc' (return code), before jumping to the
+>> unlock and return path.
+>>
+>> By not having any code depend on that 'rc' remains at
+>> it's initial value of -EINVAL, then we can re-use 'rc' for
+>> the return code of function calls in subsequent patches.
+>>
+>> Only compile tested.
+> 
+> Only compile tested, and is a preparation for something we won't do in
+> stable. Does not fix a bug, please drop.
 
---
-Regards,
-Sudeep
+Please see the original thread about this series[1], this patch is a requirement for
+two of the next patches, which does fix a few bugs with overruled error codes returned
+to user space.
+
+I was originally going to ignore these AUTOSEL mails, since the whole series was already
+added to the queued more than 24 hours earlier[2]. In the queue Sasha has also added "Stable-dep-of:'.
+
+So the weird thing is that AUTOSEL selected this patch, given that it was already in the queue.
+
+[1] https://lore.kernel.org/netdev/20240426091227.78060-1-ast@fiberby.net/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/log/?h=queue/5.10
+
+-- 
+Best regards
+Asbjørn Sloth Tønnesen
+Network Engineer
+Fiberby - AS42541
 
