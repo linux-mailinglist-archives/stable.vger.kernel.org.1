@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6FC8C42BF
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 16:00:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AED8C42C0
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 16:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD3BEB21384
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 14:00:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5929B2196B
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 14:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8244153572;
-	Mon, 13 May 2024 14:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873A4153586;
+	Mon, 13 May 2024 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6tU2e22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGwAqS1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8644F1474BB
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 14:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D241474BB
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715608807; cv=none; b=MFBB6pee2qxfew1ujDbXZL0lyS9NcxIPb2nZSuv9ss3H7Zyj9Dxs/9x+/s1G1tW2yy1CtUnzjatl27l+pabFXG62P/MS6liWezH+DcfSdrEDivGg4WQbL9ArCKVPRSIoaZYtfi4EnjOfO1i2vqhQiPwfxRQzfFZu/YyJa096vfw=
+	t=1715608812; cv=none; b=MY+4HvFeJsf9QVNsUtGwh3HGrodDEjWZF1qu5MmhBARsAP9tPDwwWzZ6QQUi6hclqf5sWXvTWvu7OaTWN6O5oHQg6sQ7oDSiAZb/ce8W/JYiC34HFPsxspgDjDZUu+qHVvJIQi6R8zDdcy58W7eSzXK6pUfuRhIptOw9TucLa14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715608807; c=relaxed/simple;
-	bh=YkTsrxhlhyDLPgWp2C5406Mre7wLi/2s11xEBVv9cX0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VGjj7F3TMip3UO1TCjNC7YrgQbk7vfwdBPwLMfP1YdQFEa/tIwYBDIL6xWketu5+y7nB3sbwXu5jQWtv4ECb41GGG45T7jB1hlvbi0h3hz0Mca6d6jGIvosu3OA7l6nFAGeX28eTsvDH01EaWUvdY8oznQs6u1TFomltHCzxlF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6tU2e22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7B3C4AF10;
-	Mon, 13 May 2024 14:00:06 +0000 (UTC)
+	s=arc-20240116; t=1715608812; c=relaxed/simple;
+	bh=8vbtucSCeYuWfEhk6eXHYurn7SmvrcMIJbl+NYv0wFs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gshMe05FSu0+wp5Oeg8XRGQu/PzhuksCyT2B0gfLBL11Y66a+ytUyk/pvfxSZxTGKwygm1A+6zddk2QlyWMApIjW8qs9H+/HVRW+A8fYrfr+/kfT1QxQofa5URUX8+I1zzEYIomsv4frXXPJREctHHj9GN83b3KHw89DH+403yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGwAqS1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D049C4AF0E;
+	Mon, 13 May 2024 14:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715608807;
-	bh=YkTsrxhlhyDLPgWp2C5406Mre7wLi/2s11xEBVv9cX0=;
+	s=korg; t=1715608812;
+	bh=8vbtucSCeYuWfEhk6eXHYurn7SmvrcMIJbl+NYv0wFs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=F6tU2e22pxTpmt39WwGZTvqCYGK0BcdMdIi1+aKE5wR++bXxF0YQBd/0Te0OiTY7s
-	 lj1WyQLywYP3VCk4ux+4JNJYiR5FrZ3UbXGnzBo1XXdcxAPTTvIxJDTuaVd7pDQZqm
-	 Vs6ToxZQ46sdowEbKjDMkAjrflAK16WILm1JQUng=
-Subject: FAILED: patch "[PATCH] ASoC: ti: davinci-mcasp: Fix race condition during probe" failed to apply to 5.4-stable tree
+	b=JGwAqS1oeGM9qNPDFKWQV6D/5QvfXzrc0e6IsGcU17++fbqgIhbr1GSH+9IDfZkIv
+	 csWpME3lrbo4agyYaPA+oa3z9YQxhhgEfbN2tIEpjz6+0A4Rzw8+T6emyt80kuOP6V
+	 fkhFzwXwws9PFYNpEf0WDdOMckd6j4zdgBrHJbUM=
+Subject: FAILED: patch "[PATCH] ASoC: ti: davinci-mcasp: Fix race condition during probe" failed to apply to 4.19-stable tree
 To: joao.goncalves@toradex.com,broonie@kernel.org,j-luthra@ti.com,peter.ujfalusi@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 16:00:03 +0200
-Message-ID: <2024051302-deluge-renovate-d904@gregkh>
+Date: Mon, 13 May 2024 16:00:08 +0200
+Message-ID: <2024051308-sullen-plug-a6fb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x d18ca8635db2f88c17acbdf6412f26d4f6aff414
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051302-deluge-renovate-d904@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051308-sullen-plug-a6fb@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,19 @@ db8793a39b29 ("ASoC: ti: davinci-mcasp: Remove legacy dma_request parsing")
 372c4bd11de1 ("ASoC: ti: davinci-mcasp: Use platform_get_irq_byname_optional")
 19f6e424d615 ("ASoC: ti: davinci-mcasp: remove always zero of davinci_mcasp_get_dt_params")
 f4d95de415b2 ("ASoC: ti: davinci-mcasp: remove redundant assignment to variable ret")
+764958f2b523 ("ASoC: ti: davinci-mcasp: Support for auxclk-fs-ratio")
+540f1ba7b3a5 ("ASoC: ti: davinci-mcasp: Add support for GPIO mode of the pins")
+617547175507 ("ASoC: ti: davinci-mcasp: Move context save/restore to runtime_pm callbacks")
+f2055e145f29 ("ASoC: ti: Merge davinci and omap directories")
+bc1845498531 ("ASoC: davinci-mcasp: Implement configurable dismod handling")
+ca3d9433349e ("ASoC: davinci-mcasp: Update PDIR (pin direction) register handling")
+9c34d023dc35 ("ASoC: omap-mcbsp: Re-arrange files for core McBSP and Sidetone function split")
+be51c576e849 ("ASoC: omap-mcbsp: Move out the FIFO check from set_threshold and get_delay")
+59d177f65f50 ("ASoC: omap-mcbsp: Simplify the mcbsp_start/_stop function parameters")
+d63a7625a6df ("ASoC: omap-mcbsp: Clean up the interrupt handlers")
+c9ece9c29e26 ("ASoC: omap-mcbsp: Skip dma_data.maxburst initialization")
+dd443a7c0b00 ("ASoC: omap-mcbsp: Clean up dma_data addr initialization code")
+2c2596f3ab25 ("ASoC: omap: Remove unused machine driver for AM3517-evm")
 
 thanks,
 
