@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36C58C41C1
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:22:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D40878C41C3
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 461B228259A
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:22:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9181F218BD
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB046152185;
-	Mon, 13 May 2024 13:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98849152182;
+	Mon, 13 May 2024 13:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PobVgbW1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jmi6+8Fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C1A15217E
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590AE15216F
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715606565; cv=none; b=pmIl+KEMpMwJwPalu002QQON+GRsld3RJ2dIzb3DO2QCy1LrP1LDl2NTF1eDG/OzMzhlTNUOa1Bwrao4TDNhVaKEdT65lLYaw1WQZCk29hoNhDxl6v9augv6751Tr3ChKufULzL83ntvR/l+LHQ5850l5QVxGYlOnAPLbWAhcSM=
+	t=1715606568; cv=none; b=WN6GINZUz+guLpl95dnyUwyCFPC4Hw8mWV2c7iw8nVWiHVqcq1kY0TZTURk/V65AZHqGXl0aCkn3gx3PIeMukwZMUpdZm8tETF2NVn//vzgxoiYSpVe7PzPFP7Gc6dT09t63wboCDycpHiNYcNPCrjikp6jhOLexugOaioZ+nf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715606565; c=relaxed/simple;
-	bh=FS1VylANIgXftEly3m6vZuUYRn7ddwo4CroLft9IC3I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ie+yt9/7R4CraSUnMqDJjDTUFErsygT0AVgnzATscUBn3wSOviB0l2LY9eOWzGRW7GBlwq4lXg3/OeEEoFxWvhn/aigyUFbhZEHm8IuvleNBieyVQ27Lj0BWrCHJ+1EVJwYMIyDHl7OOHF/BUbr7apnN40bQ9ifcwFoWgVmEEV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PobVgbW1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96056C32781;
-	Mon, 13 May 2024 13:22:44 +0000 (UTC)
+	s=arc-20240116; t=1715606568; c=relaxed/simple;
+	bh=TDUVc8C1v9ieGklDnCXPXGsGtiXWmyGKase7UD2kfxY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=J9pJ9cc+ZOz2azTzOcf19KCJasLDU01Yymt+eb+3yTYwdqq7i8rQ9H9xk9bUQ78qbF0GXC9bwWnrSMn0LLOEhd5tTTQ9u7mxg1UbtlR9aOsY5ycf/qcE+ZEM3dAOBHUaG+ngoSXe+N1LSO/mhT5UlZK26Z8heise6jB3whYmeqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jmi6+8Fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F23C32781;
+	Mon, 13 May 2024 13:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715606565;
-	bh=FS1VylANIgXftEly3m6vZuUYRn7ddwo4CroLft9IC3I=;
+	s=korg; t=1715606568;
+	bh=TDUVc8C1v9ieGklDnCXPXGsGtiXWmyGKase7UD2kfxY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PobVgbW1itAYE7JjgBS+ZlW3RyvMRMRmOt+iifTlmWJa0jiIfmt/Hv/Y3ZE1If/LJ
-	 IDZ+y22UQXp9ebLY2CvsKutSjglsf2UACyc9zbSSwAxy3emlcbIgYiwnI2CubPai5m
-	 m3oa4pU8ug5tBoqyjftjAtGjpJQCqwznBq4UDAys=
-Subject: FAILED: patch "[PATCH] usb: typec: tcpm: clear pd_event queue in PORT_RESET" failed to apply to 5.15-stable tree
+	b=Jmi6+8Fiax/lifC+kPhfJ1WbIwoHlvitdiMbGYMLvft+gr0POUGk8lJchtsDuJEcy
+	 Snogj8rsy+xN3ARkNe0ImjmL01D4r/HyG7WgB6Ud8TE1UH7zWQ1KBybjQMCgU/V9YK
+	 GhYeG4PE/jWqNjVyvXN0aCqPfb0XbksxquU510Xo=
+Subject: FAILED: patch "[PATCH] usb: typec: tcpm: clear pd_event queue in PORT_RESET" failed to apply to 5.4-stable tree
 To: rdbabiera@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:22:36 +0200
-Message-ID: <2024051335-augmented-overblown-4920@gregkh>
+Date: Mon, 13 May 2024 15:22:37 +0200
+Message-ID: <2024051337-january-scrooge-500c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x bf20c69cf3cf9c6445c4925dd9a8a6ca1b78bfdf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051335-augmented-overblown-4920@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051337-january-scrooge-500c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 bf20c69cf3cf ("usb: typec: tcpm: clear pd_event queue in PORT_RESET")
 197331b27ac8 ("usb: typec: tpcm: Fix PORT_RESET behavior for self powered devices")
 1e35f074399d ("usb: typec: tcpm: fix cc role at port reset")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
+42b8ff477202 ("Input: amimouse - convert to platform remove callback returning void")
 
 thanks,
 
