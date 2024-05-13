@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDA58C41D9
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:25:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A749D8C41EC
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFE141F22E73
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:25:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36D3A1F238F9
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9E515218F;
-	Mon, 13 May 2024 13:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8359D153500;
+	Mon, 13 May 2024 13:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLmaE9eO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrYg+/95"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EAA1152171
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FE51534F3
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715606740; cv=none; b=hjvxKHqSvaqHDVgmDsxp3rweTq8n6ph8vhWYrz5e1U74gs9Gweq3q48qsYa1r3PqLH+aNcvD+kLgHHEnR14SZndVxQhP4Lik4aSrac+pFhOAxdhDFPIuC2qwUFFQEdqzlyzPeiRaZNleayKxDSnRYOhgUCoZWrN0VZ65+zrkW68=
+	t=1715607000; cv=none; b=PgSB7FvLQOs3kf3KL/fXnAUdtZM+9R+HSYoIYQWr6vcjmnEgmNcfKhPlXKJbQdxguR5lT1gcgUxBbJs7wXPYeh0pWZ+tyFtco6YEOQLCYt2Aq3DzZPC+Bn+vCuAAOTofcx/O0WZIAfBumxOX7bfW+hw6oclhAu4f6DLfPwLe7/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715606740; c=relaxed/simple;
-	bh=sk40VDwYK29ePhIh2i/SOEUW5lG5I6sUhYrquObHnHM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EO8WrMitxo07jS2luGO+OkKCeopywYSH+2uVwhdZtsjuDTv9a7EnFC2iJu0jqdMru2FLMTh7+dLWhBkKXW1ifQiVmNZ5mFtW1n0pquqT8+CUvMABymkhMzccKn9wsL4wPMRAdTn6VMQx2GcTz7W5p1Hf8BM199XGL39uWBc8HsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLmaE9eO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A98C113CC;
-	Mon, 13 May 2024 13:25:38 +0000 (UTC)
+	s=arc-20240116; t=1715607000; c=relaxed/simple;
+	bh=c/5pu0Pn64kmPAsA9o7CPWHkw/aZ08W73CUVNNAnHM4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ozVinIk9UDTfLsb06pDv7+yyCSdZ/nWOf67JWW0xPtaqoz6Go3gM6tmp9rnvb6qU7Fvy5VUUvRL7WtBlnLI3oIoYfTRuSh66U7X72IuUoo2POP7/R7+3Vptl3pzSdsTdzFDa0mzF+jDohQiz9FXYgc2iDTTCOhU8kZCdOZ63hM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrYg+/95; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A298DC4AF13;
+	Mon, 13 May 2024 13:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715606739;
-	bh=sk40VDwYK29ePhIh2i/SOEUW5lG5I6sUhYrquObHnHM=;
+	s=korg; t=1715607000;
+	bh=c/5pu0Pn64kmPAsA9o7CPWHkw/aZ08W73CUVNNAnHM4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gLmaE9eOC8AETiUrg/GfhncHudVgyx+cOErdN0rfJsqMJrJOcELsKXgBiFQbFh5Jc
-	 K9OIMi73rmejKzNxBUkTq40mnWimBXtK+5g0dsEPbxiLuERPERcahpVpiXSix7+IoI
-	 624p9QnbQ26SeKt0WrFxUWTKnzfgzhwprTBC7B2s=
-Subject: FAILED: patch "[PATCH] usb: typec: tcpm: enforce ready state when queueing alt mode" failed to apply to 5.10-stable tree
-To: rdbabiera@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com
+	b=WrYg+/95to4ROd9T6nqqDS6ET8LJN00aPxqu3uwQPj69DYKHdABocHz30HYR6p0HG
+	 NK6sgHt3z3CtRawVHllJTVacruMQKzjrRpHIvwJzEiYh6RfqPN2HCBYXDQ7DqxSrhY
+	 H8sPGc5gXMvV3NUvhNzpPtb72RvaGL9SwxD0YNaQ=
+Subject: FAILED: patch "[PATCH] btrfs: set correct ram_bytes when splitting ordered extent" failed to apply to 6.1-stable tree
+To: wqu@suse.com,dsterba@suse.com,fdmanana@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:25:27 +0200
-Message-ID: <2024051326-travesty-kindle-cdeb@gregkh>
+Date: Mon, 13 May 2024 15:28:55 +0200
+Message-ID: <2024051355-remorse-paragraph-dbaa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x cdc9946ea6377e8e214b135ccc308c5e514ba25f
+git cherry-pick -x 63a6ce5a1a6261e4c70bad2b55c4e0de8da4762e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051326-travesty-kindle-cdeb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051355-remorse-paragraph-dbaa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-cdc9946ea637 ("usb: typec: tcpm: enforce ready state when queueing alt mode vdm")
+63a6ce5a1a62 ("btrfs: set correct ram_bytes when splitting ordered extent")
+52b1fdca23ac ("btrfs: handle completed ordered extents in btrfs_split_ordered_extent")
+816f589b8d43 ("btrfs: atomically insert the new extent in btrfs_split_ordered_extent")
+b0307e28642e ("btrfs: return the new ordered_extent from btrfs_split_ordered_extent")
+ebdb44a00e25 ("btrfs: reorder conditions in btrfs_extract_ordered_extent")
+f0f5329a00ba ("btrfs: don't split NOCOW extent_maps in btrfs_extract_ordered_extent")
+7edd339c8a41 ("btrfs: pass an ordered_extent to btrfs_extract_ordered_extent")
+2e38a84bc6ab ("btrfs: simplify extent map splitting and rename split_zoned_em")
+f0792b792dbe ("btrfs: fold btrfs_clone_ordered_extent into btrfs_split_ordered_extent")
+8f4af4b8e122 ("btrfs: sink parameter len to btrfs_split_ordered_extent")
+11d33ab6c1f3 ("btrfs: simplify splitting logic in btrfs_extract_ordered_extent")
+e44ca71cfe07 ("btrfs: move ordered_extent internal sanity checks into btrfs_split_ordered_extent")
+2cef0c79bb81 ("btrfs: make btrfs_split_bio work on struct btrfs_bio")
+ae42a154ca89 ("btrfs: pass a btrfs_bio to btrfs_submit_bio")
+34f888ce3a35 ("btrfs: cleanup main loop in btrfs_encoded_read_regular_fill_pages")
+10e924bc320a ("btrfs: factor out a btrfs_add_compressed_bio_pages helper")
+e7aff33e3161 ("btrfs: use the bbio file offset in btrfs_submit_compressed_read")
+798c9fc74d03 ("btrfs: remove redundant free_extent_map in btrfs_submit_compressed_read")
+544fe4a903ce ("btrfs: embed a btrfs_bio into struct compressed_bio")
+d5e4377d5051 ("btrfs: split zone append bios in btrfs_submit_bio")
 
 thanks,
 
@@ -77,50 +96,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cdc9946ea6377e8e214b135ccc308c5e514ba25f Mon Sep 17 00:00:00 2001
-From: RD Babiera <rdbabiera@google.com>
-Date: Tue, 23 Apr 2024 20:23:57 +0000
-Subject: [PATCH] usb: typec: tcpm: enforce ready state when queueing alt mode
- vdm
+From 63a6ce5a1a6261e4c70bad2b55c4e0de8da4762e Mon Sep 17 00:00:00 2001
+From: Qu Wenruo <wqu@suse.com>
+Date: Tue, 16 Apr 2024 08:07:00 +0930
+Subject: [PATCH] btrfs: set correct ram_bytes when splitting ordered extent
 
-Before sending Enter Mode for an Alt Mode, there is a gap between Discover
-Modes and the Alt Mode driver queueing the Enter Mode VDM for the port
-partner to send a message to the port.
+[BUG]
+When running generic/287, the following file extent items can be
+generated:
 
-If this message results in unregistering Alt Modes such as in a DR_SWAP,
-then the following deadlock can occur with respect to the DisplayPort Alt
-Mode driver:
-1. The DR_SWAP state holds port->lock. Unregistering the Alt Mode driver
-results in a cancel_work_sync() that waits for the current dp_altmode_work
-to finish.
-2. dp_altmode_work makes a call to tcpm_altmode_enter. The deadlock occurs
-because tcpm_queue_vdm_unlock attempts to hold port->lock.
+        item 16 key (258 EXTENT_DATA 2682880) itemoff 15305 itemsize 53
+                generation 9 type 1 (regular)
+                extent data disk byte 1378414592 nr 462848
+                extent data offset 0 nr 462848 ram 2097152
+                extent compression 0 (none)
 
-Before attempting to grab the lock, ensure that the port is in a state
-vdm_run_state_machine can run in. Alt Mode unregistration will not occur
-in these states.
+Note that file extent item is not a compressed one, but its ram_bytes is
+way larger than its disk_num_bytes.
 
-Fixes: 03eafcfb60c0 ("usb: typec: tcpm: Add tcpm_queue_vdm_unlocked() helper")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240423202356.3372314-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+According to btrfs on-disk scheme, ram_bytes should match disk_num_bytes
+if it's not a compressed one.
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 77e632ea6872..53c1f308ebd7 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1564,6 +1564,10 @@ static void tcpm_queue_vdm(struct tcpm_port *port, const u32 header,
- static void tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
- 				    const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
- {
-+	if (port->state != SRC_READY && port->state != SNK_READY &&
-+	    port->state != SRC_VDM_IDENTITY_REQUEST)
-+		return;
-+
- 	mutex_lock(&port->lock);
- 	tcpm_queue_vdm(port, header, data, cnt, tx_sop_type);
- 	mutex_unlock(&port->lock);
+[CAUSE]
+Since commit b73a6fd1b1ef ("btrfs: split partial dio bios before
+submit"), for partial dio writes, we would split the ordered extent.
+
+However the function btrfs_split_ordered_extent() doesn't update the
+ram_bytes even it has already shrunk the disk_num_bytes.
+
+Originally the function btrfs_split_ordered_extent() is only introduced
+for zoned devices in commit d22002fd37bd ("btrfs: zoned: split ordered
+extent when bio is sent"), but later commit b73a6fd1b1ef ("btrfs: split
+partial dio bios before submit") makes non-zoned btrfs affected.
+
+Thankfully for un-compressed file extent, we do not really utilize the
+ram_bytes member, thus it won't cause any real problem.
+
+[FIX]
+Also update btrfs_ordered_extent::ram_bytes inside
+btrfs_split_ordered_extent().
+
+Fixes: d22002fd37bd ("btrfs: zoned: split ordered extent when bio is sent")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/ordered-data.c b/fs/btrfs/ordered-data.c
+index b749ba45da2b..c2a42bcde98e 100644
+--- a/fs/btrfs/ordered-data.c
++++ b/fs/btrfs/ordered-data.c
+@@ -1188,6 +1188,7 @@ struct btrfs_ordered_extent *btrfs_split_ordered_extent(
+ 	ordered->disk_bytenr += len;
+ 	ordered->num_bytes -= len;
+ 	ordered->disk_num_bytes -= len;
++	ordered->ram_bytes -= len;
+ 
+ 	if (test_bit(BTRFS_ORDERED_IO_DONE, &ordered->flags)) {
+ 		ASSERT(ordered->bytes_left == 0);
 
 
