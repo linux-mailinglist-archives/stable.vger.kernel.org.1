@@ -1,166 +1,69 @@
-Return-Path: <stable+bounces-43633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D1E8C41A6
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A6D8C41BE
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E8EE1C22D02
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:17:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375961C22EEF
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FD81514E5;
-	Mon, 13 May 2024 13:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MltXl3kT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A55152171;
+	Mon, 13 May 2024 13:22:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98761514CB
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94071514E5
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715606240; cv=none; b=kd781Qd+S3bOXki1cpMMwrvD1c6lc3XueRoS9+DKZyZOTg2heZmGyxU+qCEC5Xhp1wzWa72v0aKPLip0UR0tJE2LcdDDucmn9hTIDXb5JBUFF8wjhb1TLeuKvjBWVKnd9xYHzlDFXK+7bxrIkHjyc/GqPnCKO7KmOGaSliPdSew=
+	t=1715606555; cv=none; b=cncFaCKinmIP4orElmFUWr3WKKU81B+om/moaCJyzkdFCZd1wbnT6SJGxX4a6PxyuLO9AS4xDMMLhyrgip3iyUPm2WovrCB5Q9deuSIggC8ey3L0Ie+a/T/lvm0LsDdCa6oV8YXur34aEghVK9ITnO5HgPK3Kb2+JR6mNkGIsJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715606240; c=relaxed/simple;
-	bh=9F+tyyR3zyIePRMXl+QJOinwJOlirF0JbGyrIT3RicU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p58j11QSxQscE3dqgImIosKz0mQt7T+KSdpCIqwfCHW+geKnn5sDML7SRAovQETTeifVbY5gla6hmAPCzDesS8MI0ccb+6Sah1s5DJZHKeme+3eS1cJ8HM0wsweQNODFbJ+cGd33MAQGrAkxRCwm9uBfgawNqR0e4sPSeCGQg1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MltXl3kT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02516C113CC;
-	Mon, 13 May 2024 13:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715606239;
-	bh=9F+tyyR3zyIePRMXl+QJOinwJOlirF0JbGyrIT3RicU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=MltXl3kTaVz0gBhC6lAx0bokH5+i6+UFpJBM0YP3+WrTxH8u0bdSUoDPYjHq+ii2C
-	 UDk5hU6R/DNcLgOqRpRNOluYy/7d2Yih4lFexXyEZw6mIdUrS+HS07MrLC8cHry34l
-	 1e7cqGuJ21U7nGdamNReICgOEawkIO/YPhXXppEM=
-Subject: FAILED: patch "[PATCH] usb: gadget: f_fs: Fix race between aio_cancel() and AIO" failed to apply to 4.19-stable tree
-To: quic_wcheng@quicinc.com,gregkh@linuxfoundation.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:17:07 +0200
-Message-ID: <2024051307-reseller-bagging-3dbc@gregkh>
+	s=arc-20240116; t=1715606555; c=relaxed/simple;
+	bh=kQF9wBbFME7j1QPFOoShAhDexN2agZ8oPWJ5/heEkhc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=asJjXQeXzeLB+Z0wer9i88O9B4aVdoHcEdDhrS4OpgLfGRe0uGRlzpYqcp5y8daLQW6PqEzNyDdIHJottk39DymGjiM3ZpaX4tG55rFtRSiFv6KEUPwZ6a+7gURrppIGc7yS+PipnhZ4G6cIyP8xWB/qKYhhZp0tRk3k9srGubc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VdKsV11dhz4wcp;
+	Mon, 13 May 2024 23:22:22 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org, Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <20240510080757.560159-1-hbathini@linux.ibm.com>
+References: <20240510080757.560159-1-hbathini@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/85xx: fix compile error without CONFIG_CRASH_DUMP
+Message-Id: <171560652136.57553.2176515778576014967.b4-ty@ellerman.id.au>
+Date: Mon, 13 May 2024 23:22:01 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+On Fri, 10 May 2024 13:37:57 +0530, Hari Bathini wrote:
+> Since commit 5c4233cc0920 ("powerpc/kdump: Split KEXEC_CORE and
+> CRASH_DUMP dependency"), crashing_cpu is not available without
+> CONFIG_CRASH_DUMP. Fix compile error on 64-BIT 85xx owing to this
+> change.
+> 
+> 
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Applied to powerpc/next.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+[1/1] powerpc/85xx: fix compile error without CONFIG_CRASH_DUMP
+      https://git.kernel.org/powerpc/c/7b090b6ff51b9a9f002139660672f662b95f0630
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 24729b307eefcd7c476065cd7351c1a018082c19
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051307-reseller-bagging-3dbc@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-24729b307eef ("usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete")
-b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 24729b307eefcd7c476065cd7351c1a018082c19 Mon Sep 17 00:00:00 2001
-From: Wesley Cheng <quic_wcheng@quicinc.com>
-Date: Mon, 8 Apr 2024 18:40:59 -0700
-Subject: [PATCH] usb: gadget: f_fs: Fix race between aio_cancel() and AIO
- request complete
-
-FFS based applications can utilize the aio_cancel() callback to dequeue
-pending USB requests submitted to the UDC.  There is a scenario where the
-FFS application issues an AIO cancel call, while the UDC is handling a
-soft disconnect.  For a DWC3 based implementation, the callstack looks
-like the following:
-
-    DWC3 Gadget                               FFS Application
-dwc3_gadget_soft_disconnect()              ...
-  --> dwc3_stop_active_transfers()
-    --> dwc3_gadget_giveback(-ESHUTDOWN)
-      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
-        --> usb_ep_free_request()            --> usb_ep_dequeue()
-
-There is currently no locking implemented between the AIO completion
-handler and AIO cancel, so the issue occurs if the completion routine is
-running in parallel to an AIO cancel call coming from the FFS application.
-As the completion call frees the USB request (io_data->req) the FFS
-application is also referencing it for the usb_ep_dequeue() call.  This can
-lead to accessing a stale/hanging pointer.
-
-commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
-relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
-However, in order to properly implement locking to mitigate this issue, the
-spinlock can't be added to ffs_epfile_async_io_complete(), as
-usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
-function driver's completion handler in the same context.  Hence, leading
-into a deadlock.
-
-Fix this issue by moving the usb_ep_free_request() back to
-ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
-to NULL after freeing it within the ffs->eps_lock.  This resolves the race
-condition above, as the ffs_aio_cancel() routine will not continue
-attempting to dequeue a request that has already been freed, or the
-ffs_user_copy_work() not freeing the USB request until the AIO cancel is
-done referencing it.
-
-This fix depends on
-  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
-  consistently")
-
-Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
-Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index f855f1fc8e5e..aa80c2a6b8e0 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -852,6 +852,7 @@ static void ffs_user_copy_worker(struct work_struct *work)
- 						   work);
- 	int ret = io_data->status;
- 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
-+	unsigned long flags;
- 
- 	if (io_data->read && ret > 0) {
- 		kthread_use_mm(io_data->mm);
-@@ -864,6 +865,11 @@ static void ffs_user_copy_worker(struct work_struct *work)
- 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
- 		eventfd_signal(io_data->ffs->ffs_eventfd);
- 
-+	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
-+	usb_ep_free_request(io_data->ep, io_data->req);
-+	io_data->req = NULL;
-+	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
-+
- 	if (io_data->read)
- 		kfree(io_data->to_free);
- 	ffs_free_buffer(io_data);
-@@ -877,7 +883,6 @@ static void ffs_epfile_async_io_complete(struct usb_ep *_ep,
- 	struct ffs_data *ffs = io_data->ffs;
- 
- 	io_data->status = req->status ? req->status : req->actual;
--	usb_ep_free_request(_ep, req);
- 
- 	INIT_WORK(&io_data->work, ffs_user_copy_worker);
- 	queue_work(ffs->io_completion_wq, &io_data->work);
-
+cheers
 
