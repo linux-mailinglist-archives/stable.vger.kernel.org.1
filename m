@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141B38C41D7
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 701738C41D8
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 453191C20BA9
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:25:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A14CF1C22E4B
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB642152185;
-	Mon, 13 May 2024 13:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E053A15218F;
+	Mon, 13 May 2024 13:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mx+dETGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lb7pGGLK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B26D152171
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0072152171
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715606733; cv=none; b=TxMKZ+hXRaaeOGSyf7XftfW9bMn/q6NzcjytMzpro2JR2jUblvyRRMtEMDN5W6fIRtXOgg1VG4rGotzAjTZtFjcl4aGUvtJ3E6bmrMW4lhJLhuT3oBqMnaaN1Mr94NbqwBKPiYVamwHsfeFS6D5W7xwdF3rC0GhlSPddxAZiYeI=
+	t=1715606736; cv=none; b=P0e2eSy/aDIqVedUi2G8oKaa0/cWzkOhPTsq6c6RzBAbwAAVueS0+krNX7n13x1xub5fs23YbdR2vbW+977xBYMWQ2vcuLF0/xNs5lVz9dgJhC4nRqOkhaJfnKArX0CeMtw67DMpEbBOqHqqL+K+srrKVB1grTSOPp9Lpe+1kkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715606733; c=relaxed/simple;
-	bh=UcuSNy7eOmNaBfoLoDqo4AW2A7kJI8i0eNWWGyfvpRg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ASwOpsaL6Jh1W2ZGgqgTcT5cpXH4UBkpmZZnUlYnnbWXy7d7nUAqBrDsWnWeCk599aIc71zb0qUEwUjilp94GYwgbRcDmpEH/yHycUPzwt+8lyoS4wL6j8X48+zVjpR3ZlnhcTkw0nugXKDUOMzh1BcbAsbE/y0JeGIqGRIWPUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mx+dETGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC271C113CC;
-	Mon, 13 May 2024 13:25:32 +0000 (UTC)
+	s=arc-20240116; t=1715606736; c=relaxed/simple;
+	bh=FFFsvWLo/s2DHm7OOseGIR9TrZSrUaFKtDsKBlOD6Xk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=I/v3cEUCP6603Y8fQMogGQaOcSGoMtKWXP4/dglagujr9jIaH0TFyLJF2JFR58+FbqovWfrC+VuHfLiOBOnFdMmv2T1+627+9AdBM/KHwE9TEwBjU90PRxal9i0f5SBsLOyyHyc/OZE2trhYV9VPE9iq2VglHlbuCO5jbnl2hp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lb7pGGLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B38C113CC;
+	Mon, 13 May 2024 13:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715606733;
-	bh=UcuSNy7eOmNaBfoLoDqo4AW2A7kJI8i0eNWWGyfvpRg=;
+	s=korg; t=1715606736;
+	bh=FFFsvWLo/s2DHm7OOseGIR9TrZSrUaFKtDsKBlOD6Xk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mx+dETGo7JydYQIE6kcTgelJQX0bZXDH9S3YTcLRth6lsBD1ULUhuUZspYgl9Ruxh
-	 YLpmepUCO1zZ6iIJNJJ44yRnO9FPkNLVPPIoi6eg280H1A/YBS2tsLfgfedMRk+FOa
-	 LrID0OjawSWoLga2YWjTF/OV+YD4ZOGdQYeo7q6o=
-Subject: FAILED: patch "[PATCH] usb: typec: tcpm: enforce ready state when queueing alt mode" failed to apply to 6.1-stable tree
+	b=lb7pGGLKkfnf9j4kg0suu+n1NHXI0fPKBNnKR/j3z0BRRu2bZXiSUQUgEkuxa/cXP
+	 PKSw6z72Bd6nbo4YRRfc0r697n5DJXDhtl8AXDNM0FXO4rfFqf/VF8aGuuyUjuJFBu
+	 aC0GT6uuNTv6OZtxIaiVmC3ikQo0T+SekAe57Vmg=
+Subject: FAILED: patch "[PATCH] usb: typec: tcpm: enforce ready state when queueing alt mode" failed to apply to 5.15-stable tree
 To: rdbabiera@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:25:25 +0200
-Message-ID: <2024051325-uphill-unworldly-8335@gregkh>
+Date: Mon, 13 May 2024 15:25:26 +0200
+Message-ID: <2024051325-botch-always-c36d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x cdc9946ea6377e8e214b135ccc308c5e514ba25f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051325-uphill-unworldly-8335@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051325-botch-always-c36d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
