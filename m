@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15398C429D
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:57:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A59E8C429E
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711D41F2225D
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A28831C21397
 	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D19153576;
-	Mon, 13 May 2024 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0087153581;
+	Mon, 13 May 2024 13:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xf6uKN4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLkx6z0m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29699152DFA
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7BE14EC7A
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715608630; cv=none; b=hzo4feGjNcx1EaObqdqYjLrHZ1q0XOoib6Nb9wjeED2BcQbAWGTRaZyj3cBC9gQHSW3TW94ni1blkEja0yu2C3B/EnmgBgmeo0F/4v7hltRnE+XBUaL8LMGsR32UC50NDOM3hsEUcJk9y/MJsCwdhnvpLxn6fkVUk+y+dxla+Hc=
+	t=1715608633; cv=none; b=jIER3poQUqNs+Nmd9QO3G2Il3RLoPvKPXKR+GhT1I9sz4XAjCB1fxWluhEub3jM/Ssw68AuUtA2M2DTgbRgU16n+c1d4zV3+cQPdeqOkWUi3XfSWOPpwcjxzd0ReYgQwwaJypVU8MXP7dr+N5i5s7S7r71+/FgIq1uuFjj0cBpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715608630; c=relaxed/simple;
-	bh=J1LiHB8fhwIStW6w5fpItgFqzPD7sSOE+8+x+TSkTTY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bt0ik52k3REq0gtbKrqehvY1q3iPLaAfrrxdvRdoz3oz605KWHAMbIUOMhDS8T1HPGySY+hvbogfLDyFbmi+YyDZvf4pmBFFRfVUPyEaMGb8uac9Kyj5K6ybXFnd5UGjoZoZs+hQ+1h+QMVD94x7xdyN2p5pyfoOEUU4dL4sSwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xf6uKN4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29592C113CC;
-	Mon, 13 May 2024 13:57:08 +0000 (UTC)
+	s=arc-20240116; t=1715608633; c=relaxed/simple;
+	bh=xdUlcPPLAVpABpE80zG/7mpBoCPjfPhzhEjHJPCQ57I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=E3ID+fbpONrEpnjNPua3+4KDrSD5nr8sQVdn7fHUt9uTx74qBb43fZ2Bi8aV3TWC/UsCpMIHtNGkw9OB0fnSB3YP1ChRt02S7MhyztJW4uy5by8eLp59lVkvaoIkBcCxlq4DDGTyq2eTj3fmlfqsg5zGutHBlLpzcBws0u9if80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLkx6z0m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06E1C113CC;
+	Mon, 13 May 2024 13:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715608629;
-	bh=J1LiHB8fhwIStW6w5fpItgFqzPD7sSOE+8+x+TSkTTY=;
+	s=korg; t=1715608633;
+	bh=xdUlcPPLAVpABpE80zG/7mpBoCPjfPhzhEjHJPCQ57I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xf6uKN4MdeWXKWsqv5EXBh8oirInyVLU2tZn5h7qmyhgwHMBjpsL+FDAMTFv6K1AZ
-	 NZKXjnNX+OeuJyo8sL+rbXI7S82k2OCG5XaETaw24BGOxHL/xGBwl03aefEfktkKQy
-	 lwoSrHUHJzGNYhpDvLCfAbqWZQhOIA6NQwSyu7hU=
-Subject: FAILED: patch "[PATCH] xtensa: fix MAKE_PC_FROM_RA second argument" failed to apply to 6.1-stable tree
+	b=dLkx6z0m5NLs4uUEv5zNonVFjRZ9ct9InWyyyfSqptd9tRMlJMN9esLI6C6sPjQHE
+	 ZpKGf6ntZ5j/cWeGkwrT0dQFKfGIcsR8YGP1ANVY3SRt0vQeONyYGHEXQevbToL92+
+	 RVroOoAiAN9GVFYN/xLRQGelQ9tiJQY5QlDnkU8g=
+Subject: FAILED: patch "[PATCH] xtensa: fix MAKE_PC_FROM_RA second argument" failed to apply to 5.15-stable tree
 To: jcmvbkbc@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:57:06 +0200
-Message-ID: <2024051305-harsh-aids-02ab@gregkh>
+Date: Mon, 13 May 2024 15:57:09 +0200
+Message-ID: <2024051308-hasty-underwent-c742@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0e60f0b75884677fb9f4f2ad40d52b43451564d5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051305-harsh-aids-02ab@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051308-hasty-underwent-c742@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 0e60f0b75884 ("xtensa: fix MAKE_PC_FROM_RA second argument")
 1b6ceeb99ee0 ("xtensa: stacktrace: include <asm/ftrace.h> for prototype")
+11e969bc964a ("xtensa: support coprocessors on SMP")
+e45d4bfbeb26 ("xtensa: merge SAVE_CP_REGS_TAB and LOAD_CP_REGS_TAB")
+0b549f813387 ("xtensa: handle coprocessor exceptions in kernel mode")
+6179ef4d460a ("xtensa: use callx0 opcode in fast_coprocessor")
+3e554d47dfe3 ("xtensa: clean up declarations in coprocessor.h")
+fc55402b8438 ("xtensa: clean up exception handler prototypes")
+db0d07fa192a ("xtensa: clean up function declarations in traps.c")
+839769c35477 ("xtensa: fix a7 clobbering in coprocessor context load/store")
+967747bbc084 ("uaccess: remove CONFIG_SET_FS")
+12700c17fc28 ("uaccess: generalize access_ok()")
+52fe8d125c9a ("arm64: simplify access_ok()")
+26509034bef1 ("m68k: fix access_ok for coldfire")
+15f3d81a8c8a ("MIPS: use simpler access_ok()")
+34737e269803 ("uaccess: add generic __{get,put}_kernel_nofault")
+1830a1d6a5b7 ("x86: use more conventional access_ok() definition")
+36903abedfe8 ("x86: remove __range_not_ok()")
+8afafbc955ba ("sparc64: add __{get,put}_kernel_nofault()")
+222ca305c9fd ("uaccess: fix integer overflow on access_ok()")
 
 thanks,
 
