@@ -1,159 +1,141 @@
-Return-Path: <stable+bounces-43751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE668C49E2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 01:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F4E8C4A0E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 01:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACCDF1F21A64
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 23:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551021F21AAC
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 23:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B8384E08;
-	Mon, 13 May 2024 23:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B4A85284;
+	Mon, 13 May 2024 23:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="XaPb7BS7";
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="h4RFnTX1"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tNQ24EZZ"
 X-Original-To: stable@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA2684DF5
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 23:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50296446BD
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 23:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715641623; cv=none; b=d0mHo3QQsFfEVbKbHaiQINWD+IILN9zKtXNdG1kp7jJNJyEE66Ek7gX+KCSHrOF41GN5quKun7l86K88AWYdDIkAQ/jCnUd5zKk5t0iAaqRU55/32/RTa3ZFlpmFHRvBs2O70ajGz8olVL1ELPbbreI5fbwWxR+SV624NonprCA=
+	t=1715643063; cv=none; b=HB6jWHJ4f8GQ+S27/mPDjWRYyxUpTTvGx7psc16oLlup4+bY4ld4SB0yLcOORDYVnsOp5OBMAR1AZh3Nd2P+NR6/PRUe3G6CQGkOkSc54b+96dK6/1Hu0Hdlrz5lOfw/vz0HZkXMpWxFHw/m7NpPwBrWTebn3pXnhY4cwsbED4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715641623; c=relaxed/simple;
-	bh=ZpolEqSGxY+2JN0Ut/ZVEL54uz7os1NYNz0jMOaTv0M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PSBNYqucRm7C7P0phBqlaRuEnjaew/mNjevjnqtgph1FJwbCtvfaKKJm/m//OZLKazx4HZy7HafLRn4eJ7acD9V47DGaWMv2/DlQBrASKOU5wFJuZv3xVze/+6uwodyu8M4NzXjoQORvZNtQ3yjQtqkBRCxmVkJEXHwZ7FrgyJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=XaPb7BS7; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=h4RFnTX1; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
-	s=gw2_bookworm; t=1715641621;
-	bh=ZpolEqSGxY+2JN0Ut/ZVEL54uz7os1NYNz0jMOaTv0M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaPb7BS7GV57bE2+7vZz1C17hO0E3cZ8KU97fi6wj6qiPvHreF06GLzV9DGIFBYRU
-	 3BAL+JE9csq5T7/07WmnM5fDJzwE4rwCLH00nZXO4qYoBKVmdnFFxKFpNnjgQhG8a5
-	 wux9hIgbqWMxwFRbeFCt6GKmht/ksGqQuGLPdbocvhRLy3F1qsnXsNe36/OZEAq83I
-	 j2+vL3nZhX57jIczKx5B0unSIZhSEg7GRq8sFaHGr/VIJ8cPjJQplXjw5YaXwaQIUo
-	 pthTnATvXDhMsTE3KCRO71dbet0Ybtz3WJR+Z9gst2HSutQaJCUK9dGOyphiukR6vv
-	 PlTnbRFOZvlew==
-Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
-	by gw2.atmark-techno.com (Postfix) with ESMTP id 1B0C92B0
-	for <stable@vger.kernel.org>; Tue, 14 May 2024 08:07:01 +0900 (JST)
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=h4RFnTX1;
-	dkim-atps=neutral
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 884BD2B0
-	for <stable@vger.kernel.org>; Tue, 14 May 2024 08:07:00 +0900 (JST)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-61a119df58fso3441206a12.1
-        for <stable@vger.kernel.org>; Mon, 13 May 2024 16:07:00 -0700 (PDT)
+	s=arc-20240116; t=1715643063; c=relaxed/simple;
+	bh=QUSk2PE035PMUfItgdSu60ZAlqjFlA426+oswFdBl20=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XrAMpMQBww/f0mzxu76Um3U8CAxOn9IhbOJcxe2pXhYP3lDRoqgWokIdspBtkSMIGgOAtG8gLedT/ETbcurpiN20BpB4WEJw6QaznSYICJ5G6ohVIFM09mmIp0PuYsxovXgXq9nIUWl4uLL8m9KzPzL8P1cSmGku4aDojaWDxQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jbongio.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tNQ24EZZ; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jbongio.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-618a2b1a441so4362666a12.0
+        for <stable@vger.kernel.org>; Mon, 13 May 2024 16:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1715641619; x=1716246419; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hDRbI+79Qk1eFfcbABhNC/u9TwmtDpW4rtPNAcpRwGI=;
-        b=h4RFnTX1tVHm5NNK+R9sGzMdiJFqx+QFjPmnD3iB6FPvrQ2Ye6zO47J2JThithYtSK
-         kKbzsU7zfzdny8/qgC9kDRdcsN1BYj4PBhF45gxFKMTp/7T8h70tRJI/eJl0iFMa6khp
-         X5ArjoOCXdeGUkLk2wKJQYLYsjFkGfFtLF1sv+84TWA/SUV/lEi1MsfOKTnlrJJagVSQ
-         RLJywgiYBAs6ImCA3rekwlR63R0JJ5BQLVymtIKWBFK2VwHerBgw/KlAyVhnz8JEoNoQ
-         1Ka8vpn/s79zb3y6b+4vhpoaE9nZ8P6fRBK/DHTdoPir27VuT/nKI0qMx+qRwq7dStVW
-         7Nug==
+        d=google.com; s=20230601; t=1715643061; x=1716247861; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YaxvBH4y+VWBXQmGsD8ebjpfQuiCbD/cpXxCcmwWLSw=;
+        b=tNQ24EZZ7LF3E+WTHFHH9i+UEzXKCbHsY3GHGaxZPUPd2NL6slEbRq+cLvuP9XYOqq
+         dL/gVZgYB+2knsADJ4E/SOQRR47OMJBU9wtZQJa1WjGAk0Vf+iKvFMM5vfrD5WJ2XNwk
+         MEgTLrXGNPXYQVZNc3GNKVrpfGtJQNBLYcweyie1BW7rVIZRIAT0RQWGvbawABJIKzan
+         oCj1nlrwMuNjJNE7th4o0s9Sbg8Je0xZBAbhjnr9ZzBC4L6VGew7Qf2GA9y/ESj0FP5H
+         P97IOgGzLjWrsUPGp+bXuvsszA0dHR58cU7vM/OtdMXtJrVYHNBeq0C6F1QMjwoKUsiw
+         Wghw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715641619; x=1716246419;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hDRbI+79Qk1eFfcbABhNC/u9TwmtDpW4rtPNAcpRwGI=;
-        b=hOgJIePiPZFjuyUyS9Em8+Xe82QSCLjz7U2nvN+RlmL+C59I3e8QnynlWCKcoZf6MY
-         K0emaYDw9rzzBvcWBTGwwVmygxfv3b6f1P8u/vr8ntT+XWpu47RMPaDqE/ZFrk0/ILGy
-         sMYL7qkN2SZUqT+UzrYAMj93hJlM7jBZkw9XOd8v2gqBV43B1PCjGiNnYHKsETNQTneJ
-         4hlHXrKo90cdBTCyRXg79d38kAL/lvgcr8cG4kC4C2792BUzvK0cFMQGrwPEgvxIXQFB
-         wMEXA00Dkrt+QeMB1yvEavthpUpTmBCyGRDiTN8y7P2Tyohiy1bVZYcBzP+OIAQD8Fxl
-         guOg==
-X-Gm-Message-State: AOJu0YydWH14aZ6kzSKSKq9AzeMeWcr73cHRYn6czeOVLtrqPD0cxWsG
-	7EFRf6EUmUUJIFPyAeVdc0Iw2YtlKC9iLLHTipzPU7YELm2DUES98BJPhLGt1O3cXcwJ3VsqKMD
-	oQ5DHC2r0ko888WHGRyk3Bwy4sUrAnfZHPusV321XIYBa33NWRVhoXDM=
-X-Received: by 2002:a05:6a20:1592:b0:1af:db2d:d36b with SMTP id adf61e73a8af0-1afde0dc165mr12088436637.15.1715641619543;
-        Mon, 13 May 2024 16:06:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBMvSOwYtPGxD09dPTqWepvT4UHT6xrfuOvDwwRk2iT8x5jlYMtRepIskszWRCh9ArtmyEpQ==
-X-Received: by 2002:a05:6a20:1592:b0:1af:db2d:d36b with SMTP id adf61e73a8af0-1afde0dc165mr12088413637.15.1715641619025;
-        Mon, 13 May 2024 16:06:59 -0700 (PDT)
-Received: from pc-0182.atmarktech (178.101.200.35.bc.googleusercontent.com. [35.200.101.178])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2ade27fsm7877216b3a.108.2024.05.13.16.06.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 13 May 2024 16:06:58 -0700 (PDT)
-Received: from [::1] (helo=pc-0182.atmark.tech)
-	by pc-0182.atmarktech with esmtp (Exim 4.96)
-	(envelope-from <dominique.martinet@atmark-techno.com>)
-	id 1s6ekz-004Rnm-1Z;
-	Tue, 14 May 2024 08:06:57 +0900
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	dsterba@suse.com,
-	pavel@denx.de,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>
-Subject: [PATCH 5.10 / 5.4 / 4.19] btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()
-Date: Tue, 14 May 2024 08:06:49 +0900
-Message-Id: <20240513230649.1060173-1-dominique.martinet@atmark-techno.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <2024051346-unvocal-magnetism-4ae1@gregkh>
-References: <2024051346-unvocal-magnetism-4ae1@gregkh>
+        d=1e100.net; s=20230601; t=1715643061; x=1716247861;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YaxvBH4y+VWBXQmGsD8ebjpfQuiCbD/cpXxCcmwWLSw=;
+        b=AXEcvEI0NzRtzZQo5h2NoqwYMxeC6s6m1ysgFiXJSigjksXveU5Y8BQIpX61oigxyN
+         RNFVmIbx4mUPyTQhrvarZBoOrazYGf2+dAaJrafDRfUAZhgIy34ECa9XcDnwhzJUBEar
+         k4NKFL2nybh2A2mnNVv8QQdfCwrdciBBb6iXGh2NdYE6SvMSgnySsxH6w3UQYsqBAbTY
+         gYiOQaB8CMYrlw/85JFrQRCPRn0kKEPyKpEQV/QH5D0bq2deoq5jT+LAFFBB6K5H7x23
+         G4JfgTLCqEOLYsCK7cj4fcS4hyejvNAMZkrxDK/RlihQrauydXBrAYyWAbRNOVUDokEy
+         W3gg==
+X-Gm-Message-State: AOJu0YyaCPMoQDEVYccYNI49UwMulQQVL/2PLYcFK5tmRZlucavKUH/d
+	5A4sCLcaaeR4GhctIL9KzQ1R5ZX+sYKmQ5fC8OnJA60MMESi244IDT0bzfEFnl9sA7vV/rlaPYO
+	2WCdpyFYA+zqdmkANl/LXOQO7nyJ/nfhWENGhqVP54Rf2PX122TuZVBddFk3gTO6/zyuFl4h/W+
+	TRSNPK1qycUZW+I2ITFJn6FfXKPbQJVJ1ysuqJKg==
+X-Google-Smtp-Source: AGHT+IEICmRWN+gEp8rmz5+w3ePcOs/aQEGHlsju/hyzyWBgldT0yaV8ov8o0hy8nW8tj+QtHXSOMMDEmoH1
+X-Received: from jbongio-kernel-in-cloud.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:3309])
+ (user=jbongio job=sendgmr) by 2002:a17:90a:d48c:b0:2af:b21b:6432 with SMTP id
+ 98e67ed59e1d1-2b6c733c523mr62029a91.2.1715643061280; Mon, 13 May 2024
+ 16:31:01 -0700 (PDT)
+Date: Mon, 13 May 2024 23:30:58 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.0.rc1.225.g2a3ae87e7f-goog
+Message-ID: <20240513233058.885052-1-jbongio@google.com>
+Subject: [PATCH] md: fix kmemleak of rdev->serial
+From: Jeremy Bongio <jbongio@google.com>
+To: stable@vger.kernel.org
+Cc: Li Nan <linan122@huawei.com>, Song Liu <song@kernel.org>, 
+	Jeremy Bongio <jbongio@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-[ Upstream commit 9af503d91298c3f2945e73703f0e00995be08c30 ]
+From: Li Nan <linan122@huawei.com>
 
-The previous patch that replaced BUG_ON by error handling forgot to
-unlock the mutex in the error path.
+commit 6cf350658736681b9d6b0b6e58c5c76b235bb4c4 upstream.
 
-Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
-Reported-by: Pavel Machek <pavel@denx.de>
-Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+If kobject_add() is fail in bind_rdev_to_array(), 'rdev->serial' will be
+alloc not be freed, and kmemleak occurs.
+
+unreferenced object 0xffff88815a350000 (size 49152):
+  comm "mdadm", pid 789, jiffies 4294716910
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc f773277a):
+    [<0000000058b0a453>] kmemleak_alloc+0x61/0xe0
+    [<00000000366adf14>] __kmalloc_large_node+0x15e/0x270
+    [<000000002e82961b>] __kmalloc_node.cold+0x11/0x7f
+    [<00000000f206d60a>] kvmalloc_node+0x74/0x150
+    [<0000000034bf3363>] rdev_init_serial+0x67/0x170
+    [<0000000010e08fe9>] mddev_create_serial_pool+0x62/0x220
+    [<00000000c3837bf0>] bind_rdev_to_array+0x2af/0x630
+    [<0000000073c28560>] md_add_new_disk+0x400/0x9f0
+    [<00000000770e30ff>] md_ioctl+0x15bf/0x1c10
+    [<000000006cfab718>] blkdev_ioctl+0x191/0x3f0
+    [<0000000085086a11>] vfs_ioctl+0x22/0x60
+    [<0000000018b656fe>] __x64_sys_ioctl+0xba/0xe0
+    [<00000000e54e675e>] do_syscall_64+0x71/0x150
+    [<000000008b0ad622>] entry_SYSCALL_64_after_hwframe+0x6c/0x74
+
+backport change:
+mddev_destroy_serial_pool third parameter was removed in mainline,
+where there is no need to suspend within this function anymore.
+
+Fixes: 963c555e75b0 ("md: introduce mddev_create/destroy_wb_pool for the change of member device")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240208085556.2412922-1-linan666@huaweicloud.com
+Signed-off-by: Jeremy Bongio <jbongio@google.com>
 ---
-The conflict is in 7411055db5ce ("btrfs: handle chunk tree lookup error
-in btrfs_relocate_sys_chunks()") but that no longer cleanly applies
-after the backport of 7411055db5ce ("btrfs: handle chunk tree lookup
-error in btrfs_relocate_sys_chunks()"); it's probably simpler to just
-use the old mutex name directly.
 
-This commit applies and builds on 4.19.313, 5.4.275 and 5.10.216
+This backport is tested on LTS 5.10, 6.1, 6.6
 
- fs/btrfs/volumes.c | 1 +
+ drivers/md/md.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 09c23626feba..2d3aeef01c9e 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3187,6 +3187,7 @@ static int btrfs_relocate_sys_chunks(struct btrfs_fs_info *fs_info)
- 			 * alignment and size).
- 			 */
- 			ret = -EUCLEAN;
-+			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
- 			goto error;
- 		}
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 09c7f52156f3f..67ceab4573be4 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -2532,6 +2532,7 @@ static int bind_rdev_to_array(struct md_rdev *rdev, struct mddev *mddev)
+  fail:
+ 	pr_warn("md: failed to register dev-%s for %s\n",
+ 		b, mdname(mddev));
++	mddev_destroy_serial_pool(mddev, rdev, false);
+ 	return err;
+ }
  
 -- 
-2.39.2
-
+2.45.0.118.g7fe29c98d7-goog
 
 
