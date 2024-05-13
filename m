@@ -1,154 +1,172 @@
-Return-Path: <stable+bounces-43710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808228C4404
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:17:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CE28C4403
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA95AB23FFE
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:17:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B891DB23FB6
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA99663C1;
-	Mon, 13 May 2024 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F369C4C84;
+	Mon, 13 May 2024 15:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uNGRaC12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3FjHsPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677BE539C;
-	Mon, 13 May 2024 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB566AC0
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715613453; cv=none; b=EKUU6KEDQeAoo20a103sNDYubeXKRLinzqlLlRsucZddHp20vWJ8eycFFPt3Gp0cIhXh4jmaQfkrQCgzWeyz9Pnc01UUE13vPzSG9965GXqceLSnHQATiT6vMIGpLdTJad8m/YQ1j1Aq8fYNdIyhoQZlVPHLnYhtjZ7yM8eQg28=
+	t=1715613449; cv=none; b=hRsmtuxe43AnkpL0cwzXGWKfkHo2g/PNxkXkXjCZabcNJzB/WWbp1Jd7EQr+LWOgNqMHbhRRyfILpjmtIJH3lTxnQTdsh9o+uuOLXjE4/QzGzXlhF+Spk9PlYSWaKWs4xcQ3hWfMrDxAGecE22EE8xv00jZSW/ERFfCnr2vstS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715613453; c=relaxed/simple;
-	bh=OGxZWchEypSsKpfa3B/CsaIUjCyUiDDrD3vCvYiJruQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Du/d91UpVOpujc1k/sTZyaEq8qWUPsZu9CwkcDLxUQyO77BmC57nBWb2gsiaTCxcYS5f6B/qCFGdB6fT4FKTQPOZX1dmjm1j9Y9U12YWMC9KxrTsm70lR8vgjW+hvuiIrXmzGL0Gh5w/pS/Nx49u2VJvjQc6bcvqpiB8STJfPRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uNGRaC12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438ECC32782;
-	Mon, 13 May 2024 15:17:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715613453;
-	bh=OGxZWchEypSsKpfa3B/CsaIUjCyUiDDrD3vCvYiJruQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNGRaC12DFncB3jl5Yg4hJjrJ2bDpyX1+HYLs6FrcZOrt4c1+gKaxhet7G361er0J
-	 Q8UO37Vt79pWC+kI4gppEGAIZuN+Mo0sigbl6znohUl9GeFFN3N6Mf18Y2G6VSiL4r
-	 uoZEHTekG5TQkW7G/a1kK6uWhXR1jT/Z/t3X5v46c9z+Cijj1RQECXqCbUX1Hpqa1e
-	 9GtRN/uzScHHZDXOWmK4TS8MA5bnoe4MnXRPN+B7W6xzkWI1CMg0btgjiNUNPVOdgj
-	 H87+YIJ/DHAToNS4L0Epy75v7PWA3tq2UmUPP0clT65bCrkZGHocpPg1KuKqIfohiv
-	 OLrdtg92zbdgQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christoph Paasch <cpaasch@apple.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10.y] mptcp: ensure snd_nxt is properly initialized on connect
-Date: Mon, 13 May 2024 17:17:17 +0200
-Message-ID: <20240513151717.2733290-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024051325-dreamt-freebee-5563@gregkh>
-References: <2024051325-dreamt-freebee-5563@gregkh>
+	s=arc-20240116; t=1715613449; c=relaxed/simple;
+	bh=X11teEcvZJI1t+Is9d98nGFItyibwLdUHu9mmuLUq2I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=X3Br7ykO1/D0pUIhTgVsz39BiWBXPXtalzLJccE/v3tkphubhMuHamXTDqIMN4KcTGiWVrgU9L5XJWMGMVesdedsbaQSmYl2+6HFwyZoNiidZr8ONsWJdO5kOReca5Xh3usb91ee9hC6aQioF2a0Xnvt/CLVkXDKYI1NkhH+lMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3FjHsPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF1AC113CC;
+	Mon, 13 May 2024 15:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715613449;
+	bh=X11teEcvZJI1t+Is9d98nGFItyibwLdUHu9mmuLUq2I=;
+	h=Subject:To:Cc:From:Date:From;
+	b=W3FjHsPplT9EjhwW03eCXAo8pZklw+tc6PYp9pilOtPHNqq3VgS3eD+M3AWR/JTmw
+	 PmgRlu4qX8oxH06ftceIeTWYk6NZkH3DcBelD4ePL0T8cqfNFnXBEFIgQutp7XZfpA
+	 vfyPEHjtJALzAgQ7p0cxa4PthVkglbvd+z+oJuiQ=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin configuration" failed to apply to 6.1-stable tree
+To: Volodymyr_Babchuk@epam.com,andersson@kernel.org,stephan@gerhold.net,volodymyr_babchuk@epam.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 13 May 2024 17:17:26 +0200
+Message-ID: <2024051326-filter-stoplight-c8cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3981; i=matttbe@kernel.org; h=from:subject; bh=wVi+G138Ev65xjb0nTcgStUa34bZdk5Q/BHpRrSyQ1s=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmQi79PNUEBmrkPWOxdaFhPvHMWCpkLFegiwWBT ytcPoK+TUWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZkIu/QAKCRD2t4JPQmmg c+mvD/9+TkwjqdIYXGSXjWnHdRy4wpXqPn/2UKoec6p9lhDj4HNA9W6/CO8v8Mm3K/bAj2I+v9/ qcThjWFdCN3Ap80OT0V/BT+X740UM7B6z1AzGYoRUcbrOCHZOSBSOYaDUv9XlwgIVUlhX1FlNzg JoeHpMynXqXrkigyRAelCcKoUpg6RGGomZ4QNyMlCeuVzTratCTH+JzMpTF341LOx3DJfE2XeQP Inf0EmhXYQyZNqd9OICmG+vzUqOCJJMRYarFwVsYbsCzbXsUW3zYjT/L46MnL7nH2k8A+VWfTrH JfhRZmtRg8Wiv8d4fL3l2scCFZAaCKBi1jPwrZ9r29FFPHQteCemiOJ4dOl/u2FZoubf33SGuRG s0LHEKSIjBu3JD5mw8KyQXytC7yOMfUXtmPRJr4RhHjnR5M3b0/FsEOSjGg9hx0SohqkDwK+mv+ VpmurP1LjvCrv7UsiykoyU6slmRObwovMnpTFc1jfQzpnmuaelQvfSM4O69lLsgrzGoS8HLDFcr nN9mQBdMHwOaAaSDMOVkt84NLJL7v4UiMlj2y3Vx6VIh33Hvi7xts0Pl2dFSwZJh+8qMcDjqK1/ 34VGTkdm13e5jlvx4BLRG5X7o7PJTx6gQTQor7grJa8nnNkPo9uOFnNewZi7TKjBCTu7Z+vs6fR VgUlfPWOF8wWLEQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
 
-commit fb7a0d334894206ae35f023a82cad5a290fd7386 upstream.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Christoph reported a splat hinting at a corrupted snd_una:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-  WARNING: CPU: 1 PID: 38 at net/mptcp/protocol.c:1005 __mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
-  Modules linked in:
-  CPU: 1 PID: 38 Comm: kworker/1:1 Not tainted 6.9.0-rc1-gbbeac67456c9 #59
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-  Workqueue: events mptcp_worker
-  RIP: 0010:__mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
-  Code: be 06 01 00 00 bf 06 01 00 00 e8 a8 12 e7 fe e9 00 fe ff ff e8
-  	8e 1a e7 fe 0f b7 ab 3e 02 00 00 e9 d3 fd ff ff e8 7d 1a e7 fe
-  	<0f> 0b 4c 8b bb e0 05 00 00 e9 74 fc ff ff e8 6a 1a e7 fe 0f 0b e9
-  RSP: 0018:ffffc9000013fd48 EFLAGS: 00010293
-  RAX: 0000000000000000 RBX: ffff8881029bd280 RCX: ffffffff82382fe4
-  RDX: ffff8881003cbd00 RSI: ffffffff823833c3 RDI: 0000000000000001
-  RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-  R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888138ba8000
-  R13: 0000000000000106 R14: ffff8881029bd908 R15: ffff888126560000
-  FS:  0000000000000000(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f604a5dae38 CR3: 0000000101dac002 CR4: 0000000000170ef0
-  Call Trace:
-   <TASK>
-   __mptcp_clean_una_wakeup net/mptcp/protocol.c:1055 [inline]
-   mptcp_clean_una_wakeup net/mptcp/protocol.c:1062 [inline]
-   __mptcp_retrans+0x7f/0x7e0 net/mptcp/protocol.c:2615
-   mptcp_worker+0x434/0x740 net/mptcp/protocol.c:2767
-   process_one_work+0x1e0/0x560 kernel/workqueue.c:3254
-   process_scheduled_works kernel/workqueue.c:3335 [inline]
-   worker_thread+0x3c7/0x640 kernel/workqueue.c:3416
-   kthread+0x121/0x170 kernel/kthread.c:388
-   ret_from_fork+0x44/0x50 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
-   </TASK>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 819fe8c96a5172dfd960e5945e8f00f8fed32953
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051326-filter-stoplight-c8cc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-When fallback to TCP happens early on a client socket, snd_nxt
-is not yet initialized and any incoming ack will copy such value
-into snd_una. If the mptcp worker (dumbly) tries mptcp-level
-re-injection after such ack, that would unconditionally trigger a send
-buffer cleanup using 'bad' snd_una values.
+Possible dependencies:
 
-We could easily disable re-injection for fallback sockets, but such
-dumb behavior already helped catching a few subtle issues and a very
-low to zero impact in practice.
+819fe8c96a51 ("arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin configuration")
+028fe09cda0a ("arm64: dts: qcom: sm8150: align TLMM pin configuration with DT schema")
 
-Instead address the issue always initializing snd_nxt (and write_seq,
-for consistency) at connect time.
+thanks,
 
-Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 819fe8c96a5172dfd960e5945e8f00f8fed32953 Mon Sep 17 00:00:00 2001
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+Date: Fri, 12 Apr 2024 19:03:25 +0000
+Subject: [PATCH] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin configuration
+
+There are two issues with SDHC2 configuration for SA8155P-ADP,
+which prevent use of SDHC2 and causes issues with ethernet:
+
+- Card Detect pin for SHDC2 on SA8155P-ADP is connected to gpio4 of
+  PMM8155AU_1, not to SoC itself. SoC's gpio4 is used for DWMAC
+  TX. If sdhc driver probes after dwmac driver, it reconfigures
+  gpio4 and this breaks Ethernet MAC.
+
+- pinctrl configuration mentions gpio96 as CD pin. It seems it was
+  copied from some SM8150 example, because as mentioned above,
+  correct CD pin is gpio4 on PMM8155AU_1.
+
+This patch fixes both mentioned issues by providing correct pin handle
+and pinctrl configuration.
+
+Fixes: 0deb2624e2d0 ("arm64: dts: qcom: sa8155p-adp: Add support for uSD card")
 Cc: stable@vger.kernel.org
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
-Tested-by: Christoph Paasch <cpaasch@apple.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-v1-1-59ceac0a7dcb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ snd_nxt field is not available in v5.10.y: before, only write_seq was
-  used, see commit eaa2ffabfc35 ("mptcp: introduce MPTCP snd_nxt") for
-  more details about that. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 2 ++
- 1 file changed, 2 insertions(+)
+Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+Link: https://lore.kernel.org/r/20240412190310.1647893-1-volodymyr_babchuk@epam.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 6be7e7592291..36fa456f42ba 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2645,6 +2645,8 @@ static int mptcp_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	if (subflow->request_mptcp && mptcp_token_new_connect(ssock->sk))
- 		mptcp_subflow_early_fallback(msk, subflow);
+diff --git a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
+index 5e4287f8c8cd..b2cf2c988336 100644
+--- a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
++++ b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
+@@ -367,6 +367,16 @@ queue0 {
+ 	};
+ };
  
-+	WRITE_ONCE(msk->write_seq, subflow->idsn);
++&pmm8155au_1_gpios {
++	pmm8155au_1_sdc2_cd: sdc2-cd-default-state {
++		pins = "gpio4";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		power-source = <0>;
++	};
++};
 +
- do_connect:
- 	err = ssock->ops->connect(ssock, uaddr, addr_len, flags);
- 	sock->state = ssock->state;
--- 
-2.43.0
+ &qupv3_id_1 {
+ 	status = "okay";
+ };
+@@ -384,10 +394,10 @@ &remoteproc_cdsp {
+ &sdhc_2 {
+ 	status = "okay";
+ 
+-	cd-gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
++	cd-gpios = <&pmm8155au_1_gpios 4 GPIO_ACTIVE_LOW>;
+ 	pinctrl-names = "default", "sleep";
+-	pinctrl-0 = <&sdc2_on>;
+-	pinctrl-1 = <&sdc2_off>;
++	pinctrl-0 = <&sdc2_on &pmm8155au_1_sdc2_cd>;
++	pinctrl-1 = <&sdc2_off &pmm8155au_1_sdc2_cd>;
+ 	vqmmc-supply = <&vreg_l13c_2p96>; /* IO line power */
+ 	vmmc-supply = <&vreg_l17a_2p96>;  /* Card power line */
+ 	bus-width = <4>;
+@@ -505,13 +515,6 @@ data-pins {
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength = <16>;	/* 16 MA */
+ 		};
+-
+-		sd-cd-pins {
+-			pins = "gpio96";
+-			function = "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength = <2>;	/* 2 MA */
+-		};
+ 	};
+ 
+ 	sdc2_off: sdc2-off-state {
+@@ -532,13 +535,6 @@ data-pins {
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength = <2>;	/* 2 MA */
+ 		};
+-
+-		sd-cd-pins {
+-			pins = "gpio96";
+-			function = "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength = <2>;	/* 2 MA */
+-		};
+ 	};
+ 
+ 	usb2phy_ac_en1_default: usb2phy-ac-en1-default-state {
 
 
