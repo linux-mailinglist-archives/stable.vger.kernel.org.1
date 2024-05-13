@@ -1,194 +1,89 @@
-Return-Path: <stable+bounces-43620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AD78C4135
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 14:57:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F378C4111
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 14:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20353B2389C
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 12:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D767281896
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 12:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBD014F9FF;
-	Mon, 13 May 2024 12:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0976B14F9CB;
+	Mon, 13 May 2024 12:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pNPq1W+B";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b9TCIcq1";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pNPq1W+B";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b9TCIcq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wufik23w"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5BB1474BC
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 12:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9AD14C5A3;
+	Mon, 13 May 2024 12:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715604993; cv=none; b=Rmx+f7ObPGd5DpFmWGBhGYMNSkpDM95nxsrmcYe313195irveiy/gQJtLOr4IjYz1zuA4rdLWpF8Mcn4HBN35v69+nl8/LdaRRiTFWP70lNwYrd0KBxTb6zERIH+bfMevrugHP5ArpcdyY+GGf7sl6MH/loLz5oL/PdDEyfYMj4=
+	t=1715604873; cv=none; b=YSm/+0Uiyvprh8W0HTrxFm76dhsxKhCa4/5C2Thmj6Jyexwmnb+l0BqikgZrEpL5D7Nk3N5tKGnKsSP0X7GqQAVmopKk7UHLSKzOIb5C0MIjQbPqoDrvqvUyM1LTqDcNNzgUQABn/qyAndaBAa0OxP1NHCHsnPZ9d63EKNiz/hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715604993; c=relaxed/simple;
-	bh=BzNmfhk60pI6MbecvRfqkrMAWZPYXimwv9nEfXiaD3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWGQz5quc1InmWIknQozWlG+xkrH/gPgezAuRySz26h9mpN0ioA5PdCZTF0zhEK1DgzDfQ9yvlUWbtB1/ARtO8QoMbh9HoDKAAk0h603822X+Yg895640SmSBZIHIb2JOP/VB4xnmm+CUUbA/A8V1BcDYrFVVSRAUwcvNs8WM5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pNPq1W+B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b9TCIcq1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pNPq1W+B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b9TCIcq1; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 537D7347BC;
-	Mon, 13 May 2024 12:56:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715604988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EVnusAxTA818RfDATVk+LtJnO2ZehJJf4jOwzj2IJQA=;
-	b=pNPq1W+Bv225k9n1lzwojUf6c4MwYVuJws86tUjNWfs6om1Dxdtg/iOwNN2nhrHW53cCFO
-	GMwgciYYuk7U4fqaJ/B0BrLiXpPMKZaGsJ8cUdkEQ4hEGl7Q3tgXBEb8K2+O1mfy21D5Tu
-	yvRQXnycqo6Ng2OhjG+HqXozk4Kv8v8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715604988;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EVnusAxTA818RfDATVk+LtJnO2ZehJJf4jOwzj2IJQA=;
-	b=b9TCIcq1b/vO/lXqMi5NLYxhPb+MPm2m5F1E+NmD3xqafxL79jnk8NxOjLJj02N09q4I7Y
-	K571fWG0AaqoSKBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715604988; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EVnusAxTA818RfDATVk+LtJnO2ZehJJf4jOwzj2IJQA=;
-	b=pNPq1W+Bv225k9n1lzwojUf6c4MwYVuJws86tUjNWfs6om1Dxdtg/iOwNN2nhrHW53cCFO
-	GMwgciYYuk7U4fqaJ/B0BrLiXpPMKZaGsJ8cUdkEQ4hEGl7Q3tgXBEb8K2+O1mfy21D5Tu
-	yvRQXnycqo6Ng2OhjG+HqXozk4Kv8v8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715604988;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EVnusAxTA818RfDATVk+LtJnO2ZehJJf4jOwzj2IJQA=;
-	b=b9TCIcq1b/vO/lXqMi5NLYxhPb+MPm2m5F1E+NmD3xqafxL79jnk8NxOjLJj02N09q4I7Y
-	K571fWG0AaqoSKBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1664313A52;
-	Mon, 13 May 2024 12:56:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ICZCBPwNQmZpfwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 13 May 2024 12:56:28 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: jfalempe@redhat.com,
-	airlied@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	jani.nikula@linux.intel.com
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 02/10] drm/mgag200: Bind I2C lifetime to DRM device
-Date: Mon, 13 May 2024 14:51:07 +0200
-Message-ID: <20240513125620.6337-3-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240513125620.6337-1-tzimmermann@suse.de>
-References: <20240513125620.6337-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1715604873; c=relaxed/simple;
+	bh=KMpHYhXrCAwNxS4eKBq53GsKdPe0uG5hEBHoW0IrnOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SdWXRR5AEOTiNNufeuUVuBlRkcpVGbe4ifXbgNoNAZGD63Tw3nXTq3X8WT9wWrfkYIkjmEdS0zSoxb17VWW89g0vFjtauyw/Xu+d0ISgMg3v4OREQ/h5AcDBKZQeNIf9iFtyzZWQ1qrF/7H+Vh5KSW+PD7PxSV5izp9hVX2AVqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wufik23w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DBCC113CC;
+	Mon, 13 May 2024 12:54:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715604873;
+	bh=KMpHYhXrCAwNxS4eKBq53GsKdPe0uG5hEBHoW0IrnOM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wufik23wA59SyeC3i7dUQdyf+Ak6hyvMnuBHXK1cDpKCpPTB+DeFkvKgTDfuYfryS
+	 DZ/LIm96KAsz5eYn3+gkjTiEOPa7+0P6UgkDzY6olZNatWKXcT5MSk6uSLaI+UDwY9
+	 h+Aq4KLJSzSe+HSdjATGnNSEZmJETRmT71OM5XAY=
+Date: Mon, 13 May 2024 14:54:29 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: Patch "spi: axi-spi-engine: fix version format string" has been
+ added to the 6.1-stable tree
+Message-ID: <2024051357-jimmy-smasher-0359@gregkh>
+References: <20240506193025.272042-1-sashal@kernel.org>
+ <ff1189d7-afb3-4567-a8ce-627cf57f3690@baylibre.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -6.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff1189d7-afb3-4567-a8ce-627cf57f3690@baylibre.com>
 
-Managed cleanup with devm_add_action_or_reset() will release the I2C
-adapter when the underlying Linux device goes away. But the connector
-still refers to it, so this cleanup leaves behind a stale pointer
-in struct drm_connector.ddc.
+On Mon, May 06, 2024 at 03:47:02PM -0500, David Lechner wrote:
+> On 5/6/24 2:30 PM, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     spi: axi-spi-engine: fix version format string
+> > 
+> > to the 6.1-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      spi-axi-spi-engine-fix-version-format-string.patch
+> > and it can be found in the queue-6.1 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> 
+> Does not meet the criteria for stable.
+> 
+> (only fixes theoretical problem, not actual documented problem)
 
-Bind the lifetime of the I2C adapter to the connector's lifetime by
-using DRM's managed release. When the DRM device goes away (after
-the Linux device) DRM will first clean up the connector and then
-clean up the I2C adapter.
+It fixes a real problem, incorrect data to userspace, why wouldn't you
+want it applied?
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b279df242972 ("drm/mgag200: Switch I2C code to managed cleanup")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.0+
----
- drivers/gpu/drm/mgag200/mgag200_i2c.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/mgag200/mgag200_i2c.c b/drivers/gpu/drm/mgag200/mgag200_i2c.c
-index 1029fef590f9b..4caeb68f3010c 100644
---- a/drivers/gpu/drm/mgag200/mgag200_i2c.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_i2c.c
-@@ -31,6 +31,8 @@
- #include <linux/i2c.h>
- #include <linux/pci.h>
- 
-+#include <drm/drm_managed.h>
-+
- #include "mgag200_drv.h"
- 
- static int mga_i2c_read_gpio(struct mga_device *mdev)
-@@ -86,7 +88,7 @@ static int mga_gpio_getscl(void *data)
- 	return (mga_i2c_read_gpio(mdev) & i2c->clock) ? 1 : 0;
- }
- 
--static void mgag200_i2c_release(void *res)
-+static void mgag200_i2c_release(struct drm_device *dev, void *res)
- {
- 	struct mga_i2c_chan *i2c = res;
- 
-@@ -125,5 +127,5 @@ int mgag200_i2c_init(struct mga_device *mdev, struct mga_i2c_chan *i2c)
- 	if (ret)
- 		return ret;
- 
--	return devm_add_action_or_reset(dev->dev, mgag200_i2c_release, i2c);
-+	return drmm_add_action_or_reset(dev, mgag200_i2c_release, i2c);
- }
--- 
-2.45.0
-
+greg k-h
 
