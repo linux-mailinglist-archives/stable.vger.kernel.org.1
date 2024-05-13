@@ -1,195 +1,166 @@
-Return-Path: <stable+bounces-43689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E778E8C435F
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 16:40:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678318C4363
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 16:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50DC4B20BE8
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 14:40:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A014AB20A8A
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 14:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2FB1848;
-	Mon, 13 May 2024 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF141859;
+	Mon, 13 May 2024 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwahl@gmx.de header.b="FP5RlYOg"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Qfc5NQnl"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12olkn2041.outbound.protection.outlook.com [40.92.22.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC4B17F0;
-	Mon, 13 May 2024 14:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715611193; cv=none; b=N7Thc1GG2y4PGBF4D82Mo1wprRVYMK7ZbybPRorznpS547QrDMU/RW9D2U0ITyymikjoDDR7Bja0Pckz8a+WPrLGvZOo40JJC4dJL6I3L34vlgE85AmxG4V19wRdTDCmkW72caRzGBoKdyTc4feco0+CSLHpfMizxzyRUV8DWDw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715611193; c=relaxed/simple;
-	bh=nBZcZltCZOCCgCCz9X3U6IvAol9wgYdcC2MRlSfWNj4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ejBeQd7IIk/cjw0U+1JHGZOIW/zQk1nkrm/TtaXEDQto/GnuBV8E56ZFRDMjw7k1zXy3V5hI0i4Hsn4L/1/1vZdA6OiQU/MyJ/yVDQjfWkXvBha+LVsrZJuL7Ve4rvUyhtZAPF8Ptb1IXnX8RzDR5pc1Cgv9rUZ00nZrG+B+iKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwahl@gmx.de header.b=FP5RlYOg; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1715611167; x=1716215967; i=rwahl@gmx.de;
-	bh=WCImdjPm9LvjalrqDqycwUi4gWN9eNIaTR2r5ILNxqA=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=FP5RlYOgV4nTPr+ta3Q6EbyPtYAcLeEXFrViVdF4GnP1hGFtG6lGI4Cp6fAzLAav
-	 ZUxisHhfdVr9/x38xDICIO3qsAojcrlAjiSWUGw8QXY1mSpAWefzy93eUNTpvVDVc
-	 ktN71R+Yx+yQtfGLI6pKywtndHdJSdfYcZKimMMdryZMR7ZuuipDsOOnSXKj3t+5J
-	 dF91/K/jxnTOnlSI5TItJjDZRB+gRgvNsHmmRRZskSJ76zyJ9HmlO8kE9P4/Mu6YP
-	 n48UHdyf/gcOM/m8pXpeXXxOwoGncDGFqkR+in8fU6yXPWxPRg97cQwoTlPUJHu6U
-	 N8sn1kIqoClaFkxA0g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from rohan.localdomain ([84.156.159.24]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MryT9-1suPz00yeL-00nxSY; Mon, 13
- May 2024 16:39:27 +0200
-From: Ronald Wahl <rwahl@gmx.de>
-To: Ronald Wahl <rwahl@gmx.de>
-Cc: Ronald Wahl <ronald.wahl@raritan.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] net: ks8851: Fix another TX stall caused by wrong ISR flag handling
-Date: Mon, 13 May 2024 16:39:22 +0200
-Message-ID: <20240513143922.1330122-1-rwahl@gmx.de>
-X-Mailer: git-send-email 2.45.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502E63C2D;
+	Mon, 13 May 2024 14:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.22.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715611206; cv=fail; b=p5QyO/dhTf+R3OgDnhpwWrgKIbO7jUh9FbXrJUVYL26x+DnHz4rmI4EtJHGyrckBnIqAlmncCBwZyr+aZEZWyPr0e74Wj94+sVCHNQI4235ZoroDsqujhAQI1HSGIB7FLO4/O8ItjRjo/DT3JVrWJ1jdWfyKT810ZRBl39qAlfU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715611206; c=relaxed/simple;
+	bh=Jw7FVfLBoECXk5ads1Gdme7hRnw0mK/aqIC7sWUT418=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hotOmNYOmX4/3Dv0dHv8ALsWAgGAJVwkTgepkEcElTGt7vV7ngOSkiJsJnNvwhrwY3/ZjEZiOfJy6I/CO1I0Ft9XKPTXRT9Rs3FCN5USkS+sqG/1l9bQO2yap7cRvT8yexNNp2cA6LY0GDeplyRXkLSG8kwO/bzuBZM+XdnXnRk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Qfc5NQnl; arc=fail smtp.client-ip=40.92.22.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NdnrUkacYe4gbJCc5i0dXIPtzviV2/8EDR+4flrVn07BTIz/ipprpf22vu08Uw7E/DMNDUln64IXslmBXz+vKNKA2v7suQExqMjs69nRB6amxNlBveKMWSd7bRKKdMKQTBQrCli0DnoWl3P8MJgjUGOSSZ0kl/gtMTquaLrIsYddhMFTU0/XL77SkY6tQZqAEvf2KbWM6X+u7NcM2egYR+F8fELETFoqFrH9j6f2pqnh9AK1wzXyvm4C5bae/h3ZvVG9ThMSBeHapjMo/poQYv5iIT2h2DzPtmWAuZNb5Ab4zXZWBD70bBif4z7XYN/CUbeB+9c+pLbO/Z42sNdjfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VvRl+StmkHaFehd/MMBoYOKyiCNtvpmt/HupBTAVANQ=;
+ b=RCBJWke18tk5Dr3cZSY/fAx7WPKOKuad5pB4dXf224iCvLEL+cssI7vPSlXYBeZE6o1d23KAToLCuwLXLs7sx+VOPq2TpYCmyHfRzSCm0KxNZe6sMDacMqXv22KMK4YwRL6rVKkTROD9UL/CpTEsqCyx7AReHfljd02lZ+Wq8fCyuhNxbjlgacQ0BGBKExCSXQC6bGREvyq5Os98mmlpEGkXMHbnGOrDqyMUAAqF44Y9jAq6yFjwcmbYzJZRB3a+XKT6gXGrqEHDHYobWytUnaJX6UaT4PgbZMTI7v5Vhxz7Bnp8pLpOFecPt3ZFkLwt/ZTQSHDv2G4wcO48hH18Dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VvRl+StmkHaFehd/MMBoYOKyiCNtvpmt/HupBTAVANQ=;
+ b=Qfc5NQnlrhwl7fAEnWO7lu/LytKcVQrVjzTxJp864KTd9HRIvBBKq14dP4olDJ6/EW8Ahj8/thU4HOhhNfW/uRdefyINVlY8rPxgQd4N6EY+S9M7dC8jBL1M165PH2ZlO7tY0+dx+sXH8KBBUBXKCaAdi3JpsyfZCwjnDKDIaXrqnnKo1cV/txyZOfINb2lzTL5Fy2Q7ChYJ8H529GjkIxoOqFpLKzji87l1xaXxYqppHJVCKilYYo8YiCWS0dNzPmspjsupUVm2cOPDkn3BU+YTjFwmy2NIe62wHLuBBYihWoikliHrdaHYs4+otbEZ91GbYUNC9MO6CF9FGx48WQ==
+Received: from BYAPR03MB4168.namprd03.prod.outlook.com (2603:10b6:a03:78::23)
+ by DS7PR03MB5464.namprd03.prod.outlook.com (2603:10b6:5:2cf::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
+ 2024 14:40:02 +0000
+Received: from BYAPR03MB4168.namprd03.prod.outlook.com
+ ([fe80::b8b1:7fdc:95d4:238a]) by BYAPR03MB4168.namprd03.prod.outlook.com
+ ([fe80::b8b1:7fdc:95d4:238a%6]) with mapi id 15.20.7544.052; Mon, 13 May 2024
+ 14:40:01 +0000
+From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+To: nirmoy.das@linux.intel.com,
+	jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	tursulin@ursulin.net,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	chris@chris-wilson.co.uk
+Cc: intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
+	stable@vger.kernel.org,
+	Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH v2] drm/i915: Fix memory leak by correcting cache object name in error handler
+Date: Mon, 13 May 2024 14:39:52 +0000
+Message-ID:
+ <BYAPR03MB41688E0CA5B01A0017EFD33DADE22@BYAPR03MB4168.namprd03.prod.outlook.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [YuiExJdkI2YO9YxmnzQ6r7s/D/uYf1uM]
+X-ClientProxiedBy: CH2PR04CA0030.namprd04.prod.outlook.com
+ (2603:10b6:610:52::40) To BYAPR03MB4168.namprd03.prod.outlook.com
+ (2603:10b6:a03:78::23)
+X-Microsoft-Original-Message-ID:
+ <20240513143952.2787-1-jiashengjiangcool@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:V/8xv8BKRPLWuIfHGHa0+ngDPh6HhmfG0BbstvqlzzoWWh0LzzO
- J84huiEM6LJHHBIf/nyikhyw9huCyucjkxElO1JezBTbf4aWdfCI58xSGRtK3JFuQj0IW5D
- +/sg4yiKtWTZw2biI8tEl3PjquPprnTmsgmRJNsm6+N8SU8fOErISGxXAxCdn1bVQ0xu0OI
- x3NY1WnlZQ5vFADSuAPZg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:8WeweyECWII=;jcWaY0mCcksn0j2ds+gE9bzXBTr
- KDPGSXUlP/JvhUisQ87I7Nz+2JbJUT9YjMn57bq/f1XAxRDz7O45KIMaM1vAnP1LG8vfmVe47
- K35sSnx//f5ySUflcMh78oz0avXMCR5Fdcpu5vFrnbautH3ybgGy8rjpv3EbRl+6sq8qb1vNJ
- md/u89w/AzKPClk7SQDNnAd/aQ0xtc9NPia5ZOPNIiqmJIjmC8R6PkZquWE+9G2sUnx578hwZ
- L4BwNSpLdqxXE7mojtUeUfXDe7T6jIz456vJSih3eh4uMFgdMT5tlGWE9EAAVcraT3Oaiw9TD
- 0SB71lv70os6GwtxiOHOs8zb7Jx+Xci9Uc+hS5B8/vmA3aObLj/1bAoiXcDwJiknghZta6+U3
- tAtzQNfAqoI7GJL44DTv52/UKtM5X14PLIcpRVWi7pDMJeUbVNC7JuiV7Bx/CRvTn8RCkPVr/
- xfYJaGX4Jgy5xlkTJH6okwAML+xYzd3poL4UyHUfJNDu7Yonp9Uu/r0RuZHlX5gpDAmD4OQSe
- K6u2meJMFk2qVirSJLhW02Yar1tnQLuojiS3+wMJ0KKOkTDjmEcjR7QY82ItqzToBflO+xuQv
- K9b0qCUWybjz/vX3tAQbOzPdrgUZzRMfOX1BHirsz0Q6rkHp4GBcnMelDcYdGzZMsCmlLB/Zl
- AnZ2LV/s7LAY3khFdIFFkTIqsD9twTvVAS4oMcibYH+GkJr6ujwh0mdLoP7oB2GSYyIUTqbrE
- 4TdxSWHdeRZDy8IjTLmIcNCsg+z7CzX1dPhj0bqRoT1Xs6FQVqY9t2W5tZDYij/IJ0PsUDt/i
- y61UUe3roo6BOGt40/I53ylETBRyJbL7Nwb93yVlonjTI=
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR03MB4168:EE_|DS7PR03MB5464:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18790f6b-f555-47c9-b37a-08dc735a91a1
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199019|440099019|3412199016|3420499023|3430499023|1710799017;
+X-Microsoft-Antispam-Message-Info:
+	KZBjxWvI7IapnUpF9KyEYplQ69EZ8ULju/pTcijD8dnWJbV7lBjz7zcR2FdAp4aY5ZQJYKwklwCXekYeI+eUy7CSpayiWDke4eMadpBAnKfkucykz9rtPKkle1cNpUBK0sLKw2XMUTeP4tbqxw0sAe5X2GHCenKY0A+5ffu3Bb5djhFy/L5/kn2R2qb864RXN9uFR58RzMAFqc6zHmwj7F0hxOIQWXwHjnqIDCdVB6kBZ/5MjpWYfSPjuetMe1ZtKau/N7pJFM8nBvZ336n2PAN4CKV/yb/TWHuUaJGJMIrejbAP+R96A8yxp6HxLoGTmB7OigxgvAO5NvEMiuDYiPpdU6GzbdgJkOWTTOwDlXyUbOxyPXtsk+eUDHTeiTIb20DijNe+d0qkR38z7euGBoLVfofyhg2AODvD3hEgRcv4yFQoKccckIx7jqtRll+hUxynSDJ9tRfezlND9nXYbBfCASVaqI4GWgnXYf+Y2Y8DvQHreqw4mRqeBO6AumO7l7OHGwC3taSFJhGvfFcVmbJdNPzuPxmrgSqdphK5cX2PNVxQzaS6XF0Xzz0VSoih24c/sLRQHbonFgYI8a6yunatjg0NC7LSHlHLNFO5TAXkwOVtqtArwmWKI8UaAqS+
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?AFZA6nTJq/gNXLHUft3z1j9rADPDiVAEApf80d1742s4DpJq4qSuKR5XZT/V?=
+ =?us-ascii?Q?jwaC9feCyiXJ9g46VSyKi6/lBEbp+Jl94yLTyT5AhlRef9jse7zVFveLJZHR?=
+ =?us-ascii?Q?eFPxxq60/eFq3YJvYd8y3ZjiuGghoF7PHHaMVDIIq87Gnuc+5Y5KIXf0zneJ?=
+ =?us-ascii?Q?rcqJjqpnr9jaFEgYIonZTixFqAcqGQcslkS5+1L39MJsWULIWmzbBiJus5+D?=
+ =?us-ascii?Q?3S+nHOOxdR4k+vboCViR7SzTEZL7q9KBWlVfHb2WJlL/2xktnCEL0lkpF/qw?=
+ =?us-ascii?Q?YQMAhZnkzZ+tP+NhFcNaKxWDhpGqZKfNJVBJJBGpZtHD2hKH+VzVbGv+YcIz?=
+ =?us-ascii?Q?P/nXMy1fKQHLkYBWnEUKom4MpYNj7fPTZNOo3/8HIG036FEpfXMaMG7vt5Ep?=
+ =?us-ascii?Q?kFBAc3bl3MaO1f5i3Jb6pLNHIqrQx3zfr5JjZcGKnhU9IpWyHDKnxKVdnDMi?=
+ =?us-ascii?Q?q0nVL6Ec4WeSC74mOH6oLYYRhQkW5xeDMyjfSvwJBDOgpF5L7h7C2UWrxOzW?=
+ =?us-ascii?Q?QbTQOOQq0znT8YS7x5BVbPjUiGZs6GURmyoK3EWQ+q0+plE4EmYh7Y4ZzIJM?=
+ =?us-ascii?Q?AyCTU7BpmMuVNB/y/xHU725wbCZEUM8CT+yfdTg3y2zon6RpJkWoiH92e35v?=
+ =?us-ascii?Q?FULbkLRdtHRGRuvSDVXBDUgJDAYcSKx2YRXDAeCHKc2TCu2MrT+Re2NlvsE0?=
+ =?us-ascii?Q?2TNdcmm/MpxyQTUxekl9imPeXxWe11qmnLXKH25NqL0yBCwpzGXeDGL4yZtL?=
+ =?us-ascii?Q?AYrkqgj9+9RhLWkkudDkmd2zEdRePyM2t650Pkz5xcpaBSjAparkSXkYZzrc?=
+ =?us-ascii?Q?7/Hn+oQfA0zkWeIfDNsOsDdc0fRLoyeLYctF8MvMgnOeDuiBJ+Qsy8QuXYz0?=
+ =?us-ascii?Q?TdaQo4QIcaS4B7mr5u795rijKIpW9DW94ASNJ9NKoW1mYPuCsdUbPE3ZuB5C?=
+ =?us-ascii?Q?UaQBUdfhQb75DuzLmkhuEwDbubifT/ytbUKX039qNzHRNk/Jwt7P9masiKhG?=
+ =?us-ascii?Q?NY2w788zpF+THUIUKF8tGo8Z44lYpI5K9PCsXCUAKKgDMRBquoSCUXDFlXEC?=
+ =?us-ascii?Q?2CPenVtjPENAsRCpOS8pMub++oHI4rgtgitanaLlzgjLuCanVwKnkaFJwFpq?=
+ =?us-ascii?Q?oWXRJPePTydqW0eZ1+JEHiYCshjIGe2CL15BJ/OhdkrjggK3LLGeYpjEjoMC?=
+ =?us-ascii?Q?GVXEkEg6yNmh7AbMFyewg6QAqJhhpA8wGwX2CxPmZWSkCLVF1DD/3cG5qbhC?=
+ =?us-ascii?Q?jVzvVjiL6T0eIyCNCdIE?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18790f6b-f555-47c9-b37a-08dc735a91a1
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR03MB4168.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2024 14:40:00.9407
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR03MB5464
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+Replace "slab_priorities" with "slab_dependencies" in the error handler
+to avoid memory leak.
 
-Under some circumstances it may happen that the ks8851 Ethernet driver
-stops sending data.
+Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
+Cc: <stable@vger.kernel.org> # v5.2+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+---
+Changelog:
 
-Currently the interrupt handler resets the interrupt status flags in the
-hardware after handling TX. With this approach we may lose interrupts in
-the time window between handling the TX interrupt and resetting the TX
-interrupt status bit.
+v1 -> v2:
 
-When all of the three following conditions are true then transmitting
-data stops:
+1. Alter the subject.
+---
+ drivers/gpu/drm/i915/i915_scheduler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  - TX queue is stopped to wait for room in the hardware TX buffer
-  - no queued SKBs in the driver (txq) that wait for being written to hw
-  - hardware TX buffer is empty and the last TX interrupt was lost
-
-This is because reenabling the TX queue happens when handling the TX
-interrupt status but if the TX status bit has already been cleared then
-this interrupt will never come.
-
-With this commit the interrupt status flags will be cleared before they
-are handled. That way we stop losing interrupts.
-
-The wrong handling of the ISR flags was there from the beginning but
-with commit 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX
-buffer overrun") the issue becomes apparent.
-
-Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overru=
-n")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-=2D--
- drivers/net/ethernet/micrel/ks8851_common.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
-
-diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/eth=
-ernet/micrel/ks8851_common.c
-index 502518cdb461..6453c92f0fa7 100644
-=2D-- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -328,7 +328,6 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- {
- 	struct ks8851_net *ks =3D _ks;
- 	struct sk_buff_head rxq;
--	unsigned handled =3D 0;
- 	unsigned long flags;
- 	unsigned int status;
- 	struct sk_buff *skb;
-@@ -336,24 +335,17 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- 	ks8851_lock(ks, &flags);
-
- 	status =3D ks8851_rdreg16(ks, KS_ISR);
-+	ks8851_wrreg16(ks, KS_ISR, status);
-
- 	netif_dbg(ks, intr, ks->netdev,
- 		  "%s: status 0x%04x\n", __func__, status);
-
--	if (status & IRQ_LCI)
--		handled |=3D IRQ_LCI;
--
- 	if (status & IRQ_LDI) {
- 		u16 pmecr =3D ks8851_rdreg16(ks, KS_PMECR);
- 		pmecr &=3D ~PMECR_WKEVT_MASK;
- 		ks8851_wrreg16(ks, KS_PMECR, pmecr | PMECR_WKEVT_LINK);
--
--		handled |=3D IRQ_LDI;
- 	}
-
--	if (status & IRQ_RXPSI)
--		handled |=3D IRQ_RXPSI;
--
- 	if (status & IRQ_TXI) {
- 		unsigned short tx_space =3D ks8851_rdreg16(ks, KS_TXMIR);
-
-@@ -365,20 +357,12 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- 		if (netif_queue_stopped(ks->netdev))
- 			netif_wake_queue(ks->netdev);
- 		spin_unlock(&ks->statelock);
--
--		handled |=3D IRQ_TXI;
- 	}
-
--	if (status & IRQ_RXI)
--		handled |=3D IRQ_RXI;
--
- 	if (status & IRQ_SPIBEI) {
- 		netdev_err(ks->netdev, "%s: spi bus error\n", __func__);
--		handled |=3D IRQ_SPIBEI;
- 	}
-
--	ks8851_wrreg16(ks, KS_ISR, handled);
--
- 	if (status & IRQ_RXI) {
- 		/* the datasheet says to disable the rx interrupt during
- 		 * packet read-out, however we're masking the interrupt
-=2D-
-2.45.0
+diff --git a/drivers/gpu/drm/i915/i915_scheduler.c b/drivers/gpu/drm/i915/i915_scheduler.c
+index 762127dd56c5..70a854557e6e 100644
+--- a/drivers/gpu/drm/i915/i915_scheduler.c
++++ b/drivers/gpu/drm/i915/i915_scheduler.c
+@@ -506,6 +506,6 @@ int __init i915_scheduler_module_init(void)
+ 	return 0;
+ 
+ err_priorities:
+-	kmem_cache_destroy(slab_priorities);
++	kmem_cache_destroy(slab_dependencies);
+ 	return -ENOMEM;
+ }
+-- 
+2.25.1
 
 
