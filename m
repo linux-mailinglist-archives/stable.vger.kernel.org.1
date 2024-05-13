@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FDE8C42A2
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:57:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30B28C42AC
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49642286E36
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:57:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52A3F1F223C5
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 13:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9DA153572;
-	Mon, 13 May 2024 13:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7731A153585;
+	Mon, 13 May 2024 13:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tK9K6Z1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5pDDQ1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9EB152DFA
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CD8153580
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 13:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715608645; cv=none; b=CRSvJBaHDNv4slGUqkv/SgP4Kznqacoc0PO5vIjxyXJ+Cl0pTH4vaYh750gM3gEV5D5cFtyiRZUjk1OxmBKOoKVALfohdphinVhqumqREd1UUM/unaMw1uxSjomnsSoEks2APjX0/Bl6kGHkT09A24ysPoF7oto4SgvniHS/ItU=
+	t=1715608668; cv=none; b=U+wyhE56gTj9iuU84n30fkQBHrmTvV+amC4s9UzP2OsWkc1E2V8ngB5/Eq2zvzWMWOzduNM0kdUriusA6UwohctOF1UsS1Bub4A7erAVCro4zkSTQcDbnXJnHDIPQZ6bYVYlFFQLhb2rzt0Yj42R4hxE8qsT+V6zSOCg5HRbrjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715608645; c=relaxed/simple;
-	bh=aOtGR2IvGia8IJTXhBpKBEhm/hHVUgx+0fwqjV1sqvE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Q5nhVmbFmmCo4WO28FOFCfVi5MbIgn84j2qPRtnF/u6/yrgKrokeoV4TAlPfYi6ESWbti2gq2y01K35Bl0bwbL5tNs4m38JdeBHIYM3ok1+9nPo59jZwhFqmZ/fD0Cef/iszd7hrZCGy+padyKgW6qCTP+HGuL2uQNNBUjel108=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tK9K6Z1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B456AC4AF0C;
-	Mon, 13 May 2024 13:57:24 +0000 (UTC)
+	s=arc-20240116; t=1715608668; c=relaxed/simple;
+	bh=ognlrjetEmwDxBFmIUhlmXN7Si/ypGSVopNFzJQdeF8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HhtHiDkkrB5p0+LxFXLdqsbEFhmtTJPVKB5LHz7KoRN7Elv0SVyC4DAhLflwG3V9ksbMj6c9dzbD2Y1t5ZGHMUU3D4yvgFz8n4Ke/ENZY2cn8oznl4e6lrsD9+o1f+w0ku8jjUAKgzbhpsAmUZK3fY/6ByRoipg3muvraCUhJFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5pDDQ1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F50FC4AF10;
+	Mon, 13 May 2024 13:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715608645;
-	bh=aOtGR2IvGia8IJTXhBpKBEhm/hHVUgx+0fwqjV1sqvE=;
+	s=korg; t=1715608668;
+	bh=ognlrjetEmwDxBFmIUhlmXN7Si/ypGSVopNFzJQdeF8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tK9K6Z1rbYZIuvywA4inhVRhhFnVFnGJhwg9y3C0GCRAsosSF4q5KiG5wh4LHSbmI
-	 Is44uK2M0e2/sTuTDK9HyWqQZAgsyDM6ahRNv8vhS1uhWyvUTdRiecG59xW/eTZzPj
-	 hJS1zop/mpZFUKxrqEtV2L7AC3WWmwJWvENnPzIo=
-Subject: FAILED: patch "[PATCH] xtensa: fix MAKE_PC_FROM_RA second argument" failed to apply to 4.19-stable tree
-To: jcmvbkbc@gmail.com
+	b=l5pDDQ1PmmR3xrAZaAE0GMfWZJfhO/5x44wtEAR0Twx9+0xPvcx361rApQz3nZLko
+	 MCmNAbrVmhbUvM9U15/utORP1w7O3k0vkWjbcEv9xgRgN/Cq4SAyL+zyAnQBstbzrd
+	 e0nDbHNfmuyHLrQf7eygkVrNlMcXZ4OO4iW/FvXU=
+Subject: FAILED: patch "[PATCH] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access" failed to apply to 5.15-stable tree
+To: opendmb@gmail.com,davem@davemloft.net,florian.fainelli@broadcom.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 15:57:21 +0200
-Message-ID: <2024051320-justifier-trusting-bb69@gregkh>
+Date: Mon, 13 May 2024 15:57:44 +0200
+Message-ID: <2024051343-casket-astride-c192@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0e60f0b75884677fb9f4f2ad40d52b43451564d5
+git cherry-pick -x d85cf67a339685beae1d0aee27b7f61da95455be
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051320-justifier-trusting-bb69@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051343-casket-astride-c192@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-0e60f0b75884 ("xtensa: fix MAKE_PC_FROM_RA second argument")
-1b6ceeb99ee0 ("xtensa: stacktrace: include <asm/ftrace.h> for prototype")
-11e969bc964a ("xtensa: support coprocessors on SMP")
-e45d4bfbeb26 ("xtensa: merge SAVE_CP_REGS_TAB and LOAD_CP_REGS_TAB")
-0b549f813387 ("xtensa: handle coprocessor exceptions in kernel mode")
-6179ef4d460a ("xtensa: use callx0 opcode in fast_coprocessor")
-3e554d47dfe3 ("xtensa: clean up declarations in coprocessor.h")
-fc55402b8438 ("xtensa: clean up exception handler prototypes")
-db0d07fa192a ("xtensa: clean up function declarations in traps.c")
-839769c35477 ("xtensa: fix a7 clobbering in coprocessor context load/store")
-967747bbc084 ("uaccess: remove CONFIG_SET_FS")
-12700c17fc28 ("uaccess: generalize access_ok()")
-52fe8d125c9a ("arm64: simplify access_ok()")
-26509034bef1 ("m68k: fix access_ok for coldfire")
-15f3d81a8c8a ("MIPS: use simpler access_ok()")
-34737e269803 ("uaccess: add generic __{get,put}_kernel_nofault")
-1830a1d6a5b7 ("x86: use more conventional access_ok() definition")
-36903abedfe8 ("x86: remove __range_not_ok()")
-8afafbc955ba ("sparc64: add __{get,put}_kernel_nofault()")
-222ca305c9fd ("uaccess: fix integer overflow on access_ok()")
+d85cf67a3396 ("net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access")
+696450c05181 ("net: bcmgenet: Clear RGMII_LINK upon link down")
+fc13d8c03773 ("net: bcmgenet: pull mac_config from adjust_link")
+fcb5dfe7dc40 ("net: bcmgenet: remove old link state values")
+50e356686fa9 ("net: bcmgenet: remove netif_carrier_off from adjust_link")
+b972b54a68b2 ("net: bcmgenet: Patch PHY interface for dedicated PHY driver")
 
 thanks,
 
@@ -96,117 +82,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0e60f0b75884677fb9f4f2ad40d52b43451564d5 Mon Sep 17 00:00:00 2001
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Sat, 17 Feb 2024 05:15:42 -0800
-Subject: [PATCH] xtensa: fix MAKE_PC_FROM_RA second argument
+From d85cf67a339685beae1d0aee27b7f61da95455be Mon Sep 17 00:00:00 2001
+From: Doug Berger <opendmb@gmail.com>
+Date: Thu, 25 Apr 2024 15:27:19 -0700
+Subject: [PATCH] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
 
-Xtensa has two-argument MAKE_PC_FROM_RA macro to convert a0 to an actual
-return address because when windowed ABI is used call{,x}{4,8,12}
-opcodes stuff encoded window size into the top 2 bits of the register
-that becomes a return address in the called function. Second argument of
-that macro is supposed to be an address having these 2 topmost bits set
-correctly, but the comment suggested that that could be the stack
-address. However the stack doesn't have to be in the same 1GByte region
-as the code, especially in noMMU XIP configurations.
+The EXT_RGMII_OOB_CTRL register can be written from different
+contexts. It is predominantly written from the adjust_link
+handler which is synchronized by the phydev->lock, but can
+also be written from a different context when configuring the
+mii in bcmgenet_mii_config().
 
-Fix the comment and use either _text or regs->pc as the second argument
-for the MAKE_PC_FROM_RA macro.
+The chances of contention are quite low, but it is conceivable
+that adjust_link could occur during resume when WoL is enabled
+so use the phydev->lock synchronizer in bcmgenet_mii_config()
+to be sure.
 
+Fixes: afe3f907d20f ("net: bcmgenet: power on MII block for all MII modes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-diff --git a/arch/xtensa/include/asm/processor.h b/arch/xtensa/include/asm/processor.h
-index d008a153a2b9..7ed1a2085bd7 100644
---- a/arch/xtensa/include/asm/processor.h
-+++ b/arch/xtensa/include/asm/processor.h
-@@ -115,9 +115,9 @@
- #define MAKE_RA_FOR_CALL(ra,ws)   (((ra) & 0x3fffffff) | (ws) << 30)
- 
- /* Convert return address to a valid pc
-- * Note: We assume that the stack pointer is in the same 1GB ranges as the ra
-+ * Note: 'text' is the address within the same 1GB range as the ra
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+index 9ada89355747..86a4aa72b3d4 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -2,7 +2,7 @@
+ /*
+  * Broadcom GENET MDIO routines
+  *
+- * Copyright (c) 2014-2017 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
   */
--#define MAKE_PC_FROM_RA(ra,sp)    (((ra) & 0x3fffffff) | ((sp) & 0xc0000000))
-+#define MAKE_PC_FROM_RA(ra, text) (((ra) & 0x3fffffff) | ((unsigned long)(text) & 0xc0000000))
  
- #elif defined(__XTENSA_CALL0_ABI__)
+ #include <linux/acpi.h>
+@@ -275,6 +275,7 @@ int bcmgenet_mii_config(struct net_device *dev, bool init)
+ 	 * block for the interface to work, unconditionally clear the
+ 	 * Out-of-band disable since we do not need it.
+ 	 */
++	mutex_lock(&phydev->lock);
+ 	reg = bcmgenet_ext_readl(priv, EXT_RGMII_OOB_CTRL);
+ 	reg &= ~OOB_DISABLE;
+ 	if (priv->ext_phy) {
+@@ -286,6 +287,7 @@ int bcmgenet_mii_config(struct net_device *dev, bool init)
+ 			reg |= RGMII_MODE_EN;
+ 	}
+ 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
++	mutex_unlock(&phydev->lock);
  
-@@ -127,9 +127,9 @@
- #define MAKE_RA_FOR_CALL(ra, ws)   (ra)
- 
- /* Convert return address to a valid pc
-- * Note: We assume that the stack pointer is in the same 1GB ranges as the ra
-+ * Note: 'text' is not used as 'ra' is always the full address
-  */
--#define MAKE_PC_FROM_RA(ra, sp)    (ra)
-+#define MAKE_PC_FROM_RA(ra, text)  (ra)
- 
- #else
- #error Unsupported Xtensa ABI
-diff --git a/arch/xtensa/include/asm/ptrace.h b/arch/xtensa/include/asm/ptrace.h
-index a270467556dc..86c70117371b 100644
---- a/arch/xtensa/include/asm/ptrace.h
-+++ b/arch/xtensa/include/asm/ptrace.h
-@@ -87,7 +87,7 @@ struct pt_regs {
- # define user_mode(regs) (((regs)->ps & 0x00000020)!=0)
- # define instruction_pointer(regs) ((regs)->pc)
- # define return_pointer(regs) (MAKE_PC_FROM_RA((regs)->areg[0], \
--					       (regs)->areg[1]))
-+					       (regs)->pc))
- 
- # ifndef CONFIG_SMP
- #  define profile_pc(regs) instruction_pointer(regs)
-diff --git a/arch/xtensa/kernel/process.c b/arch/xtensa/kernel/process.c
-index a815577d25fd..7bd66677f7b6 100644
---- a/arch/xtensa/kernel/process.c
-+++ b/arch/xtensa/kernel/process.c
-@@ -47,6 +47,7 @@
- #include <asm/asm-offsets.h>
- #include <asm/regs.h>
- #include <asm/hw_breakpoint.h>
-+#include <asm/sections.h>
- #include <asm/traps.h>
- 
- extern void ret_from_fork(void);
-@@ -380,7 +381,7 @@ unsigned long __get_wchan(struct task_struct *p)
- 	int count = 0;
- 
- 	sp = p->thread.sp;
--	pc = MAKE_PC_FROM_RA(p->thread.ra, p->thread.sp);
-+	pc = MAKE_PC_FROM_RA(p->thread.ra, _text);
- 
- 	do {
- 		if (sp < stack_page + sizeof(struct task_struct) ||
-@@ -392,7 +393,7 @@ unsigned long __get_wchan(struct task_struct *p)
- 
- 		/* Stack layout: sp-4: ra, sp-3: sp' */
- 
--		pc = MAKE_PC_FROM_RA(SPILL_SLOT(sp, 0), sp);
-+		pc = MAKE_PC_FROM_RA(SPILL_SLOT(sp, 0), _text);
- 		sp = SPILL_SLOT(sp, 1);
- 	} while (count++ < 16);
- 	return 0;
-diff --git a/arch/xtensa/kernel/stacktrace.c b/arch/xtensa/kernel/stacktrace.c
-index 831ffb648bda..ed324fdf2a2f 100644
---- a/arch/xtensa/kernel/stacktrace.c
-+++ b/arch/xtensa/kernel/stacktrace.c
-@@ -13,6 +13,7 @@
- #include <linux/stacktrace.h>
- 
- #include <asm/ftrace.h>
-+#include <asm/sections.h>
- #include <asm/stacktrace.h>
- #include <asm/traps.h>
- #include <linux/uaccess.h>
-@@ -189,7 +190,7 @@ void walk_stackframe(unsigned long *sp,
- 		if (a1 <= (unsigned long)sp)
- 			break;
- 
--		frame.pc = MAKE_PC_FROM_RA(a0, a1);
-+		frame.pc = MAKE_PC_FROM_RA(a0, _text);
- 		frame.sp = a1;
- 
- 		if (fn(&frame, data))
+ 	if (init)
+ 		dev_info(kdev, "configuring instance for %s\n", phy_name);
 
 
