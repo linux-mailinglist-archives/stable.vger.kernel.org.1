@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D789B8C4408
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:18:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D0D8C4409
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 149C51C20443
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CD0728716E
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEFE539C;
-	Mon, 13 May 2024 15:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E12C1DA20;
+	Mon, 13 May 2024 15:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jnlb/ur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esCWYFcq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0694C84
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1314C84
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715613531; cv=none; b=OxGhUmnyO+f5w0u6JJQLe85RYkYhoyTFF/7WeH4AH63QLAJT9I+V0KulCkR3VyfLLMDmlB5XQlSJzbdx6stvZt7uM/E00ap/tI+TTSB3kfkZs+w659kT0WcusdsY5M0jSJOOvHm0DRFZ8Wjd0dogNzpUyvZKUrTeT6UOgVe/zpg=
+	t=1715613534; cv=none; b=SzJ9761/Fz4zun3cI9mTnsUKifeTtPoIUZKt6/yyqP29iqECMQwXjhWI8LVyOLagR23nyQkXd0z3z4jO8R8ZQKLmc+s1+Uu24oMyVWramuXfym6NyHxcc2UX3Jm3z9/4tAqnlx1bVKAcghlE/uAl+7wy03Xz6bCKwM5d1RcM6Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715613531; c=relaxed/simple;
-	bh=1kWkKsF/r/cVAn9Sag3CQPUW7z8DMBmYTcAfbM7Zm6I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V5LkuxWvjWwlrqLEqm1255jwaFI2faF9e4B/+/XKdSlqC3gIyPxR4r0oLsHyXIrfGj4NMO9WrGMU//WgUcs4QKY9lgev5TatOGPh8I/a+EJpPXs7S85EGV1LsxmE3MxKqxUEMbMFKeEVwK9B+AEnVA2MoFQCCJdSdsod20eCBwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jnlb/ur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1546C113CC;
-	Mon, 13 May 2024 15:18:50 +0000 (UTC)
+	s=arc-20240116; t=1715613534; c=relaxed/simple;
+	bh=UZXF7xWu7gLQwZUd40pbPwUmKR3PypjXWzyxKnlIwC8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SaR2wS9I15Ez4oU09Xz15HtdkwYRtmhUPXIPo4myxu1V4F4hoLE6H5SEW+1JPzaug2cprbu5O8aomckJvrLeMUia7g4nlGvWfQ0EA2fPur0KORUb9h6otBMDuQB9d3mWuvgpTxsfa7V6JPYuDkTqew00ia011fwdPvmGRGS80vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esCWYFcq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DCEC2BD11;
+	Mon, 13 May 2024 15:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715613531;
-	bh=1kWkKsF/r/cVAn9Sag3CQPUW7z8DMBmYTcAfbM7Zm6I=;
+	s=korg; t=1715613534;
+	bh=UZXF7xWu7gLQwZUd40pbPwUmKR3PypjXWzyxKnlIwC8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2jnlb/urGf3EZNs3fpzWU3UTDr5XhP7RejyH2MrEvIr6MQ68oKPpi1GmQPDWmTokQ
-	 XEA3YvjYdDi4bl7Q3FzP5vCBJyIKFeJ7ICcz2JTqHmU+0oAbWm4qG8EsRMYMD0lL9m
-	 KlYRXwF6nNzRE25RWqHq8AkIdlR48zdC6lmU1tYk=
-Subject: FAILED: patch "[PATCH] misc/pvpanic-pci: register attributes via pci_driver" failed to apply to 6.1-stable tree
+	b=esCWYFcqYROzt9j0dlJNZomeBLpYmuspO275tE4z3oHRaKmonsjFzQWaxpYtKi9KQ
+	 3Rz2sAy8AUzVSyL/uN9KOAUEIAssrqHzTkVk7UrYJyne6NxUyaCr4SP/FCtLz4nJLI
+	 Lq4PfX0PCUz/IaVioO7SBEsf+6KDIrmXR9KpwsO8=
+Subject: FAILED: patch "[PATCH] misc/pvpanic-pci: register attributes via pci_driver" failed to apply to 5.15-stable tree
 To: linux@weissschuh.net,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 17:18:40 +0200
-Message-ID: <2024051340-puma-unshaven-405c@gregkh>
+Date: Mon, 13 May 2024 17:18:41 +0200
+Message-ID: <2024051340-destitute-overlaid-3681@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,27 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x ee59be35d7a8be7fcaa2d61fb89734ab5c25e4ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051340-puma-unshaven-405c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051340-destitute-overlaid-3681@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 ee59be35d7a8 ("misc/pvpanic-pci: register attributes via pci_driver")
 c1426d392aeb ("misc/pvpanic: deduplicate common code")
+84b0f12a953c ("pvpanic: Indentation fixes here and there")
+cc5b392d0f94 ("pvpanic: Fix typos in the comments")
+33a430419456 ("pvpanic: Keep single style across modules")
 
 thanks,
 
