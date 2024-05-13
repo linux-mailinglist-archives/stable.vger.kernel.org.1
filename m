@@ -1,255 +1,154 @@
-Return-Path: <stable+bounces-43707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B218C4400
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:17:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808228C4404
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 333001F2104F
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:17:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA95AB23FFE
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90FF6139;
-	Mon, 13 May 2024 15:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA99663C1;
+	Mon, 13 May 2024 15:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbiwtpnc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uNGRaC12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4B15221
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677BE539C;
+	Mon, 13 May 2024 15:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715613438; cv=none; b=hheNB4urELTYEk75uU6GsQfEaLLYcMOZailM1fdmpekWqZhoTL3EsXF+DScD3Oah+thFJtpJ9HeF5NwPJ4Bs05dXsU8UzgQLmEgChzjhsyiQebhcJTo5NE8fclS/N4LyQZHR5Li7+dsi7bhfzF2yPyFONZ5EcLlPuRJmBAhp4EM=
+	t=1715613453; cv=none; b=EKUU6KEDQeAoo20a103sNDYubeXKRLinzqlLlRsucZddHp20vWJ8eycFFPt3Gp0cIhXh4jmaQfkrQCgzWeyz9Pnc01UUE13vPzSG9965GXqceLSnHQATiT6vMIGpLdTJad8m/YQ1j1Aq8fYNdIyhoQZlVPHLnYhtjZ7yM8eQg28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715613438; c=relaxed/simple;
-	bh=shHhPqcpdb976njwDAAGxHlCNR3YSaFSY18jSeBk8f8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oLI+d0ZHOY1ou6wrRWSGQvkpczgKx8DZqBNz90RZUUB9pXqtDRfYIczk8HL5FoLSRiRpwnF0oV1f0P0Am0voawwghQ8LPPXZcfDVDaWNINFi2BWW+KuunKHqliwW05fPfM316xHz5kfmRCVAPXFI+DQPMeVWolWvKonFCnR9Fv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbiwtpnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C457FC113CC;
-	Mon, 13 May 2024 15:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715613438;
-	bh=shHhPqcpdb976njwDAAGxHlCNR3YSaFSY18jSeBk8f8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Lbiwtpncg6UZzInotuQXHa9rVrdcDhVZhHNw0wuzcdDeOryUgl6oHqMMe5bW3TKOO
-	 2GR4C3T1gYpTl1P44/mMsmshIyWZ7RrVxA1EOP+0bUWLFQkJ/u+S4Olu+M7YFOlNyB
-	 FJTRYvRS49cknVkYhuGAmAsYbHXdaCzbBPQZ2nM8=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix incorrect DSC instance for MST" failed to apply to 5.4-stable tree
-To: hersenxs.wu@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,daniel.wheeler@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 13 May 2024 17:17:06 +0200
-Message-ID: <2024051305-sudden-directed-5647@gregkh>
+	s=arc-20240116; t=1715613453; c=relaxed/simple;
+	bh=OGxZWchEypSsKpfa3B/CsaIUjCyUiDDrD3vCvYiJruQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Du/d91UpVOpujc1k/sTZyaEq8qWUPsZu9CwkcDLxUQyO77BmC57nBWb2gsiaTCxcYS5f6B/qCFGdB6fT4FKTQPOZX1dmjm1j9Y9U12YWMC9KxrTsm70lR8vgjW+hvuiIrXmzGL0Gh5w/pS/Nx49u2VJvjQc6bcvqpiB8STJfPRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uNGRaC12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438ECC32782;
+	Mon, 13 May 2024 15:17:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715613453;
+	bh=OGxZWchEypSsKpfa3B/CsaIUjCyUiDDrD3vCvYiJruQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uNGRaC12DFncB3jl5Yg4hJjrJ2bDpyX1+HYLs6FrcZOrt4c1+gKaxhet7G361er0J
+	 Q8UO37Vt79pWC+kI4gppEGAIZuN+Mo0sigbl6znohUl9GeFFN3N6Mf18Y2G6VSiL4r
+	 uoZEHTekG5TQkW7G/a1kK6uWhXR1jT/Z/t3X5v46c9z+Cijj1RQECXqCbUX1Hpqa1e
+	 9GtRN/uzScHHZDXOWmK4TS8MA5bnoe4MnXRPN+B7W6xzkWI1CMg0btgjiNUNPVOdgj
+	 H87+YIJ/DHAToNS4L0Epy75v7PWA3tq2UmUPP0clT65bCrkZGHocpPg1KuKqIfohiv
+	 OLrdtg92zbdgQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Christoph Paasch <cpaasch@apple.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10.y] mptcp: ensure snd_nxt is properly initialized on connect
+Date: Mon, 13 May 2024 17:17:17 +0200
+Message-ID: <20240513151717.2733290-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024051325-dreamt-freebee-5563@gregkh>
+References: <2024051325-dreamt-freebee-5563@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3981; i=matttbe@kernel.org; h=from:subject; bh=wVi+G138Ev65xjb0nTcgStUa34bZdk5Q/BHpRrSyQ1s=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmQi79PNUEBmrkPWOxdaFhPvHMWCpkLFegiwWBT ytcPoK+TUWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZkIu/QAKCRD2t4JPQmmg c+mvD/9+TkwjqdIYXGSXjWnHdRy4wpXqPn/2UKoec6p9lhDj4HNA9W6/CO8v8Mm3K/bAj2I+v9/ qcThjWFdCN3Ap80OT0V/BT+X740UM7B6z1AzGYoRUcbrOCHZOSBSOYaDUv9XlwgIVUlhX1FlNzg JoeHpMynXqXrkigyRAelCcKoUpg6RGGomZ4QNyMlCeuVzTratCTH+JzMpTF341LOx3DJfE2XeQP Inf0EmhXYQyZNqd9OICmG+vzUqOCJJMRYarFwVsYbsCzbXsUW3zYjT/L46MnL7nH2k8A+VWfTrH JfhRZmtRg8Wiv8d4fL3l2scCFZAaCKBi1jPwrZ9r29FFPHQteCemiOJ4dOl/u2FZoubf33SGuRG s0LHEKSIjBu3JD5mw8KyQXytC7yOMfUXtmPRJr4RhHjnR5M3b0/FsEOSjGg9hx0SohqkDwK+mv+ VpmurP1LjvCrv7UsiykoyU6slmRObwovMnpTFc1jfQzpnmuaelQvfSM4O69lLsgrzGoS8HLDFcr nN9mQBdMHwOaAaSDMOVkt84NLJL7v4UiMlj2y3Vx6VIh33Hvi7xts0Pl2dFSwZJh+8qMcDjqK1/ 34VGTkdm13e5jlvx4BLRG5X7o7PJTx6gQTQor7grJa8nnNkPo9uOFnNewZi7TKjBCTu7Z+vs6fR VgUlfPWOF8wWLEQ==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
+From: Paolo Abeni <pabeni@redhat.com>
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+commit fb7a0d334894206ae35f023a82cad5a290fd7386 upstream.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Christoph reported a splat hinting at a corrupted snd_una:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 892b41b16f6163e6556545835abba668fcab4eea
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051305-sudden-directed-5647@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+  WARNING: CPU: 1 PID: 38 at net/mptcp/protocol.c:1005 __mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
+  Modules linked in:
+  CPU: 1 PID: 38 Comm: kworker/1:1 Not tainted 6.9.0-rc1-gbbeac67456c9 #59
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
+  Workqueue: events mptcp_worker
+  RIP: 0010:__mptcp_clean_una+0x4b3/0x620 net/mptcp/protocol.c:1005
+  Code: be 06 01 00 00 bf 06 01 00 00 e8 a8 12 e7 fe e9 00 fe ff ff e8
+  	8e 1a e7 fe 0f b7 ab 3e 02 00 00 e9 d3 fd ff ff e8 7d 1a e7 fe
+  	<0f> 0b 4c 8b bb e0 05 00 00 e9 74 fc ff ff e8 6a 1a e7 fe 0f 0b e9
+  RSP: 0018:ffffc9000013fd48 EFLAGS: 00010293
+  RAX: 0000000000000000 RBX: ffff8881029bd280 RCX: ffffffff82382fe4
+  RDX: ffff8881003cbd00 RSI: ffffffff823833c3 RDI: 0000000000000001
+  RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+  R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888138ba8000
+  R13: 0000000000000106 R14: ffff8881029bd908 R15: ffff888126560000
+  FS:  0000000000000000(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f604a5dae38 CR3: 0000000101dac002 CR4: 0000000000170ef0
+  Call Trace:
+   <TASK>
+   __mptcp_clean_una_wakeup net/mptcp/protocol.c:1055 [inline]
+   mptcp_clean_una_wakeup net/mptcp/protocol.c:1062 [inline]
+   __mptcp_retrans+0x7f/0x7e0 net/mptcp/protocol.c:2615
+   mptcp_worker+0x434/0x740 net/mptcp/protocol.c:2767
+   process_one_work+0x1e0/0x560 kernel/workqueue.c:3254
+   process_scheduled_works kernel/workqueue.c:3335 [inline]
+   worker_thread+0x3c7/0x640 kernel/workqueue.c:3416
+   kthread+0x121/0x170 kernel/kthread.c:388
+   ret_from_fork+0x44/0x50 arch/x86/kernel/process.c:147
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:243
+   </TASK>
 
-Possible dependencies:
+When fallback to TCP happens early on a client socket, snd_nxt
+is not yet initialized and any incoming ack will copy such value
+into snd_una. If the mptcp worker (dumbly) tries mptcp-level
+re-injection after such ack, that would unconditionally trigger a send
+buffer cleanup using 'bad' snd_una values.
 
-892b41b16f61 ("drm/amd/display: Fix incorrect DSC instance for MST")
-f8e12e770e80 ("drm/amd/display: drop unnecessary NULL checks in debugfs")
-e3b0079be8f0 ("drm/amd/display: Clean up some inconsistent indenting")
-5d5c6dba2b43 ("drm/amd/display: Fix memory leak")
-712343cd21ea ("drm/amd/display: Add function and debugfs to dump DCC_EN bit")
-46a83eba276c ("drm/amd/display: Add debugfs to control DMUB trace buffer events")
-0dd795323405 ("drm/amdgpu/display: Implement functions to let DC allocate GPU memory")
-0b7421f0a6a4 ("drm/amd/display: Old sequence for HUBP blank")
-e7a30ade740f ("Revert "drm/amd/display: Unblank hubp based on plane visibility"")
-afd3a359c452 ("drm/amd/display: do not use drm middle layer for debugfs")
-dbb7898ac1bc ("drm/amd/display: Drop SOC bounding box hookup in DM/DC")
-d209124ddae3 ("drm/amd/display: enable HUBP blank behaviour")
-985faf2c4ecb ("drm/amd/display: New sequence for HUBP blank")
-fd1c85d3ac2c ("drm/amd/display: Unblank hubp based on plane visibility")
-5a83bf80723d ("drm/amd/display: Use provided offset for DPG generation")
-9a3e698c0758 ("drm/amd/display: init soc bounding box for dcn3.01.")
-20f2ffe50472 ("drm/amdgpu: fold CONFIG_DRM_AMD_DC_DCN3* into CONFIG_DRM_AMD_DC_DCN (v3)")
-4dbcdc9cada2 ("drm/amd/display: fix the NULL pointer that missed set_disp_pattern_generator callback")
-b15bfd0d8613 ("drm/amd/display: Revert HUBP blank behaviour for now")
-dbf5256bbf19 ("drm/amd/display: Blank HUBP during pixel data blank for DCN30 v2")
+We could easily disable re-injection for fallback sockets, but such
+dumb behavior already helped catching a few subtle issues and a very
+low to zero impact in practice.
 
-thanks,
+Instead address the issue always initializing snd_nxt (and write_seq,
+for consistency) at connect time.
 
-greg k-h
+Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240429-upstream-net-20240429-mptcp-snd_nxt-init-connect-v1-1-59ceac0a7dcb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ snd_nxt field is not available in v5.10.y: before, only write_seq was
+  used, see commit eaa2ffabfc35 ("mptcp: introduce MPTCP snd_nxt") for
+  more details about that. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ net/mptcp/protocol.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
------------------- original commit in Linus's tree ------------------
-
-From 892b41b16f6163e6556545835abba668fcab4eea Mon Sep 17 00:00:00 2001
-From: Hersen Wu <hersenxs.wu@amd.com>
-Date: Tue, 13 Feb 2024 14:26:06 -0500
-Subject: [PATCH] drm/amd/display: Fix incorrect DSC instance for MST
-
-[Why] DSC debugfs, such as dp_dsc_clock_en_read,
-use aconnector->dc_link to find pipe_ctx for display.
-Displays connected to MST hub share the same dc_link.
-DSC instance is from pipe_ctx. This causes incorrect
-DSC instance for display connected to MST hub.
-
-[How] Add aconnector->sink check to find pipe_ctx.
-
-CC: stable@vger.kernel.org
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-index eee4945653e2..c7715a17f388 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-@@ -1495,7 +1495,9 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 6be7e7592291..36fa456f42ba 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2645,6 +2645,8 @@ static int mptcp_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	if (subflow->request_mptcp && mptcp_token_new_connect(ssock->sk))
+ 		mptcp_subflow_early_fallback(msk, subflow);
  
-@@ -1596,7 +1598,9 @@ static ssize_t dp_dsc_clock_en_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1681,7 +1685,9 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1780,7 +1786,9 @@ static ssize_t dp_dsc_slice_width_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1865,7 +1873,9 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1964,7 +1974,9 @@ static ssize_t dp_dsc_slice_height_write(struct file *f, const char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2045,7 +2057,9 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2141,7 +2155,9 @@ static ssize_t dp_dsc_bits_per_pixel_write(struct file *f, const char __user *bu
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2220,7 +2236,9 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2276,7 +2294,9 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2347,7 +2367,9 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2418,7 +2440,9 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
++	WRITE_ONCE(msk->write_seq, subflow->idsn);
++
+ do_connect:
+ 	err = ssock->ops->connect(ssock, uaddr, addr_len, flags);
+ 	sock->state = ssock->state;
+-- 
+2.43.0
 
 
