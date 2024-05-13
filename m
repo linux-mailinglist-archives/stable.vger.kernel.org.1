@@ -1,92 +1,52 @@
-Return-Path: <stable+bounces-43743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA868C4886
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 22:53:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBDF8C4887
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 22:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35D15286664
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 20:53:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB250285F81
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 20:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30F680BE3;
-	Mon, 13 May 2024 20:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AED80BE3;
+	Mon, 13 May 2024 20:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="QnAau2Eh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UwnLhRyX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GP35I0ku"
 X-Original-To: stable@vger.kernel.org
-Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD8529D02
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 20:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F1429D02
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 20:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715633624; cv=none; b=io30xBGfCcWKfBvOtWuvp23UODaNlUZTtZM81697/LjMu0+dK+Qls5Aqf8CAHCRQRwnb7nlRxyoJXAtwPRfvpJV1Fovxb0rPfLgoTwZ9H1yQAuXywrwaYevcle1u6pBwlLVYpn+nBwSe1ZX7/2SFvAMv+TXDAFeyZIuoxaF34cg=
+	t=1715633667; cv=none; b=C27oa4go2dTAYtjdc/aoUqwsy4cBxH2YwiPkRM1tQV6Zt7bRCRGpsXYGC0J4HRJ8hEcpFbvtD6b4iF1iyD+0BoMj+8Wz3ld4f15i9aSBrjz5Zq0NB6wOjBD0NfXrNjdaa64nthwvhCs0wvAzb3EPaRwXwPD8xuA4zFA5fLMlVFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715633624; c=relaxed/simple;
-	bh=26eitV7mhfrhYFBybW9Rq9/2Isco4Eh6JJceLQL37x0=;
+	s=arc-20240116; t=1715633667; c=relaxed/simple;
+	bh=h5TC6BcarD+xAhQ6b776kZoFUV7ZmHQ9UI70rExCBik=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOf2Rj94MYQL3ezH9bH4U72pj0EjKw95Kane2r1oN5GD40muF1LNMqthTXuko4olgjAiqsd6tGPuXCmQ+hWTkd2+6aSmGmZ+F4GV4X6imk4adUiF1ELQl8/nnT6SmX0MxI8UuUMmpvMcSEyTGwetBcyr/y1iAONIRafhBDKcJTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=QnAau2Eh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UwnLhRyX; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 11D111381043;
-	Mon, 13 May 2024 16:53:42 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Mon, 13 May 2024 16:53:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1715633622; x=1715720022; bh=f6KJrYqtSP
-	pLBSsBqfoNvhwV+jRWa90xJDqx74Z/t6A=; b=QnAau2Ehb94ZjAkGDqnosiXkjR
-	fElFXZK/OKRc1VFjmX4CbnW3S0jLKyQb/LPzHvATZC+bmE10Yug6CCdJU/FkceiQ
-	Z85Gb02KhZem8/oRxJTIYKtIbVvFCYabKfwPl8IqW7cukgRD0ytVmjhYsSbcgrh6
-	I1sRfx64naAawi+f8XGpJx9zWNU8egvXENgWkLrZTlpuEtwXHmZSetSFtyXnDlDN
-	bK7wou6q7z9d5iGOG35xsDpVrB1tIg+mPhJ41xsl6Wo3H0lyCMQ0rlTsMO7s9FSg
-	3yjocZ+zlHfgp34wbZTKvLKKNz7PSRQCcKnyJcxIP8peQmU+VUU5XF38I0uQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1715633622; x=1715720022; bh=f6KJrYqtSPpLBSsBqfoNvhwV+jRW
-	a90xJDqx74Z/t6A=; b=UwnLhRyXygf35t47S/U7BGPeEp7e50CwZ3qxIotOu+x7
-	dbQ08NjGfyJK0ZMeUB0I5IMT7D+pP4ScXjSvwyxPoa7+p1w0AkM+whOrR/otuWrZ
-	r96h9gtOzyytf2GU+EZEwSzI/ThkXZ0Y6PYmS7I0QABkDw/V57+9VITXRbdzCOlz
-	VNiMsw4C3xn/o9l8w1E032ViRfkXtsl6PozRMT+HarZZacVVvmfEq/Jc3n2jIhR0
-	yhwZl+6gnb0v4Qgp2RrAAEaM4g1Xm66mP6i6vtPKWBR1K41Tgx06wxYmIvwU0vXg
-	AGvCFhvw7EdASweWOARWlZx1YHTlyiODFu5S2zyMVA==
-X-ME-Sender: <xms:1X1CZlKJz0sIFCgXQxTM8wC3qDqbEkyDFR-r54QRw57Ayj2ZU-1GsA>
-    <xme:1X1CZhJAS7h7WU7a2Kyd7fR34eg8XJACekC9KLJzIL5FpPQTL2Ry-UWeU0SCgUiAa
-    idLwv9jQQT5eQ>
-X-ME-Received: <xmr:1X1CZtvLkrdLoor_p5j1eHdAJyfQWg3KtsWIkNp4fri3tQ3cT5eoyoCkKfxcQrIVSQJy-whFAEfl9wZGsMXAjkOIP7HCTpaDgQIJCw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeggedgudehfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeghe
-    euhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhm
-    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:1X1CZmb6bilY81ybnmmWXlovQFGseHbqg4xBAiq2bSmg0uTEEWuZOA>
-    <xmx:1X1CZsYFhN-cUTTSzJO643k2Dm_EVOR24yqVmEde5BtuRWxHl0FAEw>
-    <xmx:1X1CZqD11E93FVGSb7FZijXcdzOa-rKSooOlxRqJ-OWcshYzF1GLDA>
-    <xmx:1X1CZqbmd_REs-tMSCQzifC2FWRQJU-b7DtSbhYKDT1Dnn02wS31aA>
-    <xmx:1n1CZiNhyHhbANdATLHy16tM6Y1YG5sa9cH9D_OkjB1Nut7FTiSmvkiJ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 May 2024 16:53:41 -0400 (EDT)
-Date: Mon, 13 May 2024 22:53:39 +0200
-From: Greg KH <greg@kroah.com>
-To: Jeremy Bongio <bongiojp@gmail.com>
-Cc: stable@vger.kernel.org, Li Nan <linan122@huawei.com>,
-	Song Liu <song@kernel.org>
-Subject: Re: [PATCH] md: fix kmemleak of rdev->serial
-Message-ID: <2024051318-equator-jaybird-67e9@gregkh>
-References: <20240513192024.568296-1-bongiojp@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vi8iyQuOxYcNQm311zqJcEXu7BClRn8DPir81mpyTs4+I9tycxg6X4cZQv21nfJ3Lwu1pfaMLutUPrEXERRdFWlbFzDb1QY4lLibiWW+ooEgosxkoPPoAo1Ydmei+CU9bMK/3YH86nE4gkpleZ5JGzorytD5/8I2d26FjZVK8T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GP35I0ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE703C113CC;
+	Mon, 13 May 2024 20:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715633667;
+	bh=h5TC6BcarD+xAhQ6b776kZoFUV7ZmHQ9UI70rExCBik=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GP35I0kueAS47vidXeudzolU+mZ9QXifqAxo4s0UO0xJEqNp5mnnYGQjUP4M0pzh+
+	 Ep5GSOoumH14570NRjQ7lnp4F97IyLR45eu+dXjvSrHd1QCpvgvmL0PunNLTfZevVk
+	 Zq+MJcOs4+eebJg9hLM6N3unWOxQrjjw51CtMMbg=
+Date: Mon, 13 May 2024 22:54:24 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, kernel@gpiccoli.net,
+	kernel-dev@igalia.com
+Subject: Re: [PATCH 5.4.y] ext4: fix bug_on in __es_tree_search
+Message-ID: <2024051303-footpath-scraggly-823c@gregkh>
+References: <20240511211306.895465-1-gpiccoli@igalia.com>
+ <fc7a7af9-b8b9-5fa5-288d-f04d1d7a6437@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,45 +55,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240513192024.568296-1-bongiojp@gmail.com>
+In-Reply-To: <fc7a7af9-b8b9-5fa5-288d-f04d1d7a6437@igalia.com>
 
-On Mon, May 13, 2024 at 12:20:24PM -0700, Jeremy Bongio wrote:
-> From: Li Nan <linan122@huawei.com>
+On Mon, May 13, 2024 at 04:51:02PM -0300, Guilherme G. Piccoli wrote:
+> CCing the right stable ML address...
+> Apologies!
 > 
-> If kobject_add() is fail in bind_rdev_to_array(), 'rdev->serial' will be
-> alloc not be freed, and kmemleak occurs.
 > 
-> unreferenced object 0xffff88815a350000 (size 49152):
->   comm "mdadm", pid 789, jiffies 4294716910
->   hex dump (first 32 bytes):
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace (crc f773277a):
->     [<0000000058b0a453>] kmemleak_alloc+0x61/0xe0
->     [<00000000366adf14>] __kmalloc_large_node+0x15e/0x270
->     [<000000002e82961b>] __kmalloc_node.cold+0x11/0x7f
->     [<00000000f206d60a>] kvmalloc_node+0x74/0x150
->     [<0000000034bf3363>] rdev_init_serial+0x67/0x170
->     [<0000000010e08fe9>] mddev_create_serial_pool+0x62/0x220
->     [<00000000c3837bf0>] bind_rdev_to_array+0x2af/0x630
->     [<0000000073c28560>] md_add_new_disk+0x400/0x9f0
->     [<00000000770e30ff>] md_ioctl+0x15bf/0x1c10
->     [<000000006cfab718>] blkdev_ioctl+0x191/0x3f0
->     [<0000000085086a11>] vfs_ioctl+0x22/0x60
->     [<0000000018b656fe>] __x64_sys_ioctl+0xba/0xe0
->     [<00000000e54e675e>] do_syscall_64+0x71/0x150
->     [<000000008b0ad622>] entry_SYSCALL_64_after_hwframe+0x6c/0x74
+> On 11/05/2024 18:10, Guilherme G. Piccoli wrote:
+> > From: Baokun Li <libaokun1@huawei.com>
+> > 
+> > commit d36f6ed761b53933b0b4126486c10d3da7751e7f upstream.
+> > 
+> > Hulk Robot reported a BUG_ON:
+> > ==================================================================
+> > kernel BUG at fs/ext4/extents_status.c:199!
+> > [...]
+> > RIP: 0010:ext4_es_end fs/ext4/extents_status.c:199 [inline]
+> > RIP: 0010:__es_tree_search+0x1e0/0x260 fs/ext4/extents_status.c:217
+> > [...]
+> > Call Trace:
+> >  ext4_es_cache_extent+0x109/0x340 fs/ext4/extents_status.c:766
+> >  ext4_cache_extents+0x239/0x2e0 fs/ext4/extents.c:561
+> >  ext4_find_extent+0x6b7/0xa20 fs/ext4/extents.c:964
+> >  ext4_ext_map_blocks+0x16b/0x4b70 fs/ext4/extents.c:4384
+> >  ext4_map_blocks+0xe26/0x19f0 fs/ext4/inode.c:567
+> >  ext4_getblk+0x320/0x4c0 fs/ext4/inode.c:980
+> >  ext4_bread+0x2d/0x170 fs/ext4/inode.c:1031
+> >  ext4_quota_read+0x248/0x320 fs/ext4/super.c:6257
+> >  v2_read_header+0x78/0x110 fs/quota/quota_v2.c:63
+> >  v2_check_quota_file+0x76/0x230 fs/quota/quota_v2.c:82
+> >  vfs_load_quota_inode+0x5d1/0x1530 fs/quota/dquot.c:2368
+> >  dquot_enable+0x28a/0x330 fs/quota/dquot.c:2490
+> >  ext4_quota_enable fs/ext4/super.c:6137 [inline]
+> >  ext4_enable_quotas+0x5d7/0x960 fs/ext4/super.c:6163
+> >  ext4_fill_super+0xa7c9/0xdc00 fs/ext4/super.c:4754
+> >  mount_bdev+0x2e9/0x3b0 fs/super.c:1158
+> >  mount_fs+0x4b/0x1e4 fs/super.c:1261
+> > [...]
+> > ==================================================================
+> > 
+> > Above issue may happen as follows:
+> > -------------------------------------
+> > ext4_fill_super
+> >  ext4_enable_quotas
+> >   ext4_quota_enable
+> >    ext4_iget
+> >     __ext4_iget
+> >      ext4_ext_check_inode
+> >       ext4_ext_check
+> >        __ext4_ext_check
+> >         ext4_valid_extent_entries
+> >          Check for overlapping extents does't take effect
+> >    dquot_enable
+> >     vfs_load_quota_inode
+> >      v2_check_quota_file
+> >       v2_read_header
+> >        ext4_quota_read
+> >         ext4_bread
+> >          ext4_getblk
+> >           ext4_map_blocks
+> >            ext4_ext_map_blocks
+> >             ext4_find_extent
+> >              ext4_cache_extents
+> >               ext4_es_cache_extent
+> >                ext4_es_cache_extent
+> >                 __es_tree_search
+> >                  ext4_es_end
+> >                   BUG_ON(es->es_lblk + es->es_len < es->es_lblk)
+> > 
+> > The error ext4 extents is as follows:
+> > 0af3 0300 0400 0000 00000000    extent_header
+> > 00000000 0100 0000 12000000     extent1
+> > 00000000 0100 0000 18000000     extent2
+> > 02000000 0400 0000 14000000     extent3
+> > 
+> > In the ext4_valid_extent_entries function,
+> > if prev is 0, no error is returned even if lblock<=prev.
+> > This was intended to skip the check on the first extent, but
+> > in the error image above, prev=0+1-1=0 when checking the second extent,
+> > so even though lblock<=prev, the function does not return an error.
+> > As a result, bug_ON occurs in __es_tree_search and the system panics.
+> > 
+> > To solve this problem, we only need to check that:
+> > 1. The lblock of the first extent is not less than 0.
+> > 2. The lblock of the next extent  is not less than
+> >    the next block of the previous extent.
+> > The same applies to extent_idx.
+> > 
+> > Cc: stable@kernel.org
+> > Fixes: 5946d089379a ("ext4: check for overlapping extents in ext4_valid_extent_entries()")
+> > Reported-by: Hulk Robot <hulkci@huawei.com>
+> > Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> > Reviewed-by: Jan Kara <jack@suse.cz>
+> > Link: https://lore.kernel.org/r/20220518120816.1541863-1-libaokun1@huawei.com
+> > Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> > Reported-by: syzbot+2a58d88f0fb315c85363@syzkaller.appspotmail.com
+> > [gpiccoli: Manual backport due to unrelated missing patches.]
+> > Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> > ---
+> > 
+> > 
+> > Hey folks, this one should have been backported but due to merge
+> > issues [0], it ended-up not being on 5.4.y . So here is a working version!
+> > Cheers,
+> > 
+> > Guilherme
+> > 
+> > [0] https://lore.kernel.org/stable/165451751147179@kroah.com/
+> > 
+> > 
+> >  fs/ext4/extents.c | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+> > index 98e1b1ddb4ec..90b12c7c0f20 100644
+> > --- a/fs/ext4/extents.c
+> > +++ b/fs/ext4/extents.c
+> > @@ -409,7 +409,7 @@ static int ext4_valid_extent_entries(struct inode *inode,
+> >  {
+> >  	unsigned short entries;
+> >  	ext4_lblk_t lblock = 0;
+> > -	ext4_lblk_t prev = 0;
+> > +	ext4_lblk_t cur = 0;
+> >  
+> >  	if (eh->eh_entries == 0)
+> >  		return 1;
+> > @@ -435,12 +435,12 @@ static int ext4_valid_extent_entries(struct inode *inode,
+> >  
+> >  			/* Check for overlapping extents */
+> >  			lblock = le32_to_cpu(ext->ee_block);
+> > -			if ((lblock <= prev) && prev) {
+> > +			if (lblock < cur) {
+> >  				pblock = ext4_ext_pblock(ext);
+> >  				es->s_last_error_block = cpu_to_le64(pblock);
+> >  				return 0;
+> >  			}
+> > -			prev = lblock + ext4_ext_get_actual_len(ext) - 1;
+> > +			cur = lblock + ext4_ext_get_actual_len(ext);
+> >  			ext++;
+> >  			entries--;
+> >  		}
+> > @@ -460,13 +460,13 @@ static int ext4_valid_extent_entries(struct inode *inode,
+> >  
+> >  			/* Check for overlapping index extents */
+> >  			lblock = le32_to_cpu(ext_idx->ei_block);
+> > -			if ((lblock <= prev) && prev) {
+> > +			if (lblock < cur) {
+> >  				*pblk = ext4_idx_pblock(ext_idx);
+> >  				return 0;
+> >  			}
+> >  			ext_idx++;
+> >  			entries--;
+> > -			prev = lblock;
+> > +			cur = lblock + 1;
+> >  		}
+> >  	}
+> >  	return 1;
 > 
-> Fixes: 963c555e75b0 ("md: introduce mddev_create/destroy_wb_pool for the change of member device")
-> Signed-off-by: Li Nan <linan122@huawei.com>
-> Signed-off-by: Song Liu <song@kernel.org>
-> Link: https://lore.kernel.org/r/20240208085556.2412922-1-linan666@huaweicloud.com
-> Change-Id: Icc4960dcaffedc663797e2d8b18a24c23e201932
 
-Any specific reason you are not using your google.com email address to
-properly sign off on commits?
+Having a forwarded patch doesn't really help, can we get the real
+backport please?
 
-confused,
+thanks,
 
 greg k-h
 
