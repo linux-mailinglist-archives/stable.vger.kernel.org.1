@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-43714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2138C4412
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:22:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40618C4413
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 17:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906891C2017E
-	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:22:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB5CF2814A2
+	for <lists+stable@lfdr.de>; Mon, 13 May 2024 15:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9286AC0;
-	Mon, 13 May 2024 15:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB1E6AC0;
+	Mon, 13 May 2024 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scqR/wZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tJVL9Il"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA62539C
-	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2A5539C
+	for <stable@vger.kernel.org>; Mon, 13 May 2024 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715613717; cv=none; b=M0WNA561WufL2B3xnv5lewr7V00blU3L4Tqd5I3EpJ3KTguvIx9mMxE8CXYGhVJqgbiydM8WMY6CRxby3OsR7Q39O4XXvQW/DJgPQJQMxbVR+0fUh3JL1x0+3x7SWXj4qvSRtc4F4OfpyoiHMf9xDDpVaNAirv9NHR1plDDLx0U=
+	t=1715613726; cv=none; b=Td5CGlH5QyRbQLncTNFOhUSJTdeUYR2pQ+/KovlkzbdDDfxkWKXdsr62gAC5rwsrOoZU8AfJ2FrJzYGXD36F3ZsBUoJmDMxh5uoKBsStL2HYUXYOy5Kmm3a9OI9RUoNXh5ZIKqFjj84Ab5dNx9BqyvegxIjBfrZbsMxv591bQG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715613717; c=relaxed/simple;
-	bh=6Tf8va6CmcZTWsjyOxykNXWqSgppub0w3fgUYyGz1qw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=e5zCQ7sNqiTEDKb5CUcsxeoYYiCX9Q0cBkvb1Xez/6i43QvKRo0ft3YV8LKBn6vaTaoX/1MBf7WYa7hz3tWwGAKdN/6zKFqGNXVnPHOuV8Hi4LGg8ieq8oqdlMNwtDgH37Te+7TBMyeynrlaG3A9RtbVSZtibm0GxzZGW1GX2ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scqR/wZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8971EC113CC;
-	Mon, 13 May 2024 15:21:56 +0000 (UTC)
+	s=arc-20240116; t=1715613726; c=relaxed/simple;
+	bh=LkRHiWx7NQmZgNmsjyHdbXnCg/WmTC5lY1uOVnE/1vI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YGUbZJA9m101LqvAoVPNIcKt93k9/3sRREYXT6R4fEiLJ4iNDaJcrgz850StT7MtbAAEYIgILSjcNdwYLoCy8MEc316xZZGE1poT/ZKpHP/9JUK/YuJneO/1hDNcPVlhNf/i2x/XYTXA9NgqN2WKtUro8Xt8TVITIERWLS9SUAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tJVL9Il; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971D3C113CC;
+	Mon, 13 May 2024 15:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715613716;
-	bh=6Tf8va6CmcZTWsjyOxykNXWqSgppub0w3fgUYyGz1qw=;
+	s=korg; t=1715613725;
+	bh=LkRHiWx7NQmZgNmsjyHdbXnCg/WmTC5lY1uOVnE/1vI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=scqR/wZf8OggbAJ6qH+cFXveyE1MJdSZc4v6bE3MW3maNJvGb+qShWa9el2ixB9jo
-	 T53/mzSjH8Mxo6cvEts9l94Y1PV7i3bh6EtSRVo3olfBA64NunSKUHCbZ4xicOYCVq
-	 x/WgdLVb7buEzpe6js/UsYkGRBX4lMGCFgjgb9VE=
-Subject: FAILED: patch "[PATCH] ksmbd: use rwsem instead of rwlock for lease break" failed to apply to 6.8-stable tree
+	b=0tJVL9Il0aowYXsaNQi8DyXZySlwU/1yVpInzXRU+FjLKeUb74+TyReCOGzCWQdjl
+	 X5CijbOSfV/6jl1aqlDDcoqEw7dlG7WKOQ/siWVQLGJzwlu2N64e0y0LZkNLLmdhFF
+	 ulvAOFFyezknku3aIe03Fn+MYaNBQ2g7ty7Hb4Hc=
+Subject: FAILED: patch "[PATCH] ksmbd: use rwsem instead of rwlock for lease break" failed to apply to 6.6-stable tree
 To: linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 13 May 2024 17:21:54 +0200
-Message-ID: <2024051354-playmaker-preplan-0d22@gregkh>
+Message-ID: <2024051354-eastward-undivided-3e1b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x d1c189c6cb8b0fb7b5ee549237d27889c40c2f8b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051354-playmaker-preplan-0d22@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051354-eastward-undivided-3e1b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 d1c189c6cb8b ("ksmbd: use rwsem instead of rwlock for lease break")
 c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
 fa9415d4024f ("ksmbd: mark SMB2_SESSION_EXPIRED to session when destroying previous session")
+c2a721eead71 ("ksmbd: lazy v2 lease break on smb2_write()")
+d47d9886aeef ("ksmbd: send v2 lease break notification for directory")
+eb547407f357 ("ksmbd: downgrade RWH lease caching state to RH for directory")
+2e450920d58b ("ksmbd: move oplock handling after unlock parent dir")
+4274a9dc6aeb ("ksmbd: separately allocate ci per dentry")
+864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
 
 thanks,
 
