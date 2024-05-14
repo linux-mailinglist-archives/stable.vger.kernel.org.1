@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7678C5296
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB648C541F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE6A282F08
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDACB1C22A5E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8926113F459;
-	Tue, 14 May 2024 11:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E3E1386C8;
+	Tue, 14 May 2024 11:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bEAiZYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0TJx2Lk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481776311D;
-	Tue, 14 May 2024 11:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D30136673;
+	Tue, 14 May 2024 11:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685951; cv=none; b=slVNzosQYTDTios8v7D3iBjIue6exEVlx9C1QUr73mllSGyFTXRNsN9+2UbkCmDXooudcKTxxZ21oQNWvslyDpURT39WlyyKzh5f+AiVETaaHrLQO5tpDX+c+GdL5trxymOIcAq8TYhz5lxxivA1djoeYP4Yu5wtYMBS7+YD1b8=
+	t=1715686993; cv=none; b=Dg/CiPK3X2qoeah0HV32i+7ZTMc4y43NxghJerjHTbjubGiY3naVbQoXLW7mK1lWnqzb+bH8WStsBG0hR5RUOURFb4kq+O5hap+hSVNcpn7cxdV/MzWBT3leE8Fg78SKHnBLdns0hWly7DZrTnq/FTYKZTjYQzYSYaLc3ClRKuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685951; c=relaxed/simple;
-	bh=zS2meG26Tali+2y9sH/REtdzN1lAD2TQvofMmdV/BaE=;
+	s=arc-20240116; t=1715686993; c=relaxed/simple;
+	bh=oy9a9W+2A0RX+2LRviCxiOlev49SUnhVEXoGPgjI98E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/EyvglebPn86aR8GymjM3QivRHt7+DiHuiXn6fNlsV1UubcSu17yV5trUWJaA6m4hq1jhj2UE9+aq2tefzxVTNk7pXY+bqpW0ggd0S7HYnXURhwQUtuteoLeSffTbleHKykLpmRH7XDFwQQSt8xyFtWK3Wt+dd99jwnuZ0nckQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bEAiZYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C15C2BD10;
-	Tue, 14 May 2024 11:25:50 +0000 (UTC)
+	 MIME-Version; b=I4ijI1HQcPUw9WTs+pK6poLxqagI6Smr1Bq9rel0XcaDk44dC14vIPJwAmqIW/W2ePB1tlDXIecLgYfyVVkw+icl+CJeJydOrF2cjXOQQ/0oLNbE8zeHnJnnacqS8GODykCXTZnDHCsWPLH3QNJoCior3jSK3+C6J/19WtvvjUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0TJx2Lk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94161C32782;
+	Tue, 14 May 2024 11:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685951;
-	bh=zS2meG26Tali+2y9sH/REtdzN1lAD2TQvofMmdV/BaE=;
+	s=korg; t=1715686993;
+	bh=oy9a9W+2A0RX+2LRviCxiOlev49SUnhVEXoGPgjI98E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bEAiZYfvj8yVLxH5PYaWRbXKgjQgXZSZwWNyd1k8dBML1B8JbqOhvPus+24UMjtk
-	 u5VtfkL1CJFy+MGNPRKu56G5g/68wLUGsuO2qdXnVIqA5BCwpFVf4zPloV4kPqmHX9
-	 Bus/N9Yuq1G8K9UxtXPlgmPRUnc1Pc3FYV9lPsWw=
+	b=i0TJx2LkVtwh45CHngnZ+D9VIJelG9blJ0mEyAhXqD/eThTHr3BheIt1kax3CQKc8
+	 ICJo8HIqr60PZAshRtLEg0FdBYcJ57b4BTTzV0DByEI898k/NT0uTj81xKqWnNgrrp
+	 4PHLpzOHJyLoiM9j+FuZ8OyZfAkYPLL4Unk1QFBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Nadav Amit <nadav.amit@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 283/301] mm/userfaultfd: reset ptes when close() for wr-protected ones
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 03/84] wifi: nl80211: dont free NULL coalescing rule
 Date: Tue, 14 May 2024 12:19:14 +0200
-Message-ID: <20240514101042.949731308@linuxfoundation.org>
+Message-ID: <20240514100951.820058416@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit c88033efe9a391e72ba6b5df4b01d6e628f4e734 upstream.
+[ Upstream commit 801ea33ae82d6a9d954074fbcf8ea9d18f1543a7 ]
 
-Userfaultfd unregister includes a step to remove wr-protect bits from all
-the relevant pgtable entries, but that only covered an explicit
-UFFDIO_UNREGISTER ioctl, not a close() on the userfaultfd itself.  Cover
-that too.  This fixes a WARN trace.
+If the parsing fails, we can dereference a NULL pointer here.
 
-The only user visible side effect is the user can observe leftover
-wr-protect bits even if the user close()ed on an userfaultfd when
-releasing the last reference of it.  However hopefully that should be
-harmless, and nothing bad should happen even if so.
-
-This change is now more important after the recent page-table-check
-patch we merged in mm-unstable (446dd9ad37d0 ("mm/page_table_check:
-support userfault wr-protect entries")), as we'll do sanity check on
-uffd-wp bits without vma context.  So it's better if we can 100%
-guarantee no uffd-wp bit leftovers, to make sure each report will be
-valid.
-
-Link: https://lore.kernel.org/all/000000000000ca4df20616a0fe16@google.com/
-Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
-Analyzed-by: David Hildenbrand <david@redhat.com>
-Link: https://lkml.kernel.org/r/20240422133311.2987675-1-peterx@redhat.com
-Reported-by: syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Nadav Amit <nadav.amit@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: be29b99a9b51 ("cfg80211/nl80211: Add packet coalesce support")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240418105220.b328f80406e7.Id75d961050deb05b3e4e354e024866f350c68103@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/userfaultfd.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/wireless/nl80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -921,6 +921,10 @@ static int userfaultfd_release(struct in
- 			prev = vma;
- 			continue;
- 		}
-+		/* Reset ptes for the whole vma range if wr-protected */
-+		if (userfaultfd_wp(vma))
-+			uffd_wp_range(vma, vma->vm_start,
-+				      vma->vm_end - vma->vm_start, false);
- 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
- 		prev = vma_merge(&vmi, mm, prev, vma->vm_start, vma->vm_end,
- 				 new_flags, vma->anon_vma,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index c698fc458f5f9..0d15dd68565cb 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12023,6 +12023,8 @@ static int nl80211_set_coalesce(struct sk_buff *skb, struct genl_info *info)
+ error:
+ 	for (i = 0; i < new_coalesce.n_rules; i++) {
+ 		tmp_rule = &new_coalesce.rules[i];
++		if (!tmp_rule)
++			continue;
+ 		for (j = 0; j < tmp_rule->n_patterns; j++)
+ 			kfree(tmp_rule->patterns[j].mask);
+ 		kfree(tmp_rule->patterns);
+-- 
+2.43.0
+
 
 
 
