@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-44041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC418C50EB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CA18C5231
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09341F21F15
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23B0D282A65
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E868412A158;
-	Tue, 14 May 2024 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD6A12D1F1;
+	Tue, 14 May 2024 11:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+KhArla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvDmCvoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A554E6CDC5;
-	Tue, 14 May 2024 10:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9EA55C0A;
+	Tue, 14 May 2024 11:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683861; cv=none; b=Lrv0WtyqZqN22VnqZfEdz3LKMbPACByM5jpKl8dMP3M77lUgpMsIKc9PVX3UbXLv0BaFJEPapKYXx/A/5mMCJROoiS9qrNJQK+gEy8Z7CBxta2yUuXXgXM/6StYuo5au9nQmXSHOxwwBBj6uN6gyKzW/kPkBiiREix+bLO1DQTQ=
+	t=1715685588; cv=none; b=huCi9U/RHxh6GFe/Ch6GeHcIsTI0Lv5UZcVSFwHcuYT8K5NMSQ7/h6FkQ8py8hahgtJXBjov/tOdAQIDrYDIbpRmIhuSeXKnmgl2sillLWpGzF+OPe1HBYqiJrTk2WbjrUzpm/PSpD8kQqRx+/J1jXT6EQqwqaUW86BwuCAawOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683861; c=relaxed/simple;
-	bh=+YlKxxzC6G5tuVmwPPsHiTpUe7UvrWzU+Bw2rSeXZ9g=;
+	s=arc-20240116; t=1715685588; c=relaxed/simple;
+	bh=snlwj6n1CB0XkZW30sRB/fpwzcOVWnZCVg6A/UU4IrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLLaChXLLBnNwfVRj3XGa9j67YCSocfgSKGMk4+5i77Cqb2nIpVvY74fGovNoS5baqY01cSZmVsb1IuPK4BtPEm4yPcmWPQ7hC/aBC4z2WC5GzUbuEtn9hVWg/r49dTIdbb4OY4xIFnU5hNpsnnANhTQqVeOYs8VMi/nPbpLsz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+KhArla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DC3C2BD10;
-	Tue, 14 May 2024 10:51:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UhwvZ/XSN90kN1F+RzpmF00k/tKpuh39V1MqXrq4wpjWcWptJh0b+nSN3O13pEFF+7Ia0C2a7XQPOwQ9QghkXAC/+cLdQjva51I+LNWUnrg62bJiXaFy4zwzIBv5vMp5sdUFgbGYr5xvchOJR8ihHDPNla+FpJ2N9aeeXza/tj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvDmCvoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8575CC2BD10;
+	Tue, 14 May 2024 11:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683861;
-	bh=+YlKxxzC6G5tuVmwPPsHiTpUe7UvrWzU+Bw2rSeXZ9g=;
+	s=korg; t=1715685588;
+	bh=snlwj6n1CB0XkZW30sRB/fpwzcOVWnZCVg6A/UU4IrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+KhArla4DGgWVIs9Ihu8VFhcI+iZKp41tNb5/7Y5lePVJYFYxM9eQ+uaF0TMFQgz
-	 1XwNWPrirx0oTh/oHUZqzguHDq6mJuGlxwf6OxxH5hbMKHGlr5W/zPLWW82J8Cpsd3
-	 qQ/KLeH21JyQL+otuCIxewbZnhxRX8AhEYrihNt8=
+	b=rvDmCvoenPUVpNr3YTq0UP3GklyrhG5/5hIF06XLB/yhTw8g/+nHBIfbcfN2wHlWx
+	 rXk0cu7Tzsr7eOGjQD3DKghIMCfoSs94eaFopOpEpPOLmpPnuTXzIa7d3ruHvydGyQ
+	 jvh39+wC8dKd/nb81jcIitndlnpM5ih3UYZHKI9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 278/336] kmsan: compiler_types: declare __no_sanitize_or_inline
+	=?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Fabio Estevam <festevam@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 211/301] net: dsa: mv88e6xxx: add phylink_get_caps for the mv88e6320/21 family
 Date: Tue, 14 May 2024 12:18:02 +0200
-Message-ID: <20240514101049.116398764@linuxfoundation.org>
+Message-ID: <20240514101040.227627584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Steffen Bätz <steffen@innosonix.de>
 
-commit 90d1f14cbb9ddbfc532e2da13bf6e0ed8320e792 upstream.
+[ Upstream commit f39bf3cf08a49e7d20c44bc8bc8e390fea69959a ]
 
-It turned out that KMSAN instruments READ_ONCE_NOCHECK(), resulting in
-false positive reports, because __no_sanitize_or_inline enforced inlining.
+As of commit de5c9bf40c45 ("net: phylink: require supported_interfaces to
+be filled")
+Marvell 88e6320/21 switches fail to be probed:
 
-Properly declare __no_sanitize_or_inline under __SANITIZE_MEMORY__, so
-that it does not __always_inline the annotated function.
+...
+mv88e6085 30be0000.ethernet-1:00: phylink: error: empty supported_interfaces
+error creating PHYLINK: -22
+...
 
-Link: https://lkml.kernel.org/r/20240426091622.3846771-1-glider@google.com
-Fixes: 5de0ce85f5a4 ("kmsan: mark noinstr as __no_sanitize_memory")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Reported-by: syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com
-Link: https://lkml.kernel.org/r/000000000000826ac1061675b0e3@google.com
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem stems from the use of mv88e6185_phylink_get_caps() to get
+the device capabilities.
+Since there are serdes only ports 0/1 included, create a new dedicated
+phylink_get_caps for the 6320 and 6321 to properly support their
+set of capabilities.
+
+Fixes: de5c9bf40c45 ("net: phylink: require supported_interfaces to be filled")
+Signed-off-by: Steffen Bätz <steffen@innosonix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/r/20240508072944.54880-2-steffen@innosonix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler_types.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -278,6 +278,17 @@ struct ftrace_likely_data {
- # define __no_kcsan
- #endif
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index db1d9df7d47fe..e5bac87941f61 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -697,6 +697,18 @@ static void mv88e6352_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
+ 	}
+ }
  
-+#ifdef __SANITIZE_MEMORY__
-+/*
-+ * Similarly to KASAN and KCSAN, KMSAN loses function attributes of inlined
-+ * functions, therefore disabling KMSAN checks also requires disabling inlining.
-+ *
-+ * __no_sanitize_or_inline effectively prevents KMSAN from reporting errors
-+ * within the function and marks all its outputs as initialized.
-+ */
-+# define __no_sanitize_or_inline __no_kmsan_checks notrace __maybe_unused
-+#endif
++static void mv88e632x_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
++				       struct phylink_config *config)
++{
++	unsigned long *supported = config->supported_interfaces;
 +
- #ifndef __no_sanitize_or_inline
- #define __no_sanitize_or_inline __always_inline
- #endif
++	/* Translate the default cmode */
++	mv88e6xxx_translate_cmode(chip->ports[port].cmode, supported);
++
++	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100 |
++				   MAC_1000FD;
++}
++
+ static void mv88e6341_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
+ 				       struct phylink_config *config)
+ {
+@@ -4976,7 +4988,7 @@ static const struct mv88e6xxx_ops mv88e6320_ops = {
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e632x_phylink_get_caps,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6321_ops = {
+@@ -5022,7 +5034,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e632x_phylink_get_caps,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6341_ops = {
+-- 
+2.43.0
+
 
 
 
