@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7798C5178
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 336998C5003
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BFE11C212CC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65C321C2127A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C01113958D;
-	Tue, 14 May 2024 11:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102781E4B0;
+	Tue, 14 May 2024 10:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P98i7AKu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKIknc66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6E054903;
-	Tue, 14 May 2024 11:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C154A2D60A;
+	Tue, 14 May 2024 10:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684572; cv=none; b=FjUtwrH7Tt9QQCyjaNUiTEmoUHMGAdGwWLx9vWDuLAudSJw3knWHUUgQXH0xWaxz37Flqpe3w3v+CP/ECnKaIysd9VNRubdo3lgCsSYKQmF3d01LhyDJAuOvZvOeXuPlN4dnStcH8VlaKmoniZpKLB/uYQ4yEBz2Cu1ouuO4640=
+	t=1715682847; cv=none; b=j++e+EYF+mM4fYQG0gHR47HThTNvwWxtJm2rhJ+JgVl4BxKBlNI49k7TpzoxqsjIFaeR/vZjL/kXDno561yfo3+Pn72eZve5nAKXR/T0CBFyEKTUFpU3IYjhajxrNI+lQhYDlVFPN0fGhQsPMSNYCSz9Bt81SNW1JV+Cg+JxTkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684572; c=relaxed/simple;
-	bh=k1FkmSiQ0lacK0r7RrxmSmUxHcVJIR5W0pBFiFfr1as=;
+	s=arc-20240116; t=1715682847; c=relaxed/simple;
+	bh=Xoa5dJpMnQNe9OtzCkCaZqqqWOS/CmJFi8/q2+6O0HQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0vJHF7a2lJpf91bzwnKKT/0abWrpd0UHgIw0rayA3SUhyqxFzUlhkpysEZa3Z9s+HpvUw9r87lsv64KU3eXF2xEQ0rIG48I4AZJCLTCU/VRZVaCf2i+BnKIVNH5/pwr5dDtd7dTdeKd4clOYtgttKK2LdzBisyij8dP3ZoAusc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P98i7AKu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4190C2BD10;
-	Tue, 14 May 2024 11:02:50 +0000 (UTC)
+	 MIME-Version; b=KM0b6jyGK4OkUxxjcsth+RcsYSu9TMXworNcbSshKbWd/CjMEipaPHFReVs/Xeh+kbyzTWk8ieB/c9dDI5DOAr7QzoTxTKgvmOLQsrIFoI5dCjNqEsTfepHGeIS3nLyXl8hlGnUV4YbDNMG8kyFIU+GdR0eh1TJEDzP1uAnDmw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKIknc66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA0FC2BD10;
+	Tue, 14 May 2024 10:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684571;
-	bh=k1FkmSiQ0lacK0r7RrxmSmUxHcVJIR5W0pBFiFfr1as=;
+	s=korg; t=1715682847;
+	bh=Xoa5dJpMnQNe9OtzCkCaZqqqWOS/CmJFi8/q2+6O0HQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P98i7AKutO2+LXI/DX33TOBa1arZbh9QHbCZaaxJELn0cWLcqHfoEIcnhggp4JgBJ
-	 DirKbCQRGJ2OYhNvzvnWteT0dedfhWIqAigYYkr+fQdwa8z/GjxuksaofV7nw63Vdt
-	 NdMaMtXT2qz7HHrfDUfSiTnXlR7Df7An+42+tBHs=
+	b=QKIknc66Xteq2tWBxet8qfrih2atZ/q4l3ykVY9zrTMqJEHP7JLOH7Yaztxtyazdr
+	 y6tYRNKh0AhgItrMFlG30YBlH3eoLBpMcRowQvj9NXBlVMWGlOHceJ3U7QCGIpRPtZ
+	 jcml+zHP6iDK3117sW9iF2nHky5k4SoyJS8uQBuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/301] ALSA: emu10k1: factor out snd_emu1010_load_dock_firmware()
+Subject: [PATCH 6.8 123/336] scsi: ufs: core: WLUN suspend dev/link state error recovery
 Date: Tue, 14 May 2024 12:15:27 +0200
-Message-ID: <20240514101034.359692681@linuxfoundation.org>
+Message-ID: <20240514101043.246886746@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 28deafd0fbdc45cc9c63bd7dd4efc35137958862 ]
+[ Upstream commit 6bc5e70b1c792b31b497e48b4668a9a2909aca0d ]
 
-Pulled out of the next patch to improve its legibility.
+When wl suspend error occurs, for example BKOP or SSU timeout, the host
+triggers an error handler and returns -EBUSY to break the wl suspend
+process.  However, it is possible for the runtime PM to enter wl suspend
+again before the error handler has finished, and return -EINVAL because the
+device is in an error state. To address this, ensure that the rumtime PM
+waits for the error handler to finish, or trigger the error handler in such
+cases, because returning -EINVAL can cause the I/O to hang.
 
-As the function is now available, call it directly from
-snd_emu10k1_emu1010_init(), thus making the MicroDock firmware loading
-synchronous - there isn't really a reason not to. Note that this does
-not affect the AudioDocks of rev1 cards, as these have no independent
-power supplies, and thus come up only a while after the main card is
-initialized.
-
-As a drive-by, adjust the priorities of two messages to better reflect
-their impact.
-
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20240428093716.3198666-3-oswald.buddenhagen@gmx.de>
-Stable-dep-of: f848337cd801 ("ALSA: emu10k1: move the whole GPIO event handling to the workqueue")
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240329015036.15707-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/emu10k1/emu10k1_main.c | 66 +++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 30 deletions(-)
+ drivers/ufs/core/ufshcd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/emu10k1/emu10k1_main.c b/sound/pci/emu10k1/emu10k1_main.c
-index 85f70368a27db..6265fc9ae2606 100644
---- a/sound/pci/emu10k1/emu10k1_main.c
-+++ b/sound/pci/emu10k1/emu10k1_main.c
-@@ -732,11 +732,43 @@ static int snd_emu1010_load_firmware(struct snd_emu10k1 *emu, int dock,
- 	return snd_emu1010_load_firmware_entry(emu, *fw);
- }
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 3b89c9d4aa404..14a6a100fcdb0 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -9745,7 +9745,10 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
  
-+static void snd_emu1010_load_dock_firmware(struct snd_emu10k1 *emu)
-+{
-+	u32 tmp, tmp2;
-+	int err;
-+
-+	dev_info(emu->card->dev, "emu1010: Loading Audio Dock Firmware\n");
-+	/* Return to Audio Dock programming mode */
-+	snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG,
-+			       EMU_HANA_FPGA_CONFIG_AUDIODOCK);
-+	err = snd_emu1010_load_firmware(emu, 1, &emu->dock_fw);
-+	if (err < 0)
-+		return;
-+	snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG, 0);
-+
-+	snd_emu1010_fpga_read(emu, EMU_HANA_ID, &tmp);
-+	dev_dbg(emu->card->dev, "emu1010: EMU_HANA+DOCK_ID = 0x%x\n", tmp);
-+	if ((tmp & 0x1f) != 0x15) {
-+		/* FPGA failed to be programmed */
-+		dev_err(emu->card->dev,
-+			"emu1010: Loading Audio Dock Firmware failed, reg = 0x%x\n",
-+			tmp);
-+		return;
-+	}
-+	dev_info(emu->card->dev, "emu1010: Audio Dock Firmware loaded\n");
-+
-+	snd_emu1010_fpga_read(emu, EMU_DOCK_MAJOR_REV, &tmp);
-+	snd_emu1010_fpga_read(emu, EMU_DOCK_MINOR_REV, &tmp2);
-+	dev_info(emu->card->dev, "Audio Dock ver: %u.%u\n", tmp, tmp2);
-+
-+	/* Allow DLL to settle, to sync clocking between 1010 and Dock */
-+	msleep(10);
-+}
-+
- static void emu1010_firmware_work(struct work_struct *work)
- {
- 	struct snd_emu10k1 *emu;
--	u32 tmp, tmp2, reg;
--	int err;
-+	u32 reg;
+ 	/* UFS device & link must be active before we enter in this function */
+ 	if (!ufshcd_is_ufs_dev_active(hba) || !ufshcd_is_link_active(hba)) {
+-		ret = -EINVAL;
++		/*  Wait err handler finish or trigger err recovery */
++		if (!ufshcd_eh_in_progress(hba))
++			ufshcd_force_error_recovery(hba);
++		ret = -EBUSY;
+ 		goto enable_scaling;
+ 	}
  
- 	emu = container_of(work, struct snd_emu10k1,
- 			   emu1010.firmware_work);
-@@ -749,33 +781,7 @@ static void emu1010_firmware_work(struct work_struct *work)
- 	snd_emu1010_fpga_read(emu, EMU_HANA_OPTION_CARDS, &reg); /* OPTIONS: Which cards are attached to the EMU */
- 	if (reg & EMU_HANA_OPTION_DOCK_OFFLINE) {
- 		/* Audio Dock attached */
--		/* Return to Audio Dock programming mode */
--		dev_info(emu->card->dev,
--			 "emu1010: Loading Audio Dock Firmware\n");
--		snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG,
--				       EMU_HANA_FPGA_CONFIG_AUDIODOCK);
--		err = snd_emu1010_load_firmware(emu, 1, &emu->dock_fw);
--		if (err < 0)
--			return;
--		snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG, 0);
--		snd_emu1010_fpga_read(emu, EMU_HANA_ID, &tmp);
--		dev_info(emu->card->dev,
--			 "emu1010: EMU_HANA+DOCK_ID = 0x%x\n", tmp);
--		if ((tmp & 0x1f) != 0x15) {
--			/* FPGA failed to be programmed */
--			dev_info(emu->card->dev,
--				 "emu1010: Loading Audio Dock Firmware file failed, reg = 0x%x\n",
--				 tmp);
--			return;
--		}
--		dev_info(emu->card->dev,
--			 "emu1010: Audio Dock Firmware loaded\n");
--		snd_emu1010_fpga_read(emu, EMU_DOCK_MAJOR_REV, &tmp);
--		snd_emu1010_fpga_read(emu, EMU_DOCK_MINOR_REV, &tmp2);
--		dev_info(emu->card->dev, "Audio Dock ver: %u.%u\n", tmp, tmp2);
--		/* Sync clocking between 1010 and Dock */
--		/* Allow DLL to settle */
--		msleep(10);
-+		snd_emu1010_load_dock_firmware(emu);
- 		/* Unmute all. Default is muted after a firmware load */
- 		snd_emu1010_fpga_write(emu, EMU_HANA_UNMUTE, EMU_UNMUTE);
- 	} else if (!(reg & EMU_HANA_OPTION_DOCK_ONLINE)) {
-@@ -892,7 +898,7 @@ static int snd_emu10k1_emu1010_init(struct snd_emu10k1 *emu)
- 	snd_emu1010_fpga_read(emu, EMU_HANA_OPTION_CARDS, &reg);
- 	dev_info(emu->card->dev, "emu1010: Card options = 0x%x\n", reg);
- 	if (reg & EMU_HANA_OPTION_DOCK_OFFLINE)
--		schedule_work(&emu->emu1010.firmware_work);
-+		snd_emu1010_load_dock_firmware(emu);
- 	if (emu->card_capabilities->no_adat) {
- 		emu->emu1010.optical_in = 0; /* IN_SPDIF */
- 		emu->emu1010.optical_out = 0; /* OUT_SPDIF */
 -- 
 2.43.0
 
