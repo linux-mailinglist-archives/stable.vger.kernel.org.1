@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D078C50F9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:16:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24198C54E7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4390FB20819
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:16:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB901C23B5A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872F712C46B;
-	Tue, 14 May 2024 10:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC918004E;
+	Tue, 14 May 2024 11:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrIqH29B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HTLPve0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F2A6CDC9;
-	Tue, 14 May 2024 10:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4AB7F7C7;
+	Tue, 14 May 2024 11:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683940; cv=none; b=Pxe9ewNEgOEtMe6FseJIeCOh+EQ1RfSefYixRmW659TylBZYm9CABTTH7H4QsDP0xCUleUnReg37u6yNLxTv/vAyvZtLdp/E+jffzDX3UGNJNYjIbCQGc5gar+wCaNXEdgkI3Lm2ls8Zj7EZc0Lhbn42v8AEqzXASuFjkfu9iMw=
+	t=1715687514; cv=none; b=mdPps/sDWHdl7p79zEVNHB4hlaB6pOe6/kriNv4ErwIIaagP7d0ODranhn0qrv1lTMHRaDQp2lcDeDVDqW8FmYKqIrGo1HDNSVtS9yAvMzZWUtuzHPE9I70wA/5EnfMeZglS4WwXnJ4yB4B9/EB+zAVCuAC3+91aWFk2YJCj9YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683940; c=relaxed/simple;
-	bh=i9sZm8r95tpLh+BfyY1Ijj+iz26mwf4X+6ludpdkd4g=;
+	s=arc-20240116; t=1715687514; c=relaxed/simple;
+	bh=xmTKb8iaRFT202y7ts24i2z3WCcaFk4EwJ1Q1uu83zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9HMkgv0RS1s+JkqqcmW3hjtAJz0bhM9o1Ci3KeWMSM9OleSatJNqDMSWK4YE7KnpysWAXmhMzlZf2DWUoZ5sq9Z6PnpefhSzLcQPx8teBiezjiaNLRgx9HsKrdeiQrDTBSp7mwCk+tVrxf9qKp4IPrUPJ169albrqEeQhZH9v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrIqH29B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0AAC2BD10;
-	Tue, 14 May 2024 10:52:19 +0000 (UTC)
+	 MIME-Version; b=AzXp0bTUl0WP5TsxMQoH/SeXaS2coSX+nbOalV/1PYDZ15RDkdktelpM83jhZFzQLri7W4hUJVdJdNlcPUk0aIIPpU7oPwKFXJ3aJ777eQBbvn9DgRWRY08GP4cqaCHjLL+yrEMfbP7shHWdUodaD8DiHb04Lkx2SAibl6uOBj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HTLPve0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5FCC2BD10;
+	Tue, 14 May 2024 11:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683939;
-	bh=i9sZm8r95tpLh+BfyY1Ijj+iz26mwf4X+6ludpdkd4g=;
+	s=korg; t=1715687514;
+	bh=xmTKb8iaRFT202y7ts24i2z3WCcaFk4EwJ1Q1uu83zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrIqH29B2mzSvvbdGym2j+vYiEpTC4nw+coAY9omkacN0XeeLifSM6nfOvGfp2o0T
-	 w31xgQ3CSo3gIhcPLv/sYGN6M9gWn32Bi5n9loS6BiqIyxYbM8MTGshm5jyUOe9Rxz
-	 ntJOPf0TwnkqgxIb/HMhlUIkyaWDnfvgWBkmCo38=
+	b=0HTLPve0Hw0jdIpMfVKAC2ubMHK7Qvsm5IoFS2OmhtngQnmAaA3k+TwHUX7Yc4rp+
+	 PzjU3uRoqivmCcjittyxXHqkxAMkt4SlX7FNigMA+PQoBx5BoJIH++bWF6Upqk1PVC
+	 zgEQY5SbB4I8vVkp28h1dIdMyt9XjZDP5bkpPiTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH 6.8 297/336] drm/vmwgfx: Fix Legacy Display Unit
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 003/168] wifi: nl80211: dont free NULL coalescing rule
 Date: Tue, 14 May 2024 12:18:21 +0200
-Message-ID: <20240514101049.829844304@linuxfoundation.org>
+Message-ID: <20240514101006.814122927@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 782e5e7925880f737963444f141a0320a12104a5 upstream.
+[ Upstream commit 801ea33ae82d6a9d954074fbcf8ea9d18f1543a7 ]
 
-Legacy DU was broken by the referenced fixes commit because the placement
-and the busy_placement no longer pointed to the same object. This was later
-fixed indirectly by commit a78a8da51b36c7a0c0c16233f91d60aac03a5a49
-("drm/ttm: replace busy placement with flags v6") in v6.9.
+If the parsing fails, we can dereference a NULL pointer here.
 
-Fixes: 39985eea5a6d ("drm/vmwgfx: Abstract placement selection")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Cc: <stable@vger.kernel.org> # v6.4+
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425200700.24403-1-ian.forbes@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: be29b99a9b51 ("cfg80211/nl80211: Add packet coalesce support")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240418105220.b328f80406e7.Id75d961050deb05b3e4e354e024866f350c68103@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/nl80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -204,6 +204,7 @@ int vmw_bo_pin_in_start_of_vram(struct v
- 			     VMW_BO_DOMAIN_VRAM,
- 			     VMW_BO_DOMAIN_VRAM);
- 	buf->places[0].lpfn = PFN_UP(bo->resource->size);
-+	buf->busy_places[0].lpfn = PFN_UP(bo->resource->size);
- 	ret = ttm_bo_validate(bo, &buf->placement, &ctx);
- 
- 	/* For some reason we didn't end up at the start of vram */
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 99149b10f86f6..d758ec5655892 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12890,6 +12890,8 @@ static int nl80211_set_coalesce(struct sk_buff *skb, struct genl_info *info)
+ error:
+ 	for (i = 0; i < new_coalesce.n_rules; i++) {
+ 		tmp_rule = &new_coalesce.rules[i];
++		if (!tmp_rule)
++			continue;
+ 		for (j = 0; j < tmp_rule->n_patterns; j++)
+ 			kfree(tmp_rule->patterns[j].mask);
+ 		kfree(tmp_rule->patterns);
+-- 
+2.43.0
+
 
 
 
