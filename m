@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC508C513B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:24:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A545B8C54F8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8E1A281477
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:23:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB40283A1A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5CF12FB15;
-	Tue, 14 May 2024 10:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D28684DEA;
+	Tue, 14 May 2024 11:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeqC7yr6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV2vBI4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAD7D531;
-	Tue, 14 May 2024 10:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15341CFB2;
+	Tue, 14 May 2024 11:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684211; cv=none; b=X2EJ9KCc7yEEeAHM3rsaSkBFOa7W/faw7nOAQrJrvDWBvm3DdyAfcjKTQ3i4tYOEHNlqjse9BELBKN68QfOLwQlOU1eXQyj7LJgEZdberFvV0pH9yCvCBYWAaFXeEUNB2NAwlKoUEJ/V2+k5KR3QqK9B0dbiaNTETrLwFiPm2MY=
+	t=1715687560; cv=none; b=sdKw9kJWC+3BuPoCivGVjNlPyu/TQS/QCGbeiN7YCPLMJU9GYkoDCUfbZRW6Jw2K+T6qHJcoiNsUGBLMFl8ORH25k8adRESfCXaEz7lgr+iXII0tne5OH/o9cNkYJg+pqwztqV9GJV5O4kUMZkAYhTiSxF/QsRJW2yu83pfTxQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684211; c=relaxed/simple;
-	bh=RSV5Lq1PUi5zwKQxJfes3CuD8wzplEi9Zx+V0VeSC60=;
+	s=arc-20240116; t=1715687560; c=relaxed/simple;
+	bh=V7F7y6HzYK3fE4KLSX7vTyGFPl+m5iUQNtIS2rpfN+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDuMFDKTZXY6sGPhcOpoCdgCYuwdsGAtIoQ+FmziJvj41w8YtSg9ZdmiocbWMFdJjIqcQCFrtxE6AqAPNA/+LJvK8ZBbGltUsrTC3gPkUyLTkozdx57Lue2X0A2s/0WCxgc3/oVRCYZtTZ1HTZ5PJeoeNvdHjKRIVMmstJULl44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeqC7yr6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E21C2BD10;
-	Tue, 14 May 2024 10:56:50 +0000 (UTC)
+	 MIME-Version; b=iDhASnOnD71PcoB9phPEVy/yB/X7v+L2nCu7a1qrAJ52+JwB3Kuo7W2E2QU4eqbqBnoAgcpXs+xFLrvO/caWH6rEubak9nBbQbggNaBV5qkjQVSb/WuvcB+ny+QnBc/nVGohxQfSVg0P6SKH9QRYlb9kiMuvVeKGyqOGPg4Q1zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV2vBI4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58686C2BD10;
+	Tue, 14 May 2024 11:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684211;
-	bh=RSV5Lq1PUi5zwKQxJfes3CuD8wzplEi9Zx+V0VeSC60=;
+	s=korg; t=1715687560;
+	bh=V7F7y6HzYK3fE4KLSX7vTyGFPl+m5iUQNtIS2rpfN+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeqC7yr6IRo0YL5WjhbVkeuBknm77TOlm/ucJsQaBvd9l/SMBcnBZEcnD7FMbj0W7
-	 vZeo/EFNIN8++0ykYo269yVNHQc/hKIbaeNMEXVKCOzGXmeJo8PYUm2mgWXUYZ3U6G
-	 UoQd3hAvKRTvHystbqeVl9H+tIcEpTkF1KHp0wiA=
+	b=oV2vBI4oIWGGLDsHWkA2GYyk3xLl/rEiZeaa3iJjNS3BL1zXpv8STHgAfOex+wCbx
+	 5tiUUfyuhSKixo+raLUtmcFrOL4Te7IqrlllRc3J4p6AMnHTmK3er0262dGC4awLQK
+	 PuRgSh2TYI1nyOK6E6/b5Pk0HZVl9IaUBqK06gwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.8 319/336] nvme-pci: Add quirk for broken MSIs
-Date: Tue, 14 May 2024 12:18:43 +0200
-Message-ID: <20240514101050.666103665@linuxfoundation.org>
+	Anton Protopopov <aspsk@isovalent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 026/168] bpf: Fix a verifier verbose message
+Date: Tue, 14 May 2024 12:18:44 +0200
+Message-ID: <20240514101007.678578093@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Anton Protopopov <aspsk@isovalent.com>
 
-commit d5887dc6b6c054d0da3cd053afc15b7be1f45ff6 upstream.
+[ Upstream commit 37eacb9f6e89fb399a79e952bc9c78eb3e16290e ]
 
-Sandisk SN530 NVMe drives have broken MSIs. On systems without MSI-X
-support, all commands time out resulting in the following message:
+Long ago a map file descriptor in a pseudo ldimm64 instruction could
+only be present as an immediate value insn[0].imm, and thus this value
+was used in a verbose verifier message printed when the file descriptor
+wasn't valid. Since addition of BPF_PSEUDO_MAP_IDX_VALUE/BPF_PSEUDO_MAP_IDX
+the insn[0].imm field can also contain an index pointing to the file
+descriptor in the attr.fd_array array. However, if the file descriptor
+is invalid, the verifier still prints the verbose message containing
+value of insn[0].imm. Patch the verifier message to always print the
+actual file descriptor value.
 
-nvme nvme0: I/O tag 12 (100c) QID 0 timeout, completion polled
-
-These timeouts cause the boot to take an excessively-long time (over 20
-minutes) while the initial command queue is flushed.
-
-Address this by adding a quirk for drives with buggy MSIs. The lspci
-output for this device (recorded on a system with MSI-X support) is:
-
-02:00.0 Non-Volatile memory controller: Sandisk Corp Device 5008 (rev 01) (prog-if 02 [NVM Express])
-	Subsystem: Sandisk Corp Device 5008
-	Flags: bus master, fast devsel, latency 0, IRQ 16, NUMA node 0
-	Memory at f7e00000 (64-bit, non-prefetchable) [size=16K]
-	Memory at f7e04000 (64-bit, non-prefetchable) [size=256]
-	Capabilities: [80] Power Management version 3
-	Capabilities: [90] MSI: Enable- Count=1/32 Maskable- 64bit+
-	Capabilities: [b0] MSI-X: Enable+ Count=17 Masked-
-	Capabilities: [c0] Express Endpoint, MSI 00
-	Capabilities: [100] Advanced Error Reporting
-	Capabilities: [150] Device Serial Number 00-00-00-00-00-00-00-00
-	Capabilities: [1b8] Latency Tolerance Reporting
-	Capabilities: [300] Secondary PCI Express
-	Capabilities: [900] L1 PM Substates
-	Kernel driver in use: nvme
-	Kernel modules: nvme
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 387544bfa291 ("bpf: Introduce fd_idx")
+Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240412141100.3562942-1-aspsk@isovalent.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/nvme.h |    5 +++++
- drivers/nvme/host/pci.c  |   14 +++++++++++---
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -162,6 +162,11 @@ enum nvme_quirks {
- 	 * Disables simple suspend/resume path.
- 	 */
- 	NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND	= (1 << 20),
-+
-+	/*
-+	 * MSI (but not MSI-X) interrupts are broken and never fire.
-+	 */
-+	NVME_QUIRK_BROKEN_MSI			= (1 << 21),
- };
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 67b3254270221..94d952967fbf9 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -11875,8 +11875,7 @@ static int resolve_pseudo_ldimm64(struct bpf_verifier_env *env)
+ 			f = fdget(fd);
+ 			map = __bpf_map_get(f);
+ 			if (IS_ERR(map)) {
+-				verbose(env, "fd %d is not pointing to valid bpf_map\n",
+-					insn[0].imm);
++				verbose(env, "fd %d is not pointing to valid bpf_map\n", fd);
+ 				return PTR_ERR(map);
+ 			}
  
- /*
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2218,6 +2218,7 @@ static int nvme_setup_irqs(struct nvme_d
- 		.priv		= dev,
- 	};
- 	unsigned int irq_queues, poll_queues;
-+	unsigned int flags = PCI_IRQ_ALL_TYPES | PCI_IRQ_AFFINITY;
- 
- 	/*
- 	 * Poll queues don't need interrupts, but we need at least one I/O queue
-@@ -2241,8 +2242,10 @@ static int nvme_setup_irqs(struct nvme_d
- 	irq_queues = 1;
- 	if (!(dev->ctrl.quirks & NVME_QUIRK_SINGLE_VECTOR))
- 		irq_queues += (nr_io_queues - poll_queues);
--	return pci_alloc_irq_vectors_affinity(pdev, 1, irq_queues,
--			      PCI_IRQ_ALL_TYPES | PCI_IRQ_AFFINITY, &affd);
-+	if (dev->ctrl.quirks & NVME_QUIRK_BROKEN_MSI)
-+		flags &= ~PCI_IRQ_MSI;
-+	return pci_alloc_irq_vectors_affinity(pdev, 1, irq_queues, flags,
-+					      &affd);
- }
- 
- static unsigned int nvme_max_io_queues(struct nvme_dev *dev)
-@@ -2471,6 +2474,7 @@ static int nvme_pci_enable(struct nvme_d
- {
- 	int result = -ENOMEM;
- 	struct pci_dev *pdev = to_pci_dev(dev->dev);
-+	unsigned int flags = PCI_IRQ_ALL_TYPES;
- 
- 	if (pci_enable_device_mem(pdev))
- 		return result;
-@@ -2487,7 +2491,9 @@ static int nvme_pci_enable(struct nvme_d
- 	 * interrupts. Pre-enable a single MSIX or MSI vec for setup. We'll
- 	 * adjust this later.
- 	 */
--	result = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	if (dev->ctrl.quirks & NVME_QUIRK_BROKEN_MSI)
-+		flags &= ~PCI_IRQ_MSI;
-+	result = pci_alloc_irq_vectors(pdev, 1, 1, flags);
- 	if (result < 0)
- 		goto disable;
- 
-@@ -3384,6 +3390,8 @@ static const struct pci_device_id nvme_i
- 		.driver_data = NVME_QUIRK_DELAY_BEFORE_CHK_RDY |
- 				NVME_QUIRK_DISABLE_WRITE_ZEROES|
- 				NVME_QUIRK_IGNORE_DEV_SUBNQN, },
-+	{ PCI_DEVICE(0x15b7, 0x5008),   /* Sandisk SN530 */
-+		.driver_data = NVME_QUIRK_BROKEN_MSI },
- 	{ PCI_DEVICE(0x1987, 0x5012),	/* Phison E12 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1987, 0x5016),	/* Phison E16 */
+-- 
+2.43.0
+
 
 
 
