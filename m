@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113708C51E3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C368C52ED
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42DB61C2097F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9D49282E9C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCF276025;
-	Tue, 14 May 2024 11:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DB0134413;
+	Tue, 14 May 2024 11:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozOEzlMr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/IxYTzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3011D54D;
-	Tue, 14 May 2024 11:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EC35A0F9;
+	Tue, 14 May 2024 11:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685182; cv=none; b=Z+t1Ltyn8pbMtMm1oM5lnIVzNWIBarTEMwtfbmgWIPwBJvLVmE6s1XmYyS9EUx5NJt+NokwRQTSNmOBOebIZP8Coeh3p0boX3/XHURrB3UbiBT+q9sw6nDokQnre51aWxai1BspYhNf/PIe64a0IsHiNGPygya2WGxBEslKwIzQ=
+	t=1715686205; cv=none; b=C14veHHeFLwsmKaURBjrPQ1e7kIY8PyHqJFjXRK8uCq/JGr9CyNcQ0ZmEqGLAUOd8iQ7mN1o9V5Tz15KLB1Tlo1hGdaSXZtNbLgxlTTVwjh/yqFyCcl7YdyqxDPksQDGFgdqYE/c/Q2ufcuoC6uNiGSgvg+oNLzn6PxqDIv1Oew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685182; c=relaxed/simple;
-	bh=MI8dpcWsv7srrMEA9nzg+9POV4y/2UfvDr2qOMPe2QA=;
+	s=arc-20240116; t=1715686205; c=relaxed/simple;
+	bh=5alA7ETyn+Dpt3fi/VOARbZTnb/CGyhAatxZZL3onH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZ+8m0GIIVV/AywL41OydBzkiDTAGBzDzHQ/Jt+eTmig90mGVOl8jTvESXz68VdjTIxmt6WWmm5zyl8Efaa7rpZK6fMmMBAPerwnryCT9zXM1dhijQK2/meUohWoikebgjjIhViGlHDez07atSKSgl+850rbKNwJGhhR1VxZ6tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozOEzlMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57724C2BD10;
-	Tue, 14 May 2024 11:13:01 +0000 (UTC)
+	 MIME-Version; b=ZtlhC+5Cz79WgCDkgrB+MXNJMc7hTXHj/UNrKjDUdwNxgNmjQTkF2gvDCD5zvsMOqnYEj3+t6X8thiAkPf0yzFX/MBU6RxZBflqpSBKeyhvMKvMh6v9QTqqDp0uo/Myy6DS5EAbeUtT5Vcp+UEe+qdSWDJ95Nh2B9Ml/B8RMRyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/IxYTzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF53C2BD10;
+	Tue, 14 May 2024 11:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685181;
-	bh=MI8dpcWsv7srrMEA9nzg+9POV4y/2UfvDr2qOMPe2QA=;
+	s=korg; t=1715686205;
+	bh=5alA7ETyn+Dpt3fi/VOARbZTnb/CGyhAatxZZL3onH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozOEzlMrAhDBInq0qBPB8skx2NAY0BGhXEVZyQX3IVISylfMejvIOMS6RyeGVT6Vg
-	 7MsUyux9//gIgo7fUCVl2jwIGI8x1owEz0ptBpCOWGnuoPBISl4QPe4TxJ4Lw/+LjJ
-	 IT32qzG7LKM6NNetpTV9S8a3fiC9fZMIiR+ZjdJI=
+	b=B/IxYTzGvlS3g6B2foIWjRa/ZLqxS2o4N0e3nLZAqnVlP1dsXMpAsUAN3819yGZnI
+	 yOyPr3Pi0emBzwI8FD/ZD7O7kv1KT/PuOqAPmkaUbvg7q92x7EXvaLAiEamFIK6ROi
+	 9b9i8QXNxKQEof4b+VCuASeKkfJ20Q3DR78qRwQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	James Zhu <James.Zhu@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/301] drm/amdgpu: Fix VCN allocation in CPX partition
-Date: Tue, 14 May 2024 12:16:59 +0200
-Message-ID: <20240514101037.843810664@linuxfoundation.org>
+Subject: [PATCH 6.1 058/236] bna: ensure the copied buf is NUL terminated
+Date: Tue, 14 May 2024 12:17:00 +0200
+Message-ID: <20240514101022.559231417@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit f7e232de51bb1b45646e5b7dc4ebcf13510f2630 ]
+[ Upstream commit 8c34096c7fdf272fd4c0c37fe411cd2e3ed0ee9f ]
 
-VCN need not be shared in CPX mode always for all GFX 9.4.3 SOC SKUs. In
-certain configs, VCN instance can be exclusively allocated to a
-partition even under CPX mode.
+Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
+userspace to that buffer. Later, we use sscanf on this buffer but we don't
+ensure that the string is terminated inside the buffer, this can lead to
+OOB read when using sscanf. Fix this issue by using memdup_user_nul
+instead of memdup_user.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: James Zhu <James.Zhu@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-2-f1f1b53a10f4@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-index d0fc62784e821..0284c9198a04a 100644
---- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-+++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
-@@ -61,6 +61,11 @@ void aqua_vanjaram_doorbell_index_init(struct amdgpu_device *adev)
- 	adev->doorbell_index.max_assignment = AMDGPU_DOORBELL_LAYOUT1_MAX_ASSIGNMENT << 1;
- }
+diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+index 04ad0f2b9677e..777f0d7e48192 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
++++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+@@ -312,7 +312,7 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
+ 	void *kern_buf;
  
-+static bool aqua_vanjaram_xcp_vcn_shared(struct amdgpu_device *adev)
-+{
-+	return (adev->xcp_mgr->num_xcps > adev->vcn.num_vcn_inst);
-+}
-+
- static void aqua_vanjaram_set_xcp_id(struct amdgpu_device *adev,
- 			     uint32_t inst_idx, struct amdgpu_ring *ring)
- {
-@@ -86,7 +91,7 @@ static void aqua_vanjaram_set_xcp_id(struct amdgpu_device *adev,
- 	case AMDGPU_RING_TYPE_VCN_ENC:
- 	case AMDGPU_RING_TYPE_VCN_JPEG:
- 		ip_blk = AMDGPU_XCP_VCN;
--		if (adev->xcp_mgr->mode == AMDGPU_CPX_PARTITION_MODE)
-+		if (aqua_vanjaram_xcp_vcn_shared(adev))
- 			inst_mask = 1 << (inst_idx * 2);
- 		break;
- 	default:
-@@ -139,10 +144,12 @@ static int aqua_vanjaram_xcp_sched_list_update(
+ 	/* Copy the user space buf */
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
- 		aqua_vanjaram_xcp_gpu_sched_update(adev, ring, ring->xcp_id);
+@@ -372,7 +372,7 @@ bnad_debugfs_write_regwr(struct file *file, const char __user *buf,
+ 	void *kern_buf;
  
--		/* VCN is shared by two partitions under CPX MODE */
-+		/* VCN may be shared by two partitions under CPX MODE in certain
-+		 * configs.
-+		 */
- 		if ((ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC ||
--			ring->funcs->type == AMDGPU_RING_TYPE_VCN_JPEG) &&
--			adev->xcp_mgr->mode == AMDGPU_CPX_PARTITION_MODE)
-+		     ring->funcs->type == AMDGPU_RING_TYPE_VCN_JPEG) &&
-+		    aqua_vanjaram_xcp_vcn_shared(adev))
- 			aqua_vanjaram_xcp_gpu_sched_update(adev, ring, ring->xcp_id + 1);
- 	}
+ 	/* Copy the user space buf */
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
 -- 
 2.43.0
