@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55C58C542B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686C08C5539
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E69341C22AD6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2154F1F22C48
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AE2139CE3;
-	Tue, 14 May 2024 11:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8F4F9D4;
+	Tue, 14 May 2024 11:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5uvyGG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mw3CvUKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B81139596;
-	Tue, 14 May 2024 11:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5A73D0D1;
+	Tue, 14 May 2024 11:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687024; cv=none; b=q1RfYzku2cUMLZqOsL3hyi8EQecfq32orRFjYPd87+XPy0za3qmKu3dVCVwT4Iro8YD28T/SyNe0Ktzr962SkNaN3GGbHOTLNtZjfRI76A9pjqoSrcQObiu0oML48JCmwRJy9hEVQWQKIrHIIBpl7xDIejV0My8hhCbu3KgR4Ns=
+	t=1715687750; cv=none; b=WeuG3ssjA5pdiSgR8BfwzDlJzG+C4qi25Xiex5op+rWVhPYtZToK/8iVxfC+GubTQLnAOWfWMBBHE7kzP3bYYTq28yBdxSXiO3o9v91gONJlRWADN8b6aEUuen1KI3wJyQWKVtr2Qy1HE9T351+hYHBPsD5MFRdYpa1XZlNgBL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687024; c=relaxed/simple;
-	bh=ZdD2h/Gf5EniYxrQCd7Z9R3BfJe4gDGwUHnxrPZpHvM=;
+	s=arc-20240116; t=1715687750; c=relaxed/simple;
+	bh=uvZBZRA9ixNaUBSr+HItJUyHht7vRBmRBHAVzRMFZyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZmCmTj1Jd2WCjEzzPpjg1cVgHEGxVjlIzDj+izb/LuRzDOWMNHfDkNuFEacKIpD8z0INLl0nZymLTL0hr06xTXMQygAoUFkQK3TXBIFUroskUC0M1UOaJzLf/oQV/uJxhI9FhzBPOreV77mg5p5lbOC0VUwzj0aR3k08YSUxOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5uvyGG0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B575C2BD10;
-	Tue, 14 May 2024 11:43:44 +0000 (UTC)
+	 MIME-Version; b=slR3H728hhJeu/8JvQQa1nemUvfCrAy0146PMqQUhay+UED9yY+tpPiRtVXRjJaD+alL1W5yWqEvzYCgR0VWLG4Ux2CJKvijBJ3qHuhtIBAAIpqSNwDlItEQg0+RhIpuoodeyjQVbvcTMcfPOTqIJ0LrKX/6VKKAxojobnzFrdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mw3CvUKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38568C2BD10;
+	Tue, 14 May 2024 11:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687024;
-	bh=ZdD2h/Gf5EniYxrQCd7Z9R3BfJe4gDGwUHnxrPZpHvM=;
+	s=korg; t=1715687749;
+	bh=uvZBZRA9ixNaUBSr+HItJUyHht7vRBmRBHAVzRMFZyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5uvyGG01mAeX8+18DUSLGVj8S9Tz9NlDnOjhSdmKyO4LUNodBkg/SA/XzN7Bj4nt
-	 BCLA6ntoQJsZvjHFeA5ngLyUz1uv0aEJ6PlVJMSJw9DNA+Lxe0hYZQ5bfzxulcGZzS
-	 vpgUsRwWwbgDLGwITmInN3Et6sWqydwEglfYRxTI=
+	b=mw3CvUKRmjRltHI3fcc/s+h7hLlMhPMiuiF5ux+Lg8PTam5nsd460T0gTQ4cqR9uP
+	 1HBMgbrh5nOIc9gR2QbWR3I7uw/saA9/LUIf1A9h0sFZdgxs5LkN30L7wo764OAd/S
+	 EeY/qIb15VQQcjy/tz7IvyyRk+e+fa0VPeaubLO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>,
+	Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 39/84] ALSA: line6: Zero-initialize message buffers
+Subject: [PATCH 5.15 092/168] fs/9p: drop inodes immediately on non-.L too
 Date: Tue, 14 May 2024 12:19:50 +0200
-Message-ID: <20240514100953.162208009@linuxfoundation.org>
+Message-ID: <20240514101010.163232778@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit c4e51e424e2c772ce1836912a8b0b87cd61bc9d5 ]
+[ Upstream commit 7fd524b9bd1be210fe79035800f4bd78a41b349f ]
 
-For shutting up spurious KMSAN uninit-value warnings, just replace
-kmalloc() calls with kzalloc() for the buffers used for
-communications.  There should be no real issue with the original code,
-but it's still better to cover.
-
-Reported-by: syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/00000000000084b18706150bcca5@google.com
-Message-ID: <20240402063628.26609-1-tiwai@suse.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/line6/driver.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/9p/vfs_super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/line6/driver.c b/sound/usb/line6/driver.c
-index 22104cb84b1ca..efa8fb59d3ad2 100644
---- a/sound/usb/line6/driver.c
-+++ b/sound/usb/line6/driver.c
-@@ -201,7 +201,7 @@ int line6_send_raw_message_async(struct usb_line6 *line6, const char *buffer,
- 	struct urb *urb;
- 
- 	/* create message: */
--	msg = kmalloc(sizeof(struct message), GFP_ATOMIC);
-+	msg = kzalloc(sizeof(struct message), GFP_ATOMIC);
- 	if (msg == NULL)
- 		return -ENOMEM;
- 
-@@ -679,7 +679,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
- 	int ret;
- 
- 	/* initialize USB buffers: */
--	line6->buffer_listen = kmalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
-+	line6->buffer_listen = kzalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
- 	if (!line6->buffer_listen)
- 		return -ENOMEM;
- 
-@@ -688,7 +688,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
- 		return -ENOMEM;
- 
- 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
--		line6->buffer_message = kmalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
-+		line6->buffer_message = kzalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
- 		if (!line6->buffer_message)
- 			return -ENOMEM;
- 
+diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
+index 7449f7fd47d22..51ac2653984a7 100644
+--- a/fs/9p/vfs_super.c
++++ b/fs/9p/vfs_super.c
+@@ -340,6 +340,7 @@ static const struct super_operations v9fs_super_ops = {
+ 	.alloc_inode = v9fs_alloc_inode,
+ 	.free_inode = v9fs_free_inode,
+ 	.statfs = simple_statfs,
++	.drop_inode = v9fs_drop_inode,
+ 	.evict_inode = v9fs_evict_inode,
+ 	.show_options = v9fs_show_options,
+ 	.umount_begin = v9fs_umount_begin,
 -- 
 2.43.0
 
