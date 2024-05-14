@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-43869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122078C4FF9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A97A8C5148
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4402C1C211F7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:55:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E839F1F21DA4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D814C53368;
-	Tue, 14 May 2024 10:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089C312FF6C;
+	Tue, 14 May 2024 10:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJCiTrnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgZkgghO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9625250288;
-	Tue, 14 May 2024 10:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB02C26AC5;
+	Tue, 14 May 2024 10:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682779; cv=none; b=rcj4PTjafqM+WVYCBFcMMqYpO66EFXmInqHdQTfRp4NX7my1pMdHzzsPFQcwWO3YCSWWRoDlsxc3uHxV0kFcdgfN3KVjrXXPqfXeYAEbd2KgPlurnM4Pyzn2cNOmwhD0dxaEoNkXQjifSgrIApBD+loF50qUctIovJV+P+nVbJU=
+	t=1715684259; cv=none; b=aKp8i4g6Gf6NGNqxANIDqOzlcpVNo/T7Vu7T945V/qlC9hgWQcOYYr/U24vqoH70Byd806VPy6eczv1kkWmFdKqZdDGbVfjDAxDAkFXWG1beAbKDuu0w6YaXzBwLNC74wCrXmbQeXIQFGhISgtpWlqIvwB/EwamOmA8ANfiUyTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682779; c=relaxed/simple;
-	bh=sCu4YhbqpS58BlPKfgrl0QfDFk0Lb9ioFRTW4eVK8mM=;
+	s=arc-20240116; t=1715684259; c=relaxed/simple;
+	bh=YYW+If0QfUqpKD3tNnF6gW9ok0HtNGyWD6JRw8vw8Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ar8vQ4FRbGjcuhXHTh611w2Fb/GvcBOqqPFO7IXVozUzAthzik0k5+ki20eTCVE9KyLO4VaX0j3thGStwk5BVSW9iOOdZSUst9IvD2ra0IrEWOXAsbdBJtJtuweAWgEWP/BkOdeR84XZ5HfIf/EGxTccC64jf9CeeBE3Yqr/oik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJCiTrnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22631C2BD10;
-	Tue, 14 May 2024 10:32:57 +0000 (UTC)
+	 MIME-Version; b=ZMfnQhdB7Fy6cqY3Iq1qc8o7bX9vAiQG5y7f+AiDpzKJNIgm5YYYXKrbr2Q1ysXO5JlMB9RnxGtiul26oRDyAc5AHBiUH1WOEBU7OitZ3yIGbvV+6KyRwojso47UACSWNV0V+UhjJVDXCbZOsApYHDfw8CHQBZpX969rPOOYVbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgZkgghO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E68C2BD10;
+	Tue, 14 May 2024 10:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682779;
-	bh=sCu4YhbqpS58BlPKfgrl0QfDFk0Lb9ioFRTW4eVK8mM=;
+	s=korg; t=1715684259;
+	bh=YYW+If0QfUqpKD3tNnF6gW9ok0HtNGyWD6JRw8vw8Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJCiTrnlcluueugMiz3wstk9NVUackQfthNhUt8Jn2AAh8EAlV/E2E8Y59m59mg9L
-	 bTt5gklI2Vj4A85LaIhl4SXeTYiG5kIUQKOoIoXFbP+PfDhuvN3y/U6iTT+6inKJDF
-	 xkURfI1O7harqTtBdE1BSSJ3v1caiWymLZD4fF/I=
+	b=KgZkgghOS5CmzrUvVoVSgwtT3Nk5o6i5LK8fNpGC4EcV5toREMYUDnHA4wuN9yz75
+	 Nr6H/gK5Y5dZu0BZUsfPgG7HyYd8RDLlXXtZCvoSygIeusQ+SWNtF+WMtFbSyBhmhI
+	 FKmk3bThcN8/JG/kHApVFlDIg2zgfHeSiLG1UznY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 082/336] drm/panel: ili9341: Use predefined error codes
+Subject: [PATCH 6.6 015/301] pinctrl: mediatek: paris: Fix PIN_CONFIG_INPUT_SCHMITT_ENABLE readback
 Date: Tue, 14 May 2024 12:14:46 +0200
-Message-ID: <20240514101041.702683886@linuxfoundation.org>
+Message-ID: <20240514101032.818799708@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit da85f0aaa9f21999753b01d45c0343f885a8f905 ]
+[ Upstream commit 08f66a8edd08f6f7cfa769c81634b29a2b123908 ]
 
-In one case the -1 is returned which is quite confusing code for
-the wrong device ID, in another the ret is returning instead of
-plain 0 that also confusing as readed may ask the possible meaning
-of positive codes, which are never the case there. Convert both
-to use explicit predefined error codes to make it clear what's going
-on there.
+In the generic pin config library, readback of some options are handled
+differently compared to the setting of those options: the argument value
+is used to convey enable/disable of an option in the set path, but
+success or -EINVAL is used to convey if an option is enabled or disabled
+in the debugfs readback path.
 
-Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Link: https://lore.kernel.org/r/20240425142706.2440113-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-4-andriy.shevchenko@linux.intel.com
+PIN_CONFIG_INPUT_SCHMITT_ENABLE is one such option. Fix the readback of
+the option in the mediatek-paris library, so that the debugfs dump is
+not showing "input schmitt enabled" for pins that don't have it enabled.
+
+Fixes: 1bea6afbc842 ("pinctrl: mediatek: Refine mtk_pinconf_get()")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Message-ID: <20240327091336.3434141-2-wenst@chromium.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-paris.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-index 24c74c56e5648..b933380b7eb78 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-@@ -422,7 +422,7 @@ static int ili9341_dpi_prepare(struct drm_panel *panel)
+diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
+index 33d6c3fb79080..ea60de040e0a0 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-paris.c
++++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
+@@ -193,6 +193,8 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
+ 		}
  
- 	ili9341_dpi_init(ili);
- 
--	return ret;
-+	return 0;
- }
- 
- static int ili9341_dpi_enable(struct drm_panel *panel)
-@@ -726,7 +726,7 @@ static int ili9341_probe(struct spi_device *spi)
- 	else if (!strcmp(id->name, "yx240qv29"))
- 		return ili9341_dbi_probe(spi, dc, reset);
- 
--	return -1;
-+	return -ENODEV;
- }
- 
- static void ili9341_remove(struct spi_device *spi)
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SMT, &ret);
++		if (!ret)
++			err = -EINVAL;
+ 		break;
+ 	case PIN_CONFIG_DRIVE_STRENGTH:
+ 		if (!hw->soc->drive_get)
 -- 
 2.43.0
 
