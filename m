@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-44595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E4F8C5392
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7968C5272
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 679F51F22DA1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5D35B2187B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B4312AAF7;
-	Tue, 14 May 2024 11:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C6613D508;
+	Tue, 14 May 2024 11:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORHMXWiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfnWfmdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437BF12AAC6;
-	Tue, 14 May 2024 11:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0636A6311D;
+	Tue, 14 May 2024 11:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686616; cv=none; b=UUJG1wubmiyaA8FpICJhowiQqXYHdlmaKhzA6ZnEycaRhY42zNvkgO6od4iIqnIz7Iym8ZFIzvGJSWo002r2+fkd1LmdXh8+b2OYRoqc06GEFX+1gAG7ccHq8Arru622RdBv1Yn65PHPkuIKMWKgp0lS6G0xgfmUGu8aFk95XT8=
+	t=1715685904; cv=none; b=sPUat6qfqlbgqRYDt7fdsj+EqUBXR4xy7QkM3dyzJz1XeBS6YT6JMTAKsYes+wdNtCE+fUTUyRtdnVMGPcxVfPRG3yoJgSUagspOoP6xaC+zmBuYOj0yRFsbH1iiwa0M0a5HxkEUhYGJi28g6Mr8oMbxlRhIwlO8H+Q7nO7LjfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686616; c=relaxed/simple;
-	bh=VWzJtq6is/JpTo7EYt2GxWzF7Mpk4zDpURFx6O1yyCQ=;
+	s=arc-20240116; t=1715685904; c=relaxed/simple;
+	bh=2mK4isx8QZU6RVowVkcWpfm4IfqbFFjki3Mxt1ZUUTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gny0kAUPN0sNpyPfaUVvcgf9VOxeXZCG4HIgdvpmc5153YMfocS43+qHAZMfVYNkwmYwqWWgMjiIdNbCtYrPHM8NtsQKlz51coojRkJ0fItJ7pnH58cZq99nQGOX4C7ie0DSs1KTJ6WtffQ43kjt5gkcOKrsR9PFKD7UXGK2NZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORHMXWiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C418DC2BD10;
-	Tue, 14 May 2024 11:36:55 +0000 (UTC)
+	 MIME-Version; b=dSU3CtRsoeUQ3yDULeHfXHrsZVvm4THVMHfzN4AVawcSBcc+7w9MbFuMHXdfilrrdygnvFdkmREfQFRNIKbArUL3im6Ox7N21rVQkQ5Dfm0UitttJRO1+OolCEh8uiRlVhM4AxfITAFinHkGgUlVQ1Nb1mF4OJG3dJy8s6YXDD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfnWfmdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65341C2BD10;
+	Tue, 14 May 2024 11:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686616;
-	bh=VWzJtq6is/JpTo7EYt2GxWzF7Mpk4zDpURFx6O1yyCQ=;
+	s=korg; t=1715685903;
+	bh=2mK4isx8QZU6RVowVkcWpfm4IfqbFFjki3Mxt1ZUUTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORHMXWiKZy/a5RMFGkGZuWIuyvmOCyTuu6+3Gab+bah//5gUv7xV3WUm5Du0o7yDV
-	 7pNJk289zvmc5vKG3jetP0Txbh5eXOgenctUO+34uW/aCyI8S17FQBb0Wujv7zeLmT
-	 EwvMX5WNiRJDSpT2qPdGkIgMcyDSjJGQlytxvO0A=
+	b=vfnWfmdlTT+Iadw1X8WrASdafAkBpOe3ge252XnuKfvcMBjAXJdwfzW+3Nh7Si2BE
+	 X0On/zO5SE89yKtb3zTg1OhRCLeurdRynvgy03hHMhX/r5I87+zvfNkXVJW2jtykQO
+	 JGv+oRfcFYfqDNZkoFj1dFAqGGEVVebKpRp/Dqzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/236] MAINTAINERS: add leah to 6.1 MAINTAINERS file
+	Gnattu OC <gnattuoc@me.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Krzysztof Gibala <krzysztof.gibala@intel.com>
+Subject: [PATCH 6.6 273/301] drm/i915/gt: Automate CCS Mode setting during engine resets
 Date: Tue, 14 May 2024 12:19:04 +0200
-Message-ID: <20240514101027.268108476@linuxfoundation.org>
+Message-ID: <20240514101042.573933855@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leah Rumancik <leah.rumancik@gmail.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-I've been trying to get backports rolling to 6.1.y. Update MAINTAINERS
-file so backports requests / questions can get routed appropriately.
+commit 51c1b42a232f17743cd825be6790cb64735ff98f upstream.
 
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We missed setting the CCS mode during resume and engine resets.
+Create a workaround to be added in the engine's workaround list.
+This workaround sets the XEHP_CCS_MODE value at every reset.
+
+The issue can be reproduced by running:
+
+  $ clpeak --kernel-latency
+
+Without resetting the CCS mode, we encounter a fence timeout:
+
+  Fence expiration time out i915-0000:03:00.0:clpeak[2387]:2!
+
+Fixes: 6db31251bb26 ("drm/i915/gt: Enable only one CCS for compute workload")
+Reported-by: Gnattu OC <gnattuoc@me.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10895
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: <stable@vger.kernel.org> # v6.2+
+Tested-by: Gnattu OC <gnattuoc@me.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Tested-by: Krzysztof Gibala <krzysztof.gibala@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240426000723.229296-1-andi.shyti@linux.intel.com
+(cherry picked from commit 4cfca03f76413db115c3cc18f4370debb1b81b2b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c |    6 +++---
+ drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h |    2 +-
+ drivers/gpu/drm/i915/gt/intel_workarounds.c |    4 +++-
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ecf4d0c8f446e..4b19dfb5d2fd4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -22557,6 +22557,7 @@ F:	include/xen/swiotlb-xen.h
+--- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
++++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+@@ -8,14 +8,14 @@
+ #include "intel_gt_ccs_mode.h"
+ #include "intel_gt_regs.h"
  
- XFS FILESYSTEM
- C:	irc://irc.oftc.net/xfs
-+M:	Leah Rumancik <leah.rumancik@gmail.com>
- M:	Darrick J. Wong <djwong@kernel.org>
- L:	linux-xfs@vger.kernel.org
- S:	Supported
--- 
-2.43.0
-
+-void intel_gt_apply_ccs_mode(struct intel_gt *gt)
++unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt)
+ {
+ 	int cslice;
+ 	u32 mode = 0;
+ 	int first_ccs = __ffs(CCS_MASK(gt));
+ 
+ 	if (!IS_DG2(gt->i915))
+-		return;
++		return 0;
+ 
+ 	/* Build the value for the fixed CCS load balancing */
+ 	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
+@@ -35,5 +35,5 @@ void intel_gt_apply_ccs_mode(struct inte
+ 						     XEHP_CCS_MODE_CSLICE_MASK);
+ 	}
+ 
+-	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
++	return mode;
+ }
+--- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
++++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+@@ -8,6 +8,6 @@
+ 
+ struct intel_gt;
+ 
+-void intel_gt_apply_ccs_mode(struct intel_gt *gt);
++unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt);
+ 
+ #endif /* __INTEL_GT_CCS_MODE_H__ */
+--- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
++++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+@@ -2828,6 +2828,7 @@ add_render_compute_tuning_settings(struc
+ static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_list *wal)
+ {
+ 	struct intel_gt *gt = engine->gt;
++	u32 mode;
+ 
+ 	if (!IS_DG2(gt->i915))
+ 		return;
+@@ -2844,7 +2845,8 @@ static void ccs_engine_wa_mode(struct in
+ 	 * After having disabled automatic load balancing we need to
+ 	 * assign all slices to a single CCS. We will call it CCS mode 1
+ 	 */
+-	intel_gt_apply_ccs_mode(gt);
++	mode = intel_gt_apply_ccs_mode(gt);
++	wa_masked_en(wal, XEHP_CCS_MODE, mode);
+ }
+ 
+ /*
 
 
 
