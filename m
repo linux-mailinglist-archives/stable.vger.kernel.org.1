@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4B48C5221
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFFE8C533F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 306691C211DC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C84331F232B4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379F012C7FB;
-	Tue, 14 May 2024 11:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEDF6E5ED;
+	Tue, 14 May 2024 11:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVPw8fci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wd3JvjQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CAC56B79;
-	Tue, 14 May 2024 11:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1C222094;
+	Tue, 14 May 2024 11:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685528; cv=none; b=TcirBX02YafdLfiLOsgJ962I6yUT+AULhBoldAvj4DNacWHJQm1HMDTxC8I7K6sk73Xa3Ahf5XO0TuaaT8TKqBOOJTYdegCwVY5hayAMNxDIZlPVuHn27c9xQxtHd2jubGJOkPHmZiidrimb2S1hVGk/DfpVyb4nD0b1V/AyqrE=
+	t=1715686387; cv=none; b=QEeXgV0UOdsqELzmv/Hb+2smpBgh7TV5T0ysv7hlGsKGjz6LntZfCpzooeThPBUnEUuI7Bcu1pSL5/KR0NVs/opFnI9vGJ5wuNfWCu8ZXaIuUArfG+53WIp3BZmtGpCHb7fZJVtn+X5zezEQaENXMzzkbDRieZtIqY3at7fyiRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685528; c=relaxed/simple;
-	bh=Z9czJ6ui3GvzB+lmK3qBRA4/4Y7L7zklYgEWBAG0bbw=;
+	s=arc-20240116; t=1715686387; c=relaxed/simple;
+	bh=DknQsIefrZgZfTl0DWFflmCzKo3xdVrKJcE4D8Tjo+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaTwdi0bWWgTWz45zjyclduy+J9KWwOqGbYmynfa8/Rl3wUj0OK598lT+EBzSkdDCQFjdXvXnnjPkAGW97N+85a8kFx7xYgSR80rILlxGjJZXLDnM/2yzdtsXpJwZtc3Y5WDK2gQf/bQAQwq4VY6RY28f7mAAIFCV348S4fB4vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVPw8fci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E879C32782;
-	Tue, 14 May 2024 11:18:47 +0000 (UTC)
+	 MIME-Version; b=oYoBxf6nN3ZAZJJPS44upZs+vCbj6keG7ON4nC1eHlLu50bHGPyXVnQrXjZtJ7+pnsxzp6nv+gs6I0VtQvu1GdzFd8V9+Wu2KU/lCOCxLDaDbOMpuE2GCglNC4SWzmtuKaCfKKom+CPxb6dc/OkxCKYjwICO3bRwcTUWxFLPLIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wd3JvjQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98DDC2BD10;
+	Tue, 14 May 2024 11:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685527;
-	bh=Z9czJ6ui3GvzB+lmK3qBRA4/4Y7L7zklYgEWBAG0bbw=;
+	s=korg; t=1715686387;
+	bh=DknQsIefrZgZfTl0DWFflmCzKo3xdVrKJcE4D8Tjo+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVPw8fciYvLK8vC8GEcAtt1nH+vr+dPVkbFxrYcNei0Ejj8kIDOxlHqzq4OG+PJlP
-	 Tf1c4z8J++Ud9yTRR69IOBg4UIejjAtAylv21TIG5GnDo4+DbMpIRnpFuAau2A2Q5r
-	 3bocEuNerBPxTgL59C3AQXIi5lI8887ywgKaYhtw=
+	b=Wd3JvjQ1WfI9cLdXed8M9vvajoAJYOXjxIHnR8UcDfMKiZ/TUUOZib0E2KpkjiuCS
+	 mmRvTR0YOLpEg1GhinkaSlLcT8O8ByLEt4ffBbnB6cuWBIbPharJMeHwhCmTO7T+nx
+	 6zgxV62wJipGwyGicRX851vOrLBuQb0fI/2PlLn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Doug Smythies <dsmythies@telus.net>,
+	Wyes Karny <wyes.karny@amd.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/301] net: hns3: using user configure after hardware reset
+Subject: [PATCH 6.1 113/236] tools/power turbostat: Increase the limit for fd opened
 Date: Tue, 14 May 2024 12:17:55 +0200
-Message-ID: <20240514101039.962342554@linuxfoundation.org>
+Message-ID: <20240514101024.664348549@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Wyes Karny <wyes.karny@amd.com>
 
-[ Upstream commit 05eb60e9648cca0beeebdbcd263b599fb58aee48 ]
+[ Upstream commit 3ac1d14d0583a2de75d49a5234d767e2590384dd ]
 
-When a reset occurring, it's supposed to recover user's configuration.
-Currently, the port info(speed, duplex and autoneg) is stored in hclge_mac
-and will be scheduled updated. Consider the case that reset was happened
-consecutively. During the first reset, the port info is configured with
-a temporary value cause the PHY is reset and looking for best link config.
-Second reset start and use pervious configuration which is not the user's.
-The specific process is as follows:
+When running turbostat, a system with 512 cpus reaches the limit for
+maximum number of file descriptors that can be opened. To solve this
+problem, the limit is raised to 2^15, which is a large enough number.
 
-+------+               +----+                +----+
-| USER |               | PF |                | HW |
-+---+--+               +-+--+                +-+--+
-    |  ethtool --reset   |                     |
-    +------------------->|    reset command    |
-    |  ethtool --reset   +-------------------->|
-    +------------------->|                     +---+
-    |                    +---+                 |   |
-    |                    |   |reset currently  |   | HW RESET
-    |                    |   |and wait to do   |   |
-    |                    |<--+                 |   |
-    |                    | send pervious cfg   |<--+
-    |                    | (1000M FULL AN_ON)  |
-    |                    +-------------------->|
-    |                    | read cfg(time task) |
-    |                    | (10M HALF AN_OFF)   +---+
-    |                    |<--------------------+   | cfg take effect
-    |                    |    reset command    |<--+
-    |                    +-------------------->|
-    |                    |                     +---+
-    |                    | send pervious cfg   |   | HW RESET
-    |                    | (10M HALF AN_OFF)   |<--+
-    |                    +-------------------->|
-    |                    | read cfg(time task) |
-    |                    |  (10M HALF AN_OFF)  +---+
-    |                    |<--------------------+   | cfg take effect
-    |                    |                     |   |
-    |                    | read cfg(time task) |<--+
-    |                    |  (10M HALF AN_OFF)  |
-    |                    |<--------------------+
-    |                    |                     |
-    v                    v                     v
+Below data is collected from AMD server systems while running turbostat:
 
-To avoid aboved situation, this patch introduced req_speed, req_duplex,
-req_autoneg to store user's configuration and it only be used after
-hardware reset and to recover user's configuration
+|-----------+-------------------------------|
+| # of cpus | # of opened fds for turbostat |
+|-----------+-------------------------------|
+| 128       | 260                           |
+|-----------+-------------------------------|
+| 192       | 388                           |
+|-----------+-------------------------------|
+| 512       | 1028                          |
+|-----------+-------------------------------|
 
-Fixes: f5f2b3e4dcc0 ("net: hns3: add support for imp-controlled PHYs")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+So, the new max limit would be sufficient up to 2^14 cpus (but this
+also depends on how many counters are enabled).
+
+Reviewed-by: Doug Smythies <dsmythies@telus.net>
+Tested-by: Doug Smythies <dsmythies@telus.net>
+Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
- .../ethernet/hisilicon/hns3/hns3pf/hclge_main.h   |  3 +++
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index dfd0c5f4cb9f5..4398de42c9157 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -1526,6 +1526,9 @@ static int hclge_configure(struct hclge_dev *hdev)
- 			cfg.default_speed, ret);
- 		return ret;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 9018e47e0bc26..a674500e7e63d 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -53,6 +53,8 @@
+ #define	NAME_BYTES 20
+ #define PATH_BYTES 128
+ 
++#define MAX_NOFILE 0x8000
++
+ enum counter_scope { SCOPE_CPU, SCOPE_CORE, SCOPE_PACKAGE };
+ enum counter_type { COUNTER_ITEMS, COUNTER_CYCLES, COUNTER_SECONDS, COUNTER_USEC };
+ enum counter_format { FORMAT_RAW, FORMAT_DELTA, FORMAT_PERCENT };
+@@ -6719,6 +6721,22 @@ void cmdline(int argc, char **argv)
  	}
-+	hdev->hw.mac.req_speed = hdev->hw.mac.speed;
-+	hdev->hw.mac.req_autoneg = AUTONEG_ENABLE;
-+	hdev->hw.mac.req_duplex = DUPLEX_FULL;
+ }
  
- 	hclge_parse_link_mode(hdev, cfg.speed_ability);
++void set_rlimit(void)
++{
++	struct rlimit limit;
++
++	if (getrlimit(RLIMIT_NOFILE, &limit) < 0)
++		err(1, "Failed to get rlimit");
++
++	if (limit.rlim_max < MAX_NOFILE)
++		limit.rlim_max = MAX_NOFILE;
++	if (limit.rlim_cur < MAX_NOFILE)
++		limit.rlim_cur = MAX_NOFILE;
++
++	if (setrlimit(RLIMIT_NOFILE, &limit) < 0)
++		err(1, "Failed to set rlimit");
++}
++
+ int main(int argc, char **argv)
+ {
+ 	outf = stderr;
+@@ -6731,6 +6749,9 @@ int main(int argc, char **argv)
  
-@@ -3331,9 +3334,9 @@ hclge_set_phy_link_ksettings(struct hnae3_handle *handle,
- 		return ret;
- 	}
+ 	probe_sysfs();
  
--	hdev->hw.mac.autoneg = cmd->base.autoneg;
--	hdev->hw.mac.speed = cmd->base.speed;
--	hdev->hw.mac.duplex = cmd->base.duplex;
-+	hdev->hw.mac.req_autoneg = cmd->base.autoneg;
-+	hdev->hw.mac.req_speed = cmd->base.speed;
-+	hdev->hw.mac.req_duplex = cmd->base.duplex;
- 	linkmode_copy(hdev->hw.mac.advertising, cmd->link_modes.advertising);
++	if (!getuid())
++		set_rlimit();
++
+ 	turbostat_init();
  
- 	return 0;
-@@ -3366,9 +3369,9 @@ static int hclge_tp_port_init(struct hclge_dev *hdev)
- 	if (!hnae3_dev_phy_imp_supported(hdev))
- 		return 0;
- 
--	cmd.base.autoneg = hdev->hw.mac.autoneg;
--	cmd.base.speed = hdev->hw.mac.speed;
--	cmd.base.duplex = hdev->hw.mac.duplex;
-+	cmd.base.autoneg = hdev->hw.mac.req_autoneg;
-+	cmd.base.speed = hdev->hw.mac.req_speed;
-+	cmd.base.duplex = hdev->hw.mac.req_duplex;
- 	linkmode_copy(cmd.link_modes.advertising, hdev->hw.mac.advertising);
- 
- 	return hclge_set_phy_link_ksettings(&hdev->vport->nic, &cmd);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-index 7bc2049b723da..6a6b41ef08baf 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-@@ -263,11 +263,14 @@ struct hclge_mac {
- 	u8 media_type;	/* port media type, e.g. fibre/copper/backplane */
- 	u8 mac_addr[ETH_ALEN];
- 	u8 autoneg;
-+	u8 req_autoneg;
- 	u8 duplex;
-+	u8 req_duplex;
- 	u8 support_autoneg;
- 	u8 speed_type;	/* 0: sfp speed, 1: active speed */
- 	u8 lane_num;
- 	u32 speed;
-+	u32 req_speed;
- 	u32 max_speed;
- 	u32 speed_ability; /* speed ability supported by current media */
- 	u32 module_type; /* sub media type, e.g. kr/cr/sr/lr */
+ 	msr_sum_record();
 -- 
 2.43.0
 
