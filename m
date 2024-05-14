@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED3B8C544D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400A38C53AB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57FC21F233AE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D61D1C22A6F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55CB757E8;
-	Tue, 14 May 2024 11:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A0112DDBC;
+	Tue, 14 May 2024 11:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VN9U196C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ie3E7XOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FCB6CDC0;
-	Tue, 14 May 2024 11:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7403380BE3;
+	Tue, 14 May 2024 11:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687105; cv=none; b=MvhlSDCXoDk9DsBSpkjjo7GpPRF18svBbqLwJi19PjNlRnVwveNLxwThWlyp8JxCxrTyKgFQ0qzopv7Y0ZuRJvegnH1l8RbUSBhQDjVJZWKnWaw9XUlnG4RcKShL/MVcJIMkHojVl/Gp5rgw3iiJ+yJwS4altNGPeSiUWybCd+U=
+	t=1715686685; cv=none; b=Le0SQKwIaKqOs02oR9kx+ZHxpEoJZybvK9ubpLOvH/w8Ugd7IcdpHMrk2si0SkiqRPrvTCUMx1+yIVEF1S5HQnTh8/wb8HkZBtEd3L/1InX5if3OTZQgTr7S1aFsfpFdo2ZOH2AiAB7dwDepKW2QasLYfutPJP6UdtO5GXMpKqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687105; c=relaxed/simple;
-	bh=bm7NQaHYibjvxU3VHSS2RINg5ZRW3ejQdFRODIzfNeA=;
+	s=arc-20240116; t=1715686685; c=relaxed/simple;
+	bh=+j9pXDls7pakNrT4GO32dsNezm1hMFpQNpvcrssrpNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skb8d+tiSIscMvtpuvq1SxUnUD/FeVhXy/zBG0ID/UvSROZjlpRwkLjG5CaYogPAJbzoidrCzUmLNLYQpzT+SIbm+365AYfwhWAVkaNtWRAeb1MXyEywYtEJhyfDYtVDaPFza1un8Hr9b1+YJNYQJsqHQBBDkwjXpJUqjIBWVW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VN9U196C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2925DC2BD10;
-	Tue, 14 May 2024 11:45:04 +0000 (UTC)
+	 MIME-Version; b=XknjIG6ieb/pCP8DuSItJpbchJpbCrBDpPINd7FoeN54bja2q5v6jRZdTcoPEzqUv5j7x3uzKQvyshvUMgtqpDV/XS3bzVjYl0ibYwtx/St0OH6SBiOev1JshmtVsTDSmXxs51Rlt+GdgsXAuo7C//tJPT9LVIeSPj/Wwiffpng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ie3E7XOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE818C2BD10;
+	Tue, 14 May 2024 11:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687105;
-	bh=bm7NQaHYibjvxU3VHSS2RINg5ZRW3ejQdFRODIzfNeA=;
+	s=korg; t=1715686685;
+	bh=+j9pXDls7pakNrT4GO32dsNezm1hMFpQNpvcrssrpNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VN9U196C+YGQTeIRP/53xIm9OVvD1BAm4Y8I17pu3dFMXb7qK8nFoJT0iWkEuYVhP
-	 u4MdxDq4eE+Ckj4TEeC2mTfEgDmBGlKWYGlLZ8FY5FJiN0n9HvahcRGRRMcncfC1og
-	 atJr9qgA0Rvxh2PKkiv0jY6+vAEVAvhg9MXF8Drs=
+	b=ie3E7XOFpJsyeZ0Rgq2kecpucA4u4wyaJidr8jZW8UEmc5I2oA6TONeo6agugiywD
+	 wr+kqt/EufvUraczY4YfYlgy9jj62j8zx88NOgVrBzoWoAIiLh9e5oL2qebE2uUbw6
+	 Yq6HFyD/lhIx5B6ZKbAnipH84t5nX3A7d/jYoO8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 35/84] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 224/236] net: fix out-of-bounds access in ops_init
 Date: Tue, 14 May 2024 12:19:46 +0200
-Message-ID: <20240514100953.014927401@linuxfoundation.org>
+Message-ID: <20240514101028.861707359@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
+commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
 
-Running kernel-doc on ieee80211_i.h flagged the following:
-net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
-net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
+net_alloc_generic is called by net_alloc, which is called without any
+locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
+is read twice, first to allocate an array, then to set s.len, which is
+later used to limit the bounds of the array access.
 
-Fix these warnings.
+It is possible that the array is allocated and another thread is
+registering a new pernet ops, increments max_gen_ptrs, which is then used
+to set s.len with a larger than allocated length for the variable array.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
+max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
+
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/ieee80211_i.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/net_namespace.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 3b7151501b3ed..e26368fab65d6 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -110,7 +110,7 @@ struct ieee80211_bss {
- };
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -68,12 +68,15 @@ DEFINE_COOKIE(net_cookie);
  
- /**
-- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
-+ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
-  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
-  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
-  *
-@@ -123,7 +123,7 @@ enum ieee80211_bss_corrupt_data_flags {
- };
+ static struct net_generic *net_alloc_generic(void)
+ {
++	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
++	unsigned int generic_size;
+ 	struct net_generic *ng;
+-	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
++
++	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
  
- /**
-- * enum ieee80211_valid_data_flags - BSS valid data flags
-+ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
-  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
--- 
-2.43.0
-
+ 	ng = kzalloc(generic_size, GFP_KERNEL);
+ 	if (ng)
+-		ng->s.len = max_gen_ptrs;
++		ng->s.len = gen_ptrs;
+ 
+ 	return ng;
+ }
+@@ -1217,7 +1220,11 @@ static int register_pernet_operations(st
+ 		if (error < 0)
+ 			return error;
+ 		*ops->id = error;
+-		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
++		/* This does not require READ_ONCE as writers already hold
++		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
++		 * net_alloc_generic.
++		 */
++		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
+ 	}
+ 	error = __register_pernet_operations(list, ops);
+ 	if (error) {
 
 
 
