@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0198C53DD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806268C5535
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D1D02894BE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3864B1F22D38
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CD813D244;
-	Tue, 14 May 2024 11:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F23153E30;
+	Tue, 14 May 2024 11:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dt1RYj5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsOFHg0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70AC7F48C;
-	Tue, 14 May 2024 11:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDB040862;
+	Tue, 14 May 2024 11:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686795; cv=none; b=c8ijuDcu2kBWiiL+1ZxxQkVsO3gZx4E0w+oh8bMkcB8rd7gaQIs/EPWsbacp/Bi7UrXxZ0Bs6zVfjRxS+75g6wFW/uBseBnujZw9kueK3elBn9w2v6RwAFekiz2S7RS8mbKDzjSNBQ2/Tg7xgaFmM/qJ8/PNpSG6Cvby46Zg618=
+	t=1715687738; cv=none; b=LnhPdlQdBs2aXWsDmvrn5MbtEFQdkkTJM4hLzv10/7MkHEBfbVU2VIUkL/kbOiWhUxE+dEzTxXON67seRq/G3p4QVCjiWCXmSiD8jTaKQ557upZe+APxvAyHPVTi1KRQhMe4k/slTeMZJkRK2Q886cYIfEPakP2ysy3qSZnuF94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686795; c=relaxed/simple;
-	bh=QwlrryOvmTknbgjW87pv9+cBuQqYazLq7yQw+s3cga0=;
+	s=arc-20240116; t=1715687738; c=relaxed/simple;
+	bh=LM7QhylfnORcaZqwYXrudrVJY6CB3pT1McD/y6nQW8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqawOvXIst7wQkejHx1N0kB11SFfI/ia1TRRZR4rX/1vtoey433AQlXV6Ry29j0b1jL2hyOSS+XvB+5QCllRZj/lr32Srq68z1kD9Zh0mvklanVceH/ZYlwcU29916Z6VDcjGo8NPGQScILNjveQ2vkmHkb/LHUAw+7UmDNZ2GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dt1RYj5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBB1C2BD10;
-	Tue, 14 May 2024 11:39:54 +0000 (UTC)
+	 MIME-Version; b=Bjf3tvPDoZaEIoIOB8cVMdecjTl+5dhzViuTsjrS4cdvZDpHGB5U9BJdWqSxjxYhjJOd8+IS5L3GCAC1gurvrArNAY0UmDrcC+gCAGNImdEiSiFEP8HeNlSkKLyStYxVKE9fMED8+mjNd/O2E/lMDMbKafwsz49FmfR+S1PnSmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsOFHg0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9447C32782;
+	Tue, 14 May 2024 11:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686794;
-	bh=QwlrryOvmTknbgjW87pv9+cBuQqYazLq7yQw+s3cga0=;
+	s=korg; t=1715687738;
+	bh=LM7QhylfnORcaZqwYXrudrVJY6CB3pT1McD/y6nQW8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dt1RYj5abUqo3EjRS8XOjCWPjSgATME51eFLY2X6GpaIROPcoJI2B7UHA17GK0Ev/
-	 o71xHgBFVJ0nY9L/0rfuD3rrlq2QLapQmyjz1Pm7vSP+NquU1/U+kC3wnWeWa50U01
-	 hH9xXuqLDNRpwbGGk2BieuFKMvz02A153Y70061U=
+	b=ZsOFHg0GH6QiPfAWyVjI267XcjgpMyfO8hLq/RHJs78AdS8JgkFG0JDNPDwiGhru5
+	 7Ng8udfnVwgilAnbVbhx/HSp0I8UI21zHO+mCPIuYVWrgf/WR0aZUdTOeh7aJj5y40
+	 OOHcyoO7CBg8wSZ1eZk9A4fDe+Dg6VQIjMqhRuV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jeff Layton <jlayton@kernel.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 25/63] net: mark racy access on sk->sk_rcvbuf
+Subject: [PATCH 5.15 088/168] 9p: explicitly deny setlease attempts
 Date: Tue, 14 May 2024 12:19:46 +0200
-Message-ID: <20240514100948.968013605@linuxfoundation.org>
+Message-ID: <20240514101010.015580033@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit c2deb2e971f5d9aca941ef13ee05566979e337a4 ]
+[ Upstream commit 7a84602297d36617dbdadeba55a2567031e5165b ]
 
-sk->sk_rcvbuf in __sock_queue_rcv_skb() and __sk_receive_skb() can be
-changed by other threads. Mark this as benign using READ_ONCE().
+9p is a remote network protocol, and it doesn't support asynchronous
+notifications from the server. Ensure that we don't hand out any leases
+since we can't guarantee they'll be broken when a file's contents
+change.
 
-This patch is aimed at reducing the number of benign races reported by
-KCSAN in order to focus future debugging effort on harmful races.
-
-Signed-off-by: linke li <lilinke99@qq.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/9p/vfs_file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index eaa6f1ca414d0..c1d60df487fc0 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -404,7 +404,7 @@ int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
- 	unsigned long flags;
- 	struct sk_buff_head *list = &sk->sk_receive_queue;
+diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
+index 7437b185fa8eb..0c84d414660ca 100644
+--- a/fs/9p/vfs_file.c
++++ b/fs/9p/vfs_file.c
+@@ -660,6 +660,7 @@ const struct file_operations v9fs_file_operations = {
+ 	.splice_read = generic_file_splice_read,
+ 	.splice_write = iter_file_splice_write,
+ 	.fsync = v9fs_file_fsync,
++	.setlease = simple_nosetlease,
+ };
  
--	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf) {
-+	if (atomic_read(&sk->sk_rmem_alloc) >= READ_ONCE(sk->sk_rcvbuf)) {
- 		atomic_inc(&sk->sk_drops);
- 		trace_sock_rcvqueue_full(sk, skb);
- 		return -ENOMEM;
-@@ -456,7 +456,7 @@ int __sk_receive_skb(struct sock *sk, struct sk_buff *skb,
- 
- 	skb->dev = NULL;
- 
--	if (sk_rcvqueues_full(sk, sk->sk_rcvbuf)) {
-+	if (sk_rcvqueues_full(sk, READ_ONCE(sk->sk_rcvbuf))) {
- 		atomic_inc(&sk->sk_drops);
- 		goto discard_and_relse;
- 	}
+ const struct file_operations v9fs_file_operations_dotl = {
+@@ -701,4 +702,5 @@ const struct file_operations v9fs_mmap_file_operations_dotl = {
+ 	.splice_read = generic_file_splice_read,
+ 	.splice_write = iter_file_splice_write,
+ 	.fsync = v9fs_file_fsync_dotl,
++	.setlease = simple_nosetlease,
+ };
 -- 
 2.43.0
 
