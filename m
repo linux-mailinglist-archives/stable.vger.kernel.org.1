@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-43899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDDE8C501F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470248C516E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCCC8B20924
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 787521C2150B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B60139CE5;
-	Tue, 14 May 2024 10:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27FD139569;
+	Tue, 14 May 2024 11:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVhs4eT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyj1xe1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB4C139593;
-	Tue, 14 May 2024 10:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F579136672;
+	Tue, 14 May 2024 11:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682970; cv=none; b=gCnxQ8eyggtypovsSdkYPf373ibjmy3hmUor+Qvwp3R2g6m85MULPsN5co8hQncXK25ZwSot1XNXuJqunQdplvlmB/0NdxX8mfwpcT6hFujmnFMwPSBK3IUP1m3RiykFaX1lOfNDpOS7S5sbISGM9DGHg4ZqpI2N/MdYZ+HXQjE=
+	t=1715684473; cv=none; b=a82okO6jhXnwhX0aRnqxlGHPM/g7kUQBT108LcVpA9RWWuOJXpN2r/kzvuFoP3jM3vlr4fErp0RkDNnrGXtN2chAJfrjwzxTp1vV4appIdP1IiydM7RJNdgxwXF6jwln/FHjW8JsPdFVlteL74X+2blOXuQ3bteAA9/JP+RnDow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682970; c=relaxed/simple;
-	bh=sJG/ypozmohnmk4GADWGKh3zZO6U48E87rD6BthPeYQ=;
+	s=arc-20240116; t=1715684473; c=relaxed/simple;
+	bh=Wnns6ZtlInXk9DF6KLfRv8uXSc1jlESdWy6GdUHZd+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSJxS/AuTrM86WeKurxVqDKCzKjoCZV/nZLuBe9ak94Z9u/vMkGM1k6KjQNgE6sDIOHDGNT8o4rXm8EMfN8FTefBb5R9ueIawITTEA1QLuunW/3z2xfaRiMczCuevrDM+/d1TtMM8jn3DJfplCO2s99uFiG6H+Z9wBzzL8S9dN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVhs4eT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693EDC2BD10;
-	Tue, 14 May 2024 10:36:09 +0000 (UTC)
+	 MIME-Version; b=Q0XParpyKlSQt3AaVyisDbGI+Ix9Hkjfa9X0czY1FBhNvqgvs4r0Msrd6Fi3CqC+aPfUJ8AngLJBUu91Z22esYnai2+OAJXyhtZSmcBxiHuVgAgxNiSeZrOE+P3bP5Sp8osPrIbU8qn4HOGv0ji1D+2VyzxgGdGGJSSmBAomfh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyj1xe1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E844CC2BD10;
+	Tue, 14 May 2024 11:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682970;
-	bh=sJG/ypozmohnmk4GADWGKh3zZO6U48E87rD6BthPeYQ=;
+	s=korg; t=1715684473;
+	bh=Wnns6ZtlInXk9DF6KLfRv8uXSc1jlESdWy6GdUHZd+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVhs4eT+9Uv5w2fpgu71/xXQU9H/qAGe4fIR3SpARQwGVjrCAoRU+UwOABXlsXWWV
-	 Kw5QE6JhSZmdggQHzEA+qPc0ttLgbkbw6useGSVaJaGMDhbH/Bw43XTD5TuGwR55K1
-	 7ywOgmTJettYCjluWZ91OS2vCzDmDPS8sFv0WCG8=
+	b=kyj1xe1mPHVv2ql899wzAL2hqZqmB+pKup3ywUG65oyEcLCAXfeS7TuCEieJxN1xp
+	 weWUuT/YbbX5HJEf80MC8FZfQWpj6QWvXA9dPHZxIHLBu225vT0zBIKyu0Q/bkeZ8f
+	 pJ4NTpoTxmYZtkrqFOLJod/WpC3mpsyYkKNP6RCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 112/336] scsi: mpi3mr: Avoid memcpy field-spanning write WARNING
-Date: Tue, 14 May 2024 12:15:16 +0200
-Message-ID: <20240514101042.832650019@linuxfoundation.org>
+Subject: [PATCH 6.6 046/301] s390/mm: Fix storage key clearing for guest huge pages
+Date: Tue, 14 May 2024 12:15:17 +0200
+Message-ID: <20240514101033.983999137@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 429846b4b6ce9853e0d803a2357bb2e55083adf0 ]
+[ Upstream commit 843c3280686fc1a83d89ee1e0b5599c9f6b09d0c ]
 
-When the "storcli2 show" command is executed for eHBA-9600, mpi3mr driver
-prints this WARNING message:
+The function __storage_key_init_range() expects the end address to be
+the first byte outside the range to be initialized. I.e. end - start
+should be the size of the area to be initialized.
 
-  memcpy: detected field-spanning write (size 128) of single field "bsg_reply_buf->reply_buf" at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 (size 1)
-  WARNING: CPU: 0 PID: 12760 at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 mpi3mr_bsg_request+0x6b12/0x7f10 [mpi3mr]
+The current code works because __storage_key_init_range() will still loop
+over every page in the range, but it is slower than using sske_frame().
 
-The cause of the WARN is 128 bytes memcpy to the 1 byte size array "__u8
-replay_buf[1]" in the struct mpi3mr_bsg_in_reply_buf. The array is intended
-to be a flexible length array, so the WARN is a false positive.
-
-To suppress the WARN, remove the constant number '1' from the array
-declaration and clarify that it has flexible length. Also, adjust the
-memory allocation size to match the change.
-
-Suggested-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://lore.kernel.org/r/20240323084155.166835-1-shinichiro.kawasaki@wdc.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 964c2c05c9f3 ("s390/mm: Clear huge page storage keys on enable_skey")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240416114220.28489-2-imbrenda@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_app.c    | 2 +-
- include/uapi/scsi/scsi_bsg_mpi3mr.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/mm/gmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
-index 0380996b5ad27..55d590b919476 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_app.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
-@@ -1644,7 +1644,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
- 	if ((mpirep_offset != 0xFF) &&
- 	    drv_bufs[mpirep_offset].bsg_buf_len) {
- 		drv_buf_iter = &drv_bufs[mpirep_offset];
--		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) - 1 +
-+		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) +
- 					   mrioc->reply_sz);
- 		bsg_reply_buf = kzalloc(drv_buf_iter->kern_buf_len, GFP_KERNEL);
+diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+index d17bb1ef63f41..0da54dc9430a9 100644
+--- a/arch/s390/mm/gmap.c
++++ b/arch/s390/mm/gmap.c
+@@ -2659,7 +2659,7 @@ static int __s390_enable_skey_hugetlb(pte_t *pte, unsigned long addr,
+ 		return 0;
  
-diff --git a/include/uapi/scsi/scsi_bsg_mpi3mr.h b/include/uapi/scsi/scsi_bsg_mpi3mr.h
-index c72ce387286ad..30a5c1a593764 100644
---- a/include/uapi/scsi/scsi_bsg_mpi3mr.h
-+++ b/include/uapi/scsi/scsi_bsg_mpi3mr.h
-@@ -382,7 +382,7 @@ struct mpi3mr_bsg_in_reply_buf {
- 	__u8	mpi_reply_type;
- 	__u8	rsvd1;
- 	__u16	rsvd2;
--	__u8	reply_buf[1];
-+	__u8	reply_buf[];
- };
- 
- /**
+ 	start = pmd_val(*pmd) & HPAGE_MASK;
+-	end = start + HPAGE_SIZE - 1;
++	end = start + HPAGE_SIZE;
+ 	__storage_key_init_range(start, end);
+ 	set_bit(PG_arch_1, &page->flags);
+ 	cond_resched();
 -- 
 2.43.0
 
