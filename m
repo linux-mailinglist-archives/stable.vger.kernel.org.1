@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144FB8C54BB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBD48C546B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C488928A4C7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C4751C22B60
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B6212E1FE;
-	Tue, 14 May 2024 11:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F68385C42;
+	Tue, 14 May 2024 11:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNsMxFGB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/EE2TrL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0220054903;
-	Tue, 14 May 2024 11:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DC3B1A3;
+	Tue, 14 May 2024 11:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687401; cv=none; b=LOoLzlCqPgu/wgmGMux8lstBIDb7pZNTbzJwSFd+UE3PNXy53tWvf5Z0v3UhwKrMdDOlQ4z5rj8cCvwb+zw1CMNVIKKajDAYYK66ndS45k5ElqD5BBhlCBvZxB4qo00WIC5rfb1mOKpxkbgPdveWhCZU2m5yGaZAmnHcL2kdPhg=
+	t=1715687175; cv=none; b=G4t7Y19NtNU/Dk0Iq5p2elgVoBfcqaF/5WXOK1UL/a3yC8Ve3Xos/62aJ5eMOLEh0uGOA2npMvyRJR+RMb07uTSLp8770o+3Yy33M06tZuhVxdJZjR+8yE9AnWqcaazuVaJfqhMmuHN4bGFtUDqR0WQvBUqGhS/1IiO58FLcMVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687401; c=relaxed/simple;
-	bh=KtPoUTzlDniuMSAR8WeSDjspv97Qz6MDc39YwtQglVM=;
+	s=arc-20240116; t=1715687175; c=relaxed/simple;
+	bh=1fq89TFv6n3cj1g9l+N/84vCHumV1pV7flD92pYS7cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABUPRtvl62ZxgiYJI/ipoF270ets9MJqZ/Ocead8JQvI+2gIwcpr79Lm1MomiDVq1ZxO4Jj6Y5CvfJheS/uCLUg2/w9lyiIQ3a08N9WEpbdDn0BTQhqEJMcN24k3fAqoIuRZNq0bLB9NM9Y6lAaAs2sY6oyRNXD+rRuBGDYiSeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNsMxFGB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E81C2BD10;
-	Tue, 14 May 2024 11:50:00 +0000 (UTC)
+	 MIME-Version; b=PiFbQzvAQIkJMeEb8e7l0Dj+ZByVNO5+oKxYrlMgvJtaFV9Y6vb389Js2iunsZGq27HOevkdeRQ0aDCeZircHSmCgsDisknfMJTm/M2rGTbz8LTsirR4GLYvFYzLgDo0WBzjcv8Tgm9o+uKC5ZN1Xdb96TveIGXLALuDm7ZYrJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/EE2TrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBF2C2BD10;
+	Tue, 14 May 2024 11:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687400;
-	bh=KtPoUTzlDniuMSAR8WeSDjspv97Qz6MDc39YwtQglVM=;
+	s=korg; t=1715687175;
+	bh=1fq89TFv6n3cj1g9l+N/84vCHumV1pV7flD92pYS7cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNsMxFGB+fklBtS6Cw1TxlANHuB/kgztg03XFKy+AvPwTVq4M4OeklOSFMLZLwKsT
-	 lZc1bP1kGzqmb39hD7ySvsYOBk9z070TnVMBqQPWzdlunNyl7thAvSiAvXdbwRYeHY
-	 m6Amot81yQitj2Qw/4od7dD/7S3PfI6DugRBb3ZI=
+	b=M/EE2TrLXMLEp0AM80wbl1ZcHi/q8CokmPUH57yPqsMX1C1woBelgYrirKb1CCsz/
+	 OuGRGNvvvd48ytyFbxePfr7LjAYPtSFkL5arHPVZyhXBrvxu6ptrhyiiGWAXhWdX61
+	 HKwzklV/wf1pxji3J6CxsMQ343Ib7yBFtXxxIkuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/111] hwmon: (corsair-cpro) Protect ccp->wait_input_report with a spinlock
+Subject: [PATCH 5.4 70/84] ipv6: fib6_rules: avoid possible NULL dereference in fib6_rule_action()
 Date: Tue, 14 May 2024 12:20:21 +0200
-Message-ID: <20240514101000.287465455@linuxfoundation.org>
+Message-ID: <20240514100954.316628055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d02abd57e79469a026213f7f5827a98d909f236a ]
+[ Upstream commit d101291b2681e5ab938554e3e323f7a7ee33e3aa ]
 
-Through hidraw, userspace can cause a status report to be sent
-from the device. The parsing in ccp_raw_event() may happen in
-parallel to a send_usb_cmd() call (which resets the completion
-for tracking the report) if it's running on a different CPU where
-bottom half interrupts are not disabled.
+syzbot is able to trigger the following crash [1],
+caused by unsafe ip6_dst_idev() use.
 
-Add a spinlock around the complete_all() in ccp_raw_event() and
-reinit_completion() in send_usb_cmd() to prevent race issues.
+Indeed ip6_dst_idev() can return NULL, and must always be checked.
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-4-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+[1]
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 PID: 31648 Comm: syz-executor.0 Not tainted 6.9.0-rc4-next-20240417-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ RIP: 0010:__fib6_rule_action net/ipv6/fib6_rules.c:237 [inline]
+ RIP: 0010:fib6_rule_action+0x241/0x7b0 net/ipv6/fib6_rules.c:267
+Code: 02 00 00 49 8d 9f d8 00 00 00 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 f9 32 bf f7 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 e0 32 bf f7 4c 8b 03 48 89 ef 4c
+RSP: 0018:ffffc9000fc1f2f0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1a772f98c8186700
+RDX: 0000000000000003 RSI: ffffffff8bcac4e0 RDI: ffffffff8c1f9760
+RBP: ffff8880673fb980 R08: ffffffff8fac15ef R09: 1ffffffff1f582bd
+R10: dffffc0000000000 R11: fffffbfff1f582be R12: dffffc0000000000
+R13: 0000000000000080 R14: ffff888076509000 R15: ffff88807a029a00
+FS:  00007f55e82ca6c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b31d23000 CR3: 0000000022b66000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  fib_rules_lookup+0x62c/0xdb0 net/core/fib_rules.c:317
+  fib6_rule_lookup+0x1fd/0x790 net/ipv6/fib6_rules.c:108
+  ip6_route_output_flags_noref net/ipv6/route.c:2637 [inline]
+  ip6_route_output_flags+0x38e/0x610 net/ipv6/route.c:2649
+  ip6_route_output include/net/ip6_route.h:93 [inline]
+  ip6_dst_lookup_tail+0x189/0x11a0 net/ipv6/ip6_output.c:1120
+  ip6_dst_lookup_flow+0xb9/0x180 net/ipv6/ip6_output.c:1250
+  sctp_v6_get_dst+0x792/0x1e20 net/sctp/ipv6.c:326
+  sctp_transport_route+0x12c/0x2e0 net/sctp/transport.c:455
+  sctp_assoc_add_peer+0x614/0x15c0 net/sctp/associola.c:662
+  sctp_connect_new_asoc+0x31d/0x6c0 net/sctp/socket.c:1099
+  __sctp_connect+0x66d/0xe30 net/sctp/socket.c:1197
+  sctp_connect net/sctp/socket.c:4819 [inline]
+  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
+  __sys_connect_file net/socket.c:2048 [inline]
+  __sys_connect+0x2df/0x310 net/socket.c:2065
+  __do_sys_connect net/socket.c:2075 [inline]
+  __se_sys_connect net/socket.c:2072 [inline]
+  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 5e5f3f0f8013 ("[IPV6] ADDRCONF: Convert ipv6_get_saddr() to ipv6_dev_get_saddr().")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240507163145.835254-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-cpro.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ net/ipv6/fib6_rules.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 7000a6af5092d..05df31cab2e52 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/slab.h>
-+#include <linux/spinlock.h>
- #include <linux/types.h>
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index cdc8a49d7fc34..3cf9dc2231036 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -227,8 +227,12 @@ static int __fib6_rule_action(struct fib_rule *rule, struct flowi *flp,
  
- #define USB_VENDOR_ID_CORSAIR			0x1b1c
-@@ -77,6 +78,8 @@
- struct ccp_device {
- 	struct hid_device *hdev;
- 	struct device *hwmon_dev;
-+	/* For reinitializing the completion below */
-+	spinlock_t wait_input_report_lock;
- 	struct completion wait_input_report;
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
- 	u8 *cmd_buffer;
-@@ -118,7 +121,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	ccp->cmd_buffer[2] = byte2;
- 	ccp->cmd_buffer[3] = byte3;
- 
-+	/*
-+	 * Disable raw event parsing for a moment to safely reinitialize the
-+	 * completion. Reinit is done because hidraw could have triggered
-+	 * the raw event parsing and marked the ccp->wait_input_report
-+	 * completion as done.
-+	 */
-+	spin_lock_bh(&ccp->wait_input_report_lock);
- 	reinit_completion(&ccp->wait_input_report);
-+	spin_unlock_bh(&ccp->wait_input_report_lock);
- 
- 	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
- 	if (ret < 0)
-@@ -136,11 +147,12 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 	struct ccp_device *ccp = hid_get_drvdata(hdev);
- 
- 	/* only copy buffer when requested */
--	if (completion_done(&ccp->wait_input_report))
--		return 0;
--
--	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
--	complete_all(&ccp->wait_input_report);
-+	spin_lock(&ccp->wait_input_report_lock);
-+	if (!completion_done(&ccp->wait_input_report)) {
-+		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
-+		complete_all(&ccp->wait_input_report);
-+	}
-+	spin_unlock(&ccp->wait_input_report_lock);
- 
- 	return 0;
- }
-@@ -514,7 +526,9 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 
- 	ccp->hdev = hdev;
- 	hid_set_drvdata(hdev, ccp);
+ 	rt = lookup(net, table, flp6, arg->lookup_data, flags);
+ 	if (rt != net->ipv6.ip6_null_entry) {
++		struct inet6_dev *idev = ip6_dst_idev(&rt->dst);
 +
- 	mutex_init(&ccp->mutex);
-+	spin_lock_init(&ccp->wait_input_report_lock);
- 	init_completion(&ccp->wait_input_report);
++		if (!idev)
++			goto again;
+ 		err = fib6_rule_saddr(net, rule, flags, flp6,
+-				      ip6_dst_idev(&rt->dst)->dev);
++				      idev->dev);
  
- 	hid_device_io_start(hdev);
+ 		if (err == -EAGAIN)
+ 			goto again;
 -- 
 2.43.0
 
