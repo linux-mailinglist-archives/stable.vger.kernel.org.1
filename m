@@ -1,177 +1,150 @@
-Return-Path: <stable+bounces-43758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2BC8C4C95
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 09:08:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EE78C4DC9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B92C2B2119C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 07:08:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 161231C214CA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 08:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72509107A8;
-	Tue, 14 May 2024 07:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD72182B5;
+	Tue, 14 May 2024 08:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="evv0SBhD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R7zQuAb5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CABF9D4;
-	Tue, 14 May 2024 07:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3430B1CABD
+	for <stable@vger.kernel.org>; Tue, 14 May 2024 08:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715670481; cv=none; b=CZE19RMadOPp0dgCc7NWV9YCIqWjMNABNkBO72WvgbATa1YY4H9enAMYG570IBeIHw2uvRo+pOevQl8+/2wrvdGbvCrlO4bi2zzooUcT154pszgMY8bkVcyR/AJjFGUP4D2104i4vnCgL3aIeGylBJi7U6Tmj7W1UbxMWRuE0+E=
+	t=1715675975; cv=none; b=IzK+I98zgu9maFpgwoyfW16mtwXwXazAasi4dtx3jRPM6jQKx8/ne9i1a1kgJOrMIGXv7CfpgHp+s6PauSyoRt3qrIODppCYatlWCyny8v7EErL71KtPzOqrQuKBPYhF6bwq9oPWthQFm5PBASmOd2vssjDrex9nbYFKCBtwlWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715670481; c=relaxed/simple;
-	bh=X+YkrXgyWzVE1vkaFzWg3Tm00enAzXXtdq+NMhAjH/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MavnWkbP3bCm+CJe63upFhLdgFu0N+QEr1C0jcARyUlGsW8sEQYqlLI0NAuOzcHwhEEjJHNhRwMJKniehp+2N3Ly9BuVHTOzFN5hXCmGfRMVBapjXqvunk3wZSkH5bjBMcAolFxoiJLWFoBRgdXmvEE7xi7GnVtwWd7BVLSScXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=evv0SBhD; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-41ffad2426eso36674825e9.3;
-        Tue, 14 May 2024 00:07:59 -0700 (PDT)
+	s=arc-20240116; t=1715675975; c=relaxed/simple;
+	bh=/qKAckkSIiFrpRIvGGkfqQ5SXkqsX83t/RMU22jS5PA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z5d++U4W2yXe/19p0dhAjjDdgXhrJIbTycmsN56OPXfHqs/y3RDXKFslE7VNUCBAAG7XuBOsyKcsYE5A69bOnNOIsk/5w2uSwSQYhtFj47p1ePWBiHPhUmDPOaRH0bqWQ1GWgp4/JaFcmYG11GCY4yb1/WrcLH9HGOJVStoha0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R7zQuAb5; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-34d8d11a523so3349313f8f.2
+        for <stable@vger.kernel.org>; Tue, 14 May 2024 01:39:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1715670478; x=1716275278; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=X+YkrXgyWzVE1vkaFzWg3Tm00enAzXXtdq+NMhAjH/M=;
-        b=evv0SBhDWUZd9BGlOo8xhU5F+bFnr/Yg6MbO0B3suAdHjc8R1ottIGxd83TosT/Gmb
-         EekuFr1dbrYErDfFwgWQzOw4J2xsh+sjfHdNOJpdcmiNmXQiBCxRkrsXhLanukjYoRN+
-         pKmpfYYsDhTMkKAFAzMJ01SFKJzOO8qoMhlvMlyEYGmk2y2KnSXxlYjup5td/VLpyq0K
-         4TKxCv5saL9shvQAZX3HI1iGNadNdsYjy5OYMgxAE6oruULVkG8veldC/4w6ZHMQA9BY
-         KQc1+2Cs75niQto+hLvY3wfzBd2H8ag1JalX5uF2zjzG8dXNwGrNVBRFo+MfTt8XZ65N
-         T6LQ==
+        d=gmail.com; s=20230601; t=1715675973; x=1716280773; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LS0peL0MwvyMOdZgt++EgygrPaWPwT8KTIWTL9DYX6c=;
+        b=R7zQuAb5AIK2KHe+S0ocEt0Va5DaqfJuMbJ/WDud8ZxAB6Mu9PbMxPmrRA34DpcuA4
+         0Asqm8dXWhA+X2KC6XC3YmbGgHXFSkacz5BxOrSV7woAy4ti/oZmu1okS0+vtnqVWM3e
+         JrImIWG2ri+PQ4QLog+RbsDbkshOnoSbrJMfc85MAGB+aCrV3exaSlNaFVKUFpc2Q6wV
+         GkD1PD6BGvnhl+YhhFjEBIsp/qScrtHpwm0qPz+/h59dPh7kLkwT8f0wB+v9hOKDqvMB
+         VmlCcMpgIJM700b420amoWh0tBd99j7CldiclSOEgjT/EzI/T3HvmzqhyrZazfMOT6k/
+         o66A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715670478; x=1716275278;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=X+YkrXgyWzVE1vkaFzWg3Tm00enAzXXtdq+NMhAjH/M=;
-        b=YaAXd1iTWjevBZSQY7LAVq1qmslWXMiclGSooLWdia1R2NSgJjoo4Hr7XFT1eOY5Rh
-         yqW2tkHCgXnR/f3YeivuF7DCd7VmtceJs/hOWh2Ye1/iqcDcfH7m9RUoSYJipyy9DZVd
-         7s7Ze96I65cKlsqKEwqLAUyimtC0YMAh4vR6ZQyeDCB9xT8ZxQZjxJlYrVxbEXC/iZ1R
-         ELCDdoXOivHu2pgTEnRYtll/rvgo+4gewAKscOEa88Zxg3I6SlJlSnEYC5uEdSLN6hO/
-         Z2rjVHT81pLZdJdtGaUCpHnF34b3fjGAvzgJrrbhb1L4ArWgJjFNF6xYlrQaG2/Y8WKf
-         wi/g==
-X-Forwarded-Encrypted: i=1; AJvYcCXSMEr5i4PhhK7C5Hc9CyrjKgrUNFwTM9JcTbQr+tsCWjywstx7HuKBaX7ob9z6FQrdTWtNtbBTv0d/bfvoFhJC3SKgEehZbKRGuGEIuPG8HaLdrdtL644/vXoaF0R82OMM1sQn
-X-Gm-Message-State: AOJu0YxVnjtvUUUIk3KIs01oCaA9ti9dQGd0RZc3pRCV2XIXooj0PY5y
-	c3uQDVYv4AFSysP4yvZTrWB1uWnN2hAZnxnjMNaK6M9ox53z8NHld3kgHTI=
-X-Google-Smtp-Source: AGHT+IEsS63TXT+CNUHhfxEjLBmwVUfEfHU7Zb1RUnpJaRDD56Nb3r+lUE0Fx0YW+PSVfdn2LDRVhA==
-X-Received: by 2002:a05:600c:5252:b0:420:f8:23d6 with SMTP id 5b1f17b1804b1-42000f82681mr109286795e9.36.1715670477628;
-        Tue, 14 May 2024 00:07:57 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b40c2.dip0.t-ipconnect.de. [91.43.64.194])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42012d9ace5sm79279885e9.2.2024.05.14.00.07.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 May 2024 00:07:56 -0700 (PDT)
-Message-ID: <c4e8e0b5-fc32-4e26-8c0e-27a996769903@googlemail.com>
-Date: Tue, 14 May 2024 09:07:55 +0200
+        d=1e100.net; s=20230601; t=1715675973; x=1716280773;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LS0peL0MwvyMOdZgt++EgygrPaWPwT8KTIWTL9DYX6c=;
+        b=msdEn3LfaZju+11vFq+ZD4LZa8XzMeoMpLINQBG3LijuIJekn+qorhR0LAeSv2dJR1
+         OHsnrvU/4/MNblAUdSEK0cf0t5zGSm6ixV/f3T2O61dfLO6KC1m0++EytW72WAKO84Sv
+         6DRvfwZ7Ijih85PScPAYIMxY3ALbZgGLgPJwCZIIy+Wmfpfa+myU2WoYTSkXAsQVo6yb
+         TcWi2/IvL1mKvV4VksaZ4gItF3a2WJi3b1KfMCKaqnMM6ovd6i7Htbu61JJ5jL+r7e22
+         qTrsNaghgEvLsytWMsrZCX/INj36L5zs0u1nd6i+vO1uMDAjVIVPcr4NbksCghL6HNid
+         D1AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtUAWM1oOnNrrdGdBvoVMuyW3LirHmSldKCaC2WHxHAW1Du96y4+aSnstszteOb6Cx4W6oB4mxizxGkDNWdEErq+XTrZDv
+X-Gm-Message-State: AOJu0YysUgzVgK7Cpe4/GIN7InLS/Rl6plBnzcLlWeT4nkDwUekh0ita
+	/L+Si8ICPYLh61n068gvswLgZ30JbS2BDonhMuIdYgRtfwNb23zC
+X-Google-Smtp-Source: AGHT+IG+XBuPesGABN/DU+tou/THngVBqGizh2m2vmGjA1o+1uvBhmfyckrEfobGo05Gwci94M+ziQ==
+X-Received: by 2002:adf:c049:0:b0:351:b56e:8bad with SMTP id ffacd0b85a97d-351b56e8c40mr4194712f8f.50.1715675972374;
+        Tue, 14 May 2024 01:39:32 -0700 (PDT)
+Received: from fedora.iskraemeco.si ([193.77.86.250])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502e5e0b0esm12890517f8f.26.2024.05.14.01.39.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 May 2024 01:39:31 -0700 (PDT)
+From: Uros Bizjak <ubizjak@gmail.com>
+To: 
+Cc: Uros Bizjak <ubizjak@gmail.com>,
+	Charlemagne Lasse <charlemagnelasse@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/percpu: Use __force to cast from __percpu address space
+Date: Tue, 14 May 2024 10:39:18 +0200
+Message-ID: <20240514083920.3369074-1-ubizjak@gmail.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: Kernel 6.8.4 regression: aacraid controller not initialized any
- more, system boot hangs
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@leemhuis.info,
- regressions@lists.linux.dev
-References: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com>
- <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-Autocrypt: addr=pschneider1968@googlemail.com; keydata=
- xjMEY58biBYJKwYBBAHaRw8BAQdADPnoGTrfCUCyH7SZVkFtnlzsFpeKANckofR4WVLMtMzN
- L1BldGVyIFNjaG5laWRlciA8cHNjaG5laWRlcjE5NjhAZ29vZ2xlbWFpbC5jb20+wpwEExYK
- AEQCGyMFCQW15qgFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSjgovXlszhGoyt6IZu
- OpLJLD/yRAUCY58b8AIZAQAKCRBuOpLJLD/yRIeIAQD0+/LMdKHM6AJdPCt+e9Z92BMybfnN
- RtGqkdZWtvdhDQD9FJkGh/3PFtDinimB8UOB7Gi6AGxt9Nu9ne7PvHa0KQXOOARjnxuIEgor
- BgEEAZdVAQUBAQdAw2GRwTf5HJlO6CCigzqH6GUKOjqR1xJ+3nR5EbBze0sDAQgHwn4EGBYK
- ACYWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCY58biAIbDAUJBbXmqAAKCRBuOpLJLD/yRONS
- AQCwB9qiEQoSnxHodu8kRuvUxXKIqN7701W+INXtFGtJygEAyPZH3/vSBJ4A7GUG7BZyQRcr
- ryS0CUq77B7ZkcI1Nwo=
-In-Reply-To: <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------3k07hvzCU80C7y4hrWzdZar0"
+Content-Transfer-Encoding: 8bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------3k07hvzCU80C7y4hrWzdZar0
-Content-Type: multipart/mixed; boundary="------------XgrnrIbEqmkVi01629oNH2n6";
- protected-headers="v1"
-From: Peter Schneider <pschneider1968@googlemail.com>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@leemhuis.info,
- regressions@lists.linux.dev
-Message-ID: <c4e8e0b5-fc32-4e26-8c0e-27a996769903@googlemail.com>
-Subject: Re: Kernel 6.8.4 regression: aacraid controller not initialized any
- more, system boot hangs
-References: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com>
- <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
-In-Reply-To: <yq1cypvwz5o.fsf@ca-mkp.ca.oracle.com>
+commit a55c1fdad5f61b4bfe42319694b23671a758cb28 upstream.
 
---------------XgrnrIbEqmkVi01629oNH2n6
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Fix Sparse warning when casting from __percpu address space by using
+__force in the cast. x86 named address spaces are not considered to
+be subspaces of the generic (flat) address space, so explicit casts
+are required to convert pointers between these address spaces and the
+generic address space (the application should cast to uintptr_t and
+apply the segment base offset). The cast to uintptr_t removes
+__percpu address space tag and Sparse reports:
 
-SGkgTWFydGluLA0KDQptZWFud2hpbGUsIHNvbWUgbW9yZSBwZW9wbGUgd2hvIGZhY2UgdGhl
-IHNhbWUgcHJvYmxlbSBoYXZlIGJlZW4gZ2F0aGVyaW5nIGluIHRoaXMgdGhyZWFkIA0KaW4g
-dGhlIFByb3htb3ggdXNlciBmb3J1bToNCg0KaHR0cHM6Ly9mb3J1bS5wcm94bW94LmNvbS90
-aHJlYWRzL3B2ZS04LTIta2VybmVsLTYtOC00LTItZG9lcy1ub3QtYm9vdC1jYW5ub3QtZmlu
-ZC1yb290LWRldmljZS4xNDU3NjQvDQoNClR3byBvZiB0aGVtIGFsc28gaGF2ZSBhbiBBZGFw
-dGVjIGNvbnRyb2xsZXIsIHdoaWxlIGFub3RoZXIgb25lIGhhcyBhIFBFUkMgSDMxMCBNaW5p
-IChMU0kgDQpiYXNlZCkuDQoNCkRpZCB5b3UgaGF2ZSBhbnkgY2hhbmNlIHRvIGxvb2sgaW50
-byB0aGlzIGluIG1vcmUgZGVwdGg/IERvIHlvdSBuZWVkIG1vcmUgaW5mb3JtYXRpb24gZnJv
-bSANCm1lIHRvIHRhY2tsZSB0aGlzIGlzc3VlPyBJJ20gbm90IGEga2VybmVsIGRldmVsb3Bl
-ciwganVzdCBhIHVzZXIsIGJ1dCBJIGd1ZXNzIHdpdGggcHJvcGVyIA0KaW5zdHJ1Y3Rpb24g
-SSB3b3VsZCBiZSBhYmxlIHRvIGNvbXBpbGUgYW5kIHRlc3QgcGF0Y2hlcy4NCg0KQmVzdGUg
-R3LDvMOfZSwNClBldGVyIFNjaG5laWRlcg0KDQotLSANCkNsaW1iIHRoZSBtb3VudGFpbiBu
-b3QgdG8gcGxhbnQgeW91ciBmbGFnLCBidXQgdG8gZW1icmFjZSB0aGUgY2hhbGxlbmdlLA0K
-ZW5qb3kgdGhlIGFpciBhbmQgYmVob2xkIHRoZSB2aWV3LiBDbGltYiBpdCBzbyB5b3UgY2Fu
-IHNlZSB0aGUgd29ybGQsDQpub3Qgc28gdGhlIHdvcmxkIGNhbiBzZWUgeW91LiAgICAgICAg
-ICAgICAgICAgICAgLS0gRGF2aWQgTWNDdWxsb3VnaCBKci4NCg0KT3BlblBHUDogIDB4QTM4
-MjhCRDc5NkNDRTExQThDQURFODg2NkUzQTkyQzkyQzNGRjI0NA0KRG93bmxvYWQ6IGh0dHBz
-Oi8vd3d3LnBldGVycy1uZXR6cGxhdHouZGUvZG93bmxvYWQvcHNjaG5laWRlcjE5NjhfcHVi
-LmFzYw0KaHR0cHM6Ly9rZXlzLm1haWx2ZWxvcGUuY29tL3Brcy9sb29rdXA/b3A9Z2V0JnNl
-YXJjaD1wc2NobmVpZGVyMTk2OEBnb29nbGVtYWlsLmNvbQ0KaHR0cHM6Ly9rZXlzLm1haWx2
-ZWxvcGUuY29tL3Brcy9sb29rdXA/b3A9Z2V0JnNlYXJjaD1wc2NobmVpZGVyMTk2OEBnbWFp
-bC5jb20NCg0KDQoNCg0KQW0gMDkuMDUuMjAyNCB1bSAwMzozOCBzY2hyaWViIE1hcnRpbiBL
-LiBQZXRlcnNlbjoNCj4gDQo+IEhpIFBldGVyIQ0KPiANCj4gVGhhbmtzIGZvciB0aGUgZGV0
-YWlsZWQgYnVnIHJlcG9ydC4NCj4gDQo+PiA2LjguOCsgICAgICAgICAgV09SS1MgICBSZXZl
-cnQgInNjc2k6IGNvcmU6IENvbnN1bHQgc3VwcG9ydGVkIFZQRCBwYWdlDQo+PiBsaXN0IHBy
-aW9yIHRvIGZldGNoaW5nIHBhZ2UiIC0gVGhpcyByZXZlcnRzIGNvbW1pdA0KPj4gYjVmYzA3
-YTVmYjU2MjE2YTQ5ZTZjMWQwYjE3MmQ1NDY0ZDk5YTg5YiAodGhpcyBpcyB0aGUgZmlyc3Qg
-YmFkIGNvbW1pdA0KPj4gb2YgbXkgYmlzZWN0IHNlc3Npb24sIHNlZSBiZWxvdywgYW5kIGEg
-c2luZ2xlIHBhdGNoIGFzIHBhcnQgb2YgdGhlDQo+PiBhYm92ZSBtZXJnZWQgdGFnICdzY3Np
-LWZpeGVzJykNCj4gDQo+IFRoZSBwdXp6bGluZyB0aGluZyBpcyB0aGF0IHRoZSBwYXRjaCBp
-biBxdWVzdGlvbiByZXN0b3JlcyB0aGUgb3JpZ2luYWwNCj4gYmVoYXZpb3IgaW4gd2hpY2gg
-d2UgZG8gbm90IGF0dGVtcHQgdG8gcXVlcnkgYW55IHBhZ2VzIG5vdCBleHBsaWNpdGx5DQo+
-IHJlcG9ydGVkIGJ5IHRoZSBkZXZpY2UuDQo+IA0KPiBDYW4geW91IHBsZWFzZSBzZW5kIG1l
-IHRoZSBvdXRwdXQgb2Y6DQo+IA0KPiAjIHNnX3ZwZCAtYSAvZGV2L3NkYQ0KPiAjIHNnX3Jl
-YWRjYXAgLWwgL2Rldi9zZGENCj4gDQo+IHdoZXJlIHNkYSBpcyBvbmUgb2YgdGhlIGFhY3Jh
-aWQgdm9sdW1lcy4NCj4gDQo+IFRoYW5rcyENCj4gDQo=
+  warning: cast removes address space '__percpu' of expression
 
---------------XgrnrIbEqmkVi01629oNH2n6--
+Use __force to inform Sparse that the cast is intentional.
 
---------------3k07hvzCU80C7y4hrWzdZar0
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+The patch deviates from upstream commit due to the unification of
+arch_raw_cpu_ptr() defines in the commit:
 
------BEGIN PGP SIGNATURE-----
+  4e5b0e8003df ("x86/percpu: Unify arch_raw_cpu_ptr() defines").
 
-wnsEABYIACMWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCZkMNywUDAAAAAAAKCRBuOpLJLD/yRCwp
-AQCQ7e+Eq4H8veOUlyQswf1miAnfnUuv6gJHx8fzCKZitgEA+ZQiQ7a7hoNcNvVQkvkExdTsC207
-mtXOQ/byiSnliAc=
-=WPgk
------END PGP SIGNATURE-----
+Fixes: 9a462b9eafa6 ("x86/percpu: Use compiler segment prefix qualifier")
+Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAFGhKbzev7W4aHwhFPWwMZQEHenVgZUj7=aunFieVqZg3mt14A@mail.gmail.com/
+Cc: stable@vger.kernel.org # v6.8
+Link: https://lore.kernel.org/r/20240402175058.52649-1-ubizjak@gmail.com
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+---
+ arch/x86/include/asm/percpu.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---------------3k07hvzCU80C7y4hrWzdZar0--
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 44958ebaf626..66ed36b8cdb4 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -70,7 +70,7 @@
+ 	unsigned long tcp_ptr__;				\
+ 	tcp_ptr__ = __raw_cpu_read(, this_cpu_off);		\
+ 								\
+-	tcp_ptr__ += (unsigned long)(ptr);			\
++	tcp_ptr__ += (__force unsigned long)(ptr);		\
+ 	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;		\
+ })
+ #else /* CONFIG_USE_X86_SEG_SUPPORT */
+@@ -85,7 +85,7 @@
+ 	     : "=r" (tcp_ptr__)					\
+ 	     : "m" (__my_cpu_var(this_cpu_off)));		\
+ 								\
+-	tcp_ptr__ += (unsigned long)(ptr);			\
++	tcp_ptr__ += (__force unsigned long)(ptr);		\
+ 	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;		\
+ })
+ #endif /* CONFIG_USE_X86_SEG_SUPPORT */
+@@ -102,8 +102,8 @@
+ #endif /* CONFIG_SMP */
+ 
+ #define __my_cpu_type(var)	typeof(var) __percpu_seg_override
+-#define __my_cpu_ptr(ptr)	(__my_cpu_type(*ptr) *)(uintptr_t)(ptr)
+-#define __my_cpu_var(var)	(*__my_cpu_ptr(&var))
++#define __my_cpu_ptr(ptr)	(__my_cpu_type(*(ptr))*)(__force uintptr_t)(ptr)
++#define __my_cpu_var(var)	(*__my_cpu_ptr(&(var)))
+ #define __percpu_arg(x)		__percpu_prefix "%" #x
+ #define __force_percpu_arg(x)	__force_percpu_prefix "%" #x
+ 
+-- 
+2.45.0
+
 
