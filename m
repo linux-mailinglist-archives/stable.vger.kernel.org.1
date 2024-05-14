@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-44083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D828C5129
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208F58C5265
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1E0CB212AB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF5FC1F22C12
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C485F502A1;
-	Tue, 14 May 2024 10:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A2A12FB00;
+	Tue, 14 May 2024 11:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHBvOktp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1N/JPJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B5A1CFB2;
-	Tue, 14 May 2024 10:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D99512F5B9;
+	Tue, 14 May 2024 11:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684122; cv=none; b=Gk9vGvKkgi21fhD3+7buDPPHXMtfuRwF9Atdf8msAbpQYdIhIaaZCjcxnJc3k4c3x6qMZM05LoDrY26DMDORx7edLiG33e0UnJoENVI9N+KyaYOJ2vsEOl8GV4VtMUsszlP6e8oZY6QP5mNCKT11u+ceNNiEuzT9bPLC4fesWlw=
+	t=1715685860; cv=none; b=KYPSh1syA8NR/S3Z6T6wBcF+zoxqtU0kcwTOPLHFxRf0rFE2ngAeGmHVe5CyJNJLr20p/a7Ub1pOMCm2QqqANlGdgazXecgy6DxCmeawDzKSTJlWBbTfZgNPetG1iuZCDnHJgpRRiUhUrmt8Y3KlxtJlBiIl1u2txI98KLwTqIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684122; c=relaxed/simple;
-	bh=1hPihjOctIh47vkOgn8fXAWWm7t9zucR4J9BIuPK9K4=;
+	s=arc-20240116; t=1715685860; c=relaxed/simple;
+	bh=YZ0DBGMP9GZPTQgtwRK77ZKNevaESDRQ46ewDAc7XB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHHEmM3AueWapMpO4w8aUoW59WvrCz6n5wnz0Al/lUjOlNi6Fy0fyK9yqzPlFu/nvQtuq+WWPVHxHkHpWQ0Gy9tkhIOGrFf0F1vbSHdx/rL1ufkcuF2fTorlLd860QTlFYH6xazPzDJGFm8Q9z2hsFG4r4aIBefQsZSNPikqvp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHBvOktp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FA7C2BD10;
-	Tue, 14 May 2024 10:55:20 +0000 (UTC)
+	 MIME-Version; b=AEEYVQuMC0ibd3VwShUK0hqKo+lFV/IK0eCsxaLZne9xwGUeJ6yPjVOEGQz+K3PCY4PO7KOdZN8Wz+MVx3flc120Ti3/bd61eFY29Pnw/BJkvmydk07x90XldWU340bQW6wSoBcttluwV1rxt5zeHxRWkM1HLBU0LLgIk4n+rDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1N/JPJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9AAC2BD10;
+	Tue, 14 May 2024 11:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684122;
-	bh=1hPihjOctIh47vkOgn8fXAWWm7t9zucR4J9BIuPK9K4=;
+	s=korg; t=1715685860;
+	bh=YZ0DBGMP9GZPTQgtwRK77ZKNevaESDRQ46ewDAc7XB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHBvOktp2AX5rUYEa519TUJtiIKgXAXJEUmmN2sRHwkO+rMAQaj5lPWAQNJoOahWz
-	 XyZ6fPYuQM25NkiGYeFrP1AJvoGRWsa7RqkV24fri8uJOuAbGVVuOQ2QxuhM/h9qd3
-	 FJzl/ppvUHn6CxJmNakfS78pgFX87mdiFPui5uPw=
+	b=E1N/JPJ3DnjXjCz9eYVWEiS5bR9k23sC5bNViwq6QnK57uW/OtRQ/aDzWrz2se8yY
+	 /Ced+RgIsSsQ+uXkFWWhFwEpcXubcoR1OMJqIwvEeN2zJ/bLRDFk4mSa1MXT+NwnzM
+	 RUhQmXSIxhUenNMmVG48XraDMwiTV9wcsVanHnVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.8 328/336] eventfs: Do not treat events directory different than other directories
+	stable <stable@kernel.org>,
+	Jim Cromie <jim.cromie@gmail.com>
+Subject: [PATCH 6.6 261/301] dyndbg: fix old BUG_ON in >control parser
 Date: Tue, 14 May 2024 12:18:52 +0200
-Message-ID: <20240514101051.006481645@linuxfoundation.org>
+Message-ID: <20240514101042.110526536@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jim Cromie <jim.cromie@gmail.com>
 
-commit 22e61e15af731dbe46704c775d2335e56fcef4e9 upstream.
+commit 00e7d3bea2ce7dac7bee1cf501fb071fd0ea8f6c upstream.
 
-Treat the events directory the same as other directories when it comes to
-permissions. The events directory was considered different because it's
-dentry is persistent, whereas the other directory dentries are created
-when accessed. But the way tracefs now does its ownership by using the
-root dentry's permissions as the default permissions, the events directory
-can get out of sync when a remount is performed setting the group and user
-permissions.
+Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
+really look), lets make sure by removing it, doing pr_err and return
+-EINVAL instead.
 
-Remove the special case for the events directory on setting the
-attributes. This allows the updates caused by remount to work properly as
-well as simplifies the code.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200906.002923579@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
+Link: https://lore.kernel.org/r/20240429193145.66543-2-jim.cromie@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ lib/dynamic_debug.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -163,21 +163,7 @@ static int eventfs_set_attr(struct mnt_i
- 	 * determined by the parent directory.
- 	 */
- 	if (dentry->d_inode->i_mode & S_IFDIR) {
--		/*
--		 * The events directory dentry is never freed, unless its
--		 * part of an instance that is deleted. It's attr is the
--		 * default for its child files and directories.
--		 * Do not update it. It's not used for its own mode or ownership.
--		 */
--		if (ei->is_events) {
--			/* But it still needs to know if it was modified */
--			if (iattr->ia_valid & ATTR_UID)
--				ei->attr.mode |= EVENTFS_SAVE_UID;
--			if (iattr->ia_valid & ATTR_GID)
--				ei->attr.mode |= EVENTFS_SAVE_GID;
--		} else {
--			update_attr(&ei->attr, iattr);
--		}
-+		update_attr(&ei->attr, iattr);
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -302,7 +302,11 @@ static int ddebug_tokenize(char *buf, ch
+ 		} else {
+ 			for (end = buf; *end && !isspace(*end); end++)
+ 				;
+-			BUG_ON(end == buf);
++			if (end == buf) {
++				pr_err("parse err after word:%d=%s\n", nwords,
++				       nwords ? words[nwords - 1] : "<none>");
++				return -EINVAL;
++			}
+ 		}
  
- 	} else {
- 		name = dentry->d_name.name;
+ 		/* `buf' is start of word, `end' is one past its end */
 
 
 
