@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D42E8C540E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E6E8C551F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF66D2883BF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04C5D1C236CA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE8712BEAA;
-	Tue, 14 May 2024 11:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40C16EB52;
+	Tue, 14 May 2024 11:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVb5z0Nk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgRJo24B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B857CBC;
-	Tue, 14 May 2024 11:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13E33D0D1;
+	Tue, 14 May 2024 11:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686938; cv=none; b=WFbs+kgO7gj/VGlgH5ht6kheW+qF1AEqASUF+pRCb/ODUQTLIpjCovEzHAk0PeBH7PyxTG9e3hl02UYY8cuImpaxONKCvUrLIfYII+FDBnPm/pm0LlXOLjSyRD+iGNdhH3RaRI4pLdNkuwoqVhMjcwDhCzHmm7XzCzEsr45ukKY=
+	t=1715687667; cv=none; b=XRVHr8aW+fZQAWiK8hxM1/B/4eStMbBkUle9+lXAvJ1iV4nJT3E/FKgYTfWwvrU6aBGmss7WQ8IKZwSHc1hRDfwC5inWYG7egUctlWyb5CSqzRVy8tH5b6n9vtvTeYWYgEInGHbUWgpJG03ICCOow9k9dfD7zXNOds6VnyIkFnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686938; c=relaxed/simple;
-	bh=YEtA1KUjuFYgW7D1LMPzUiTIl2fmb8vw+lqj0eVMTrg=;
+	s=arc-20240116; t=1715687667; c=relaxed/simple;
+	bh=EoiIEC96r4NWofdG4lP8INbyjPQSoOCNNWNJY9F0dWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUO7an5cTgO4HDnRUGF9URvR8Ppy/YRw5X00zu7s6gD/eamt6SKnrTevIo94m2J5PYHjpabN2sSaZ55VV+TL7jqAtz6LFgMA/0Dn/tMjIRFqeMxnT6lLqKRNYr7lo3r58/RP6ntXYy43Qhndw17ibkrOK+dwXfhJMLvT8Ak0SKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVb5z0Nk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AE7C2BD10;
-	Tue, 14 May 2024 11:42:17 +0000 (UTC)
+	 MIME-Version; b=lMYR6SRgmvhYnf/J3xwWFtJh3l3vSkc5l26qqAvzZ6DvQNUkWRHYI/cinA7PA5zs39dWlK9a0xL/74DtCj2pf6JEGI5o85S4C4bEzjexucnD1W+Vi5l6RiltQKu8jKtfwr2DBWaGyrtzzHAE3ifhi02tq3mPP3EzPYeo8q9LYqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgRJo24B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A8EC2BD10;
+	Tue, 14 May 2024 11:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686937;
-	bh=YEtA1KUjuFYgW7D1LMPzUiTIl2fmb8vw+lqj0eVMTrg=;
+	s=korg; t=1715687667;
+	bh=EoiIEC96r4NWofdG4lP8INbyjPQSoOCNNWNJY9F0dWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVb5z0NkLsCYKLu3wxh98nf/41eSAAvUmvc9dAT53uz5x9HEsXADnx4AdzBFAjghh
-	 17wNRfgl3GWOKuKDCUukZvagyo3gDs26NDiKPzeRL3yXHEKfEBlKT1u10Pw58B9RrN
-	 CxMokp9EmP8fp/ds6dqmzVFtcxh/WGdp2FSfapuc=
+	b=kgRJo24B5ZEMhnrYP3rAWDrm8fPw9gSHAyfNlcUl2uokJQwzlyGlEHEfYwkrXigRv
+	 vZjZz2NimZ1SEdQl0Xz8nHA1xP5+MngOhqno5m12T8bcKlY9ZSkVT9LPfYlLtm2XXr
+	 X+sBMrZuNfZs0EGLUJ0TFgTug7F35Dc3e5cbrFck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Light Hsieh <light.hsieh@mediatek.com>,
-	Stanley Chu <stanley.chu@mediatek.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/84] pinctrl: mediatek: remove shadow variable declaration
+Subject: [PATCH 5.15 063/168] scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
 Date: Tue, 14 May 2024 12:19:21 +0200
-Message-ID: <20240514100952.080614688@linuxfoundation.org>
+Message-ID: <20240514101009.077136479@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Light Hsieh <light.hsieh@mediatek.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit d1f7af4b4a11bcd85a18b383cb6fae1915916a83 ]
+[ Upstream commit bb011631435c705cdeddca68d5c85fd40a4320f9 ]
 
-Remove shadow declaration of variable 'pullup' in mtk_pinconf_get()
+Typically when an out of resource CQE status is detected, the
+lpfc_ramp_down_queue_handler() logic is called to help reduce I/O load by
+reducing an sdev's queue_depth.
 
-Signed-off-by: Light Hsieh <light.hsieh@mediatek.com>
-Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
-Link: https://lore.kernel.org/r/1586255632-27528-1-git-send-email-light.hsieh@mediatek.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: c5d3b64c568a ("pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE")
+However, the current lpfc_rampdown_queue_depth() logic does not help reduce
+queue_depth.  num_cmd_success is never updated and is always zero, which
+means new_queue_depth will always be set to sdev->queue_depth.  So,
+new_queue_depth = sdev->queue_depth - new_queue_depth always sets
+new_queue_depth to zero.  And, scsi_change_queue_depth(sdev, 0) is
+essentially a no-op.
+
+Change the lpfc_ramp_down_queue_handler() logic to set new_queue_depth
+equal to sdev->queue_depth subtracted from number of times num_rsrc_err was
+incremented.  If num_rsrc_err is >= sdev->queue_depth, then set
+new_queue_depth equal to 1.  Eventually, the frequency of Good_Status
+frames will signal SCSI upper layer to auto increase the queue_depth back
+to the driver default of 64 via scsi_handle_queue_ramp_up().
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240305200503.57317-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/scsi/lpfc/lpfc.h      |  1 -
+ drivers/scsi/lpfc/lpfc_scsi.c | 13 ++++---------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index 18706c46d46ba..b613dda50151b 100644
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -164,8 +164,6 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 	case MTK_PIN_CONFIG_PU_ADV:
- 	case MTK_PIN_CONFIG_PD_ADV:
- 		if (hw->soc->adv_pull_get) {
--			bool pullup;
--
- 			pullup = param == MTK_PIN_CONFIG_PU_ADV;
- 			err = hw->soc->adv_pull_get(hw, desc, pullup, &ret);
- 		} else
+diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
+index 65ac952b767fb..194825ff1ee80 100644
+--- a/drivers/scsi/lpfc/lpfc.h
++++ b/drivers/scsi/lpfc/lpfc.h
+@@ -1341,7 +1341,6 @@ struct lpfc_hba {
+ 	unsigned long bit_flags;
+ #define	FABRIC_COMANDS_BLOCKED	0
+ 	atomic_t num_rsrc_err;
+-	atomic_t num_cmd_success;
+ 	unsigned long last_rsrc_error_time;
+ 	unsigned long last_ramp_down_time;
+ #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 6d1a3cbd6b3c4..d9fb5e09fb53f 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -231,11 +231,10 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
+ 	struct Scsi_Host  *shost;
+ 	struct scsi_device *sdev;
+ 	unsigned long new_queue_depth;
+-	unsigned long num_rsrc_err, num_cmd_success;
++	unsigned long num_rsrc_err;
+ 	int i;
+ 
+ 	num_rsrc_err = atomic_read(&phba->num_rsrc_err);
+-	num_cmd_success = atomic_read(&phba->num_cmd_success);
+ 
+ 	/*
+ 	 * The error and success command counters are global per
+@@ -250,20 +249,16 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
+ 		for (i = 0; i <= phba->max_vports && vports[i] != NULL; i++) {
+ 			shost = lpfc_shost_from_vport(vports[i]);
+ 			shost_for_each_device(sdev, shost) {
+-				new_queue_depth =
+-					sdev->queue_depth * num_rsrc_err /
+-					(num_rsrc_err + num_cmd_success);
+-				if (!new_queue_depth)
+-					new_queue_depth = sdev->queue_depth - 1;
++				if (num_rsrc_err >= sdev->queue_depth)
++					new_queue_depth = 1;
+ 				else
+ 					new_queue_depth = sdev->queue_depth -
+-								new_queue_depth;
++						num_rsrc_err;
+ 				scsi_change_queue_depth(sdev, new_queue_depth);
+ 			}
+ 		}
+ 	lpfc_destroy_vport_work_array(phba, vports);
+ 	atomic_set(&phba->num_rsrc_err, 0);
+-	atomic_set(&phba->num_cmd_success, 0);
+ }
+ 
+ /**
 -- 
 2.43.0
 
