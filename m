@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B33A8C54DE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A14B38C545B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78F57B22B58
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 463291F23319
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88DD5029A;
-	Tue, 14 May 2024 11:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BC785936;
+	Tue, 14 May 2024 11:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmsD6ed3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzy/oMfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FE447F5D;
-	Tue, 14 May 2024 11:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260F2D60A;
+	Tue, 14 May 2024 11:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687488; cv=none; b=cQO56wcttMtsrfbtTaD5QwXZKPKmEv/tUbQUBCOQgVnlcLazOyReEkIPJLueRtH81okxeculw+SyuU2vozHmtGvC+4AfFAEeeyYzJGMTFbmd4mRPLuHObGxIoihvrO9CEv3UzWiewXoLLuMl+W7a66zskRxeuNj//cMgMPc+Ffo=
+	t=1715687142; cv=none; b=qMzpNEQShtLQ/dKiTqicdjwGUyP0jz/HYZoQOExTFbCd06eo/zUSibpZGUu08ZTe6jECNGn8p3Akz8je7KtCr11cwo5o8N48p9TQM8U0a691yhcfRbEH0kxoSnzyTZLbF8vqYppH2G2ceoSFeMmR4rQg8TYXLvBHcerQQQ/7hZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687488; c=relaxed/simple;
-	bh=vOY9QkzrONnE0ZgW3TxY0dZxsBw4qK/005/hOjzcP5k=;
+	s=arc-20240116; t=1715687142; c=relaxed/simple;
+	bh=xf5lhVBlD8yavVTWwpJAAj+q4rQd19W2JdPF95E+6E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhzCWIuUXx2lYJV/NPr/uln5J31Nm5sHk1lnFm1+CEaNdbAchheBYnxltqZvebNBLMYEOPmZl0nDE0Kj9yd7Aaj2h3ayK4vnkxYNDoWnTcxud7asC0+sQY7AJtzkxXVV7Bq4mPVsCkUTPHwTa3ocx2zllML9WnCEWitku220ycY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmsD6ed3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C34C2BD10;
-	Tue, 14 May 2024 11:51:27 +0000 (UTC)
+	 MIME-Version; b=mee816aeyE/aSndjKhSZ560Ap41DmSNsDbv9k6ZgrCaLFfwPIS0KX1Tre0mCxt0O/xBD+qQoellWYxofCCeQ9LjQSnN7+NAUvT4KSNHl6BkD1bOcPJKY7qCfqE3TD6kx3qvlCNLLDGcIgPDVNQhBD2ptcswg8rBQ5QYi2MatCY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzy/oMfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53754C2BD10;
+	Tue, 14 May 2024 11:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687488;
-	bh=vOY9QkzrONnE0ZgW3TxY0dZxsBw4qK/005/hOjzcP5k=;
+	s=korg; t=1715687140;
+	bh=xf5lhVBlD8yavVTWwpJAAj+q4rQd19W2JdPF95E+6E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmsD6ed3+wEoglGUbqAiFkDPuOWcF4WxARVj3gpUYl8LdGuoEGxfiQ3VpsUcr1ep0
-	 Rvw16bKWCpC3d58pzM0Ie9FWft8BUTk3+PAj3lqbmaGkVBD6jTK+bJeM6uXLz56bdl
-	 LFP3nMYbQYs6RiNurmYIbKJivWUkpn55VlfhBiE4=
+	b=dzy/oMfuxN6c8ymwpO2jOqsCgcwe+Cw7/B3KUxmzc5lvOye56A/cZe613jv41nClw
+	 D4FGR+GaJfddn9ttyeIsXbdHV8hwsS9ZMso/AKXNV7p4uIF55uNYXRLrIHR0vjwxK9
+	 nAza59wtbvuWSj0jgoBXhEEZWP7U/xBgW8i4NT0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.10 092/111] usb: typec: ucsi: Check for notifications after init
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.4 79/84] net: fix out-of-bounds access in ops_init
 Date: Tue, 14 May 2024 12:20:30 +0200
-Message-ID: <20240514101000.626446996@linuxfoundation.org>
+Message-ID: <20240514100954.655053349@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
+commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
 
-The completion notification for the final SET_NOTIFICATION_ENABLE
-command during initialization can include a connector change
-notification.  However, at the time this completion notification is
-processed, the ucsi struct is not ready to handle this notification.
-As a result the notification is ignored and the controller
-never sends an interrupt again.
+net_alloc_generic is called by net_alloc, which is called without any
+locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
+is read twice, first to allocate an array, then to set s.len, which is
+later used to limit the bounds of the array access.
 
-Re-check CCI for a pending connector state change after
-initialization is complete. Adjust the corresponding debug
-message accordingly.
+It is possible that the array is allocated and another thread is
+registering a new pernet ops, increments max_gen_ptrs, which is then used
+to set s.len with a larger than allocated length for the variable array.
 
-Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
+max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
+
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/core/net_namespace.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -827,7 +827,7 @@ void ucsi_connector_change(struct ucsi *
- 	struct ucsi_connector *con = &ucsi->connector[num - 1];
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -71,12 +71,15 @@ static unsigned int max_gen_ptrs = INITI
  
- 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
--		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-+		dev_dbg(ucsi->dev, "Early connector change event\n");
- 		return;
- 	}
- 
-@@ -1191,6 +1191,7 @@ static int ucsi_init(struct ucsi *ucsi)
+ static struct net_generic *net_alloc_generic(void)
  {
- 	struct ucsi_connector *con;
- 	u64 command, ntfy;
-+	u32 cci;
- 	int ret;
- 	int i;
- 
-@@ -1242,6 +1243,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 		goto err_unregister;
- 
- 	ucsi->ntfy = ntfy;
++	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
++	unsigned int generic_size;
+ 	struct net_generic *ng;
+-	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
 +
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret)
-+		return ret;
-+	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-+		ucsi_connector_change(ucsi, cci);
-+
- 	return 0;
++	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
  
- err_unregister:
+ 	ng = kzalloc(generic_size, GFP_KERNEL);
+ 	if (ng)
+-		ng->s.len = max_gen_ptrs;
++		ng->s.len = gen_ptrs;
+ 
+ 	return ng;
+ }
+@@ -1231,7 +1234,11 @@ static int register_pernet_operations(st
+ 		if (error < 0)
+ 			return error;
+ 		*ops->id = error;
+-		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
++		/* This does not require READ_ONCE as writers already hold
++		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
++		 * net_alloc_generic.
++		 */
++		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
+ 	}
+ 	error = __register_pernet_operations(list, ops);
+ 	if (error) {
 
 
 
