@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-44437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42648C52E4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402198C52DE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C81FF2828C0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B5B1C21957
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A671353F3;
-	Tue, 14 May 2024 11:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B1713540C;
+	Tue, 14 May 2024 11:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLp6wzT1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LR7Rx461"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAAB1CAA4;
-	Tue, 14 May 2024 11:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358FF1CAA4;
+	Tue, 14 May 2024 11:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686159; cv=none; b=q6MaXAkuT7/JaGbljuc9ilIX4I9la8SI2HizRI3tnbU17aMOdXt9y9HlqNG+xsQR1zJHPGvU2uVLj7u4XVLm9J5bVC4mg4cS15LLEv4MPviI+rid1xew6UrDe5oAHNLzY8j0KQXTN8HgNM+uLCVW9Ry//X0hNnQAecxxKUVh0RE=
+	t=1715686171; cv=none; b=IiWg0mjMQrt27vz0WqM9fExsQmGo2gJ7toxSfjZeMuw4JQ+n7mpsiFEHjIRMwhP9xRlS/cEG3ZeZX0US7Vu4nrsnqyHDAcFriEI0IpDQVj+mnJX6YsP3DRSFVmW31CSdxQajRyQmyXDzupnVTLbrVga7CCg9Z9AkvRINZoI4b2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686159; c=relaxed/simple;
-	bh=jOLYMbet/ItuegWvoqK/jk89YP7hD/Pk4e0nuaqfEGM=;
+	s=arc-20240116; t=1715686171; c=relaxed/simple;
+	bh=PYKozqe3VENtOpnGK0xyZShfQRkZj5iZfU9K3/H8LYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2GadB0PWEGYciInJLMBsqUP4Q/TP5A4vlB37+vDzpMnOiarVZcgnuNh9Asjs0efFHwMoEY3SttCoYsUDisSAMRi1/f1kEn3RQy+Nxp1tO6OrUaqhvgCkJiqBL2JwHF1uFAPEQUpX/tt8Sjsw3i6pEHqVT5gijeluyQBTGE+FkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLp6wzT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF09C2BD10;
-	Tue, 14 May 2024 11:29:18 +0000 (UTC)
+	 MIME-Version; b=oFeAlCeD4Qx7dewmmDWJzn5X5M+BxC/3TKRAsLedmJtMHCukF5+BGbnWUP244YkPEx1YOMuQ/D6nrkMjSTLhbZM+wpxXDczhsfW2ZWuyaNspK2OSLIOuqvIqDLPqHP73P0GlQ9tztfnC4pSPXPAw5EwmeOqOSPqivnr9PYWIPz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LR7Rx461; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850C9C2BD10;
+	Tue, 14 May 2024 11:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686159;
-	bh=jOLYMbet/ItuegWvoqK/jk89YP7hD/Pk4e0nuaqfEGM=;
+	s=korg; t=1715686171;
+	bh=PYKozqe3VENtOpnGK0xyZShfQRkZj5iZfU9K3/H8LYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLp6wzT1CZJRvWDBGvyY42pjOpANGdlAm2Y/bvKMqkzHdTzGsAZ7BVlX/NXr8lvwc
-	 QIpF9rvK9x5uoiQheowsT1mDjPSBlfxBcqglthJJnADORA0TQ1Be+l9euq3MnoCyaQ
-	 ryXxspaSZfiI9J7ODy5KL0wBlqU+PYCKpz8AvWMY=
+	b=LR7Rx461nET2h7Mwyg3pewwyITginZn9vcz3QRcO61H/dALyZL5D3CPheViQDlPzV
+	 IBpb65fwsCtImEWfszBecUBf6TuM1lnBECUCWrDqs7JeYJJN5g+xhxbx34umNAlQm2
+	 KPVj9YaqrHmRWhnWsWj1ee2ieBGFQVmU17Ln2p0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
 	Muchun Song <songmuchun@bytedance.com>,
 	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
 	Bui Quang Minh <minhquangbui99@gmail.com>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Miaohe Lin <linmiaohe@huawei.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
 	Mina Almasry <almasrymina@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/236] mm/hugetlb_cgroup: convert hugetlb_cgroup_from_page() to folios
-Date: Tue, 14 May 2024 12:16:16 +0200
-Message-ID: <20240514101020.872665033@linuxfoundation.org>
+Subject: [PATCH 6.1 015/236] mm/hugetlb: convert free_huge_page to folios
+Date: Tue, 14 May 2024 12:16:17 +0200
+Message-ID: <20240514101020.910661659@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
 References: <20240514101020.320785513@linuxfoundation.org>
@@ -75,170 +75,83 @@ Content-Transfer-Encoding: 8bit
 
 From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 
-[ Upstream commit f074732d599e19a2a5b12e54743ad5eaccbe6550 ]
+[ Upstream commit 0356c4b96f6890dd61af4c902f681764f4bdba09 ]
 
-Introduce folios in __remove_hugetlb_page() by converting
-hugetlb_cgroup_from_page() to use folios.
+Use folios inside free_huge_page(), this is in preparation for converting
+hugetlb_cgroup_uncharge_page() to take in a folio.
 
-Also gets rid of unsed hugetlb_cgroup_from_page_resv() function.
-
-Link: https://lkml.kernel.org/r/20221101223059.460937-3-sidhartha.kumar@oracle.com
+Link: https://lkml.kernel.org/r/20221101223059.460937-7-sidhartha.kumar@oracle.com
 Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
 Reviewed-by: Muchun Song <songmuchun@bytedance.com>
 Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 Cc: Bui Quang Minh <minhquangbui99@gmail.com>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
 Cc: Mina Almasry <almasrymina@google.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Stable-dep-of: b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hugetlb_cgroup.h | 39 +++++++++++++++++-----------------
- mm/hugetlb.c                   |  5 +++--
- mm/hugetlb_cgroup.c            | 13 +++++++-----
- 3 files changed, 31 insertions(+), 26 deletions(-)
+ mm/hugetlb.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/hugetlb_cgroup.h b/include/linux/hugetlb_cgroup.h
-index 7576e9ed8afe7..feb2edafc8b68 100644
---- a/include/linux/hugetlb_cgroup.h
-+++ b/include/linux/hugetlb_cgroup.h
-@@ -67,27 +67,34 @@ struct hugetlb_cgroup {
- };
- 
- static inline struct hugetlb_cgroup *
--__hugetlb_cgroup_from_page(struct page *page, bool rsvd)
-+__hugetlb_cgroup_from_folio(struct folio *folio, bool rsvd)
- {
--	VM_BUG_ON_PAGE(!PageHuge(page), page);
-+	struct page *tail;
- 
--	if (compound_order(page) < HUGETLB_CGROUP_MIN_ORDER)
-+	VM_BUG_ON_FOLIO(!folio_test_hugetlb(folio), folio);
-+	if (folio_order(folio) < HUGETLB_CGROUP_MIN_ORDER)
- 		return NULL;
--	if (rsvd)
--		return (void *)page_private(page + SUBPAGE_INDEX_CGROUP_RSVD);
--	else
--		return (void *)page_private(page + SUBPAGE_INDEX_CGROUP);
-+
-+	if (rsvd) {
-+		tail = folio_page(folio, SUBPAGE_INDEX_CGROUP_RSVD);
-+		return (void *)page_private(tail);
-+	}
-+
-+	else {
-+		tail = folio_page(folio, SUBPAGE_INDEX_CGROUP);
-+		return (void *)page_private(tail);
-+	}
- }
- 
--static inline struct hugetlb_cgroup *hugetlb_cgroup_from_page(struct page *page)
-+static inline struct hugetlb_cgroup *hugetlb_cgroup_from_folio(struct folio *folio)
- {
--	return __hugetlb_cgroup_from_page(page, false);
-+	return __hugetlb_cgroup_from_folio(folio, false);
- }
- 
- static inline struct hugetlb_cgroup *
--hugetlb_cgroup_from_page_rsvd(struct page *page)
-+hugetlb_cgroup_from_folio_rsvd(struct folio *folio)
- {
--	return __hugetlb_cgroup_from_page(page, true);
-+	return __hugetlb_cgroup_from_folio(folio, true);
- }
- 
- static inline void __set_hugetlb_cgroup(struct folio *folio,
-@@ -181,19 +188,13 @@ static inline void hugetlb_cgroup_uncharge_file_region(struct resv_map *resv,
- {
- }
- 
--static inline struct hugetlb_cgroup *hugetlb_cgroup_from_page(struct page *page)
--{
--	return NULL;
--}
--
--static inline struct hugetlb_cgroup *
--hugetlb_cgroup_from_page_resv(struct page *page)
-+static inline struct hugetlb_cgroup *hugetlb_cgroup_from_folio(struct folio *folio)
- {
- 	return NULL;
- }
- 
- static inline struct hugetlb_cgroup *
--hugetlb_cgroup_from_page_rsvd(struct page *page)
-+hugetlb_cgroup_from_folio_rsvd(struct folio *folio)
- {
- 	return NULL;
- }
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 37288a7f0fa65..9c1a30eb6c564 100644
+index 9c1a30eb6c564..6cdbb06902df1 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1661,9 +1661,10 @@ static void __remove_hugetlb_page(struct hstate *h, struct page *page,
- 							bool demote)
- {
- 	int nid = page_to_nid(page);
+@@ -1918,21 +1918,22 @@ void free_huge_page(struct page *page)
+ 	 * Can't pass hstate in here because it is called from the
+ 	 * compound page destructor.
+ 	 */
+-	struct hstate *h = page_hstate(page);
+-	int nid = page_to_nid(page);
+-	struct hugepage_subpool *spool = hugetlb_page_subpool(page);
 +	struct folio *folio = page_folio(page);
++	struct hstate *h = folio_hstate(folio);
++	int nid = folio_nid(folio);
++	struct hugepage_subpool *spool = hugetlb_folio_subpool(folio);
+ 	bool restore_reserve;
+ 	unsigned long flags;
  
--	VM_BUG_ON_PAGE(hugetlb_cgroup_from_page(page), page);
--	VM_BUG_ON_PAGE(hugetlb_cgroup_from_page_rsvd(page), page);
-+	VM_BUG_ON_FOLIO(hugetlb_cgroup_from_folio(folio), folio);
-+	VM_BUG_ON_FOLIO(hugetlb_cgroup_from_folio_rsvd(folio), folio);
+-	VM_BUG_ON_PAGE(page_count(page), page);
+-	VM_BUG_ON_PAGE(page_mapcount(page), page);
++	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
++	VM_BUG_ON_FOLIO(folio_mapcount(folio), folio);
  
- 	lockdep_assert_held(&hugetlb_lock);
- 	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index b2316bcbf634a..8b95c1560f9c3 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -191,8 +191,9 @@ static void hugetlb_cgroup_move_parent(int idx, struct hugetlb_cgroup *h_cg,
- 	struct page_counter *counter;
- 	struct hugetlb_cgroup *page_hcg;
- 	struct hugetlb_cgroup *parent = parent_hugetlb_cgroup(h_cg);
-+	struct folio *folio = page_folio(page);
+-	hugetlb_set_page_subpool(page, NULL);
+-	if (PageAnon(page))
+-		__ClearPageAnonExclusive(page);
+-	page->mapping = NULL;
+-	restore_reserve = HPageRestoreReserve(page);
+-	ClearHPageRestoreReserve(page);
++	hugetlb_set_folio_subpool(folio, NULL);
++	if (folio_test_anon(folio))
++		__ClearPageAnonExclusive(&folio->page);
++	folio->mapping = NULL;
++	restore_reserve = folio_test_hugetlb_restore_reserve(folio);
++	folio_clear_hugetlb_restore_reserve(folio);
  
--	page_hcg = hugetlb_cgroup_from_page(page);
-+	page_hcg = hugetlb_cgroup_from_folio(folio);
  	/*
- 	 * We can have pages in active list without any cgroup
- 	 * ie, hugepage with less than 3 pages. We can safely
-@@ -349,14 +350,15 @@ static void __hugetlb_cgroup_uncharge_page(int idx, unsigned long nr_pages,
- 					   struct page *page, bool rsvd)
- {
- 	struct hugetlb_cgroup *h_cg;
-+	struct folio *folio = page_folio(page);
+ 	 * If HPageRestoreReserve was set on page, page allocation consumed a
+@@ -1954,7 +1955,7 @@ void free_huge_page(struct page *page)
+ 	}
  
- 	if (hugetlb_cgroup_disabled())
- 		return;
- 	lockdep_assert_held(&hugetlb_lock);
--	h_cg = __hugetlb_cgroup_from_page(page, rsvd);
-+	h_cg = __hugetlb_cgroup_from_folio(folio, rsvd);
- 	if (unlikely(!h_cg))
- 		return;
--	__set_hugetlb_cgroup(page_folio(page), NULL, rsvd);
-+	__set_hugetlb_cgroup(folio, NULL, rsvd);
+ 	spin_lock_irqsave(&hugetlb_lock, flags);
+-	ClearHPageMigratable(page);
++	folio_clear_hugetlb_migratable(folio);
+ 	hugetlb_cgroup_uncharge_page(hstate_index(h),
+ 				     pages_per_huge_page(h), page);
+ 	hugetlb_cgroup_uncharge_page_rsvd(hstate_index(h),
+@@ -1962,7 +1963,7 @@ void free_huge_page(struct page *page)
+ 	if (restore_reserve)
+ 		h->resv_huge_pages++;
  
- 	page_counter_uncharge(__hugetlb_cgroup_counter_from_cgroup(h_cg, idx,
- 								   rsvd),
-@@ -888,13 +890,14 @@ void hugetlb_cgroup_migrate(struct page *oldhpage, struct page *newhpage)
- 	struct hugetlb_cgroup *h_cg;
- 	struct hugetlb_cgroup *h_cg_rsvd;
- 	struct hstate *h = page_hstate(oldhpage);
-+	struct folio *old_folio = page_folio(oldhpage);
- 
- 	if (hugetlb_cgroup_disabled())
- 		return;
- 
- 	spin_lock_irq(&hugetlb_lock);
--	h_cg = hugetlb_cgroup_from_page(oldhpage);
--	h_cg_rsvd = hugetlb_cgroup_from_page_rsvd(oldhpage);
-+	h_cg = hugetlb_cgroup_from_folio(old_folio);
-+	h_cg_rsvd = hugetlb_cgroup_from_folio_rsvd(old_folio);
- 	set_hugetlb_cgroup(oldhpage, NULL);
- 	set_hugetlb_cgroup_rsvd(oldhpage, NULL);
- 
+-	if (HPageTemporary(page)) {
++	if (folio_test_hugetlb_temporary(folio)) {
+ 		remove_hugetlb_page(h, page, false);
+ 		spin_unlock_irqrestore(&hugetlb_lock, flags);
+ 		update_and_free_page(h, page, true);
 -- 
 2.43.0
 
