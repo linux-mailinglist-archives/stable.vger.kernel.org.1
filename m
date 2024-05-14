@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-44505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E255C8C5331
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58828C5205
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA121C22AD1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 472B8B20ACB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309C2139D15;
-	Tue, 14 May 2024 11:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837A5129A93;
+	Tue, 14 May 2024 11:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nba9QwIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ1u8ewm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E021A61674;
-	Tue, 14 May 2024 11:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4030D6CDC4;
+	Tue, 14 May 2024 11:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686356; cv=none; b=XQozHT+55Y3SYcisSjnyjEKM1RHxRfBW97Hckzu+mqyDSQ6jmgWVZ9o3WxSQTQMyn7w0Xc6a2cqdIZ1mnpDONEMqr3MWvCV2GSvcu6xf0NxWMr/bzVi4xh18n+V0cQOzLxM2AXWySG/2vhWYP8YUJ+nMACBx/sTry0b6/xQDeyM=
+	t=1715685354; cv=none; b=AMVSWzXhJO4urXL6tlZJdoKmqRXbS321EUhwLVkzHdTnx6cp1sRX7q7o4p4Zav2okh28QcpDLr33yjYSL7CphwHjrog6jbkJhiNNkEx5/Fb3YWL5SDYC9gbblBHTC0l/91Cdhwa2dgpq264VosCW4EaxDxyI+ohhGcsl/lkcrbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686356; c=relaxed/simple;
-	bh=9K0Qxqhg0mqmkISy610FMYzNoxCizTQV2HS7OiKEwCA=;
+	s=arc-20240116; t=1715685354; c=relaxed/simple;
+	bh=vzPZ5Q8tWs5AmL952cd/N7r9rt7XG7GooyTKA9X5Sic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8UkKUbgIUvLkQlWAzRtOqb+kO+S7Prf72Coh4ljPtBn+8PQMsJPEitDD6tTSqcNE4M4EKW9lweZPiaZ67fKSVgDOVAS7UsTc2BDhDpRLPMfRDx0cEjP4Qp3lNQXC35+Skob8Uf6hWeNV5CVDJ6LOhAY+2TlXu6QJy95GUNIaUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nba9QwIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6865EC2BD10;
-	Tue, 14 May 2024 11:32:35 +0000 (UTC)
+	 MIME-Version; b=nMMm8rxz6iwIIVtFR9/A0rn9hEj9vUlF3pwNwHdJZ7bFGoUE1fhTL5TCuJ5YiGIByKz8L9rrL0DaTJGSt+w4IW64qcX2ij9+f0VG+wj9M77kQPzR2NxJggJwhiG101Jqv0jHOhjqUtVvQMDfYMQPIUymVnR0dM8UcKjFehaJd0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ1u8ewm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594B6C2BD10;
+	Tue, 14 May 2024 11:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686355;
-	bh=9K0Qxqhg0mqmkISy610FMYzNoxCizTQV2HS7OiKEwCA=;
+	s=korg; t=1715685353;
+	bh=vzPZ5Q8tWs5AmL952cd/N7r9rt7XG7GooyTKA9X5Sic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nba9QwIu/eHXczQ7Nr5qvWYXsWpBuRn+sbvqUqtPmZMZIBTNj5ZeZZ/Mj0+vbN5ZI
-	 urIfj09129/8/Hm2zMHXVqwGB7uJRiY7Ll588mtLncvps/36qAkv1lxOCLpmwt7FZz
-	 5UkUK42EjWYvQilh/wbr5Na8q5kLIVL8b7MrFz2g=
+	b=dJ1u8ewmef2JSsWTbKG/GYlYgJIQmnvdfAbCAnETBAjNY2TXzYkjsV0MIOB9Ykc3F
+	 aCQmvMMbA2lnHn2eC3ncZFXvALrjKWITv0vwSpYkoe1zr2v0C0ygbBawTZCxo5xXHr
+	 h658zO5Z3qNGRnKTmM50kIZ8PtLSFtToiKtRC7HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/236] drm/panel: ili9341: Respect deferred probe
-Date: Tue, 14 May 2024 12:17:24 +0200
-Message-ID: <20240514101023.483648743@linuxfoundation.org>
+Subject: [PATCH 6.6 174/301] qibfs: fix dentry leak
+Date: Tue, 14 May 2024 12:17:25 +0200
+Message-ID: <20240514101038.826782468@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 740fc1e0509be3f7e2207e89125b06119ed62943 ]
+[ Upstream commit aa23317d0268b309bb3f0801ddd0d61813ff5afb ]
 
-GPIO controller might not be available when driver is being probed.
-There are plenty of reasons why, one of which is deferred probe.
+simple_recursive_removal() drops the pinning references to all positives
+in subtree.  For the cases when its argument has been kept alive by
+the pinning alone that's exactly the right thing to do, but here
+the argument comes from dcache lookup, that needs to be balanced by
+explicit dput().
 
-Since GPIOs are optional, return any error code we got to the upper
-layer, including deferred probe. With that in mind, use dev_err_probe()
-in order to avoid spamming the logs.
-
-Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Link: https://lore.kernel.org/r/20240425142706.2440113-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-3-andriy.shevchenko@linux.intel.com
+Fixes: e41d237818598 "qib_fs: switch to simple_recursive_removal()"
+Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/qib/qib_fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-index 39dc40cf681f0..c46b5d820f5a0 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-@@ -717,11 +717,11 @@ static int ili9341_probe(struct spi_device *spi)
+diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
+index ed7d4b02f45a6..11155e0fb8395 100644
+--- a/drivers/infiniband/hw/qib/qib_fs.c
++++ b/drivers/infiniband/hw/qib/qib_fs.c
+@@ -439,6 +439,7 @@ static int remove_device_files(struct super_block *sb,
+ 		return PTR_ERR(dir);
+ 	}
+ 	simple_recursive_removal(dir, NULL);
++	dput(dir);
+ 	return 0;
+ }
  
- 	reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset))
--		dev_err(dev, "Failed to get gpio 'reset'\n");
-+		return dev_err_probe(dev, PTR_ERR(reset), "Failed to get gpio 'reset'\n");
- 
- 	dc = devm_gpiod_get_optional(dev, "dc", GPIOD_OUT_LOW);
- 	if (IS_ERR(dc))
--		dev_err(dev, "Failed to get gpio 'dc'\n");
-+		return dev_err_probe(dev, PTR_ERR(dc), "Failed to get gpio 'dc'\n");
- 
- 	if (!strcmp(id->name, "sf-tc240t-9370-t"))
- 		return ili9341_dpi_probe(spi, dc, reset);
 -- 
 2.43.0
 
