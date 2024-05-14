@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDB98C5260
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FB98C5125
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844881F22C0C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6DCC1C2094B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE7112F5A8;
-	Tue, 14 May 2024 11:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE4A46430;
+	Tue, 14 May 2024 10:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cykwc8QJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMsWcrv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D46F6311D;
-	Tue, 14 May 2024 11:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2938D43AD7;
+	Tue, 14 May 2024 10:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685848; cv=none; b=EFqmlmWN/0Bur7xZs53+Du8EVsCbcAZPXtdLX4K/w8XS2HPJik4GwxWJcjL9UWDOabjMLiu62GsGH384fs1BwPuUm2ACYgq5PXNEJnz1rXiGNFQp7eOZNfxZUd+RjK7gPti6JcAyZkh3r4q9EbhNHxdRIyH5/mMYorSzKl+2Y+4=
+	t=1715684104; cv=none; b=FYCieCYUeWf9Yn3qAquD5KzIy3BITairPpQiMyWRrI2+baPJ1XA/DytHgK/UFke/qv+9Dvx98rpvenwPF/WehiY9Q6lBmXMwqmOgsiTbV4gYwKsQJKPEjS4tHBCxyas6NYtOIUoJHTG2pL5z/2vbQ6oYfS2QV6mtnHRasdvO8F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685848; c=relaxed/simple;
-	bh=rDh9/ChtzJsc9P2hiXDL+GHNHfYIHZ2sm0RB+iX76jE=;
+	s=arc-20240116; t=1715684104; c=relaxed/simple;
+	bh=LqSbpyecp2pbxRpJoMOlKBqv5u3y28nssQiyB7TPxfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3gBgfS4RPga0AmZKYGfP+f0jVrB2zOADWv01q0/m+6GHd5AjzaakPkCYqSbx2AvavWyuF9Ksb7fJE7I01h9llizahmFBQKpVGAsoDAcfyFY0P8J0DYNQvI2UcR98U9sos6XBwiqINkgJGnU2Nvvsu5E59Z5Bem89lMW/66kAvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cykwc8QJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFE4C2BD10;
-	Tue, 14 May 2024 11:24:07 +0000 (UTC)
+	 MIME-Version; b=ljdR4cpGra+ELcdFvFJoAb4bOWJIARkP0QbjmmDpoLLwes7Hj+g1+Uq1ZvjNEniU9pykg4d/41LzbTa2M8/H9oBrTzvd5ls0e3/zYank+wxgdz+5FzrIUXLPakkfWZiAsCRaWLnm1fRMbrGhPKeW4EBLjjFGtWgY/pUL8er0bWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMsWcrv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C119AC2BD10;
+	Tue, 14 May 2024 10:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685848;
-	bh=rDh9/ChtzJsc9P2hiXDL+GHNHfYIHZ2sm0RB+iX76jE=;
+	s=korg; t=1715684103;
+	bh=LqSbpyecp2pbxRpJoMOlKBqv5u3y28nssQiyB7TPxfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cykwc8QJT+Lne4Eydu/ZTpmL5txQbedpz7mOKcYLUGGIwkKK3mBcSHoOIRROxW2CO
-	 E099X376TSlJ1IEWH6DokVrztBXDxiakvubohh82Af6d36AgdcnVCWGS4X9EMcW6FP
-	 SpmPKKOJf6K8YRfzJd+kESv1rulNJ1ZccTtSBr7Y=
+	b=gMsWcrv+vGe5JwVvRnpn2KkURGFu8eoVe7GM1E7ZLRHd7NpU6Yfr8GlTUoY6iqNQx
+	 jSsShlUbAn9kGMCIhhNvksAgZ/LLW0xvvNnlHjyU16AhX/gfBB8VYLYlqhpZxWppnb
+	 8DCjYPucwgNzQHuZWwaRIR8tuYGNpUi/q8vT7zsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 258/301] net: bcmgenet: synchronize UMAC_CMD access
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.8 325/336] tracefs: Reset permissions on remount if permissions are options
 Date: Tue, 14 May 2024 12:18:49 +0200
-Message-ID: <20240514101041.997916157@linuxfoundation.org>
+Message-ID: <20240514101050.893145891@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,189 +64,251 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 0d5e2a82232605b337972fb2c7d0cbc46898aca1 upstream.
+commit baa23a8d4360d981a49913841a726edede5cdd54 upstream.
 
-The UMAC_CMD register is written from different execution
-contexts and has insufficient synchronization protections to
-prevent possible corruption. Of particular concern are the
-acceses from the phy_device delayed work context used by the
-adjust_link call and the BH context that may be used by the
-ndo_set_rx_mode call.
+There's an inconsistency with the way permissions are handled in tracefs.
+Because the permissions are generated when accessed, they default to the
+root inode's permission if they were never set by the user. If the user
+sets the permissions, then a flag is set and the permissions are saved via
+the inode (for tracefs files) or an internal attribute field (for
+eventfs).
 
-A spinlock is added to the driver to protect contended register
-accesses (i.e. reg_lock) and it is used to synchronize accesses
-to UMAC_CMD.
+But if a remount happens that specify the permissions, all the files that
+were not changed by the user gets updated, but the ones that were are not.
+If the user were to remount the file system with a given permission, then
+all files and directories within that file system should be updated.
 
-Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+This can cause security issues if a file's permission was updated but the
+admin forgot about it. They could incorrectly think that remounting with
+permissions set would update all files, but miss some.
+
+For example:
+
+ # cd /sys/kernel/tracing
+ # chgrp 1002 current_tracer
+ # ls -l
+[..]
+ -rw-r-----  1 root root 0 May  1 21:25 buffer_size_kb
+ -rw-r-----  1 root root 0 May  1 21:25 buffer_subbuf_size_kb
+ -r--r-----  1 root root 0 May  1 21:25 buffer_total_size_kb
+ -rw-r-----  1 root lkp  0 May  1 21:25 current_tracer
+ -rw-r-----  1 root root 0 May  1 21:25 dynamic_events
+ -r--r-----  1 root root 0 May  1 21:25 dyn_ftrace_total_info
+ -r--r-----  1 root root 0 May  1 21:25 enabled_functions
+
+Where current_tracer now has group "lkp".
+
+ # mount -o remount,gid=1001 .
+ # ls -l
+ -rw-r-----  1 root tracing 0 May  1 21:25 buffer_size_kb
+ -rw-r-----  1 root tracing 0 May  1 21:25 buffer_subbuf_size_kb
+ -r--r-----  1 root tracing 0 May  1 21:25 buffer_total_size_kb
+ -rw-r-----  1 root lkp     0 May  1 21:25 current_tracer
+ -rw-r-----  1 root tracing 0 May  1 21:25 dynamic_events
+ -r--r-----  1 root tracing 0 May  1 21:25 dyn_ftrace_total_info
+ -r--r-----  1 root tracing 0 May  1 21:25 enabled_functions
+
+Everything changed but the "current_tracer".
+
+Add a new link list that keeps track of all the tracefs_inodes which has
+the permission flags that tell if the file/dir should use the root inode's
+permission or not. Then on remount, clear all the flags so that the
+default behavior of using the root inode's permission is done for all
+files and directories.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.529542160@goodmis.org
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   12 +++++++++++-
- drivers/net/ethernet/broadcom/genet/bcmgenet.h     |    4 +++-
- drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |    8 +++++++-
- drivers/net/ethernet/broadcom/genet/bcmmii.c       |    2 ++
- 4 files changed, 23 insertions(+), 3 deletions(-)
+ fs/tracefs/event_inode.c |   29 ++++++++++++++++++++
+ fs/tracefs/inode.c       |   65 ++++++++++++++++++++++++++++++++++++++++++++++-
+ fs/tracefs/internal.h    |    7 ++++-
+ 3 files changed, 99 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2469,14 +2469,18 @@ static void umac_enable_set(struct bcmge
- {
- 	u32 reg;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -265,6 +265,35 @@ static const struct file_operations even
+ 	.llseek		= generic_file_llseek,
+ };
  
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
--	if (reg & CMD_SW_RESET)
-+	if (reg & CMD_SW_RESET) {
-+		spin_unlock_bh(&priv->reg_lock);
- 		return;
++/*
++ * On a remount of tracefs, if UID or GID options are set, then
++ * the mount point inode permissions should be used.
++ * Reset the saved permission flags appropriately.
++ */
++void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid)
++{
++	struct eventfs_inode *ei = ti->private;
++
++	if (!ei)
++		return;
++
++	if (update_uid)
++		ei->attr.mode &= ~EVENTFS_SAVE_UID;
++
++	if (update_gid)
++		ei->attr.mode &= ~EVENTFS_SAVE_GID;
++
++	if (!ei->entry_attrs)
++		return;
++
++	for (int i = 0; i < ei->nr_entries; i++) {
++		if (update_uid)
++			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_UID;
++		if (update_gid)
++			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_GID;
 +	}
- 	if (enable)
- 		reg |= mask;
- 	else
- 		reg &= ~mask;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
++}
++
+ /* Return the evenfs_inode of the "events" directory */
+ static struct eventfs_inode *eventfs_find_events(struct dentry *dentry)
+ {
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -30,20 +30,47 @@ static struct vfsmount *tracefs_mount;
+ static int tracefs_mount_count;
+ static bool tracefs_registered;
  
- 	/* UniMAC stops on a packet boundary, wait for a full-size packet
- 	 * to be processed
-@@ -2492,8 +2496,10 @@ static void reset_umac(struct bcmgenet_p
- 	udelay(10);
++/*
++ * Keep track of all tracefs_inodes in order to update their
++ * flags if necessary on a remount.
++ */
++static DEFINE_SPINLOCK(tracefs_inode_lock);
++static LIST_HEAD(tracefs_inodes);
++
+ static struct inode *tracefs_alloc_inode(struct super_block *sb)
+ {
+ 	struct tracefs_inode *ti;
++	unsigned long flags;
  
- 	/* issue soft reset and disable MAC while updating its registers */
-+	spin_lock_bh(&priv->reg_lock);
- 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
- 	udelay(2);
-+	spin_unlock_bh(&priv->reg_lock);
+ 	ti = kmem_cache_alloc(tracefs_inode_cachep, GFP_KERNEL);
+ 	if (!ti)
+ 		return NULL;
+ 
++	spin_lock_irqsave(&tracefs_inode_lock, flags);
++	list_add_rcu(&ti->list, &tracefs_inodes);
++	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
++
+ 	return &ti->vfs_inode;
  }
  
- static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
-@@ -3616,16 +3622,19 @@ static void bcmgenet_set_rx_mode(struct
- 	 * 3. The number of filters needed exceeds the number filters
- 	 *    supported by the hardware.
- 	*/
-+	spin_lock(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
- 	    (nfilter > MAX_MDF_FILTER)) {
- 		reg |= CMD_PROMISC;
- 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+		spin_unlock(&priv->reg_lock);
- 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
- 		return;
- 	} else {
- 		reg &= ~CMD_PROMISC;
- 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+		spin_unlock(&priv->reg_lock);
- 	}
- 
- 	/* update MDF filter */
-@@ -4027,6 +4036,7 @@ static int bcmgenet_probe(struct platfor
- 		goto err;
- 	}
- 
-+	spin_lock_init(&priv->reg_lock);
- 	spin_lock_init(&priv->lock);
- 
- 	/* Set default pause parameters */
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
- 
- #ifndef __BCMGENET_H__
-@@ -573,6 +573,8 @@ struct bcmgenet_rxnfc_rule {
- /* device context */
- struct bcmgenet_priv {
- 	void __iomem *base;
-+	/* reg_lock: lock to serialize access to shared registers */
-+	spinlock_t reg_lock;
- 	enum bcmgenet_version version;
- 	struct net_device *dev;
- 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET (Gigabit Ethernet) Wake-on-LAN support
-  *
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
- 
- #define pr_fmt(fmt)				"bcmgenet_wol: " fmt
-@@ -151,6 +151,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	}
- 
- 	/* Can't suspend with WoL if MAC is still in reset */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	if (reg & CMD_SW_RESET)
- 		reg &= ~CMD_SW_RESET;
-@@ -158,6 +159,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	/* disable RX */
- 	reg &= ~CMD_RX_EN;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 	mdelay(10);
- 
- 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE)) {
-@@ -203,6 +205,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	}
- 
- 	/* Enable CRC forward */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	priv->crc_fwd_en = 1;
- 	reg |= CMD_CRC_FWD;
-@@ -210,6 +213,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	/* Receiver must be enabled for WOL MP detection */
- 	reg |= CMD_RX_EN;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 
- 	reg = UMAC_IRQ_MPD_R;
- 	if (hfb_enable)
-@@ -256,7 +260,9 @@ void bcmgenet_wol_power_up_cfg(struct bc
- 	}
- 
- 	/* Disable CRC Forward */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~CMD_CRC_FWD;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
++static void tracefs_free_inode_rcu(struct rcu_head *rcu)
++{
++	struct tracefs_inode *ti;
++
++	ti = container_of(rcu, struct tracefs_inode, rcu);
++	kmem_cache_free(tracefs_inode_cachep, ti);
++}
++
+ static void tracefs_free_inode(struct inode *inode)
+ {
+-	kmem_cache_free(tracefs_inode_cachep, get_tracefs(inode));
++	struct tracefs_inode *ti = get_tracefs(inode);
++	unsigned long flags;
++
++	spin_lock_irqsave(&tracefs_inode_lock, flags);
++	list_del_rcu(&ti->list);
++	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
++
++	call_rcu(&ti->rcu, tracefs_free_inode_rcu);
  }
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -75,6 +75,7 @@ static void bcmgenet_mac_config(struct n
- 	reg |= RGMII_LINK;
- 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
  
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
- 		       CMD_HD_EN |
-@@ -87,6 +88,7 @@ static void bcmgenet_mac_config(struct n
- 		reg |= CMD_TX_EN | CMD_RX_EN;
- 	}
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
+ static ssize_t default_read_file(struct file *file, char __user *buf,
+@@ -313,6 +340,8 @@ static int tracefs_apply_options(struct
+ 	struct tracefs_fs_info *fsi = sb->s_fs_info;
+ 	struct inode *inode = d_inode(sb->s_root);
+ 	struct tracefs_mount_opts *opts = &fsi->mount_opts;
++	struct tracefs_inode *ti;
++	bool update_uid, update_gid;
+ 	umode_t tmp_mode;
  
- 	priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
- 	bcmgenet_eee_enable_set(dev,
+ 	/*
+@@ -332,6 +361,25 @@ static int tracefs_apply_options(struct
+ 	if (!remount || opts->opts & BIT(Opt_gid))
+ 		inode->i_gid = opts->gid;
+ 
++	if (remount && (opts->opts & BIT(Opt_uid) || opts->opts & BIT(Opt_gid))) {
++
++		update_uid = opts->opts & BIT(Opt_uid);
++		update_gid = opts->opts & BIT(Opt_gid);
++
++		rcu_read_lock();
++		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
++			if (update_uid)
++				ti->flags &= ~TRACEFS_UID_PERM_SET;
++
++			if (update_gid)
++				ti->flags &= ~TRACEFS_GID_PERM_SET;
++
++			if (ti->flags & TRACEFS_EVENT_INODE)
++				eventfs_remount(ti, update_uid, update_gid);
++		}
++		rcu_read_unlock();
++	}
++
+ 	return 0;
+ }
+ 
+@@ -398,7 +446,22 @@ static int tracefs_d_revalidate(struct d
+ 	return !(ei && ei->is_freed);
+ }
+ 
++static void tracefs_d_iput(struct dentry *dentry, struct inode *inode)
++{
++	struct tracefs_inode *ti = get_tracefs(inode);
++
++	/*
++	 * This inode is being freed and cannot be used for
++	 * eventfs. Clear the flag so that it doesn't call into
++	 * eventfs during the remount flag updates. The eventfs_inode
++	 * gets freed after an RCU cycle, so the content will still
++	 * be safe if the iteration is going on now.
++	 */
++	ti->flags &= ~TRACEFS_EVENT_INODE;
++}
++
+ static const struct dentry_operations tracefs_dentry_operations = {
++	.d_iput = tracefs_d_iput,
+ 	.d_revalidate = tracefs_d_revalidate,
+ 	.d_release = tracefs_d_release,
+ };
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -11,8 +11,12 @@ enum {
+ };
+ 
+ struct tracefs_inode {
+-	struct inode            vfs_inode;
++	union {
++		struct inode            vfs_inode;
++		struct rcu_head		rcu;
++	};
+ 	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
++	struct list_head	list;
+ 	unsigned long           flags;
+ 	void                    *private;
+ };
+@@ -75,6 +79,7 @@ struct dentry *tracefs_end_creating(stru
+ struct dentry *tracefs_failed_creating(struct dentry *dentry);
+ struct inode *tracefs_get_inode(struct super_block *sb);
+ 
++void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
+ void eventfs_d_release(struct dentry *dentry);
+ 
+ #endif /* _TRACEFS_INTERNAL_H */
 
 
 
