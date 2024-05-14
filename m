@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DB68C5111
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4598C534F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BBF4281793
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:18:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8286282D60
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512E612F360;
-	Tue, 14 May 2024 10:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FB16EB4D;
+	Tue, 14 May 2024 11:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACn97joP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5A0iFpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F85255C0A;
-	Tue, 14 May 2024 10:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C17322094;
+	Tue, 14 May 2024 11:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684014; cv=none; b=adtJHj5aT3hLnwnmyCS9uoMLPRDpYJAZbyrzP0eYzH/wSr2O+3p+eiGSH4xeSpEN4rfOvj4RHZyM3aCU5eLEq07qafBIEDqnnMlOqG0QE47XEFbINDJoGxZRXUwDZJifGgS/BbbmOhaZ/iGCLD+MgkH5oom5FJJGrIPQH8K/gqk=
+	t=1715686390; cv=none; b=opcrFMpGJyZvM/ViXbWEGqLu6lh2lErvjdoulL0XENuMqIgEuz4nXxZZWFU8Qn7skuYFM5/JxcnY6iBk2dq9ja5cXi+WSO6SW3ssrS1PpInehCBnZ/ZuoQfODFrfx/iCq5VrsnWHWVJGC+dY33nmDhRHb0B+Bzc7gTzfPWo0i3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684014; c=relaxed/simple;
-	bh=buIBFQErPppYc0dgf3s9Szt4DsMfcmSZoa4+0nkr6vc=;
+	s=arc-20240116; t=1715686390; c=relaxed/simple;
+	bh=NHUMD1wqcmtk+BChXI+SLVNiTt0VUUm8DfRGVIlzG0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvOQovVk4+OSlVH0ll84G+fBraQEYv1+9u8mAWEYKpByxYf5lh3CTY72yxPLUL1QaRW+AcKIbGpKww0ATHt0Qg0/zMkruZ2F3j2bWboGHCYcRHeYQEGcWgmSoYvGqbwZfav0G8HJ9vVU+AFNUM8/O9PYA30X4i6ewA0x5BRxKto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACn97joP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DC3C2BD10;
-	Tue, 14 May 2024 10:53:32 +0000 (UTC)
+	 MIME-Version; b=Kn86mrJ6wET5qkkE7TMkVOJHJ7acvqTMG7KDYCA3VvjZHuZU4ombXJUuixal4HRTY23naWOf0Gq26EIb8qyW+pw5HMIT7yAQcjQHdSD5OnK8coyKxgrCfvcNyYSYqbMH4Va8+hGONLaSyIAAePhkysBEVOOeu/6ss7YizP7Wi28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5A0iFpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7293C2BD10;
+	Tue, 14 May 2024 11:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684013;
-	bh=buIBFQErPppYc0dgf3s9Szt4DsMfcmSZoa4+0nkr6vc=;
+	s=korg; t=1715686390;
+	bh=NHUMD1wqcmtk+BChXI+SLVNiTt0VUUm8DfRGVIlzG0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACn97joPl49TR0Uo3PnKHBfpMddp5HDoZShC1jR/ysap3NvJClCAPDDY7MnjVRvDk
-	 klwhJrqXzpV+qaEj6dc3yPeNHSF3w+XF9t6VDzHQKpVWm9g0W5w6GtndvHye9BYtXM
-	 Z49Lgl/Gtbipgj3l68/SD4D86tfmxOF9KJN3mkgM=
+	b=X5A0iFpKwIIyBlIoHedt/sLu/lNA0VdiGwC98M5tVEEr/NwI6a9d8M5Sg2ukQQcMB
+	 orVM7myg3UCzwJl0XK8b52R2oi9yAyFYBAaXJyqg0J02dCeKz3EtD3lX+k94voTNfP
+	 Ru2sWJF6gDPfIXEm6OBbqbqm5u0hDYn4D+qdhmRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.8 280/336] tipc: fix UAF in error path
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 122/236] gpu: host1x: Do not setup DMA for virtual devices
 Date: Tue, 14 May 2024 12:18:04 +0200
-Message-ID: <20240514101049.190448370@linuxfoundation.org>
+Message-ID: <20240514101025.002818882@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,146 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Thierry Reding <treding@nvidia.com>
 
-commit 080cbb890286cd794f1ee788bbc5463e2deb7c2b upstream.
+[ Upstream commit 8ab58f6841b19423231c5db3378691ec80c778f8 ]
 
-Sam Page (sam4k) working with Trend Micro Zero Day Initiative reported
-a UAF in the tipc_buf_append() error path:
+The host1x devices are virtual compound devices and do not perform DMA
+accesses themselves, so they do not need to be set up for DMA.
 
-BUG: KASAN: slab-use-after-free in kfree_skb_list_reason+0x47e/0x4c0
-linux/net/core/skbuff.c:1183
-Read of size 8 at addr ffff88804d2a7c80 by task poc/8034
+Ideally we would also not need to set up DMA masks for the virtual
+devices, but we currently still need those for legacy support on old
+hardware.
 
-CPU: 1 PID: 8034 Comm: poc Not tainted 6.8.2 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.0-debian-1.16.0-5 04/01/2014
-Call Trace:
- <IRQ>
- __dump_stack linux/lib/dump_stack.c:88
- dump_stack_lvl+0xd9/0x1b0 linux/lib/dump_stack.c:106
- print_address_description linux/mm/kasan/report.c:377
- print_report+0xc4/0x620 linux/mm/kasan/report.c:488
- kasan_report+0xda/0x110 linux/mm/kasan/report.c:601
- kfree_skb_list_reason+0x47e/0x4c0 linux/net/core/skbuff.c:1183
- skb_release_data+0x5af/0x880 linux/net/core/skbuff.c:1026
- skb_release_all linux/net/core/skbuff.c:1094
- __kfree_skb linux/net/core/skbuff.c:1108
- kfree_skb_reason+0x12d/0x210 linux/net/core/skbuff.c:1144
- kfree_skb linux/./include/linux/skbuff.h:1244
- tipc_buf_append+0x425/0xb50 linux/net/tipc/msg.c:186
- tipc_link_input+0x224/0x7c0 linux/net/tipc/link.c:1324
- tipc_link_rcv+0x76e/0x2d70 linux/net/tipc/link.c:1824
- tipc_rcv+0x45f/0x10f0 linux/net/tipc/node.c:2159
- tipc_udp_recv+0x73b/0x8f0 linux/net/tipc/udp_media.c:390
- udp_queue_rcv_one_skb+0xad2/0x1850 linux/net/ipv4/udp.c:2108
- udp_queue_rcv_skb+0x131/0xb00 linux/net/ipv4/udp.c:2186
- udp_unicast_rcv_skb+0x165/0x3b0 linux/net/ipv4/udp.c:2346
- __udp4_lib_rcv+0x2594/0x3400 linux/net/ipv4/udp.c:2422
- ip_protocol_deliver_rcu+0x30c/0x4e0 linux/net/ipv4/ip_input.c:205
- ip_local_deliver_finish+0x2e4/0x520 linux/net/ipv4/ip_input.c:233
- NF_HOOK linux/./include/linux/netfilter.h:314
- NF_HOOK linux/./include/linux/netfilter.h:308
- ip_local_deliver+0x18e/0x1f0 linux/net/ipv4/ip_input.c:254
- dst_input linux/./include/net/dst.h:461
- ip_rcv_finish linux/net/ipv4/ip_input.c:449
- NF_HOOK linux/./include/linux/netfilter.h:314
- NF_HOOK linux/./include/linux/netfilter.h:308
- ip_rcv+0x2c5/0x5d0 linux/net/ipv4/ip_input.c:569
- __netif_receive_skb_one_core+0x199/0x1e0 linux/net/core/dev.c:5534
- __netif_receive_skb+0x1f/0x1c0 linux/net/core/dev.c:5648
- process_backlog+0x101/0x6b0 linux/net/core/dev.c:5976
- __napi_poll.constprop.0+0xba/0x550 linux/net/core/dev.c:6576
- napi_poll linux/net/core/dev.c:6645
- net_rx_action+0x95a/0xe90 linux/net/core/dev.c:6781
- __do_softirq+0x21f/0x8e7 linux/kernel/softirq.c:553
- do_softirq linux/kernel/softirq.c:454
- do_softirq+0xb2/0xf0 linux/kernel/softirq.c:441
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x100/0x120 linux/kernel/softirq.c:381
- local_bh_enable linux/./include/linux/bottom_half.h:33
- rcu_read_unlock_bh linux/./include/linux/rcupdate.h:851
- __dev_queue_xmit+0x871/0x3ee0 linux/net/core/dev.c:4378
- dev_queue_xmit linux/./include/linux/netdevice.h:3169
- neigh_hh_output linux/./include/net/neighbour.h:526
- neigh_output linux/./include/net/neighbour.h:540
- ip_finish_output2+0x169f/0x2550 linux/net/ipv4/ip_output.c:235
- __ip_finish_output linux/net/ipv4/ip_output.c:313
- __ip_finish_output+0x49e/0x950 linux/net/ipv4/ip_output.c:295
- ip_finish_output+0x31/0x310 linux/net/ipv4/ip_output.c:323
- NF_HOOK_COND linux/./include/linux/netfilter.h:303
- ip_output+0x13b/0x2a0 linux/net/ipv4/ip_output.c:433
- dst_output linux/./include/net/dst.h:451
- ip_local_out linux/net/ipv4/ip_output.c:129
- ip_send_skb+0x3e5/0x560 linux/net/ipv4/ip_output.c:1492
- udp_send_skb+0x73f/0x1530 linux/net/ipv4/udp.c:963
- udp_sendmsg+0x1a36/0x2b40 linux/net/ipv4/udp.c:1250
- inet_sendmsg+0x105/0x140 linux/net/ipv4/af_inet.c:850
- sock_sendmsg_nosec linux/net/socket.c:730
- __sock_sendmsg linux/net/socket.c:745
- __sys_sendto+0x42c/0x4e0 linux/net/socket.c:2191
- __do_sys_sendto linux/net/socket.c:2203
- __se_sys_sendto linux/net/socket.c:2199
- __x64_sys_sendto+0xe0/0x1c0 linux/net/socket.c:2199
- do_syscall_x64 linux/arch/x86/entry/common.c:52
- do_syscall_64+0xd8/0x270 linux/arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x6f/0x77 linux/arch/x86/entry/entry_64.S:120
-RIP: 0033:0x7f3434974f29
-Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48
-89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d
-01 f0 ff ff 73 01 c3 48 8b 0d 37 8f 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007fff9154f2b8 EFLAGS: 00000212 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f3434974f29
-RDX: 00000000000032c8 RSI: 00007fff9154f300 RDI: 0000000000000003
-RBP: 00007fff915532e0 R08: 00007fff91553360 R09: 0000000000000010
-R10: 0000000000000000 R11: 0000000000000212 R12: 000055ed86d261d0
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-In the critical scenario, either the relevant skb is freed or its
-ownership is transferred into a frag_lists. In both cases, the cleanup
-code must not free it again: we need to clear the skb reference earlier.
-
-Fixes: 1149557d64c9 ("tipc: eliminate unnecessary linearization of incoming buffers")
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23852
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/752f1ccf762223d109845365d07f55414058e5a3.1714484273.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240314154943.2487549-1-thierry.reding@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/msg.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/host1x/bus.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/net/tipc/msg.c
-+++ b/net/tipc/msg.c
-@@ -156,6 +156,11 @@ int tipc_buf_append(struct sk_buff **hea
- 	if (!head)
- 		goto err;
- 
-+	/* Either the input skb ownership is transferred to headskb
-+	 * or the input skb is freed, clear the reference to avoid
-+	 * bad access on error path.
-+	 */
-+	*buf = NULL;
- 	if (skb_try_coalesce(head, frag, &headstolen, &delta)) {
- 		kfree_skb_partial(frag, headstolen);
- 	} else {
-@@ -179,7 +184,6 @@ int tipc_buf_append(struct sk_buff **hea
- 		*headbuf = NULL;
- 		return 1;
- 	}
--	*buf = NULL;
+diff --git a/drivers/gpu/host1x/bus.c b/drivers/gpu/host1x/bus.c
+index bdee16a0bb8e2..ba622fb5e4822 100644
+--- a/drivers/gpu/host1x/bus.c
++++ b/drivers/gpu/host1x/bus.c
+@@ -368,11 +368,6 @@ static int host1x_device_uevent(struct device *dev,
  	return 0;
- err:
- 	kfree_skb(*buf);
+ }
+ 
+-static int host1x_dma_configure(struct device *dev)
+-{
+-	return of_dma_configure(dev, dev->of_node, true);
+-}
+-
+ static const struct dev_pm_ops host1x_device_pm_ops = {
+ 	.suspend = pm_generic_suspend,
+ 	.resume = pm_generic_resume,
+@@ -386,7 +381,6 @@ struct bus_type host1x_bus_type = {
+ 	.name = "host1x",
+ 	.match = host1x_device_match,
+ 	.uevent = host1x_device_uevent,
+-	.dma_configure = host1x_dma_configure,
+ 	.pm = &host1x_device_pm_ops,
+ };
+ 
+@@ -475,8 +469,6 @@ static int host1x_device_add(struct host1x *host1x,
+ 	device->dev.bus = &host1x_bus_type;
+ 	device->dev.parent = host1x->dev;
+ 
+-	of_dma_configure(&device->dev, host1x->dev->of_node, true);
+-
+ 	device->dev.dma_parms = &device->dma_parms;
+ 	dma_set_max_seg_size(&device->dev, UINT_MAX);
+ 
+-- 
+2.43.0
+
 
 
 
