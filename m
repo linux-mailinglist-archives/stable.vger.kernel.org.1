@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-43985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94438C509A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC738C52FA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46744B20C2C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80EBA1C21955
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F1B13DDA7;
-	Tue, 14 May 2024 10:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D254B1386CC;
+	Tue, 14 May 2024 11:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjbulS+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilOeTeYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A4313DDA3;
-	Tue, 14 May 2024 10:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9159912FF89;
+	Tue, 14 May 2024 11:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683506; cv=none; b=TmHJ9QmTv83DMhYPgam0gwqasN2vp2ZkQjcqhXxxrJN6rZLWcGripttW998K4adzAO4MC9vPp2QFOVR9dYYsLYZHZNjLAEy753JufV+A0/S/gePA43CHeaI/5XzHhPYUMpMw+TCwU6M2NNDjf6TY4Spdwvg9BK2iqtKQVb43+2c=
+	t=1715686249; cv=none; b=Q1KD60TBx1moC22Cch9kcUDMI6cyW/nMjYJu2Et4OOxjwqn37ssEVng0xwV10SCTq+/jBHXlns0500sPLXN75Cz+WK95BWeUg0Wky7KLcKhIs6By8+kQlwxdNAV4ukpGp1HX+02AoPfBpfLgbsxuF8iq9h+SxQajZ7NnEEEr8EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683506; c=relaxed/simple;
-	bh=5CiHR4Fben+FQVYHH1UYYoD+tlNt2VyzVygZS7cPFm0=;
+	s=arc-20240116; t=1715686249; c=relaxed/simple;
+	bh=GU9y/FpA5MWWEjmXeZic3EOO6bb2zr/IAGEe/vj2yqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThDkjK7g1AVHT6bcUKBLgWgWtnYimDSmafZiw4vRPS/buai63IChegq1Kk2PPBy+/sMnDSyC+BltnoCCeKavofsAM0eg6UQXnGfGbIMXRiQcKSoMcVfDZb13tPnNebimehXizvXDwrySWJFutQ1c3pPMej8Ma8e1PuWc0zyB6i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjbulS+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A4AC2BD10;
-	Tue, 14 May 2024 10:45:05 +0000 (UTC)
+	 MIME-Version; b=ebeQkICZfu3fxUVIVdPoxInrTGwpJjwmDktQNro8DHA927/Jki7gXOOw8vMgfI9F73CtcTqBjqkve49zi5yJZo8+Vv6zLpHYPbINyjaH/eTyM6VtylWIt736IdEFQXYOHeZoGC3ybnUpsuURFoxNEuFm9TQaCO21hGGkBQl6EzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilOeTeYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199A9C2BD10;
+	Tue, 14 May 2024 11:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683506;
-	bh=5CiHR4Fben+FQVYHH1UYYoD+tlNt2VyzVygZS7cPFm0=;
+	s=korg; t=1715686249;
+	bh=GU9y/FpA5MWWEjmXeZic3EOO6bb2zr/IAGEe/vj2yqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjbulS+FNxF6U0s/L0vCUcPcZ4XXXpHKipTfxw6W/ANEzpjJB5HvdRCrUxU5eMjdW
-	 D77nNseoHD2+JQnykZAjeipP+SJNXvqu8xD61winuX03Odm+Ld/3oMjso+ab45xZ1H
-	 m6IGKC/YhU6yTSVs9iurImzU71lBpBihurkr1akw=
+	b=ilOeTeYCSG2PJApclinfZqeNh6y16/tPucq2QIuXj54ADQiEO/MszsTESyK2ML6CQ
+	 aqxrCLzO3EknU59ayCBUZUHmUtIhZHd502TSba6btS2qJ38jOZMs4eKLwShPax92yS
+	 Pf8L07QkwdqoBAnCZjXoW63LztP/pAygzeYy8MN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 229/336] net: hns3: release PTP resources if pf initialization failed
-Date: Tue, 14 May 2024 12:17:13 +0200
-Message-ID: <20240514101047.260398055@linuxfoundation.org>
+Subject: [PATCH 6.1 072/236] ALSA: hda: intel-sdw-acpi: fix usage of device_get_named_child_node()
+Date: Tue, 14 May 2024 12:17:14 +0200
+Message-ID: <20240514101023.104245142@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 950aa42399893a170d9b57eda0e4a3ff91fd8b70 ]
+[ Upstream commit c158cf914713efc3bcdc25680c7156c48c12ef6a ]
 
-During the PF initialization process, hclge_update_port_info may return an
-error code for some reason. At this point,  the ptp initialization has been
-completed. To void memory leaks, the resources that are applied by ptp
-should be released. Therefore, when hclge_update_port_info returns an error
-code, hclge_ptp_uninit is called to release the corresponding resources.
+The documentation for device_get_named_child_node() mentions this
+important point:
 
-Fixes: eaf83ae59e18 ("net: hns3: add querying fec ability from firmware")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
+
+Add fwnode_handle_put() to avoid a leaked reference.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Fixes: 08c2a4bc9f2a ("ALSA: hda: move Intel SoundWire ACPI scan to dedicated module")
+Message-ID: <20240426152731.38420-1-pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/hda/intel-sdw-acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 6b84c1313f9bd..a5e63655fd88d 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11751,7 +11751,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+diff --git a/sound/hda/intel-sdw-acpi.c b/sound/hda/intel-sdw-acpi.c
+index b57d72ea4503f..4e376994bf78b 100644
+--- a/sound/hda/intel-sdw-acpi.c
++++ b/sound/hda/intel-sdw-acpi.c
+@@ -41,6 +41,8 @@ static bool is_link_enabled(struct fwnode_handle *fw_node, u8 idx)
+ 				 "intel-quirk-mask",
+ 				 &quirk_mask);
  
- 	ret = hclge_update_port_info(hdev);
- 	if (ret)
--		goto err_mdiobus_unreg;
-+		goto err_ptp_uninit;
++	fwnode_handle_put(link);
++
+ 	if (quirk_mask & SDW_INTEL_QUIRK_MASK_BUS_DISABLE)
+ 		return false;
  
- 	INIT_KFIFO(hdev->mac_tnl_log);
- 
-@@ -11802,6 +11802,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 	devl_unlock(hdev->devlink);
- 	return 0;
- 
-+err_ptp_uninit:
-+	hclge_ptp_uninit(hdev);
- err_mdiobus_unreg:
- 	if (hdev->hw.mac.phydev)
- 		mdiobus_unregister(hdev->hw.mac.mdio_bus);
 -- 
 2.43.0
 
