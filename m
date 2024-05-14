@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D77D8C553B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214278C53D8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1660A1F21D52
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46C51C2247F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0915A4C0;
-	Tue, 14 May 2024 11:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DBA613D269;
+	Tue, 14 May 2024 11:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwaiTFbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbIELj7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC882B9AD;
-	Tue, 14 May 2024 11:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCD87F48C;
+	Tue, 14 May 2024 11:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687752; cv=none; b=ncD0GBNwNNCXehdZK3C9G0cPWE8GWOip4ji5mq40ptzLCsBSG1wQeONOF8yrV6upL0TakIHzRMAlS50aFPdkALB3w5L3foYEyppX9C0ai2b0wSGdXNJr2r2a0sinc7xm4MewZNjvYTipJdFfgvHY67Q2Fj6d4fwNdC6zf6AK0wU=
+	t=1715686809; cv=none; b=L6bdz781iP5+8/U9z9xuBo7d5AvdAfgjwuTpHkDewxeJm2hDIJydnFeObBxN5feAAnsa/6qBth2MZKhK5fcnjYWPNfWyXlyliL3/w5a8g8fMyPG0sgsPMKvKLX/3DrqcP4Zf4N4tKbrhs9dnR6Ngds+9pIkaPl4UVLkhH5VeA50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687752; c=relaxed/simple;
-	bh=3bi4A6U0RfV2K6QdRkkw/Eq2ekM153hRPben7N8u5Wg=;
+	s=arc-20240116; t=1715686809; c=relaxed/simple;
+	bh=U+MQGswrwf2ZJjoy3RuD5iFNflKNs5rEsBj3WQij8z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Id8fX3yROq7gGRCDRlYES4QOow5JwelWkRxXRVKwMtJuuh8FBIJ9ugexJZzBEMyWmV+hZwYz+jSFtJ4DAX2T+ylZvhprlHmFBNYk2JnBs/MXYc3SCVGWaoQikquDJLt3pKkvgBaav8FMwsB+SytDm2Lmjx4gO/+8DSrTAFC3eDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwaiTFbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D0FC2BD10;
-	Tue, 14 May 2024 11:55:51 +0000 (UTC)
+	 MIME-Version; b=XOaVK6cA98fFLuXxsBGW75T43pT7CN5eKpNcyAP2xMAG01v8CfstEnBMGfuaBuQxYCdQYGVvvmGnoagh1/lDF+BQ5AvLlXUKMJ7rj+UicY4VhEOtvDzCa+i/a0hDz+pZ5Hkvq9Az5T2Z+DYWcXxFbm0XrPKKd2770+Ek1Mww2Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbIELj7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B500CC32781;
+	Tue, 14 May 2024 11:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687752;
-	bh=3bi4A6U0RfV2K6QdRkkw/Eq2ekM153hRPben7N8u5Wg=;
+	s=korg; t=1715686809;
+	bh=U+MQGswrwf2ZJjoy3RuD5iFNflKNs5rEsBj3WQij8z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwaiTFbXHT8Ds2r5Pm6cPKWgGAFZa0j2cf5bNKJkPjg8xZML64/X2WqxxEtbg0/0c
-	 f6S61m79JbnT4quGXGBxvpYWpzLInRTisiIIfuSk25g0qU+KJ0xnLH9GuOKjohK32C
-	 kJbD0+2U1fn5Mx7SU7m/XeG9X3PzMeozEO01d2p4=
+	b=pbIELj7T8iPE/V9muWffJDuTMsCxKjAJKVLtI4GUHHWifr4QJXYWRDBco7w2dqHtP
+	 tqBRR5zkwCeyAv6LOCgRDDne76HNtj/4EWwxfTIckXAZ3witqjyYHiN9CVixJCQLzw
+	 XdiOG4EmfVPLCXRjGz84UglETLIhuRqdg/p4PIiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
+	Adam Goldman <adamg@pobox.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/168] drm/nouveau/dp: Dont probe eDP ports twice harder
+Subject: [PATCH 4.19 30/63] firewire: ohci: mask bus reset interrupts between ISR and bottom half
 Date: Tue, 14 May 2024 12:19:51 +0200
-Message-ID: <20240514101010.200714969@linuxfoundation.org>
+Message-ID: <20240514100949.153771666@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Adam Goldman <adamg@pobox.com>
 
-[ Upstream commit bf52d7f9b2067f02efe7e32697479097aba4a055 ]
+[ Upstream commit 752e3c53de0fa3b7d817a83050b6699b8e9c6ec9 ]
 
-I didn't pay close enough attention the last time I tried to fix this
-problem - while we currently do correctly take care to make sure we don't
-probe a connected eDP port more then once, we don't do the same thing for
-eDP ports we found to be disconnected.
+In the FireWire OHCI interrupt handler, if a bus reset interrupt has
+occurred, mask bus reset interrupts until bus_reset_work has serviced and
+cleared the interrupt.
 
-So, fix this and make sure we only ever probe eDP ports once and then leave
-them at that connector state forever (since without HPD, it's not going to
-change on its own anyway). This should get rid of the last few GSP errors
-getting spit out during runtime suspend and resume on some machines, as we
-tried to reprobe eDP ports in response to ACPI hotplug probe events.
+Normally, we always leave bus reset interrupts masked. We infer the bus
+reset from the self-ID interrupt that happens shortly thereafter. A
+scenario where we unmask bus reset interrupts was introduced in 2008 in
+a007bb857e0b26f5d8b73c2ff90782d9c0972620: If
+OHCI_PARAM_DEBUG_BUSRESETS (8) is set in the debug parameter bitmask, we
+will unmask bus reset interrupts so we can log them.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404233736.7946-3-lyude@redhat.com
-(cherry picked from commit fe6660b661c3397af0867d5d098f5b26581f1290)
+irq_handler logs the bus reset interrupt. However, we can't clear the bus
+reset event flag in irq_handler, because we won't service the event until
+later. irq_handler exits with the event flag still set. If the
+corresponding interrupt is still unmasked, the first bus reset will
+usually freeze the system due to irq_handler being called again each
+time it exits. This freeze can be reproduced by loading firewire_ohci
+with "modprobe firewire_ohci debug=-1" (to enable all debugging output).
+Apparently there are also some cases where bus_reset_work will get called
+soon enough to clear the event, and operation will continue normally.
+
+This freeze was first reported a few months after a007bb85 was committed,
+but until now it was never fixed. The debug level could safely be set
+to -1 through sysfs after the module was loaded, but this would be
+ineffectual in logging bus reset interrupts since they were only
+unmasked during initialization.
+
+irq_handler will now leave the event flag set but mask bus reset
+interrupts, so irq_handler won't be called again and there will be no
+freeze. If OHCI_PARAM_DEBUG_BUSRESETS is enabled, bus_reset_work will
+unmask the interrupt after servicing the event, so future interrupts
+will be caught as desired.
+
+As a side effect to this change, OHCI_PARAM_DEBUG_BUSRESETS can now be
+enabled through sysfs in addition to during initial module loading.
+However, when enabled through sysfs, logging of bus reset interrupts will
+be effective only starting with the second bus reset, after
+bus_reset_work has executed.
+
+Signed-off-by: Adam Goldman <adamg@pobox.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_dp.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/firewire/ohci.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_dp.c b/drivers/gpu/drm/nouveau/nouveau_dp.c
-index 447b7594b35ae..0107a21dc9f9b 100644
---- a/drivers/gpu/drm/nouveau/nouveau_dp.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dp.c
-@@ -109,12 +109,15 @@ nouveau_dp_detect(struct nouveau_connector *nv_connector,
- 	u8 *dpcd = nv_encoder->dp.dpcd;
- 	int ret = NOUVEAU_DP_NONE;
+diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
+index 9807a885e698c..a4912650544fa 100644
+--- a/drivers/firewire/ohci.c
++++ b/drivers/firewire/ohci.c
+@@ -2066,6 +2066,8 @@ static void bus_reset_work(struct work_struct *work)
  
--	/* If we've already read the DPCD on an eDP device, we don't need to
--	 * reread it as it won't change
-+	/* eDP ports don't support hotplugging - so there's no point in probing eDP ports unless we
-+	 * haven't probed them once before.
+ 	ohci->generation = generation;
+ 	reg_write(ohci, OHCI1394_IntEventClear, OHCI1394_busReset);
++	if (param_debug & OHCI_PARAM_DEBUG_BUSRESETS)
++		reg_write(ohci, OHCI1394_IntMaskSet, OHCI1394_busReset);
+ 
+ 	if (ohci->quirks & QUIRK_RESET_PACKET)
+ 		ohci->request_generation = generation;
+@@ -2132,12 +2134,14 @@ static irqreturn_t irq_handler(int irq, void *data)
+ 		return IRQ_NONE;
+ 
+ 	/*
+-	 * busReset and postedWriteErr must not be cleared yet
++	 * busReset and postedWriteErr events must not be cleared yet
+ 	 * (OHCI 1.1 clauses 7.2.3.2 and 13.2.8.1)
  	 */
--	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
--	    dpcd[DP_DPCD_REV] != 0)
--		return NOUVEAU_DP_SST;
-+	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
-+		if (connector->status == connector_status_connected)
-+			return NOUVEAU_DP_SST;
-+		else if (connector->status == connector_status_disconnected)
-+			return NOUVEAU_DP_NONE;
-+	}
+ 	reg_write(ohci, OHCI1394_IntEventClear,
+ 		  event & ~(OHCI1394_busReset | OHCI1394_postedWriteErr));
+ 	log_irqs(ohci, event);
++	if (event & OHCI1394_busReset)
++		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
  
- 	mutex_lock(&nv_encoder->dp.hpd_irq_lock);
- 	if (mstm) {
+ 	if (event & OHCI1394_selfIDComplete)
+ 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
 -- 
 2.43.0
 
