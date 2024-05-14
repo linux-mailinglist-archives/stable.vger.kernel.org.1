@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28CB68C53A6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED768C5522
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27942879D3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C8701C23763
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F3112CD99;
-	Tue, 14 May 2024 11:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE4974427;
+	Tue, 14 May 2024 11:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJI4HtPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCDKacGV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F2D12C801;
-	Tue, 14 May 2024 11:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE7B3B79C;
+	Tue, 14 May 2024 11:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686627; cv=none; b=M44Xz268DMIP6PTImOuxei4MOzk9yYHnocGSndN4ahD6fhKeeIhICqxHhnkHzDPRysmdrLrC4iO0hDy20vb8ES8k/uuzFc1khL96e00XunkFLDD5hjkORfY9FncDbO8JjUz0UMIM+LRrp4lQdTd9FGEXgrdiWqYSgZieTGzYR2M=
+	t=1715687679; cv=none; b=A6pb5gDlmMu7FVUmtazwyoGV/4qEbMlVPuGq1GSiEHntPUIo1II1BIK1LUhf4TnIW+4uhKxzVCqGmCRmzpnonnNm0r8XyPqinC2tUvfCTjL1oCFsg9AgIzkYI2w7YgR8ax/rZ24ksz+5zVI5UMyD7F2LPgiyoMr1E6QDcx3JVpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686627; c=relaxed/simple;
-	bh=G45lCZMsTxxKsyswBlkp92XrmrEqBEIWQzwTJvbVU/0=;
+	s=arc-20240116; t=1715687679; c=relaxed/simple;
+	bh=wBbE7GJE+gY4reUe1d8gNyLntm4zhWMTQHtwwP/DuCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcAQYnB5ZQknWjga0SXBuQkU6HhHMxAAw6uxWmVF99ZKCu8TWjehKqcJegl0fSaG0EfTKC+uXNjPq+PoghEid2pIw+JtykGHCUPUDktQP6Je1EmjYw8Cols4RoolpbJh3xjGt8iNFCl6ucu+Z/Z1sxwISZ/Y+PpDr2cJ75fg4B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJI4HtPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB61C32781;
-	Tue, 14 May 2024 11:37:07 +0000 (UTC)
+	 MIME-Version; b=tg70yzaRVnHlZiJkmfcybb4/Jprj+VsAvZTwM1poSa61PlysNdTpDus1feesYPgHbvW69i6ovUm25VtWihpK+PV1dFNw4GIVHQrWNYTISgMYQ7rsz0jjOq/dlUvB3kWluQ2zyt2Z9TduQmdlydwRO1G8PCV7H+42AVLsyGsot9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCDKacGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AF6C2BD10;
+	Tue, 14 May 2024 11:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686627;
-	bh=G45lCZMsTxxKsyswBlkp92XrmrEqBEIWQzwTJvbVU/0=;
+	s=korg; t=1715687679;
+	bh=wBbE7GJE+gY4reUe1d8gNyLntm4zhWMTQHtwwP/DuCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJI4HtPvlwPLMK+RKFNMEUHKRb0TaIRj/ExRnkcmwnCsPlxiYuMcU8m0vgQ8fxRiB
-	 XfKhlNOHmVbSwoffhVFoWZwe/vPjKMoxJRDJmwLMNM9jYbVcP2A1dOYcQou/sL0gQO
-	 Iy7/+kphu/3YtHa0hIwXPjdMODSSZg718JHLEKj0=
+	b=KCDKacGVfjmYruDYo0XZNLOI1HhbSF9wN9rc428HT1j5e6U3Mscw/GvjTzmWtvgjB
+	 Zt3GSWuhwZfC7rTrb8+iWUtRfKbgoNP7RRiYcRavAoxdI/UL2xapSspwEPXgkpJNcd
+	 H+t+cZWD9vj0KgSsKrb4P6ZO7T3GKjvXdrZY6OKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aman Dhoot <amandhoot12@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 203/236] ALSA: hda/realtek: Fix mute led of HP Laptop 15-da3001TU
+	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 067/168] wifi: cfg80211: fix rdev_dump_mpp() arguments order
 Date: Tue, 14 May 2024 12:19:25 +0200
-Message-ID: <20240514101028.070845443@linuxfoundation.org>
+Message-ID: <20240514101009.227105610@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aman Dhoot <amandhoot12@gmail.com>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-commit 2d5af3ab9e6f1cf1468b2a5221b5c1f7f46c3333 upstream.
+[ Upstream commit ec50f3114e55406a1aad24b7dfaa1c3f4336d8eb ]
 
-This patch simply add SND_PCI_QUIRK for HP Laptop 15-da3001TU to fixed
-mute led of laptop.
+Fix the order of arguments in the TP_ARGS macro
+for the rdev_dump_mpp tracepoint event.
 
-Signed-off-by: Aman Dhoot <amandhoot12@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/CAMTp=B+3NG65Z684xMwHqdXDJhY+DJK-kuSw4adn6xwnG+b5JA@mail.gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org).
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Link: https://msgid.link/20240311164519.118398-1-Igor.A.Artemiev@mcst.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9660,6 +9660,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x869d, "HP", ALC236_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 19b78d4722834..dafea8bfcf3cb 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -963,7 +963,7 @@ TRACE_EVENT(rdev_get_mpp,
+ TRACE_EVENT(rdev_dump_mpp,
+ 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
+ 		 u8 *dst, u8 *mpp),
+-	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
++	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		NETDEV_ENTRY
+-- 
+2.43.0
+
 
 
 
