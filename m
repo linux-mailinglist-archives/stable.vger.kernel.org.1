@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5594D8C53E1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BC48C53BA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DE2F2895D5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7018928844F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A92213D274;
-	Tue, 14 May 2024 11:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DB412E1F9;
+	Tue, 14 May 2024 11:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hN4DjqIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8Lozr5K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B1F53E37;
-	Tue, 14 May 2024 11:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34E512E1DA;
+	Tue, 14 May 2024 11:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686818; cv=none; b=r1TI4qAhrUuw09GY1wjfPoFZp0njPqBy5m0kA1AVpIjeBnOakRjkn6HuiCOs5D1ej2YKpM/XJTh6SCeMqI9JM+V4WqbpkFqiFM20xZDEb3Mj82psHzRrwuguhHAp2RdTVX+K2yv7r1bxcoAsmJTppfC4S6soXkctqBUp+Lh3ies=
+	t=1715686708; cv=none; b=TLu/6U4g3MAgqdFfb5cYuEsxoa4PcLp/f3y0rN2brOpWO0AfmshRP2R3t0EShuiT2uevMFCKfkULfWEo4RjCh4sB9inw0C5n9M6sxkxgsxaKoJZDX4Uqjkj0451m1HcU1FRaAXp0i2g5jLUsylbMGAUBhZ9UtpIjkI9QVyiDPmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686818; c=relaxed/simple;
-	bh=mZdSFv+GbbPliUMYXmzO/nXjhv+/BU7S0Isc92vQeng=;
+	s=arc-20240116; t=1715686708; c=relaxed/simple;
+	bh=ivJHfgPzg1J26Dl8TxDPnerq9hp0pkSUIn8j+3WrD20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kc9qY5hQF2BqBl/MZ5LXDaoLYCurkvzaeps0u0sDn+7celEb1blEe/wCpV1HBzjhX8tOYPu4e2WljDHhlo04Yx8aHbQp0XFgPaA+MtEO6XKeI1KC691P7iB99gDD1H+8gRDrgGqpeAM0L6F8eOe/8c9IEE3Vtau6Y23FEatGyvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hN4DjqIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C76AC2BD10;
-	Tue, 14 May 2024 11:40:17 +0000 (UTC)
+	 MIME-Version; b=NGvoqCJIuP+leOH4Isc5Q2L/gNyECuo0i0+6SKX2x4YPZT1IlUQdcN6YPdqoWFZvmUM+9QxhCrj0O1y2DWaCQQYdh9O8by8BnP0UVrg8CSXMyQrARRLmYPq+J3IWmQj98tHiB/FR5v6Dj1rrZ3coZJheFTTuXayu6TjDCu0OUvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8Lozr5K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E86C2BD10;
+	Tue, 14 May 2024 11:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686818;
-	bh=mZdSFv+GbbPliUMYXmzO/nXjhv+/BU7S0Isc92vQeng=;
+	s=korg; t=1715686708;
+	bh=ivJHfgPzg1J26Dl8TxDPnerq9hp0pkSUIn8j+3WrD20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hN4DjqIlTiMO1ncvfumQJq90WruV3s/Jg+i/6iBOzuav4Kffz7ylMCCu1yO4EAqvS
-	 RnOSV6LkRGjP2a+wKU2SYtNXsW6zqpYj0PUfTTEPo4VeZbJ1vlz6CGmjdO+OKH7BwD
-	 6QiPB82MfgoATQ3B/8HW1SMxFP1GUqFvM4Elh7MY=
+	b=q8Lozr5Kgdm89FvKoYKY0XjnxMgzNVIbp0y7NP+HCwD4X4/5/vcw5gmJUrUCIXJBy
+	 XZd7pnmxs6rwrpUY9UslYHlSATm/Mb31FSuYt7wzgnDXys5eV2OnCNzzc4wnZCIvdA
+	 xXAU8LP3Bl0FSU4nCvEYmB3zSEWvAqQLrsEUtQO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 33/63] btrfs: make btrfs_clear_delalloc_extent() free delalloc reserve
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 232/236] Bluetooth: qca: add missing firmware sanity checks
 Date: Tue, 14 May 2024 12:19:54 +0200
-Message-ID: <20240514100949.266731883@linuxfoundation.org>
+Message-ID: <20240514101029.164446410@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 3c6f0c5ecc8910d4ffb0dfe85609ebc0c91c8f34 ]
+commit 2e4edfa1e2bd821a317e7d006517dcf2f3fac68d upstream.
 
-Currently, this call site in btrfs_clear_delalloc_extent() only converts
-the reservation. We are marking it not delalloc, so I don't think it
-makes sense to keep the rsv around.  This is a path where we are not
-sure to join a transaction, so it leads to incorrect free-ing during
-umount.
+Add the missing sanity checks when parsing the firmware files before
+downloading them to avoid accessing and corrupting memory beyond the
+vmalloced buffer.
 
-Helps with the pass rate of generic/269 and generic/475.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 83e81961ff7e ("Bluetooth: btqca: Introduce generic QCA ROME support")
+Cc: stable@vger.kernel.org	# 4.10
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btqca.c |   38 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index e4a4074ef33da..7f675862ffb0e 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1906,7 +1906,7 @@ static void btrfs_clear_bit_hook(void *private_data,
- 		 */
- 		if (*bits & EXTENT_CLEAR_META_RESV &&
- 		    root != fs_info->tree_root)
--			btrfs_delalloc_release_metadata(inode, len, false);
-+			btrfs_delalloc_release_metadata(inode, len, true);
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -265,9 +265,10 @@ int qca_send_pre_shutdown_cmd(struct hci
+ }
+ EXPORT_SYMBOL_GPL(qca_send_pre_shutdown_cmd);
  
- 		/* For sanity tests. */
- 		if (btrfs_is_testing(fs_info))
--- 
-2.43.0
-
+-static void qca_tlv_check_data(struct hci_dev *hdev,
++static int qca_tlv_check_data(struct hci_dev *hdev,
+ 			       struct qca_fw_config *config,
+-		u8 *fw_data, enum qca_btsoc_type soc_type)
++			       u8 *fw_data, size_t fw_size,
++			       enum qca_btsoc_type soc_type)
+ {
+ 	const u8 *data;
+ 	u32 type_len;
+@@ -283,6 +284,9 @@ static void qca_tlv_check_data(struct hc
+ 
+ 	switch (config->type) {
+ 	case ELF_TYPE_PATCH:
++		if (fw_size < 7)
++			return -EINVAL;
++
+ 		config->dnld_mode = QCA_SKIP_EVT_VSE_CC;
+ 		config->dnld_type = QCA_SKIP_EVT_VSE_CC;
+ 
+@@ -291,6 +295,9 @@ static void qca_tlv_check_data(struct hc
+ 		bt_dev_dbg(hdev, "File version      : 0x%x", fw_data[6]);
+ 		break;
+ 	case TLV_TYPE_PATCH:
++		if (fw_size < sizeof(struct tlv_type_hdr) + sizeof(struct tlv_type_patch))
++			return -EINVAL;
++
+ 		tlv = (struct tlv_type_hdr *)fw_data;
+ 		type_len = le32_to_cpu(tlv->type_len);
+ 		tlv_patch = (struct tlv_type_patch *)tlv->data;
+@@ -330,6 +337,9 @@ static void qca_tlv_check_data(struct hc
+ 		break;
+ 
+ 	case TLV_TYPE_NVM:
++		if (fw_size < sizeof(struct tlv_type_hdr))
++			return -EINVAL;
++
+ 		tlv = (struct tlv_type_hdr *)fw_data;
+ 
+ 		type_len = le32_to_cpu(tlv->type_len);
+@@ -338,17 +348,26 @@ static void qca_tlv_check_data(struct hc
+ 		BT_DBG("TLV Type\t\t : 0x%x", type_len & 0x000000ff);
+ 		BT_DBG("Length\t\t : %d bytes", length);
+ 
++		if (fw_size < length + (tlv->data - fw_data))
++			return -EINVAL;
++
+ 		idx = 0;
+ 		data = tlv->data;
+-		while (idx < length) {
++		while (idx < length - sizeof(struct tlv_type_nvm)) {
+ 			tlv_nvm = (struct tlv_type_nvm *)(data + idx);
+ 
+ 			tag_id = le16_to_cpu(tlv_nvm->tag_id);
+ 			tag_len = le16_to_cpu(tlv_nvm->tag_len);
+ 
++			if (length < idx + sizeof(struct tlv_type_nvm) + tag_len)
++				return -EINVAL;
++
+ 			/* Update NVM tags as needed */
+ 			switch (tag_id) {
+ 			case EDL_TAG_ID_HCI:
++				if (tag_len < 3)
++					return -EINVAL;
++
+ 				/* HCI transport layer parameters
+ 				 * enabling software inband sleep
+ 				 * onto controller side.
+@@ -364,6 +383,9 @@ static void qca_tlv_check_data(struct hc
+ 				break;
+ 
+ 			case EDL_TAG_ID_DEEP_SLEEP:
++				if (tag_len < 1)
++					return -EINVAL;
++
+ 				/* Sleep enable mask
+ 				 * enabling deep sleep feature on controller.
+ 				 */
+@@ -372,14 +394,16 @@ static void qca_tlv_check_data(struct hc
+ 				break;
+ 			}
+ 
+-			idx += (sizeof(u16) + sizeof(u16) + 8 + tag_len);
++			idx += sizeof(struct tlv_type_nvm) + tag_len;
+ 		}
+ 		break;
+ 
+ 	default:
+ 		BT_ERR("Unknown TLV type %d", config->type);
+-		break;
++		return -EINVAL;
+ 	}
++
++	return 0;
+ }
+ 
+ static int qca_tlv_send_segment(struct hci_dev *hdev, int seg_size,
+@@ -529,7 +553,9 @@ static int qca_download_firmware(struct
+ 	memcpy(data, fw->data, size);
+ 	release_firmware(fw);
+ 
+-	qca_tlv_check_data(hdev, config, data, soc_type);
++	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
++	if (ret)
++		return ret;
+ 
+ 	segment = data;
+ 	remain = size;
 
 
 
