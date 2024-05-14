@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AEC38C51C5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C8B8C52CC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39429B22359
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D87DB1C21915
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F6F13C673;
-	Tue, 14 May 2024 11:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AFB130495;
+	Tue, 14 May 2024 11:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOkhfkRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8YcpjVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4563513C3CA;
-	Tue, 14 May 2024 11:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5524ED531;
+	Tue, 14 May 2024 11:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684995; cv=none; b=QhQ1b2qw9NWmDk2hWsPM/bV02tgNW/lvGneKZrTJz2/ERxQjIqMLg5x6HwLlqcRGJfYGnk400TGHNMQq12h1ikWd4hmn4C8AvQEgqUhAeHN2vC8oOCJGj3/4lIyh6pNdCc/tmYzRZXgyUVgWD86DaVv4fF/vvdgBR7gM0vE4hpk=
+	t=1715686122; cv=none; b=PReYQYIQcNl9KojgLUHuHAqPmYJ1T9jQiDYP0IcKPRgvXcEC3tYdxgIBkAydc+W6QrMs8ddKLJdhKzOJ0FwcvSTuOScRyGUtOzq9zgVH2gWzQzkG4EZ/ESzivtKa65V1YnU+RWmiDd7p6WVCG5+Q7C9SVicwCb0VC1Vru/od2Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684995; c=relaxed/simple;
-	bh=djng8qHHt9wRAM3RjYjuhxa6rpSjCz/55qVfTCDZhWc=;
+	s=arc-20240116; t=1715686122; c=relaxed/simple;
+	bh=cQsdYgaK9zlX6EZa8Zm6nt1d2NcJk66Uj3No2aaT9UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hdxES7NDUfIKpCJ1GUHl8tVNSUrPNeAWLk9/oB1KG/oHF7nUEaZOrSoDcFvQ9a4ZaLk9YIJxmzu81Z3hPLvZCoaDU6wdSuYlGpPqBovzvRNypAro38SRjcVKP3XxowCr5vaiNX/sMOB8HFCHQyRM5FJcTuZWkPauRJWehs0EBXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOkhfkRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A472EC32781;
-	Tue, 14 May 2024 11:09:54 +0000 (UTC)
+	 MIME-Version; b=LTdH5NEyTnhZp08XdfilbePY79oTy84joIwdkt3OolrWXEGzC98KFIhXM/S8hqlh/tlpdIofLBZlnKHf2tQLJLhNVcoWglsHImVykXMLUWKLIyJguXPm61e5jom91mKqaax3aASTXYzNT4oPOAhx8YyD2MkAFn54qpSUEXIuPac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8YcpjVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FAAC2BD10;
+	Tue, 14 May 2024 11:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684995;
-	bh=djng8qHHt9wRAM3RjYjuhxa6rpSjCz/55qVfTCDZhWc=;
+	s=korg; t=1715686122;
+	bh=cQsdYgaK9zlX6EZa8Zm6nt1d2NcJk66Uj3No2aaT9UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOkhfkRhHLZe0CD13Qwq6e9TiR82wPZvUdw13xz7uoKA8JvuzYYxBY7O94lWJV0V5
-	 ymHXTco+4ycR38kD5zq+FBsWLjCVukkDaTRc6FCqqgM5W1V3O3mUO4cATP6gtCMJ3/
-	 9atgkTYx5/6OhS8PfhcQyz4834Buujizb/LJ3CNQ=
+	b=K8YcpjVJ9gX2nbltRyHkUu56IxxWgtvK9g36JrO0ktBeggkK+ZlHLB9HDSIXi+vAj
+	 3AxdfmN28TKozJA5zIlqEosX9XKc0bK3+0rlstpHK4ErSzgM8GJM3wTpOjWjTxOTne
+	 tOboyZQSpiAC2Y59wWwX29lhz4EITRKDjeBItQDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Mark Brown <broonie@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/301] regulator: tps65132: Add of_match table
-Date: Tue, 14 May 2024 12:16:30 +0200
-Message-ID: <20240514101036.743763231@linuxfoundation.org>
+Subject: [PATCH 6.1 029/236] nfs: make the rpc_stat per net namespace
+Date: Tue, 14 May 2024 12:16:31 +0200
+Message-ID: <20240514101021.447054063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit a469158eaf8f4b10263b417856d923dfa38ae96d ]
+[ Upstream commit 1548036ef1204df65ca5a16e8b199c858cb80075 ]
 
-Add of_match table for "ti,tps65132" compatible string.
-This fixes automatic driver loading when using device-tree,
-and if built as a module like major linux distributions do.
+Now that we're exposing the rpc stats on a per-network namespace basis,
+move this struct into struct nfs_net and use that to make sure only the
+per-network namespace stats are exposed.
 
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Link: https://msgid.link/r/20240325-of_tps65132-v1-1-86a5f7ef4ede@apitzsch.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/tps65132-regulator.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/nfs/client.c   | 5 ++++-
+ fs/nfs/inode.c    | 4 +++-
+ fs/nfs/internal.h | 2 --
+ fs/nfs/netns.h    | 2 ++
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/regulator/tps65132-regulator.c b/drivers/regulator/tps65132-regulator.c
-index a06f5f2d79329..9c2f0dd42613d 100644
---- a/drivers/regulator/tps65132-regulator.c
-+++ b/drivers/regulator/tps65132-regulator.c
-@@ -267,10 +267,17 @@ static const struct i2c_device_id tps65132_id[] = {
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index f50e025ae4064..755256875052f 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -73,7 +73,6 @@ const struct rpc_program nfs_program = {
+ 	.number			= NFS_PROGRAM,
+ 	.nrvers			= ARRAY_SIZE(nfs_version),
+ 	.version		= nfs_version,
+-	.stats			= &nfs_rpcstat,
+ 	.pipe_dir_name		= NFS_PIPE_DIRNAME,
  };
- MODULE_DEVICE_TABLE(i2c, tps65132_id);
  
-+static const struct of_device_id __maybe_unused tps65132_of_match[] = {
-+	{ .compatible = "ti,tps65132" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, tps65132_of_match);
+@@ -496,6 +495,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
+ 			  const struct nfs_client_initdata *cl_init,
+ 			  rpc_authflavor_t flavor)
+ {
++	struct nfs_net		*nn = net_generic(clp->cl_net, nfs_net_id);
+ 	struct rpc_clnt		*clnt = NULL;
+ 	struct rpc_create_args args = {
+ 		.net		= clp->cl_net,
+@@ -507,6 +507,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
+ 		.servername	= clp->cl_hostname,
+ 		.nodename	= cl_init->nodename,
+ 		.program	= &nfs_program,
++		.stats		= &nn->rpcstats,
+ 		.version	= clp->rpc_ops->version,
+ 		.authflavor	= flavor,
+ 		.cred		= cl_init->cred,
+@@ -1142,6 +1143,8 @@ void nfs_clients_init(struct net *net)
+ #endif
+ 	spin_lock_init(&nn->nfs_client_lock);
+ 	nn->boot_time = ktime_get_real();
++	memset(&nn->rpcstats, 0, sizeof(nn->rpcstats));
++	nn->rpcstats.program = &nfs_program;
+ 
+ 	nfs_netns_sysfs_setup(nn, net);
+ }
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 3cdb8daa6d6a9..fae1e009cd6cf 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2333,8 +2333,10 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ 
+ static int nfs_net_init(struct net *net)
+ {
++	struct nfs_net *nn = net_generic(net, nfs_net_id);
 +
- static struct i2c_driver tps65132_i2c_driver = {
- 	.driver = {
- 		.name = "tps65132",
- 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-+		.of_match_table = of_match_ptr(tps65132_of_match),
- 	},
- 	.probe = tps65132_probe,
- 	.id_table = tps65132_id,
+ 	nfs_clients_init(net);
+-	rpc_proc_register(net, &nfs_rpcstat);
++	rpc_proc_register(net, &nn->rpcstats);
+ 	return nfs_fs_proc_net_init(net);
+ }
+ 
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 35a8ae46b6c34..b3b801e7c4bc5 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -443,8 +443,6 @@ int nfs_try_get_tree(struct fs_context *);
+ int nfs_get_tree_common(struct fs_context *);
+ void nfs_kill_super(struct super_block *);
+ 
+-extern struct rpc_stat nfs_rpcstat;
+-
+ extern int __init register_nfs_fs(void);
+ extern void __exit unregister_nfs_fs(void);
+ extern bool nfs_sb_active(struct super_block *sb);
+diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
+index c8374f74dce11..a68b21603ea9a 100644
+--- a/fs/nfs/netns.h
++++ b/fs/nfs/netns.h
+@@ -9,6 +9,7 @@
+ #include <linux/nfs4.h>
+ #include <net/net_namespace.h>
+ #include <net/netns/generic.h>
++#include <linux/sunrpc/stats.h>
+ 
+ struct bl_dev_msg {
+ 	int32_t status;
+@@ -34,6 +35,7 @@ struct nfs_net {
+ 	struct nfs_netns_client *nfs_client;
+ 	spinlock_t nfs_client_lock;
+ 	ktime_t boot_time;
++	struct rpc_stat rpcstats;
+ #ifdef CONFIG_PROC_FS
+ 	struct proc_dir_entry *proc_nfsfs;
+ #endif
 -- 
 2.43.0
 
