@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C708C53B5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC9D8C541E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83AD31C22B1C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5DAA1F2180E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A850012EBC7;
-	Tue, 14 May 2024 11:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C281386BD;
+	Tue, 14 May 2024 11:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3ofiap1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf80zLay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF0012E1FE;
-	Tue, 14 May 2024 11:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767C5136672;
+	Tue, 14 May 2024 11:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686714; cv=none; b=qIFVuXKiSoZ7JWRzHRJJAT+ztbcFKyYo/csBC0NtLd05H3BSlao1TvzMjh+vyHSgIRQ1ees97bRAihrSDVNu7STIVP5QkyMZizewFWHV8GYJdOyGVm0+TK25L525NatYCJLQU0xruA9HztCrNvvOsZZHqsdumIoD7uKZq7SoT6o=
+	t=1715686990; cv=none; b=ZgZkeXxWyDNCxBeLF/1/bhabR6q7szk5pRiJ7AQTWtC51eSQt+ATxTz2LlLlJWx4yNiXKkiteMBC8MVJ/iDKp6QrSKjAvPbxwiNehoKAhOKZWTW5sjvdtHL8TZo46YehaKd/RadXmJ0EHQ9+gT7aQeIrhRmq5iWDakbh5ml5o54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686714; c=relaxed/simple;
-	bh=hW1QH/dWmrW3DHsYkVTQyKd/t3snSIL/vI7nKhIrTvw=;
+	s=arc-20240116; t=1715686990; c=relaxed/simple;
+	bh=tdk23UCMreSNmkf2YlSwCGorZW/Kot3nqQV1ffed0LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOWBE/XHS3ktkrqDhlleNtsCCQ/+OVC3kQZZ4YYao1VjjuXSRDg5kU4lXhp60mQjbIdwGUHRAJ0DHdt2LpJghCbaBmzVHeaaQF5/jFmWUC+LcTbtKIF5rRZuvm9w0AhVYPXLuK1zDubgIU3Ev4hdlxZOCP9qU6b4uMeeWA8aAww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3ofiap1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA539C2BD10;
-	Tue, 14 May 2024 11:38:33 +0000 (UTC)
+	 MIME-Version; b=FQ1Jev8hz+1f3Ehm/xs1mf/JNbnGM1z2UYpCMGeTNtDb5/HRPiXPyhQw2H/Gxhh0fkxiR9s90tXMxQ9hTroYYPUpRwv1nytOyZfqUiKAaR9z6cxagNJxXpKpJYw6IrxpzKuYgjds22W0IifWjQse08ezHpugp01hG4220aQlj+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf80zLay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54EDC2BD10;
+	Tue, 14 May 2024 11:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686714;
-	bh=hW1QH/dWmrW3DHsYkVTQyKd/t3snSIL/vI7nKhIrTvw=;
+	s=korg; t=1715686990;
+	bh=tdk23UCMreSNmkf2YlSwCGorZW/Kot3nqQV1ffed0LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3ofiap1/KwEytzT1QpOwMo/n8Vd1MoL1aZ1CdNRmRQDSmK1GQbt90WW0EAqSqtc7
-	 ks0NWj1rucnJRHjcFlO33VF7yHEJ/sCFFPDu8/Q40ya0STWZMLTjMDSMkRZ70sxjgO
-	 KOymvcNJUejgO4hWNpoVKBFQFfH2KzX13LTkPXUs=
+	b=nf80zLayqAESK7v2NL0zLrskYa7w8TDi/DpOcugXe0suITBfslQnV9Kvn21N/jGWW
+	 Zr4bwIagCMKrfZy7NQB7tvaAblu+X037YpxkYv396noWQqlWgpK290E/RVfbStnf8J
+	 zfBMFOm/pjPC+Fl+QNP/CctMIpuPXq+TsrClWuCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jai Luthra <j-luthra@ti.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 216/236] ASoC: ti: davinci-mcasp: Fix race condition during probe
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 27/84] ASoC: meson: axg-tdm-interface: manage formatters in trigger
 Date: Tue, 14 May 2024 12:19:38 +0200
-Message-ID: <20240514101028.558790949@linuxfoundation.org>
+Message-ID: <20240514100952.719719439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit d18ca8635db2f88c17acbdf6412f26d4f6aff414 upstream.
+[ Upstream commit bf5e4887eeddb48480568466536aa08ec7f179a5 ]
 
-When using davinci-mcasp as CPU DAI with simple-card, there are some
-conditions that cause simple-card to finish registering a sound card before
-davinci-mcasp finishes registering all sound components. This creates a
-non-working sound card from userspace with no problem indication apart
-from not being able to play/record audio on a PCM stream. The issue
-arises during simultaneous probe execution of both drivers. Specifically,
-the simple-card driver, awaiting a CPU DAI, proceeds as soon as
-davinci-mcasp registers its DAI. However, this process can lead to the
-client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
-being preempted before PCM DMA registration on davinci-mcasp finishes.
-This situation occurs when the probes of both drivers run concurrently.
-Below is the code path for this condition. To solve the issue, defer
-davinci-mcasp CPU DAI registration to the last step in the audio part of
-it. This way, simple-card CPU DAI parsing will be deferred until all
-audio components are registered.
+So far, the formatters have been reset/enabled using the .prepare()
+callback. This was done in this callback because walking the formatters use
+a mutex so it could not be done in .trigger(), which is atomic by default.
 
-Fail Code Path:
+It turns out there is a problem on capture path of the AXG series.
+The FIFO may get out of sync with the TDM decoder if the IP are not enabled
+in a specific order. The FIFO must be enabled before the formatter starts
+producing data. IOW, we must deal with FE before the BE. The .prepare()
+callback is called on the BEs before the FE so it is not OK for the AXG.
 
-simple-card.c: probe starts
-simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns EPROBE_DEFER, no CPU DAI yet
-davinci-mcasp.c: probe starts
-davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
-simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc_register_card()
-simple-card.c: finish probe
-davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
-davinci-mcasp.c: probe finish
+The .trigger() callback order can be configured, and it deals with the FE
+before the BEs by default. To solve our problem, we just need to start and
+stop the formatters from the .trigger() callback. It is OK do so now that
+the links have been made 'nonatomic' in the card driver.
 
-Cc: stable@vger.kernel.org
-Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on configured DMA controller")
-Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Reviewed-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20211020114217.133153-3-jbrunet@baylibre.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/davinci-mcasp.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/soc/meson/axg-tdm-interface.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -2416,12 +2416,6 @@ static int davinci_mcasp_probe(struct pl
+diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
+index 34aff050caf25..dc2fe9e2baadd 100644
+--- a/sound/soc/meson/axg-tdm-interface.c
++++ b/sound/soc/meson/axg-tdm-interface.c
+@@ -351,13 +351,29 @@ static int axg_tdm_iface_hw_free(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
  
- 	mcasp_reparent_fck(pdev);
- 
--	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
--					      &davinci_mcasp_dai[mcasp->op_mode], 1);
--
--	if (ret != 0)
--		goto err;
--
- 	ret = davinci_mcasp_get_dma_type(mcasp);
- 	switch (ret) {
- 	case PCM_EDMA:
-@@ -2448,6 +2442,12 @@ static int davinci_mcasp_probe(struct pl
- 		goto err;
- 	}
- 
-+	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
-+					      &davinci_mcasp_dai[mcasp->op_mode], 1);
+-static int axg_tdm_iface_prepare(struct snd_pcm_substream *substream,
++static int axg_tdm_iface_trigger(struct snd_pcm_substream *substream,
++				 int cmd,
+ 				 struct snd_soc_dai *dai)
+ {
+-	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
++	struct axg_tdm_stream *ts =
++		snd_soc_dai_get_dma_data(dai, substream);
 +
-+	if (ret != 0)
-+		goto err;
-+
- no_audio:
- 	ret = davinci_mcasp_init_gpiochip(mcasp);
- 	if (ret) {
++	switch (cmd) {
++	case SNDRV_PCM_TRIGGER_START:
++	case SNDRV_PCM_TRIGGER_RESUME:
++	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++		axg_tdm_stream_start(ts);
++		break;
++	case SNDRV_PCM_TRIGGER_SUSPEND:
++	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
++	case SNDRV_PCM_TRIGGER_STOP:
++		axg_tdm_stream_stop(ts);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+-	/* Force all attached formatters to update */
+-	return axg_tdm_stream_reset(ts);
++	return 0;
+ }
+ 
+ static int axg_tdm_iface_remove_dai(struct snd_soc_dai *dai)
+@@ -397,8 +413,8 @@ static const struct snd_soc_dai_ops axg_tdm_iface_ops = {
+ 	.set_fmt	= axg_tdm_iface_set_fmt,
+ 	.startup	= axg_tdm_iface_startup,
+ 	.hw_params	= axg_tdm_iface_hw_params,
+-	.prepare	= axg_tdm_iface_prepare,
+ 	.hw_free	= axg_tdm_iface_hw_free,
++	.trigger	= axg_tdm_iface_trigger,
+ };
+ 
+ /* TDM Backend DAIs */
+-- 
+2.43.0
+
 
 
 
