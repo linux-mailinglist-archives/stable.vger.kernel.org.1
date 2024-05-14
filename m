@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE8F8C556D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185918C54AD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5452B21E7C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 259ED28A2B4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE811D54D;
-	Tue, 14 May 2024 11:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A515A4C0;
+	Tue, 14 May 2024 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIOIplF+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wodCXErI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7DCF9D4;
-	Tue, 14 May 2024 11:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CBD320F;
+	Tue, 14 May 2024 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687885; cv=none; b=IWDwsxyz+SCUu05rXLxvSJvW/qq6QkcNutoB0oUo96LJ4mQJc18RTTsfcdmsWuNxO70MsxivDerhYqiSYQuxiCAPsOya6Zbsm+izjmQq0prDAZV6BfqCSObV2I+cWHGR2u2RbMG1dnmEHygNChopTBsWZw33u2gybqaQcH9r9Tg=
+	t=1715687363; cv=none; b=OZ2F7u8ifJeJODnKNsio+yV1/v90vWZMWgVJ9kDJhOFiaRFdtShpCmy6/dpuXai3iN2lV5Hzt35ohAKLhNomSEbYh0Z3SrPn2ii1fSD/3KKvAXi+oLR074y8jpkMCdquNC4YFXI9t5XL8tkoPVGrRRNhEYKKBsdhsEMwg0lrhj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687885; c=relaxed/simple;
-	bh=ISeYqwm0IIkRcfq+yxMWEZePu5AiDAab+mtztrHIxVg=;
+	s=arc-20240116; t=1715687363; c=relaxed/simple;
+	bh=eCBGNtOOqOm+8D2E883NNyppUeVyzELGYz9CrbTS3mI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYBS/jS4CpqM1yEIlDRVHKtmV08qNMsfkUv54gQ21wdE2xOKBrB+5alVzvDLqiabjMrVzk2KezQG0clyvckUEBbWj4kx2Ql9WoM2FZXEXiANHB1RlsMcWTu8K/oJVaDRZAms0U+OH1S8WQC9/o+Os3fGRpBvljRRBexfqN9+kzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIOIplF+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66466C2BD10;
-	Tue, 14 May 2024 11:58:04 +0000 (UTC)
+	 MIME-Version; b=j7A0wlNfsdYCmbucm9sP7+RehZsr5CkDIRDx7smFcxVi0Y2ggDlZ0YpYbGPvmmqW8nYnwFHEI0rOacyZqzV3hcx7NHRSpnjbaT37K25j5U8/yU99QIqCzf6MaIYHOEzF4GLXvEmXxrRiRRWGSs4+clnhB83VnCViK2SfkxTsDZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wodCXErI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D9AC2BD10;
+	Tue, 14 May 2024 11:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687884;
-	bh=ISeYqwm0IIkRcfq+yxMWEZePu5AiDAab+mtztrHIxVg=;
+	s=korg; t=1715687363;
+	bh=eCBGNtOOqOm+8D2E883NNyppUeVyzELGYz9CrbTS3mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIOIplF+NbhLoTawaYb4wCe4+SQd1uQIzEWkC8odKKjbRrXH7wgd7BcggsvuUvjFd
-	 IefjL2UfEJbSP1BUodqvE9FWg5Vjl+dD1o7OfXjabJSsCt5h+QcKHoPpq9y4WPJGct
-	 gXLvsmNk1infCw+V96VKmDOg/gA7AeGjn+RGoxJE=
+	b=wodCXErIHvGP1Q0ymssG0QboJeTyYQUx1e64GweXG1SPSggyQKDUKDao9+VGVgBj3
+	 sIf+CH1atkZeDNH5JTvUxLzugJxTcFrV69Q0J2mBQ18KjaT2zfZgOkftTjgXEc7VH/
+	 GPpb8iFaVPf6Sai/gfdbn5+o9Y2tY/4stVMaEar8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Lyude Paul <lyude@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/168] hwmon: (corsair-cpro) Use complete_all() instead of complete() in ccp_raw_event()
+Subject: [PATCH 5.10 071/111] drm/nouveau/dp: Dont probe eDP ports twice harder
 Date: Tue, 14 May 2024 12:20:09 +0200
-Message-ID: <20240514101010.874715286@linuxfoundation.org>
+Message-ID: <20240514100959.832384459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Lyude Paul <lyude@redhat.com>
 
-[ Upstream commit 3a034a7b0715eb51124a5263890b1ed39978ed3a ]
+[ Upstream commit bf52d7f9b2067f02efe7e32697479097aba4a055 ]
 
-In ccp_raw_event(), the ccp->wait_input_report completion is
-completed once. Since we're waiting for exactly one report in
-send_usb_cmd(), use complete_all() instead of complete()
-to mark the completion as spent.
+I didn't pay close enough attention the last time I tried to fix this
+problem - while we currently do correctly take care to make sure we don't
+probe a connected eDP port more then once, we don't do the same thing for
+eDP ports we found to be disconnected.
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-3-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+So, fix this and make sure we only ever probe eDP ports once and then leave
+them at that connector state forever (since without HPD, it's not going to
+change on its own anyway). This should get rid of the last few GSP errors
+getting spit out during runtime suspend and resume on some machines, as we
+tried to reprobe eDP ports in response to ACPI hotplug probe events.
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240404233736.7946-3-lyude@redhat.com
+(cherry picked from commit fe6660b661c3397af0867d5d098f5b26581f1290)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-cpro.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_dp.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 0a9cbb556188f..543a741fe5473 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -140,7 +140,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 		return 0;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_dp.c b/drivers/gpu/drm/nouveau/nouveau_dp.c
+index 447b7594b35ae..0107a21dc9f9b 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_dp.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dp.c
+@@ -109,12 +109,15 @@ nouveau_dp_detect(struct nouveau_connector *nv_connector,
+ 	u8 *dpcd = nv_encoder->dp.dpcd;
+ 	int ret = NOUVEAU_DP_NONE;
  
- 	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
--	complete(&ccp->wait_input_report);
-+	complete_all(&ccp->wait_input_report);
+-	/* If we've already read the DPCD on an eDP device, we don't need to
+-	 * reread it as it won't change
++	/* eDP ports don't support hotplugging - so there's no point in probing eDP ports unless we
++	 * haven't probed them once before.
+ 	 */
+-	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
+-	    dpcd[DP_DPCD_REV] != 0)
+-		return NOUVEAU_DP_SST;
++	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
++		if (connector->status == connector_status_connected)
++			return NOUVEAU_DP_SST;
++		else if (connector->status == connector_status_disconnected)
++			return NOUVEAU_DP_NONE;
++	}
  
- 	return 0;
- }
+ 	mutex_lock(&nv_encoder->dp.hpd_irq_lock);
+ 	if (mstm) {
 -- 
 2.43.0
 
