@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A6C8C5537
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A008C53F9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B052284AFF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19B6B289648
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA24A4F1F8;
-	Tue, 14 May 2024 11:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96D112FF75;
+	Tue, 14 May 2024 11:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpC7sLi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jev0X4wY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B0C2B9AD;
-	Tue, 14 May 2024 11:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8679E12F394;
+	Tue, 14 May 2024 11:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687726; cv=none; b=R9PzzB4+AEfzupscbeNAk614nbIsh3ML/oMD0Tf3KicQVqB2s9U+PUO+GZWzCM3Rc7znom/FMtnSuPnYnlFJPT1sLbM5RirKrkzEjQ3GRqNjDMZ1rcFS8xHbXZUgxkoQizw02g5+SmQvJhn1ld5PEcX6AkUEWSBvfY6otEHfKWg=
+	t=1715686877; cv=none; b=eL/UmQqiTxgcWBumhR4URu91xnFYPnMgsLwm3tz2SZS8+brwZ9xT0c2/FdHWTAx6y2B5KR+1078gQjq4qnDgP0HKlnXK+fWKEZYsdpyDuE+RPERvOL71+8oTBkcasqQcO1kyGDtq5ein6ht04plvtWZsiWe6J9AevQEMTiOz02U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687726; c=relaxed/simple;
-	bh=+2wpBi+lC0xVuiabtoDLolxqQ48rZMYiqw1da022TJA=;
+	s=arc-20240116; t=1715686877; c=relaxed/simple;
+	bh=mTvrySSx2p1lo9n2V+N1MKuBkrQBs+RiVm92ukYAjwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F05kiSngBAz5jT/IzRG/OM13sI4R6wGMNU579oPj386NYA6ISIhLHlg2mOCuDE5V3jv/t+VGUGzD3LQH8rSrinzZ8E+6x6Nflw0459htBKtW65jp7J7z6cdojvl7TaE+og9669sxbgCRfHMXViAB431C0j0jzZpOKLr8GHUbwws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpC7sLi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30412C2BD10;
-	Tue, 14 May 2024 11:55:26 +0000 (UTC)
+	 MIME-Version; b=WGZeeS06ZqHxLylQdUI4AqOf+678Z6UsKmZVk/qGTvmuZ0Q9d16R2GeG1smCU+PdLq/E1Jav8E4sirjif7fdVSFWeAsoL3K25Uwe+OwOf2C3YzRIoiZ/jrnehHPeAJtIpjUZBLoOMI3RDn6WZ3Kx21lr3iasCmUn9ttmn3tfbVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jev0X4wY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFADC2BD10;
+	Tue, 14 May 2024 11:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687726;
-	bh=+2wpBi+lC0xVuiabtoDLolxqQ48rZMYiqw1da022TJA=;
+	s=korg; t=1715686877;
+	bh=mTvrySSx2p1lo9n2V+N1MKuBkrQBs+RiVm92ukYAjwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpC7sLi7iGYAnEu+1m1Un1kejdQYmTAMdDRJUpDu7b960me/Rp9l+9NPyaAIocXM8
-	 e8XjEUfyoYjZO64gNHULRI7lhqXttHvhbCv0cyIlRt7ay7JmsfvRXjzMLgmtxrlYOn
-	 QkyYBVGcw/xOpziBI/cgz9K6V3mjwheu821HKGoI=
+	b=Jev0X4wYcHQP9HiuNdINh8BzGmtzTHdvIdWo+vkCkTEu85HvtK0iLUVr+13X6fC2I
+	 wTtHeWofA/bLqhjBKoLPeexm/fcNgae3GbPTAE+ABx9PPvKuHs9GE8get5dxKRwUmq
+	 mGlw3efVJ8oELQGK3eE4uAqp6YQ1swm4JCM125Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <joneslee@google.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	John Stultz <jstultz@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Tung Nguyen <tung.q.nguyen@dektech.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/168] selftests: timers: Fix valid-adjtimex signed left-shift undefined behavior
+Subject: [PATCH 4.19 21/63] tipc: fix a possible memleak in tipc_buf_append
 Date: Tue, 14 May 2024 12:19:42 +0200
-Message-ID: <20240514101009.863940814@linuxfoundation.org>
+Message-ID: <20240514100948.816808192@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 076361362122a6d8a4c45f172ced5576b2d4a50d ]
+[ Upstream commit 97bf6f81b29a8efaf5d0983251a7450e5794370d ]
 
-The struct adjtimex freq field takes a signed value who's units are in
-shifted (<<16) parts-per-million.
+__skb_linearize() doesn't free the skb when it fails, so move
+'*buf = NULL' after __skb_linearize(), so that the skb can be
+freed on the err path.
 
-Unfortunately for negative adjustments, the straightforward use of:
-
-  freq = ppm << 16 trips undefined behavior warnings with clang:
-
-valid-adjtimex.c:66:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -499<<16,
-        ~~~~^
-valid-adjtimex.c:67:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -450<<16,
-        ~~~~^
-..
-
-Fix it by using a multiply by (1 << 16) instead of shifting negative values
-in the valid-adjtimex test case. Align the values for better readability.
-
-Reported-by: Lee Jones <joneslee@google.com>
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240409202222.2830476-1-jstultz@google.com
-Link: https://lore.kernel.org/lkml/0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com/
+Fixes: b7df21cf1b79 ("tipc: skb_linearize the head skb when reassembling msgs")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Link: https://lore.kernel.org/r/90710748c29a1521efac4f75ea01b3b7e61414cf.1714485818.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/timers/valid-adjtimex.c | 73 +++++++++----------
- 1 file changed, 36 insertions(+), 37 deletions(-)
+ net/tipc/msg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/timers/valid-adjtimex.c b/tools/testing/selftests/timers/valid-adjtimex.c
-index 48b9a803235a8..d13ebde203221 100644
---- a/tools/testing/selftests/timers/valid-adjtimex.c
-+++ b/tools/testing/selftests/timers/valid-adjtimex.c
-@@ -21,9 +21,6 @@
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  *   GNU General Public License for more details.
-  */
--
--
--
- #include <stdio.h>
- #include <stdlib.h>
- #include <time.h>
-@@ -62,45 +59,47 @@ int clear_time_state(void)
- #define NUM_FREQ_OUTOFRANGE 4
- #define NUM_FREQ_INVALID 2
- 
-+#define SHIFTED_PPM (1 << 16)
-+
- long valid_freq[NUM_FREQ_VALID] = {
--	-499<<16,
--	-450<<16,
--	-400<<16,
--	-350<<16,
--	-300<<16,
--	-250<<16,
--	-200<<16,
--	-150<<16,
--	-100<<16,
--	-75<<16,
--	-50<<16,
--	-25<<16,
--	-10<<16,
--	-5<<16,
--	-1<<16,
-+	 -499 * SHIFTED_PPM,
-+	 -450 * SHIFTED_PPM,
-+	 -400 * SHIFTED_PPM,
-+	 -350 * SHIFTED_PPM,
-+	 -300 * SHIFTED_PPM,
-+	 -250 * SHIFTED_PPM,
-+	 -200 * SHIFTED_PPM,
-+	 -150 * SHIFTED_PPM,
-+	 -100 * SHIFTED_PPM,
-+	  -75 * SHIFTED_PPM,
-+	  -50 * SHIFTED_PPM,
-+	  -25 * SHIFTED_PPM,
-+	  -10 * SHIFTED_PPM,
-+	   -5 * SHIFTED_PPM,
-+	   -1 * SHIFTED_PPM,
- 	-1000,
--	1<<16,
--	5<<16,
--	10<<16,
--	25<<16,
--	50<<16,
--	75<<16,
--	100<<16,
--	150<<16,
--	200<<16,
--	250<<16,
--	300<<16,
--	350<<16,
--	400<<16,
--	450<<16,
--	499<<16,
-+	    1 * SHIFTED_PPM,
-+	    5 * SHIFTED_PPM,
-+	   10 * SHIFTED_PPM,
-+	   25 * SHIFTED_PPM,
-+	   50 * SHIFTED_PPM,
-+	   75 * SHIFTED_PPM,
-+	  100 * SHIFTED_PPM,
-+	  150 * SHIFTED_PPM,
-+	  200 * SHIFTED_PPM,
-+	  250 * SHIFTED_PPM,
-+	  300 * SHIFTED_PPM,
-+	  350 * SHIFTED_PPM,
-+	  400 * SHIFTED_PPM,
-+	  450 * SHIFTED_PPM,
-+	  499 * SHIFTED_PPM,
- };
- 
- long outofrange_freq[NUM_FREQ_OUTOFRANGE] = {
--	-1000<<16,
--	-550<<16,
--	550<<16,
--	1000<<16,
-+	-1000 * SHIFTED_PPM,
-+	 -550 * SHIFTED_PPM,
-+	  550 * SHIFTED_PPM,
-+	 1000 * SHIFTED_PPM,
- };
- 
- #define LONG_MAX (~0UL>>1)
+diff --git a/net/tipc/msg.c b/net/tipc/msg.c
+index 0ac2704449744..911b8f4319851 100644
+--- a/net/tipc/msg.c
++++ b/net/tipc/msg.c
+@@ -140,9 +140,9 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
+ 	if (fragid == FIRST_FRAGMENT) {
+ 		if (unlikely(head))
+ 			goto err;
+-		*buf = NULL;
+ 		if (skb_has_frag_list(frag) && __skb_linearize(frag))
+ 			goto err;
++		*buf = NULL;
+ 		frag = skb_unshare(frag, GFP_ATOMIC);
+ 		if (unlikely(!frag))
+ 			goto err;
 -- 
 2.43.0
 
