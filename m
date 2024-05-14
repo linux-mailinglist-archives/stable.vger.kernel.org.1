@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-43978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BEB08C5092
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B31FB8C52F3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E87881F21C89
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA681F22B3F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE2613DB8D;
-	Tue, 14 May 2024 10:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410F0136669;
+	Tue, 14 May 2024 11:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2h+uraRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY+qKqrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC536BFBB;
-	Tue, 14 May 2024 10:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F236C84D26;
+	Tue, 14 May 2024 11:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683471; cv=none; b=RdFhZ7HZtKgZayZr3HuvRLxhwlTZwKFnm/8cnJn2zH5f2TVp8VL+WpjQYoy6hl/y7L3VU58rlLGjPx5lISY+meCX+M4dZgiL5utt6A2VmFMs75IKTNqohyb1wB7kdAmSk/fbL1qJnRZB3H1GAMk78iYBMY1qjunSZlqxI8NxZKU=
+	t=1715686229; cv=none; b=XUC3Ewq/lCmMB9nBfGAE+YFyC6Vmu0cUZ2SNDr/dshw/SZ0OgDjPeJN9h/g25LppqjXEGWOn1TBy1mXUMKFHoUghzwZGpzSPdT9taUP9gSS8PNuZaCxLw0sSP4FANSVMHRuuqrkxPKE2SBYgMofFY2NAURE4wDqW4+gFKM7FWt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683471; c=relaxed/simple;
-	bh=C9UOoRpsJPHYjS0pF1WI74lAUGZhjB4gPNKM++d4aOI=;
+	s=arc-20240116; t=1715686229; c=relaxed/simple;
+	bh=HKA6CaahibWf4vtjsWEDc4HY0SID1D/Vpglj4ee2NmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bG7A5zkeCwNxDr5mIbwcmpBnc0tQzxejQKFL6ktZX4AcNj+yl5OA3IuFjXCXLzwAWRJfjRH2YkYtCGHUYYzE79Skg+AP/opnMz+pmj6bFv8ooY80CQ8bv6wcUn1NF+OM54Hzbm0HohTagoSHq1gwFO1iBbqWisq8M0dSNeAiWKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2h+uraRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D51C2BD10;
-	Tue, 14 May 2024 10:44:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=geu3dtiy02LB1uCe1BmCMBZC9nt7/u9IChuihxduScyVImiy5Ne3Rmd4Lc55Qv8qzlKsWQCp/0jLjKIn9diNzca3yD4Gq2/o45kBkhTqoWKobd+N6klQiu3pUJvscziDYWyXvKovdPFwOVEMJfK0kleeDvcBHOUroUSeQePWACs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY+qKqrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C85C2BD10;
+	Tue, 14 May 2024 11:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683471;
-	bh=C9UOoRpsJPHYjS0pF1WI74lAUGZhjB4gPNKM++d4aOI=;
+	s=korg; t=1715686228;
+	bh=HKA6CaahibWf4vtjsWEDc4HY0SID1D/Vpglj4ee2NmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2h+uraRACxZWlsEqpphyXb8VoqU53SegEyef4dKVjrb2dX+zB21zac3MasOCZLx5+
-	 GGxvjniy7Kbur3TSy5ht36iDu7g70OFfiRQ9kopZTdHWRSVqiXi/NgWbBQ2jZImBq+
-	 321Qe6mWK34MSz+ZAA5gt0GcJzI8Vopz339TjToM=
+	b=tY+qKqrM++zl1eoZ4Gb0FtJzz1cYA6ZveQR6YaoRUpxtVOqNmG+Auk/3SfnpXE9/6
+	 S/XyShJXrr6OY1lLLcfffr6J4pDWmunBpQbxA9mMYdsSgNm4X9E3rPgPMGrwPK+TmE
+	 Whg+RnRpO3NoEjz3OSfTb1MzKumdqTKm54Kubxfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Simon Horman <horms@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 223/336] ipv6: annotate data-races around cnf.disable_ipv6
+Subject: [PATCH 6.1 065/236] net: qede: use return from qede_parse_flow_attr() for flow_spec
 Date: Tue, 14 May 2024 12:17:07 +0200
-Message-ID: <20240514101047.036229670@linuxfoundation.org>
+Message-ID: <20240514101022.829175567@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-[ Upstream commit d289ab65b89c1d4d88417cb6c03e923f21f95fae ]
+[ Upstream commit 27b44414a34b108c5a37cd5b4894f606061d86e7 ]
 
-disable_ipv6 is read locklessly, add appropriate READ_ONCE()
-and WRITE_ONCE() annotations.
+In qede_flow_spec_to_rule(), when calling
+qede_parse_flow_attr() then the return code
+was only used for a non-zero check, and then
+-EINVAL was returned.
 
-v2: do not preload net before rtnl_trylock() in
-    addrconf_disable_ipv6() (Jiri)
+qede_parse_flow_attr() can currently fail with:
+* -EINVAL
+* -EOPNOTSUPP
+* -EPROTONOSUPPORT
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+This patch changes the code to use the actual
+return code, not just return -EINVAL.
+
+The blaimed commit introduced qede_flow_spec_to_rule(),
+and this call to qede_parse_flow_attr(), it looks
+like it just duplicated how it was already used.
+
+Only compile tested.
+
+Fixes: 37c5d3efd7f8 ("qede: use ethtool_rx_flow_rule() to remove duplicated parser code")
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 4db783d68b9b ("ipv6: prevent NULL dereference in ip6_output()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c   | 9 +++++----
- net/ipv6/ip6_input.c  | 4 ++--
- net/ipv6/ip6_output.c | 2 +-
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_filter.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 775f51cbc539b..c4e2f9d35e687 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -4164,7 +4164,7 @@ static void addrconf_dad_work(struct work_struct *w)
- 			if (!ipv6_generate_eui64(addr.s6_addr + 8, idev->dev) &&
- 			    ipv6_addr_equal(&ifp->addr, &addr)) {
- 				/* DAD failed for link-local based on MAC */
--				idev->cnf.disable_ipv6 = 1;
-+				WRITE_ONCE(idev->cnf.disable_ipv6, 1);
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+index aedb98713bbf2..aeff091cdfaee 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+@@ -2002,10 +2002,9 @@ static int qede_flow_spec_to_rule(struct qede_dev *edev,
+ 	if (IS_ERR(flow))
+ 		return PTR_ERR(flow);
  
- 				pr_info("%s: IPv6 being disabled!\n",
- 					ifp->idev->dev->name);
-@@ -6325,7 +6325,8 @@ static void addrconf_disable_change(struct net *net, __s32 newf)
- 		idev = __in6_dev_get(dev);
- 		if (idev) {
- 			int changed = (!idev->cnf.disable_ipv6) ^ (!newf);
--			idev->cnf.disable_ipv6 = newf;
-+
-+			WRITE_ONCE(idev->cnf.disable_ipv6, newf);
- 			if (changed)
- 				dev_disable_change(idev);
- 		}
-@@ -6342,7 +6343,7 @@ static int addrconf_disable_ipv6(struct ctl_table *table, int *p, int newf)
+-	if (qede_parse_flow_attr(edev, proto, flow->rule, t)) {
+-		err = -EINVAL;
++	err = qede_parse_flow_attr(edev, proto, flow->rule, t);
++	if (err)
+ 		goto err_out;
+-	}
  
- 	net = (struct net *)table->extra2;
- 	old = *p;
--	*p = newf;
-+	WRITE_ONCE(*p, newf);
- 
- 	if (p == &net->ipv6.devconf_dflt->disable_ipv6) {
- 		rtnl_unlock();
-@@ -6350,7 +6351,7 @@ static int addrconf_disable_ipv6(struct ctl_table *table, int *p, int newf)
- 	}
- 
- 	if (p == &net->ipv6.devconf_all->disable_ipv6) {
--		net->ipv6.devconf_dflt->disable_ipv6 = newf;
-+		WRITE_ONCE(net->ipv6.devconf_dflt->disable_ipv6, newf);
- 		addrconf_disable_change(net, newf);
- 	} else if ((!newf) ^ (!old))
- 		dev_disable_change((struct inet6_dev *)table->extra1);
-diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-index b8378814532ce..1ba97933c74fb 100644
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -168,9 +168,9 @@ static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
- 
- 	SKB_DR_SET(reason, NOT_SPECIFIED);
- 	if ((skb = skb_share_check(skb, GFP_ATOMIC)) == NULL ||
--	    !idev || unlikely(idev->cnf.disable_ipv6)) {
-+	    !idev || unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
- 		__IP6_INC_STATS(net, idev, IPSTATS_MIB_INDISCARDS);
--		if (idev && unlikely(idev->cnf.disable_ipv6))
-+		if (idev && unlikely(READ_ONCE(idev->cnf.disable_ipv6)))
- 			SKB_DR_SET(reason, IPV6DISABLED);
- 		goto drop;
- 	}
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 568065a015c41..e4b02e94c2eb3 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -234,7 +234,7 @@ int ip6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
- 
--	if (unlikely(idev->cnf.disable_ipv6)) {
-+	if (unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
- 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
- 		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
- 		return 0;
+ 	/* Make sure location is valid and filter isn't already set */
+ 	err = qede_flow_spec_validate(edev, &flow->rule->action, t,
 -- 
 2.43.0
 
