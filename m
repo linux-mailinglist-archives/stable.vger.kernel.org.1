@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965178C53B3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C288C543F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5E281C22ABC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FFB7283CA6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BB812E1F8;
-	Tue, 14 May 2024 11:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85BB139CF1;
+	Tue, 14 May 2024 11:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbH8FbVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD/dVoPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1087412E1E7;
-	Tue, 14 May 2024 11:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638B0139599;
+	Tue, 14 May 2024 11:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686706; cv=none; b=kNDx+qf6cruEQgCSgLxoBapkqmcOCKrkNGEbEcyYIp0A2bBgJ90iMebB0ivY3KgjZi/WByN+9Xmpzm237OxgzFE/GVYhUceIBX0mtJKxDZ2AqN2sMngdOTT0JLoB12wmKRdrWKvmDhw4T3y7j4+aOZG6I26tP77FQ0zrY7Xzq9k=
+	t=1715687033; cv=none; b=IM1QbOP/e9TIeJ9Cu9Ny24IMpHHUh7RFyCOrIXZ8clkWwQ+cva4pb3MZfa5sIqtLLHUjSusk7UCx7n6E05AofNID2MchFvPDKADbhGJ2PV46osJO/3SFZUgYm6ZHbbEF4MOeexckDnFGHFAiZ0zN191YnPJwnFVDRBrRTueOp+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686706; c=relaxed/simple;
-	bh=Ptgi3DpB4w9hE5JCfCvbl8iIq/BbCJFTN6QWX4Gx9Qg=;
+	s=arc-20240116; t=1715687033; c=relaxed/simple;
+	bh=6gIXUQR3pohpZ23Choex8gNdDCDQd51lVLAl45tYVGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E91f44ZbxFNKyLUt+feQ+xDqXHQW8xbb69Pa7Vy4rqqQB2QAYsg8h/n8785yQJf9ES7R2Kfr/xbrtwp+jgwzLmQ6e2gnvZp0lRUSUxRTxJ0/1U7Z5qBa4YZaPoSdhLjgYTZF9178vGXyFaq9Iz4Ub9WNzgRMqhaniuNfvC7i3/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbH8FbVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DE9C2BD10;
-	Tue, 14 May 2024 11:38:25 +0000 (UTC)
+	 MIME-Version; b=semag3uyyrCFx7fBFZU/LwJrFPuz3MvK0Cs9he0sUsFDacZyDkKVr2OK/MgmACok31aj0PJH7rFx09ByXfR+X4icqDi3Ut7LPoQnSlVw5+vpp6VXIpAIVZNhLD/06lAZRquqA9h9PY3aIuE7KmAZGznyW96CmG93BImThqeXr7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD/dVoPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC38C2BD10;
+	Tue, 14 May 2024 11:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686705;
-	bh=Ptgi3DpB4w9hE5JCfCvbl8iIq/BbCJFTN6QWX4Gx9Qg=;
+	s=korg; t=1715687033;
+	bh=6gIXUQR3pohpZ23Choex8gNdDCDQd51lVLAl45tYVGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbH8FbVemNT0aosNgC3pyUjm/5h+2Pk/C4nrCoYtSKsbK9UsCoJ+8qFn7tURtebyf
-	 CbCra8vb3KfkBmwDDaY9r8yIoAEGS97VvB6/TT7rmNbAuOkBPa62JJOfLNihSZUDYs
-	 LulZ1EmaLeQtwMagH/gXQc6Uqr8Tj24XeQO7wMt8=
+	b=bD/dVoPTtB9XbDoBCLEhhul36LUdhG97PN8bFFkGaMTvOiQophRa7ujOFwbiCqIDS
+	 sDacfTId1XezgwQEuCUNPZz57O3VWg6DExWHH3PeIX/xTcYjvyQUyV7lJGnTIQcT0N
+	 UTt3Uh32um2FdboHYaiJZNM+F8Xk6U9CUcnmfi5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 231/236] ksmbd: do not grant v2 lease if parent lease key and epoch are not set
+	Adam Goldman <adamg@pobox.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 42/84] firewire: ohci: mask bus reset interrupts between ISR and bottom half
 Date: Tue, 14 May 2024 12:19:53 +0200
-Message-ID: <20240514101029.126620481@linuxfoundation.org>
+Message-ID: <20240514100953.273253419@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Adam Goldman <adamg@pobox.com>
 
-commit 691aae4f36f9825df6781da4399a1e718951085a upstream.
+[ Upstream commit 752e3c53de0fa3b7d817a83050b6699b8e9c6ec9 ]
 
-This patch fix xfstests generic/070 test with smb2 leases = yes.
+In the FireWire OHCI interrupt handler, if a bus reset interrupt has
+occurred, mask bus reset interrupts until bus_reset_work has serviced and
+cleared the interrupt.
 
-cifs.ko doesn't set parent lease key and epoch in create context v2 lease.
-ksmbd suppose that parent lease and epoch are vaild if data length is
-v2 lease context size and handle directory lease using this values.
-ksmbd should hanle it as v1 lease not v2 lease if parent lease key and
-epoch are not set in create context v2 lease.
+Normally, we always leave bus reset interrupts masked. We infer the bus
+reset from the self-ID interrupt that happens shortly thereafter. A
+scenario where we unmask bus reset interrupts was introduced in 2008 in
+a007bb857e0b26f5d8b73c2ff90782d9c0972620: If
+OHCI_PARAM_DEBUG_BUSRESETS (8) is set in the debug parameter bitmask, we
+will unmask bus reset interrupts so we can log them.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+irq_handler logs the bus reset interrupt. However, we can't clear the bus
+reset event flag in irq_handler, because we won't service the event until
+later. irq_handler exits with the event flag still set. If the
+corresponding interrupt is still unmasked, the first bus reset will
+usually freeze the system due to irq_handler being called again each
+time it exits. This freeze can be reproduced by loading firewire_ohci
+with "modprobe firewire_ohci debug=-1" (to enable all debugging output).
+Apparently there are also some cases where bus_reset_work will get called
+soon enough to clear the event, and operation will continue normally.
+
+This freeze was first reported a few months after a007bb85 was committed,
+but until now it was never fixed. The debug level could safely be set
+to -1 through sysfs after the module was loaded, but this would be
+ineffectual in logging bus reset interrupts since they were only
+unmasked during initialization.
+
+irq_handler will now leave the event flag set but mask bus reset
+interrupts, so irq_handler won't be called again and there will be no
+freeze. If OHCI_PARAM_DEBUG_BUSRESETS is enabled, bus_reset_work will
+unmask the interrupt after servicing the event, so future interrupts
+will be caught as desired.
+
+As a side effect to this change, OHCI_PARAM_DEBUG_BUSRESETS can now be
+enabled through sysfs in addition to during initial module loading.
+However, when enabled through sysfs, logging of bus reset interrupts will
+be effective only starting with the second bus reset, after
+bus_reset_work has executed.
+
+Signed-off-by: Adam Goldman <adamg@pobox.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/firewire/ohci.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1208,7 +1208,9 @@ int smb_grant_oplock(struct ksmbd_work *
+diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
+index 6603f13f5de9b..2db5448c4293a 100644
+--- a/drivers/firewire/ohci.c
++++ b/drivers/firewire/ohci.c
+@@ -2053,6 +2053,8 @@ static void bus_reset_work(struct work_struct *work)
  
- 	/* Only v2 leases handle the directory */
- 	if (S_ISDIR(file_inode(fp->filp)->i_mode)) {
--		if (!lctx || lctx->version != 2)
-+		if (!lctx || lctx->version != 2 ||
-+		    (lctx->flags != SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE &&
-+		     !lctx->epoch))
- 			return 0;
- 	}
+ 	ohci->generation = generation;
+ 	reg_write(ohci, OHCI1394_IntEventClear, OHCI1394_busReset);
++	if (param_debug & OHCI_PARAM_DEBUG_BUSRESETS)
++		reg_write(ohci, OHCI1394_IntMaskSet, OHCI1394_busReset);
  
-@@ -1470,8 +1472,9 @@ void create_lease_buf(u8 *rbuf, struct l
- 		buf->lcontext.LeaseFlags = lease->flags;
- 		buf->lcontext.Epoch = cpu_to_le16(lease->epoch);
- 		buf->lcontext.LeaseState = lease->state;
--		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
--		       SMB2_LEASE_KEY_SIZE);
-+		if (lease->flags == SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE)
-+			memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
-+			       SMB2_LEASE_KEY_SIZE);
- 		buf->ccontext.DataOffset = cpu_to_le16(offsetof
- 				(struct create_lease_v2, lcontext));
- 		buf->ccontext.DataLength = cpu_to_le32(sizeof(struct lease_context_v2));
-@@ -1536,8 +1539,9 @@ struct lease_ctx_info *parse_lease_state
- 		lreq->flags = lc->lcontext.LeaseFlags;
- 		lreq->epoch = lc->lcontext.Epoch;
- 		lreq->duration = lc->lcontext.LeaseDuration;
--		memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
--				SMB2_LEASE_KEY_SIZE);
-+		if (lreq->flags == SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE)
-+			memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
-+			       SMB2_LEASE_KEY_SIZE);
- 		lreq->version = 2;
- 	} else {
- 		struct create_lease *lc = (struct create_lease *)cc;
+ 	if (ohci->quirks & QUIRK_RESET_PACKET)
+ 		ohci->request_generation = generation;
+@@ -2119,12 +2121,14 @@ static irqreturn_t irq_handler(int irq, void *data)
+ 		return IRQ_NONE;
+ 
+ 	/*
+-	 * busReset and postedWriteErr must not be cleared yet
++	 * busReset and postedWriteErr events must not be cleared yet
+ 	 * (OHCI 1.1 clauses 7.2.3.2 and 13.2.8.1)
+ 	 */
+ 	reg_write(ohci, OHCI1394_IntEventClear,
+ 		  event & ~(OHCI1394_busReset | OHCI1394_postedWriteErr));
+ 	log_irqs(ohci, event);
++	if (event & OHCI1394_busReset)
++		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
+ 
+ 	if (event & OHCI1394_selfIDComplete)
+ 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
+-- 
+2.43.0
+
 
 
 
