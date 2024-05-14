@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AAA8C52B4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5778C53D0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53448B222BA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5FE1F22B2B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B51D143731;
-	Tue, 14 May 2024 11:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06D613C690;
+	Tue, 14 May 2024 11:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVF+m5+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0F0EHP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC96012DDBD;
-	Tue, 14 May 2024 11:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB5012F5BD;
+	Tue, 14 May 2024 11:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686062; cv=none; b=V0rMciutJ7UCxTt/BAQCs2KEnfN6vSdffhOpOUXpSWq6m6D0L7NEQpx2SXSVI66zlvIt8Tn8iQFTJzuN5TiDqYWndDEg6YayF+ovEQnWp+r35lV/ToCzPItbtasbACejydKJZZCqr9d7hu1SlYtEUOTBNWu6wVazlg5rPRCslyU=
+	t=1715686777; cv=none; b=BsWQNwmNzIluRmwuWOdhoMPky9W5DyjZwHxkGlgSVARcEP01Y6gdGw43pJHxhUqgPcY8ROb5kWzfVgpGOP+BC3WIf92dszTq8+SED4/FkxhEUiDJd9RKPt6vY/SwqbxtMnZg2uxbNgC/2jF4CizLXJB88ayBNY9yGqR8XVxqA2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686062; c=relaxed/simple;
-	bh=hazMWLSeuCxOgn67+HiNDGcSAv4wO4/A8qiAUtK1l+s=;
+	s=arc-20240116; t=1715686777; c=relaxed/simple;
+	bh=mTrznR+V+gdH+lDiDjx3PKrBSXtW/+k6mXSrMQb5Yhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxceFamiATyvIvGbqr/sWpWxevTIWXXG9xThdJDaSbOgn1T2O44xhnli9BeZgOjiAfAYqNIX7gW3vo3lXSc9DFPwoRSMzCpdnH7GbZFmLS9EVyBuSoaGaRJAZMMBjyQjwCDjVfcJ6+uQ1/c1SGAqfIEyE/BZXX/M9PERb9XEZXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVF+m5+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622A6C2BD10;
-	Tue, 14 May 2024 11:27:41 +0000 (UTC)
+	 MIME-Version; b=fuP4MODZfNivG/5r1p8BSP+k1UVTccFuK7+57PBhFnmUEJ9HXGhdXtoynZys3X4l1HQMdwayyVel7FChSel0xKe383QKr+kesNSojlfH4uPV6PpOqM/xTZfW17bIgrxLsNowCRpVjTSduoLX3K2ynkPNUzWbsBLbxByzBw14ifM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0F0EHP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30815C2BD10;
+	Tue, 14 May 2024 11:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686061;
-	bh=hazMWLSeuCxOgn67+HiNDGcSAv4wO4/A8qiAUtK1l+s=;
+	s=korg; t=1715686777;
+	bh=mTrznR+V+gdH+lDiDjx3PKrBSXtW/+k6mXSrMQb5Yhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVF+m5+1s4PIpFuhEAyDI+3G8j4bPHo2yVokH+TiPu0rAXOdUBcc9DzAV7ewtpq1o
-	 T2yvMTQt4mcV0+zkukCXhuVdNZThFgDPc4bE14VbSzXLErD+1FwUHRHOO9VwM/owjc
-	 JdlanR022D/9wV9rMczs0YWGZD9YdSLFpOlj3uK4=
+	b=A0F0EHP5cQtEp55B8AFQyF2e5g2lfM/pktrAM/3uHTC7mhuPku6v3EfcWnHd9JU/A
+	 bWwZBHHfqxfhWg6uVVK5Cp60812AvMBv4UCpXaa1eh+GEeBh2guVjuW5gNNE2Dbbb6
+	 4SCDCY2biXZ9mxCy+Cqr+/7clCo4PsBKtk9Hx/yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 296/301] Bluetooth: qca: add missing firmware sanity checks
+	Zhang Yu <zhangyu31@baidu.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 06/63] net: slightly optimize eth_type_trans
 Date: Tue, 14 May 2024 12:19:27 +0200
-Message-ID: <20240514101043.437623364@linuxfoundation.org>
+Message-ID: <20240514100948.253815114@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Li RongQing <lirongqing@baidu.com>
 
-commit 2e4edfa1e2bd821a317e7d006517dcf2f3fac68d upstream.
+[ Upstream commit 45cf7959c30402d7c4ea43568a6f1bab0ba6ca63 ]
 
-Add the missing sanity checks when parsing the firmware files before
-downloading them to avoid accessing and corrupting memory beyond the
-vmalloced buffer.
+netperf udp stream shows that eth_type_trans takes certain cpu,
+so adjust the mac address check order, and firstly check if it
+is device address, and only check if it is multicast address
+only if not the device address.
 
-Fixes: 83e81961ff7e ("Bluetooth: btqca: Introduce generic QCA ROME support")
-Cc: stable@vger.kernel.org	# 4.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After this change:
+To unicast, and skb dst mac is device mac, this is most of time
+reduce a comparision
+To unicast, and skb dst mac is not device mac, nothing change
+To multicast, increase a comparision
+
+Before:
+1.03%  [kernel]          [k] eth_type_trans
+
+After:
+0.78%  [kernel]          [k] eth_type_trans
+
+Signed-off-by: Zhang Yu <zhangyu31@baidu.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6e159fd653d7 ("ethernet: Add helper for assigning packet type when dest address does not match device address")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |   38 ++++++++++++++++++++++++++++++++------
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ net/ethernet/eth.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -268,9 +268,10 @@ int qca_send_pre_shutdown_cmd(struct hci
- }
- EXPORT_SYMBOL_GPL(qca_send_pre_shutdown_cmd);
+diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
+index ca06e9a53d15c..88a074dd983e6 100644
+--- a/net/ethernet/eth.c
++++ b/net/ethernet/eth.c
+@@ -165,15 +165,17 @@ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
+ 	eth = (struct ethhdr *)skb->data;
+ 	skb_pull_inline(skb, ETH_HLEN);
  
--static void qca_tlv_check_data(struct hci_dev *hdev,
-+static int qca_tlv_check_data(struct hci_dev *hdev,
- 			       struct qca_fw_config *config,
--		u8 *fw_data, enum qca_btsoc_type soc_type)
-+			       u8 *fw_data, size_t fw_size,
-+			       enum qca_btsoc_type soc_type)
- {
- 	const u8 *data;
- 	u32 type_len;
-@@ -286,6 +287,9 @@ static void qca_tlv_check_data(struct hc
- 
- 	switch (config->type) {
- 	case ELF_TYPE_PATCH:
-+		if (fw_size < 7)
-+			return -EINVAL;
-+
- 		config->dnld_mode = QCA_SKIP_EVT_VSE_CC;
- 		config->dnld_type = QCA_SKIP_EVT_VSE_CC;
- 
-@@ -294,6 +298,9 @@ static void qca_tlv_check_data(struct hc
- 		bt_dev_dbg(hdev, "File version      : 0x%x", fw_data[6]);
- 		break;
- 	case TLV_TYPE_PATCH:
-+		if (fw_size < sizeof(struct tlv_type_hdr) + sizeof(struct tlv_type_patch))
-+			return -EINVAL;
-+
- 		tlv = (struct tlv_type_hdr *)fw_data;
- 		type_len = le32_to_cpu(tlv->type_len);
- 		tlv_patch = (struct tlv_type_patch *)tlv->data;
-@@ -333,6 +340,9 @@ static void qca_tlv_check_data(struct hc
- 		break;
- 
- 	case TLV_TYPE_NVM:
-+		if (fw_size < sizeof(struct tlv_type_hdr))
-+			return -EINVAL;
-+
- 		tlv = (struct tlv_type_hdr *)fw_data;
- 
- 		type_len = le32_to_cpu(tlv->type_len);
-@@ -341,17 +351,26 @@ static void qca_tlv_check_data(struct hc
- 		BT_DBG("TLV Type\t\t : 0x%x", type_len & 0x000000ff);
- 		BT_DBG("Length\t\t : %d bytes", length);
- 
-+		if (fw_size < length + (tlv->data - fw_data))
-+			return -EINVAL;
-+
- 		idx = 0;
- 		data = tlv->data;
--		while (idx < length) {
-+		while (idx < length - sizeof(struct tlv_type_nvm)) {
- 			tlv_nvm = (struct tlv_type_nvm *)(data + idx);
- 
- 			tag_id = le16_to_cpu(tlv_nvm->tag_id);
- 			tag_len = le16_to_cpu(tlv_nvm->tag_len);
- 
-+			if (length < idx + sizeof(struct tlv_type_nvm) + tag_len)
-+				return -EINVAL;
-+
- 			/* Update NVM tags as needed */
- 			switch (tag_id) {
- 			case EDL_TAG_ID_HCI:
-+				if (tag_len < 3)
-+					return -EINVAL;
-+
- 				/* HCI transport layer parameters
- 				 * enabling software inband sleep
- 				 * onto controller side.
-@@ -367,6 +386,9 @@ static void qca_tlv_check_data(struct hc
- 				break;
- 
- 			case EDL_TAG_ID_DEEP_SLEEP:
-+				if (tag_len < 1)
-+					return -EINVAL;
-+
- 				/* Sleep enable mask
- 				 * enabling deep sleep feature on controller.
- 				 */
-@@ -375,14 +397,16 @@ static void qca_tlv_check_data(struct hc
- 				break;
- 			}
- 
--			idx += (sizeof(u16) + sizeof(u16) + 8 + tag_len);
-+			idx += sizeof(struct tlv_type_nvm) + tag_len;
- 		}
- 		break;
- 
- 	default:
- 		BT_ERR("Unknown TLV type %d", config->type);
--		break;
-+		return -EINVAL;
+-	if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
+-		if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
+-			skb->pkt_type = PACKET_BROADCAST;
+-		else
+-			skb->pkt_type = PACKET_MULTICAST;
++	if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
++					      dev->dev_addr))) {
++		if (unlikely(is_multicast_ether_addr_64bits(eth->h_dest))) {
++			if (ether_addr_equal_64bits(eth->h_dest, dev->broadcast))
++				skb->pkt_type = PACKET_BROADCAST;
++			else
++				skb->pkt_type = PACKET_MULTICAST;
++		} else {
++			skb->pkt_type = PACKET_OTHERHOST;
++		}
  	}
-+
-+	return 0;
- }
+-	else if (unlikely(!ether_addr_equal_64bits(eth->h_dest,
+-						   dev->dev_addr)))
+-		skb->pkt_type = PACKET_OTHERHOST;
  
- static int qca_tlv_send_segment(struct hci_dev *hdev, int seg_size,
-@@ -532,7 +556,9 @@ static int qca_download_firmware(struct
- 	memcpy(data, fw->data, size);
- 	release_firmware(fw);
- 
--	qca_tlv_check_data(hdev, config, data, soc_type);
-+	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
-+	if (ret)
-+		return ret;
- 
- 	segment = data;
- 	remain = size;
+ 	/*
+ 	 * Some variants of DSA tagging don't have an ethertype field
+-- 
+2.43.0
+
 
 
 
