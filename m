@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07E68C50D8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A3F8C5333
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E28271C213E4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0E321F2310F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FF88627C;
-	Tue, 14 May 2024 10:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140AD6EB46;
+	Tue, 14 May 2024 11:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hunq+P3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqUj3fLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFE369950;
-	Tue, 14 May 2024 10:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C710061674;
+	Tue, 14 May 2024 11:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683751; cv=none; b=ozTXFDXJjkHnL0yQ9Ai9mciz3PrWJVlTqOGeM5zJl1GGUY3jxVv5dFBTLfzaCEttVDCkZfeu5AsP5HVFADK9BarLe4E3FTXzqUSehWY4N5k2i3hDXGWfRWm6zP5J7Zf6Ze0t+sGNeITvnOF98zlcriTFAA0Dawd6dg6nuE78liw=
+	t=1715686358; cv=none; b=MvxtNS6BIson0hZx5wK4rHRPn976ooDQAD8mHNiJeAFvUty3wj69bw9ePyHAEM9LHIIFKKdGxt5t3GADOZFgJTE/xq/gZv+hk3E8lQIP4IndG3lm6nJmMMP6BtkOQPSlObjwYkylUMi4eCgPLEmbOINt0eHsMQFTDpkCqoELcGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683751; c=relaxed/simple;
-	bh=WdmI/3PHx/AUo2sTDBiIE6IrIIAwlRfECQPLK1qZrf0=;
+	s=arc-20240116; t=1715686358; c=relaxed/simple;
+	bh=tiVObLohjnzMRLgSxraEQXxbUcgYYXN+JCGGPX+gNLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHkojuG8D0pvOVARfzrliD7VfObWdo3J0YEWw+Pgh3BQot8U72PHpQXCUgjyDCOGZfghF0zpMnE8zJ4VJHMpdZTz8qIFwNa/ajwYP0pMwi5hDkDVARr9PgXE7ph2+TplpuQZFYIWZ6333SbI52gv2cFWhoqatzsj+rkLmbOJZOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hunq+P3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4222FC2BD10;
-	Tue, 14 May 2024 10:49:10 +0000 (UTC)
+	 MIME-Version; b=IHb2SJ+wa+REDw8kwCQbyH5o8GrK+Ehc2LWk/lYpo7Izksf2SkqtZe5+q1dF8xhBkBL6hJp7OJXMKxjU38I6JWlw6ZOoNgvhbyQJyKcqp7iZvM8jZGGLtgM/JmOpv16UWhS9icRvgAKLrdqpsoaHL8Pb0ChESTvqNhD1Wz5aOhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqUj3fLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D995C2BD10;
+	Tue, 14 May 2024 11:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683750;
-	bh=WdmI/3PHx/AUo2sTDBiIE6IrIIAwlRfECQPLK1qZrf0=;
+	s=korg; t=1715686358;
+	bh=tiVObLohjnzMRLgSxraEQXxbUcgYYXN+JCGGPX+gNLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hunq+P3EaKLW372tuYS4RQyDpqtFDTH6ii48m9mxcw199/6r80TFUV3M1xRWJa2+K
-	 iCZ72zVM9bLldKG4dY0n4hwZyqBONnTKfNF+HdinSeCXRbmnkdNCxBPHX4tcLJvvqS
-	 +CDV2Y68+F78Fg/NZ21cEY3uhgXEXfAXBSL6VwyI=
+	b=oqUj3fLNlV2N+y/hjUGacqzJ6BNjrp9CJnatxNkovye21cRC1zfOFBQ69ET+wMyz2
+	 IvDPiuMezaOS+2iMRd0N+m5mq33iPS4SyMYDgks3W3/TGhiTyW4cmWYl0pNTupIFRf
+	 qYbTUilmBI13eu6IV0pKwrEaCAiYuTkhZihn+2Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Marius Fleischer <fleischermarius@gmail.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 267/336] maple_tree: fix mas_empty_area_rev() null pointer dereference
+	Phil Elwell <phil@raspberrypi.com>,
+	Maarten Vanraes <maarten@rmail.be>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 109/236] net: bcmgenet: Reset RBUF on first open
 Date: Tue, 14 May 2024 12:17:51 +0200
-Message-ID: <20240514101048.699046587@linuxfoundation.org>
+Message-ID: <20240514101024.511035031@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Phil Elwell <phil@raspberrypi.com>
 
-commit 955a923d2809803980ff574270f81510112be9cf upstream.
+[ Upstream commit 0a6380cb4c6b5c1d6dad226ba3130f9090f0ccea ]
 
-Currently the code calls mas_start() followed by mas_data_end() if the
-maple state is MA_START, but mas_start() may return with the maple state
-node == NULL.  This will lead to a null pointer dereference when checking
-information in the NULL node, which is done in mas_data_end().
+If the RBUF logic is not reset when the kernel starts then there
+may be some data left over from any network boot loader. If the
+64-byte packet headers are enabled then this can be fatal.
 
-Avoid setting the offset if there is no node by waiting until after the
-maple state is checked for an empty or single entry state.
+Extend bcmgenet_dma_disable to do perform the reset, but not when
+called from bcmgenet_resume in order to preserve a wake packet.
 
-A user could trigger the events to cause a kernel oops by unmapping all
-vmas to produce an empty maple tree, then mapping a vma that would cause
-the scenario described above.
+N.B. This different handling of resume is just based on a hunch -
+why else wouldn't one reset the RBUF as well as the TBUF? If this
+isn't the case then it's easy to change the patch to make the RBUF
+reset unconditional.
 
-Link: https://lkml.kernel.org/r/20240422203349.2418465-1-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: Marius Fleischer <fleischermarius@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAJg=8jyuSxDL6XvqEXY_66M20psRK2J53oBTP+fjV5xpW2-R6w@mail.gmail.com/
-Link: https://lore.kernel.org/lkml/CAJg=8jyuSxDL6XvqEXY_66M20psRK2J53oBTP+fjV5xpW2-R6w@mail.gmail.com/
-Tested-by: Marius Fleischer <fleischermarius@gmail.com>
-Tested-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+See: https://github.com/raspberrypi/linux/issues/3850
+See: https://github.com/raspberrypi/firmware/issues/1882
+
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Maarten Vanraes <maarten@rmail.be>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5061,18 +5061,18 @@ int mas_empty_area_rev(struct ma_state *
- 	if (size == 0 || max - min < size - 1)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index c2a9913082153..4b8574acf848e 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3298,7 +3298,7 @@ static void bcmgenet_get_hw_addr(struct bcmgenet_priv *priv,
+ }
  
--	if (mas_is_start(mas)) {
-+	if (mas_is_start(mas))
- 		mas_start(mas);
--		mas->offset = mas_data_end(mas);
--	} else if (mas->offset >= 2) {
--		mas->offset -= 2;
--	} else if (!mas_rewind_node(mas)) {
-+	else if ((mas->offset < 2) && (!mas_rewind_node(mas)))
- 		return -EBUSY;
--	}
+ /* Returns a reusable dma control register value */
+-static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
++static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv, bool flush_rx)
+ {
+ 	unsigned int i;
+ 	u32 reg;
+@@ -3323,6 +3323,14 @@ static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
+ 	udelay(10);
+ 	bcmgenet_umac_writel(priv, 0, UMAC_TX_FLUSH);
  
--	/* Empty set. */
--	if (mas_is_none(mas) || mas_is_ptr(mas))
-+	if (unlikely(mas_is_none(mas) || mas_is_ptr(mas)))
- 		return mas_sparse_area(mas, min, max, size, false);
-+	else if (mas->offset >= 2)
-+		mas->offset -= 2;
-+	else
-+		mas->offset = mas_data_end(mas);
++	if (flush_rx) {
++		reg = bcmgenet_rbuf_ctrl_get(priv);
++		bcmgenet_rbuf_ctrl_set(priv, reg | BIT(0));
++		udelay(10);
++		bcmgenet_rbuf_ctrl_set(priv, reg);
++		udelay(10);
++	}
 +
+ 	return dma_ctrl;
+ }
  
- 	/* The start of the window can only be within these values. */
- 	mas->index = min;
+@@ -3386,8 +3394,8 @@ static int bcmgenet_open(struct net_device *dev)
+ 
+ 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
+ 
+-	/* Disable RX/TX DMA and flush TX queues */
+-	dma_ctrl = bcmgenet_dma_disable(priv);
++	/* Disable RX/TX DMA and flush TX and RX queues */
++	dma_ctrl = bcmgenet_dma_disable(priv, true);
+ 
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv);
+@@ -4258,7 +4266,7 @@ static int bcmgenet_resume(struct device *d)
+ 			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
+ 
+ 	/* Disable RX/TX DMA and flush TX queues */
+-	dma_ctrl = bcmgenet_dma_disable(priv);
++	dma_ctrl = bcmgenet_dma_disable(priv, false);
+ 
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv);
+-- 
+2.43.0
+
 
 
 
