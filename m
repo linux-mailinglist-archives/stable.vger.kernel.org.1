@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A3F8C5333
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C998A8C50DB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0E321F2310F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ECCA1F21E8F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140AD6EB46;
-	Tue, 14 May 2024 11:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C683784D05;
+	Tue, 14 May 2024 10:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqUj3fLN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZepZ/EAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C710061674;
-	Tue, 14 May 2024 11:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834526D1A0;
+	Tue, 14 May 2024 10:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686358; cv=none; b=MvxtNS6BIson0hZx5wK4rHRPn976ooDQAD8mHNiJeAFvUty3wj69bw9ePyHAEM9LHIIFKKdGxt5t3GADOZFgJTE/xq/gZv+hk3E8lQIP4IndG3lm6nJmMMP6BtkOQPSlObjwYkylUMi4eCgPLEmbOINt0eHsMQFTDpkCqoELcGk=
+	t=1715683754; cv=none; b=PpTsDfvA7jJiYjnf1OIEo8gZC14+tCk34q0YifxzhbAKDE3bQWUr1nrrgr/8PXC3k6nqUDfPowc5dQVmNx+Mh7v9GAb7gRc4dEEYpFab3rdziqokOtzkjC0G0LQ4nrgfdo+3UVVJRUhjyeeeho/oevNxQVzmI/VF0s6IKEZ7tQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686358; c=relaxed/simple;
-	bh=tiVObLohjnzMRLgSxraEQXxbUcgYYXN+JCGGPX+gNLo=;
+	s=arc-20240116; t=1715683754; c=relaxed/simple;
+	bh=1Q7BuxcW9izjILI15Ek25rgF4DMU3HQN2YjBQhzQTIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHb2SJ+wa+REDw8kwCQbyH5o8GrK+Ehc2LWk/lYpo7Izksf2SkqtZe5+q1dF8xhBkBL6hJp7OJXMKxjU38I6JWlw6ZOoNgvhbyQJyKcqp7iZvM8jZGGLtgM/JmOpv16UWhS9icRvgAKLrdqpsoaHL8Pb0ChESTvqNhD1Wz5aOhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqUj3fLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D995C2BD10;
-	Tue, 14 May 2024 11:32:38 +0000 (UTC)
+	 MIME-Version; b=FYw7joIuZx1N7Ur09YNthgG9ODYz9I+VoWgR96wLvlXKWX4tK20n1UOF4TwbdqMX6Js+XsZ3tfHC1Ar1VNLKkhL9os3OJ4owAg5lmXJuQx1/24ILnoQOkjr8jwO3uSParWUHtXjPkMRTj9a0JVQSYr0iHU0/RohhMQeAlrUtNjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZepZ/EAU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4652C2BD10;
+	Tue, 14 May 2024 10:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686358;
-	bh=tiVObLohjnzMRLgSxraEQXxbUcgYYXN+JCGGPX+gNLo=;
+	s=korg; t=1715683754;
+	bh=1Q7BuxcW9izjILI15Ek25rgF4DMU3HQN2YjBQhzQTIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqUj3fLNlV2N+y/hjUGacqzJ6BNjrp9CJnatxNkovye21cRC1zfOFBQ69ET+wMyz2
-	 IvDPiuMezaOS+2iMRd0N+m5mq33iPS4SyMYDgks3W3/TGhiTyW4cmWYl0pNTupIFRf
-	 qYbTUilmBI13eu6IV0pKwrEaCAiYuTkhZihn+2Oc=
+	b=ZepZ/EAUe1cnfbxiPGSkJcfsLYGmlk6WDcNdkmsAvgPzEAPC+vvtRh4BV3oMxtYWh
+	 rZS4YBVLfe66ZmJW2LHATozEvDDtmm+jz4g6FbeIRZ+19oTBFsJqbLOns+IOo/3jOD
+	 ZoCxtgRHMpxpImWnt4KIFpDLMC0ax96U/Sit4b7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Maarten Vanraes <maarten@rmail.be>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/236] net: bcmgenet: Reset RBUF on first open
-Date: Tue, 14 May 2024 12:17:51 +0200
-Message-ID: <20240514101024.511035031@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.8 268/336] mm/slab: make __free(kfree) accept error pointers
+Date: Tue, 14 May 2024 12:17:52 +0200
+Message-ID: <20240514101048.736683177@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 0a6380cb4c6b5c1d6dad226ba3130f9090f0ccea ]
+commit cd7eb8f83fcf258f71e293f7fc52a70be8ed0128 upstream.
 
-If the RBUF logic is not reset when the kernel starts then there
-may be some data left over from any network boot loader. If the
-64-byte packet headers are enabled then this can be fatal.
+Currently, if an automatically freed allocation is an error pointer that
+will lead to a crash.  An example of this is in wm831x_gpio_dbg_show().
 
-Extend bcmgenet_dma_disable to do perform the reset, but not when
-called from bcmgenet_resume in order to preserve a wake packet.
+   171	char *label __free(kfree) = gpiochip_dup_line_label(chip, i);
+   172	if (IS_ERR(label)) {
+   173		dev_err(wm831x->dev, "Failed to duplicate label\n");
+   174		continue;
+   175  }
 
-N.B. This different handling of resume is just based on a hunch -
-why else wouldn't one reset the RBUF as well as the TBUF? If this
-isn't the case then it's easy to change the patch to make the RBUF
-reset unconditional.
+The auto clean up function should check for error pointers as well,
+otherwise we're going to keep hitting issues like this.
 
-See: https://github.com/raspberrypi/linux/issues/3850
-See: https://github.com/raspberrypi/firmware/issues/1882
-
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Maarten Vanraes <maarten@rmail.be>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 54da6a092431 ("locking: Introduce __cleanup() based infrastructure")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: David Rientjes <rientjes@google.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ include/linux/slab.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index c2a9913082153..4b8574acf848e 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3298,7 +3298,7 @@ static void bcmgenet_get_hw_addr(struct bcmgenet_priv *priv,
- }
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -228,7 +228,7 @@ void kfree(const void *objp);
+ void kfree_sensitive(const void *objp);
+ size_t __ksize(const void *objp);
  
- /* Returns a reusable dma control register value */
--static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
-+static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv, bool flush_rx)
- {
- 	unsigned int i;
- 	u32 reg;
-@@ -3323,6 +3323,14 @@ static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
- 	udelay(10);
- 	bcmgenet_umac_writel(priv, 0, UMAC_TX_FLUSH);
+-DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++DEFINE_FREE(kfree, void *, if (!IS_ERR_OR_NULL(_T)) kfree(_T))
  
-+	if (flush_rx) {
-+		reg = bcmgenet_rbuf_ctrl_get(priv);
-+		bcmgenet_rbuf_ctrl_set(priv, reg | BIT(0));
-+		udelay(10);
-+		bcmgenet_rbuf_ctrl_set(priv, reg);
-+		udelay(10);
-+	}
-+
- 	return dma_ctrl;
- }
+ /**
+  * ksize - Report actual allocation size of associated object
+@@ -754,7 +754,7 @@ static inline __alloc_size(1, 2) void *k
+ extern void *kvrealloc(const void *p, size_t oldsize, size_t newsize, gfp_t flags)
+ 		      __realloc_size(3);
+ extern void kvfree(const void *addr);
+-DEFINE_FREE(kvfree, void *, if (_T) kvfree(_T))
++DEFINE_FREE(kvfree, void *, if (!IS_ERR_OR_NULL(_T)) kvfree(_T))
  
-@@ -3386,8 +3394,8 @@ static int bcmgenet_open(struct net_device *dev)
+ extern void kvfree_sensitive(const void *addr, size_t len);
  
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
- 
--	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	/* Disable RX/TX DMA and flush TX and RX queues */
-+	dma_ctrl = bcmgenet_dma_disable(priv, true);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
-@@ -4258,7 +4266,7 @@ static int bcmgenet_resume(struct device *d)
- 			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
- 
- 	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	dma_ctrl = bcmgenet_dma_disable(priv, false);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
--- 
-2.43.0
-
 
 
 
