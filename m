@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A208C52E9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C588C51B7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C9E8B220AD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79CC828286F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7139135A6A;
-	Tue, 14 May 2024 11:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA6213B29B;
+	Tue, 14 May 2024 11:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmNApqYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nstzrlcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42B7135415;
-	Tue, 14 May 2024 11:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C151E495;
+	Tue, 14 May 2024 11:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686185; cv=none; b=dG5kAHub1rfdUnzM/rqXHFo7ZscEBtWfs4lBcCnd7HJZV3QgYzXtNed9GB/uXsTL5JYX1xfsw8JbW1inc0NP1wLsAmkYeMONTvYA2i/wxX94yp7Bva7hbqYCIMhJFprpRrajKhyC4z7Gc5OFqtJ/zFZt/7VoOrkjJ1epiIJDa4s=
+	t=1715684953; cv=none; b=Ac7pmUGjFH8URoLiwvqx54zBJVMrmWj9vks3R81xDSE3i+g2uEOKFlqj2DCwBbGctqCEn9TFc8HHngICcOup+B+Amc9TJXvcFU0eYOoHkAG/7PsH3EsiYvh6BmkCT/5iEFvVlB5iYMAbbouC+r89PIdn/hG+qOmsnhjAuNZr53U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686185; c=relaxed/simple;
-	bh=/0jIIO6z8OPbVoLT8yutYhfjXD6I26xZ+o/9I8mcf/8=;
+	s=arc-20240116; t=1715684953; c=relaxed/simple;
+	bh=N80Kfn0TeakhCneYphTlW5/0N96MGZFV4xZIM6Uv+5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbIjZ+/QRnmBSvMfxREwEau6LjCiNHM19QZn+yVD0yVvFQMCCNnYycXaekSvR3Cw/TBOmpukMfySRcdDM+yW/t7fi1BinsQ/937uMdOBeVii+DTDh627CZoO1BvS/CE+hK7x6ueotrPCfQlg7HAYukir3yI6SXusaMMVSJ7TTrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmNApqYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A890C2BD10;
-	Tue, 14 May 2024 11:29:44 +0000 (UTC)
+	 MIME-Version; b=S0ouDUXfW9fl0c1at7Hev7t93GW+zjHHWkzss844pql4Npg55pf+rpr0cYNNCy57TA1Eet04shHmEgXQ3tQi30EnSKfyFz1v3DWm8RpcMWY/l+0HUWjgb0YoDnuP80Xcl/SZxiU96C+K36bZZC4ess39hwiiWH3f9YvyiegiCc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nstzrlcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87890C4AF09;
+	Tue, 14 May 2024 11:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686185;
-	bh=/0jIIO6z8OPbVoLT8yutYhfjXD6I26xZ+o/9I8mcf/8=;
+	s=korg; t=1715684953;
+	bh=N80Kfn0TeakhCneYphTlW5/0N96MGZFV4xZIM6Uv+5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmNApqYqsuZFvhtXaCwakFHiO3YdJc3V9l0YyImBJ6RW8Ar4MG2najcRmtkzdN2H2
-	 OspoWy6WEBY6BkDd8iol0NUlYSH/VydE53QsvgR5eoM+GPzIWhSvNIPjV89/MbSXOP
-	 vQtr076xf9lJZSJ5tj3FJ7E3enJ126v92wXuKNMQ=
+	b=nstzrlcfsOdeMd3uaN3pVj7R07cWM8QWHvYA+dcuOhfGX285NTqgnmh8eLcdmo+St
+	 +xWT07cDF48BlJ8N1Gcrug44WOdHW85HnEcPVQXQHo2Kjeanjm9eM4sJtxS5suhf/2
+	 CtEPx/RIES+eXe32NsuL13DfXOAbBzr10ac7TCSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
-	Steve French <stfrench@microsoft.com>,
+	Boris Burkov <boris@bur.io>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/236] cifs: use the least loaded channel for sending requests
-Date: Tue, 14 May 2024 12:16:22 +0200
-Message-ID: <20240514101021.099519981@linuxfoundation.org>
+Subject: [PATCH 6.6 112/301] btrfs: return accurate error code on open failure in open_fs_devices()
+Date: Tue, 14 May 2024 12:16:23 +0200
+Message-ID: <20240514101036.480434238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-[ Upstream commit ea90708d3cf3d0d92c02afe445ad463fb3c6bf10 ]
+[ Upstream commit 2f1aeab9fca1a5f583be1add175d1ee95c213cfa ]
 
-Till now, we've used a simple round robin approach to
-distribute the requests between the channels. This does
-not work well if the channels consume the requests at
-different speeds, even if the advertised speeds are the
-same.
+When attempting to exclusive open a device which has no exclusive open
+permission, such as a physical device associated with the flakey dm
+device, the open operation will fail, resulting in a mount failure.
 
-This change will allow the client to pick the channel
-with least number of requests currently in-flight. This
-will disregard the link speed, and select a channel
-based on the current load of the channels.
+In this particular scenario, we erroneously return -EINVAL instead of the
+correct error code provided by the bdev_open_by_path() function, which is
+-EBUSY.
 
-For cases when all the channels are equally loaded,
-fall back to the old round robin method.
+Fix this, by returning error code from the bdev_open_by_path() function.
+With this correction, the mount error message will align with that of
+ext4 and xfs.
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 8094a600245e ("smb3: missing lock when picking channel")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c | 33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ fs/btrfs/volumes.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 338b34c99b2de..da2bef3b7ac27 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1045,15 +1045,40 @@ cifs_cancelled_callback(struct mid_q_entry *mid)
- struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
- {
- 	uint index = 0;
-+	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
-+	struct TCP_Server_Info *server = NULL;
-+	int i;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 453d037987fb3..d0bbb05d4c081 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1224,23 +1224,30 @@ static int open_fs_devices(struct btrfs_fs_devices *fs_devices,
+ 	struct btrfs_device *device;
+ 	struct btrfs_device *latest_dev = NULL;
+ 	struct btrfs_device *tmp_device;
++	int ret = 0;
  
- 	if (!ses)
- 		return NULL;
+ 	list_for_each_entry_safe(device, tmp_device, &fs_devices->devices,
+ 				 dev_list) {
+-		int ret;
++		int ret2;
  
--	/* round robin */
--	index = (uint)atomic_inc_return(&ses->chan_seq);
--
- 	spin_lock(&ses->chan_lock);
--	index %= ses->chan_count;
-+	for (i = 0; i < ses->chan_count; i++) {
-+		server = ses->chans[i].server;
-+		if (!server)
-+			continue;
+-		ret = btrfs_open_one_device(fs_devices, device, flags, holder);
+-		if (ret == 0 &&
++		ret2 = btrfs_open_one_device(fs_devices, device, flags, holder);
++		if (ret2 == 0 &&
+ 		    (!latest_dev || device->generation > latest_dev->generation)) {
+ 			latest_dev = device;
+-		} else if (ret == -ENODATA) {
++		} else if (ret2 == -ENODATA) {
+ 			fs_devices->num_devices--;
+ 			list_del(&device->dev_list);
+ 			btrfs_free_device(device);
+ 		}
++		if (ret == 0 && ret2 != 0)
++			ret = ret2;
+ 	}
+-	if (fs_devices->open_devices == 0)
 +
-+		/*
-+		 * strictly speaking, we should pick up req_lock to read
-+		 * server->in_flight. But it shouldn't matter much here if we
-+		 * race while reading this data. The worst that can happen is
-+		 * that we could use a channel that's not least loaded. Avoiding
-+		 * taking the lock could help reduce wait time, which is
-+		 * important for this function
-+		 */
-+		if (server->in_flight < min_in_flight) {
-+			min_in_flight = server->in_flight;
-+			index = i;
-+		}
-+		if (server->in_flight > max_in_flight)
-+			max_in_flight = server->in_flight;
++	if (fs_devices->open_devices == 0) {
++		if (ret)
++			return ret;
+ 		return -EINVAL;
 +	}
-+
-+	/* if all channels are equally loaded, fall back to round-robin */
-+	if (min_in_flight == max_in_flight) {
-+		index = (uint)atomic_inc_return(&ses->chan_seq);
-+		index %= ses->chan_count;
-+	}
- 	spin_unlock(&ses->chan_lock);
  
- 	return ses->chans[index].server;
+ 	fs_devices->opened = 1;
+ 	fs_devices->latest_dev = latest_dev;
 -- 
 2.43.0
 
