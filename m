@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046A98C5182
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C11F8C4FEC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14861F226D1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074481F217B2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250D7139D16;
-	Tue, 14 May 2024 11:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A90042AA4;
+	Tue, 14 May 2024 10:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kk52BLY1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nfg/cevx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7132139597;
-	Tue, 14 May 2024 11:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0950722EF3;
+	Tue, 14 May 2024 10:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684616; cv=none; b=MuLz5lsfETf1b3s57M4+RJpTGlB4E+KDy0BUYmmqceA4VbyL0HZmgjAQAB1PpUoZrVjuMm99pPySU4RjuLi10WN30MXOjQkHiWWQmnvIQephYK73QI6CtDXreg688G1CGdKdhBSR6sygb81iQIuBQKlrIXQ/P3yzLSFJrlzU6Vs=
+	t=1715682699; cv=none; b=T/0qKVxdpPV/VEZCfqVYOXzulZqpNrUWYCXMTwG8WLki5RVhxRvZXk0qM0wXf+5geTJVoyXVKK27spblBQbg5hGz9nR3wjNAuTJzTXfRAAzhO6Hn9z2k/an25JHDKeIIBdq6LWSM22G1eaFQpbhmjsSHyOsvFvWug4Ka1XJhjCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684616; c=relaxed/simple;
-	bh=PLQSrFk0NxAnxAt6XsxMWIPgNid/frUoXKGuYNkjfxU=;
+	s=arc-20240116; t=1715682699; c=relaxed/simple;
+	bh=i4GQL7vkrCAwrOzf1OlvTl/UWLklX/5TQPgpH1uO5Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQyfJUF9nn43lPi3zOEAnjIm6f5mKW6me9GLycr6CFe8/z0EOeLnwAQMm2TQ8DD+MvPwWHfRie6PZoZIBlUPIscEjhV9smpT1Ws9QGfihBnIPwwi/8AB3MKj4YqR7YAImULFtFy7qDg57Q51hr8rXE6Tyh/W16zMUPj/srnE6OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kk52BLY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1866C2BD10;
-	Tue, 14 May 2024 11:03:35 +0000 (UTC)
+	 MIME-Version; b=RRAZDzITe0ElbFGzcddOdqn262vU+yKSHNMoikpZGulzumnGdHFUD1hwG5QPbAJ1hOfpl1LCO2GGrfmUd7j+gZGbv+HKIZ7LnerMiDNGhNyi9F17svTutYfmXUTNEDMZ2nUZ8mWuno7MuRpzOmQW/XGqxrp+N5Yy4Q5DKhZuONI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nfg/cevx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6C8C2BD10;
+	Tue, 14 May 2024 10:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684616;
-	bh=PLQSrFk0NxAnxAt6XsxMWIPgNid/frUoXKGuYNkjfxU=;
+	s=korg; t=1715682698;
+	bh=i4GQL7vkrCAwrOzf1OlvTl/UWLklX/5TQPgpH1uO5Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kk52BLY1uzc4p8mlprKTuI5LYKqglpcrKE/615zFx3XAZPhd6G+sGDUdM+IoVb+Qg
-	 wOuxDf9KqU2kAElgGkit2V7QlRn4mL4RU7YUft4n2r+3lZtnPSAjuVdTjPzW+3Kir/
-	 L3OQ0HV1loLuuLXAg+wbEhgjTXE06LpI+SEKOrR0=
+	b=Nfg/cevxyxZTrJQ79024ZiNGgala6YucIqQZ/C2OVMIXlyXhDvHCKjxPlO22qND0e
+	 K3f+T11D2g1sFzFHH312S+406BD1EQr3m1h6hXcR8HRNXMn3s/vblA6XjyQZJ4/phG
+	 4bjAmu7C4PaQZcRCbyAABazZN/laZX3i2gk7xurU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/301] nvme: fix warn output about shared namespaces without CONFIG_NVME_MULTIPATH
+Subject: [PATCH 6.8 100/336] scsi: lpfc: Replace hbalock with ndlp lock in lpfc_nvme_unregister_port()
 Date: Tue, 14 May 2024 12:15:04 +0200
-Message-ID: <20240514101033.497440663@linuxfoundation.org>
+Message-ID: <20240514101042.382511972@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Zhang <yi.zhang@redhat.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 0bc2e80b9be51712b19e919db5abc97a418f8292 ]
+[ Upstream commit d11272be497e48a8e8f980470eb6b70e92eed0ce ]
 
-Move the stray '.' that is currently at the end of the line after
-newline '\n' to before newline character which is the right position.
+The ndlp object update in lpfc_nvme_unregister_port() should be protected
+by the ndlp lock rather than hbalock.
 
-Fixes: ce8d78616a6b ("nvme: warn about shared namespaces without CONFIG_NVME_MULTIPATH")
-Signed-off-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240305200503.57317-6-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_nvme.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 012c8b3f5f9c9..2db71e222fa7d 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3540,7 +3540,7 @@ static int nvme_init_ns_head(struct nvme_ns *ns, struct nvme_ns_info *info)
- 				"Found shared namespace %d, but multipathing not supported.\n",
- 				info->nsid);
- 			dev_warn_once(ctrl->device,
--				"Support for shared namespaces without CONFIG_NVME_MULTIPATH is deprecated and will be removed in Linux 6.0\n.");
-+				"Support for shared namespaces without CONFIG_NVME_MULTIPATH is deprecated and will be removed in Linux 6.0.\n");
- 		}
- 	}
+diff --git a/drivers/scsi/lpfc/lpfc_nvme.c b/drivers/scsi/lpfc/lpfc_nvme.c
+index 128fc1bab5865..47218cf4d110d 100644
+--- a/drivers/scsi/lpfc/lpfc_nvme.c
++++ b/drivers/scsi/lpfc/lpfc_nvme.c
+@@ -2616,9 +2616,9 @@ lpfc_nvme_unregister_port(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp)
+ 		/* No concern about the role change on the nvme remoteport.
+ 		 * The transport will update it.
+ 		 */
+-		spin_lock_irq(&vport->phba->hbalock);
++		spin_lock_irq(&ndlp->lock);
+ 		ndlp->fc4_xpt_flags |= NVME_XPT_UNREG_WAIT;
+-		spin_unlock_irq(&vport->phba->hbalock);
++		spin_unlock_irq(&ndlp->lock);
  
+ 		/* Don't let the host nvme transport keep sending keep-alives
+ 		 * on this remoteport. Vport is unloading, no recovery. The
 -- 
 2.43.0
 
