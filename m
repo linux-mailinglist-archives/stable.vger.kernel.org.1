@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-43840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617798C4FDE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D8B8C514A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB743283CC0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3867B1F21998
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AADF130494;
-	Tue, 14 May 2024 10:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D11D12FF86;
+	Tue, 14 May 2024 10:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5N3D0NA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXg1AOAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A46757CA1;
-	Tue, 14 May 2024 10:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C862320F;
+	Tue, 14 May 2024 10:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682579; cv=none; b=MQVs4k/ZmoaZOjRCZo6Kr97ohs2lHHvaYnzg8hJ8Qbl+K4qt9KRS1ucwu8FhRjGzVnS9JhYiP/WY0p4z3RxB58ZQnT/l8i8GLTwfMRMFpA8wx6mWtYA4qXxyFpOguWhDXz9q++vLs1Nk/p+3jtRyTI1sUUwTYiMrDtS7Bn49Rs0=
+	t=1715684280; cv=none; b=tHOO0cDSDEaEINn9bim5vH7MtjNsf0d1zaTf5HJ7Vg978gfhNZNntWUVHPEwYl2C3QbiQiu4824AnSfQxEA4eeN1yEqVUxxrhp3/S1mTqnxfzyBPi9qyi31d2Bfp7/BiORam2vwzSpda59RjOSbzXN4SgYy46dQmtetscAMEL/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682579; c=relaxed/simple;
-	bh=DGbZEBB+2scUKWQIdgDSQKdn02cnAg+7xclLGz8AzaM=;
+	s=arc-20240116; t=1715684280; c=relaxed/simple;
+	bh=w/E8FOp3Du4BtVxITmLQHqVzAQ8pXzb3vGQgzzQsK4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyqXsky45+CHY/6dhePvhRrK70lwxzWqDDjFi6n5Ungs4lTMqLMm/AiRaGSI/5qSn4aabay7Vuutxa/bRR8BT9G/bZLDs5KXbjHLQkfAfaI71BZt1TB9vA3/AZXbLFOp4yH1usOIJoxk8dqAq/jdwLHF50qcPl3LLlPVcUuhzG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5N3D0NA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B83C2BD10;
-	Tue, 14 May 2024 10:29:37 +0000 (UTC)
+	 MIME-Version; b=iwVXShTHK3S06r7r+NvT2Ej+y/lwIipjfE4gDQw9ANDiHbTYwYXBwJYlj1GKeY1uZoLppone4RAhkdttf74EOZiw8mfsyo2cl6JKnJakaloOo2OTqN2wbIr+6brOsX/KLy6heS5u4desu4FyBVfq+CRcBxlKrWCshnEs55Md0mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXg1AOAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AC2C2BD10;
+	Tue, 14 May 2024 10:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682578;
-	bh=DGbZEBB+2scUKWQIdgDSQKdn02cnAg+7xclLGz8AzaM=;
+	s=korg; t=1715684279;
+	bh=w/E8FOp3Du4BtVxITmLQHqVzAQ8pXzb3vGQgzzQsK4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5N3D0NAo0YRKw5WWledVZXvSsto/M2w3DuRKI2sPaMv7/Q537E7rnLIr8jKY5d9L
-	 vqURmbJvP27gfDjPlSG5Ce0D9mXaWNnEzQPz+Z8lF3S8Wz+OJlUgr2GEYZtlNH52lW
-	 gLSYBOt297AHMQOJLT9OavZMQ1FCZJNLnewUFjG4=
+	b=VXg1AOAwK/00DiGw92tsnC1qvz/7SnxqeJQHrBXzyAAFCYn+uviWQC/T9jIyXreQw
+	 e83juTXi3PoeOMikd/nfu5PRzO2t4BlZBeXBWSn54UEka+kY6v2zS4PqiFmuVtq3JZ
+	 Wz+yFkOEpd/RBhwsUiUk1Jk2eUQfzUghL/Iix7IU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Gobert <richardbgobert@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 085/336] net: gro: add flush check in udp_gro_receive_segment
+Subject: [PATCH 6.6 018/301] nfs: expose /proc/net/sunrpc/nfs in net namespaces
 Date: Tue, 14 May 2024 12:14:49 +0200
-Message-ID: <20240514101041.816616946@linuxfoundation.org>
+Message-ID: <20240514101032.932119193@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Gobert <richardbgobert@gmail.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 5babae777c61aa8a8679d59d3cdc54165ad96d42 ]
+[ Upstream commit d47151b79e3220e72ae323b8b8e9d6da20dc884e ]
 
-GRO-GSO path is supposed to be transparent and as such L3 flush checks are
-relevant to all UDP flows merging in GRO. This patch uses the same logic
-and code from tcp_gro_receive, terminating merge if flush is non zero.
+We're using nfs mounts inside of containers in production and noticed
+that the nfs stats are not exposed in /proc.  This is a problem for us
+as we use these stats for monitoring, and have to do this awkward bind
+mount from the main host into the container in order to get to these
+states.
 
-Fixes: e20cf8d3f1f7 ("udp: implement GRO for plain UDP sockets.")
-Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add the rpc_proc_register call to the pernet operations entry and exit
+points so these stats can be exposed inside of network namespaces.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/nfs/inode.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 889d4926fc0c1..e5971890d637d 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -471,6 +471,7 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
- 	struct sk_buff *p;
- 	unsigned int ulen;
- 	int ret = 0;
-+	int flush;
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index e21c073158e5b..d7d937597001d 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2427,11 +2427,13 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ static int nfs_net_init(struct net *net)
+ {
+ 	nfs_clients_init(net);
++	rpc_proc_register(net, &nfs_rpcstat);
+ 	return nfs_fs_proc_net_init(net);
+ }
  
- 	/* requires non zero csum, for symmetry with GSO */
- 	if (!uh->check) {
-@@ -504,13 +505,22 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
- 			return p;
- 		}
+ static void nfs_net_exit(struct net *net)
+ {
++	rpc_proc_unregister(net, "nfs");
+ 	nfs_fs_proc_net_exit(net);
+ 	nfs_clients_exit(net);
+ }
+@@ -2486,15 +2488,12 @@ static int __init init_nfs_fs(void)
+ 	if (err)
+ 		goto out1;
  
-+		flush = NAPI_GRO_CB(p)->flush;
-+
-+		if (NAPI_GRO_CB(p)->flush_id != 1 ||
-+		    NAPI_GRO_CB(p)->count != 1 ||
-+		    !NAPI_GRO_CB(p)->is_atomic)
-+			flush |= NAPI_GRO_CB(p)->flush_id;
-+		else
-+			NAPI_GRO_CB(p)->is_atomic = false;
-+
- 		/* Terminate the flow on len mismatch or if it grow "too much".
- 		 * Under small packet flood GRO count could elsewhere grow a lot
- 		 * leading to excessive truesize values.
- 		 * On len mismatch merge the first packet shorter than gso_size,
- 		 * otherwise complete the GRO packet.
- 		 */
--		if (ulen > ntohs(uh2->len)) {
-+		if (ulen > ntohs(uh2->len) || flush) {
- 			pp = p;
- 		} else {
- 			if (NAPI_GRO_CB(skb)->is_flist) {
+-	rpc_proc_register(&init_net, &nfs_rpcstat);
+-
+ 	err = register_nfs_fs();
+ 	if (err)
+ 		goto out0;
+ 
+ 	return 0;
+ out0:
+-	rpc_proc_unregister(&init_net, "nfs");
+ 	nfs_destroy_directcache();
+ out1:
+ 	nfs_destroy_writepagecache();
+@@ -2524,7 +2523,6 @@ static void __exit exit_nfs_fs(void)
+ 	nfs_destroy_inodecache();
+ 	nfs_destroy_nfspagecache();
+ 	unregister_pernet_subsys(&nfs_net_ops);
+-	rpc_proc_unregister(&init_net, "nfs");
+ 	unregister_nfs_fs();
+ 	nfs_fs_proc_exit();
+ 	nfsiod_stop();
 -- 
 2.43.0
 
