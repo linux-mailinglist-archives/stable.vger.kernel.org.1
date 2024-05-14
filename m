@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BD58C5066
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:04:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBCD8C51F2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2365D1C208F6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:04:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 715DC282991
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA42013D29B;
-	Tue, 14 May 2024 10:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B9176035;
+	Tue, 14 May 2024 11:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEZtad0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhwfpPFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D3F13D290;
-	Tue, 14 May 2024 10:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527B83B79C;
+	Tue, 14 May 2024 11:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683295; cv=none; b=XV0EnqkrF43RZIKU7zD4dDc4VcpA1FWMELThIIBWdhpwNIK8R9zzOBPWM0b0lsuvUAPU6B9738Nc8CPp78Hc9yphHxHTJXlktcD+Rop51MgdHtaEO5G6QNsDopf6HWF5mYv7mAZwymnnRZFQFVbGYrp5c3+b1bFGyGiIRvtPIqk=
+	t=1715685269; cv=none; b=uoCUQrUitr38u9raaVPuYw8sny+vHnwN/9Ws+wWGtK5hSpfi7sTaV9fxmlnmzh4f+XUM20Y27WluaNhFDMP9Vu8cdokbcx++MhruvkdMi5IIemkaKdNNobYRv5UYW14/YLBk4iN81L/dcRx/3pa9JGvvyf10Ac0n+Gm2raV5Fec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683295; c=relaxed/simple;
-	bh=ei6Qta6Q+Fcq7sQBH26aJ5irdQWIEuZskUOkwyOhTVM=;
+	s=arc-20240116; t=1715685269; c=relaxed/simple;
+	bh=ZQ+8RbdFeMAz2RZNRbHKxp3Tu9MEzBWlhMUHlQzOeCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7pEmCXtggCYNZ+oYXHBJven1T6vbMI1UzDTGBj4DpdGylZi6/SdL/gkXPHhfSbv2C9RKeBOVylJUQQ2RS4VIBsZ4oBYpUCUmpEPhoey0YB0i0Xdl4VLA1ROi+OQKhNxR+5qW19P1iyNB9mAW9A7aHT20mQayMakoC+mdLEgCzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEZtad0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A350C2BD10;
-	Tue, 14 May 2024 10:41:33 +0000 (UTC)
+	 MIME-Version; b=fm/7LRGCudkaudIsCxYYHqCV1N1ia4T+dz7g/FoKztohWoOwyaFM8YLVxs/n6m2nebiGbtyGZauaMnMg63+n/5tgw5uK4aAsXvz/GWzRGegbF7R3NYShkkBf8roYITvz/VLhfZ1zSSvmM9qTV0KqGNWj2TKzUqbq+yx+i05EiZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhwfpPFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DF7C2BD10;
+	Tue, 14 May 2024 11:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683295;
-	bh=ei6Qta6Q+Fcq7sQBH26aJ5irdQWIEuZskUOkwyOhTVM=;
+	s=korg; t=1715685269;
+	bh=ZQ+8RbdFeMAz2RZNRbHKxp3Tu9MEzBWlhMUHlQzOeCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEZtad0AnnAsJ9d9Nk/j+lkRW1IN3cxzPAvBi+3zlW2sfTkDkMjZ69cATxawrk4E5
-	 /j+RbGwiKu2Vp+xC76xRszn9cNyWnmaDFneFgndNU5TrbU7zl5sKq6cIpN3B7CCXHQ
-	 5Biqu5EAb7da/rj02TzMMGdYUXkzxKSkxKtLmyxI=
+	b=JhwfpPFNWjcORoji4TvVbsWfmYZTIr4tsuqqxQCW6DUlP55t4G2hJOVByC7fsNzYg
+	 lNX+hOQbiy+VGdLu030Ss1+UDkxbtIRps+3SKfS22i16QuTDfPAs2Y2PwFs5X8IQIV
+	 kUHQITKiTs9k5q52D5wwzZfmlzsuaf3Qgk+0zo6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Davey <paul.davey@alliedtelesis.co.nz>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Doug Smythies <dsmythies@telus.net>,
+	Wyes Karny <wyes.karny@amd.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 196/336] xfrm: Preserve vlan tags for transport mode software GRO
-Date: Tue, 14 May 2024 12:16:40 +0200
-Message-ID: <20240514101046.005117758@linuxfoundation.org>
+Subject: [PATCH 6.6 130/301] tools/power turbostat: Increase the limit for fd opened
+Date: Tue, 14 May 2024 12:16:41 +0200
+Message-ID: <20240514101037.155634384@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Davey <paul.davey@alliedtelesis.co.nz>
+From: Wyes Karny <wyes.karny@amd.com>
 
-[ Upstream commit 58fbfecab965014b6e3cc956a76b4a96265a1add ]
+[ Upstream commit 3ac1d14d0583a2de75d49a5234d767e2590384dd ]
 
-The software GRO path for esp transport mode uses skb_mac_header_rebuild
-prior to re-injecting the packet via the xfrm_napi_dev.  This only
-copies skb->mac_len bytes of header which may not be sufficient if the
-packet contains 802.1Q tags or other VLAN tags.  Worse copying only the
-initial header will leave a packet marked as being VLAN tagged but
-without the corresponding tag leading to mangling when it is later
-untagged.
+When running turbostat, a system with 512 cpus reaches the limit for
+maximum number of file descriptors that can be opened. To solve this
+problem, the limit is raised to 2^15, which is a large enough number.
 
-The VLAN tags are important when receiving the decrypted esp transport
-mode packet after GRO processing to ensure it is received on the correct
-interface.
+Below data is collected from AMD server systems while running turbostat:
 
-Therefore record the full mac header length in xfrm*_transport_input for
-later use in corresponding xfrm*_transport_finish to copy the entire mac
-header when rebuilding the mac header for GRO.  The skb->data pointer is
-left pointing skb->mac_header bytes after the start of the mac header as
-is expected by the network stack and network and transport header
-offsets reset to this location.
+|-----------+-------------------------------|
+| # of cpus | # of opened fds for turbostat |
+|-----------+-------------------------------|
+| 128       | 260                           |
+|-----------+-------------------------------|
+| 192       | 388                           |
+|-----------+-------------------------------|
+| 512       | 1028                          |
+|-----------+-------------------------------|
 
-Fixes: 7785bba299a8 ("esp: Add a software GRO codepath")
-Signed-off-by: Paul Davey <paul.davey@alliedtelesis.co.nz>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+So, the new max limit would be sufficient up to 2^14 cpus (but this
+also depends on how many counters are enabled).
+
+Reviewed-by: Doug Smythies <dsmythies@telus.net>
+Tested-by: Doug Smythies <dsmythies@telus.net>
+Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skbuff.h | 15 +++++++++++++++
- include/net/xfrm.h     |  3 +++
- net/ipv4/xfrm4_input.c |  6 +++++-
- net/ipv6/xfrm6_input.c |  6 +++++-
- net/xfrm/xfrm_input.c  |  8 ++++++++
- 5 files changed, 36 insertions(+), 2 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 5bafcfe18be61..f86f9396f727b 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -2972,6 +2972,21 @@ static inline void skb_mac_header_rebuild(struct sk_buff *skb)
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 9602a4798f383..5b892c53fc2c2 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -53,6 +53,8 @@
+ #define	NAME_BYTES 20
+ #define PATH_BYTES 128
+ 
++#define MAX_NOFILE 0x8000
++
+ enum counter_scope { SCOPE_CPU, SCOPE_CORE, SCOPE_PACKAGE };
+ enum counter_type { COUNTER_ITEMS, COUNTER_CYCLES, COUNTER_SECONDS, COUNTER_USEC };
+ enum counter_format { FORMAT_RAW, FORMAT_DELTA, FORMAT_PERCENT };
+@@ -6719,6 +6721,22 @@ void cmdline(int argc, char **argv)
  	}
  }
  
-+/* Move the full mac header up to current network_header.
-+ * Leaves skb->data pointing at offset skb->mac_len into the mac_header.
-+ * Must be provided the complete mac header length.
-+ */
-+static inline void skb_mac_header_rebuild_full(struct sk_buff *skb, u32 full_mac_len)
++void set_rlimit(void)
 +{
-+	if (skb_mac_header_was_set(skb)) {
-+		const unsigned char *old_mac = skb_mac_header(skb);
++	struct rlimit limit;
 +
-+		skb_set_mac_header(skb, -full_mac_len);
-+		memmove(skb_mac_header(skb), old_mac, full_mac_len);
-+		__skb_push(skb, full_mac_len - skb->mac_len);
-+	}
++	if (getrlimit(RLIMIT_NOFILE, &limit) < 0)
++		err(1, "Failed to get rlimit");
++
++	if (limit.rlim_max < MAX_NOFILE)
++		limit.rlim_max = MAX_NOFILE;
++	if (limit.rlim_cur < MAX_NOFILE)
++		limit.rlim_cur = MAX_NOFILE;
++
++	if (setrlimit(RLIMIT_NOFILE, &limit) < 0)
++		err(1, "Failed to set rlimit");
 +}
 +
- static inline int skb_checksum_start_offset(const struct sk_buff *skb)
+ int main(int argc, char **argv)
  {
- 	return skb->csum_start - skb_headroom(skb);
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 1d107241b9018..5d0f8f40b8d16 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1047,6 +1047,9 @@ struct xfrm_offload {
- #define CRYPTO_INVALID_PACKET_SYNTAX		64
- #define CRYPTO_INVALID_PROTOCOL			128
+ 	outf = stderr;
+@@ -6731,6 +6749,9 @@ int main(int argc, char **argv)
  
-+	/* Used to keep whole l2 header for transport mode GRO */
-+	__u32			orig_mac_len;
+ 	probe_sysfs();
+ 
++	if (!getuid())
++		set_rlimit();
 +
- 	__u8			proto;
- 	__u8			inner_ipproto;
- };
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index c54676998eb60..801404f7d6574 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -63,7 +63,11 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
- 	ip_send_check(iph);
+ 	turbostat_init();
  
- 	if (xo && (xo->flags & XFRM_GRO)) {
--		skb_mac_header_rebuild(skb);
-+		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
-+		 * works correctly in the presence of vlan tags.
-+		 */
-+		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
-+		skb_reset_network_header(skb);
- 		skb_reset_transport_header(skb);
- 		return 0;
- 	}
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 6e36e5047fbab..4e6dcefd635c8 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -58,7 +58,11 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
- 	skb_postpush_rcsum(skb, skb_network_header(skb), nhlen);
- 
- 	if (xo && (xo->flags & XFRM_GRO)) {
--		skb_mac_header_rebuild(skb);
-+		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
-+		 * works correctly in the presence of vlan tags.
-+		 */
-+		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
-+		skb_reset_network_header(skb);
- 		skb_reset_transport_header(skb);
- 		return 0;
- 	}
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index bd4ce21d76d75..b2f7af63b7dae 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -388,11 +388,15 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
-  */
- static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- {
-+	struct xfrm_offload *xo = xfrm_offload(skb);
- 	int ihl = skb->data - skb_transport_header(skb);
- 
- 	if (skb->transport_header != skb->network_header) {
- 		memmove(skb_transport_header(skb),
- 			skb_network_header(skb), ihl);
-+		if (xo)
-+			xo->orig_mac_len =
-+				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
- 		skb->network_header = skb->transport_header;
- 	}
- 	ip_hdr(skb)->tot_len = htons(skb->len + ihl);
-@@ -403,11 +407,15 @@ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- static int xfrm6_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- {
- #if IS_ENABLED(CONFIG_IPV6)
-+	struct xfrm_offload *xo = xfrm_offload(skb);
- 	int ihl = skb->data - skb_transport_header(skb);
- 
- 	if (skb->transport_header != skb->network_header) {
- 		memmove(skb_transport_header(skb),
- 			skb_network_header(skb), ihl);
-+		if (xo)
-+			xo->orig_mac_len =
-+				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
- 		skb->network_header = skb->transport_header;
- 	}
- 	ipv6_hdr(skb)->payload_len = htons(skb->len + ihl -
+ 	msr_sum_record();
 -- 
 2.43.0
 
