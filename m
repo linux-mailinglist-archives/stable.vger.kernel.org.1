@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F008C5328
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBB98C50CE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6AB528534D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF7C01F2148A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D859143C4F;
-	Tue, 14 May 2024 11:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBBD13D8B6;
+	Tue, 14 May 2024 10:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cU3FpFNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maRzPQNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281F8143C47;
-	Tue, 14 May 2024 11:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF97284D23;
+	Tue, 14 May 2024 10:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686327; cv=none; b=A+wbaMhIh+VB6xuWWV0wLkSHllIR8uo9YEKMLOBjQmuOHOYM0MmB97YIch3YKpBbm6rVYyCjDQascxM+8FIWlTM5cOFA2fJel/HzCrYkYEDBDN+j5Q3C5k2yU5TfKcCScsZjig2dMjkv9yyxzv2yPx7bN0x6PF5UuxZawnDPW9A=
+	t=1715683692; cv=none; b=avystnszUjXQtLteMUkrO1apAPCjP5TNco6FgeFC6PU2qj488kVwi3ymPVvytISWbpdIVfiYRO5fYijqGvd2AQDXcvdfQBI7zPtWP3EdXNhKILkHgU+DASYWt53XEYhVjxkDpk1zcAmLIfpNyW2mZipglyRoj6CaJrjn2rijdBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686327; c=relaxed/simple;
-	bh=3o8cTqVljCbEToLLLcHx+A5pQauRZCYV7cpaBBHcSGo=;
+	s=arc-20240116; t=1715683692; c=relaxed/simple;
+	bh=sxAHCrFaRGo2o15KMBtBPcF0PFb245aLGP5cvltRqf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYMdYKCE+oS5kh9q4JJdihNl1Kc9xKDFYv/z3y5v8Ukjv5y06yFLm61p70/m72LUvNwT/hI7u6kXKBwpEAdOFtAIyr0doZXbJpzzezk0XOwLQaWPl0CqTsOEya3mvgrG5z3HgSxvvuodFFf0gEhEqmyAUfw9Dl7jivhb61F0kl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cU3FpFNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF75C2BD10;
-	Tue, 14 May 2024 11:32:06 +0000 (UTC)
+	 MIME-Version; b=h5FMGsH+hmpWo4TklnSBPSqQl/3f22lzLv5U0JLtHsi+GaLyWrp/wcgs4bRLOuAafDhl31rBWVRCg5bbrGGm+Xr7bxxSQGRfOtJbx1LKeUzpJt5W0UAnA3z9iYh+MdegxsoTSA+MJIOKGfY6gBqThhv7J//2WUfUtrGZ8GAepys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maRzPQNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAC0C2BD10;
+	Tue, 14 May 2024 10:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686327;
-	bh=3o8cTqVljCbEToLLLcHx+A5pQauRZCYV7cpaBBHcSGo=;
+	s=korg; t=1715683692;
+	bh=sxAHCrFaRGo2o15KMBtBPcF0PFb245aLGP5cvltRqf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cU3FpFNLtgE/MoZAkckei7Oo3sLdg/Rq49FEj+mdc6QPXWDl29WAGJm73ZGhasMR/
-	 0lh2OMGmc4OZdMaoUm1hWRieVtefYwIEbgbc3pKOE6zxT16lYXHvCB2V1zVK6pWtaC
-	 vP0dz3OOC1FrErzHMh/0DQE8d27iqy4D0WeNV7wY=
+	b=maRzPQNik6iFzKG4jSv47Q1PtK4oG2MUlfw4X6Zf+43KcZg5zsLXcBuZNn1h3KKcp
+	 pmfWVILjpXBv8xTgZDiRwnjt9HvAvTwntQydcL3DB8uhdEeztVBQs7kJpoc5sJ8nbk
+	 No786Vpq8Ffprnz9JiJ/5NWrB7xLP4wMBywMSrR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/236] wifi: cfg80211: fix rdev_dump_mpp() arguments order
-Date: Tue, 14 May 2024 12:17:41 +0200
-Message-ID: <20240514101024.129838304@linuxfoundation.org>
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.8 258/336] usb: typec: tcpm: Check for port partner validity before consuming it
+Date: Tue, 14 May 2024 12:17:42 +0200
+Message-ID: <20240514101048.356247105@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-[ Upstream commit ec50f3114e55406a1aad24b7dfaa1c3f4336d8eb ]
+commit ae11f04b452b5205536e1c02d31f8045eba249dd upstream.
 
-Fix the order of arguments in the TP_ARGS macro
-for the rdev_dump_mpp tracepoint event.
+typec_register_partner() does not guarantee partner registration
+to always succeed. In the event of failure, port->partner is set
+to the error value or NULL. Given that port->partner validity is
+not checked, this results in the following crash:
 
-Found by Linux Verification Center (linuxtesting.org).
+Unable to handle kernel NULL pointer dereference at virtual address xx
+ pc : run_state_machine+0x1bc8/0x1c08
+ lr : run_state_machine+0x1b90/0x1c08
+..
+ Call trace:
+   run_state_machine+0x1bc8/0x1c08
+   tcpm_state_machine_work+0x94/0xe4
+   kthread_worker_fn+0x118/0x328
+   kthread+0x1d0/0x23c
+   ret_from_fork+0x10/0x20
 
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240311164519.118398-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To prevent the crash, check for port->partner validity before
+derefencing it in all the call sites.
+
+Cc: stable@vger.kernel.org
+Fixes: c97cd0b4b54e ("usb: typec: tcpm: set initial svdm version based on pd revision")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240427202812.3435268-1-badhri@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |   30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index a405c3edbc47e..cb5c3224e038a 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1018,7 +1018,7 @@ TRACE_EVENT(rdev_get_mpp,
- TRACE_EVENT(rdev_dump_mpp,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
- 		 u8 *dst, u8 *mpp),
--	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
-+	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		NETDEV_ENTRY
--- 
-2.43.0
-
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1501,7 +1501,8 @@ static void svdm_consume_identity(struct
+ 	port->partner_ident.cert_stat = p[VDO_INDEX_CSTAT];
+ 	port->partner_ident.product = product;
+ 
+-	typec_partner_set_identity(port->partner);
++	if (port->partner)
++		typec_partner_set_identity(port->partner);
+ 
+ 	tcpm_log(port, "Identity: %04x:%04x.%04x",
+ 		 PD_IDH_VID(vdo),
+@@ -1589,6 +1590,9 @@ static void tcpm_register_partner_altmod
+ 	struct typec_altmode *altmode;
+ 	int i;
+ 
++	if (!port->partner)
++		return;
++
+ 	for (i = 0; i < modep->altmodes; i++) {
+ 		altmode = typec_partner_register_altmode(port->partner,
+ 						&modep->altmode_desc[i]);
+@@ -3587,7 +3591,10 @@ static int tcpm_init_vconn(struct tcpm_p
+ 
+ static void tcpm_typec_connect(struct tcpm_port *port)
+ {
++	struct typec_partner *partner;
++
+ 	if (!port->connected) {
++		port->connected = true;
+ 		/* Make sure we don't report stale identity information */
+ 		memset(&port->partner_ident, 0, sizeof(port->partner_ident));
+ 		port->partner_desc.usb_pd = port->pd_capable;
+@@ -3597,9 +3604,13 @@ static void tcpm_typec_connect(struct tc
+ 			port->partner_desc.accessory = TYPEC_ACCESSORY_AUDIO;
+ 		else
+ 			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
+-		port->partner = typec_register_partner(port->typec_port,
+-						       &port->partner_desc);
+-		port->connected = true;
++		partner = typec_register_partner(port->typec_port, &port->partner_desc);
++		if (IS_ERR(partner)) {
++			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
++			return;
++		}
++
++		port->partner = partner;
+ 		typec_partner_set_usb_power_delivery(port->partner, port->partner_pd);
+ 	}
+ }
+@@ -3669,9 +3680,11 @@ out_disable_mux:
+ static void tcpm_typec_disconnect(struct tcpm_port *port)
+ {
+ 	if (port->connected) {
+-		typec_partner_set_usb_power_delivery(port->partner, NULL);
+-		typec_unregister_partner(port->partner);
+-		port->partner = NULL;
++		if (port->partner) {
++			typec_partner_set_usb_power_delivery(port->partner, NULL);
++			typec_unregister_partner(port->partner);
++			port->partner = NULL;
++		}
+ 		port->connected = false;
+ 	}
+ }
+@@ -3887,6 +3900,9 @@ static enum typec_cc_status tcpm_pwr_opm
+ 
+ static void tcpm_set_initial_svdm_version(struct tcpm_port *port)
+ {
++	if (!port->partner)
++		return;
++
+ 	switch (port->negotiated_rev) {
+ 	case PD_REV30:
+ 		break;
 
 
 
