@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1748C52DB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D6A8C51ED
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0911EB21C67
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCF1282866
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EEE1350EF;
-	Tue, 14 May 2024 11:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3126F7CF34;
+	Tue, 14 May 2024 11:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqyoGUGk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+I3iDYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035541CAA4;
-	Tue, 14 May 2024 11:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E325C6D1A1;
+	Tue, 14 May 2024 11:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686151; cv=none; b=Rp0WG3ZJMUZqnNgbnT2PUyIz+sapMv1OrOSUz4fahZpRzxCxfMdsEFngmi5NH/JZNhb6gV+ccBNpc1PBCcD/uGtOgJx3LpEe4aEOscNBFeBvFabzYVSBbGBhC5MYJEBeYJxiIDT6Vr9E6nexj3yGBgiMFzwHgLx62uEnzFP26QQ=
+	t=1715685235; cv=none; b=YcYFH86Q8b51rSGNEA1gXnug7++YTE4v71DHkI/Vv6Yn1FUs9Erh91ZRjwkDhCmIa16gSOJB/jtXFnNUXQ/b9JFMPcZoNGCo8y9n7JFeU5OtZwyuN8rkCTs1oESGu3APmaQDiiLpFJU/N1x5wbJ6fCrKow8pYmkRM59mc9uJ/k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686151; c=relaxed/simple;
-	bh=pmBmqqtuTUTQyJ2oQRWVtZFU58a8T9mqxKGppAHVWgE=;
+	s=arc-20240116; t=1715685235; c=relaxed/simple;
+	bh=hu+b8m8k09YP0v1+5RfhKamhyWegKKK1EcZTkQFFzKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NP/SMTKnqVhgDAOkVx8SHTHAexP1nqZUXHn3JIAPgUMzGyWnDOj/tKxrMK/Ire5olkGWk1opjr6i+U8fMPx214wPP5ct1IpS1PWR2vjM/CkqurMeXcDgyoYnDvEDrPwtW2jo5nB4EIsAYGU3rIZZuf6J/dvICQZJK80dXRIlCuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqyoGUGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8052AC2BD10;
-	Tue, 14 May 2024 11:29:10 +0000 (UTC)
+	 MIME-Version; b=KqI5jf2XlYlPoNVgPNo9HwrxuD+ivYD1Yu+V9g6AYQufZzNmRERINdmU9p8E3Vty3TDAb1CZrswye5fcvsSBJVBElFM7ZoNbc3CLW/FD7V7Ufa5ascpQaJu6c/qYgj/1zxA3t6iZBZhuhxkk3Qd9Y0aWghGSatwNX/8XCwqtA0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+I3iDYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4F4C2BD10;
+	Tue, 14 May 2024 11:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686150;
-	bh=pmBmqqtuTUTQyJ2oQRWVtZFU58a8T9mqxKGppAHVWgE=;
+	s=korg; t=1715685234;
+	bh=hu+b8m8k09YP0v1+5RfhKamhyWegKKK1EcZTkQFFzKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqyoGUGk1ukjsyInT2watfGhCVc2dIZpEVUxl5Kc+qXA/1pD3S/cnQCy1WwKXZKVj
-	 YlTz+nBYMovhQoTJsg8xWacAZw3DRe0lqC27OOhi1hge9wRrrrwpY7/YyMKK9H2/Hf
-	 XnWmmzYJlGyZn47ISDGXw/BSpJga6fw0EuEnUdqI=
+	b=B+I3iDYJOqrrcreqky8uWxq3/4V5T5OmfRHciKuEnHiU7U5fffXrJJz4V9I+GD86X
+	 wcTDedYxnRrPagCP4NLzTx41894rlFXwFsiiYXSv8kYv3SXLwZB1+htDvcueiUijcN
+	 ALH0Ceb1smqIsU2ijkKxpigugunUlVTgJ1EDsL4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Aleksander Mazur <deweloper@wp.pl>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Mark Brown <broonie@kernel.org>,
+	Doug Smythies <dsmythies@telus.net>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/236] regulator: change stubbed devm_regulator_get_enable to return Ok
+Subject: [PATCH 6.6 129/301] tools/power turbostat: Fix added raw MSR output
 Date: Tue, 14 May 2024 12:16:40 +0200
-Message-ID: <20240514101021.788814284@linuxfoundation.org>
+Message-ID: <20240514101037.118542562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Doug Smythies <dsmythies@telus.net>
 
-[ Upstream commit 96e20adc43c4f81e9163a5188cee75a6dd393e09 ]
+[ Upstream commit e5f4e68eed85fa8495d78cd966eecc2b27bb9e53 ]
 
-The devm_regulator_get_enable() should be a 'call and forget' API,
-meaning, when it is used to enable the regulators, the API does not
-provide a handle to do any further control of the regulators. It gives
-no real benefit to return an error from the stub if CONFIG_REGULATOR is
-not set.
+When using --Summary mode, added MSRs in raw mode always
+print zeros. Print the actual register contents.
 
-On the contrary, returning and error is causing problems to drivers when
-hardware is such it works out just fine with no regulator control.
-Returning an error forces drivers to specifically handle the case where
-CONFIG_REGULATOR is not set, making the mere existence of the stub
-questionalble. Furthermore, the stub of the regulator_enable() seems to
-be returning Ok.
+Example, with patch:
 
-Change the stub implementation for the devm_regulator_get_enable() to
-return Ok so drivers do not separately handle the case where the
-CONFIG_REGULATOR is not set.
+note the added column:
+--add msr0x64f,u32,package,raw,REASON
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reported-by: Aleksander Mazur <deweloper@wp.pl>
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: da279e6965b3 ("regulator: Add devm helpers for get and enable")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/ZiYF6d1V1vSPcsJS@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Where:
+
+0x64F is MSR_CORE_PERF_LIMIT_REASONS
+
+Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
+0.00    4800    35      1.42    0.76    0x00000000
+0.00    4801    34      1.42    0.76    0x00000000
+80.08   4531    66      108.17  107.52  0x08000000
+98.69   4530    66      133.21  132.54  0x08000000
+99.28   4505    66      128.26  127.60  0x0c000400
+99.65   4486    68      124.91  124.25  0x0c000400
+99.63   4483    68      124.90  124.25  0x0c000400
+79.34   4481    41      99.80   99.13   0x0c000000
+0.00    4801    41      1.40    0.73    0x0c000000
+
+Where, for the test processor (i5-10600K):
+
+PKG Limit #1: 125.000 Watts, 8.000000 sec
+MSR bit 26 = log; bit 10 = status
+
+PKG Limit #2: 136.000 Watts, 0.002441 sec
+MSR bit 27 = log; bit 11 = status
+
+Example, without patch:
+
+Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
+0.01    4800    35      1.43    0.77    0x00000000
+0.00    4801    35      1.39    0.73    0x00000000
+83.49   4531    66      112.71  112.06  0x00000000
+98.69   4530    68      133.35  132.69  0x00000000
+99.31   4500    67      127.96  127.30  0x00000000
+99.63   4483    69      124.91  124.25  0x00000000
+99.61   4481    69      124.90  124.25  0x00000000
+99.61   4481    71      124.92  124.25  0x00000000
+59.35   4479    42      75.03   74.37   0x00000000
+0.00    4800    42      1.39    0.73    0x00000000
+0.00    4801    42      1.42    0.76    0x00000000
+
+c000000
+
+[lenb: simplified patch to apply only to package scope]
+
+Signed-off-by: Doug Smythies <dsmythies@telus.net>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/regulator/consumer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/power/x86/turbostat/turbostat.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
-index ee3b4a0146119..eea165685588a 100644
---- a/include/linux/regulator/consumer.h
-+++ b/include/linux/regulator/consumer.h
-@@ -361,7 +361,7 @@ devm_regulator_get_exclusive(struct device *dev, const char *id)
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 785de89077de0..9602a4798f383 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -1811,9 +1811,10 @@ int sum_counters(struct thread_data *t, struct core_data *c, struct pkg_data *p)
+ 	average.packages.rapl_dram_perf_status += p->rapl_dram_perf_status;
  
- static inline int devm_regulator_get_enable(struct device *dev, const char *id)
- {
--	return -ENODEV;
-+	return 0;
+ 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW)
+-			continue;
+-		average.packages.counter[i] += p->counter[i];
++		if ((mp->format == FORMAT_RAW) && (topo.num_packages == 0))
++			average.packages.counter[i] = p->counter[i];
++		else
++			average.packages.counter[i] += p->counter[i];
+ 	}
+ 	return 0;
  }
- 
- static inline int devm_regulator_get_enable_optional(struct device *dev,
 -- 
 2.43.0
 
