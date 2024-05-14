@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEFA8C51EF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067868C52F6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FF9B1C216D8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37E391C21998
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6CD83CD7;
-	Tue, 14 May 2024 11:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDC713667B;
+	Tue, 14 May 2024 11:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPj7ZM1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQ+BSsBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0473B79C;
-	Tue, 14 May 2024 11:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D47E5A4C0;
+	Tue, 14 May 2024 11:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685257; cv=none; b=tFIa2mu3f1BpKsIZje51+VUOMw4wXk0GYdxall7PEMIhqad/4Red9alZEcnKlMm3gWgpQAE9u7jEZY7jr9VHFefxv9HUJSA8ccqF+JXXeHTUFXf+KSvMqnKg0Bd1280MnWz6EbyX4JH4+877rZsNBEbL6nVzo5pH0Fv2fGb2Ajo=
+	t=1715686237; cv=none; b=drO6hXUcHJIuzgZmrJ5pN/6lj+z35dxWuuzYPcblU0gmYu6dR+dXGToC2K+GYWAizV07PtFSOgPbmevOXPQMniCqlTvrnv01uavPAStIYa+i4m2MH+/ds+tApmtKT9kDMikFQRK9Xg1T0kKUqQrHhs97POfUq48nyVA0e+i6uf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685257; c=relaxed/simple;
-	bh=b5plEFXkoefEnUj2rSpbS9jux63jdF3bkSBaQM2AWx8=;
+	s=arc-20240116; t=1715686237; c=relaxed/simple;
+	bh=BryMPSza72fYiU3SEO0+mzyBq2E1bkRSJ89O6GpC3ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKZxnObsNsFqMDH8AI8Snh1+AujNCTnq62TOvAYkd0NF3SPVgKB6MnpouuCAv2e3IJSAgrZ83C4Jv/hm7MyXls2nfNHJWaSKOUPtgq/lA9VpYf95endXX8MFhtjduFjXroI7olxX2rH0aqFl9sVFX4N4EnSvJUSPoFHbiSk5rsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPj7ZM1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A60CC2BD10;
-	Tue, 14 May 2024 11:14:14 +0000 (UTC)
+	 MIME-Version; b=MSOmws9lCWQzwo7B0GEFzqK+ZiABMioH0x3AnFmR7AndeGIaj/n7guPvetMmqSmpIo6ZRI6VU5jAOG0u6NIqa2jiLg6/iJuWHnjATFIiht+VPO7aUf07VYIYIVmzmoQLEMvqEYQK7XO9ISyHryLNDxNG1poDAtl7Ya0LyUZFbQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ+BSsBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219DAC32782;
+	Tue, 14 May 2024 11:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685256;
-	bh=b5plEFXkoefEnUj2rSpbS9jux63jdF3bkSBaQM2AWx8=;
+	s=korg; t=1715686237;
+	bh=BryMPSza72fYiU3SEO0+mzyBq2E1bkRSJ89O6GpC3ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPj7ZM1h9LOacqDgH5HiCPEzB/lSkL2Ln4gi7+3O/Z40o4LOu6lC2WpuDQjetT18a
-	 JpJWw6hEMWx4gcmQ5Gx/HYNfApuuDCTawSb3h00zSSa3w0kPcXZTb9FyfhOqoMdKBj
-	 oWnBJhv6ysObrL0j7knjJT8yde7ReZmowXW7vg1M=
+	b=tQ+BSsBQ8jZiuYDp2+SpC8GF4XAT4Ze0o3tV2fhfDN+6qGFEY2nWDL05jF2ciTRkZ
+	 G+S54IGip2mfqKYTbq/KnJKvE0eoiaeANHm7F9LHSnv/Zufc/rZWmz3+4Vx1UO73/p
+	 En0hhG/fHm6w68aaoZ2Se4bvV8o5J66BqI4z8lOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/301] fs/9p: only translate RWX permissions for plain 9P2000
-Date: Tue, 14 May 2024 12:17:09 +0200
-Message-ID: <20240514101038.224323296@linuxfoundation.org>
+Subject: [PATCH 6.1 068/236] ASoC: meson: axg-fifo: use threaded irq to check periods
+Date: Tue, 14 May 2024 12:17:10 +0200
+Message-ID: <20240514101022.954305063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Sindholt <opensource@zhasha.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
+[ Upstream commit b11d26660dff8d7430892008616452dc8e5fb0f3 ]
 
-Garbage in plain 9P2000's perm bits is allowed through, which causes it
-to be able to set (among others) the suid bit. This was presumably not
-the intent since the unix extended bits are handled explicitly and
-conditionally on .u.
+With the AXG audio subsystem, there is a possible random channel shift on
+TDM capture, when the slot number per lane is more than 2, and there is
+more than one lane used.
 
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+The problem has been there since the introduction of the axg audio support
+but such scenario is pretty uncommon. This is why there is no loud
+complains about the problem.
+
+Solving the problem require to make the links non-atomic and use the
+trigger() callback to start FEs and BEs in the appropriate order.
+
+This was tried in the past and reverted because it caused the block irq to
+sleep while atomic. However, instead of reverting, the solution is to call
+snd_pcm_period_elapsed() in a non atomic context.
+
+Use the bottom half of a threaded IRQ to do so.
+
+Fixes: 6dc4fa179fb8 ("ASoC: meson: add axg fifo base driver")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240426152946.3078805-2-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/meson/axg-fifo.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index ea695c4a7a3fb..3bdf6df4b553e 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -83,7 +83,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
- 	int res;
- 	int mode = stat->mode;
+diff --git a/sound/soc/meson/axg-fifo.c b/sound/soc/meson/axg-fifo.c
+index bde7598750064..94b169a5493b5 100644
+--- a/sound/soc/meson/axg-fifo.c
++++ b/sound/soc/meson/axg-fifo.c
+@@ -204,18 +204,26 @@ static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
+ 	unsigned int status;
  
--	res = mode & S_IALLUGO;
-+	res = mode & 0777; /* S_IRWXUGO */
- 	if (v9fs_proto_dotu(v9ses)) {
- 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
- 			res |= S_ISUID;
+ 	regmap_read(fifo->map, FIFO_STATUS1, &status);
+-
+ 	status = FIELD_GET(STATUS1_INT_STS, status);
++	axg_fifo_ack_irq(fifo, status);
++
++	/* Use the thread to call period elapsed on nonatomic links */
+ 	if (status & FIFO_INT_COUNT_REPEAT)
+-		snd_pcm_period_elapsed(ss);
+-	else
+-		dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
+-			status);
++		return IRQ_WAKE_THREAD;
+ 
+-	/* Ack irqs */
+-	axg_fifo_ack_irq(fifo, status);
++	dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
++		status);
++
++	return IRQ_NONE;
++}
++
++static irqreturn_t axg_fifo_pcm_irq_block_thread(int irq, void *dev_id)
++{
++	struct snd_pcm_substream *ss = dev_id;
++
++	snd_pcm_period_elapsed(ss);
+ 
+-	return IRQ_RETVAL(status);
++	return IRQ_HANDLED;
+ }
+ 
+ int axg_fifo_pcm_open(struct snd_soc_component *component,
+@@ -243,8 +251,9 @@ int axg_fifo_pcm_open(struct snd_soc_component *component,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = request_irq(fifo->irq, axg_fifo_pcm_irq_block, 0,
+-			  dev_name(dev), ss);
++	ret = request_threaded_irq(fifo->irq, axg_fifo_pcm_irq_block,
++				   axg_fifo_pcm_irq_block_thread,
++				   IRQF_ONESHOT, dev_name(dev), ss);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.43.0
 
