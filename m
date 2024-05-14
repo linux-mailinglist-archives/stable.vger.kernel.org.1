@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3F58C5232
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C9F8C5340
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4764A1C21699
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A99A71F22FA7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D9F12DDB3;
-	Tue, 14 May 2024 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B037A6EB68;
+	Tue, 14 May 2024 11:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/KPkE5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1ixS+aI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414A8200BF;
-	Tue, 14 May 2024 11:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9141D54D;
+	Tue, 14 May 2024 11:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685618; cv=none; b=SFIxYGPrvAl0/BXGGeA3jLFAHDldSCy371HYNdITOO8zWZl7AhINc8S8QMyjKaiw/UEcLy/dxNtsszPPzfDBOUMl0CI1pS+Rt7VhWnPwDiUpTjygA202evUxhLGqj3MJu9X4a/0RieIBOHtOwrbWiIFXEnpwyFefB+ujj0NumEs=
+	t=1715686396; cv=none; b=pEabF8d8kfrOBoll+W11X/QFwYdRTVYu3VnQsY7Dhpi+WqLjWvJ46x4DYjhOqReKWgDLvsRWx8hXFsfqR/SRrFbel9j5q032QmfHaF2kJeG4QH6znembdDpjAlcJrAHv1ajOche5AGvziwL000AzWouPaNOHfo0o40ZGLHxIda4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685618; c=relaxed/simple;
-	bh=2aalL5PO078epPbrWjOcIAyLVsHJ7+ZTeyh01WPbAXM=;
+	s=arc-20240116; t=1715686396; c=relaxed/simple;
+	bh=cOvmi7iNtR+Fai2Lfi6I4woKNIILzaCiiaJvpWwN9pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqndjrOs85Z20LDXFI0NNo3qL93di+DkM38WtpMwLlBYm9cebo3XKALRq6Wkr3oNMf+MsG6ya/Gbi7FHAO5LPqDxrcwX0gSqGFON6lMYUaHrg23aIZi9AEqIICJLtNGoKiRYLgVuCZepNWqnek3Cz4EeTM7yyhufKwBvozFp5fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/KPkE5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CF2C2BD10;
-	Tue, 14 May 2024 11:20:15 +0000 (UTC)
+	 MIME-Version; b=XbtD0ARQv0G0BDa348eiC8Equf70mjyIVExSaCHjWL3lNvuBog2fOJ2AwV1xfl0s9JLGKfIlvWrwiV3FZfr7wiYiU2IaUNTYsTqE+cAM4mMDAmwJQKSIuzjEMicxY3Kr8C5FMfwIk0iqvXfq7V0nA5gLq9cPI0m7MTnB0lJVCAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1ixS+aI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873B1C2BD10;
+	Tue, 14 May 2024 11:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685618;
-	bh=2aalL5PO078epPbrWjOcIAyLVsHJ7+ZTeyh01WPbAXM=;
+	s=korg; t=1715686395;
+	bh=cOvmi7iNtR+Fai2Lfi6I4woKNIILzaCiiaJvpWwN9pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/KPkE5nVddQOaCQkT1D7qT/+kBvM1WpL4XrPd90ZWMz7qQN7oSNHrq9bkSrE7Uyh
-	 3ee4Q11q/EPqlFtSC8Zg+2MikDqhZ514xvHOwx1qKTHjx/Sw5oHb7zSN5wOvHlppQH
-	 1fze5b/rpO6yuoSfdwlzVMvTk6UwiUybM21rCJnQ=
+	b=l1ixS+aIjFeDvtiQ/WRYNpC8FXUG9Ru3m9lCQWDyuK7F8RzjK7z7+qfHWEkGNXG2z
+	 PBbNeRISZJJDjBot4/t8pOZI8Lv/1EXu6amtyBt0MThG/4H2wkNULNekLyg44jGAWm
+	 0aJohyqQs+aXChoqVyKyG8cgcoPh08+WFJgMdVR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Justin Ernst <justin.ernst@hpe.com>,
+	Thomas Renninger <trenn@suse.de>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/301] dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users
+Subject: [PATCH 6.1 124/236] tools/power/turbostat: Fix uncore frequency file string
 Date: Tue, 14 May 2024 12:18:06 +0200
-Message-ID: <20240514101040.377447886@linuxfoundation.org>
+Message-ID: <20240514101025.080087296@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Justin Ernst <justin.ernst@hpe.com>
 
-[ Upstream commit cd94d1b182d2986378550c9087571991bfee01d4 ]
+[ Upstream commit 60add818ab2543b7e4f2bfeaacf2504743c1eb50 ]
 
-Limit the workaround introduced by commit 31729e8c21ec ("drm/amd/pm: fixes
-a random hang in S4 for SMU v13.0.4/11") to only run in the s4 path.
+Running turbostat on a 16 socket HPE Scale-up Compute 3200 (SapphireRapids) fails with:
+turbostat: /sys/devices/system/cpu/intel_uncore_frequency/package_010_die_00/current_freq_khz: open failed: No such file or directory
 
-Cc: Tim Huang <Tim.Huang@amd.com>
-Fixes: 31729e8c21ec ("drm/amd/pm: fixes a random hang in S4 for SMU v13.0.4/11")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3351
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+We observe the sysfs uncore frequency directories named:
+...
+package_09_die_00/
+package_10_die_00/
+package_11_die_00/
+...
+package_15_die_00/
+
+The culprit is an incorrect sprintf format string "package_0%d_die_0%d" used
+with each instance of reading uncore frequency files. uncore-frequency-common.c
+creates the sysfs directory with the format "package_%02d_die_%02d". Once the
+package value reaches double digits, the formats diverge.
+
+Change each instance of "package_0%d_die_0%d" to "package_%02d_die_%02d".
+
+[lenb: deleted the probe part of this patch, as it was already fixed]
+
+Signed-off-by: Justin Ernst <justin.ernst@hpe.com>
+Reviewed-by: Thomas Renninger <trenn@suse.de>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c | 2 +-
+ tools/power/x86/turbostat/turbostat.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-index 1d1917e1b63f4..cd674ef5adb19 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-@@ -226,7 +226,7 @@ static int smu_v13_0_4_system_features_control(struct smu_context *smu, bool en)
- 	struct amdgpu_device *adev = smu->adev;
- 	int ret = 0;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index a674500e7e63d..a41bad8e653bb 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -1969,7 +1969,7 @@ unsigned long long get_uncore_mhz(int package, int die)
+ {
+ 	char path[128];
  
--	if (!en && !adev->in_s0ix) {
-+	if (!en && adev->in_s4) {
- 		/* Adds a GFX reset as workaround just before sending the
- 		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
- 		 * an invalid state.
+-	sprintf(path, "/sys/devices/system/cpu/intel_uncore_frequency/package_0%d_die_0%d/current_freq_khz", package,
++	sprintf(path, "/sys/devices/system/cpu/intel_uncore_frequency/package_%02d_die_%02d/current_freq_khz", package,
+ 		die);
+ 
+ 	return (snapshot_sysfs_counter(path) / 1000);
 -- 
 2.43.0
 
