@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7434E8C54F6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18FE48C536C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 360CE1F21517
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C00728685A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AA47F7EB;
-	Tue, 14 May 2024 11:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65358627C;
+	Tue, 14 May 2024 11:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd+u/6Bf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ild21teT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1738E1CFB2;
-	Tue, 14 May 2024 11:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5518026;
+	Tue, 14 May 2024 11:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687555; cv=none; b=PMSc+DouFEE5yTL1S2jy1yS0JAn55xgHx1uaWVaSHjFJIamdjkYPsx6T7hzBQf6w33g3KXWqCesWVbR6PZ5+XxqfWavychoqQp1T6ZOpFiNyaA/S4uzwtDqfoYJoD6KxjmgyC7ot1TYRMuTwEDrnnWOP2+taU0PZROZtAUt5m2Q=
+	t=1715686502; cv=none; b=XY8kG7C5vJ1cKk9RZAs0CFkrlgTPNIIdLZ/HT4o2q+G9liC1OT8+ubU3G+NOr/LG74SNos1OvcU3zxDd0eWMuaol8362ucHBhH8c/qv7ne556yfW9x1lkNR2Sg8h3lG+9rhSsL8ilmn5UfDZZ2ts11yOVXIZJvhkmW6oXJkCcjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687555; c=relaxed/simple;
-	bh=ZwdRiVi6wI+D9sHbFk3C6J4HUzP8qp4pXTz8+eITLbg=;
+	s=arc-20240116; t=1715686502; c=relaxed/simple;
+	bh=bDcluG28gV33mLX7Yu2hL5wqpIpNCmzf0KBZaQzSNeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDXJ+feH5iyoHkHFdoxfovJRTboHaWGkCGLRZQr8yMTx+UVtJcCdLMMloBcYUQiiXpFbh/Vwbr0OEYt8Y+jOYTmW47UIcdW3oeLC7yoSYKB8TEUVrgTt2EOhnoL9lmadSKbTsvXzCzrphHN1fhfv4WwrZOnTaAAuGY0W6lavGMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd+u/6Bf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FC9C2BD10;
-	Tue, 14 May 2024 11:52:34 +0000 (UTC)
+	 MIME-Version; b=n6s0iM4ckQk+gmSpWz/T1M/RpDTkcAzg5T927WC8AzGY8861zYNoqO/Flg6Dhp+agN+/Hm44D0v2QBTndN52UofYGLQVvU8fk3IFXohns1Nod0OlpetzsCqwsfbjoaEzHTDFvjMnLb0hLDMLjK8p26qc2UzoLjCuHguzzW7CZu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ild21teT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AC7C32782;
+	Tue, 14 May 2024 11:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687555;
-	bh=ZwdRiVi6wI+D9sHbFk3C6J4HUzP8qp4pXTz8+eITLbg=;
+	s=korg; t=1715686502;
+	bh=bDcluG28gV33mLX7Yu2hL5wqpIpNCmzf0KBZaQzSNeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qd+u/6BfsFAWTo7m0tybVMlJ/RUvO87+npJuiH4vMNkli0fvD13s9n8MyZjyPqMGO
-	 Xj/Olf2AFceO7cqGSOuEwQ6oG8+ca+qNEyx+KU1AjfJHo7PpPUn5b8hvh+NVExKIxs
-	 bcZB5EuXLS8VHMVI6TANEsShCdazQwlOGSTGrANY=
+	b=ild21teTNS9KUUtiRIysn8VYY/Eo2rpDFoYb/43MTVY7N+kTiT/gNxdodtNTpEM1i
+	 4dTCeOjwob2pkSB/3C/XNM4SmRId2UC/mBVFlVwHVmrcYMx5RbaCJEFY+2peOL9yF5
+	 AGETJja9UbS7lBSEdsiOYsAG4K5P04A7LAUBw/NY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+aa8c8ec2538929f18f2d@syzkaller.appspotmail.com,
-	Jason Xing <kernelxing@tencent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/168] bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue
+Subject: [PATCH 6.1 161/236] timers: Rename del_timer() to timer_delete()
 Date: Tue, 14 May 2024 12:18:43 +0200
-Message-ID: <20240514101007.639238135@linuxfoundation.org>
+Message-ID: <20240514101026.473010377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 6648e613226e18897231ab5e42ffc29e63fa3365 ]
+[ Upstream commit bb663f0f3c396c6d05f6c5eeeea96ced20ff112e ]
 
-Fix NULL pointer data-races in sk_psock_skb_ingress_enqueue() which
-syzbot reported [1].
+The timer related functions do not have a strict timer_ prefixed namespace
+which is really annoying.
 
-[1]
-BUG: KCSAN: data-race in sk_psock_drop / sk_psock_skb_ingress_enqueue
+Rename del_timer() to timer_delete() and provide del_timer()
+as a wrapper. Document that del_timer() is not for new code.
 
-write to 0xffff88814b3278b8 of 8 bytes by task 10724 on cpu 1:
- sk_psock_stop_verdict net/core/skmsg.c:1257 [inline]
- sk_psock_drop+0x13e/0x1f0 net/core/skmsg.c:843
- sk_psock_put include/linux/skmsg.h:459 [inline]
- sock_map_close+0x1a7/0x260 net/core/sock_map.c:1648
- unix_release+0x4b/0x80 net/unix/af_unix.c:1048
- __sock_release net/socket.c:659 [inline]
- sock_close+0x68/0x150 net/socket.c:1421
- __fput+0x2c1/0x660 fs/file_table.c:422
- __fput_sync+0x44/0x60 fs/file_table.c:507
- __do_sys_close fs/open.c:1556 [inline]
- __se_sys_close+0x101/0x1b0 fs/open.c:1541
- __x64_sys_close+0x1f/0x30 fs/open.c:1541
- do_syscall_64+0xd3/0x1d0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-read to 0xffff88814b3278b8 of 8 bytes by task 10713 on cpu 0:
- sk_psock_data_ready include/linux/skmsg.h:464 [inline]
- sk_psock_skb_ingress_enqueue+0x32d/0x390 net/core/skmsg.c:555
- sk_psock_skb_ingress_self+0x185/0x1e0 net/core/skmsg.c:606
- sk_psock_verdict_apply net/core/skmsg.c:1008 [inline]
- sk_psock_verdict_recv+0x3e4/0x4a0 net/core/skmsg.c:1202
- unix_read_skb net/unix/af_unix.c:2546 [inline]
- unix_stream_read_skb+0x9e/0xf0 net/unix/af_unix.c:2682
- sk_psock_verdict_data_ready+0x77/0x220 net/core/skmsg.c:1223
- unix_stream_sendmsg+0x527/0x860 net/unix/af_unix.c:2339
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x140/0x180 net/socket.c:745
- ____sys_sendmsg+0x312/0x410 net/socket.c:2584
- ___sys_sendmsg net/socket.c:2638 [inline]
- __sys_sendmsg+0x1e9/0x280 net/socket.c:2667
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x46/0x50 net/socket.c:2674
- do_syscall_64+0xd3/0x1d0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-value changed: 0xffffffff83d7feb0 -> 0x0000000000000000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 10713 Comm: syz-executor.4 Tainted: G        W          6.8.0-syzkaller-08951-gfe46a7dd189e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-
-Prior to this, commit 4cd12c6065df ("bpf, sockmap: Fix NULL pointer
-dereference in sk_psock_verdict_data_ready()") fixed one NULL pointer
-similarly due to no protection of saved_data_ready. Here is another
-different caller causing the same issue because of the same reason. So
-we should protect it with sk_callback_lock read lock because the writer
-side in the sk_psock_drop() uses "write_lock_bh(&sk->sk_callback_lock);".
-
-To avoid errors that could happen in future, I move those two pairs of
-lock into the sk_psock_data_ready(), which is suggested by John Fastabend.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Reported-by: syzbot+aa8c8ec2538929f18f2d@syzkaller.appspotmail.com
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=aa8c8ec2538929f18f2d
-Link: https://lore.kernel.org/all/20240329134037.92124-1-kerneljasonxing@gmail.com
-Link: https://lore.kernel.org/bpf/20240404021001.94815-1-kerneljasonxing@gmail.com
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201625.015535022@linutronix.de
+Stable-dep-of: 4893b8b3ef8d ("hsr: Simplify code for announcing HSR nodes timer setup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skmsg.h |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/timer.h | 15 ++++++++++++++-
+ kernel/time/timer.c   |  6 +++---
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -462,10 +462,12 @@ static inline void sk_psock_put(struct s
- 
- static inline void sk_psock_data_ready(struct sock *sk, struct sk_psock *psock)
- {
-+	read_lock_bh(&sk->sk_callback_lock);
- 	if (psock->saved_data_ready)
- 		psock->saved_data_ready(sk);
- 	else
- 		sk->sk_data_ready(sk);
-+	read_unlock_bh(&sk->sk_callback_lock);
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 551fa467726f0..e338e173ce8bc 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -169,7 +169,6 @@ static inline int timer_pending(const struct timer_list * timer)
  }
  
- static inline void psock_set_prog(struct bpf_prog **pprog,
+ extern void add_timer_on(struct timer_list *timer, int cpu);
+-extern int del_timer(struct timer_list * timer);
+ extern int mod_timer(struct timer_list *timer, unsigned long expires);
+ extern int mod_timer_pending(struct timer_list *timer, unsigned long expires);
+ extern int timer_reduce(struct timer_list *timer, unsigned long expires);
+@@ -184,6 +183,7 @@ extern void add_timer(struct timer_list *timer);
+ 
+ extern int try_to_del_timer_sync(struct timer_list *timer);
+ extern int timer_delete_sync(struct timer_list *timer);
++extern int timer_delete(struct timer_list *timer);
+ 
+ /**
+  * del_timer_sync - Delete a pending timer and wait for a running callback
+@@ -198,6 +198,19 @@ static inline int del_timer_sync(struct timer_list *timer)
+ 	return timer_delete_sync(timer);
+ }
+ 
++/**
++ * del_timer - Delete a pending timer
++ * @timer:	The timer to be deleted
++ *
++ * See timer_delete() for detailed explanation.
++ *
++ * Do not use in new code. Use timer_delete() instead.
++ */
++static inline int del_timer(struct timer_list *timer)
++{
++	return timer_delete(timer);
++}
++
+ extern void init_timers(void);
+ struct hrtimer;
+ extern enum hrtimer_restart it_real_fn(struct hrtimer *);
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index f5f938140ceaf..e09852be4e638 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1255,7 +1255,7 @@ void add_timer_on(struct timer_list *timer, int cpu)
+ EXPORT_SYMBOL_GPL(add_timer_on);
+ 
+ /**
+- * del_timer - Deactivate a timer.
++ * timer_delete - Deactivate a timer
+  * @timer:	The timer to be deactivated
+  *
+  * The function only deactivates a pending timer, but contrary to
+@@ -1268,7 +1268,7 @@ EXPORT_SYMBOL_GPL(add_timer_on);
+  * * %0 - The timer was not pending
+  * * %1 - The timer was pending and deactivated
+  */
+-int del_timer(struct timer_list *timer)
++int timer_delete(struct timer_list *timer)
+ {
+ 	struct timer_base *base;
+ 	unsigned long flags;
+@@ -1284,7 +1284,7 @@ int del_timer(struct timer_list *timer)
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL(del_timer);
++EXPORT_SYMBOL(timer_delete);
+ 
+ /**
+  * try_to_del_timer_sync - Try to deactivate a timer
+-- 
+2.43.0
+
 
 
 
