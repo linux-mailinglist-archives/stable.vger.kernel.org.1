@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D578C5514
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7831E8C5290
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ABC5282C8B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1585AB2179B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7604DA13;
-	Tue, 14 May 2024 11:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B713F446;
+	Tue, 14 May 2024 11:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZn5iqNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNbSG8Zs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD413D0D1;
-	Tue, 14 May 2024 11:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC3513D51C;
+	Tue, 14 May 2024 11:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687636; cv=none; b=cUH+6N+6hC3d0NSfR0XeeA7EsOHxXq9NEbRqTagRlzqIuF30JUWK/LnDgN6KsbZyj70wPfkITj4fVp4zmWzxKgS7KISB+cdTP5NtddZ7oSMKvDcZGxrH98XsUQ5Ln5VVUyMjiNBFCddv3IjZc3VDBSqX/HYFNsOnEQ6qqC2W9SU=
+	t=1715685934; cv=none; b=d6QtJ8hJjPVaIIo8fTD1lf7BPbdib22q/8hdCp7PDZ5SH0eoBJy/msssjypkDA/CB6Ta5PAB9VPfgr9FbvxP/nBJp7CPzykmUxX5c7SIDr9fT57OVJoXI2LX3XkrDf6p/xEfpUUwCnFoYqMP5wU648RkfpidVa5sjDn8nPv7O3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687636; c=relaxed/simple;
-	bh=1aA82xdddhJPHYnI4MW3y1xVzCS+90gO/GPFTarhvNQ=;
+	s=arc-20240116; t=1715685934; c=relaxed/simple;
+	bh=IMtdshwa/wBKusNLHDHSfBYL2BbGBvdqIahMWX1Wt0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4lnQbnTADk3WPOUjb7tPZR7bSQVlJ9Em2G5z6yS2ZeCODDhzLz+e6qz3F7rbb0v0dHWcAyxeysNu7yr8LdWlKly2zupXbrbIk1NFP2BkGc+Zt7MmrAyEXx8Uro+0zm3iy8kMIvVlSsAHkcd2QnMiE8ZD2YDNVtFVCvnjnWv5T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZn5iqNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774F1C2BD10;
-	Tue, 14 May 2024 11:53:55 +0000 (UTC)
+	 MIME-Version; b=u8okpeGUtOwemH4rQUI42xI4J9ydi8rPlfSon4EqYyvqk+qgaihMdfymLklCCmhRgSxjnrqoi2OBEvBDK7zLsZXM2kUT74/fjOwH+gBKhrapTxoa/3fnpLNQUDjdm//luTBUHNq4PvQLPJvwjIl6HETxlqWEbY6OdTM3VZ+qVsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNbSG8Zs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E2FC2BD10;
+	Tue, 14 May 2024 11:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687635;
-	bh=1aA82xdddhJPHYnI4MW3y1xVzCS+90gO/GPFTarhvNQ=;
+	s=korg; t=1715685933;
+	bh=IMtdshwa/wBKusNLHDHSfBYL2BbGBvdqIahMWX1Wt0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZn5iqNbFZ4PQYdTiSFJAVBzjHXQyPpigS3SYDlZ1U08Ovsi8jATotJGATxVhGOhA
-	 qnQ60uRx9+ebdPZXlonSNaUzs7CGKXLlcKmpLghOdBp7jDWTKbX6O6+c0j4KTX4jyq
-	 iK2F1UYlOCHVJn9iWaxj9WK39EWKNpM84EVvXYG0=
+	b=tNbSG8ZsYD4w+2sS/Q2mh5ATnakKE1X8YXC3ZEecedC20j7hs/gS5QpcrbYvMuTgc
+	 YQCjjIQTSlmE1Q3J/9DXM31TRqD6ACmjDcWYuHFoO7h+8tccSecu0XoVlbb02Q207t
+	 2CTaqs9U/VlRulBsmN/DcVwAVbvD+OmTvrQyTa7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Tung Nguyen <tung.q.nguyen@dektech.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 053/168] tipc: fix a possible memleak in tipc_buf_append
+	Adrian Huang <ahuang12@lenovo.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.6 280/301] x86/apic: Dont access the APIC when disabling x2APIC
 Date: Tue, 14 May 2024 12:19:11 +0200
-Message-ID: <20240514101008.690931534@linuxfoundation.org>
+Message-ID: <20240514101042.836557063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 97bf6f81b29a8efaf5d0983251a7450e5794370d ]
+commit 720a22fd6c1cdadf691281909950c0cbc5cdf17e upstream.
 
-__skb_linearize() doesn't free the skb when it fails, so move
-'*buf = NULL' after __skb_linearize(), so that the skb can be
-freed on the err path.
+With 'iommu=off' on the kernel command line and x2APIC enabled by the BIOS
+the code which disables the x2APIC triggers an unchecked MSR access error:
 
-Fixes: b7df21cf1b79 ("tipc: skb_linearize the head skb when reassembling msgs")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
-Link: https://lore.kernel.org/r/90710748c29a1521efac4f75ea01b3b7e61414cf.1714485818.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  RDMSR from 0x802 at rIP: 0xffffffff94079992 (native_apic_msr_read+0x12/0x50)
+
+This is happens because default_acpi_madt_oem_check() selects an x2APIC
+driver before the x2APIC is disabled.
+
+When the x2APIC is disabled because interrupt remapping cannot be enabled
+due to 'iommu=off' on the command line, x2apic_disable() invokes
+apic_set_fixmap() which in turn tries to read the APIC ID. This triggers
+the MSR warning because x2APIC is disabled, but the APIC driver is still
+x2APIC based.
+
+Prevent that by adding an argument to apic_set_fixmap() which makes the
+APIC ID read out conditional and set it to false from the x2APIC disable
+path. That's correct as the APIC ID has already been read out during early
+discovery.
+
+Fixes: d10a904435fa ("x86/apic: Consolidate boot_cpu_physical_apicid initialization sites")
+Reported-by: Adrian Huang <ahuang12@lenovo.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Adrian Huang <ahuang12@lenovo.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/875xw5t6r7.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/msg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/apic/apic.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/tipc/msg.c b/net/tipc/msg.c
-index 5c9fd4791c4ba..c52ab423082cd 100644
---- a/net/tipc/msg.c
-+++ b/net/tipc/msg.c
-@@ -142,9 +142,9 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
- 	if (fragid == FIRST_FRAGMENT) {
- 		if (unlikely(head))
- 			goto err;
--		*buf = NULL;
- 		if (skb_has_frag_list(frag) && __skb_linearize(frag))
- 			goto err;
-+		*buf = NULL;
- 		frag = skb_unshare(frag, GFP_ATOMIC);
- 		if (unlikely(!frag))
- 			goto err;
--- 
-2.43.0
-
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1808,7 +1808,7 @@ void x2apic_setup(void)
+ 	__x2apic_enable();
+ }
+ 
+-static __init void apic_set_fixmap(void);
++static __init void apic_set_fixmap(bool read_apic);
+ 
+ static __init void x2apic_disable(void)
+ {
+@@ -1830,7 +1830,12 @@ static __init void x2apic_disable(void)
+ 	}
+ 
+ 	__x2apic_disable();
+-	apic_set_fixmap();
++	/*
++	 * Don't reread the APIC ID as it was already done from
++	 * check_x2apic() and the APIC driver still is a x2APIC variant,
++	 * which fails to do the read after x2APIC was disabled.
++	 */
++	apic_set_fixmap(false);
+ }
+ 
+ static __init void x2apic_enable(void)
+@@ -2095,13 +2100,14 @@ void __init init_apic_mappings(void)
+ 	}
+ }
+ 
+-static __init void apic_set_fixmap(void)
++static __init void apic_set_fixmap(bool read_apic)
+ {
+ 	set_fixmap_nocache(FIX_APIC_BASE, mp_lapic_addr);
+ 	apic_mmio_base = APIC_BASE;
+ 	apic_printk(APIC_VERBOSE, "mapped APIC to %16lx (%16lx)\n",
+ 		    apic_mmio_base, mp_lapic_addr);
+-	apic_read_boot_cpu_id(false);
++	if (read_apic)
++		apic_read_boot_cpu_id(false);
+ }
+ 
+ void __init register_lapic_address(unsigned long address)
+@@ -2111,7 +2117,7 @@ void __init register_lapic_address(unsig
+ 	mp_lapic_addr = address;
+ 
+ 	if (!x2apic_mode)
+-		apic_set_fixmap();
++		apic_set_fixmap(true);
+ }
+ 
+ /*
 
 
 
