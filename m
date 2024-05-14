@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-44684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0368C53F2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAF38C53BE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D7501F23091
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3003B288608
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B198B12FF67;
-	Tue, 14 May 2024 11:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCECB12EBE4;
+	Tue, 14 May 2024 11:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkVT23Ex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVhGWkJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7080B5FDD2;
-	Tue, 14 May 2024 11:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB3512EBCE;
+	Tue, 14 May 2024 11:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686874; cv=none; b=VlkCXWYTF6MuI4oeeFsx3NwKXZ5zj5yPs2Ch3bhI49U/xyjFw8J43ItADH50fNH/o5pQ2qiRLtOzZbXJf0tLmcU2xwgUHswmEjaKzhtIhiJ80HSLfkVSeX2zQi9ypeC3grX23/0a2wm85fHdLuk9iY95tcIH7xlBKhhPc2QQ1mk=
+	t=1715686731; cv=none; b=I4/a0LBpFBD+2ktL2iC5njKmADMdaxQ1wwC3EdXVoqCV2Mgoh3zTjhejRqqGDnccod1wMwiOSNFAWOw1M2ZaJXDLv1GWGvJA9aSfRKkVcM6oBPqPIPFLkVHl0QUWQPV4r1yT13+Z3tFzzLqapSPCa30PbDopTk1OJ/m/DvvAbyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686874; c=relaxed/simple;
-	bh=7ToX8QbRouw9PCR7FDs8TgSMEU7E+DJcL7o4/bpj0qw=;
+	s=arc-20240116; t=1715686731; c=relaxed/simple;
+	bh=U/0ayFmmreFlhfMFtGJJCYEFUEs5Cdk+T7M5m96FbJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zh1oSv0rdhlWdFw5E7a+Kyge1ypcm3Vj2C+gQJsuY5B06FBYHAPM/41gCbvjkMELODU7JzkYCHrRNtsjLK832CWAM39Hl5yybodTmoCJnu4oaanaCYasDCLtJCz0vei+xyZTCjqa+XFPZXE+DEvFjYHl8hhxu031m/JuyEj0UOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkVT23Ex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1BDC2BD10;
-	Tue, 14 May 2024 11:41:13 +0000 (UTC)
+	 MIME-Version; b=Ski1kLdP8CpUOIjs8ga4lEGtbNhB22DA/SH6UvAvnCW3XwwZuUY3w493kvQUX/yivhMVocySSr5Gpo608GTiIt8I6yfcs0X8fCv9/LWmV4cCcEhYmRR3Ret5FdCJvW4axxmL6YndvHj6OKrCnpjWtr/nZmTVLYmB0HA5t+Kxbfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVhGWkJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1070EC2BD10;
+	Tue, 14 May 2024 11:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686874;
-	bh=7ToX8QbRouw9PCR7FDs8TgSMEU7E+DJcL7o4/bpj0qw=;
+	s=korg; t=1715686731;
+	bh=U/0ayFmmreFlhfMFtGJJCYEFUEs5Cdk+T7M5m96FbJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkVT23ExSic60dnXTC8RC82pl7YJzqqM4+GqTdHjKO/WgTHS8aaH8DzSIjZd5YRyo
-	 Bqlmn8rlrcWNjbcKTCUvWrPGkNiqlX3W9XO/dsW4ai5o3set044RsjPTx9PYClCFmU
-	 HXsSKmTYatfLOVizOsQPfzwaUuNNVQ/iLO1DfcQg=
+	b=HVhGWkJGjv03/zFLE5N9uetCadzMHJVIfc/e8zeK/gMDiGx7R2vUkLGCRBU5C6vUB
+	 2P3WWrWs+rOidyzlJSQcTKb2US0ATaeenPMmP+T3E+FE8d7ryrO2KFIKH67pUv/y9J
+	 jqtVkn822qNwo5EAJ3D1EleqQouqPeX3000OaDcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 20/63] net: bridge: fix multicast-to-unicast with fraglist GSO
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 6.1 219/236] mei: me: add lunar lake point M DID
 Date: Tue, 14 May 2024 12:19:41 +0200
-Message-ID: <20240514100948.779612200@linuxfoundation.org>
+Message-ID: <20240514101028.671051799@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 59c878cbcdd80ed39315573b3511d0acfd3501b5 ]
+commit 4108a30f1097eead0f6bd5d885e6bf093b4d460f upstream.
 
-Calling skb_copy on a SKB_GSO_FRAGLIST skb is not valid, since it returns
-an invalid linearized skb. This code only needs to change the ethernet
-header, so pskb_copy is the right function to call here.
+Add Lunar (Point) Lake M device id.
 
-Fixes: 6db6f0eae605 ("bridge: multicast to unicast")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240421135631.223362-1-tomas.winkler@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_forward.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index c07a47d65c398..fc2ebd732098f 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -259,7 +259,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -115,6 +115,8 @@
+ #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+ #define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
  
--	skb = skb_copy(skb, GFP_ATOMIC);
-+	skb = pskb_copy(skb, GFP_ATOMIC);
- 	if (!skb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
--- 
-2.43.0
-
++#define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -122,6 +122,8 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
