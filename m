@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023388C531B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:43:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C59C8C52CA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD8C91F22FB4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:43:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 434B5B221CD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFC213AD07;
-	Tue, 14 May 2024 11:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8247A12A170;
+	Tue, 14 May 2024 11:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Rnh6vCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vdgs34SM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD80213AA5F;
-	Tue, 14 May 2024 11:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3A954BFE;
+	Tue, 14 May 2024 11:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686310; cv=none; b=LqPhNz4xqrqOGlzkl4gk/xyPBGa4VeZb9BBsZjp4AWsiVbyVTpZpLVsJJ6lSTBpUQH+/Pux1ecd2iS8q7RBcDbHJ73HhfLx8Ax7OXPBPrxEDrVI2ccgWbg+2tpN2NLEzDqQEVB2wjr6GO2fpNj4h27OyZDRdKmwcC7kjnTj4zyM=
+	t=1715685418; cv=none; b=r/c8RAYz5LM08BFkFMCyf6FwXHqcEY4n6ZASQlXRy9wCSxwF18dqv/Sg589Tp89C6qi+mn2J21ZN13fI923ESA4XTWQsxzkFPqSmQ1z/Q+IwaCKr8mh5na8nfVrTDDC5eNoZHr96f6TYZ93SC03Z9ZfjBs0KDZO/p4pvi4Y8lQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686310; c=relaxed/simple;
-	bh=veic3/KKTZlKzrxiMoCoDTSXVffV84ZbgLndlqcdn+8=;
+	s=arc-20240116; t=1715685418; c=relaxed/simple;
+	bh=+UkcPrOZGdm4ql0ALZ7DX472BVBpsOpSkmTAjGprL3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2iMf7BoFhTW2yDJugkujgU8UYH7LCoIWQL7GsJKPjunaayUapKJW8YUKWBD0xB6B+AMIkebweGoazK9cnmq6DuB7ZT0D5sZv1yq1QWgiNfjfJ2M/Orh1zeH0/QgpCImetpDRlBnvwJTFSjrOiSRuSRmHCLJVJy8TMYkPMX+wXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Rnh6vCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1E4C2BD10;
-	Tue, 14 May 2024 11:31:49 +0000 (UTC)
+	 MIME-Version; b=S3s+8QuQ62+8KbROs5dDfIN/6jIzYEQgCopza1N5sPF05t4n1pLicqYxW0WU6KMzqsfdx50ZIDdYjhbGoCY380RMHHDAmxsQ8yPCsRwFpdK5Npyoo0a6ltP1zLCmW8mkcfhHDPqIWc/SsAiSQ6GYiZJHKmxwpG0g6oTzgkbakbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vdgs34SM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE9EC2BD10;
+	Tue, 14 May 2024 11:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686309;
-	bh=veic3/KKTZlKzrxiMoCoDTSXVffV84ZbgLndlqcdn+8=;
+	s=korg; t=1715685418;
+	bh=+UkcPrOZGdm4ql0ALZ7DX472BVBpsOpSkmTAjGprL3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Rnh6vCLlanhm4RzrpIleytZV+N7D4zHFzMoGfrECJpFq4RZYMsA9ilj/vI8HBHKP
-	 AYGdOBh2amgfJBs34Br92hgXauYfcMBN+bKZrwFku/DjBdyptFI5/PUmzUCPjN23Xg
-	 CSwfDB3MUNxrWAoPFWK8GeIdr/k0T4A6QtI3cFnM=
+	b=Vdgs34SM0pwGnu1bFn0b3+F94H82p4xhDwG3Zpwc3+tSrL8UVJEyz8C0QY3FEP4EK
+	 Ac0eNBlwORTmeDSVDmwce31o4qDhYbo8S8HfEDxAviQvRq9oXa+lHPXCo+whFHJVps
+	 77IiIhGPVe6GzCbmgWXeyFBLE+M0MFbWl2Y8iZzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/236] scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
+Subject: [PATCH 6.6 185/301] hwmon: (corsair-cpro) Use a separate buffer for sending commands
 Date: Tue, 14 May 2024 12:17:36 +0200
-Message-ID: <20240514101023.941001253@linuxfoundation.org>
+Message-ID: <20240514101039.240848966@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-[ Upstream commit bb011631435c705cdeddca68d5c85fd40a4320f9 ]
+[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
 
-Typically when an out of resource CQE status is detected, the
-lpfc_ramp_down_queue_handler() logic is called to help reduce I/O load by
-reducing an sdev's queue_depth.
+Introduce cmd_buffer, a separate buffer for storing only
+the command that is sent to the device. Before this separation,
+the existing buffer was shared for both the command and the
+report received in ccp_raw_event(), which was copied into it.
 
-However, the current lpfc_rampdown_queue_depth() logic does not help reduce
-queue_depth.  num_cmd_success is never updated and is always zero, which
-means new_queue_depth will always be set to sdev->queue_depth.  So,
-new_queue_depth = sdev->queue_depth - new_queue_depth always sets
-new_queue_depth to zero.  And, scsi_change_queue_depth(sdev, 0) is
-essentially a no-op.
+However, because of hidraw, the raw event parsing may be triggered
+in the middle of sending a command, resulting in outputting gibberish
+to the device. Using a separate buffer resolves this.
 
-Change the lpfc_ramp_down_queue_handler() logic to set new_queue_depth
-equal to sdev->queue_depth subtracted from number of times num_rsrc_err was
-incremented.  If num_rsrc_err is >= sdev->queue_depth, then set
-new_queue_depth equal to 1.  Eventually, the frequency of Good_Status
-frames will signal SCSI upper layer to auto increase the queue_depth back
-to the driver default of 64 via scsi_handle_queue_ramp_up().
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240305200503.57317-5-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc.h      |  1 -
- drivers/scsi/lpfc/lpfc_scsi.c | 13 ++++---------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index dc5ac3cc70f6d..6f08fbe103cb9 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -1355,7 +1355,6 @@ struct lpfc_hba {
- 	struct timer_list fabric_block_timer;
- 	unsigned long bit_flags;
- 	atomic_t num_rsrc_err;
--	atomic_t num_cmd_success;
- 	unsigned long last_rsrc_error_time;
- 	unsigned long last_ramp_down_time;
- #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 0bb7e164b525f..2a81a42de5c14 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -167,11 +167,10 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
- 	struct Scsi_Host  *shost;
- 	struct scsi_device *sdev;
- 	unsigned long new_queue_depth;
--	unsigned long num_rsrc_err, num_cmd_success;
-+	unsigned long num_rsrc_err;
- 	int i;
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index 463ab4296ede5..34136d1b04764 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -79,6 +79,7 @@ struct ccp_device {
+ 	struct device *hwmon_dev;
+ 	struct completion wait_input_report;
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
++	u8 *cmd_buffer;
+ 	u8 *buffer;
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	unsigned long t;
+ 	int ret;
  
- 	num_rsrc_err = atomic_read(&phba->num_rsrc_err);
--	num_cmd_success = atomic_read(&phba->num_cmd_success);
+-	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
+-	ccp->buffer[0] = command;
+-	ccp->buffer[1] = byte1;
+-	ccp->buffer[2] = byte2;
+-	ccp->buffer[3] = byte3;
++	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
++	ccp->cmd_buffer[0] = command;
++	ccp->cmd_buffer[1] = byte1;
++	ccp->cmd_buffer[2] = byte2;
++	ccp->cmd_buffer[3] = byte3;
  
- 	/*
- 	 * The error and success command counters are global per
-@@ -186,20 +185,16 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
- 		for (i = 0; i <= phba->max_vports && vports[i] != NULL; i++) {
- 			shost = lpfc_shost_from_vport(vports[i]);
- 			shost_for_each_device(sdev, shost) {
--				new_queue_depth =
--					sdev->queue_depth * num_rsrc_err /
--					(num_rsrc_err + num_cmd_success);
--				if (!new_queue_depth)
--					new_queue_depth = sdev->queue_depth - 1;
-+				if (num_rsrc_err >= sdev->queue_depth)
-+					new_queue_depth = 1;
- 				else
- 					new_queue_depth = sdev->queue_depth -
--								new_queue_depth;
-+						num_rsrc_err;
- 				scsi_change_queue_depth(sdev, new_queue_depth);
- 			}
- 		}
- 	lpfc_destroy_vport_work_array(phba, vports);
- 	atomic_set(&phba->num_rsrc_err, 0);
--	atomic_set(&phba->num_cmd_success, 0);
- }
+ 	reinit_completion(&ccp->wait_input_report);
  
- /**
+-	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
++	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	if (!ccp)
+ 		return -ENOMEM;
+ 
+-	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	if (!ccp->cmd_buffer)
++		return -ENOMEM;
++
++	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
+ 	if (!ccp->buffer)
+ 		return -ENOMEM;
+ 
 -- 
 2.43.0
 
