@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED848C52B2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE188C53A2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E2C6283746
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B341287D89
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA013142E85;
-	Tue, 14 May 2024 11:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7768C12D755;
+	Tue, 14 May 2024 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etbZKSxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQNHb6wz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C86142E6E;
-	Tue, 14 May 2024 11:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3601412C554;
+	Tue, 14 May 2024 11:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686056; cv=none; b=FVaVRz3nTKvSCb2Pep3PXwcnF+/YJfHLix0uEMkaPSe47UuG1ReXGywxx8wI2hEAXoqKN3wBECA+RX8BZOgXHhoineF3IlC9YOvRTCndomLA9j535N4Hplqf4IneQHNRUSMyttIRjYZ2g/7bio0kUsmTTkbqkMvQtbdEleCVbKw=
+	t=1715686645; cv=none; b=C2D5XR4qJM5svGPq/apo147esnKatSjWBHdqNy4asZU8G08wnPOc0pv1RNdODfESRfKdQXzzLE4ERPgEKDjhUDNrWwsP7Oc3gCOSdI+Ao/2oKx9s2ZctutqZ5jDboJRxU0K0Fgo3GFLSlmXwx3Mo7cBhmhra9jvdNvxgO0v+0pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686056; c=relaxed/simple;
-	bh=9mBiWXR3DFyYZ2Q3UQY0cPdba0NbCL4rMpdBMZU238s=;
+	s=arc-20240116; t=1715686645; c=relaxed/simple;
+	bh=vV/dM6tmb/iUhmg9jMB+GfWXyuuDL8gRl0TfbhK2eJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMWE8OPDV9vnB1waxy4gbZyR12wak/Rn7+bsaaugrsyPTILkW7SylMEpvFucscC+j0o64snfkGJWgSeHatEraeJRHAKIIxl4Zm177vSw1HSBO28GBh8oO9dy6MbO8VqKIaqgneCo5NV+9QaTUFpgomHDSctxJHzl9wBKy3Ws2Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etbZKSxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B5FC2BD10;
-	Tue, 14 May 2024 11:27:35 +0000 (UTC)
+	 MIME-Version; b=KbhgTTXtYwHBp+V3PdE1y1dgjIYGznb02rOoM67jNEN7q7x2vAzExbrM2etLbVn86LrDUSlg+Tp/E1lXdNs6GW7WzCWA+HKgPKDWWkNtLQP8oGGFaOTF/w8fzY+1Zj6GSvRu7+e8dlz0i3tDveumVC9DShK8+a/KYznjsvY2j90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQNHb6wz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46DFC32782;
+	Tue, 14 May 2024 11:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686056;
-	bh=9mBiWXR3DFyYZ2Q3UQY0cPdba0NbCL4rMpdBMZU238s=;
+	s=korg; t=1715686645;
+	bh=vV/dM6tmb/iUhmg9jMB+GfWXyuuDL8gRl0TfbhK2eJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etbZKSxYPs7TLZtcGPq0xaaCgsj4fosnZR11TwD9OirAnoDtR9akr316ZoxUwz7v1
-	 ok48kHUtC4thfEQOcO7veerhOKOTnfSuuuQsK4RwoWZV6eLRMtFhcmWDlyVeWjqb8T
-	 voU+YmexgpItXSEAXCz1hLm075GcFJs0q5rQu6Lo=
+	b=jQNHb6wzIFwRccHSgaNjZVJ/HQV62lXjqa1AHb9VBgZNyIXT108druIX6tiRRbY8H
+	 gCQZ13YkLPUroR26QRFK230WnqvFC+Q4s8Sn17C/IIWTEID/uh3k7Fmjx6P3bfhVv/
+	 FKZrx6xqJIS1EBE0H5rj6hjqJXZZiSmvm06RpCNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 300/301] Bluetooth: qca: fix info leak when fetching fw build id
+	Hans de Goede <hdegoede@redhat.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 209/236] iio: accel: mxc4005: Interrupt handling fixes
 Date: Tue, 14 May 2024 12:19:31 +0200
-Message-ID: <20240514101043.592657550@linuxfoundation.org>
+Message-ID: <20240514101028.295522754@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit cda0d6a198e2a7ec6f176c36173a57bdd8af7af2 upstream.
+commit 57a1592784d622ecee0b71940c65429173996b33 upstream.
 
-Add the missing sanity checks and move the 255-byte build-id buffer off
-the stack to avoid leaking stack data through debugfs in case the
-build-info reply is malformed.
+There are 2 issues with interrupt handling in the mxc4005 driver:
 
-Fixes: c0187b0bd3e9 ("Bluetooth: btqca: Add support to read FW build version for WCN3991 BTSoC")
-Cc: stable@vger.kernel.org	# 5.12
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+1. mxc4005_set_trigger_state() writes MXC4005_REG_INT_MASK1_BIT_DRDYE
+(0x01) to INT_MASK1 to enable the interrupt, but to disable the interrupt
+it writes ~MXC4005_REG_INT_MASK1_BIT_DRDYE which is 0xfe, so it enables
+all other interrupt sources in the INT_SRC1 register. On the MXC4005 this
+is not an issue because only bit 0 of the register is used. On the MXC6655
+OTOH this is a problem since bit7 is used as TC (Temperature Compensation)
+disable bit and writing 1 to this disables Temperature Compensation which
+should only be done when running self-tests on the chip.
+
+Write 0 instead of ~MXC4005_REG_INT_MASK1_BIT_DRDYE to disable
+the interrupts to fix this.
+
+2. The datasheets for the MXC4005 / MXC6655 do not state what the reset
+value for the INT_MASK0 and INT_MASK1 registers is and since these are
+write only we also cannot learn this from the hw. Presumably the reset
+value for both is all 0, which means all interrupts disabled.
+
+Explicitly set both registers to 0 from mxc4005_chip_init() to ensure
+both masks are actually set to 0.
+
+Fixes: 79846e33aac1 ("iio: accel: mxc4005: add support for mxc6655")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240326113700.56725-2-hdegoede@redhat.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btqca.c |   25 +++++++++++++++++++++----
- drivers/bluetooth/btqca.h |    1 -
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ drivers/iio/accel/mxc4005.c |   24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -99,7 +99,8 @@ static int qca_read_fw_build_info(struct
+--- a/drivers/iio/accel/mxc4005.c
++++ b/drivers/iio/accel/mxc4005.c
+@@ -27,9 +27,13 @@
+ #define MXC4005_REG_ZOUT_UPPER		0x07
+ #define MXC4005_REG_ZOUT_LOWER		0x08
+ 
++#define MXC4005_REG_INT_MASK0		0x0A
++
+ #define MXC4005_REG_INT_MASK1		0x0B
+ #define MXC4005_REG_INT_MASK1_BIT_DRDYE	0x01
+ 
++#define MXC4005_REG_INT_CLR0		0x00
++
+ #define MXC4005_REG_INT_CLR1		0x01
+ #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
+ 
+@@ -113,7 +117,9 @@ static bool mxc4005_is_readable_reg(stru
+ static bool mxc4005_is_writeable_reg(struct device *dev, unsigned int reg)
  {
- 	struct sk_buff *skb;
- 	struct edl_event_hdr *edl;
--	char cmd, build_label[QCA_FW_BUILD_VER_LEN];
-+	char *build_label;
-+	char cmd;
- 	int build_lbl_len, err = 0;
+ 	switch (reg) {
++	case MXC4005_REG_INT_CLR0:
+ 	case MXC4005_REG_INT_CLR1:
++	case MXC4005_REG_INT_MASK0:
+ 	case MXC4005_REG_INT_MASK1:
+ 	case MXC4005_REG_CONTROL:
+ 		return true;
+@@ -330,17 +336,13 @@ static int mxc4005_set_trigger_state(str
+ {
+ 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+ 	struct mxc4005_data *data = iio_priv(indio_dev);
++	unsigned int val;
+ 	int ret;
  
- 	bt_dev_dbg(hdev, "QCA read fw build info");
-@@ -114,6 +115,11 @@ static int qca_read_fw_build_info(struct
- 		return err;
- 	}
+ 	mutex_lock(&data->mutex);
+-	if (state) {
+-		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
+-				   MXC4005_REG_INT_MASK1_BIT_DRDYE);
+-	} else {
+-		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
+-				   ~MXC4005_REG_INT_MASK1_BIT_DRDYE);
+-	}
  
-+	if (skb->len < sizeof(*edl)) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
++	val = state ? MXC4005_REG_INT_MASK1_BIT_DRDYE : 0;
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, val);
+ 	if (ret < 0) {
+ 		mutex_unlock(&data->mutex);
+ 		dev_err(data->dev, "failed to update reg_int_mask1");
+@@ -382,6 +384,14 @@ static int mxc4005_chip_init(struct mxc4
+ 
+ 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
+ 
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
 +
- 	edl = (struct edl_event_hdr *)(skb->data);
- 	if (!edl) {
- 		bt_dev_err(hdev, "QCA read fw build info with no header");
-@@ -129,14 +135,25 @@ static int qca_read_fw_build_info(struct
- 		goto out;
- 	}
- 
-+	if (skb->len < sizeof(*edl) + 1) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, 0);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "writing INT_MASK1\n");
 +
- 	build_lbl_len = edl->data[0];
--	if (build_lbl_len <= QCA_FW_BUILD_VER_LEN - 1) {
--		memcpy(build_label, edl->data + 1, build_lbl_len);
--		*(build_label + build_lbl_len) = '\0';
-+
-+	if (skb->len < sizeof(*edl) + 1 + build_lbl_len) {
-+		err = -EILSEQ;
-+		goto out;
- 	}
- 
-+	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
-+	if (!build_label)
-+		goto out;
-+
- 	hci_set_fw_info(hdev, "%s", build_label);
- 
-+	kfree(build_label);
- out:
- 	kfree_skb(skb);
- 	return err;
---- a/drivers/bluetooth/btqca.h
-+++ b/drivers/bluetooth/btqca.h
-@@ -48,7 +48,6 @@
- #define get_soc_ver(soc_id, rom_ver)	\
- 	((le32_to_cpu(soc_id) << 16) | (le16_to_cpu(rom_ver)))
- 
--#define QCA_FW_BUILD_VER_LEN		255
- #define QCA_HSP_GF_SOC_ID			0x1200
- #define QCA_HSP_GF_SOC_MASK			0x0000ff00
+ 	return 0;
+ }
  
 
 
