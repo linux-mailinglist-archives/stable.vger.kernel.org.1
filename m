@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47F48C5325
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602A68C50CA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72C17B219C4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9A1AB20912
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE6014388D;
-	Tue, 14 May 2024 11:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DD585955;
+	Tue, 14 May 2024 10:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qHjv7rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rz3kHAwf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE5713B284;
-	Tue, 14 May 2024 11:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6A084D23;
+	Tue, 14 May 2024 10:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686321; cv=none; b=i97dWDQh3Fh3VfABKmGsfdeSMORgCfZHBxstZXbO0pmgFErNapN2MDW++M+0Z1EF8HzIEyLosoHznk5WFXsBGz0Q0MIdjbDHia0/vPhUl6ZsLTqM2qHsu5srRvtbd/zgOXyRkRudl2ELLjfxLFIOqWQOUy3nPemPlCERUJIAr7A=
+	t=1715683688; cv=none; b=jATgp7Y99BErp05o/0Qur5pQlqOTrm+T1KcaUZdLTND/z6FzZk913VW69o8Ndm7GGH7Snk1bxp7Pd8uHjZr4lbSL/8aENL+DvYsh32Lex6STsZsrYBogiKFnUZxNptgcZQ768N1aYHGo4JhksJmJhfRuDYZexgfb/KuouL4WPqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686321; c=relaxed/simple;
-	bh=WL4kLQwRZyXOBfzxhLVeeYSEFRSLYCRTTdkWgsHP/1I=;
+	s=arc-20240116; t=1715683688; c=relaxed/simple;
+	bh=JMWo4w7F3EPtehsG03RW5xqidd/t+WrU1yoW/MymqBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=be8ZCuaFXLaNv4ZYblfd2DKKyhHAWe7YK0Ngjv2JLhF6YOx10HkmuWFi8FBCs+8mBAsmG/yu4r2dxoqZV3iHMfjptiG1+LSVG48eukO3afw9LSLSvL5URqFjLjWiqjByzJYxNTfatTUUzdLA9X/ayiD3XApjK+HCO3q3qKwGq5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qHjv7rn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF12C2BD10;
-	Tue, 14 May 2024 11:32:00 +0000 (UTC)
+	 MIME-Version; b=gSaReuWDqN1LbXEPECn+0lIl59lLRxDXM8rYrRQGqjzVuNDrLuodX34h5bc5LOYiJEw1EBs8Y0+VDWxNfMUfHfiuaB1K1JG/VJAdTmhVmwpnDlOixuFVo7TLiXy4n0nCOpkl2btxbM/gAaOu/i6xzFTuHFi80zyV9nA01el5ARI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rz3kHAwf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088D3C2BD10;
+	Tue, 14 May 2024 10:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686321;
-	bh=WL4kLQwRZyXOBfzxhLVeeYSEFRSLYCRTTdkWgsHP/1I=;
+	s=korg; t=1715683688;
+	bh=JMWo4w7F3EPtehsG03RW5xqidd/t+WrU1yoW/MymqBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qHjv7rnANzM7EIGLP6UkYASnLpoft1htivcI8YSQ/9uuivVlZuyCYq6tpRUy9hNX
-	 CxiGqohJgal5i1bzGDDTrve4nkqQSs/DC6gFs6c6GM4wOjiYujoEDgwFcWArFfCIOW
-	 D3+JDtDGaldr7aJiHz8231CYxWgrstCiXA+/esBw=
+	b=rz3kHAwfhkM9UgplMJjEe9pocJBKwlRlU4wgit50v1T6BZ8e9C+SxTNaq3k4rXDno
+	 5sgAGu/HCfzjvk+ZnmnYaZARhV+44mgXz/XM0R3/IFtKZ8vTwaKmltBEEYSfkLZTcr
+	 XeXmGnsUGqHPjiJt/ZSFxoxXWtq8R05LeaqITjbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/236] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
-Date: Tue, 14 May 2024 12:17:40 +0200
-Message-ID: <20240514101024.092054075@linuxfoundation.org>
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.8 257/336] usb: typec: tcpm: unregister existing source caps before re-registration
+Date: Tue, 14 May 2024 12:17:41 +0200
+Message-ID: <20240514101048.319410880@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
+commit 230ecdf71a644c9c73e0e6735b33173074ae3f94 upstream.
 
-Running kernel-doc on ieee80211_i.h flagged the following:
-net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
-net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
+Check and unregister existing source caps in tcpm_register_source_caps
+function before registering new ones. This change fixes following
+warning when port partner resends source caps after negotiating PD contract
+for the purpose of re-negotiation.
 
-Fix these warnings.
+[  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
+[  343.135071][  T151] Call trace:
+[  343.135076][  T151]  dump_backtrace+0xe8/0x108
+[  343.135099][  T151]  show_stack+0x18/0x24
+[  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
+[  343.135119][  T151]  dump_stack+0x18/0x24
+[  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
+[  343.135137][  T151]  kobject_add_internal+0x228/0x424
+[  343.135146][  T151]  kobject_add+0x94/0x10c
+[  343.135152][  T151]  device_add+0x1b0/0x4c0
+[  343.135187][  T151]  device_register+0x20/0x34
+[  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
+[  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
+[  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
+[  343.135227][  T151]  kthread+0x114/0x1bc
+[  343.135235][  T151]  ret_from_fork+0x10/0x20
+[  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
+Cc: linux-usb@vger.kernel.org
+Cc: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240424223227.1807844-1-amitsd@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/ieee80211_i.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index d5dd2d9e89b48..3e14d5c9aa1b4 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -120,7 +120,7 @@ struct ieee80211_bss {
- };
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2435,7 +2435,7 @@ static int tcpm_register_sink_caps(struc
+ {
+ 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
+ 	struct usb_power_delivery_capabilities_desc caps = { };
+-	struct usb_power_delivery_capabilities *cap;
++	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
  
- /**
-- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
-+ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
-  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
-  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
-  *
-@@ -133,7 +133,7 @@ enum ieee80211_bss_corrupt_data_flags {
- };
+ 	if (!port->partner_pd)
+ 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
+@@ -2445,6 +2445,9 @@ static int tcpm_register_sink_caps(struc
+ 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
+ 	caps.role = TYPEC_SINK;
  
- /**
-- * enum ieee80211_valid_data_flags - BSS valid data flags
-+ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
-  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
--- 
-2.43.0
-
++	if (cap)
++		usb_power_delivery_unregister_capabilities(cap);
++
+ 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+ 	if (IS_ERR(cap))
+ 		return PTR_ERR(cap);
 
 
 
