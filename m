@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12218C5406
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20358C5460
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5566A1F232D9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CFE285581
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2345B13541D;
-	Tue, 14 May 2024 11:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2483F9D9;
+	Tue, 14 May 2024 11:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOMUjGQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4EENS4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AB012FF64;
-	Tue, 14 May 2024 11:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20D02D60A;
+	Tue, 14 May 2024 11:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686917; cv=none; b=Ii/tylC4+Pbsfj418FYQD8OW/6zPfnD7JNZSru3OmJDAcZTgV/gRi+K2aoUGwPitEqeVlKmFtLaoI2U/klVFuJg8SXVuGqHXY+qzg2nhGas233Nwqanq0bjvSTy/YVmzRGHHN/AC4nDAXb0OBHcj5SZ23OSW3GSvWTEnsDBiSZQ=
+	t=1715687150; cv=none; b=uAq0KPwCxNbBQlZoiIae7RTrpm44ycfByQNVl1y79OYi0iy3kj7ZKlI3Y2sgYZUBDEgMUG0F14BIv6UdzHmke78qWfFYm6HkXyu7uY5uGEXrR8CH6QV6pR1c/xWeXM563F6CW8MlCPPlffB1GgT3saGnxw+tG1wlPlgj7ZtXvTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686917; c=relaxed/simple;
-	bh=yZfggPdvSMJYr6gePOqjE3IJJOq2ybWFBs2qqyTI6iM=;
+	s=arc-20240116; t=1715687150; c=relaxed/simple;
+	bh=edxI5XU7WIYox9TZWEcRiYzisBigXiWkOIMFwWHR2Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcdvuBU1ZAL136olVxko4ElcytCZSyJjiEEqyr9rctcGGq9KHM3BXJQPkq7OSgcIEhQHUf0jmMvHvrwDbgBmdkn8C8ixLs59vKEuo9LymUpwI3MaYp+Ta9KPC4xFQJRGrVJ1w4wmFldNfN6ZweYqq2vAT/WqW9mpMaopLxw8zVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOMUjGQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AD8C2BD10;
-	Tue, 14 May 2024 11:41:57 +0000 (UTC)
+	 MIME-Version; b=AEoeRU9hSaYEfSpghEhCLFWAWdYpRJQtzik9aQqwg9nri84nW6ZkhDT+nwXRQAHFXOBEzne0wAXFX2tyIFl+cBYpq+wLIN7hkEKlvmXlb3MnsOdtsjpssg2Pgm2p2j+gi4VZ0yuBhUZ/P1zNkW0Kha83qwR6ThjbV+Z64EFjNe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4EENS4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5F3C2BD10;
+	Tue, 14 May 2024 11:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686917;
-	bh=yZfggPdvSMJYr6gePOqjE3IJJOq2ybWFBs2qqyTI6iM=;
+	s=korg; t=1715687149;
+	bh=edxI5XU7WIYox9TZWEcRiYzisBigXiWkOIMFwWHR2Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOMUjGQHnM80KasS8EXpqRBuzMZLKhHA7V22S1y0wF3d1bOwhTYWaYYx8AWkOpSuG
-	 jHEnPCT6nhuh6oD1mjnrHxmFQOVu3N0jY5f32FJDgJHt7IeoogOFAnYy9VAwrdIY9Z
-	 oLiksUX4MeX9U5qR7xcwvBXxXRga4qP3o7Fc2hcI=
+	b=V4EENS4eOgI8NUFVc26ZUTkHavX3IZ208c1uamRipxRqJLLQGvYycUyrsz3vLAB2N
+	 hG2sG/fX/dhGG0YBVneZo4+JwpeDilp64Ghl71O8ObL1SrHDmd6XCc+uZ3W82Yyh26
+	 GFnCpsMHEQSrsNSjEWdtVRJcjfuWLC89xuAGU0jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 54/63] af_unix: Do not use atomic ops for unix_sk(sk)->inflight.
+Subject: [PATCH 5.4 64/84] tcp: Use refcount_inc_not_zero() in tcp_twsk_unique().
 Date: Tue, 14 May 2024 12:20:15 +0200
-Message-ID: <20240514100950.051627562@linuxfoundation.org>
+Message-ID: <20240514100954.091778234@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +64,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 97af84a6bba2ab2b9c704c08e67de3b5ea551bb2 ]
+[ Upstream commit f2db7230f73a80dbb179deab78f88a7947f0ab7e ]
 
-When touching unix_sk(sk)->inflight, we are always under
-spin_lock(&unix_gc_lock).
+Anderson Nascimento reported a use-after-free splat in tcp_twsk_unique()
+with nice analysis.
 
-Let's convert unix_sk(sk)->inflight to the normal unsigned long.
+Since commit ec94c2696f0b ("tcp/dccp: avoid one atomic operation for
+timewait hashdance"), inet_twsk_hashdance() sets TIME-WAIT socket's
+sk_refcnt after putting it into ehash and releasing the bucket lock.
 
+Thus, there is a small race window where other threads could try to
+reuse the port during connect() and call sock_hold() in tcp_twsk_unique()
+for the TIME-WAIT socket with zero refcnt.
+
+If that happens, the refcnt taken by tcp_twsk_unique() is overwritten
+and sock_put() will cause underflow, triggering a real use-after-free
+somewhere else.
+
+To avoid the use-after-free, we need to use refcount_inc_not_zero() in
+tcp_twsk_unique() and give up on reusing the port if it returns false.
+
+[0]:
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 0 PID: 1039313 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+CPU: 0 PID: 1039313 Comm: trigger Not tainted 6.8.6-200.fc39.x86_64 #1
+Hardware name: VMware, Inc. VMware20,1/440BX Desktop Reference Platform, BIOS VMW201.00V.21805430.B64.2305221830 05/22/2023
+RIP: 0010:refcount_warn_saturate+0xe5/0x110
+Code: 42 8e ff 0f 0b c3 cc cc cc cc 80 3d aa 13 ea 01 00 0f 85 5e ff ff ff 48 c7 c7 f8 8e b7 82 c6 05 96 13 ea 01 01 e8 7b 42 8e ff <0f> 0b c3 cc cc cc cc 48 c7 c7 50 8f b7 82 c6 05 7a 13 ea 01 01 e8
+RSP: 0018:ffffc90006b43b60 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff888009bb3ef0 RCX: 0000000000000027
+RDX: ffff88807be218c8 RSI: 0000000000000001 RDI: ffff88807be218c0
+RBP: 0000000000069d70 R08: 0000000000000000 R09: ffffc90006b439f0
+R10: ffffc90006b439e8 R11: 0000000000000003 R12: ffff8880029ede84
+R13: 0000000000004e20 R14: ffffffff84356dc0 R15: ffff888009bb3ef0
+FS:  00007f62c10926c0(0000) GS:ffff88807be00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020ccb000 CR3: 000000004628c005 CR4: 0000000000f70ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? refcount_warn_saturate+0xe5/0x110
+ ? __warn+0x81/0x130
+ ? refcount_warn_saturate+0xe5/0x110
+ ? report_bug+0x171/0x1a0
+ ? refcount_warn_saturate+0xe5/0x110
+ ? handle_bug+0x3c/0x80
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? refcount_warn_saturate+0xe5/0x110
+ tcp_twsk_unique+0x186/0x190
+ __inet_check_established+0x176/0x2d0
+ __inet_hash_connect+0x74/0x7d0
+ ? __pfx___inet_check_established+0x10/0x10
+ tcp_v4_connect+0x278/0x530
+ __inet_stream_connect+0x10f/0x3d0
+ inet_stream_connect+0x3a/0x60
+ __sys_connect+0xa8/0xd0
+ __x64_sys_connect+0x18/0x20
+ do_syscall_64+0x83/0x170
+ entry_SYSCALL_64_after_hwframe+0x78/0x80
+RIP: 0033:0x7f62c11a885d
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d a3 45 0c 00 f7 d8 64 89 01 48
+RSP: 002b:00007f62c1091e58 EFLAGS: 00000296 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 0000000020ccb004 RCX: 00007f62c11a885d
+RDX: 0000000000000010 RSI: 0000000020ccb000 RDI: 0000000000000003
+RBP: 00007f62c1091e90 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000296 R12: 00007f62c10926c0
+R13: ffffffffffffff88 R14: 0000000000000000 R15: 00007ffe237885b0
+ </TASK>
+
+Fixes: ec94c2696f0b ("tcp/dccp: avoid one atomic operation for timewait hashdance")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Closes: https://lore.kernel.org/netdev/37a477a6-d39e-486b-9577-3463f655a6b7@allelesecurity.com/
+Suggested-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240123170856.41348-3-kuniyu@amazon.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240501213145.62261-1-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h |  2 +-
- net/unix/af_unix.c    |  4 ++--
- net/unix/garbage.c    | 17 ++++++++---------
- net/unix/scm.c        |  8 +++++---
- 4 files changed, 16 insertions(+), 15 deletions(-)
+ net/ipv4/tcp_ipv4.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index e514508bdc928..f22ab1a7b6bab 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -52,7 +52,7 @@ struct unix_sock {
- 	struct mutex		iolock, bindlock;
- 	struct sock		*peer;
- 	struct list_head	link;
--	atomic_long_t		inflight;
-+	unsigned long		inflight;
- 	spinlock_t		lock;
- 	unsigned long		gc_flags;
- #define UNIX_GC_CANDIDATE	0
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 7910b9c88d8b7..921b7e355b9b9 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -814,11 +814,11 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern)
- 	sk->sk_write_space	= unix_write_space;
- 	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
- 	sk->sk_destruct		= unix_sock_destructor;
--	u	  = unix_sk(sk);
-+	u = unix_sk(sk);
-+	u->inflight = 0;
- 	u->path.dentry = NULL;
- 	u->path.mnt = NULL;
- 	spin_lock_init(&u->lock);
--	atomic_long_set(&u->inflight, 0);
- 	INIT_LIST_HEAD(&u->link);
- 	mutex_init(&u->iolock); /* single task reading lock */
- 	mutex_init(&u->bindlock); /* single task binding lock */
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 0a212422b513c..04dd9e80cbe01 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -171,17 +171,18 @@ static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
- 
- static void dec_inflight(struct unix_sock *usk)
- {
--	atomic_long_dec(&usk->inflight);
-+	usk->inflight--;
- }
- 
- static void inc_inflight(struct unix_sock *usk)
- {
--	atomic_long_inc(&usk->inflight);
-+	usk->inflight++;
- }
- 
- static void inc_inflight_move_tail(struct unix_sock *u)
- {
--	atomic_long_inc(&u->inflight);
-+	u->inflight++;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index a54505c29a5c2..0dd917c5a7da6 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -152,6 +152,12 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 	if (tcptw->tw_ts_recent_stamp &&
+ 	    (!twp || (reuse && time_after32(ktime_get_seconds(),
+ 					    tcptw->tw_ts_recent_stamp)))) {
++		/* inet_twsk_hashdance() sets sk_refcnt after putting twsk
++		 * and releasing the bucket lock.
++		 */
++		if (unlikely(!refcount_inc_not_zero(&sktw->sk_refcnt)))
++			return 0;
 +
- 	/* If this still might be part of a cycle, move it to the end
- 	 * of the list, so that it's checked even if it was already
- 	 * passed over
-@@ -241,14 +242,12 @@ void unix_gc(void)
- 	 */
- 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
- 		long total_refs;
--		long inflight_refs;
- 
- 		total_refs = file_count(u->sk.sk_socket->file);
--		inflight_refs = atomic_long_read(&u->inflight);
- 
--		BUG_ON(inflight_refs < 1);
--		BUG_ON(total_refs < inflight_refs);
--		if (total_refs == inflight_refs) {
-+		BUG_ON(!u->inflight);
-+		BUG_ON(total_refs < u->inflight);
-+		if (total_refs == u->inflight) {
- 			list_move_tail(&u->link, &gc_candidates);
- 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
- 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
-@@ -275,7 +274,7 @@ void unix_gc(void)
- 		/* Move cursor to after the current position. */
- 		list_move(&cursor, &u->link);
- 
--		if (atomic_long_read(&u->inflight) > 0) {
-+		if (u->inflight) {
- 			list_move_tail(&u->link, &not_cycle_list);
- 			__clear_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
- 			scan_children(&u->sk, inc_inflight_move_tail, NULL);
-diff --git a/net/unix/scm.c b/net/unix/scm.c
-index ac206bfdbbe3c..186c20826a14f 100644
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -50,12 +50,13 @@ void unix_inflight(struct user_struct *user, struct file *fp)
- 	if (s) {
- 		struct unix_sock *u = unix_sk(s);
- 
--		if (atomic_long_inc_return(&u->inflight) == 1) {
-+		if (!u->inflight) {
- 			BUG_ON(!list_empty(&u->link));
- 			list_add_tail(&u->link, &gc_inflight_list);
- 		} else {
- 			BUG_ON(list_empty(&u->link));
+ 		/* In case of repair and re-using TIME-WAIT sockets we still
+ 		 * want to be sure that it is safe as above but honor the
+ 		 * sequence numbers and time stamps set as part of the repair
+@@ -172,7 +178,7 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 			tp->rx_opt.ts_recent	   = tcptw->tw_ts_recent;
+ 			tp->rx_opt.ts_recent_stamp = tcptw->tw_ts_recent_stamp;
  		}
-+		u->inflight++;
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
+-		sock_hold(sktw);
++
+ 		return 1;
  	}
-@@ -72,10 +73,11 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
- 	if (s) {
- 		struct unix_sock *u = unix_sk(s);
  
--		BUG_ON(!atomic_long_read(&u->inflight));
-+		BUG_ON(!u->inflight);
- 		BUG_ON(list_empty(&u->link));
- 
--		if (atomic_long_dec_and_test(&u->inflight))
-+		u->inflight--;
-+		if (!u->inflight)
- 			list_del_init(&u->link);
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
 -- 
 2.43.0
 
