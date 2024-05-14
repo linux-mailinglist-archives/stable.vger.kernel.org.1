@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC738C52FA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B35B8C509D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80EBA1C21955
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C30D1C2101F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D254B1386CC;
-	Tue, 14 May 2024 11:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23D913DDB8;
+	Tue, 14 May 2024 10:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilOeTeYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h657r1Tu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9159912FF89;
-	Tue, 14 May 2024 11:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9F913DDB1;
+	Tue, 14 May 2024 10:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686249; cv=none; b=Q1KD60TBx1moC22Cch9kcUDMI6cyW/nMjYJu2Et4OOxjwqn37ssEVng0xwV10SCTq+/jBHXlns0500sPLXN75Cz+WK95BWeUg0Wky7KLcKhIs6By8+kQlwxdNAV4ukpGp1HX+02AoPfBpfLgbsxuF8iq9h+SxQajZ7NnEEEr8EA=
+	t=1715683517; cv=none; b=twmYRLM90magn2SNnbM9WXVBK/4gduBrVlO3Xm2nXGnEH6dOQrXi5xY+TIOOR3QvwdCBui5Ku7l09ljqaQhm5alSBPZYa13EtuHI/iDrOpgNDvEoMiTaNuD0iVj5ysu+FYSjKBmjuLfgfvaYFGMo1aLOQdFI4FnGE2xB2cIYrVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686249; c=relaxed/simple;
-	bh=GU9y/FpA5MWWEjmXeZic3EOO6bb2zr/IAGEe/vj2yqg=;
+	s=arc-20240116; t=1715683517; c=relaxed/simple;
+	bh=jbzhC5THULLhEzFzdJGjGPTdZ9aN2CcLuxV2iuXCF0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebeQkICZfu3fxUVIVdPoxInrTGwpJjwmDktQNro8DHA927/Jki7gXOOw8vMgfI9F73CtcTqBjqkve49zi5yJZo8+Vv6zLpHYPbINyjaH/eTyM6VtylWIt736IdEFQXYOHeZoGC3ybnUpsuURFoxNEuFm9TQaCO21hGGkBQl6EzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilOeTeYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199A9C2BD10;
-	Tue, 14 May 2024 11:30:48 +0000 (UTC)
+	 MIME-Version; b=tKGxPm59t2A/F2kqSJIpWOxiFS5KueglmNEo2kWNnaApPlBxMp6fsmIIx5uNOtA0vAqqW/f1OYo6H59kyNYV/chgJsjT29cbY8lFb6avQzYJULLIuvXXYiNXN7urrqpKPgskS+7BdGJWJBf0YLPJ3sFBcpk7QxeNojNSO6P2ql4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h657r1Tu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D31C2BD10;
+	Tue, 14 May 2024 10:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686249;
-	bh=GU9y/FpA5MWWEjmXeZic3EOO6bb2zr/IAGEe/vj2yqg=;
+	s=korg; t=1715683517;
+	bh=jbzhC5THULLhEzFzdJGjGPTdZ9aN2CcLuxV2iuXCF0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilOeTeYCSG2PJApclinfZqeNh6y16/tPucq2QIuXj54ADQiEO/MszsTESyK2ML6CQ
-	 aqxrCLzO3EknU59ayCBUZUHmUtIhZHd502TSba6btS2qJ38jOZMs4eKLwShPax92yS
-	 Pf8L07QkwdqoBAnCZjXoW63LztP/pAygzeYy8MN0=
+	b=h657r1TutUfUXgaDuGRXbzcU4Ym2TExfCUXRZcsz4Xeq8MmOM157GuQ/Guxd6UfGv
+	 RRmJMtcNq+jvittjWwif9blgRwIyA1S/kyL+L3w7MTIQGa/dbuT8EzL6AZpRq/NKer
+	 tTwxdCfD3iquXB2mC8hoVRfd0wo6UQLMuqakHA9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/236] ALSA: hda: intel-sdw-acpi: fix usage of device_get_named_child_node()
+Subject: [PATCH 6.8 230/336] net: hns3: use appropriate barrier function after setting a bit value
 Date: Tue, 14 May 2024 12:17:14 +0200
-Message-ID: <20240514101023.104245142@linuxfoundation.org>
+Message-ID: <20240514101047.298602519@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit c158cf914713efc3bcdc25680c7156c48c12ef6a ]
+[ Upstream commit 094c281228529d333458208fd02fcac3b139d93b ]
 
-The documentation for device_get_named_child_node() mentions this
-important point:
+There is a memory barrier in followed case. When set the port down,
+hclgevf_set_timmer will set DOWN in state. Meanwhile, the service task has
+different behaviour based on whether the state is DOWN. Thus, to make sure
+service task see DOWN, use smp_mb__after_atomic after calling set_bit().
 
-"
-The caller is responsible for calling fwnode_handle_put() on the
-returned fwnode pointer.
-"
+          CPU0                        CPU1
+========================== ===================================
+hclgevf_set_timer_task()    hclgevf_periodic_service_task()
+  set_bit(DOWN,state)         test_bit(DOWN,state)
 
-Add fwnode_handle_put() to avoid a leaked reference.
+pf also has this issue.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Fixes: 08c2a4bc9f2a ("ALSA: hda: move Intel SoundWire ACPI scan to dedicated module")
-Message-ID: <20240426152731.38420-1-pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ff200099d271 ("net: hns3: remove unnecessary work in hclgevf_main")
+Fixes: 1c6dfe6fc6f7 ("net: hns3: remove mailbox and reset work in hclge_main")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-sdw-acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 3 +--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/hda/intel-sdw-acpi.c b/sound/hda/intel-sdw-acpi.c
-index b57d72ea4503f..4e376994bf78b 100644
---- a/sound/hda/intel-sdw-acpi.c
-+++ b/sound/hda/intel-sdw-acpi.c
-@@ -41,6 +41,8 @@ static bool is_link_enabled(struct fwnode_handle *fw_node, u8 idx)
- 				 "intel-quirk-mask",
- 				 &quirk_mask);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index a5e63655fd88d..a99e42005b9b8 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7944,8 +7944,7 @@ static void hclge_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 		/* Set the DOWN flag here to disable link updating */
+ 		set_bit(HCLGE_STATE_DOWN, &hdev->state);
  
-+	fwnode_handle_put(link);
-+
- 	if (quirk_mask & SDW_INTEL_QUIRK_MASK_BUS_DISABLE)
- 		return false;
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclge_flush_link_update(hdev);
+ 	}
+ }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index b57111252d071..08db8e84be4ed 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2181,8 +2181,7 @@ static void hclgevf_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 	} else {
+ 		set_bit(HCLGEVF_STATE_DOWN, &hdev->state);
  
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclgevf_flush_link_update(hdev);
+ 	}
+ }
 -- 
 2.43.0
 
