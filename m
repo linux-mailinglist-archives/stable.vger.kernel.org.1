@@ -1,181 +1,166 @@
-Return-Path: <stable+bounces-45097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA438C5AE0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 20:15:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6753F8C5AFE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 20:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 364662825F9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 18:15:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 984401C218F1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 18:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A893B1802D7;
-	Tue, 14 May 2024 18:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9C81802D2;
+	Tue, 14 May 2024 18:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QPvSZ4AJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bLdSarrL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2901802CC;
-	Tue, 14 May 2024 18:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5901E487;
+	Tue, 14 May 2024 18:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715710501; cv=none; b=giYWWA9aKml1X3JT3NKdtMfirrjZlf46pFbWOzZCKJ1xYda8wPg/jjnxyhRJSiWR4YsYz/I4tNqglGtuHJfUxXx8CyuC7sTLpzcfzILzjR6viuJWC7N7TtaIytjSFi+AdTIdz+4pATX4H825ry6jBNVPvYaHBWbXnHV+g2GlXys=
+	t=1715710917; cv=none; b=mzDRjx+x0Vy5AinLHwFwS19kwbpn1xime3rz913EHGrrBM4nFuBholi2vUqHUBTOorXQH0qgH1JQG7JfHL2C+A6bytPDpO4x/YgCOM8u78Z+hpNC248pDerinAd3uru/glOPsfvmOJ7RZKg4wYly8FMrQGXbe0UkeFsCqoSCwjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715710501; c=relaxed/simple;
-	bh=0YTUEiFdqVgsyhGRrtIwAVlKX3/OZiI22fa1dGr7wYU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NJtFopbBC4sxYnOQNY1KA/ENJt4qmgZBpQj1So7ZS2A7HcOUYl6jmJBpziemDdc4SZrnUrlcjk3H8f0D4sFR3X3XqPwfbdfhYFaUj0eTSp+oQlBkeabFH26vgohnPIgF5/m3kBG2bXHyBPxs0p4DmJ5OvTQi99RLKz1H0UZ/zj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QPvSZ4AJ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44EE9pdQ004151;
-	Tue, 14 May 2024 18:14:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=OAc04QDaaFxlVX9U1jLw7CfZQzypcX2egL9NvmQNVpk=; b=QP
-	vSZ4AJMV8M4ptCZa+BS/ZXi9PvMnFW4c4X3hRQkkxCL9GIzDowL0wS0M0NqZzKee
-	nBuOcX7hx51gzefJY3PLX4MzVzu2tzTHzDN5rdGi4MuqcLGwRoP/cjXIedX4OJV8
-	R6AtF0t1FE2h5JW5SSjpmmN4pabBycXZKtAo4bInN1aa8HTTABV+iuWP1GN2DuIy
-	FuYvebpdLnsMEd6iCqIQMRZCZ/YJbMAKl0sH3GS/OmffnFcvKwsIYMvhcQ7K2vnl
-	C0N47VhxsnxKbXHBFQ3nxOnE4Qd/9KDuSQu0ysvmx3SdbzCwCtbzs/psxlkKI02O
-	otlykDsrq0Iazhiq1YxA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y49ft0me7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 18:14:51 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44EIEpb8011974
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 18:14:51 GMT
-Received: from [10.110.0.4] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 14 May
- 2024 11:14:50 -0700
-Message-ID: <e5edd92e-ab47-4a55-9276-5a7d160fd399@quicinc.com>
-Date: Tue, 14 May 2024 11:14:49 -0700
+	s=arc-20240116; t=1715710917; c=relaxed/simple;
+	bh=vmd1Wbet79qrAMDzsTnla96BFxR2SLaCABhrFHuvXL8=;
+	h=Date:To:From:Subject:Message-Id; b=jqgfL3L5njJhl+BuOcXEkbk4NW6SVNcSgKonzInhhs3P/6s9Cx++inBcah66uzfBBRD8W4B11m9u/+CMAWbegTvsaZe2T51J9FGI4qegxqwekp+ULTF3zl/sKBrl52X3PUz+YvDOhp3ao1DfxIX2EkIaL44lTY7RH5yrYX2++Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bLdSarrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB6CC2BD10;
+	Tue, 14 May 2024 18:21:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1715710917;
+	bh=vmd1Wbet79qrAMDzsTnla96BFxR2SLaCABhrFHuvXL8=;
+	h=Date:To:From:Subject:From;
+	b=bLdSarrLZZRjbC4VPmdHl5OPdvrsxky0ZMw2LYyAYAxnyx5ntJslgXwLAP/4NxF4w
+	 vvo5OX6kIqGWCvW+o1WUJC4SUlBiWt8Un5I2WueKejAiXrNp+r6bYyAckSyYeBhUlL
+	 kN9j8f/JIyAOaipGvNM2eNKXXnlx6oA6iRNsYYXI=
+Date: Tue, 14 May 2024 11:21:56 -0700
+To: mm-commits@vger.kernel.org,xuyu@linux.alibaba.com,stable@vger.kernel.org,shy828301@gmail.com,nao.horiguchi@gmail.com,david@redhat.com,linmiaohe@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-huge_memory-mark-huge_zero_page-reserved.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240514182156.EAB6CC2BD10@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
-Content-Language: en-US
-To: Masahiro Yamada <masahiroy@kernel.org>
-CC: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Kalle Valo
-	<kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        Stephen Boyd
-	<swboyd@chromium.org>,
-        Rakesh Pillai <quic_pillair@quicinc.com>,
-        <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <linux-kbuild@vger.kernel.org>
-References: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
- <12a208d7-f36b-4953-abff-323a15452b3c@quicinc.com>
- <CAK7LNASyBNbxm-e+iZ=7pOJg-a-Zm84O6RNcqiUjZQH7f9r3Lw@mail.gmail.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <CAK7LNASyBNbxm-e+iZ=7pOJg-a-Zm84O6RNcqiUjZQH7f9r3Lw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 9VgrQtpqhVheQyH8pRyT6lhcDDHS8BpV
-X-Proofpoint-GUID: 9VgrQtpqhVheQyH8pRyT6lhcDDHS8BpV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-14_10,2024-05-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
- suspectscore=0 mlxlogscore=994 mlxscore=0 clxscore=1011 phishscore=0
- bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405140129
 
-On 5/14/2024 10:45 AM, Masahiro Yamada wrote:
-> On Tue, May 14, 2024 at 11:43 PM Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
->>
->> On 5/11/2024 3:49 AM, Dmitry Baryshkov wrote:
->>> If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
->>> modules, compilation fails with:
->>>
->>> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
->>> drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
->>> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
->>> drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
->>>
->>> Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
->>> built as module if QCOM_RPROC_COMMON is built as module too.
->>>
->>> Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->>> ---
->>>  drivers/net/wireless/ath/ath10k/Kconfig | 1 +
->>>  1 file changed, 1 insertion(+)
->>>
->>> diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
->>> index e6ea884cafc1..4f385f4a8cef 100644
->>> --- a/drivers/net/wireless/ath/ath10k/Kconfig
->>> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
->>> @@ -45,6 +45,7 @@ config ATH10K_SNOC
->>>       depends on ATH10K
->>>       depends on ARCH_QCOM || COMPILE_TEST
->>>       depends on QCOM_SMEM
->>> +     depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
->>>       select QCOM_SCM
->>>       select QCOM_QMI_HELPERS
->>>       help
->>>
->>> ---
->>> base-commit: 75fa778d74b786a1608d55d655d42b480a6fa8bd
->>> change-id: 20240511-ath10k-snoc-dep-862a9da2e6bb
->>
->> I see how this fixes the problem, but this doesn't seem like an ideal
->> solution. The fact that the *_ssr_notifier() functions are correctly protected
->> by conditional compilation ideally should mean that clients don't need to call
->> call out this as a dependency. Otherwise, it would mean we'd need to do this
->> for all feature flags.
-> 
-> 
-> It depends on if qcom_common.c is optional for ath10k_snoc.
-> 
-> If it is optional, this patch is correct.
 
-At least from a build perspective it is optional
+The patch titled
+     Subject: mm/huge_memory: mark huge_zero_page reserved
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-huge_memory-mark-huge_zero_page-reserved.patch
 
-> 
-> 
-> If it is mandatory
-> depends on QCOM_RPROC_COMMON
-> 
-> 
->>
->> +linux-kbuild just to make sure there isn't a better approach.
-> 
-> 
-> Commit 28d49e171676afb7df7f47798391364af9abed7f suggested
-> 
->   depends on BAR || !BAR
-> 
-> but
-> 
->   depends on BAR || BAR=n
-> 
-> works equivalently.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-mark-huge_zero_page-reserved.patch
 
-Thanks for the information.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I'll let Kalle decide if he wants to change this in 'pending' to:
-	depends on QCOM_RPROC_COMMON || !QCOM_RPROC_COMMON
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/huge_memory: mark huge_zero_page reserved
+Date: Sat, 11 May 2024 11:54:35 +0800
+
+When I did memory failure tests recently, below panic occurs:
+
+ kernel BUG at include/linux/mm.h:1135!
+ invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+ Call Trace:
+  <TASK>
+  do_shrink_slab+0x14f/0x6a0
+  shrink_slab+0xca/0x8c0
+  shrink_node+0x2d0/0x7d0
+  balance_pgdat+0x33a/0x720
+  kswapd+0x1f3/0x410
+  kthread+0xd5/0x100
+  ret_from_fork+0x2f/0x50
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ Modules linked in: mce_inject hwpoison_inject
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+
+The root cause is that HWPoison flag will be set for huge_zero_page
+without increasing the page refcnt. But then unpoison_memory() will
+decrease the page refcnt unexpectly as it appears like a successfully
+hwpoisoned page leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0)
+when releasing huge_zero_page.
+
+Fix this issue by marking huge_zero_page reserved. So unpoison_memory()
+will skip this page. This will make it consistent with ZERO_PAGE case too.
+
+Link: https://lkml.kernel.org/r/20240511035435.1477004-1-linmiaohe@huawei.com
+Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Xu Yu <xuyu@linux.alibaba.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/huge_memory.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/mm/huge_memory.c~mm-huge_memory-mark-huge_zero_page-reserved
++++ a/mm/huge_memory.c
+@@ -208,6 +208,7 @@ retry:
+ 		__free_pages(zero_page, compound_order(zero_page));
+ 		goto retry;
+ 	}
++	__SetPageReserved(zero_page);
+ 	WRITE_ONCE(huge_zero_pfn, page_to_pfn(zero_page));
+ 
+ 	/* We take additional reference here. It will be put back by shrinker */
+@@ -260,6 +261,7 @@ static unsigned long shrink_huge_zero_pa
+ 		struct page *zero_page = xchg(&huge_zero_page, NULL);
+ 		BUG_ON(zero_page == NULL);
+ 		WRITE_ONCE(huge_zero_pfn, ~0UL);
++		__ClearPageReserved(zero_page);
+ 		__free_pages(zero_page, compound_order(zero_page));
+ 		return HPAGE_PMD_NR;
+ 	}
+_
+
+Patches currently in -mm which might be from linmiaohe@huawei.com are
+
+mm-huge_memory-mark-huge_zero_page-reserved.patch
 
 
