@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3878C532F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33EE8C522A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE181C22AB0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12B181C2114C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076BB13C66C;
-	Tue, 14 May 2024 11:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095C312D755;
+	Tue, 14 May 2024 11:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2OmxatW"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnTzQHEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C4513C3FB;
-	Tue, 14 May 2024 11:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC76B53E30;
+	Tue, 14 May 2024 11:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686344; cv=none; b=ChwF2JfAHIp6ggCBZ1kIgwIyrZ85PUQQifQfJaW2D5QUdoBLnuO6aB/yMdKf475/t+3Wpjs32W7ZPOXxJTsQi2w1CxDLh5kwilhA8XvPMFnXfwf22mEWB048CYiA94XMda0rE01vHdhxhXKWJMS9NHvlF1Te3eJKA1sa8xrhWVw=
+	t=1715685603; cv=none; b=lFJ8xdLddsBaLNqWXyJy2ussMN5500WoDP6MHUe8ozmJFAGyJscMM/1PELQiA52Mf/fbDyOKGkT0rYoGkIfKNNzn6QzgqDKquv/2xLWZrOVFAAdtYc8a4rFziyHncS7ZGfbpP29u4qh+nbRgKIoogMolHBiQieEVbsxlwIod5nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686344; c=relaxed/simple;
-	bh=XJXnNb5RKr17O3h/QuhZXvfGmrXFSXyXXwX+InympNk=;
+	s=arc-20240116; t=1715685603; c=relaxed/simple;
+	bh=/+LejgYF+0t21hoP/0Q+tH2uHxgCGVjpqA4j6InBoQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVFKGwbMLqxwp8qoL6Kaud9zxDkaZGZ9O5rFJ1KNWW8yF0zG/hy2LXSw0PM9wE99RNd9Q/gjPV9WDmuMAdtXS0aiVMl26i5oSHeU7HqJoKWavPyb71Y5FOtVjCiSJ/yOxZAdk4v2Av/J12mAdZjyjRTFRg0lX8+npUKt9Hp3CC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2OmxatW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DFEC2BD10;
-	Tue, 14 May 2024 11:32:23 +0000 (UTC)
+	 MIME-Version; b=Hf6IC9k4ddDrsWTo7HdkqHhXvNbwySQY6KTCyWiXtcOmkKRKa4wbIPlegcNcjU4lw+P//IU1p46V3XCyIvew+Z88gdjBQj99AJHprpziy+wGUFDAVO5ITAtRQDf8fO/HLVXZ5oCJ1TUy15g8yMv3CXg8l1vtIYLa3pKIhPPjONQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnTzQHEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5FAC2BD10;
+	Tue, 14 May 2024 11:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686344;
-	bh=XJXnNb5RKr17O3h/QuhZXvfGmrXFSXyXXwX+InympNk=;
+	s=korg; t=1715685603;
+	bh=/+LejgYF+0t21hoP/0Q+tH2uHxgCGVjpqA4j6InBoQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2OmxatWHX44N16HEp7Bt0AwzCDiB0RDNvnMo09LIBKCwYidQMqk9NrLioQpLh4WD
-	 WcbMa/jMFXTsbibEQOslq5KqS38uorC2Ofs336sTS+qRbJk7LJdUaNcru6EJ7+Xbg2
-	 ifpGkKFlBGHSExHTxHm34hV/MJ7TyULkv7HYzYk4=
+	b=KnTzQHEOIW1gfybQQY/2WL4NmH7jRRet7mkJ/qc5o6LebWt2Sz6XmQ7GB8YU+LH2S
+	 gDqKGZ2exlxZfSjO81SqPXECmpqaPRd7kbVE+dCd3PErpSMR28VAE/2Qer7I6Gsouo
+	 WI4P8+ReOnpzcFu85LiPRDt34jZhPx7xSCz7Lbjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Marco Elver <elver@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/236] kbuild: Disable KCSAN for autogenerated *.mod.c intermediaries
+	patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeffrey Altman <"jaltman@auristor.commailto:jaltman"@auristor.com>
+Subject: [PATCH 6.6 196/301] rxrpc: Only transmit one ACK per jumbo packet received
 Date: Tue, 14 May 2024 12:17:47 +0200
-Message-ID: <20240514101024.356169804@linuxfoundation.org>
+Message-ID: <20240514101039.656268436@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 54babdc0343fff2f32dfaafaaa9e42c4db278204 ]
+[ Upstream commit 012b7206918dcc5a4dcf1432b3e643114c95957e ]
 
-When KCSAN and CONSTRUCTORS are enabled, one can trigger the
+Only generate one ACK packet for all the subpackets in a jumbo packet.  If
+we would like to generate more than one ACK, we prioritise them base on
+their reason code, in the order, highest first:
 
-  "Unpatched return thunk in use. This should not happen!"
+   OutOfSeq > NoSpace > ExceedsWin > Duplicate > Requested > Delay > Idle
 
-catch-all warning.
+For the first four, we reference the lowest offending subpacket; for the
+last three, the highest.
 
-Usually, when objtool runs on the .o objects, it does generate a section
-.return_sites which contains all offsets in the objects to the return
-thunks of the functions present there. Those return thunks then get
-patched at runtime by the alternatives.
+This reduces the number of ACKs we end up transmitting to one per UDP
+packet transmitted to reduce network loading and packet parsing.
 
-KCSAN and CONSTRUCTORS add this to the object file's .text.startup
-section:
-
-  -------------------
-  Disassembly of section .text.startup:
-
-  ...
-
-  0000000000000010 <_sub_I_00099_0>:
-    10:   f3 0f 1e fa             endbr64
-    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
-                          15: R_X86_64_PLT32      __tsan_init-0x4
-    19:   e9 00 00 00 00          jmp    1e <__UNIQUE_ID___addressable_cryptd_alloc_aead349+0x6>
-                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
-  -------------------
-
-which, if it is built as a module goes through the intermediary stage of
-creating a <module>.mod.c file which, when translated, receives a second
-constructor:
-
-  -------------------
-  Disassembly of section .text.startup:
-
-  0000000000000010 <_sub_I_00099_0>:
-    10:   f3 0f 1e fa             endbr64
-    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
-                          15: R_X86_64_PLT32      __tsan_init-0x4
-    19:   e9 00 00 00 00          jmp    1e <_sub_I_00099_0+0xe>
-                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
-
-  ...
-
-  0000000000000030 <_sub_I_00099_0>:
-    30:   f3 0f 1e fa             endbr64
-    34:   e8 00 00 00 00          call   39 <_sub_I_00099_0+0x9>
-                          35: R_X86_64_PLT32      __tsan_init-0x4
-    39:   e9 00 00 00 00          jmp    3e <__ksymtab_cryptd_alloc_ahash+0x2>
-                          3a: R_X86_64_PLT32      __x86_return_thunk-0x4
-  -------------------
-
-in the .ko file.
-
-Objtool has run already so that second constructor's return thunk cannot
-be added to the .return_sites section and thus the return thunk remains
-unpatched and the warning rightfully fires.
-
-Drop KCSAN flags from the mod.c generation stage as those constructors
-do not contain data races one would be interested about.
-
-Debugged together with David Kaplan <David.Kaplan@amd.com> and Nikolay
-Borisov <nik.borisov@suse.com>.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/r/0851a207-7143-417e-be31-8bf2b3afb57d@molgen.mpg.de
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 5d7edbc9231e ("rxrpc: Get rid of the Rx ring")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com <mailto:jaltman@auristor.com>>
+Link: https://lore.kernel.org/r/20240503150749.1001323-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.modfinal | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rxrpc/input.c | 46 +++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 35 insertions(+), 11 deletions(-)
 
-diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-index 3af5e5807983a..650d59388336f 100644
---- a/scripts/Makefile.modfinal
-+++ b/scripts/Makefile.modfinal
-@@ -23,7 +23,7 @@ modname = $(notdir $(@:.mod.o=))
- part-of-module = y
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index f7304e06aadca..5dfda1ac51dda 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -9,6 +9,17 @@
  
- quiet_cmd_cc_o_c = CC [M]  $@
--      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV), $(c_flags)) -c -o $@ $<
-+      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV) $(CFLAGS_KCSAN), $(c_flags)) -c -o $@ $<
+ #include "ar-internal.h"
  
- %.mod.o: %.mod.c FORCE
- 	$(call if_changed_dep,cc_o_c)
++/* Override priority when generating ACKs for received DATA */
++static const u8 rxrpc_ack_priority[RXRPC_ACK__INVALID] = {
++	[RXRPC_ACK_IDLE]		= 1,
++	[RXRPC_ACK_DELAY]		= 2,
++	[RXRPC_ACK_REQUESTED]		= 3,
++	[RXRPC_ACK_DUPLICATE]		= 4,
++	[RXRPC_ACK_EXCEEDS_WINDOW]	= 5,
++	[RXRPC_ACK_NOSPACE]		= 6,
++	[RXRPC_ACK_OUT_OF_SEQUENCE]	= 7,
++};
++
+ static void rxrpc_proto_abort(struct rxrpc_call *call, rxrpc_seq_t seq,
+ 			      enum rxrpc_abort_reason why)
+ {
+@@ -366,7 +377,7 @@ static void rxrpc_input_queue_data(struct rxrpc_call *call, struct sk_buff *skb,
+  * Process a DATA packet.
+  */
+ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
+-				 bool *_notify)
++				 bool *_notify, rxrpc_serial_t *_ack_serial, int *_ack_reason)
+ {
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	struct sk_buff *oos;
+@@ -419,8 +430,6 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
+ 		/* Send an immediate ACK if we fill in a hole */
+ 		else if (!skb_queue_empty(&call->rx_oos_queue))
+ 			ack_reason = RXRPC_ACK_DELAY;
+-		else
+-			call->ackr_nr_unacked++;
+ 
+ 		window++;
+ 		if (after(window, wtop)) {
+@@ -498,12 +507,16 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
+ 	}
+ 
+ send_ack:
+-	if (ack_reason >= 0)
+-		rxrpc_send_ACK(call, ack_reason, serial,
+-			       rxrpc_propose_ack_input_data);
+-	else
+-		rxrpc_propose_delay_ACK(call, serial,
+-					rxrpc_propose_ack_input_data);
++	if (ack_reason >= 0) {
++		if (rxrpc_ack_priority[ack_reason] > rxrpc_ack_priority[*_ack_reason]) {
++			*_ack_serial = serial;
++			*_ack_reason = ack_reason;
++		} else if (rxrpc_ack_priority[ack_reason] == rxrpc_ack_priority[*_ack_reason] &&
++			   ack_reason == RXRPC_ACK_REQUESTED) {
++			*_ack_serial = serial;
++			*_ack_reason = ack_reason;
++		}
++	}
+ }
+ 
+ /*
+@@ -514,9 +527,11 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
+ 	struct rxrpc_jumbo_header jhdr;
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb), *jsp;
+ 	struct sk_buff *jskb;
++	rxrpc_serial_t ack_serial = 0;
+ 	unsigned int offset = sizeof(struct rxrpc_wire_header);
+ 	unsigned int len = skb->len - offset;
+ 	bool notify = false;
++	int ack_reason = 0;
+ 
+ 	while (sp->hdr.flags & RXRPC_JUMBO_PACKET) {
+ 		if (len < RXRPC_JUMBO_SUBPKTLEN)
+@@ -536,7 +551,7 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
+ 		jsp = rxrpc_skb(jskb);
+ 		jsp->offset = offset;
+ 		jsp->len = RXRPC_JUMBO_DATALEN;
+-		rxrpc_input_data_one(call, jskb, &notify);
++		rxrpc_input_data_one(call, jskb, &notify, &ack_serial, &ack_reason);
+ 		rxrpc_free_skb(jskb, rxrpc_skb_put_jumbo_subpacket);
+ 
+ 		sp->hdr.flags = jhdr.flags;
+@@ -549,7 +564,16 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
+ 
+ 	sp->offset = offset;
+ 	sp->len    = len;
+-	rxrpc_input_data_one(call, skb, &notify);
++	rxrpc_input_data_one(call, skb, &notify, &ack_serial, &ack_reason);
++
++	if (ack_reason > 0) {
++		rxrpc_send_ACK(call, ack_reason, ack_serial,
++			       rxrpc_propose_ack_input_data);
++	} else {
++		call->ackr_nr_unacked++;
++		rxrpc_propose_delay_ACK(call, sp->hdr.serial,
++					rxrpc_propose_ack_input_data);
++	}
+ 	if (notify) {
+ 		trace_rxrpc_notify_socket(call->debug_id, sp->hdr.serial);
+ 		rxrpc_notify_socket(call);
 -- 
 2.43.0
 
