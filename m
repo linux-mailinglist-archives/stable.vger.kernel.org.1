@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 732B58C510A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:18:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4A78C524C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D189D2811D5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:18:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CD1282A23
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCF912EBD2;
-	Tue, 14 May 2024 10:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9109512EBD5;
+	Tue, 14 May 2024 11:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBLrrkPH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ/+rF/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187D312D776;
-	Tue, 14 May 2024 10:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DAD12EBCE;
+	Tue, 14 May 2024 11:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683995; cv=none; b=hIfH8w8IvGXPXhVMEBTDzCzHATES+5bQz1BuEgE3Epqcs5Hjr1KfvvXugFDmjbdcpxs9kGXn7QWcNu+niKseUcOrdeVr9RFfmm39agWHGsLvwbF3WL1iQE2cwQHcazpwpv4bX2Z6wFRX3ghr7m+bAwbj8FN6pO9CA6q439wVn4Y=
+	t=1715685744; cv=none; b=maWFJJE/7YS8LVSFKhI6dWhA2CFcMfbzPoEf5HYdEOHZ/4iMQrQkRTlwYauq0BPInXcdWRU75WFIyE4ChBWxZBAT2tsaGRTv4ia/4dldYe1ynWlw3SnG5HY8B3e4aNQ2x75ZV66Kf79ECwhN3CYuMTYOpZpT0esHNLT9RJdET7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683995; c=relaxed/simple;
-	bh=DYr06N5jwtFG+twcz4XglO0RFyVFx0iMhXpKlLecRh0=;
+	s=arc-20240116; t=1715685744; c=relaxed/simple;
+	bh=OWcSlLtY5MqFWvpBsC2U1iaDbTwqitiCJxtL/B/iu1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIm+u7MHmMTul8zs1HmFvJWOR7jygcJXLZlshmTCYvA4As4rNaui+/cBzEsYh1PmRrwhix7fYwDXo0WCwHZ7BE2PO3lCYVZm3uU4teWoyZQG/7U9neJIQtBqUALdNJaMe0l2QsYNCBZ+x1cXyUwc6i9WanGtaCeUahEPXzl7C4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBLrrkPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A816C2BD10;
-	Tue, 14 May 2024 10:53:13 +0000 (UTC)
+	 MIME-Version; b=SIIOPKJWO/pQrTKcBcz91h4PmsVYIHZ+rt4+LQtQM6OrI+Tr9JYNRbkXVA/J2dLzPwVGQEx652v7zj6AtUPeC9fVyuQoL4rgL4OEQCpRM3HGjswvRaIcPIdaoUrshPXcIiBIDAhd2ums3bQ/MK7a09CtdXLEqQYdCl+IRWIx7rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ/+rF/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD47EC2BD10;
+	Tue, 14 May 2024 11:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683995;
-	bh=DYr06N5jwtFG+twcz4XglO0RFyVFx0iMhXpKlLecRh0=;
+	s=korg; t=1715685744;
+	bh=OWcSlLtY5MqFWvpBsC2U1iaDbTwqitiCJxtL/B/iu1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OBLrrkPHjEunMA4S8xdeesPm1vo7K94x0zecN3kw5GJiSav2znm74EfmnaUnxyFzH
-	 QvZ2hVwtIbSz0YJSb16lEGgQ8W2Qiqws9boLrsS119w+gZqAkGw10yD+44ywIWjDqz
-	 wRrYxDCP2dOEFpdsqunJkPVHXPg2rSs2xHjtq3ME=
+	b=aQ/+rF/Xwb/SPpwFTwyw4EhZ2qw89xE/qNTvYAmwAFADKtLLRcXwoClskFu5wXV1C
+	 f8Wk2oU79quxPchBkOvdlOOTjnY2jj3tha45A1xqzoApZbFE2DjD132iyyrV+8jB8C
+	 VaU9g+deUR+8m4Rmk2bhmDg21Kufog8KJejs/BRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.8 306/336] drm/amd/display: Fix incorrect DSC instance for MST
+	Aman Dhoot <amandhoot12@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 239/301] ALSA: hda/realtek: Fix mute led of HP Laptop 15-da3001TU
 Date: Tue, 14 May 2024 12:18:30 +0200
-Message-ID: <20240514101050.171976522@linuxfoundation.org>
+Message-ID: <20240514101041.277986889@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Aman Dhoot <amandhoot12@gmail.com>
 
-commit 892b41b16f6163e6556545835abba668fcab4eea upstream.
+commit 2d5af3ab9e6f1cf1468b2a5221b5c1f7f46c3333 upstream.
 
-[Why] DSC debugfs, such as dp_dsc_clock_en_read,
-use aconnector->dc_link to find pipe_ctx for display.
-Displays connected to MST hub share the same dc_link.
-DSC instance is from pipe_ctx. This causes incorrect
-DSC instance for display connected to MST hub.
+This patch simply add SND_PCI_QUIRK for HP Laptop 15-da3001TU to fixed
+mute led of laptop.
 
-[How] Add aconnector->sink check to find pipe_ctx.
-
-CC: stable@vger.kernel.org
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Aman Dhoot <amandhoot12@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/CAMTp=B+3NG65Z684xMwHqdXDJhY+DJK-kuSw4adn6xwnG+b5JA@mail.gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |   48 ++++++++++----
- 1 file changed, 36 insertions(+), 12 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-@@ -1495,7 +1495,9 @@ static ssize_t dp_dsc_clock_en_read(stru
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1596,7 +1598,9 @@ static ssize_t dp_dsc_clock_en_write(str
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1681,7 +1685,9 @@ static ssize_t dp_dsc_slice_width_read(s
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1780,7 +1786,9 @@ static ssize_t dp_dsc_slice_width_write(
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1865,7 +1873,9 @@ static ssize_t dp_dsc_slice_height_read(
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -1964,7 +1974,9 @@ static ssize_t dp_dsc_slice_height_write
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2045,7 +2057,9 @@ static ssize_t dp_dsc_bits_per_pixel_rea
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2141,7 +2155,9 @@ static ssize_t dp_dsc_bits_per_pixel_wri
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2220,7 +2236,9 @@ static ssize_t dp_dsc_pic_width_read(str
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2276,7 +2294,9 @@ static ssize_t dp_dsc_pic_height_read(st
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2347,7 +2367,9 @@ static ssize_t dp_dsc_chunk_size_read(st
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
-@@ -2418,7 +2440,9 @@ static ssize_t dp_dsc_slice_bpg_offset_r
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
- 		if (pipe_ctx->stream &&
--		    pipe_ctx->stream->link == aconnector->dc_link)
-+		    pipe_ctx->stream->link == aconnector->dc_link &&
-+		    pipe_ctx->stream->sink &&
-+		    pipe_ctx->stream->sink == aconnector->dc_sink)
- 			break;
- 	}
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9826,6 +9826,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x869d, "HP", ALC236_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
 
 
 
