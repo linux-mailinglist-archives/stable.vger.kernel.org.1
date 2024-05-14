@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B338C53AF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6925D8C53D6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C42461F233B2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3866D1C22A2C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960987FBA3;
-	Tue, 14 May 2024 11:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C251013D254;
+	Tue, 14 May 2024 11:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK0owB6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/MepVJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528D580C04;
-	Tue, 14 May 2024 11:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BAB7F48C;
+	Tue, 14 May 2024 11:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686694; cv=none; b=bsQiDgHEkwhPceQL8xQl0C7aoeDtTsr8X2J7saa5a109jfwm0hfomBl/Um5b4ZZ+NynvHGXBWaBjZ5XxmK2gTBX7QsWhvpyVpqmGvrlYsAwF8+HRwsh1A760AwhUegssxGGC8lOaNZxMUl/cCntU1oxi72eo7yeex0jYuxAIMi4=
+	t=1715686803; cv=none; b=M8v33DRO2JhbzlRYHEltPe1GGtjqCX4gtIRfDkPqmbTpf9c/AF9NhU/Il7/LyTb7l5NhscFDa9rQiD+6wjuMQHtTDqA3wtDRbR1r2W0zYOAEtqMXLvHJdUWPfh1wCuUrKEajPkYNV3qBNwlDFSSkWVuWRdGQbdevIlIMJcEmzvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686694; c=relaxed/simple;
-	bh=+CUIkPdL/NdKxH4JLOjtZXZ2FTrgt0+uf39SvOIbffM=;
+	s=arc-20240116; t=1715686803; c=relaxed/simple;
+	bh=dDxeDBnVpscxIYtDtz2Gpa/GMzENWAjypTHcxNEXens=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jStIUvkOWK02lOLaC3KyPE+eE967EaYym0Nbp5Rk3Ir4eQnUDXX/lk0XV7pq4l1C/31rLMmDf2cij97OEn2ALDj6EKHOBLY4RDZicoeGjpk6QNOEee6aoREpJ+Q7amm7SsedpgexCXv2ScmI8vT3pVbaYUwIQ3m2dn/wxRTlwtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK0owB6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A420C2BD10;
-	Tue, 14 May 2024 11:38:13 +0000 (UTC)
+	 MIME-Version; b=aoTB8qukPMabdPzPrwIwnmfFhWIOstynZVtj+tEYEtaAhoR7IFgAwMrWY5zLfjAmQLinhYqn5pim86UA7jkMBuh1RKnne8asTbbuwpATIEfSSmzb0yBcovAIdZwrz+AdOlQ0J5+Zg3YJAt4oq6ORz1MTOcOtxoxPG7UjHvSRPVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/MepVJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071B2C2BD10;
+	Tue, 14 May 2024 11:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686694;
-	bh=+CUIkPdL/NdKxH4JLOjtZXZ2FTrgt0+uf39SvOIbffM=;
+	s=korg; t=1715686803;
+	bh=dDxeDBnVpscxIYtDtz2Gpa/GMzENWAjypTHcxNEXens=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pK0owB6BBJC5DDG25ooMXhpF2QneGXG05n4jru1D8BmmMEx+9iOAMzcduXokoSZXg
-	 mLqjsNpS84ZNcz0KjYuqMvgkY1T8qTmozwH5w7fwx4lpRHYRBlASxfTPE4WqOfiSP5
-	 4ygZVYCa5XbvOiJ9p63NvRJ6jjoag0O971kYDDv8=
+	b=M/MepVJlDevfnxFVLXAbegKA+K7wh3S7j3wU2AGguadbTyIRT7VdaqOOLkDdwCP1X
+	 gHNjp0oUn09GnTrrY882Ye3Zz9EtJWUGzK4r+3LueEyi2T2bsZWVigqx+LD6cE4jfI
+	 78mmcIv91InbKxmVLhRDcerlnAv1AQs+EgPRYQnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 227/236] regulator: core: fix debugfs creation regression
+	Phil Elwell <phil@raspberrypi.com>,
+	Maarten Vanraes <maarten@rmail.be>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 28/63] net: bcmgenet: Reset RBUF on first open
 Date: Tue, 14 May 2024 12:19:49 +0200
-Message-ID: <20240514101028.974711145@linuxfoundation.org>
+Message-ID: <20240514100949.081224630@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Phil Elwell <phil@raspberrypi.com>
 
-commit 2a4b49bb58123bad6ec0e07b02845f74c23d5e04 upstream.
+[ Upstream commit 0a6380cb4c6b5c1d6dad226ba3130f9090f0ccea ]
 
-regulator_get() may sometimes be called more than once for the same
-consumer device, something which before commit dbe954d8f163 ("regulator:
-core: Avoid debugfs: Directory ...  already present! error") resulted in
-errors being logged.
+If the RBUF logic is not reset when the kernel starts then there
+may be some data left over from any network boot loader. If the
+64-byte packet headers are enabled then this can be fatal.
 
-A couple of recent commits broke the handling of such cases so that
-attributes are now erroneously created in the debugfs root directory the
-second time a regulator is requested and the log is filled with errors
-like:
+Extend bcmgenet_dma_disable to do perform the reset, but not when
+called from bcmgenet_resume in order to preserve a wake packet.
 
-	debugfs: File 'uA_load' in directory '/' already present!
-	debugfs: File 'min_uV' in directory '/' already present!
-	debugfs: File 'max_uV' in directory '/' already present!
-	debugfs: File 'constraint_flags' in directory '/' already present!
+N.B. This different handling of resume is just based on a hunch -
+why else wouldn't one reset the RBUF as well as the TBUF? If this
+isn't the case then it's easy to change the patch to make the RBUF
+reset unconditional.
 
-on any further calls.
+See: https://github.com/raspberrypi/linux/issues/3850
+See: https://github.com/raspberrypi/firmware/issues/1882
 
-Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugfs_create_dir()")
-Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
-Cc: stable@vger.kernel.org
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240509133304.8883-1-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Maarten Vanraes <maarten@rmail.be>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c |   27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1916,19 +1916,24 @@ static struct regulator *create_regulato
- 		}
- 	}
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 8bbc5dcf8cb43..9fded8a862d46 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2806,7 +2806,7 @@ static void bcmgenet_set_hw_addr(struct bcmgenet_priv *priv,
+ }
  
--	if (err != -EEXIST)
-+	if (err != -EEXIST) {
- 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
--	if (IS_ERR(regulator->debugfs))
--		rdev_dbg(rdev, "Failed to create debugfs directory\n");
-+		if (IS_ERR(regulator->debugfs)) {
-+			rdev_dbg(rdev, "Failed to create debugfs directory\n");
-+			regulator->debugfs = NULL;
-+		}
+ /* Returns a reusable dma control register value */
+-static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
++static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv, bool flush_rx)
+ {
+ 	unsigned int i;
+ 	u32 reg;
+@@ -2831,6 +2831,14 @@ static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
+ 	udelay(10);
+ 	bcmgenet_umac_writel(priv, 0, UMAC_TX_FLUSH);
+ 
++	if (flush_rx) {
++		reg = bcmgenet_rbuf_ctrl_get(priv);
++		bcmgenet_rbuf_ctrl_set(priv, reg | BIT(0));
++		udelay(10);
++		bcmgenet_rbuf_ctrl_set(priv, reg);
++		udelay(10);
 +	}
++
+ 	return dma_ctrl;
+ }
  
--	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
--			   &regulator->uA_load);
--	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
--			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
--	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
--			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
--	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
--			    regulator, &constraint_flags_fops);
-+	if (regulator->debugfs) {
-+		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
-+				   &regulator->uA_load);
-+		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
-+				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
-+		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
-+				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
-+		debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
-+				    regulator, &constraint_flags_fops);
-+	}
+@@ -2926,8 +2934,8 @@ static int bcmgenet_open(struct net_device *dev)
  
- 	/*
- 	 * Check now if the regulator is an always on regulator - if
+ 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
+ 
+-	/* Disable RX/TX DMA and flush TX queues */
+-	dma_ctrl = bcmgenet_dma_disable(priv);
++	/* Disable RX/TX DMA and flush TX and RX queues */
++	dma_ctrl = bcmgenet_dma_disable(priv, true);
+ 
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv);
+@@ -3682,7 +3690,7 @@ static int bcmgenet_resume(struct device *d)
+ 		bcmgenet_power_up(priv, GENET_POWER_WOL_MAGIC);
+ 
+ 	/* Disable RX/TX DMA and flush TX queues */
+-	dma_ctrl = bcmgenet_dma_disable(priv);
++	dma_ctrl = bcmgenet_dma_disable(priv, false);
+ 
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv);
+-- 
+2.43.0
+
 
 
 
