@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-44606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE478C539C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437B88C5481
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529171F2314D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF7ED289B0D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D7412D768;
-	Tue, 14 May 2024 11:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4FE129E7F;
+	Tue, 14 May 2024 11:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tikL86oA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxhLGRES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5EB12CD84;
-	Tue, 14 May 2024 11:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A941E4B0;
+	Tue, 14 May 2024 11:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686648; cv=none; b=IlqPsAPiISWyIisI0ngM+mpQwB7x96avH2dX1u64ZZApD4eVpgO/HB3nZngEzGdhJ7Brq7h1eYofw+e/Skh66ryfbx0CGXWOVYMmg0zl9uFIBady8ingmXmOfUKWHiilx1/7vUpmcD5Gq6sC+YfSuZ1Cc3xUnuDtRDRvOoKwoN4=
+	t=1715687230; cv=none; b=EUpiVyIEwCltcwLFoay7OeoYZTEb3oWdqF0wKUwGaFOBx1KHzrIDoFvQ3AFwqeX45Mo84FjdqDVWBz6VYW0FLPVKfJpFDxWOoWUZsMqz/3Mj7pJgvaewXvGbXkUUvMeYGQmM0wXiP3jn7JPFtW9f7qczaAn+hYrm47tpGhG3zVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686648; c=relaxed/simple;
-	bh=sFgCSIgljBAXnHp0NwJDFWCKHIIpPxrFVyd5bCrI7qI=;
+	s=arc-20240116; t=1715687230; c=relaxed/simple;
+	bh=Nw4rTzmqyJIw3gJ2hOqZyTV4LUM3na9dLZF8FdBsmpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EP0JEL0afu00Fwg1AW9ejy4SrqXuHg78btG+vka/vxNoXncpjMwFylyEYCH8KRFs8wL35pRzdimofN/VC9oSEi2wDx3qe1jhHEvnKnVeUdkwT7g/jvJeR2FyhJKZEY5nZ3YNfWrYxiWtL5uw+BZ2mJpkuJJkx5MGhmg53AULP1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tikL86oA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAA1C2BD10;
-	Tue, 14 May 2024 11:37:27 +0000 (UTC)
+	 MIME-Version; b=k8tzHjjBcYrkqLgsCS4LyezPqLbm6j7fE2Or5VXm4TKAAWwmn2w8qQt5LVQ/YWo4wfIE5V6yv58BvIup4GrkX3CFA0oDeo1DZtKOeRJkHUrEDbQBFnsLezaFdI3R6C14I/NHL4y0cZHaY8vdW8wgN3YC9MeAQ6H64MLR5CYv8zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxhLGRES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CA5C2BD10;
+	Tue, 14 May 2024 11:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686647;
-	bh=sFgCSIgljBAXnHp0NwJDFWCKHIIpPxrFVyd5bCrI7qI=;
+	s=korg; t=1715687230;
+	bh=Nw4rTzmqyJIw3gJ2hOqZyTV4LUM3na9dLZF8FdBsmpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tikL86oAtsdLP4b+bPQN/fSDOny1e/NDYb2a0oMxuYZZPNOtEDTwvZN4+oea4rD3W
-	 DYIQZz4RINPLwZchX/X059RppinAtUR/9ni9q/CUNTwvbO/6k6JrxsQunQBtp2/jMP
-	 +c3COEgMPkMZiqZINKvJ3Xln9FEVaRWY5lWyg8pc=
+	b=cxhLGRESWLlsXHrFov6yeAWsSLGW2c4V6Uu3pFqgav7IcodgZLfODdxNpMeaEZm9r
+	 z0+3lGoybO3MtVklrwIfEZvFdf2K7yGwOIrk1+G3XV68PJr2DOj02tYau1vy7Ikr8g
+	 7vWlGMIwn+0OFUMg9lGB9c6EuChFDldxmmqqwOvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 183/236] drm/amdgpu: once more fix the call oder in amdgpu_ttm_move() v2
+	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 007/111] pinctrl: pinctrl-aspeed-g6: Fix register offset for pinconf of GPIOR-T
 Date: Tue, 14 May 2024 12:19:05 +0200
-Message-ID: <20240514101027.306963317@linuxfoundation.org>
+Message-ID: <20240514100957.402229768@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,200 +63,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-commit d3a9331a6591e9df64791e076f6591f440af51c3 upstream.
+[ Upstream commit c10cd03d69403fa0f00be8631bd4cb4690440ebd ]
 
-This reverts drm/amdgpu: fix ftrace event amdgpu_bo_move always move
-on same heap. The basic problem here is that after the move the old
-location is simply not available any more.
+The register offset to disable the internal pull-down of GPIOR~T is 0x630
+instead of 0x620, as specified in the Ast2600 datasheet v15
+The datasheet can download from the official Aspeed website.
 
-Some fixes were suggested, but essentially we should call the move
-notification before actually moving things because only this way we have
-the correct order for DMA-buf and VM move notifications as well.
-
-Also rework the statistic handling so that we don't update the eviction
-counter before the move.
-
-v2: add missing NULL check
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 94aeb4117343 ("drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3171
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 15711ba6ff19 ("pinctrl: aspeed-g6: Add AST2600 pinconf support")
+Reported-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Message-ID: <20240313092809.2596644-1-billy_tsai@aspeedtech.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c |   14 +++++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |    4 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c    |   48 +++++++++++++++--------------
- 3 files changed, 38 insertions(+), 28 deletions(-)
+ drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c | 34 +++++++++++-----------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1222,14 +1222,18 @@ int amdgpu_bo_get_metadata(struct amdgpu
-  * amdgpu_bo_move_notify - notification about a memory move
-  * @bo: pointer to a buffer object
-  * @evict: if this move is evicting the buffer from the graphics address space
-+ * @new_mem: new resource for backing the BO
-  *
-  * Marks the corresponding &amdgpu_bo buffer object as invalid, also performs
-  * bookkeeping.
-  * TTM driver callback which is called when ttm moves a buffer.
-  */
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
-+			   bool evict,
-+			   struct ttm_resource *new_mem)
- {
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->bdev);
-+	struct ttm_resource *old_mem = bo->resource;
- 	struct amdgpu_bo *abo;
+diff --git a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
+index c2ba4064ce5b2..3e05444537ed1 100644
+--- a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
++++ b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
+@@ -43,7 +43,7 @@
+ #define SCU614		0x614 /* Disable GPIO Internal Pull-Down #1 */
+ #define SCU618		0x618 /* Disable GPIO Internal Pull-Down #2 */
+ #define SCU61C		0x61c /* Disable GPIO Internal Pull-Down #3 */
+-#define SCU620		0x620 /* Disable GPIO Internal Pull-Down #4 */
++#define SCU630		0x630 /* Disable GPIO Internal Pull-Down #4 */
+ #define SCU634		0x634 /* Disable GPIO Internal Pull-Down #5 */
+ #define SCU638		0x638 /* Disable GPIO Internal Pull-Down #6 */
+ #define SCU694		0x694 /* Multi-function Pin Control #25 */
+@@ -2471,38 +2471,38 @@ static struct aspeed_pin_config aspeed_g6_configs[] = {
+ 	ASPEED_PULL_DOWN_PINCONF(D14, SCU61C, 0),
  
- 	if (!amdgpu_bo_is_amdgpu_bo(bo))
-@@ -1241,12 +1245,12 @@ void amdgpu_bo_move_notify(struct ttm_bu
- 	amdgpu_bo_kunmap(abo);
+ 	/* GPIOS7 */
+-	ASPEED_PULL_DOWN_PINCONF(T24, SCU620, 23),
++	ASPEED_PULL_DOWN_PINCONF(T24, SCU630, 23),
+ 	/* GPIOS6 */
+-	ASPEED_PULL_DOWN_PINCONF(P23, SCU620, 22),
++	ASPEED_PULL_DOWN_PINCONF(P23, SCU630, 22),
+ 	/* GPIOS5 */
+-	ASPEED_PULL_DOWN_PINCONF(P24, SCU620, 21),
++	ASPEED_PULL_DOWN_PINCONF(P24, SCU630, 21),
+ 	/* GPIOS4 */
+-	ASPEED_PULL_DOWN_PINCONF(R26, SCU620, 20),
++	ASPEED_PULL_DOWN_PINCONF(R26, SCU630, 20),
+ 	/* GPIOS3*/
+-	ASPEED_PULL_DOWN_PINCONF(R24, SCU620, 19),
++	ASPEED_PULL_DOWN_PINCONF(R24, SCU630, 19),
+ 	/* GPIOS2 */
+-	ASPEED_PULL_DOWN_PINCONF(T26, SCU620, 18),
++	ASPEED_PULL_DOWN_PINCONF(T26, SCU630, 18),
+ 	/* GPIOS1 */
+-	ASPEED_PULL_DOWN_PINCONF(T25, SCU620, 17),
++	ASPEED_PULL_DOWN_PINCONF(T25, SCU630, 17),
+ 	/* GPIOS0 */
+-	ASPEED_PULL_DOWN_PINCONF(R23, SCU620, 16),
++	ASPEED_PULL_DOWN_PINCONF(R23, SCU630, 16),
  
- 	if (abo->tbo.base.dma_buf && !abo->tbo.base.import_attach &&
--	    bo->resource->mem_type != TTM_PL_SYSTEM)
-+	    old_mem && old_mem->mem_type != TTM_PL_SYSTEM)
- 		dma_buf_move_notify(abo->tbo.base.dma_buf);
+ 	/* GPIOR7 */
+-	ASPEED_PULL_DOWN_PINCONF(U26, SCU620, 15),
++	ASPEED_PULL_DOWN_PINCONF(U26, SCU630, 15),
+ 	/* GPIOR6 */
+-	ASPEED_PULL_DOWN_PINCONF(W26, SCU620, 14),
++	ASPEED_PULL_DOWN_PINCONF(W26, SCU630, 14),
+ 	/* GPIOR5 */
+-	ASPEED_PULL_DOWN_PINCONF(T23, SCU620, 13),
++	ASPEED_PULL_DOWN_PINCONF(T23, SCU630, 13),
+ 	/* GPIOR4 */
+-	ASPEED_PULL_DOWN_PINCONF(U25, SCU620, 12),
++	ASPEED_PULL_DOWN_PINCONF(U25, SCU630, 12),
+ 	/* GPIOR3*/
+-	ASPEED_PULL_DOWN_PINCONF(V26, SCU620, 11),
++	ASPEED_PULL_DOWN_PINCONF(V26, SCU630, 11),
+ 	/* GPIOR2 */
+-	ASPEED_PULL_DOWN_PINCONF(V24, SCU620, 10),
++	ASPEED_PULL_DOWN_PINCONF(V24, SCU630, 10),
+ 	/* GPIOR1 */
+-	ASPEED_PULL_DOWN_PINCONF(U24, SCU620, 9),
++	ASPEED_PULL_DOWN_PINCONF(U24, SCU630, 9),
+ 	/* GPIOR0 */
+-	ASPEED_PULL_DOWN_PINCONF(V25, SCU620, 8),
++	ASPEED_PULL_DOWN_PINCONF(V25, SCU630, 8),
  
--	/* remember the eviction */
--	if (evict)
--		atomic64_inc(&adev->num_evictions);
-+	/* move_notify is called before move happens */
-+	trace_amdgpu_bo_move(abo, new_mem ? new_mem->mem_type : -1,
-+			     old_mem ? old_mem->mem_type : -1);
- }
- 
- void amdgpu_bo_get_memory(struct amdgpu_bo *bo, uint64_t *vram_mem,
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -312,7 +312,9 @@ int amdgpu_bo_set_metadata (struct amdgp
- int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
- 			   size_t buffer_size, uint32_t *metadata_size,
- 			   uint64_t *flags);
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict);
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
-+			   bool evict,
-+			   struct ttm_resource *new_mem);
- void amdgpu_bo_release_notify(struct ttm_buffer_object *bo);
- vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo);
- void amdgpu_bo_fence(struct amdgpu_bo *bo, struct dma_fence *fence,
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -483,14 +483,16 @@ static int amdgpu_bo_move(struct ttm_buf
- 
- 	if (!old_mem || (old_mem->mem_type == TTM_PL_SYSTEM &&
- 			 bo->ttm == NULL)) {
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_bo_move_null(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 	if (old_mem->mem_type == TTM_PL_SYSTEM &&
- 	    (new_mem->mem_type == TTM_PL_TT ||
- 	     new_mem->mem_type == AMDGPU_PL_PREEMPT)) {
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_bo_move_null(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 	if ((old_mem->mem_type == TTM_PL_TT ||
- 	     old_mem->mem_type == AMDGPU_PL_PREEMPT) &&
-@@ -500,9 +502,10 @@ static int amdgpu_bo_move(struct ttm_buf
- 			return r;
- 
- 		amdgpu_ttm_backend_unbind(bo->bdev, bo->ttm);
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_resource_free(bo, &bo->resource);
- 		ttm_bo_assign_mem(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 
- 	if (old_mem->mem_type == AMDGPU_PL_GDS ||
-@@ -512,8 +515,9 @@ static int amdgpu_bo_move(struct ttm_buf
- 	    new_mem->mem_type == AMDGPU_PL_GWS ||
- 	    new_mem->mem_type == AMDGPU_PL_OA) {
- 		/* Nothing to save here */
-+		amdgpu_bo_move_notify(bo, evict, new_mem);
- 		ttm_bo_move_null(bo, new_mem);
--		goto out;
-+		return 0;
- 	}
- 
- 	if (bo->type == ttm_bo_type_device &&
-@@ -525,22 +529,23 @@ static int amdgpu_bo_move(struct ttm_buf
- 		abo->flags &= ~AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
- 	}
- 
--	if (adev->mman.buffer_funcs_enabled) {
--		if (((old_mem->mem_type == TTM_PL_SYSTEM &&
--		      new_mem->mem_type == TTM_PL_VRAM) ||
--		     (old_mem->mem_type == TTM_PL_VRAM &&
--		      new_mem->mem_type == TTM_PL_SYSTEM))) {
--			hop->fpfn = 0;
--			hop->lpfn = 0;
--			hop->mem_type = TTM_PL_TT;
--			hop->flags = TTM_PL_FLAG_TEMPORARY;
--			return -EMULTIHOP;
--		}
-+	if (adev->mman.buffer_funcs_enabled &&
-+	    ((old_mem->mem_type == TTM_PL_SYSTEM &&
-+	      new_mem->mem_type == TTM_PL_VRAM) ||
-+	     (old_mem->mem_type == TTM_PL_VRAM &&
-+	      new_mem->mem_type == TTM_PL_SYSTEM))) {
-+		hop->fpfn = 0;
-+		hop->lpfn = 0;
-+		hop->mem_type = TTM_PL_TT;
-+		hop->flags = TTM_PL_FLAG_TEMPORARY;
-+		return -EMULTIHOP;
-+	}
- 
-+	amdgpu_bo_move_notify(bo, evict, new_mem);
-+	if (adev->mman.buffer_funcs_enabled)
- 		r = amdgpu_move_blit(bo, evict, new_mem, old_mem);
--	} else {
-+	else
- 		r = -ENODEV;
--	}
- 
- 	if (r) {
- 		/* Check that all memory is CPU accessible */
-@@ -555,11 +560,10 @@ static int amdgpu_bo_move(struct ttm_buf
- 			return r;
- 	}
- 
--	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
--out:
--	/* update statistics */
-+	/* update statistics after the move */
-+	if (evict)
-+		atomic64_inc(&adev->num_evictions);
- 	atomic64_add(bo->base.size, &adev->num_bytes_moved);
--	amdgpu_bo_move_notify(bo, evict);
- 	return 0;
- }
- 
-@@ -1505,7 +1509,7 @@ static int amdgpu_ttm_access_memory(stru
- static void
- amdgpu_bo_delete_mem_notify(struct ttm_buffer_object *bo)
- {
--	amdgpu_bo_move_notify(bo, false);
-+	amdgpu_bo_move_notify(bo, false, NULL);
- }
- 
- static struct ttm_device_funcs amdgpu_bo_driver = {
+ 	/* GPIOX7 */
+ 	ASPEED_PULL_DOWN_PINCONF(AB10, SCU634, 31),
+-- 
+2.43.0
+
 
 
 
