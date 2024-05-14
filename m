@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4998C52E5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF19F8C51AF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FC941C2198A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 955E11F2271B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400A7135A5A;
-	Tue, 14 May 2024 11:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E393613B285;
+	Tue, 14 May 2024 11:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXL4iL9/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXvFyZnr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E6E135A4A;
-	Tue, 14 May 2024 11:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A135213AD3E;
+	Tue, 14 May 2024 11:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686177; cv=none; b=Ehv8Pwq5x4XMYztRvHs7FXCi5Zz5NDT1fVeurkAAcV+bK+10rI6zW/+aOuo4PJwo8JiwLdo+GTe7Aa8C2DfezhlTxtwLCBkhXItyAhiMQMO61Uy5g47otKk0x9Mzqj0Eb44TcNZvdwfIbFHrOWeQDHTbH1sb9Nz0uGkYMIjI4H0=
+	t=1715684918; cv=none; b=i28Gd/n3TuB8OY53pT/OYKHO0CVCfP14ypsrlLPjiAE12E/HLYUruTA3jXYipEjS2pkUsMR6+P8ppiJVfqzmdLMOjrGV591C32NZ61lIb0p5aU6+LG2F9Abg/aACgrZJzl8EwXU8onQMq0NQkmBhVsN122qvFbIABJJh215kmg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686177; c=relaxed/simple;
-	bh=s1hTGlhNaBHCWvPsVRLC4FK8f0d555HfBeFY7gTOt5w=;
+	s=arc-20240116; t=1715684918; c=relaxed/simple;
+	bh=vYiIY28ZzDLZ7tyqhnV4lzwmQPu6XEZDLmAwAx9baXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bu7fgQVFADfkNsDOKb5CmQ0xT6Cj3z/yC/Be7j3kTFYTCiS9LLPKyhGZ+41YpsTLwYg4GzvL66eXHkdMAMm8AdrY9DHeljqAFfrBhZhwYcL3qt5tKyc9lom2cRRHvzwxMuHzW+GqEvRA7Q9rudfLBevHhcayfmjUMzVjM6Aw1I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXL4iL9/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB62C2BD10;
-	Tue, 14 May 2024 11:29:36 +0000 (UTC)
+	 MIME-Version; b=q1+tUOpAWg0CnTeFaSUse3aXmT/VUp0WAheiQulAxnjAYEPVSKqFXRET9zsKWgZ7rqCbFY2hd3ZuszjHz0BkZifuRLp7J5ZrdXEKRXOF40Ymz2u+xGoRDWyeX63utsGTFuxk9dRrNHmk3qYP1UjRn2X7S4NCIM3yngUa3KdDmeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXvFyZnr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3B8C2BD10;
+	Tue, 14 May 2024 11:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686176;
-	bh=s1hTGlhNaBHCWvPsVRLC4FK8f0d555HfBeFY7gTOt5w=;
+	s=korg; t=1715684918;
+	bh=vYiIY28ZzDLZ7tyqhnV4lzwmQPu6XEZDLmAwAx9baXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXL4iL9/C0finelzmKBCnKN9EO7SAug5dBdoswtMWqeb4YyAsG2RWBr/YeMub13/n
-	 NlNA4e/ufuWDLTpWbCYK0Mc6+N7OwJ9HJ1W+VgcWWeu/8FDjwLkB6U0G6g7cpbvRLu
-	 liNuYCr+6uY24hH+8awHpg1zDMDSbxDbdmbMcK1A=
+	b=RXvFyZnr913aF0XAGFM6mnQVYNeQuJsoatUnbhFPNQ1JIid3HQqBF+tmTr/YiIaEQ
+	 cjk3/oJ9LGiWSiUpvVkEuPLeOa1KCQCrOZ2UBUD4JIvNV885rCY9ut+3bjOHzmFyif
+	 7p4lPJpgP8sw25q7T89aODTYA0PahghByzl/WhNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com,
-	Mina Almasry <almasrymina@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/236] mm/hugetlb: fix missing hugetlb_lock for resv uncharge
+Subject: [PATCH 6.6 108/301] wifi: iwlwifi: mvm: guard against invalid STA ID on removal
 Date: Tue, 14 May 2024 12:16:19 +0200
-Message-ID: <20240514101020.986214186@linuxfoundation.org>
+Message-ID: <20240514101036.328852908@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit b76b46902c2d0395488c8412e1116c2486cdfcb2 ]
+[ Upstream commit 17f64517bf5c26af56b6c3566273aad6646c3c4f ]
 
-There is a recent report on UFFDIO_COPY over hugetlb:
+Guard against invalid station IDs in iwl_mvm_mld_rm_sta_id as that would
+result in out-of-bounds array accesses. This prevents issues should the
+driver get into a bad state during error handling.
 
-https://lore.kernel.org/all/000000000000ee06de0616177560@google.com/
-
-350:	lockdep_assert_held(&hugetlb_lock);
-
-Should be an issue in hugetlb but triggered in an userfault context, where
-it goes into the unlikely path where two threads modifying the resv map
-together.  Mike has a fix in that path for resv uncharge but it looks like
-the locking criteria was overlooked: hugetlb_cgroup_uncharge_folio_rsvd()
-will update the cgroup pointer, so it requires to be called with the lock
-held.
-
-Link: https://lkml.kernel.org/r/20240417211836.2742593-3-peterx@redhat.com
-Fixes: 79aa925bf239 ("hugetlb_cgroup: fix reservation accounting")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: syzbot+4b8077a5fccc61c385a1@syzkaller.appspotmail.com
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.d523167bda9c.I1cffd86363805bf86a95d8bdfd4b438bb54baddc@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index e720b9ac28337..e9ae0fc81dfbe 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3190,9 +3190,12 @@ struct page *alloc_huge_page(struct vm_area_struct *vma,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 1ccbe8c1eeb42..278454c116fee 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -853,10 +853,15 @@ int iwl_mvm_mld_rm_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
  
- 		rsv_adjust = hugepage_subpool_put_pages(spool, 1);
- 		hugetlb_acct_memory(h, -rsv_adjust);
--		if (deferred_reserve)
-+		if (deferred_reserve) {
-+			spin_lock_irq(&hugetlb_lock);
- 			hugetlb_cgroup_uncharge_folio_rsvd(hstate_index(h),
- 					pages_per_huge_page(h), folio);
-+			spin_unlock_irq(&hugetlb_lock);
-+		}
- 	}
- 	return page;
+ int iwl_mvm_mld_rm_sta_id(struct iwl_mvm *mvm, u8 sta_id)
+ {
+-	int ret = iwl_mvm_mld_rm_sta_from_fw(mvm, sta_id);
++	int ret;
  
+ 	lockdep_assert_held(&mvm->mutex);
+ 
++	if (WARN_ON(sta_id == IWL_MVM_INVALID_STA))
++		return 0;
++
++	ret = iwl_mvm_mld_rm_sta_from_fw(mvm, sta_id);
++
+ 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[sta_id], NULL);
+ 	RCU_INIT_POINTER(mvm->fw_id_to_link_sta[sta_id], NULL);
+ 	return ret;
 -- 
 2.43.0
 
