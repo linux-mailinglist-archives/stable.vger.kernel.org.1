@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-44180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848458C519A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD648C5029
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE89B21DB3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 629C4B20D04
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CB013A412;
-	Tue, 14 May 2024 11:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75C6139D0A;
+	Tue, 14 May 2024 10:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlwlc5jU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL1u/o0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC0E58AC4;
-	Tue, 14 May 2024 11:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74863139CFC;
+	Tue, 14 May 2024 10:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684762; cv=none; b=ZuSiDgK3TrJj7Jxi/0TJApGGoYLb96XznjWB8yVbO7Q38Lfru2AvxaCZGBmjj1JkjAyx37J3Wr77YlhkjT9C9KUbrAnN2mxbqW10rTn813ZxJtSOwB7fZ9zk9rMQPpXTtGuRTS4sI8zLlobUW36IOI68K14YJzHNt9SI5cVa0b4=
+	t=1715683025; cv=none; b=aF/jp6fR86YD6RpP6nCBZYMhvDw/R+gDILUGm1rTxUEgMY+ZDJLXoeuIKxNjFjj9UFYlPCX2/2i0nqPe+rUOLqi1DN5oDK635V7Ib79joURf+nO1YDCtmYYWtlgOqW+vhsWEI+U//rvb5++UXrSX0k9nXZC9+eVXQGzKo2dEboo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684762; c=relaxed/simple;
-	bh=wnxkFZ8cdMzo2TgGZFwgnsgCuH5UZt+0IbB6Tf7EtIQ=;
+	s=arc-20240116; t=1715683025; c=relaxed/simple;
+	bh=Dh8JsJ1nilNJHHF5QGoigul+7fhcvcdfQMIspKdY3hU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBZNCLJTG+F5QDNrb8EJHyFkoHOuFzbIFBOLKjfdruihkGkCtcy8/xwnyAn6oE3ptRpT34RPjtP6vx/yk9U8vkYm2bXQR78VLsp3cOOlzeSoZiQr2yzQDSrrLQGtqNyO0POtp9uDaXjPxhU1q3Lr8FpL2qm5RjzPilaEorXoWqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlwlc5jU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051C9C2BD10;
-	Tue, 14 May 2024 11:06:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KX2Bz37CNvZmUARabEZTPbId5dJacSujQ797l89UAMyo0ZtbDpHVQ40Q1qEnfcVoohPIpwP5r3/782XLhN40u868XeXlXqFeFmsaNDwkawcp9fBe+9VkP3AHnXNS2i/TrGG/y23MaBEhV2NgvwyMpRiC+8a5bNK4cr0i103cAYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL1u/o0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A6FC2BD10;
+	Tue, 14 May 2024 10:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684762;
-	bh=wnxkFZ8cdMzo2TgGZFwgnsgCuH5UZt+0IbB6Tf7EtIQ=;
+	s=korg; t=1715683025;
+	bh=Dh8JsJ1nilNJHHF5QGoigul+7fhcvcdfQMIspKdY3hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlwlc5jUJnHjXH1j5aCAYJQG4DKhPqTc/g5TX2YpCbtWElnJHRu7v/O3ZLoDLBVWF
-	 996KfXsbSRsyGTsvXeuxiWizXBEPcme5QVGJJ6YaUJrFk1ZUIPYg1hIsNje7YqOM9J
-	 8Z/Jms15M2aKIFplSqwoPK4oqFibIzKAtOwOFoqA=
+	b=gL1u/o0/czuto5dl13cW2qMe+bxrYc7a/OqzzLN8GWPGfKTzz1y2oEXlFooBl18nH
+	 pHIiFztjuOAm3majpoP3OfWMRmswYaWqjwpcwEgdyrP7R8aYde7Sud48Qy1pcb7D1l
+	 mZz9V6ugxAO1VZ14bqyBCHpkVuFLmv37IqP0D5pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Gobert <richardbgobert@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Bernhard=20Rosenkr=C3=A4nzer?= <bero@baylibre.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/301] net: gro: parse ipv6 ext headers without frag0 invalidation
+Subject: [PATCH 6.8 153/336] platform/x86: acer-wmi: Add support for Acer PH18-71
 Date: Tue, 14 May 2024 12:15:57 +0200
-Message-ID: <20240514101035.493829758@linuxfoundation.org>
+Message-ID: <20240514101044.379254973@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Gobert <richardbgobert@gmail.com>
+From: Bernhard Rosenkränzer <bero@baylibre.com>
 
-[ Upstream commit dff0b0161ad571f888d37f5e7163a07dcafdef60 ]
+[ Upstream commit b45d0d01da542be280d935d87b71465028cdcb1f ]
 
-The existing code always pulls the IPv6 header and sets the transport
-offset initially. Then optionally again pulls any extension headers in
-ipv6_gso_pull_exthdrs and sets the transport offset again on return from
-that call. skb->data is set at the start of the first extension header
-before calling ipv6_gso_pull_exthdrs, and must disable the frag0
-optimization because that function uses pskb_may_pull/pskb_pull instead of
-skb_gro_ helpers. It sets the GRO offset to the TCP header with
-skb_gro_pull and sets the transport header. Then returns skb->data to its
-position before this block.
+Add Acer Predator PH18-71 to acer_quirks with predator_v4
+to support mode button and fan speed sensor.
 
-This commit introduces a new helper function - ipv6_gro_pull_exthdrs -
-which is used in ipv6_gro_receive to pull ipv6 ext headers instead of
-ipv6_gso_pull_exthdrs. Thus, there is no modification of skb->data, all
-operations use skb_gro_* helpers, and the frag0 fast path can be taken for
-IPv6 packets with ext headers.
-
-Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/504130f6-b56c-4dcc-882c-97942c59f5b7@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5ef31ea5d053 ("net: gro: fix udp bad offset in socket lookup by adding {inner_}network_offset to napi_gro_cb")
+Signed-off-by: Bernhard Rosenkränzer <bero@baylibre.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240329152800.29393-1-bero@baylibre.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_offload.c | 51 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 10 deletions(-)
+ drivers/platform/x86/acer-wmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
-index d6314287338da..f6e5fcdf041d1 100644
---- a/net/ipv6/ip6_offload.c
-+++ b/net/ipv6/ip6_offload.c
-@@ -37,6 +37,40 @@
- 		INDIRECT_CALL_L4(cb, f2, f1, head, skb);	\
- })
- 
-+static int ipv6_gro_pull_exthdrs(struct sk_buff *skb, int off, int proto)
-+{
-+	const struct net_offload *ops = NULL;
-+	struct ipv6_opt_hdr *opth;
-+
-+	for (;;) {
-+		int len;
-+
-+		ops = rcu_dereference(inet6_offloads[proto]);
-+
-+		if (unlikely(!ops))
-+			break;
-+
-+		if (!(ops->flags & INET6_PROTO_GSO_EXTHDR))
-+			break;
-+
-+		opth = skb_gro_header(skb, off + sizeof(*opth), off);
-+		if (unlikely(!opth))
-+			break;
-+
-+		len = ipv6_optlen(opth);
-+
-+		opth = skb_gro_header(skb, off + len, off);
-+		if (unlikely(!opth))
-+			break;
-+		proto = opth->nexthdr;
-+
-+		off += len;
-+	}
-+
-+	skb_gro_pull(skb, off - skb_network_offset(skb));
-+	return proto;
-+}
-+
- static int ipv6_gso_pull_exthdrs(struct sk_buff *skb, int proto)
- {
- 	const struct net_offload *ops = NULL;
-@@ -206,28 +240,25 @@ INDIRECT_CALLABLE_SCOPE struct sk_buff *ipv6_gro_receive(struct list_head *head,
- 		goto out;
- 
- 	skb_set_network_header(skb, off);
--	skb_gro_pull(skb, sizeof(*iph));
--	skb_set_transport_header(skb, skb_gro_offset(skb));
- 
--	flush += ntohs(iph->payload_len) != skb_gro_len(skb);
-+	flush += ntohs(iph->payload_len) != skb->len - hlen;
- 
- 	proto = iph->nexthdr;
- 	ops = rcu_dereference(inet6_offloads[proto]);
- 	if (!ops || !ops->callbacks.gro_receive) {
--		pskb_pull(skb, skb_gro_offset(skb));
--		skb_gro_frag0_invalidate(skb);
--		proto = ipv6_gso_pull_exthdrs(skb, proto);
--		skb_gro_pull(skb, -skb_transport_offset(skb));
--		skb_reset_transport_header(skb);
--		__skb_push(skb, skb_gro_offset(skb));
-+		proto = ipv6_gro_pull_exthdrs(skb, hlen, proto);
- 
- 		ops = rcu_dereference(inet6_offloads[proto]);
- 		if (!ops || !ops->callbacks.gro_receive)
- 			goto out;
- 
--		iph = ipv6_hdr(skb);
-+		iph = skb_gro_network_header(skb);
-+	} else {
-+		skb_gro_pull(skb, sizeof(*iph));
- 	}
- 
-+	skb_set_transport_header(skb, skb_gro_offset(skb));
-+
- 	NAPI_GRO_CB(skb)->proto = proto;
- 
- 	flush--;
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index ee2e164f86b9c..38c932df6446a 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -597,6 +597,15 @@ static const struct dmi_system_id acer_quirks[] __initconst = {
+ 		},
+ 		.driver_data = &quirk_acer_predator_v4,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "Acer Predator PH18-71",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Predator PH18-71"),
++		},
++		.driver_data = &quirk_acer_predator_v4,
++	},
+ 	{
+ 		.callback = set_force_caps,
+ 		.ident = "Acer Aspire Switch 10E SW3-016",
 -- 
 2.43.0
 
