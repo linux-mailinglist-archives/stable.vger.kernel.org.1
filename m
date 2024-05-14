@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC8E8C54F5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122578C5138
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ED0E1C22FB9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 434DA1C208A7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A905953E37;
-	Tue, 14 May 2024 11:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4122F12FB03;
+	Tue, 14 May 2024 10:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9ZbFOT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTIUbqn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688A81CFB2;
-	Tue, 14 May 2024 11:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C0A84A3F;
+	Tue, 14 May 2024 10:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687552; cv=none; b=aD8g3vZVDNChEkodJvQL89un9tAxslpw3NS0jkEZlAy6+nN/YdtLP4eUZZDvxz4DCUfFtkhii7RIhtZYpvwKqyVyUYaKXIiUClcHb4HPCUR2AFfFonwSvVBmaD3bmWiIjuuOLosgZ1hEjNZaj8GDXbaO6lZsnKWBIljU9a6GINY=
+	t=1715684204; cv=none; b=cFrCud0BekvXmB8I7aEC/kIEbexRNbGlZxFwFdseTMJSp9vGBmI3gJ6eqcuF4apstdGeAgfvzwmUWrvlUOv+X1N8rJxo7Ct1KQGHNB6p7aPw/dwRuCm6vzv6bKkEfbZStGkf/KJIS+Xr/nDQv9PhCZxsBiD3xxOH9MIr5dM32zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687552; c=relaxed/simple;
-	bh=ylIsmzbzM9t7YqO3HEnPQ+CZEwdA+eIyAO8nPAcyV8A=;
+	s=arc-20240116; t=1715684204; c=relaxed/simple;
+	bh=wRdhn/dQid05s7zg3Z1p/b5D6muU2EV/7M7xs3VXkLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3yBik950LAJgeCqi2jWNMYdPSCfpkXzB0pY+Tjj1UTCROvXRNw6kEa7Cax/GnBdRnbg2ukR03y1RtUkbC3FRhMngqB2wrZVtMjydhwdX9Gh1Ag/onaxIeyvpRPj2Pg8JSIQDmpw0bR4VpnoOtHrNvWgMVOLndnxyhIDfs93ETg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9ZbFOT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D6DC2BD10;
-	Tue, 14 May 2024 11:52:31 +0000 (UTC)
+	 MIME-Version; b=dtfD2OciAGDGrz9y7+JGSNk34issLyKifFw4bGWh1EQmOri2UwnDYl7duc5lOvr+ttWPqVfkJW/JhLitCnpe0+hVtDbyPgriEL5NhooM/EO5Isv5pB81Y2LhCZeBsWKrKYnJxK2XeNgXoQmf/wEn81B6zTQYp3lKsGTg4bY+NBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTIUbqn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBA3C2BD10;
+	Tue, 14 May 2024 10:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687552;
-	bh=ylIsmzbzM9t7YqO3HEnPQ+CZEwdA+eIyAO8nPAcyV8A=;
+	s=korg; t=1715684203;
+	bh=wRdhn/dQid05s7zg3Z1p/b5D6muU2EV/7M7xs3VXkLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9ZbFOT+UB8e353oCTSQrLs4YgM8rtwd0HZ/ZaG3ch4WwHMAM9Q2ojeUKb820+tbX
-	 ZbARBpcnDWV/mO4atFOsvw5aH+50VrWkV5JctdpYGmfAntICkRpPxFm4kNDiLsF3/g
-	 pOaMBUcKXj5ycz+EQfPfyamRPx25UFBHhPSyz/Ys=
+	b=GTIUbqn9o0Eq9jLriLi8TA++Wr6Yn2mid1Sy5vhDSH8JSKrW8O0FdUr/lTdy9OE73
+	 qtmM9rN6HPk0GE8TxddAw55sB7iPf1EzMYkn9jCQRL8MoSyaoY9k0ipjJDWJKvOtcM
+	 478PZGYmpFRRe4NcrJp+VrX5geKMmQYZUI0GsET0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Li <vincent.mc.li@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/168] bpf, kconfig: Fix DEBUG_INFO_BTF_MODULES Kconfig definition
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 318/336] fs/proc/task_mmu: fix uffd-wp confusion in pagemap_scan_pmd_entry()
 Date: Tue, 14 May 2024 12:18:42 +0200
-Message-ID: <20240514101007.600335544@linuxfoundation.org>
+Message-ID: <20240514101050.628271078@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 229087f6f1dc2d0c38feba805770f28529980ec0 ]
+commit 2c7ad9a590d1a99ec59c7d90cef41e2b296944c4 upstream.
 
-Turns out that due to CONFIG_DEBUG_INFO_BTF_MODULES not having an
-explicitly specified "menu item name" in Kconfig, it's basically
-impossible to turn it off (see [0]).
+pagemap_scan_pmd_entry() checks if uffd-wp is set on each pte to avoid
+unnecessary if set.  However it was previously checking with
+`pte_uffd_wp(ptep_get(pte))` without first confirming that the pte was
+present.  It is only valid to call pte_uffd_wp() for present ptes.  For
+swap ptes, pte_swp_uffd_wp() must be called because the uffd-wp bit may be
+kept in a different position, depending on the arch.
 
-This patch fixes the issue by defining menu name for
-CONFIG_DEBUG_INFO_BTF_MODULES, which makes it actually adjustable
-and independent of CONFIG_DEBUG_INFO_BTF, in the sense that one can
-have DEBUG_INFO_BTF=y and DEBUG_INFO_BTF_MODULES=n.
+This was leading to test failures in the pagemap_ioctl mm selftest, when
+bringing up uffd-wp support on arm64 due to incorrectly interpretting the
+uffd-wp status of migration entries.
 
-We still keep it as defaulting to Y, of course.
+Let's fix this by using the correct check based on pte_present().  While
+we are at it, let's pass the pte to make_uffd_wp_pte() to avoid the
+pointless extra ptep_get() which can't be optimized out due to READ_ONCE()
+on many arches.
 
-Fixes: 5f9ae91f7c0d ("kbuild: Build kernel module BTFs if BTF is enabled and pahole supports it")
-Reported-by: Vincent Li <vincent.mc.li@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/CAK3+h2xiFfzQ9UXf56nrRRP=p1+iUxGoEP5B+aq9MDT5jLXDSg@mail.gmail.com [0]
-Link: https://lore.kernel.org/bpf/20240404220344.3879270-1-andrii@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240429114104.182890-1-ryan.roberts@arm.com
+Fixes: 12f6b01a0bcb ("fs/proc/task_mmu: add fast paths to get/clear PAGE_IS_WRITTEN flag")
+Closes: https://lore.kernel.org/linux-arm-kernel/ZiuyGXt0XWwRgFh9@x1n/
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/Kconfig.debug | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/proc/task_mmu.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 28faea9b5da62..2025b624fbb67 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -319,7 +319,7 @@ config DEBUG_INFO_DWARF5
- endchoice # "DWARF version"
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1818,10 +1818,8 @@ static unsigned long pagemap_page_catego
+ }
  
- config DEBUG_INFO_BTF
--	bool "Generate BTF typeinfo"
-+	bool "Generate BTF type information"
- 	depends on !DEBUG_INFO_SPLIT && !DEBUG_INFO_REDUCED
- 	depends on !GCC_PLUGIN_RANDSTRUCT || COMPILE_TEST
- 	help
-@@ -331,7 +331,8 @@ config PAHOLE_HAS_SPLIT_BTF
- 	def_bool PAHOLE_VERSION >= 119
+ static void make_uffd_wp_pte(struct vm_area_struct *vma,
+-			     unsigned long addr, pte_t *pte)
++			     unsigned long addr, pte_t *pte, pte_t ptent)
+ {
+-	pte_t ptent = ptep_get(pte);
+-
+ 	if (pte_present(ptent)) {
+ 		pte_t old_pte;
  
- config DEBUG_INFO_BTF_MODULES
--	def_bool y
-+	bool "Generate BTF type information for kernel modules"
-+	default y
- 	depends on DEBUG_INFO_BTF && MODULES && PAHOLE_HAS_SPLIT_BTF
- 	help
- 	  Generate compact split BTF type information for kernel modules.
--- 
-2.43.0
-
+@@ -2176,9 +2174,12 @@ static int pagemap_scan_pmd_entry(pmd_t
+ 	if ((p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out) {
+ 		/* Fast path for performing exclusive WP */
+ 		for (addr = start; addr != end; pte++, addr += PAGE_SIZE) {
+-			if (pte_uffd_wp(ptep_get(pte)))
++			pte_t ptent = ptep_get(pte);
++
++			if ((pte_present(ptent) && pte_uffd_wp(ptent)) ||
++			    pte_swp_uffd_wp_any(ptent))
+ 				continue;
+-			make_uffd_wp_pte(vma, addr, pte);
++			make_uffd_wp_pte(vma, addr, pte, ptent);
+ 			if (!flush_end)
+ 				start = addr;
+ 			flush_end = addr + PAGE_SIZE;
+@@ -2191,8 +2192,10 @@ static int pagemap_scan_pmd_entry(pmd_t
+ 	    p->arg.return_mask == PAGE_IS_WRITTEN) {
+ 		for (addr = start; addr < end; pte++, addr += PAGE_SIZE) {
+ 			unsigned long next = addr + PAGE_SIZE;
++			pte_t ptent = ptep_get(pte);
+ 
+-			if (pte_uffd_wp(ptep_get(pte)))
++			if ((pte_present(ptent) && pte_uffd_wp(ptent)) ||
++			    pte_swp_uffd_wp_any(ptent))
+ 				continue;
+ 			ret = pagemap_scan_output(p->cur_vma_category | PAGE_IS_WRITTEN,
+ 						  p, addr, &next);
+@@ -2200,7 +2203,7 @@ static int pagemap_scan_pmd_entry(pmd_t
+ 				break;
+ 			if (~p->arg.flags & PM_SCAN_WP_MATCHING)
+ 				continue;
+-			make_uffd_wp_pte(vma, addr, pte);
++			make_uffd_wp_pte(vma, addr, pte, ptent);
+ 			if (!flush_end)
+ 				start = addr;
+ 			flush_end = next;
+@@ -2209,8 +2212,9 @@ static int pagemap_scan_pmd_entry(pmd_t
+ 	}
+ 
+ 	for (addr = start; addr != end; pte++, addr += PAGE_SIZE) {
++		pte_t ptent = ptep_get(pte);
+ 		unsigned long categories = p->cur_vma_category |
+-					   pagemap_page_category(p, vma, addr, ptep_get(pte));
++					   pagemap_page_category(p, vma, addr, ptent);
+ 		unsigned long next = addr + PAGE_SIZE;
+ 
+ 		if (!pagemap_scan_is_interesting_page(categories, p))
+@@ -2225,7 +2229,7 @@ static int pagemap_scan_pmd_entry(pmd_t
+ 		if (~categories & PAGE_IS_WRITTEN)
+ 			continue;
+ 
+-		make_uffd_wp_pte(vma, addr, pte);
++		make_uffd_wp_pte(vma, addr, pte, ptent);
+ 		if (!flush_end)
+ 			start = addr;
+ 		flush_end = next;
 
 
 
