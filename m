@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEEC8C54BE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02958C5562
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308501F214C2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 704E1B214E8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B714612EBDF;
-	Tue, 14 May 2024 11:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055651E4B0;
+	Tue, 14 May 2024 11:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azFqcF0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZqYAYSR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DF612EBD4;
-	Tue, 14 May 2024 11:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B844CF9D4;
+	Tue, 14 May 2024 11:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687412; cv=none; b=JpZDeuyIaXHlR/HH4YVlORRwz4n6W5gL8sIZ3l7yLz21hmh561wZDg3fd1tByQ9BqihEgR8hTKYbU5kp5TPQ8IrLBIQXKpXIqcL8CGIPGyN0MTXr6HsiOPdpkg4UGtNGTFPZlBes+35bYmYQzKeRDeltD3+IXf6ITHm0JcEonqc=
+	t=1715687850; cv=none; b=cwRZJf/+n8BHuMPV6EHUgMYZVbGKg78UwM8lkcpstvFfu6mscMqCF+hXopIIu6h3sxTRVQVBYN6UQBa92fQ/iP9r5aRohGR7sXoE76e40HIrdsuQo5pduS+2SgeDaPZ08BtT89TG45kvKh4Uz2c2APdlJBM9J+TAaW0u746Y6ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687412; c=relaxed/simple;
-	bh=Sq7wTOiPttDnHCPPvij1z48iSz9aExQ9qc7AlsfUtOw=;
+	s=arc-20240116; t=1715687850; c=relaxed/simple;
+	bh=4SkQ4t8udrfvLsHeogR/+dY2Tw6a0tTeHyFkLbPkSBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0dBZw+ID2bRqEITSMU/gQh5UtKGQbJUo7p7sOCEveOcp1D9uvr7q5sk7s5OK6cMOjSIGZInXePsc7N1WHK57YCWQPxq12Ml8dRIxpTWbUKaBEQUokIsUfHhRf1xM+ecgXEpVKdqgH+u0To5i1nL6u6+Vr9I/Oqvrl9msp5LFIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azFqcF0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA15CC2BD10;
-	Tue, 14 May 2024 11:50:11 +0000 (UTC)
+	 MIME-Version; b=XX0t2ktR2jdxZ2pzW9+19He6C0E9o4t4a5FxP7QE9fRiGnWjaNELP+uBC1CrwJiTr1B2oRqUHMjIpr3QEcCROLCD9azG5wC+i/Jnh7xDhJnuRU0XRV3BmXIPJY+iKDjAHvXww13XHl+9GrdnijAMtrnqonc2wSyWfYK+WlEXVxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZqYAYSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029F5C2BD10;
+	Tue, 14 May 2024 11:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687412;
-	bh=Sq7wTOiPttDnHCPPvij1z48iSz9aExQ9qc7AlsfUtOw=;
+	s=korg; t=1715687850;
+	bh=4SkQ4t8udrfvLsHeogR/+dY2Tw6a0tTeHyFkLbPkSBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azFqcF0PNLdpSCMw7/2Wq+/ZSPlYolZMIaB/JzNttyBRHs4p4ki59J87+JBEIC8Jo
-	 CXFDKlUjPOsGv4EvBUeqCoSGp9GaB6He5l3OzF/3Gen7HEK9sajemPbN2yD+YlMT2X
-	 Ai6kV6HWxdb8k+3nZ9BFIMleoGPqv6OC7yOenThM=
+	b=nZqYAYSRGxoa01oxfjQV8DDrH485TX2ogamTYPodqpHFZapHS7FB3LC+7nOnCykOO
+	 kr9yX0O5ivkA3tBgFX4OoDf5P43fnsgxup6X7lgqLYPRRNORsGlpV3YckGorYWl9si
+	 tBHTb6ADFGFLzYZToKdEsMsGM5ldhLMlDUNQdGBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/111] net: bridge: fix corrupted ethernet header on multicast-to-unicast
-Date: Tue, 14 May 2024 12:20:24 +0200
-Message-ID: <20240514101000.398875412@linuxfoundation.org>
+Subject: [PATCH 5.15 127/168] net: hns3: use appropriate barrier function after setting a bit value
+Date: Tue, 14 May 2024 12:20:25 +0200
+Message-ID: <20240514101011.477741304@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
+[ Upstream commit 094c281228529d333458208fd02fcac3b139d93b ]
 
-The change from skb_copy to pskb_copy unfortunately changed the data
-copying to omit the ethernet header, since it was pulled before reaching
-this point. Fix this by calling __skb_push/pull around pskb_copy.
+There is a memory barrier in followed case. When set the port down,
+hclgevf_set_timmer will set DOWN in state. Meanwhile, the service task has
+different behaviour based on whether the state is DOWN. Thus, to make sure
+service task see DOWN, use smp_mb__after_atomic after calling set_bit().
 
-Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+          CPU0                        CPU1
+========================== ===================================
+hclgevf_set_timer_task()    hclgevf_periodic_service_task()
+  set_bit(DOWN,state)         test_bit(DOWN,state)
+
+pf also has this issue.
+
+Fixes: ff200099d271 ("net: hns3: remove unnecessary work in hclgevf_main")
+Fixes: 1c6dfe6fc6f7 ("net: hns3: remove mailbox and reset work in hclge_main")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 3 +--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 3a70682e63524..ada03d49e7c1a 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -245,6 +245,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- {
- 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
- 	const unsigned char *src = eth_hdr(skb)->h_source;
-+	struct sk_buff *nskb;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index a0a64441199c5..4b0027a41f3cd 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -8156,8 +8156,7 @@ static void hclge_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 		/* Set the DOWN flag here to disable link updating */
+ 		set_bit(HCLGE_STATE_DOWN, &hdev->state);
  
- 	if (!should_deliver(p, skb))
- 		return;
-@@ -253,12 +254,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
- 
--	skb = pskb_copy(skb, GFP_ATOMIC);
--	if (!skb) {
-+	__skb_push(skb, ETH_HLEN);
-+	nskb = pskb_copy(skb, GFP_ATOMIC);
-+	__skb_pull(skb, ETH_HLEN);
-+	if (!nskb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclge_flush_link_update(hdev);
  	}
+ }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 9afb44d738c4e..a41e04796b0b6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2722,8 +2722,7 @@ static void hclgevf_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 	} else {
+ 		set_bit(HCLGEVF_STATE_DOWN, &hdev->state);
  
-+	skb = nskb;
-+	__skb_pull(skb, ETH_HLEN);
- 	if (!is_broadcast_ether_addr(addr))
- 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
- 
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclgevf_flush_link_update(hdev);
+ 	}
+ }
 -- 
 2.43.0
 
