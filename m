@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FF68C5233
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162158C5116
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 796681C2175F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 774E528255B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774FA55C08;
-	Tue, 14 May 2024 11:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2655812F5AA;
+	Tue, 14 May 2024 10:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnikjTyA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13lZGvaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363C3200BF;
-	Tue, 14 May 2024 11:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F9953370;
+	Tue, 14 May 2024 10:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685622; cv=none; b=CtvhAvRn+ji/Y+rmHb32O5+SlMPgKaHsV+iyfaMeDvCeLlDT30EzR+CYMWEiiBCAUJRywQOAtL5Z425+as50YQdESsFtps+mVAHAWWf/2/yAVICxowwffRfAK/DAUx7FCGCz+DzILT62rj3cBv04LfRfVrdC5BixeADsWaAtv0c=
+	t=1715684046; cv=none; b=aNgiuHlbfWxSIb2oLMci3K7y1lZ2a1QJ4jKaAeSuzM0E/IMEif49P8OuhAmuCe8UiV+6fHIaxHY+fX5dDI6C6vOqsU4CTigMuDzKmpRTYIui9NA34yL4dAg5X5ViN7bZ+jHMbDeDzKfiTrnyF/jmvVGK+rWmjYzuDSqaLWck3l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685622; c=relaxed/simple;
-	bh=Aera5R3XySLQQuWdWA4Hji31/txw+nulivJ8wrX0nWg=;
+	s=arc-20240116; t=1715684046; c=relaxed/simple;
+	bh=AagKtx3wM9PlM38Az96SIcTCX79Uko/VbGS1OmquG6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMt4hzozfDl31bM2PwMaxqG5amvJxEyzHC2rHVoGkcuDB2zLopBDlcMRFsnDK7b3Bym8qFBjh+OFT+w5PtTX015pjd0A2Yy77nXLV1csfqxt1Dux5VDR11z2u/9b4U+1a3bR4dp8yS8EBV/lsyoC8TbAC1qTRdWpjtXzICAokfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnikjTyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50582C2BD10;
-	Tue, 14 May 2024 11:20:21 +0000 (UTC)
+	 MIME-Version; b=S3pEp6rxyp3rlaYFfFt+0X0kFeAVZ3qNZmQiVVQysbVm+ML+DurVG9rKm22T9ulLAyZ5I0o0kjFcWfQhbj2S7yODBSqExk+SLaNFH6EAPLMwWvD9S1ksg1ipa1gERD95uCu9ajO5skvSHgmzzjmEYG3/Bl4iUgBEJAuK0kR6s4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13lZGvaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FEEC2BD10;
+	Tue, 14 May 2024 10:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685621;
-	bh=Aera5R3XySLQQuWdWA4Hji31/txw+nulivJ8wrX0nWg=;
+	s=korg; t=1715684046;
+	bh=AagKtx3wM9PlM38Az96SIcTCX79Uko/VbGS1OmquG6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnikjTyA+a7Vogs9RvZMI+yaiGY8mtmMS2Vw3v99rDIFSg7/+ZT5ysKqyGgX7z9um
-	 ONam/Yt4O1zeP2fV+GsjxFOxlPL/sH2LsU3ltGODWiYTi4BgNEkUSQ5ZyrQkrZNvmo
-	 3g51EwkKr9/lSCC5YcnoRwcHTbdutTLmoXPXKOEg=
+	b=13lZGvaHM5BKTXuRgDDHH7b1fg69MHxq5ISFbT6KZHrPEghzSIN/g6eRv25V3Pl+l
+	 yL3a8kPDcCJA8PORMVbdo4EZYfnqehd7p3k9+ZanI07gxwOPKDKspj9AHI89TsHJ70
+	 6XbYKIiUhd2vAzNlyPG17CC3vcyQr/cWyKTXhEQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/301] gpiolib: cdev: Fix use after free in lineinfo_changed_notify
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.8 283/336] net: bcmgenet: synchronize use of bcmgenet_set_rx_mode()
 Date: Tue, 14 May 2024 12:18:07 +0200
-Message-ID: <20240514101040.414818396@linuxfoundation.org>
+Message-ID: <20240514101049.302535611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit 02f6b0e1ec7e0e7d059dddc893645816552039da ]
+commit 2dbe5f19368caae63b1f59f5bc2af78c7d522b3a upstream.
 
-The use-after-free issue occurs as follows: when the GPIO chip device file
-is being closed by invoking gpio_chrdev_release(), watched_lines is freed
-by bitmap_free(), but the unregistration of lineinfo_changed_nb notifier
-chain failed due to waiting write rwsem. Additionally, one of the GPIO
-chip's lines is also in the release process and holds the notifier chain's
-read rwsem. Consequently, a race condition leads to the use-after-free of
-watched_lines.
+The ndo_set_rx_mode function is synchronized with the
+netif_addr_lock spinlock and BHs disabled. Since this
+function is also invoked directly from the driver the
+same synchronization should be applied.
 
-Here is the typical stack when issue happened:
-
-[free]
-gpio_chrdev_release()
-  --> bitmap_free(cdev->watched_lines)                  <-- freed
-  --> blocking_notifier_chain_unregister()
-    --> down_write(&nh->rwsem)                          <-- waiting rwsem
-          --> __down_write_common()
-            --> rwsem_down_write_slowpath()
-                  --> schedule_preempt_disabled()
-                    --> schedule()
-
-[use]
-st54spi_gpio_dev_release()
-  --> gpio_free()
-    --> gpiod_free()
-      --> gpiod_free_commit()
-        --> gpiod_line_state_notify()
-          --> blocking_notifier_call_chain()
-            --> down_read(&nh->rwsem);                  <-- held rwsem
-            --> notifier_call_chain()
-              --> lineinfo_changed_notify()
-                --> test_bit(xxxx, cdev->watched_lines) <-- use after free
-
-The side effect of the use-after-free issue is that a GPIO line event is
-being generated for userspace where it shouldn't. However, since the chrdev
-is being closed, userspace won't have the chance to read that event anyway.
-
-To fix the issue, call the bitmap_free() function after the unregistration
-of lineinfo_changed_nb notifier chain.
-
-Fixes: 51c1064e82e7 ("gpiolib: add new ioctl() for monitoring changes in line info")
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Link: https://lore.kernel.org/r/20240505141156.2944912-1-quic_zhonhan@quicinc.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 72f96347628e ("net: bcmgenet: set Rx mode before starting netif")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 84125e55de101..ebf5b8ef3b5dc 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -2816,11 +2816,11 @@ static int gpio_chrdev_release(struct inode *inode, struct file *file)
- 	struct gpio_chardev_data *cdev = file->private_data;
- 	struct gpio_device *gdev = cdev->gdev;
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2,7 +2,7 @@
+ /*
+  * Broadcom GENET (Gigabit Ethernet) controller driver
+  *
+- * Copyright (c) 2014-2020 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
+  */
  
--	bitmap_free(cdev->watched_lines);
- 	blocking_notifier_chain_unregister(&gdev->device_notifier,
- 					   &cdev->device_unregistered_nb);
- 	blocking_notifier_chain_unregister(&gdev->line_state_notifier,
- 					   &cdev->lineinfo_changed_nb);
-+	bitmap_free(cdev->watched_lines);
- 	gpio_device_put(gdev);
- 	kfree(cdev);
+ #define pr_fmt(fmt)				"bcmgenet: " fmt
+@@ -3336,7 +3336,9 @@ static void bcmgenet_netif_start(struct
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
  
--- 
-2.43.0
-
+ 	/* Start the network engine */
++	netif_addr_lock_bh(dev);
+ 	bcmgenet_set_rx_mode(dev);
++	netif_addr_unlock_bh(dev);
+ 	bcmgenet_enable_rx_napi(priv);
+ 
+ 	umac_enable_set(priv, CMD_TX_EN | CMD_RX_EN, true);
 
 
 
