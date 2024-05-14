@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FC68C537D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C698C550D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 720BC1F23333
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C31531F21585
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ACB5103D;
-	Tue, 14 May 2024 11:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2081441A87;
+	Tue, 14 May 2024 11:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIHuL1T5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWwXpxc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8014E1C9;
-	Tue, 14 May 2024 11:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C25320F;
+	Tue, 14 May 2024 11:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686564; cv=none; b=c7A0WJCcIAVNxKZ/BcpIOYp58gKlVCpUfHmu7kKAZK/3HdHvN8CPELiN84jntYpinmLyB+AW+ZHnRMkaXmhmosz4bHpgsqEo4FUBwJJWbdRv11A//ew4rxRRWHQrgeOowdFV2+814a4cjtmeegDT8cFnghETSOTW59zFsaKNagQ=
+	t=1715687615; cv=none; b=YPgyX2v0gxuOQyNimEDeqww8m6s6zHTWHtUUvFQvn0hDBg/UIYC4UwG2EXdHZiRpAhmcrCjSnz06El3xPUULXHIZuvcuDtFX76ugYhko0e0vhfIIfOmYlcXTL879XwKvr7G90QEvG930htRs9i9nszFni+uOr6HuXLZsVIRcI9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686564; c=relaxed/simple;
-	bh=f2bkcciqEiwGm56VdYRU/ybELd4wFziwQf32h6lO5R8=;
+	s=arc-20240116; t=1715687615; c=relaxed/simple;
+	bh=J0iE/G8vX00721bkXshss3p+HuuZL8CuTTd/ipctpz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3r4eaeqPe3TF1gd+xxP2RqUhL6Gzb6C4/gVkKbd9XAgr2tkv0o0lppTFpsvhNU+IfgQSAUExakkg6ckVONOwGcNvi3HW//8Nd95ZVyj7ouwiLTp3aV830YGb+zDqXLC5A5Y/e2bbJpjk+aM08djNvWWYgZR0CPRMN6Rz4P7arg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIHuL1T5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDD5C2BD10;
-	Tue, 14 May 2024 11:36:03 +0000 (UTC)
+	 MIME-Version; b=EWJaAdg2UuX3RXBnb9uziRE9/u4rR46A3pkbSPj7rg5bmqiiPh3HLc4g1bQuJw+Z10bNosu/iR6ELQA0vKzH1ixsjG9Dxt743aRqRczduWUzjTe5aJlNP4uSpMundtPWDMXw53yah4zzYNZnVM4Z6awzH74Sk2NXJ/9OzrA1em4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWwXpxc6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589A4C2BD10;
+	Tue, 14 May 2024 11:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686564;
-	bh=f2bkcciqEiwGm56VdYRU/ybELd4wFziwQf32h6lO5R8=;
+	s=korg; t=1715687615;
+	bh=J0iE/G8vX00721bkXshss3p+HuuZL8CuTTd/ipctpz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIHuL1T5oK1jDo+EY7si5lVFhP6Ki/+iSCyz1cnQlksJReSedgmsAzgHM+sXgnGUW
-	 oEnu1VKc8U46qhCIomeidolw3Rg4/cNOgtyQoanEYaNHGBDNdRgST51mZ7B4i8ikiD
-	 Q/Nn8tXpb8kj2B5VGGFN+IrcvTauaeZLzfyuTyg0=
+	b=cWwXpxc6umichRzAMI8lf3ZHecSBTcRRLdBdOjT6Qn87vd4HUkNGfEgUINwugV8M+
+	 9SeLaHAaOfJIXkkRzuu+7bW5S991r7kRkhdX/BIFooMoWksQiyaRxs0k4UWGhZzx5j
+	 gRbbbjfgvGXqU5JgUs4DDgQJRR56diTfK0x0oV3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/236] Bluetooth: msft: fix slab-use-after-free in msft_do_close()
+Subject: [PATCH 5.15 014/168] pinctrl: mediatek: paris: Fix PIN_CONFIG_INPUT_SCHMITT_ENABLE readback
 Date: Tue, 14 May 2024 12:18:32 +0200
-Message-ID: <20240514101026.061138645@linuxfoundation.org>
+Message-ID: <20240514101007.225382495@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 10f9f426ac6e752c8d87bf4346930ba347aaabac ]
+[ Upstream commit 08f66a8edd08f6f7cfa769c81634b29a2b123908 ]
 
-Tying the msft->data lifetime to hdev by freeing it in
-hci_release_dev() to fix the following case:
+In the generic pin config library, readback of some options are handled
+differently compared to the setting of those options: the argument value
+is used to convey enable/disable of an option in the set path, but
+success or -EINVAL is used to convey if an option is enabled or disabled
+in the debugfs readback path.
 
-[use]
-msft_do_close()
-  msft = hdev->msft_data;
-  if (!msft)                      ...(1) <- passed.
-    return;
-  mutex_lock(&msft->filter_lock); ...(4) <- used after freed.
+PIN_CONFIG_INPUT_SCHMITT_ENABLE is one such option. Fix the readback of
+the option in the mediatek-paris library, so that the debugfs dump is
+not showing "input schmitt enabled" for pins that don't have it enabled.
 
-[free]
-msft_unregister()
-  msft = hdev->msft_data;
-  hdev->msft_data = NULL;         ...(2)
-  kfree(msft);                    ...(3) <- msft is freed.
-
-==================================================================
-BUG: KASAN: slab-use-after-free in __mutex_lock_common
-kernel/locking/mutex.c:587 [inline]
-BUG: KASAN: slab-use-after-free in __mutex_lock+0x8f/0xc30
-kernel/locking/mutex.c:752
-Read of size 8 at addr ffff888106cbbca8 by task kworker/u5:2/309
-
-Fixes: bf6a4e30ffbd ("Bluetooth: disable advertisement filters during suspend")
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 1bea6afbc842 ("pinctrl: mediatek: Refine mtk_pinconf_get()")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Message-ID: <20240327091336.3434141-2-wenst@chromium.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 3 +--
- net/bluetooth/msft.c     | 2 +-
- net/bluetooth/msft.h     | 4 ++--
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-paris.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 02e67ff05b7b4..d6be3cb86598e 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2733,8 +2733,6 @@ void hci_unregister_dev(struct hci_dev *hdev)
+diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
+index f17325a738eaa..9c2eaf8ce84a4 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-paris.c
++++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
+@@ -141,6 +141,8 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
+ 		}
  
- 	hci_unregister_suspend_notifier(hdev);
- 
--	msft_unregister(hdev);
--
- 	hci_dev_do_close(hdev);
- 
- 	if (!test_bit(HCI_INIT, &hdev->flags) &&
-@@ -2788,6 +2786,7 @@ void hci_release_dev(struct hci_dev *hdev)
- 	hci_discovery_filter_clear(hdev);
- 	hci_blocked_keys_clear(hdev);
- 	hci_codec_list_clear(&hdev->local_codecs);
-+	msft_release(hdev);
- 	hci_dev_unlock(hdev);
- 
- 	ida_simple_remove(&hci_index_ida, hdev->id);
-diff --git a/net/bluetooth/msft.c b/net/bluetooth/msft.c
-index bee6a4c656be4..076cf8bce4d9e 100644
---- a/net/bluetooth/msft.c
-+++ b/net/bluetooth/msft.c
-@@ -584,7 +584,7 @@ void msft_register(struct hci_dev *hdev)
- 	hdev->msft_data = msft;
- }
- 
--void msft_unregister(struct hci_dev *hdev)
-+void msft_release(struct hci_dev *hdev)
- {
- 	struct msft_data *msft = hdev->msft_data;
- 
-diff --git a/net/bluetooth/msft.h b/net/bluetooth/msft.h
-index 2a63205b377b7..fe538e9c91c01 100644
---- a/net/bluetooth/msft.h
-+++ b/net/bluetooth/msft.h
-@@ -14,7 +14,7 @@
- 
- bool msft_monitor_supported(struct hci_dev *hdev);
- void msft_register(struct hci_dev *hdev);
--void msft_unregister(struct hci_dev *hdev);
-+void msft_release(struct hci_dev *hdev);
- void msft_do_open(struct hci_dev *hdev);
- void msft_do_close(struct hci_dev *hdev);
- void msft_vendor_evt(struct hci_dev *hdev, void *data, struct sk_buff *skb);
-@@ -35,7 +35,7 @@ static inline bool msft_monitor_supported(struct hci_dev *hdev)
- }
- 
- static inline void msft_register(struct hci_dev *hdev) {}
--static inline void msft_unregister(struct hci_dev *hdev) {}
-+static inline void msft_release(struct hci_dev *hdev) {}
- static inline void msft_do_open(struct hci_dev *hdev) {}
- static inline void msft_do_close(struct hci_dev *hdev) {}
- static inline void msft_vendor_evt(struct hci_dev *hdev, void *data,
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SMT, &ret);
++		if (!ret)
++			err = -EINVAL;
+ 		break;
+ 	case PIN_CONFIG_DRIVE_STRENGTH:
+ 		if (!hw->soc->drive_get)
 -- 
 2.43.0
 
