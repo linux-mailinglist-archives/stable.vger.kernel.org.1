@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0908C543C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593528C5563
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60F5D2841C3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22DD1F2175E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C38213A25D;
-	Tue, 14 May 2024 11:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13A51E4B1;
+	Tue, 14 May 2024 11:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaJOhApK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hA5WGt8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8BE1E495;
-	Tue, 14 May 2024 11:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FFCF9D4;
+	Tue, 14 May 2024 11:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687076; cv=none; b=fZH4EBQIulbUCqbcFslvSne/RMoVZRBS2nsFhFH9D92q1j3xdsI/vYZDg3yFP8s3kG+Tnef2DMgot7cbQEYjlIs9xV/AABjY1sURfhuMQCu2bVc33qbUl7HEOINx3/TlAJK3x2BnaQJOD7+1czx+OkWzXcqfK1Qa4NURASTZqEw=
+	t=1715687853; cv=none; b=a2Qd+rWzdGjJm/VZsp+bFD8U0+bMwx9pVUVhBT9So027PkbFws8aH7kcRYmZzUtWXjFDn97tWoFsXjW5js73VkX4UoyE0oeh16uGEB/mOxX7bYWqwVc6E7jcSmxc9ogoh7MeFkOYnzPAH9gWLcQ40INj9H39xVvBF1crQEq1CQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687076; c=relaxed/simple;
-	bh=D1/cY61IFYrfjKGAzPD0hOd7sEkndVRAj+zorc6eXO4=;
+	s=arc-20240116; t=1715687853; c=relaxed/simple;
+	bh=qF3YodMJHNtoNXyVilu2cl6L6LitKz9ZoY9hbQV5NqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rx4035AwbGgY79zMi1wEGdqmUkPV2jCThwK8z/Rcka+CX6nXf+mOUvHFFD1TuDq6UBYeqitEnl1tiyxmlKqShJCUnbwil7uf+F2Xq+HnjuNE2SCi6WHMe/CnTFXHPKoQaHBJDeah7657ChOhGWMCMBwSpJZAR0Xza6JPl6csZio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaJOhApK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E75C2BD10;
-	Tue, 14 May 2024 11:44:36 +0000 (UTC)
+	 MIME-Version; b=j4rTaiV7DNQVOek2spw7y3Mw9iqYP/I2pKpHqQryPpFPLeEej0L0TpmGkCfYBcSyQZVyiyHZLesfXKWRqJc6kHhh0BubHvUkj4itX8izY3NBhh2b6sqE5sJ9kxKCvLSATY7j4ksoPOUfOIHJblpdIx2G6D+zeV2gEHZ5Q/s0J4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA5WGt8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE25C32781;
+	Tue, 14 May 2024 11:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687076;
-	bh=D1/cY61IFYrfjKGAzPD0hOd7sEkndVRAj+zorc6eXO4=;
+	s=korg; t=1715687853;
+	bh=qF3YodMJHNtoNXyVilu2cl6L6LitKz9ZoY9hbQV5NqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HaJOhApKE0NolhijiQEBpeR1gtv2OZsBG8xlKWvpLYxZZUbZbJNzlexja4IDTIS0V
-	 09ImDvKYYv4nNt6MlR+OUA6nDfIOt5yNe1H8BqK9iV5390nkNgkVEgQfHSt2wGSKuU
-	 9Of0RVuop2Dc3acYXYvFByQFBeyELCh9I6pzNQcM=
+	b=hA5WGt8rNqu5HZ6sGXdAMqXvIaGlWWj+ZaE/Pl/swu/wPI1qFd8i4GorSsM/+AxYG
+	 PQmJrQCzvfFLZLbuO+wbD8IwPzV5Tj4yFEa6Dn2F5bAB8gA6QsKWVG66EBHi1u3MiO
+	 mt2T6M92Rb1VHKFNcsKwS8r+vURzHXODU7CK/S8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 56/84] clk: Dont hold prepare_lock when calling kref_put()
-Date: Tue, 14 May 2024 12:20:07 +0200
-Message-ID: <20240514100953.793703351@linuxfoundation.org>
+Subject: [PATCH 5.15 110/168] hwmon: (corsair-cpro) Use a separate buffer for sending commands
+Date: Tue, 14 May 2024 12:20:08 +0200
+Message-ID: <20240514101010.836896327@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-[ Upstream commit 6f63af7511e7058f3fa4ad5b8102210741c9f947 ]
+[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
 
-We don't need to hold the prepare_lock when dropping a ref on a struct
-clk_core. The release function is only freeing memory and any code with
-a pointer reference has already unlinked anything pointing to the
-clk_core. This reduces the holding area of the prepare_lock a bit.
+Introduce cmd_buffer, a separate buffer for storing only
+the command that is sent to the device. Before this separation,
+the existing buffer was shared for both the command and the
+report received in ccp_raw_event(), which was copied into it.
 
-Note that we also don't call free_clk() with the prepare_lock held.
-There isn't any reason to do that.
+However, because of hidraw, the raw event parsing may be triggered
+in the middle of sending a command, resulting in outputting gibberish
+to the device. Using a separate buffer resolves this.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-3-sboyd@kernel.org
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 59a77587da47b..56be3f97c265a 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4061,7 +4061,8 @@ void clk_unregister(struct clk *clk)
- 	if (clk->core->ops == &clk_nodrv_ops) {
- 		pr_err("%s: unregistered clock: %s\n", __func__,
- 		       clk->core->name);
--		goto unlock;
-+		clk_prepare_unlock();
-+		return;
- 	}
- 	/*
- 	 * Assign empty clock ops for consumers that might still hold
-@@ -4092,11 +4093,10 @@ void clk_unregister(struct clk *clk)
- 	if (clk->core->protect_count)
- 		pr_warn("%s: unregistering protected clock: %s\n",
- 					__func__, clk->core->name);
-+	clk_prepare_unlock();
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index fa6aa4fc8b521..0a9cbb556188f 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -79,6 +79,7 @@ struct ccp_device {
+ 	struct device *hwmon_dev;
+ 	struct completion wait_input_report;
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
++	u8 *cmd_buffer;
+ 	u8 *buffer;
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	unsigned long t;
+ 	int ret;
  
- 	kref_put(&clk->core->ref, __clk_release);
- 	free_clk(clk);
--unlock:
--	clk_prepare_unlock();
- }
- EXPORT_SYMBOL_GPL(clk_unregister);
+-	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
+-	ccp->buffer[0] = command;
+-	ccp->buffer[1] = byte1;
+-	ccp->buffer[2] = byte2;
+-	ccp->buffer[3] = byte3;
++	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
++	ccp->cmd_buffer[0] = command;
++	ccp->cmd_buffer[1] = byte1;
++	ccp->cmd_buffer[2] = byte2;
++	ccp->cmd_buffer[3] = byte3;
  
-@@ -4258,13 +4258,11 @@ void __clk_put(struct clk *clk)
- 	    clk->max_rate < clk->core->req_rate)
- 		clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
+ 	reinit_completion(&ccp->wait_input_report);
  
--	owner = clk->core->owner;
--	kref_put(&clk->core->ref, __clk_release);
--
- 	clk_prepare_unlock();
+-	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
++	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+ 	if (ret < 0)
+ 		return ret;
  
-+	owner = clk->core->owner;
-+	kref_put(&clk->core->ref, __clk_release);
- 	module_put(owner);
--
- 	free_clk(clk);
- }
+@@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	if (!ccp)
+ 		return -ENOMEM;
+ 
+-	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	if (!ccp->cmd_buffer)
++		return -ENOMEM;
++
++	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
+ 	if (!ccp->buffer)
+ 		return -ENOMEM;
  
 -- 
 2.43.0
