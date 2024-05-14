@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663538C51A8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7488C5015
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E24B21EE2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5A41C212AC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77B713AD05;
-	Tue, 14 May 2024 11:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB4B13957D;
+	Tue, 14 May 2024 10:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxcPXnZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzH0sZac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B431E495;
-	Tue, 14 May 2024 11:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA16139568;
+	Tue, 14 May 2024 10:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684843; cv=none; b=Xb+IrrTu14D4iKzyGT4XWpENio2vWcGVWkqdUlrxJSmWB785POzYJTERqW8cL0PEDwm03hkddDJGjMDW/IXmg/dYWNjrt4JPyoy7I4j8plKJeLcAlLubCG9+3DU87cHMpxLQU39u7FCJBA4Hws9HOmTKO14NLQUgYSi36J/I+ug=
+	t=1715682924; cv=none; b=ge6rYfaaNW3cNnoAVty0JfaO2/E1V2dz8Z30GhU82GGIC1bHvBv0kep41QznkVW9wfCvD1G7+Xi6s2WLqMXMnwzWw4B7vGGJErGG4x8KPtBRu2T/kagtAReHAjIed8M3YCRdLe9i0RWKTWheHN2Dylo6urf216RXZYgYbzI7QYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684843; c=relaxed/simple;
-	bh=n+NNzJmwXybEGAFwtlezNDgoZwFRlHTIJuH6bxAyVOg=;
+	s=arc-20240116; t=1715682924; c=relaxed/simple;
+	bh=s6BkkEeegm+U7YA9FV1k0TR6iKmtucVVRj1WmxAeayw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgCRffvbG5B/RZEuPtHy+6gNnnfbHN75g3GXwCk3wj96LsZPb0XU/7mKGxRyFPj4D/gXt5gM9cdXoTCkuxADvn4k9oSZFAHCDBMm+fVMaGYhFf23RerBOGZYypa0iRQc0hquUVU+EAS+DuOoSVv5AvlBZFQoaHaZPBTUVf2LWQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxcPXnZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0566C2BD10;
-	Tue, 14 May 2024 11:07:22 +0000 (UTC)
+	 MIME-Version; b=e5LO5gs5E22GL0Xs/u5LXIeBpfxGMYr6/iziw4/S29cn+EROxroqGGD+v3FPdeHPLbkT78pIl6pXQ97nekNEsgLzacDjyZ1H+OaPRjXbxntF1XIt+DEyoLTYFkgN3yNK926Af4O9EoSdbHBpeCPKOBTSCxaA9WvM44EVHJF6+hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzH0sZac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B347C2BD10;
+	Tue, 14 May 2024 10:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684843;
-	bh=n+NNzJmwXybEGAFwtlezNDgoZwFRlHTIJuH6bxAyVOg=;
+	s=korg; t=1715682923;
+	bh=s6BkkEeegm+U7YA9FV1k0TR6iKmtucVVRj1WmxAeayw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxcPXnZTb7PUlv8gyl62TAyxJEX6HhVkFpkfwHzD9Dvo+668GNlNd3QbgEE5Tq11x
-	 NBsKXGw6Z2DXT1hObNaVmdxbMJrR7eBdJYnvMbi2pLrWqhfmHTFW2yotq7HvGkrY4w
-	 i22nxkQRrpZHYZtIbfGcaYNE/0zdVlTeLDqQJ2+w=
+	b=CzH0sZacVgMw8BqEmJTaZkHpQ8UH92Th+3yH/W/bOc6RoEIsEELoayLSUeamVUz0u
+	 7WVolHdjLtgYZcT6EAYLpo65jhheUjJbwOU927Q+xRHdhEw8iuW+YG3VzkJWPtV/lB
+	 ZB7iWzqI39wrQ2+wf3vZrDwQk69USsb2YPq+DtQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Doug Smythies <dsmythies@telus.net>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/301] ASoC: meson: axg-fifo: use threaded irq to check periods
-Date: Tue, 14 May 2024 12:15:37 +0200
-Message-ID: <20240514101034.734622891@linuxfoundation.org>
+Subject: [PATCH 6.8 134/336] tools/power turbostat: Fix added raw MSR output
+Date: Tue, 14 May 2024 12:15:38 +0200
+Message-ID: <20240514101043.658669849@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Doug Smythies <dsmythies@telus.net>
 
-[ Upstream commit b11d26660dff8d7430892008616452dc8e5fb0f3 ]
+[ Upstream commit e5f4e68eed85fa8495d78cd966eecc2b27bb9e53 ]
 
-With the AXG audio subsystem, there is a possible random channel shift on
-TDM capture, when the slot number per lane is more than 2, and there is
-more than one lane used.
+When using --Summary mode, added MSRs in raw mode always
+print zeros. Print the actual register contents.
 
-The problem has been there since the introduction of the axg audio support
-but such scenario is pretty uncommon. This is why there is no loud
-complains about the problem.
+Example, with patch:
 
-Solving the problem require to make the links non-atomic and use the
-trigger() callback to start FEs and BEs in the appropriate order.
+note the added column:
+--add msr0x64f,u32,package,raw,REASON
 
-This was tried in the past and reverted because it caused the block irq to
-sleep while atomic. However, instead of reverting, the solution is to call
-snd_pcm_period_elapsed() in a non atomic context.
+Where:
 
-Use the bottom half of a threaded IRQ to do so.
+0x64F is MSR_CORE_PERF_LIMIT_REASONS
 
-Fixes: 6dc4fa179fb8 ("ASoC: meson: add axg fifo base driver")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240426152946.3078805-2-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
+0.00    4800    35      1.42    0.76    0x00000000
+0.00    4801    34      1.42    0.76    0x00000000
+80.08   4531    66      108.17  107.52  0x08000000
+98.69   4530    66      133.21  132.54  0x08000000
+99.28   4505    66      128.26  127.60  0x0c000400
+99.65   4486    68      124.91  124.25  0x0c000400
+99.63   4483    68      124.90  124.25  0x0c000400
+79.34   4481    41      99.80   99.13   0x0c000000
+0.00    4801    41      1.40    0.73    0x0c000000
+
+Where, for the test processor (i5-10600K):
+
+PKG Limit #1: 125.000 Watts, 8.000000 sec
+MSR bit 26 = log; bit 10 = status
+
+PKG Limit #2: 136.000 Watts, 0.002441 sec
+MSR bit 27 = log; bit 11 = status
+
+Example, without patch:
+
+Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
+0.01    4800    35      1.43    0.77    0x00000000
+0.00    4801    35      1.39    0.73    0x00000000
+83.49   4531    66      112.71  112.06  0x00000000
+98.69   4530    68      133.35  132.69  0x00000000
+99.31   4500    67      127.96  127.30  0x00000000
+99.63   4483    69      124.91  124.25  0x00000000
+99.61   4481    69      124.90  124.25  0x00000000
+99.61   4481    71      124.92  124.25  0x00000000
+59.35   4479    42      75.03   74.37   0x00000000
+0.00    4800    42      1.39    0.73    0x00000000
+0.00    4801    42      1.42    0.76    0x00000000
+
+c000000
+
+[lenb: simplified patch to apply only to package scope]
+
+Signed-off-by: Doug Smythies <dsmythies@telus.net>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-fifo.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/meson/axg-fifo.c b/sound/soc/meson/axg-fifo.c
-index bde7598750064..94b169a5493b5 100644
---- a/sound/soc/meson/axg-fifo.c
-+++ b/sound/soc/meson/axg-fifo.c
-@@ -204,18 +204,26 @@ static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
- 	unsigned int status;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 7a334377f92b9..fca7913f6c84d 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -2444,9 +2444,10 @@ int sum_counters(struct thread_data *t, struct core_data *c, struct pkg_data *p)
+ 	average.packages.rapl_dram_perf_status += p->rapl_dram_perf_status;
  
- 	regmap_read(fifo->map, FIFO_STATUS1, &status);
--
- 	status = FIELD_GET(STATUS1_INT_STS, status);
-+	axg_fifo_ack_irq(fifo, status);
-+
-+	/* Use the thread to call period elapsed on nonatomic links */
- 	if (status & FIFO_INT_COUNT_REPEAT)
--		snd_pcm_period_elapsed(ss);
--	else
--		dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
--			status);
-+		return IRQ_WAKE_THREAD;
- 
--	/* Ack irqs */
--	axg_fifo_ack_irq(fifo, status);
-+	dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
-+		status);
-+
-+	return IRQ_NONE;
-+}
-+
-+static irqreturn_t axg_fifo_pcm_irq_block_thread(int irq, void *dev_id)
-+{
-+	struct snd_pcm_substream *ss = dev_id;
-+
-+	snd_pcm_period_elapsed(ss);
- 
--	return IRQ_RETVAL(status);
-+	return IRQ_HANDLED;
+ 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW)
+-			continue;
+-		average.packages.counter[i] += p->counter[i];
++		if ((mp->format == FORMAT_RAW) && (topo.num_packages == 0))
++			average.packages.counter[i] = p->counter[i];
++		else
++			average.packages.counter[i] += p->counter[i];
+ 	}
+ 	return 0;
  }
- 
- int axg_fifo_pcm_open(struct snd_soc_component *component,
-@@ -243,8 +251,9 @@ int axg_fifo_pcm_open(struct snd_soc_component *component,
- 	if (ret)
- 		return ret;
- 
--	ret = request_irq(fifo->irq, axg_fifo_pcm_irq_block, 0,
--			  dev_name(dev), ss);
-+	ret = request_threaded_irq(fifo->irq, axg_fifo_pcm_irq_block,
-+				   axg_fifo_pcm_irq_block_thread,
-+				   IRQF_ONESHOT, dev_name(dev), ss);
- 	if (ret)
- 		return ret;
- 
 -- 
 2.43.0
 
