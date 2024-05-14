@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8268C52B8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3568C51C6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFDCE1C218C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71DA11F225AA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CA112FB2C;
-	Tue, 14 May 2024 11:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066CF13C685;
+	Tue, 14 May 2024 11:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vF5Vapno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xhzs5hCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A8C7FBD3;
-	Tue, 14 May 2024 11:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B850113AD16;
+	Tue, 14 May 2024 11:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686076; cv=none; b=P/JZj31eCmzQjyUs+wP1AjNB5JS/txxmFgut/PAvzZVMIb4yyjR4SVuMVgcXUYxgqHITHkzwiDRZIFh4EsMKYFpg5i7vBNuOvjGGlzlF5l4bkfExMI8yV98Alh+Mmo5BUzH+/zDc4Hhuz/MeEcWNSQ+qxmP7IsMsesnjwGw0kOo=
+	t=1715685012; cv=none; b=WevKHwGFWKbsskkWDD86buaEp/+YN1mZiMV7uf3Mpvn2jgOlMsI8BHjSZ6exj4kP2fiuHReCU6Al7ml3HG7aYlni6adLIiOrCBdHnVj0B0mL+lAHDXxWAEXZUBqbrisJ8EM0OlcaiHnBXd2uoyPPibWxmSJnVrdseaQ3y/7QvjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686076; c=relaxed/simple;
-	bh=cyZXUTrZAFThX5iTo1lGQEoplI1okWO3rrdCDnpPnsA=;
+	s=arc-20240116; t=1715685012; c=relaxed/simple;
+	bh=l0HYPLDk1vgqY0u5y7csCZdLjkcG9UgqWKSd9lG3R/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KnBSltJ2pCocaxt5wC7uTXpmRfNcCUPHVzjdcBRrq5pAjS97F4DG66urht8naBPiw76CcnxzIzkpkKX1m6xuFCGi0O3DSMpc2vzULmRKCQ63yCh8aTeh9fWgZ4a4g0HYOqdDp1EApAOBE1Hj35MZ9baH7l7vpc+sWODuJsKNSgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vF5Vapno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38DCC2BD10;
-	Tue, 14 May 2024 11:27:55 +0000 (UTC)
+	 MIME-Version; b=GMU6ZN/YLzwS364SF/HZbgAisT0lU7aqa/ue+ce4+TDk9OCSqUDNbhiSW/288KsouLI+dqWgBP2uc756HylX2tSjx7TEZAkzoFKreOyQiGS5kJ5uRWJJWbWJx1yzKthqbMwYhORLscoNcej4yK9F2ktxR7jU2NthPSczHXXuLiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xhzs5hCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F871C2BD10;
+	Tue, 14 May 2024 11:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686076;
-	bh=cyZXUTrZAFThX5iTo1lGQEoplI1okWO3rrdCDnpPnsA=;
+	s=korg; t=1715685012;
+	bh=l0HYPLDk1vgqY0u5y7csCZdLjkcG9UgqWKSd9lG3R/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vF5Vapnoo89KoHADS74W1YkdnuiEV7b5zeidHstaqPlkEbAWryV8lOIHGpFQTTuLx
-	 ekFYUVxi1WpzMUpZKdXdp7YERKM5RzryuGWih1+8/7gJK17nintUKheKG/toWbF/1H
-	 hac4SJICz4g2ed2y2cEVJtFrYbxLhsC6zYzuicfs=
+	b=Xhzs5hCWl+bDxqcEhEVHFhSe7JQTxXfWVhcKRHCtI0rff1+j4EuaqrPYdDrmi0Thh
+	 v65xWwp7Zgh69aCg7RXRVysfjpDnOV9ptroCtw0y/AFAajoXNdclIYf4++xJ/s+x17
+	 WQHcBoHd22mSpH5MtDIBW2XPGQcWt0AFbE1LIkQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/236] rust: kernel: require `Send` for `Module` implementations
+Subject: [PATCH 6.6 095/301] KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()
 Date: Tue, 14 May 2024 12:16:06 +0200
-Message-ID: <20240514101020.493044334@linuxfoundation.org>
+Message-ID: <20240514101035.838899746@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wedson Almeida Filho <walmeida@microsoft.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 323617f649c0966ad5e741e47e27e06d3a680d8f ]
+[ Upstream commit 6ddb4f372fc63210034b903d96ebbeb3c7195adb ]
 
-The thread that calls the module initialisation code when a module is
-loaded is not guaranteed [in fact, it is unlikely] to be the same one
-that calls the module cleanup code on module unload, therefore, `Module`
-implementations must be `Send` to account for them moving from one
-thread to another implicitly.
+vgic_v2_parse_attr() is responsible for finding the vCPU that matches
+the user-provided CPUID, which (of course) may not be valid. If the ID
+is invalid, kvm_get_vcpu_by_id() returns NULL, which isn't handled
+gracefully.
 
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org # 6.8.x: df70d04d5697: rust: phy: implement `Send` for `Registration`
+Similar to the GICv3 uaccess flow, check that kvm_get_vcpu_by_id()
+actually returns something and fail the ioctl if not.
+
 Cc: stable@vger.kernel.org
-Fixes: 247b365dc8dc ("rust: add `kernel` crate")
-Link: https://lore.kernel.org/r/20240328195457.225001-3-wedsonaf@gmail.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 7d450e282171 ("KVM: arm/arm64: vgic-new: Add userland access to VGIC dist registers")
+Reported-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240424173959.3776798-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/lib.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index abd46261d3855..43cf5f6bde9c2 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -37,7 +37,7 @@
- /// The top level entrypoint to implementing a kernel module.
- ///
- /// For any teardown or cleanup operations, your type may implement [`Drop`].
--pub trait Module: Sized + Sync {
-+pub trait Module: Sized + Sync + Send {
-     /// Called at module initialization time.
-     ///
-     /// Use this method to perform whatever setup or registration your module
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+index c11962f901e0c..2f9e8c611f642 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -337,12 +337,12 @@ int kvm_register_vgic_device(unsigned long type)
+ int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
+ 		       struct vgic_reg_attr *reg_attr)
+ {
+-	int cpuid;
++	int cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+ 
+-	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+-
+-	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
+ 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
++	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
++	if (!reg_attr->vcpu)
++		return -EINVAL;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
