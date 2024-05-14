@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE818C50D6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880248C5330
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BDC01C2130D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A1731F23269
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C605013F435;
-	Tue, 14 May 2024 10:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637C813C3FB;
+	Tue, 14 May 2024 11:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuYD94om"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQcf8IMG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8396969950;
-	Tue, 14 May 2024 10:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22147139D15;
+	Tue, 14 May 2024 11:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683739; cv=none; b=CZjl/bJv/2XUKADgBbl9O019G2qss/ONPULeZeSDR7lZmwbFdOprfGZHO40OW8XBaM3s/0ysUc+FnVcc1M2k8volkB0P5hJJYZu/YyV5/Tzkzoj36C9nf1IJqfTxm1a5WmzdkBJYAP4rpqTV++YrGNDCdUkpcVcBRPUGMQQa86M=
+	t=1715686350; cv=none; b=kWEpnZo7ns7IEJCaZMriJyxRqzBDW3VcZ7JGBOI2/K0EWyTdW7SvIuZDXlTd/tlh/ISymkVBF72UXe0HHw9qtIAwbhORM3xs7SjWiBZ12dRsh+gB3G7KJ8tfCfNZXoiCD+01aHtz9t/ESN5lLfuDh/rGkSZh385adBLrdD2XK9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683739; c=relaxed/simple;
-	bh=C2VC+mcxLt3k151YIxSGa29SyEBfNIFoQ0SHTaA26cg=;
+	s=arc-20240116; t=1715686350; c=relaxed/simple;
+	bh=ik8q0WF6J3RkOBZGDfiv7KOcY/SF+znuPRqUP65OkE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKF14sS2EPayko0YBoD0yBCkKNkndp9kEB4sEx37L4g52QRctHZELVdSzkIz6nS7qrZO0kDmWF/9FYEB5YNyQP1m4xw6Qz3ch/1EXFojyxfHYCDdClZx+ZRcXmwgOmiXUCuXAHSyWBDGZI3UGvXpq9i2AErebxZOA5LCRzb//L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuYD94om; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DAAC2BD10;
-	Tue, 14 May 2024 10:48:58 +0000 (UTC)
+	 MIME-Version; b=HyQU8M8hSlqhNseqPBMl28FadHcyc/7CnB6UpHEJqK9+RWGj319zVW2MHumiJU7SZQy8CmjmqaQXOhXfYs+BWddtrd9iLVk5cWPTLonGF64Z56BuhxPigVneSXF3oQIhfmLApcuksuf8Rf2O51TI2jK1afiE5GVt2I215OEvP8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQcf8IMG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC4BC2BD10;
+	Tue, 14 May 2024 11:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683739;
-	bh=C2VC+mcxLt3k151YIxSGa29SyEBfNIFoQ0SHTaA26cg=;
+	s=korg; t=1715686350;
+	bh=ik8q0WF6J3RkOBZGDfiv7KOcY/SF+znuPRqUP65OkE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuYD94om0Fe7kj5KoWERlSSbfkMtefneB+v//Awdscpkxyw61wbhZsYeUepdtXURS
-	 nwi01AH8OqBSu1tjbXsmRyCSZQpI7tHDix7piXeYd9GOuacDCzRUXLRDl8YznGlVBb
-	 fmrPT9XjlbEMTpNurOKHqNvLNtKupOCZC1bDaE4c=
+	b=bQcf8IMGuyjAXilETE1xNin9guD4vkk1RxWikNoQyOnzJEQ5EOsMVIBGtHqFlh+LJ
+	 l2QHWQqob+QKHr7vI1M9BMyA5emYk391uSF5kRtNSXJTOaUzfK2/o2KcUkGAXW3U21
+	 f4YNzVGNelkQqpj4s3f8a3i8cFEcUVDSS/mtRsvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 265/336] btrfs: qgroup: do not check qgroup inherit if qgroup is disabled
+	syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 107/236] ALSA: line6: Zero-initialize message buffers
 Date: Tue, 14 May 2024 12:17:49 +0200
-Message-ID: <20240514101048.620087195@linuxfoundation.org>
+Message-ID: <20240514101024.434189054@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b5357cb268c41b4e2b7383d2759fc562f5b58c33 upstream.
+[ Upstream commit c4e51e424e2c772ce1836912a8b0b87cd61bc9d5 ]
 
-[BUG]
-After kernel commit 86211eea8ae1 ("btrfs: qgroup: validate
-btrfs_qgroup_inherit parameter"), user space tool snapper will fail to
-create snapshot using its timeline feature.
+For shutting up spurious KMSAN uninit-value warnings, just replace
+kmalloc() calls with kzalloc() for the buffers used for
+communications.  There should be no real issue with the original code,
+but it's still better to cover.
 
-[CAUSE]
-It turns out that, if using timeline snapper would unconditionally pass
-btrfs_qgroup_inherit parameter (assigning the new snapshot to qgroup 1/0)
-for snapshot creation.
-
-In that case, since qgroup is disabled there would be no qgroup 1/0, and
-btrfs_qgroup_check_inherit() would return -ENOENT and fail the whole
-snapshot creation.
-
-[FIX]
-Just skip the check if qgroup is not enabled.
-This is to keep the older behavior for user space tools, as if the
-kernel behavior changed for user space, it is a regression of kernel.
-
-Thankfully snapper is also fixing the behavior by detecting if qgroup is
-running in the first place, so the effect should not be that huge.
-
-Link: https://github.com/openSUSE/snapper/issues/894
-Fixes: 86211eea8ae1 ("btrfs: qgroup: validate btrfs_qgroup_inherit parameter")
-CC: stable@vger.kernel.org # 6.8+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/00000000000084b18706150bcca5@google.com
+Message-ID: <20240402063628.26609-1-tiwai@suse.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/usb/line6/driver.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3052,6 +3052,8 @@ int btrfs_qgroup_check_inherit(struct bt
- 			       struct btrfs_qgroup_inherit *inherit,
- 			       size_t size)
- {
-+	if (!btrfs_qgroup_enabled(fs_info))
-+		return 0;
- 	if (inherit->flags & ~BTRFS_QGROUP_INHERIT_FLAGS_SUPP)
- 		return -EOPNOTSUPP;
- 	if (size < sizeof(*inherit) || size > PAGE_SIZE)
+diff --git a/sound/usb/line6/driver.c b/sound/usb/line6/driver.c
+index b67617b68e509..f4437015d43a7 100644
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -202,7 +202,7 @@ int line6_send_raw_message_async(struct usb_line6 *line6, const char *buffer,
+ 	struct urb *urb;
+ 
+ 	/* create message: */
+-	msg = kmalloc(sizeof(struct message), GFP_ATOMIC);
++	msg = kzalloc(sizeof(struct message), GFP_ATOMIC);
+ 	if (msg == NULL)
+ 		return -ENOMEM;
+ 
+@@ -688,7 +688,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 	int ret;
+ 
+ 	/* initialize USB buffers: */
+-	line6->buffer_listen = kmalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
++	line6->buffer_listen = kzalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
+ 	if (!line6->buffer_listen)
+ 		return -ENOMEM;
+ 
+@@ -697,7 +697,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 		return -ENOMEM;
+ 
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
+-		line6->buffer_message = kmalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
++		line6->buffer_message = kzalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
+ 		if (!line6->buffer_message)
+ 			return -ENOMEM;
+ 
+-- 
+2.43.0
+
 
 
 
