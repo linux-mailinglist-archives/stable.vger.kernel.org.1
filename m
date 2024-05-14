@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3863F8C512B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:21:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587EE8C5376
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E56A1F2156B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3291C22C19
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B3C53368;
-	Tue, 14 May 2024 10:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761FC4122C;
+	Tue, 14 May 2024 11:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbfCM440"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3ZtdVZv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEF642A9C;
-	Tue, 14 May 2024 10:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3503B2B9B3;
+	Tue, 14 May 2024 11:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684135; cv=none; b=fkREGTqzduvoIV2xGTZfFhAJ3x/1g2e4qCV0mp1XRS1thQ4imvI9Igp1s77XO71BgM09t6zgB0ctThPBBlxB/g3W99Qswhn/NuTqLP9VxbgsxPGkL0SikiJ9uHQeq8z2bgxd0iuAYs1nTgrhpRY27yEDjqlw+6gsOr1CqmSdxqw=
+	t=1715686538; cv=none; b=dKPxru8AlLzYA9zFlWOOz+sS+CEip6nTeWNCmDckSSa3HzyvCUr0/P+g0iHHeiSK3VAOMQkI24gE40gnbaF/kMKGtQ+OFKoVG5lW+HJou6fRcECxRdai/whH2CrSwI+V3vp6/D3u5GNMeGZd3FifHotN0ttEUAnbvkHgdsbiuLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684135; c=relaxed/simple;
-	bh=67J8LL0YcD5lh++KMtikNUWtNQRO3kWIvgX14NilzF0=;
+	s=arc-20240116; t=1715686538; c=relaxed/simple;
+	bh=deVYBv2dFy3+MQ/XvgLbm0LTgipo2FW/REc1fjo85nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwpUJ8q2mPWKRCleycSXlNfY7LwfcZYb8akHmmNICzIGnAY4JrpbBa19b1pM7YehpwkIcNyK51LmMaEUWI18JJ2tAtiKwk7Ms/fEG4ohEFvh9UWRlINeLw/n7cFuZr4YGtJTNlj1MaES0RhT+rTEhp4OzALtvR7sMSzL9Ch293Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbfCM440; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EE7C2BD10;
-	Tue, 14 May 2024 10:55:34 +0000 (UTC)
+	 MIME-Version; b=fJ3ntwSI3lejzW5sYHU9+7NU6pdmfAX/rW/aPc77VPMN+HxXYGYympXUlavVHq0KQA+/dA53oYmWiNPLNJ7BepMUqZmyiDTZ47WUDWAFS8qUx41/2f9qcnl4uB2Wz8XRDMBv21jbr8cArlTD05a/+ENImP3722Gt4bcsRP27tBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3ZtdVZv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10F1C2BD10;
+	Tue, 14 May 2024 11:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684135;
-	bh=67J8LL0YcD5lh++KMtikNUWtNQRO3kWIvgX14NilzF0=;
+	s=korg; t=1715686538;
+	bh=deVYBv2dFy3+MQ/XvgLbm0LTgipo2FW/REc1fjo85nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbfCM440hEgWyghAlH+qXHO1iyLxXQreUCoaVQJYj7+xdVd4utfZILdihKSDt5f+G
-	 JWSX1A/5WuXOLgVGUMpl/2xhKn1pZ5k+m8brouKW2XjKjz9GqiiucjwSNXNzrZP4Qx
-	 XLse1Rei6pmyIyj7X/Kty3icFNbOc3JvsYUkU1Nc=
+	b=j3ZtdVZve/sdkekfbV8LqJ3QsyOPAY0Pj2zfTB8ZpbPnVi+vqG2c3FDR3IFP42xaJ
+	 LSJEObViBsM90/SQYM4L307keO8kWMKSee2ZueZrBc6adKS2QLiCG1djyBOjsV8ofl
+	 sBcXecgZIP41VmLsNQJmGUGi0PFTxiVU1OYlylJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@chromium.org>,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 330/336] Bluetooth: qca: fix wcn3991 device address check
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 172/236] net: hns3: fix port vlan filter not disabled issue
 Date: Tue, 14 May 2024 12:18:54 +0200
-Message-ID: <20240514101051.083350843@linuxfoundation.org>
+Message-ID: <20240514101026.894245499@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-commit 66c39332d02d65e311ec89b0051130bfcd00c9ac upstream.
+[ Upstream commit f5db7a3b65c84d723ca5e2bb6e83115180ab6336 ]
 
-Qualcomm Bluetooth controllers may not have been provisioned with a
-valid device address and instead end up using the default address
-00:00:00:00:5a:ad.
+According to hardware limitation, for device support modify
+VLAN filter state but not support bypass port VLAN filter,
+it should always disable the port VLAN filter. but the driver
+enables port VLAN filter when initializing, if there is no
+VLAN(except VLAN 0) id added, the driver will disable it
+in service task. In most time, it works fine. But there is
+a time window before the service task shceduled and net device
+being registered. So if user adds VLAN at this time, the driver
+will not update the VLAN filter state,  and the port VLAN filter
+remains enabled.
 
-This address is now used to determine if a controller has a valid
-address or if one needs to be provided through devicetree or by user
-space before the controller can be used.
+To fix the problem, if support modify VLAN filter state but not
+support bypass port VLAN filter, set the port vlan filter to "off".
 
-It turns out that the WCN3991 controllers used in Chromium Trogdor
-machines use a different default address, 39:98:00:00:5a:ad, which also
-needs to be marked as invalid so that the correct address is fetched
-from the devicetree.
-
-Qualcomm has unfortunately not yet provided any answers as to whether
-the 39:98 encodes a hardware id and if there are other variants of the
-default address that needs to be handled by the driver.
-
-For now, add the Trogdor WCN3991 default address to the device address
-check to avoid having these controllers start with the default address
-instead of their assigned addresses.
-
-Fixes: 32868e126c78 ("Bluetooth: qca: fix invalid device address check")
-Cc: stable@vger.kernel.org      # 6.5
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 184cd221a863 ("net: hns3: disable port VLAN filter when support function level VLAN filter control")
+Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -16,6 +16,7 @@
- #define VERSION "0.1"
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 646546cf25264..a18dc73c69894 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10004,6 +10004,7 @@ static int hclge_set_vlan_protocol_type(struct hclge_dev *hdev)
+ static int hclge_init_vlan_filter(struct hclge_dev *hdev)
+ {
+ 	struct hclge_vport *vport;
++	bool enable = true;
+ 	int ret;
+ 	int i;
  
- #define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
-+#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98, 0x39 }})
- 
- int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
- 			 enum qca_btsoc_type soc_type)
-@@ -638,8 +639,10 @@ static int qca_check_bdaddr(struct hci_d
+@@ -10023,8 +10024,12 @@ static int hclge_init_vlan_filter(struct hclge_dev *hdev)
+ 		vport->cur_vlan_fltr_en = true;
  	}
  
- 	bda = (struct hci_rp_read_bd_addr *)skb->data;
--	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT))
-+	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT) ||
-+	    !bacmp(&bda->bdaddr, QCA_BDADDR_WCN3991)) {
- 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+	}
++	if (test_bit(HNAE3_DEV_SUPPORT_VLAN_FLTR_MDF_B, hdev->ae_dev->caps) &&
++	    !test_bit(HNAE3_DEV_SUPPORT_PORT_VLAN_BYPASS_B, hdev->ae_dev->caps))
++		enable = false;
++
+ 	return hclge_set_vlan_filter_ctrl(hdev, HCLGE_FILTER_TYPE_PORT,
+-					  HCLGE_FILTER_FE_INGRESS, true, 0);
++					  HCLGE_FILTER_FE_INGRESS, enable, 0);
+ }
  
- 	kfree_skb(skb);
- 
+ static int hclge_init_vlan_type(struct hclge_dev *hdev)
+-- 
+2.43.0
+
 
 
 
