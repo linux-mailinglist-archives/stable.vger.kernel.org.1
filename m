@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-44447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D8D8C52FC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556828C51AC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9599282D4D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B259CB220BC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED5F135A6F;
-	Tue, 14 May 2024 11:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BC213AD1C;
+	Tue, 14 May 2024 11:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbqJgLe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THZ+P5qK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC76134CDC;
-	Tue, 14 May 2024 11:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F011E495;
+	Tue, 14 May 2024 11:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686188; cv=none; b=BVq9z7YgWDQk4cJxSnWXgt3FKid+XfV4NJF9stCxrmxsgbhn5HSFDo1FOMndHfaPbIOwxTW5RcpgbVC9pAN6GAXBCybCN555hFTLOlzmd5IEAwzRs6TKuM3NWUfpPqcAVH9TFeBQIzMtXjvEbReIvgFQ4A7XZHBGI9IgeMpJrz8=
+	t=1715684883; cv=none; b=Vxp2sWQOpIS4Ind7PrcUCmZ/mA7USIb+qOfF7kvSW78GZHZhS/F5lGggzjefSlS2RL7bpz3y3YXctiBia3hN+6mOtYV9NOlzvHSdhyDTxST0/P+8N0RaP2HCdKfcXcZ2QfOREYGF2YCxgsn1Lx4CsrcsPz/boR+Rksvkd9TX6H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686188; c=relaxed/simple;
-	bh=klL047nBJv6aR2+6nev2n7UKJAbb7yZgScXPfM5X3ME=;
+	s=arc-20240116; t=1715684883; c=relaxed/simple;
+	bh=bVpf/bpO/CP2zs/m1ZfUXvozMN/+6apCv/ZieOAlcH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0RDaETK+rT9BmOv+59y1fbDncV60nJy0Drk1PkvA5z3p3EGU3NMHQhGZwGFNsIgzEw9gv6HHIlrAaEueG0kX8qAwEdjZ590GStN9LXAg0h7KVHFu7q51t7n7VprPb3Kf+X5YwS0v7ys8rJfS5Jkpy6VetN8GMLxr6wjHqR0Sz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbqJgLe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3968C2BD10;
-	Tue, 14 May 2024 11:29:47 +0000 (UTC)
+	 MIME-Version; b=oFqCLdCozc4dpUu3bZvl02k+EFh5mYO+ZLB9KkfX33Q8jmgeYZ6Qds/TN/8TQyNgRrMm+Ks6AwdA1CR2vEQOoO3KopVTmfWtTeMEzZAFh8M6/UmBmVXreIDJZZJbdwN3TfH6LObrAQ3GEMf+fNPX03AkdD/iIJZSsb48Xxazs+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THZ+P5qK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE83C2BD10;
+	Tue, 14 May 2024 11:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686188;
-	bh=klL047nBJv6aR2+6nev2n7UKJAbb7yZgScXPfM5X3ME=;
+	s=korg; t=1715684882;
+	bh=bVpf/bpO/CP2zs/m1ZfUXvozMN/+6apCv/ZieOAlcH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbqJgLe0OFmLtk+OdSGBmTUTr7rLjK++JlYG/31SU9BRyAY6HmsQMbz5QCeZOmNdL
-	 U2jGr2x9cPSiv+b8MmJLRkJU8B2Ihk+64KjAwXrX1/hAcoBVIbu+5BZXigAESofvUT
-	 SAFJEex7MgPP1iCJRVOdPSukLigKzcemGAX8d5sQ=
+	b=THZ+P5qKGj/taIzUa/jzbIJL3Gvk2J3NLPsfzo9LW4ra0W+bdTHeuHIW7URt38pu7
+	 kUbc8qc/CehXUCCijToPey8jLD4BSRX/cQeL9JoWus7xFU8sqFYBF2tfdfrjJ+nHiY
+	 Z361qEgGNjJu2SmZOBQ6RmW+wt0IzS/VbgshWFpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Colin Cross <ccross@google.com>,
-	David Howells <dhowells@redhat.com>,
-	"Eric W . Biederman" <ebiederm@xmission.com>,
-	Hugh Dickins <hughd@google.com>,
-	kernel test robot <lkp@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Peter Xu <peterx@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	William Kucharski <william.kucharski@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/236] mm/hugetlb: add hugetlb_folio_subpool() helpers
-Date: Tue, 14 May 2024 12:16:13 +0200
-Message-ID: <20240514101020.758953781@linuxfoundation.org>
+Subject: [PATCH 6.6 103/301] gfs2: Fix invalid metadata access in punch_hole
+Date: Tue, 14 May 2024 12:16:14 +0200
+Message-ID: <20240514101036.139567280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,94 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+From: Andrew Price <anprice@redhat.com>
 
-[ Upstream commit 149562f7509404c382c32c3fa8a6ba356135e5cf ]
+[ Upstream commit c95346ac918c5badf51b9a7ac58a26d3bd5bb224 ]
 
-Allow hugetlbfs_migrate_folio to check and read subpool information by
-passing in a folio.
+In punch_hole(), when the offset lies in the final block for a given
+height, there is no hole to punch, but the maximum size check fails to
+detect that.  Consequently, punch_hole() will try to punch a hole beyond
+the end of the metadata and fail.  Fix the maximum size check.
 
-Link: https://lkml.kernel.org/r/20220922154207.1575343-4-sidhartha.kumar@oracle.com
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Colin Cross <ccross@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: "Eric W . Biederman" <ebiederm@xmission.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: kernel test robot <lkp@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hugetlbfs/inode.c    |  8 ++++----
- include/linux/hugetlb.h | 15 +++++++++++++--
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ fs/gfs2/bmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 4fe4b3393e71c..330729445d8ab 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -1108,10 +1108,10 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
- 	if (rc != MIGRATEPAGE_SUCCESS)
- 		return rc;
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index ef7017fb69512..2b578615607e4 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -1715,7 +1715,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	struct buffer_head *dibh, *bh;
+ 	struct gfs2_holder rd_gh;
+ 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
+-	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
++	unsigned int bsize = 1 << bsize_shift;
++	u64 lblock = (offset + bsize - 1) >> bsize_shift;
+ 	__u16 start_list[GFS2_MAX_META_HEIGHT];
+ 	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
+ 	unsigned int start_aligned, end_aligned;
+@@ -1726,7 +1727,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	u64 prev_bnr = 0;
+ 	__be64 *start, *end;
  
--	if (hugetlb_page_subpool(&src->page)) {
--		hugetlb_set_page_subpool(&dst->page,
--					hugetlb_page_subpool(&src->page));
--		hugetlb_set_page_subpool(&src->page, NULL);
-+	if (hugetlb_folio_subpool(src)) {
-+		hugetlb_set_folio_subpool(dst,
-+					hugetlb_folio_subpool(src));
-+		hugetlb_set_folio_subpool(src, NULL);
- 	}
- 
- 	if (mode != MIGRATE_SYNC_NO_COPY)
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 0c5326fd3c47a..02d9a8af3704e 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -754,18 +754,29 @@ extern unsigned int default_hstate_idx;
- 
- #define default_hstate (hstates[default_hstate_idx])
- 
-+static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
-+{
-+	return (void *)folio_get_private_1(folio);
-+}
-+
- /*
-  * hugetlb page subpool pointer located in hpage[1].private
-  */
- static inline struct hugepage_subpool *hugetlb_page_subpool(struct page *hpage)
- {
--	return (void *)page_private(hpage + SUBPAGE_INDEX_SUBPOOL);
-+	return hugetlb_folio_subpool(page_folio(hpage));
-+}
-+
-+static inline void hugetlb_set_folio_subpool(struct folio *folio,
-+					struct hugepage_subpool *subpool)
-+{
-+	folio_set_private_1(folio, (unsigned long)subpool);
- }
- 
- static inline void hugetlb_set_page_subpool(struct page *hpage,
- 					struct hugepage_subpool *subpool)
- {
--	set_page_private(hpage + SUBPAGE_INDEX_SUBPOOL, (unsigned long)subpool);
-+	hugetlb_set_folio_subpool(page_folio(hpage), subpool);
- }
- 
- static inline struct hstate *hstate_file(struct file *f)
+-	if (offset >= maxsize) {
++	if (offset + bsize - 1 >= maxsize) {
+ 		/*
+ 		 * The starting point lies beyond the allocated metadata;
+ 		 * there are no blocks to deallocate.
 -- 
 2.43.0
 
