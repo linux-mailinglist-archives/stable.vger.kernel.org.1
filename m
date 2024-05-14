@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-44905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0F58C54E8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6B08C50FA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EAE61C23F5B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774DB1F21E4D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A7884D37;
-	Tue, 14 May 2024 11:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF0312C48A;
+	Tue, 14 May 2024 10:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/wig9HI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dG7X0fjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6546A4CB2E;
-	Tue, 14 May 2024 11:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578B16CDC9;
+	Tue, 14 May 2024 10:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687517; cv=none; b=D5s+2flbn8bzZLyIPbfinaqr3wwCmnFlcJz2Q3axjhj8uqCabN0Gu7agiIt+GywbD9sV648UPV2Lg9doagEH1cnABke8TyzQYLqU02yE9o+js0F8N2HFi41uh5klcWCe6YtCHTaTOtAP6b3V2fEbzSwqKilsvrnCILa7n1Pzfms=
+	t=1715683945; cv=none; b=kb4vmKVPHFVAUkV0PSoQORzWzK3BLXlfprfTp4n+RO3ue/S8d5y/sy3m5HHO6A9f/aVq16jo9CTllX0F0buHmO2lVIWz/kvrl/I+MezAU9NyCCmXx3JSbew3C6LPltkmlsNftLlbf/xUOzzBfCsIbT/WK7NfpG1W76YKBw1tOEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687517; c=relaxed/simple;
-	bh=GXSqg3PQAF+dXeTcFqwoknT+3eOd/U6cznlAN4Sv3JU=;
+	s=arc-20240116; t=1715683945; c=relaxed/simple;
+	bh=HzymojR6eANGvMHbiOBc1AW1r5RLyDAKnqpjyv7pRuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiJlGjx6k04aYNFWu/O+2b9O3oRYnSFekWskd6VMWVxpGy4TD4jDrMKYXzLgZHQCIWfy0m0wMvgk+9azDDZCzgltKv6GkniJkgy2fko3dWBmGanPIeyR8O8yljnCnKWmc3EGe+gfIimNO+0j2nckIxqte55ckEjZ1QtukqdUGCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/wig9HI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CAEC2BD10;
-	Tue, 14 May 2024 11:51:56 +0000 (UTC)
+	 MIME-Version; b=ZEoIabHc5ipf4BXmgaUxQ0zqw3xCrmaipHJNXCfWAqPngAy600wDxTG0BkpSrWEkfq2vS6NW9elYBzXHYk9Fg/mJ8EZXy19J0ZSJtsSAB8vV3wz1oPkhaunxntCeirEoQ/hMPPFy9/n5UCWgongvFSXeZpDxfQByWJYkDRQErmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dG7X0fjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF74CC2BD10;
+	Tue, 14 May 2024 10:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687517;
-	bh=GXSqg3PQAF+dXeTcFqwoknT+3eOd/U6cznlAN4Sv3JU=;
+	s=korg; t=1715683945;
+	bh=HzymojR6eANGvMHbiOBc1AW1r5RLyDAKnqpjyv7pRuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/wig9HIXCd0tVXqvEOlQmCTSl/iUBSy9Bph0oZbimgNq2XScKr/0gyZe2/V7a1eY
-	 EgNZ/CvXIc6A668SV2+WAH8UdY0ZU2gO5vV/w2PbXJqztLt5YvHQvkXsEVA+jJ2nxG
-	 KURWpTE7WL4rvm8UQMuEFckYXyq3CZ9YZ3TSzxKI=
+	b=dG7X0fjWLIhkKP47Q7YVpSi0iPxjnDGHPo/swQyKWkZVbB11/p03gw0KxOIBR0pYx
+	 6iawGyxnaviV5V1ok6U7F4i6T17TJw5h1WuLjVV79kYGGe/LtJzNR0EXceBigD4AGv
+	 5AF9MzCatfHEgz7Ps7vxME6QyO1YOKDu+EYpyhME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/168] ksmbd: fix slab-out-of-bounds in smb2_allocate_rsp_buf
+	Zack Rusin <zack.rusin@broadcom.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.8 298/336] drm/vmwgfx: Fix invalid reads in fence signaled events
 Date: Tue, 14 May 2024 12:18:22 +0200
-Message-ID: <20240514101006.851265248@linuxfoundation.org>
+Message-ID: <20240514101049.868407347@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +68,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit c119f4ede3fa90a9463f50831761c28f989bfb20 ]
+commit a37ef7613c00f2d72c8fc08bd83fb6cc76926c8c upstream.
 
-If ->ProtocolId is SMB2_TRANSFORM_PROTO_NUM, smb2 request size
-validation could be skipped. if request size is smaller than
-sizeof(struct smb2_query_info_req), slab-out-of-bounds read can happen in
-smb2_allocate_rsp_buf(). This patch allocate response buffer after
-decrypting transform request. smb3_decrypt_req() will validate transform
-request size and avoid slab-out-of-bound in smb2_allocate_rsp_buf().
+Correctly set the length of the drm_event to the size of the structure
+that's actually used.
 
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The length of the drm_event was set to the parent structure instead of
+to the drm_vmw_event_fence which is supposed to be read. drm_read
+uses the length parameter to copy the event to the user space thus
+resuling in oob reads.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
+Cc: David Airlie <airlied@gmail.com>
+CC: Daniel Vetter <daniel@ffwll.ch>
+Cc: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v3.4+
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425192748.1761522-1-zack.rusin@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/server.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/server.c b/fs/ksmbd/server.c
-index 11b201e6ee44b..63b01f7d97031 100644
---- a/fs/ksmbd/server.c
-+++ b/fs/ksmbd/server.c
-@@ -167,20 +167,17 @@ static void __handle_ksmbd_work(struct ksmbd_work *work,
- 	int rc;
- 	bool is_chained = false;
- 
--	if (conn->ops->allocate_rsp_buf(work))
--		return;
--
- 	if (conn->ops->is_transform_hdr &&
- 	    conn->ops->is_transform_hdr(work->request_buf)) {
- 		rc = conn->ops->decrypt_req(work);
--		if (rc < 0) {
--			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
--			goto send;
--		}
--
-+		if (rc < 0)
-+			return;
- 		work->encrypted = true;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+@@ -991,7 +991,7 @@ static int vmw_event_fence_action_create
  	}
  
-+	if (conn->ops->allocate_rsp_buf(work))
-+		return;
-+
- 	rc = conn->ops->init_rsp_hdr(work);
- 	if (rc) {
- 		/* either uid or tid is not correct */
--- 
-2.43.0
-
+ 	event->event.base.type = DRM_VMW_EVENT_FENCE_SIGNALED;
+-	event->event.base.length = sizeof(*event);
++	event->event.base.length = sizeof(event->event);
+ 	event->event.user_data = user_data;
+ 
+ 	ret = drm_event_reserve_init(dev, file_priv, &event->base, &event->event.base);
 
 
 
