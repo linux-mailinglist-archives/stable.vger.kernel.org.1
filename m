@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC8848C5195
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905998C5026
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE43F1C216F5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1C051C21337
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8014139597;
-	Tue, 14 May 2024 11:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFB1139D02;
+	Tue, 14 May 2024 10:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3VMHKMk"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1DUTb0y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FC154903;
-	Tue, 14 May 2024 11:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDEE139CE4;
+	Tue, 14 May 2024 10:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684744; cv=none; b=i9GyjhItbbi8T9mdI8d/wY5XsLypCKARpuspesNcS8xAcFalzJSgghXnEo+KJcovMnb0xToa8xrEifHPLL2mVh6iD9TFsLsf4eOjE82/9GpPRjxsOhDO2H1ZSdVPO/tLxpipZ2YAd3fAzHG4psLKM/a2WWnblr8vHLlQDHoVPCY=
+	t=1715683007; cv=none; b=k8V1UXEbJjLi38cyRvZ9vjLvT7oC+JjFc29XnwlfCNZ8GhC0ehos97qVh5gIyQVfuYm/kaaetQIIY/Q0jE+EDxKf7DDJ6cyZ2gmvCs14DALGKVuZ8gpJCIsTvBUeAuT4lKuKVLZn52zHOA5v51t8OlZxvKalAbEdj8ZAXfHuY6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684744; c=relaxed/simple;
-	bh=GOeRE61lMrYy3XU2ucnzIkIGrWpkLdEu+p978oGaWVE=;
+	s=arc-20240116; t=1715683007; c=relaxed/simple;
+	bh=iUKVut38R68KkmSYslHYgLZu5TEKlXEmbDB8V8kFt38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOCmlG7y6zM5fRpujsL8B1CenF/aqZMkF0H2w0NLbqG8d5gOstQZacLgrOFw6y2p2td/M/MQpTBs0SuOpE80nAqbgH9qlWL4L3tQQDRNy0aQo42azEOC3Bf5yJTDDYtLNGXQ6lE7lWrmpBtXFYgHQRR32qPi/jxeKQk93nTgNaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3VMHKMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53D6C2BD10;
-	Tue, 14 May 2024 11:05:43 +0000 (UTC)
+	 MIME-Version; b=q+JocYM+MYUrfxWsykektVnsgmSszohNXpu2IxHonYrK8SVNiCBzVeWo6f0wwyRKXGZltxBJCA7QnGymlcGo4NgjQ8AHV+bzOlK624tHovOZl6svO2dSNKowqwlIPTxEnOe/4AWCc/lhGMbM6iVAmdl8VDArt6fBs5tA52q0eqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1DUTb0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDD1C2BD10;
+	Tue, 14 May 2024 10:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684744;
-	bh=GOeRE61lMrYy3XU2ucnzIkIGrWpkLdEu+p978oGaWVE=;
+	s=korg; t=1715683007;
+	bh=iUKVut38R68KkmSYslHYgLZu5TEKlXEmbDB8V8kFt38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3VMHKMkwD85znrT1KRL/48FnPQ7ScJSYmBhHBVa2omdsneIU1/lVp3crCjtU4vx6
-	 IIoOMBL+ttAUgNUJnlhM2agaoTUIMhYUp3iPxrFANfSOp6dIJDnwSnnYiHGDrJ7hax
-	 ojypdBjsdddoShY9VFFY8DoXf1f6miJSHwebMnMc=
+	b=D1DUTb0yIOR5OMF56bUPOPKoIiNVSJ+KZJA4ShvVmUgihct4qP4xGfo9knNfxdH1+
+	 DUhPJRxKKPAa3C7SaPt64G4UQrTdY4tPYNRBDkf4YGMZBdLqFeTZcvXiQjNF/or2om
+	 /w3fRIiKX6ybtvPoe95p5Xlvo9UYtxVFgaIkfmL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/301] drm/panel: ili9341: Respect deferred probe
-Date: Tue, 14 May 2024 12:15:54 +0200
-Message-ID: <20240514101035.381694626@linuxfoundation.org>
+	"Wachowski, Karol" <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>, Wachowski@web.codeaurora.org
+Subject: [PATCH 6.8 151/336] accel/ivpu: Improve clarity of MMU error messages
+Date: Tue, 14 May 2024 12:15:55 +0200
+Message-ID: <20240514101044.303631447@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Wachowski, Karol <karol.wachowski@intel.com>
 
-[ Upstream commit 740fc1e0509be3f7e2207e89125b06119ed62943 ]
+[ Upstream commit 3556f922612caf4c9b97cf7337626f8342b3dea3 ]
 
-GPIO controller might not be available when driver is being probed.
-There are plenty of reasons why, one of which is deferred probe.
+This patch improves readability and clarity of MMU error messages.
+Previously, the error strings were somewhat confusing and could lead to
+ambiguous interpretations, making it difficult to diagnose issues.
 
-Since GPIOs are optional, return any error code we got to the upper
-layer, including deferred probe. With that in mind, use dev_err_probe()
-in order to avoid spamming the logs.
-
-Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Link: https://lore.kernel.org/r/20240425142706.2440113-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240402104929.941186-6-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/accel/ivpu/ivpu_mmu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-index 7584ddb0e4416..24c74c56e5648 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-@@ -715,11 +715,11 @@ static int ili9341_probe(struct spi_device *spi)
+diff --git a/drivers/accel/ivpu/ivpu_mmu.c b/drivers/accel/ivpu/ivpu_mmu.c
+index 91bd640655ab3..2e46b322c4505 100644
+--- a/drivers/accel/ivpu/ivpu_mmu.c
++++ b/drivers/accel/ivpu/ivpu_mmu.c
+@@ -278,7 +278,7 @@ static const char *ivpu_mmu_event_to_str(u32 cmd)
+ 	case IVPU_MMU_EVT_F_VMS_FETCH:
+ 		return "Fetch of VMS caused external abort";
+ 	default:
+-		return "Unknown CMDQ command";
++		return "Unknown event";
+ 	}
+ }
  
- 	reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset))
--		dev_err(dev, "Failed to get gpio 'reset'\n");
-+		return dev_err_probe(dev, PTR_ERR(reset), "Failed to get gpio 'reset'\n");
+@@ -286,15 +286,15 @@ static const char *ivpu_mmu_cmdq_err_to_str(u32 err)
+ {
+ 	switch (err) {
+ 	case IVPU_MMU_CERROR_NONE:
+-		return "No CMDQ Error";
++		return "No error";
+ 	case IVPU_MMU_CERROR_ILL:
+ 		return "Illegal command";
+ 	case IVPU_MMU_CERROR_ABT:
+-		return "External abort on CMDQ read";
++		return "External abort on command queue read";
+ 	case IVPU_MMU_CERROR_ATC_INV_SYNC:
+ 		return "Sync failed to complete ATS invalidation";
+ 	default:
+-		return "Unknown CMDQ Error";
++		return "Unknown error";
+ 	}
+ }
  
- 	dc = devm_gpiod_get_optional(dev, "dc", GPIOD_OUT_LOW);
- 	if (IS_ERR(dc))
--		dev_err(dev, "Failed to get gpio 'dc'\n");
-+		return dev_err_probe(dev, PTR_ERR(dc), "Failed to get gpio 'dc'\n");
- 
- 	if (!strcmp(id->name, "sf-tc240t-9370-t"))
- 		return ili9341_dpi_probe(spi, dc, reset);
 -- 
 2.43.0
 
