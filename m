@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-44930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B12E8C5502
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 102D78C5107
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBD8F1C231CA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3394C1C21474
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5182E129E94;
-	Tue, 14 May 2024 11:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44FD12DDBB;
+	Tue, 14 May 2024 10:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gR2Cvx//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INg3PzbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116AA320F;
-	Tue, 14 May 2024 11:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A255055C0A;
+	Tue, 14 May 2024 10:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687590; cv=none; b=MvV2+A/INXR9JynMcHHMHlHXbpe65B3yONOYvcXCMX1jVdWyjIHMT/b47oXP6Eoag1kwYwTDj1ZKcmYo8hKlHJt3LldJ7UX4UhxPLcV47tKrne7ZVKzE/0ddbuymb38kqJKbArMYq6n1onFci+Rqw4yhUACGHUnsK4EVxuFakMY=
+	t=1715683976; cv=none; b=fN2IRjaaRNRHEYh3bysLKTZtIMDHUeoJ7iD9ilaZcGPvhBXMmatU8BInwO2hsEejQQytoDI5CCjfG0CDYf9kqNcmVanlmEm7fSnddus6sns/a4eCDrGZS8Ea28lNuaekHT3eipSn1xbqEgkUEg2r9QRq0xMnJaiEuoDhv+YIi8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687590; c=relaxed/simple;
-	bh=whj4uupTcaPAqTZbFdNhJQjPRd3CRaeWSef3/Wd5D1c=;
+	s=arc-20240116; t=1715683976; c=relaxed/simple;
+	bh=n08AJ/Em8oQCIWYKDD9749gYXdGQHQVvalHLaUnf90Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuMFoNo+7lw+99odqLxx44YFcAwQh3nx0IN0NJk3Zj/InFmJ0HiMzMrYQeuSIBqm/p0eajk8CLQWxi3DUVFiYOlqpamAfzy0MsYS+9uk5vZdIdNgPnJCjjFPrDoDsEaTJgtbf8MTZzebCe7LCyKSar5eAtqvWK6k92dp9Pg/nzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gR2Cvx//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40373C2BD10;
-	Tue, 14 May 2024 11:53:09 +0000 (UTC)
+	 MIME-Version; b=kP1FH1OnX6u0SAeohIA0lh2Y7uUo/wZ4LmcDEFq3zG3Nh1AYyGrN0BS0ocri+yzNiRFBXqn4V3LUl7ns57nlLzc/JtM+J1/s2ksbTBp1yweHtyxpgBOoc1aegcpjou0iwC+uaJ/YxwgXudt+xUtYsU6jw3szsKKweK8RrvpNoAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INg3PzbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB833C2BD10;
+	Tue, 14 May 2024 10:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687589;
-	bh=whj4uupTcaPAqTZbFdNhJQjPRd3CRaeWSef3/Wd5D1c=;
+	s=korg; t=1715683976;
+	bh=n08AJ/Em8oQCIWYKDD9749gYXdGQHQVvalHLaUnf90Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gR2Cvx//5yX2g+/AZ4eGU/mFwPwcTIfG/RhrZSKvPYGySi1enC0sx4CIFdsMuT95r
-	 idLMsGF+vo7UByAJ0kNIkPGN/UOsjvWiabGreS/0sM/UzFr4G408wvSeg6aNDEWWmJ
-	 5md2PCUgqdfrcqG1O7Zs2vQN9i4OCIFCHhfOmEXg=
+	b=INg3PzbP6waCIwIKW/XX0+tGsG44baCKm/GMQx7lCXZRVSaLHYv8DQEVAh3nD0TE8
+	 BFx1xTuMoumK5p8DYgPbp9L+fJJI+Q1b0Rq11a/YpqvgidLS8IDoKJ5rT7HIzPTL9E
+	 1Th2MvQxCrimnVML0dMN+e71vok2vvA6ef+qKfwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Okazaki <dtokazaki@google.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/168] eeprom: at24: fix memory corruption race condition
+	Gnattu OC <gnattuoc@me.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Krzysztof Gibala <krzysztof.gibala@intel.com>
+Subject: [PATCH 6.8 303/336] drm/i915/gt: Automate CCS Mode setting during engine resets
 Date: Tue, 14 May 2024 12:18:27 +0200
-Message-ID: <20240514101007.038291082@linuxfoundation.org>
+Message-ID: <20240514101050.057682705@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Okazaki <dtokazaki@google.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-[ Upstream commit f42c97027fb75776e2e9358d16bf4a99aeb04cf2 ]
+commit 51c1b42a232f17743cd825be6790cb64735ff98f upstream.
 
-If the eeprom is not accessible, an nvmem device will be registered, the
-read will fail, and the device will be torn down. If another driver
-accesses the nvmem device after the teardown, it will reference
-invalid memory.
+We missed setting the CCS mode during resume and engine resets.
+Create a workaround to be added in the engine's workaround list.
+This workaround sets the XEHP_CCS_MODE value at every reset.
 
-Move the failure point before registering the nvmem device.
+The issue can be reproduced by running:
 
-Signed-off-by: Daniel Okazaki <dtokazaki@google.com>
-Fixes: b20eb4c1f026 ("eeprom: at24: drop unnecessary label")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240422174337.2487142-1-dtokazaki@google.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  $ clpeak --kernel-latency
+
+Without resetting the CCS mode, we encounter a fence timeout:
+
+  Fence expiration time out i915-0000:03:00.0:clpeak[2387]:2!
+
+Fixes: 6db31251bb26 ("drm/i915/gt: Enable only one CCS for compute workload")
+Reported-by: Gnattu OC <gnattuoc@me.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10895
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: <stable@vger.kernel.org> # v6.2+
+Tested-by: Gnattu OC <gnattuoc@me.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Tested-by: Krzysztof Gibala <krzysztof.gibala@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240426000723.229296-1-andi.shyti@linux.intel.com
+(cherry picked from commit 4cfca03f76413db115c3cc18f4370debb1b81b2b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/eeprom/at24.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c |    6 +++---
+ drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h |    2 +-
+ drivers/gpu/drm/i915/gt/intel_workarounds.c |    4 +++-
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 65a7517c031a7..02bea44369435 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -782,15 +782,6 @@ static int at24_probe(struct i2c_client *client)
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
+--- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
++++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
+@@ -8,14 +8,14 @@
+ #include "intel_gt_ccs_mode.h"
+ #include "intel_gt_regs.h"
  
--	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
--	if (IS_ERR(at24->nvmem)) {
--		pm_runtime_disable(dev);
--		if (!pm_runtime_status_suspended(dev))
--			regulator_disable(at24->vcc_reg);
--		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
--				     "failed to register nvmem\n");
--	}
--
- 	/*
- 	 * Perform a one-byte test read to verify that the
- 	 * chip is functional.
-@@ -803,6 +794,15 @@ static int at24_probe(struct i2c_client *client)
- 		return -ENODEV;
+-void intel_gt_apply_ccs_mode(struct intel_gt *gt)
++unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt)
+ {
+ 	int cslice;
+ 	u32 mode = 0;
+ 	int first_ccs = __ffs(CCS_MASK(gt));
+ 
+ 	if (!IS_DG2(gt->i915))
+-		return;
++		return 0;
+ 
+ 	/* Build the value for the fixed CCS load balancing */
+ 	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
+@@ -35,5 +35,5 @@ void intel_gt_apply_ccs_mode(struct inte
+ 						     XEHP_CCS_MODE_CSLICE_MASK);
  	}
  
-+	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
-+	if (IS_ERR(at24->nvmem)) {
-+		pm_runtime_disable(dev);
-+		if (!pm_runtime_status_suspended(dev))
-+			regulator_disable(at24->vcc_reg);
-+		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
-+				     "failed to register nvmem\n");
-+	}
-+
- 	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
- 	if (cdata == &at24_data_spd)
- 		at24_probe_temp_sensor(client);
--- 
-2.43.0
-
+-	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
++	return mode;
+ }
+--- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
++++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
+@@ -8,6 +8,6 @@
+ 
+ struct intel_gt;
+ 
+-void intel_gt_apply_ccs_mode(struct intel_gt *gt);
++unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt);
+ 
+ #endif /* __INTEL_GT_CCS_MODE_H__ */
+--- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
++++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+@@ -2855,6 +2855,7 @@ add_render_compute_tuning_settings(struc
+ static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_list *wal)
+ {
+ 	struct intel_gt *gt = engine->gt;
++	u32 mode;
+ 
+ 	if (!IS_DG2(gt->i915))
+ 		return;
+@@ -2871,7 +2872,8 @@ static void ccs_engine_wa_mode(struct in
+ 	 * After having disabled automatic load balancing we need to
+ 	 * assign all slices to a single CCS. We will call it CCS mode 1
+ 	 */
+-	intel_gt_apply_ccs_mode(gt);
++	mode = intel_gt_apply_ccs_mode(gt);
++	wa_masked_en(wal, XEHP_CCS_MODE, mode);
+ }
+ 
+ /*
 
 
 
