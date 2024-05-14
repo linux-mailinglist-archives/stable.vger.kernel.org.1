@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7399B8C5213
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D418C532B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177381F2284F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22B5D285611
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD4F6BFAC;
-	Tue, 14 May 2024 11:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D262143C6D;
+	Tue, 14 May 2024 11:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JobI99wB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKQoUho/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8956F12AAF7;
-	Tue, 14 May 2024 11:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF3C143C59;
+	Tue, 14 May 2024 11:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685457; cv=none; b=lcZVUcZf4qeQ0U4uQGhVONMVeK4PkeFK6G5Gn8hbihHI/dijr/5eRBVipVvzC919xD2Y0Hap3tIoTIPjk/pHlvL2+uTE72gv3h2fzHgyGgWDaOzmy4n8LX7zSrV1CckSwnPU0/yOSGAzksxTTESu/CO4mHr6cHkAIm6VuYMCVIw=
+	t=1715686333; cv=none; b=MIcYKdTRItaABvh4VdtaAXOjwKIAsWJ0JQSz/Kqx9WtUls3CV3DcH7RiF3f7XLxuEXanmMlo0wJnDFyZ6txXyUhMs2zFoImMoXE+d7M2G+GKwc9tKgrkHi7qjdt3LWDNQp+I5lr4AQLIUFZETaoiAjyBxeyEJcVxr2lmdVTZ+dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685457; c=relaxed/simple;
-	bh=hhR/I1LSI41mmktZ8ilIi/+suh/J1xC1b51U5gyJAuw=;
+	s=arc-20240116; t=1715686333; c=relaxed/simple;
+	bh=kWC/dmKd5o70egMQb8wSMmmjDYEP+exfQjhK/IzYg4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyLJYf909TQMLWPjwGzozi0H3C1exEoRLMAXg41wBrwZedeQYsB41udPmhroT4HIR1M0jjuMeTqr8hLT7UgHzI5giw/qX2O4ChyGT+GWX+pSQE26yc/wjmnrWI2iivDVA3V+QhQqILOczkorzFwEK1vbX9KS7dDrVpAcQIm6BLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JobI99wB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BB6C2BD10;
-	Tue, 14 May 2024 11:17:36 +0000 (UTC)
+	 MIME-Version; b=lrFNdNNCOkEz5d4QKEhYRygf1r9B1p92D/I2pmqjSD7AlODDsYFhA/litSsROW2UKuaoS01H7MeGVpXQm3g1J0TTvRbEP/SHNUndPohr/b327FlkT1fCtFbf4YEc9RFUs/g5puJ+T+5ZYqtO5JymuZwzKUyhTKW5KmPEnx/ec6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKQoUho/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B9CC2BD10;
+	Tue, 14 May 2024 11:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685457;
-	bh=hhR/I1LSI41mmktZ8ilIi/+suh/J1xC1b51U5gyJAuw=;
+	s=korg; t=1715686332;
+	bh=kWC/dmKd5o70egMQb8wSMmmjDYEP+exfQjhK/IzYg4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JobI99wBmXGuC+7LlMcSWFwzdNlWhoLiB5bsvuCPRyC9OWBOz9/43qm8STn64OgRw
-	 kl7VCqty1ctgH3MxtWRqyUVuQJ12Z2/YWCr8+OVP179ASYnDjvd0HRFtKlj9ekW9ix
-	 2ov0n3pN96+N1QhYV01pQjGpC9HLB+yhxHtV0ALc=
+	b=vKQoUho/2jXVysWy6cCbOlE0VZEhI3yyPqaP4eEsCTlelsP/k4J4j2SPlxGTQ8uBd
+	 CVvLOXzS3gmsO1YQvmk68rh8ut46MuLBJsmMPyRfqdUIOAvPr5lZr2u/pegJMGzv4I
+	 dY0V4aW+3NgaxW42oBJt69yAsV1OXSpOVh1FsnIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/301] ipv6: Fix potential uninit-value access in __ip6_make_skb()
-Date: Tue, 14 May 2024 12:17:42 +0200
-Message-ID: <20240514101039.465185510@linuxfoundation.org>
+Subject: [PATCH 6.1 101/236] scsi: mpi3mr: Avoid memcpy field-spanning write WARNING
+Date: Tue, 14 May 2024 12:17:43 +0200
+Message-ID: <20240514101024.205349920@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 4e13d3a9c25b7080f8a619f961e943fe08c2672c ]
+[ Upstream commit 429846b4b6ce9853e0d803a2357bb2e55083adf0 ]
 
-As it was done in commit fc1092f51567 ("ipv4: Fix uninit-value access in
-__ip_make_skb()") for IPv4, check FLOWI_FLAG_KNOWN_NH on fl6->flowi6_flags
-instead of testing HDRINCL on the socket to avoid a race condition which
-causes uninit-value access.
+When the "storcli2 show" command is executed for eHBA-9600, mpi3mr driver
+prints this WARNING message:
 
-Fixes: ea30388baebc ("ipv6: Fix an uninit variable access bug in __ip6_make_skb()")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  memcpy: detected field-spanning write (size 128) of single field "bsg_reply_buf->reply_buf" at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 (size 1)
+  WARNING: CPU: 0 PID: 12760 at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 mpi3mr_bsg_request+0x6b12/0x7f10 [mpi3mr]
+
+The cause of the WARN is 128 bytes memcpy to the 1 byte size array "__u8
+replay_buf[1]" in the struct mpi3mr_bsg_in_reply_buf. The array is intended
+to be a flexible length array, so the WARN is a false positive.
+
+To suppress the WARN, remove the constant number '1' from the array
+declaration and clarify that it has flexible length. Also, adjust the
+memory allocation size to match the change.
+
+Suggested-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20240323084155.166835-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_app.c    | 2 +-
+ include/uapi/scsi/scsi_bsg_mpi3mr.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 53fe1375b147c..fba789cbd215c 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -2003,7 +2003,7 @@ struct sk_buff *__ip6_make_skb(struct sock *sk,
- 		u8 icmp6_type;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
+index 8c662d08706f1..42600e5c457a1 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -1344,7 +1344,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job, unsigned int *reply
+ 	if ((mpirep_offset != 0xFF) &&
+ 	    drv_bufs[mpirep_offset].bsg_buf_len) {
+ 		drv_buf_iter = &drv_bufs[mpirep_offset];
+-		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) - 1 +
++		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) +
+ 					   mrioc->reply_sz);
+ 		bsg_reply_buf = kzalloc(drv_buf_iter->kern_buf_len, GFP_KERNEL);
  
- 		if (sk->sk_socket->type == SOCK_RAW &&
--		   !inet_test_bit(HDRINCL, sk))
-+		   !(fl6->flowi6_flags & FLOWI_FLAG_KNOWN_NH))
- 			icmp6_type = fl6->fl6_icmp_type;
- 		else
- 			icmp6_type = icmp6_hdr(skb)->icmp6_type;
+diff --git a/include/uapi/scsi/scsi_bsg_mpi3mr.h b/include/uapi/scsi/scsi_bsg_mpi3mr.h
+index fdc3517f9e199..c48c5d08c0fa0 100644
+--- a/include/uapi/scsi/scsi_bsg_mpi3mr.h
++++ b/include/uapi/scsi/scsi_bsg_mpi3mr.h
+@@ -382,7 +382,7 @@ struct mpi3mr_bsg_in_reply_buf {
+ 	__u8	mpi_reply_type;
+ 	__u8	rsvd1;
+ 	__u16	rsvd2;
+-	__u8	reply_buf[1];
++	__u8	reply_buf[];
+ };
+ 
+ /**
 -- 
 2.43.0
 
