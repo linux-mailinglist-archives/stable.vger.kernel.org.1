@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7CF8C512D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD268C5505
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C0E91C20AF1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC5131C23394
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D074B6311D;
-	Tue, 14 May 2024 10:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DFD6D1AB;
+	Tue, 14 May 2024 11:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nadL/HE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oe0hdKy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDACD531;
-	Tue, 14 May 2024 10:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563AD320F;
+	Tue, 14 May 2024 11:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684151; cv=none; b=o8ujkwioL31Sqrp5lKQrNmYetrI/86+KoVEIrnPKN+Cjdi25DJ4liLAe9+8hs9mrYtabA94nNm4F4oeeaD+Ai32eah6jvU8lUd+mycJHJhqSluBwbfVPa+zp5xmr3H4CoyGqkHJHqwGGDWQ+AtFpx1LpYbMFmm1TOIWBInCB0TQ=
+	t=1715687598; cv=none; b=nwS02jHoFg7Aw5UycUF8Ee3IaaY2naJpIEpEUz/xxVhlBTjfX+zRgUEnoKI48LnrWwGFVKNOCl0kUXeWWFG8kJNsZF/5glo45tQBMOUvJgty2uacE+qEMEUPHgFkeDZIyzKiYBvt4afif8gV4d162Q7HHLgD25u3Iu0CtowPQOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684151; c=relaxed/simple;
-	bh=9/0rZYYmI2VtOHSMymlcbbODYTWRdMBETU0KGOmpRRQ=;
+	s=arc-20240116; t=1715687598; c=relaxed/simple;
+	bh=+ES0a39S6qMrK04ecJs83tbxcXkmHvs4WSd0wupWL1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYpPvWNnx10YeKcBzYE6N/wwKPwhRujTruw0WbYu4qTf2rJgGmX8gxXOqBCpQcMSJaA5erOSmUgmoAzITbydmNWWO6FYivhpmVjXITTaNcaWw5hD/saZiS9ao04ZDG9kR6b0NuDARbAuoeUyAryjdMTFgCcYuxIhwlf0oYZDORc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nadL/HE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B352FC2BD10;
-	Tue, 14 May 2024 10:55:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FrutzeC/Tqm1BlDUr4NwVvO8OHA7Oj45YOZnLRjb+UeYSpyN+5NMW8JdQryWty8QPn3Jbg60A5QN+6UpU++Dd5H3VEnRw4oC1AoR7qm3DTpwyj9ZefMItIoZ6mNN/J/q98+T31NFIzighYm05UOaWgocr5RQ4HSVkibRhh8YGv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oe0hdKy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2ABC2BD10;
+	Tue, 14 May 2024 11:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684151;
-	bh=9/0rZYYmI2VtOHSMymlcbbODYTWRdMBETU0KGOmpRRQ=;
+	s=korg; t=1715687598;
+	bh=+ES0a39S6qMrK04ecJs83tbxcXkmHvs4WSd0wupWL1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nadL/HEQsbkPBXAjMvNg2WmNlnEH97LMVawhPJYzCmWx8qkIsvx66j1p37dwy8uQ
-	 tGUeyQugFimaCE7BG219H4POEGy7OD87Ox86Rep+ZMJdkNHnWPw0mWuFtYBHekslAE
-	 roj19Ehqs109m6Xh6ygLSj+wvLzTEs7M42XX9YhQ=
+	b=Oe0hdKy10rmXGbzEMjHmOQiSgKY5bM8AkmGhH55tcFVLyDY5Nym6vF4ge55VMpS4r
+	 Uioph5kQsrCiCTK1kBProFOp90jSHb9+Qm+MduHZxPoz0dE62NZjoBWVOUNymBljNR
+	 2OMOpnvg9GhkOfqZ+LtG8gBbrQAfDQ1zYoijtkmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 332/336] Bluetooth: qca: fix NVM configuration parsing
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 038/168] net: qede: sanitize rc in qede_add_tc_flower_fltr()
 Date: Tue, 14 May 2024 12:18:56 +0200
-Message-ID: <20240514101051.160796275@linuxfoundation.org>
+Message-ID: <20240514101008.129399838@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-commit a112d3c72a227f2edbb6d8094472cc6e503e52af upstream.
+[ Upstream commit e25714466abd9d96901b15efddf82c60a38abd86 ]
 
-The NVM configuration files used by WCN3988 and WCN3990/1/8 have two
-sets of configuration tags that are enclosed by a type-length header of
-type four which the current parser fails to account for.
+Explicitly set 'rc' (return code), before jumping to the
+unlock and return path.
 
-Instead the driver happily parses random data as if it were valid tags,
-something which can lead to the configuration data being corrupted if it
-ever encounters the words 0x0011 or 0x001b.
+By not having any code depend on that 'rc' remains at
+it's initial value of -EINVAL, then we can re-use 'rc' for
+the return code of function calls in subsequent patches.
 
-As is clear from commit b63882549b2b ("Bluetooth: btqca: Fix the NVM
-baudrate tag offcet for wcn3991") the intention has always been to
-process the configuration data also for WCN3991 and WCN3998 which
-encodes the baud rate at a different offset.
+Only compile tested.
 
-Fix the parser so that it can handle the WCN3xxx configuration files,
-which has an enclosing type-length header of type four and two sets of
-TLV tags enclosed by a type-length header of type two and three,
-respectively.
-
-Note that only the first set, which contains the tags the driver is
-currently looking for, will be parsed for now.
-
-With the parser fixed, the software in-band sleep bit will now be set
-for WCN3991 and WCN3998 (as it is for later controllers) and the default
-baud rate 3200000 may be updated by the driver also for WCN3xxx
-controllers.
-
-Notably the deep-sleep feature bit is already set by default in all
-configuration files in linux-firmware.
-
-Fixes: 4219d4686875 ("Bluetooth: btqca: Add wcn3990 firmware download support.")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fcee2065a178 ("net: qede: use return from qede_parse_flow_attr() for flower")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |   24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_filter.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -281,6 +281,7 @@ static int qca_tlv_check_data(struct hci
- 	struct tlv_type_patch *tlv_patch;
- 	struct tlv_type_nvm *tlv_nvm;
- 	uint8_t nvm_baud_rate = config->user_baud_rate;
-+	u8 type;
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+index 3010833ddde33..76aa5934e985b 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+@@ -1868,8 +1868,8 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 			    struct flow_cls_offload *f)
+ {
+ 	struct qede_arfs_fltr_node *n;
+-	int min_hlen, rc = -EINVAL;
+ 	struct qede_arfs_tuple t;
++	int min_hlen, rc;
  
- 	config->dnld_mode = QCA_SKIP_EVT_NONE;
- 	config->dnld_type = QCA_SKIP_EVT_NONE;
-@@ -346,11 +347,30 @@ static int qca_tlv_check_data(struct hci
- 		tlv = (struct tlv_type_hdr *)fw_data;
+ 	__qede_lock(edev);
  
- 		type_len = le32_to_cpu(tlv->type_len);
--		length = (type_len >> 8) & 0x00ffffff;
-+		length = type_len >> 8;
-+		type = type_len & 0xff;
+@@ -1879,8 +1879,10 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 	}
  
--		BT_DBG("TLV Type\t\t : 0x%x", type_len & 0x000000ff);
-+		/* Some NVM files have more than one set of tags, only parse
-+		 * the first set when it has type 2 for now. When there is
-+		 * more than one set there is an enclosing header of type 4.
-+		 */
-+		if (type == 4) {
-+			if (fw_size < 2 * sizeof(struct tlv_type_hdr))
-+				return -EINVAL;
-+
-+			tlv++;
-+
-+			type_len = le32_to_cpu(tlv->type_len);
-+			length = type_len >> 8;
-+			type = type_len & 0xff;
-+		}
-+
-+		BT_DBG("TLV Type\t\t : 0x%x", type);
- 		BT_DBG("Length\t\t : %d bytes", length);
+ 	/* parse flower attribute and prepare filter */
+-	if (qede_parse_flow_attr(edev, proto, f->rule, &t))
++	if (qede_parse_flow_attr(edev, proto, f->rule, &t)) {
++		rc = -EINVAL;
+ 		goto unlock;
++	}
  
-+		if (type != 2)
-+			break;
-+
- 		if (fw_size < length + (tlv->data - fw_data))
- 			return -EINVAL;
+ 	/* Validate profile mode and number of filters */
+ 	if ((edev->arfs->filter_count && edev->arfs->mode != t.mode) ||
+@@ -1888,12 +1890,15 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 		DP_NOTICE(edev,
+ 			  "Filter configuration invalidated, filter mode=0x%x, configured mode=0x%x, filter count=0x%x\n",
+ 			  t.mode, edev->arfs->mode, edev->arfs->filter_count);
++		rc = -EINVAL;
+ 		goto unlock;
+ 	}
  
+ 	/* parse tc actions and get the vf_id */
+-	if (qede_parse_actions(edev, &f->rule->action, f->common.extack))
++	if (qede_parse_actions(edev, &f->rule->action, f->common.extack)) {
++		rc = -EINVAL;
+ 		goto unlock;
++	}
+ 
+ 	if (qede_flow_find_fltr(edev, &t)) {
+ 		rc = -EEXIST;
+-- 
+2.43.0
+
 
 
 
