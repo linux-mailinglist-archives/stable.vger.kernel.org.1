@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-44522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2668C5344
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7862F8C5118
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B4C1F232AB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594651F22175
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F3876026;
-	Tue, 14 May 2024 11:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4637312FB00;
+	Tue, 14 May 2024 10:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KqmnXSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkJY914J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FCB1D54D;
-	Tue, 14 May 2024 11:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056E855C3B;
+	Tue, 14 May 2024 10:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686404; cv=none; b=tHzljzUHp6wWY85xBbuo42an6ZKpJagKlwDh6e/cLdoSTrBZrEdK45vKruPL4XAEaD23OEOmJX2ebgI97+emKApPjVGBXvzW7xF7tLH2auILjox9w18nujjqbUQZXy5QQo84oKChvVcmjlYDHkIAVn21KDUlkYdMaLMnKogbPgw=
+	t=1715684055; cv=none; b=ndGHmD5UNFb4Kt35q1w0ZhupcnJSF3owXYMi8dKVorbIYo3L3bYtKDIfxHoAIUbkQXgwyckjsfsgy2ImzDtiZ3y66rWycg0oGa0i1S7ntiW/kbF4jAcMojGZfYVLODPyQwzsAX1pGdtJCdFtk97Y9M8YftOqY35FeXFsFQHc384=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686404; c=relaxed/simple;
-	bh=v9bstt9p8yRDXB/sXWPSB3KfENRgrnv2m/5GS/MViNE=;
+	s=arc-20240116; t=1715684055; c=relaxed/simple;
+	bh=+hyIDqF0jQbQ4wmfDl9S+puaYvj7KF38GlQc0p6hWbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkGJEWxx10qYStq1e14trV3qP8yMqHn63gufODXczBBDb2WqmN9QMf/8yMmu+0XME2BzF9N9uMZb9WDZnLQ9Aa+WuxtTvAyisZJX2FXWZVyW88FCI7ytZ3v1rzk2FRVXr6L0KVEOKOpFyruT7mhPB7sRg3hB4Me2ozAsVA3Hn8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KqmnXSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2899CC32781;
-	Tue, 14 May 2024 11:33:23 +0000 (UTC)
+	 MIME-Version; b=YQVVzenjHvG+BWxf/7ayp/FU7MN8AhRU12QyYrNShn343O4cZ5fZPaoKY1T84NqsZ0Mey7pOoFN0qUuLKOXOjNbXa1LsTE/2hBBqi1gqz/II6uW+Cbx521oXCCrwbQ61CL9d+zKjSLpqf9D9xHVK1sUn2DopL/NjzgH8dMg+zgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkJY914J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65525C2BD10;
+	Tue, 14 May 2024 10:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686404;
-	bh=v9bstt9p8yRDXB/sXWPSB3KfENRgrnv2m/5GS/MViNE=;
+	s=korg; t=1715684054;
+	bh=+hyIDqF0jQbQ4wmfDl9S+puaYvj7KF38GlQc0p6hWbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KqmnXSOErO4O6cF8mJNl/NWR/XwGBAHcMoNgXCpqe4RaxMu+AQLQbB46DuYi6FSe
-	 yA4XHfRjb5HKMmarKDKDW1piVcEnVdLj6jRBvWYANPYG5v8EQDiavW/uj5Rdtd+vUw
-	 Xgg4+jUyoq1yRllnvHcyTr/KlY61fAHMsB6YjG9g=
+	b=OkJY914JyEU14gF2MdYclrJgLzSJNPLMcUGnP91b425oZV42xSoydoVsXV5uudC7Z
+	 wHnHMSTty5uEhnaalEeBPktdZSAAjxlh8CSpEu2Ig6Zq4XAIfAxnb8uKozjoETmpTv
+	 GvOfRL+s2LtyuCAm4WUkT2Vvsdgz3bcHQi+1mb6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/236] Drivers: hv: vmbus: Track decrypted status in vmbus_gpadl
+	Sameer Pujar <spujar@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 285/336] ASoC: tegra: Fix DSPK 16-bit playback
 Date: Tue, 14 May 2024 12:18:09 +0200
-Message-ID: <20240514101025.192277278@linuxfoundation.org>
+Message-ID: <20240514101049.378659174@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Sameer Pujar <spujar@nvidia.com>
 
-[ Upstream commit 211f514ebf1ef5de37b1cf6df9d28a56cfd242ca ]
+commit 2e93a29b48a017c777d4fcbfcc51aba4e6a90d38 upstream.
 
-In CoCo VMs it is possible for the untrusted host to cause
-set_memory_encrypted() or set_memory_decrypted() to fail such that an
-error is returned and the resulting memory is shared. Callers need to
-take care to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional or security
-issues.
+DSPK configuration is wrong for 16-bit playback and this happens because
+the client config is always fixed at 24-bit in hw_params(). Fix this by
+updating the client config to 16-bit for the respective playback.
 
-In order to make sure callers of vmbus_establish_gpadl() and
-vmbus_teardown_gpadl() don't return decrypted/shared pages to
-allocators, add a field in struct vmbus_gpadl to keep track of the
-decryption status of the buffers. This will allow the callers to
-know if they should free or leak the pages.
-
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20240311161558.1310-3-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240311161558.1310-3-mhklinux@outlook.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://msgid.link/r/20240405104306.551036-1-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/channel.c   | 25 +++++++++++++++++++++----
- include/linux/hyperv.h |  1 +
- 2 files changed, 22 insertions(+), 4 deletions(-)
+ sound/soc/tegra/tegra186_dspk.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
-index 56f7e06c673e4..bb5abdcda18f8 100644
---- a/drivers/hv/channel.c
-+++ b/drivers/hv/channel.c
-@@ -472,9 +472,18 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
- 		(atomic_inc_return(&vmbus_connection.next_gpadl_handle) - 1);
+--- a/sound/soc/tegra/tegra186_dspk.c
++++ b/sound/soc/tegra/tegra186_dspk.c
+@@ -1,8 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: Copyright (c) 2020-2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ //
+ // tegra186_dspk.c - Tegra186 DSPK driver
+-//
+-// Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
  
- 	ret = create_gpadl_header(type, kbuffer, size, send_offset, &msginfo);
--	if (ret)
-+	if (ret) {
-+		gpadl->decrypted = false;
- 		return ret;
-+	}
+ #include <linux/clk.h>
+ #include <linux/device.h>
+@@ -241,14 +240,14 @@ static int tegra186_dspk_hw_params(struc
+ 		return -EINVAL;
+ 	}
  
-+	/*
-+	 * Set the "decrypted" flag to true for the set_memory_decrypted()
-+	 * success case. In the failure case, the encryption state of the
-+	 * memory is unknown. Leave "decrypted" as true to ensure the
-+	 * memory will be leaked instead of going back on the free list.
-+	 */
-+	gpadl->decrypted = true;
- 	ret = set_memory_decrypted((unsigned long)kbuffer,
- 				   PFN_UP(size));
- 	if (ret) {
-@@ -563,9 +572,15 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
- 
- 	kfree(msginfo);
- 
--	if (ret)
--		set_memory_encrypted((unsigned long)kbuffer,
--				     PFN_UP(size));
-+	if (ret) {
-+		/*
-+		 * If set_memory_encrypted() fails, the decrypted flag is
-+		 * left as true so the memory is leaked instead of being
-+		 * put back on the free list.
-+		 */
-+		if (!set_memory_encrypted((unsigned long)kbuffer, PFN_UP(size)))
-+			gpadl->decrypted = false;
-+	}
- 
- 	return ret;
- }
-@@ -886,6 +901,8 @@ int vmbus_teardown_gpadl(struct vmbus_channel *channel, struct vmbus_gpadl *gpad
- 	if (ret)
- 		pr_warn("Fail to set mem host visibility in GPADL teardown %d.\n", ret);
- 
-+	gpadl->decrypted = ret;
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(vmbus_teardown_gpadl);
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index 4fbd5d8417111..811d59cf891ba 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -832,6 +832,7 @@ struct vmbus_gpadl {
- 	u32 gpadl_handle;
- 	u32 size;
- 	void *buffer;
-+	bool decrypted;
- };
- 
- struct vmbus_channel {
--- 
-2.43.0
-
+-	cif_conf.client_bits = TEGRA_ACIF_BITS_24;
+-
+ 	switch (params_format(params)) {
+ 	case SNDRV_PCM_FORMAT_S16_LE:
+ 		cif_conf.audio_bits = TEGRA_ACIF_BITS_16;
++		cif_conf.client_bits = TEGRA_ACIF_BITS_16;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_S32_LE:
+ 		cif_conf.audio_bits = TEGRA_ACIF_BITS_32;
++		cif_conf.client_bits = TEGRA_ACIF_BITS_24;
+ 		break;
+ 	default:
+ 		dev_err(dev, "unsupported format!\n");
 
 
 
