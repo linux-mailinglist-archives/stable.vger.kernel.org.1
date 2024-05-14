@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214278C53D8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCB78C542F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46C51C2247F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97C3C283D65
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DBA613D269;
-	Tue, 14 May 2024 11:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA841139CE7;
+	Tue, 14 May 2024 11:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbIELj7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkAa3rzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCD87F48C;
-	Tue, 14 May 2024 11:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99341139596;
+	Tue, 14 May 2024 11:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686809; cv=none; b=L6bdz781iP5+8/U9z9xuBo7d5AvdAfgjwuTpHkDewxeJm2hDIJydnFeObBxN5feAAnsa/6qBth2MZKhK5fcnjYWPNfWyXlyliL3/w5a8g8fMyPG0sgsPMKvKLX/3DrqcP4Zf4N4tKbrhs9dnR6Ngds+9pIkaPl4UVLkhH5VeA50=
+	t=1715687027; cv=none; b=mPLgUOArNw1ixHt5TwOg0xiavb8csXtcb/cIohTSF13R8IvE5nSvZiB4D8OUBbtNbCLs+h4HiBytlERH8GObvqwMtAmmV5UhsgxhJeysXBce4VWagAsI6xVVqlGuen1IXZsIEZSP/11pCe1R3o7+ouMzu74Z1e2yUnuS55qcCkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686809; c=relaxed/simple;
-	bh=U+MQGswrwf2ZJjoy3RuD5iFNflKNs5rEsBj3WQij8z4=;
+	s=arc-20240116; t=1715687027; c=relaxed/simple;
+	bh=6cvB46tfKP0BHEVaUdKsh90eBD9vU5Oc0T5lh9H7054=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOaVK6cA98fFLuXxsBGW75T43pT7CN5eKpNcyAP2xMAG01v8CfstEnBMGfuaBuQxYCdQYGVvvmGnoagh1/lDF+BQ5AvLlXUKMJ7rj+UicY4VhEOtvDzCa+i/a0hDz+pZ5Hkvq9Az5T2Z+DYWcXxFbm0XrPKKd2770+Ek1Mww2Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbIELj7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B500CC32781;
-	Tue, 14 May 2024 11:40:08 +0000 (UTC)
+	 MIME-Version; b=ZDweppNRuAZ4motFUA0I8yukXPAZmtJq/JSPMWjEVxL+Wc2b7vc/+tfVEgurdFBvUGqRMGiMqF08kI7GdTzAU5m/Z0PImsxM00TPQU+cZiMLfoDEqK4HSRTwyACEzku0IwBtQ6nZu2E3Ockw63a+gXGhF2HCRx5P7DzizsqWZTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkAa3rzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E50CC2BD10;
+	Tue, 14 May 2024 11:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686809;
-	bh=U+MQGswrwf2ZJjoy3RuD5iFNflKNs5rEsBj3WQij8z4=;
+	s=korg; t=1715687027;
+	bh=6cvB46tfKP0BHEVaUdKsh90eBD9vU5Oc0T5lh9H7054=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbIELj7T8iPE/V9muWffJDuTMsCxKjAJKVLtI4GUHHWifr4QJXYWRDBco7w2dqHtP
-	 tqBRR5zkwCeyAv6LOCgRDDne76HNtj/4EWwxfTIckXAZ3witqjyYHiN9CVixJCQLzw
-	 XdiOG4EmfVPLCXRjGz84UglETLIhuRqdg/p4PIiE=
+	b=QkAa3rzRaA8n+ApeABXPNNFS/NmQiG141ugVr0bpG2jxw9kXB6B8z/6IsK92HdbVF
+	 Rpj2EfrCEFpYgss+CPVtgh6DsA4sUSvmufgwJ+yM+qdJ2ST7a2lVUYKotaHSAG1L+x
+	 ngidvEDLxFanmHfYfVy/IiLSn9DDQAbdmF9sDf8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Goldman <adamg@pobox.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Maarten Vanraes <maarten@rmail.be>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 30/63] firewire: ohci: mask bus reset interrupts between ISR and bottom half
+Subject: [PATCH 5.4 40/84] net: bcmgenet: Reset RBUF on first open
 Date: Tue, 14 May 2024 12:19:51 +0200
-Message-ID: <20240514100949.153771666@linuxfoundation.org>
+Message-ID: <20240514100953.199742400@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Goldman <adamg@pobox.com>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 752e3c53de0fa3b7d817a83050b6699b8e9c6ec9 ]
+[ Upstream commit 0a6380cb4c6b5c1d6dad226ba3130f9090f0ccea ]
 
-In the FireWire OHCI interrupt handler, if a bus reset interrupt has
-occurred, mask bus reset interrupts until bus_reset_work has serviced and
-cleared the interrupt.
+If the RBUF logic is not reset when the kernel starts then there
+may be some data left over from any network boot loader. If the
+64-byte packet headers are enabled then this can be fatal.
 
-Normally, we always leave bus reset interrupts masked. We infer the bus
-reset from the self-ID interrupt that happens shortly thereafter. A
-scenario where we unmask bus reset interrupts was introduced in 2008 in
-a007bb857e0b26f5d8b73c2ff90782d9c0972620: If
-OHCI_PARAM_DEBUG_BUSRESETS (8) is set in the debug parameter bitmask, we
-will unmask bus reset interrupts so we can log them.
+Extend bcmgenet_dma_disable to do perform the reset, but not when
+called from bcmgenet_resume in order to preserve a wake packet.
 
-irq_handler logs the bus reset interrupt. However, we can't clear the bus
-reset event flag in irq_handler, because we won't service the event until
-later. irq_handler exits with the event flag still set. If the
-corresponding interrupt is still unmasked, the first bus reset will
-usually freeze the system due to irq_handler being called again each
-time it exits. This freeze can be reproduced by loading firewire_ohci
-with "modprobe firewire_ohci debug=-1" (to enable all debugging output).
-Apparently there are also some cases where bus_reset_work will get called
-soon enough to clear the event, and operation will continue normally.
+N.B. This different handling of resume is just based on a hunch -
+why else wouldn't one reset the RBUF as well as the TBUF? If this
+isn't the case then it's easy to change the patch to make the RBUF
+reset unconditional.
 
-This freeze was first reported a few months after a007bb85 was committed,
-but until now it was never fixed. The debug level could safely be set
-to -1 through sysfs after the module was loaded, but this would be
-ineffectual in logging bus reset interrupts since they were only
-unmasked during initialization.
+See: https://github.com/raspberrypi/linux/issues/3850
+See: https://github.com/raspberrypi/firmware/issues/1882
 
-irq_handler will now leave the event flag set but mask bus reset
-interrupts, so irq_handler won't be called again and there will be no
-freeze. If OHCI_PARAM_DEBUG_BUSRESETS is enabled, bus_reset_work will
-unmask the interrupt after servicing the event, so future interrupts
-will be caught as desired.
-
-As a side effect to this change, OHCI_PARAM_DEBUG_BUSRESETS can now be
-enabled through sysfs in addition to during initial module loading.
-However, when enabled through sysfs, logging of bus reset interrupts will
-be effective only starting with the second bus reset, after
-bus_reset_work has executed.
-
-Signed-off-by: Adam Goldman <adamg@pobox.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Maarten Vanraes <maarten@rmail.be>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/ohci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
-index 9807a885e698c..a4912650544fa 100644
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -2066,6 +2066,8 @@ static void bus_reset_work(struct work_struct *work)
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 380bf7a328ba3..469cfc74617a6 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2796,7 +2796,7 @@ static void bcmgenet_set_hw_addr(struct bcmgenet_priv *priv,
+ }
  
- 	ohci->generation = generation;
- 	reg_write(ohci, OHCI1394_IntEventClear, OHCI1394_busReset);
-+	if (param_debug & OHCI_PARAM_DEBUG_BUSRESETS)
-+		reg_write(ohci, OHCI1394_IntMaskSet, OHCI1394_busReset);
+ /* Returns a reusable dma control register value */
+-static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
++static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv, bool flush_rx)
+ {
+ 	unsigned int i;
+ 	u32 reg;
+@@ -2821,6 +2821,14 @@ static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
+ 	udelay(10);
+ 	bcmgenet_umac_writel(priv, 0, UMAC_TX_FLUSH);
  
- 	if (ohci->quirks & QUIRK_RESET_PACKET)
- 		ohci->request_generation = generation;
-@@ -2132,12 +2134,14 @@ static irqreturn_t irq_handler(int irq, void *data)
- 		return IRQ_NONE;
++	if (flush_rx) {
++		reg = bcmgenet_rbuf_ctrl_get(priv);
++		bcmgenet_rbuf_ctrl_set(priv, reg | BIT(0));
++		udelay(10);
++		bcmgenet_rbuf_ctrl_set(priv, reg);
++		udelay(10);
++	}
++
+ 	return dma_ctrl;
+ }
  
- 	/*
--	 * busReset and postedWriteErr must not be cleared yet
-+	 * busReset and postedWriteErr events must not be cleared yet
- 	 * (OHCI 1.1 clauses 7.2.3.2 and 13.2.8.1)
- 	 */
- 	reg_write(ohci, OHCI1394_IntEventClear,
- 		  event & ~(OHCI1394_busReset | OHCI1394_postedWriteErr));
- 	log_irqs(ohci, event);
-+	if (event & OHCI1394_busReset)
-+		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
+@@ -2916,8 +2924,8 @@ static int bcmgenet_open(struct net_device *dev)
  
- 	if (event & OHCI1394_selfIDComplete)
- 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
+ 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
+ 
+-	/* Disable RX/TX DMA and flush TX queues */
+-	dma_ctrl = bcmgenet_dma_disable(priv);
++	/* Disable RX/TX DMA and flush TX and RX queues */
++	dma_ctrl = bcmgenet_dma_disable(priv, true);
+ 
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv);
+@@ -3670,7 +3678,7 @@ static int bcmgenet_resume(struct device *d)
+ 		bcmgenet_power_up(priv, GENET_POWER_WOL_MAGIC);
+ 
+ 	/* Disable RX/TX DMA and flush TX queues */
+-	dma_ctrl = bcmgenet_dma_disable(priv);
++	dma_ctrl = bcmgenet_dma_disable(priv, false);
+ 
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv);
 -- 
 2.43.0
 
