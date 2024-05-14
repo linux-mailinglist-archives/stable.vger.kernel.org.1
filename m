@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-44049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B3B8C50F4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:15:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BA48C523D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D77E11C213C3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A553D1C20AAE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F3F6CDD2;
-	Tue, 14 May 2024 10:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA754F1F8;
+	Tue, 14 May 2024 11:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQ0uqWcL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnQa+Gd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FDB4F88C;
-	Tue, 14 May 2024 10:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A94B2943F;
+	Tue, 14 May 2024 11:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683910; cv=none; b=sHn0drZ8zJb4H3dWfAwKCfuiPA0SKn8eejnn0VG//gAO8l56GcdQzA+pmypftF2ttatF0R32b3gEu7j5jVp0pyhSOdQoRmjmsKn+XZB5PaMEVElrySqzEsxGmSsA52S2Aj+w2jQefLIbCkEotm811CsUGqz/h+QiYY3sCFYgPW0=
+	t=1715685694; cv=none; b=rhv0FW+DSmS/UQhVhyAw/oJihMn6fWoJwjb0oeWfYjECORCfF0FG8OBgn9VxoJtWFvoi9iEW/d4/suqxEHL+pG0+B0mr/NcxJin2VmmhXa42PmAPVsx6arManiC5DziUFeAyXaTQYb8DAB20Lri+qfry+NYZV+gpsyTIKR8jSrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683910; c=relaxed/simple;
-	bh=Dy5P42AEA19ZUcwM61o7FAvDX4/JLXRcq3HhAvsENU0=;
+	s=arc-20240116; t=1715685694; c=relaxed/simple;
+	bh=dHkVzL1WXiKzgod0KuwU3f/sX6gQEppuqy60hOSvOGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNNsfkchh071IECduiydBtDdGiiSGu7tu1ucaZfIiPD78jmN/qbCCRazfh49SR59ZZRU1LzPdhhCgIz6zgZkgQrIyvYQ0hDyvge9RaNnoWhi/vtYULLp/6aUhKlZJ91oBaghAPOagW6gUWBPyLy0EKesUG7NeJcSIAL8a1tFPWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQ0uqWcL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EDFC2BD10;
-	Tue, 14 May 2024 10:51:49 +0000 (UTC)
+	 MIME-Version; b=UJ1hmSU3sZaueOxZrbXOzJXiIgYEzeRLyAHoi02JEPbUm1giKGBLl3jWpHu96UR6yFLaoZReCuWI75eZqtU9AwI2BdEtrq/RipMKYa1g4irswzK7xA3cIobVq3IknQoviU9nHjjp9/1CG5kBSCk5TVfKAlkiQfZ1IWKDvrcBafw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnQa+Gd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FE7C2BD10;
+	Tue, 14 May 2024 11:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683910;
-	bh=Dy5P42AEA19ZUcwM61o7FAvDX4/JLXRcq3HhAvsENU0=;
+	s=korg; t=1715685693;
+	bh=dHkVzL1WXiKzgod0KuwU3f/sX6gQEppuqy60hOSvOGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQ0uqWcLKmzuninFWyDyoc2zVS5xvG8tIB7nMIUSojKgoBji85E9CJgHwxulPWSy4
-	 zKdrgtTVcXyYIefQPSYR2sMWIlIeIRehZKh3dre3lRIPLs4QtXT5n0MQtaiR6om7ut
-	 MY9v1SG7WMtWnGzOrqVhNUgcwu2H870kvvV/3OGs=
+	b=wnQa+Gd1eUc/D+vtCEMcoexb7wEQ96kh57Xn92VsqNDtqNMFDioUcrjMdjj89f7cD
+	 fAxxC6jc0lkOSf5l2+kMO4q7Qn5btfdVjQ335kz7GOAdS6A0H+Ae6ITiaqYHBE2r97
+	 uQ3HZ/L0UzK97XjEV0xQT0n99+t9mRauGpjXNV7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Moulding <dan@danm.net>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.8 294/336] Revert "drm/nouveau/firmware: Fix SG_DEBUG error with nvkm_firmware_ctor()"
+	Alan Stern <stern@rowland.harvard.edu>,
+	Roger Whittaker <roger.whittaker@suse.com>
+Subject: [PATCH 6.6 227/301] usb: Fix regression caused by invalid ep0 maxpacket in virtual SuperSpeed device
 Date: Tue, 14 May 2024 12:18:18 +0200
-Message-ID: <20240514101049.714793491@linuxfoundation.org>
+Message-ID: <20240514101040.827722853@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit a222a6470d7eea91193946e8162066fa88da64c2 upstream.
+commit c78c3644b772e356ca452ae733a3c4de0fb11dc8 upstream.
 
-This reverts commit 52a6947bf576b97ff8e14bb0a31c5eaf2d0d96e2.
+A virtual SuperSpeed device in the FreeBSD BVCP package
+(https://bhyve.npulse.net/) presents an invalid ep0 maxpacket size of 256.
+It stopped working with Linux following a recent commit because now we
+check these sizes more carefully than before.
 
-This causes loading failures in
-[    0.367379] nouveau 0000:01:00.0: NVIDIA GP104 (134000a1)
-[    0.474499] nouveau 0000:01:00.0: bios: version 86.04.50.80.13
-[    0.474620] nouveau 0000:01:00.0: pmu: firmware unavailable
-[    0.474977] nouveau 0000:01:00.0: fb: 8192 MiB GDDR5
-[    0.484371] nouveau 0000:01:00.0: sec2(acr): mbox 00000001 00000000
-[    0.484377] nouveau 0000:01:00.0: sec2(acr):load: boot failed: -5
-[    0.484379] nouveau 0000:01:00.0: acr: init failed, -5
-[    0.484466] nouveau 0000:01:00.0: init failed with -5
-[    0.484468] nouveau: DRM-master:00000000:00000080: init failed with -5
-[    0.484470] nouveau 0000:01:00.0: DRM-master: Device allocation failed: -5
-[    0.485078] nouveau 0000:01:00.0: probe with driver nouveau failed with error -50
+Fix this regression by using the bMaxpacketSize0 value in the device
+descriptor for SuperSpeed or faster devices, even if it is invalid.  This
+is a very simple-minded change; we might want to check more carefully for
+values that actually make some sense (for instance, no smaller than 64).
 
-I tried tracking it down but ran out of time this week, will revisit next week.
-
-Reported-by: Dan Moulding <dan@danm.net>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: Roger Whittaker <roger.whittaker@suse.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1220569
+Link: https://lore.kernel.org/linux-usb/9efbd569-7059-4575-983f-0ea30df41871@suse.com/
+Fixes: 59cf44575456 ("USB: core: Fix oversight in SuperSpeed initialization")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/r/4058ac05-237c-4db4-9ecc-5af42bdb4501@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/core/firmware.c |   19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/usb/core/hub.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
-@@ -205,9 +205,7 @@ nvkm_firmware_dtor(struct nvkm_firmware
- 		break;
- 	case NVKM_FIRMWARE_IMG_DMA:
- 		nvkm_memory_unref(&memory);
--		dma_unmap_single(fw->device->dev, fw->phys, sg_dma_len(&fw->mem.sgl),
--				 DMA_TO_DEVICE);
--		kfree(fw->img);
-+		dma_free_coherent(fw->device->dev, sg_dma_len(&fw->mem.sgl), fw->img, fw->phys);
- 		break;
- 	case NVKM_FIRMWARE_IMG_SGT:
- 		nvkm_memory_unref(&memory);
-@@ -237,17 +235,14 @@ nvkm_firmware_ctor(const struct nvkm_fir
- 		fw->img = kmemdup(src, fw->len, GFP_KERNEL);
- 		break;
- 	case NVKM_FIRMWARE_IMG_DMA: {
-+		dma_addr_t addr;
-+
- 		len = ALIGN(fw->len, PAGE_SIZE);
- 
--		fw->img = kmalloc(len, GFP_KERNEL);
--		if (!fw->img)
--			return -ENOMEM;
--
--		memcpy(fw->img, src, fw->len);
--		fw->phys = dma_map_single(fw->device->dev, fw->img, len, DMA_TO_DEVICE);
--		if (dma_mapping_error(fw->device->dev, fw->phys)) {
--			kfree(fw->img);
--			return -EFAULT;
-+		fw->img = dma_alloc_coherent(fw->device->dev, len, &addr, GFP_KERNEL);
-+		if (fw->img) {
-+			memcpy(fw->img, src, fw->len);
-+			fw->phys = addr;
- 		}
- 
- 		sg_init_one(&fw->mem.sgl, fw->img, len);
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -5077,9 +5077,10 @@ hub_port_init(struct usb_hub *hub, struc
+ 	}
+ 	if (usb_endpoint_maxp(&udev->ep0.desc) == i) {
+ 		;	/* Initial ep0 maxpacket guess is right */
+-	} else if ((udev->speed == USB_SPEED_FULL ||
++	} else if (((udev->speed == USB_SPEED_FULL ||
+ 				udev->speed == USB_SPEED_HIGH) &&
+-			(i == 8 || i == 16 || i == 32 || i == 64)) {
++			(i == 8 || i == 16 || i == 32 || i == 64)) ||
++			(udev->speed >= USB_SPEED_SUPER && i > 0)) {
+ 		/* Initial guess is wrong; use the descriptor's value */
+ 		if (udev->speed == USB_SPEED_FULL)
+ 			dev_dbg(&udev->dev, "ep0 maxpacket = %d\n", i);
 
 
 
