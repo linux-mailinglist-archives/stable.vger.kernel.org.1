@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A98A8C5166
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A258C4FF0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 793A2B216B3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A73AB20FD1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A66413667B;
-	Tue, 14 May 2024 11:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F54347F4B;
+	Tue, 14 May 2024 10:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plaePLfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1/ax0us"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB01612FF64;
-	Tue, 14 May 2024 11:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA6022EF3;
+	Tue, 14 May 2024 10:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684415; cv=none; b=TNUJUu86wAMowgI3DdMibt9dCcQHbxADjUQEyCasRFq8sZWaNXfQK9ytkuYYvYfXTPcSM+eWfjCiww6a7Ag0GkBZquXS3sVuFQ4lzduMqCJpwH1y3FTZrreShwLUOdqD0IUEXARgXJCkRarPqF0w0I+lpBkXKfzK9JFwEQuCyvQ=
+	t=1715682739; cv=none; b=eX6huGChqVurwcdJaZc1Xwmnt+zlC4KKnqT+FQQuT15ld+FJozyuv4Tpqu65Hz2e31Rmr1dnNK71eaVHJ3IQVZt5LdK5XEgETARtbQdU9XVClRccEc5dWeFm9wwyiZ5HfTIv3/tRTRZdVzX/iWycehe0XxM85KuZnL5kHaROaPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684415; c=relaxed/simple;
-	bh=YVrdwDq6JP8cRcBKrSULa2aW8v6Ksw9Ps1sdG1gzPOI=;
+	s=arc-20240116; t=1715682739; c=relaxed/simple;
+	bh=op7P6M8ys4v0QMe5cCcv5INr7kyg92KnghQ56IW8eQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rt32B6mOEsoN2Aw8nGtBY9y9FI0oR4lKcaNcL1lGrHYW1sdE/q3/YdG5corb4Y2eMCnVY77uJEVQ3xwWk5zA3lWyChxOqQUZZ9ceBz4AjoOu42TepzJBg3ewp32F9DZ1Ty+A9GWl8VUaE4jrxEUg6BQl5te6HM3VFfVTPcwg5yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plaePLfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E66AC2BD10;
-	Tue, 14 May 2024 11:00:13 +0000 (UTC)
+	 MIME-Version; b=mN0vsS1SQjZJlkRHx/FSwrkKsKUObMoQ9PC1EBMO0m2Rn5mbr24ahumjxHuU/DHnWF7FgBZ4kKn6VMSKd0N7IndMdvM+cY4berkQWEmRtKYLR8BNxNh6HsLzDNn/w0C/YMHFWQhDhktA21xD57+gILYftRbl+DChjFSJL1Z/vZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1/ax0us; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6550C2BD10;
+	Tue, 14 May 2024 10:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684415;
-	bh=YVrdwDq6JP8cRcBKrSULa2aW8v6Ksw9Ps1sdG1gzPOI=;
+	s=korg; t=1715682738;
+	bh=op7P6M8ys4v0QMe5cCcv5INr7kyg92KnghQ56IW8eQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plaePLfXKhFPu9xLRlBEMMZ1CqClgN6XXPSmkijN3YO0f1wGJ2+LRD/HpeqgzC8Xh
-	 ul0FMarixIiGHL2f9aaf618bXS9rNibrO0rwHTZAU+Z11e1JwMj95vFMZRyCeghLGm
-	 M9nwmtfDV7UNrYTHq/pTDjqvkjVNFv9O7781jf0A=
+	b=Q1/ax0usW9jNraXEqiT0MkdX8AyPIqnVzqy3e//tE2t1dlIHmiQ36SFOEUSCzGRQ5
+	 5gemccoWInVQ5rmEXh0203smp+0N6gKFLCHXs3zB6nBWAQQGuRqNnlOgvhODWekM9f
+	 Lrc6lSvxzZ/+SXWTHrqmN5FwrXLv6zx1bmPHwr48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/301] spi: axi-spi-engine: move msg state to new struct
+Subject: [PATCH 6.8 105/336] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
 Date: Tue, 14 May 2024 12:15:09 +0200
-Message-ID: <20240514101033.683840518@linuxfoundation.org>
+Message-ID: <20240514101042.570750235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,355 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 7f970ecb77b6759d37ee743fc36fc0daba960e75 ]
+[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
 
-This moves the message state in the AXI SPI Engine driver to a new
-struct spi_engine_msg_state.
+Running kernel-doc on ieee80211_i.h flagged the following:
+net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
+net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
 
-Previously, the driver state contained various pointers that pointed
-to memory owned by a struct spi_message. However, it did not set any of
-these pointers to NULL when a message was completed. This could lead to
-use after free bugs.
+Fix these warnings.
 
-Example of how this could happen:
-1. SPI core calls into spi_engine_transfer_one_message() with msg1.
-2. Assume something was misconfigured and spi_engine_tx_next() is not
-   called enough times in interrupt callbacks for msg1 such that
-   spi_engine->tx_xfer is never set to NULL before the msg1 completes.
-3. SYNC interrupt is received and spi_finalize_current_message() is
-   called for msg1. spi_engine->msg is set to NULL but no other
-   message-specific state is reset.
-4. Caller that sent msg1 is notified of the completion and frees msg1
-   and the associated xfers and tx/rx buffers.
-4. SPI core calls into spi_engine_transfer_one_message() with msg2.
-5. When spi_engine_tx_next() is called for msg2, spi_engine->tx_xfer is
-   still be pointing to an xfer from msg1, which was already freed.
-   spi_engine_xfer_next() tries to access xfer->transfer_list of one
-   of the freed xfers and we get a segfault or undefined behavior.
-
-To avoid issues like this, instead of putting per-message state in the
-driver state struct, we can make use of the struct spi_message::state
-field to store a pointer to a new struct spi_engine_msg_state. This way,
-all of the state that belongs to specific message stays with that
-message and we don't have to remember to manually reset all aspects of
-the message state when a message is completed. Rather, a new state is
-allocated for each message.
-
-Most of the changes are just renames where the state is accessed. One
-place where this wasn't straightforward was the sync_id member. This
-has been changed to use ida_alloc_range() since we needed to separate
-the per-message sync_id from the per-controller next available sync_id.
-
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20231117-axi-spi-engine-series-1-v1-9-cc59db999b87@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 150 ++++++++++++++++++++-----------
- 1 file changed, 96 insertions(+), 54 deletions(-)
+ net/mac80211/ieee80211_i.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 77c1c115448d6..9ca5b45c4b4cc 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/clk.h>
-+#include <linux/idr.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/of.h>
-@@ -78,28 +79,42 @@ struct spi_engine_program {
- 	uint16_t instructions[];
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index a18361afea249..399fcb66658da 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -131,7 +131,7 @@ struct ieee80211_bss {
  };
  
--struct spi_engine {
--	struct clk *clk;
--	struct clk *ref_clk;
--
--	spinlock_t lock;
--
--	void __iomem *base;
--
--	struct spi_message *msg;
-+/**
-+ * struct spi_engine_message_state - SPI engine per-message state
-+ */
-+struct spi_engine_message_state {
-+	/** Instructions for executing this message. */
- 	struct spi_engine_program *p;
-+	/** Number of elements in cmd_buf array. */
- 	unsigned cmd_length;
-+	/** Array of commands not yet written to CMD FIFO. */
- 	const uint16_t *cmd_buf;
--
-+	/** Next xfer with tx_buf not yet fully written to TX FIFO. */
- 	struct spi_transfer *tx_xfer;
-+	/** Size of tx_buf in bytes. */
- 	unsigned int tx_length;
-+	/** Bytes not yet written to TX FIFO. */
- 	const uint8_t *tx_buf;
--
-+	/** Next xfer with rx_buf not yet fully written to RX FIFO. */
- 	struct spi_transfer *rx_xfer;
-+	/** Size of tx_buf in bytes. */
- 	unsigned int rx_length;
-+	/** Bytes not yet written to the RX FIFO. */
- 	uint8_t *rx_buf;
-+	/** ID to correlate SYNC interrupts with this message. */
-+	u8 sync_id;
-+};
-+
-+struct spi_engine {
-+	struct clk *clk;
-+	struct clk *ref_clk;
+ /**
+- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
++ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
+  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
+  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
+  *
+@@ -144,7 +144,7 @@ enum ieee80211_bss_corrupt_data_flags {
+ };
  
--	unsigned int sync_id;
-+	spinlock_t lock;
-+
-+	void __iomem *base;
-+
-+	struct spi_message *msg;
-+	struct ida sync_ida;
- 	unsigned int completed_id;
- 
- 	unsigned int int_enable;
-@@ -258,100 +273,105 @@ static void spi_engine_xfer_next(struct spi_engine *spi_engine,
- 
- static void spi_engine_tx_next(struct spi_engine *spi_engine)
- {
--	struct spi_transfer *xfer = spi_engine->tx_xfer;
-+	struct spi_engine_message_state *st = spi_engine->msg->state;
-+	struct spi_transfer *xfer = st->tx_xfer;
- 
- 	do {
- 		spi_engine_xfer_next(spi_engine, &xfer);
- 	} while (xfer && !xfer->tx_buf);
- 
--	spi_engine->tx_xfer = xfer;
-+	st->tx_xfer = xfer;
- 	if (xfer) {
--		spi_engine->tx_length = xfer->len;
--		spi_engine->tx_buf = xfer->tx_buf;
-+		st->tx_length = xfer->len;
-+		st->tx_buf = xfer->tx_buf;
- 	} else {
--		spi_engine->tx_buf = NULL;
-+		st->tx_buf = NULL;
- 	}
- }
- 
- static void spi_engine_rx_next(struct spi_engine *spi_engine)
- {
--	struct spi_transfer *xfer = spi_engine->rx_xfer;
-+	struct spi_engine_message_state *st = spi_engine->msg->state;
-+	struct spi_transfer *xfer = st->rx_xfer;
- 
- 	do {
- 		spi_engine_xfer_next(spi_engine, &xfer);
- 	} while (xfer && !xfer->rx_buf);
- 
--	spi_engine->rx_xfer = xfer;
-+	st->rx_xfer = xfer;
- 	if (xfer) {
--		spi_engine->rx_length = xfer->len;
--		spi_engine->rx_buf = xfer->rx_buf;
-+		st->rx_length = xfer->len;
-+		st->rx_buf = xfer->rx_buf;
- 	} else {
--		spi_engine->rx_buf = NULL;
-+		st->rx_buf = NULL;
- 	}
- }
- 
- static bool spi_engine_write_cmd_fifo(struct spi_engine *spi_engine)
- {
- 	void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_CMD_FIFO;
-+	struct spi_engine_message_state *st = spi_engine->msg->state;
- 	unsigned int n, m, i;
- 	const uint16_t *buf;
- 
- 	n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_CMD_FIFO_ROOM);
--	while (n && spi_engine->cmd_length) {
--		m = min(n, spi_engine->cmd_length);
--		buf = spi_engine->cmd_buf;
-+	while (n && st->cmd_length) {
-+		m = min(n, st->cmd_length);
-+		buf = st->cmd_buf;
- 		for (i = 0; i < m; i++)
- 			writel_relaxed(buf[i], addr);
--		spi_engine->cmd_buf += m;
--		spi_engine->cmd_length -= m;
-+		st->cmd_buf += m;
-+		st->cmd_length -= m;
- 		n -= m;
- 	}
- 
--	return spi_engine->cmd_length != 0;
-+	return st->cmd_length != 0;
- }
- 
- static bool spi_engine_write_tx_fifo(struct spi_engine *spi_engine)
- {
- 	void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_SDO_DATA_FIFO;
-+	struct spi_engine_message_state *st = spi_engine->msg->state;
- 	unsigned int n, m, i;
- 	const uint8_t *buf;
- 
- 	n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_SDO_FIFO_ROOM);
--	while (n && spi_engine->tx_length) {
--		m = min(n, spi_engine->tx_length);
--		buf = spi_engine->tx_buf;
-+	while (n && st->tx_length) {
-+		m = min(n, st->tx_length);
-+		buf = st->tx_buf;
- 		for (i = 0; i < m; i++)
- 			writel_relaxed(buf[i], addr);
--		spi_engine->tx_buf += m;
--		spi_engine->tx_length -= m;
-+		st->tx_buf += m;
-+		st->tx_length -= m;
- 		n -= m;
--		if (spi_engine->tx_length == 0)
-+		if (st->tx_length == 0)
- 			spi_engine_tx_next(spi_engine);
- 	}
- 
--	return spi_engine->tx_length != 0;
-+	return st->tx_length != 0;
- }
- 
- static bool spi_engine_read_rx_fifo(struct spi_engine *spi_engine)
- {
- 	void __iomem *addr = spi_engine->base + SPI_ENGINE_REG_SDI_DATA_FIFO;
-+	struct spi_engine_message_state *st = spi_engine->msg->state;
- 	unsigned int n, m, i;
- 	uint8_t *buf;
- 
- 	n = readl_relaxed(spi_engine->base + SPI_ENGINE_REG_SDI_FIFO_LEVEL);
--	while (n && spi_engine->rx_length) {
--		m = min(n, spi_engine->rx_length);
--		buf = spi_engine->rx_buf;
-+	while (n && st->rx_length) {
-+		m = min(n, st->rx_length);
-+		buf = st->rx_buf;
- 		for (i = 0; i < m; i++)
- 			buf[i] = readl_relaxed(addr);
--		spi_engine->rx_buf += m;
--		spi_engine->rx_length -= m;
-+		st->rx_buf += m;
-+		st->rx_length -= m;
- 		n -= m;
--		if (spi_engine->rx_length == 0)
-+		if (st->rx_length == 0)
- 			spi_engine_rx_next(spi_engine);
- 	}
- 
--	return spi_engine->rx_length != 0;
-+	return st->rx_length != 0;
- }
- 
- static irqreturn_t spi_engine_irq(int irq, void *devid)
-@@ -387,12 +407,16 @@ static irqreturn_t spi_engine_irq(int irq, void *devid)
- 			disable_int |= SPI_ENGINE_INT_SDI_ALMOST_FULL;
- 	}
- 
--	if (pending & SPI_ENGINE_INT_SYNC) {
--		if (spi_engine->msg &&
--		    spi_engine->completed_id == spi_engine->sync_id) {
-+	if (pending & SPI_ENGINE_INT_SYNC && spi_engine->msg) {
-+		struct spi_engine_message_state *st = spi_engine->msg->state;
-+
-+		if (spi_engine->completed_id == st->sync_id) {
- 			struct spi_message *msg = spi_engine->msg;
-+			struct spi_engine_message_state *st = msg->state;
- 
--			kfree(spi_engine->p);
-+			ida_free(&spi_engine->sync_ida, st->sync_id);
-+			kfree(st->p);
-+			kfree(st);
- 			msg->status = 0;
- 			msg->actual_length = msg->frame_length;
- 			spi_engine->msg = NULL;
-@@ -417,29 +441,46 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
- {
- 	struct spi_engine_program p_dry, *p;
- 	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-+	struct spi_engine_message_state *st;
- 	unsigned int int_enable = 0;
- 	unsigned long flags;
- 	size_t size;
-+	int ret;
-+
-+	st = kzalloc(sizeof(*st), GFP_KERNEL);
-+	if (!st)
-+		return -ENOMEM;
- 
- 	p_dry.length = 0;
- 	spi_engine_compile_message(spi_engine, msg, true, &p_dry);
- 
- 	size = sizeof(*p->instructions) * (p_dry.length + 1);
- 	p = kzalloc(sizeof(*p) + size, GFP_KERNEL);
--	if (!p)
-+	if (!p) {
-+		kfree(st);
- 		return -ENOMEM;
-+	}
-+
-+	ret = ida_alloc_range(&spi_engine->sync_ida, 0, U8_MAX, GFP_KERNEL);
-+	if (ret < 0) {
-+		kfree(p);
-+		kfree(st);
-+		return ret;
-+	}
-+
-+	st->sync_id = ret;
-+
- 	spi_engine_compile_message(spi_engine, msg, false, p);
- 
- 	spin_lock_irqsave(&spi_engine->lock, flags);
--	spi_engine->sync_id = (spi_engine->sync_id + 1) & 0xff;
--	spi_engine_program_add_cmd(p, false,
--		SPI_ENGINE_CMD_SYNC(spi_engine->sync_id));
-+	spi_engine_program_add_cmd(p, false, SPI_ENGINE_CMD_SYNC(st->sync_id));
- 
-+	msg->state = st;
- 	spi_engine->msg = msg;
--	spi_engine->p = p;
-+	st->p = p;
- 
--	spi_engine->cmd_buf = p->instructions;
--	spi_engine->cmd_length = p->length;
-+	st->cmd_buf = p->instructions;
-+	st->cmd_length = p->length;
- 	if (spi_engine_write_cmd_fifo(spi_engine))
- 		int_enable |= SPI_ENGINE_INT_CMD_ALMOST_EMPTY;
- 
-@@ -448,7 +489,7 @@ static int spi_engine_transfer_one_message(struct spi_controller *host,
- 		int_enable |= SPI_ENGINE_INT_SDO_ALMOST_EMPTY;
- 
- 	spi_engine_rx_next(spi_engine);
--	if (spi_engine->rx_length != 0)
-+	if (st->rx_length != 0)
- 		int_enable |= SPI_ENGINE_INT_SDI_ALMOST_FULL;
- 
- 	int_enable |= SPI_ENGINE_INT_SYNC;
-@@ -480,6 +521,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	spi_engine = spi_controller_get_devdata(host);
- 
- 	spin_lock_init(&spi_engine->lock);
-+	ida_init(&spi_engine->sync_ida);
- 
- 	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
- 	if (IS_ERR(spi_engine->clk))
+ /**
+- * enum ieee80211_valid_data_flags - BSS valid data flags
++ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
+  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
 -- 
 2.43.0
 
