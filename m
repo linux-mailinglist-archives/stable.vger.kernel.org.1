@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA978C51DD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954DF8C530C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AC361C21555
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A957E2830DA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5396F077;
-	Tue, 14 May 2024 11:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2E813957B;
+	Tue, 14 May 2024 11:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dy24jBjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vb7LOHPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA95C6D1AF;
-	Tue, 14 May 2024 11:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEF354903;
+	Tue, 14 May 2024 11:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685128; cv=none; b=IOxfzXps7xHvWF1GL4/xqO8d0nywu+kjvUApnDQoAwD1bcOgEcmhB3Nssv71+gwPYpQKSkBXxq5/vMubUnzH11esTwTrT4zH1r+4dug0PxiXlV5dpGuMrEGAkF+JZIYwEMdwplDRZEeuuaVVi/kzLdyaucGO6ufQq+Ba6XQ2hxk=
+	t=1715686281; cv=none; b=VHyxa+79UUq/hWqoSz1PEIzSIvBw1YmFxHm93jCHi1l1aHMhkcjLc2+27Fqab5G1telifzAJu4m3kCkDAuTGOjy+klIxriq48Gw12S+naCMfqTEI/pMCqCmF1VPg7YoaQEy8H4xcVgywWS2m6UzdjQZ5lDsiyTfitKVw6kybaGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685128; c=relaxed/simple;
-	bh=xM4iq3gbpbPnwXdWS4fR/O55kY/o9ayDMMa5gvBt4k8=;
+	s=arc-20240116; t=1715686281; c=relaxed/simple;
+	bh=Ycin/yaVIVQN6Cnnf1XHlReW/REBf2Ih+FOCC224rlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hta2MmCDeTJQE8MT2tkTIg2GFp/jElQ8Ethqc3YS3VAUI02UN1J0qJv3EeP17KiZTi1wpKIs+KyfjRDi8B2169l7Im3YdkkBOnXvJZaE1yPH55VUW87HBEvhkzGGEO70mboDM/ynRSiAZuP831YQHSVezUnD8mRJqGKcIxSkLN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dy24jBjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACD6C2BD10;
-	Tue, 14 May 2024 11:12:07 +0000 (UTC)
+	 MIME-Version; b=p2k//iPnj6Hu4PSQibc7w72bqatH9ThssF3g/bpjbo5C7oA+sepL7GV8VwrOHujF2F5pjEighokFgY+V3WGOaBU2RQ5mVxlcBYP2pgUJHKL9Ob2jWJ6hIF4O1iPVF3gy1iV6bERJhW/c064/IOyNh9ogv+2nKg76HxrtB/lzYqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vb7LOHPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BB9C2BD10;
+	Tue, 14 May 2024 11:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685128;
-	bh=xM4iq3gbpbPnwXdWS4fR/O55kY/o9ayDMMa5gvBt4k8=;
+	s=korg; t=1715686281;
+	bh=Ycin/yaVIVQN6Cnnf1XHlReW/REBf2Ih+FOCC224rlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dy24jBjRDpWlCr+Co1B4RyAXvFZmakThoCzJN2EbbCnwL3OackZqgCqgKDGNxeytF
-	 qQGNbUZPn4zmW5IqUHxG9hn0mfAAZxbMd0pR2my8MThmKQSsOFIbXoUF8mNSt7HpL5
-	 gOj/+c+nGIkyrYBCFhiVM7cQ27F+nQEAIKkWdSHg=
+	b=vb7LOHPTybhBovQJIlx3/zC4MB2WWvMG9bRZkXFN/+Nk9U/59oskjdRUzMAR7jd6V
+	 2q2BG3GZo2Ue1ac/mEiFEqv/8rR74GA/bjoe6tU24C9A78vvrCkiAhu1KiU0w780w8
+	 5CHkoWt6HBi71V8DUv6G6zYu8X5DyR3/13Epy5/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/301] gpu: host1x: Do not setup DMA for virtual devices
+Subject: [PATCH 6.1 051/236] spi: axi-spi-engine: use common AXI macros
 Date: Tue, 14 May 2024 12:16:53 +0200
-Message-ID: <20240514101037.615099959@linuxfoundation.org>
+Message-ID: <20240514101022.283456656@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 8ab58f6841b19423231c5db3378691ec80c778f8 ]
+[ Upstream commit 88c2b56c2690061121cad03f0f551db465287575 ]
 
-The host1x devices are virtual compound devices and do not perform DMA
-accesses themselves, so they do not need to be set up for DMA.
+This avoid duplicating the same macros in multiple drivers by reusing
+the common AXI macros for the version register.
 
-Ideally we would also not need to set up DMA masks for the virtual
-devices, but we currently still need those for legacy support on old
-hardware.
-
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240314154943.2487549-1-thierry.reding@gmail.com
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240202213132.3863124-2-dlechner@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/host1x/bus.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/spi/spi-axi-spi-engine.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/host1x/bus.c b/drivers/gpu/host1x/bus.c
-index 84d042796d2e6..3937889fa912d 100644
---- a/drivers/gpu/host1x/bus.c
-+++ b/drivers/gpu/host1x/bus.c
-@@ -351,11 +351,6 @@ static int host1x_device_uevent(const struct device *dev,
- 	return 0;
- }
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index b75c1272de5f3..719e4f7445361 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -6,6 +6,7 @@
+  */
  
--static int host1x_dma_configure(struct device *dev)
--{
--	return of_dma_configure(dev, dev->of_node, true);
--}
+ #include <linux/clk.h>
++#include <linux/fpga/adi-axi-common.h>
+ #include <linux/idr.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+@@ -14,12 +15,6 @@
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
+ 
+-#define SPI_ENGINE_VERSION_MAJOR(x)	((x >> 16) & 0xff)
+-#define SPI_ENGINE_VERSION_MINOR(x)	((x >> 8) & 0xff)
+-#define SPI_ENGINE_VERSION_PATCH(x)	(x & 0xff)
 -
- static const struct dev_pm_ops host1x_device_pm_ops = {
- 	.suspend = pm_generic_suspend,
- 	.resume = pm_generic_resume,
-@@ -369,7 +364,6 @@ struct bus_type host1x_bus_type = {
- 	.name = "host1x",
- 	.match = host1x_device_match,
- 	.uevent = host1x_device_uevent,
--	.dma_configure = host1x_dma_configure,
- 	.pm = &host1x_device_pm_ops,
- };
- 
-@@ -458,8 +452,6 @@ static int host1x_device_add(struct host1x *host1x,
- 	device->dev.bus = &host1x_bus_type;
- 	device->dev.parent = host1x->dev;
- 
--	of_dma_configure(&device->dev, host1x->dev->of_node, true);
+-#define SPI_ENGINE_REG_VERSION			0x00
 -
- 	device->dev.dma_parms = &device->dma_parms;
- 	dma_set_max_seg_size(&device->dev, UINT_MAX);
+ #define SPI_ENGINE_REG_RESET			0x40
+ 
+ #define SPI_ENGINE_REG_INT_ENABLE		0x80
+@@ -535,12 +530,12 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 	if (IS_ERR(spi_engine->base))
+ 		return PTR_ERR(spi_engine->base);
+ 
+-	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
+-	if (SPI_ENGINE_VERSION_MAJOR(version) != 1) {
++	version = readl(spi_engine->base + ADI_AXI_REG_VERSION);
++	if (ADI_AXI_PCORE_VER_MAJOR(version) != 1) {
+ 		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%c\n",
+-			SPI_ENGINE_VERSION_MAJOR(version),
+-			SPI_ENGINE_VERSION_MINOR(version),
+-			SPI_ENGINE_VERSION_PATCH(version));
++			ADI_AXI_PCORE_VER_MAJOR(version),
++			ADI_AXI_PCORE_VER_MINOR(version),
++			ADI_AXI_PCORE_VER_PATCH(version));
+ 		return -ENODEV;
+ 	}
  
 -- 
 2.43.0
