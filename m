@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CEC8C5255
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F25828C5362
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858051C21747
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B97286175
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2039612F37A;
-	Tue, 14 May 2024 11:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C60B85C65;
+	Tue, 14 May 2024 11:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqpuLlKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKB+XUQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16591E4B0;
-	Tue, 14 May 2024 11:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D8818026;
+	Tue, 14 May 2024 11:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685787; cv=none; b=Qo1IlMnHU0DhtvgtfJG7xRSW8tpIrGD5STjFTPPkh38RBUOaBn76I7VlhI2q+6tG/Qw5SePVBF0u6UP3BPm8s/nJlqCsve7GcXpkJTnD6WcI8NPEZ7M5waEjOJpI4fd8sX/TlJFrvcUw+ldQ4y5cyotawm13LmqIhylpp4C9I8M=
+	t=1715686488; cv=none; b=ZEN8f4U/bMFCsNVU5RorO9HVHdelMNNi+phJ4jhCCyZSjC1I4XaZZqVRFsEjLtR5GEGStb4LgCuGMBWWG6s2RlU3A/6z4knZAEO6gRHV6EUD3V2iQsY9wLQOa/oM2nRhtedrla9af1QhpO4mpVbfdAK5B4OjCgetY0/EcZEftzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685787; c=relaxed/simple;
-	bh=lAQYZUZz/q/fdGb7FzqsczfGCHJzC2sss7XS9B+FWQI=;
+	s=arc-20240116; t=1715686488; c=relaxed/simple;
+	bh=DUBsEti82CBpVrtJoHCVc9jDeBQa/R9/u1h9rJekRw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKxHiCOIJGn5YcixiJWeCPp4v5LeYcKoi9bSfIF02Ivgm3rH9k8nIkQoQZEAqYo5ftaKGNT7B4KaAburnAIziTbIxrnunwRnuBvAAusJc2ZPywG04mJjt7wh94cx71Ro9PQB0Nxa7Al4Ty4GKXNjpnLMuiJIcaPXmKDN4kWC9wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqpuLlKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEE9C2BD10;
-	Tue, 14 May 2024 11:23:06 +0000 (UTC)
+	 MIME-Version; b=Bk8i+yARQfGCbWNDaXNaB2TCe/eCP0inIwVZY3QXAxz3eL+Y1QU1nfQ4Yh5v/IfhdzisbGMexm9+iDERk1VcZNZtt9O5SVigDXvuz+XdzbPrlHL/0y84QhAXzD0PgWqsx8UdBVojCjXjpzhTZWTnzeOIOihYmbdM7acRGmq/G38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKB+XUQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A217AC2BD10;
+	Tue, 14 May 2024 11:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685787;
-	bh=lAQYZUZz/q/fdGb7FzqsczfGCHJzC2sss7XS9B+FWQI=;
+	s=korg; t=1715686488;
+	bh=DUBsEti82CBpVrtJoHCVc9jDeBQa/R9/u1h9rJekRw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqpuLlKMJs/NUu03ZpgSBhbdGNpK2VbS5H0uO5Ax7FiOKEMdcrJrxQYuuGzcZp3FS
-	 n2GqXdDPJbmMsGKpnNS6J+vgOKJJ4YnhlBKplv5/mnMSpkNy8RzJR2tJStubhzMEMG
-	 DO3q2gtZJEbdAZxkIcZPj89+NO5UlZLD81S2lSK4=
+	b=SKB+XUQgw8Pi49prmvEXmgKd1aOJb4B0zsdxr/a495rK+zqJa0Yhg1mqtQxhGvMfu
+	 nEm3tkr1rOZhjDqzTrrL7DjTX87tQUurGGQafwGE6UqUy47lxNX2Itp8KmKrAwpWGD
+	 0kpzG5ojyxUDRS/f7jt/RwfdlDOOm8GtI2lgJ4fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.6 247/301] workqueue: Fix selection of wake_cpu in kick_pool()
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 156/236] hwmon: (corsair-cpro) Protect ccp->wait_input_report with a spinlock
 Date: Tue, 14 May 2024 12:18:38 +0200
-Message-ID: <20240514101041.581732023@linuxfoundation.org>
+Message-ID: <20240514101026.286311772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-commit 57a01eafdcf78f6da34fad9ff075ed5dfdd9f420 upstream.
+[ Upstream commit d02abd57e79469a026213f7f5827a98d909f236a ]
 
-With cpu_possible_mask=0-63 and cpu_online_mask=0-7 the following
-kernel oops was observed:
+Through hidraw, userspace can cause a status report to be sent
+from the device. The parsing in ccp_raw_event() may happen in
+parallel to a send_usb_cmd() call (which resets the completion
+for tracking the report) if it's running on a different CPU where
+bottom half interrupts are not disabled.
 
-smp: Bringing up secondary CPUs ...
-smp: Brought up 1 node, 8 CPUs
-Unable to handle kernel pointer dereference in virtual kernel address space
-Failing address: 0000000000000000 TEID: 0000000000000803
-[..]
- Call Trace:
-arch_vcpu_is_preempted+0x12/0x80
-select_idle_sibling+0x42/0x560
-select_task_rq_fair+0x29a/0x3b0
-try_to_wake_up+0x38e/0x6e0
-kick_pool+0xa4/0x198
-__queue_work.part.0+0x2bc/0x3a8
-call_timer_fn+0x36/0x160
-__run_timers+0x1e2/0x328
-__run_timer_base+0x5a/0x88
-run_timer_softirq+0x40/0x78
-__do_softirq+0x118/0x388
-irq_exit_rcu+0xc0/0xd8
-do_ext_irq+0xae/0x168
-ext_int_handler+0xbe/0xf0
-psw_idle_exit+0x0/0xc
-default_idle_call+0x3c/0x110
-do_idle+0xd4/0x158
-cpu_startup_entry+0x40/0x48
-rest_init+0xc6/0xc8
-start_kernel+0x3c4/0x5e0
-startup_continue+0x3c/0x50
+Add a spinlock around the complete_all() in ccp_raw_event() and
+reinit_completion() in send_usb_cmd() to prevent race issues.
 
-The crash is caused by calling arch_vcpu_is_preempted() for an offline
-CPU. To avoid this, select the cpu with cpumask_any_and_distribute()
-to mask __pod_cpumask with cpu_online_mask. In case no cpu is left in
-the pool, skip the assignment.
-
-tj: This doesn't fully fix the bug as CPUs can still go down between picking
-the target CPU and the wake call. Fixing that likely requires adding
-cpu_online() test to either the sched or s390 arch code. However, regardless
-of how that is fixed, workqueue shouldn't be picking a CPU which isn't
-online as that would result in unpredictable and worse behavior.
-
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Fixes: 8639ecebc9b1 ("workqueue: Implement non-strict affinity scope for unbound workqueues")
-Cc: stable@vger.kernel.org # v6.6+
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-4-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/hwmon/corsair-cpro.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -1135,8 +1135,12 @@ static bool kick_pool(struct worker_pool
- 	    !cpumask_test_cpu(p->wake_cpu, pool->attrs->__pod_cpumask)) {
- 		struct work_struct *work = list_first_entry(&pool->worklist,
- 						struct work_struct, entry);
--		p->wake_cpu = cpumask_any_distribute(pool->attrs->__pod_cpumask);
--		get_work_pwq(work)->stats[PWQ_STAT_REPATRIATED]++;
-+		int wake_cpu = cpumask_any_and_distribute(pool->attrs->__pod_cpumask,
-+							  cpu_online_mask);
-+		if (wake_cpu < nr_cpu_ids) {
-+			p->wake_cpu = wake_cpu;
-+			get_work_pwq(work)->stats[PWQ_STAT_REPATRIATED]++;
-+		}
- 	}
- #endif
- 	wake_up_process(p);
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index 543a741fe5473..486fb6a8c3566 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -16,6 +16,7 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/slab.h>
++#include <linux/spinlock.h>
+ #include <linux/types.h>
+ 
+ #define USB_VENDOR_ID_CORSAIR			0x1b1c
+@@ -77,6 +78,8 @@
+ struct ccp_device {
+ 	struct hid_device *hdev;
+ 	struct device *hwmon_dev;
++	/* For reinitializing the completion below */
++	spinlock_t wait_input_report_lock;
+ 	struct completion wait_input_report;
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
+ 	u8 *cmd_buffer;
+@@ -118,7 +121,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	ccp->cmd_buffer[2] = byte2;
+ 	ccp->cmd_buffer[3] = byte3;
+ 
++	/*
++	 * Disable raw event parsing for a moment to safely reinitialize the
++	 * completion. Reinit is done because hidraw could have triggered
++	 * the raw event parsing and marked the ccp->wait_input_report
++	 * completion as done.
++	 */
++	spin_lock_bh(&ccp->wait_input_report_lock);
+ 	reinit_completion(&ccp->wait_input_report);
++	spin_unlock_bh(&ccp->wait_input_report_lock);
+ 
+ 	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+ 	if (ret < 0)
+@@ -136,11 +147,12 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
+ 	struct ccp_device *ccp = hid_get_drvdata(hdev);
+ 
+ 	/* only copy buffer when requested */
+-	if (completion_done(&ccp->wait_input_report))
+-		return 0;
+-
+-	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
+-	complete_all(&ccp->wait_input_report);
++	spin_lock(&ccp->wait_input_report_lock);
++	if (!completion_done(&ccp->wait_input_report)) {
++		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
++		complete_all(&ccp->wait_input_report);
++	}
++	spin_unlock(&ccp->wait_input_report_lock);
+ 
+ 	return 0;
+ }
+@@ -515,7 +527,9 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 
+ 	ccp->hdev = hdev;
+ 	hid_set_drvdata(hdev, ccp);
++
+ 	mutex_init(&ccp->mutex);
++	spin_lock_init(&ccp->wait_input_report_lock);
+ 	init_completion(&ccp->wait_input_report);
+ 
+ 	hid_device_io_start(hdev);
+-- 
+2.43.0
+
 
 
 
