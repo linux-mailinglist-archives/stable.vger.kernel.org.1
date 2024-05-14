@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028688C5291
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDC98C5391
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 344D31C218F8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF169286F51
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A979513F455;
-	Tue, 14 May 2024 11:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2649128373;
+	Tue, 14 May 2024 11:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7oSrW/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9at2LJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685986311D;
-	Tue, 14 May 2024 11:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6096847A6C;
+	Tue, 14 May 2024 11:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685947; cv=none; b=UkRDi4t7ASAWSA6s/CJz7oShhasUeP/PvY3i/GbnUhxgm7bTyjhsDDP0I546+quLdWARXEVl2dpExnTx5Q+PCzyUsLwym4rX3TjGllslRhRr2cbcn3zYQLIsIMkjBWS8/9oyAkvVo4g9+1Cdizw/03JwLYAuKC6SmfIGxilKAxw=
+	t=1715686593; cv=none; b=RIiM326cLsQoItHDSCNNTNzMSALkTM8GVvjGVAO9xuLf8rJweTesEV7CwXJ38T/zsfGmu9PKxJgnSUgdIR8DRHszc5FDCBa086aNpeadIL/3GCvO8OZwpECShvqoIkkUlX+yDKQAbx9FCj1fxcAPcsbgPGGLmROv+T2Ibu8LRo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685947; c=relaxed/simple;
-	bh=0O3NexeRfshJOxebj5zdc+pMQW0ZvLsmHEVNvb4rpCQ=;
+	s=arc-20240116; t=1715686593; c=relaxed/simple;
+	bh=pj0ovW7VYRMRN9N5HNCqeZCCbMsaCuqOooJD8aMRefs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFrss9e3/2jLbKKKMfnYgKOun7nolqBGtik8ZqEvjM/6XhyioS6F1GtlplT9Q3pjKkVeoRcsrqQkysbtR2R7e1yE9hvJeW3mB4f1ojQimwOQMWxaTFt23MXscU5sRz2B1aNNUk4H1CvzBHe86IwjfD50fw+94y2/Oh6i+qQdS+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7oSrW/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BECDC2BD10;
-	Tue, 14 May 2024 11:25:46 +0000 (UTC)
+	 MIME-Version; b=NmHzWlTI6wJrspXgASGUwNzp7Y75s27FAhl8B2qfUJgmG8brH7RrLLE3hw+vsZwSDEQQVhUHcwUAhE1D/ASHdpNWombdGkBOpCH6or4FY2sbBeLD80OZS62Yl1ztiNWOJ6WTWk4KAizK4OBzRoA0mzUgktxm9juhtmk27+Q/noM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9at2LJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25DCC2BD10;
+	Tue, 14 May 2024 11:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685946;
-	bh=0O3NexeRfshJOxebj5zdc+pMQW0ZvLsmHEVNvb4rpCQ=;
+	s=korg; t=1715686593;
+	bh=pj0ovW7VYRMRN9N5HNCqeZCCbMsaCuqOooJD8aMRefs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7oSrW/+1sEHc3XBRD1XYxaICmyjzwUb+0LxtdsOr0lMY/nxOrEYDaAckYSoMdJci
-	 k6uzXa4CeI2bcFbnSor/YtSu/i2ryBtgswPUzyzZns/6clI+3DQugrKufR8HHh5ndA
-	 HWRhqtEt40gbiTRqGpC/0/C6RLImlHO3jSa36UlE=
+	b=a9at2LJUDgMtzIKe+UDAFXQ1XX4xomkmWO/dzBXviK8zq2/ApwyM1V5mTCKm5lKez
+	 6pFvLcveNl8rSoyt6wos92SnHxLub43aBznWr26imNy5KZPSlD+Ve1fy0oCBY/NxLP
+	 WFf56Y9WofyRZqXyAFBRzwLbQZ7CYZtqGG7lXwbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 282/301] mm: use memalloc_nofs_save() in page_cache_ra_order()
-Date: Tue, 14 May 2024 12:19:13 +0200
-Message-ID: <20240514101042.912895464@linuxfoundation.org>
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 192/236] usb: typec: ucsi: Check for notifications after init
+Date: Tue, 14 May 2024 12:19:14 +0200
+Message-ID: <20240514101027.650174757@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 30153e4466647a17eebfced13eede5cbe4290e69 upstream.
+commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
 
-See commit f2c817bed58d ("mm: use memalloc_nofs_save in readahead path"),
-ensure that page_cache_ra_order() do not attempt to reclaim file-backed
-pages too, or it leads to a deadlock, found issue when test ext4 large
-folio.
+The completion notification for the final SET_NOTIFICATION_ENABLE
+command during initialization can include a connector change
+notification.  However, at the time this completion notification is
+processed, the ucsi struct is not ready to handle this notification.
+As a result the notification is ignored and the controller
+never sends an interrupt again.
 
- INFO: task DataXceiver for:7494 blocked for more than 120 seconds.
- "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- task:DataXceiver for state:D stack:0     pid:7494  ppid:1      flags:0x00000200
- Call trace:
-  __switch_to+0x14c/0x240
-  __schedule+0x82c/0xdd0
-  schedule+0x58/0xf0
-  io_schedule+0x24/0xa0
-  __folio_lock+0x130/0x300
-  migrate_pages_batch+0x378/0x918
-  migrate_pages+0x350/0x700
-  compact_zone+0x63c/0xb38
-  compact_zone_order+0xc0/0x118
-  try_to_compact_pages+0xb0/0x280
-  __alloc_pages_direct_compact+0x98/0x248
-  __alloc_pages+0x510/0x1110
-  alloc_pages+0x9c/0x130
-  folio_alloc+0x20/0x78
-  filemap_alloc_folio+0x8c/0x1b0
-  page_cache_ra_order+0x174/0x308
-  ondemand_readahead+0x1c8/0x2b8
-  page_cache_async_ra+0x68/0xb8
-  filemap_readahead.isra.0+0x64/0xa8
-  filemap_get_pages+0x3fc/0x5b0
-  filemap_splice_read+0xf4/0x280
-  ext4_file_splice_read+0x2c/0x48 [ext4]
-  vfs_splice_read.part.0+0xa8/0x118
-  splice_direct_to_actor+0xbc/0x288
-  do_splice_direct+0x9c/0x108
-  do_sendfile+0x328/0x468
-  __arm64_sys_sendfile64+0x8c/0x148
-  invoke_syscall+0x4c/0x118
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x4c/0x1f8
-  el0t_64_sync_handler+0xc0/0xc8
-  el0t_64_sync+0x188/0x190
+Re-check CCI for a pending connector state change after
+initialization is complete. Adjust the corresponding debug
+message accordingly.
 
-Link: https://lkml.kernel.org/r/20240426112938.124740-1-wangkefeng.wang@huawei.com
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Zhang Yi <yi.zhang@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/readahead.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -490,6 +490,7 @@ void page_cache_ra_order(struct readahea
- 	pgoff_t index = readahead_index(ractl);
- 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
- 	pgoff_t mark = index + ra->size - ra->async_size;
-+	unsigned int nofs;
- 	int err = 0;
- 	gfp_t gfp = readahead_gfp_mask(mapping);
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -855,7 +855,7 @@ void ucsi_connector_change(struct ucsi *
+ 	struct ucsi_connector *con = &ucsi->connector[num - 1];
  
-@@ -506,6 +507,8 @@ void page_cache_ra_order(struct readahea
- 			new_order--;
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+-		dev_dbg(ucsi->dev, "Bogus connector change event\n");
++		dev_dbg(ucsi->dev, "Early connector change event\n");
+ 		return;
  	}
  
-+	/* See comment in page_cache_ra_unbounded() */
-+	nofs = memalloc_nofs_save();
- 	filemap_invalidate_lock_shared(mapping);
- 	while (index <= limit) {
- 		unsigned int order = new_order;
-@@ -534,6 +537,7 @@ void page_cache_ra_order(struct readahea
+@@ -1248,6 +1248,7 @@ static int ucsi_init(struct ucsi *ucsi)
+ {
+ 	struct ucsi_connector *con, *connector;
+ 	u64 command, ntfy;
++	u32 cci;
+ 	int ret;
+ 	int i;
  
- 	read_pages(ractl);
- 	filemap_invalidate_unlock_shared(mapping);
-+	memalloc_nofs_restore(nofs);
+@@ -1300,6 +1301,13 @@ static int ucsi_init(struct ucsi *ucsi)
  
- 	/*
- 	 * If there were already pages in the page cache, then we may have
+ 	ucsi->connector = connector;
+ 	ucsi->ntfy = ntfy;
++
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret)
++		return ret;
++	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
++		ucsi_connector_change(ucsi, cci);
++
+ 	return 0;
+ 
+ err_unregister:
 
 
 
