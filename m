@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336C08C5188
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8298E8C5017
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6460C1C21600
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ED8728499D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9407A13A24B;
-	Tue, 14 May 2024 11:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FEF13958C;
+	Tue, 14 May 2024 10:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XF+yeYun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jl/zZP37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AC6139D19;
-	Tue, 14 May 2024 11:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B3A139568;
+	Tue, 14 May 2024 10:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684646; cv=none; b=KzD8/hW2Anzpg7fUCv4IdOuX8Nug+bRvP6d2tFjRzVMV0HUe3a1TxelpJ2hjHGqMMoLWgEFh/XEDQgYMSozTtGSIbGaHPJifeM2lETUptbcISBFrlcHtZJTXmDiUxjCVaeLmOlb1bETLMd0YOWI9j0YAyH5qS0Saks22Z1r3M3A=
+	t=1715682934; cv=none; b=kfV+1EyifCjyZQoCYGRDrkWgVZ1a3cMCIeL1+6QPc/ULs7Wuhx8gn4uz6dzFpwKUsdR3OH1ZSWfYSvSIhNAxgdZ0hci89zJlMNVzNE6xr2V/YqLY6SMox6D+rUHdwB2tmzjEjfW7omVvW6f5KlvYwlQzcnW7dKx9Z6ZWIuyG9QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684646; c=relaxed/simple;
-	bh=aj6mLU87irF7x0GycoH3mlN2Ao8K6IofHzOugQdil2Y=;
+	s=arc-20240116; t=1715682934; c=relaxed/simple;
+	bh=+lZuthWITtUxAki4VdK6SExSbTPA8FmOLIRWQv/oFNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFB/eXWiWUxwcCsiVGtoTE2JI18DjGX7muF8FJdCofH1aFxEMCwcT3PpyFG3Hv84J9ZRRPjuan9ZJaYMH46gA2sSgp2fxv9JeQs3PYAu3XC2hkn60Rl567HIjJa/VDGeSTSpbQUnzQJscm78WgFJiSwGzwIyTlIL50SaeMJP+04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF+yeYun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD8EC2BD10;
-	Tue, 14 May 2024 11:04:05 +0000 (UTC)
+	 MIME-Version; b=U7wY3N7vMWMIdbNl1w0rmZ+Kt5S58rE6Jn8pa3FmrOhE0ZkUgbI+GXiZWcVn+xqmAu4m02zm1WhSi8H71/GvnqQ65o4n7FWMbPPisCuBRxcil/pXSXSMO+CjfnBcFe4q3SJYktyv8XyJSFJda9mQpCxYQIGhOZd8t3iM00NGqNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jl/zZP37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D0CC2BD10;
+	Tue, 14 May 2024 10:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684646;
-	bh=aj6mLU87irF7x0GycoH3mlN2Ao8K6IofHzOugQdil2Y=;
+	s=korg; t=1715682934;
+	bh=+lZuthWITtUxAki4VdK6SExSbTPA8FmOLIRWQv/oFNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XF+yeYunqeM4TH60ifw4v1/yJfcUkjsb+dh+jCVZTV+9Ce+yqUHLpLZFtC16esoM3
-	 N+ZRJ8jsVyMxu9KLMlBw/GHuoifICNZuMrqBzHZo/IX5d7VHei1tUll5cXIHi7/3Qg
-	 9/PtIBBobjjPUotXWhgvEgYNzoerO9mPoL3YfoYQ=
+	b=jl/zZP37gDBkd0RW+G+U6YjwMOBmNTHtu0w0ujglvsLDhAwhSWMi+Mk28ANq4CHnw
+	 ru4leIw0b5loJTTu0e50xE47KO0iaQ9sj4G2UbCArAOZBDdu1joGcKQBfU6czf1AZS
+	 24l+B2frRhRZUwF1iYmK2EQVryg8Mh24x53mgzmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peng Liu <liupeng17@lenovo.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/301] ASoC: meson: cards: select SND_DYNAMIC_MINORS
+Subject: [PATCH 6.8 136/336] tools/power turbostat: Fix Bzy_MHz documentation typo
 Date: Tue, 14 May 2024 12:15:40 +0200
-Message-ID: <20240514101034.849053518@linuxfoundation.org>
+Message-ID: <20240514101043.734502503@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Peng Liu <liupeng17@lenovo.com>
 
-[ Upstream commit 6db26f9ea4edd8a17d39ab3c20111e3ccd704aef ]
+[ Upstream commit 0b13410b52c4636aacb6964a4253a797c0fa0d16 ]
 
-Amlogic sound cards do create a lot of pcm interfaces, possibly more than
-8. Some pcm interfaces are internal (like DPCM backends and c2c) and not
-exposed to userspace.
+The code calculates Bzy_MHz by multiplying TSC_delta * APERF_delta/MPERF_delta
+The man page erroneously showed that TSC_delta was divided.
 
-Those interfaces still increase the number passed to snd_find_free_minor(),
-which eventually exceeds 8 causing -EBUSY error on card registration if
-CONFIG_SND_DYNAMIC_MINORS=n and the interface is exposed to userspace.
-
-select CONFIG_SND_DYNAMIC_MINORS for Amlogic cards to avoid the problem.
-
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240426134150.3053741-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Peng Liu <liupeng17@lenovo.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/power/x86/turbostat/turbostat.8 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/Kconfig b/sound/soc/meson/Kconfig
-index b93ea33739f29..6458d5dc4902f 100644
---- a/sound/soc/meson/Kconfig
-+++ b/sound/soc/meson/Kconfig
-@@ -99,6 +99,7 @@ config SND_MESON_AXG_PDM
+diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
+index 8f08c3fd498d5..1ba6340d3b3da 100644
+--- a/tools/power/x86/turbostat/turbostat.8
++++ b/tools/power/x86/turbostat/turbostat.8
+@@ -370,7 +370,7 @@ below the processor's base frequency.
  
- config SND_MESON_CARD_UTILS
- 	tristate
-+	select SND_DYNAMIC_MINORS
+ Busy% = MPERF_delta/TSC_delta
  
- config SND_MESON_CODEC_GLUE
- 	tristate
+-Bzy_MHz = TSC_delta/APERF_delta/MPERF_delta/measurement_interval
++Bzy_MHz = TSC_delta*APERF_delta/MPERF_delta/measurement_interval
+ 
+ Note that these calculations depend on TSC_delta, so they
+ are not reliable during intervals when TSC_MHz is not running at the base frequency.
 -- 
 2.43.0
 
