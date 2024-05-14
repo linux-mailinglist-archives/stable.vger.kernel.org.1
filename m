@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF948C5241
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B09148C5335
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027EA1F227D0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27B51C225B3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1375427E;
-	Tue, 14 May 2024 11:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7E26F06A;
+	Tue, 14 May 2024 11:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WljHEWRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmESpVqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF09C2943F;
-	Tue, 14 May 2024 11:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8F16BB39;
+	Tue, 14 May 2024 11:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685713; cv=none; b=Wpm0ClJ9U8SgxFAy/UDx8BUfVjqZoyeMuVCcA1sy+n5KUL2O9sm/2BReNCeEYHNLLiF9Qhvm0lpzsNXNiEhDPD7BVxJUa+Jkgk98kmS6CE1yCzTq96I7zInQVBVzbgZ664Om/MRNjNF/GteXTYDbZfyREwMWLFvHp7+nvYW8JVY=
+	t=1715686361; cv=none; b=i+T5vdoDeptbBRv5Tmiigj3VHuRorqZenjpQndgjCyyrECYklVg4aDF5LBn7S4RpKS3YRG6wJaLR2cAwcGEWUPh0G97Jz4indr2lHhxAJNZGThgD4W9gqMy8wMbNoTnN/YVTAOXg1BUPNL7lF0iC0UbfoxQV/HRkkeeq/9UTS4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685713; c=relaxed/simple;
-	bh=Pdh+ukP3AheWEdMGUstdX7OudVX+p5bs97hxtxXibIs=;
+	s=arc-20240116; t=1715686361; c=relaxed/simple;
+	bh=dNUVNrPSLOrSqrOq4FWJgD9OT3x9SfGwc2LTZE9G8PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZgrIY++IeQwHuVGGD+zFhYDqyejCcGickslJ8+WOpVxeW1x3RTDr0eFTFalCWf5KslKCH1PSvtKhg0e8Hy1w/dy11mrezW0BCwyESLqYQQ4SnWCkJfvDpoSjgfSrB/r5Vg+TstVD/03hGhmGMJaCDBG14gOH77PnIjJMhlntFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WljHEWRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D88AC2BD10;
-	Tue, 14 May 2024 11:21:51 +0000 (UTC)
+	 MIME-Version; b=negH4L5tnM6SGi+3Q1kXRvTXXjBk8Nx4HDZZ7DxvGR/5zOOFnGeuKOfVhz4QsiCCSGz79ek7wcN1pDZfzc1yt4qyeEccvEi1SFR/caFJRdNO7+MXw8JeUzpy5B+hgbmcXddjIVKFJGmB/Tp3XtSDjZv3h6hxD9MpzcPmyai1NbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmESpVqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F2DC2BD10;
+	Tue, 14 May 2024 11:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685712;
-	bh=Pdh+ukP3AheWEdMGUstdX7OudVX+p5bs97hxtxXibIs=;
+	s=korg; t=1715686361;
+	bh=dNUVNrPSLOrSqrOq4FWJgD9OT3x9SfGwc2LTZE9G8PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WljHEWRs+VUvehLKuYAt2N2TMIKW9rsVmlmfGTfxIeuYtZY0lPoxFecxITUhCG06y
-	 h5HYwuLiNuMLVtNCPdZFFPH487lu2wH1gGiC6PMWirlBWAk4y4OfHFvj14DC0btRS/
-	 BV9E2QwyCPRZFgmpTH0U0gEef7BXcAAPUutkfgno=
+	b=fmESpVqgmVNdrtSMWuP0H7DabbiWHSsV8ZrX6QSqu3dgAj3ZHTFYzRe2ZcAWu3c1l
+	 Mg+a5LS+nTzGmb4aP419dAbB4mQVb6xgnermtTGuCh3ZRLs7au5xzoPg8E47qkNZf+
+	 2wmseQcGqP+wOhznEtbxgCUptSpP22okDJwC1MJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/301] ipv6: annotate data-races around cnf.disable_ipv6
+Subject: [PATCH 6.1 110/236] ata: sata_gemini: Check clk_enable() result
 Date: Tue, 14 May 2024 12:17:52 +0200
-Message-ID: <20240514101039.850269001@linuxfoundation.org>
+Message-ID: <20240514101024.548280673@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit d289ab65b89c1d4d88417cb6c03e923f21f95fae ]
+[ Upstream commit e85006ae7430aef780cc4f0849692e266a102ec0 ]
 
-disable_ipv6 is read locklessly, add appropriate READ_ONCE()
-and WRITE_ONCE() annotations.
+The call to clk_enable() in gemini_sata_start_bridge() can fail.
+Add a check to detect such failure.
 
-v2: do not preload net before rtnl_trylock() in
-    addrconf_disable_ipv6() (Jiri)
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 4db783d68b9b ("ipv6: prevent NULL dereference in ip6_output()")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c   | 9 +++++----
- net/ipv6/ip6_input.c  | 4 ++--
- net/ipv6/ip6_output.c | 2 +-
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/ata/sata_gemini.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 01f4502916a12..9dfbda164e8c1 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -4160,7 +4160,7 @@ static void addrconf_dad_work(struct work_struct *w)
- 			if (!ipv6_generate_eui64(addr.s6_addr + 8, idev->dev) &&
- 			    ipv6_addr_equal(&ifp->addr, &addr)) {
- 				/* DAD failed for link-local based on MAC */
--				idev->cnf.disable_ipv6 = 1;
-+				WRITE_ONCE(idev->cnf.disable_ipv6, 1);
- 
- 				pr_info("%s: IPv6 being disabled!\n",
- 					ifp->idev->dev->name);
-@@ -6321,7 +6321,8 @@ static void addrconf_disable_change(struct net *net, __s32 newf)
- 		idev = __in6_dev_get(dev);
- 		if (idev) {
- 			int changed = (!idev->cnf.disable_ipv6) ^ (!newf);
--			idev->cnf.disable_ipv6 = newf;
+diff --git a/drivers/ata/sata_gemini.c b/drivers/ata/sata_gemini.c
+index c96fcf9ee3c07..01f050b1bc93b 100644
+--- a/drivers/ata/sata_gemini.c
++++ b/drivers/ata/sata_gemini.c
+@@ -201,7 +201,10 @@ int gemini_sata_start_bridge(struct sata_gemini *sg, unsigned int bridge)
+ 		pclk = sg->sata0_pclk;
+ 	else
+ 		pclk = sg->sata1_pclk;
+-	clk_enable(pclk);
++	ret = clk_enable(pclk);
++	if (ret)
++		return ret;
 +
-+			WRITE_ONCE(idev->cnf.disable_ipv6, newf);
- 			if (changed)
- 				dev_disable_change(idev);
- 		}
-@@ -6338,7 +6339,7 @@ static int addrconf_disable_ipv6(struct ctl_table *table, int *p, int newf)
+ 	msleep(10);
  
- 	net = (struct net *)table->extra2;
- 	old = *p;
--	*p = newf;
-+	WRITE_ONCE(*p, newf);
- 
- 	if (p == &net->ipv6.devconf_dflt->disable_ipv6) {
- 		rtnl_unlock();
-@@ -6346,7 +6347,7 @@ static int addrconf_disable_ipv6(struct ctl_table *table, int *p, int newf)
- 	}
- 
- 	if (p == &net->ipv6.devconf_all->disable_ipv6) {
--		net->ipv6.devconf_dflt->disable_ipv6 = newf;
-+		WRITE_ONCE(net->ipv6.devconf_dflt->disable_ipv6, newf);
- 		addrconf_disable_change(net, newf);
- 	} else if ((!newf) ^ (!old))
- 		dev_disable_change((struct inet6_dev *)table->extra1);
-diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
-index b8378814532ce..1ba97933c74fb 100644
---- a/net/ipv6/ip6_input.c
-+++ b/net/ipv6/ip6_input.c
-@@ -168,9 +168,9 @@ static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
- 
- 	SKB_DR_SET(reason, NOT_SPECIFIED);
- 	if ((skb = skb_share_check(skb, GFP_ATOMIC)) == NULL ||
--	    !idev || unlikely(idev->cnf.disable_ipv6)) {
-+	    !idev || unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
- 		__IP6_INC_STATS(net, idev, IPSTATS_MIB_INDISCARDS);
--		if (idev && unlikely(idev->cnf.disable_ipv6))
-+		if (idev && unlikely(READ_ONCE(idev->cnf.disable_ipv6)))
- 			SKB_DR_SET(reason, IPV6DISABLED);
- 		goto drop;
- 	}
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index fba789cbd215c..b6cc557abb942 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -227,7 +227,7 @@ int ip6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
- 
--	if (unlikely(idev->cnf.disable_ipv6)) {
-+	if (unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
- 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
- 		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
- 		return 0;
+ 	/* Do not keep clocking a bridge that is not online */
 -- 
 2.43.0
 
