@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD808C520F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D31A8C50C3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28B79282A3C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33F3A1C208BD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046C812A174;
-	Tue, 14 May 2024 11:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE9E76036;
+	Tue, 14 May 2024 10:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcTQXNvG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqRq0qac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B612C54BFE;
-	Tue, 14 May 2024 11:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A096D1D7;
+	Tue, 14 May 2024 10:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685425; cv=none; b=s5sMVsyBLMKTeclyk7lJ0swUl4glPd9RmW8QM2zhbJd379aIxuEke1TwFDbDB4zCfGpbhR/oRKJbTinIEcgdKH2XRkfFkcL+WZcR68cqNoDIfcg86VafzmZUmSMV+uZIomwnAczXTWuMXlyPiyReajLq1qN50h7TpEighxqr7Z4=
+	t=1715683663; cv=none; b=Lx1PGK9wxukVyHqIUwwug1L4tQnoQSjakCSqze9I0Y9d7QrVJlZzH/r5720mxPTPRj4IyaSOa4bt8suvFY6Y+5ENj+A+gJ4EZY65SWq23WLsqLB37bkTpNpYiQuiexw1MydtzO70jKiQK1nxr29hdPEzkJHkUECwMfTtoH10Hcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685425; c=relaxed/simple;
-	bh=5tG0Hu25GxnflYGqLs4aVL4L7/67Ojxv1gxWT5qeUfE=;
+	s=arc-20240116; t=1715683663; c=relaxed/simple;
+	bh=TP0oI6VrWfeLIAoqAkaCp5YOacA79hMyQbi+4GGtHmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbOFuqxRFLQXLxJIuS5RIFbyyf52J037B5+298PtREvWQ6EhZrn/iYQ+kg8NxYHD6rg9R6bCylchBcsMGx02qPXiFVX+ShA4JQ2JGrKbWbLCjUjMqAj6G3RYU+h4+km22990zODoWBpFwBEX5biHzvDh1WO/yIiEjvQiQQeQnmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcTQXNvG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127F2C2BD10;
-	Tue, 14 May 2024 11:17:04 +0000 (UTC)
+	 MIME-Version; b=nzOQe1CavwOpKU2/AqH5a3phYJtzFCbccxnxaW0lzAjbUX+lrWhne+U6s3aj3Bu+wP/Z/vChxQMht+ruuwZPwRZgIbF7oeYa1htnr8B0A7zNUKZabEDimRemzo3PTRouDNafgLtNfp5ZoogIB2I4QsLQPBz3+baZtIL/O6mrbYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqRq0qac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF9AC2BD10;
+	Tue, 14 May 2024 10:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685425;
-	bh=5tG0Hu25GxnflYGqLs4aVL4L7/67Ojxv1gxWT5qeUfE=;
+	s=korg; t=1715683663;
+	bh=TP0oI6VrWfeLIAoqAkaCp5YOacA79hMyQbi+4GGtHmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcTQXNvGM7belzPZTfZ59jZ2Q/LWaSN5J5zpfV+ZsUTIV5xoUp4dAluspS8NNynoQ
-	 ZS50mn1X+Y7peCcqgk7qjCYKYYARudA2l4eoQkwG1KgCwccNRQjlySXGCGlgSH2rSF
-	 1PuN+J+2Xv/7Tybs80bViZ3BMY/6nbQyx3GE6nSU=
+	b=oqRq0qaczwjBHCGZ42DxssbU2B3Rt7oeu5Pt0KIe5z+9FDRhWqaVp5yk95mK1U2SX
+	 5TEkYEeRSsAe0j8UKpn/aUv3avW18gY68MipKx3kSRYs+YbqRXPjHWkv9D+EOJO9ft
+	 Gi3YaAGJ2YrO5817u7+Jb3gPC4rsqP1txuB/Fi5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/301] hwmon: (corsair-cpro) Use complete_all() instead of complete() in ccp_raw_event()
+	stable <stable@kernel.org>,
+	Chris Wulff <chris.wulff@biamp.com>
+Subject: [PATCH 6.8 253/336] usb: gadget: f_fs: Fix a race condition when processing setup packets.
 Date: Tue, 14 May 2024 12:17:37 +0200
-Message-ID: <20240514101039.278526705@linuxfoundation.org>
+Message-ID: <20240514101048.169484560@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Chris Wulff <Chris.Wulff@biamp.com>
 
-[ Upstream commit 3a034a7b0715eb51124a5263890b1ed39978ed3a ]
+commit 0aea736ddb877b93f6d2dd8cf439840d6b4970a9 upstream.
 
-In ccp_raw_event(), the ccp->wait_input_report completion is
-completed once. Since we're waiting for exactly one report in
-send_usb_cmd(), use complete_all() instead of complete()
-to mark the completion as spent.
+If the USB driver passes a pointer into the TRB buffer for creq, this
+buffer can be overwritten with the status response as soon as the event
+is queued. This can make the final check return USB_GADGET_DELAYED_STATUS
+when it shouldn't. Instead use the stored wLength.
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-3-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4d644abf2569 ("usb: gadget: f_fs: Only return delayed status when len is 0")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
+Link: https://lore.kernel.org/r/CO1PR17MB5419BD664264A558B2395E28E1112@CO1PR17MB5419.namprd17.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/corsair-cpro.c | 2 +-
+ drivers/usb/gadget/function/f_fs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 34136d1b04764..e65e3825af974 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -140,7 +140,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 		return 0;
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -3335,7 +3335,7 @@ static int ffs_func_setup(struct usb_fun
+ 	__ffs_event_add(ffs, FUNCTIONFS_SETUP);
+ 	spin_unlock_irqrestore(&ffs->ev.waitq.lock, flags);
  
- 	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
--	complete(&ccp->wait_input_report);
-+	complete_all(&ccp->wait_input_report);
- 
- 	return 0;
+-	return creq->wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
++	return ffs->ev.setup.wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
  }
--- 
-2.43.0
-
+ 
+ static bool ffs_func_req_match(struct usb_function *f,
 
 
 
