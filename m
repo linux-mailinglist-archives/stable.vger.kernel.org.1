@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-43926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9C18C5045
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:01:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE49B8C52BE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC45F282CB0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:01:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BEAD1C21931
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5678013B284;
-	Tue, 14 May 2024 10:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB84E143742;
+	Tue, 14 May 2024 11:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmeDZHHy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgZ0pGN7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1351254903;
-	Tue, 14 May 2024 10:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782B612FF98;
+	Tue, 14 May 2024 11:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683124; cv=none; b=HQh1ccV8c+2sND/sTGsnEO6q3Objoahs0ZZVQ7dILJwqIlpV1tOVDxZK+soefbe8YYCHO/eVAmRcq6NXqmk11+rPvahAJb57wpbgDD7739/ZV60GEpcImdUFSjSnB6rHVgJaSa71GW5Oq7r+Mn4XYPR4b9isog6JQLiNOtHem9Q=
+	t=1715686096; cv=none; b=LNdEcH3tMDO5L1H8Qad/KHZq7hQW9D6j1hUCPt4I90+tpkqGmDFX6BJ8zf8SU+S285xtn5BR+JoZ/Zz+cjpGA+gJM6cVxekgUFFSBko9mQnFJQYWKGu0Q8wrZZQ7sgm1RO44GhAauWd9P+U1yDzGpfc4j62vhTd/pj4qPTOPIIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683124; c=relaxed/simple;
-	bh=ji2txronKhWtK1uw5ez+a1oVKIzSomwP0K8zr3u6zvI=;
+	s=arc-20240116; t=1715686096; c=relaxed/simple;
+	bh=Tg/2UbrqDbwdyXO595HVsF997NW+vywGSO8WWavFSw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUCWT9oxWrNQ5B7GzqzCjYvjHwYGlj8QpEOegsTVqUxn4z8pZVN/r1LK787etYpNzoqIApLVYOcDzA/KdvVabfLOyFbVY3QcAUJBsUgTn9ayyASKQU//i8GIt92yobXtD/0QAE0wLiZeSyeqGRXzAewR407e6hiWs5LhAdeWbak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmeDZHHy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB21C32781;
-	Tue, 14 May 2024 10:38:43 +0000 (UTC)
+	 MIME-Version; b=bDOjm0e1zFAN8vebtIE4TDMuY154S21ITM63aanDi77U4Gr0BBAAwmSgzOFgCFhfsFzrLAoZldzCdak+/bkJJocm4ZpPSyFE9FSqO98j3a3xllp+r2Q06/RQPKQ6jRr3k6Y0md+ajMztg+AblV0XLSHPsuat+A/buGBdOnX2F0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgZ0pGN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F8AC2BD10;
+	Tue, 14 May 2024 11:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683123;
-	bh=ji2txronKhWtK1uw5ez+a1oVKIzSomwP0K8zr3u6zvI=;
+	s=korg; t=1715686096;
+	bh=Tg/2UbrqDbwdyXO595HVsF997NW+vywGSO8WWavFSw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmeDZHHyZ3RGiLfc4dQItwQMcPUCSTI4LnM1Lxf+ZCrsrAWVdR/MQvgTWdCpHTT/L
-	 Q1zmlURPoy/h+6t89irQG8CKrAA8gq7VFKo9WWK+mAAzGrGVa8HRbKBxUk1CnbiACD
-	 n7+sskLEgLwUvJJB0Yx7WBOn3rUptGF9ArLqvB1c=
+	b=YgZ0pGN7j2NJQZDav6dK4Vce08LfpTyav01tgvQ8eD5Ar4CA6sUDC4GLbWC81Ffn7
+	 XPzdS7DtN+0sVk4/omyBpiIQbXAqC9OnD1lJ90KTuJTSbEST5wXconfbEOXjg3Nad7
+	 Wmbq+lIEo0Hdg/waB4G3Mr3Vy2hOAgX+MHWy7PUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Colin Cross <ccross@google.com>,
+	David Howells <dhowells@redhat.com>,
+	"Eric W . Biederman" <ebiederm@xmission.com>,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Peter Xu <peterx@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	William Kucharski <william.kucharski@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 170/336] hv_netvsc: Dont free decrypted memory
+Subject: [PATCH 6.1 012/236] mm/hugetlb: add folio_hstate()
 Date: Tue, 14 May 2024 12:16:14 +0200
-Message-ID: <20240514101045.021202011@linuxfoundation.org>
+Message-ID: <20240514101020.796743120@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +74,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 
-[ Upstream commit bbf9ac34677b57506a13682b31a2a718934c0e31 ]
+[ Upstream commit e51da3a9b6c2f67879880259a25c51dbda01c462 ]
 
-In CoCo VMs it is possible for the untrusted host to cause
-set_memory_encrypted() or set_memory_decrypted() to fail such that an
-error is returned and the resulting memory is shared. Callers need to
-take care to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional or security
-issues.
+Helper function to retrieve hstate information from a hugetlb folio.
 
-The netvsc driver could free decrypted/shared pages if
-set_memory_decrypted() fails. Check the decrypted field in the gpadl
-to decide whether to free the memory.
-
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20240311161558.1310-4-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240311161558.1310-4-mhklinux@outlook.com>
+Link: https://lkml.kernel.org/r/20220922154207.1575343-6-sidhartha.kumar@oracle.com
+Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Colin Cross <ccross@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: "Eric W . Biederman" <ebiederm@xmission.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/linux/hugetlb.h | 14 ++++++++++++--
+ mm/migrate.c            |  2 +-
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-index a6fcbda64ecc6..2b6ec979a62f2 100644
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -154,8 +154,11 @@ static void free_netvsc_device(struct rcu_head *head)
- 	int i;
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 02d9a8af3704e..37eeef9841c4e 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -863,10 +863,15 @@ static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift,
+ }
+ #endif
  
- 	kfree(nvdev->extension);
--	vfree(nvdev->recv_buf);
--	vfree(nvdev->send_buf);
++static inline struct hstate *folio_hstate(struct folio *folio)
++{
++	VM_BUG_ON_FOLIO(!folio_test_hugetlb(folio), folio);
++	return size_to_hstate(folio_size(folio));
++}
 +
-+	if (!nvdev->recv_buf_gpadl_handle.decrypted)
-+		vfree(nvdev->recv_buf);
-+	if (!nvdev->send_buf_gpadl_handle.decrypted)
-+		vfree(nvdev->send_buf);
- 	bitmap_free(nvdev->send_section_map);
+ static inline struct hstate *page_hstate(struct page *page)
+ {
+-	VM_BUG_ON_PAGE(!PageHuge(page), page);
+-	return size_to_hstate(page_size(page));
++	return folio_hstate(page_folio(page));
+ }
  
- 	for (i = 0; i < VRSS_CHANNEL_MAX; i++) {
+ static inline unsigned hstate_index_to_shift(unsigned index)
+@@ -1077,6 +1082,11 @@ static inline struct hstate *hstate_vma(struct vm_area_struct *vma)
+ 	return NULL;
+ }
+ 
++static inline struct hstate *folio_hstate(struct folio *folio)
++{
++	return NULL;
++}
++
+ static inline struct hstate *page_hstate(struct page *page)
+ {
+ 	return NULL;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index c5968021fde0a..0252aa4ff572e 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1632,7 +1632,7 @@ struct page *alloc_migration_target(struct page *page, unsigned long private)
+ 		nid = folio_nid(folio);
+ 
+ 	if (folio_test_hugetlb(folio)) {
+-		struct hstate *h = page_hstate(&folio->page);
++		struct hstate *h = folio_hstate(folio);
+ 
+ 		gfp_mask = htlb_modify_alloc_mask(h, gfp_mask);
+ 		return alloc_huge_page_nodemask(h, nid, mtc->nmask, gfp_mask);
 -- 
 2.43.0
 
