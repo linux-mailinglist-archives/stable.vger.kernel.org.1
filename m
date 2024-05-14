@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C6038C5389
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615678C5420
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2D541F23293
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60D5287316
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A83512837C;
-	Tue, 14 May 2024 11:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F99F1386D0;
+	Tue, 14 May 2024 11:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5qxF/WA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEobRVB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3830047A6C;
-	Tue, 14 May 2024 11:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD2B1386C2;
+	Tue, 14 May 2024 11:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686596; cv=none; b=MaXP1k2DxKgDx5E+U5CvYeSGZ0hSve8K/bpZKM5RD76g2DDc1Kyzf2jqDyjedcL0sFqNkWnCnM7WqNBO0yHtFrDFV5f+4MljP690Ler9bq1iPEMbi1lLV6kTpUti1Q2G4G/TAAuCg6Q1oiPgyRB4+Dl96KX6H3NLDmrYoOvMrNI=
+	t=1715686996; cv=none; b=JCHVy+mwmMKWY/UNOLB3VuH2FB1ta/vc6u3WeyflrPe8N2HodEUTxE0EcvYJdq5SSuoaLlZq7wuwYB8/4x54YY6ymGrkfCekLTzlYUvXhHrUDGnfV6dibMPc6dg1Yaov2JpnXRprJc/rPH04/AITs/wE2LA4RktXrJ2KJhyij14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686596; c=relaxed/simple;
-	bh=+mdXUpiSElh5vPmzmzOmgZf2EKVmk6MHlyftmkNhJU0=;
+	s=arc-20240116; t=1715686996; c=relaxed/simple;
+	bh=FYK9EKKQEQ488HHYb+8mUzDHZ8k6hn6tt94QxGl2GqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xc8USboo6yqTViWges+TRHaEzTxLJlZ0oRhR2wZVbE454B4qYLycxysAtSIGiYIx8USjFGsRKSf5Oj+A0QKhe54irQCkG5LJ4na4taDdtVX+dKqML9uspIM9ikLNpTuASaCwtfPk81NUMjq5ECDl8F6TCixED80o2s5R8d4j1Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5qxF/WA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6A4C2BD10;
-	Tue, 14 May 2024 11:36:35 +0000 (UTC)
+	 MIME-Version; b=qM4DCtivVWskcAMyHcwdygabZnSstsFEtoaJvVQM4eVNwgX1rjlnnK/1N3TDeBbhtBjaY2jAsPkAkDQ1YYFWytYbR0nmIKZubyfiqND0TQAn2Cd6BL6zTxa0qWYEvvcYQnVwo/0Cy90kklb1g9AcS3hbOo3jPFaY80ElKzYfFSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEobRVB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8481BC32782;
+	Tue, 14 May 2024 11:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686596;
-	bh=+mdXUpiSElh5vPmzmzOmgZf2EKVmk6MHlyftmkNhJU0=;
+	s=korg; t=1715686995;
+	bh=FYK9EKKQEQ488HHYb+8mUzDHZ8k6hn6tt94QxGl2GqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5qxF/WAWGQjMlvC23E/1tOLis0wN8AhopiCu8QgswkDms0HTygDhdzxTIPzO+V93
-	 jlyhsKh1EjBbDC662Ob3vj+GMdwoeu+6jBoZ/ZkK5bvDQ2saGgWzEij9PJWSvQzOOE
-	 Rmlflhj2lVy9QGs8+nLXtexS4FASwzpj0SNmAgfI=
+	b=zEobRVB4uRsMW4aR6wuscdPeLywMfWgrRzal646wKr1igwbiCGwEMdaF0MWTYWNYw
+	 8SoPwO9rqJ7mp/0joFaLpnwA/N4ZefprmINShfVecuzZFL+6TSrLOTpui0Q5bozElO
+	 TkIkT/rbG4w1f8DU0TsHIHgmvlNXsPnhJFJXkM3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 193/236] usb: typec: ucsi: Fix connector check on init
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 04/84] pinctrl: core: delete incorrect free in pinctrl_enable()
 Date: Tue, 14 May 2024 12:19:15 +0200
-Message-ID: <20240514101027.689241017@linuxfoundation.org>
+Message-ID: <20240514100951.856881170@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit ce4c8d21054ae9396cd759fe6e8157b525616dc4 upstream.
+[ Upstream commit 5038a66dad0199de60e5671603ea6623eb9e5c79 ]
 
-Fix issues when initially checking for a connector change:
-- Use the correct connector number not the entire CCI.
-- Call ->read under the PPM lock.
-- Remove a bogus READ_ONCE.
+The "pctldev" struct is allocated in devm_pinctrl_register_and_init().
+It's a devm_ managed pointer that is freed by devm_pinctrl_dev_release(),
+so freeing it in pinctrl_enable() will lead to a double free.
 
-Fixes: 808a8b9e0b87 ("usb: typec: ucsi: Check for notifications after init")
-Cc: stable@kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240401210515.1902048-1-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The devm_pinctrl_dev_release() function frees the pindescs and destroys
+the mutex as well.
+
+Fixes: 6118714275f0 ("pinctrl: core: Fix pinctrl_register_and_init() with pinctrl_enable()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <578fbe56-44e9-487c-ae95-29b695650f7c@moroto.mountain>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pinctrl/core.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1302,11 +1302,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 	ucsi->connector = connector;
- 	ucsi->ntfy = ntfy;
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index a1c2dc304fb10..3947b7064bead 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -2053,13 +2053,7 @@ int pinctrl_enable(struct pinctrl_dev *pctldev)
  
-+	mutex_lock(&ucsi->ppm_lock);
- 	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	mutex_unlock(&ucsi->ppm_lock);
- 	if (ret)
- 		return ret;
--	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
--		ucsi_connector_change(ucsi, cci);
-+	if (UCSI_CCI_CONNECTOR(cci))
-+		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
+ 	error = pinctrl_claim_hogs(pctldev);
+ 	if (error) {
+-		dev_err(pctldev->dev, "could not claim hogs: %i\n",
+-			error);
+-		pinctrl_free_pindescs(pctldev, pctldev->desc->pins,
+-				      pctldev->desc->npins);
+-		mutex_destroy(&pctldev->mutex);
+-		kfree(pctldev);
+-
++		dev_err(pctldev->dev, "could not claim hogs: %i\n", error);
+ 		return error;
+ 	}
  
- 	return 0;
- 
+-- 
+2.43.0
+
 
 
 
