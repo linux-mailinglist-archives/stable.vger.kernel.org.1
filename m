@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E578C8C5273
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:37:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5888C5384
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3BC4282B9C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:37:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4123B1C22A2F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB83813D500;
-	Tue, 14 May 2024 11:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664A47E574;
+	Tue, 14 May 2024 11:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WayXLFjl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNu2FV2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797626311D;
-	Tue, 14 May 2024 11:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2352647A6C;
+	Tue, 14 May 2024 11:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685899; cv=none; b=NnWF/hB76DuK4zAjIxYekI8qieYNx3oR/ormaRwjXEeUcD+8Uq+ihJm1jbxqWJTA9GRvzsRYow379MOERNjjTaRCnmXIKdCLNliX8VA8gA9YMREuEFQLZ3CeYwwafmGuZ04UHecz9yG+PEnnDUTLFhmdLNwokycnM0ax5B8J8vY=
+	t=1715686585; cv=none; b=e1ewfFL7F0F+gW52B3Nwa8OGEbNXateXRjkcWBtUoJUFgeIGg5QdC+hHjHOdnmPFwa4KrqgyeYhzNjsUgexnk8p3NZ1PvglJ4+raxxQHIGNWRKsni8lTxCz1m4k+g6QmmppwXhm1gd12xWow00jrK/RZJORpUubHxgmXZ3ElAec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685899; c=relaxed/simple;
-	bh=5mM1Xuvrx/5sIOiKTzhN0LGBaRtHm6dLSUPaSBa/ZeM=;
+	s=arc-20240116; t=1715686585; c=relaxed/simple;
+	bh=vINcPJcetYMcAyEtMa4dFwq0Ki+VoDpIv7EsUMLnVlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3ARf8twUEPk8/xS8L+MZvzClrvTcP/Jei2dcyOniT/0uDVwHnryKlCOb0HkWdLMWJoy+Dc87ALmTv25I9nWuSqT3NCQE1IK/9Ra6XW1vs8P5ypKGH7vzqT9REEQZO6tvZ/l0niVns7yoaWYTnNbfEtQrqS1NRGpDjEEBUPBRbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WayXLFjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9EABC2BD10;
-	Tue, 14 May 2024 11:24:58 +0000 (UTC)
+	 MIME-Version; b=cYFdA48hCe+VUJVXLbFfe7LPLVLAePcTPlriGbQHUsH+20BOiMZmneiXZQwr8XWP8JMgJoO/HtPcMND6IsIACnem9ZFUdNqb8161V4F1/CKUdGb9wVT+JPFoUT4bE1qExNiTshjJDOodT35oB6v9XvYlIHwbOhP0IUloiPQvIcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNu2FV2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48027C2BD10;
+	Tue, 14 May 2024 11:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685899;
-	bh=5mM1Xuvrx/5sIOiKTzhN0LGBaRtHm6dLSUPaSBa/ZeM=;
+	s=korg; t=1715686584;
+	bh=vINcPJcetYMcAyEtMa4dFwq0Ki+VoDpIv7EsUMLnVlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WayXLFjlOIPgg8pG9yB113yr/L/Rr5QfA9rXUdZMwxxp0DYecYogQN/RY4Xyi9Iuu
-	 zPWe2/F6aL17LOkdfQmDpXKuV2TwwBGofwhrICGi6MS8ovNZRqSJqH6EjusxLpewy9
-	 YhBtMFH2JCvBgKDRhdAGVL/LD5NNy4xoVPLuM6wE=
+	b=vNu2FV2fDV66gJ8dAWyT4LS29Ndp6JiSmm69OE6bB+MV7gfB5OIaHbbM94UJbdSpi
+	 TmH+6HtDuyAIkW6JCsmqVUXiT9d8/Uc0vE2bIPiJepo2XWZZk8zrx2I62bvzkD4Gub
+	 K7ovvNmVPmJJ4TLSMKfh+0d06PmeFmN/QYVoeivk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Vehmanen <kai.vehmanen@intel.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Uma Shankar <uma.shankar@intel.com>,
-	Animesh Manna <animesh.manna@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.6 272/301] drm/i915/audio: Fix audio time stamp programming for DP
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Gabe Teeger <gabe.teeger@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 181/236] drm/amd/display: Atom Integrated System Info v2_2 for DCN35
 Date: Tue, 14 May 2024 12:19:03 +0200
-Message-ID: <20240514101042.535485731@linuxfoundation.org>
+Message-ID: <20240514101027.230927123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,174 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: Gabe Teeger <gabe.teeger@amd.com>
 
-commit c66b8356273c8d22498f88e4223af47a7bf8a23c upstream.
+[ Upstream commit 9a35d205f466501dcfe5625ca313d944d0ac2d60 ]
 
-Intel hardware is capable of programming the Maud/Naud SDPs on its
-own based on real-time clocks. While doing so, it takes care
-of any deviations from the theoretical values. Programming the registers
-explicitly with static values can interfere with this logic. Therefore,
-let the HW decide the Maud and Naud SDPs on it's own.
+New request from KMD/VBIOS in order to support new UMA carveout
+model. This fixes a null dereference from accessing
+Ctx->dc_bios->integrated_info while it was NULL.
 
-Cc: stable@vger.kernel.org # v5.17
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8097
-Co-developed-by: Kai Vehmanen <kai.vehmanen@intel.com>
-Signed-off-by: Kai Vehmanen <kai.vehmanen@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Animesh Manna <animesh.manna@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240430091825.733499-1-chaitanya.kumar.borah@intel.com
-(cherry picked from commit 8e056b50d92ae7f4d6895d1c97a69a2a953cf97b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+DAL parses through the BIOS and extracts the necessary
+integrated_info but was missing a case for the new BIOS
+version 2.3.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Gabe Teeger <gabe.teeger@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_audio.c |  113 ++---------------------------
- 1 file changed, 8 insertions(+), 105 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/i915/display/intel_audio.c
-+++ b/drivers/gpu/drm/i915/display/intel_audio.c
-@@ -75,19 +75,6 @@ struct intel_audio_funcs {
- 				       struct intel_crtc_state *crtc_state);
- };
- 
--/* DP N/M table */
--#define LC_810M	810000
--#define LC_540M	540000
--#define LC_270M	270000
--#define LC_162M	162000
--
--struct dp_aud_n_m {
--	int sample_rate;
--	int clock;
--	u16 m;
--	u16 n;
--};
--
- struct hdmi_aud_ncts {
- 	int sample_rate;
- 	int clock;
-@@ -95,60 +82,6 @@ struct hdmi_aud_ncts {
- 	int cts;
- };
- 
--/* Values according to DP 1.4 Table 2-104 */
--static const struct dp_aud_n_m dp_aud_n_m[] = {
--	{ 32000, LC_162M, 1024, 10125 },
--	{ 44100, LC_162M, 784, 5625 },
--	{ 48000, LC_162M, 512, 3375 },
--	{ 64000, LC_162M, 2048, 10125 },
--	{ 88200, LC_162M, 1568, 5625 },
--	{ 96000, LC_162M, 1024, 3375 },
--	{ 128000, LC_162M, 4096, 10125 },
--	{ 176400, LC_162M, 3136, 5625 },
--	{ 192000, LC_162M, 2048, 3375 },
--	{ 32000, LC_270M, 1024, 16875 },
--	{ 44100, LC_270M, 784, 9375 },
--	{ 48000, LC_270M, 512, 5625 },
--	{ 64000, LC_270M, 2048, 16875 },
--	{ 88200, LC_270M, 1568, 9375 },
--	{ 96000, LC_270M, 1024, 5625 },
--	{ 128000, LC_270M, 4096, 16875 },
--	{ 176400, LC_270M, 3136, 9375 },
--	{ 192000, LC_270M, 2048, 5625 },
--	{ 32000, LC_540M, 1024, 33750 },
--	{ 44100, LC_540M, 784, 18750 },
--	{ 48000, LC_540M, 512, 11250 },
--	{ 64000, LC_540M, 2048, 33750 },
--	{ 88200, LC_540M, 1568, 18750 },
--	{ 96000, LC_540M, 1024, 11250 },
--	{ 128000, LC_540M, 4096, 33750 },
--	{ 176400, LC_540M, 3136, 18750 },
--	{ 192000, LC_540M, 2048, 11250 },
--	{ 32000, LC_810M, 1024, 50625 },
--	{ 44100, LC_810M, 784, 28125 },
--	{ 48000, LC_810M, 512, 16875 },
--	{ 64000, LC_810M, 2048, 50625 },
--	{ 88200, LC_810M, 1568, 28125 },
--	{ 96000, LC_810M, 1024, 16875 },
--	{ 128000, LC_810M, 4096, 50625 },
--	{ 176400, LC_810M, 3136, 28125 },
--	{ 192000, LC_810M, 2048, 16875 },
--};
--
--static const struct dp_aud_n_m *
--audio_config_dp_get_n_m(const struct intel_crtc_state *crtc_state, int rate)
--{
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(dp_aud_n_m); i++) {
--		if (rate == dp_aud_n_m[i].sample_rate &&
--		    crtc_state->port_clock == dp_aud_n_m[i].clock)
--			return &dp_aud_n_m[i];
--	}
--
--	return NULL;
--}
--
- static const struct {
- 	int clock;
- 	u32 config;
-@@ -386,47 +319,17 @@ hsw_dp_audio_config_update(struct intel_
- 			   const struct intel_crtc_state *crtc_state)
- {
- 	struct drm_i915_private *i915 = to_i915(encoder->base.dev);
--	struct i915_audio_component *acomp = i915->display.audio.component;
- 	enum transcoder cpu_transcoder = crtc_state->cpu_transcoder;
--	enum port port = encoder->port;
--	const struct dp_aud_n_m *nm;
--	int rate;
--	u32 tmp;
- 
--	rate = acomp ? acomp->aud_sample_rate[port] : 0;
--	nm = audio_config_dp_get_n_m(crtc_state, rate);
--	if (nm)
--		drm_dbg_kms(&i915->drm, "using Maud %u, Naud %u\n", nm->m,
--			    nm->n);
--	else
--		drm_dbg_kms(&i915->drm, "using automatic Maud, Naud\n");
--
--	tmp = intel_de_read(i915, HSW_AUD_CFG(cpu_transcoder));
--	tmp &= ~AUD_CONFIG_N_VALUE_INDEX;
--	tmp &= ~AUD_CONFIG_PIXEL_CLOCK_HDMI_MASK;
--	tmp &= ~AUD_CONFIG_N_PROG_ENABLE;
--	tmp |= AUD_CONFIG_N_VALUE_INDEX;
--
--	if (nm) {
--		tmp &= ~AUD_CONFIG_N_MASK;
--		tmp |= AUD_CONFIG_N(nm->n);
--		tmp |= AUD_CONFIG_N_PROG_ENABLE;
--	}
--
--	intel_de_write(i915, HSW_AUD_CFG(cpu_transcoder), tmp);
--
--	tmp = intel_de_read(i915, HSW_AUD_M_CTS_ENABLE(cpu_transcoder));
--	tmp &= ~AUD_CONFIG_M_MASK;
--	tmp &= ~AUD_M_CTS_M_VALUE_INDEX;
--	tmp &= ~AUD_M_CTS_M_PROG_ENABLE;
--
--	if (nm) {
--		tmp |= nm->m;
--		tmp |= AUD_M_CTS_M_VALUE_INDEX;
--		tmp |= AUD_M_CTS_M_PROG_ENABLE;
--	}
-+	/* Enable time stamps. Let HW calculate Maud/Naud values */
-+	intel_de_rmw(i915, HSW_AUD_CFG(cpu_transcoder),
-+		     AUD_CONFIG_N_VALUE_INDEX |
-+		     AUD_CONFIG_PIXEL_CLOCK_HDMI_MASK |
-+		     AUD_CONFIG_UPPER_N_MASK |
-+		     AUD_CONFIG_LOWER_N_MASK |
-+		     AUD_CONFIG_N_PROG_ENABLE,
-+		     AUD_CONFIG_N_VALUE_INDEX);
- 
--	intel_de_write(i915, HSW_AUD_M_CTS_ENABLE(cpu_transcoder), tmp);
- }
- 
- static void
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 93e40e0a15087..4d2590964a204 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -2962,6 +2962,7 @@ static enum bp_result construct_integrated_info(
+ 				result = get_integrated_info_v2_1(bp, info);
+ 				break;
+ 			case 2:
++			case 3:
+ 				result = get_integrated_info_v2_2(bp, info);
+ 				break;
+ 			default:
+-- 
+2.43.0
+
 
 
 
