@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346198C5534
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E025C8C53FE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65F381C231A5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ECAF28994B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907995103D;
-	Tue, 14 May 2024 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CED712FB37;
+	Tue, 14 May 2024 11:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8qQhlYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffGK7F9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE7C2B9AD;
-	Tue, 14 May 2024 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDFA7E77B;
+	Tue, 14 May 2024 11:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687735; cv=none; b=MeAmCAlJlgleuoKVCaWXe3SbXhKFU1bibch5VJTjyMJHbv4eCI0BLIl0Y+z5k6E+1FQ/trq8Gptaq1qBb9UOgMYBG7qnMqDDZAQA6NKISUcG6rR6ay8H6olfo4hDkx20e8SRk/M3LVKOVjw4SaOknZTCbI4dOGGWjSKjahxigpA=
+	t=1715686886; cv=none; b=t0/aQjxcdMlprwzUsW7YEpAZgulUhuqlYR2YjBRKZLR7AoxN7oGAwGlbNXiwzGI+QQPoKUo3YXRTq5wuw2M0T4gQoBnA3CRe0EXZ54DOFL+InYQegmmQNiMdtj0KXmNCCh5ybiBFLps6hu5t8+vj4biA83NtIXO0kvISTCCROK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687735; c=relaxed/simple;
-	bh=sgqj05B5GawxJfb35kz89bS7zAfC1u6mzDAfiFhAt+0=;
+	s=arc-20240116; t=1715686886; c=relaxed/simple;
+	bh=AiGCulxNbZBCOdNlbJWkI00SrCuiSHwGgNDGMWJSOzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZYdpttkNkeWkkTcS6UwN7Rbyzf1mcTyYJ+5GiBplUZfrjjy2+PdQhcAOVrVBlgZwmJMw5Sk/02dQ2EZ2hqYlMEr21dPpuLYYtXFHbuibRHCywr0ITklJxn5URSpXapfpvdyKiMyOQnco07dVDktctoWDp1TRGStbGjrq7Jw2gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8qQhlYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE990C2BD10;
-	Tue, 14 May 2024 11:55:34 +0000 (UTC)
+	 MIME-Version; b=axnSBpOYs9KS2dZhx/O6n+JdbMuV/aVQ/SnKF1Nw4+IgKseZVVqc6Q3baW6ZrAPzMh0iqqzEF01zxvzpftAcqZZ+U5SCVl6FFZ2LgIt9al4Yz3trp/g0Bhq/ILMIGtr143TzaWqu4XXHqlFs6EWMiU53ypFAje/7bTjRwwNSsdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffGK7F9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73892C2BD10;
+	Tue, 14 May 2024 11:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687735;
-	bh=sgqj05B5GawxJfb35kz89bS7zAfC1u6mzDAfiFhAt+0=;
+	s=korg; t=1715686885;
+	bh=AiGCulxNbZBCOdNlbJWkI00SrCuiSHwGgNDGMWJSOzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8qQhlYJ8Tiyx3yPGaNQszzEJ9Yvjbbslv7vWxWFXWuf7YlleaQuXq3DQ2ne9BKK7
-	 5sXVubuDUiBH3eBvpHpKDpNJcSDCi9gLg8B6BL6mCXrVgAL8u5f23/FSuAiLfcKOcA
-	 7lmJgmWRvbAm9hFo578TKzB1LCHPhOcbNxrBnRvs=
+	b=ffGK7F9M54/npwJCi58enFsNchmE+1sKMI7swNnMB2jLZoiR0HMhsS8C/Yg+1ksFP
+	 jKyZIWrSgWu/7h7Aj/E8cscPgb1bofLo8EcKRl8SSux6B5O0D6EEqa9a9gC752HCHG
+	 0Rc6Tp8baudEEzMqC66Q7kY8Ou3RsJH0kuTxY9N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/168] fs/9p: translate O_TRUNC into OTRUNC
+Subject: [PATCH 4.19 24/63] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
 Date: Tue, 14 May 2024 12:19:45 +0200
-Message-ID: <20240514101009.977369357@linuxfoundation.org>
+Message-ID: <20240514100948.929547031@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Sindholt <opensource@zhasha.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 87de39e70503e04ddb58965520b15eb9efa7eef3 ]
+[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
 
-This one hits both 9P2000 and .u as it appears v9fs has never translated
-the O_TRUNC flag.
+Running kernel-doc on ieee80211_i.h flagged the following:
+net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
+net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
 
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+Fix these warnings.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_inode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/ieee80211_i.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 75907f77f9e38..ef103ef392ee3 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -178,6 +178,9 @@ int v9fs_uflags2omode(int uflags, int extended)
- 		break;
- 	}
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index c5e5e978d3ede..3f17f2797acc9 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -113,7 +113,7 @@ struct ieee80211_bss {
+ };
  
-+	if (uflags & O_TRUNC)
-+		ret |= P9_OTRUNC;
-+
- 	if (extended) {
- 		if (uflags & O_EXCL)
- 			ret |= P9_OEXCL;
+ /**
+- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
++ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
+  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
+  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
+  *
+@@ -126,7 +126,7 @@ enum ieee80211_bss_corrupt_data_flags {
+ };
+ 
+ /**
+- * enum ieee80211_valid_data_flags - BSS valid data flags
++ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
+  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
 -- 
 2.43.0
 
