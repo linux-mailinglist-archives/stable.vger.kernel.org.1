@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-43953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFEA78C5068
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:04:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094B78C52D8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 501501F2194D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:04:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E07B1C2188F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A416313D2A8;
-	Tue, 14 May 2024 10:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2371350FA;
+	Tue, 14 May 2024 11:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4N2H2s1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdAGQA4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619BF5A0FE;
-	Tue, 14 May 2024 10:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC7A12FB10;
+	Tue, 14 May 2024 11:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683306; cv=none; b=hL1+E0TanMvJVwR+xkpsJpjUOZwhzWfgfmxG6s/fyhHKwfzPGNtpU8VjK5gD/jLjwgBdmhIJpNmKuJStW2r5eXBOwMGN6cgy3Ptrdpbbkc4LEIWvWMJQ7OLd8QAWcZ2T++/hqWs3HGHOJhsegQdssllXTUWzX1I99trmJ7aj5h0=
+	t=1715686153; cv=none; b=hxV9cWG1uZzntxaBPC6za6r+92allSmv2xQR3+3JohGJ+Ep6WLScoWvF6iLU4e83GX+OLmsnlUWWRNVuCD1wWN7o50lyOqbHHT+U4WkWfpic/HbPaU5GUXBNaRbn8XAxTzTWxPd03uqPMh7wytdlMEzjyZpvS8idW6YzkrJAvt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683306; c=relaxed/simple;
-	bh=LDbpSl3okWGRT+CiGAuMynzYQEPFi8Igb8m/th5fjDc=;
+	s=arc-20240116; t=1715686153; c=relaxed/simple;
+	bh=DPMqNCXJqDvRcGdHV2nAPqt0bfvUIYaG0+r1VPrx864=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fchvmnhNtI+4MZwxHMEZUYjTXQc7b1EWUZCyewymqH+I/dTg3Ui1GixupeiI/0fT9uXZNTdkrMoEIRMjStz/eOgJ+YC7hU9dlqNigvL8aOAaSk+wF1J7YS++/pIwRQ29WaODViLD4LRLUgBYBkFj24mXhT7QLAgIrMj+wFHkzaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4N2H2s1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D78C32782;
-	Tue, 14 May 2024 10:41:45 +0000 (UTC)
+	 MIME-Version; b=qcNaIVOnyjnDXpewb4uCeZ1PG5Jrn6svRZQNOleCjl83f0cNDj9LhI9vdJA1d/YT07W4UvP3oOxckxVjctx3y1fWIufvfoS0TURRT0YMHn7Xl9AvqmWV/Ho2WvleN6t4kmac3Tq7VeLBqNibTUUMs8In1YHFonU5FA4HchsogtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdAGQA4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623EBC2BD10;
+	Tue, 14 May 2024 11:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683306;
-	bh=LDbpSl3okWGRT+CiGAuMynzYQEPFi8Igb8m/th5fjDc=;
+	s=korg; t=1715686153;
+	bh=DPMqNCXJqDvRcGdHV2nAPqt0bfvUIYaG0+r1VPrx864=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4N2H2s1s2E2nx0VUoMci1lL8Og37l3/AqJHpoMnj2Y7DKupxUKx/bO1Lm+ySTkYE
-	 Zu0aJIeT96bY0R+f6LHks4CtaiWAnm5fXvmTSBMeTvoJP3Hsz4aWtlxKyrKWUZgbR/
-	 rBWN1sqsNXCeLX8ap6C6dvW43Xd0RJdKv+dS5nUo=
+	b=wdAGQA4dZLWBuCwjeTvmjBQUgRl08ZCP/zS72L5YiFMJT1P38gdl1clgpFGYHiiUh
+	 2VWDPeDs8IQvHu6l+15w7wRqEe5/QAbrTA28v99oJLJMPoQz4jA1q/trh+7LvAiKfd
+	 vpkQIVhxqpd1Ff3d9UHFqmrjhOjupij2OD1yQ2oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boy Wu <boy.wu@mediatek.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 197/336] ARM: 9381/1: kasan: clear stale stack poison
+Subject: [PATCH 6.1 039/236] regulator: change devm_regulator_get_enable_optional() stub to return Ok
 Date: Tue, 14 May 2024 12:16:41 +0200
-Message-ID: <20240514101046.043158374@linuxfoundation.org>
+Message-ID: <20240514101021.826955230@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,118 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boy.Wu <boy.wu@mediatek.com>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit c4238686f9093b98bd6245a348bcf059cdce23af ]
+[ Upstream commit ff33132605c1a0acea59e4c523cb7c6fabe856b2 ]
 
-We found below OOB crash:
+The devm_regulator_get_enable_optional() should be a 'call and forget'
+API, meaning, when it is used to enable the regulators, the API does not
+provide a handle to do any further control of the regulators. It gives
+no real benefit to return an error from the stub if CONFIG_REGULATOR is
+not set.
 
-[   33.452494] ==================================================================
-[   33.453513] BUG: KASAN: stack-out-of-bounds in refresh_cpu_vm_stats.constprop.0+0xcc/0x2ec
-[   33.454660] Write of size 164 at addr c1d03d30 by task swapper/0/0
-[   33.455515]
-[   33.455767] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G           O       6.1.25-mainline #1
-[   33.456880] Hardware name: Generic DT based system
-[   33.457555]  unwind_backtrace from show_stack+0x18/0x1c
-[   33.458326]  show_stack from dump_stack_lvl+0x40/0x4c
-[   33.459072]  dump_stack_lvl from print_report+0x158/0x4a4
-[   33.459863]  print_report from kasan_report+0x9c/0x148
-[   33.460616]  kasan_report from kasan_check_range+0x94/0x1a0
-[   33.461424]  kasan_check_range from memset+0x20/0x3c
-[   33.462157]  memset from refresh_cpu_vm_stats.constprop.0+0xcc/0x2ec
-[   33.463064]  refresh_cpu_vm_stats.constprop.0 from tick_nohz_idle_stop_tick+0x180/0x53c
-[   33.464181]  tick_nohz_idle_stop_tick from do_idle+0x264/0x354
-[   33.465029]  do_idle from cpu_startup_entry+0x20/0x24
-[   33.465769]  cpu_startup_entry from rest_init+0xf0/0xf4
-[   33.466528]  rest_init from arch_post_acpi_subsys_init+0x0/0x18
-[   33.467397]
-[   33.467644] The buggy address belongs to stack of task swapper/0/0
-[   33.468493]  and is located at offset 112 in frame:
-[   33.469172]  refresh_cpu_vm_stats.constprop.0+0x0/0x2ec
-[   33.469917]
-[   33.470165] This frame has 2 objects:
-[   33.470696]  [32, 76) 'global_zone_diff'
-[   33.470729]  [112, 276) 'global_node_diff'
-[   33.471294]
-[   33.472095] The buggy address belongs to the physical page:
-[   33.472862] page:3cd72da8 refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x41d03
-[   33.473944] flags: 0x1000(reserved|zone=0)
-[   33.474565] raw: 00001000 ed741470 ed741470 00000000 00000000 00000000 ffffffff 00000001
-[   33.475656] raw: 00000000
-[   33.476050] page dumped because: kasan: bad access detected
-[   33.476816]
-[   33.477061] Memory state around the buggy address:
-[   33.477732]  c1d03c00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   33.478630]  c1d03c80: 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00 00 00 00
-[   33.479526] >c1d03d00: 00 04 f2 f2 f2 f2 00 00 00 00 00 00 f1 f1 f1 f1
-[   33.480415]                                                ^
-[   33.481195]  c1d03d80: 00 00 00 00 00 00 00 00 00 00 04 f3 f3 f3 f3 f3
-[   33.482088]  c1d03e00: f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
-[   33.482978] ==================================================================
+On the contrary, returning an error is causing problems to drivers when
+hardware is such it works out just fine with no regulator control.
+Returning an error forces drivers to specifically handle the case where
+CONFIG_REGULATOR is not set, making the mere existence of the stub
+questionalble.
 
-We find the root cause of this OOB is that arm does not clear stale stack
-poison in the case of cpuidle.
+Change the stub implementation for the
+devm_regulator_get_enable_optional() to return Ok so drivers do not
+separately handle the case where the CONFIG_REGULATOR is not set.
 
-This patch refer to arch/arm64/kernel/sleep.S to resolve this issue.
-
->From cited commit [1] that explain the problem
-
-Functions which the compiler has instrumented for KASAN place poison on
-the stack shadow upon entry and remove this poison prior to returning.
-
-In the case of cpuidle, CPUs exit the kernel a number of levels deep in
-C code.  Any instrumented functions on this critical path will leave
-portions of the stack shadow poisoned.
-
-If CPUs lose context and return to the kernel via a cold path, we
-restore a prior context saved in __cpu_suspend_enter are forgotten, and
-we never remove the poison they placed in the stack shadow area by
-functions calls between this and the actual exit of the kernel.
-
-Thus, (depending on stackframe layout) subsequent calls to instrumented
-functions may hit this stale poison, resulting in (spurious) KASAN
-splats to the console.
-
-To avoid this, clear any stale poison from the idle thread for a CPU
-prior to bringing a CPU online.
-
->From cited commit [2]
-
-Extend to check for CONFIG_KASAN_STACK
-
-[1] commit 0d97e6d8024c ("arm64: kasan: clear stale stack poison")
-[2] commit d56a9ef84bd0 ("kasan, arm64: unpoison stack only with CONFIG_KASAN_STACK")
-
-Signed-off-by: Boy Wu <boy.wu@mediatek.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Fixes: 5615f69bc209 ("ARM: 9016/2: Initialize the mapping of KASan shadow memory")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: da279e6965b3 ("regulator: Add devm helpers for get and enable")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/ZiedtOE00Zozd3XO@fedora
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/sleep.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/regulator/consumer.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/kernel/sleep.S b/arch/arm/kernel/sleep.S
-index a86a1d4f34618..93afd1005b43c 100644
---- a/arch/arm/kernel/sleep.S
-+++ b/arch/arm/kernel/sleep.S
-@@ -127,6 +127,10 @@ cpu_resume_after_mmu:
- 	instr_sync
- #endif
- 	bl	cpu_init		@ restore the und/abt/irq banked regs
-+#if defined(CONFIG_KASAN) && defined(CONFIG_KASAN_STACK)
-+	mov	r0, sp
-+	bl	kasan_unpoison_task_stack_below
-+#endif
- 	mov	r0, #0			@ return zero on success
- 	ldmfd	sp!, {r4 - r11, pc}
- ENDPROC(cpu_resume_after_mmu)
+diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
+index eea165685588a..a9ca87a8f4e61 100644
+--- a/include/linux/regulator/consumer.h
++++ b/include/linux/regulator/consumer.h
+@@ -367,7 +367,7 @@ static inline int devm_regulator_get_enable(struct device *dev, const char *id)
+ static inline int devm_regulator_get_enable_optional(struct device *dev,
+ 						     const char *id)
+ {
+-	return -ENODEV;
++	return 0;
+ }
+ 
+ static inline struct regulator *__must_check
 -- 
 2.43.0
 
