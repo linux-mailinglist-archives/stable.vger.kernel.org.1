@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-44878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008808C54C8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0588E8C5564
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939BC28A677
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211291C21C3B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393D76EB4D;
-	Tue, 14 May 2024 11:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598551E4B1;
+	Tue, 14 May 2024 11:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSyrDyGI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeVERb9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8D52B9AD;
-	Tue, 14 May 2024 11:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18216F9D4;
+	Tue, 14 May 2024 11:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687440; cv=none; b=Tils6iYg7hDbvsZvmQE7QYsuXy9Svd1+QDbhGDil2UqLgAdNODUbo55eG5wrhn5g9yXffm3AWmvOUrDrMcAQlJueOJ05/M9+zVNpIZgvAou90m9KC00kTZjH5T2W7S45qSdQ/6Fy9gcys7zBcCtaDLtAR2GplOQ/C2fyirJ+lzU=
+	t=1715687859; cv=none; b=cOnFiDXw2DjT0RoNVLCePX9K9KRMS3FgDG5yAoBWMbj2aoIDdPcD27j+FrWFNeVgBx3e35hHYZMWwaX+wTKRHrRvZY+ePje7Eky7I6naDBboMijiIWwt9QeQX3zyXBgl2d1XZwz9QTKOlR+GhLdcuVDEjTf4vTNAza+ATvZlQTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687440; c=relaxed/simple;
-	bh=X73BQ/SqrrdAwB9c33BZmUhqPpFqkJ5fxffnEbc5qqg=;
+	s=arc-20240116; t=1715687859; c=relaxed/simple;
+	bh=rVZo/0pnCNksjm280XZKS8jXDFtjlE8EAcs1moOrIC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/bsrDVtCk8zGiMgcxXKF93nueeB2VCf7R0MViHU9T1HQ08VmGmHIAYfNJxipvNNPqTG8WnQVtWHdH2ixMAakkHqv36SJ13D+4BtUY8YqdyWrwMommVuh4VGpFVsktKZSj4rhtbRTo9qiZ4ksQwGWMEf8vYkOjrQGEmhviPd8UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSyrDyGI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABF4C2BD10;
-	Tue, 14 May 2024 11:50:38 +0000 (UTC)
+	 MIME-Version; b=pcKy8djGdhcYCq/Cj6MliltcVeRulyJhxPDzZ/fk+u5H+ZCRJjVyTtn8r8eKA3EG65Z720endNJ2NwJe0RlWAYl/Id8nXusfBo4sd0hK2B8x7XrCoY2PQkds6QPlcvjbBIQB6kQ1Upq51fJxNot/s+2b8U5sJKSbzEbwzrKX5Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeVERb9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9884BC2BD10;
+	Tue, 14 May 2024 11:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687439;
-	bh=X73BQ/SqrrdAwB9c33BZmUhqPpFqkJ5fxffnEbc5qqg=;
+	s=korg; t=1715687859;
+	bh=rVZo/0pnCNksjm280XZKS8jXDFtjlE8EAcs1moOrIC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSyrDyGIZOdXWTDdh/1yxk347bDrMkJipGNHIVC3zJATSWiz/bzsTCb+kQ3BT/0St
-	 Mqvrp2Be0DOxDZe3L9cE3M63l2il7mktho6Y5iTky7Z7tCKwuoBRLhvFRALhH5p8KS
-	 2DmVXQEI2BoG/tow8Vvk1t4QgnxjAW8SSdS3QPeY=
+	b=zeVERb9psLcijY9MZ5wKDp9uzat+smztptmvwAjwtC9t0MjvRb0cfUaChyHehQGYB
+	 yXp2BSqtV7zRS8gP2Sr/Z6Fi514/PUkHQIFpi42lwS+bsjpOlknbHmwO51OR3vU+LR
+	 CF42AuK3tqOtxJm8VgrO9gdRaWmGc1nIdDtDYNzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 089/111] btrfs: fix kvcalloc() arguments order in btrfs_ioctl_send()
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 129/168] net: hns3: fix port vlan filter not disabled issue
 Date: Tue, 14 May 2024 12:20:27 +0200
-Message-ID: <20240514101000.512490395@linuxfoundation.org>
+Message-ID: <20240514101011.552443496@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-commit 6ff09b6b8c2fb6b3edda4ffaa173153a40653067 upstream.
+[ Upstream commit f5db7a3b65c84d723ca5e2bb6e83115180ab6336 ]
 
-When compiling with gcc version 14.0.0 20231220 (experimental)
-and W=1, I've noticed the following warning:
+According to hardware limitation, for device support modify
+VLAN filter state but not support bypass port VLAN filter,
+it should always disable the port VLAN filter. but the driver
+enables port VLAN filter when initializing, if there is no
+VLAN(except VLAN 0) id added, the driver will disable it
+in service task. In most time, it works fine. But there is
+a time window before the service task shceduled and net device
+being registered. So if user adds VLAN at this time, the driver
+will not update the VLAN filter state,  and the port VLAN filter
+remains enabled.
 
-fs/btrfs/send.c: In function 'btrfs_ioctl_send':
-fs/btrfs/send.c:8208:44: warning: 'kvcalloc' sizes specified with 'sizeof'
-in the earlier argument and not in the later argument [-Wcalloc-transposed-args]
- 8208 |         sctx->clone_roots = kvcalloc(sizeof(*sctx->clone_roots),
-      |                                            ^
+To fix the problem, if support modify VLAN filter state but not
+support bypass port VLAN filter, set the port vlan filter to "off".
 
-Since 'n' and 'size' arguments of 'kvcalloc()' are multiplied to
-calculate the final size, their actual order doesn't affect the result
-and so this is not a bug. But it's still worth to fix it.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 184cd221a863 ("net: hns3: disable port VLAN filter when support function level VLAN filter control")
+Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -7339,8 +7339,8 @@ long btrfs_ioctl_send(struct file *mnt_f
- 	sctx->waiting_dir_moves = RB_ROOT;
- 	sctx->orphan_dirs = RB_ROOT;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 6a346165d5881..d58048b056781 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10105,6 +10105,7 @@ static int hclge_set_vlan_protocol_type(struct hclge_dev *hdev)
+ static int hclge_init_vlan_filter(struct hclge_dev *hdev)
+ {
+ 	struct hclge_vport *vport;
++	bool enable = true;
+ 	int ret;
+ 	int i;
  
--	sctx->clone_roots = kvcalloc(sizeof(*sctx->clone_roots),
--				     arg->clone_sources_count + 1,
-+	sctx->clone_roots = kvcalloc(arg->clone_sources_count + 1,
-+				     sizeof(*sctx->clone_roots),
- 				     GFP_KERNEL);
- 	if (!sctx->clone_roots) {
- 		ret = -ENOMEM;
+@@ -10124,8 +10125,12 @@ static int hclge_init_vlan_filter(struct hclge_dev *hdev)
+ 		vport->cur_vlan_fltr_en = true;
+ 	}
+ 
++	if (test_bit(HNAE3_DEV_SUPPORT_VLAN_FLTR_MDF_B, hdev->ae_dev->caps) &&
++	    !test_bit(HNAE3_DEV_SUPPORT_PORT_VLAN_BYPASS_B, hdev->ae_dev->caps))
++		enable = false;
++
+ 	return hclge_set_vlan_filter_ctrl(hdev, HCLGE_FILTER_TYPE_PORT,
+-					  HCLGE_FILTER_FE_INGRESS, true, 0);
++					  HCLGE_FILTER_FE_INGRESS, enable, 0);
+ }
+ 
+ static int hclge_init_vlan_type(struct hclge_dev *hdev)
+-- 
+2.43.0
+
 
 
 
