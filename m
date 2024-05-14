@@ -1,240 +1,196 @@
-Return-Path: <stable+bounces-45088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC65C8C59C8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 18:34:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265C28C5A2D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 19:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A4F3281444
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 16:34:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BA6D1F2279F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 17:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156901E4A0;
-	Tue, 14 May 2024 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481B417F38E;
+	Tue, 14 May 2024 17:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="KofxzZGs";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="dZk5VnOQ"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="siZ/cXdP";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="mTq/VJCB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A9F365;
-	Tue, 14 May 2024 16:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715704465; cv=fail; b=IAebWOlqVKpOy85w0jrjnvioozgCeLCnfGr/yxxpWV673XSKiG1oWJv/3ziThzJse2+NW1pu9g85Y7PfCmOy1Fte1EswxYTxhW9QU/cFy9r+JW+Wm3H2VxcnEpA78K58QDWQOCHA4wI/P6iASc+U2yFRCs7zEa8PiV7E30esJ9M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715704465; c=relaxed/simple;
-	bh=9xtVxAeA9czrygWR8kv9mmpIcKL6ot5mbtm4Ow8phZA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ohmq4nc9KDZIrQB2UGn42CJGOgyr8PSA0EpNl9NqFXzE97vA/nXJy+V0EfeBREQakNJrmJL8sV/+XeDgPxNeDUrUUUg/O6NhZeIjqKpNpIIyNjCLeHar6QeU9BCJCfdMMuhES4kWPMwoN0zNHJ9MuaSR6VinfeiPkut+54wkDPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=KofxzZGs; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=dZk5VnOQ; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44ECg0BM006833;
-	Tue, 14 May 2024 16:33:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=pxH9q/nrzDCgGPHaZ5X/lk6JLYhUFLuFLUaUP8pgNpk=;
- b=KofxzZGse7aRwmmnQOV5+Dr8oh/IMZ9NmZ6PORbGnmwatBQIjzN1eulS9cKmLpCALw0p
- S2nWGDkjW4amShBW59X+PLBtxMGmPqyp0c3etFhthx9GMMFaSCGGFi6PCpOsBpPobg4a
- b5zPfdEX9BnG4S0yE2fgIjR1uVroyJ0IX9MhCTZpK/ll2SHmOaYk6ZTPCLatRekbfKym
- nkFiLZXDl8wWCcj2K4D3E17X1hZFt536XXKAElnxRxphWWINip2/7XD2S38AWLfK99ds
- tW5fv8PhSMICnuxx+TdcQ8FjpA3PKeqoBqSNa+D77CUZhdjZo9EF4oLLqxfmc0XoO2mF vA== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3y3tx31tuj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 May 2024 16:33:55 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 44EFihPB038323;
-	Tue, 14 May 2024 16:33:54 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3y24pwajyr-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 May 2024 16:33:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hIsMwjGfHtwJ2UPe+ZxBLjyLCwAkAonWfcvEImSbz71lAc317n/7Ohwk2NmpsWZn/4mPzWTSHYf+3gvpkxv4ukiHGPwFTsGR00tGg+i/qYgmESvlqa+ua+L0xfd/BUioQE/dhcg7CHj2cE/dAKllKbA5C80WRbgoSXRNcHgQ+eyglDVGdMyIKSmdcSTshJjjcDx/bo0WvAXakOwHBQSbiUHF1i9UNphkkAGYdtCp3RoQPTXPkx07WujkKRj2+ZIjooA9OQTgP9Rg9D/UbCTjRVdKGSHs12jZ6esM7C0aXlZeTJdZSyG15DGCSfHCfM2PnClEb83Mm7yPpTDFNTRsFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pxH9q/nrzDCgGPHaZ5X/lk6JLYhUFLuFLUaUP8pgNpk=;
- b=Bn0mXXZdAbDYR/dfb9gUek7Icl+z+D23BJoX2KmUFggu18qcP1zBBFMsSqdeFu1akoQVqTV7lXuWFGf8tvlZtJISp8w/ZXyYBbwFpptJQLrKnnt4Ux+qK/Dk+ezT44g9mZoCGU80l4jxEODQx428W/dmiD4N/IcVd6/B5ZdZA/XPL90yawZq0yGfc1iqseOeOnqLyYiHXxpTJKvGuwU+ekNTjmMQFPc1Q4+zACSG4XrJRf1V4YBDgR/mO8Mr2goE+jUPsm2QGW+lLPOHakuinyUsoLO/+T7ojaw0l1fttFOyQpfNNhWtrng0/YSoonEAoQ/ITtaRRVkzura3bnw+xw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pxH9q/nrzDCgGPHaZ5X/lk6JLYhUFLuFLUaUP8pgNpk=;
- b=dZk5VnOQZUMAQuFBgjg1hhxTn84csQu15Lg6silN+mM4BlFaWru2+wIWcKf08aXPfAPMfi29bS6impZmtQ0Vt93v89QEe1L3u03bxVtALIocz91G+C1vJiiBgKyuB6Y9nJRuC/RQEk8fer7HlIHh/RPY3oQGwE+2Gc6LzyQF+7U=
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
- by MN2PR10MB4256.namprd10.prod.outlook.com (2603:10b6:208:1db::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.27; Tue, 14 May
- 2024 16:33:49 +0000
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::309b:26bb:11d5:cc76]) by PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::309b:26bb:11d5:cc76%7]) with mapi id 15.20.7544.052; Tue, 14 May 2024
- 16:33:49 +0000
-Message-ID: <540a899c-4b51-4df6-b3a4-f2e40aa0e2ca@oracle.com>
-Date: Tue, 14 May 2024 22:03:35 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19 00/63] 4.19.314-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
-        broonie@kernel.org, Vegard Nossum <vegard.nossum@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>
-References: <20240514100948.010148088@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2P153CA0005.APCP153.PROD.OUTLOOK.COM (2603:1096::15) To
- PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E7D17EBB9
+	for <stable@vger.kernel.org>; Tue, 14 May 2024 17:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715707113; cv=none; b=msGtYs+yD8FnkAISPBH7zSBUOBI+ZtCf3rbVcqdgc4DRAGgRg4BrLaZMlseNCN+JOk2arwgzFaxgJsa7MDarb80qDwA/DFBnHqFcd/vmu0vwJoFE5pJUnbOjCxI0iFRttReJA3/uIE6DnOGSy1ZidpaFe4oZeTR3hJTQxtM0NV4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715707113; c=relaxed/simple;
+	bh=NZR7d4Nv1tF+4i3RKyVUnvY440ZWNWes/tSBtMVIWmI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aty+D+cF0XD+qwnLhdRT2djUkxYs72X+J5kkNNvzlx+FPBgWXdGBu5xfglN70tFex2ULcSX5fxxr5HqGCd24OMe0XBKD3nwA37Y3xPe7cyPKYHLwZp9hLixv/G3QXs2aaO5cJvE8d1L6z/7BRwcv1S8aheVzFQV7WQxJ7+uN9JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=siZ/cXdP; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=mTq/VJCB; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DF90B3368E;
+	Tue, 14 May 2024 17:18:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1715707109; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=HikSZtlXvphSCiXs/ksppv3uAIN2D5iXIy+9sDVjWNg=;
+	b=siZ/cXdPzFYAOqxFtWM1I7TRoqUKn+bd6f6Xn2oQ7zho+DBcghUJXtidoNj0fGHOC/jbR7
+	C+KOz2YFFYAZnaWQCz8obaRxnXAMzOi+JUbdLjg/MY0K71FU89TKB2WxfOP44P0BXxGZnO
+	DmEogDmKvEfnkBoKNJvA+ibhX3cGSk4=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1715707107; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=HikSZtlXvphSCiXs/ksppv3uAIN2D5iXIy+9sDVjWNg=;
+	b=mTq/VJCByTG7yr9hLbzkXq6nGboEI6WkYSkiXGDc9KXHBNveWrir11NfbryVXNsl7KEMlU
+	j2boVTeBql9LOGjBoV+sJan5n1qFhrakK8OJc5GVzG3m0EBD5NGPnRcBJjkLN/DfIcxLxk
+	JSpyM3EEeRttIELVRpuuZW3Hhs7mrrk=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D8EE5137C3;
+	Tue, 14 May 2024 17:18:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ldXyNOOcQ2a4bgAAD6G6ig
+	(envelope-from <dsterba@suse.com>); Tue, 14 May 2024 17:18:27 +0000
+From: David Sterba <dsterba@suse.com>
+To: stable@vger.kernel.org
+Cc: Qu Wenruo <wqu@suse.com>,
+	Julian Taylor <julian.taylor@1und1.de>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1.x] btrfs: do not wait for short bulk allocation
+Date: Tue, 14 May 2024 19:10:52 +0200
+Message-ID: <20240514171055.11285-1-dsterba@suse.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|MN2PR10MB4256:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a395609-8c4a-47fc-ede1-08dc7433a230
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|1800799015|7416005;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?YlFNNG5qNjhOa2dQMXZoUTJhMFRwQ1VmU1FLTm1oU1Z4OGFPT2RJWWtjeUdW?=
- =?utf-8?B?RDNBNDE5UmhwV25mbzN1TU13TTdTUDh5R0RFUzRnZ094bTNLNHlSZ08wcURU?=
- =?utf-8?B?UUlWdEtGM01JN2tGQUppcHZXOFhpcVJtblRvbUlsZm56U2dQZEZRSFJWaXc3?=
- =?utf-8?B?aFdDSk1ZSjVLWUNMNnp3WDVQbmE2N0VyN1B0VW9SZmRBSVFHRHNJeWhEeDJv?=
- =?utf-8?B?c2VNcTJ6RmhIV0owcXdFeFpXM2lVTVZ2Wm5PUUNhM3FYWGl6Wnl5dm5Ndkl1?=
- =?utf-8?B?NWhoWkM1cGRnck5FRmhxUlV1ZVQyUzdzYjVwN3BBblF4LzBtTjU3RGFFWUlC?=
- =?utf-8?B?ZDEyKzBEYk1qQ3hWeTZBenNzYTlqWnkyaXJtZzg2N1J0Y3NkZ1lFSXZFb1Bk?=
- =?utf-8?B?cS9HY0JmQ1MxSlN2ZEE5VE9wRW9LQlo0SDg5UFY4ZmorUE5ZblJTc2Z4STVh?=
- =?utf-8?B?anh4ODVlYXpUMzVkc0RnT1RWV2REbGVJMU5mSWMwRHVlalgyMU1hcEE5ZTQx?=
- =?utf-8?B?ZzhrbVd0YW1DYlBLb1J6eTZHNUJkYXNiM2FDN3VLd00rN1BFRzJJcldtVUlC?=
- =?utf-8?B?VFFQaFhVNmtueTZqdlFjWmQ2bHBYelZ6WlRLTjliMXhTK2F4K3U1UWhLYmxy?=
- =?utf-8?B?Z2pNUldjSjYyT05zcUZSelJxQ2t2aE81d09rQ3NYKzRsajJuQVdmalF4NzdX?=
- =?utf-8?B?dWc5TFZENFdGZ1c2aEVoUWEzWmRHYld4azlpMDJNYmtIVWlTdE5MZnExcGFU?=
- =?utf-8?B?MnJPZXFXRndlZzVjMUpwTVZRK1dGMlVqU3lUY25lR3hZMk85bDROaHo1Q2pY?=
- =?utf-8?B?dzd2aDNMQkh2MHRnZmRTaHRZL2wzeVpkZnRjNm9hdWtEcGJiQ2g3WWtKd3Bv?=
- =?utf-8?B?ankwU2xESzRPVnRZSzgyV0J5dHdEZmw4Q2o5bzlLeWZhOFM1M2tFbmZ5L0VB?=
- =?utf-8?B?UGRPUWVjcWo0VzhDSGFvMy9DNXNubHprMkJHTER1ZWw1TUNhZHFwa0xaNjdF?=
- =?utf-8?B?ZVl6QnBHYTF5UXY5bWlJOWZzbWdjd29KeWRNa2dWY253clNIUGpVQTNKeG1W?=
- =?utf-8?B?U2N6ZXdoL3hQRHhBOGdSZ3FtRnJwMTkxbG90Yk4vN2ZzMnZ2a1MwTmtQTDFk?=
- =?utf-8?B?T1JlWVcxMmhxM25oV1BIa2VmYlVZeHg5NWxpcUxFaEtkQXRnK1JVd202bDNI?=
- =?utf-8?B?TFJXM0xQV0hkV1ZqTXpiQThnRERiMCtwQ1c5eHZwSUNLNUNFY2w1d0xWcFFS?=
- =?utf-8?B?bWduL05aQVdvc0ZmQXhDNzRXbHNyT1p6NFNiajJxQnFJVlhXSWgzQjArZUNH?=
- =?utf-8?B?MFFUekQwdjBFWld5NE9ickl6NDd0Q0k3ajdnYURnTlZhZXZHb2hHYmNhM3N6?=
- =?utf-8?B?bVZYdUVDd25Hc0hydUVxMEcwbmdwaTE3RUtuaXZjTDAyRlEvUXBjbjRoSVVM?=
- =?utf-8?B?RzdGZDFPeGs1SWN5WkJZOXBBWTFMNkEzNkFCMnpVcHN0WnphVDRQa2tSTEI3?=
- =?utf-8?B?aEd2MlQ5dmphV0Y5UkNNNGppVHJISUsrSGFWMWZwcXNOdnBPY1dlZDZKbVNy?=
- =?utf-8?B?R1J3azh0ald6bk1tcVd5L2UreHZDTkFKOFBHNC9QcFc3OTE0MENNSit2bEta?=
- =?utf-8?Q?kLG8Zd17E6U4D9B9F4g+5ecYApDJx0jKCGf65AtZPMBI=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(7416005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?RDJFeWMycWNnQVJUWlF0bWNPNFg2Vm9sVlpQajF1c2Q2YlhOeTEzN21qKzg3?=
- =?utf-8?B?Y3kyUHBZdGk1cnBWcSthZklpTlNWeUUrbjY0K0MyaTE2cnVidzRGU2ZTQjJF?=
- =?utf-8?B?czcxQzY3c0xCRG5RR0dzRU1YRm1jYmhHYzFzSGdqYVJlbkYwVWQ3S3RidHZW?=
- =?utf-8?B?TXphNkJEVld3dzc1dnMzejhVbVQvajNtcDVvbzFKK0lDaWJtL1U0SnpXTDlJ?=
- =?utf-8?B?V1M0OC9VZElnS2YrQUM2ZEdOaThTazZyZGptRWc1enZxeTJQQkR6VFd1OTVD?=
- =?utf-8?B?bFNlakczR2ZiZFJnbFJzeVRmYXpYWEF5c0hSc2J3K1RvTjFsUkw2ZGJhK1lP?=
- =?utf-8?B?U0Vjb3FuVzdxMjBDOHg2KzNVMGpTY1BKY2h2K1RTeUtkREZqVXNEM2NTMG85?=
- =?utf-8?B?VUVUejNJaHc1ZzZXaUVhYU9RVDlCV0xqcHo3VEtFbmI1NUVablp0ZGVDTWhX?=
- =?utf-8?B?YjFHTmUzYW5zWXJEKzBpU2luMWlhVitlV1YweTFYYXh6REdVR2ZTRHhrLzdF?=
- =?utf-8?B?UWZ3dDNoVHRqSnlERWJxZjVRTTVtS0c3cFBHQjBtZ09jTnE0STd6czFXQUt5?=
- =?utf-8?B?RW9JT05zNlppVjJ3ZEFUbDVLK0JzekhFdE5FZE1aSkNyMnYwZUdOMi9SSUZR?=
- =?utf-8?B?ajRBcWU4MzdCYTNTejFhV0QrbUhkUTlGakdwb2JuMUxRRS9Xb002eGhMamla?=
- =?utf-8?B?dHV4OFhueWQxZG9tV2tqZGo3cHhLN0VwZFNiMXJkRVdqdFNESStjdXAzaWJy?=
- =?utf-8?B?WmhyZXpodmljcVR6U3ZUbEpjQkZFUzAxcDMvblQ1Wk55YnU4MW5GbC8zR1hG?=
- =?utf-8?B?MVd3THNoNDdvLzgyYWpyZHhndUMrb1J4d3c3NUJsOFJGODl2d3AremNodHJF?=
- =?utf-8?B?T3BwdmRzb1VwZDcxT2xTaXlpVnRZUnBTWUZ3MGt6S2I5YWN2b2dFdURVVGpR?=
- =?utf-8?B?VU13RTNHNFdBMS9OSW5oRm9EUHBPYzlvZU9Rckp1QVdIUUFVMzF5TGFsSzYz?=
- =?utf-8?B?b3k2blE5dXkyQVZOVGNOUlVJdzNzQW5XVzl4Rms2cVhaR2MvNGlWL1B5Vmkw?=
- =?utf-8?B?Sm5kKzFBS3ArbWlUTUZLbU5henlwbGwwa0VJS1BIc0hMNzQ2ekZwcWxRSHhS?=
- =?utf-8?B?WWlGUXZwZGNXaHQ2aWk0RmJMNUhqRlBTeTJzbE45QjArZTBLZURVaHEySWV4?=
- =?utf-8?B?SERQcjBRbTE4K0o4cXhySlI0aGNtd0x6a1A0OW56dThETHJ0RWI3enYwVTBo?=
- =?utf-8?B?STY2ZzQwWS8rVmY1a1VkU1Q2Y0g0ZjIxeGxiM0p2elhkWEtia2dpZThHUXk1?=
- =?utf-8?B?ZS9VYTFPZGVuOVB5c0d3RmpWSTY2WWc4Y0MvK3dYcWhTUXE1MHdBNnhEN1Vk?=
- =?utf-8?B?a2g1bTI5TmpZMmgvOGFtWTNGUnYrc0k3OXBkTElMSFhlWExqdVk0ZVFnNk94?=
- =?utf-8?B?d1prbHRKbHFBbFhER2lkb3BORWc2cXBIdUxKVzhCK1VNN0FTTFVFc05DcmRQ?=
- =?utf-8?B?RmVVMzJXSWNxdmFCMWRnQ1NmZUtjbjRZVTdndWdpZDZFSUQ5WnJSc2k1T2pH?=
- =?utf-8?B?dDM5cHg3VjBGa2QxOGgzWnljd0xWV3RsdW80cHhxRUFiMXVrc0NlVXoxRHNB?=
- =?utf-8?B?MkZMUHJ1cUhqQklBa0ZMS1ZwakhMQ2MzcDFKTklGNDdvLzJsQWhXa0NjMzZO?=
- =?utf-8?B?YlRqSHlUMHFpY2RxRzNObGlqVkhJZkYvSEliTWxKZzZEbm44TE02MjY4Zjls?=
- =?utf-8?B?b1c3eFpVaFdiN1hCUFJDT0N6aVAyZkNyN0xsS21rY2xScktiV29PZExWSlNE?=
- =?utf-8?B?bTRlNGx2RGdRRUsrZzVydlllSzdwNVJZRDk0VDRGeEZHLzdrT0RDZkE1OVY4?=
- =?utf-8?B?bVBUMWlEb1BDNzZzY2lVWEY2UCtIc0grNUpPZjIxaUtYbHZzVHVkNkcvMW9N?=
- =?utf-8?B?NXhWRDZPd0FXdGxpV3B6ZmxQN0VML1NIeFFFenJlaUtmMzNqQjhuYll5RExp?=
- =?utf-8?B?UTBTVm94Vkw0Sm5oMkF2T0J1eUJlb2pWTjhNYXBOd0t2TzBLRStWTUhjeDB5?=
- =?utf-8?B?RDIwSkxqM2VsRW45dTVoKzZmQmxQTWxIWSswR1RQSnhVK0x2WS9sSk9VZVUv?=
- =?utf-8?B?OFFpdUdjMzdXa0FFWkVaQXU5S0c3TmcvMW5kbm9TZENyL1JReXBvVEJTVy8v?=
- =?utf-8?Q?FYlQD6xVMDAoLVBTQNImuKM=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	Dxgnr/++nWiBqkjYTOk8I7ZaCXk5XLkoNGF1QNkTntzVCAEOkYcRrFirZK7v4vJ9fCrnPTDycXwd1IVL9y8mwMY1yoK3zrIZlYs5ocHTTgZY6JIr6aoOgC+594nc6elDBoDE73mJbNwwcE/5O4hgIUAglya9otJJT9yAX4fVSeZpenpFunBXhDP1RCHREg/l42Ns2eGvudRq1SygCj5B4drE6QfXkAu6Bi9/gmr5CFtbFbc2NTB1b6sGCWtUhI0LhwHjzuiF9D3523ZU5OZVdTP4GuKv4f2/fbOedtw88938zmXoSHCQaBtkIii0Rtl6/6aR8bNhrYIBbmFa0RuLNk77wubug7GsOqS1qxQp5rRZjGXHvw+wH04HYR7V1K6tyol/imO0I9mLH4iMtb77P5r6rhgMO1jebPI4LDHk8hh6cu+ggYEWY0RPZvhfg/424M6H34w5PHX1GaiiC3FzzTidHeW6cSfUc0LfyzwmIobxF74ZgEXyf8B9jPpyq6vhzYpuNJVfZdqL9hxheHHCojhSVQobrEw/asS55ZxoUJvBTi1EqKr0n9Zl7UzYN3ddAutHnc0X6qpXXE6I8rf2G18y1IAD+6/PP/RyvPeCJmw=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a395609-8c4a-47fc-ede1-08dc7433a230
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2024 16:33:49.6189
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jJ13M0Zjfj7mOdTfGc6btyzDt/yaBrX7hLHqEnJgzlKHb28LBoQ7jTPs4Y98kwNy1zSn6veL35P9WhWEoG0n0+o1PDmujAKG38VNq+IUfjFrqAb7PsEIZb7glIu+7wo0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4256
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-14_09,2024-05-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 mlxscore=0
- spamscore=0 phishscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405140115
-X-Proofpoint-GUID: Lz4RXgXUYg2qZQF5CYLGhvByEsR_qenp
-X-Proofpoint-ORIG-GUID: Lz4RXgXUYg2qZQF5CYLGhvByEsR_qenp
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.981];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[1und1.de:email,dorminy.me:email,suse.com:email,imap1.dmz-prg2.suse.org:helo];
+	RCVD_TLS_ALL(0.00)[]
 
-Hi Greg,
+From: Qu Wenruo <wqu@suse.com>
 
+commit 1db7959aacd905e6487d0478ac01d89f86eb1e51 upstream.
 
-On 14/05/24 15:49, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.314 release.
-> There are 63 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 16 May 2024 10:09:32 +0000.
-> Anything received after that time might be too late.
-> 
+[BUG]
+There is a recent report that when memory pressure is high (including
+cached pages), btrfs can spend most of its time on memory allocation in
+btrfs_alloc_page_array() for compressed read/write.
 
+[CAUSE]
+For btrfs_alloc_page_array() we always go alloc_pages_bulk_array(), and
+even if the bulk allocation failed (fell back to single page
+allocation) we still retry but with extra memalloc_retry_wait().
 
-No problems seen on x86_64 and aarch64 with our testing.
+If the bulk alloc only returned one page a time, we would spend a lot of
+time on the retry wait.
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+The behavior was introduced in commit 395cb57e8560 ("btrfs: wait between
+incomplete batch memory allocations").
 
+[FIX]
+Although the commit mentioned that other filesystems do the wait, it's
+not the case at least nowadays.
 
-Thanks,
-Harshit
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.314-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+All the mainlined filesystems only call memalloc_retry_wait() if they
+failed to allocate any page (not only for bulk allocation).
+If there is any progress, they won't call memalloc_retry_wait() at all.
+
+For example, xfs_buf_alloc_pages() would only call memalloc_retry_wait()
+if there is no allocation progress at all, and the call is not for
+metadata readahead.
+
+So I don't believe we should call memalloc_retry_wait() unconditionally
+for short allocation.
+
+Call memalloc_retry_wait() if it fails to allocate any page for tree
+block allocation (which goes with __GFP_NOFAIL and may not need the
+special handling anyway), and reduce the latency for
+btrfs_alloc_page_array().
+
+Reported-by: Julian Taylor <julian.taylor@1und1.de>
+Tested-by: Julian Taylor <julian.taylor@1und1.de>
+Link: https://lore.kernel.org/all/8966c095-cbe7-4d22-9784-a647d1bf27c3@1und1.de/
+Fixes: 395cb57e8560 ("btrfs: wait between incomplete batch memory allocations")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ fs/btrfs/extent_io.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 539bc9bdcb93..5f923c9b773e 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1324,19 +1324,14 @@ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array)
+ 		unsigned int last = allocated;
+ 
+ 		allocated = alloc_pages_bulk_array(GFP_NOFS, nr_pages, page_array);
+-
+-		if (allocated == nr_pages)
+-			return 0;
+-
+-		/*
+-		 * During this iteration, no page could be allocated, even
+-		 * though alloc_pages_bulk_array() falls back to alloc_page()
+-		 * if  it could not bulk-allocate. So we must be out of memory.
+-		 */
+-		if (allocated == last)
++		if (unlikely(allocated == last)) {
++			/* No progress, fail and do cleanup. */
++			for (int i = 0; i < allocated; i++) {
++				__free_page(page_array[i]);
++				page_array[i] = NULL;
++			}
+ 			return -ENOMEM;
+-
+-		memalloc_retry_wait(GFP_NOFS);
++		}
+ 	}
+ 	return 0;
+ }
+-- 
+2.45.0
+
 
