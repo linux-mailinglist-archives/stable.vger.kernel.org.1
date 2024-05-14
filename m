@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999598C536B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2E88C54FC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3852F2869CA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A66B1C231B1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5506B1272D6;
-	Tue, 14 May 2024 11:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66FE5A109;
+	Tue, 14 May 2024 11:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcJYrs84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPtnP5a8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A2A5FB9C;
-	Tue, 14 May 2024 11:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639BA1CFB2;
+	Tue, 14 May 2024 11:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686514; cv=none; b=S9tcjWGazZI5LF/mMoP+4XGI6SrTQv3XBROn4Krs3a3ZisY5SSs+1uS998OW5BLqxhPqWjsDpUdHHVPhIt6SI0hqEnJey+I12xzdp2DQV7o4QfuWw0I8QglAWdMPYa36sLfW+V/BaySig65MECaLitj+FJiv8PAku9leptk8zso=
+	t=1715687572; cv=none; b=REp8AX8cRGOVmoJ+9MKQVwZYSaLGwtiZPqB4Jk4XkD7wXuwbXIUh4ihcQ3XXUWISLKrOkuIqV30bSjxoEligjsRJwOFUTWU7nFVy8NpUSLjykmgRSU7yfdywQITFdkuVNWfpApm7mwDyFALv7iTv99JsGAkwgmACtBG66ivyEIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686514; c=relaxed/simple;
-	bh=C0tPZBuqU/1zQh+FXCgmI+Mrn2hkHrjicqTHceQLIxQ=;
+	s=arc-20240116; t=1715687572; c=relaxed/simple;
+	bh=le+XP8FyJC1Sace4F9vh040h9KzAGpY4jGZNTZddwlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSp2NSko7KsVGhZOufXwq7Iq6nVB8glta4orCKbje/Lmg5N9nh3WNGq6YxDcwkQ5vzXxwTQakpvFhFh4xHje98TVxuVmYDSH0Dj3yApBR/bXrf0Ka9ZKS1hvao6StK2/AJNiRje1aq0uSpLaY/USdi9Sk32CgBv2xJuB+ZwjBVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcJYrs84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFBDC2BD10;
-	Tue, 14 May 2024 11:35:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SLYWTn1A4Qn605b7yCVyUO9A/raA+gYKvQeljDt3CB1zxpan8h8j94WCWs6GZR4xocxTBVUyZvaEPn074uNF22O/U5fIK2JAVnx/Lrz5F+j7Op/OklzweZnJB0FgFUqzbt5V0sRbskrTpFZ2r16tu4KbzVHlKYqChL01nXijXsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPtnP5a8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE640C2BD10;
+	Tue, 14 May 2024 11:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686513;
-	bh=C0tPZBuqU/1zQh+FXCgmI+Mrn2hkHrjicqTHceQLIxQ=;
+	s=korg; t=1715687572;
+	bh=le+XP8FyJC1Sace4F9vh040h9KzAGpY4jGZNTZddwlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcJYrs845bOCvxNfTuO5FF8fNW2p9omp2NkG3a6OYdSVGJoZLgjYgSW8SmRwxUtO5
-	 FEHCWYuKnv8Ku7L/6GMpecxfjQorDy5x58xRL1DgjFWHkXeEPLRgdtbhezwN8DOWZq
-	 qg1mUKd4Huat1m73h+d4HNgBk6jxEYu2mMRm6TOM=
+	b=nPtnP5a8hRoBAO+ol5QSXP7FAcNbJ+XemUsx+2N0ToBm/dE/poyA4O8ZRMj/kh9eA
+	 bOQhgLflFyZOKojLMPT97ruj+8ko2srqI7CSLlAfs8KLJ73PUj2JeE+U3Ox+wgJpV9
+	 Gu7xfmmeo4IkS49J3ipk3aeySj49ebRSi/qo+5r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/236] ipv6: prevent NULL dereference in ip6_output()
-Date: Tue, 14 May 2024 12:18:47 +0200
-Message-ID: <20240514101026.622891829@linuxfoundation.org>
+Subject: [PATCH 5.15 030/168] xdp: Move conversion to xdp_frame out of map functions
+Date: Tue, 14 May 2024 12:18:48 +0200
+Message-ID: <20240514101007.828358275@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +60,305 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit 4db783d68b9b39a411a96096c10828ff5dfada7a ]
+[ Upstream commit d53ad5d8b218a885e95080d4d3d556b16b91b1b9 ]
 
-According to syzbot, there is a chance that ip6_dst_idev()
-returns NULL in ip6_output(). Most places in IPv6 stack
-deal with a NULL idev just fine, but not here.
+All map redirect functions except XSK maps convert xdp_buff to xdp_frame
+before enqueueing it. So move this conversion of out the map functions
+and into xdp_do_redirect(). This removes a bit of duplicated code, but more
+importantly it makes it possible to support caller-allocated xdp_frame
+structures, which will be added in a subsequent commit.
 
-syzbot reported:
-
-general protection fault, probably for non-canonical address 0xdffffc00000000bc: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x00000000000005e0-0x00000000000005e7]
-CPU: 0 PID: 9775 Comm: syz-executor.4 Not tainted 6.9.0-rc5-syzkaller-00157-g6a30653b604a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:ip6_output+0x231/0x3f0 net/ipv6/ip6_output.c:237
-Code: 3c 1e 00 49 89 df 74 08 4c 89 ef e8 19 58 db f7 48 8b 44 24 20 49 89 45 00 49 89 c5 48 8d 9d e0 05 00 00 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 4c 8b 74 24 28 0f 85 61 01 00 00 8b 1b 31 ff
-RSP: 0018:ffffc9000927f0d8 EFLAGS: 00010202
-RAX: 00000000000000bc RBX: 00000000000005e0 RCX: 0000000000040000
-RDX: ffffc900131f9000 RSI: 0000000000004f47 RDI: 0000000000004f48
-RBP: 0000000000000000 R08: ffffffff8a1f0b9a R09: 1ffffffff1f51fad
-R10: dffffc0000000000 R11: fffffbfff1f51fae R12: ffff8880293ec8c0
-R13: ffff88805d7fc000 R14: 1ffff1100527d91a R15: dffffc0000000000
-FS:  00007f135c6856c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000080 CR3: 0000000064096000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_xmit+0xefe/0x17f0 net/ipv6/ip6_output.c:358
-  sctp_v6_xmit+0x9f2/0x13f0 net/sctp/ipv6.c:248
-  sctp_packet_transmit+0x26ad/0x2ca0 net/sctp/output.c:653
-  sctp_packet_singleton+0x22c/0x320 net/sctp/outqueue.c:783
-  sctp_outq_flush_ctrl net/sctp/outqueue.c:914 [inline]
-  sctp_outq_flush+0x6d5/0x3e20 net/sctp/outqueue.c:1212
-  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
-  sctp_do_sm+0x59cc/0x60c0 net/sctp/sm_sideeffect.c:1169
-  sctp_primitive_ASSOCIATE+0x95/0xc0 net/sctp/primitive.c:73
-  __sctp_connect+0x9cd/0xe30 net/sctp/socket.c:1234
-  sctp_connect net/sctp/socket.c:4819 [inline]
-  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
-  __sys_connect_file net/socket.c:2048 [inline]
-  __sys_connect+0x2df/0x310 net/socket.c:2065
-  __do_sys_connect net/socket.c:2075 [inline]
-  __se_sys_connect net/socket.c:2072 [inline]
-  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 778d80be5269 ("ipv6: Add disable_ipv6 sysctl to disable IPv6 operaion on specific interface.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Link: https://lore.kernel.org/r/20240507161842.773961-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/bpf/20220103150812.87914-5-toke@redhat.com
+Stable-dep-of: 5bcf0dcbf906 ("xdp: use flags field to disambiguate broadcast redirect")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/bpf.h | 20 ++++++++++----------
+ kernel/bpf/cpumap.c |  8 +-------
+ kernel/bpf/devmap.c | 32 +++++++++++---------------------
+ net/core/filter.c   | 24 +++++++++++++++++-------
+ 4 files changed, 39 insertions(+), 45 deletions(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 17fe401bc299a..fb26401950e7e 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -224,7 +224,7 @@ int ip6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 74a26cabc084e..4236de05a8e70 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1651,17 +1651,17 @@ void bpf_patch_call_args(struct bpf_insn *insn, u32 stack_depth);
+ struct btf *bpf_get_btf_vmlinux(void);
  
--	if (unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
-+	if (unlikely(!idev || READ_ONCE(idev->cnf.disable_ipv6))) {
- 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
- 		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
- 		return 0;
+ /* Map specifics */
+-struct xdp_buff;
++struct xdp_frame;
+ struct sk_buff;
+ struct bpf_dtab_netdev;
+ struct bpf_cpu_map_entry;
+ 
+ void __dev_flush(void);
+-int dev_xdp_enqueue(struct net_device *dev, struct xdp_buff *xdp,
++int dev_xdp_enqueue(struct net_device *dev, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx);
+-int dev_map_enqueue(struct bpf_dtab_netdev *dst, struct xdp_buff *xdp,
++int dev_map_enqueue(struct bpf_dtab_netdev *dst, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx);
+-int dev_map_enqueue_multi(struct xdp_buff *xdp, struct net_device *dev_rx,
++int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
+ 			  struct bpf_map *map, bool exclude_ingress);
+ int dev_map_generic_redirect(struct bpf_dtab_netdev *dst, struct sk_buff *skb,
+ 			     struct bpf_prog *xdp_prog);
+@@ -1670,7 +1670,7 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 			   bool exclude_ingress);
+ 
+ void __cpu_map_flush(void);
+-int cpu_map_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_buff *xdp,
++int cpu_map_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx);
+ int cpu_map_generic_redirect(struct bpf_cpu_map_entry *rcpu,
+ 			     struct sk_buff *skb);
+@@ -1823,26 +1823,26 @@ static inline void __dev_flush(void)
+ {
+ }
+ 
+-struct xdp_buff;
++struct xdp_frame;
+ struct bpf_dtab_netdev;
+ struct bpf_cpu_map_entry;
+ 
+ static inline
+-int dev_xdp_enqueue(struct net_device *dev, struct xdp_buff *xdp,
++int dev_xdp_enqueue(struct net_device *dev, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx)
+ {
+ 	return 0;
+ }
+ 
+ static inline
+-int dev_map_enqueue(struct bpf_dtab_netdev *dst, struct xdp_buff *xdp,
++int dev_map_enqueue(struct bpf_dtab_netdev *dst, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx)
+ {
+ 	return 0;
+ }
+ 
+ static inline
+-int dev_map_enqueue_multi(struct xdp_buff *xdp, struct net_device *dev_rx,
++int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
+ 			  struct bpf_map *map, bool exclude_ingress)
+ {
+ 	return 0;
+@@ -1870,7 +1870,7 @@ static inline void __cpu_map_flush(void)
+ }
+ 
+ static inline int cpu_map_enqueue(struct bpf_cpu_map_entry *rcpu,
+-				  struct xdp_buff *xdp,
++				  struct xdp_frame *xdpf,
+ 				  struct net_device *dev_rx)
+ {
+ 	return 0;
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index a8429cfb4ae8c..0848d5691fd15 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -764,15 +764,9 @@ static void bq_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf)
+ 		list_add(&bq->flush_node, flush_list);
+ }
+ 
+-int cpu_map_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_buff *xdp,
++int cpu_map_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx)
+ {
+-	struct xdp_frame *xdpf;
+-
+-	xdpf = xdp_convert_buff_to_frame(xdp);
+-	if (unlikely(!xdpf))
+-		return -EOVERFLOW;
+-
+ 	/* Info needed when constructing SKB on remote CPU */
+ 	xdpf->dev_rx = dev_rx;
+ 
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index b591073c5f83d..bbf3ec03aa591 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -468,24 +468,19 @@ static void bq_enqueue(struct net_device *dev, struct xdp_frame *xdpf,
+ 	bq->q[bq->count++] = xdpf;
+ }
+ 
+-static inline int __xdp_enqueue(struct net_device *dev, struct xdp_buff *xdp,
++static inline int __xdp_enqueue(struct net_device *dev, struct xdp_frame *xdpf,
+ 				struct net_device *dev_rx,
+ 				struct bpf_prog *xdp_prog)
+ {
+-	struct xdp_frame *xdpf;
+ 	int err;
+ 
+ 	if (!dev->netdev_ops->ndo_xdp_xmit)
+ 		return -EOPNOTSUPP;
+ 
+-	err = xdp_ok_fwd_dev(dev, xdp->data_end - xdp->data);
++	err = xdp_ok_fwd_dev(dev, xdpf->len);
+ 	if (unlikely(err))
+ 		return err;
+ 
+-	xdpf = xdp_convert_buff_to_frame(xdp);
+-	if (unlikely(!xdpf))
+-		return -EOVERFLOW;
+-
+ 	bq_enqueue(dev, xdpf, dev_rx, xdp_prog);
+ 	return 0;
+ }
+@@ -521,27 +516,27 @@ static u32 dev_map_bpf_prog_run_skb(struct sk_buff *skb, struct bpf_dtab_netdev
+ 	return act;
+ }
+ 
+-int dev_xdp_enqueue(struct net_device *dev, struct xdp_buff *xdp,
++int dev_xdp_enqueue(struct net_device *dev, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx)
+ {
+-	return __xdp_enqueue(dev, xdp, dev_rx, NULL);
++	return __xdp_enqueue(dev, xdpf, dev_rx, NULL);
+ }
+ 
+-int dev_map_enqueue(struct bpf_dtab_netdev *dst, struct xdp_buff *xdp,
++int dev_map_enqueue(struct bpf_dtab_netdev *dst, struct xdp_frame *xdpf,
+ 		    struct net_device *dev_rx)
+ {
+ 	struct net_device *dev = dst->dev;
+ 
+-	return __xdp_enqueue(dev, xdp, dev_rx, dst->xdp_prog);
++	return __xdp_enqueue(dev, xdpf, dev_rx, dst->xdp_prog);
+ }
+ 
+-static bool is_valid_dst(struct bpf_dtab_netdev *obj, struct xdp_buff *xdp)
++static bool is_valid_dst(struct bpf_dtab_netdev *obj, struct xdp_frame *xdpf)
+ {
+ 	if (!obj ||
+ 	    !obj->dev->netdev_ops->ndo_xdp_xmit)
+ 		return false;
+ 
+-	if (xdp_ok_fwd_dev(obj->dev, xdp->data_end - xdp->data))
++	if (xdp_ok_fwd_dev(obj->dev, xdpf->len))
+ 		return false;
+ 
+ 	return true;
+@@ -587,14 +582,13 @@ static int get_upper_ifindexes(struct net_device *dev, int *indexes)
+ 	return n;
+ }
+ 
+-int dev_map_enqueue_multi(struct xdp_buff *xdp, struct net_device *dev_rx,
++int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
+ 			  struct bpf_map *map, bool exclude_ingress)
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+ 	struct bpf_dtab_netdev *dst, *last_dst = NULL;
+ 	int excluded_devices[1+MAX_NEST_DEV];
+ 	struct hlist_head *head;
+-	struct xdp_frame *xdpf;
+ 	int num_excluded = 0;
+ 	unsigned int i;
+ 	int err;
+@@ -604,15 +598,11 @@ int dev_map_enqueue_multi(struct xdp_buff *xdp, struct net_device *dev_rx,
+ 		excluded_devices[num_excluded++] = dev_rx->ifindex;
+ 	}
+ 
+-	xdpf = xdp_convert_buff_to_frame(xdp);
+-	if (unlikely(!xdpf))
+-		return -EOVERFLOW;
+-
+ 	if (map->map_type == BPF_MAP_TYPE_DEVMAP) {
+ 		for (i = 0; i < map->max_entries; i++) {
+ 			dst = rcu_dereference_check(dtab->netdev_map[i],
+ 						    rcu_read_lock_bh_held());
+-			if (!is_valid_dst(dst, xdp))
++			if (!is_valid_dst(dst, xdpf))
+ 				continue;
+ 
+ 			if (is_ifindex_excluded(excluded_devices, num_excluded, dst->dev->ifindex))
+@@ -635,7 +625,7 @@ int dev_map_enqueue_multi(struct xdp_buff *xdp, struct net_device *dev_rx,
+ 			head = dev_map_index_hash(dtab, i);
+ 			hlist_for_each_entry_rcu(dst, head, index_hlist,
+ 						 lockdep_is_held(&dtab->index_lock)) {
+-				if (!is_valid_dst(dst, xdp))
++				if (!is_valid_dst(dst, xdpf))
+ 					continue;
+ 
+ 				if (is_ifindex_excluded(excluded_devices, num_excluded,
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 457d1a164ad5d..96441da61fca8 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3994,12 +3994,24 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
+ 	enum bpf_map_type map_type = ri->map_type;
+ 	void *fwd = ri->tgt_value;
+ 	u32 map_id = ri->map_id;
++	struct xdp_frame *xdpf;
+ 	struct bpf_map *map;
+ 	int err;
+ 
+ 	ri->map_id = 0; /* Valid map id idr range: [1,INT_MAX[ */
+ 	ri->map_type = BPF_MAP_TYPE_UNSPEC;
+ 
++	if (map_type == BPF_MAP_TYPE_XSKMAP) {
++		err = __xsk_map_redirect(fwd, xdp);
++		goto out;
++	}
++
++	xdpf = xdp_convert_buff_to_frame(xdp);
++	if (unlikely(!xdpf)) {
++		err = -EOVERFLOW;
++		goto err;
++	}
++
+ 	switch (map_type) {
+ 	case BPF_MAP_TYPE_DEVMAP:
+ 		fallthrough;
+@@ -4007,17 +4019,14 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
+ 		map = READ_ONCE(ri->map);
+ 		if (unlikely(map)) {
+ 			WRITE_ONCE(ri->map, NULL);
+-			err = dev_map_enqueue_multi(xdp, dev, map,
++			err = dev_map_enqueue_multi(xdpf, dev, map,
+ 						    ri->flags & BPF_F_EXCLUDE_INGRESS);
+ 		} else {
+-			err = dev_map_enqueue(fwd, xdp, dev);
++			err = dev_map_enqueue(fwd, xdpf, dev);
+ 		}
+ 		break;
+ 	case BPF_MAP_TYPE_CPUMAP:
+-		err = cpu_map_enqueue(fwd, xdp, dev);
+-		break;
+-	case BPF_MAP_TYPE_XSKMAP:
+-		err = __xsk_map_redirect(fwd, xdp);
++		err = cpu_map_enqueue(fwd, xdpf, dev);
+ 		break;
+ 	case BPF_MAP_TYPE_UNSPEC:
+ 		if (map_id == INT_MAX) {
+@@ -4026,7 +4035,7 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
+ 				err = -EINVAL;
+ 				break;
+ 			}
+-			err = dev_xdp_enqueue(fwd, xdp, dev);
++			err = dev_xdp_enqueue(fwd, xdpf, dev);
+ 			break;
+ 		}
+ 		fallthrough;
+@@ -4034,6 +4043,7 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
+ 		err = -EBADRQC;
+ 	}
+ 
++out:
+ 	if (unlikely(err))
+ 		goto err;
+ 
 -- 
 2.43.0
 
