@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25828C5362
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171BE8C5132
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B97286175
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487F91C21458
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C60B85C65;
-	Tue, 14 May 2024 11:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855B37F49F;
+	Tue, 14 May 2024 10:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKB+XUQg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWvBo6I3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D8818026;
-	Tue, 14 May 2024 11:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FF2D531;
+	Tue, 14 May 2024 10:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686488; cv=none; b=ZEN8f4U/bMFCsNVU5RorO9HVHdelMNNi+phJ4jhCCyZSjC1I4XaZZqVRFsEjLtR5GEGStb4LgCuGMBWWG6s2RlU3A/6z4knZAEO6gRHV6EUD3V2iQsY9wLQOa/oM2nRhtedrla9af1QhpO4mpVbfdAK5B4OjCgetY0/EcZEftzQ=
+	t=1715684183; cv=none; b=l+EEa2eE8hma2qUfkXdK1uuds/iEM1+tQg2jbjadGwTWYsM3ciuIFOUrYUbquzklAAUVex0WgCDOGc7LjKg7ejkZ8jy+INt4sJDz8dEmOsPi9ToNfchytjrD7XyEJoeqnZuCS4eM38j86nIYxXcpRgw/k1XDJrYnEmnHK4bjaX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686488; c=relaxed/simple;
-	bh=DUBsEti82CBpVrtJoHCVc9jDeBQa/R9/u1h9rJekRw0=;
+	s=arc-20240116; t=1715684183; c=relaxed/simple;
+	bh=15PMqbAWaQ+AX5yWexu54No/76eCPF/VEApOkFIIp5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bk8i+yARQfGCbWNDaXNaB2TCe/eCP0inIwVZY3QXAxz3eL+Y1QU1nfQ4Yh5v/IfhdzisbGMexm9+iDERk1VcZNZtt9O5SVigDXvuz+XdzbPrlHL/0y84QhAXzD0PgWqsx8UdBVojCjXjpzhTZWTnzeOIOihYmbdM7acRGmq/G38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKB+XUQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A217AC2BD10;
-	Tue, 14 May 2024 11:34:47 +0000 (UTC)
+	 MIME-Version; b=RBfl1zNj3C25pa8f4rPLZuhhSd9k5Xj9xWY4lYQpDBtP5ukHGn4UvFE8V3kawkuRmVvZS8p7OHq0fgK825oJyZhwOjTI+u1b3kRsi5QjofoskL12wnTuxNadaRdDa+c9n1lfYcVRLnzJ7CGse3aTSz9ezw1U7CJM6urbSN6tOZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWvBo6I3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B77C2BD10;
+	Tue, 14 May 2024 10:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686488;
-	bh=DUBsEti82CBpVrtJoHCVc9jDeBQa/R9/u1h9rJekRw0=;
+	s=korg; t=1715684183;
+	bh=15PMqbAWaQ+AX5yWexu54No/76eCPF/VEApOkFIIp5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKB+XUQgw8Pi49prmvEXmgKd1aOJb4B0zsdxr/a495rK+zqJa0Yhg1mqtQxhGvMfu
-	 nEm3tkr1rOZhjDqzTrrL7DjTX87tQUurGGQafwGE6UqUy47lxNX2Itp8KmKrAwpWGD
-	 0kpzG5ojyxUDRS/f7jt/RwfdlDOOm8GtI2lgJ4fY=
+	b=zWvBo6I3ECaFfzb4fuZLQphchxOIvstCOJzr8WocdyklrPpJgeV9R351dZwBAQu6v
+	 7xDGKrt1A7KtbYbr/w4DQ6OjrtIARNvm6pz6X7LTU63/chiMtcqZ8wBd8zvgL89ZRw
+	 dO1W8vdG8vvZylC5ZTBOgwKFf4ekbSSgdv8wjJXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/236] hwmon: (corsair-cpro) Protect ccp->wait_input_report with a spinlock
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 314/336] mm: use memalloc_nofs_save() in page_cache_ra_order()
 Date: Tue, 14 May 2024 12:18:38 +0200
-Message-ID: <20240514101026.286311772@linuxfoundation.org>
+Message-ID: <20240514101050.474446694@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-[ Upstream commit d02abd57e79469a026213f7f5827a98d909f236a ]
+commit 30153e4466647a17eebfced13eede5cbe4290e69 upstream.
 
-Through hidraw, userspace can cause a status report to be sent
-from the device. The parsing in ccp_raw_event() may happen in
-parallel to a send_usb_cmd() call (which resets the completion
-for tracking the report) if it's running on a different CPU where
-bottom half interrupts are not disabled.
+See commit f2c817bed58d ("mm: use memalloc_nofs_save in readahead path"),
+ensure that page_cache_ra_order() do not attempt to reclaim file-backed
+pages too, or it leads to a deadlock, found issue when test ext4 large
+folio.
 
-Add a spinlock around the complete_all() in ccp_raw_event() and
-reinit_completion() in send_usb_cmd() to prevent race issues.
+ INFO: task DataXceiver for:7494 blocked for more than 120 seconds.
+ "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+ task:DataXceiver for state:D stack:0     pid:7494  ppid:1      flags:0x00000200
+ Call trace:
+  __switch_to+0x14c/0x240
+  __schedule+0x82c/0xdd0
+  schedule+0x58/0xf0
+  io_schedule+0x24/0xa0
+  __folio_lock+0x130/0x300
+  migrate_pages_batch+0x378/0x918
+  migrate_pages+0x350/0x700
+  compact_zone+0x63c/0xb38
+  compact_zone_order+0xc0/0x118
+  try_to_compact_pages+0xb0/0x280
+  __alloc_pages_direct_compact+0x98/0x248
+  __alloc_pages+0x510/0x1110
+  alloc_pages+0x9c/0x130
+  folio_alloc+0x20/0x78
+  filemap_alloc_folio+0x8c/0x1b0
+  page_cache_ra_order+0x174/0x308
+  ondemand_readahead+0x1c8/0x2b8
+  page_cache_async_ra+0x68/0xb8
+  filemap_readahead.isra.0+0x64/0xa8
+  filemap_get_pages+0x3fc/0x5b0
+  filemap_splice_read+0xf4/0x280
+  ext4_file_splice_read+0x2c/0x48 [ext4]
+  vfs_splice_read.part.0+0xa8/0x118
+  splice_direct_to_actor+0xbc/0x288
+  do_splice_direct+0x9c/0x108
+  do_sendfile+0x328/0x468
+  __arm64_sys_sendfile64+0x8c/0x148
+  invoke_syscall+0x4c/0x118
+  el0_svc_common.constprop.0+0xc8/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x4c/0x1f8
+  el0t_64_sync_handler+0xc0/0xc8
+  el0t_64_sync+0x188/0x190
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-4-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240426112938.124740-1-wangkefeng.wang@huawei.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Zhang Yi <yi.zhang@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/corsair-cpro.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ mm/readahead.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 543a741fe5473..486fb6a8c3566 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/slab.h>
-+#include <linux/spinlock.h>
- #include <linux/types.h>
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -490,6 +490,7 @@ void page_cache_ra_order(struct readahea
+ 	pgoff_t index = readahead_index(ractl);
+ 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+ 	pgoff_t mark = index + ra->size - ra->async_size;
++	unsigned int nofs;
+ 	int err = 0;
+ 	gfp_t gfp = readahead_gfp_mask(mapping);
  
- #define USB_VENDOR_ID_CORSAIR			0x1b1c
-@@ -77,6 +78,8 @@
- struct ccp_device {
- 	struct hid_device *hdev;
- 	struct device *hwmon_dev;
-+	/* For reinitializing the completion below */
-+	spinlock_t wait_input_report_lock;
- 	struct completion wait_input_report;
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
- 	u8 *cmd_buffer;
-@@ -118,7 +121,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	ccp->cmd_buffer[2] = byte2;
- 	ccp->cmd_buffer[3] = byte3;
+@@ -506,6 +507,8 @@ void page_cache_ra_order(struct readahea
+ 			new_order--;
+ 	}
  
-+	/*
-+	 * Disable raw event parsing for a moment to safely reinitialize the
-+	 * completion. Reinit is done because hidraw could have triggered
-+	 * the raw event parsing and marked the ccp->wait_input_report
-+	 * completion as done.
-+	 */
-+	spin_lock_bh(&ccp->wait_input_report_lock);
- 	reinit_completion(&ccp->wait_input_report);
-+	spin_unlock_bh(&ccp->wait_input_report_lock);
++	/* See comment in page_cache_ra_unbounded() */
++	nofs = memalloc_nofs_save();
+ 	filemap_invalidate_lock_shared(mapping);
+ 	while (index <= limit) {
+ 		unsigned int order = new_order;
+@@ -532,6 +535,7 @@ void page_cache_ra_order(struct readahea
  
- 	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
- 	if (ret < 0)
-@@ -136,11 +147,12 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 	struct ccp_device *ccp = hid_get_drvdata(hdev);
+ 	read_pages(ractl);
+ 	filemap_invalidate_unlock_shared(mapping);
++	memalloc_nofs_restore(nofs);
  
- 	/* only copy buffer when requested */
--	if (completion_done(&ccp->wait_input_report))
--		return 0;
--
--	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
--	complete_all(&ccp->wait_input_report);
-+	spin_lock(&ccp->wait_input_report_lock);
-+	if (!completion_done(&ccp->wait_input_report)) {
-+		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
-+		complete_all(&ccp->wait_input_report);
-+	}
-+	spin_unlock(&ccp->wait_input_report_lock);
- 
- 	return 0;
- }
-@@ -515,7 +527,9 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 
- 	ccp->hdev = hdev;
- 	hid_set_drvdata(hdev, ccp);
-+
- 	mutex_init(&ccp->mutex);
-+	spin_lock_init(&ccp->wait_input_report_lock);
- 	init_completion(&ccp->wait_input_report);
- 
- 	hid_device_io_start(hdev);
--- 
-2.43.0
-
+ 	/*
+ 	 * If there were already pages in the page cache, then we may have
 
 
 
