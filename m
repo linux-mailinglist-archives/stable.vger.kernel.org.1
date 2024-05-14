@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57358C5410
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BEB8C53C3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 047EF1C22865
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D080D288D82
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D15135A5A;
-	Tue, 14 May 2024 11:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7133112FB06;
+	Tue, 14 May 2024 11:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RB0++80c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClGuqfl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC5757CBC;
-	Tue, 14 May 2024 11:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E61C12FB00;
+	Tue, 14 May 2024 11:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686943; cv=none; b=JLfg6bN4mC0ynetlHD/3ZNSrZ6REOUBwdQDx6ey/Ob53cQliCNjsHe0t3b23du+Z7gIX4kw0JSuyX2R0w9uBtWhzg1mAWmiA/PxOD/59kYgOxVjHZG9B0vcEdiRa5IMaatTkWPzIQCOJROVYN6ixKWDJvL38aRVhTbwbW36hvhI=
+	t=1715686766; cv=none; b=iOvWrz6bzGFYBPySm9rszf9jvl+g1sLvfD4LdVYMA46yBSuaWTwY8GFaFuunNnT6psiKPD7NG+TlW8QzvtJnpMAM20wLNWJvCHgEmXHPI7E4q8XI/NpJyb27xZ/juy7j96OUlO7EOce6SSo6o9up2HpVnOlhE8cZKZEcGO/6jh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686943; c=relaxed/simple;
-	bh=q1vPWBGd63YkvvZrnelE36DBA/nj6/d1swBKJIjCg28=;
+	s=arc-20240116; t=1715686766; c=relaxed/simple;
+	bh=vk/CyTbKmxdlm6O6eLgrTXtLApGY/DkDoDKYBZn+fxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hY6xxVgMvksqtBo9ETztkrPy2ORR68JB8SEvGfs0d0c6C0yomsXczhMO0AwvESsDaD7yqcInpg8ERfc6gJqO+kxXF/WI7hxsXbWZzuUt3GpowfnogDwtBYCbAf06KZoLb/x7ZYJD4EYAGfyT4oewmUeyxVv8DQUqA2RP75Q+wq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RB0++80c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45ABCC2BD10;
-	Tue, 14 May 2024 11:42:23 +0000 (UTC)
+	 MIME-Version; b=IaXYamgmOViylZ0RVZsbIOyOkA8NwQGhWWO0VP5UoW0p8bi4DfK/hTsE8ut8ZkAenFEtp24YMBMwvK7KCu9QR69suQsYExvJZw1qyms419U40E3UgcyKSFxXG/iFA4xt9HO/83ZkniazJiebnM6FTQ3A1NYDh9QG0AmzWky8i48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClGuqfl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA14C2BD10;
+	Tue, 14 May 2024 11:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686943;
-	bh=q1vPWBGd63YkvvZrnelE36DBA/nj6/d1swBKJIjCg28=;
+	s=korg; t=1715686766;
+	bh=vk/CyTbKmxdlm6O6eLgrTXtLApGY/DkDoDKYBZn+fxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RB0++80cFcbWIf0qsuD4idpwwMMgmQDG5uAZzJaf9KBPkQqvaGDkT9MbcsbthMyt3
-	 vfwUGd+UoVVW1sy6XPjExWolvI6QXb8lUP37hJNRVNxnqM9i105Ot5jXWHLmTJ6+eF
-	 Fto9PO6K+wjKRsyFn9n5Hf2ZePsu++NaWYLCpk0k=
+	b=ClGuqfl720YKV8EymbKMXnDy4FyPTNz8kMZzAZoE+3N5g1ptoG4Pgzx/oe7wi0m6G
+	 iCh+mEXaUvMPFzN9mUkv5AIULoPiPrR5oqHI2tK/q9fTe/zIKBXUrd5W1G+8UyAo/l
+	 0kTM9wP/CBVq7R2PfqKnPbocObt/5zZJnS18F6ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	karthikeyan <karthikeyan@linumiz.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 12/84] pinctrl: mediatek: paris: Rework mtk_pinconf_{get,set} switch/case logic
+Subject: [PATCH 4.19 02/63] dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"
 Date: Tue, 14 May 2024 12:19:23 +0200
-Message-ID: <20240514100952.155517670@linuxfoundation.org>
+Message-ID: <20240514100948.105013586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,300 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Vinod Koul <vkoul@kernel.org>
 
-[ Upstream commit 9b780fa1ff14663c2e0f07ad098b96b8337f27a4 ]
+[ Upstream commit afc89870ea677bd5a44516eb981f7a259b74280c ]
 
-The current code deals with optional features by testing for the
-function pointers and returning -ENOTSUPP if it is not valid. This is
-done for multiple pin config settings and results in the code that
-handles the supporting cases to get indented by one level. This is
-aggrevated by the fact that some features require another level of
-conditionals.
+This reverts commit 22a9d9585812 ("dmaengine: pl330: issue_pending waits
+until WFP state") as it seems to cause regression in pl330 driver.
+Note the issue now exists in mainline so a fix to be done.
 
-Instead of assigning the same error code in all unsupported optional
-feature cases, simply have that error code as the default, and break
-out of the switch/case block whenever a feature is unsupported, or an
-error is returned. This reduces indentation by one level for the useful
-code.
-
-Also replace the goto statements with break statements. The result is
-the same, as the gotos simply exit the switch/case block, which can
-also be achieved with a break statement. With the latter the intent
-is clear and easier to understand.
-
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20220308100956.2750295-8-wenst@chromium.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: c5d3b64c568a ("pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE")
+Cc: stable@vger.kernel.org
+Reported-by: karthikeyan <karthikeyan@linumiz.com>
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c | 144 ++++++++++-------------
- 1 file changed, 61 insertions(+), 83 deletions(-)
+ drivers/dma/pl330.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index cb4979cefdd09..f568df4f0f643 100644
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -78,37 +78,34 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- {
- 	struct mtk_pinctrl *hw = pinctrl_dev_get_drvdata(pctldev);
- 	u32 param = pinconf_to_config_param(*config);
--	int pullup, err, reg, ret = 1;
-+	int pullup, reg, err = -ENOTSUPP, ret = 1;
- 	const struct mtk_pin_desc *desc;
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 54bb6e46c1803..1bba1fa3a8096 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -1045,9 +1045,6 @@ static bool _trigger(struct pl330_thread *thrd)
  
--	if (pin >= hw->soc->npins) {
--		err = -EINVAL;
--		goto out;
--	}
-+	if (pin >= hw->soc->npins)
-+		return -EINVAL;
-+
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[pin];
+ 	thrd->req_running = idx;
  
- 	switch (param) {
- 	case PIN_CONFIG_BIAS_DISABLE:
- 	case PIN_CONFIG_BIAS_PULL_UP:
- 	case PIN_CONFIG_BIAS_PULL_DOWN:
--		if (hw->soc->bias_get_combo) {
--			err = hw->soc->bias_get_combo(hw, desc, &pullup, &ret);
--			if (err)
--				goto out;
--			if (ret == MTK_PUPD_SET_R1R0_00)
--				ret = MTK_DISABLE;
--			if (param == PIN_CONFIG_BIAS_DISABLE) {
--				if (ret != MTK_DISABLE)
--					err = -EINVAL;
--			} else if (param == PIN_CONFIG_BIAS_PULL_UP) {
--				if (!pullup || ret == MTK_DISABLE)
--					err = -EINVAL;
--			} else if (param == PIN_CONFIG_BIAS_PULL_DOWN) {
--				if (pullup || ret == MTK_DISABLE)
--					err = -EINVAL;
--			}
--		} else {
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_get_combo)
-+			break;
-+		err = hw->soc->bias_get_combo(hw, desc, &pullup, &ret);
-+		if (err)
-+			break;
-+		if (ret == MTK_PUPD_SET_R1R0_00)
-+			ret = MTK_DISABLE;
-+		if (param == PIN_CONFIG_BIAS_DISABLE) {
-+			if (ret != MTK_DISABLE)
-+				err = -EINVAL;
-+		} else if (param == PIN_CONFIG_BIAS_PULL_UP) {
-+			if (!pullup || ret == MTK_DISABLE)
-+				err = -EINVAL;
-+		} else if (param == PIN_CONFIG_BIAS_PULL_DOWN) {
-+			if (pullup || ret == MTK_DISABLE)
-+				err = -EINVAL;
- 		}
- 		break;
- 	case PIN_CONFIG_SLEW_RATE:
-@@ -118,7 +115,7 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 	case PIN_CONFIG_OUTPUT_ENABLE:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
- 		if (err)
--			goto out;
-+			break;
- 		/*     CONFIG     Current direction return value
- 		 * -------------  ----------------- ----------------------
- 		 * OUTPUT_ENABLE       output       1 (= HW value)
-@@ -133,23 +130,21 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
- 		if (err)
--			goto out;
-+			break;
- 		/* return error when in output mode
- 		 * because schmitt trigger only work in input mode
- 		 */
- 		if (ret) {
- 			err = -EINVAL;
--			goto out;
-+			break;
- 		}
- 
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SMT, &ret);
+-	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
+-		UNTIL(thrd, PL330_STATE_WFP);
 -
- 		break;
- 	case PIN_CONFIG_DRIVE_STRENGTH:
--		if (hw->soc->drive_get)
--			err = hw->soc->drive_get(hw, desc, &ret);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->drive_get)
-+			break;
-+		err = hw->soc->drive_get(hw, desc, &ret);
- 		break;
- 	case MTK_PIN_CONFIG_TDSEL:
- 	case MTK_PIN_CONFIG_RDSEL:
-@@ -159,23 +154,18 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 		break;
- 	case MTK_PIN_CONFIG_PU_ADV:
- 	case MTK_PIN_CONFIG_PD_ADV:
--		if (hw->soc->adv_pull_get) {
--			pullup = param == MTK_PIN_CONFIG_PU_ADV;
--			err = hw->soc->adv_pull_get(hw, desc, pullup, &ret);
--		} else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_pull_get)
-+			break;
-+		pullup = param == MTK_PIN_CONFIG_PU_ADV;
-+		err = hw->soc->adv_pull_get(hw, desc, pullup, &ret);
- 		break;
- 	case MTK_PIN_CONFIG_DRV_ADV:
--		if (hw->soc->adv_drive_get)
--			err = hw->soc->adv_drive_get(hw, desc, &ret);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_drive_get)
-+			break;
-+		err = hw->soc->adv_drive_get(hw, desc, &ret);
- 		break;
--	default:
--		err = -ENOTSUPP;
- 	}
- 
--out:
- 	if (!err)
- 		*config = pinconf_to_config_packed(param, ret);
- 
-@@ -187,33 +177,29 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- {
- 	struct mtk_pinctrl *hw = pinctrl_dev_get_drvdata(pctldev);
- 	const struct mtk_pin_desc *desc;
--	int err = 0;
-+	int err = -ENOTSUPP;
- 	u32 reg;
- 
--	if (pin >= hw->soc->npins) {
--		err = -EINVAL;
--		goto err;
--	}
-+	if (pin >= hw->soc->npins)
-+		return -EINVAL;
-+
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[pin];
- 
- 	switch ((u32)param) {
- 	case PIN_CONFIG_BIAS_DISABLE:
--		if (hw->soc->bias_set_combo)
--			err = hw->soc->bias_set_combo(hw, desc, 0, MTK_DISABLE);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_set_combo)
-+			break;
-+		err = hw->soc->bias_set_combo(hw, desc, 0, MTK_DISABLE);
- 		break;
- 	case PIN_CONFIG_BIAS_PULL_UP:
--		if (hw->soc->bias_set_combo)
--			err = hw->soc->bias_set_combo(hw, desc, 1, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_set_combo)
-+			break;
-+		err = hw->soc->bias_set_combo(hw, desc, 1, arg);
- 		break;
- 	case PIN_CONFIG_BIAS_PULL_DOWN:
--		if (hw->soc->bias_set_combo)
--			err = hw->soc->bias_set_combo(hw, desc, 0, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_set_combo)
-+			break;
-+		err = hw->soc->bias_set_combo(hw, desc, 0, arg);
- 		break;
- 	case PIN_CONFIG_OUTPUT_ENABLE:
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT,
-@@ -222,7 +208,7 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		 *  does not have SMT control
- 		 */
- 		if (err != -ENOTSUPP)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
- 				       MTK_OUTPUT);
-@@ -231,7 +217,7 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		/* regard all non-zero value as enable */
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, !!arg);
- 		if (err)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
- 				       MTK_INPUT);
-@@ -244,7 +230,7 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
- 				       MTK_OUTPUT);
- 		if (err)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DO,
- 				       arg);
-@@ -256,15 +242,14 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		 */
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR, !arg);
- 		if (err)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT, !!arg);
- 		break;
- 	case PIN_CONFIG_DRIVE_STRENGTH:
--		if (hw->soc->drive_set)
--			err = hw->soc->drive_set(hw, desc, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->drive_set)
-+			break;
-+		err = hw->soc->drive_set(hw, desc, arg);
- 		break;
- 	case MTK_PIN_CONFIG_TDSEL:
- 	case MTK_PIN_CONFIG_RDSEL:
-@@ -274,26 +259,19 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		break;
- 	case MTK_PIN_CONFIG_PU_ADV:
- 	case MTK_PIN_CONFIG_PD_ADV:
--		if (hw->soc->adv_pull_set) {
--			bool pullup;
--
--			pullup = param == MTK_PIN_CONFIG_PU_ADV;
--			err = hw->soc->adv_pull_set(hw, desc, pullup,
--						    arg);
--		} else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_pull_set)
-+			break;
-+		err = hw->soc->adv_pull_set(hw, desc,
-+					    (param == MTK_PIN_CONFIG_PU_ADV),
-+					    arg);
- 		break;
- 	case MTK_PIN_CONFIG_DRV_ADV:
--		if (hw->soc->adv_drive_set)
--			err = hw->soc->adv_drive_set(hw, desc, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_drive_set)
-+			break;
-+		err = hw->soc->adv_drive_set(hw, desc, arg);
- 		break;
--	default:
--		err = -ENOTSUPP;
- 	}
- 
--err:
- 	return err;
+ 	return true;
  }
  
 -- 
