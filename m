@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097FA8C5548
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F2B8C53E6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D7F61C21EB1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985C01F213D2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFFE3D3B8;
-	Tue, 14 May 2024 11:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C2C13D29D;
+	Tue, 14 May 2024 11:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsaqJLAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5ozlTBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291A1F9D4;
-	Tue, 14 May 2024 11:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA50547A57;
+	Tue, 14 May 2024 11:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687784; cv=none; b=usEoWl+k95DZxojv2CiSkNHKE5Qr6jbqOtJDeGGEZ71fZ1mvZ9qiVoVYVqx0Hf3K7U9S7pe9jv3hFkkSQV45DNodLOVtosrJXdFpU0Xk4XsNsGoszmGEZm4/yUDotMYyskLsAxtmXyh7BWF6QjBubgR07XNzr7+QPY0VszM85AY=
+	t=1715686842; cv=none; b=Kz2EqICYR+KzIrfAky+7tP1sMt0l746MsQZom+PMaxxDYSk/rs7afShP0aXi2dcZ+YB60/oYKDr3YGhQ1zCBo9agVIAjp372WMTNp39q5bq97DbWnUdN/lwSbGwZxcHm5bvsHibiduM39l8luuRGToLkKNXvdAqODQa1lqj+eDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687784; c=relaxed/simple;
-	bh=tjvPhV4dwm/5581HqbeTqnPmCFB9+FKjDPNeeMITZ8A=;
+	s=arc-20240116; t=1715686842; c=relaxed/simple;
+	bh=RuAsk+dn38z6d4wz6zcVgdtS96ITm0oW1QMRwTRmqvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPOmVp/JhEhYtvDRpf64qgd7hGn+Am32UMhCFO3SrrHGPNBWO4LxkOj8N3TTTPkU+UKetzDGLqh1uoOXrJHZk0e3oCZhuRnFurd69q7QvtGF7N7jW9gJgzImOq3NImsJBOL5qOrDxnfAlNv+V20YvTdCRynPp+EehzBexG9280g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsaqJLAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAA8C2BD10;
-	Tue, 14 May 2024 11:56:23 +0000 (UTC)
+	 MIME-Version; b=AeVMEVlnN0USlXSxSjaTRQCp/nTtDukmuwXV6XmoY09GslsJKg0rt+SDt00jUI1fErkZaaUlGwY0T3uEFYqUN7wyUxfh0lHUKXialgy5z5xpbkIWh41+4fF6MbIZgaxQ9qRNsRqaxVMSgVC2IfZspSCG112Cbda/LumUysdkeyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5ozlTBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5242DC2BD10;
+	Tue, 14 May 2024 11:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687784;
-	bh=tjvPhV4dwm/5581HqbeTqnPmCFB9+FKjDPNeeMITZ8A=;
+	s=korg; t=1715686842;
+	bh=RuAsk+dn38z6d4wz6zcVgdtS96ITm0oW1QMRwTRmqvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsaqJLAvkJRrnDGXNWX08VIHHexcvECZd9hrxNlhI87mxxfOfoue/sd8TSYjiJoo6
-	 8bklK3XQUVm8wO7XG2bLuIPNX7FXYKAgIbJZSurhFbhCHGQTsipunFmLbnV8iGCpEf
-	 I0MGTiRrWaHbKY+0dr0zeVAbzA8Lyxw2OLkAOLKI=
+	b=C5ozlTBXk8pY2BV9iPDR8iIwbG4Vdh2HoZJVoCdM7YDZZRKpgfx/ENUJFbaQH7nTo
+	 HKkauo3QqlLL6mB6+4PNtFQp+xrQUPC4D8SVtbn3lJz1pPC0WjLY84AA6odQJm4tIj
+	 zh3VCYVDly32jChAvfwHp4pho+eNj9+BWNjn8Z4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Davey <paul.davey@alliedtelesis.co.nz>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/168] xfrm: Preserve vlan tags for transport mode software GRO
+Subject: [PATCH 4.19 40/63] gpio: wcove: Use -ENOTSUPP consistently
 Date: Tue, 14 May 2024 12:20:01 +0200
-Message-ID: <20240514101010.574685085@linuxfoundation.org>
+Message-ID: <20240514100949.528499369@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Davey <paul.davey@alliedtelesis.co.nz>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 58fbfecab965014b6e3cc956a76b4a96265a1add ]
+[ Upstream commit 0c3b532ad3fbf82884a2e7e83e37c7dcdd4d1d99 ]
 
-The software GRO path for esp transport mode uses skb_mac_header_rebuild
-prior to re-injecting the packet via the xfrm_napi_dev.  This only
-copies skb->mac_len bytes of header which may not be sufficient if the
-packet contains 802.1Q tags or other VLAN tags.  Worse copying only the
-initial header will leave a packet marked as being VLAN tagged but
-without the corresponding tag leading to mangling when it is later
-untagged.
+The GPIO library expects the drivers to return -ENOTSUPP in some
+cases and not using analogue POSIX code. Make the driver to follow
+this.
 
-The VLAN tags are important when receiving the decrypted esp transport
-mode packet after GRO processing to ensure it is received on the correct
-interface.
-
-Therefore record the full mac header length in xfrm*_transport_input for
-later use in corresponding xfrm*_transport_finish to copy the entire mac
-header when rebuilding the mac header for GRO.  The skb->data pointer is
-left pointing skb->mac_header bytes after the start of the mac header as
-is expected by the network stack and network and transport header
-offsets reset to this location.
-
-Fixes: 7785bba299a8 ("esp: Add a software GRO codepath")
-Signed-off-by: Paul Davey <paul.davey@alliedtelesis.co.nz>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skbuff.h | 15 +++++++++++++++
- include/net/xfrm.h     |  3 +++
- net/ipv4/xfrm4_input.c |  6 +++++-
- net/ipv6/xfrm6_input.c |  6 +++++-
- net/xfrm/xfrm_input.c  |  8 ++++++++
- 5 files changed, 36 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-wcove.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 7ed1d4472c0c8..15de91c65a09a 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -2735,6 +2735,21 @@ static inline void skb_mac_header_rebuild(struct sk_buff *skb)
- 	}
- }
+diff --git a/drivers/gpio/gpio-wcove.c b/drivers/gpio/gpio-wcove.c
+index dde7c6aecbb5e..b8d79f70cb965 100644
+--- a/drivers/gpio/gpio-wcove.c
++++ b/drivers/gpio/gpio-wcove.c
+@@ -110,7 +110,7 @@ static inline unsigned int to_reg(int gpio, enum ctrl_register reg_type)
+ 	unsigned int reg;
  
-+/* Move the full mac header up to current network_header.
-+ * Leaves skb->data pointing at offset skb->mac_len into the mac_header.
-+ * Must be provided the complete mac header length.
-+ */
-+static inline void skb_mac_header_rebuild_full(struct sk_buff *skb, u32 full_mac_len)
-+{
-+	if (skb_mac_header_was_set(skb)) {
-+		const unsigned char *old_mac = skb_mac_header(skb);
-+
-+		skb_set_mac_header(skb, -full_mac_len);
-+		memmove(skb_mac_header(skb), old_mac, full_mac_len);
-+		__skb_push(skb, full_mac_len - skb->mac_len);
-+	}
-+}
-+
- static inline int skb_checksum_start_offset(const struct sk_buff *skb)
- {
- 	return skb->csum_start - skb_headroom(skb);
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 6156ed2950f97..2e2e30d31a763 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1019,6 +1019,9 @@ struct xfrm_offload {
- #define CRYPTO_INVALID_PACKET_SYNTAX		64
- #define CRYPTO_INVALID_PROTOCOL			128
+ 	if (gpio >= WCOVE_GPIO_NUM)
+-		return -EOPNOTSUPP;
++		return -ENOTSUPP;
  
-+	/* Used to keep whole l2 header for transport mode GRO */
-+	__u32			orig_mac_len;
-+
- 	__u8			proto;
- 	__u8			inner_ipproto;
- };
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index eac206a290d05..1f50517289fd9 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -61,7 +61,11 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
- 	ip_send_check(iph);
- 
- 	if (xo && (xo->flags & XFRM_GRO)) {
--		skb_mac_header_rebuild(skb);
-+		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
-+		 * works correctly in the presence of vlan tags.
-+		 */
-+		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
-+		skb_reset_network_header(skb);
- 		skb_reset_transport_header(skb);
- 		return 0;
- 	}
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 4907ab241d6be..7dbefbb338ca5 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -56,7 +56,11 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
- 	skb_postpush_rcsum(skb, skb_network_header(skb), nhlen);
- 
- 	if (xo && (xo->flags & XFRM_GRO)) {
--		skb_mac_header_rebuild(skb);
-+		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
-+		 * works correctly in the presence of vlan tags.
-+		 */
-+		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
-+		skb_reset_network_header(skb);
- 		skb_reset_transport_header(skb);
- 		return 0;
- 	}
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index a6861832710d9..7f326a01cbcea 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -400,11 +400,15 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
-  */
- static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- {
-+	struct xfrm_offload *xo = xfrm_offload(skb);
- 	int ihl = skb->data - skb_transport_header(skb);
- 
- 	if (skb->transport_header != skb->network_header) {
- 		memmove(skb_transport_header(skb),
- 			skb_network_header(skb), ihl);
-+		if (xo)
-+			xo->orig_mac_len =
-+				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
- 		skb->network_header = skb->transport_header;
- 	}
- 	ip_hdr(skb)->tot_len = htons(skb->len + ihl);
-@@ -415,11 +419,15 @@ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- static int xfrm6_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- {
- #if IS_ENABLED(CONFIG_IPV6)
-+	struct xfrm_offload *xo = xfrm_offload(skb);
- 	int ihl = skb->data - skb_transport_header(skb);
- 
- 	if (skb->transport_header != skb->network_header) {
- 		memmove(skb_transport_header(skb),
- 			skb_network_header(skb), ihl);
-+		if (xo)
-+			xo->orig_mac_len =
-+				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
- 		skb->network_header = skb->transport_header;
- 	}
- 	ipv6_hdr(skb)->payload_len = htons(skb->len + ihl -
+ 	if (reg_type == CTRL_IN)
+ 		reg = GPIO_IN_CTRL_BASE + gpio;
 -- 
 2.43.0
 
