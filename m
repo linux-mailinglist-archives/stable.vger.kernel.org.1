@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-43841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719F18C4FDB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA2E8C5156
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857371F214F6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 905A9281FA9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69380130496;
-	Tue, 14 May 2024 10:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F5912FF9F;
+	Tue, 14 May 2024 10:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM5c6iw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSSrtUaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A8657CA1;
-	Tue, 14 May 2024 10:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D03320F;
+	Tue, 14 May 2024 10:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682584; cv=none; b=J+znr/iHAd9p0n/lQVNebk74SgMoi81WaDIgtce/EwnsmEaphT+LhfmKHy1lnal/FtRaZaN9RhDsvXMicFHY/2Ln0MMxjGG1R28il942Y5QiJk3oldvV9TtiVm23rLYJgkCT5En4qJsMcM/VHj3MA8Jgvh5LJjZcQv8bzBFIB50=
+	t=1715684296; cv=none; b=tCzB5vdVb0yXJQDtZafdGvYqTQFEZEtUcu6NvARTIL1Rs2I4ueOu8UJ1MTYPKIAc6E/TaMM1jvg2EHwHCDKZpQWTkJ5fH382lZOuK39hqMw94G2J22sAuDgU4uTFq9HD7LnknzGWINm4NAAfjzaR9q2DbWCkgLE6g1HI7stwAQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682584; c=relaxed/simple;
-	bh=ctDR2JlXjd93Gy5wH6AZvKzRK12xQbeDPoiaB6SRTbA=;
+	s=arc-20240116; t=1715684296; c=relaxed/simple;
+	bh=l6IEM0/Bu6x78Crk1EHg6CR2GCTte7/9W3pojfsKTGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUM8tOtVrGyfqKrgPwjYkhvAtza/bF8HNpxLp8AUYmsWYHJWYzuhXBRk55aAsAOk/Zeecx3sBOHjRYdjPE2h3t2SfAEA6sE3PClfjUKior98JJyn8c8rHdx9f580mLqgwDm5EexefwGyvqKav1dyt3c/oeRe5LQe6YwFgFfd7ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM5c6iw6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029E0C2BD10;
-	Tue, 14 May 2024 10:29:42 +0000 (UTC)
+	 MIME-Version; b=gLYReOwgTDooaIeOngPZkXGafz7mpuwiZP9QoLfIQ8fGZzSRoCAPnR0Yoqq1h7quVxvbsI7ggib+XjuuRWuN3vE3XqIh5pZvil6VrA6Xtft21kRVwRHtLOM/r/1Nv/Kjpykb6z1mSxrbosLE+fVCcv0i88GGbkDkymDd/TGKy2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSSrtUaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F35C2BD10;
+	Tue, 14 May 2024 10:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682584;
-	bh=ctDR2JlXjd93Gy5wH6AZvKzRK12xQbeDPoiaB6SRTbA=;
+	s=korg; t=1715684296;
+	bh=l6IEM0/Bu6x78Crk1EHg6CR2GCTte7/9W3pojfsKTGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MM5c6iw6tFnMnwDxu8yV1op6MyeDJ9GLKlzazDdDFVyLyMOVKrraHAyvUyb1owU6w
-	 D1ajgsE7YgVvDg5Osu7z4t0wf4CxfSNhYwoqfZy00t7nA87NM5ZGqYpEwNk/2ihLH2
-	 oKWI8RCKTkirey4k5Ijmx7l6DtwyF9rudUi968o4=
+	b=zSSrtUaKUtH7BK59BjYHY11lkVmy0AhxQ2Z7tT6y7x+AauEDl04md/IbssKzrSy+7
+	 9RYGbeytKlhgRukL5EXQJN4ZHSvu4WxF9AGS2jbTQ3y38NgVYAwMcna630uUlfiaNp
+	 uRG7gkVVFx9Ipre6p3n5Ijtz3O9dZAdag6Hz1/bA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 086/336] drm/xe/display: Fix ADL-N detection
-Date: Tue, 14 May 2024 12:14:50 +0200
-Message-ID: <20240514101041.854251215@linuxfoundation.org>
+Subject: [PATCH 6.6 020/301] nfs: Handle error of rpc_proc_register() in nfs_net_init().
+Date: Tue, 14 May 2024 12:14:51 +0200
+Message-ID: <20240514101033.007788758@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit df04b152fca2d46e75fbb74ed79299bc420bc9e6 ]
+[ Upstream commit 24457f1be29f1e7042e50a7749f5c2dde8c433c8 ]
 
-Contrary to i915, in xe ADL-N is kept as a different platform, not a
-subplatform of ADL-P. Since the display side doesn't need to
-differentiate between P and N, i.e. IS_ALDERLAKE_P_N() is never called,
-just fixup the compat header to check for both P and N.
+syzkaller reported a warning [0] triggered while destroying immature
+netns.
 
-Moving ADL-N to be a subplatform would be more complex as the firmware
-loading in xe only handles platforms, not subplatforms, as going forward
-the direction is to check on IP version rather than
-platforms/subplatforms.
+rpc_proc_register() was called in init_nfs_fs(), but its error
+has been ignored since at least the initial commit 1da177e4c3f4
+("Linux-2.6.12-rc2").
 
-Fix warning when initializing display:
+Recently, commit d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs
+in net namespaces") converted the procfs to per-netns and made
+the problem more visible.
 
-	xe 0000:00:02.0: [drm:intel_pch_type [xe]] Found Alder Lake PCH
-	------------[ cut here ]------------
-	xe 0000:00:02.0: drm_WARN_ON(!((dev_priv)->info.platform == XE_ALDERLAKE_S) && !((dev_priv)->info.platform == XE_ALDERLAKE_P))
+Even when rpc_proc_register() fails, nfs_net_init() could succeed,
+and thus nfs_net_exit() will be called while destroying the netns.
 
-And wrong paths being taken on the display side.
+Then, remove_proc_entry() will be called for non-existing proc
+directory and trigger the warning below.
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425181610.2704633-1-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 6a2a90cba12b42eb96c2af3426b77ceb4be31df2)
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Let's handle the error of rpc_proc_register() properly in nfs_net_init().
+
+[0]:
+name 'nfs'
+WARNING: CPU: 1 PID: 1710 at fs/proc/generic.c:711 remove_proc_entry+0x1bb/0x2d0 fs/proc/generic.c:711
+Modules linked in:
+CPU: 1 PID: 1710 Comm: syz-executor.2 Not tainted 6.8.0-12822-gcd51db110a7e #12
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:remove_proc_entry+0x1bb/0x2d0 fs/proc/generic.c:711
+Code: 41 5d 41 5e c3 e8 85 09 b5 ff 48 c7 c7 88 58 64 86 e8 09 0e 71 02 e8 74 09 b5 ff 4c 89 e6 48 c7 c7 de 1b 80 84 e8 c5 ad 97 ff <0f> 0b eb b1 e8 5c 09 b5 ff 48 c7 c7 88 58 64 86 e8 e0 0d 71 02 eb
+RSP: 0018:ffffc9000c6d7ce0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8880422b8b00 RCX: ffffffff8110503c
+RDX: ffff888030652f00 RSI: ffffffff81105045 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: ffffffff81bb62cb R12: ffffffff84807ffc
+R13: ffff88804ad6fcc0 R14: ffffffff84807ffc R15: ffffffff85741ff8
+FS:  00007f30cfba8640(0000) GS:ffff88807dd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff51afe8000 CR3: 000000005a60a005 CR4: 0000000000770ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ rpc_proc_unregister+0x64/0x70 net/sunrpc/stats.c:310
+ nfs_net_exit+0x1c/0x30 fs/nfs/inode.c:2438
+ ops_exit_list+0x62/0xb0 net/core/net_namespace.c:170
+ setup_net+0x46c/0x660 net/core/net_namespace.c:372
+ copy_net_ns+0x244/0x590 net/core/net_namespace.c:505
+ create_new_namespaces+0x2ed/0x770 kernel/nsproxy.c:110
+ unshare_nsproxy_namespaces+0xae/0x160 kernel/nsproxy.c:228
+ ksys_unshare+0x342/0x760 kernel/fork.c:3322
+ __do_sys_unshare kernel/fork.c:3393 [inline]
+ __se_sys_unshare kernel/fork.c:3391 [inline]
+ __x64_sys_unshare+0x1f/0x30 kernel/fork.c:3391
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x46/0x4e
+RIP: 0033:0x7f30d0febe5d
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
+RSP: 002b:00007f30cfba7cc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
+RAX: ffffffffffffffda RBX: 00000000004bbf80 RCX: 00007f30d0febe5d
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000000006c020600
+RBP: 00000000004bbf80 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 000000000000000b R14: 00007f30d104c530 R15: 0000000000000000
+ </TASK>
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/inode.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
-index 5d2a77b52db41..d9a81e6a4b85a 100644
---- a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
-+++ b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
-@@ -84,7 +84,8 @@ static inline struct drm_i915_private *kdev_to_i915(struct device *kdev)
- #define IS_ROCKETLAKE(dev_priv)	IS_PLATFORM(dev_priv, XE_ROCKETLAKE)
- #define IS_DG1(dev_priv)        IS_PLATFORM(dev_priv, XE_DG1)
- #define IS_ALDERLAKE_S(dev_priv) IS_PLATFORM(dev_priv, XE_ALDERLAKE_S)
--#define IS_ALDERLAKE_P(dev_priv) IS_PLATFORM(dev_priv, XE_ALDERLAKE_P)
-+#define IS_ALDERLAKE_P(dev_priv) (IS_PLATFORM(dev_priv, XE_ALDERLAKE_P) || \
-+				  IS_PLATFORM(dev_priv, XE_ALDERLAKE_N))
- #define IS_XEHPSDV(dev_priv) (dev_priv && 0)
- #define IS_DG2(dev_priv)	IS_PLATFORM(dev_priv, XE_DG2)
- #define IS_PONTEVECCHIO(dev_priv) IS_PLATFORM(dev_priv, XE_PVC)
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index e26d892ff4f2d..ca76b0b51b779 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2429,7 +2429,12 @@ static int nfs_net_init(struct net *net)
+ 	struct nfs_net *nn = net_generic(net, nfs_net_id);
+ 
+ 	nfs_clients_init(net);
+-	rpc_proc_register(net, &nn->rpcstats);
++
++	if (!rpc_proc_register(net, &nn->rpcstats)) {
++		nfs_clients_exit(net);
++		return -ENOMEM;
++	}
++
+ 	return nfs_fs_proc_net_init(net);
+ }
+ 
 -- 
 2.43.0
 
