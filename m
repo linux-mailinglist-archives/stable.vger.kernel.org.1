@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0B88C53CE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5536D8C54A2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3CF1288DD4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95671F2205F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E81313AA37;
-	Tue, 14 May 2024 11:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F266812D773;
+	Tue, 14 May 2024 11:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfmgUOwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GV1aIIDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DAA12FB00;
-	Tue, 14 May 2024 11:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D655FDD2;
+	Tue, 14 May 2024 11:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686769; cv=none; b=PjbLwf9aOQ8mc5bMG1abWkmvWUuuSKrCxmE1kqfHw90mnePp+yzVJW/+wGKys4vswAl/cZcacTH+yHmz56g0ketyTzoRl3NjjK278xSOB2t4VtM+caewD+q13T2G+qI4/IValqyWmYpMbHebMNL9BSJQNxJZY1LdE2fY0aO3CfU=
+	t=1715687325; cv=none; b=OUhK2jyEqeEIYrBfSVSWtToZXgkjs2l6FwfLb/VWoovzfn4cq+OUrevjn5La7hNZB95hNGCKwiOU3jjj8I8+jeI0fBXqZHFpbRQyMFE+wBMp/lVWy9BT1MPZywRDH7LU8bO9sTC0kfJrPVAtSXnXnA3mdM3hbA21lfVfXqJA6IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686769; c=relaxed/simple;
-	bh=CJkk4txtha12BjPWDJt9ko7kJEofZi8zk1IN7otSZ3A=;
+	s=arc-20240116; t=1715687325; c=relaxed/simple;
+	bh=YnMwKSdPV0XsGrYpWnUsM6oEfKImjGjP8RoNpAwQKwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzQhuYFyvDmTyuPFcQZTQJ7jtgphme5OkCCPN4izzzJZcfzGBeaelO4HDpoFu7AofTQ5cXLAs+vdUEZUNEDum0XMfxUiaUFasw/VqBpUQWiqGi9g/fi+qfNqugbQHUP6nLQjIKXI9/rCYz9BENyZLwhu3wXAvffn4mF6xmGSPxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfmgUOwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E710C2BD10;
-	Tue, 14 May 2024 11:39:28 +0000 (UTC)
+	 MIME-Version; b=tmQVcVnN87TjmwwfajFH2JZhYQPY98+gChzBKFL+XkMCZFv73iomdrvAZl9qPd5dPRPjl7fa+yqI4Us0QCe9ZqhadFTgxgZSvV/9AqKROBY3Pj+egx2X2w1RhA3tpdKUbb7JNeCUS0GtypnGkuMS/SxpNijqVrALX1t/wHYlxGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GV1aIIDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387CAC2BD10;
+	Tue, 14 May 2024 11:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686768;
-	bh=CJkk4txtha12BjPWDJt9ko7kJEofZi8zk1IN7otSZ3A=;
+	s=korg; t=1715687325;
+	bh=YnMwKSdPV0XsGrYpWnUsM6oEfKImjGjP8RoNpAwQKwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfmgUOwfXpDtWKUeFdZC8GWfLeSAiSVucJ7ysiQHIKZFhlki4sOSJHvKAU/buSI1r
-	 pbvqdlt0YK6YEWJ3CKtS5UiT4M4eBhPSWmMe4nP6y3aQI4bqmO+Ni7Hz/Xj5cQyxaj
-	 kDE8xhdKOCSYkt8MDuXtsIXGwr45Sw5VH7+l0P9Y=
+	b=GV1aIIDgeSGQqLy44bk/0sQyIAgIYJQIUpzyh6uB2cA2eKZKWmJpqJD63zjAyd9pY
+	 ir/iiVrv7/5wO9wXmFJc5LWGAOvTU45yMiih7dZduqSQHpBT/s6DXsY28ruQasgakd
+	 RULKv1+vORsc7kJ1SYvuAdTWzltpE2qH8UuhisAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 03/63] wifi: nl80211: dont free NULL coalescing rule
+Subject: [PATCH 5.10 026/111] s390/vdso: Add CFI for RA register to asm macro vdso_func
 Date: Tue, 14 May 2024 12:19:24 +0200
-Message-ID: <20240514100948.141530423@linuxfoundation.org>
+Message-ID: <20240514100958.120959007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jens Remus <jremus@linux.ibm.com>
 
-[ Upstream commit 801ea33ae82d6a9d954074fbcf8ea9d18f1543a7 ]
+[ Upstream commit b961ec10b9f9719987470236feb50c967db5a652 ]
 
-If the parsing fails, we can dereference a NULL pointer here.
+The return-address (RA) register r14 is specified as volatile in the
+s390x ELF ABI [1]. Nevertheless proper CFI directives must be provided
+for an unwinder to restore the return address, if the RA register
+value is changed from its value at function entry, as it is the case.
 
-Cc: stable@vger.kernel.org
-Fixes: be29b99a9b51 ("cfg80211/nl80211: Add packet coalesce support")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240418105220.b328f80406e7.Id75d961050deb05b3e4e354e024866f350c68103@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[1]: s390x ELF ABI, https://github.com/IBM/s390x-abi/releases
+
+Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/include/asm/dwarf.h               | 1 +
+ arch/s390/kernel/vdso64/vdso_user_wrapper.S | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index df2989c35fd86..15f28203445cb 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -11492,6 +11492,8 @@ static int nl80211_set_coalesce(struct sk_buff *skb, struct genl_info *info)
- error:
- 	for (i = 0; i < new_coalesce.n_rules; i++) {
- 		tmp_rule = &new_coalesce.rules[i];
-+		if (!tmp_rule)
-+			continue;
- 		for (j = 0; j < tmp_rule->n_patterns; j++)
- 			kfree(tmp_rule->patterns[j].mask);
- 		kfree(tmp_rule->patterns);
+diff --git a/arch/s390/include/asm/dwarf.h b/arch/s390/include/asm/dwarf.h
+index 4f21ae561e4dd..390906b8e386e 100644
+--- a/arch/s390/include/asm/dwarf.h
++++ b/arch/s390/include/asm/dwarf.h
+@@ -9,6 +9,7 @@
+ #define CFI_DEF_CFA_OFFSET	.cfi_def_cfa_offset
+ #define CFI_ADJUST_CFA_OFFSET	.cfi_adjust_cfa_offset
+ #define CFI_RESTORE		.cfi_restore
++#define CFI_REL_OFFSET		.cfi_rel_offset
+ 
+ #ifdef CONFIG_AS_CFI_VAL_OFFSET
+ #define CFI_VAL_OFFSET		.cfi_val_offset
+diff --git a/arch/s390/kernel/vdso64/vdso_user_wrapper.S b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
+index a775d7e528728..2183b8f64d574 100644
+--- a/arch/s390/kernel/vdso64/vdso_user_wrapper.S
++++ b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
+@@ -23,8 +23,10 @@ __kernel_\func:
+ 	CFI_DEF_CFA_OFFSET (STACK_FRAME_OVERHEAD + WRAPPER_FRAME_SIZE)
+ 	CFI_VAL_OFFSET 15, -STACK_FRAME_OVERHEAD
+ 	stg	%r14,STACK_FRAME_OVERHEAD(%r15)
++	CFI_REL_OFFSET 14, STACK_FRAME_OVERHEAD
+ 	brasl	%r14,__s390_vdso_\func
+ 	lg	%r14,STACK_FRAME_OVERHEAD(%r15)
++	CFI_RESTORE 14
+ 	aghi	%r15,WRAPPER_FRAME_SIZE
+ 	CFI_DEF_CFA_OFFSET STACK_FRAME_OVERHEAD
+ 	CFI_RESTORE 15
 -- 
 2.43.0
 
