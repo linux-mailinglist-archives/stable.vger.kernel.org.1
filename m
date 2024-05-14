@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162158C5116
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A088F8C5342
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 774E528255B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53B0F1F232CE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2655812F5AA;
-	Tue, 14 May 2024 10:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9457581B;
+	Tue, 14 May 2024 11:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13lZGvaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rw5GBaOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F9953370;
-	Tue, 14 May 2024 10:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB43A757E8;
+	Tue, 14 May 2024 11:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684046; cv=none; b=aNgiuHlbfWxSIb2oLMci3K7y1lZ2a1QJ4jKaAeSuzM0E/IMEif49P8OuhAmuCe8UiV+6fHIaxHY+fX5dDI6C6vOqsU4CTigMuDzKmpRTYIui9NA34yL4dAg5X5ViN7bZ+jHMbDeDzKfiTrnyF/jmvVGK+rWmjYzuDSqaLWck3l4=
+	t=1715686401; cv=none; b=ryCgpZ6c+Eq++uGCAJ2SogwJ5Vo/G5UxMHC3Yu/b2mlYMnJvXJqDhs1hYeV2eGN/8JvGHyxZDoZ1rLhszAwLyn+ym/iGQyk17WbUbga/WFCcPRqN98l4WpqmTidIRpJzecW9neT6j5UKZejTxEPTL7nMZteQIzLofK90GJWSAiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684046; c=relaxed/simple;
-	bh=AagKtx3wM9PlM38Az96SIcTCX79Uko/VbGS1OmquG6I=;
+	s=arc-20240116; t=1715686401; c=relaxed/simple;
+	bh=ZLUUA7PeJwd3Nv9x0Ukxd0sJh2ikqDDRc+OxoV368j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3pEp6rxyp3rlaYFfFt+0X0kFeAVZ3qNZmQiVVQysbVm+ML+DurVG9rKm22T9ulLAyZ5I0o0kjFcWfQhbj2S7yODBSqExk+SLaNFH6EAPLMwWvD9S1ksg1ipa1gERD95uCu9ajO5skvSHgmzzjmEYG3/Bl4iUgBEJAuK0kR6s4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13lZGvaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FEEC2BD10;
-	Tue, 14 May 2024 10:54:05 +0000 (UTC)
+	 MIME-Version; b=ZVK0vLFfov+ycw4A0rmr05SHuO4UneTULM2BkrIeBauy3USN2VbLsr+dhxEZCUNHtxyGBVYLKsGNTrnmnfyHE1iQwwjjKC0v6CQHH2lEk4lOd1yB782UrAiCnMM5Ue+P/+1FejZB3N0dFnM83m5cYKQnIQRF07Xn+oG9S8tEkSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rw5GBaOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48397C2BD10;
+	Tue, 14 May 2024 11:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684046;
-	bh=AagKtx3wM9PlM38Az96SIcTCX79Uko/VbGS1OmquG6I=;
+	s=korg; t=1715686401;
+	bh=ZLUUA7PeJwd3Nv9x0Ukxd0sJh2ikqDDRc+OxoV368j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=13lZGvaHM5BKTXuRgDDHH7b1fg69MHxq5ISFbT6KZHrPEghzSIN/g6eRv25V3Pl+l
-	 yL3a8kPDcCJA8PORMVbdo4EZYfnqehd7p3k9+ZanI07gxwOPKDKspj9AHI89TsHJ70
-	 6XbYKIiUhd2vAzNlyPG17CC3vcyQr/cWyKTXhEQs=
+	b=Rw5GBaOK07c8b/zNY+ak7Dh08nmB9xSl8PWsSDsl0UDi8JPUhn9TPK9yYPTv2N5fZ
+	 Ji/1HN0e7CzRsZan8sFAmdGiwb32DOatklW6XnWOnOwK9WeH9+7oSmCrL0cLzGUiC0
+	 Ybwbj+bjtAvfZXPBwTToLqzBB+FkEO7iVDWVnBwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 283/336] net: bcmgenet: synchronize use of bcmgenet_set_rx_mode()
-Date: Tue, 14 May 2024 12:18:07 +0200
-Message-ID: <20240514101049.302535611@linuxfoundation.org>
+	Lee Jones <joneslee@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 126/236] selftests: timers: Fix valid-adjtimex signed left-shift undefined behavior
+Date: Tue, 14 May 2024 12:18:08 +0200
+Message-ID: <20240514101025.154946817@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: John Stultz <jstultz@google.com>
 
-commit 2dbe5f19368caae63b1f59f5bc2af78c7d522b3a upstream.
+[ Upstream commit 076361362122a6d8a4c45f172ced5576b2d4a50d ]
 
-The ndo_set_rx_mode function is synchronized with the
-netif_addr_lock spinlock and BHs disabled. Since this
-function is also invoked directly from the driver the
-same synchronization should be applied.
+The struct adjtimex freq field takes a signed value who's units are in
+shifted (<<16) parts-per-million.
 
-Fixes: 72f96347628e ("net: bcmgenet: set Rx mode before starting netif")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Unfortunately for negative adjustments, the straightforward use of:
+
+  freq = ppm << 16 trips undefined behavior warnings with clang:
+
+valid-adjtimex.c:66:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+        -499<<16,
+        ~~~~^
+valid-adjtimex.c:67:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+        -450<<16,
+        ~~~~^
+..
+
+Fix it by using a multiply by (1 << 16) instead of shifting negative values
+in the valid-adjtimex test case. Align the values for better readability.
+
+Reported-by: Lee Jones <joneslee@google.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240409202222.2830476-1-jstultz@google.com
+Link: https://lore.kernel.org/lkml/0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../testing/selftests/timers/valid-adjtimex.c | 73 +++++++++----------
+ 1 file changed, 36 insertions(+), 37 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET (Gigabit Ethernet) controller driver
-  *
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
+diff --git a/tools/testing/selftests/timers/valid-adjtimex.c b/tools/testing/selftests/timers/valid-adjtimex.c
+index 48b9a803235a8..d13ebde203221 100644
+--- a/tools/testing/selftests/timers/valid-adjtimex.c
++++ b/tools/testing/selftests/timers/valid-adjtimex.c
+@@ -21,9 +21,6 @@
+  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  *   GNU General Public License for more details.
   */
+-
+-
+-
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <time.h>
+@@ -62,45 +59,47 @@ int clear_time_state(void)
+ #define NUM_FREQ_OUTOFRANGE 4
+ #define NUM_FREQ_INVALID 2
  
- #define pr_fmt(fmt)				"bcmgenet: " fmt
-@@ -3336,7 +3336,9 @@ static void bcmgenet_netif_start(struct
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
++#define SHIFTED_PPM (1 << 16)
++
+ long valid_freq[NUM_FREQ_VALID] = {
+-	-499<<16,
+-	-450<<16,
+-	-400<<16,
+-	-350<<16,
+-	-300<<16,
+-	-250<<16,
+-	-200<<16,
+-	-150<<16,
+-	-100<<16,
+-	-75<<16,
+-	-50<<16,
+-	-25<<16,
+-	-10<<16,
+-	-5<<16,
+-	-1<<16,
++	 -499 * SHIFTED_PPM,
++	 -450 * SHIFTED_PPM,
++	 -400 * SHIFTED_PPM,
++	 -350 * SHIFTED_PPM,
++	 -300 * SHIFTED_PPM,
++	 -250 * SHIFTED_PPM,
++	 -200 * SHIFTED_PPM,
++	 -150 * SHIFTED_PPM,
++	 -100 * SHIFTED_PPM,
++	  -75 * SHIFTED_PPM,
++	  -50 * SHIFTED_PPM,
++	  -25 * SHIFTED_PPM,
++	  -10 * SHIFTED_PPM,
++	   -5 * SHIFTED_PPM,
++	   -1 * SHIFTED_PPM,
+ 	-1000,
+-	1<<16,
+-	5<<16,
+-	10<<16,
+-	25<<16,
+-	50<<16,
+-	75<<16,
+-	100<<16,
+-	150<<16,
+-	200<<16,
+-	250<<16,
+-	300<<16,
+-	350<<16,
+-	400<<16,
+-	450<<16,
+-	499<<16,
++	    1 * SHIFTED_PPM,
++	    5 * SHIFTED_PPM,
++	   10 * SHIFTED_PPM,
++	   25 * SHIFTED_PPM,
++	   50 * SHIFTED_PPM,
++	   75 * SHIFTED_PPM,
++	  100 * SHIFTED_PPM,
++	  150 * SHIFTED_PPM,
++	  200 * SHIFTED_PPM,
++	  250 * SHIFTED_PPM,
++	  300 * SHIFTED_PPM,
++	  350 * SHIFTED_PPM,
++	  400 * SHIFTED_PPM,
++	  450 * SHIFTED_PPM,
++	  499 * SHIFTED_PPM,
+ };
  
- 	/* Start the network engine */
-+	netif_addr_lock_bh(dev);
- 	bcmgenet_set_rx_mode(dev);
-+	netif_addr_unlock_bh(dev);
- 	bcmgenet_enable_rx_napi(priv);
+ long outofrange_freq[NUM_FREQ_OUTOFRANGE] = {
+-	-1000<<16,
+-	-550<<16,
+-	550<<16,
+-	1000<<16,
++	-1000 * SHIFTED_PPM,
++	 -550 * SHIFTED_PPM,
++	  550 * SHIFTED_PPM,
++	 1000 * SHIFTED_PPM,
+ };
  
- 	umac_enable_set(priv, CMD_TX_EN | CMD_RX_EN, true);
+ #define LONG_MAX (~0UL>>1)
+-- 
+2.43.0
+
 
 
 
