@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8298E8C5017
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DC58C5189
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ED8728499D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A710B21689
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FEF13958C;
-	Tue, 14 May 2024 10:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F8C13A24A;
+	Tue, 14 May 2024 11:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jl/zZP37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4L7LB2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B3A139568;
-	Tue, 14 May 2024 10:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EE854903;
+	Tue, 14 May 2024 11:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682934; cv=none; b=kfV+1EyifCjyZQoCYGRDrkWgVZ1a3cMCIeL1+6QPc/ULs7Wuhx8gn4uz6dzFpwKUsdR3OH1ZSWfYSvSIhNAxgdZ0hci89zJlMNVzNE6xr2V/YqLY6SMox6D+rUHdwB2tmzjEjfW7omVvW6f5KlvYwlQzcnW7dKx9Z6ZWIuyG9QI=
+	t=1715684651; cv=none; b=SHRwk61KwCGFUwUzOeShpoleEwUzwBf8Vkxucl3Wt/k/ZYA3RMJB7owh+kQPr1yU+63YlREASEvMoOeaKNu+vJZkYxhxcocJqg+c1rax7bskCH/B3AIwCKR3iKAykLhGILY+9crV7MNVp61w896UHrdlHtomN/NuyXXSqJnlnWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682934; c=relaxed/simple;
-	bh=+lZuthWITtUxAki4VdK6SExSbTPA8FmOLIRWQv/oFNU=;
+	s=arc-20240116; t=1715684651; c=relaxed/simple;
+	bh=Z18dgXwERnm4JgBBbSoTtXmB3GyIi6GS8xa5KlQWls0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7wY3N7vMWMIdbNl1w0rmZ+Kt5S58rE6Jn8pa3FmrOhE0ZkUgbI+GXiZWcVn+xqmAu4m02zm1WhSi8H71/GvnqQ65o4n7FWMbPPisCuBRxcil/pXSXSMO+CjfnBcFe4q3SJYktyv8XyJSFJda9mQpCxYQIGhOZd8t3iM00NGqNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jl/zZP37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D0CC2BD10;
-	Tue, 14 May 2024 10:35:32 +0000 (UTC)
+	 MIME-Version; b=MKCXz1qfBmqIwKWsSA52KMUXWyvUhtPbQcbuNY/UGtqDt6oT2wo55r6+homoLuRgECaF3FMUl+iIRSad7vJwwUEuKGmF60OErqcmVa8EdLJVZsC68FYcgUkXukFxfPt2u0pcH6ycBwfyHpdMTdNxkkgaaryJQOmDpLMVu58RwQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4L7LB2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3658AC2BD10;
+	Tue, 14 May 2024 11:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682934;
-	bh=+lZuthWITtUxAki4VdK6SExSbTPA8FmOLIRWQv/oFNU=;
+	s=korg; t=1715684651;
+	bh=Z18dgXwERnm4JgBBbSoTtXmB3GyIi6GS8xa5KlQWls0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jl/zZP37gDBkd0RW+G+U6YjwMOBmNTHtu0w0ujglvsLDhAwhSWMi+Mk28ANq4CHnw
-	 ru4leIw0b5loJTTu0e50xE47KO0iaQ9sj4G2UbCArAOZBDdu1joGcKQBfU6czf1AZS
-	 24l+B2frRhRZUwF1iYmK2EQVryg8Mh24x53mgzmQ=
+	b=l4L7LB2Q31pKOfSKuuXOe99djpmBT9v/dHN1ce2KQYWuCaZ5fVG5CBugV6oAV/5Gt
+	 9u3TU6ZhNRVH9F1/awPcttZGKxlHEaTIyAyGUzR9ftDeKvsHb1pqrwZksHt0DR3Fi+
+	 RZIHhqMpeROQEvEVfovoVkBdB0mZnOOJU5AjrJHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Liu <liupeng17@lenovo.com>,
-	Len Brown <len.brown@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 136/336] tools/power turbostat: Fix Bzy_MHz documentation typo
-Date: Tue, 14 May 2024 12:15:40 +0200
-Message-ID: <20240514101043.734502503@linuxfoundation.org>
+Subject: [PATCH 6.6 070/301] ALSA: hda: intel-sdw-acpi: fix usage of device_get_named_child_node()
+Date: Tue, 14 May 2024 12:15:41 +0200
+Message-ID: <20240514101034.887886529@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Liu <liupeng17@lenovo.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 0b13410b52c4636aacb6964a4253a797c0fa0d16 ]
+[ Upstream commit c158cf914713efc3bcdc25680c7156c48c12ef6a ]
 
-The code calculates Bzy_MHz by multiplying TSC_delta * APERF_delta/MPERF_delta
-The man page erroneously showed that TSC_delta was divided.
+The documentation for device_get_named_child_node() mentions this
+important point:
 
-Signed-off-by: Peng Liu <liupeng17@lenovo.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
+
+Add fwnode_handle_put() to avoid a leaked reference.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Fixes: 08c2a4bc9f2a ("ALSA: hda: move Intel SoundWire ACPI scan to dedicated module")
+Message-ID: <20240426152731.38420-1-pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.8 | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/intel-sdw-acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
-index 8f08c3fd498d5..1ba6340d3b3da 100644
---- a/tools/power/x86/turbostat/turbostat.8
-+++ b/tools/power/x86/turbostat/turbostat.8
-@@ -370,7 +370,7 @@ below the processor's base frequency.
+diff --git a/sound/hda/intel-sdw-acpi.c b/sound/hda/intel-sdw-acpi.c
+index b57d72ea4503f..4e376994bf78b 100644
+--- a/sound/hda/intel-sdw-acpi.c
++++ b/sound/hda/intel-sdw-acpi.c
+@@ -41,6 +41,8 @@ static bool is_link_enabled(struct fwnode_handle *fw_node, u8 idx)
+ 				 "intel-quirk-mask",
+ 				 &quirk_mask);
  
- Busy% = MPERF_delta/TSC_delta
++	fwnode_handle_put(link);
++
+ 	if (quirk_mask & SDW_INTEL_QUIRK_MASK_BUS_DISABLE)
+ 		return false;
  
--Bzy_MHz = TSC_delta/APERF_delta/MPERF_delta/measurement_interval
-+Bzy_MHz = TSC_delta*APERF_delta/MPERF_delta/measurement_interval
- 
- Note that these calculations depend on TSC_delta, so they
- are not reliable during intervals when TSC_MHz is not running at the base frequency.
 -- 
 2.43.0
 
