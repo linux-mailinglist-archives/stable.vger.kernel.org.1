@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C8B8C52CC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B0C8C51C3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D87DB1C21915
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F07F1F225D0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AFB130495;
-	Tue, 14 May 2024 11:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F0613C67A;
+	Tue, 14 May 2024 11:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8YcpjVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNuUF+5Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5524ED531;
-	Tue, 14 May 2024 11:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B666E13B287;
+	Tue, 14 May 2024 11:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686122; cv=none; b=PReYQYIQcNl9KojgLUHuHAqPmYJ1T9jQiDYP0IcKPRgvXcEC3tYdxgIBkAydc+W6QrMs8ddKLJdhKzOJ0FwcvSTuOScRyGUtOzq9zgVH2gWzQzkG4EZ/ESzivtKa65V1YnU+RWmiDd7p6WVCG5+Q7C9SVicwCb0VC1Vru/od2Gc=
+	t=1715685001; cv=none; b=kbcobvwKFKcbnbv+n3L4tGGzHPgI4qvjFSVjNBZbr8x/zu+gj9P2nbnWw88LnFh3IeJKwfKlPedA6M7toKkAmx7UmmhcMI4lZIAFonQah4YZZWb3Ts0io96PMo9R9nWJ7bJQNwu5bg2SEuMUMD5JQSFFky+bY4MG93kBZP+TTqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686122; c=relaxed/simple;
-	bh=cQsdYgaK9zlX6EZa8Zm6nt1d2NcJk66Uj3No2aaT9UQ=;
+	s=arc-20240116; t=1715685001; c=relaxed/simple;
+	bh=AIhDmYJcvRJ8LsJm+b90FdVieXcguD8wrGACQlffPZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTdH5NEyTnhZp08XdfilbePY79oTy84joIwdkt3OolrWXEGzC98KFIhXM/S8hqlh/tlpdIofLBZlnKHf2tQLJLhNVcoWglsHImVykXMLUWKLIyJguXPm61e5jom91mKqaax3aASTXYzNT4oPOAhx8YyD2MkAFn54qpSUEXIuPac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8YcpjVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FAAC2BD10;
-	Tue, 14 May 2024 11:28:41 +0000 (UTC)
+	 MIME-Version; b=mi44fHB/B9ZBuhlCUbWNSLVZ8qvSP5r6L2ob1Zs/JTeyA4amkpBBFtdN/jfdfb6AwlyAKB7UHgsejfpCYiF5Vyd48CzuLlmBqg+Pb8eDM/TZCSwYSSjFrRdl2l1aBMUFT/983+zy3lFDzpvah/0GDqF1pQpNrbcAZJXVlVDCmUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNuUF+5Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21F7C2BD10;
+	Tue, 14 May 2024 11:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686122;
-	bh=cQsdYgaK9zlX6EZa8Zm6nt1d2NcJk66Uj3No2aaT9UQ=;
+	s=korg; t=1715685001;
+	bh=AIhDmYJcvRJ8LsJm+b90FdVieXcguD8wrGACQlffPZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8YcpjVJ9gX2nbltRyHkUu56IxxWgtvK9g36JrO0ktBeggkK+ZlHLB9HDSIXi+vAj
-	 3AxdfmN28TKozJA5zIlqEosX9XKc0bK3+0rlstpHK4ErSzgM8GJM3wTpOjWjTxOTne
-	 tOboyZQSpiAC2Y59wWwX29lhz4EITRKDjeBItQDk=
+	b=WNuUF+5QY7rg9DPCq6nu0i6cNGGj4kVza/ClTgLO3OqFB3ndJtoA0AfDJjNQRf7qz
+	 ez3T6SUJBGABqMLumxNUeF1vzG5cBtQJ80d97SwHUlqv9BQa52qvCxlGHHDGR+mf2A
+	 q3rJ7xQswp/nrq82mp0btsRgr66dXJ2Y4ALINiwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/236] nfs: make the rpc_stat per net namespace
+Subject: [PATCH 6.6 120/301] scsi: ufs: core: WLUN suspend dev/link state error recovery
 Date: Tue, 14 May 2024 12:16:31 +0200
-Message-ID: <20240514101021.447054063@linuxfoundation.org>
+Message-ID: <20240514101036.781314541@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 1548036ef1204df65ca5a16e8b199c858cb80075 ]
+[ Upstream commit 6bc5e70b1c792b31b497e48b4668a9a2909aca0d ]
 
-Now that we're exposing the rpc stats on a per-network namespace basis,
-move this struct into struct nfs_net and use that to make sure only the
-per-network namespace stats are exposed.
+When wl suspend error occurs, for example BKOP or SSU timeout, the host
+triggers an error handler and returns -EBUSY to break the wl suspend
+process.  However, it is possible for the runtime PM to enter wl suspend
+again before the error handler has finished, and return -EINVAL because the
+device is in an error state. To address this, ensure that the rumtime PM
+waits for the error handler to finish, or trigger the error handler in such
+cases, because returning -EINVAL can cause the I/O to hang.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240329015036.15707-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c   | 5 ++++-
- fs/nfs/inode.c    | 4 +++-
- fs/nfs/internal.h | 2 --
- fs/nfs/netns.h    | 2 ++
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/ufs/core/ufshcd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index f50e025ae4064..755256875052f 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -73,7 +73,6 @@ const struct rpc_program nfs_program = {
- 	.number			= NFS_PROGRAM,
- 	.nrvers			= ARRAY_SIZE(nfs_version),
- 	.version		= nfs_version,
--	.stats			= &nfs_rpcstat,
- 	.pipe_dir_name		= NFS_PIPE_DIRNAME,
- };
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index ee9119b708f01..8005373e20bae 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -9547,7 +9547,10 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
  
-@@ -496,6 +495,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 			  const struct nfs_client_initdata *cl_init,
- 			  rpc_authflavor_t flavor)
- {
-+	struct nfs_net		*nn = net_generic(clp->cl_net, nfs_net_id);
- 	struct rpc_clnt		*clnt = NULL;
- 	struct rpc_create_args args = {
- 		.net		= clp->cl_net,
-@@ -507,6 +507,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 		.servername	= clp->cl_hostname,
- 		.nodename	= cl_init->nodename,
- 		.program	= &nfs_program,
-+		.stats		= &nn->rpcstats,
- 		.version	= clp->rpc_ops->version,
- 		.authflavor	= flavor,
- 		.cred		= cl_init->cred,
-@@ -1142,6 +1143,8 @@ void nfs_clients_init(struct net *net)
- #endif
- 	spin_lock_init(&nn->nfs_client_lock);
- 	nn->boot_time = ktime_get_real();
-+	memset(&nn->rpcstats, 0, sizeof(nn->rpcstats));
-+	nn->rpcstats.program = &nfs_program;
+ 	/* UFS device & link must be active before we enter in this function */
+ 	if (!ufshcd_is_ufs_dev_active(hba) || !ufshcd_is_link_active(hba)) {
+-		ret = -EINVAL;
++		/*  Wait err handler finish or trigger err recovery */
++		if (!ufshcd_eh_in_progress(hba))
++			ufshcd_force_error_recovery(hba);
++		ret = -EBUSY;
+ 		goto enable_scaling;
+ 	}
  
- 	nfs_netns_sysfs_setup(nn, net);
- }
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 3cdb8daa6d6a9..fae1e009cd6cf 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2333,8 +2333,10 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- 
- static int nfs_net_init(struct net *net)
- {
-+	struct nfs_net *nn = net_generic(net, nfs_net_id);
-+
- 	nfs_clients_init(net);
--	rpc_proc_register(net, &nfs_rpcstat);
-+	rpc_proc_register(net, &nn->rpcstats);
- 	return nfs_fs_proc_net_init(net);
- }
- 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 35a8ae46b6c34..b3b801e7c4bc5 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -443,8 +443,6 @@ int nfs_try_get_tree(struct fs_context *);
- int nfs_get_tree_common(struct fs_context *);
- void nfs_kill_super(struct super_block *);
- 
--extern struct rpc_stat nfs_rpcstat;
--
- extern int __init register_nfs_fs(void);
- extern void __exit unregister_nfs_fs(void);
- extern bool nfs_sb_active(struct super_block *sb);
-diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
-index c8374f74dce11..a68b21603ea9a 100644
---- a/fs/nfs/netns.h
-+++ b/fs/nfs/netns.h
-@@ -9,6 +9,7 @@
- #include <linux/nfs4.h>
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
-+#include <linux/sunrpc/stats.h>
- 
- struct bl_dev_msg {
- 	int32_t status;
-@@ -34,6 +35,7 @@ struct nfs_net {
- 	struct nfs_netns_client *nfs_client;
- 	spinlock_t nfs_client_lock;
- 	ktime_t boot_time;
-+	struct rpc_stat rpcstats;
- #ifdef CONFIG_PROC_FS
- 	struct proc_dir_entry *proc_nfsfs;
- #endif
 -- 
 2.43.0
 
