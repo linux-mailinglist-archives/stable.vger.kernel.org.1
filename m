@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A02C8C53F8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C918C544B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5F6B1C22A33
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36F831F23343
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7568412FF8B;
-	Tue, 14 May 2024 11:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2494C13A3E2;
+	Tue, 14 May 2024 11:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbvy5JBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbP2Fam0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F59812B141;
-	Tue, 14 May 2024 11:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D787913A275;
+	Tue, 14 May 2024 11:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686880; cv=none; b=FpHcETvttfW/2T7SYp60Si70r2jHv2rwYSNMbSoWx+7RR2PK6JdH2tAw4hGkb8GVjlWVTUTxcsfUxfvd5z75d2fTZgz51sHRpP92z6e0kzbqSS2ePANKabev4HHoPTU1lGPS4lpbuOsMHEbhJENNggkD1liEkk5Drc3SB8FDo3g=
+	t=1715687099; cv=none; b=iaASxOnPb+9j3ZymdlT/dsGksQ9yxqJK3a2An9ncfUzcnFM7PRzg45JGOSCvRJ639phDgTvuaoFqhaaBs589dOim88gGDKbS9s8Wdxw1asLacws6HSUdMxkMLjmTdbaZGHOe7PHLYU45StWg5ixbA9m6tN4A6wn1vu2fTqaem9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686880; c=relaxed/simple;
-	bh=66oYCU/2KvELmkyHXJ7R9fXSibi5/trTf/Ms57bLzm4=;
+	s=arc-20240116; t=1715687099; c=relaxed/simple;
+	bh=qAWwiuKPuP+aWL5RpPzpnsIPVpbd/VqezflHg3T2mMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJYdvllalCNJl4Ep8BlI7Z7xCZiXfy8jViWbA+ySGPcQ84vfLXxgnSoAT0a8J2Y6UuAQPeqjc8ewjBJVFgjt5Vc42Q6zNql7X6Q6IZ5OgfRq4zZcJT1Tmx5xmMFsQEOdQBTeaHIviKFj6vPC3uGkAFbfgn2YydXj7Wf++8Xd6X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbvy5JBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3C5C2BD10;
-	Tue, 14 May 2024 11:41:19 +0000 (UTC)
+	 MIME-Version; b=cNbABex6F3y+GSC+PH+Aw5xLoyKDAC26rVk1N8WhL87eJoVzq1rDH5X+p0yjH0OGEoCRQBBWdVQQaFsY7d7cCAHzaDkWnbehzFnF4eiAROUnUFJfO6OyECO9VShUnEG8NWFEnlst4Za0bA3pdYnucCc8B8vSMO0dgpnIZUSwQ3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbP2Fam0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616BFC2BD10;
+	Tue, 14 May 2024 11:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686880;
-	bh=66oYCU/2KvELmkyHXJ7R9fXSibi5/trTf/Ms57bLzm4=;
+	s=korg; t=1715687099;
+	bh=qAWwiuKPuP+aWL5RpPzpnsIPVpbd/VqezflHg3T2mMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbvy5JBieR6C5H8f2S9/8m7QrvdtCncFQNubA+IjTN/NnHyW3ljF5IChBYZFUtB1W
-	 YvOFBOFn5C/Urxk6Cn739UNzu2uYYOZ8VPhSH/t9E2Yl6P2qA7pNapU0MuaMKcQgzG
-	 oaglxaw4685sc2aoVXua6WXa9+KHZjGj67rRKXlw=
+	b=BbP2Fam0Sp/1ljdrRsTPU2ZWc4oICN0VDBU3wpzEciydQ3hEY7Hm1cMIjfhfh+8JB
+	 DZ42U+/WmXKtOf4PBr3jKHDZtKiEpB0Ugf4LsxXHVZmNroBoaOLeSrMX9Ftw0/T6bV
+	 7fS0NrbhalW20Tcox1NZLjHjCspPml8W32Rrnh+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Justin Tee <justin.tee@broadcom.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 22/63] scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
-Date: Tue, 14 May 2024 12:19:43 +0200
-Message-ID: <20240514100948.853611946@linuxfoundation.org>
+Subject: [PATCH 5.4 33/84] scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
+Date: Tue, 14 May 2024 12:19:44 +0200
+Message-ID: <20240514100952.940366678@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -98,10 +98,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 4 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index 53b661793268f..5698928d8029c 100644
+index 7ce0d94cdc018..98ab07c3774ed 100644
 --- a/drivers/scsi/lpfc/lpfc.h
 +++ b/drivers/scsi/lpfc/lpfc.h
-@@ -989,7 +989,6 @@ struct lpfc_hba {
+@@ -1039,7 +1039,6 @@ struct lpfc_hba {
  	unsigned long bit_flags;
  #define	FABRIC_COMANDS_BLOCKED	0
  	atomic_t num_rsrc_err;
@@ -110,10 +110,10 @@ index 53b661793268f..5698928d8029c 100644
  	unsigned long last_ramp_down_time;
  #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
 diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 425b83618a2e5..02d067e1fc45c 100644
+index 816235ccd2992..f238e0f41f07c 100644
 --- a/drivers/scsi/lpfc/lpfc_scsi.c
 +++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -303,11 +303,10 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
+@@ -246,11 +246,10 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
  	struct Scsi_Host  *shost;
  	struct scsi_device *sdev;
  	unsigned long new_queue_depth;
@@ -126,7 +126,7 @@ index 425b83618a2e5..02d067e1fc45c 100644
  
  	/*
  	 * The error and success command counters are global per
-@@ -322,20 +321,16 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
+@@ -265,20 +264,16 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
  		for (i = 0; i <= phba->max_vports && vports[i] != NULL; i++) {
  			shost = lpfc_shost_from_vport(vports[i]);
  			shost_for_each_device(sdev, shost) {
