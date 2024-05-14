@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-43936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB918C5051
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:02:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E8C8C5193
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD674B20B3F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:02:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3D741C216B8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFCE13C699;
-	Tue, 14 May 2024 10:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A70B13A404;
+	Tue, 14 May 2024 11:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwb4TKFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXDT850U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489E013C695;
-	Tue, 14 May 2024 10:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0C313A275;
+	Tue, 14 May 2024 11:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683186; cv=none; b=NqagCH4i7+rCPhWYwraZGUJcK7FHdXaZcqYTtSw70/w37KnqS5WJRQpKh7OLi+TwlD1aFIcjk/iUeC2NjpeWckd+JpLJEcO11ngAfp/3TYf5ejw6RMHdQjrlJPcIOSKPmda2nFigJcf/nShCKkLMMLjfaN2eVK6Ypnoj0Xqffgw=
+	t=1715684732; cv=none; b=CVtkU3PmxO6Bn/KhXJyqDvOwBIS/l0/uhTUW3ZZjw+1rtwnoNCW4dqLYq0G3hnjgTpGo3x1HA3/gQjIXJfgm6e2ZgEqubBYCmGp7erxh3Y5rwXVtqeVi+d4VaKziyfc7wd20s46nf0HFm6z0DO9vmGdCykvEOc84OuFqnhAQh6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683186; c=relaxed/simple;
-	bh=NeByYpr7ubwCs84Y5OXp2NeYhmn6S6chcPUb7Bu4rOs=;
+	s=arc-20240116; t=1715684732; c=relaxed/simple;
+	bh=iuwN6bJ6neyeUklXkHjXEK5mjHWNUHoHbtQaH3WSrgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQjYRkTpjQC95qXia6G9+M4RUksq50uWzbvhDalwQXVFUWcpTdKWDRnNLAEBddk3BO93ukID4cHU2XSJLMi2ma10v7rweRvOZRcTXymKVVySSZne3vmda+9S/1aqSpCTVCaBF1l65DxEFv6taUl2uHwVh4RZAGust4pCXEyNrik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwb4TKFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A776AC2BD10;
-	Tue, 14 May 2024 10:39:45 +0000 (UTC)
+	 MIME-Version; b=n3s7mohJoP8QTfmDOwXbHc9Z8tIk22GyCFG9boivrYwxIYYpBCCssWJfY0jjhHrUapStJ4labtiKWeuT0tAz0BeRyIlGnhmd8BDursezsGGVnKQdPiLb3I6eB6Xx3sAjaJ0kyh78aygtX+1zMo1QyNcvgrKgMZlBp2vjSHauJ6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXDT850U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEBEC2BD10;
+	Tue, 14 May 2024 11:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683186;
-	bh=NeByYpr7ubwCs84Y5OXp2NeYhmn6S6chcPUb7Bu4rOs=;
+	s=korg; t=1715684731;
+	bh=iuwN6bJ6neyeUklXkHjXEK5mjHWNUHoHbtQaH3WSrgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwb4TKFe+OwvFFmffk5Aj06zE+//3Egx9ZWWCUdHsAy2QrxKNbydEkT0jfLKxkD7l
-	 R6uHWh07YpztG/TJQbigw2510EKf2pdu/2u8bwgasoxxFRqhqarsn+QdsMbXnu5ACZ
-	 IN8c+yzFcC9l9VyQM7Vgxo/T13hxaskxNX3eSIa0=
+	b=ZXDT850UjXCh71yPq6hN+huvEkx43PB402MKO2rCDxrbbz4MaSfAJ0OeEtYMOla+2
+	 NOt/bCxm5l0KypmkBtuDbh1bTJqPpsDMJXWtUC/ovcU/HvXm+xInpoBDKGF+fAEkpv
+	 06DDJakQtf5TPA9TQX//M/11GYvKAzz23DJ0O+Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Tejun Heo <tj@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 149/336] blk-iocost: avoid out of bounds shift
+Subject: [PATCH 6.6 082/301] drm/panel: ili9341: Correct use of device property APIs
 Date: Tue, 14 May 2024 12:15:53 +0200
-Message-ID: <20240514101044.227785073@linuxfoundation.org>
+Message-ID: <20240514101035.344421824@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit beaa51b36012fad5a4d3c18b88a617aea7a9b96d ]
+[ Upstream commit d43cd48ef1791801c61a54fade4a88d294dedf77 ]
 
-UBSAN catches undefined behavior in blk-iocost, where sometimes
-iocg->delay is shifted right by a number that is too large,
-resulting in undefined behavior on some architectures.
+It seems driver missed the point of proper use of device property APIs.
+Correct this by updating headers and calls respectively.
 
-[  186.556576] ------------[ cut here ]------------
-UBSAN: shift-out-of-bounds in block/blk-iocost.c:1366:23
-shift exponent 64 is too large for 64-bit type 'u64' (aka 'unsigned long long')
-CPU: 16 PID: 0 Comm: swapper/16 Tainted: G S          E    N 6.9.0-0_fbk700_debug_rc2_kbuilder_0_gc85af715cac0 #1
-Hardware name: Quanta Twin Lakes MP/Twin Lakes Passive MP, BIOS F09_3A23 12/08/2020
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x8f/0xe0
- __ubsan_handle_shift_out_of_bounds+0x22c/0x280
- iocg_kick_delay+0x30b/0x310
- ioc_timer_fn+0x2fb/0x1f80
- __run_timer_base+0x1b6/0x250
-...
-
-Avoid that undefined behavior by simply taking the
-"delay = 0" branch if the shift is too large.
-
-I am not sure what the symptoms of an undefined value
-delay will be, but I suspect it could be more than a
-little annoying to debug.
-
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20240404123253.0f58010f@imladris.surriel.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240425142706.2440113-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-2-andriy.shevchenko@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/panel/Kconfig                | 2 +-
+ drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index 04d44f0bcbc85..b1c4c874d4201 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1347,7 +1347,7 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
- {
- 	struct ioc *ioc = iocg->ioc;
- 	struct blkcg_gq *blkg = iocg_to_blkg(iocg);
--	u64 tdelta, delay, new_delay;
-+	u64 tdelta, delay, new_delay, shift;
- 	s64 vover, vover_pct;
- 	u32 hwa;
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index 869e535faefa3..3a2f4a9f1d466 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -184,7 +184,7 @@ config DRM_PANEL_ILITEK_IL9322
  
-@@ -1362,8 +1362,9 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
+ config DRM_PANEL_ILITEK_ILI9341
+ 	tristate "Ilitek ILI9341 240x320 QVGA panels"
+-	depends on OF && SPI
++	depends on SPI
+ 	select DRM_KMS_HELPER
+ 	select DRM_GEM_DMA_HELPER
+ 	depends on BACKLIGHT_CLASS_DEVICE
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
+index 3574681891e81..7584ddb0e4416 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
+@@ -22,8 +22,9 @@
+ #include <linux/bitops.h>
+ #include <linux/delay.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
++#include <linux/property.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/spi/spi.h>
  
- 	/* calculate the current delay in effect - 1/2 every second */
- 	tdelta = now->now - iocg->delay_at;
--	if (iocg->delay)
--		delay = iocg->delay >> div64_u64(tdelta, USEC_PER_SEC);
-+	shift = div64_u64(tdelta, USEC_PER_SEC);
-+	if (iocg->delay && shift < BITS_PER_LONG)
-+		delay = iocg->delay >> shift;
- 	else
- 		delay = 0;
- 
+@@ -691,7 +692,7 @@ static int ili9341_dpi_probe(struct spi_device *spi, struct gpio_desc *dc,
+ 	 * Every new incarnation of this display must have a unique
+ 	 * data entry for the system in this driver.
+ 	 */
+-	ili->conf = of_device_get_match_data(dev);
++	ili->conf = device_get_match_data(dev);
+ 	if (!ili->conf) {
+ 		dev_err(dev, "missing device configuration\n");
+ 		return -ENODEV;
 -- 
 2.43.0
 
