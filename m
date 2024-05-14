@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AB48C52FF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC578C5073
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 241F81C21A0C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF8C51C21448
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9511386D6;
-	Tue, 14 May 2024 11:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E669113D60F;
+	Tue, 14 May 2024 10:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTn48vfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaHAQL9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5128784D26;
-	Tue, 14 May 2024 11:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294113D605;
+	Tue, 14 May 2024 10:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686255; cv=none; b=RHlbkyDY5UBtXaJ9BG709Ndq+x990D2PPlt1h6pQfmSMHReUdBTleHGRasAnE5xy2ldQyb8OMN2U4aHaC53TWtWoiydVPX9vaJlwjs6ODUdsB/mVMWndRNF3huH9nqgpGnfjaQAYoE9opbxo3Yk4GPbFc2S487DXhCTAg40pr+g=
+	t=1715683372; cv=none; b=dj6G3V6/wNp8u9g4Wsmar9AO/5bCbwfERs2oG5rRIgEWmgDFB5Klf46dlPnHDl6IlVaAWlNjd8YqUoUSXUe1vIhb+7V0zJPHrN8vBlVVe2S20wD2Rue4pVbanUi8xXJxVOO5xHerb8KhSPzNwg9Jn3Vgm583E4sB3LY2J3EwyXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686255; c=relaxed/simple;
-	bh=GTxGQUYm7DdC3nQnWDmD+inV3ukEQDuJhndVTBUrZwo=;
+	s=arc-20240116; t=1715683372; c=relaxed/simple;
+	bh=7HqLMqWOSTxBVvrVFGLvUdVN1ynV7rtZiVCPJZy94BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROQtjgGeloL7kdPD832fiDUEHj3SsPgyiD95EYkp28fjWBtbdbtxHCd3qF3+frY9OQOOMHFhud/+vc2J34Orw7CKJInshbtd++BG+ctUljmgU+M4gPhV+Ib1HW1rZOxAz8MqFCAUTH4RSCPNZQm5r45D09GdDXuE0u1C6uO9N+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTn48vfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE00C32781;
-	Tue, 14 May 2024 11:30:54 +0000 (UTC)
+	 MIME-Version; b=kCihdzyppQTbS7GJcbwn5R+jQS3YyEtbEIw/AQeIhmjRmZZZ4O0CeGWMlAdCfriLmKQjQnnF/v4evtx03N6cHa+OP4NQc+CLiMDxPRRkGJ/tzaowGZmm6eHCosymDFyEA5wbnts33RONE8aDV0+PsLhQBEGnmL2eT+dUudXj99U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaHAQL9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102CDC2BD10;
+	Tue, 14 May 2024 10:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686255;
-	bh=GTxGQUYm7DdC3nQnWDmD+inV3ukEQDuJhndVTBUrZwo=;
+	s=korg; t=1715683372;
+	bh=7HqLMqWOSTxBVvrVFGLvUdVN1ynV7rtZiVCPJZy94BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTn48vfyc2ZMrhLVzyVPpKjznjQiaRtz2g1C0va3wjcrXR7JwURsbHmxl9onTyAnn
-	 OJWF72oG+mE/YA4yKA5RhLCqCxdFijqG1mk3Hlzjb39HXZwwV4EtMu3sNMSH8utIzh
-	 q0A2PP32O0ApSTEbfnzWWM34gefLqoqN396Y0Idk=
+	b=oaHAQL9PlmGs3+9EgxUasq8GAdzzWDpm2TCXharVLCoBO+RQW6CQrVMbuWL78lVRW
+	 zi+NqNFFDBAlVoIlCANZphLjpNDKxFEfVhMyzDdav55CT8IgCooMcyGl/kEUuI6gjf
+	 gseUNAfiFABg0aY8HXqoll+pH4Qf7sujbDKzhj0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/236] spi: spi-axi-spi-engine: Use helper function devm_clk_get_enabled()
+	Marek Vasut <marex@denx.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Ronald Wahl <ronald.wahl@raritan.com>
+Subject: [PATCH 6.8 205/336] net: ks8851: Queue RX packets in IRQ handler instead of disabling BHs
 Date: Tue, 14 May 2024 12:16:49 +0200
-Message-ID: <20240514101022.130002629@linuxfoundation.org>
+Message-ID: <20240514101046.342475967@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit a08199b309f833fd4221ab5ee2391c791fe26385 ]
+[ Upstream commit e0863634bf9f7cf36291ebb5bfa2d16632f79c49 ]
 
-Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
-and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
-replaced by devm_clk_get_enabled() when driver enables (and possibly
-prepares) the clocks for the whole lifetime of the device. Moreover, it is
-no longer necessary to unprepare and disable the clocks explicitly.
+Currently the driver uses local_bh_disable()/local_bh_enable() in its
+IRQ handler to avoid triggering net_rx_action() softirq on exit from
+netif_rx(). The net_rx_action() could trigger this driver .start_xmit
+callback, which is protected by the same lock as the IRQ handler, so
+calling the .start_xmit from netif_rx() from the IRQ handler critical
+section protected by the lock could lead to an attempt to claim the
+already claimed lock, and a hang.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Link: https://lore.kernel.org/r/20230823133938.1359106-6-lizetao1@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
+The local_bh_disable()/local_bh_enable() approach works only in case
+the IRQ handler is protected by a spinlock, but does not work if the
+IRQ handler is protected by mutex, i.e. this works for KS8851 with
+Parallel bus interface, but not for KS8851 with SPI bus interface.
+
+Remove the BH manipulation and instead of calling netif_rx() inside
+the IRQ handler code protected by the lock, queue all the received
+SKBs in the IRQ handler into a queue first, and once the IRQ handler
+exits the critical section protected by the lock, dequeue all the
+queued SKBs and push them all into netif_rx(). At this point, it is
+safe to trigger the net_rx_action() softirq, since the netif_rx()
+call is outside of the lock that protects the IRQ handler.
+
+Fixes: be0384bf599c ("net: ks8851: Handle softirqs at the end of IRQ thread to fix hang")
+Tested-by: Ronald Wahl <ronald.wahl@raritan.com> # KS8851 SPI
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240502183436.117117-1-marex@denx.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 25 +++++--------------------
- 1 file changed, 5 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/micrel/ks8851_common.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index e10c70cb87c97..861578aa6ea12 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -485,30 +485,22 @@ static int spi_engine_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index d4cdf3d4f5525..502518cdb4618 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -234,12 +234,13 @@ static void ks8851_dbg_dumpkkt(struct ks8851_net *ks, u8 *rxpkt)
+ /**
+  * ks8851_rx_pkts - receive packets from the host
+  * @ks: The device information.
++ * @rxq: Queue of packets received in this function.
+  *
+  * This is called from the IRQ work queue when the system detects that there
+  * are packets in the receive queue. Find out how many packets there are and
+  * read them from the FIFO.
+  */
+-static void ks8851_rx_pkts(struct ks8851_net *ks)
++static void ks8851_rx_pkts(struct ks8851_net *ks, struct sk_buff_head *rxq)
+ {
+ 	struct sk_buff *skb;
+ 	unsigned rxfc;
+@@ -299,7 +300,7 @@ static void ks8851_rx_pkts(struct ks8851_net *ks)
+ 					ks8851_dbg_dumpkkt(ks, rxpkt);
  
- 	spin_lock_init(&spi_engine->lock);
+ 				skb->protocol = eth_type_trans(skb, ks->netdev);
+-				__netif_rx(skb);
++				__skb_queue_tail(rxq, skb);
  
--	spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
-+	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
- 	if (IS_ERR(spi_engine->clk)) {
- 		ret = PTR_ERR(spi_engine->clk);
- 		goto err_put_host;
- 	}
- 
--	spi_engine->ref_clk = devm_clk_get(&pdev->dev, "spi_clk");
-+	spi_engine->ref_clk = devm_clk_get_enabled(&pdev->dev, "spi_clk");
- 	if (IS_ERR(spi_engine->ref_clk)) {
- 		ret = PTR_ERR(spi_engine->ref_clk);
- 		goto err_put_host;
- 	}
- 
--	ret = clk_prepare_enable(spi_engine->clk);
--	if (ret)
--		goto err_put_host;
+ 				ks->netdev->stats.rx_packets++;
+ 				ks->netdev->stats.rx_bytes += rxlen;
+@@ -326,11 +327,11 @@ static void ks8851_rx_pkts(struct ks8851_net *ks)
+ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ {
+ 	struct ks8851_net *ks = _ks;
++	struct sk_buff_head rxq;
+ 	unsigned handled = 0;
+ 	unsigned long flags;
+ 	unsigned int status;
 -
--	ret = clk_prepare_enable(spi_engine->ref_clk);
--	if (ret)
--		goto err_clk_disable;
--
- 	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi_engine->base)) {
- 		ret = PTR_ERR(spi_engine->base);
--		goto err_ref_clk_disable;
-+		goto err_put_host;
+-	local_bh_disable();
++	struct sk_buff *skb;
+ 
+ 	ks8851_lock(ks, &flags);
+ 
+@@ -384,7 +385,8 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 		 * from the device so do not bother masking just the RX
+ 		 * from the device. */
+ 
+-		ks8851_rx_pkts(ks);
++		__skb_queue_head_init(&rxq);
++		ks8851_rx_pkts(ks, &rxq);
  	}
  
- 	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
-@@ -518,7 +510,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 			SPI_ENGINE_VERSION_MINOR(version),
- 			SPI_ENGINE_VERSION_PATCH(version));
- 		ret = -ENODEV;
--		goto err_ref_clk_disable;
-+		goto err_put_host;
- 	}
+ 	/* if something stopped the rx process, probably due to wanting
+@@ -408,7 +410,9 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	if (status & IRQ_LCI)
+ 		mii_check_link(&ks->mii);
  
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
-@@ -527,7 +519,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+-	local_bh_enable();
++	if (status & IRQ_RXI)
++		while ((skb = __skb_dequeue(&rxq)))
++			netif_rx(skb);
  
- 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
- 	if (ret)
--		goto err_ref_clk_disable;
-+		goto err_put_host;
- 
- 	host->dev.of_node = pdev->dev.of_node;
- 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
-@@ -545,10 +537,6 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	return 0;
- err_free_irq:
- 	free_irq(irq, host);
--err_ref_clk_disable:
--	clk_disable_unprepare(spi_engine->ref_clk);
--err_clk_disable:
--	clk_disable_unprepare(spi_engine->clk);
- err_put_host:
- 	spi_controller_put(host);
- 	return ret;
-@@ -569,9 +557,6 @@ static void spi_engine_remove(struct platform_device *pdev)
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
--
--	clk_disable_unprepare(spi_engine->ref_clk);
--	clk_disable_unprepare(spi_engine->clk);
+ 	return IRQ_HANDLED;
  }
- 
- static const struct of_device_id spi_engine_match_table[] = {
 -- 
 2.43.0
 
