@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15198C514D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1232B8C4FCE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D09F1C210DC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C57B61F214BB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73264130483;
-	Tue, 14 May 2024 10:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF3B12FB3C;
+	Tue, 14 May 2024 10:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKbAFB4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEa951Gn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5BC12FF89;
-	Tue, 14 May 2024 10:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489C712BF3D;
+	Tue, 14 May 2024 10:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684291; cv=none; b=JtbxZjVAcuEYxQKUYoFhU4qXGduMAZlEiQATETfbTyD1RJT4HMfkRDtQd0fyyvQ+MO/Q2xDl5grgxQZZL5A6Bx6nEKjD95if3OpHrrAuHzHqigURmPzOOempo4NfJDYOxxYp08Q/sqN2COjR9I2gWpYH6arvpDkhc9jo+wKazqk=
+	t=1715682489; cv=none; b=tegkqXc76Uu7k2z6M417oqfa49fsERMHBEju+hXQP8kjlDh4j7XVhZR1iKeRnIuTru+5b1eb3Cl/M1z/jdZsja7U56UXHGqe/XU9qmxshPujkoOyyKNlChEt8tw8EojOPmpFJBb1EGHU+cF04yWOvYDZcehBp2zYMKNpMXRdLn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684291; c=relaxed/simple;
-	bh=kuYHP5LFTAZOGnhFliieZVx8PdM9NLfkXSILOLQptvA=;
+	s=arc-20240116; t=1715682489; c=relaxed/simple;
+	bh=FaPhXuiryfxEM7XF8vFKsJucv4YK9Zr6iMljdJ+vnhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2Ek0mhC5Jor7/hHXleCLJ256GTf+J6IpEPWHBqibE+MpFwGrsO+5NOJaDT8VcN8aVEVmAUR9BdfEy6KaZUyMsYCoO4z+GHC1n5tx3nNO6vddjoyFGbji4CAIzya/OvrCyc8fc3Qql/4FGy2z9VJIMa2Df1fLi88tu43m1+8grY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKbAFB4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80646C2BD10;
-	Tue, 14 May 2024 10:58:10 +0000 (UTC)
+	 MIME-Version; b=FUq0Y1j+bmq1+taB69vF6tMhoSaxfGTy5KTlVBAfaUb5zMkwyF05swuZsGiG35o7vdFI1efzuMtiGTMiyyYWGBoAm/USpwYkg2IKZkWFtOC9a3u1aXVEtrkdUQrHy4GJh7v84J8dbMDISjpgdMXEEjLhVSBEHOqu+Xq1AZX0Nn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEa951Gn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5E6C2BD10;
+	Tue, 14 May 2024 10:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684291;
-	bh=kuYHP5LFTAZOGnhFliieZVx8PdM9NLfkXSILOLQptvA=;
+	s=korg; t=1715682489;
+	bh=FaPhXuiryfxEM7XF8vFKsJucv4YK9Zr6iMljdJ+vnhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKbAFB4qfIhWCS9nOPWOXD7kzZDGW4jGAAsS/0lldsrIpO5wKpy4a/J+3t46mxEsq
-	 wxHnqwKm4+KXcgd4VjDTsBN90pqoxwL0X0CwJmtmVv9WVO01M6/Vg/BBPoOWVAhlB7
-	 ixFNxtd20bt9L7DEs5vciUiJVS0VjDbTdiqgoWOM=
+	b=tEa951Gn1CcvUPMwGkSXW9prty8nmmmE8shwQozQrLDwQWOxNO+XjZlBbok5+klbh
+	 XcYXXqR9MS88EWx5rb2uLRpQW0k4EuORkm3JnYHOB/vm93DLjnhqPvk7NCAoX/PS0r
+	 Zy3UaQLVtZhoyPrbIobmENFNhZUshtMaSYqfimqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	karthikeyan <karthikeyan@linumiz.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/301] dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"
+Subject: [PATCH 6.8 069/336] s390/cio: Ensure the copied buf is NUL terminated
 Date: Tue, 14 May 2024 12:14:33 +0200
-Message-ID: <20240514101032.317202614@linuxfoundation.org>
+Message-ID: <20240514101041.210610848@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinod Koul <vkoul@kernel.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit afc89870ea677bd5a44516eb981f7a259b74280c ]
+[ Upstream commit da7c622cddd4fe36be69ca61e8c42e43cde94784 ]
 
-This reverts commit 22a9d9585812 ("dmaengine: pl330: issue_pending waits
-until WFP state") as it seems to cause regression in pl330 driver.
-Note the issue now exists in mainline so a fix to be done.
+Currently, we allocate a lbuf-sized kernel buffer and copy lbuf from
+userspace to that buffer. Later, we use scanf on this buffer but we don't
+ensure that the string is terminated inside the buffer, this can lead to
+OOB read when using scanf. Fix this issue by using memdup_user_nul instead.
 
-Cc: stable@vger.kernel.org
-Reported-by: karthikeyan <karthikeyan@linumiz.com>
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: a4f17cc72671 ("s390/cio: add CRW inject functionality")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-5-f1f1b53a10f4@gmail.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pl330.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/s390/cio/cio_inject.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index c29744bfdf2c2..3cf0b38387ae5 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1053,9 +1053,6 @@ static bool _trigger(struct pl330_thread *thrd)
+diff --git a/drivers/s390/cio/cio_inject.c b/drivers/s390/cio/cio_inject.c
+index 8613fa937237b..a2e771ebae8eb 100644
+--- a/drivers/s390/cio/cio_inject.c
++++ b/drivers/s390/cio/cio_inject.c
+@@ -95,7 +95,7 @@ static ssize_t crw_inject_write(struct file *file, const char __user *buf,
+ 		return -EINVAL;
+ 	}
  
- 	thrd->req_running = idx;
- 
--	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
--		UNTIL(thrd, PL330_STATE_WFP);
--
- 	return true;
- }
+-	buffer = vmemdup_user(buf, lbuf);
++	buffer = memdup_user_nul(buf, lbuf);
+ 	if (IS_ERR(buffer))
+ 		return -ENOMEM;
  
 -- 
 2.43.0
