@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F8C8C534B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D308C50F0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1749F1C230DF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A4181F20F8F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAAA763F2;
-	Tue, 14 May 2024 11:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EEB12AAD2;
+	Tue, 14 May 2024 10:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTMs7XTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChXT6srq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF505762C1;
-	Tue, 14 May 2024 11:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B0812AAC8;
+	Tue, 14 May 2024 10:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686424; cv=none; b=aJmtuY0/TvLp7TUwZLbmgH5y3wImqJG9F92RyyNh67IGhqM82TdVpEz/yp5Rt0cdCrdMeNhcj63Ekw3VCW4OwEEggAWHPOwMVfSl4ymBLeHNFZOjDtR/qQbAc2SYDnJ/PfqohdptMAQPZx/ZSe0giaRLbwv3UIDHkdgKH9H4J1Q=
+	t=1715683889; cv=none; b=PqAaGx8aIscObrNJbcCD9cFWNjUFcNVNEU7mcwZnBkhs4ReRZdlWb38jWc/HWwAXLvSVM/jtrhq2Xq3VRqQ9hgy8x3bd7Ib5WkUUbLGKSq8CeVKYibrl42VbcdrvA15SCQoGhn07L1H2CNiD+Xdn3uUA5e36AjPXcITgJe8l9PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686424; c=relaxed/simple;
-	bh=jLdsQjFvEj4CVB+QLs6xKhZGfrkjMSV7pf31Pa2VK8w=;
+	s=arc-20240116; t=1715683889; c=relaxed/simple;
+	bh=vleHy62cgQUgEEXI9GPXuDoik5v5wuImQ+4DPmV9cXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ur5ZRoBpOXOIwiBPAEZbR4FM5qV4TYSz15nA101qRMYVM62m3lg3ktUePNYSH4Bh4lTosGuYShB3r6MdMVQc9JKDV15GK/1XcHOuwhkILZg2d+0jCOPjkPqh7Y+qSkAFWZVjeJtA5ExLCm1wf8ZDVVirD+o8AB7fYlkJo2QTK/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTMs7XTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552F3C2BD10;
-	Tue, 14 May 2024 11:33:44 +0000 (UTC)
+	 MIME-Version; b=EJU/rvcdIA0/n0o2b1frYRzpFddc1rCI5V3zEWZgzREDJsb/IO/SwOd1HFRx2CUqWRD+5dPocsygOd5ZdFSiomXXYNyiLmdAZigwtuxoqrsUustNlZxeo2O20Xyw3PuVJeEDHCSgrGbzhbkz4aSccQDAvZauytLHeJyz7W2GVY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChXT6srq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E24EC2BD10;
+	Tue, 14 May 2024 10:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686424;
-	bh=jLdsQjFvEj4CVB+QLs6xKhZGfrkjMSV7pf31Pa2VK8w=;
+	s=korg; t=1715683889;
+	bh=vleHy62cgQUgEEXI9GPXuDoik5v5wuImQ+4DPmV9cXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTMs7XTCdKSdaSb1QJhEcHg7gD+slsS6v1NbVqpaNkkQrvdf6KzUQ68VGkDtlaDiq
-	 Bzegeqkjyel/nW9kpUZa4fei/c8v0nJzaZXdDBDXz9MKGei3eV0zR+Jj04zeenT6Vg
-	 0lcd5EFfKVBonruWHSK/OW26+tBaGn8mJsbqZfg8=
+	b=ChXT6srqX0BO1X4ZwlmPeCmx3LfH7sqTuSsAmd4GH1fo36bFbMuXOoryuF0NbWIO3
+	 iy8+LTdTlJ85OeokNzaod+ppkBkmAunbWB4sJEVwZilgZ7xjJ1fkrpbgz7jhSsp9Kq
+	 V/fbUV+alRaEVZL/KbVLX2PH6VoLPgOaswMSnn+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/236] 9p: explicitly deny setlease attempts
+	Diego Roversi <diegor@tiscali.it>,
+	Maxime Ripard <mripard@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: [PATCH 6.8 291/336] clk: sunxi-ng: a64: Set minimum and maximum rate for PLL-MIPI
 Date: Tue, 14 May 2024 12:18:15 +0200
-Message-ID: <20240514101025.419432294@linuxfoundation.org>
+Message-ID: <20240514101049.602457041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Frank Oltmanns <frank@oltmanns.dev>
 
-[ Upstream commit 7a84602297d36617dbdadeba55a2567031e5165b ]
+commit 69f16d9b789821183d342719d2ebd4a5ac7178bc upstream.
 
-9p is a remote network protocol, and it doesn't support asynchronous
-notifications from the server. Ensure that we don't hand out any leases
-since we can't guarantee they'll be broken when a file's contents
-change.
+When the Allwinner A64's TCON0 searches the ideal rate for the connected
+panel, it may happen that it requests a rate from its parent PLL-MIPI
+which PLL-MIPI does not support.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This happens for example on the Olimex TERES-I laptop where TCON0
+requests PLL-MIPI to change to a rate of several GHz which causes the
+panel to stay blank. It also happens on the pinephone where a rate of
+less than 500 MHz is requested which causes instabilities on some
+phones.
+
+Set the minimum and maximum rate of Allwinner A64's PLL-MIPI according
+to the Allwinner User Manual.
+
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reported-by: Diego Roversi <diegor@tiscali.it>
+Closes: https://groups.google.com/g/linux-sunxi/c/Rh-Uqqa66bw
+Tested-by: Diego Roversi <diegor@tiscali.it>
+Cc: stable@vger.kernel.org
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://lore.kernel.org/r/20240310-pinephone-pll-fixes-v4-2-46fc80c83637@oltmanns.dev
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/9p/vfs_file.c | 2 ++
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index aec43ba837992..87222067fe5de 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -667,6 +667,7 @@ const struct file_operations v9fs_file_operations = {
- 	.splice_read = generic_file_splice_read,
- 	.splice_write = iter_file_splice_write,
- 	.fsync = v9fs_file_fsync,
-+	.setlease = simple_nosetlease,
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+@@ -182,6 +182,8 @@ static struct ccu_nkm pll_mipi_clk = {
+ 					      &ccu_nkm_ops,
+ 					      CLK_SET_RATE_UNGATE | CLK_SET_RATE_PARENT),
+ 		.features	= CCU_FEATURE_CLOSEST_RATE,
++		.min_rate	= 500000000,
++		.max_rate	= 1400000000,
+ 	},
  };
  
- const struct file_operations v9fs_file_operations_dotl = {
-@@ -708,4 +709,5 @@ const struct file_operations v9fs_mmap_file_operations_dotl = {
- 	.splice_read = generic_file_splice_read,
- 	.splice_write = iter_file_splice_write,
- 	.fsync = v9fs_file_fsync_dotl,
-+	.setlease = simple_nosetlease,
- };
--- 
-2.43.0
-
 
 
 
