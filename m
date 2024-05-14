@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674708C5541
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF94D8C53E4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 983711C233AE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B23D289719
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1137543AD6;
-	Tue, 14 May 2024 11:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5216813D299;
+	Tue, 14 May 2024 11:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvN61e9M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHhtTqOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C771CFB2;
-	Tue, 14 May 2024 11:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E71213D28D;
+	Tue, 14 May 2024 11:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687769; cv=none; b=tsSWvklQH9yxSWnn2M67n2E/s4t/BjfY06JBDVd/rV3sb4BsURp2TeLuWxbknHQnpCgIc1ltaGIL3r6wgWU3f813GRYOLeHG4YPjvHJKqRyZg42mQdZP6LYOSht4LMfJrBXAb3uApWz4uyS7U14CyYTBIXD/BTeeAQy8baEN5Gk=
+	t=1715686827; cv=none; b=ToJWCHR7lTlCqzd5ghdXpa0ZtOp2BmmkGZg7n4Uk8VPFrbrZ+9qyeCHho/sTCsCwdjMKCDINiZUShtnsfi6iBtBe7ZVQo7iWCiqkInkLROm36DupQutfHpLjDEhtmZs6Sn2bFAbhxufcw80ynAUV0KFGi4TwOHKlyIciACQ5a2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687769; c=relaxed/simple;
-	bh=1WFFKjy03ndX3WWWs5IHsgBIwSSc8BclZeQHcBvTjvE=;
+	s=arc-20240116; t=1715686827; c=relaxed/simple;
+	bh=zgXrxs5jirDEVQ7V3Px2uaRtKyNSmg/PYy/SrTrmB9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ByM+u9i9hvs9199w7bd47AQ0L0/rEJybWJqqG/B0Rsp3Ckdn6ETOY9xX3YBMbnq8OJ2M/RRPxCIubvFMRja1PQoQyB1MzOHLXJ+Wn/SJcPpkqordT4TahrWqD6OFmcHpdXjK6q+ZSULzA/24xtEFkmuuL1ABEDe8RIZjMYMUSyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvN61e9M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A86C32781;
-	Tue, 14 May 2024 11:56:09 +0000 (UTC)
+	 MIME-Version; b=MAdFNru87pS982QRDfAPwKx1QQlr9cFuXQ0yD4hWdlJKutpCtVy5HFH1q/S2KYu5AaW3X3CrUJrXYT1erUjy/NJj8Mz8iw/vd533ELTW59ODjbBCTgnAWh9MDIrc3USLhKhaDRFxsu5+kbuPRJ5GVFJJ1Cgn9/nAUqu6T33aVYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHhtTqOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF3EC2BD10;
+	Tue, 14 May 2024 11:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687769;
-	bh=1WFFKjy03ndX3WWWs5IHsgBIwSSc8BclZeQHcBvTjvE=;
+	s=korg; t=1715686826;
+	bh=zgXrxs5jirDEVQ7V3Px2uaRtKyNSmg/PYy/SrTrmB9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvN61e9M91HIav7GX85rYCFMGLOjAVfNeyYi8DIZENOfNSCtfxzDMlyJ/jwo/EI3O
-	 izWqoEyOyL0Evsc7kvZ31lILP4WZdYTpjyvT9okfd6qx0DDygZV+MM0M3OBs/G0WQc
-	 bRTUB/+PekIJ4I6LyJpFUcQjBFj+abUQ43OcQ1Ug=
+	b=ZHhtTqOzjhrbjy6Y+Bk6dbr8srvF/6QF9aD4MB5N1aSo1OW49kFbA6CPsKUJ0mhhf
+	 YIsBVZYlMRjQrq6beBO/sxR+VXQMuV4fEEs1On/u9B/W0PG+u0ar2HVkduwt0pCXI5
+	 XQkNGy2+/xcsdERjAZvfdGIs6pvm46iwytGsw39I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/168] bpf, sockmap: Reschedule is now done through backlog
+Subject: [PATCH 4.19 35/63] scsi: target: Fix SELinux error when systemd-modules loads the target module
 Date: Tue, 14 May 2024 12:19:56 +0200
-Message-ID: <20240514101010.389378780@linuxfoundation.org>
+Message-ID: <20240514100949.340518891@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit bce22552f92ea7c577f49839b8e8f7d29afaf880 ]
+[ Upstream commit 97a54ef596c3fd24ec2b227ba8aaf2cf5415e779 ]
 
-Now that the backlog manages the reschedule() logic correctly we can drop
-the partial fix to reschedule from recvmsg hook.
+If the systemd-modules service loads the target module, the credentials of
+that userspace process will be used to validate the access to the target db
+directory.  SELinux will prevent it, reporting an error like the following:
 
-Rescheduling on recvmsg hook was added to address a corner case where we
-still had data in the backlog state but had nothing to kick it and
-reschedule the backlog worker to run and finish copying data out of the
-state. This had a couple limitations, first it required user space to
-kick it introducing an unnecessary EBUSY and retry. Second it only
-handled the ingress case and egress redirects would still be hung.
+kernel: audit: type=1400 audit(1676301082.205:4): avc: denied  { read }
+for  pid=1020 comm="systemd-modules" name="target" dev="dm-3"
+ino=4657583 scontext=system_u:system_r:systemd_modules_load_t:s0
+tcontext=system_u:object_r:targetd_etc_rw_t:s0 tclass=dir permissive=0
 
-With the correct fix, pushing the reschedule logic down to where the
-enomem error occurs we can drop this fix.
+Fix the error by using the kernel credentials to access the db directory
 
-Fixes: bec217197b412 ("skmsg: Schedule psock work if the cached skb exists on the psock")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20230523025618.113937-4-john.fastabend@gmail.com
-Stable-dep-of: 405df89dd52c ("bpf, sockmap: Improved check for empty queue")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Link: https://lore.kernel.org/r/20240215143944.847184-2-mlombard@redhat.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/target/target_core_configfs.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index e9fddceba390e..51ab1e617d922 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -481,8 +481,6 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
- 		msg_rx = sk_psock_peek_msg(psock);
- 	}
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index f6b1549f41422..10fbfa7df46ab 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -3240,6 +3240,8 @@ static int __init target_core_init_configfs(void)
+ {
+ 	struct configfs_subsystem *subsys = &target_core_fabrics;
+ 	struct t10_alua_lu_gp *lu_gp;
++	struct cred *kern_cred;
++	const struct cred *old_cred;
+ 	int ret;
+ 
+ 	pr_debug("TARGET_CORE[0]: Loading Generic Kernel Storage"
+@@ -3316,11 +3318,21 @@ static int __init target_core_init_configfs(void)
+ 	if (ret < 0)
+ 		goto out;
+ 
++	/* We use the kernel credentials to access the target directory */
++	kern_cred = prepare_kernel_cred(&init_task);
++	if (!kern_cred) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	old_cred = override_creds(kern_cred);
+ 	target_init_dbroot();
++	revert_creds(old_cred);
++	put_cred(kern_cred);
+ 
+ 	return 0;
+ 
  out:
--	if (psock->work_state.skb && copied > 0)
--		schedule_delayed_work(&psock->work, 0);
- 	return copied;
- }
- EXPORT_SYMBOL_GPL(sk_msg_recvmsg);
++	target_xcopy_release_pt();
+ 	configfs_unregister_subsystem(subsys);
+ 	core_dev_release_virtual_lun0();
+ 	rd_module_exit();
 -- 
 2.43.0
 
