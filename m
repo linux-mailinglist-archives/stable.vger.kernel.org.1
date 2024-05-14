@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD7F8C54AF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB368C5557
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E6F928A267
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F88A28CF0D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10E712DD9C;
-	Tue, 14 May 2024 11:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B662626AC5;
+	Tue, 14 May 2024 11:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MI1BwbYr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGvclV0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3A14205D;
-	Tue, 14 May 2024 11:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B9FF9D4;
+	Tue, 14 May 2024 11:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687354; cv=none; b=E+15Oed46xJvRkedvola2YO6cYaWMRsJQq/EohQVoXthmskhcDsT5BIzQtQQBs6Le0ajE8Q4d7vj3hyjVzayub8qY4tsIbKT7TCfqMTT3oyFB/b2ev5fpar6hjkVQKs9njuQbnd4bgtxiwH98tQilWhU9TttOu8cn/ROg1s/Sbw=
+	t=1715687821; cv=none; b=EBTJhp3kaMN3lV4VM2haMHLhbWTmd+kpf93A9iQiSGmot/3R8ZK0jTmLEW126LWZ4+DjtCCL3SUvHELi2jK+jvr5TF5x2EHAg7gniXpDH9IJKOjDgSi9jE8THdez1Oy6ODWMmV/EmRX9Mj2QSDn8LAqL41i6EdQvFKG0PoDR7+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687354; c=relaxed/simple;
-	bh=866v8iD4QyufnQUZjA63Okrc8mKxgV0vlneY5hovnTc=;
+	s=arc-20240116; t=1715687821; c=relaxed/simple;
+	bh=LByu32i5djXSxq3UDqVziMG5JELnb4PBHd2oBZ+BBSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3KWtJ4La8IjhrW/dz/r9ogw0hrBJyX6iJaLZQQcbGNnhLQzUSx47UWnFRAVQS4z1OkzglLCUaD6A7DbxEmIrDa7sVsGWLNnCRT/mADbTHpRCZNhXMjPXwGoyEZLeWhOZxWiiHMVi8TNhE5EXSeFiKm6UwApaghmzO8EaU3MRrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MI1BwbYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03C8C2BD10;
-	Tue, 14 May 2024 11:49:13 +0000 (UTC)
+	 MIME-Version; b=IEeRVfou7KmRAPIBGAKTQtmlcOowe8p+1cb8VsdZCkZUHBratueccJWFbdaj+aKEG+dzQ9N2I70EfjLGsCnCRr4ypLAnPSj/ct6+jNLJSIhO+otyEoUo2iTxqPEjtTbBfgr0hJvWepUqmP6zuYwwmIGjcLI2zIf6GjzaFKSbZTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGvclV0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E67C2BD10;
+	Tue, 14 May 2024 11:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687354;
-	bh=866v8iD4QyufnQUZjA63Okrc8mKxgV0vlneY5hovnTc=;
+	s=korg; t=1715687821;
+	bh=LByu32i5djXSxq3UDqVziMG5JELnb4PBHd2oBZ+BBSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MI1BwbYroOSAL88L7TjnlFEwtffrvY4bADORgW5bhG8KqmQn4nvohj9dz8AyH+N7N
-	 wuA/Fosi2T5yjuG9mfv1OM1On5d23pAA/OkPPOeTyAurJ4u/V3eLAYNzV8Bm4jGAzJ
-	 84xTNaPLF8tHxFTEcf+VXcwJWoVLjUiTCbaAiXP0=
+	b=MGvclV0AJbiPyzAAHPvJLH9rgzi9SX3mZ3OPObT/cM9TE90WKJJRCHAWqxmPSPoxx
+	 rpJf4CtfQqnLGthP5lGzWUis5/qoE6b6wbBQMUCH8kAlgv81HZIgcHU0DHoofeq8n2
+	 C4ZktjVA/QQJfpns93UkirxyHrYsOO+opqOLP/Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Roded Zats <rzats@paloaltonetworks.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/111] gpio: crystalcove: Use -ENOTSUPP consistently
-Date: Tue, 14 May 2024 12:20:06 +0200
-Message-ID: <20240514100959.718459459@linuxfoundation.org>
+Subject: [PATCH 5.15 109/168] rtnetlink: Correct nested IFLA_VF_VLAN_LIST attribute validation
+Date: Tue, 14 May 2024 12:20:07 +0200
+Message-ID: <20240514101010.799961013@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Roded Zats <rzats@paloaltonetworks.com>
 
-[ Upstream commit ace0ebe5c98d66889f19e0f30e2518d0c58d0e04 ]
+[ Upstream commit 1aec77b2bb2ed1db0f5efc61c4c1ca3813307489 ]
 
-The GPIO library expects the drivers to return -ENOTSUPP in some
-cases and not using analogue POSIX code. Make the driver to follow
-this.
+Each attribute inside a nested IFLA_VF_VLAN_LIST is assumed to be a
+struct ifla_vf_vlan_info so the size of such attribute needs to be at least
+of sizeof(struct ifla_vf_vlan_info) which is 14 bytes.
+The current size validation in do_setvfinfo is against NLA_HDRLEN (4 bytes)
+which is less than sizeof(struct ifla_vf_vlan_info) so this validation
+is not enough and a too small attribute might be cast to a
+struct ifla_vf_vlan_info, this might result in an out of bands
+read access when accessing the saved (casted) entry in ivvl.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 79aab093a0b5 ("net: Update API for VF vlan protocol 802.1ad support")
+Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Link: https://lore.kernel.org/r/20240502155751.75705-1-rzats@paloaltonetworks.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-crystalcove.c | 2 +-
+ net/core/rtnetlink.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-crystalcove.c b/drivers/gpio/gpio-crystalcove.c
-index 2ba2257200865..0f0b4edaa4865 100644
---- a/drivers/gpio/gpio-crystalcove.c
-+++ b/drivers/gpio/gpio-crystalcove.c
-@@ -91,7 +91,7 @@ static inline int to_reg(int gpio, enum ctrl_register reg_type)
- 		case 0x5e:
- 			return GPIOPANELCTL;
- 		default:
--			return -EOPNOTSUPP;
-+			return -ENOTSUPP;
- 		}
- 	}
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index ef218e290dfba..d25632fbfa892 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2383,7 +2383,7 @@ static int do_setvfinfo(struct net_device *dev, struct nlattr **tb)
  
+ 		nla_for_each_nested(attr, tb[IFLA_VF_VLAN_LIST], rem) {
+ 			if (nla_type(attr) != IFLA_VF_VLAN_INFO ||
+-			    nla_len(attr) < NLA_HDRLEN) {
++			    nla_len(attr) < sizeof(struct ifla_vf_vlan_info)) {
+ 				return -EINVAL;
+ 			}
+ 			if (len >= MAX_VLAN_LIST_LEN)
 -- 
 2.43.0
 
