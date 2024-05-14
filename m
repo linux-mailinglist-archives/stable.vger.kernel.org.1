@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-44752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5058C543B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53C98C53EE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD9C91C22BE2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 896E01F210A4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC9913A259;
-	Tue, 14 May 2024 11:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF8C12FB21;
+	Tue, 14 May 2024 11:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoXuYnal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlPwdG7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD44A13A256;
-	Tue, 14 May 2024 11:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5335FDD2;
+	Tue, 14 May 2024 11:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687074; cv=none; b=GTzDM5BVS9Zp0g4gi7aPIAXVwebfenfdhvwTEshZiGNgi/porcSWp5W7hPP8tZWydHagX6rQvfkTdCp2C7iCvd5NA8d72XL4MoVw8gvRn5LUDpqDmfzoqRT+gEUVDToIMtjVkOBfug+QNKVsnF97rGS64vpFZnMwTEao+L4OHLA=
+	t=1715686860; cv=none; b=XVq81MApKdAljpErbEoMQf4/JYkbIvWPZh4gcFXr3h6Ej6Q+K4+uUS8kZtFhaoe+55klhdLhfa3YULePsUot3NxhOfKCY5sz8LRNfSmBugSK59IZhlbI3aRha5gJ2gMT8W9oQIvfJ5WYTpz1bysD2craTifkq5zo/1w2vCwhpo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687074; c=relaxed/simple;
-	bh=uhdHzBUGw/TgZ9hfRgtUExWz8+5Oawv4AoZJnKtwVuk=;
+	s=arc-20240116; t=1715686860; c=relaxed/simple;
+	bh=0yeBRcHKPOseRslp6ChI00LVjydI8ki0TMWz4LwGuc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCPcEb7pHxjygCK7FEigKhVpgR6IVchca/Ompcz0VplteyCnlucTvgfedWwIaIjvOkGPhGvjsI+YOn0BShgF2jr4iJvGt7i79VU/k0QQoWG41gzGZQgYIle85W3afkpeYtu1D1yxTpQrX+agBem4N7GmrHuFRjMgRgN0TnSfSoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoXuYnal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603C7C2BD10;
-	Tue, 14 May 2024 11:44:33 +0000 (UTC)
+	 MIME-Version; b=aVyrFy3ijwFPt8FaCR9tcQi9csHCOPa1XxF2eXlPwAISaTQ+m4ZetdpxszuDSzm4uFgRPkVQwsb1MeOljOeGzUeNKwxtpdFSxzlcvFXxWLlv7DuwyhQcueILxILQKCLqrK8XdTXg4dIG3buns9UWd/HvfdIURYIHsOmQ06YLh8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlPwdG7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E12CC2BD10;
+	Tue, 14 May 2024 11:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687073;
-	bh=uhdHzBUGw/TgZ9hfRgtUExWz8+5Oawv4AoZJnKtwVuk=;
+	s=korg; t=1715686860;
+	bh=0yeBRcHKPOseRslp6ChI00LVjydI8ki0TMWz4LwGuc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XoXuYnalS5ztcsSl665G+xnZ3uiqS7l/BAkuKGXm8UjCLi3Qfqy3kKqvvudgj8eWc
-	 h+h5uve3dzwv8pCjFcEMmT7CI5cng9BEGa/OzOFuNYHkAo3fRLib+4bSmoo+Xb6gI/
-	 Qlv22Ao391O6G5/KYO0gVhAkC9nvSmEvT/tKdzwM=
+	b=BlPwdG7+PWU+VSvt5YYJAiV87xRHQYY+fZjleWi9FlCE9+kro+HWU7a0RlxNT4y05
+	 cPHYXNadhZoWwksGboRlD8jimFXQaUuJJCIuh3YKGyxvewy0PI1yMJTPkID9vJu1Be
+	 sFgasX2R0uR+m/R0ik/j7EywXYHh7cU+To5GvGJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Colin Ian King <colin.king@canonical.com>,
+	Mukesh Ojha <mojha@codeaurora.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 55/84] gpio: crystalcove: Use -ENOTSUPP consistently
+Subject: [PATCH 4.19 45/63] tcp: remove redundant check on tskb
 Date: Tue, 14 May 2024 12:20:06 +0200
-Message-ID: <20240514100953.754962769@linuxfoundation.org>
+Message-ID: <20240514100949.716386846@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-[ Upstream commit ace0ebe5c98d66889f19e0f30e2518d0c58d0e04 ]
+[ Upstream commit d1edc085559744fbda7a55e97eeae8bd6135a11b ]
 
-The GPIO library expects the drivers to return -ENOTSUPP in some
-cases and not using analogue POSIX code. Make the driver to follow
-this.
+The non-null check on tskb is always false because it is in an else
+path of a check on tskb and hence tskb is null in this code block.
+This is check is therefore redundant and can be removed as well
+as the label coalesc.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+if (tsbk) {
+        ...
+} else {
+        ...
+        if (unlikely(!skb)) {
+                if (tskb)       /* can never be true, redundant code */
+                        goto coalesc;
+                return;
+        }
+}
+
+Addresses-Coverity: ("Logically dead code")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 94062790aedb ("tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-crystalcove.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_output.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpio/gpio-crystalcove.c b/drivers/gpio/gpio-crystalcove.c
-index 14d1f4c933b69..8b9c1833bf7d4 100644
---- a/drivers/gpio/gpio-crystalcove.c
-+++ b/drivers/gpio/gpio-crystalcove.c
-@@ -91,7 +91,7 @@ static inline int to_reg(int gpio, enum ctrl_register reg_type)
- 		case 0x5e:
- 			return GPIOPANELCTL;
- 		default:
--			return -EOPNOTSUPP;
-+			return -ENOTSUPP;
- 		}
- 	}
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 670804d4c1690..8b78cb96a8461 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3132,7 +3132,6 @@ void tcp_send_fin(struct sock *sk)
+ 		tskb = skb_rb_last(&sk->tcp_rtx_queue);
  
+ 	if (tskb) {
+-coalesce:
+ 		TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;
+ 		TCP_SKB_CB(tskb)->end_seq++;
+ 		tp->write_seq++;
+@@ -3148,11 +3147,9 @@ void tcp_send_fin(struct sock *sk)
+ 		}
+ 	} else {
+ 		skb = alloc_skb_fclone(MAX_TCP_HEADER, sk->sk_allocation);
+-		if (unlikely(!skb)) {
+-			if (tskb)
+-				goto coalesce;
++		if (unlikely(!skb))
+ 			return;
+-		}
++
+ 		INIT_LIST_HEAD(&skb->tcp_tsorted_anchor);
+ 		skb_reserve(skb, MAX_TCP_HEADER);
+ 		sk_forced_mem_schedule(sk, skb->truesize);
 -- 
 2.43.0
 
