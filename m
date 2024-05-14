@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-43902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E518C5022
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2DF8C5172
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05E0E1C20B5B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27C8A28154B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA5E139CF1;
-	Tue, 14 May 2024 10:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F286B134413;
+	Tue, 14 May 2024 11:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2LjUXLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOGKzUaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA7940862;
-	Tue, 14 May 2024 10:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B9954903;
+	Tue, 14 May 2024 11:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682989; cv=none; b=oNwGoCpwD/ZpkLuS9fDKYztr6hUTgNnuMrjXRss/DT0oJnob4fAJ8LSMYrK5ZyxKaEwgwpQLimsvi+bX80zlNsOY79JoOjlw9HU8ytu8UWzyhKZQFA6G5Cww1B0gadK46qEArA9Zp2Yiu8fIPkfaEMCCTz2zVKkyAh46EdB+c7c=
+	t=1715684507; cv=none; b=nWfePmEuryv0o05kfBECj7OvaKP4PF5qUIt7w36u6/2CrUDwJuh6ilDsRntGJxZUW4zDOK6dtVYQx7LhQ9dx9wKCd2iQwBIpHLe3WlbELbiP5ytDWN5JGfPrjds7jSwk2EiRSkkpWRprFusJCZGOjgD1MegdJifll1kvknh79eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682989; c=relaxed/simple;
-	bh=r7qKTv8mANj1zrDoSMmU0eoTsyiqtZBbjIzWkLw4XKI=;
+	s=arc-20240116; t=1715684507; c=relaxed/simple;
+	bh=vh0XEF9//zMhd9EEn7G9+m1OD4GEiv2I+6JbPo2QJJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hI+IhgSBnOqamxp/pGD3kUEdybLc1rhzNMSXoDBfx8vNiuRAE/8QWmWdziNagl2wbSVo7f27it8YXnMIdog7ogjiJjirNdByHwonX0/lBD9+zHiUd6Ru1YAQJ26yFyKsjFkraq5OoVTHH/BnS0auFdgzTWDFjf0PoMyrDYZCmP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2LjUXLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A4AC2BD10;
-	Tue, 14 May 2024 10:36:28 +0000 (UTC)
+	 MIME-Version; b=jjtpvHSMTs66FbRqID3uhZkUAhD6vcCEIs6yvo8ucOF6G9oE3vyH+J6u4KzbZmGGkFrZH76jl5lih+02a3HCaPVCJfE8kiVXgCTC5UGQ5ffs0Q94OygvH2tLYO59FZ4ia53vOMZyQKJgi/gqqMA1eNqN4xju79Dq10lsqvoLels=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOGKzUaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F08C2BD10;
+	Tue, 14 May 2024 11:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682989;
-	bh=r7qKTv8mANj1zrDoSMmU0eoTsyiqtZBbjIzWkLw4XKI=;
+	s=korg; t=1715684507;
+	bh=vh0XEF9//zMhd9EEn7G9+m1OD4GEiv2I+6JbPo2QJJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2LjUXLRZAfHMgrfax+UL42lqhd4aHp0yo4lOAB/UpRxK1LvysQMosvom3YaRWM9O
-	 Om/LKAU1pSXKCoh0Z1JFmDLuOeQAXq39sFWO2zhrGdJGp1JGF1Q1wiBI3L67UASyDn
-	 THjPaC82wC0wBrdztPbaEyOumPcFXaR3knPkMC/0=
+	b=MOGKzUaLQhsK2crg17MzH3irRlE3MgpV9H4HxEzhlZ0X/BlrAAdgTFVh4QiyHtwPS
+	 CQplEBPx0F+RrP6jz/9yccdxkY4gQtZ9Oe5wwGLLUexoDFjXmP1x3htZ/cXvVr9yyc
+	 OYJeA5prwyDXR+9wQu14GarIyBMvGmGeHehKuLus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukul Joshi <mukul.joshi@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 115/336] drm/amdkfd: Check cgroup when returning DMABuf info
-Date: Tue, 14 May 2024 12:15:19 +0200
-Message-ID: <20240514101042.945519506@linuxfoundation.org>
+Subject: [PATCH 6.6 049/301] bna: ensure the copied buf is NUL terminated
+Date: Tue, 14 May 2024 12:15:20 +0200
+Message-ID: <20240514101034.096747875@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukul Joshi <mukul.joshi@amd.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 9d7993a7ab9651afd5fb295a4992e511b2b727aa ]
+[ Upstream commit 8c34096c7fdf272fd4c0c37fe411cd2e3ed0ee9f ]
 
-Check cgroup permissions when returning DMA-buf info and
-based on cgroup info return the GPU id of the GPU that have
-access to the BO.
+Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
+userspace to that buffer. Later, we use sscanf on this buffer but we don't
+ensure that the string is terminated inside the buffer, this can lead to
+OOB read when using sscanf. Fix this issue by using memdup_user_nul
+instead of memdup_user.
 
-Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-2-f1f1b53a10f4@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 4 ++--
+ drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 08da993df1480..7d5ffc2bad793 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1522,7 +1522,7 @@ static int kfd_ioctl_get_dmabuf_info(struct file *filep,
+diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+index 7246e13dd559f..97291bfbeea58 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
++++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+@@ -312,7 +312,7 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
+ 	void *kern_buf;
  
- 	/* Find a KFD GPU device that supports the get_dmabuf_info query */
- 	for (i = 0; kfd_topology_enum_kfd_devices(i, &dev) == 0; i++)
--		if (dev)
-+		if (dev && !kfd_devcgroup_check_permission(dev))
- 			break;
- 	if (!dev)
- 		return -EINVAL;
-@@ -1544,7 +1544,7 @@ static int kfd_ioctl_get_dmabuf_info(struct file *filep,
- 	if (xcp_id >= 0)
- 		args->gpu_id = dmabuf_adev->kfd.dev->nodes[xcp_id]->id;
- 	else
--		args->gpu_id = dmabuf_adev->kfd.dev->nodes[0]->id;
-+		args->gpu_id = dev->id;
- 	args->flags = flags;
+ 	/* Copy the user space buf */
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
- 	/* Copy metadata buffer to user mode */
+@@ -372,7 +372,7 @@ bnad_debugfs_write_regwr(struct file *file, const char __user *buf,
+ 	void *kern_buf;
+ 
+ 	/* Copy the user space buf */
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
+ 
 -- 
 2.43.0
 
