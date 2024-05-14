@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-44553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6D98C5364
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8B98C5135
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E45A31F232F2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B130B20514
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298538615E;
-	Tue, 14 May 2024 11:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093F984A46;
+	Tue, 14 May 2024 10:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIiYGnpe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHsLfg4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFEB18026;
-	Tue, 14 May 2024 11:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD51D531;
+	Tue, 14 May 2024 10:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686494; cv=none; b=dcPHtDEP9m2hRkSfnT8ly+mOwishTT0etryZUOWL977HpCyCiJpPn4LxbHbNfQkj1iyru7vqF3y30bLHQjlHXjUN8Uv4w3uo8LBLKsbVd80Offa5D20X2mssIwERNmQkh9Jc5Al8nwpZ92ZwZERxuVEqbzXG6jNi7pstbUJjTSw=
+	t=1715684194; cv=none; b=f7VUm7dcVDweFOsw598qkoqvgtFe3JPTnQyxSnnPXNkkHiYUZLIOyOwCAbwQDuIvuWwz2N+kd7rJ9eVMvm67YWjAkrcinK8Fa1WjGj1yx2yDMJo9DMRrDwYa9IH2LqCYKmYwyhAX9oE5Z4yuMV9qF6+OafTd06AOxr276BljuC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686494; c=relaxed/simple;
-	bh=XAUP8ECSIyQ78EKbmqv2uUGorVdBUyh9u9xvyeksT+I=;
+	s=arc-20240116; t=1715684194; c=relaxed/simple;
+	bh=gM3ktK+I0EAnQYB5lYtF+C46JhyTnBXznwgjuPJcx3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOZesj+QPUSwfJLtcs4Jf/3qCLwOSc5HwOz+8nFkVRDfJ8Njmlc8Txohqwmerd2hRfS3WgwDc1QDK/KqaJJd9sw0polNTMqyCXy55v6pxBbPqvYmUkc3C3YNAuXOz5cq0tLCbZqcXtJlSNOiPzLTXOOKZcoI0oH5hFW9Hi6jdZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIiYGnpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6213BC2BD10;
-	Tue, 14 May 2024 11:34:53 +0000 (UTC)
+	 MIME-Version; b=paShUQK5WdSD4Th6jpBgu2tttsmY8OlxS4m6qXKUropFcgcm/8c0S7v93llz1+baibobeKP0R4zO9hoXwTLLepef+s1Hum80jZIBqBU0zJ21HA5oOAzfP9oSzQ3yIdo/zQ0X0hT2pefAUDRB8fsm8QO7tHQfJJYFwFuQAtixJN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHsLfg4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C1DC2BD10;
+	Tue, 14 May 2024 10:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686493;
-	bh=XAUP8ECSIyQ78EKbmqv2uUGorVdBUyh9u9xvyeksT+I=;
+	s=korg; t=1715684194;
+	bh=gM3ktK+I0EAnQYB5lYtF+C46JhyTnBXznwgjuPJcx3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIiYGnpe+RG6HhWAFdc84Ku5rLuzCqX1gc6yyZdEFYpnm9xE7/Gb5xZk+2BllQgDs
-	 yuBTYSqhQTq98gQvov/QY1KBM5g5bn9nv1PqIxS6L1bVqBkdmQhLjyXZiu+LHsLxbb
-	 xb2DXPgRkENSth/tYy+uT7qh3eIKOL7CQXWMKQ50=
+	b=aHsLfg4YuMpdHHOkbdjoxDYwuN6CTf1mNPVJwfUEM1mvg6XLxmaVsKiKwcilKcWK1
+	 75Rh+08E5hirHZNdsQauWsbs7k/YfzC+h6KhVVgiQuwE61mPYXrxr2XBS9tVjklbXy
+	 KPuMqTMwLtV53UYd8oS9/EdbUxS5mh91FdJAFpiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/236] net: bridge: fix corrupted ethernet header on multicast-to-unicast
+	Eric Wagner <ewagner12@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	stable@kernel.org
+Subject: [PATCH 6.8 316/336] iommu/amd: Enhance def_domain_type to handle untrusted device
 Date: Tue, 14 May 2024 12:18:40 +0200
-Message-ID: <20240514101026.361542462@linuxfoundation.org>
+Message-ID: <20240514101050.548672869@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
+commit 0f91d0795741c12cee200667648669a91b568735 upstream.
 
-The change from skb_copy to pskb_copy unfortunately changed the data
-copying to omit the ethernet header, since it was pulled before reaching
-this point. Fix this by calling __skb_push/pull around pskb_copy.
+Previously, IOMMU core layer was forcing IOMMU_DOMAIN_DMA domain for
+untrusted device. This always took precedence over driver's
+def_domain_type(). Commit 59ddce4418da ("iommu: Reorganize
+iommu_get_default_domain_type() to respect def_domain_type()") changed
+the behaviour. Current code calls def_domain_type() but if it doesn't
+return IOMMU_DOMAIN_DMA for untrusted device it throws error. This
+results in IOMMU group (and potentially IOMMU itself) in undetermined
+state.
 
-Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds untrusted check in AMD IOMMU driver code. So that it
+allows eGPUs behind Thunderbolt work again.
+
+Fine tuning amd_iommu_def_domain_type() will be done later.
+
+Reported-by: Eric Wagner <ewagner12@gmail.com>
+Link: https://lore.kernel.org/linux-iommu/CAHudX3zLH6CsRmLE-yb+gRjhh-v4bU5_1jW_xCcxOo_oUUZKYg@mail.gmail.com
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3182
+Fixes: 59ddce4418da ("iommu: Reorganize iommu_get_default_domain_type() to respect def_domain_type()")
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: stable@kernel.org # v6.7+
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20240423111725.5813-1-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_forward.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iommu/amd/iommu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 982e7a9ccc41c..9661698e86e40 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -253,6 +253,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- {
- 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
- 	const unsigned char *src = eth_hdr(skb)->h_source;
-+	struct sk_buff *nskb;
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2593,6 +2593,10 @@ static int amd_iommu_def_domain_type(str
+ 	if (!dev_data)
+ 		return 0;
  
- 	if (!should_deliver(p, skb))
- 		return;
-@@ -261,12 +262,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
- 
--	skb = pskb_copy(skb, GFP_ATOMIC);
--	if (!skb) {
-+	__skb_push(skb, ETH_HLEN);
-+	nskb = pskb_copy(skb, GFP_ATOMIC);
-+	__skb_pull(skb, ETH_HLEN);
-+	if (!nskb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
- 	}
- 
-+	skb = nskb;
-+	__skb_pull(skb, ETH_HLEN);
- 	if (!is_broadcast_ether_addr(addr))
- 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
- 
--- 
-2.43.0
-
++	/* Always use DMA domain for untrusted device */
++	if (dev_is_pci(dev) && to_pci_dev(dev)->untrusted)
++		return IOMMU_DOMAIN_DMA;
++
+ 	/*
+ 	 * Do not identity map IOMMUv2 capable devices when:
+ 	 *  - memory encryption is active, because some of those devices
 
 
 
