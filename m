@@ -1,109 +1,113 @@
-Return-Path: <stable+bounces-45104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6EC8C5BC8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 21:47:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 366F88C5C0A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 22:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61AA1F2298A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 19:47:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76BF283D1E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 20:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836DE18131A;
-	Tue, 14 May 2024 19:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3AD7181321;
+	Tue, 14 May 2024 20:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IVp72pCU"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9015C1E4B3;
-	Tue, 14 May 2024 19:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EFD2AF09;
+	Tue, 14 May 2024 20:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715716073; cv=none; b=EImZSxa7HKbibNsmC39ybB4S5D4zcE4mNq378JucwL48nyP7I9V0nVjKM/7AbPJ8cmT0rGtR7ao6k0Or7jkcoHYC3/7nxUdIfyXqN3oQBfrTBtW5Sev19rhqsChDG0qXlsSmddR3zS4+JocnTiOk9apLbFF/D36wTe3AHEkDzvo=
+	t=1715717310; cv=none; b=i9LEsF8qqTM0x68k0FgWYKJvogkaQxZTr6UHt7IApZsoGFUKrweIjymkQaPdzphpHhB9CHu2xiezTWVB8vA02KClS7anG9+FjFmQMNdlp36UEz1909Yi/PFuU9KjFKed0QlItTN940176QZJR6Ghd5bMXJnxt9J8neqEPvJMz98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715716073; c=relaxed/simple;
-	bh=zvyqoR0pAOWeQw9bGL+bI2kZ/Qx3hCO4XLckJSozRHA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R0oIr5ypZRq8gRN34XlgwiUFszHsu8AixYO/Ih9jkeIXAkiEV21Im36zJ/dgfOtD0+l4VAKPGs+eccS3L0x1K86wl+/yfMLmCvJ1d4Io9fEVy020MS8Nq7KTk8K3CldY+Cj8pa1Bk5HPLoXNg1uNs0i6uuMOHlettW74Ckp2R6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id E3C2F1C0081; Tue, 14 May 2024 21:47:48 +0200 (CEST)
-Date: Tue, 14 May 2024 21:47:48 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.8 000/336] 6.8.10-rc1 review
-Message-ID: <ZkO/5CJ0M0VfK9p8@duo.ucw.cz>
-References: <20240514101038.595152603@linuxfoundation.org>
+	s=arc-20240116; t=1715717310; c=relaxed/simple;
+	bh=cKYDeecydpzGb/O5fET85WmiV/33NCb/HD7oeJKbfRg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XXjILZLtEkArPCNrxbeT/M8jSXVQQGc7qZsT/qcqofqkDq/TDy+RQPt33cJ5xXjkLsZ0ScmE8FkWwaDL1lbYsihZtL3t5PqLK+AKripwmQWNwYHip6vnV6bNjdPcVfl4u2d+5xS1bkMvBM8K26p1o2Cpxd0J37bFprjtfvh/feA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IVp72pCU; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-4affeacaff9so1551876e0c.3;
+        Tue, 14 May 2024 13:08:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715717307; x=1716322107; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fvjoJ3H6892IQ+WG+yDZXENruQLJb/czhTtD/pn2XzY=;
+        b=IVp72pCU6HsIJnWjgWMNhtb1CdtunhrR7WljLIV5HIKFSXCU/YhFZJMaTtFGLe+xTx
+         bF+1RD6BsgJwBsjYbC/LRVVG8eJ1piSvVukTmuyvfHLKFWGdU22g7qFZK+Nu43c6Oj1U
+         clhmqbKZUS8aZhtb9Dj/4twHekCVy8f9KHWGEhX6Sc694Rfv60h1a8o0SiPVdRI0ZGXA
+         6bw+0TgcNLIj/Uf6ZZPih1DJUD2eAKbqhdcNJB3qyD5HEIKDyY0oxxJuSXEe32XKgnfG
+         1CisJ4lcA/88uPRZa6p3wiLZrf88GZncg+I/namttPObmf5/U24wQCjSkzNTqifWKEDQ
+         NkVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715717307; x=1716322107;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fvjoJ3H6892IQ+WG+yDZXENruQLJb/czhTtD/pn2XzY=;
+        b=OQuJCcABfBUNkSSQLyiVr3rERMwHmxbicB7/98cL4bn78SCOslP0bOCFar62SrV+Wl
+         pfiqGguu46IGtfyUqPkTUNztOcf4w2dpg6dJc7VgGHJyGLDP04Byrd5qVWY8az7kgBBR
+         xZIrKul/18oFlTZ0KtuqJXDl0qErRDmQGTZtb+cpQDj1+HsvddW/2dvURMTXcH6ua3gp
+         avGwkQ9qwpeJ9emLQa22i3fP/GnGgE6BdUvxr4zTW6nA64zbGCdccf9pIURBDLwxHd0U
+         JoZDdPyAZo+OJpDIsChfrqtvT435ynj1YswOiBpw0y3FoT5du8tQcOaNARJVuOw8ABjQ
+         omaw==
+X-Forwarded-Encrypted: i=1; AJvYcCWb/KF5bdB+Bep6WqgpDTz1BIFwDivJNX2qfbR6RcH8EuU5u2PzjFAd7yC2oG64wMgjvSxu+MFrUeNE2pBsHXRdEDtcEYNF15ezG5G+
+X-Gm-Message-State: AOJu0YwArctf0eMNh87KxQPhC2HJZFAvZfS2Z9nYu+5IHG5z6GzmA4zp
+	nQmNZFCNn2scf2WQ2kiDgbv4AsQNpNDyjyLc8io6m12DfyMQf+f6cG76xTSMrDeDLS7wyQRrVeH
+	GDTn4TcGODRoyWICA8jJCWzlgVqk=
+X-Google-Smtp-Source: AGHT+IEPLqc+S8mwOzSlD9qkOiMIP3L1kSLyeSw+t3/KMw5TNbtUgeOPShHGNCog8hcDpyKJCP2QHrDpVrC0Qsd0ug4=
+X-Received: by 2002:a05:6122:d0e:b0:4d4:126b:2c8 with SMTP id
+ 71dfb90a1353d-4df882ea840mr12437198e0c.9.1715717307146; Tue, 14 May 2024
+ 13:08:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LTTWuTFqn242T+fu"
-Content-Disposition: inline
+References: <20240514101038.595152603@linuxfoundation.org>
 In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-
-
---LTTWuTFqn242T+fu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
+From: Allen <allen.lkml@gmail.com>
+Date: Tue, 14 May 2024 13:08:16 -0700
+Message-ID: <CAOMdWS+Fow2jJm9j66Pb2hQH_uyvUtHxM9+HdFwmT_eHL-Qo-g@mail.gmail.com>
+Subject: Re: [PATCH 6.8 000/336] 6.8.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
 > This is the start of the stable review cycle for the 6.8.10 release.
 > There are 336 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->=20
+>
 > Responses should be made by Thu, 16 May 2024 10:09:32 +0000.
 > Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.8.10-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.8.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-CIP testing did not find any problems here:
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.8.y
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-6.6, 5.15, 5.4 pass our	testing, too:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.15.y
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.4.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
-
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---LTTWuTFqn242T+fu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZkO/5AAKCRAw5/Bqldv6
-8gS5AKC3iAo1D6kKPjYGqd7q4EeCJL8KHQCfQAw3HSb7JiwMbnj0EO+itJQpQT8=
-=CaAI
------END PGP SIGNATURE-----
-
---LTTWuTFqn242T+fu--
+Thanks.
 
