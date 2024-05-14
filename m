@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636B78C5416
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 334A78C52AC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 939841C22B74
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C47A2836E2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F52135A71;
-	Tue, 14 May 2024 11:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE9A142E65;
+	Tue, 14 May 2024 11:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhKl15hK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkWKFDff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E9D54903;
-	Tue, 14 May 2024 11:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEB31419BA;
+	Tue, 14 May 2024 11:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686961; cv=none; b=SIu8yxt9tffIu2frhNxSDbtdpE1UmtE2nCrpEQhynKwnEo/P71Df1MSAHgZBejsfB4UnwY6NxCbagivXQJ4v52lQkq5GsHGbXT/0FKPfFGKcCo4R+sM6A80AhVZWpxzi6eXBYowz4BSY5vndYR4guzDRcmpZc5jD9fWGm22jFZ4=
+	t=1715686050; cv=none; b=BIL3h2RiFhiP/PpE5OXQ6xhRuSAQOBIdAIVk0RrO3/rEOOoJYU/Nl9tvIk/052v5WkPYtx8OdHmiDdhFXSwxbcRuctxxkyVG9A3G/CcSJXLi2m+UFqzJN4pC6g03NwQ37IgeTM/3O2n92WInaQNJcHqcWG53rpG6nD06LeDu0YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686961; c=relaxed/simple;
-	bh=CvH7VbgpHCPTmH4wd9DJwVpx5uQB4t0lwon9d6iiMqw=;
+	s=arc-20240116; t=1715686050; c=relaxed/simple;
+	bh=CpN5LUvCrcKrrics1PobCz1rshiXmbXZKg3Eq5JARgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5gTDAl99x4heVJ1A8ab4/UcjbDPIIMOfrzyyeWoFuwf2aUIkSSeJJqcGvAB15DiNTiKkEUV9OtXdBfxmD0z0kd84v65+Qt3Hb1COV6ilmeD5X8qqaf1TtT3JzrQoVHTh9POQ4csYH5wohF5Ur1E636hWoPB62IXW7hionNZ/GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhKl15hK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F30FC2BD10;
-	Tue, 14 May 2024 11:42:40 +0000 (UTC)
+	 MIME-Version; b=db4SccK6/w+48N/XS+FHWwUuyXlvgyqdzdLQlNw4jXBzz3ir0YD1Brlz7WJK9L1Y+JsVJ0iis+0wNhq8A26wLDxQWnTBYVh/EYEZP+AEAGUUI0TJkqrS3+/zzhkXeV/BENRfhVjOFhxYCZam2mRx7s4go5LGX2mt1JW3K1Co6oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkWKFDff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C71C32782;
+	Tue, 14 May 2024 11:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686961;
-	bh=CvH7VbgpHCPTmH4wd9DJwVpx5uQB4t0lwon9d6iiMqw=;
+	s=korg; t=1715686050;
+	bh=CpN5LUvCrcKrrics1PobCz1rshiXmbXZKg3Eq5JARgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhKl15hKAXW28pUb7oCHXstlkj9no4Qn6hzZbbOfim/kPjR+DjScuhNemXjiDAWDw
-	 4jQGSvsUwoFQsvhTcsdvLoTF4fpn55MANZcDuOXIyfmF1R++qvHNMcU/Vaxi3pqj7q
-	 BS1Re38nrePsw51QZqlPGbSbM34fa0c1Uj6Xdt9c=
+	b=jkWKFDffgXitSs/4BkUwiMeSuAAa8AtkazodPWsW2iFkUZsJcQ6i+E5oR2EGhzJrg
+	 r3FZhMG/Eea3fK4ITzKFVUhb1/pf8sfJBQTECiN3qHnKFqCiTzLDRp1Cd4yPUVkp2h
+	 Qu7cnY0Tg2OVUqE/HuAyHfDB0Un4ZcnSnzm4uovw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 18/84] power: rt9455: hide unused rt9455_boost_voltage_values
+	Doug Anderson <dianders@chromium.org>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 298/301] Bluetooth: qca: generalise device address check
 Date: Tue, 14 May 2024 12:19:29 +0200
-Message-ID: <20240514100952.379888624@linuxfoundation.org>
+Message-ID: <20240514101043.515324695@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 452d8950db3e839aba1bb13bc5378f4bac11fa04 ]
+commit dd336649ba89789c845618dcbc09867010aec673 upstream.
 
-The rt9455_boost_voltage_values[] array is only used when USB PHY
-support is enabled, causing a W=1 warning otherwise:
+The default device address apparently comes from the NVM configuration
+file and can differ quite a bit between controllers.
 
-drivers/power/supply/rt9455_charger.c:200:18: error: 'rt9455_boost_voltage_values' defined but not used [-Werror=unused-const-variable=]
+Store the default address when parsing the configuration file and use it
+to determine whether the controller has been provisioned with an
+address.
 
-Enclose the definition in the same #ifdef as the references to it.
+This makes sure that devices without a unique address start as
+unconfigured unless a valid address has been provided in the devicetree.
 
-Fixes: e86d69dd786e ("power_supply: Add support for Richtek RT9455 battery charger")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240403080702.3509288-10-arnd@kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 32868e126c78 ("Bluetooth: qca: fix invalid device address check")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/rt9455_charger.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btqca.c |   21 ++++++++++++---------
+ drivers/bluetooth/btqca.h |    2 ++
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/power/supply/rt9455_charger.c b/drivers/power/supply/rt9455_charger.c
-index 29161ae902456..5864b31426b8f 100644
---- a/drivers/power/supply/rt9455_charger.c
-+++ b/drivers/power/supply/rt9455_charger.c
-@@ -193,6 +193,7 @@ static const int rt9455_voreg_values[] = {
- 	4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -15,9 +15,6 @@
+ 
+ #define VERSION "0.1"
+ 
+-#define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
+-#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98, 0x39 }})
+-
+ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
+ 			 enum qca_btsoc_type soc_type)
+ {
+@@ -387,6 +384,14 @@ static int qca_tlv_check_data(struct hci
+ 
+ 			/* Update NVM tags as needed */
+ 			switch (tag_id) {
++			case EDL_TAG_ID_BD_ADDR:
++				if (tag_len != sizeof(bdaddr_t))
++					return -EINVAL;
++
++				memcpy(&config->bdaddr, tlv_nvm->data, sizeof(bdaddr_t));
++
++				break;
++
+ 			case EDL_TAG_ID_HCI:
+ 				if (tag_len < 3)
+ 					return -EINVAL;
+@@ -661,7 +666,7 @@ int qca_set_bdaddr_rome(struct hci_dev *
+ }
+ EXPORT_SYMBOL_GPL(qca_set_bdaddr_rome);
+ 
+-static int qca_check_bdaddr(struct hci_dev *hdev)
++static int qca_check_bdaddr(struct hci_dev *hdev, const struct qca_fw_config *config)
+ {
+ 	struct hci_rp_read_bd_addr *bda;
+ 	struct sk_buff *skb;
+@@ -685,10 +690,8 @@ static int qca_check_bdaddr(struct hci_d
+ 	}
+ 
+ 	bda = (struct hci_rp_read_bd_addr *)skb->data;
+-	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT) ||
+-	    !bacmp(&bda->bdaddr, QCA_BDADDR_WCN3991)) {
++	if (!bacmp(&bda->bdaddr, &config->bdaddr))
+ 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+-	}
+ 
+ 	kfree_skb(skb);
+ 
+@@ -716,7 +719,7 @@ int qca_uart_setup(struct hci_dev *hdev,
+ 		   enum qca_btsoc_type soc_type, struct qca_btsoc_version ver,
+ 		   const char *firmware_name)
+ {
+-	struct qca_fw_config config;
++	struct qca_fw_config config = {};
+ 	int err;
+ 	u8 rom_ver = 0;
+ 	u32 soc_ver;
+@@ -901,7 +904,7 @@ int qca_uart_setup(struct hci_dev *hdev,
+ 		break;
+ 	}
+ 
+-	err = qca_check_bdaddr(hdev);
++	err = qca_check_bdaddr(hdev, &config);
+ 	if (err)
+ 		return err;
+ 
+--- a/drivers/bluetooth/btqca.h
++++ b/drivers/bluetooth/btqca.h
+@@ -29,6 +29,7 @@
+ #define EDL_PATCH_CONFIG_RES_EVT	(0x00)
+ #define QCA_DISABLE_LOGGING_SUB_OP	(0x14)
+ 
++#define EDL_TAG_ID_BD_ADDR		2
+ #define EDL_TAG_ID_HCI			(17)
+ #define EDL_TAG_ID_DEEP_SLEEP		(27)
+ 
+@@ -94,6 +95,7 @@ struct qca_fw_config {
+ 	uint8_t user_baud_rate;
+ 	enum qca_tlv_dnld_mode dnld_mode;
+ 	enum qca_tlv_dnld_mode dnld_type;
++	bdaddr_t bdaddr;
  };
  
-+#if IS_ENABLED(CONFIG_USB_PHY)
- /*
-  * When the charger is in boost mode, REG02[7:2] represent boost output
-  * voltage.
-@@ -208,6 +209,7 @@ static const int rt9455_boost_voltage_values[] = {
- 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
- 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
- };
-+#endif
- 
- /* REG07[3:0] (VMREG) in uV */
- static const int rt9455_vmreg_values[] = {
--- 
-2.43.0
-
+ struct edl_event_hdr {
 
 
 
