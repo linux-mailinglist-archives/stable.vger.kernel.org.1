@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133AF8C52EA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A64C08C51E0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450981C218DD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49A471F217EF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878A7135A79;
-	Tue, 14 May 2024 11:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C20B757E1;
+	Tue, 14 May 2024 11:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/6ybnjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXR/19Aq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47333134CDC;
-	Tue, 14 May 2024 11:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD511D54D;
+	Tue, 14 May 2024 11:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686194; cv=none; b=a4ojnAfsmLBBlUOwQtA1197dmJvJ4XlKMqc/2UBHPnozqlZQGKPsIWKI1QMNE6D548zxa3+Zx77//1gKWmMU5RcgS5LiHxXn9LL34ikU0XsQbEt9tTEEijSLizyIOMlzJ7RXR3jbIMoHNS3Np7JEwAr4J0gSsAxKidGz7IASig0=
+	t=1715685150; cv=none; b=K4x3wnnXybLE4VksuFlUTK9yViagZKDvzOQtiykTb0jduzbvwOWA62tOq5GvsRlQ5BTX5TXTOv0whDAfCQUhT17wTh4Od06OFtLCtTOXewPr61X4HR3mEI5LhKNahIeaDPmigHvyErrAwUY5asiUET7F1i44OxBV0SG/D0SBtvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686194; c=relaxed/simple;
-	bh=jl1BZE9+6W4y3HCN2Ls2rD32TE+ScAz/epnzub/heSY=;
+	s=arc-20240116; t=1715685150; c=relaxed/simple;
+	bh=cB2Y8sYbR5jXA0lV+rjVxfv6LktE8uuJx0AgL0D9Nvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkMaTC9WgrYWhGSmH8kX3tnuJlPlriGCduFP2f3Lhqa0RWk7HUKiQ9EqA9nNbONYoXQFdAqhNXB56hIyQZ7CYnSM5+qRzu5fLS6HM69g1kUI2GpONoxj9aLUKhibpJrbwysTkI1cpa0lEvK622RSnmdQYuPbtwlFGCiXSMQnwu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/6ybnjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E07C2BD10;
-	Tue, 14 May 2024 11:29:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PL5aEt81GwDkAfne0O1I9sYcjbz3XGJ+C3cBXzbalrA6CyKotI3rkIGr0jLB7aKkm7j9DxU2Q/TfXWDqag6oRT3AfIiwiS3NbvUHu66JNmm5oIH2g1YQ61jNSCfGIjgAUbRteVAnRui38PjkHtEz1gbaEYDdUT1nmaWcoLeY0BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXR/19Aq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CD9C2BD10;
+	Tue, 14 May 2024 11:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686194;
-	bh=jl1BZE9+6W4y3HCN2Ls2rD32TE+ScAz/epnzub/heSY=;
+	s=korg; t=1715685150;
+	bh=cB2Y8sYbR5jXA0lV+rjVxfv6LktE8uuJx0AgL0D9Nvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/6ybnjHpZfBslIkKaM3y4p5MiiXBE3Cdf/R7tiI86etAsO7Et3D7H8umSXj75284
-	 vLwSAMwBjUfTiPy5qOT1a5mCBjhICj4w76QT3O96rl47nNwEhd5NbkfArz/hUJumfX
-	 Q/VZtDVetf3UI90kL1IWehz/9bqkeb0xB3R8RuCY=
+	b=hXR/19AqWY2NLTHhSZLpG6d2Pmv/od5FpTMfZ480+AZhz0Dbg3SbBm11P3fFHBmHQ
+	 /NHH5/FsVANuzqK43rvywBNImc+lhpFtlNxoOlQwQq06jYM15rvQQVDW4nTf1LN3z6
+	 V3h1/uyCP2tGK8klBJau21SnC6J3gxB79SFTO/K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Babrou <ivan@cloudflare.com>,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/236] bpf, arm64: Fix incorrect runtime stats
+Subject: [PATCH 6.6 145/301] drm/amdgpu: Refine IB schedule error logging
 Date: Tue, 14 May 2024 12:16:56 +0200
-Message-ID: <20240514101022.397379936@linuxfoundation.org>
+Message-ID: <20240514101037.727688519@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit dc7d7447b56bcc9cf79a9c22e4edad200a298e4c ]
+[ Upstream commit 4b18a91faf1752f9bd69a4ed3aed2c8f6e5b0528 ]
 
-When __bpf_prog_enter() returns zero, the arm64 register x20 that stores
-prog start time is not assigned to zero, causing incorrect runtime stats.
+Downgrade to debug information when IBs are skipped. Also, use dev_* to
+identify the device.
 
-To fix it, assign the return value of bpf_prog_enter() to x20 register
-immediately upon its return.
-
-Fixes: efc9909fdce0 ("bpf, arm64: Add bpf trampoline for arm64")
-Reported-by: Ivan Babrou <ivan@cloudflare.com>
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Ivan Babrou <ivan@cloudflare.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240416064208.2919073-2-xukuohai@huaweicloud.com
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 0ce5f13eabb1b..afb79209d4132 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -1679,15 +1679,15 @@ static void invoke_bpf_prog(struct jit_ctx *ctx, struct bpf_tramp_link *l,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+index 78476bc75b4e1..de9d7f3dc2336 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+@@ -300,12 +300,15 @@ static struct dma_fence *amdgpu_job_run(struct drm_sched_job *sched_job)
+ 		dma_fence_set_error(finished, -ECANCELED);
  
- 	emit_call(enter_prog, ctx);
+ 	if (finished->error < 0) {
+-		DRM_INFO("Skip scheduling IBs!\n");
++		dev_dbg(adev->dev, "Skip scheduling IBs in ring(%s)",
++			ring->name);
+ 	} else {
+ 		r = amdgpu_ib_schedule(ring, job->num_ibs, job->ibs, job,
+ 				       &fence);
+ 		if (r)
+-			DRM_ERROR("Error scheduling IBs (%d)\n", r);
++			dev_err(adev->dev,
++				"Error scheduling IBs (%d) in ring(%s)", r,
++				ring->name);
+ 	}
  
-+	/* save return value to callee saved register x20 */
-+	emit(A64_MOV(1, A64_R(20), A64_R(0)), ctx);
-+
- 	/* if (__bpf_prog_enter(prog) == 0)
- 	 *         goto skip_exec_of_prog;
- 	 */
- 	branch = ctx->image + ctx->idx;
- 	emit(A64_NOP, ctx);
- 
--	/* save return value to callee saved register x20 */
--	emit(A64_MOV(1, A64_R(20), A64_R(0)), ctx);
--
- 	emit(A64_ADD_I(1, A64_R(0), A64_SP, args_off), ctx);
- 	if (!p->jited)
- 		emit_addr_mov_i64(A64_R(1), (const u64)p->insnsi, ctx);
+ 	job->job_run_counter++;
 -- 
 2.43.0
 
