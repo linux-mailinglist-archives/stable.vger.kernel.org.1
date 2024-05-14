@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE278C52D0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 511D28C51C9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD1241C21907
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E09C9B22458
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102EA130A79;
-	Tue, 14 May 2024 11:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227916D1AB;
+	Tue, 14 May 2024 11:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To8Ra3Fn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sprUFKtC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135984A46;
-	Tue, 14 May 2024 11:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28FE1386D5;
+	Tue, 14 May 2024 11:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686133; cv=none; b=MUW1fHoKsTMkpcXeDErWikv7Wj49awIYm49a6vCRrJoxQqSRgKRXstANO1cBU5lmbPBMQXEQ/0W3QtFDDpKYnZeknTrJudvRqIhc/EzFl/zJZKlUkXNL8Nk6Bg0Ws+2NJg5v+4/PHuzuIRjPFaUomfEX/VhM4eYNYCi+UC9aSFk=
+	t=1715685026; cv=none; b=duPzGYjQMSIOIev4nAO7fCBaeHxSxMFe4hy8Jp7XCDFvW+c0LpFF6WoPcJfYlW3uY/3wZyoz1LTXURGBuTxKQ4tsUof66Fq4qilFe86C9kTc8/XG/Bp+iIcHZTueMsovzvHU23zwEomLzYZHdTOrAFPf226fYkz+B/Ju2Vu3eTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686133; c=relaxed/simple;
-	bh=Sn2YEJpI4uVSXE996F1SOgr0CPfJ9bksY8SFSkq+/9w=;
+	s=arc-20240116; t=1715685026; c=relaxed/simple;
+	bh=+Db5LF/levAnYPM+axMwGzviG6U4cTmZafcy+m1FBwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4KC+QcgDOc6tpzNGpBt1UozvIXad+wvydV8YwavkY9W3Q28jiYMsSa+S0/YB1nDW77AVmkK6iQ8/a3YMDnh0qc6khG3IH/IFFL0gJYr0Pt5HwFISIwG+YNfIFh9WmabYwq4/03z9XPz4SoSGtCIhHZuwUHFZxW66p2h8spPUbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To8Ra3Fn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B067C2BD10;
-	Tue, 14 May 2024 11:28:53 +0000 (UTC)
+	 MIME-Version; b=N4g8rGRQO5s+9/IhFphefBudagGzW4TyTl60ZhQKbblaC19Z7Mowai1eBEDW2aANpj6NuSVPYPF8iXLhM7HBOj+SmnONJBhJ8P9yu8CzSe3+aPTFFnVw8SYHK9H3vUmhGwardseWFazJn+UQ9dUcc+VTBbw5qSI+KOdNqHnckvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sprUFKtC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37925C2BD10;
+	Tue, 14 May 2024 11:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686133;
-	bh=Sn2YEJpI4uVSXE996F1SOgr0CPfJ9bksY8SFSkq+/9w=;
+	s=korg; t=1715685026;
+	bh=+Db5LF/levAnYPM+axMwGzviG6U4cTmZafcy+m1FBwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=To8Ra3FnsJ4/zL+xj+nKiQ2yYjQh6kRo0halQ7yy1qwi2OFoggOz3zoyxbHHssJL+
-	 p7kTw7xhojjC+sHAOZ47n2d9J88ZWUwWIGE0dvi5M2Fg+4yUxUNdFUp/BVDO7ehiPF
-	 0DOibyiR8RmywSEPehFoWfX3+cOF2fhCsujjQ+pI=
+	b=sprUFKtCdUUYfY/mcO5fwy5k+WJeUSpsoBgTX+078AGCY/3aCZfioM0ueVR8nPCKm
+	 HnPcqW9vDp+6Kil6zkdBZHazoPpFyq5dvPgOdJKIPeoNAKq2RWtVTE2LZ04/I4Nr+Z
+	 5SwijvDQO7xqc8aLtc5lK58h/p9A7ciKLu53Jmfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/236] pinctrl: intel: Make use of struct pinfunction and PINCTRL_PINFUNCTION()
+Subject: [PATCH 6.6 123/301] ALSA: line6: Zero-initialize message buffers
 Date: Tue, 14 May 2024 12:16:34 +0200
-Message-ID: <20240514101021.561135672@linuxfoundation.org>
+Message-ID: <20240514101036.894707074@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 999b85bfd765f273208cd7348b2977d3c5ae0753 ]
+[ Upstream commit c4e51e424e2c772ce1836912a8b0b87cd61bc9d5 ]
 
-Since pin control provides a generic data type and a macro for
-the pin function definition, use them in the Intel driver.
+For shutting up spurious KMSAN uninit-value warnings, just replace
+kmalloc() calls with kzalloc() for the buffers used for
+communications.  There should be no real issue with the original code,
+but it's still better to cover.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Stable-dep-of: fed6d9a8e6a6 ("pinctrl: baytrail: Fix selecting gpio pinctrl state")
+Reported-by: syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/00000000000084b18706150bcca5@google.com
+Message-ID: <20240402063628.26609-1-tiwai@suse.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/intel/pinctrl-intel.c |  6 +++---
- drivers/pinctrl/intel/pinctrl-intel.h | 13 ++++++++-----
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ sound/usb/line6/driver.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-intel.c b/drivers/pinctrl/intel/pinctrl-intel.c
-index 954a412267402..8542053d4d6d0 100644
---- a/drivers/pinctrl/intel/pinctrl-intel.c
-+++ b/drivers/pinctrl/intel/pinctrl-intel.c
-@@ -362,7 +362,7 @@ static const char *intel_get_function_name(struct pinctrl_dev *pctldev,
- {
- 	struct intel_pinctrl *pctrl = pinctrl_dev_get_drvdata(pctldev);
+diff --git a/sound/usb/line6/driver.c b/sound/usb/line6/driver.c
+index b67617b68e509..f4437015d43a7 100644
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -202,7 +202,7 @@ int line6_send_raw_message_async(struct usb_line6 *line6, const char *buffer,
+ 	struct urb *urb;
  
--	return pctrl->soc->functions[function].name;
-+	return pctrl->soc->functions[function].func.name;
- }
+ 	/* create message: */
+-	msg = kmalloc(sizeof(struct message), GFP_ATOMIC);
++	msg = kzalloc(sizeof(struct message), GFP_ATOMIC);
+ 	if (msg == NULL)
+ 		return -ENOMEM;
  
- static int intel_get_function_groups(struct pinctrl_dev *pctldev,
-@@ -372,8 +372,8 @@ static int intel_get_function_groups(struct pinctrl_dev *pctldev,
- {
- 	struct intel_pinctrl *pctrl = pinctrl_dev_get_drvdata(pctldev);
+@@ -688,7 +688,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 	int ret;
  
--	*groups = pctrl->soc->functions[function].groups;
--	*ngroups = pctrl->soc->functions[function].ngroups;
-+	*groups = pctrl->soc->functions[function].func.groups;
-+	*ngroups = pctrl->soc->functions[function].func.ngroups;
- 	return 0;
- }
+ 	/* initialize USB buffers: */
+-	line6->buffer_listen = kmalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
++	line6->buffer_listen = kzalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
+ 	if (!line6->buffer_listen)
+ 		return -ENOMEM;
  
-diff --git a/drivers/pinctrl/intel/pinctrl-intel.h b/drivers/pinctrl/intel/pinctrl-intel.h
-index 65628423bf639..46f5f7d1565fe 100644
---- a/drivers/pinctrl/intel/pinctrl-intel.h
-+++ b/drivers/pinctrl/intel/pinctrl-intel.h
-@@ -36,11 +36,13 @@ struct intel_pingroup {
+@@ -697,7 +697,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 		return -ENOMEM;
  
- /**
-  * struct intel_function - Description about a function
-+ * @func: Generic data of the pin function (name and groups of pins)
-  * @name: Name of the function
-  * @groups: An array of groups for this function
-  * @ngroups: Number of groups in @groups
-  */
- struct intel_function {
-+	struct pinfunction func;
- 	const char *name;
- 	const char * const *groups;
- 	size_t ngroups;
-@@ -158,11 +160,12 @@ struct intel_community {
- 		.modes = __builtin_choose_expr(__builtin_constant_p((m)), NULL, (m)),	\
- 	}
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
+-		line6->buffer_message = kmalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
++		line6->buffer_message = kzalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
+ 		if (!line6->buffer_message)
+ 			return -ENOMEM;
  
--#define FUNCTION(n, g)				\
--	{					\
--		.name = (n),			\
--		.groups = (g),			\
--		.ngroups = ARRAY_SIZE((g)),	\
-+#define FUNCTION(n, g)							\
-+	{								\
-+		.func = PINCTRL_PINFUNCTION((n), (g), ARRAY_SIZE(g)),	\
-+		.name = (n),						\
-+		.groups = (g),						\
-+		.ngroups = ARRAY_SIZE((g)),				\
- 	}
- 
- /**
 -- 
 2.43.0
 
