@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC938C5461
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77D98C54E0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF4D628560E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86893B22DD0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C937C4122C;
-	Tue, 14 May 2024 11:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912A753E30;
+	Tue, 14 May 2024 11:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYU8lL1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sox3talb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EE62B9B3;
-	Tue, 14 May 2024 11:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDA253361;
+	Tue, 14 May 2024 11:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687152; cv=none; b=IxVPMZzxAAuwHaW8s0LRA250nZMQqTQ6lXZWDRP1QQRZPR0aXgc6obU++Qurq5h11Q1T4pHJRtzUDS5kZaZcOyejSYp7bfp2ninLG82dOXCNC8mlaoSEqmb+NsW8RD5sZREHgUQMLrV2vRNAvv35JsSoZVgJ/c5XOtupFnFR+Js=
+	t=1715687497; cv=none; b=oiW6lh4jjMwhPhTS+GfSAgwKKcuRAWkxRpMu917iiHT36LBDeqnZld6r1poI6fAH2uOv9FP5SrIhE7QX8ybbEIMQqQZta5KAt5BAV6/pDiHvz6g0HGaRa/RbHMaDITwXP/bhI8nbL8aQkxc6MSpuLFb4kHhlFHvks9gSYwxaU04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687152; c=relaxed/simple;
-	bh=iIIo3YaWZMTsTbVT2kuSfTqFZC4Y7jSZqeUdUFqkYvc=;
+	s=arc-20240116; t=1715687497; c=relaxed/simple;
+	bh=o+MLd3iRMvsDRbYGmHfG/BehRsDDLY81kej+YF6ldDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjlu3xLYy8ipdej0Mh6/Q87m+BxYNN72/8NoOXnJA70SEWX4c42/S+j6JNYDJn6ONIJ+pZboDmenh6tdlpu19Gfu7vkz0g+RqAq5Nzqk9vvXClk6+Bv/eGZ0DBo5+kxr7OIvVdTn24cgg4AuXUgatowIUjhFWsKY0tR6b6dR1A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYU8lL1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12770C2BD10;
-	Tue, 14 May 2024 11:45:51 +0000 (UTC)
+	 MIME-Version; b=VrV8MqlGW0u8zS7TmA8AdmczkzXO5vZIjbExdQ+M5Vrwxc6ZRL2ZsyyvJDpCClFJhHiS7b87fgWIw1nWtTdOdh2FUFQYLVfyGb+u1/RQhkQX48JMIBZGmxgV4aG9biT0hw3qOesby0quGbA5sfmsdUVum53iGBCFqVqixHVqLc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sox3talb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81F2C2BD10;
+	Tue, 14 May 2024 11:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687152;
-	bh=iIIo3YaWZMTsTbVT2kuSfTqFZC4Y7jSZqeUdUFqkYvc=;
+	s=korg; t=1715687497;
+	bh=o+MLd3iRMvsDRbYGmHfG/BehRsDDLY81kej+YF6ldDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYU8lL1X0zEwX5IEbsQZqAJmhzMv7rMkAWNcPGa+fTPJFKAz1/1iNcB5lh2kIFsit
-	 ghaMW6AmX3SnGgygp4KWSGrC4+itINgfMF07+0nvE208LA+/Jr++E/52mvj3f0FoND
-	 r2SYBrPJn6pFNZvnxGt3Dvq+mrTIKAEacdvRbpKs=
+	b=sox3talbJFUUd9fg1A9R8rK0qRQYVjc+kxrDJ8VCLQmySiB/qgOIUltql4w0VsFxQ
+	 X1SZnmvMOXZaVNcdDATrSXDbdPy6zyWUWufrEAA3MV7yZjBv/qLRveXjgb7Ley8Qq1
+	 tqDEyvfknb85HqFRRgelYkvW/Zhe/AwtAvO7yBtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 82/84] pinctrl: mediatek: Fix some off by one bugs
+	Gerd Hoffmann <kraxel@redhat.com>,
+	David Laight <David.Laight@aculab.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 095/111] usb: ohci: Prevent missed ohci interrupts
 Date: Tue, 14 May 2024 12:20:33 +0200
-Message-ID: <20240514100954.768127546@linuxfoundation.org>
+Message-ID: <20240514101000.740433706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit 3385ab72d995fc0b876818a36203bf2429445686 upstream.
+commit fe81f354841641c7f71163b84912b25c169ed8ec upstream.
 
-These comparisons should be >= instead of > to prevent accessing one
-element beyond the end of the hw->soc->pins[] array.
+Testing ohci functionality with qemu's pci-ohci emulation often results
+in ohci interface stalls, resulting in hung task timeouts.
 
-Fixes: 3de7deefce69 ("pinctrl: mediatek: Check gpio pin number and use binary search in mtk_hw_pin_field_lookup()")
-Fixes: 184d8e13f9b1 ("pinctrl: mediatek: Add support for pin configuration dump via debugfs.")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Link: https://lore.kernel.org/r/20200218055247.74s2xa7veqx2do34@kili.mountain
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+The problem is caused by lost interrupts between the emulation and the
+Linux kernel code. Additional interrupts raised while the ohci interrupt
+handler in Linux is running and before the handler clears the interrupt
+status are not handled. The fix for a similar problem in ehci suggests
+that the problem is likely caused by edge-triggered MSI interrupts. See
+commit 0b60557230ad ("usb: ehci: Prevent missed ehci interrupts with
+edge-triggered MSI") for details.
+
+Ensure that the ohci interrupt code handles all pending interrupts before
+returning to solve the problem.
+
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: David Laight <David.Laight@aculab.com>
+Cc: stable@vger.kernel.org
+Fixes: 306c54d0edb6 ("usb: hcd: Try MSI interrupts on PCI devices")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+Link: https://lore.kernel.org/r/20240429154010.1507366-1-linux@roeck-us.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/host/ohci-hcd.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -610,7 +610,7 @@ static int mtk_gpio_get_direction(struct
- 	const struct mtk_pin_desc *desc;
- 	int value, err;
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -890,6 +890,7 @@ static irqreturn_t ohci_irq (struct usb_
+ 	/* Check for an all 1's result which is a typical consequence
+ 	 * of dead, unclocked, or unplugged (CardBus...) devices
+ 	 */
++again:
+ 	if (ints == ~(u32)0) {
+ 		ohci->rh_state = OHCI_RH_HALTED;
+ 		ohci_dbg (ohci, "device removed!\n");
+@@ -984,6 +985,13 @@ static irqreturn_t ohci_irq (struct usb_
+ 	}
+ 	spin_unlock(&ohci->lock);
  
--	if (gpio > hw->soc->npins)
-+	if (gpio >= hw->soc->npins)
- 		return -EINVAL;
++	/* repeat until all enabled interrupts are handled */
++	if (ohci->rh_state != OHCI_RH_HALTED) {
++		ints = ohci_readl(ohci, &regs->intrstatus);
++		if (ints && (ints & ohci_readl(ohci, &regs->intrenable)))
++			goto again;
++	}
++
+ 	return IRQ_HANDLED;
+ }
  
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
-@@ -628,7 +628,7 @@ static int mtk_gpio_get(struct gpio_chip
- 	const struct mtk_pin_desc *desc;
- 	int value, err;
- 
--	if (gpio > hw->soc->npins)
-+	if (gpio >= hw->soc->npins)
- 		return -EINVAL;
- 
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
-@@ -645,7 +645,7 @@ static void mtk_gpio_set(struct gpio_chi
- 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
- 	const struct mtk_pin_desc *desc;
- 
--	if (gpio > hw->soc->npins)
-+	if (gpio >= hw->soc->npins)
- 		return;
- 
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
-@@ -657,7 +657,7 @@ static int mtk_gpio_direction_input(stru
- {
- 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
- 
--	if (gpio > hw->soc->npins)
-+	if (gpio >= hw->soc->npins)
- 		return -EINVAL;
- 
- 	return pinctrl_gpio_direction_input(chip->base + gpio);
-@@ -668,7 +668,7 @@ static int mtk_gpio_direction_output(str
- {
- 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
- 
--	if (gpio > hw->soc->npins)
-+	if (gpio >= hw->soc->npins)
- 		return -EINVAL;
- 
- 	mtk_gpio_set(chip, gpio, value);
 
 
 
