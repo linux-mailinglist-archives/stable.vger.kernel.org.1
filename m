@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8D48C51A5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7988C5019
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 748F0B21EF5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19821284BC6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2253C13AA41;
-	Tue, 14 May 2024 11:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BC213956F;
+	Tue, 14 May 2024 10:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iB8/02v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY/rRARi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CC3168C7;
-	Tue, 14 May 2024 11:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F6F320F;
+	Tue, 14 May 2024 10:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684827; cv=none; b=bWWRKEGEj+KkBaOB//5P3RTFVYGBOSaSJkeBBfARE9dhVQ2UTfvtRu0MWAZCPhb8TO4orgYPEZSoBDQjos6dIpkM7tj22rHjTLkD5QFGXcQRkBw9CbIdIUtD/YQOTZDhT/JhS8C8QB+E24ie7sAcvylBAIJ7wMf6fGwQOZ2ytxM=
+	t=1715682912; cv=none; b=feSxWdhyj0nF0AkeCapxBj3KMW6fYe/8Cvj0/iw2McyENjavvNlLk8J9ds1E1prV34hKxFT0k1nPxQV3TVKCaHVEe5YzcLb5kM5vW2xi/0WRGY510hS/RRK4l9obru33fee7LN7L0eqje2i951DgE0tOYYRFpJT63LFj8sQY85E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684827; c=relaxed/simple;
-	bh=TGIXemcBBxcVDhaud6NsFTTaI4zxOD99V+hdA4M+luM=;
+	s=arc-20240116; t=1715682912; c=relaxed/simple;
+	bh=AB9iJeK8/8er4H2wZhMExfE9yF69IvChLvrg4DzCyBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cI9JsJWo2/vLzIBIbAdZpO8J52BInlh3FUL/bV0lzR5e3JGMOSfdOz3MB906xpqLAFWqJ4zET1zlV2rIfxfseypq1vizT2Ke3TMch0aRyrBruJALdc3vrGAC6vvfFaihl5I5+SwqOwuCGrz69MzN7zjppviLtaGUDPBsaprLpn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iB8/02v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9DEC2BD10;
-	Tue, 14 May 2024 11:07:07 +0000 (UTC)
+	 MIME-Version; b=gnXBU+dUrkBIGbNg0+p3b/BXHbkqy9jO3MYADGdV8YL07O8y9rj1DpDX4NDNTRQTnmoSX46dY/cldLJghzKL4d1rcprWGk0sQoqpNjcEx4ZVhJ6xjw8mpiPDGo1r9OJ/4KuBaNFu/9YXRdSGW7RzKw+Yjan7oLLYYrXfMLdsWxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZY/rRARi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261DDC2BD10;
+	Tue, 14 May 2024 10:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684827;
-	bh=TGIXemcBBxcVDhaud6NsFTTaI4zxOD99V+hdA4M+luM=;
+	s=korg; t=1715682911;
+	bh=AB9iJeK8/8er4H2wZhMExfE9yF69IvChLvrg4DzCyBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iB8/02vFHdIqHUJG10irTYoWC1GsW0F6jjMpudCr7u6X97Kbnk8UVRFuFrDG8yr9
-	 1uk9ug0/T+yZ8tHFtRz1D/77VoeVH6i8vHV6hFSdMRDDsNRI5SQBTdFublBjPlhHky
-	 nNoXFJOVo5gHAOY8O4BQGZ6ewGdNva/CbZ4pPIXU=
+	b=ZY/rRARirID1GqoT7fqWPw17f1G3hpb4Xt/nGbuGIUXuaBxQdxc7pnPPKzuspbFcj
+	 75w0hF7RXC6/qLqaocxQctlp+TIKdkC5/0IFhJLom1BoS/8CkMpcce7/LouRSXuDnk
+	 5xsL7wcL2ntnf8o3WXQC7tOJj6osIlLNuchVqR18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/301] vxlan: Add missing VNI filter counter update in arp_reduce().
-Date: Tue, 14 May 2024 12:15:35 +0200
-Message-ID: <20240514101034.659785440@linuxfoundation.org>
+Subject: [PATCH 6.8 132/336] ata: sata_gemini: Check clk_enable() result
+Date: Tue, 14 May 2024 12:15:36 +0200
+Message-ID: <20240514101043.584359035@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit b22ea4ef4c3438817fcb604255b55b0058ed8c64 ]
+[ Upstream commit e85006ae7430aef780cc4f0849692e266a102ec0 ]
 
-VXLAN stores per-VNI statistics using vxlan_vnifilter_count().
-These statistics were not updated when arp_reduce() failed its
-pskb_may_pull() call.
+The call to clk_enable() in gemini_sata_start_bridge() can fail.
+Add a check to detect such failure.
 
-Use vxlan_vnifilter_count() to update the VNI counter when that
-happens.
-
-Fixes: 4095e0e1328a ("drivers: vxlan: vnifilter: per vni stats")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/sata_gemini.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 3d3c11e61f9de..7e5e60318045a 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1838,6 +1838,8 @@ static int arp_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
+diff --git a/drivers/ata/sata_gemini.c b/drivers/ata/sata_gemini.c
+index 400b22ee99c33..4c270999ba3cc 100644
+--- a/drivers/ata/sata_gemini.c
++++ b/drivers/ata/sata_gemini.c
+@@ -200,7 +200,10 @@ int gemini_sata_start_bridge(struct sata_gemini *sg, unsigned int bridge)
+ 		pclk = sg->sata0_pclk;
+ 	else
+ 		pclk = sg->sata1_pclk;
+-	clk_enable(pclk);
++	ret = clk_enable(pclk);
++	if (ret)
++		return ret;
++
+ 	msleep(10);
  
- 	if (!pskb_may_pull(skb, arp_hdr_len(dev))) {
- 		dev_core_stats_tx_dropped_inc(dev);
-+		vxlan_vnifilter_count(vxlan, vni, NULL,
-+				      VXLAN_VNI_STATS_TX_DROPS, 0);
- 		goto out;
- 	}
- 	parp = arp_hdr(skb);
+ 	/* Do not keep clocking a bridge that is not online */
 -- 
 2.43.0
 
