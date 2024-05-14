@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FE08C553E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45C58C547B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27F402846C8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 781621F23306
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1B455C36;
-	Tue, 14 May 2024 11:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0BC129A66;
+	Tue, 14 May 2024 11:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BczT8j8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsbCj7eQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8D12B9AD;
-	Tue, 14 May 2024 11:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F001F1E4B0;
+	Tue, 14 May 2024 11:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687702; cv=none; b=toKAnsD0C+EfQJd6LIyKJSMl4GNpXHlGVfoBu6Szy1lqCfhNVulhJgI5CMPtseXqLSnv8HTFTS4o+a3P4nP4cV02SQhc4VjYzfGwf+N4Elc/GzZFFXmXfzYv666SsAu7d9IBc37Bz7gUGvNc/B6OPSPpO7SNz7a84djddfWp8OY=
+	t=1715687222; cv=none; b=MhID4XcKnO/AuwTBqwXEZdckiTHkF++3ng7oU1XJTBwwpoJ0kdMzSfkhPbrhYggssrKvynoTppdSnZMgGuZ+Aww0sY3aG0+mxNClgk1U4UUQdydgKioLWoNgb1C4v8SxBMdBhYw5fEYDYoB0b2ztPEB2JHOsH3v2UNEPreYsNF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687702; c=relaxed/simple;
-	bh=5k+XTXSxCDXONzseZJOa0vPf7vT9UMaWJEIPHewjdsQ=;
+	s=arc-20240116; t=1715687222; c=relaxed/simple;
+	bh=nqLtbwzOHhbK9IIh7sT7E+lB4+muNoMH0Ed6Xdvg26M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnUqtSFxy19exAgYTgOZaj6RNW0TvWDhu26mFltCazzaTPALYcz0dyYzU2+17gt8oqTdCX256loG+6oWgLOunnTnIpGz/t2DwXbTNKwaPLgvi+kEz/73/nGLPlhiuCjmw/P8RBJUF3Os3VsKoN157aXhgEVkKwe5LgT9Cn3JpeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BczT8j8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54A9C32781;
-	Tue, 14 May 2024 11:55:01 +0000 (UTC)
+	 MIME-Version; b=diNsOWOkzbATm+9x07APPs6sqq+1y2+1MYch7iJBXARKoCLlTbXlLZSlcY70sLd6a9X49PhfaRsN2VmA9v+GH0R65uMiKxK24Jmb32+cyc3vg0g1+jsIj3iwRKTrGQDZravIBuTsG9NzE2lm4s0x0QcpCreirpAt2IsPx0erPDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsbCj7eQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765C7C2BD10;
+	Tue, 14 May 2024 11:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687702;
-	bh=5k+XTXSxCDXONzseZJOa0vPf7vT9UMaWJEIPHewjdsQ=;
+	s=korg; t=1715687221;
+	bh=nqLtbwzOHhbK9IIh7sT7E+lB4+muNoMH0Ed6Xdvg26M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BczT8j8prEVNm7BS3I4LXEB/9sIGFp5UjayaSUn6YEHzJcbzXZcoXtAfSydLPqyi5
-	 9VeFcrc4vBIHAJO7jBLsnScOuqOaG3k6cfOniYAXaYOp/mnPJ3qzFdy3PElXMAsRVu
-	 G2ijd7bRd9pkVu6nqkv7aFPy4HS1pzYdfZPx+HHk=
+	b=KsbCj7eQnou8iD0GcYXWjLSqrx1lotGGQ1NR4jFptmiWHvnl/+stXJ1NOWOo37Nwz
+	 1kjnty0VoFRHml45WtPmzhGyCYnEXK6r/Q6Q+/zSDsM5+jHk142Qo+KScp3EojiFww
+	 brBqTCp8sJElYbdjDT412iGAVi08Ez+M+fOA9+nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 044/168] ASoC: meson: axg-card: make links nonatomic
+Subject: [PATCH 5.10 004/111] eeprom: at24: Use dev_err_probe for nvmem register failure
 Date: Tue, 14 May 2024 12:19:02 +0200
-Message-ID: <20240514101008.356882791@linuxfoundation.org>
+Message-ID: <20240514100957.287342814@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit e138233e56e9829e65b6293887063a1a3ccb2d68 ]
+[ Upstream commit a3c10035d12f5ec10915d5c00c2e8f7d7c066182 ]
 
-Non atomic operations need to be performed in the trigger callback
-of the TDM interfaces. Those are BEs but what matters is the nonatomic
-flag of the FE in the DPCM context. Just set nonatomic for everything so,
-at least, it is clear.
+When using nvmem layouts it is possible devm_nvmem_register returns
+-EPROBE_DEFER, resulting in an 'empty' in
+/sys/kernel/debug/devices_deferred. Use dev_err_probe for providing
+additional information.
 
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20211020114217.133153-2-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: f42c97027fb7 ("eeprom: at24: fix memory corruption race condition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-card.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/eeprom/at24.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-index 2b77010c2c5ce..cbbaa55d92a66 100644
---- a/sound/soc/meson/axg-card.c
-+++ b/sound/soc/meson/axg-card.c
-@@ -320,6 +320,7 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
+diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+index 305ffad131a29..b100bbc888668 100644
+--- a/drivers/misc/eeprom/at24.c
++++ b/drivers/misc/eeprom/at24.c
+@@ -762,7 +762,8 @@ static int at24_probe(struct i2c_client *client)
+ 		pm_runtime_disable(dev);
+ 		if (!pm_runtime_status_suspended(dev))
+ 			regulator_disable(at24->vcc_reg);
+-		return PTR_ERR(at24->nvmem);
++		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
++				     "failed to register nvmem\n");
+ 	}
  
- 	dai_link->cpus = cpu;
- 	dai_link->num_cpus = 1;
-+	dai_link->nonatomic = true;
- 
- 	ret = meson_card_parse_dai(card, np, &dai_link->cpus->of_node,
- 				   &dai_link->cpus->dai_name);
+ 	/*
 -- 
 2.43.0
 
