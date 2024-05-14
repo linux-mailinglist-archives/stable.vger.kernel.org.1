@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E568C5256
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2530E8C535A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD3D1F22B9A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88F128626C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30C712F38D;
-	Tue, 14 May 2024 11:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE0084A22;
+	Tue, 14 May 2024 11:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6BmaeeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejot0cB1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922E512F385;
-	Tue, 14 May 2024 11:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BC16CDBD;
+	Tue, 14 May 2024 11:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685791; cv=none; b=jZaUxO0yP3PsFjosBEbt2RrC78CkJqmwUUCNLXVj29/aV5VhExVhcXBpEZtQcgun1ssja7PNr4aAfxf39ybKK2BYou9F2kk2I8QNAu3D+zhJkS6eEOX/vI9cruRs1V+ChCqtYLfy8AF3VBTkJNMpSV8Vg/hyJDf96lNBnCjWu+0=
+	t=1715686442; cv=none; b=qbcp3bJGygtM2OeKQiO/Ms44EpmNdLWxe9EWKtYvyP5vAGRpIkH2BXyZUsHzSHz5gSHetolQP3qxVI/L5sM0SQhSbB9//MZK4IevNAKh44iIvsHNWwcdHQuwjR9lm7oXWjCRfyhVn5NnbD22YmkGjO3JILdZLQVqb3ue+X3lOHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685791; c=relaxed/simple;
-	bh=a+xj6vunKp/P0VhkqubcggaT21X72iB/AlMs0wi844c=;
+	s=arc-20240116; t=1715686442; c=relaxed/simple;
+	bh=LzqZGrZuz7jYr1Z+/KYb8FBrdqWNUR0dGJ64L3yLN7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GstbfnnU+z77bV6aFxhJNNjIjbHZbCnG3vnMfZMnby3djeXzOdZltedtwh2EloKEEBXb7yMsQQezxLOx0JQsPkmYZ5O3jBmPfL8pxWSom1kDWahfHlkbqJmN/UzdEJesWU/sbPGr4yShuZypxOQHZHdWl4RngQN5haxsU2hlMqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6BmaeeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF08C2BD10;
-	Tue, 14 May 2024 11:23:10 +0000 (UTC)
+	 MIME-Version; b=BzQbHNMv4zICL/oA3NM4xVwcCfw7FMlNxULn85v8ATIXuHif3uMGdwhuv4WJQ4s9tW0Y71tIEAWPgx9QjHh1LYTf0+fDRcTM+L8dUeECZAl+u+OEgYndaAKr5U2VpXIzOo2FZk+UZ3BnR9+xn/7Q9E2j93HJsbSHDwV4gaSa9Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejot0cB1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1942C2BD10;
+	Tue, 14 May 2024 11:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685791;
-	bh=a+xj6vunKp/P0VhkqubcggaT21X72iB/AlMs0wi844c=;
+	s=korg; t=1715686442;
+	bh=LzqZGrZuz7jYr1Z+/KYb8FBrdqWNUR0dGJ64L3yLN7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6BmaeeK35lmln029IekkyvbTWebAYxJ4HiKGSNDySTsvmmnzJOCwVs1bUT3Ul/Q7
-	 7GkyUSwXC/iW7ZYH84DLkkpa97Q4iscRQPG9JuU2BBvQB3dpjIGnkop9TV64vW3MmW
-	 uSuZfAYrmv5BI9Otcz7MSYkLTly81lYUCvl8Svto=
+	b=ejot0cB19grpIp5kykBSdMv1YPFLhpDVA125Lwv1UMDzemMJ6oIWkNrsD+C4Aa62K
+	 sDLMLlS2rN8PRKI+spfMTXnYur5bPGCNR/yZQ0MEzsJn+do5+IEt/DBIcYBXcjb2eP
+	 RCuQxH661bvf3sKqE8YFZOYvU3XuBhjWlThenwHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Peter Korsgaard <peter@korsgaard.com>
-Subject: [PATCH 6.6 230/301] usb: gadget: composite: fix OS descriptors w_value logic
+	Vanillan Wang <vanillanwang@163.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/236] net:usb:qmi_wwan: support Rolling modules
 Date: Tue, 14 May 2024 12:18:21 +0200
-Message-ID: <20240514101040.939896963@linuxfoundation.org>
+Message-ID: <20240514101025.645611756@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Korsgaard <peter@korsgaard.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-commit ec6ce7075ef879b91a8710829016005dc8170f17 upstream.
+[ Upstream commit d362046021ea122309da8c8e0b6850c792ca97b5 ]
 
-The OS descriptors logic had the high/low byte of w_value inverted, causing
-the extended properties to not be accessible for interface != 0.
+Update the qmi_wwan driver support for the Rolling
+LTE modules.
 
->From the Microsoft documentation:
-https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-os-1-0-descriptors-specification
+- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
+interface for /Linux/Chrome OS)
+0x0104: RMNET, diag, at, pipe
 
-OS_Desc_CompatID.doc (w_index = 0x4):
+Here are the outputs of usb-devices:
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0104 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling Module
+S:  SerialNumber=ba2eb033
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-- wValue:
-
-  High Byte = InterfaceNumber.  InterfaceNumber is set to the number of the
-  interface or function that is associated with the descriptor, typically
-  0x00.  Because a device can have only one extended compat ID descriptor,
-  it should ignore InterfaceNumber, regardless of the value, and simply
-  return the descriptor.
-
-  Low Byte = 0.  PageNumber is used to retrieve descriptors that are larger
-  than 64 KB.  The header section is 16 bytes, so PageNumber is set to 0 for
-  this request.
-
-We currently do not support >64KB compat ID descriptors, so verify that the
-low byte is 0.
-
-OS_Desc_Ext_Prop.doc (w_index = 0x5):
-
-- wValue:
-
-  High byte = InterfaceNumber.  The high byte of wValue is set to the number
-  of the interface or function that is associated with the descriptor.
-
-  Low byte = PageNumber.  The low byte of wValue is used to retrieve
-  descriptors that are larger than 64 KB.  The header section is 10 bytes, so
-  PageNumber is set to 0 for this request.
-
-We also don't support >64KB extended properties, so verify that the low byte
-is 0 and use the high byte for the interface number.
-
-Fixes: 37a3a533429e ("usb: gadget: OS Feature Descriptors support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20240404100635.3215340-1-peter@korsgaard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Link: https://lore.kernel.org/r/20240416120713.24777-1-vanillanwang@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2112,7 +2112,7 @@ unknown:
- 			buf[5] = 0x01;
- 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
- 			case USB_RECIP_DEVICE:
--				if (w_index != 0x4 || (w_value >> 8))
-+				if (w_index != 0x4 || (w_value & 0xff))
- 					break;
- 				buf[6] = w_index;
- 				/* Number of ext compat interfaces */
-@@ -2128,9 +2128,9 @@ unknown:
- 				}
- 				break;
- 			case USB_RECIP_INTERFACE:
--				if (w_index != 0x5 || (w_value >> 8))
-+				if (w_index != 0x5 || (w_value & 0xff))
- 					break;
--				interface = w_value & 0xFF;
-+				interface = w_value >> 8;
- 				if (interface >= MAX_CONFIG_INTERFACES ||
- 				    !os_desc_cfg->interface[interface])
- 					break;
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 2d82481d34e6b..45a542659a814 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1429,6 +1429,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
++	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
+ 
+ 	/* 4. Gobi 1000 devices */
+ 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+-- 
+2.43.0
+
 
 
 
