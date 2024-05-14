@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24068C5303
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869308C50A8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87BE41F22862
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80701C20A2E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664551386DD;
-	Tue, 14 May 2024 11:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E804913E40D;
+	Tue, 14 May 2024 10:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKBUMHFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5Bh6sV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244F984D26;
-	Tue, 14 May 2024 11:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5ADA13E050;
+	Tue, 14 May 2024 10:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686261; cv=none; b=airTBwt5ToI+VraR0zbam2sk790AZI0tE8dQHuMlZ5a6BPPtBoztDGji/hDKUVSAlZU2RhGxdqvTulZdaslhJ2M8KCzDdd6szh8ZpjBfkfsXVJtFIAz7o+5y08888ntpdASr9sPVPQ8R+9jAan/TZwY2udBKzsJNvpMI6ypq2Lw=
+	t=1715683543; cv=none; b=refyOAXgG6YNvz8sF8y97QC6jOcJ3jtiDnJeyBxvf/VG85z310udkyKT4Rutx3swf3aGL0eAKf+zqtimw6emfrJBeZ/AJTMyqepxnhlrhe7VdyjO3w9rVxw4/wrcLi7YlcYv6a18QGKuXO2BDl9/XC71ovbRrc4LO90b30/sUpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686261; c=relaxed/simple;
-	bh=gpSQqpvcitq/fM619TmwN80S4aE4H68JYcGUii6DnaQ=;
+	s=arc-20240116; t=1715683543; c=relaxed/simple;
+	bh=Qwh65TR070YMNjSKWTKj6qQhe7McrCo0SMx858fMqW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SFnPvbIqKnAT6+BY/7iMcMWdOAmORSsbb9KW5o6viBHue6fi1XLvOAjSZRQjRcQA0GjiGLnhOXTQsv+7XyQzdKsSw6FEb3hP09e0HFNEjnMDWoCbcX0cygI9M7aOhi0ftzVn8YRk/k7YeLrj9DInY4GYSYlYSkXByS9/vUnCQ6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKBUMHFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1F2C2BD10;
-	Tue, 14 May 2024 11:31:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IBr/gPUASpeuOkIPwvaxk3OZ8MnQMGuEQv73Ntrv40pNRiyqpM63G10RBsXixJPi8n1IJsc0id7Ltf9CNyHVvTSFPjqdXiFj+Xay4bFwHWzmZ7c1mGQKtTg+WyR6NiuhKSBaBveDDDJcHi8znKoaxiNDCeNAp5HVBVsXv2BlW+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5Bh6sV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8238CC2BD10;
+	Tue, 14 May 2024 10:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686261;
-	bh=gpSQqpvcitq/fM619TmwN80S4aE4H68JYcGUii6DnaQ=;
+	s=korg; t=1715683543;
+	bh=Qwh65TR070YMNjSKWTKj6qQhe7McrCo0SMx858fMqW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tKBUMHFHyXi6UG4WpTHeE5kSBW51BTGmRM2iK9RrQ7ggaLhOCSECajQYvix0++WUh
-	 nex5yNXzcU5ayiaUkNQHYbPOYIIo3+uxmm8XhyejwtJOkaXF5j+9CcPOSVntrpDyWy
-	 9qh2aVTw3g1xFXOaU3lMa+DOU2jPmrEoqnGgQ3kQ=
+	b=O5Bh6sV74kxLNXR0s4hlhWAB0/dQHKTOfOJl1MytexzpaMnMiiX/bPPdrnSZsOvVF
+	 88Fk01tQYMEaKJt8WDYapqwrzpPzAfP+ZPJe4pVMGuaumvhWofFxYC/3+lOsZ0MO8F
+	 PgovVlPE2BuoKpYn6qK+Y1TPbBFgN2adDZTP4MTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	=?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
 	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/236] net: dsa: mv88e6xxx: Fix number of databases for 88E6141 / 88E6341
+Subject: [PATCH 6.8 233/336] net: dsa: mv88e6xxx: add phylink_get_caps for the mv88e6320/21 family
 Date: Tue, 14 May 2024 12:17:17 +0200
-Message-ID: <20240514101023.218400261@linuxfoundation.org>
+Message-ID: <20240514101047.412107062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +65,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Steffen Bätz <steffen@innosonix.de>
 
-[ Upstream commit b9a61c20179fda7bdfe2c1210aa72451991ab81a ]
+[ Upstream commit f39bf3cf08a49e7d20c44bc8bc8e390fea69959a ]
 
-The Topaz family (88E6141 and 88E6341) only support 256 Forwarding
-Information Tables.
+As of commit de5c9bf40c45 ("net: phylink: require supported_interfaces to
+be filled")
+Marvell 88e6320/21 switches fail to be probed:
 
-Fixes: a75961d0ebfd ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6341")
-Fixes: 1558727a1c1b ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6141")
-Signed-off-by: Marek Behún <kabel@kernel.org>
+...
+mv88e6085 30be0000.ethernet-1:00: phylink: error: empty supported_interfaces
+error creating PHYLINK: -22
+...
+
+The problem stems from the use of mv88e6185_phylink_get_caps() to get
+the device capabilities.
+Since there are serdes only ports 0/1 included, create a new dedicated
+phylink_get_caps for the 6320 and 6321 to properly support their
+set of capabilities.
+
+Fixes: de5c9bf40c45 ("net: phylink: require supported_interfaces to be filled")
+Signed-off-by: Steffen Bätz <steffen@innosonix.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240429133832.9547-1-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/r/20240508072944.54880-2-steffen@innosonix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index ba906dfab055c..517c50d11fbce 100644
+index bb0552469ae84..967d9136313f4 100644
 --- a/drivers/net/dsa/mv88e6xxx/chip.c
 +++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5677,7 +5677,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6141,
- 		.family = MV88E6XXX_FAMILY_6341,
- 		.name = "Marvell 88E6141",
--		.num_databases = 4096,
-+		.num_databases = 256,
- 		.num_macs = 2048,
- 		.num_ports = 6,
- 		.num_internal_phys = 5,
-@@ -6134,7 +6134,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6341,
- 		.family = MV88E6XXX_FAMILY_6341,
- 		.name = "Marvell 88E6341",
--		.num_databases = 4096,
-+		.num_databases = 256,
- 		.num_macs = 2048,
- 		.num_internal_phys = 5,
- 		.num_ports = 6,
+@@ -697,6 +697,18 @@ static void mv88e6352_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
+ 	}
+ }
+ 
++static void mv88e632x_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
++				       struct phylink_config *config)
++{
++	unsigned long *supported = config->supported_interfaces;
++
++	/* Translate the default cmode */
++	mv88e6xxx_translate_cmode(chip->ports[port].cmode, supported);
++
++	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100 |
++				   MAC_1000FD;
++}
++
+ static void mv88e6341_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
+ 				       struct phylink_config *config)
+ {
+@@ -5090,7 +5102,7 @@ static const struct mv88e6xxx_ops mv88e6320_ops = {
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e632x_phylink_get_caps,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6321_ops = {
+@@ -5136,7 +5148,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e632x_phylink_get_caps,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6341_ops = {
 -- 
 2.43.0
 
