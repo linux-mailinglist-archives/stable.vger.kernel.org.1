@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE318C5529
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29328C539B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AECB01C22DB4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB031F23337
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B191CFB2;
-	Tue, 14 May 2024 11:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9F712D20E;
+	Tue, 14 May 2024 11:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij8Q4tWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5X8bYtz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952E076045;
-	Tue, 14 May 2024 11:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3817712CD84;
+	Tue, 14 May 2024 11:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687693; cv=none; b=SdYA8c5o1IDjl19L68MaBGq569rqThjBCZmISgiBMbv0gdOagIr4qsPfOhnoMbA7CkX00iwxVh1siHvlb9uT/vYFF0OmZvTWrMq4ZZ7JLfU0MQErd1lyur+K/ByKORzPuRYPEB8eMbZroazk6+A0dwkJBgq/F1TE6QUs45COK3w=
+	t=1715686639; cv=none; b=n0EpYoIuz6lD7GnFrYzc1CrJ9xYpY5uCnaiW/YD72pX/SUx+fEdeWKhLmucEDAmTRpwwPWgSq0n9dA2+OLnb6tacqOeM9yzW4XFUi/KK7k8eMCbOZIAjV74wGIKWRhgMNBoStrzgqQGn356FzWe3n/I3CYTKt2fUFaUULsrE+1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687693; c=relaxed/simple;
-	bh=Hryv2OtcuQyTUCAFaXJbr87+y6FgT6ZampiQku3qesA=;
+	s=arc-20240116; t=1715686639; c=relaxed/simple;
+	bh=ki4PZs7cyGSFKEhgPSbNzMMWQqO7Lhe7Nurg4XTXWU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUQ8MGscjToC1SQrCnFXa6EIJVGMH5L3tcdhTf71W7Z0e96WYCHWnwaTuq0xiEW5KBxyB27uxm2v4xkObtwGLkGBzNe5r2X5TokSxuA5c0AbbNDbWSnzuYJ0KedxKZeZbUah8Jyxk6MWck9kkf3kRpVsIRxZ0JjlZ1L/hko5sJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij8Q4tWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9E0C32781;
-	Tue, 14 May 2024 11:54:52 +0000 (UTC)
+	 MIME-Version; b=dMhv2myY4P+ao7x/47veV8Xm3SxmlhYNGdx0PNlYUdmxeckZxzxCiM8AB94jvEnoFVoRIxeiq7D/5bRGdlZ5WsJ1RTNpiHGIHgDIw+bQ7a+JaxYRBWcQhuLYt/6LdmITqcEvlZolV/eUOcvY64HkGVlasDEgEQM6n1xrbRMKias=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5X8bYtz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D26C2BD10;
+	Tue, 14 May 2024 11:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687693;
-	bh=Hryv2OtcuQyTUCAFaXJbr87+y6FgT6ZampiQku3qesA=;
+	s=korg; t=1715686639;
+	bh=ki4PZs7cyGSFKEhgPSbNzMMWQqO7Lhe7Nurg4XTXWU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ij8Q4tWxk+iEbh/c+TIeyQKYsRQPZj2pV83nTkdE785ZovVP93UTn4JLQQDBPRKl/
-	 Ycq0cpmGAh+IGyK782/zexq9qjK5Qis60aQFhBLIxAaKXcrL6lLgzLX3rLGPU00DaC
-	 A3OcCRu9yG9xjqjYiMM9AYKRefP6cgZGOKOWTOw4=
+	b=u5X8bYtzgt1ktbReQDk2CXdsHoYamD24MUn8VU9jwwl1IJUmyE+1XNm83rWNt1FHi
+	 WqYqcOat8t752QhVYxpTLn98MwZHrvAEwXjPKTW0Yo+Y/EzTQhcEXlKWekGsMWjSU2
+	 bwKAObW2MlWbE9i83m4NF974CwDJJE3zo9+GWUVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Marco Elver <elver@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/168] kbuild: Disable KCSAN for autogenerated *.mod.c intermediaries
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 207/236] dt-bindings: iio: health: maxim,max30102: fix compatible check
 Date: Tue, 14 May 2024 12:19:29 +0200
-Message-ID: <20240514101009.375411560@linuxfoundation.org>
+Message-ID: <20240514101028.220737703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 54babdc0343fff2f32dfaafaaa9e42c4db278204 ]
+commit 89384a2b656b9dace4c965432a209d5c9c3a2a6f upstream.
 
-When KCSAN and CONSTRUCTORS are enabled, one can trigger the
+The "maxim,green-led-current-microamp" property is only available for
+the max30105 part (it provides an extra green LED), and must be set to
+false for the max30102 part.
 
-  "Unpatched return thunk in use. This should not happen!"
+Instead, the max30100 part has been used for that, which is not
+supported by this binding (it has its own binding).
 
-catch-all warning.
+This error was introduced during the txt to yaml conversion.
 
-Usually, when objtool runs on the .o objects, it does generate a section
-.return_sites which contains all offsets in the objects to the return
-thunks of the functions present there. Those return thunks then get
-patched at runtime by the alternatives.
-
-KCSAN and CONSTRUCTORS add this to the object file's .text.startup
-section:
-
-  -------------------
-  Disassembly of section .text.startup:
-
-  ...
-
-  0000000000000010 <_sub_I_00099_0>:
-    10:   f3 0f 1e fa             endbr64
-    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
-                          15: R_X86_64_PLT32      __tsan_init-0x4
-    19:   e9 00 00 00 00          jmp    1e <__UNIQUE_ID___addressable_cryptd_alloc_aead349+0x6>
-                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
-  -------------------
-
-which, if it is built as a module goes through the intermediary stage of
-creating a <module>.mod.c file which, when translated, receives a second
-constructor:
-
-  -------------------
-  Disassembly of section .text.startup:
-
-  0000000000000010 <_sub_I_00099_0>:
-    10:   f3 0f 1e fa             endbr64
-    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
-                          15: R_X86_64_PLT32      __tsan_init-0x4
-    19:   e9 00 00 00 00          jmp    1e <_sub_I_00099_0+0xe>
-                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
-
-  ...
-
-  0000000000000030 <_sub_I_00099_0>:
-    30:   f3 0f 1e fa             endbr64
-    34:   e8 00 00 00 00          call   39 <_sub_I_00099_0+0x9>
-                          35: R_X86_64_PLT32      __tsan_init-0x4
-    39:   e9 00 00 00 00          jmp    3e <__ksymtab_cryptd_alloc_ahash+0x2>
-                          3a: R_X86_64_PLT32      __x86_return_thunk-0x4
-  -------------------
-
-in the .ko file.
-
-Objtool has run already so that second constructor's return thunk cannot
-be added to the .return_sites section and thus the return thunk remains
-unpatched and the warning rightfully fires.
-
-Drop KCSAN flags from the mod.c generation stage as those constructors
-do not contain data races one would be interested about.
-
-Debugged together with David Kaplan <David.Kaplan@amd.com> and Nikolay
-Borisov <nik.borisov@suse.com>.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/r/0851a207-7143-417e-be31-8bf2b3afb57d@molgen.mpg.de
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5a6a65b11e3a ("dt-bindings:iio:health:maxim,max30102: txt to yaml conversion")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.modfinal | 2 +-
+ Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-index 47f047458264f..dce4cf55a4b68 100644
---- a/scripts/Makefile.modfinal
-+++ b/scripts/Makefile.modfinal
-@@ -23,7 +23,7 @@ modname = $(notdir $(@:.mod.o=))
- part-of-module = y
- 
- quiet_cmd_cc_o_c = CC [M]  $@
--      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV), $(c_flags)) -c -o $@ $<
-+      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV) $(CFLAGS_KCSAN), $(c_flags)) -c -o $@ $<
- 
- %.mod.o: %.mod.c FORCE
- 	$(call if_changed_dep,cc_o_c)
--- 
-2.43.0
-
+--- a/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
++++ b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
+@@ -42,7 +42,7 @@ allOf:
+       properties:
+         compatible:
+           contains:
+-            const: maxim,max30100
++            const: maxim,max30102
+     then:
+       properties:
+         maxim,green-led-current-microamp: false
 
 
 
