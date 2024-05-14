@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A944F8C5544
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B338C53AF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BA9C284DA3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C42461F233B2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2142855C3B;
-	Tue, 14 May 2024 11:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960987FBA3;
+	Tue, 14 May 2024 11:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apZPwS4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK0owB6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A6C54F87;
-	Tue, 14 May 2024 11:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528D580C04;
+	Tue, 14 May 2024 11:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687746; cv=none; b=gNXtTlZjBK76j62Pjl9CHWCOF2wk8a0wmKufG5vCt3AVCrxfTndb7KiWpJyx1yDkaIZr5AMTsuSf6MdfGeUbghqqlDcKXM4vpMnUmN/TYoQHVd4mR9kY4yFJoTfd0U129utrm7EeGiY5+E2sV7Mf1DnFvW74G54Sn/c+nzbOZos=
+	t=1715686694; cv=none; b=bsQiDgHEkwhPceQL8xQl0C7aoeDtTsr8X2J7saa5a109jfwm0hfomBl/Um5b4ZZ+NynvHGXBWaBjZ5XxmK2gTBX7QsWhvpyVpqmGvrlYsAwF8+HRwsh1A760AwhUegssxGGC8lOaNZxMUl/cCntU1oxi72eo7yeex0jYuxAIMi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687746; c=relaxed/simple;
-	bh=5LGHAdNH2gehhgEWY01PI/xqxbunqXgRdWWXO50zIMY=;
+	s=arc-20240116; t=1715686694; c=relaxed/simple;
+	bh=+CUIkPdL/NdKxH4JLOjtZXZ2FTrgt0+uf39SvOIbffM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGyO/1B1I4ElHdhBrljFc67WLKSg8EovI4gu1gHsVJ+bmGTZrOxVcnQKusfyoRRd8lYtHnq4NrGzAZpwcWDM99XkMQXni+nKSYA5YVVdaLdjqJzgoMrhSXbJCmjjnFoYUGuSePoYvxVLmwQWjsvZMEouXgiWeesNUJnlZtfkkls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apZPwS4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5279CC2BD10;
-	Tue, 14 May 2024 11:55:46 +0000 (UTC)
+	 MIME-Version; b=jStIUvkOWK02lOLaC3KyPE+eE967EaYym0Nbp5Rk3Ir4eQnUDXX/lk0XV7pq4l1C/31rLMmDf2cij97OEn2ALDj6EKHOBLY4RDZicoeGjpk6QNOEee6aoREpJ+Q7amm7SsedpgexCXv2ScmI8vT3pVbaYUwIQ3m2dn/wxRTlwtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK0owB6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A420C2BD10;
+	Tue, 14 May 2024 11:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687746;
-	bh=5LGHAdNH2gehhgEWY01PI/xqxbunqXgRdWWXO50zIMY=;
+	s=korg; t=1715686694;
+	bh=+CUIkPdL/NdKxH4JLOjtZXZ2FTrgt0+uf39SvOIbffM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apZPwS4woUQ2oB5j/IL/CF4yQ8ZTvLiG55Dp7qDAZrr9USv506p/cYtSHAuqks3PK
-	 j7ImPsh8qza+9djnnWGfAMpEGUnCdaV+dftweIv86pKgxZPa8FJ+IEqyAdcWETrO9y
-	 V58+HQ99IDEfI0LB2rv3MJBr3mceJwXZgu4O4XDQ=
+	b=pK0owB6BBJC5DDG25ooMXhpF2QneGXG05n4jru1D8BmmMEx+9iOAMzcduXokoSZXg
+	 mLqjsNpS84ZNcz0KjYuqMvgkY1T8qTmozwH5w7fwx4lpRHYRBlASxfTPE4WqOfiSP5
+	 4ygZVYCa5XbvOiJ9p63NvRJ6jjoag0O971kYDDv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/168] clk: Dont hold prepare_lock when calling kref_put()
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 227/236] regulator: core: fix debugfs creation regression
 Date: Tue, 14 May 2024 12:19:49 +0200
-Message-ID: <20240514101010.126149536@linuxfoundation.org>
+Message-ID: <20240514101028.974711145@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 6f63af7511e7058f3fa4ad5b8102210741c9f947 ]
+commit 2a4b49bb58123bad6ec0e07b02845f74c23d5e04 upstream.
 
-We don't need to hold the prepare_lock when dropping a ref on a struct
-clk_core. The release function is only freeing memory and any code with
-a pointer reference has already unlinked anything pointing to the
-clk_core. This reduces the holding area of the prepare_lock a bit.
+regulator_get() may sometimes be called more than once for the same
+consumer device, something which before commit dbe954d8f163 ("regulator:
+core: Avoid debugfs: Directory ...  already present! error") resulted in
+errors being logged.
 
-Note that we also don't call free_clk() with the prepare_lock held.
-There isn't any reason to do that.
+A couple of recent commits broke the handling of such cases so that
+attributes are now erroneously created in the debugfs root directory the
+second time a regulator is requested and the log is filled with errors
+like:
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-3-sboyd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	debugfs: File 'uA_load' in directory '/' already present!
+	debugfs: File 'min_uV' in directory '/' already present!
+	debugfs: File 'max_uV' in directory '/' already present!
+	debugfs: File 'constraint_flags' in directory '/' already present!
+
+on any further calls.
+
+Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugfs_create_dir()")
+Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
+Cc: stable@vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240509133304.8883-1-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/regulator/core.c |   27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index a05b5bca64250..dc2bcf58fc107 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4227,7 +4227,8 @@ void clk_unregister(struct clk *clk)
- 	if (ops == &clk_nodrv_ops) {
- 		pr_err("%s: unregistered clock: %s\n", __func__,
- 		       clk->core->name);
--		goto unlock;
-+		clk_prepare_unlock();
-+		return;
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1916,19 +1916,24 @@ static struct regulator *create_regulato
+ 		}
  	}
+ 
+-	if (err != -EEXIST)
++	if (err != -EEXIST) {
+ 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
+-	if (IS_ERR(regulator->debugfs))
+-		rdev_dbg(rdev, "Failed to create debugfs directory\n");
++		if (IS_ERR(regulator->debugfs)) {
++			rdev_dbg(rdev, "Failed to create debugfs directory\n");
++			regulator->debugfs = NULL;
++		}
++	}
+ 
+-	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
+-			   &regulator->uA_load);
+-	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
+-	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
+-	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
+-			    regulator, &constraint_flags_fops);
++	if (regulator->debugfs) {
++		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
++				   &regulator->uA_load);
++		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
++		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
++		debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
++				    regulator, &constraint_flags_fops);
++	}
+ 
  	/*
- 	 * Assign empty clock ops for consumers that might still hold
-@@ -4261,11 +4262,10 @@ void clk_unregister(struct clk *clk)
- 	if (clk->core->protect_count)
- 		pr_warn("%s: unregistering protected clock: %s\n",
- 					__func__, clk->core->name);
-+	clk_prepare_unlock();
- 
- 	kref_put(&clk->core->ref, __clk_release);
- 	free_clk(clk);
--unlock:
--	clk_prepare_unlock();
- }
- EXPORT_SYMBOL_GPL(clk_unregister);
- 
-@@ -4471,13 +4471,11 @@ void __clk_put(struct clk *clk)
- 	    clk->max_rate < clk->core->req_rate)
- 		clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
- 
--	owner = clk->core->owner;
--	kref_put(&clk->core->ref, __clk_release);
--
- 	clk_prepare_unlock();
- 
-+	owner = clk->core->owner;
-+	kref_put(&clk->core->ref, __clk_release);
- 	module_put(owner);
--
- 	free_clk(clk);
- }
- 
--- 
-2.43.0
-
+ 	 * Check now if the regulator is an always on regulator - if
 
 
 
