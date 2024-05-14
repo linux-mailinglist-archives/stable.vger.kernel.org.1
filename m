@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4A48C540A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD5C8C5558
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5146B287386
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBFB28D20A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F294212FB08;
-	Tue, 14 May 2024 11:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D621D54D;
+	Tue, 14 May 2024 11:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nngeM/CH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzcrWi5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F231CAA4;
-	Tue, 14 May 2024 11:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F33AF9D4;
+	Tue, 14 May 2024 11:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686920; cv=none; b=IZR0UUisF002gNJ2RvVNyJTBTCpP0KzrQQD4BzrDUhYHNA7aIP8arfCcOy9XBBmgc5MZWU0cf0n3Jv9t14e8m2NylDa6m25WUeM112WFIXM9g8kiUgLcQflpRVqHmpuTMn2H8YRNeg1tgt0i0pydxXXVTonrpIXk89+uIkdDgLQ=
+	t=1715687824; cv=none; b=Ld+gACLnEOHfZWacVAYf5HIC1yZomGdMs5Cmdtwy1GN6RDaVrBeulDorR2taldAeKtxjmNUs9D+vwO5MIYstynCtH0Xc76amJiNNaMFgnURv9KV8Hjq2yOVgjpv25iLen2Ahas8mRre0lVGSe4BgsKLva3evYruV8qkKIkiE5V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686920; c=relaxed/simple;
-	bh=LfVIiOTSV5CkkuXN9PYjGjHKR9gl4CQzSW3/zbRXzek=;
+	s=arc-20240116; t=1715687824; c=relaxed/simple;
+	bh=6NyKHoa2vFzkshhw7LkPOQ5eLHNlbh+h4HuyCxurfKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TA8xQKNRFe/Rfg7RBhBUdnRfNbFdhHEZqkYEgONMP/q5kfAw3q9a7Whgbw8/X26Lou7dm/c8xTPL0vpvrLDC7ZT9EM/mc9XLO8pfVCjRj3iNQf4yK0tVj//Xe81/n1fk2SgTNytLrvWuHFRHo5BZJ15sVTj7AC/7npDuTT5pfb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nngeM/CH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360F4C2BD10;
-	Tue, 14 May 2024 11:42:00 +0000 (UTC)
+	 MIME-Version; b=pcZrmaH7XkFMwanJTZ7D9kPolQErKtlwld62Ia8MyxyltVN3OegHolw57jmyR333Ix8ZfLp7GLTaLBWpayyeiXH3MV52GLHogVSAz5FA1dqDcuWZ68hMn0kDTJE6Uh4k9r0IcbUtT0RYNFBklCC44aV4gHMKyQ0PwNWdtXWMMTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzcrWi5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2231C2BD10;
+	Tue, 14 May 2024 11:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686920;
-	bh=LfVIiOTSV5CkkuXN9PYjGjHKR9gl4CQzSW3/zbRXzek=;
+	s=korg; t=1715687824;
+	bh=6NyKHoa2vFzkshhw7LkPOQ5eLHNlbh+h4HuyCxurfKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nngeM/CHP8mB3yJwk2nP8gQk9MbF/cA+DpQi/aSVdcLko7Dzl1WQH5PbHO8hg/HV/
-	 9KGmautEHV2NikCXqrrhHEpaUWdCYyl8SaK8dFAAzQv61CtjnicgB3xEw9k2HbW0h3
-	 Lg9lOUUG0xKkjrfrl9/LJgk1LU9MrzDTlM0Eujuk=
+	b=fzcrWi5W6ZOXhdbVifJ7asHd1gywnautjJF5Kh7cj+eAHTR1LTyLVdZjBgMCTmAwD
+	 FTd++wVzY9YO3tl5pXLfg8FoHsSFMeFhCPWyg8e8l23Lkt1vLV9E7MufA3G4Z52M8R
+	 ebCW4eUihtx0vZ1x60Nxc4A1vb9uu8K7OQqA/X8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yufeng Mo <moyufeng@huawei.com>,
+	Guangbin Huang <huangguangbin2@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 55/63] af_unix: Fix garbage collector racing against connect()
+Subject: [PATCH 5.15 118/168] net: hns3: add log for workqueue scheduled late
 Date: Tue, 14 May 2024 12:20:16 +0200
-Message-ID: <20240514100950.089497150@linuxfoundation.org>
+Message-ID: <20240514101011.138422036@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Yufeng Mo <moyufeng@huawei.com>
 
-[ Upstream commit 47d8ac011fe1c9251070e1bd64cb10b48193ec51 ]
+[ Upstream commit d9069dab207534d9f6f41993ee78a651733becea ]
 
-Garbage collector does not take into account the risk of embryo getting
-enqueued during the garbage collection. If such embryo has a peer that
-carries SCM_RIGHTS, two consecutive passes of scan_children() may see a
-different set of children. Leading to an incorrectly elevated inflight
-count, and then a dangling pointer within the gc_inflight_list.
+When the mbx or reset message arrives, the driver is informed
+through an interrupt. This task can be processed only after
+the workqueue is scheduled. In some cases, this workqueue
+scheduling takes a long time. As a result, the mbx or reset
+service task cannot be processed in time. So add some warning
+message to improve debugging efficiency for this case.
 
-sockets are AF_UNIX/SOCK_STREAM
-S is an unconnected socket
-L is a listening in-flight socket bound to addr, not in fdtable
-V's fd will be passed via sendmsg(), gets inflight count bumped
-
-connect(S, addr)	sendmsg(S, [V]); close(V)	__unix_gc()
-----------------	-------------------------	-----------
-
-NS = unix_create1()
-skb1 = sock_wmalloc(NS)
-L = unix_find_other(addr)
-unix_state_lock(L)
-unix_peer(S) = NS
-			// V count=1 inflight=0
-
- 			NS = unix_peer(S)
- 			skb2 = sock_alloc()
-			skb_queue_tail(NS, skb2[V])
-
-			// V became in-flight
-			// V count=2 inflight=1
-
-			close(V)
-
-			// V count=1 inflight=1
-			// GC candidate condition met
-
-						for u in gc_inflight_list:
-						  if (total_refs == inflight_refs)
-						    add u to gc_candidates
-
-						// gc_candidates={L, V}
-
-						for u in gc_candidates:
-						  scan_children(u, dec_inflight)
-
-						// embryo (skb1) was not
-						// reachable from L yet, so V's
-						// inflight remains unchanged
-__skb_queue_tail(L, skb1)
-unix_state_unlock(L)
-						for u in gc_candidates:
-						  if (u.inflight)
-						    scan_children(u, inc_inflight_move_tail)
-
-						// V count=1 inflight=2 (!)
-
-If there is a GC-candidate listening socket, lock/unlock its state. This
-makes GC wait until the end of any ongoing connect() to that socket. After
-flipping the lock, a possibly SCM-laden embryo is already enqueued. And if
-there is another embryo coming, it can not possibly carry SCM_RIGHTS. At
-this point, unix_inflight() can not happen because unix_gc_lock is already
-taken. Inflight graph remains unaffected.
-
-Fixes: 1fd05ba5a2f2 ("[AF_UNIX]: Rewrite garbage collector, fixes race.")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240409201047.1032217-1-mhal@rbox.co
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Yufeng Mo <moyufeng@huawei.com>
+Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 669554c512d2 ("net: hns3: direct return when receive a unknown mailbox message")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/garbage.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ .../net/ethernet/hisilicon/hns3/hclge_mbx.h   |  3 +++
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 22 +++++++++++++++++--
+ .../hisilicon/hns3/hns3pf/hclge_main.h        |  2 ++
+ .../hisilicon/hns3/hns3pf/hclge_mbx.c         |  8 +++++++
+ 4 files changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 04dd9e80cbe01..a3a49110fe06f 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -239,11 +239,22 @@ void unix_gc(void)
- 	 * receive queues.  Other, non candidate sockets _can_ be
- 	 * added to queue, so we must make sure only to touch
- 	 * candidates.
-+	 *
-+	 * Embryos, though never candidates themselves, affect which
-+	 * candidates are reachable by the garbage collector.  Before
-+	 * being added to a listener's queue, an embryo may already
-+	 * receive data carrying SCM_RIGHTS, potentially making the
-+	 * passed socket a candidate that is not yet reachable by the
-+	 * collector.  It becomes reachable once the embryo is
-+	 * enqueued.  Therefore, we must ensure that no SCM-laden
-+	 * embryo appears in a (candidate) listener's queue between
-+	 * consecutive scan_children() calls.
- 	 */
- 	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
-+		struct sock *sk = &u->sk;
- 		long total_refs;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h b/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h
+index 277d6d657c429..e1ba0ae055b02 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h
+@@ -80,6 +80,9 @@ enum hclge_mbx_tbl_cfg_subcode {
+ #define HCLGE_MBX_MAX_RESP_DATA_SIZE	8U
+ #define HCLGE_MBX_MAX_RING_CHAIN_PARAM_NUM	4
  
--		total_refs = file_count(u->sk.sk_socket->file);
-+		total_refs = file_count(sk->sk_socket->file);
- 
- 		BUG_ON(!u->inflight);
- 		BUG_ON(total_refs < u->inflight);
-@@ -251,6 +262,11 @@ void unix_gc(void)
- 			list_move_tail(&u->link, &gc_candidates);
- 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
- 			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
++#define HCLGE_RESET_SCHED_TIMEOUT	(3 * HZ)
++#define HCLGE_MBX_SCHED_TIMEOUT	(HZ / 2)
 +
-+			if (sk->sk_state == TCP_LISTEN) {
-+				unix_state_lock(sk);
-+				unix_state_unlock(sk);
-+			}
+ struct hclge_ring_chain_param {
+ 	u8 ring_type;
+ 	u8 tqp_index;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 71b498aa327bb..93e55c6c4cf5e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -2855,16 +2855,20 @@ static int hclge_mac_init(struct hclge_dev *hdev)
+ static void hclge_mbx_task_schedule(struct hclge_dev *hdev)
+ {
+ 	if (!test_bit(HCLGE_STATE_REMOVING, &hdev->state) &&
+-	    !test_and_set_bit(HCLGE_STATE_MBX_SERVICE_SCHED, &hdev->state))
++	    !test_and_set_bit(HCLGE_STATE_MBX_SERVICE_SCHED, &hdev->state)) {
++		hdev->last_mbx_scheduled = jiffies;
+ 		mod_delayed_work(hclge_wq, &hdev->service_task, 0);
++	}
+ }
+ 
+ static void hclge_reset_task_schedule(struct hclge_dev *hdev)
+ {
+ 	if (!test_bit(HCLGE_STATE_REMOVING, &hdev->state) &&
+ 	    test_bit(HCLGE_STATE_SERVICE_INITED, &hdev->state) &&
+-	    !test_and_set_bit(HCLGE_STATE_RST_SERVICE_SCHED, &hdev->state))
++	    !test_and_set_bit(HCLGE_STATE_RST_SERVICE_SCHED, &hdev->state)) {
++		hdev->last_rst_scheduled = jiffies;
+ 		mod_delayed_work(hclge_wq, &hdev->service_task, 0);
++	}
+ }
+ 
+ static void hclge_errhand_task_schedule(struct hclge_dev *hdev)
+@@ -3697,6 +3701,13 @@ static void hclge_mailbox_service_task(struct hclge_dev *hdev)
+ 	    test_and_set_bit(HCLGE_STATE_MBX_HANDLING, &hdev->state))
+ 		return;
+ 
++	if (time_is_before_jiffies(hdev->last_mbx_scheduled +
++				   HCLGE_MBX_SCHED_TIMEOUT))
++		dev_warn(&hdev->pdev->dev,
++			 "mbx service task is scheduled after %ums on cpu%u!\n",
++			 jiffies_to_msecs(jiffies - hdev->last_mbx_scheduled),
++			 smp_processor_id());
++
+ 	hclge_mbx_handler(hdev);
+ 
+ 	clear_bit(HCLGE_STATE_MBX_HANDLING, &hdev->state);
+@@ -4346,6 +4357,13 @@ static void hclge_reset_service_task(struct hclge_dev *hdev)
+ 	if (!test_and_clear_bit(HCLGE_STATE_RST_SERVICE_SCHED, &hdev->state))
+ 		return;
+ 
++	if (time_is_before_jiffies(hdev->last_rst_scheduled +
++				   HCLGE_RESET_SCHED_TIMEOUT))
++		dev_warn(&hdev->pdev->dev,
++			 "reset service task is scheduled after %ums on cpu%u!\n",
++			 jiffies_to_msecs(jiffies - hdev->last_rst_scheduled),
++			 smp_processor_id());
++
+ 	down(&hdev->reset_sem);
+ 	set_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+index ba0d41091b1da..6870ccc9d9eac 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+@@ -928,6 +928,8 @@ struct hclge_dev {
+ 	u16 hclge_fd_rule_num;
+ 	unsigned long serv_processed_cnt;
+ 	unsigned long last_serv_processed;
++	unsigned long last_rst_scheduled;
++	unsigned long last_mbx_scheduled;
+ 	unsigned long fd_bmap[BITS_TO_LONGS(MAX_FD_FILTER_NUM)];
+ 	enum HCLGE_FD_ACTIVE_RULE_TYPE fd_active_type;
+ 	u8 fd_en;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+index 5182051e5414d..ab6df4c1ea0f6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+@@ -855,6 +855,14 @@ void hclge_mbx_handler(struct hclge_dev *hdev)
+ 		if (hnae3_get_bit(req->mbx_need_resp, HCLGE_MBX_NEED_RESP_B) &&
+ 		    req->msg.code < HCLGE_MBX_GET_VF_FLR_STATUS) {
+ 			resp_msg.status = ret;
++			if (time_is_before_jiffies(hdev->last_mbx_scheduled +
++						   HCLGE_MBX_SCHED_TIMEOUT))
++				dev_warn(&hdev->pdev->dev,
++					 "resp vport%u mbx(%u,%u) late\n",
++					 req->mbx_src_vfid,
++					 req->msg.code,
++					 req->msg.subcode);
++
+ 			hclge_gen_resp_to_vf(vport, req, &resp_msg);
  		}
- 	}
  
 -- 
 2.43.0
