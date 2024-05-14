@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B545D8C546A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CFB8C53FC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E710C1C22C35
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A11B1C2173B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB118595F;
-	Tue, 14 May 2024 11:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A2612FB18;
+	Tue, 14 May 2024 11:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="er3ydAAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7BHYZb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A157E792;
-	Tue, 14 May 2024 11:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B452D60A;
+	Tue, 14 May 2024 11:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687172; cv=none; b=Kp3Z1/e+DZsf9tFkAIlHMHRDixUZn1jeiTCXLox9oJ/W2xzzXwO/GPQU03TMjmugYXTLXnxUDnuuSEWGW13X0a9FKs/AAbksPLYTKKhFTisPF3rZEDYvsnGYKebyMIHqoPZG763w6XFcoPJHhM+Z6Km/GuhDwmf9jbI42xoPCek=
+	t=1715686897; cv=none; b=NRv+CVqt57tr8QNKnl5kaJmKMu3TV6c56dlSxw5AM1WeHc58SwhEItzTe9iFTLxqEo6/VS0D7k8zecRVQJQOu/bBfrBOdRYX46z3/szrOHOrsETIfYuhnGnkyhpuTKjNujYGCc4e7LqJhwjGE/faRehIvC2+AkKFZAjMBpJqtQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687172; c=relaxed/simple;
-	bh=ujg2yK9/7LDyHUsadtLIyxxR6X8jRouYaI4IuG9bkbQ=;
+	s=arc-20240116; t=1715686897; c=relaxed/simple;
+	bh=Uon0DQbhFYKMy2P6sTexKOeZnx9DZNDMhvUGPM9fK4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plT8I/GMoTXZXlK+1On925Q6ZZmfjABYmOR+/+M+GVciy78I3izegYghjmaOJIQZsbbI7HO40aOFmkAvq5joUFIHSd9g9U6GYO9ODIf0/tp/fwOWhfUyJXwWIIwAINTzAhiftLVp73tdEiwYMSIwEDLq0E/pcNjyRMgiacYGEq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=er3ydAAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40462C2BD10;
-	Tue, 14 May 2024 11:46:12 +0000 (UTC)
+	 MIME-Version; b=MEQjRiyEpo1N7H46LI2JXDSQFDBMWZrcMixPmKdbr1OlBJnyWjn73vXVzD3ENYexlrdICVoVy9TT81KvmU6j4AdayjXvt9Nyew4zt6piEe6AQ0jTDnhPONTGzAn+bqnQtpic3YmP5Jrs7VLRQ1nku1YQQwiCqSJGEZSUtyHFqIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7BHYZb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C02AC2BD10;
+	Tue, 14 May 2024 11:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687172;
-	bh=ujg2yK9/7LDyHUsadtLIyxxR6X8jRouYaI4IuG9bkbQ=;
+	s=korg; t=1715686897;
+	bh=Uon0DQbhFYKMy2P6sTexKOeZnx9DZNDMhvUGPM9fK4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=er3ydAAOQ2hc2201apWmCwJ6h8sJeTVRCVmeQWW9L/3Y7bFO+FWbhEIaGCbAqfW/y
-	 rj9AY8SaAXpEW4vJWEh/ZgPm1ztrx1cfHKu2ZHxeE01dHCx9V3Tj/SlpcW4ixmqZxu
-	 QcTjm3X00SG6KpLKU5ZFWKO642y+DwwnsXVd1L28=
+	b=L7BHYZb2PI8h9IfbX07UKdRH8EKGdYCy6M/oRu3IX/NY86Ld0KqCsZ6yJVYrjT79e
+	 pWx72A8Q07Vs/jS9l3K67hrx1aJwvrSMM+lg3lcpPoQlfvoZlvRTByDn+Ws6qUEN+M
+	 lNO9IfovKhxrhNnQuOxgPDNuuvnMtTJBSk4MSVH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 69/84] net: bridge: fix corrupted ethernet header on multicast-to-unicast
-Date: Tue, 14 May 2024 12:20:20 +0200
-Message-ID: <20240514100954.280341107@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jim Cromie <jim.cromie@gmail.com>
+Subject: [PATCH 4.19 60/63] dyndbg: fix old BUG_ON in >control parser
+Date: Tue, 14 May 2024 12:20:21 +0200
+Message-ID: <20240514100950.275077003@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Jim Cromie <jim.cromie@gmail.com>
 
-[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
+commit 00e7d3bea2ce7dac7bee1cf501fb071fd0ea8f6c upstream.
 
-The change from skb_copy to pskb_copy unfortunately changed the data
-copying to omit the ethernet header, since it was pulled before reaching
-this point. Fix this by calling __skb_push/pull around pskb_copy.
+Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
+really look), lets make sure by removing it, doing pr_err and return
+-EINVAL instead.
 
-Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
+Link: https://lore.kernel.org/r/20240429193145.66543-2-jim.cromie@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_forward.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ lib/dynamic_debug.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 0a1ca20f719da..460d578fae4df 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -245,6 +245,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- {
- 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
- 	const unsigned char *src = eth_hdr(skb)->h_source;
-+	struct sk_buff *nskb;
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -242,7 +242,11 @@ static int ddebug_tokenize(char *buf, ch
+ 		} else {
+ 			for (end = buf; *end && !isspace(*end); end++)
+ 				;
+-			BUG_ON(end == buf);
++			if (end == buf) {
++				pr_err("parse err after word:%d=%s\n", nwords,
++				       nwords ? words[nwords - 1] : "<none>");
++				return -EINVAL;
++			}
+ 		}
  
- 	if (!should_deliver(p, skb))
- 		return;
-@@ -253,12 +254,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
- 
--	skb = pskb_copy(skb, GFP_ATOMIC);
--	if (!skb) {
-+	__skb_push(skb, ETH_HLEN);
-+	nskb = pskb_copy(skb, GFP_ATOMIC);
-+	__skb_pull(skb, ETH_HLEN);
-+	if (!nskb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
- 	}
- 
-+	skb = nskb;
-+	__skb_pull(skb, ETH_HLEN);
- 	if (!is_broadcast_ether_addr(addr))
- 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
- 
--- 
-2.43.0
-
+ 		/* `buf' is start of word, `end' is one past its end */
 
 
 
