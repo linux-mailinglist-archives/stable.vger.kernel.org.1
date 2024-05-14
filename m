@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491A78C550F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CED8C5112
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6F1B22437
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 792AA1F2141C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AD641C6C;
-	Tue, 14 May 2024 11:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF6F12F5A4;
+	Tue, 14 May 2024 10:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0mgxrsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCy7vtMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B750C320F;
-	Tue, 14 May 2024 11:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD8912880A;
+	Tue, 14 May 2024 10:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687618; cv=none; b=AdnyPJldgs6MXey20f25IgxIGqQwGDw8vf3KA3llJepDODXAdSrkOp6xWp7eNAuhOdL2bCDxyToRXwM3IWyvu/A62cISiIExDi89mNJ6yPEZhG1zcenmGDZ3vsA6EbgMvSnmTzcPQohsr6z216+lRwV03zhTI0tLsWDxLjjH+t0=
+	t=1715684033; cv=none; b=nj7P0iLMoncjswJLGNOh5bT0J5zJ5vcgqf4cuIIEgEgRdQdMgFlulHW412E74JHLxjcB4Y2O0NGhfbxiPA+9HHTUPqiW6x2B1PovgziaB5xBqCZEwLzQM3LE1SP9wMIj8oJ0urzBdirdj8jLfVxfGvG8h20fPHnQjE+fAfAR8Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687618; c=relaxed/simple;
-	bh=0jPTlDy8jBatPPQK7CFuuxAw7QqVMxNMtEQGIZb0QYY=;
+	s=arc-20240116; t=1715684033; c=relaxed/simple;
+	bh=TBKGuXcafzvLg7tjDHbPg5q0D6oS3JI7sxFuDct3UuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIZURIe9/ReIYTEDFntk2NDCsuaxHBedulylicSo+x94t4A1HszA57vHRoYySWbIlsz0wUMkqdFUEEADHlZOwX7gjxWdPq7im6iAzb5yNA9BGPwXPqFGhFNnTG5iD/n6c24+mpuCM98gC5N7OXxbbNbjLeqXDtFfPPe698WyHVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0mgxrsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF37C2BD10;
-	Tue, 14 May 2024 11:53:38 +0000 (UTC)
+	 MIME-Version; b=gSCa/c/2sKPxW0Dz/hr9D0XqamKW5LyMBGKr/bxIRz3Xmhjd1iW+n5yAwQ0RbFYCKwaxMgxAbY3V+BlBgS7zx97gqaVPoUwpAAoCDF7tX9dLrlAFLdAdwQi1YswiE+ucUvCeiEtxLvRTfZxUCvWXyk3zhcoD/4Z5Xqmu+eYp/Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCy7vtMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AEBC2BD10;
+	Tue, 14 May 2024 10:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687618;
-	bh=0jPTlDy8jBatPPQK7CFuuxAw7QqVMxNMtEQGIZb0QYY=;
+	s=korg; t=1715684033;
+	bh=TBKGuXcafzvLg7tjDHbPg5q0D6oS3JI7sxFuDct3UuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0mgxrsMdEP1u9iWwekJveKdiMTfcLQ/s6SKUskxFy3dZZagBe8rbX1yRVrRsDvVz
-	 e1/uIwcafKo80zd/kSUPbHJ9skbI6W3bNvAQ3lsZ321hlHvlZIALt6fYJZllvjeCqw
-	 Bk5vK3eP1pDRfG+eXXXJQ4pJl/3OX1WcAC7CjnQE=
+	b=PCy7vtMY5OQLQ4LEZdY0mGQpMosvVZFqPtsC5l8wq2GlJLutlUS+R7yo7GxAAMLxF
+	 FFUoA+pIrbb8JG490xfZ4F6jhXjNXgvbENkCuDjXU9f/YcN3xVg1Ed+r9LTS/zmSDG
+	 G8zVCL28ZlpVv+pkxoA7z7U3qh98HbWNFRcsVs5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 015/168] pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE
-Date: Tue, 14 May 2024 12:18:33 +0200
-Message-ID: <20240514101007.262832515@linuxfoundation.org>
+	Lakshmi Yadlapati <lakshmiy@us.ibm.com>,
+	Eddie James <eajames@linux.ibm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.8 310/336] hwmon: (pmbus/ucd9000) Increase delay from 250 to 500us
+Date: Tue, 14 May 2024 12:18:34 +0200
+Message-ID: <20240514101050.321845612@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
 
-[ Upstream commit c5d3b64c568a344e998830e0e94a7c04e372f89b ]
+commit 26e8383b116d0dbe74e28f86646563ab46d66d83 upstream.
 
-There is a misinterpretation of some of the PIN_CONFIG_* options in this
-driver library. PIN_CONFIG_OUTPUT_ENABLE should refer to a buffer or
-switch in the output direction of the electrical path. The MediaTek
-hardware does not have such a thing. The driver incorrectly maps this
-option to the GPIO function's direction.
+Following the failure observed with a delay of 250us, experiments were
+conducted with various delays. It was found that a delay of 350us
+effectively mitigated the issue.
 
-Likewise, PIN_CONFIG_INPUT_ENABLE should refer to a buffer or switch in
-the input direction. The hardware does have such a mechanism, and is
-mapped to the IES bit. The driver however sets the direction in addition
-to the IES bit, which is incorrect. On readback, the IES bit isn't even
-considered.
+To provide a more optimal solution while still allowing a margin for
+stability, the delay is being adjusted to 500us.
 
-Ironically, the driver does not support readback for PIN_CONFIG_OUTPUT,
-while its readback of PIN_CONFIG_{INPUT,OUTPUT}_ENABLE is what it should
-be doing for PIN_CONFIG_OUTPUT.
-
-Rework support for these three options, so that PIN_CONFIG_OUTPUT_ENABLE
-is completely removed, PIN_CONFIG_INPUT_ENABLE is only linked to the IES
-bit, and PIN_CONFIG_OUTPUT is linked to the GPIO function's direction
-and output level.
-
-Fixes: 805250982bb5 ("pinctrl: mediatek: add pinctrl-paris that implements the vendor dt-bindings")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Message-ID: <20240327091336.3434141-3-wenst@chromium.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+Link: https://lore.kernel.org/r/20240507194603.1305750-1-lakshmiy@us.ibm.com
+Fixes: 8d655e6523764 ("hwmon: (ucd90320) Add minimum delay between bus accesses")
+Reviewed-by: Eddie James <eajames@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c | 38 +++++++-----------------
- 1 file changed, 11 insertions(+), 27 deletions(-)
+ drivers/hwmon/pmbus/ucd9000.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index 9c2eaf8ce84a4..deade010270ac 100644
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -113,20 +113,21 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SR, &ret);
- 		break;
- 	case PIN_CONFIG_INPUT_ENABLE:
--	case PIN_CONFIG_OUTPUT_ENABLE:
-+		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_IES, &ret);
-+		if (!ret)
-+			err = -EINVAL;
-+		break;
-+	case PIN_CONFIG_OUTPUT:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
- 		if (err)
- 			break;
--		/*     CONFIG     Current direction return value
--		 * -------------  ----------------- ----------------------
--		 * OUTPUT_ENABLE       output       1 (= HW value)
--		 *                     input        0 (= HW value)
--		 * INPUT_ENABLE        output       0 (= reverse HW value)
--		 *                     input        1 (= reverse HW value)
--		 */
--		if (param == PIN_CONFIG_INPUT_ENABLE)
--			ret = !ret;
+--- a/drivers/hwmon/pmbus/ucd9000.c
++++ b/drivers/hwmon/pmbus/ucd9000.c
+@@ -80,11 +80,11 @@ struct ucd9000_debugfs_entry {
+  * It has been observed that the UCD90320 randomly fails register access when
+  * doing another access right on the back of a register write. To mitigate this
+  * make sure that there is a minimum delay between a write access and the
+- * following access. The 250us is based on experimental data. At a delay of
+- * 200us the issue seems to go away. Add a bit of extra margin to allow for
++ * following access. The 500 is based on experimental data. At a delay of
++ * 350us the issue seems to go away. Add a bit of extra margin to allow for
+  * system to system differences.
+  */
+-#define UCD90320_WAIT_DELAY_US 250
++#define UCD90320_WAIT_DELAY_US 500
  
-+		if (!ret) {
-+			err = -EINVAL;
-+			break;
-+		}
-+
-+		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DO, &ret);
- 		break;
- 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
-@@ -204,26 +205,9 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 			break;
- 		err = hw->soc->bias_set_combo(hw, desc, 0, arg);
- 		break;
--	case PIN_CONFIG_OUTPUT_ENABLE:
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT,
--				       MTK_DISABLE);
--		/* Keep set direction to consider the case that a GPIO pin
--		 *  does not have SMT control
--		 */
--		if (err != -ENOTSUPP)
--			break;
--
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
--				       MTK_OUTPUT);
--		break;
- 	case PIN_CONFIG_INPUT_ENABLE:
- 		/* regard all non-zero value as enable */
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, !!arg);
--		if (err)
--			break;
--
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
--				       MTK_INPUT);
- 		break;
- 	case PIN_CONFIG_SLEW_RATE:
- 		/* regard all non-zero value as enable */
--- 
-2.43.0
-
+ static inline void ucd90320_wait(const struct ucd9000_data *data)
+ {
 
 
 
