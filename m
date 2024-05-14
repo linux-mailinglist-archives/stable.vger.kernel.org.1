@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-43983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16A18C5096
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC268C52FD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 654CA1F21BD6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E434E2828D0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C884E13DBB3;
-	Tue, 14 May 2024 10:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F811386C2;
+	Tue, 14 May 2024 11:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swjUuCbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NR80UcY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856BC2CCA3;
-	Tue, 14 May 2024 10:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D747812FF89;
+	Tue, 14 May 2024 11:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683496; cv=none; b=emXMW6ySzFqd6jxNkjnjFBO0ezgEwUJQnyvaBGM6MIrCJclR6k7Gm4uBujZi6iiPLRjbtYNbLgkuLu6rB4LiQpk4OdCP9XrQgaR/D09Zq3Pqpkm4z/7Kp4i3GqPFSncM9rlWmZ3/duwHYIDCFt4UrTz78iE1bgCqgGV/FLc09qI=
+	t=1715686243; cv=none; b=eSixlVBbp2DCewYjGP2EsUS4l3lBnHyMoFFBA5oy3oIWlnJyD6DEuiojz9gufsK222Xesft9dvaF4hMK20fCJ4t3Qft3Y7qnQsTdybUcgnCH8T8+DIo+gtausRaAW/uR/4Z+D/hKGCTCAyKvmeeGIxCkvsbvJkwrRq+zcyG5g2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683496; c=relaxed/simple;
-	bh=NDp1JJ5a9vaDiIR6KE4eQ6xKCAIB0P1f/m3QBOdsMKI=;
+	s=arc-20240116; t=1715686243; c=relaxed/simple;
+	bh=UKAYI3dofMfiTECmLTBhrFZl05DU6PSZU2Z/e2Vsl5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QG9XutmHCEpKw8a+Y5k+aBDVcQ6jXZfi2cxQHkRGvL77ipR6eUGwFK+l+FaR5dNdNCXn8xOo46Z0/VjD1uyNbDG1Fbp6hVTJoxpT+r0IcKIFqDEKG4HKHaElJ1w0P+AB0OI/oxfH5Ky6/kOiA3E6LzBW3WQ10b8hNtWFI+nksak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swjUuCbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69C4C2BD10;
-	Tue, 14 May 2024 10:44:55 +0000 (UTC)
+	 MIME-Version; b=Zf8I5dZKbwxUCrLLW3EXokLUY+6C7SEs2fVgBfbM53r7IeWUTvMSdKtxYj9eInwuAjtHi5tb1pYxM4DS1YAuQJlPKdr+oHutmMOlUteB/oZxFtoXZRY1VHn1zppPi6dd+SY5g23FeaI6bWXxagLoT0OBjDswW02o5eu8epZCsOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NR80UcY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D9AC32782;
+	Tue, 14 May 2024 11:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683496;
-	bh=NDp1JJ5a9vaDiIR6KE4eQ6xKCAIB0P1f/m3QBOdsMKI=;
+	s=korg; t=1715686243;
+	bh=UKAYI3dofMfiTECmLTBhrFZl05DU6PSZU2Z/e2Vsl5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swjUuCbSKNw8xOG21THDeN1/7AMpn14OpHOOaiAZKjyV221gj8fzZHPormbz3pCof
-	 IKbxlBgYtarsziO/SRKVN4ydVayBtVyMhySIY9064zo32Tpuy2vb8OAwmq/HjmhgBq
-	 d3ePppEgmVG/bwNiyfACCN7XZQX8JQErT84Oni9g=
+	b=NR80UcY5eDs/WxX6bAguD7dw5PgCjF4Xn8HaouFVxtd9VHZKEesn500rctqJQpGIh
+	 EKFmj1L26UIHxLNkawB6WyGdq8BXtWJFVNFEHL4PGosJZuPMMDmd7+HJpGQzvovrmt
+	 fkxZfgXj+/usEAESEezV3xpp1EAK1qLOroK1+0PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 228/336] net: hns3: change type of numa_node_mask as nodemask_t
+Subject: [PATCH 6.1 070/236] ASoC: meson: axg-tdm-interface: manage formatters in trigger
 Date: Tue, 14 May 2024 12:17:12 +0200
-Message-ID: <20240514101047.223201702@linuxfoundation.org>
+Message-ID: <20240514101023.029274642@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 6639a7b953212ac51aa4baa7d7fb855bf736cf56 ]
+[ Upstream commit f949ed458ad15a00d41b37c745ebadaef171aaae ]
 
-It provides nodemask_t to describe the numa node mask in kernel. To
-improve transportability, change the type of numa_node_mask as nodemask_t.
+So far, the formatters have been reset/enabled using the .prepare()
+callback. This was done in this callback because walking the formatters use
+a mutex. A mutex is used because formatter handling require dealing
+possibly slow clock operation.
 
-Fixes: 38caee9d3ee8 ("net: hns3: Add support of the HNAE3 framework")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+With the support of non-atomic, .trigger() callback may be used which also
+allows to properly enable and disable formatters on start but also
+pause/resume.
+
+This solve a random shift on TDMIN as well repeated samples on for TDMOUT.
+
+Fixes: d60e4f1e4be5 ("ASoC: meson: add tdm interface driver")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240426152946.3078805-4-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h               | 2 +-
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 6 ++++--
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h   | 2 +-
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 7 ++++---
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h | 2 +-
- 5 files changed, 11 insertions(+), 8 deletions(-)
+ sound/soc/meson/axg-tdm-interface.c | 34 ++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index d7e175a9cb49b..2f7195ba4902b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -895,7 +895,7 @@ struct hnae3_handle {
- 		struct hnae3_roce_private_info rinfo;
- 	};
+diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
+index 028383f949efd..272c3d2d68cb7 100644
+--- a/sound/soc/meson/axg-tdm-interface.c
++++ b/sound/soc/meson/axg-tdm-interface.c
+@@ -351,26 +351,31 @@ static int axg_tdm_iface_hw_params(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
  
--	u32 numa_node_mask;	/* for multi-chip support */
-+	nodemask_t numa_node_mask; /* for multi-chip support */
+-static int axg_tdm_iface_hw_free(struct snd_pcm_substream *substream,
++static int axg_tdm_iface_trigger(struct snd_pcm_substream *substream,
++				 int cmd,
+ 				 struct snd_soc_dai *dai)
+ {
+-	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
++	struct axg_tdm_stream *ts =
++		snd_soc_dai_get_dma_data(dai, substream);
  
- 	enum hnae3_port_base_vlan_state port_base_vlan_state;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 895e07f5c4fc8..6b84c1313f9bd 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -1756,7 +1756,8 @@ static int hclge_vport_setup(struct hclge_vport *vport, u16 num_tqps)
- 
- 	nic->pdev = hdev->pdev;
- 	nic->ae_algo = &ae_algo;
--	nic->numa_node_mask = hdev->numa_node_mask;
-+	bitmap_copy(nic->numa_node_mask.bits, hdev->numa_node_mask.bits,
-+		    MAX_NUMNODES);
- 	nic->kinfo.io_base = hdev->hw.hw.io_base;
- 
- 	ret = hclge_knic_setup(vport, num_tqps,
-@@ -2448,7 +2449,8 @@ static int hclge_init_roce_base_info(struct hclge_vport *vport)
- 
- 	roce->pdev = nic->pdev;
- 	roce->ae_algo = nic->ae_algo;
--	roce->numa_node_mask = nic->numa_node_mask;
-+	bitmap_copy(roce->numa_node_mask.bits, nic->numa_node_mask.bits,
-+		    MAX_NUMNODES);
+-	/* Stop all attached formatters */
+-	axg_tdm_stream_stop(ts);
++	switch (cmd) {
++	case SNDRV_PCM_TRIGGER_START:
++	case SNDRV_PCM_TRIGGER_RESUME:
++	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++		axg_tdm_stream_start(ts);
++		break;
++	case SNDRV_PCM_TRIGGER_SUSPEND:
++	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
++	case SNDRV_PCM_TRIGGER_STOP:
++		axg_tdm_stream_stop(ts);
++		break;
++	default:
++		return -EINVAL;
++	}
  
  	return 0;
  }
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-index 0f06e94d6c180..d4a146c53c5e9 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-@@ -885,7 +885,7 @@ struct hclge_dev {
  
- 	u16 fdir_pf_filter_count; /* Num of guaranteed filters for this PF */
- 	u16 num_alloc_vport;		/* Num vports this driver supports */
--	u32 numa_node_mask;
-+	nodemask_t numa_node_mask;
- 	u16 rx_buf_len;
- 	u16 num_tx_desc;		/* desc num of per tx queue */
- 	u16 num_rx_desc;		/* desc num of per rx queue */
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 0aa9beefd1c7e..b57111252d071 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -412,7 +412,8 @@ static int hclgevf_set_handle_info(struct hclgevf_dev *hdev)
- 
- 	nic->ae_algo = &ae_algovf;
- 	nic->pdev = hdev->pdev;
--	nic->numa_node_mask = hdev->numa_node_mask;
-+	bitmap_copy(nic->numa_node_mask.bits, hdev->numa_node_mask.bits,
-+		    MAX_NUMNODES);
- 	nic->flags |= HNAE3_SUPPORT_VF;
- 	nic->kinfo.io_base = hdev->hw.hw.io_base;
- 
-@@ -2082,8 +2083,8 @@ static int hclgevf_init_roce_base_info(struct hclgevf_dev *hdev)
- 
- 	roce->pdev = nic->pdev;
- 	roce->ae_algo = nic->ae_algo;
--	roce->numa_node_mask = nic->numa_node_mask;
+-static int axg_tdm_iface_prepare(struct snd_pcm_substream *substream,
+-				 struct snd_soc_dai *dai)
+-{
+-	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
 -
-+	bitmap_copy(roce->numa_node_mask.bits, nic->numa_node_mask.bits,
-+		    MAX_NUMNODES);
- 	return 0;
- }
+-	/* Force all attached formatters to update */
+-	return axg_tdm_stream_reset(ts);
+-}
+-
+ static int axg_tdm_iface_remove_dai(struct snd_soc_dai *dai)
+ {
+ 	if (dai->capture_dma_data)
+@@ -408,8 +413,7 @@ static const struct snd_soc_dai_ops axg_tdm_iface_ops = {
+ 	.set_fmt	= axg_tdm_iface_set_fmt,
+ 	.startup	= axg_tdm_iface_startup,
+ 	.hw_params	= axg_tdm_iface_hw_params,
+-	.prepare	= axg_tdm_iface_prepare,
+-	.hw_free	= axg_tdm_iface_hw_free,
++	.trigger	= axg_tdm_iface_trigger,
+ };
  
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
-index a73f2bf3a56a6..cccef32284616 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
-@@ -236,7 +236,7 @@ struct hclgevf_dev {
- 	u16 rss_size_max;	/* HW defined max RSS task queue */
- 
- 	u16 num_alloc_vport;	/* num vports this driver supports */
--	u32 numa_node_mask;
-+	nodemask_t numa_node_mask;
- 	u16 rx_buf_len;
- 	u16 num_tx_desc;	/* desc num of per tx queue */
- 	u16 num_rx_desc;	/* desc num of per rx queue */
+ /* TDM Backend DAIs */
 -- 
 2.43.0
 
