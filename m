@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A97B8C53C7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DD58C548C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96EB7288AAE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C55671C22E5D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAD212F581;
-	Tue, 14 May 2024 11:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DCA12BF12;
+	Tue, 14 May 2024 11:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqTSaos1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAGSklod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD8276028;
-	Tue, 14 May 2024 11:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B87126F02;
+	Tue, 14 May 2024 11:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686746; cv=none; b=rRvVAjj88xsQQ4nm7N6I1MZjObsntqIt6Lv7m9OAPZc7oMinIB1ILWVS5bKsu31vbIIvkNSYemziEzgkwXsj5S2QCdBALuOCoQLu6TwjNrLFhz4RpygCERw3Wgg3elltXrSPi6iGvD0Lm9E1euKtaIKBaHSfpwx2dyKQNIHDpf0=
+	t=1715687268; cv=none; b=cOHSVKL3h3sf1r2f1dGWXSBT1AemOLDq+7PT6VGud4FAd1VXqor42X/M+mTormRI1xukRNu4RWX8vI6ccWGQJIp/wm+Gt2nvEoAGeLp/KeNJ9hEVo4TUZ8bZ20SKUe9qv2AaYosjr+7EYtFRsffFUepB4cETBw5ZtLgDXiJkr1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686746; c=relaxed/simple;
-	bh=GS7TFFG6u8fmxU3hmQ5iLPiCWjD2Gabu9aovzXZokXs=;
+	s=arc-20240116; t=1715687268; c=relaxed/simple;
+	bh=287nP//lWFtJiMPNqeKof84cry/LZV6pZXvhlodR1dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXtrDfkA+rh4chzP1BiQdAREh7GvImkLQ/y4kQUsRPhbCmPpe/N7CRJIjdmkgZz5E18eUR3cRbfWA6srj6J33jvuLJIjZv/vLOmisHXt3fI3dCi0cuZ9eG4AKAcU+O+b6jMj2ZSObmlDQH8v7YvcGNYikulpdJG78Aw0Kcy7q0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqTSaos1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A336C2BD10;
-	Tue, 14 May 2024 11:39:05 +0000 (UTC)
+	 MIME-Version; b=PSIjDIq6vAaROfQ6nfSw6uC9WEKD+JYVd39B6jxd4ysQ2sLC+cr5Xlb9fdg8GSRM4vYUW5ooPcDUXPnNdi9Hj6MhZziXtyCJXJ9h0Gj5GFVHy8fNuYEXNLaX3WMTi/B2LNu9VKFL96e+BuAMZp1+6E69GL+Ib0CHDXZwDYBtOGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAGSklod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0C2C2BD10;
+	Tue, 14 May 2024 11:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686746;
-	bh=GS7TFFG6u8fmxU3hmQ5iLPiCWjD2Gabu9aovzXZokXs=;
+	s=korg; t=1715687268;
+	bh=287nP//lWFtJiMPNqeKof84cry/LZV6pZXvhlodR1dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqTSaos10fhYWMCSxbRYJlBNP+MB9e38EhGsj2bcYL6qK74iQy3A2g5KAC7yD+L4T
-	 WvHfn4P+OInz4IRuRQTRyeroiFSHk6DQb9EKgJy1gwR2zF0C6qRAA4RhhpiwF9dET1
-	 /SywIKBF25AbbHnjBHgvF48D+qaOOEsVLxHStI2k=
+	b=KAGSklodYpKSYOcQ1LeABwKELlrrDHuT7p7tQOxzEX1YCUa8cAHJQuBA8DY/NgztG
+	 sjwsPzGco+p2WSxX0eFkxqKm7oH83zHcar0Jiy9RSKpB7b/Zn495CKt6KDg0a8zTGQ
+	 56Xm406QVVxOLMR3OCWxAt46WjKyDf8sYj8qVXKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 214/236] net: bcmgenet: synchronize UMAC_CMD access
+	Felix Fietkau <nbd@nbd.name>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 038/111] net: core: reject skb_copy(_expand) for fraglist GSO skbs
 Date: Tue, 14 May 2024 12:19:36 +0200
-Message-ID: <20240514101028.484420034@linuxfoundation.org>
+Message-ID: <20240514100958.574717233@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,189 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 0d5e2a82232605b337972fb2c7d0cbc46898aca1 upstream.
+[ Upstream commit d091e579b864fa790dd6a0cd537a22c383126681 ]
 
-The UMAC_CMD register is written from different execution
-contexts and has insufficient synchronization protections to
-prevent possible corruption. Of particular concern are the
-acceses from the phy_device delayed work context used by the
-adjust_link call and the BH context that may be used by the
-ndo_set_rx_mode call.
+SKB_GSO_FRAGLIST skbs must not be linearized, otherwise they become
+invalid. Return NULL if such an skb is passed to skb_copy or
+skb_copy_expand, in order to prevent a crash on a potential later
+call to skb_gso_segment.
 
-A spinlock is added to the driver to protect contended register
-accesses (i.e. reg_lock) and it is used to synchronize accesses
-to UMAC_CMD.
-
-Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   12 +++++++++++-
- drivers/net/ethernet/broadcom/genet/bcmgenet.h     |    4 +++-
- drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |    8 +++++++-
- drivers/net/ethernet/broadcom/genet/bcmmii.c       |    2 ++
- 4 files changed, 23 insertions(+), 3 deletions(-)
+ net/core/skbuff.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2468,14 +2468,18 @@ static void umac_enable_set(struct bcmge
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 50261f3aec82b..fd53b66f2ca1d 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1516,11 +1516,17 @@ static inline int skb_alloc_rx_flag(const struct sk_buff *skb)
+ 
+ struct sk_buff *skb_copy(const struct sk_buff *skb, gfp_t gfp_mask)
  {
- 	u32 reg;
+-	int headerlen = skb_headroom(skb);
+-	unsigned int size = skb_end_offset(skb) + skb->data_len;
+-	struct sk_buff *n = __alloc_skb(size, gfp_mask,
+-					skb_alloc_rx_flag(skb), NUMA_NO_NODE);
++	struct sk_buff *n;
++	unsigned int size;
++	int headerlen;
++
++	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
++		return NULL;
  
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
--	if (reg & CMD_SW_RESET)
-+	if (reg & CMD_SW_RESET) {
-+		spin_unlock_bh(&priv->reg_lock);
- 		return;
-+	}
- 	if (enable)
- 		reg |= mask;
- 	else
- 		reg &= ~mask;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
++	headerlen = skb_headroom(skb);
++	size = skb_end_offset(skb) + skb->data_len;
++	n = __alloc_skb(size, gfp_mask,
++			skb_alloc_rx_flag(skb), NUMA_NO_NODE);
+ 	if (!n)
+ 		return NULL;
  
- 	/* UniMAC stops on a packet boundary, wait for a full-size packet
- 	 * to be processed
-@@ -2491,8 +2495,10 @@ static void reset_umac(struct bcmgenet_p
- 	udelay(10);
+@@ -1750,12 +1756,17 @@ struct sk_buff *skb_copy_expand(const struct sk_buff *skb,
+ 	/*
+ 	 *	Allocate the copy buffer
+ 	 */
+-	struct sk_buff *n = __alloc_skb(newheadroom + skb->len + newtailroom,
+-					gfp_mask, skb_alloc_rx_flag(skb),
+-					NUMA_NO_NODE);
+-	int oldheadroom = skb_headroom(skb);
+ 	int head_copy_len, head_copy_off;
++	struct sk_buff *n;
++	int oldheadroom;
++
++	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
++		return NULL;
  
- 	/* issue soft reset and disable MAC while updating its registers */
-+	spin_lock_bh(&priv->reg_lock);
- 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
- 	udelay(2);
-+	spin_unlock_bh(&priv->reg_lock);
- }
++	oldheadroom = skb_headroom(skb);
++	n = __alloc_skb(newheadroom + skb->len + newtailroom,
++			gfp_mask, skb_alloc_rx_flag(skb),
++			NUMA_NO_NODE);
+ 	if (!n)
+ 		return NULL;
  
- static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
-@@ -3615,16 +3621,19 @@ static void bcmgenet_set_rx_mode(struct
- 	 * 3. The number of filters needed exceeds the number filters
- 	 *    supported by the hardware.
- 	*/
-+	spin_lock(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
- 	    (nfilter > MAX_MDF_FILTER)) {
- 		reg |= CMD_PROMISC;
- 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+		spin_unlock(&priv->reg_lock);
- 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
- 		return;
- 	} else {
- 		reg &= ~CMD_PROMISC;
- 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+		spin_unlock(&priv->reg_lock);
- 	}
- 
- 	/* update MDF filter */
-@@ -4026,6 +4035,7 @@ static int bcmgenet_probe(struct platfor
- 		goto err;
- 	}
- 
-+	spin_lock_init(&priv->reg_lock);
- 	spin_lock_init(&priv->lock);
- 
- 	/* Set default pause parameters */
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
- 
- #ifndef __BCMGENET_H__
-@@ -573,6 +573,8 @@ struct bcmgenet_rxnfc_rule {
- /* device context */
- struct bcmgenet_priv {
- 	void __iomem *base;
-+	/* reg_lock: lock to serialize access to shared registers */
-+	spinlock_t reg_lock;
- 	enum bcmgenet_version version;
- 	struct net_device *dev;
- 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET (Gigabit Ethernet) Wake-on-LAN support
-  *
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
- 
- #define pr_fmt(fmt)				"bcmgenet_wol: " fmt
-@@ -133,6 +133,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	}
- 
- 	/* Can't suspend with WoL if MAC is still in reset */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	if (reg & CMD_SW_RESET)
- 		reg &= ~CMD_SW_RESET;
-@@ -140,6 +141,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	/* disable RX */
- 	reg &= ~CMD_RX_EN;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 	mdelay(10);
- 
- 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE)) {
-@@ -185,6 +187,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	}
- 
- 	/* Enable CRC forward */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	priv->crc_fwd_en = 1;
- 	reg |= CMD_CRC_FWD;
-@@ -192,6 +195,7 @@ int bcmgenet_wol_power_down_cfg(struct b
- 	/* Receiver must be enabled for WOL MP detection */
- 	reg |= CMD_RX_EN;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 
- 	reg = UMAC_IRQ_MPD_R;
- 	if (hfb_enable)
-@@ -238,7 +242,9 @@ void bcmgenet_wol_power_up_cfg(struct bc
- 	}
- 
- 	/* Disable CRC Forward */
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~CMD_CRC_FWD;
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- }
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -78,6 +78,7 @@ static void bcmgenet_mac_config(struct n
- 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
- 	mutex_unlock(&phydev->lock);
- 
-+	spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
- 		       CMD_HD_EN |
-@@ -90,6 +91,7 @@ static void bcmgenet_mac_config(struct n
- 		reg |= CMD_TX_EN | CMD_RX_EN;
- 	}
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+	spin_unlock_bh(&priv->reg_lock);
- 
- 	priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
- 	bcmgenet_eee_enable_set(dev,
+-- 
+2.43.0
+
 
 
 
