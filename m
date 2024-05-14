@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121FE8C5133
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:21:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279A78C537E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7461C1F2149D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA49CB20A42
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160187F7EB;
-	Tue, 14 May 2024 10:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED304F1F8;
+	Tue, 14 May 2024 11:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrQZX+nZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yR57JrIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FDED531;
-	Tue, 14 May 2024 10:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB11947A6C;
+	Tue, 14 May 2024 11:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684176; cv=none; b=KMrRRXznzri/VnBcelf4ol6J5TexrsKZuxhlBWLDFK1JpqqynVSKM+KOyFh8+TTLG2Ay3y2DWMojeIYSrfnErdD/2m2lWK3hZbHq12lGtrvTUK5RHUOAmThV8eaoDW6PVPznlN6c/zpiya1jCGcl4SV3OnMVs1mvNXwCJzQKXIE=
+	t=1715686558; cv=none; b=RA8xASS/2qc98Z704wFupt0dFNLpIsMK+ZYGsv6HRx0UUM4oyDEuYTf0czP3iFrVkfcfhslTbvEUSgS4yhpfV0fmre+mTEDpUpPrt2UDNwquz9PEq34i6IQwXaDRSYAVL4Xi1z3GmlPKn9sr73G7mmE+WqYGmnvQ3mwJR2OUXOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684176; c=relaxed/simple;
-	bh=rZmm9UkglMHxq1fu1Y86rpaMyI6NOfF8bsbSYsNudg8=;
+	s=arc-20240116; t=1715686558; c=relaxed/simple;
+	bh=+4QpH/XNRV7BsrJUrJRBucMlRO8pGMkz3iqyE3MasbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWel/ENGPUid90jjJuxjG10jKeFsPrDwdl6ROSir8wnF7KzIvs7iU1xtMLq57At5soPoNHsS/A3Zow8v+B7U9WVgK5nC64dWNgS4MElpvMrTHzcTwxrZAqTzpl6hVNMVMjYAldotcEobLj9JbGNHTKTsaR32wv98c9yaXFDL06o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrQZX+nZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B22CC2BD10;
-	Tue, 14 May 2024 10:56:15 +0000 (UTC)
+	 MIME-Version; b=YrqvMK2KhZw7hGogfecgEGA+TzjXfgJJAOWg+uUZJ4+AOnSgwqdMxkZ6vy8dWtFU0v4Qv8wAgX2e0Moqsrf9j0Rg1btX9gI+78p6gZyunX1i5AAXc3ECoiwxAngYU1aP4qiWxfOo3k+zu1hishfnwceiRQceXml9MtGs0+GykjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yR57JrIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334B3C2BD10;
+	Tue, 14 May 2024 11:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684176;
-	bh=rZmm9UkglMHxq1fu1Y86rpaMyI6NOfF8bsbSYsNudg8=;
+	s=korg; t=1715686558;
+	bh=+4QpH/XNRV7BsrJUrJRBucMlRO8pGMkz3iqyE3MasbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrQZX+nZz+86T1YO2NM0hAdw50SftG83XVjQKBpKdvkjQMzAAb4R7wQVtiyac/wSd
-	 D2bXf+cXGZPUMdynOzwxZVMzhH5c1WVpRNwfEKvMicGwgftMT/2TdCg9u+HWGAD2YE
-	 P/LN92WtJBiXVVnKp3ycCsU1psjXxXKIWhYNa8iA=
+	b=yR57JrIJRDtM50dKc7zjFocVVOFVFWdB3hWWfqcbviNH9vXF9OPU7u0wK1B/FJS8G
+	 aVC/zxIuAT2IsD2C/mGGnU6UQrdLdBhWklYMzRmXubkoHwBRCK6wf09wekuzp0/b6P
+	 IAmraerVI5QSAhXwMWKGYxXRS8yV1E8vPZViAdKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.8 336/336] Bluetooth: qca: fix firmware check error path
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Kent Gibson <warthog618@gmail.com>
+Subject: [PATCH 6.1 178/236] gpiolib: cdev: Add missing header(s)
 Date: Tue, 14 May 2024 12:19:00 +0200
-Message-ID: <20240514101051.314434161@linuxfoundation.org>
+Message-ID: <20240514101027.118795111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 40d442f969fb1e871da6fca73d3f8aef1f888558 upstream.
+[ Upstream commit 52ee7c02f67808afa533c523fa3e4b66c54ea758 ]
 
-A recent commit fixed the code that parses the firmware files before
-downloading them to the controller but introduced a memory leak in case
-the sanity checks ever fail.
+Do not imply that some of the generic headers may be always included.
+Instead, include explicitly what we are direct user of.
 
-Make sure to free the firmware buffer before returning on errors.
+While at it, sort headers alphabetically.
 
-Fixes: f905ae0be4b7 ("Bluetooth: qca: add missing firmware sanity checks")
-Cc: stable@vger.kernel.org      # 4.19
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Rewiewed-by: Kent Gibson <warthog618@gmail.com>
+Stable-dep-of: ee0166b637a5 ("gpiolib: cdev: fix uninitialised kfifo")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib-cdev.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -605,7 +605,7 @@ static int qca_download_firmware(struct
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index e40c93f0960b4..d2027212901fd 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -12,6 +12,7 @@
+ #include <linux/file.h>
+ #include <linux/gpio.h>
+ #include <linux/gpio/driver.h>
++#include <linux/hte.h>
+ #include <linux/interrupt.h>
+ #include <linux/irqreturn.h>
+ #include <linux/kernel.h>
+@@ -20,11 +21,12 @@
+ #include <linux/mutex.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/poll.h>
++#include <linux/seq_file.h>
+ #include <linux/spinlock.h>
+ #include <linux/timekeeping.h>
+ #include <linux/uaccess.h>
+ #include <linux/workqueue.h>
+-#include <linux/hte.h>
++
+ #include <uapi/linux/gpio.h>
  
- 	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	segment = data;
- 	remain = size;
+ #include "gpiolib.h"
+-- 
+2.43.0
+
 
 
 
