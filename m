@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9058C5120
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B30D8C54FE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BC541C211C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CECD1C230AC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2105C3BB24;
-	Tue, 14 May 2024 10:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D805A0FC;
+	Tue, 14 May 2024 11:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cs4Kek4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3WjK3pn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78492943F;
-	Tue, 14 May 2024 10:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45155320F;
+	Tue, 14 May 2024 11:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684098; cv=none; b=K8Bt7nYyf6VD5XL27ra4LK3opvFsp3dXnDQ6SKP1VMMeiKXdP9AhWdhaz8THdMTlYkPoVr8NzU+73LTUqvFntHMjKfknIx0TKZyFqeTB7Ffo1pwh24Ym9Y7gtvYrB8tzs/9uXpRnr30ELxOvkCWIP9dEjdT0XBBDrAuE6Yt/4vo=
+	t=1715687575; cv=none; b=bsyJhI5vAMxxf4KaPYkCdoBXXpvV6YghJ5/WYRGHa6A8G++uVtURIwIN/XTbqRkAWalgmuwZHGjqLinuZ5Dh3F1S46C3h/FO5hc0egfW179WeSw/gXO4BwF7I7dcGadNEtVXRSH170jgbSOO4QShhFtuh5XMBCoW9rSNacKSgGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684098; c=relaxed/simple;
-	bh=ktoZY9TIj8FmM4kxEYQd9wp3OQ0/qui1e/iopQuhicw=;
+	s=arc-20240116; t=1715687575; c=relaxed/simple;
+	bh=tIBNYjor9NNWBEaqAReljwHoXHR0uBXUU25freWdVbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1Xao06YU6/NGx8aTWTNsamwsPNDD0VrFqQ6OMgjmkGtVSs+k2wg4NRGUZOaxlMVyhA/DU9RkTEoD8ydPVagZjGikIFrdy0wN1nzd9ncbdZ1728Lj66zlUE062zmYM2KCRuLJGoXODp34OM846Smfub/WBdaFfqXRhPC+m/4gRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cs4Kek4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DD2C2BD10;
-	Tue, 14 May 2024 10:54:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=amJRuEoFS76wummU8b1DPdlSwbW+72dtPOY5MHbmjY0A+1aNb/7lHfpggnZ+gsiJ6Lw2fGBkR5iSfEFlM36S+eywocrV5IgPrRevjkw4FbmIhVz9u3IqA902y9EyS4ZB6lSJHPw+bfw94SnOALWP5aDyqAwKrAMaES1CFiCeR1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3WjK3pn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BCFC32781;
+	Tue, 14 May 2024 11:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684098;
-	bh=ktoZY9TIj8FmM4kxEYQd9wp3OQ0/qui1e/iopQuhicw=;
+	s=korg; t=1715687575;
+	bh=tIBNYjor9NNWBEaqAReljwHoXHR0uBXUU25freWdVbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cs4Kek4AO0Ll6f5KDhqr8R4qbFG7JCGhD9o3CeWAnIslRDNZFhI0Yw9GW/A6kqhBW
-	 6llmgKLI8gItpCKWKxVw4oTySOox2/7YLjMwVnwMI6qfhyK2yQY/P1qku9pUrw8hYX
-	 jniR7IOWcaVCJ3Png0IN9AbVFgSDL0q0Q9JlhQGk=
+	b=H3WjK3pnkWCRBVGeb8b7MZg+QfGMtC59oeEbd6hdAckIGtKiJuU/rlOAbcle+tz7U
+	 h2KrObLYhF0xbvIlJco5d7QZMAweJ59W5RnkDZCUU+BX5DjFJ54M0rjqvJ/0cay4P7
+	 F5LXQURotDqhk+NddE5j5ybGjsOo1y8ppoT38ZAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.8 324/336] ksmbd: do not grant v2 lease if parent lease key and epoch are not set
-Date: Tue, 14 May 2024 12:18:48 +0200
-Message-ID: <20240514101050.855938469@linuxfoundation.org>
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 031/168] xdp: Add xdp_do_redirect_frame() for pre-computed xdp_frames
+Date: Tue, 14 May 2024 12:18:49 +0200
+Message-ID: <20240514101007.865879234@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,69 +60,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-commit 691aae4f36f9825df6781da4399a1e718951085a upstream.
+[ Upstream commit 1372d34ccf6dd480332b2bcb2fd59a2b9a0df415 ]
 
-This patch fix xfstests generic/070 test with smb2 leases = yes.
+Add an xdp_do_redirect_frame() variant which supports pre-computed
+xdp_frame structures. This will be used in bpf_prog_run() to avoid having
+to write to the xdp_frame structure when the XDP program doesn't modify the
+frame boundaries.
 
-cifs.ko doesn't set parent lease key and epoch in create context v2 lease.
-ksmbd suppose that parent lease and epoch are vaild if data length is
-v2 lease context size and handle directory lease using this values.
-ksmbd should hanle it as v1 lease not v2 lease if parent lease key and
-epoch are not set in create context v2 lease.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/bpf/20220103150812.87914-6-toke@redhat.com
+Stable-dep-of: 5bcf0dcbf906 ("xdp: use flags field to disambiguate broadcast redirect")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ include/linux/filter.h |  4 +++
+ net/core/filter.c      | 65 +++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 58 insertions(+), 11 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1208,7 +1208,9 @@ int smb_grant_oplock(struct ksmbd_work *
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index ddaeb2afc022f..af0103bebb7bf 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1020,6 +1020,10 @@ int xdp_do_generic_redirect(struct net_device *dev, struct sk_buff *skb,
+ int xdp_do_redirect(struct net_device *dev,
+ 		    struct xdp_buff *xdp,
+ 		    struct bpf_prog *prog);
++int xdp_do_redirect_frame(struct net_device *dev,
++			  struct xdp_buff *xdp,
++			  struct xdp_frame *xdpf,
++			  struct bpf_prog *prog);
+ void xdp_do_flush(void);
  
- 	/* Only v2 leases handle the directory */
- 	if (S_ISDIR(file_inode(fp->filp)->i_mode)) {
--		if (!lctx || lctx->version != 2)
-+		if (!lctx || lctx->version != 2 ||
-+		    (lctx->flags != SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE &&
-+		     !lctx->epoch))
- 			return 0;
+ /* The xdp_do_flush_map() helper has been renamed to drop the _map suffix, as
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 96441da61fca8..b756951c92494 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3987,26 +3987,44 @@ u32 xdp_master_redirect(struct xdp_buff *xdp)
+ }
+ EXPORT_SYMBOL_GPL(xdp_master_redirect);
+ 
+-int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
+-		    struct bpf_prog *xdp_prog)
++static inline int __xdp_do_redirect_xsk(struct bpf_redirect_info *ri,
++					struct net_device *dev,
++					struct xdp_buff *xdp,
++					struct bpf_prog *xdp_prog)
+ {
+-	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
+ 	enum bpf_map_type map_type = ri->map_type;
+ 	void *fwd = ri->tgt_value;
+ 	u32 map_id = ri->map_id;
+-	struct xdp_frame *xdpf;
+-	struct bpf_map *map;
+ 	int err;
+ 
+ 	ri->map_id = 0; /* Valid map id idr range: [1,INT_MAX[ */
+ 	ri->map_type = BPF_MAP_TYPE_UNSPEC;
+ 
+-	if (map_type == BPF_MAP_TYPE_XSKMAP) {
+-		err = __xsk_map_redirect(fwd, xdp);
+-		goto out;
+-	}
++	err = __xsk_map_redirect(fwd, xdp);
++	if (unlikely(err))
++		goto err;
++
++	_trace_xdp_redirect_map(dev, xdp_prog, fwd, map_type, map_id, ri->tgt_index);
++	return 0;
++err:
++	_trace_xdp_redirect_map_err(dev, xdp_prog, fwd, map_type, map_id, ri->tgt_index, err);
++	return err;
++}
++
++static __always_inline int __xdp_do_redirect_frame(struct bpf_redirect_info *ri,
++						   struct net_device *dev,
++						   struct xdp_frame *xdpf,
++						   struct bpf_prog *xdp_prog)
++{
++	enum bpf_map_type map_type = ri->map_type;
++	void *fwd = ri->tgt_value;
++	u32 map_id = ri->map_id;
++	struct bpf_map *map;
++	int err;
++
++	ri->map_id = 0; /* Valid map id idr range: [1,INT_MAX[ */
++	ri->map_type = BPF_MAP_TYPE_UNSPEC;
+ 
+-	xdpf = xdp_convert_buff_to_frame(xdp);
+ 	if (unlikely(!xdpf)) {
+ 		err = -EOVERFLOW;
+ 		goto err;
+@@ -4043,7 +4061,6 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
+ 		err = -EBADRQC;
  	}
  
-@@ -1470,8 +1472,9 @@ void create_lease_buf(u8 *rbuf, struct l
- 		buf->lcontext.LeaseFlags = lease->flags;
- 		buf->lcontext.Epoch = cpu_to_le16(lease->epoch);
- 		buf->lcontext.LeaseState = lease->state;
--		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
--		       SMB2_LEASE_KEY_SIZE);
-+		if (lease->flags == SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE)
-+			memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
-+			       SMB2_LEASE_KEY_SIZE);
- 		buf->ccontext.DataOffset = cpu_to_le16(offsetof
- 				(struct create_lease_v2, lcontext));
- 		buf->ccontext.DataLength = cpu_to_le32(sizeof(struct lease_context_v2));
-@@ -1536,8 +1539,9 @@ struct lease_ctx_info *parse_lease_state
- 		lreq->flags = lc->lcontext.LeaseFlags;
- 		lreq->epoch = lc->lcontext.Epoch;
- 		lreq->duration = lc->lcontext.LeaseDuration;
--		memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
--				SMB2_LEASE_KEY_SIZE);
-+		if (lreq->flags == SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE)
-+			memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
-+			       SMB2_LEASE_KEY_SIZE);
- 		lreq->version = 2;
- 	} else {
- 		struct create_lease *lc = (struct create_lease *)cc;
+-out:
+ 	if (unlikely(err))
+ 		goto err;
+ 
+@@ -4053,8 +4070,34 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
+ 	_trace_xdp_redirect_map_err(dev, xdp_prog, fwd, map_type, map_id, ri->tgt_index, err);
+ 	return err;
+ }
++
++int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
++		    struct bpf_prog *xdp_prog)
++{
++	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
++	enum bpf_map_type map_type = ri->map_type;
++
++	if (map_type == BPF_MAP_TYPE_XSKMAP)
++		return __xdp_do_redirect_xsk(ri, dev, xdp, xdp_prog);
++
++	return __xdp_do_redirect_frame(ri, dev, xdp_convert_buff_to_frame(xdp),
++				       xdp_prog);
++}
+ EXPORT_SYMBOL_GPL(xdp_do_redirect);
+ 
++int xdp_do_redirect_frame(struct net_device *dev, struct xdp_buff *xdp,
++			  struct xdp_frame *xdpf, struct bpf_prog *xdp_prog)
++{
++	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
++	enum bpf_map_type map_type = ri->map_type;
++
++	if (map_type == BPF_MAP_TYPE_XSKMAP)
++		return __xdp_do_redirect_xsk(ri, dev, xdp, xdp_prog);
++
++	return __xdp_do_redirect_frame(ri, dev, xdpf, xdp_prog);
++}
++EXPORT_SYMBOL_GPL(xdp_do_redirect_frame);
++
+ static int xdp_do_generic_redirect_map(struct net_device *dev,
+ 				       struct sk_buff *skb,
+ 				       struct xdp_buff *xdp,
+-- 
+2.43.0
+
 
 
 
