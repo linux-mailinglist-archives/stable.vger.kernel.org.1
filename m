@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-43825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5BD8C4FCC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:53:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B470C8C4FD0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7791F21081
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:53:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E65941C20AE0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503BE12FB3A;
-	Tue, 14 May 2024 10:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE57312FF6A;
+	Tue, 14 May 2024 10:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+Evo9pw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b56fvDlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAB012BF3D;
-	Tue, 14 May 2024 10:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5E753370;
+	Tue, 14 May 2024 10:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682483; cv=none; b=TFfvsdMmj1+Drtc6XtIizIu1sCubbeScwndTnMvbTbx48Pt24baBKUxJ1+KyvqUzKpScN1Pj8fgmd0uyemE74HEF0AQYW3WD2br7B/HiZ7OfqWGK3NctL1QlYMhcTRnxNSSeYp/tJCXWgNDy4esaANPb9aV6U90vhIQ3wrGP6GI=
+	t=1715682513; cv=none; b=kccNtmgYaKyRlVygfabgBYrq1sOgC3wqympefblEYeJV/141FpLu+6p2bKB8wHUuOcD1xBf4cYxUCj4jxMB3Uu/0C0IWMptJV80YOx2FT2kBEs/VEYrNLa5dbQ9HKWfPJnXCmm6czbU9AfYVFPZWPgm7EiMDMzp+OOgq6T5MYyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682483; c=relaxed/simple;
-	bh=cKfXZan9IgkGEu0rf4rbaY2DFqNxHjzZNCJFGSfb4Zc=;
+	s=arc-20240116; t=1715682513; c=relaxed/simple;
+	bh=jwfZb6m8bD/mvEumnU+IVxX63AifYsWl9Ect2+wjoRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkaFs0nEn+NZGY5+PJhMdZwrhKdq4Hxe2SP2brKPcyUOYsCTLjmrCvKV2U+JxVhLb+a1LBUlXRebamFSe1yJVdDdrv1M4vE+leIy3bP/JgBJCLplN5I9RroU4pdU7M6JdvfYV2Jc7mXcnrPPYxQd5kjpz7lQeOojmdiowigUesc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+Evo9pw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94439C2BD10;
-	Tue, 14 May 2024 10:28:01 +0000 (UTC)
+	 MIME-Version; b=VjCAU//Omi/yJKaLxuq4T+GqKo5ZqG0mkrzax2pbh2WnJ7qoPW9Qtfk/NuCSR7jr7QUbo9s4ysbVYKjBUZe/azVjJsX6187pz5zdQznCa5VV7WQM7apkoZa8+K8u33dmAafWWTxAuiBOMKLAoNnmyY61nbazgqJcwyg9/FVc1m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b56fvDlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EE9C2BD10;
+	Tue, 14 May 2024 10:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682482;
-	bh=cKfXZan9IgkGEu0rf4rbaY2DFqNxHjzZNCJFGSfb4Zc=;
+	s=korg; t=1715682513;
+	bh=jwfZb6m8bD/mvEumnU+IVxX63AifYsWl9Ect2+wjoRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+Evo9pwN59MLZSyArwUhLEdRlAlQwYAxHZrVmza8IX33DMoCrV/w7mmyqOyVJQcX
-	 E2A2912Pdmd0BjydRCJAEHjM4eiL/NWPUCRfIVMtyyNWNlH415J6xjYceCJ8TFxgPJ
-	 WaFY5mNbVCEOptU4N6RdujF8Jf9I1dDJFffD1BoA=
+	b=b56fvDltmfyOMgEtpVh7Io+GysVMZZJgxmPcUMM4syZJO+Bq+WhNfM/H/2P12/PEZ
+	 Ss794h2ZPh75DBmrzVoiV5qoy0ZN6ab6MlY5sipSkUqM3VNSYLizYMCE6ZWsQliYON
+	 Jha/qBuCGL4FpfZY4JklyLQ12NIVi2ULjAzNj36I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Hossain, Md Iqbal" <md.iqbal.hossain@intel.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Hossain@web.codeaurora.org
-Subject: [PATCH 6.8 042/336] efi/unaccepted: touch soft lockup during memory accept
-Date: Tue, 14 May 2024 12:14:06 +0200
-Message-ID: <20240514101040.197513665@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 043/336] ice: ensure the copied buf is NUL terminated
+Date: Tue, 14 May 2024 12:14:07 +0200
+Message-ID: <20240514101040.234750157@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
 References: <20240514101038.595152603@linuxfoundation.org>
@@ -68,94 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 1c5a1627f48105cbab81d25ec2f72232bfaa8185 ]
+[ Upstream commit 666854ea9cad844f75a068f32812a2d78004914a ]
 
-Commit 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by
-parallel memory acceptance") has released the spinlock so other CPUs can
-do memory acceptance in parallel and not triggers softlockup on other
-CPUs.
+Currently, we allocate a count-sized kernel buffer and copy count bytes
+from userspace to that buffer. Later, we use sscanf on this buffer but we
+don't ensure that the string is terminated inside the buffer, this can lead
+to OOB read when using sscanf. Fix this issue by using memdup_user_nul
+instead of memdup_user.
 
-However the softlock up was intermittent shown up if the memory of the
-TD guest is large, and the timeout of softlockup is set to 1 second:
-
- RIP: 0010:_raw_spin_unlock_irqrestore
- Call Trace:
- ? __hrtimer_run_queues
- <IRQ>
- ? hrtimer_interrupt
- ? watchdog_timer_fn
- ? __sysvec_apic_timer_interrupt
- ? __pfx_watchdog_timer_fn
- ? sysvec_apic_timer_interrupt
- </IRQ>
- ? __hrtimer_run_queues
- <TASK>
- ? hrtimer_interrupt
- ? asm_sysvec_apic_timer_interrupt
- ? _raw_spin_unlock_irqrestore
- ? __sysvec_apic_timer_interrupt
- ? sysvec_apic_timer_interrupt
- accept_memory
- try_to_accept_memory
- do_huge_pmd_anonymous_page
- get_page_from_freelist
- __handle_mm_fault
- __alloc_pages
- __folio_alloc
- ? __tdx_hypercall
- handle_mm_fault
- vma_alloc_folio
- do_user_addr_fault
- do_huge_pmd_anonymous_page
- exc_page_fault
- ? __do_huge_pmd_anonymous_page
- asm_exc_page_fault
- __handle_mm_fault
-
-When the local irq is enabled at the end of accept_memory(), the
-softlockup detects that the watchdog on single CPU has not been fed for
-a while. That is to say, even other CPUs will not be blocked by
-spinlock, the current CPU might be stunk with local irq disabled for a
-while, which hurts not only nmi watchdog but also softlockup.
-
-Chao Gao pointed out that the memory accept could be time costly and
-there was similar report before. Thus to avoid any softlocup detection
-during this stage, give the softlockup a flag to skip the timeout check
-at the end of accept_memory(), by invoking touch_softlockup_watchdog().
-
-Reported-by: Hossain, Md Iqbal <md.iqbal.hossain@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by parallel memory acceptance")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 96a9a9341cda ("ice: configure FW logging")
+Fixes: 73671c3162c8 ("ice: enable FW logging")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-1-f1f1b53a10f4@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/unaccepted_memory.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_debugfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-index 5b439d04079c8..50f6503fe49f5 100644
---- a/drivers/firmware/efi/unaccepted_memory.c
-+++ b/drivers/firmware/efi/unaccepted_memory.c
-@@ -4,6 +4,7 @@
- #include <linux/memblock.h>
- #include <linux/spinlock.h>
- #include <linux/crash_dump.h>
-+#include <linux/nmi.h>
- #include <asm/unaccepted_memory.h>
+diff --git a/drivers/net/ethernet/intel/ice/ice_debugfs.c b/drivers/net/ethernet/intel/ice/ice_debugfs.c
+index c2bfba6b9ead6..66aa9759c8e7e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_debugfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_debugfs.c
+@@ -174,7 +174,7 @@ ice_debugfs_module_write(struct file *filp, const char __user *buf,
+ 	if (*ppos != 0 || count > 8)
+ 		return -EINVAL;
  
- /* Protects unaccepted memory bitmap and accepting_list */
-@@ -149,6 +150,9 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 	}
+-	cmd_buf = memdup_user(buf, count);
++	cmd_buf = memdup_user_nul(buf, count);
+ 	if (IS_ERR(cmd_buf))
+ 		return PTR_ERR(cmd_buf);
  
- 	list_del(&range.list);
-+
-+	touch_softlockup_watchdog();
-+
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
+@@ -260,7 +260,7 @@ ice_debugfs_nr_messages_write(struct file *filp, const char __user *buf,
+ 	if (*ppos != 0 || count > 4)
+ 		return -EINVAL;
+ 
+-	cmd_buf = memdup_user(buf, count);
++	cmd_buf = memdup_user_nul(buf, count);
+ 	if (IS_ERR(cmd_buf))
+ 		return PTR_ERR(cmd_buf);
+ 
+@@ -335,7 +335,7 @@ ice_debugfs_enable_write(struct file *filp, const char __user *buf,
+ 	if (*ppos != 0 || count > 2)
+ 		return -EINVAL;
+ 
+-	cmd_buf = memdup_user(buf, count);
++	cmd_buf = memdup_user_nul(buf, count);
+ 	if (IS_ERR(cmd_buf))
+ 		return PTR_ERR(cmd_buf);
+ 
+@@ -431,7 +431,7 @@ ice_debugfs_log_size_write(struct file *filp, const char __user *buf,
+ 	if (*ppos != 0 || count > 5)
+ 		return -EINVAL;
+ 
+-	cmd_buf = memdup_user(buf, count);
++	cmd_buf = memdup_user_nul(buf, count);
+ 	if (IS_ERR(cmd_buf))
+ 		return PTR_ERR(cmd_buf);
  
 -- 
 2.43.0
