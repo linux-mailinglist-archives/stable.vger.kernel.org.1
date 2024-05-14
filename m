@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803158C552E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3484D8C547E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 242771F21294
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99521B21AAC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D3D4122C;
-	Tue, 14 May 2024 11:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0889B129A99;
+	Tue, 14 May 2024 11:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDdfuOGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQyyncLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAF42B9AD;
-	Tue, 14 May 2024 11:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCA31E4B0;
+	Tue, 14 May 2024 11:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687708; cv=none; b=ZkQCW6P9MWySk8gL0zaFkmJ4NCej7AWut0nFtpaTsRSc3CMUh1/t7Lcmwdit1LleMeBp+qkZJaB1grQ3kdt5zIQzTlRqvLyF7EX1lQszzjw8QYyoafNGqMjRH4Kv2tdTiB4eGm59/Ev2941kt463h/aP3JGmb6YGpL+PqGFVgyQ=
+	t=1715687227; cv=none; b=NtJwyE80k2g11cSdvZJXUSGGh/P7P0fLIenzsr3JjnSjNNxfAqk6gZ0izmeQlrCYSHnFMCg78Xr9HuOOOMMIzULmnWrYwd9Rwjy2sCLedCGHF1zEvZdNp++Z7lcTJN2tam2N+kMveF+QpTy7duHirArIw6lFFLJKPt7jdhAirfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687708; c=relaxed/simple;
-	bh=ceJ0tzOvKTdWtiFfp3GeQq/eX2eX5AN93Rd95s5gHag=;
+	s=arc-20240116; t=1715687227; c=relaxed/simple;
+	bh=WXr6jMSl8LaMLli3C/rHHlK2bPYFAdNmxuqXzLbyXWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kyIIB/tWeGOePdSaTHLw4e3NoRdth0yUypHTWiHLxOHpRhtbNLi5afDb5Lsvoq/poGG2rjWHUt7VV6UYKq673LZhCS5R5SiooNFwRPdkOYBZ9hqBRkza6pAlI/gmpdg1vKiQpbSR0IBs0hIKQyn/hKQHYI3I1I326IPClcgHJXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDdfuOGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D27C2BD10;
-	Tue, 14 May 2024 11:55:07 +0000 (UTC)
+	 MIME-Version; b=jGUpJkYOIovXmyDAh6aIjnfrI/B8ZedaJyo4ijcn7uW4RhjyTIJsy7enTO9MCt44yGai9yIKTgC5aRgiWFiYuE3+Nkm6g0djoVSyzggfZU6MWFYYqSeQp4liXPMdx77pQdDWJEtavAf1P0VWE+Wg8jWzpX/ASj6LazxdHAm6OYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQyyncLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BEEC2BD10;
+	Tue, 14 May 2024 11:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687707;
-	bh=ceJ0tzOvKTdWtiFfp3GeQq/eX2eX5AN93Rd95s5gHag=;
+	s=korg; t=1715687227;
+	bh=WXr6jMSl8LaMLli3C/rHHlK2bPYFAdNmxuqXzLbyXWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDdfuOGneaMVuNEyFBALEWjVn7ClduLeckEg9pJi5rZcrWCd1CoczQu31mNJf12l/
-	 A2JKS8PxJsaH8pBNJyO3XHc1kCYmhngOyRIuMwhpAoSMWZnT3dLpOz7ojdm9AyprHp
-	 I+G2J0sJJGLyOMWJxq+0HqLbFQ5ZOTVLypCV5OdI=
+	b=RQyyncLeUnufJ5zFEqR+IgdOCo+WGPAnin1sTGUcmpWYZvf1Bli9IPJjw4gqtT3di
+	 gmnd4V8VmZ+aNZHpPmUxWOvz8K8gSTo8E9rU3DddDhFhPxnDwTUYHnAwdiB0Ir5hKy
+	 IMjnmWp/dQCTECl/bJLkbjQ9c4MQSWdSTyqG1u8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Okazaki <dtokazaki@google.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/168] ASoC: meson: cards: select SND_DYNAMIC_MINORS
+Subject: [PATCH 5.10 006/111] eeprom: at24: fix memory corruption race condition
 Date: Tue, 14 May 2024 12:19:04 +0200
-Message-ID: <20240514101008.430729008@linuxfoundation.org>
+Message-ID: <20240514100957.364191611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Daniel Okazaki <dtokazaki@google.com>
 
-[ Upstream commit 6db26f9ea4edd8a17d39ab3c20111e3ccd704aef ]
+[ Upstream commit f42c97027fb75776e2e9358d16bf4a99aeb04cf2 ]
 
-Amlogic sound cards do create a lot of pcm interfaces, possibly more than
-8. Some pcm interfaces are internal (like DPCM backends and c2c) and not
-exposed to userspace.
+If the eeprom is not accessible, an nvmem device will be registered, the
+read will fail, and the device will be torn down. If another driver
+accesses the nvmem device after the teardown, it will reference
+invalid memory.
 
-Those interfaces still increase the number passed to snd_find_free_minor(),
-which eventually exceeds 8 causing -EBUSY error on card registration if
-CONFIG_SND_DYNAMIC_MINORS=n and the interface is exposed to userspace.
+Move the failure point before registering the nvmem device.
 
-select CONFIG_SND_DYNAMIC_MINORS for Amlogic cards to avoid the problem.
-
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240426134150.3053741-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Daniel Okazaki <dtokazaki@google.com>
+Fixes: b20eb4c1f026 ("eeprom: at24: drop unnecessary label")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240422174337.2487142-1-dtokazaki@google.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/eeprom/at24.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/meson/Kconfig b/sound/soc/meson/Kconfig
-index b93ea33739f29..6458d5dc4902f 100644
---- a/sound/soc/meson/Kconfig
-+++ b/sound/soc/meson/Kconfig
-@@ -99,6 +99,7 @@ config SND_MESON_AXG_PDM
+diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+index 65a7517c031a7..02bea44369435 100644
+--- a/drivers/misc/eeprom/at24.c
++++ b/drivers/misc/eeprom/at24.c
+@@ -782,15 +782,6 @@ static int at24_probe(struct i2c_client *client)
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
  
- config SND_MESON_CARD_UTILS
- 	tristate
-+	select SND_DYNAMIC_MINORS
+-	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
+-	if (IS_ERR(at24->nvmem)) {
+-		pm_runtime_disable(dev);
+-		if (!pm_runtime_status_suspended(dev))
+-			regulator_disable(at24->vcc_reg);
+-		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
+-				     "failed to register nvmem\n");
+-	}
+-
+ 	/*
+ 	 * Perform a one-byte test read to verify that the
+ 	 * chip is functional.
+@@ -803,6 +794,15 @@ static int at24_probe(struct i2c_client *client)
+ 		return -ENODEV;
+ 	}
  
- config SND_MESON_CODEC_GLUE
- 	tristate
++	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
++	if (IS_ERR(at24->nvmem)) {
++		pm_runtime_disable(dev);
++		if (!pm_runtime_status_suspended(dev))
++			regulator_disable(at24->vcc_reg);
++		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
++				     "failed to register nvmem\n");
++	}
++
+ 	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
+ 	if (cdata == &at24_data_spd)
+ 		at24_probe_temp_sensor(client);
 -- 
 2.43.0
 
