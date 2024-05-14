@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D978C508C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:06:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AADD8C52F2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C89C1C213E4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C66D282E37
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B8B13DB83;
-	Tue, 14 May 2024 10:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F41B5A79B;
+	Tue, 14 May 2024 11:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDOYY7+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2QCwh8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D98E6A352;
-	Tue, 14 May 2024 10:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3CE5A4C0;
+	Tue, 14 May 2024 11:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683461; cv=none; b=VIC8nlT1cjOlBRvAYlWaP6n09DJBdTQZWnAeJK6yYEl1hSD6gW8RLMl1IhPHrSW/Yr40Phsp4ywPSXmrm13lyT6LlC6dHZhesgEKOAroA5SdkGjgi7dnq/pjuRm9cOBW3p7LqqRWWxFuloKy0g6WYjBFUqfrghEsaZBwILXy2wM=
+	t=1715686220; cv=none; b=rZb7/mi3QqOIvcp/8Vs1+467+Ar1OVuSThMpqIVkgY2CMqPV8IJRV3INO1//eudAiuwwK1DkZa7hLaAnkGZQQtWTqOi9ZvX9M39y16jZsAJ/3WF5NsM9rKU7xAryM7/zD0UPDFSQiSz30kfH5TLiDHUI7YNkdpS1nR6oSm5Qm1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683461; c=relaxed/simple;
-	bh=DnPKGkTaxBzpVP0dqcYwxdNwqt5JqAYEdW14RYs2pFo=;
+	s=arc-20240116; t=1715686220; c=relaxed/simple;
+	bh=SVTdvrNN70Ymfexa2ZRjrBgs6ZPF53vPTJq4dAOodU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQG9/L2W6YNRMOb2nnVGEpLDvq4aT9aC38+jp1Veq+C9mV0nyKAcw1+OFomGTvNbZ38LApzyhcgj064NYbY/nyfQNKNb6CFpQS/ORfpQd9iNOrX4+Il7VY+iRzVTGDtxuxi3nTSnh8ZdgWNqL0zSaNwDyCu8psz5bR5FFfud5Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDOYY7+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2384BC2BD10;
-	Tue, 14 May 2024 10:44:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MdGoMgTO+GnZf/AqijLJCFTOrLhYk/MftsGkpVjGssw5EYIuO7QKxcXosCkT/kXqs+r1m0A/ue0PlWCi/dO7fZxtimwUOvZgUiN4CwM+SZ6HjPXi8IP7bG/zmGUasRINxOrWXsmoTHZQ4AdACFO1RkvThT2SCnDr3B+Yc0K2qvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2QCwh8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9604C2BD10;
+	Tue, 14 May 2024 11:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683461;
-	bh=DnPKGkTaxBzpVP0dqcYwxdNwqt5JqAYEdW14RYs2pFo=;
+	s=korg; t=1715686220;
+	bh=SVTdvrNN70Ymfexa2ZRjrBgs6ZPF53vPTJq4dAOodU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDOYY7+m4961pbKivs847VsIBhKa7EdD02zr3zPh8sq354a9fe+c3R50od0o9BbIb
-	 PQgFQrMNepWBP5q5M4Tfm6NBNTocqqwtlYMGQT7cJ68ORTUwClsFLYQIipoT6sWe+o
-	 w46JgWTU5iUK0mZyMD40o0XJrxSY2CBN14yNeNO4=
+	b=a2QCwh8K2Jnr2ZGnC5Uv7saDAfqjscdXONyOiqfWbL22inJ3eFR+6n3D8I5LvorbV
+	 +i6RK/6wOoJyzjGROoEJB9KtLII0IZCDIb0CWFc4ixvrocsR6w0OUfxKt5O3G+9z5j
+	 VvYsSazgc43rfNVE4uXYhz9Oyqml7/F8VDZMM5T4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Simon Horman <horms@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 221/336] net-sysfs: convert dev->operstate reads to lockless ones
+Subject: [PATCH 6.1 063/236] net: qede: sanitize rc in qede_add_tc_flower_fltr()
 Date: Tue, 14 May 2024 12:17:05 +0200
-Message-ID: <20240514101046.959080444@linuxfoundation.org>
+Message-ID: <20240514101022.750540640@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,159 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-[ Upstream commit 004d138364fd10dd5ff8ceb54cfdc2d792a7b338 ]
+[ Upstream commit e25714466abd9d96901b15efddf82c60a38abd86 ]
 
-operstate_show() can omit dev_base_lock acquisition only
-to read dev->operstate.
+Explicitly set 'rc' (return code), before jumping to the
+unlock and return path.
 
-Annotate accesses to dev->operstate.
+By not having any code depend on that 'rc' remains at
+it's initial value of -EINVAL, then we can re-use 'rc' for
+the return code of function calls in subsequent patches.
 
-Writers still acquire dev_base_lock for mutual exclusion.
+Only compile tested.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 4893b8b3ef8d ("hsr: Simplify code for announcing HSR nodes timer setup")
+Stable-dep-of: fcee2065a178 ("net: qede: use return from qede_parse_flow_attr() for flower")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netlink.c |  3 ++-
- net/core/link_watch.c   |  4 ++--
- net/core/net-sysfs.c    |  4 +---
- net/core/rtnetlink.c    |  4 ++--
- net/hsr/hsr_device.c    | 10 +++++-----
- net/ipv6/addrconf.c     |  2 +-
- 6 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_filter.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index d415833fce91f..f17dbac7d8284 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -455,7 +455,8 @@ static int br_fill_ifinfo(struct sk_buff *skb,
- 			  u32 filter_mask, const struct net_device *dev,
- 			  bool getlink)
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+index 3010833ddde33..76aa5934e985b 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+@@ -1868,8 +1868,8 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 			    struct flow_cls_offload *f)
  {
--	u8 operstate = netif_running(dev) ? dev->operstate : IF_OPER_DOWN;
-+	u8 operstate = netif_running(dev) ? READ_ONCE(dev->operstate) :
-+					    IF_OPER_DOWN;
- 	struct nlattr *af = NULL;
- 	struct net_bridge *br;
- 	struct ifinfomsg *hdr;
-diff --git a/net/core/link_watch.c b/net/core/link_watch.c
-index 429571c258da7..1b93e054c9a3c 100644
---- a/net/core/link_watch.c
-+++ b/net/core/link_watch.c
-@@ -67,7 +67,7 @@ static void rfc2863_policy(struct net_device *dev)
- {
- 	unsigned char operstate = default_operstate(dev);
+ 	struct qede_arfs_fltr_node *n;
+-	int min_hlen, rc = -EINVAL;
+ 	struct qede_arfs_tuple t;
++	int min_hlen, rc;
  
--	if (operstate == dev->operstate)
-+	if (operstate == READ_ONCE(dev->operstate))
- 		return;
+ 	__qede_lock(edev);
  
- 	write_lock(&dev_base_lock);
-@@ -87,7 +87,7 @@ static void rfc2863_policy(struct net_device *dev)
- 		break;
+@@ -1879,8 +1879,10 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
  	}
  
--	dev->operstate = operstate;
-+	WRITE_ONCE(dev->operstate, operstate);
+ 	/* parse flower attribute and prepare filter */
+-	if (qede_parse_flow_attr(edev, proto, f->rule, &t))
++	if (qede_parse_flow_attr(edev, proto, f->rule, &t)) {
++		rc = -EINVAL;
+ 		goto unlock;
++	}
  
- 	write_unlock(&dev_base_lock);
- }
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index a09d507c5b03d..676048ae11831 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -318,11 +318,9 @@ static ssize_t operstate_show(struct device *dev,
- 	const struct net_device *netdev = to_net_dev(dev);
- 	unsigned char operstate;
- 
--	read_lock(&dev_base_lock);
--	operstate = netdev->operstate;
-+	operstate = READ_ONCE(netdev->operstate);
- 	if (!netif_running(netdev))
- 		operstate = IF_OPER_DOWN;
--	read_unlock(&dev_base_lock);
- 
- 	if (operstate >= ARRAY_SIZE(operstates))
- 		return -EINVAL; /* should not happen */
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 4e4e6c7399109..95e62235b5410 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -875,9 +875,9 @@ static void set_operstate(struct net_device *dev, unsigned char transition)
- 		break;
+ 	/* Validate profile mode and number of filters */
+ 	if ((edev->arfs->filter_count && edev->arfs->mode != t.mode) ||
+@@ -1888,12 +1890,15 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 		DP_NOTICE(edev,
+ 			  "Filter configuration invalidated, filter mode=0x%x, configured mode=0x%x, filter count=0x%x\n",
+ 			  t.mode, edev->arfs->mode, edev->arfs->filter_count);
++		rc = -EINVAL;
+ 		goto unlock;
  	}
  
--	if (dev->operstate != operstate) {
-+	if (READ_ONCE(dev->operstate) != operstate) {
- 		write_lock(&dev_base_lock);
--		dev->operstate = operstate;
-+		WRITE_ONCE(dev->operstate, operstate);
- 		write_unlock(&dev_base_lock);
- 		netdev_state_change(dev);
- 	}
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 9d71b66183daf..be0e43f46556e 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -31,8 +31,8 @@ static bool is_slave_up(struct net_device *dev)
- static void __hsr_set_operstate(struct net_device *dev, int transition)
- {
- 	write_lock(&dev_base_lock);
--	if (dev->operstate != transition) {
--		dev->operstate = transition;
-+	if (READ_ONCE(dev->operstate) != transition) {
-+		WRITE_ONCE(dev->operstate, transition);
- 		write_unlock(&dev_base_lock);
- 		netdev_state_change(dev);
- 	} else {
-@@ -78,14 +78,14 @@ static void hsr_check_announce(struct net_device *hsr_dev,
+ 	/* parse tc actions and get the vf_id */
+-	if (qede_parse_actions(edev, &f->rule->action, f->common.extack))
++	if (qede_parse_actions(edev, &f->rule->action, f->common.extack)) {
++		rc = -EINVAL;
+ 		goto unlock;
++	}
  
- 	hsr = netdev_priv(hsr_dev);
- 
--	if (hsr_dev->operstate == IF_OPER_UP && old_operstate != IF_OPER_UP) {
-+	if (READ_ONCE(hsr_dev->operstate) == IF_OPER_UP && old_operstate != IF_OPER_UP) {
- 		/* Went up */
- 		hsr->announce_count = 0;
- 		mod_timer(&hsr->announce_timer,
- 			  jiffies + msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
- 	}
- 
--	if (hsr_dev->operstate != IF_OPER_UP && old_operstate == IF_OPER_UP)
-+	if (READ_ONCE(hsr_dev->operstate) != IF_OPER_UP && old_operstate == IF_OPER_UP)
- 		/* Went down */
- 		del_timer(&hsr->announce_timer);
- }
-@@ -100,7 +100,7 @@ void hsr_check_carrier_and_operstate(struct hsr_priv *hsr)
- 	/* netif_stacked_transfer_operstate() cannot be used here since
- 	 * it doesn't set IF_OPER_LOWERLAYERDOWN (?)
- 	 */
--	old_operstate = master->dev->operstate;
-+	old_operstate = READ_ONCE(master->dev->operstate);
- 	has_carrier = hsr_check_carrier(master);
- 	hsr_set_operstate(master, has_carrier);
- 	hsr_check_announce(master->dev, old_operstate);
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 37d48aa073c3c..775f51cbc539b 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -6015,7 +6015,7 @@ static int inet6_fill_ifinfo(struct sk_buff *skb, struct inet6_dev *idev,
- 	    (dev->ifindex != dev_get_iflink(dev) &&
- 	     nla_put_u32(skb, IFLA_LINK, dev_get_iflink(dev))) ||
- 	    nla_put_u8(skb, IFLA_OPERSTATE,
--		       netif_running(dev) ? dev->operstate : IF_OPER_DOWN))
-+		       netif_running(dev) ? READ_ONCE(dev->operstate) : IF_OPER_DOWN))
- 		goto nla_put_failure;
- 	protoinfo = nla_nest_start_noflag(skb, IFLA_PROTINFO);
- 	if (!protoinfo)
+ 	if (qede_flow_find_fltr(edev, &t)) {
+ 		rc = -EEXIST;
 -- 
 2.43.0
 
