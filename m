@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-44149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9588C5176
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 071E68C5001
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6151F21E4E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EBBA1F21586
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7DC139587;
-	Tue, 14 May 2024 11:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286F6134CD3;
+	Tue, 14 May 2024 10:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpSM4r1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZVZelqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A46A54903;
-	Tue, 14 May 2024 11:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BF42D60A;
+	Tue, 14 May 2024 10:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684557; cv=none; b=MTMgdX3M2e6FuR1TqHJpyi9w5xY77+8+MpJMNB/8SC4A+g1n2TwSxotp4ZCo72cSzRQiiYZiAHZVwAxUIUKkvGcbqquD7/5kIzFGWqGCEomEgSfB/DMvbSRsf+4D7wrsw8oh1J4pXbS4zyJlT5iwaHSV8I2KFhXG8ojZH5POjBM=
+	t=1715682836; cv=none; b=tWfB7/pQ/iGIm6R5oUmSmSJjRC8ql+ZLPPIPJYqw1HHZ8yoIlUaCUkAsXszC/+3dPhYXKQzAegoSPiGhvl0jJ0GtlNJxhlV8qOgyOgY7NJlfZry0EcI+4sQSeZyUgcLk/CfXhmUtRNrhE0VCFerdDwI+I6XSETjQmoIKMaRLWng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684557; c=relaxed/simple;
-	bh=vDkJu9jMR85PH1Zfanl/8EgVbAcSbXHWIeFMu5Y/j6U=;
+	s=arc-20240116; t=1715682836; c=relaxed/simple;
+	bh=+OFs2eWCdI29s5dq2kPIky8xhAQxoBqLkqZU39Zyq7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRn1DoJroBhY1YQBWpAqXmk0M1bWHrZFay0LjZCTK+frsB970ECyl3wSOddCD3ykzBFL3f/bkFZ7oRPW+QkK5jLhM8FYyNRRYWpRvpmVUhroaANaulnzX6O5EHeBgQgN4Pl4kY5fSClTV4kJ4a/CplufYsfS0IF+eJLpjmjLEnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpSM4r1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9A4C2BD10;
-	Tue, 14 May 2024 11:02:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ctQrUogu5y/WwElAsPdhIuYp5YDe0eLpWDgYxC3LyLFfbJa+GN+W+d5EGT/nGb5nKWBYpT7E3Js9A71smrzy8ElJhCB6xi7FFgyjt+hm48AM9ZU0xCqPg8o4ZoF+JeAVA7mvpyvcqAJq/NJmUpfw3bK8w37YuEI821X9jFVED9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZVZelqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43204C2BD10;
+	Tue, 14 May 2024 10:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684557;
-	bh=vDkJu9jMR85PH1Zfanl/8EgVbAcSbXHWIeFMu5Y/j6U=;
+	s=korg; t=1715682836;
+	bh=+OFs2eWCdI29s5dq2kPIky8xhAQxoBqLkqZU39Zyq7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpSM4r1n5kkUQ5jomXD5Afo7oZbrPytTRiEO6pv7LY+pGS2UiqbKfhSydNyCFQfxy
-	 GasBhqHFNStd4PctkDdUG9ITseg7kMReycI/C31wSdv2IepeaCpoehpI5WOQaqiG3M
-	 fdiraeydq64dsRLfKna67hNrklveGGFAsQllfTHg=
+	b=QZVZelqgmD8dbjiMWcQ2hPAwz5EGfG9B8cA2k9nWcQp8c0Pqr+YcTt+IsjsFRLWHM
+	 FYhtJJSqZ0hvZdRqqpV0Zl2loh9jULjnRr3hZMlyM1BoxIpSVAwn9BZ06GUPJHGThj
+	 KrrQ+1PT1g9rIW9VepSwrKybOJqUx5DZTlG9l9lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve French <sfrench@samba.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	netfs@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/301] Fix a potential infinite loop in extract_user_to_sg()
+Subject: [PATCH 6.8 121/336] regulator: tps65132: Add of_match table
 Date: Tue, 14 May 2024 12:15:25 +0200
-Message-ID: <20240514101034.283493510@linuxfoundation.org>
+Message-ID: <20240514101043.172718531@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: André Apitzsch <git@apitzsch.eu>
 
-[ Upstream commit 6a30653b604aaad1bf0f2e74b068ceb8b6fc7aea ]
+[ Upstream commit a469158eaf8f4b10263b417856d923dfa38ae96d ]
 
-Fix extract_user_to_sg() so that it will break out of the loop if
-iov_iter_extract_pages() returns 0 rather than looping around forever.
+Add of_match table for "ti,tps65132" compatible string.
+This fixes automatic driver loading when using device-tree,
+and if built as a module like major linux distributions do.
 
-[Note that I've included two fixes lines as the function got moved to a
-different file and renamed]
-
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Fixes: f5f82cd18732 ("Move netfs_extract_iter_to_sg() to lib/scatterlist.c")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Steve French <sfrench@samba.org>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: netfs@lists.linux.dev
-Link: https://lore.kernel.org/r/1967121.1714034372@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Link: https://msgid.link/r/20240325-of_tps65132-v1-1-86a5f7ef4ede@apitzsch.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/scatterlist.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/tps65132-regulator.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/lib/scatterlist.c b/lib/scatterlist.c
-index 68b45c82c37a6..7bc2220fea805 100644
---- a/lib/scatterlist.c
-+++ b/lib/scatterlist.c
-@@ -1124,7 +1124,7 @@ static ssize_t extract_user_to_sg(struct iov_iter *iter,
- 	do {
- 		res = iov_iter_extract_pages(iter, &pages, maxsize, sg_max,
- 					     extraction_flags, &off);
--		if (res < 0)
-+		if (res <= 0)
- 			goto failed;
+diff --git a/drivers/regulator/tps65132-regulator.c b/drivers/regulator/tps65132-regulator.c
+index a06f5f2d79329..9c2f0dd42613d 100644
+--- a/drivers/regulator/tps65132-regulator.c
++++ b/drivers/regulator/tps65132-regulator.c
+@@ -267,10 +267,17 @@ static const struct i2c_device_id tps65132_id[] = {
+ };
+ MODULE_DEVICE_TABLE(i2c, tps65132_id);
  
- 		len = res;
++static const struct of_device_id __maybe_unused tps65132_of_match[] = {
++	{ .compatible = "ti,tps65132" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, tps65132_of_match);
++
+ static struct i2c_driver tps65132_i2c_driver = {
+ 	.driver = {
+ 		.name = "tps65132",
+ 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
++		.of_match_table = of_match_ptr(tps65132_of_match),
+ 	},
+ 	.probe = tps65132_probe,
+ 	.id_table = tps65132_id,
 -- 
 2.43.0
 
