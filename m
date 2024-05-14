@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-43946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BBC8C505A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:03:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A780F8C51CA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC672280E3D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:03:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12F7DB22475
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F1013CF8D;
-	Tue, 14 May 2024 10:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A3A13C690;
+	Tue, 14 May 2024 11:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFkpyutx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCLk4MY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40E613C684;
-	Tue, 14 May 2024 10:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02E213AD16;
+	Tue, 14 May 2024 11:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683257; cv=none; b=nES8naSF7ylsgXKX9ueMfF9or+YrMhwMRgOgCGOa4m5K6U1dg07vJzMYcbkSi1lP+Nyszd/NRkfqPym7NJekqPxKXldrVH1hea3Ed6gPPjY6+6O0IoP4XO2pV+m9FfTMQNBAEdUFO+jmQDyXbiRUGLUVD082c88K7Zq+pvES7vQ=
+	t=1715685036; cv=none; b=i4X57RjW+hXiK1rSileMU+NHS3OtQp53s2R+kyczmBjygxNtDCqTRc3TDj3SEaLxp6NDllmS7l9WAjM1bg8PrdjnjYPID0puPBlgS6AI7mH1Z6K9mICXsJ0jRH8yiI9gQuaCJMo63/GsrOP+pEkQIjcCRUd7mSgNzgJBOvMo1pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683257; c=relaxed/simple;
-	bh=79xzwZ/QmgcafRkmjddgtcflTrVicC11Pzelx6IzppQ=;
+	s=arc-20240116; t=1715685036; c=relaxed/simple;
+	bh=auhhlMzPZ13+UDSeFc0ow0lJSpxVchO8CNZleajY4A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OXzIIxmTHMDwQP7DG3kllO1wZARXVpXRPDAOIm6fjCBoDD1MNNLNCq0sN1oQLQY7r1vcc8iXOg1cNotf31wX+Gdbn0ctGqduoA8XOGjPfvl71R4JPw9YUHTai2k7NcFCO3I7sd7gxGUKnsKnu6lyOwCJBTZa1D1TLIgQGms6DUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFkpyutx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B525C2BD10;
-	Tue, 14 May 2024 10:40:54 +0000 (UTC)
+	 MIME-Version; b=ntsy6yCQR3Yv5lwGzXx11dclHaLQiifU1/U21gqCHFbm4hfdt3YKxK1PX6Lxy23hHflUe6ubGBf+WGCVg2suqMlidltTcqbmreX87/Vk7mGDxhnKdxuW6GpYsQ9+UYosuGAt89GpYGSdOV/r89RYikj6tOI8y36MER6HoM45Llk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCLk4MY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829E0C2BD10;
+	Tue, 14 May 2024 11:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683256;
-	bh=79xzwZ/QmgcafRkmjddgtcflTrVicC11Pzelx6IzppQ=;
+	s=korg; t=1715685036;
+	bh=auhhlMzPZ13+UDSeFc0ow0lJSpxVchO8CNZleajY4A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFkpyutxCXQzjJEOTezMUlMB/tHvO3pthtrv4Lx1lWB4/C4xSQNV4Ke08BTkWYvNh
-	 p82fS7TE/eBcrFO9cHaXA9g2DqgCjuKc0UIlbJ2om8eNyRjjj9Ene+oHotTAhfNeDX
-	 Y482p1L1skcRu07tF0AbfcCd5Mc0skI3n34zsqAw=
+	b=pCLk4MY5JAFWyhTdnqlerL9nXuLdTLliy8cfQKuCve/ptSDSTvpwCdcnrnTvdMw7P
+	 OF9PbsK3MaRAF7+lc9EJD+PwaYNKlY9wyBglzUME51D8qMyuYG3ix3A7oyy2dLOYlf
+	 xxp2NsY50MMH77qjWE6+61fIq8YOng+ilrj4UpoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.8 191/336] drm/radeon: silence UBSAN warning (v3)
+	Li Nan <linan122@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/301] block: fix overflow in blk_ioctl_discard()
 Date: Tue, 14 May 2024 12:16:35 +0200
-Message-ID: <20240514101045.814116782@linuxfoundation.org>
+Message-ID: <20240514101036.931833527@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 781d41fed19caf900c8405064676813dc9921d32 ]
+[ Upstream commit 22d24a544b0d49bbcbd61c8c0eaf77d3c9297155 ]
 
-Convert a variable sized array from [1] to [].
+There is no check for overflow of 'start + len' in blk_ioctl_discard().
+Hung task occurs if submit an discard ioctl with the following param:
+  start = 0x80000000000ff000, len = 0x8000000000fff000;
+Add the overflow validation now.
 
-v2: fix up a few more.
-v3: integrate comments from Kees.
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Tested-by: Jeff Johnson <quic_jjohnson@quicinc.com> (v2)
-Acked-by: Christian König <christian.koenig@amd.com> (v1)
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: keescook@chromium.org
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240329012319.2034550-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/pptable.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ block/ioctl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/pptable.h b/drivers/gpu/drm/radeon/pptable.h
-index 94947229888ba..b7f22597ee95e 100644
---- a/drivers/gpu/drm/radeon/pptable.h
-+++ b/drivers/gpu/drm/radeon/pptable.h
-@@ -424,7 +424,7 @@ typedef struct _ATOM_PPLIB_SUMO_CLOCK_INFO{
- typedef struct _ATOM_PPLIB_STATE_V2
+diff --git a/block/ioctl.c b/block/ioctl.c
+index d1d8e8391279a..68265f914c27b 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -89,7 +89,7 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
+ 		unsigned long arg)
  {
-       //number of valid dpm levels in this state; Driver uses it to calculate the whole 
--      //size of the state: sizeof(ATOM_PPLIB_STATE_V2) + (ucNumDPMLevels - 1) * sizeof(UCHAR)
-+      //size of the state: struct_size(ATOM_PPLIB_STATE_V2, clockInfoIndex, ucNumDPMLevels)
-       UCHAR ucNumDPMLevels;
-       
-       //a index to the array of nonClockInfos
-@@ -432,14 +432,14 @@ typedef struct _ATOM_PPLIB_STATE_V2
-       /**
-       * Driver will read the first ucNumDPMLevels in this array
-       */
--      UCHAR clockInfoIndex[1];
-+      UCHAR clockInfoIndex[] __counted_by(ucNumDPMLevels);
- } ATOM_PPLIB_STATE_V2;
+ 	uint64_t range[2];
+-	uint64_t start, len;
++	uint64_t start, len, end;
+ 	struct inode *inode = bdev->bd_inode;
+ 	int err;
  
- typedef struct _StateArray{
-     //how many states we have 
-     UCHAR ucNumEntries;
-     
--    ATOM_PPLIB_STATE_V2 states[1];
-+    ATOM_PPLIB_STATE_V2 states[] __counted_by(ucNumEntries);
- }StateArray;
+@@ -110,7 +110,8 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
+ 	if (len & 511)
+ 		return -EINVAL;
  
+-	if (start + len > bdev_nr_bytes(bdev))
++	if (check_add_overflow(start, len, &end) ||
++	    end > bdev_nr_bytes(bdev))
+ 		return -EINVAL;
  
-@@ -450,7 +450,7 @@ typedef struct _ClockInfoArray{
-     //sizeof(ATOM_PPLIB_CLOCK_INFO)
-     UCHAR ucEntrySize;
-     
--    UCHAR clockInfo[1];
-+    UCHAR clockInfo[] __counted_by(ucNumEntries);
- }ClockInfoArray;
- 
- typedef struct _NonClockInfoArray{
-@@ -460,7 +460,7 @@ typedef struct _NonClockInfoArray{
-     //sizeof(ATOM_PPLIB_NONCLOCK_INFO)
-     UCHAR ucEntrySize;
-     
--    ATOM_PPLIB_NONCLOCK_INFO nonClockInfo[1];
-+    ATOM_PPLIB_NONCLOCK_INFO nonClockInfo[] __counted_by(ucNumEntries);
- }NonClockInfoArray;
- 
- typedef struct _ATOM_PPLIB_Clock_Voltage_Dependency_Record
+ 	filemap_invalidate_lock(inode->i_mapping);
 -- 
 2.43.0
 
