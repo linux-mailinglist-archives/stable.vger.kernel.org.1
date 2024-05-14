@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-44896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09848C54DA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF2A8C5567
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADED1F22810
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27341C21DFD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1718253368;
-	Tue, 14 May 2024 11:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86211E4B1;
+	Tue, 14 May 2024 11:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHO9uF0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vj8ihD1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F6150278;
-	Tue, 14 May 2024 11:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CFBF9D4;
+	Tue, 14 May 2024 11:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687491; cv=none; b=NQrUdYxvMQfVar283kJPSya09OIP5j49zhapZWbYiPusNdUk35cyXR3zXV+uO2LIcGNWFP7wOVelbt416bfpEI5pxQWfKZ/JEpoVQ9U44+eqR7nNvYxC5eel8J3DDpPlbx/6wQcuEl+hLlEGFvW3PS+pcj7Ys1H1kcdtUoVkJk0=
+	t=1715687870; cv=none; b=twOsOdYyQOGDw31LfaW6BxOCbFnVlMvEDJWTYoCLlyn4s+0m3Jv715oCgT5uuW2XjEkSFjWKQ/IhOzF2H1dc5mG5ETIBdkyhgi5W0ryiZoH9WShl8ag6jTJ/t7t/VKMw7htpS0OCC8mX4/rsQ3yx2euKOjIBl1qLBRFbUt6hYUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687491; c=relaxed/simple;
-	bh=fKMLcaIwT6tuN4w7kBKhjRaBECGxRyRXh9VnJjLMocw=;
+	s=arc-20240116; t=1715687870; c=relaxed/simple;
+	bh=iPDtvHJeh5if4d+/JEUYkWFTChPjfttHxYCP1h5B3Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sC6WBXC56+zwy19hdRlh+eDMSnirYAOyDV0rBIgklRG0Dxtp4gujfypTTBfLGM2r0nutW+GD5waLiUHoCTvu/kbAeM0e2dNHHLO4N6vqLil42HaWkXSpyLIQ/EC6rEkuIBB3QM0+rOq6JmBG5yJX6JCnl9IBHbgOhJuAhZB0JDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHO9uF0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D947C2BD10;
-	Tue, 14 May 2024 11:51:30 +0000 (UTC)
+	 MIME-Version; b=rIOEprByfWSsh5M51U7VGaweKC5kkS5VPxp5nkVxxPsJWWHJdIq5dT6aWdSp49ee+Lt0XhvQzLCVB+c97Zi/qcU3U+95tIEMPZR5XzD5KnJmjv1AYALVeeWCGo1vZ247/VEDLDzwbXDKpVbaU9+xNpr7dywJeey0IexlMWX4HGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vj8ihD1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD6EC2BD10;
+	Tue, 14 May 2024 11:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687491;
-	bh=fKMLcaIwT6tuN4w7kBKhjRaBECGxRyRXh9VnJjLMocw=;
+	s=korg; t=1715687870;
+	bh=iPDtvHJeh5if4d+/JEUYkWFTChPjfttHxYCP1h5B3Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHO9uF0iwhX/hWExPAWSobTIuQxLUJkEywHMHVBNVsX+XuUj17I7fc2/Xe6QofNrV
-	 ln4HUI++xAInZh1GoNEosstqHY1sCJG2gunor+mS3ZRTTVtDQ+u10MNxbTCFBHbW1y
-	 b5iiDttFM/ood3JjFAV3L+SD0VaQUcW2zyZp7IlI=
+	b=vj8ihD1LtqaDaNl7pu1zB6qs9Womv7lDHmAXNkrVBT5fiE/uNmMMVL1BVPizwgeCS
+	 XSbsfquO+LneotZ6RM7x1C0LPJECYDqXuztiCumOKYyOS9yEEEBFai/E6Z6NKGfm6G
+	 o2Y2B7/acdv8vD4CmLR4YrUzHbLGxAmNSF8tHW9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 093/111] usb: typec: ucsi: Fix connector check on init
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Gabe Teeger <gabe.teeger@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 133/168] drm/amd/display: Atom Integrated System Info v2_2 for DCN35
 Date: Tue, 14 May 2024 12:20:31 +0200
-Message-ID: <20240514101000.665583025@linuxfoundation.org>
+Message-ID: <20240514101011.703177011@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Gabe Teeger <gabe.teeger@amd.com>
 
-commit ce4c8d21054ae9396cd759fe6e8157b525616dc4 upstream.
+[ Upstream commit 9a35d205f466501dcfe5625ca313d944d0ac2d60 ]
 
-Fix issues when initially checking for a connector change:
-- Use the correct connector number not the entire CCI.
-- Call ->read under the PPM lock.
-- Remove a bogus READ_ONCE.
+New request from KMD/VBIOS in order to support new UMA carveout
+model. This fixes a null dereference from accessing
+Ctx->dc_bios->integrated_info while it was NULL.
 
-Fixes: 808a8b9e0b87 ("usb: typec: ucsi: Check for notifications after init")
-Cc: stable@kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240401210515.1902048-1-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+DAL parses through the BIOS and extracts the necessary
+integrated_info but was missing a case for the new BIOS
+version 2.3.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Gabe Teeger <gabe.teeger@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1244,11 +1244,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 
- 	ucsi->ntfy = ntfy;
- 
-+	mutex_lock(&ucsi->ppm_lock);
- 	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	mutex_unlock(&ucsi->ppm_lock);
- 	if (ret)
- 		return ret;
--	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
--		ucsi_connector_change(ucsi, cci);
-+	if (UCSI_CCI_CONNECTOR(cci))
-+		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
- 
- 	return 0;
- 
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 228f098e5d88f..6bc8c6bee411e 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -2303,6 +2303,7 @@ static enum bp_result construct_integrated_info(
+ 				result = get_integrated_info_v2_1(bp, info);
+ 				break;
+ 			case 2:
++			case 3:
+ 				result = get_integrated_info_v2_2(bp, info);
+ 				break;
+ 			default:
+-- 
+2.43.0
+
 
 
 
