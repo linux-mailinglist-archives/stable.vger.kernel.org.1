@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-44744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370F48C5434
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B358C53BD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E452D1F21595
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EE6128864A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA503139D0A;
-	Tue, 14 May 2024 11:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80C812EBE8;
+	Tue, 14 May 2024 11:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+YNgp4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9Zn3Hte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D2B139CF3;
-	Tue, 14 May 2024 11:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C7812E1DA;
+	Tue, 14 May 2024 11:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687050; cv=none; b=SpN8XFayjgEw6O6yEgzZCANy2JoK9Rc9X7yapZyepe6ne+w4OCZfp1Kacy4Hclj6/wG6pOxZThGJ97pp/jjXKGI+6R0fols/V6VsrXk3Z+fPr6r5VbcO+RkC8NrEpSqxdu0PSR5OhHo6HtOJI0V5zgI+ndSb92nFs4VGoZW6dDM=
+	t=1715686734; cv=none; b=PrB0n9Kl4BvMLm/RnSTlpBZ/SJs+Jr7xlfkiC9XrRwFTuCHq0h+rEda4etIGbVpXoSwWLgI8RQumbzaXlkgHcNykLYQkwcSN/ilPj1KFvqTkf3lhT39BD16q/ngulpt6ibuivRffJVPLwF3STFf9nIRRVGu4Clr9Ps96BLd1YbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687050; c=relaxed/simple;
-	bh=wHNRsxsHzdDz2zt2rP+mIwqrTxnFGYSY99XMK0hr4uY=;
+	s=arc-20240116; t=1715686734; c=relaxed/simple;
+	bh=AI6C4XACa46aMitUWRusQ7aVS15SmNokgEzUEBV21Uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G30QU5+pFmguxq9vyBy4OTJEPXoWf2g5HzXZ6mee5yVGqVZPOVLXmNBNnu/NgYlc3wuBlLXQSgKQL+ZpDWlCdP+UgKoA7ViAMqdQmzG22EngdVzJgeItiY2s3jcUSZ/2V5WCQpV2ln+7keyPlb0Ew8FBZUS3tWujcmIjEjRpFEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+YNgp4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30216C2BD10;
-	Tue, 14 May 2024 11:44:10 +0000 (UTC)
+	 MIME-Version; b=hPNO2dohMIk1dNxIAKT1vA/vCOn3V2d3B/5QL9K1z2yz18B4M5yqlDN5WKNIumYm2dT8baAXb20DZghTargV0qnFd2bzjUF9yea+xaZfn0ECq6wxZtNhc4quUBTVUdfm52ehOLmtwf6RPgvd2oBtylssGOSzijaDDhUkSUZpYUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9Zn3Hte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6CAC2BD10;
+	Tue, 14 May 2024 11:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687050;
-	bh=wHNRsxsHzdDz2zt2rP+mIwqrTxnFGYSY99XMK0hr4uY=;
+	s=korg; t=1715686734;
+	bh=AI6C4XACa46aMitUWRusQ7aVS15SmNokgEzUEBV21Uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+YNgp4zXs4ubpG8Lh2LMu9BIktNeBBzDUNIBOlXvmiOyQ1hwgWmBNjvOWsNx07cv
-	 vmbf8PsARrJMad0wc8RkH+R+0UsgtiDHEvIXM7g9r2TaxfnQDt9jNkG5VsWUmmjp1K
-	 l8ITI71+lhVyH4747kxV4IX845BjlW9pv+WAisuM=
+	b=w9Zn3HteTVKQs7ni4pgvJh/EUZL+z+49qyO/CwikTEjmaDO7+891nBpxcZj2MaLak
+	 OJfCkId6Fk2H+kZKwRbbYGE9yzFqUjvYZ8ORfaOgGH56J7YphGtlkabMFaA1Fp84Wn
+	 cJ/DKfTl3b3oX6ZBGuMpEUwoCJxEkm3bAlM+zfMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 30/84] net: bridge: fix multicast-to-unicast with fraglist GSO
-Date: Tue, 14 May 2024 12:19:41 +0200
-Message-ID: <20240514100952.830004994@linuxfoundation.org>
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 220/236] drm/amdkfd: dont allow mapping the MMIO HDP page with large pages
+Date: Tue, 14 May 2024 12:19:42 +0200
+Message-ID: <20240514101028.708058293@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 59c878cbcdd80ed39315573b3511d0acfd3501b5 ]
+commit be4a2a81b6b90d1a47eaeaace4cc8e2cb57b96c7 upstream.
 
-Calling skb_copy on a SKB_GSO_FRAGLIST skb is not valid, since it returns
-an invalid linearized skb. This code only needs to change the ethernet
-header, so pskb_copy is the right function to call here.
+We don't get the right offset in that case.  The GPU has
+an unused 4K area of the register BAR space into which you can
+remap registers.  We remap the HDP flush registers into this
+space to allow userspace (CPU or GPU) to flush the HDP when it
+updates VRAM.  However, on systems with >4K pages, we end up
+exposing PAGE_SIZE of MMIO space.
 
-Fixes: 6db6f0eae605 ("bridge: multicast to unicast")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d8e408a82704 ("drm/amdkfd: Expose HDP registers to user space")
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_forward.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 4f8eb83976f10..0a1ca20f719da 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -253,7 +253,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1106,7 +1106,7 @@ static int kfd_ioctl_alloc_memory_of_gpu
+ 			goto err_unlock;
+ 		}
+ 		offset = dev->adev->rmmio_remap.bus_addr;
+-		if (!offset) {
++		if (!offset || (PAGE_SIZE > 4096)) {
+ 			err = -ENOMEM;
+ 			goto err_unlock;
+ 		}
+@@ -2215,7 +2215,7 @@ static int criu_restore_memory_of_gpu(st
+ 			return -EINVAL;
+ 		}
+ 		offset = pdd->dev->adev->rmmio_remap.bus_addr;
+-		if (!offset) {
++		if (!offset || (PAGE_SIZE > 4096)) {
+ 			pr_err("amdgpu_amdkfd_get_mmio_remap_phys_addr failed\n");
+ 			return -ENOMEM;
+ 		}
+@@ -2886,6 +2886,9 @@ static int kfd_mmio_mmap(struct kfd_dev
+ 	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
+ 		return -EINVAL;
  
--	skb = skb_copy(skb, GFP_ATOMIC);
-+	skb = pskb_copy(skb, GFP_ATOMIC);
- 	if (!skb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
--- 
-2.43.0
-
++	if (PAGE_SIZE > 4096)
++		return -EINVAL;
++
+ 	address = dev->adev->rmmio_remap.bus_addr;
+ 
+ 	vma->vm_flags |= VM_IO | VM_DONTCOPY | VM_DONTEXPAND | VM_NORESERVE |
 
 
 
