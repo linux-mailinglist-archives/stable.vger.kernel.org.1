@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9898C5250
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 867358C5110
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89F67282DB6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B826E1C20E30
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D53F12F360;
-	Tue, 14 May 2024 11:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1581512F59E;
+	Tue, 14 May 2024 10:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpQ1tpCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2ksuI+7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF23512EBCE;
-	Tue, 14 May 2024 11:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C803F12BF3D;
+	Tue, 14 May 2024 10:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685759; cv=none; b=BZ5cTRbmz4pjim+nz193gOPOljzZTKEu6UzxeGFBp655aMoUrhkKJmGml2w5u5COnxLQZ+e2mdPDeux5v3mvAn6POqix4PO0EotFe58YjL4dwZJEbaWewFTROFAB+teAi5SspUPeMLHOlWy3UW7KqZBPqssG7LICmHD6D2gFfus=
+	t=1715684028; cv=none; b=A9rNIIcK6zZrSfCAnKmQKBmtS5rWHC6hF+3CSh0mJqqyz1CZ34IPtoHkIAwJNiFCWogPjzvnKKdZ6x8VJMVaCDLaC70fKtnC++J8eMGxCmciuWD+Z5doOH/RoA6WHlFUMl5PaIKxPdKpJyzgG+WdT9IvLlXJ6qh5ddsOwNAsj38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685759; c=relaxed/simple;
-	bh=/yeEAeqlbyVB1eUHSxGPL98HsnstS70DUxioVAarWFg=;
+	s=arc-20240116; t=1715684028; c=relaxed/simple;
+	bh=RErsRqBzzE4anchPULmtNvBzpXuHVMfNo73A6Dt0/Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLD4D8BMoon2ElQ+N05ptXerycFRg8XgvmxJnO9ixmVNz312VrxNUn/ntkNgD55A7e1jWPEDUF5+wzAdSVLkgWuEYw7Z5gXZanqyLVE5Md8aweHQLKgkbVNh43yfx5wKQ4GwW7ylLqXZjAH0X/BvClCNCv+K0fh00KVIJAgNt9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpQ1tpCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF25C2BD10;
-	Tue, 14 May 2024 11:22:37 +0000 (UTC)
+	 MIME-Version; b=o/DOqpk9+vVWKzZ84MT0jLVdn7UEYY2WqBWzRLjCWSwnjvGuxySyReTNP8l6xO64HuLZ4ius/zqLn32ycLTv1few4OJQ/3jde+4X0Na86cE7tmd5pUxyyzDyTF37GGvVMF5SHfdsMWqiLDu7S2CenW1W2+Bc1MeZA3bL4a3M/tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2ksuI+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F59C2BD10;
+	Tue, 14 May 2024 10:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685758;
-	bh=/yeEAeqlbyVB1eUHSxGPL98HsnstS70DUxioVAarWFg=;
+	s=korg; t=1715684028;
+	bh=RErsRqBzzE4anchPULmtNvBzpXuHVMfNo73A6Dt0/Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mpQ1tpCNpATY0FFhIKoLwWTedjwamrl0cI5skT1o/Xa9E21iUMitdeGdoTmz7uThh
-	 kQEKdRrYkhEytlBOuUpgAqJy0kSZFtkAGXDsGXLEaGO2YpBgjcaLHYcT8ceIQO2HtE
-	 zzJ55H4u8LlhsMZe4oOjbEMA2CenvajVS/LuMaGI=
+	b=U2ksuI+7iOvOt5OS+l2yxDIPD8vaI7+TGwUOwoVaX2lYKkZdy3lTwknQpQ2GiIDcF
+	 +HOmIIVrmKjzfhcVAZ/xC1/hj6CkEP4DZY+I9yBzziB4TP74roatT/+q7HpApcjtaH
+	 8r/+6NXpLY2Euot3E0nB908JLk+QUv2a8ITCV5GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 242/301] btrfs: set correct ram_bytes when splitting ordered extent
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.8 309/336] net: fix out-of-bounds access in ops_init
 Date: Tue, 14 May 2024 12:18:33 +0200
-Message-ID: <20240514101041.391256783@linuxfoundation.org>
+Message-ID: <20240514101050.284204093@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 63a6ce5a1a6261e4c70bad2b55c4e0de8da4762e upstream.
+commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
 
-[BUG]
-When running generic/287, the following file extent items can be
-generated:
+net_alloc_generic is called by net_alloc, which is called without any
+locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
+is read twice, first to allocate an array, then to set s.len, which is
+later used to limit the bounds of the array access.
 
-        item 16 key (258 EXTENT_DATA 2682880) itemoff 15305 itemsize 53
-                generation 9 type 1 (regular)
-                extent data disk byte 1378414592 nr 462848
-                extent data offset 0 nr 462848 ram 2097152
-                extent compression 0 (none)
+It is possible that the array is allocated and another thread is
+registering a new pernet ops, increments max_gen_ptrs, which is then used
+to set s.len with a larger than allocated length for the variable array.
 
-Note that file extent item is not a compressed one, but its ram_bytes is
-way larger than its disk_num_bytes.
+Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
+max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
 
-According to btrfs on-disk scheme, ram_bytes should match disk_num_bytes
-if it's not a compressed one.
-
-[CAUSE]
-Since commit b73a6fd1b1ef ("btrfs: split partial dio bios before
-submit"), for partial dio writes, we would split the ordered extent.
-
-However the function btrfs_split_ordered_extent() doesn't update the
-ram_bytes even it has already shrunk the disk_num_bytes.
-
-Originally the function btrfs_split_ordered_extent() is only introduced
-for zoned devices in commit d22002fd37bd ("btrfs: zoned: split ordered
-extent when bio is sent"), but later commit b73a6fd1b1ef ("btrfs: split
-partial dio bios before submit") makes non-zoned btrfs affected.
-
-Thankfully for un-compressed file extent, we do not really utilize the
-ram_bytes member, thus it won't cause any real problem.
-
-[FIX]
-Also update btrfs_ordered_extent::ram_bytes inside
-btrfs_split_ordered_extent().
-
-Fixes: d22002fd37bd ("btrfs: zoned: split ordered extent when bio is sent")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ordered-data.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/core/net_namespace.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/ordered-data.c
-+++ b/fs/btrfs/ordered-data.c
-@@ -1202,6 +1202,7 @@ struct btrfs_ordered_extent *btrfs_split
- 	ordered->disk_bytenr += len;
- 	ordered->num_bytes -= len;
- 	ordered->disk_num_bytes -= len;
-+	ordered->ram_bytes -= len;
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -69,12 +69,15 @@ DEFINE_COOKIE(net_cookie);
  
- 	if (test_bit(BTRFS_ORDERED_IO_DONE, &ordered->flags)) {
- 		ASSERT(ordered->bytes_left == 0);
+ static struct net_generic *net_alloc_generic(void)
+ {
++	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
++	unsigned int generic_size;
+ 	struct net_generic *ng;
+-	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
++
++	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
+ 
+ 	ng = kzalloc(generic_size, GFP_KERNEL);
+ 	if (ng)
+-		ng->s.len = max_gen_ptrs;
++		ng->s.len = gen_ptrs;
+ 
+ 	return ng;
+ }
+@@ -1278,7 +1281,11 @@ static int register_pernet_operations(st
+ 		if (error < 0)
+ 			return error;
+ 		*ops->id = error;
+-		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
++		/* This does not require READ_ONCE as writers already hold
++		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
++		 * net_alloc_generic.
++		 */
++		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
+ 	}
+ 	error = __register_pernet_operations(list, ops);
+ 	if (error) {
 
 
 
