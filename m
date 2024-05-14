@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA86A8C515A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DBA68C4FD2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FAB3B216C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 889B52838C5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE51B135415;
-	Tue, 14 May 2024 10:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E00D12FF69;
+	Tue, 14 May 2024 10:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEiT0NBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5QGOfHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7DF2374E;
-	Tue, 14 May 2024 10:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB6F55C3B;
+	Tue, 14 May 2024 10:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684345; cv=none; b=iSODtE44BFq5YLKhE9kbgu3UdEhZGqKj6+VTS01lRlOkbb85p1Aubp2rK1SG1WbS8SqDVstuLA3xTGbuKv64DXu7iBzWTHWReRbL+gSn+YMRGVdWjLcRUcdLQRWUOoScr4wsbvFuNtH2ay6TrMSwtZPCkMG7S/QfyemdjDt8rqg=
+	t=1715682508; cv=none; b=vGDc6HH/pWkKQxEKgQ+Z6p+ETVPRZMt1CqdBK1C1ZaZDFcOWhLVU3vmKIEVO5lXlstCROrpbnVkatEeW8zu0VFPx0TR9T1EJSNv9lQt1hZJ6E6RZatklhtf+Cb3yjxQjzymsUK4QOq1JtHYE/hla40fDdnqTmuQaUpdU6OJMoYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684345; c=relaxed/simple;
-	bh=TeuAfgymTVBlLISmk4RR9LlHrSnIakFG9KCUYe//KhY=;
+	s=arc-20240116; t=1715682508; c=relaxed/simple;
+	bh=UgBSqk7EVh+5stuiDMaKJD9pi1yq0YhgcXry6bvybM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUaNyQ7P6CsXPar3y9t5Rz5iZI2kfdcFAKXE9bx6xO1IJGnE7QM9tTTVSRawRsN0B3Pz8Lrv9cV4o8pxocNGDMCWVUthsWHO+4NE6Axrq1dfz7CN4HS1yIBTlJj0Jj6/nPuGQk+7NVXqeivPh2jz4l2eiDajdao+xUziX/m4VzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEiT0NBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95E9C2BD10;
-	Tue, 14 May 2024 10:59:04 +0000 (UTC)
+	 MIME-Version; b=DMpVPKyv146jeFIi8pRbIURJC7N689nEqFb/GUq1giTP2h/i42HVEf15p3WHyvVoVsfd43Dcj9iX8+cnnTmB8ufistJ80xiB8B5cfLEIkz8Yc4fM0efx+YCWzOni0hEr/ieEmMyJlVolvXL5yAxiFY0mKNymskkEahhJXVC2Mr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5QGOfHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB53CC2BD10;
+	Tue, 14 May 2024 10:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684345;
-	bh=TeuAfgymTVBlLISmk4RR9LlHrSnIakFG9KCUYe//KhY=;
+	s=korg; t=1715682508;
+	bh=UgBSqk7EVh+5stuiDMaKJD9pi1yq0YhgcXry6bvybM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEiT0NBPJJ3i8e0MScWFalqpeQiAKfNEyNTkSBD6dtPCrQk5NI9lnPR7dazC73fXZ
-	 g6bbCN9lsw8h585ZG2VwdbMxtvcipACxjoFutrGPqnzhk1kF3VJ1fIm/eOzGo3OQ1p
-	 YJWWo+7dMUjSL52fxeKLtbH+hFXSkwL1YvQ2iidI=
+	b=O5QGOfHJOpAoWwQ7rKGpFUQphoCGvhHZOVnensTS80tifTiHiJsqzNguLy4ofiSNf
+	 spR/D4VAp8uhrPn21hfeSa2qJDltYqhhP5/VXls5mu3Hya+ZqXXEOrbU33yAZR0Ggu
+	 myVErVOVLTX6Ulld67GH/WrvnkS26G7vhno4LgS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Shashank Sharma <shashank.sharma@amd.com>,
+	Arvind Yadav <arvind.yadav@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/301] rust: module: place generated init_module() function in .init.text
+Subject: [PATCH 6.8 072/336] drm/amdgpu: fix doorbell regression
 Date: Tue, 14 May 2024 12:14:36 +0200
-Message-ID: <20240514101032.432772913@linuxfoundation.org>
+Message-ID: <20240514101041.324302630@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bertschinger <tahbertschinger@gmail.com>
+From: Shashank Sharma <shashank.sharma@amd.com>
 
-[ Upstream commit 1b6170ff7a203a5e8354f19b7839fe8b897a9c0d ]
+[ Upstream commit 705d0480e6ae5a73ca3a9c04316d0678e19a46ed ]
 
-Currently Rust kernel modules have their init code placed in the `.text`
-section of the .ko file. I don't think this causes any real problems
-for Rust modules as long as all code called during initialization lives
-in `.text`.
+This patch adds a missed handling of PL domain doorbell while
+handling VRAM faults.
 
-However, if a Rust `init_module()` function (that lives in `.text`)
-calls a function marked with `__init` (in C) or
-`#[link_section = ".init.text"]` (in Rust), then a warning is
-generated by modpost because that function lives in `.init.text`.
-For example:
-
-WARNING: modpost: fs/bcachefs/bcachefs: section mismatch in reference: init_module+0x6 (section: .text) -> _RNvXCsj7d3tFpT5JS_15bcachefs_moduleNtB2_8BcachefsNtCsjDtqRIL3JAG_6kernel6Module4init (section: .init.text)
-
-I ran into this while experimenting with converting the bcachefs kernel
-module from C to Rust. The module's `init()`, written in Rust, calls C
-functions like `bch2_vfs_init()` which are placed in `.init.text`.
-
-This patch places the macro-generated `init_module()` Rust function in
-the `.init.text` section. It also marks `init_module()` as unsafe--now
-it may not be called after module initialization completes because it
-may be freed already.
-
-Note that this is not enough on its own to actually get all the module
-initialization code in that section. The module author must still add
-the `#[link_section = ".init.text"]` attribute to the Rust `init()` in
-the `impl kernel::Module` block in order to then call `__init`
-functions. However, this patch enables module authors do so, when
-previously it would not be possible (without warnings).
-
-Signed-off-by: Thomas Bertschinger <tahbertschinger@gmail.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240206153806.567055-1-tahbertschinger@gmail.com
-[ Reworded title to add prefix. ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: 7044dcff8301 ("rust: macros: fix soundness issue in `module!` macro")
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
+Reviewed-by: Christian Koenig <christian.koenig@amd.com>
+Signed-off-by: Shashank Sharma <shashank.sharma@amd.com>
+Signed-off-by: Arvind Yadav <arvind.yadav@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/macros/module.rs | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index d62d8710d77ab..27979e582e4b9 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -222,10 +222,15 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             }};
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 851509c6e90eb..8d5413ffad301 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -424,7 +424,7 @@ bool amdgpu_res_cpu_visible(struct amdgpu_device *adev,
+ 		return false;
  
-             // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-+            /// # Safety
-+            ///
-+            /// This function must not be called after module initialization, because it may be
-+            /// freed after that completes.
-             #[cfg(MODULE)]
-             #[doc(hidden)]
-             #[no_mangle]
--            pub extern \"C\" fn init_module() -> core::ffi::c_int {{
-+            #[link_section = \".init.text\"]
-+            pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {{
-                 __init()
-             }}
+ 	if (res->mem_type == TTM_PL_SYSTEM || res->mem_type == TTM_PL_TT ||
+-	    res->mem_type == AMDGPU_PL_PREEMPT)
++	    res->mem_type == AMDGPU_PL_PREEMPT || res->mem_type == AMDGPU_PL_DOORBELL)
+ 		return true;
  
+ 	if (res->mem_type != TTM_PL_VRAM)
 -- 
 2.43.0
 
