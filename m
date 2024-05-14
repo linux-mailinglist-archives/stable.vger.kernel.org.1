@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3650A8C53CF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9378C5413
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36A3F1C208EC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCCA51C22A26
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E16612FB0D;
-	Tue, 14 May 2024 11:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD59135A6A;
+	Tue, 14 May 2024 11:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZbz3Umk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juUTBjiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD62913C685;
-	Tue, 14 May 2024 11:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785AC69D2F;
+	Tue, 14 May 2024 11:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686774; cv=none; b=EHM963yhO9CZRblFPrsb5Kec2xpjK9hfUNAIc4krpl0lQmP5zUtltj6SnlvA1wp7v7Z9S8FEGI9P/8QxVbLuCRW0b2d8pnNrCfWq52P9MRC0/A86dwZx/4J4PzzjWh1C43BJPzqJee1EikgO3fxFrkIG1g3R+zz1xb1uKLFJfn8=
+	t=1715686952; cv=none; b=JIjKkLpKYR5j89GUr9lkr0kc9WJRxfYbJLJmSrsTufT466KKfp+4xWbepZPo1Nqp4ShMrR8iszDAy2rBwk+09tfNXWgNjVAm2sDDUeQDLevtDTp2cPb1Qi//IZCxKTTz7s0yOEwm5fto8e0A9z+VCZmrFToUSk/AEVuki+C+PDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686774; c=relaxed/simple;
-	bh=9jYqjQ9XZk3ch8O+ZfzvGkn38ELw8Q8NjYkHrQtb6K0=;
+	s=arc-20240116; t=1715686952; c=relaxed/simple;
+	bh=FLm8YYXjr8vRWfF+hLoFJcm94zTzoYLFgnysE9gdcSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1CNSIkUibcIzi2snbl06fSs8ifRJIhm1R+sQoZwQeNoC5u7ZuudMdjfG+GDmmG0pA1iCazcoV6HmTaALpzJn2vkScDZou8bnTWPo1U6xT6q9UN3OTdtWFkD+0R3Loi3ztqsnGX7d5c+0S2GaYnS7Sv+qyBhVflas+qdGTsI34w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZbz3Umk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46342C2BD10;
-	Tue, 14 May 2024 11:39:34 +0000 (UTC)
+	 MIME-Version; b=Yf5mjpsJ/F6k8ADpS16fmveK9P3Pi4WQJnAickUVTLoMIGusSjARSUXC1lrnhk07RXtk4ML6ntZwn2TZUktiiaRENMDai5suLHihpDEwDQhvbtUTVTNKfCn0Ot2Lk3eSm/qa3OVONb2YvM2ry4LiaYGkkKl5DKD+U5omYVVYlw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juUTBjiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8C9C2BD10;
+	Tue, 14 May 2024 11:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686774;
-	bh=9jYqjQ9XZk3ch8O+ZfzvGkn38ELw8Q8NjYkHrQtb6K0=;
+	s=korg; t=1715686952;
+	bh=FLm8YYXjr8vRWfF+hLoFJcm94zTzoYLFgnysE9gdcSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZbz3UmkioUUJd1qoBXYraBvQk24ZnUwamJiOYwy/Da0pOU/elTa47N4g9mYdDW8z
-	 JMbSyEuPai1YA1GGSj93Qh+0/4PeMFOdKU+5MPAJVT1j67GvvhBMUhVgm9XFBZW/03
-	 MS7Hv5uY0IInxJHj7akvZJxr7q4kAOVqba4UgZQs=
+	b=juUTBjiMk8y5dzKjSfDD3ueKCqiza+QS2SWDisHScPVIWfmOxFR9kGI9CLvtXaxB3
+	 kmgtGGN1BZCuimj7my7g1yffc/BbY6UhnKFvlwrXOjyRy6KvYTPVMYUoDzU7PTp0fy
+	 o8tWckQCHHmM18Q9tNYrgJB1kpjXlRqy/fYZYVH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukul Joshi <mukul.joshi@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 05/63] drm/amdgpu: Fix leak when GPU memory allocation fails
+Subject: [PATCH 5.4 15/84] nfs: expose /proc/net/sunrpc/nfs in net namespaces
 Date: Tue, 14 May 2024 12:19:26 +0200
-Message-ID: <20240514100948.216527362@linuxfoundation.org>
+Message-ID: <20240514100952.267212335@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukul Joshi <mukul.joshi@amd.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 25e9227c6afd200bed6774c866980b8e36d033af ]
+[ Upstream commit d47151b79e3220e72ae323b8b8e9d6da20dc884e ]
 
-Free the sync object if the memory allocation fails for any
-reason.
+We're using nfs mounts inside of containers in production and noticed
+that the nfs stats are not exposed in /proc.  This is a problem for us
+as we use these stats for monitoring, and have to do this awkward bind
+mount from the main host into the container in order to get to these
+states.
 
-Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Add the rpc_proc_register call to the pernet operations entry and exit
+points so these stats can be exposed inside of network namespaces.
+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/inode.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index 13a03f467688a..e15f9da25c7d1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -1273,6 +1273,7 @@ int amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu(
- err_bo_create:
- 	unreserve_system_mem_limit(adev, size, alloc_domain, false);
- err_reserve_limit:
-+	amdgpu_sync_free(&(*mem)->sync);
- 	mutex_destroy(&(*mem)->lock);
- 	kfree(*mem);
- 	return ret;
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 3bddf5332b6d6..c154e7f98e6d8 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2179,11 +2179,13 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ static int nfs_net_init(struct net *net)
+ {
+ 	nfs_clients_init(net);
++	rpc_proc_register(net, &nfs_rpcstat);
+ 	return nfs_fs_proc_net_init(net);
+ }
+ 
+ static void nfs_net_exit(struct net *net)
+ {
++	rpc_proc_unregister(net, "nfs");
+ 	nfs_fs_proc_net_exit(net);
+ 	nfs_clients_exit(net);
+ }
+@@ -2242,15 +2244,12 @@ static int __init init_nfs_fs(void)
+ 	if (err)
+ 		goto out1;
+ 
+-	rpc_proc_register(&init_net, &nfs_rpcstat);
+-
+ 	err = register_nfs_fs();
+ 	if (err)
+ 		goto out0;
+ 
+ 	return 0;
+ out0:
+-	rpc_proc_unregister(&init_net, "nfs");
+ 	nfs_destroy_directcache();
+ out1:
+ 	nfs_destroy_writepagecache();
+@@ -2283,7 +2282,6 @@ static void __exit exit_nfs_fs(void)
+ 	nfs_destroy_nfspagecache();
+ 	nfs_fscache_unregister();
+ 	unregister_pernet_subsys(&nfs_net_ops);
+-	rpc_proc_unregister(&init_net, "nfs");
+ 	unregister_nfs_fs();
+ 	nfs_fs_proc_exit();
+ 	nfsiod_stop();
 -- 
 2.43.0
 
