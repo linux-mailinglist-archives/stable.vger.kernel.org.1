@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3027C8C51D4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AD88C52B9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26B9528216E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DC0A1F224F8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306B91386D5;
-	Tue, 14 May 2024 11:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F60212FF60;
+	Tue, 14 May 2024 11:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWyS8yZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKD/i6VQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E198F2B9AD;
-	Tue, 14 May 2024 11:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD5A7FBD3;
+	Tue, 14 May 2024 11:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685052; cv=none; b=o4y0n3u5bwdc76KA5VJ+vbwGbwDhjiFTMUll/ljYs5lnOV6xBrjAVgBcOty7qU1fH+3EQ22gPFK7eYWXupvsODUdB/Y/UQd0+z8qk0O3uyZCiBm1UAL3MCfAqWtZDx2Umx0QzreA0pHPjagOyGy65qFcDvoRucTvhK9tVi9yHZ8=
+	t=1715686079; cv=none; b=WIdcPlpdrKj5JdAkTRwwoBYUZiUXklA2INtwsu4z6IzgvxfImmFC2zPphcdOv+XfhGcvjlymgHcJQXxCJ8WhsOHeUP0DYallSvc/TK2xpUKt9Mm9hCZFhdLADu1w97f7NSgEmDRJq4+aoVikhzOlKiuoxQvXaOvEK/eBaq6xME8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685052; c=relaxed/simple;
-	bh=JPHSaVxIthyylBKBV+o5NCOR2Q1Mpgb+2caqJrA0d3Y=;
+	s=arc-20240116; t=1715686079; c=relaxed/simple;
+	bh=fWkXPuKn1sBgzjcEHzv1jFIqVjN1+mZMBqX4DnzIb1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVX5tDM3TZ3NqhhrXiCMVI5BWNi47jRUNycvuEBDFlVwP0o0BYltV+i+VoYINDDOYlty/1G03dA4VGCns/pttZH2HHGYkqD9uRCEepvotF5tex+IMUXm0VSH3di5dVD1VwbFsjapE1ZiynwzRTQZDzqOq9MB9r0dd79sEUSYjzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWyS8yZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068ECC2BD10;
-	Tue, 14 May 2024 11:10:50 +0000 (UTC)
+	 MIME-Version; b=KMe2hIwJ+gvM1FNpv2FRoUfJ3lhhXeB8OSq9Jpa+3Ehvv94Ov50IyZunu4T3VQrBZbbhJ1jDD40Bwk3TOTi4WqSN4tf0b0wWTVxR93CiBUcYdK2iZMkq3hmEJdWU56GRU+P3nTxkLHILOkDj5rQevcD3HQXYtLI6agQ6053PIWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKD/i6VQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960ECC2BD10;
+	Tue, 14 May 2024 11:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685051;
-	bh=JPHSaVxIthyylBKBV+o5NCOR2Q1Mpgb+2caqJrA0d3Y=;
+	s=korg; t=1715686079;
+	bh=fWkXPuKn1sBgzjcEHzv1jFIqVjN1+mZMBqX4DnzIb1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWyS8yZbNO4Qlv93fTRtGcpiLAnOHdtZWwUUMjDr0yjH+xS99bRj/AnOYqU7xyDAG
-	 bQ6fxGO/vH/xDk3xiKTVfv3tU+CBjL677ltHRnVKdjX8ZI3+B47yvtj44WcDhXQDm4
-	 9KrDy9LKP6XEp+g7e3WNEQAMla5hiJjqR4F11a8k=
+	b=XKD/i6VQQWFtu8hKpFh/vuFL1A/QQP7z+Io7tjORfydKNpWTmQKg69U2AY31wF6bS
+	 PpzrOmhLDBinHGX+W36r/tNHI9aKtzIF+/LsEOJLdkue4ocf/ixBx89EhxlArGN/yD
+	 asDY++rYHcklTRur5IcZX9wqUMNOmg0KTHe5p/Ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Ner <rohitner@google.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Can Guo <quic_cang@quicinc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/301] scsi: ufs: core: Fix MCQ MAC configuration
+Subject: [PATCH 6.1 005/236] eeprom: at24: Use dev_err_probe for nvmem register failure
 Date: Tue, 14 May 2024 12:16:07 +0200
-Message-ID: <20240514101035.877043382@linuxfoundation.org>
+Message-ID: <20240514101020.532141454@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohit Ner <rohitner@google.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 767712f91de76abd22a45184e6e3440120b8bfce ]
+[ Upstream commit a3c10035d12f5ec10915d5c00c2e8f7d7c066182 ]
 
-As per JEDEC Standard No. 223E Section 5.9.2, the max # active commands
-value programmed by the host sw in MCQConfig.MAC should be one less than
-the actual value.
+When using nvmem layouts it is possible devm_nvmem_register returns
+-EPROBE_DEFER, resulting in an 'empty' in
+/sys/kernel/debug/devices_deferred. Use dev_err_probe for providing
+additional information.
 
-Signed-off-by: Rohit Ner <rohitner@google.com>
-Link: https://lore.kernel.org/r/20240220095637.2900067-1-rohitner@google.com
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: f42c97027fb7 ("eeprom: at24: fix memory corruption race condition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/eeprom/at24.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 0787456c2b892..c873fd8239427 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -94,7 +94,7 @@ void ufshcd_mcq_config_mac(struct ufs_hba *hba, u32 max_active_cmds)
+diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+index 938c4f41b98c7..5aae2f9bdd51c 100644
+--- a/drivers/misc/eeprom/at24.c
++++ b/drivers/misc/eeprom/at24.c
+@@ -761,7 +761,8 @@ static int at24_probe(struct i2c_client *client)
+ 		pm_runtime_disable(dev);
+ 		if (!pm_runtime_status_suspended(dev))
+ 			regulator_disable(at24->vcc_reg);
+-		return PTR_ERR(at24->nvmem);
++		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
++				     "failed to register nvmem\n");
+ 	}
  
- 	val = ufshcd_readl(hba, REG_UFS_MCQ_CFG);
- 	val &= ~MCQ_CFG_MAC_MASK;
--	val |= FIELD_PREP(MCQ_CFG_MAC_MASK, max_active_cmds);
-+	val |= FIELD_PREP(MCQ_CFG_MAC_MASK, max_active_cmds - 1);
- 	ufshcd_writel(hba, val, REG_UFS_MCQ_CFG);
- }
- EXPORT_SYMBOL_GPL(ufshcd_mcq_config_mac);
+ 	/*
 -- 
 2.43.0
 
