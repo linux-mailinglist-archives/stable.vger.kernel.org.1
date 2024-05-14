@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7C48C53A8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BDC8C552D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEF3C1C218C5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836101C22E5E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F220B12DD9C;
-	Tue, 14 May 2024 11:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610823F9D2;
+	Tue, 14 May 2024 11:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbqVI5TF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yc7eoD9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B084480BE3;
-	Tue, 14 May 2024 11:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F58A2B9AD;
+	Tue, 14 May 2024 11:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686679; cv=none; b=a+WSDVV0zwShDXnj3xNcCaZcaG9ZX7ih2BnBdJi4sDat9lGYENoJvEfc0UZokNL3YTl45TOv+NekLtNOEr43jUt15HiMhl3hTfzHXlkV2EYkEEZEt95jZlvj1aZ788z/gt0IQd1Zd3eP88sHGnJCkEuOKr3AE12tFiHwd5KqLkY=
+	t=1715687705; cv=none; b=aYduOQWnczVUgbORpA/LR/sQ6SSE1yIGkPqnPTcH2WEyTtO3f8Gm8UwqHgEV1aGK3MJqcfiRdd5lq1NAqt0bm6BUXIgPT/eQ/PnGSMeTAIcwcavKTp++11u5+zoiKyjYre4hYgsEG/umvzKrBuYXDN4Xzq/qJt3kZqv7x5A/2hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686679; c=relaxed/simple;
-	bh=en9k31UJnObgTV/fQ9lxAv21F21XL8taC/jM9ZBdupk=;
+	s=arc-20240116; t=1715687705; c=relaxed/simple;
+	bh=08a5wbcztJlErCDg//quHR0rPqZMKJIs/XhoBw9t1iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfCsmdkDUL7zEF3AR3u6Mm7tNbeRhv1QpbQhSZjiDUCCuvSgn5SFGjQknrb92oa2DmEa7mZGYsJutHQVq+LLEetroZZoEZhGyIJCs5XwZKteWBSZ/8NO3hC+3YA/RlL/rjTFWvQ3Fyc2X+xP0JyMqiA14Q3l+VeBWAhLRfmpaPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbqVI5TF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394C7C2BD10;
-	Tue, 14 May 2024 11:37:59 +0000 (UTC)
+	 MIME-Version; b=O4jNEFCms8z5ZSOk13oIJymKNC44oazbhHJlASEDwRVczjrhY4POBqMHK1eOEEsuG7fQc4P9PIxn+J+w6dOaHw6mbClhgy5s8h+EEwuKEy+54UWcNPuNjtyQ6o8vdjC4ftn+WM9VqyS1YtFxa0U4iZQvwbV/TNmjp7xjPq5L1bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yc7eoD9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B781C2BD10;
+	Tue, 14 May 2024 11:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686679;
-	bh=en9k31UJnObgTV/fQ9lxAv21F21XL8taC/jM9ZBdupk=;
+	s=korg; t=1715687705;
+	bh=08a5wbcztJlErCDg//quHR0rPqZMKJIs/XhoBw9t1iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbqVI5TF7u8wJ0wLU+mRuaoWZKQatfjF+/rX2yVzqFozyt/KAAUkuaeBdKRdZ5meu
-	 PYYMGxSIlA7gfCkmKC5ACyxuA3T/QV98euD44NHaRc9LYSlB1YMjG8jbqqoeRRRH+p
-	 APyZPYR17DwjA9ik+t6b91G7ZZM9h18XQtLFtX4g=
+	b=Yc7eoD9pXIRvy2rseDfMdyyCGj7ABpOC/XCyk9f79yOWeVAZj7CpT4I5HxnYt0Dps
+	 G2YPvRHxu6G/F8VNKsw7l9ZzEZ6AnW5urMwc2pTL5S4jezA+Kt5MyE1wmDbgatfFVa
+	 iL84EsszF3nmMNZ/8w6M53Acj8C7itLeM1xdGlYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/236] gpiolib: cdev: fix uninitialised kfifo
-Date: Tue, 14 May 2024 12:19:02 +0200
-Message-ID: <20240514101027.193651593@linuxfoundation.org>
+Subject: [PATCH 5.15 045/168] ASoC: meson: axg-tdm-interface: manage formatters in trigger
+Date: Tue, 14 May 2024 12:19:03 +0200
+Message-ID: <20240514101008.393494517@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit ee0166b637a5e376118e9659e5b4148080f1d27e ]
+[ Upstream commit bf5e4887eeddb48480568466536aa08ec7f179a5 ]
 
-If a line is requested with debounce, and that results in debouncing
-in software, and the line is subsequently reconfigured to enable edge
-detection then the allocation of the kfifo to contain edge events is
-overlooked.  This results in events being written to and read from an
-uninitialised kfifo.  Read events are returned to userspace.
+So far, the formatters have been reset/enabled using the .prepare()
+callback. This was done in this callback because walking the formatters use
+a mutex so it could not be done in .trigger(), which is atomic by default.
 
-Initialise the kfifo in the case where the software debounce is
-already active.
+It turns out there is a problem on capture path of the AXG series.
+The FIFO may get out of sync with the TDM decoder if the IP are not enabled
+in a specific order. The FIFO must be enabled before the formatter starts
+producing data. IOW, we must deal with FE before the BE. The .prepare()
+callback is called on the BEs before the FE so it is not OK for the AXG.
 
-Fixes: 65cff7046406 ("gpiolib: cdev: support setting debounce")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240510065342.36191-1-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+The .trigger() callback order can be configured, and it deals with the FE
+before the BEs by default. To solve our problem, we just need to start and
+stop the formatters from the .trigger() callback. It is OK do so now that
+the links have been made 'nonatomic' in the card driver.
+
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20211020114217.133153-3-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ sound/soc/meson/axg-tdm-interface.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 6ee1074d49152..97e8335716b01 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1201,6 +1201,8 @@ static int edge_detector_update(struct line *line,
- 				struct gpio_v2_line_config *lc,
- 				unsigned int line_idx, u64 edflags)
- {
-+	u64 eflags;
-+	int ret;
- 	u64 active_edflags = READ_ONCE(line->edflags);
- 	unsigned int debounce_period_us =
- 			gpio_v2_line_config_debounce_period(lc, line_idx);
-@@ -1212,6 +1214,18 @@ static int edge_detector_update(struct line *line,
- 	/* sw debounced and still will be...*/
- 	if (debounce_period_us && READ_ONCE(line->sw_debounced)) {
- 		line_set_debounce_period(line, debounce_period_us);
-+		/*
-+		 * ensure event fifo is initialised if edge detection
-+		 * is now enabled.
-+		 */
-+		eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
-+		if (eflags && !kfifo_initialized(&line->req->events)) {
-+			ret = kfifo_alloc(&line->req->events,
-+					  line->req->event_buffer_size,
-+					  GFP_KERNEL);
-+			if (ret)
-+				return ret;
-+		}
- 		return 0;
- 	}
+diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
+index 60d132ab1ab78..f5145902360de 100644
+--- a/sound/soc/meson/axg-tdm-interface.c
++++ b/sound/soc/meson/axg-tdm-interface.c
+@@ -362,13 +362,29 @@ static int axg_tdm_iface_hw_free(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
  
+-static int axg_tdm_iface_prepare(struct snd_pcm_substream *substream,
++static int axg_tdm_iface_trigger(struct snd_pcm_substream *substream,
++				 int cmd,
+ 				 struct snd_soc_dai *dai)
+ {
+-	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
++	struct axg_tdm_stream *ts =
++		snd_soc_dai_get_dma_data(dai, substream);
++
++	switch (cmd) {
++	case SNDRV_PCM_TRIGGER_START:
++	case SNDRV_PCM_TRIGGER_RESUME:
++	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++		axg_tdm_stream_start(ts);
++		break;
++	case SNDRV_PCM_TRIGGER_SUSPEND:
++	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
++	case SNDRV_PCM_TRIGGER_STOP:
++		axg_tdm_stream_stop(ts);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+-	/* Force all attached formatters to update */
+-	return axg_tdm_stream_reset(ts);
++	return 0;
+ }
+ 
+ static int axg_tdm_iface_remove_dai(struct snd_soc_dai *dai)
+@@ -408,8 +424,8 @@ static const struct snd_soc_dai_ops axg_tdm_iface_ops = {
+ 	.set_fmt	= axg_tdm_iface_set_fmt,
+ 	.startup	= axg_tdm_iface_startup,
+ 	.hw_params	= axg_tdm_iface_hw_params,
+-	.prepare	= axg_tdm_iface_prepare,
+ 	.hw_free	= axg_tdm_iface_hw_free,
++	.trigger	= axg_tdm_iface_trigger,
+ };
+ 
+ /* TDM Backend DAIs */
 -- 
 2.43.0
 
