@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42DD18C5399
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163A78C54A3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDCA41F22C2E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47FEB1C23289
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146C912CD8A;
-	Tue, 14 May 2024 11:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C1612DD87;
+	Tue, 14 May 2024 11:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yALydrjb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGLeNECc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CEA12C554;
-	Tue, 14 May 2024 11:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5301781736;
+	Tue, 14 May 2024 11:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686633; cv=none; b=ebPRQ7U+A2izrBhOX47vUTT7hV911p0pQsQlGCyCfIoWBTRYvcQIoV6kYQ3AE/C7Ng/cnVdvOgwprvbzmsxwOi5+Ank87+Wdil6FfzdOTw2LMsDFDfPvvdHkqvmp9+zFj6hNtMj+nyBqjYHyS2O50ekeK/XL+1a/ZEyebmIOkpI=
+	t=1715687334; cv=none; b=u9VB8R4Ho/9xG7MqHPX9UYxzf0IwVeE3+vqrriHhTOfzHYkqamH2xueWGl7IrioyVbpl/N0HzzSMU/RfAi4aiVvvTvoxVt0csKsd6tnnfHW6kwGHybd+0Q8prt/ZYorLGzdpzktJKoiv9K0JxZtp0EzmLKEgy7Iv7/Zdeagygsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686633; c=relaxed/simple;
-	bh=akDS+qBCT3opHg4SZTH0dNly6vhHIJVbYSY3ipeoj1M=;
+	s=arc-20240116; t=1715687334; c=relaxed/simple;
+	bh=ul2o3YBXmh8zRe6WpbsmXBAehj6VV2/eITwF4wnQDpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ra3kXCc1O6ROgUsKyf2oTaranirXDoj4R6IQH2srca5LL49rVFPNYrCrhtyauXhLK3EAtgTqJXhKSoOjhFXbuj5MCas5zUI2L+B1+eNvd4qyeKLLBZEaAJYQ2PaiBMVCfgB1aQMcOjjxiWMM5QsmbkbTETcR+8jzHtYuex1TH/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yALydrjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C71C2BD10;
-	Tue, 14 May 2024 11:37:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LwUT8brqMfGSOKMq+TZPSrhq0ewX7eL7gfcFDVwUeDTiOf4BcUPFB0nd+1hNME8GUg+iuMHjT8exUtaZHT1aYukDBgdibOTro4uJkZAcvV0NBCaAudG7qsHEqDauOCBsCG+SY0feWIjEcNbgGN+W97JIi4yj+vsLgWjvmckJ3Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGLeNECc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC5DC2BD10;
+	Tue, 14 May 2024 11:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686633;
-	bh=akDS+qBCT3opHg4SZTH0dNly6vhHIJVbYSY3ipeoj1M=;
+	s=korg; t=1715687334;
+	bh=ul2o3YBXmh8zRe6WpbsmXBAehj6VV2/eITwF4wnQDpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yALydrjbhJ916f5PlfbxVyDhoNhYwOb4Zv4ydNBqgWkpS2ncN1bUdnHEBDErg0yOj
-	 mf2jPHRSyHQRNZ602LGzLkW/CRSHiFL8QvTF4nS3nZyQkxneFn8Vt/BMFlEbIhJqMo
-	 mz+a3PXb3tbJvBAUmjAy5uzwU9T3DtZP8m5JdLLU=
+	b=xGLeNECc6abDlOp1oXfYgsURUitQm2n96CdACpnwUrTmJ5wn4Xnv4x282pevqvzzb
+	 jTubKJpC6peNXcJ4hTOHBtnQ5hB+rlrh4fnAxZSz1JIlBfjhdTX8z88EmaKCKFdzyJ
+	 RPnVyKzyo81HaKKahdSF7Irln9dY6HGABJT2cgkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.1 205/236] mm/slab: make __free(kfree) accept error pointers
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 029/111] net: qede: use return from qede_parse_flow_attr() for flow_spec
 Date: Tue, 14 May 2024 12:19:27 +0200
-Message-ID: <20240514101028.145729203@linuxfoundation.org>
+Message-ID: <20240514100958.234203952@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-commit cd7eb8f83fcf258f71e293f7fc52a70be8ed0128 upstream.
+[ Upstream commit 27b44414a34b108c5a37cd5b4894f606061d86e7 ]
 
-Currently, if an automatically freed allocation is an error pointer that
-will lead to a crash.  An example of this is in wm831x_gpio_dbg_show().
+In qede_flow_spec_to_rule(), when calling
+qede_parse_flow_attr() then the return code
+was only used for a non-zero check, and then
+-EINVAL was returned.
 
-   171	char *label __free(kfree) = gpiochip_dup_line_label(chip, i);
-   172	if (IS_ERR(label)) {
-   173		dev_err(wm831x->dev, "Failed to duplicate label\n");
-   174		continue;
-   175  }
+qede_parse_flow_attr() can currently fail with:
+* -EINVAL
+* -EOPNOTSUPP
+* -EPROTONOSUPPORT
 
-The auto clean up function should check for error pointers as well,
-otherwise we're going to keep hitting issues like this.
+This patch changes the code to use the actual
+return code, not just return -EINVAL.
 
-Fixes: 54da6a092431 ("locking: Introduce __cleanup() based infrastructure")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: David Rientjes <rientjes@google.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The blaimed commit introduced qede_flow_spec_to_rule(),
+and this call to qede_parse_flow_attr(), it looks
+like it just duplicated how it was already used.
+
+Only compile tested.
+
+Fixes: 37c5d3efd7f8 ("qede: use ethtool_rx_flow_rule() to remove duplicated parser code")
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/slab.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qede/qede_filter.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -198,7 +198,7 @@ void kfree(const void *objp);
- void kfree_sensitive(const void *objp);
- size_t __ksize(const void *objp);
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+index 413e8331a0ce6..6e2913f2a791a 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+@@ -2011,10 +2011,9 @@ static int qede_flow_spec_to_rule(struct qede_dev *edev,
+ 	if (IS_ERR(flow))
+ 		return PTR_ERR(flow);
  
--DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
-+DEFINE_FREE(kfree, void *, if (!IS_ERR_OR_NULL(_T)) kfree(_T))
+-	if (qede_parse_flow_attr(edev, proto, flow->rule, t)) {
+-		err = -EINVAL;
++	err = qede_parse_flow_attr(edev, proto, flow->rule, t);
++	if (err)
+ 		goto err_out;
+-	}
  
- /**
-  * ksize - Report actual allocation size of associated object
+ 	/* Make sure location is valid and filter isn't already set */
+ 	err = qede_flow_spec_validate(edev, &flow->rule->action, t,
+-- 
+2.43.0
+
 
 
 
