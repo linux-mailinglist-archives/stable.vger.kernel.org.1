@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4A58C54A6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 965178C53B3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4008C1C23302
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5E281C22ABC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5156012DD91;
-	Tue, 14 May 2024 11:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BB812E1F8;
+	Tue, 14 May 2024 11:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKJplyBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbH8FbVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFBD47F4B;
-	Tue, 14 May 2024 11:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1087412E1E7;
+	Tue, 14 May 2024 11:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687340; cv=none; b=MPKIukINW961qGStPyJ+b+pktRrze8UraiXs3+RgVgLzGlxNSd9Jzn/YoFxyipihZX6CEDnZgJJ7ikxgtU8rWZuD+jGMA//9vDlkpIp8R4cBNoiPE/jEWQxjAxv/IlG7zz8wduj1qqzm/GA14UnYsz5Wak3VbvvVD8kDDHfaTqc=
+	t=1715686706; cv=none; b=kNDx+qf6cruEQgCSgLxoBapkqmcOCKrkNGEbEcyYIp0A2bBgJ90iMebB0ivY3KgjZi/WByN+9Xmpzm237OxgzFE/GVYhUceIBX0mtJKxDZ2AqN2sMngdOTT0JLoB12wmKRdrWKvmDhw4T3y7j4+aOZG6I26tP77FQ0zrY7Xzq9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687340; c=relaxed/simple;
-	bh=CC8w3wUDzsCzQ8cGt84MsbsriwMq5HLCPYFQoxh/iIg=;
+	s=arc-20240116; t=1715686706; c=relaxed/simple;
+	bh=Ptgi3DpB4w9hE5JCfCvbl8iIq/BbCJFTN6QWX4Gx9Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAUtcg6xj2AEnO3IepkvSRWEdJuNuFnES4R1Foo5PR3/Tm1U8jdNxZ7b0DGzWmqfNX+8BrKTI7tL9JGJaKejkVb0cF1KxPiA9uAFaB/73XMYgprg288R8PBuNHA+ycgIzoWRRjuXmgXrOY+QMmQOJGKi2uy25d7Z1sl++ORZDPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKJplyBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3CBC2BD10;
-	Tue, 14 May 2024 11:48:59 +0000 (UTC)
+	 MIME-Version; b=E91f44ZbxFNKyLUt+feQ+xDqXHQW8xbb69Pa7Vy4rqqQB2QAYsg8h/n8785yQJf9ES7R2Kfr/xbrtwp+jgwzLmQ6e2gnvZp0lRUSUxRTxJ0/1U7Z5qBa4YZaPoSdhLjgYTZF9178vGXyFaq9Iz4Ub9WNzgRMqhaniuNfvC7i3/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbH8FbVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DE9C2BD10;
+	Tue, 14 May 2024 11:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687339;
-	bh=CC8w3wUDzsCzQ8cGt84MsbsriwMq5HLCPYFQoxh/iIg=;
+	s=korg; t=1715686705;
+	bh=Ptgi3DpB4w9hE5JCfCvbl8iIq/BbCJFTN6QWX4Gx9Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKJplyBCZMcb6fAPsUfOTPMUmo2N2jWJH9fg1DKX0mMpiSv6+WR3wzNI4IU1yU5NH
-	 4Wr43c5irmxgXP8ZwEog6AS8zeENrEL/0YOgxAMx990ipCNrqxqeOmXPCwbtly0qqA
-	 otwQCip4BXUlXrFHYihUc3EkERF3S5RKXXc4i+gw=
+	b=HbH8FbVemNT0aosNgC3pyUjm/5h+2Pk/C4nrCoYtSKsbK9UsCoJ+8qFn7tURtebyf
+	 CbCra8vb3KfkBmwDDaY9r8yIoAEGS97VvB6/TT7rmNbAuOkBPa62JJOfLNihSZUDYs
+	 LulZ1EmaLeQtwMagH/gXQc6Uqr8Tj24XeQO7wMt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Smythies <dsmythies@telus.net>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/111] tools/power turbostat: Fix added raw MSR output
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 231/236] ksmbd: do not grant v2 lease if parent lease key and epoch are not set
 Date: Tue, 14 May 2024 12:19:53 +0200
-Message-ID: <20240514100959.225818602@linuxfoundation.org>
+Message-ID: <20240514101029.126620481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Smythies <dsmythies@telus.net>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit e5f4e68eed85fa8495d78cd966eecc2b27bb9e53 ]
+commit 691aae4f36f9825df6781da4399a1e718951085a upstream.
 
-When using --Summary mode, added MSRs in raw mode always
-print zeros. Print the actual register contents.
+This patch fix xfstests generic/070 test with smb2 leases = yes.
 
-Example, with patch:
+cifs.ko doesn't set parent lease key and epoch in create context v2 lease.
+ksmbd suppose that parent lease and epoch are vaild if data length is
+v2 lease context size and handle directory lease using this values.
+ksmbd should hanle it as v1 lease not v2 lease if parent lease key and
+epoch are not set in create context v2 lease.
 
-note the added column:
---add msr0x64f,u32,package,raw,REASON
-
-Where:
-
-0x64F is MSR_CORE_PERF_LIMIT_REASONS
-
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.00    4800    35      1.42    0.76    0x00000000
-0.00    4801    34      1.42    0.76    0x00000000
-80.08   4531    66      108.17  107.52  0x08000000
-98.69   4530    66      133.21  132.54  0x08000000
-99.28   4505    66      128.26  127.60  0x0c000400
-99.65   4486    68      124.91  124.25  0x0c000400
-99.63   4483    68      124.90  124.25  0x0c000400
-79.34   4481    41      99.80   99.13   0x0c000000
-0.00    4801    41      1.40    0.73    0x0c000000
-
-Where, for the test processor (i5-10600K):
-
-PKG Limit #1: 125.000 Watts, 8.000000 sec
-MSR bit 26 = log; bit 10 = status
-
-PKG Limit #2: 136.000 Watts, 0.002441 sec
-MSR bit 27 = log; bit 11 = status
-
-Example, without patch:
-
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.01    4800    35      1.43    0.77    0x00000000
-0.00    4801    35      1.39    0.73    0x00000000
-83.49   4531    66      112.71  112.06  0x00000000
-98.69   4530    68      133.35  132.69  0x00000000
-99.31   4500    67      127.96  127.30  0x00000000
-99.63   4483    69      124.91  124.25  0x00000000
-99.61   4481    69      124.90  124.25  0x00000000
-99.61   4481    71      124.92  124.25  0x00000000
-59.35   4479    42      75.03   74.37   0x00000000
-0.00    4800    42      1.39    0.73    0x00000000
-0.00    4801    42      1.42    0.76    0x00000000
-
-c000000
-
-[lenb: simplified patch to apply only to package scope]
-
-Signed-off-by: Doug Smythies <dsmythies@telus.net>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/server/oplock.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 9d4a249cc98bb..11f1b6288e123 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -1685,9 +1685,10 @@ int sum_counters(struct thread_data *t, struct core_data *c,
- 	average.packages.rapl_dram_perf_status += p->rapl_dram_perf_status;
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1208,7 +1208,9 @@ int smb_grant_oplock(struct ksmbd_work *
  
- 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW)
--			continue;
--		average.packages.counter[i] += p->counter[i];
-+		if ((mp->format == FORMAT_RAW) && (topo.num_packages == 0))
-+			average.packages.counter[i] = p->counter[i];
-+		else
-+			average.packages.counter[i] += p->counter[i];
+ 	/* Only v2 leases handle the directory */
+ 	if (S_ISDIR(file_inode(fp->filp)->i_mode)) {
+-		if (!lctx || lctx->version != 2)
++		if (!lctx || lctx->version != 2 ||
++		    (lctx->flags != SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE &&
++		     !lctx->epoch))
+ 			return 0;
  	}
- 	return 0;
- }
--- 
-2.43.0
-
+ 
+@@ -1470,8 +1472,9 @@ void create_lease_buf(u8 *rbuf, struct l
+ 		buf->lcontext.LeaseFlags = lease->flags;
+ 		buf->lcontext.Epoch = cpu_to_le16(lease->epoch);
+ 		buf->lcontext.LeaseState = lease->state;
+-		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
+-		       SMB2_LEASE_KEY_SIZE);
++		if (lease->flags == SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE)
++			memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
++			       SMB2_LEASE_KEY_SIZE);
+ 		buf->ccontext.DataOffset = cpu_to_le16(offsetof
+ 				(struct create_lease_v2, lcontext));
+ 		buf->ccontext.DataLength = cpu_to_le32(sizeof(struct lease_context_v2));
+@@ -1536,8 +1539,9 @@ struct lease_ctx_info *parse_lease_state
+ 		lreq->flags = lc->lcontext.LeaseFlags;
+ 		lreq->epoch = lc->lcontext.Epoch;
+ 		lreq->duration = lc->lcontext.LeaseDuration;
+-		memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
+-				SMB2_LEASE_KEY_SIZE);
++		if (lreq->flags == SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE)
++			memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
++			       SMB2_LEASE_KEY_SIZE);
+ 		lreq->version = 2;
+ 	} else {
+ 		struct create_lease *lc = (struct create_lease *)cc;
 
 
 
