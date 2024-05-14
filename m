@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9378C5413
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DC28C529E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCCA51C22A26
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2391A1F226DB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD59135A6A;
-	Tue, 14 May 2024 11:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D7613FD8D;
+	Tue, 14 May 2024 11:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juUTBjiM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVBAE4FB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785AC69D2F;
-	Tue, 14 May 2024 11:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28D54F1E5;
+	Tue, 14 May 2024 11:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686952; cv=none; b=JIjKkLpKYR5j89GUr9lkr0kc9WJRxfYbJLJmSrsTufT466KKfp+4xWbepZPo1Nqp4ShMrR8iszDAy2rBwk+09tfNXWgNjVAm2sDDUeQDLevtDTp2cPb1Qi//IZCxKTTz7s0yOEwm5fto8e0A9z+VCZmrFToUSk/AEVuki+C+PDk=
+	t=1715686011; cv=none; b=R5BTvi1szfDUzq7bw3BCaAiSyc34WMTR6JIRovvmFqdDphjYgDPCfninbFtLEkvqgnoUM+d+MJCUqWoSVMSA8ZEZRZmMBXjiKSXIAC4OSZDtFZxMjOLy/Upa6Jx1EIMUAM0Mlop1FFPaXUKEk4ZSqb366cJfpO3rij91K8TpD5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686952; c=relaxed/simple;
-	bh=FLm8YYXjr8vRWfF+hLoFJcm94zTzoYLFgnysE9gdcSY=;
+	s=arc-20240116; t=1715686011; c=relaxed/simple;
+	bh=IbTzhlLPRIrl3ec2SupDyk5fKYYFtZwylKHY3TaKfVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yf5mjpsJ/F6k8ADpS16fmveK9P3Pi4WQJnAickUVTLoMIGusSjARSUXC1lrnhk07RXtk4ML6ntZwn2TZUktiiaRENMDai5suLHihpDEwDQhvbtUTVTNKfCn0Ot2Lk3eSm/qa3OVONb2YvM2ry4LiaYGkkKl5DKD+U5omYVVYlw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juUTBjiM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8C9C2BD10;
-	Tue, 14 May 2024 11:42:31 +0000 (UTC)
+	 MIME-Version; b=YPr/N6xn8KcvVB+jPXsnoM4fcFCbfqRSAJtYhaOof8l319orkiwTJxHopa7tIB+DROvRu1hRRvnhITdG7/77c8oeos/eau8t/AK8gs8NCitGp1nwYwJEauUrzdvDPjUp1nYCM9FmkdbK2kNhcFMBbkOXG+ecjqgUJmB3+t6neow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVBAE4FB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9E3C2BD10;
+	Tue, 14 May 2024 11:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686952;
-	bh=FLm8YYXjr8vRWfF+hLoFJcm94zTzoYLFgnysE9gdcSY=;
+	s=korg; t=1715686011;
+	bh=IbTzhlLPRIrl3ec2SupDyk5fKYYFtZwylKHY3TaKfVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=juUTBjiMk8y5dzKjSfDD3ueKCqiza+QS2SWDisHScPVIWfmOxFR9kGI9CLvtXaxB3
-	 kmgtGGN1BZCuimj7my7g1yffc/BbY6UhnKFvlwrXOjyRy6KvYTPVMYUoDzU7PTp0fy
-	 o8tWckQCHHmM18Q9tNYrgJB1kpjXlRqy/fYZYVH0=
+	b=hVBAE4FB5MOOgz0vAXKrdBh6XunaiGb0vtDliaQkMfoLy3iJ7V5zQKtuWksoFdXJX
+	 quwVnrc8Hw82wRp2gqQc7uNs2HnBYryVKEgNFzIF+Xft5HzRagU7HNqhRzuMv8IbGA
+	 5Ql75GBDarME09dys/OMGqZox5Kjew7A3RFG3+n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 15/84] nfs: expose /proc/net/sunrpc/nfs in net namespaces
+	Doug Anderson <dianders@chromium.org>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 295/301] Bluetooth: qca: fix wcn3991 device address check
 Date: Tue, 14 May 2024 12:19:26 +0200
-Message-ID: <20240514100952.267212335@linuxfoundation.org>
+Message-ID: <20240514101043.398893832@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit d47151b79e3220e72ae323b8b8e9d6da20dc884e ]
+commit 66c39332d02d65e311ec89b0051130bfcd00c9ac upstream.
 
-We're using nfs mounts inside of containers in production and noticed
-that the nfs stats are not exposed in /proc.  This is a problem for us
-as we use these stats for monitoring, and have to do this awkward bind
-mount from the main host into the container in order to get to these
-states.
+Qualcomm Bluetooth controllers may not have been provisioned with a
+valid device address and instead end up using the default address
+00:00:00:00:5a:ad.
 
-Add the rpc_proc_register call to the pernet operations entry and exit
-points so these stats can be exposed inside of network namespaces.
+This address is now used to determine if a controller has a valid
+address or if one needs to be provided through devicetree or by user
+space before the controller can be used.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It turns out that the WCN3991 controllers used in Chromium Trogdor
+machines use a different default address, 39:98:00:00:5a:ad, which also
+needs to be marked as invalid so that the correct address is fetched
+from the devicetree.
+
+Qualcomm has unfortunately not yet provided any answers as to whether
+the 39:98 encodes a hardware id and if there are other variants of the
+default address that needs to be handled by the driver.
+
+For now, add the Trogdor WCN3991 default address to the device address
+check to avoid having these controllers start with the default address
+instead of their assigned addresses.
+
+Fixes: 32868e126c78 ("Bluetooth: qca: fix invalid device address check")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btqca.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 3bddf5332b6d6..c154e7f98e6d8 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2179,11 +2179,13 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- static int nfs_net_init(struct net *net)
- {
- 	nfs_clients_init(net);
-+	rpc_proc_register(net, &nfs_rpcstat);
- 	return nfs_fs_proc_net_init(net);
- }
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 216826c31ee3..cfa71708397b 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -16,6 +16,7 @@
+ #define VERSION "0.1"
  
- static void nfs_net_exit(struct net *net)
- {
-+	rpc_proc_unregister(net, "nfs");
- 	nfs_fs_proc_net_exit(net);
- 	nfs_clients_exit(net);
- }
-@@ -2242,15 +2244,12 @@ static int __init init_nfs_fs(void)
- 	if (err)
- 		goto out1;
+ #define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
++#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98, 0x39 }})
  
--	rpc_proc_register(&init_net, &nfs_rpcstat);
--
- 	err = register_nfs_fs();
- 	if (err)
- 		goto out0;
+ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
+ 			 enum qca_btsoc_type soc_type)
+@@ -638,8 +639,10 @@ static int qca_check_bdaddr(struct hci_dev *hdev)
+ 	}
  
- 	return 0;
- out0:
--	rpc_proc_unregister(&init_net, "nfs");
- 	nfs_destroy_directcache();
- out1:
- 	nfs_destroy_writepagecache();
-@@ -2283,7 +2282,6 @@ static void __exit exit_nfs_fs(void)
- 	nfs_destroy_nfspagecache();
- 	nfs_fscache_unregister();
- 	unregister_pernet_subsys(&nfs_net_ops);
--	rpc_proc_unregister(&init_net, "nfs");
- 	unregister_nfs_fs();
- 	nfs_fs_proc_exit();
- 	nfsiod_stop();
+ 	bda = (struct hci_rp_read_bd_addr *)skb->data;
+-	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT))
++	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT) ||
++	    !bacmp(&bda->bdaddr, QCA_BDADDR_WCN3991)) {
+ 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
++	}
+ 
+ 	kfree_skb(skb);
+ 
 -- 
-2.43.0
+2.45.0
 
 
 
