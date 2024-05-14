@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02DB8C5261
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 999598C536B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436EC282CB3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3852F2869CA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF31F12F598;
-	Tue, 14 May 2024 11:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5506B1272D6;
+	Tue, 14 May 2024 11:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j06qQ4wc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcJYrs84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB746311D;
-	Tue, 14 May 2024 11:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A2A5FB9C;
+	Tue, 14 May 2024 11:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685836; cv=none; b=AQfjxrPiEtxvUJ0spA2US1rIdY9GeU4BIyEvOpcwWcfwAFAmwDHsVhMhiRFW14GUZypkvVqqz+4Mk/qv2UfN8S818I4TWnf3D7PjsDArRMjvwmDfCCl8JAx5caVbalN1u0EI5K29aEM3vPdbpZuPJvtFFIZr//LKmyctniJtapo=
+	t=1715686514; cv=none; b=S9tcjWGazZI5LF/mMoP+4XGI6SrTQv3XBROn4Krs3a3ZisY5SSs+1uS998OW5BLqxhPqWjsDpUdHHVPhIt6SI0hqEnJey+I12xzdp2DQV7o4QfuWw0I8QglAWdMPYa36sLfW+V/BaySig65MECaLitj+FJiv8PAku9leptk8zso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685836; c=relaxed/simple;
-	bh=7mZgd8438yw1sV3PrAKUP2A3GAgsG8m0zWW5JIcBfMo=;
+	s=arc-20240116; t=1715686514; c=relaxed/simple;
+	bh=C0tPZBuqU/1zQh+FXCgmI+Mrn2hkHrjicqTHceQLIxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1B1L+xC+ICFj36LH1siigEcq2uhRSh/QdIvAogLwEcwFclI5owf1+CsV8xOHuN+tX55ekwkuKjeAk7FQ23a5dSFei6APpNxieW+7X6yeBGC8TOD8c7uiO2ofz5l5zsPcONQtkVgSbd7CoEP3vLbwVlXuvxmwJLGEyBSZbLceI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j06qQ4wc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622C8C2BD10;
-	Tue, 14 May 2024 11:23:55 +0000 (UTC)
+	 MIME-Version; b=HSp2NSko7KsVGhZOufXwq7Iq6nVB8glta4orCKbje/Lmg5N9nh3WNGq6YxDcwkQ5vzXxwTQakpvFhFh4xHje98TVxuVmYDSH0Dj3yApBR/bXrf0Ka9ZKS1hvao6StK2/AJNiRje1aq0uSpLaY/USdi9Sk32CgBv2xJuB+ZwjBVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcJYrs84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFBDC2BD10;
+	Tue, 14 May 2024 11:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685836;
-	bh=7mZgd8438yw1sV3PrAKUP2A3GAgsG8m0zWW5JIcBfMo=;
+	s=korg; t=1715686513;
+	bh=C0tPZBuqU/1zQh+FXCgmI+Mrn2hkHrjicqTHceQLIxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j06qQ4wcaxozTytmSjFsSAqSG4LUWbzUP3Gl6kwr4bMYmtuFfOwe0WLTjmdT6+xOX
-	 KNhx4smSi5ylZsxcXv3qvSB4ogJ3pCoPfbA4WiWNWBqypwl6bCGxuWxNHrhfvQS285
-	 oEPPx62IPYW4c9nQg9Qmy8Q9syHytY6Qi9pphJEA=
+	b=JcJYrs845bOCvxNfTuO5FF8fNW2p9omp2NkG3a6OYdSVGJoZLgjYgSW8SmRwxUtO5
+	 FEHCWYuKnv8Ku7L/6GMpecxfjQorDy5x58xRL1DgjFWHkXeEPLRgdtbhezwN8DOWZq
+	 qg1mUKd4Huat1m73h+d4HNgBk6jxEYu2mMRm6TOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 256/301] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 165/236] ipv6: prevent NULL dereference in ip6_output()
 Date: Tue, 14 May 2024 12:18:47 +0200
-Message-ID: <20240514101041.922871377@linuxfoundation.org>
+Message-ID: <20240514101026.622891829@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d85cf67a339685beae1d0aee27b7f61da95455be upstream.
+[ Upstream commit 4db783d68b9b39a411a96096c10828ff5dfada7a ]
 
-The EXT_RGMII_OOB_CTRL register can be written from different
-contexts. It is predominantly written from the adjust_link
-handler which is synchronized by the phydev->lock, but can
-also be written from a different context when configuring the
-mii in bcmgenet_mii_config().
+According to syzbot, there is a chance that ip6_dst_idev()
+returns NULL in ip6_output(). Most places in IPv6 stack
+deal with a NULL idev just fine, but not here.
 
-The chances of contention are quite low, but it is conceivable
-that adjust_link could occur during resume when WoL is enabled
-so use the phydev->lock synchronizer in bcmgenet_mii_config()
-to be sure.
+syzbot reported:
 
-Fixes: afe3f907d20f ("net: bcmgenet: power on MII block for all MII modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+general protection fault, probably for non-canonical address 0xdffffc00000000bc: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x00000000000005e0-0x00000000000005e7]
+CPU: 0 PID: 9775 Comm: syz-executor.4 Not tainted 6.9.0-rc5-syzkaller-00157-g6a30653b604a #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ RIP: 0010:ip6_output+0x231/0x3f0 net/ipv6/ip6_output.c:237
+Code: 3c 1e 00 49 89 df 74 08 4c 89 ef e8 19 58 db f7 48 8b 44 24 20 49 89 45 00 49 89 c5 48 8d 9d e0 05 00 00 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 4c 8b 74 24 28 0f 85 61 01 00 00 8b 1b 31 ff
+RSP: 0018:ffffc9000927f0d8 EFLAGS: 00010202
+RAX: 00000000000000bc RBX: 00000000000005e0 RCX: 0000000000040000
+RDX: ffffc900131f9000 RSI: 0000000000004f47 RDI: 0000000000004f48
+RBP: 0000000000000000 R08: ffffffff8a1f0b9a R09: 1ffffffff1f51fad
+R10: dffffc0000000000 R11: fffffbfff1f51fae R12: ffff8880293ec8c0
+R13: ffff88805d7fc000 R14: 1ffff1100527d91a R15: dffffc0000000000
+FS:  00007f135c6856c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000080 CR3: 0000000064096000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_xmit+0xefe/0x17f0 net/ipv6/ip6_output.c:358
+  sctp_v6_xmit+0x9f2/0x13f0 net/sctp/ipv6.c:248
+  sctp_packet_transmit+0x26ad/0x2ca0 net/sctp/output.c:653
+  sctp_packet_singleton+0x22c/0x320 net/sctp/outqueue.c:783
+  sctp_outq_flush_ctrl net/sctp/outqueue.c:914 [inline]
+  sctp_outq_flush+0x6d5/0x3e20 net/sctp/outqueue.c:1212
+  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
+  sctp_do_sm+0x59cc/0x60c0 net/sctp/sm_sideeffect.c:1169
+  sctp_primitive_ASSOCIATE+0x95/0xc0 net/sctp/primitive.c:73
+  __sctp_connect+0x9cd/0xe30 net/sctp/socket.c:1234
+  sctp_connect net/sctp/socket.c:4819 [inline]
+  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
+  __sys_connect_file net/socket.c:2048 [inline]
+  __sys_connect+0x2df/0x310 net/socket.c:2065
+  __do_sys_connect net/socket.c:2075 [inline]
+  __se_sys_connect net/socket.c:2072 [inline]
+  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 778d80be5269 ("ipv6: Add disable_ipv6 sysctl to disable IPv6 operaion on specific interface.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Link: https://lore.kernel.org/r/20240507161842.773961-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmmii.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET MDIO routines
-  *
-- * Copyright (c) 2014-2017 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 17fe401bc299a..fb26401950e7e 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -224,7 +224,7 @@ int ip6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	skb->protocol = htons(ETH_P_IPV6);
+ 	skb->dev = dev;
  
- #include <linux/acpi.h>
-@@ -274,6 +274,7 @@ int bcmgenet_mii_config(struct net_devic
- 	 * block for the interface to work, unconditionally clear the
- 	 * Out-of-band disable since we do not need it.
- 	 */
-+	mutex_lock(&phydev->lock);
- 	reg = bcmgenet_ext_readl(priv, EXT_RGMII_OOB_CTRL);
- 	reg &= ~OOB_DISABLE;
- 	if (priv->ext_phy) {
-@@ -285,6 +286,7 @@ int bcmgenet_mii_config(struct net_devic
- 			reg |= RGMII_MODE_EN;
- 	}
- 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
-+	mutex_unlock(&phydev->lock);
- 
- 	if (init)
- 		dev_info(kdev, "configuring instance for %s\n", phy_name);
+-	if (unlikely(READ_ONCE(idev->cnf.disable_ipv6))) {
++	if (unlikely(!idev || READ_ONCE(idev->cnf.disable_ipv6))) {
+ 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
+ 		kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED);
+ 		return 0;
+-- 
+2.43.0
+
 
 
 
