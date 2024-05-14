@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A13C8C556F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EBF8C555C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7879283A6E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAC8A1F222B8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7953512EBC5;
-	Tue, 14 May 2024 11:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7720B1E4B1;
+	Tue, 14 May 2024 11:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Es/adYI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKidl5z0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D2366B5E;
-	Tue, 14 May 2024 11:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E8AF9D4;
+	Tue, 14 May 2024 11:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687398; cv=none; b=ukZTYy+dcjf7y4uDPXCFH3DpYQO+VdbVAfzGMVqP3ew35v454NjE6L0J5Ly8nEyRVe6TOVAPfMJszpyFyCxeOTHBcJP95wajAiYUDvwBielFI+0upNX/gppmjku0cIrjocz1e+YAbJkYzTEL2PH5FV94Eb7kY1jFQQtbAJA6lOI=
+	t=1715687836; cv=none; b=XCABD/j5+dkJQuPtoaAFwhEBw4NyQ/AKT8Qhy+eTrMTmKTPNaSuEH5tnqFCZJsCTvimjxXtAuzufIxqXAkLBV2ygyBZ/2AgXxibW2c9rL+IK3PKta3UWr2mRK1lIFa/BsodbTM0OAwKlPN0l9uWiKdc+ZCkGP6nVOvYwx4Qpqpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687398; c=relaxed/simple;
-	bh=DAeinNjlOLEv/NB1u7UUSuttkD9GPpiPiwN41MT5qJI=;
+	s=arc-20240116; t=1715687836; c=relaxed/simple;
+	bh=EYbikkwR5l2RZBWzaSnYIYntwu6Vs12sn40emkBxiYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S98yyyzLxkZj0xlAiPkeHeYaGCRzY59HmdnWL5cERyIhj9OTobVia9igy8Kp0fJF6eeP1OnlQ+hG4VCC50KfPznh1eiAKOy0PXnHAnN6nZwSx66b2JfmdUPGyZqTGnT8014a3Zy8njFn/0Q4NGcgNENUY6XV0r1gQ4GW8oU/BEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Es/adYI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60876C2BD10;
-	Tue, 14 May 2024 11:49:57 +0000 (UTC)
+	 MIME-Version; b=f6KixKcnabuUjPKh8L5O9+pgUHqwveBWCAoUU3rsaD4os22ThKsbIvawI951jDBDcoBFxOwgOb+cVjM5macEQS5tlu2kXBHsRq4WWsaBhwheXFGLJV8J69EKHI39+2BY2+taVWtc051TUasOzUn1A2v0xrsCtLuw3bRulQrr0NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKidl5z0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6394EC32781;
+	Tue, 14 May 2024 11:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687397;
-	bh=DAeinNjlOLEv/NB1u7UUSuttkD9GPpiPiwN41MT5qJI=;
+	s=korg; t=1715687835;
+	bh=EYbikkwR5l2RZBWzaSnYIYntwu6Vs12sn40emkBxiYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Es/adYI9NvQI48QcZVqnHhm6rQoVgdyN+n9pxhTkPYpqTxRVjmsv0HPGifhNTeahC
-	 XNtrN+FxAlLKl9k+N2sAJ+dvZJsH9+orzDTDJ27dyXA9y0kXkTqIYEm1oK6VDdzk0I
-	 GiKHgoWgV+kDY4d5toAQ/pu9dqkh3vI61POgYU6M=
+	b=gKidl5z0ztxd9oAfIFIBkh3FW/LlAfYneNtBPoaIG0N2kxlrD0o1qr5r3z+TgQN8I
+	 Q8KTE93ZSbn8XhE3EUOUCbugeGIagGG9qT+5FpieoWaQBV8bvqPTPCP7m0V/3y1UFT
+	 qOMjpDp2sqXnkrA9Lsx+1P92QZi+QRGFJt5htVOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jie Wang <wangjie125@huawei.com>,
+	Guangbin Huang <huangguangbin2@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/111] hwmon: (corsair-cpro) Use complete_all() instead of complete() in ccp_raw_event()
+Subject: [PATCH 5.15 122/168] net: hns3: refactor hns3 makefile to support hns3_common module
 Date: Tue, 14 May 2024 12:20:20 +0200
-Message-ID: <20240514101000.248789394@linuxfoundation.org>
+Message-ID: <20240514101011.289793958@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 3a034a7b0715eb51124a5263890b1ed39978ed3a ]
+[ Upstream commit 5f20be4e90e603d8967962f81ac89307fd4f8af9 ]
 
-In ccp_raw_event(), the ccp->wait_input_report completion is
-completed once. Since we're waiting for exactly one report in
-send_usb_cmd(), use complete_all() instead of complete()
-to mark the completion as spent.
+Currently we plan to refactor PF and VF cmdq module. A new file folder
+hns3_common will be created to store new common APIs used by PF and VF
+cmdq module. Thus the PF and VF compilation process will both depends on
+the hns3_common. This may cause parallel building problems if we add a new
+makefile building unit.
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-3-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+So this patch combined the PF and VF makefile scripts to the top level
+makefile to support the new hns3_common which will be created in the next
+patch.
+
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6639a7b95321 ("net: hns3: change type of numa_node_mask as nodemask_t")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-cpro.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/Makefile       | 14 +++++++++++---
+ .../net/ethernet/hisilicon/hns3/hns3pf/Makefile    | 12 ------------
+ .../net/ethernet/hisilicon/hns3/hns3vf/Makefile    | 10 ----------
+ 3 files changed, 11 insertions(+), 25 deletions(-)
+ delete mode 100644 drivers/net/ethernet/hisilicon/hns3/hns3pf/Makefile
+ delete mode 100644 drivers/net/ethernet/hisilicon/hns3/hns3vf/Makefile
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 78c93c142fecf..7000a6af5092d 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -140,7 +140,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 		return 0;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/Makefile b/drivers/net/ethernet/hisilicon/hns3/Makefile
+index 7aa2fac76c5e8..32e24e0945f5e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/Makefile
++++ b/drivers/net/ethernet/hisilicon/hns3/Makefile
+@@ -4,9 +4,8 @@
+ #
  
- 	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
--	complete(&ccp->wait_input_report);
-+	complete_all(&ccp->wait_input_report);
+ ccflags-y += -I$(srctree)/$(src)
+-
+-obj-$(CONFIG_HNS3) += hns3pf/
+-obj-$(CONFIG_HNS3) += hns3vf/
++ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3pf
++ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3vf
  
- 	return 0;
- }
+ obj-$(CONFIG_HNS3) += hnae3.o
+ 
+@@ -14,3 +13,12 @@ obj-$(CONFIG_HNS3_ENET) += hns3.o
+ hns3-objs = hns3_enet.o hns3_ethtool.o hns3_debugfs.o
+ 
+ hns3-$(CONFIG_HNS3_DCB) += hns3_dcbnl.o
++
++obj-$(CONFIG_HNS3_HCLGEVF) += hclgevf.o
++hclgevf-objs = hns3vf/hclgevf_main.o hns3vf/hclgevf_cmd.o hns3vf/hclgevf_mbx.o  hns3vf/hclgevf_devlink.o
++
++obj-$(CONFIG_HNS3_HCLGE) += hclge.o
++hclge-objs = hns3pf/hclge_main.o hns3pf/hclge_cmd.o hns3pf/hclge_mdio.o hns3pf/hclge_tm.o \
++		hns3pf/hclge_mbx.o hns3pf/hclge_err.o  hns3pf/hclge_debugfs.o hns3pf/hclge_ptp.o hns3pf/hclge_devlink.o
++
++hclge-$(CONFIG_HNS3_DCB) += hns3pf/hclge_dcb.o
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/Makefile b/drivers/net/ethernet/hisilicon/hns3/hns3pf/Makefile
+deleted file mode 100644
+index d1bf5c4c0abbc..0000000000000
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/Makefile
++++ /dev/null
+@@ -1,12 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0+
+-#
+-# Makefile for the HISILICON network device drivers.
+-#
+-
+-ccflags-y := -I $(srctree)/drivers/net/ethernet/hisilicon/hns3
+-ccflags-y += -I $(srctree)/$(src)
+-
+-obj-$(CONFIG_HNS3_HCLGE) += hclge.o
+-hclge-objs = hclge_main.o hclge_cmd.o hclge_mdio.o hclge_tm.o hclge_mbx.o hclge_err.o  hclge_debugfs.o hclge_ptp.o hclge_devlink.o
+-
+-hclge-$(CONFIG_HNS3_DCB) += hclge_dcb.o
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/Makefile b/drivers/net/ethernet/hisilicon/hns3/hns3vf/Makefile
+deleted file mode 100644
+index 51ff7d86ee906..0000000000000
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/Makefile
++++ /dev/null
+@@ -1,10 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0+
+-#
+-# Makefile for the HISILICON network device drivers.
+-#
+-
+-ccflags-y := -I $(srctree)/drivers/net/ethernet/hisilicon/hns3
+-ccflags-y += -I $(srctree)/$(src)
+-
+-obj-$(CONFIG_HNS3_HCLGEVF) += hclgevf.o
+-hclgevf-objs = hclgevf_main.o hclgevf_cmd.o hclgevf_mbx.o  hclgevf_devlink.o
 -- 
 2.43.0
 
