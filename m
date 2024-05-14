@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58828C5205
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8D88C50B8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 472B8B20ACB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E80FB20F57
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837A5129A93;
-	Tue, 14 May 2024 11:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B90274E10;
+	Tue, 14 May 2024 10:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ1u8ewm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jdi9Jt7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4030D6CDC4;
-	Tue, 14 May 2024 11:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3D76E60F;
+	Tue, 14 May 2024 10:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685354; cv=none; b=AMVSWzXhJO4urXL6tlZJdoKmqRXbS321EUhwLVkzHdTnx6cp1sRX7q7o4p4Zav2okh28QcpDLr33yjYSL7CphwHjrog6jbkJhiNNkEx5/Fb3YWL5SDYC9gbblBHTC0l/91Cdhwa2dgpq264VosCW4EaxDxyI+ohhGcsl/lkcrbM=
+	t=1715683608; cv=none; b=IjHBwtG9jk0JWQahGg4FZ6+rjnsgA7+RraFaxNY82mveg4Nv9FkC+jnNFCBiATUhZayQ3kNMsLo8xWEc3pqkpRXYr17M+uY/XdDVoVbzpm5ShknXNBI0xokBVP2VWE5CwYbgbZN9DlKfJB2fAuFed01eLBFRwZc+hMK0VCImE1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685354; c=relaxed/simple;
-	bh=vzPZ5Q8tWs5AmL952cd/N7r9rt7XG7GooyTKA9X5Sic=;
+	s=arc-20240116; t=1715683608; c=relaxed/simple;
+	bh=YttjMzh581FiVqt4jfpoVa/ODbabL01hqyAnDIAZT9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMMm8rxz6iwIIVtFR9/A0rn9hEj9vUlF3pwNwHdJZ7bFGoUE1fhTL5TCuJ5YiGIByKz8L9rrL0DaTJGSt+w4IW64qcX2ij9+f0VG+wj9M77kQPzR2NxJggJwhiG101Jqv0jHOhjqUtVvQMDfYMQPIUymVnR0dM8UcKjFehaJd0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ1u8ewm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594B6C2BD10;
-	Tue, 14 May 2024 11:15:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NU+4XBnwYkZ30DkUTAC26q8LsvfigCZUoLK7a8B3Ah/s8htwcT4ixMmGGS4OeuGrNnVS8msKUJxugUqdFTs3NbISzcp+mJ7x8rcalZlcLxOMoBfEJHdU+vswx9XXvsNp1fH8HFGmMxl5f+KMGg18OeZpwwYRTZcsNbWu7G4yYtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jdi9Jt7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1A5C2BD10;
+	Tue, 14 May 2024 10:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685353;
-	bh=vzPZ5Q8tWs5AmL952cd/N7r9rt7XG7GooyTKA9X5Sic=;
+	s=korg; t=1715683607;
+	bh=YttjMzh581FiVqt4jfpoVa/ODbabL01hqyAnDIAZT9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJ1u8ewmef2JSsWTbKG/GYlYgJIQmnvdfAbCAnETBAjNY2TXzYkjsV0MIOB9Ykc3F
-	 aCQmvMMbA2lnHn2eC3ncZFXvALrjKWITv0vwSpYkoe1zr2v0C0ygbBawTZCxo5xXHr
-	 h658zO5Z3qNGRnKTmM50kIZ8PtLSFtToiKtRC7HQ=
+	b=Jdi9Jt7WjqbUzSxiyFvHVeTyOBOq3OUGUvC8CN6aa9wiTvb35/DWslz7dXiwxnMIR
+	 5aOo4YghFE4YP5XCN1DtaZ6q8Kmfr75dXia6h+eCwH9b/GtCXphLixlDDj8GvNvBsF
+	 D6RpXYs2iRRg1tRq+dWsEBmlvFEh02/2POUc77tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/301] qibfs: fix dentry leak
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
+	Jeremy Day <jsday@noreason.ca>
+Subject: [PATCH 6.8 241/336] drm/amdgpu: Fix comparison in amdgpu_res_cpu_visible
 Date: Tue, 14 May 2024 12:17:25 +0200
-Message-ID: <20240514101038.826782468@linuxfoundation.org>
+Message-ID: <20240514101047.713008755@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Michel Dänzer <mdaenzer@redhat.com>
 
-[ Upstream commit aa23317d0268b309bb3f0801ddd0d61813ff5afb ]
+commit 8d2c930735f850e5be6860aeb39b27ac73ca192f upstream.
 
-simple_recursive_removal() drops the pinning references to all positives
-in subtree.  For the cases when its argument has been kept alive by
-the pinning alone that's exactly the right thing to do, but here
-the argument comes from dcache lookup, that needs to be balanced by
-explicit dput().
+It incorrectly claimed a resource isn't CPU visible if it's located at
+the very end of CPU visible VRAM.
 
-Fixes: e41d237818598 "qib_fs: switch to simple_recursive_removal()"
-Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3343
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-and-Tested-by: Jeremy Day <jsday@noreason.ca>
+Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/qib/qib_fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
-index ed7d4b02f45a6..11155e0fb8395 100644
---- a/drivers/infiniband/hw/qib/qib_fs.c
-+++ b/drivers/infiniband/hw/qib/qib_fs.c
-@@ -439,6 +439,7 @@ static int remove_device_files(struct super_block *sb,
- 		return PTR_ERR(dir);
- 	}
- 	simple_recursive_removal(dir, NULL);
-+	dput(dir);
- 	return 0;
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -432,7 +432,7 @@ bool amdgpu_res_cpu_visible(struct amdgp
  
--- 
-2.43.0
-
+ 	amdgpu_res_first(res, 0, res->size, &cursor);
+ 	while (cursor.remaining) {
+-		if ((cursor.start + cursor.size) >= adev->gmc.visible_vram_size)
++		if ((cursor.start + cursor.size) > adev->gmc.visible_vram_size)
+ 			return false;
+ 		amdgpu_res_next(&cursor, cursor.size);
+ 	}
 
 
 
