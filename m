@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-44422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0048E8C52C7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE12D8C51C2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AC31F227C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BC691C217E7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A0813048E;
-	Tue, 14 May 2024 11:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6500013C66F;
+	Tue, 14 May 2024 11:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7kQBpCf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNi/SUAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9946840862;
-	Tue, 14 May 2024 11:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224C313B287;
+	Tue, 14 May 2024 11:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686116; cv=none; b=Dfwp5Jiu89K3+ev/cSPWoKIllwcAn7HZ6w14urYsRLzG9zmSNO6YByRhh9PFx8IueSadPErgiNN8qZfiob8eDhorQaZLppZoVX7gt8PGPZJE7NFrnkrxvqw94bYH4f/dgA2oPd+FvgeKt7N+4++ebxYRn5AkGdlMqFNgq1MPFbs=
+	t=1715684991; cv=none; b=hFrQSlL6mgb25vld1vpS0E7XGX0L44Qr0cHDBw2z5f8BLNOJhweRZIuUCvTLVhqH0Xge//mwgQ6OhekMJEka958D3Rx7VJD0Qtz/qGZ7N6TixgElNI/Tl87kjxnFmtT3iPFVOGjIBVzmhbcj/lYlAvh0d9fk9X7Ch86pbaYB5Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686116; c=relaxed/simple;
-	bh=R0L8rVDh2U1EXoi+bKRZZeU+9YL2hNtv2y3xDgSWZIg=;
+	s=arc-20240116; t=1715684991; c=relaxed/simple;
+	bh=E9N6uVbucIWdnidfGxPlPUc+HgD985D8sxHpeL2wmls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=equ9Gg/Kz8WT5PLpBwpz4kN/4uFR9Y7V3iFOR1iYeL4Bs4n/e1MAkfuB0PPmtsaM7zWwrn2T0Ltii0D6NqCveAwHad6VaKJMFZc2hhGEUfsQJnO4lJaSE/FDb+J8Gtcy2ZRo0lOOwWtThMsrzLKtrF+/P9JzyaLGLnPbcdKo20g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7kQBpCf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AC6C2BD10;
-	Tue, 14 May 2024 11:28:35 +0000 (UTC)
+	 MIME-Version; b=AowTBaNOm5MVWzgMXtswChwi263Juvr5xHTrfU2pgYpmoig45yrqrCnx9QU1++gSj2Z5WBD2dvQ14vQy1MVObGiRxCrGy/y+eb0kVqaW7e/ymu79B3ARUEDb633FSAjoqA8A4O1MUOpbiY9KDzlPoRBMeJ7GcINo0DQ58YCJgns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNi/SUAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF3FC32781;
+	Tue, 14 May 2024 11:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686116;
-	bh=R0L8rVDh2U1EXoi+bKRZZeU+9YL2hNtv2y3xDgSWZIg=;
+	s=korg; t=1715684991;
+	bh=E9N6uVbucIWdnidfGxPlPUc+HgD985D8sxHpeL2wmls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V7kQBpCfAxy90aq3TQlTXu8sNisAHVatsxIRUvoNn5RggOsgKlgThEyTXouyS00xz
-	 gV10F0sZbGImEzhejzanOYcbun5FaYgprZxg+ZzXoR9tugrC1LBZWjTNP2Fb9Rcg/Z
-	 tLiV+GqOVPuI0chZDyOfNzUyLojliH0xDmUzy76M=
+	b=fNi/SUAOlF5uFe3JBfrZzCGzgmrATldPR9spszEbwJxntwiqOUU+ZxP0QOy7Vd0yl
+	 /wrl1bRHCbksm9U1qEe5ii4J+45RPLqC2vsNw9y7YhSkqGAzjSwcAcd8pHU7W5X4Zl
+	 B3D9FZ6zHRh6Rk/af4Y/tnUu8TlMI7EAom+0PLSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/236] sunrpc: add a struct rpc_stats arg to rpc_create_args
+Subject: [PATCH 6.6 118/301] ASoC: SOF: Intel: hda-dsp: Skip IMR boot on ACE platforms in case of S3 suspend
 Date: Tue, 14 May 2024 12:16:29 +0200
-Message-ID: <20240514101021.369190732@linuxfoundation.org>
+Message-ID: <20240514101036.706316071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +66,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 2057a48d0dd00c6a2a94ded7df2bf1d3f2a4a0da ]
+[ Upstream commit c61115b37ff964d63191dbf4a058f481daabdf57 ]
 
-We want to be able to have our rpc stats handled in a per network
-namespace manner, so add an option to rpc_create_args to specify a
-different rpc_stats struct instead of using the one on the rpc_program.
+SoCs with ACE architecture are tailored to use s2idle instead deep (S3)
+suspend state and the IMR content is lost when the system is forced to
+enter even to S3.
+When waking up from S3 state the IMR boot will fail as the content is lost.
+Set the skip_imr_boot flag to make sure that we don't try IMR in this case.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://msgid.link/r/20240322112504.4192-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/clnt.h | 1 +
- net/sunrpc/clnt.c           | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/sof/intel/hda-dsp.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/sunrpc/clnt.h b/include/linux/sunrpc/clnt.h
-index c794b0ce4e782..809c23120d548 100644
---- a/include/linux/sunrpc/clnt.h
-+++ b/include/linux/sunrpc/clnt.h
-@@ -131,6 +131,7 @@ struct rpc_create_args {
- 	const char		*servername;
- 	const char		*nodename;
- 	const struct rpc_program *program;
-+	struct rpc_stat		*stats;
- 	u32			prognumber;	/* overrides program->number */
- 	u32			version;
- 	rpc_authflavor_t	authflavor;
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 61e5c77462e94..b774028e4aa8f 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -398,7 +398,7 @@ static struct rpc_clnt * rpc_new_client(const struct rpc_create_args *args,
- 	clnt->cl_maxproc  = version->nrprocs;
- 	clnt->cl_prog     = args->prognumber ? : program->number;
- 	clnt->cl_vers     = version->number;
--	clnt->cl_stats    = program->stats;
-+	clnt->cl_stats    = args->stats ? : program->stats;
- 	clnt->cl_metrics  = rpc_alloc_iostats(clnt);
- 	rpc_init_pipe_dir_head(&clnt->cl_pipedir_objects);
- 	err = -ENOMEM;
-@@ -677,6 +677,7 @@ struct rpc_clnt *rpc_clone_client(struct rpc_clnt *clnt)
- 		.version	= clnt->cl_vers,
- 		.authflavor	= clnt->cl_auth->au_flavor,
- 		.cred		= clnt->cl_cred,
-+		.stats		= clnt->cl_stats,
- 	};
- 	return __rpc_clone_client(&args, clnt);
- }
-@@ -699,6 +700,7 @@ rpc_clone_client_set_auth(struct rpc_clnt *clnt, rpc_authflavor_t flavor)
- 		.version	= clnt->cl_vers,
- 		.authflavor	= flavor,
- 		.cred		= clnt->cl_cred,
-+		.stats		= clnt->cl_stats,
- 	};
- 	return __rpc_clone_client(&args, clnt);
- }
-@@ -1044,6 +1046,7 @@ struct rpc_clnt *rpc_bind_new_program(struct rpc_clnt *old,
- 		.version	= vers,
- 		.authflavor	= old->cl_auth->au_flavor,
- 		.cred		= old->cl_cred,
-+		.stats		= old->cl_stats,
- 	};
- 	struct rpc_clnt *clnt;
- 	int err;
+diff --git a/sound/soc/sof/intel/hda-dsp.c b/sound/soc/sof/intel/hda-dsp.c
+index 44f39a520bb39..e80a2a5ec56a1 100644
+--- a/sound/soc/sof/intel/hda-dsp.c
++++ b/sound/soc/sof/intel/hda-dsp.c
+@@ -681,17 +681,27 @@ static int hda_suspend(struct snd_sof_dev *sdev, bool runtime_suspend)
+ 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
+ 	const struct sof_intel_dsp_desc *chip = hda->desc;
+ 	struct hdac_bus *bus = sof_to_bus(sdev);
++	bool imr_lost = false;
+ 	int ret, j;
+ 
+ 	/*
+-	 * The memory used for IMR boot loses its content in deeper than S3 state
+-	 * We must not try IMR boot on next power up (as it will fail).
+-	 *
++	 * The memory used for IMR boot loses its content in deeper than S3
++	 * state on CAVS platforms.
++	 * On ACE platforms due to the system architecture the IMR content is
++	 * lost at S3 state already, they are tailored for s2idle use.
++	 * We must not try IMR boot on next power up in these cases as it will
++	 * fail.
++	 */
++	if (sdev->system_suspend_target > SOF_SUSPEND_S3 ||
++	    (chip->hw_ip_version >= SOF_INTEL_ACE_1_0 &&
++	     sdev->system_suspend_target == SOF_SUSPEND_S3))
++		imr_lost = true;
++
++	/*
+ 	 * In case of firmware crash or boot failure set the skip_imr_boot to true
+ 	 * as well in order to try to re-load the firmware to do a 'cold' boot.
+ 	 */
+-	if (sdev->system_suspend_target > SOF_SUSPEND_S3 ||
+-	    sdev->fw_state == SOF_FW_CRASHED ||
++	if (imr_lost || sdev->fw_state == SOF_FW_CRASHED ||
+ 	    sdev->fw_state == SOF_FW_BOOT_FAILED)
+ 		hda->skip_imr_boot = true;
+ 
 -- 
 2.43.0
 
