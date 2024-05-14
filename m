@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086718C53DC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350AC8C544F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385021C22793
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3071C28494D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459B213D257;
-	Tue, 14 May 2024 11:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50847602D;
+	Tue, 14 May 2024 11:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7lyG/cN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4EX49wY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0396413CF93;
-	Tue, 14 May 2024 11:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ADF2D60A;
+	Tue, 14 May 2024 11:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686801; cv=none; b=GdG+TJSgbf+GGWRvqSgDHHlIhaieSgG9HY6G+IMYdqfjHgndEjC6ssAlHvzT3bhBHa9W8W7GVJ6b7L0p+nY8Cnt7mX2S5E6Fz4H2NnLgLusp7bLkMbiFFPl7sxshFK49RA7y06D+EjuDjROTfxJWjDn6VBQ5xRtD8O3Aajt+ziU=
+	t=1715687111; cv=none; b=qggC4Sxe4Z5xrhkWhAg4LCQt3HYFAPuBZLI/V6zAHUzIKZuoigvHfHW2f4TqIUBgWdhyMLRwlN8m505uFFAthCYFam7TUn1JgJ2HqyAsMFFfgqiqaq/UcNlV9O25RfjFrdbSxP5ZHi2fxSWRHX41ddkrMd+lsb1V2KXerBzfnZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686801; c=relaxed/simple;
-	bh=qAjMEo/6jEjJgWbLBDSX+UFORDCwwq7rETOoH66/FeA=;
+	s=arc-20240116; t=1715687111; c=relaxed/simple;
+	bh=D/NlKENOjYbg19PbhD/Z3/sBVn8Mp5hffrgj2UdevFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VULvg2evwo4ppN/RrPE6DxLNELa0mEJ8Q7jizVMeFpD2jjdpdJ9pvHrYC0fr4sq/G7mZLWNNd/Bcn50d4eWCDusAUPOYVawG5g8whUIaWckKzVblQ88bDfEcuDGqgCIrj4e+VK3iVlguju41wHw14gj6I/L+Guc8fSpnWgDRi7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7lyG/cN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F16FC2BD10;
-	Tue, 14 May 2024 11:40:00 +0000 (UTC)
+	 MIME-Version; b=qeavZstlM2siPy73wda5qgxXl8LqmazUgbImm3mm7Z152ChMr6JAxR/NVq/oPNIGw3ZKLa67m+2eImI78NRoHdn1jNI1WmzFoSgJWc7ji014Rr02JKx2HAEvZGuX0awPDoytSQ33g+mxzenUY4GVwfPZgGPjo3i8jbYphbbcNMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4EX49wY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF81EC2BD10;
+	Tue, 14 May 2024 11:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686800;
-	bh=qAjMEo/6jEjJgWbLBDSX+UFORDCwwq7rETOoH66/FeA=;
+	s=korg; t=1715687111;
+	bh=D/NlKENOjYbg19PbhD/Z3/sBVn8Mp5hffrgj2UdevFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7lyG/cNTipEXvTKY6UWzMdanWfAdtQVcJQtuYN6kIe1oiFUMMMJp3goQ489eBwtW
-	 uZ6PDWMDe2sRbM6tccKZc3iQT95qBgmOHWKDpcXpH5VXetPyD9VY7Mp9AojqB9BGIR
-	 /PqyxPRzoMLWaSJvuIaYcYMZLS7Y+tQRuUnOcED0=
+	b=H4EX49wY+O2Lsp1jDNMBFfXL+Eu1bq7FwZc5Wkbp6D/3mGYJXqRYwvbc2G1am8AWV
+	 CwM5kmhYVgHfe2Qns4p6eSqmagUjJXDhVLBZ2tinzGotoWoXYqzjYlDigWEIvetPzS
+	 OOsOfuDFxZWL7SCcuetC3j0WxwMaiIdZlJ9ur/58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>,
+	linke li <lilinke99@qq.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 27/63] ALSA: line6: Zero-initialize message buffers
+Subject: [PATCH 5.4 37/84] net: mark racy access on sk->sk_rcvbuf
 Date: Tue, 14 May 2024 12:19:48 +0200
-Message-ID: <20240514100949.043118044@linuxfoundation.org>
+Message-ID: <20240514100953.088014794@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: linke li <lilinke99@qq.com>
 
-[ Upstream commit c4e51e424e2c772ce1836912a8b0b87cd61bc9d5 ]
+[ Upstream commit c2deb2e971f5d9aca941ef13ee05566979e337a4 ]
 
-For shutting up spurious KMSAN uninit-value warnings, just replace
-kmalloc() calls with kzalloc() for the buffers used for
-communications.  There should be no real issue with the original code,
-but it's still better to cover.
+sk->sk_rcvbuf in __sock_queue_rcv_skb() and __sk_receive_skb() can be
+changed by other threads. Mark this as benign using READ_ONCE().
 
-Reported-by: syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/00000000000084b18706150bcca5@google.com
-Message-ID: <20240402063628.26609-1-tiwai@suse.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This patch is aimed at reducing the number of benign races reported by
+KCSAN in order to focus future debugging effort on harmful races.
+
+Signed-off-by: linke li <lilinke99@qq.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/line6/driver.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/sock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/line6/driver.c b/sound/usb/line6/driver.c
-index 2399d500b8812..8970d4b3b42c3 100644
---- a/sound/usb/line6/driver.c
-+++ b/sound/usb/line6/driver.c
-@@ -216,7 +216,7 @@ int line6_send_raw_message_async(struct usb_line6 *line6, const char *buffer,
- 	struct urb *urb;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index daeb0e69c71b4..2b68a93adfa8d 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -453,7 +453,7 @@ int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
+ 	unsigned long flags;
+ 	struct sk_buff_head *list = &sk->sk_receive_queue;
  
- 	/* create message: */
--	msg = kmalloc(sizeof(struct message), GFP_ATOMIC);
-+	msg = kzalloc(sizeof(struct message), GFP_ATOMIC);
- 	if (msg == NULL)
+-	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf) {
++	if (atomic_read(&sk->sk_rmem_alloc) >= READ_ONCE(sk->sk_rcvbuf)) {
+ 		atomic_inc(&sk->sk_drops);
+ 		trace_sock_rcvqueue_full(sk, skb);
  		return -ENOMEM;
+@@ -505,7 +505,7 @@ int __sk_receive_skb(struct sock *sk, struct sk_buff *skb,
  
-@@ -694,7 +694,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
- 	int ret;
+ 	skb->dev = NULL;
  
- 	/* initialize USB buffers: */
--	line6->buffer_listen = kmalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
-+	line6->buffer_listen = kzalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
- 	if (!line6->buffer_listen)
- 		return -ENOMEM;
- 
-@@ -703,7 +703,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
- 		return -ENOMEM;
- 
- 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
--		line6->buffer_message = kmalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
-+		line6->buffer_message = kzalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
- 		if (!line6->buffer_message)
- 			return -ENOMEM;
- 
+-	if (sk_rcvqueues_full(sk, sk->sk_rcvbuf)) {
++	if (sk_rcvqueues_full(sk, READ_ONCE(sk->sk_rcvbuf))) {
+ 		atomic_inc(&sk->sk_drops);
+ 		goto discard_and_relse;
+ 	}
 -- 
 2.43.0
 
