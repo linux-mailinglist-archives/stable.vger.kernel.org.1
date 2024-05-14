@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-44028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08898C50DE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2014B8C50DF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 645F71F21F1B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 510131C2145F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83509126F1E;
-	Tue, 14 May 2024 10:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F36D129A93;
+	Tue, 14 May 2024 10:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAlYi0CD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qT/XjZq7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BC06BFAC;
-	Tue, 14 May 2024 10:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C109129A66;
+	Tue, 14 May 2024 10:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683776; cv=none; b=cyuwgopAtVBuGck323gA1sBwCoKxZpxGUfquG1cm3lxWfCj89FC8AO08D61klZoWameiE2NBPDi5EmDG6ZeEOMJnpO1j7rOhi5br+2gWTExvXd7YLRTQlBvXzUodWqDGq7I6++NGX3npyyiiFX2Yy1A2/cV4tdAihIsYNzqb/uo=
+	t=1715683785; cv=none; b=IipnFuQ0ZqwhBE5CxePOnlNuEScZL2ydNUDkba/3smkkYK4KFl+C4dBLHX3L/LQec2V/VPW1geqQJxDHoiHutgqCYqTaJob915KWSGenLuTeBKjFPLy7eVpwhuiNrrKGM2OusZdh4UIX3youPAvaA/0a7qkjUNAOUBF/8r/BYeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683776; c=relaxed/simple;
-	bh=xY9W55N6Xg0lETEK6D9S8pNO6lErS6AVDXTWx5T0TVc=;
+	s=arc-20240116; t=1715683785; c=relaxed/simple;
+	bh=CwInm5geF4LAm3wm7C4RlcYE+gn/EYB2fjxvGoLWLfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUEnN3cdQOD1HTRcXg4QWu6Jb6qPD2C+jbb+1cXrbhDNFMFIb+xrhXKbx36a3u2m+NxycL+5ERsaWahxDS/RvKh4IWZ/C601FKgv16LsxZwk2a+mChaQ6Dg7Ww4ato2LaoJ+LZtJxp1fGqySP8mj5UWALbm141GbtvBh8E+8bv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAlYi0CD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A750C2BD10;
-	Tue, 14 May 2024 10:49:35 +0000 (UTC)
+	 MIME-Version; b=ZeRdL137dPRPsO+xjGHYammP8MGFL3qk9135ldLBkGjzETjqOxEDqvCecrGqA+QfLJBCzlsJDXjXKymQtdZg8fAYgBj3PzMg3QGttF5AXB0ggC6kidxfIRL3vVf2+/nG5//KZrJafka0qDzQLz/88XvtEajGChTkzwYqZ4RT7uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qT/XjZq7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D698C2BD10;
+	Tue, 14 May 2024 10:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683776;
-	bh=xY9W55N6Xg0lETEK6D9S8pNO6lErS6AVDXTWx5T0TVc=;
+	s=korg; t=1715683785;
+	bh=CwInm5geF4LAm3wm7C4RlcYE+gn/EYB2fjxvGoLWLfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAlYi0CDbctsO6BxVM5zIj2r31I91AE24xg9696YRlDF474F6TQ1tsih6dGYih2N9
-	 8erypsfniG12OAhnnmwb929vMl8pGE82q3gZhvMHeaQz5+V4T5kkNnYsrMYul7ggBt
-	 6RzIKVKgfQtyuerWpOe1R33AMP8mxWOEEfTKLda8=
+	b=qT/XjZq7B6AcEJaW3ieqjuU9GR/WNkEEvjnx2lDtnnm3OlBjyY8XBwGea7oBe2VpB
+	 7PA6dHJ1wnVVvPMWJv+6nI23WRYoUy5bfXUYqmXG47mwW4vySYJUMXQdrN6nQXYe3R
+	 70lPBofL/d7BvdSziXv7Uc7gUEoUFgQtIiw+65GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.8 272/336] dt-bindings: iio: health: maxim,max30102: fix compatible check
-Date: Tue, 14 May 2024 12:17:56 +0200
-Message-ID: <20240514101048.891105356@linuxfoundation.org>
+Subject: [PATCH 6.8 273/336] iio:imu: adis16475: Fix sync mode setting
+Date: Tue, 14 May 2024 12:17:57 +0200
+Message-ID: <20240514101048.928377618@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
 References: <20240514101038.595152603@linuxfoundation.org>
@@ -67,41 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 
-commit 89384a2b656b9dace4c965432a209d5c9c3a2a6f upstream.
+commit 74a72baf204fd509bbe8b53eec35e39869d94341 upstream.
 
-The "maxim,green-led-current-microamp" property is only available for
-the max30105 part (it provides an extra green LED), and must be set to
-false for the max30102 part.
+Fix sync mode setting by applying the necessary shift bits.
 
-Instead, the max30100 part has been used for that, which is not
-supported by this binding (it has its own binding).
-
-This error was introduced during the txt to yaml conversion.
-
-Fixes: 5a6a65b11e3a ("dt-bindings:iio:health:maxim,max30102: txt to yaml conversion")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com
+Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
+Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240405045309.816328-2-ramona.bolboaca13@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/adis16475.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
-+++ b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
-@@ -42,7 +42,7 @@ allOf:
-       properties:
-         compatible:
-           contains:
--            const: maxim,max30100
-+            const: maxim,max30102
-     then:
-       properties:
-         maxim,green-led-current-microamp: false
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -1289,6 +1289,7 @@ static int adis16475_config_sync_mode(st
+ 	struct device *dev = &st->adis.spi->dev;
+ 	const struct adis16475_sync *sync;
+ 	u32 sync_mode;
++	u16 val;
+ 
+ 	/* default to internal clk */
+ 	st->clk_freq = st->info->int_clk * 1000;
+@@ -1350,8 +1351,9 @@ static int adis16475_config_sync_mode(st
+ 	 * I'm keeping this for simplicity and avoiding extra variables
+ 	 * in chip_info.
+ 	 */
++	val = ADIS16475_SYNC_MODE(sync->sync_mode);
+ 	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
+-				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
++				 ADIS16475_SYNC_MODE_MASK, val);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
