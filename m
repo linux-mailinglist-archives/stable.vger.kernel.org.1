@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-43893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F288C5018
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0848C516B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04A351C20A3B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26D98B2173D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2311013958F;
-	Tue, 14 May 2024 10:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3C11386CC;
+	Tue, 14 May 2024 11:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv3Pbrbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3JwKeMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D84139568;
-	Tue, 14 May 2024 10:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECDD12FF64;
+	Tue, 14 May 2024 11:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682937; cv=none; b=c3PWOlia31h75xvsedU9dhfFUoc/9M8160ljg/X4/xqz0eOmyIY9g6JvJF3oKkvRieF8r60ABVZxMjghH+FZEo0GCoFu1TvVn+ZyW28v7HgfpDowwirHDpz5/qQ3WR5TK2XHaNEzVqeXrfldgX/5regZw6xQq5n7/RmoIhD9d44=
+	t=1715684447; cv=none; b=gFz7XuwAlOZQa4KUObaC0A9aByx9/4D+FV27ovNwvUB/4VUwntLGJgNNeOPLyrIpTgui4/1K1NZHKQsEhbGVKK8DtskJ9PvTO0D0QkTW04daZbvIZS+4tYhBNfmRl7ElQbrHEDGrrry1gZTKdx/jrn3WKj9OD+yMU5h2py3ZHsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682937; c=relaxed/simple;
-	bh=s0W4/atVywLXUuSz4lbQpzVK21icb4uu9m8e12wmoh8=;
+	s=arc-20240116; t=1715684447; c=relaxed/simple;
+	bh=rFP4LPyA9aX4LekMg/kBQwWZ+AVmqWT4LgfUjg2iJU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3YJih+BrCjiaJVb86WC6oSsVxln4z+E2aNzqdrJgi9DAOy6lMD3EbwZnPfA2rx0VRmhHoNGaTMntGY+7Hw0Skt+hJrYwRMJFYsOZ1BW98QSlAo16SUKXnwrwFK58MzwVVoNht2OZkUn0F58+RzBpVsxxrSSKja14Silq2J6hgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jv3Pbrbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42372C2BD10;
-	Tue, 14 May 2024 10:35:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tsw+p5e/nsf4zLdMlLzsWv95xBCxj9gaBH/KOiR9Xdttm508pEmE3arjhsReiR2Rj6mYiWwMu8W0iReNGhRMeRoT4I7MXPPpEDUEHPh9vLWFVEm/G3VNaxcwINziu2l8G2rUPZwUx+y1tvmM3+QF9U6VtZnGwrtErXfg0IDHSXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3JwKeMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3DBC2BD10;
+	Tue, 14 May 2024 11:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682937;
-	bh=s0W4/atVywLXUuSz4lbQpzVK21icb4uu9m8e12wmoh8=;
+	s=korg; t=1715684447;
+	bh=rFP4LPyA9aX4LekMg/kBQwWZ+AVmqWT4LgfUjg2iJU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jv3PbrbcfeAA17et+2SzE/7Y7LVrAy+dmLvax6oV+jYFfrR/erNW6ddI7/nAmbziu
-	 44IuWvu1e2JSmz07ESCHj4PgGPMJuAzD4PqBNZKF8FDbFic3lQ6ZJ6LfBCGZpp8OT5
-	 EDszwlZFtk195nuT5MeFjYi0IfLCa4wDemGHRrXk=
+	b=N3JwKeMYuCWMfQOZHZAQWolpSWaM8TRNveisHFqbssQzY7mp+a0++WUuRU5oghlUZ
+	 7l5XyY3SIykFjJSVDjlJZ6qyUMb/B3kFI9TVZqbJ+Iw4HgdVY6WdtSZ/It156cXgtF
+	 Rp4YYXSqLdW+7AfgSKI3slC+NkliB704LHsTBV7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Pu Lehui <pulehui@huawei.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 110/336] net: mark racy access on sk->sk_rcvbuf
+Subject: [PATCH 6.6 043/301] riscv, bpf: Fix incorrect runtime stats
 Date: Tue, 14 May 2024 12:15:14 +0200
-Message-ID: <20240514101042.757450610@linuxfoundation.org>
+Message-ID: <20240514101033.871835415@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Xu Kuohai <xukuohai@huawei.com>
 
-[ Upstream commit c2deb2e971f5d9aca941ef13ee05566979e337a4 ]
+[ Upstream commit 10541b374aa05c8118cc6a529a615882e53f261b ]
 
-sk->sk_rcvbuf in __sock_queue_rcv_skb() and __sk_receive_skb() can be
-changed by other threads. Mark this as benign using READ_ONCE().
+When __bpf_prog_enter() returns zero, the s1 register is not set to zero,
+resulting in incorrect runtime stats. Fix it by setting s1 immediately upon
+the return of __bpf_prog_enter().
 
-This patch is aimed at reducing the number of benign races reported by
-KCSAN in order to focus future debugging effort on harmful races.
-
-Signed-off-by: linke li <lilinke99@qq.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 49b5e77ae3e2 ("riscv, bpf: Add bpf trampoline support for RV64")
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Acked-by: Björn Töpel <bjorn@kernel.org>
+Link: https://lore.kernel.org/bpf/20240416064208.2919073-3-xukuohai@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/net/bpf_jit_comp64.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 9cf404e8038a4..599f186fe3d3a 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -482,7 +482,7 @@ int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
- 	unsigned long flags;
- 	struct sk_buff_head *list = &sk->sk_receive_queue;
+diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
+index 8581693e62d39..b3990874e4818 100644
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -740,6 +740,9 @@ static int invoke_bpf_prog(struct bpf_tramp_link *l, int args_off, int retval_of
+ 	if (ret)
+ 		return ret;
  
--	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf) {
-+	if (atomic_read(&sk->sk_rmem_alloc) >= READ_ONCE(sk->sk_rcvbuf)) {
- 		atomic_inc(&sk->sk_drops);
- 		trace_sock_rcvqueue_full(sk, skb);
- 		return -ENOMEM;
-@@ -552,7 +552,7 @@ int __sk_receive_skb(struct sock *sk, struct sk_buff *skb,
++	/* store prog start time */
++	emit_mv(RV_REG_S1, RV_REG_A0, ctx);
++
+ 	/* if (__bpf_prog_enter(prog) == 0)
+ 	 *	goto skip_exec_of_prog;
+ 	 */
+@@ -747,9 +750,6 @@ static int invoke_bpf_prog(struct bpf_tramp_link *l, int args_off, int retval_of
+ 	/* nop reserved for conditional jump */
+ 	emit(rv_nop(), ctx);
  
- 	skb->dev = NULL;
- 
--	if (sk_rcvqueues_full(sk, sk->sk_rcvbuf)) {
-+	if (sk_rcvqueues_full(sk, READ_ONCE(sk->sk_rcvbuf))) {
- 		atomic_inc(&sk->sk_drops);
- 		goto discard_and_relse;
- 	}
+-	/* store prog start time */
+-	emit_mv(RV_REG_S1, RV_REG_A0, ctx);
+-
+ 	/* arg1: &args_off */
+ 	emit_addi(RV_REG_A0, RV_REG_FP, -args_off, ctx);
+ 	if (!p->jited)
 -- 
 2.43.0
 
