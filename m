@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-44255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBCD8C51F2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFEA78C5068
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 715DC282991
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 501501F2194D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B9176035;
-	Tue, 14 May 2024 11:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A416313D2A8;
+	Tue, 14 May 2024 10:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhwfpPFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4N2H2s1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527B83B79C;
-	Tue, 14 May 2024 11:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619BF5A0FE;
+	Tue, 14 May 2024 10:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685269; cv=none; b=uoCUQrUitr38u9raaVPuYw8sny+vHnwN/9Ws+wWGtK5hSpfi7sTaV9fxmlnmzh4f+XUM20Y27WluaNhFDMP9Vu8cdokbcx++MhruvkdMi5IIemkaKdNNobYRv5UYW14/YLBk4iN81L/dcRx/3pa9JGvvyf10Ac0n+Gm2raV5Fec=
+	t=1715683306; cv=none; b=hL1+E0TanMvJVwR+xkpsJpjUOZwhzWfgfmxG6s/fyhHKwfzPGNtpU8VjK5gD/jLjwgBdmhIJpNmKuJStW2r5eXBOwMGN6cgy3Ptrdpbbkc4LEIWvWMJQ7OLd8QAWcZ2T++/hqWs3HGHOJhsegQdssllXTUWzX1I99trmJ7aj5h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685269; c=relaxed/simple;
-	bh=ZQ+8RbdFeMAz2RZNRbHKxp3Tu9MEzBWlhMUHlQzOeCA=;
+	s=arc-20240116; t=1715683306; c=relaxed/simple;
+	bh=LDbpSl3okWGRT+CiGAuMynzYQEPFi8Igb8m/th5fjDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fm/7LRGCudkaudIsCxYYHqCV1N1ia4T+dz7g/FoKztohWoOwyaFM8YLVxs/n6m2nebiGbtyGZauaMnMg63+n/5tgw5uK4aAsXvz/GWzRGegbF7R3NYShkkBf8roYITvz/VLhfZ1zSSvmM9qTV0KqGNWj2TKzUqbq+yx+i05EiZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhwfpPFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DF7C2BD10;
-	Tue, 14 May 2024 11:14:28 +0000 (UTC)
+	 MIME-Version; b=fchvmnhNtI+4MZwxHMEZUYjTXQc7b1EWUZCyewymqH+I/dTg3Ui1GixupeiI/0fT9uXZNTdkrMoEIRMjStz/eOgJ+YC7hU9dlqNigvL8aOAaSk+wF1J7YS++/pIwRQ29WaODViLD4LRLUgBYBkFj24mXhT7QLAgIrMj+wFHkzaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4N2H2s1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D78C32782;
+	Tue, 14 May 2024 10:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685269;
-	bh=ZQ+8RbdFeMAz2RZNRbHKxp3Tu9MEzBWlhMUHlQzOeCA=;
+	s=korg; t=1715683306;
+	bh=LDbpSl3okWGRT+CiGAuMynzYQEPFi8Igb8m/th5fjDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhwfpPFNWjcORoji4TvVbsWfmYZTIr4tsuqqxQCW6DUlP55t4G2hJOVByC7fsNzYg
-	 lNX+hOQbiy+VGdLu030Ss1+UDkxbtIRps+3SKfS22i16QuTDfPAs2Y2PwFs5X8IQIV
-	 kUHQITKiTs9k5q52D5wwzZfmlzsuaf3Qgk+0zo6Y=
+	b=P4N2H2s1s2E2nx0VUoMci1lL8Og37l3/AqJHpoMnj2Y7DKupxUKx/bO1Lm+ySTkYE
+	 Zu0aJIeT96bY0R+f6LHks4CtaiWAnm5fXvmTSBMeTvoJP3Hsz4aWtlxKyrKWUZgbR/
+	 rBWN1sqsNXCeLX8ap6C6dvW43Xd0RJdKv+dS5nUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Smythies <dsmythies@telus.net>,
-	Wyes Karny <wyes.karny@amd.com>,
-	Len Brown <len.brown@intel.com>,
+	Boy Wu <boy.wu@mediatek.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/301] tools/power turbostat: Increase the limit for fd opened
+Subject: [PATCH 6.8 197/336] ARM: 9381/1: kasan: clear stale stack poison
 Date: Tue, 14 May 2024 12:16:41 +0200
-Message-ID: <20240514101037.155634384@linuxfoundation.org>
+Message-ID: <20240514101046.043158374@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wyes Karny <wyes.karny@amd.com>
+From: Boy.Wu <boy.wu@mediatek.com>
 
-[ Upstream commit 3ac1d14d0583a2de75d49a5234d767e2590384dd ]
+[ Upstream commit c4238686f9093b98bd6245a348bcf059cdce23af ]
 
-When running turbostat, a system with 512 cpus reaches the limit for
-maximum number of file descriptors that can be opened. To solve this
-problem, the limit is raised to 2^15, which is a large enough number.
+We found below OOB crash:
 
-Below data is collected from AMD server systems while running turbostat:
+[   33.452494] ==================================================================
+[   33.453513] BUG: KASAN: stack-out-of-bounds in refresh_cpu_vm_stats.constprop.0+0xcc/0x2ec
+[   33.454660] Write of size 164 at addr c1d03d30 by task swapper/0/0
+[   33.455515]
+[   33.455767] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G           O       6.1.25-mainline #1
+[   33.456880] Hardware name: Generic DT based system
+[   33.457555]  unwind_backtrace from show_stack+0x18/0x1c
+[   33.458326]  show_stack from dump_stack_lvl+0x40/0x4c
+[   33.459072]  dump_stack_lvl from print_report+0x158/0x4a4
+[   33.459863]  print_report from kasan_report+0x9c/0x148
+[   33.460616]  kasan_report from kasan_check_range+0x94/0x1a0
+[   33.461424]  kasan_check_range from memset+0x20/0x3c
+[   33.462157]  memset from refresh_cpu_vm_stats.constprop.0+0xcc/0x2ec
+[   33.463064]  refresh_cpu_vm_stats.constprop.0 from tick_nohz_idle_stop_tick+0x180/0x53c
+[   33.464181]  tick_nohz_idle_stop_tick from do_idle+0x264/0x354
+[   33.465029]  do_idle from cpu_startup_entry+0x20/0x24
+[   33.465769]  cpu_startup_entry from rest_init+0xf0/0xf4
+[   33.466528]  rest_init from arch_post_acpi_subsys_init+0x0/0x18
+[   33.467397]
+[   33.467644] The buggy address belongs to stack of task swapper/0/0
+[   33.468493]  and is located at offset 112 in frame:
+[   33.469172]  refresh_cpu_vm_stats.constprop.0+0x0/0x2ec
+[   33.469917]
+[   33.470165] This frame has 2 objects:
+[   33.470696]  [32, 76) 'global_zone_diff'
+[   33.470729]  [112, 276) 'global_node_diff'
+[   33.471294]
+[   33.472095] The buggy address belongs to the physical page:
+[   33.472862] page:3cd72da8 refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x41d03
+[   33.473944] flags: 0x1000(reserved|zone=0)
+[   33.474565] raw: 00001000 ed741470 ed741470 00000000 00000000 00000000 ffffffff 00000001
+[   33.475656] raw: 00000000
+[   33.476050] page dumped because: kasan: bad access detected
+[   33.476816]
+[   33.477061] Memory state around the buggy address:
+[   33.477732]  c1d03c00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   33.478630]  c1d03c80: 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00 00 00 00
+[   33.479526] >c1d03d00: 00 04 f2 f2 f2 f2 00 00 00 00 00 00 f1 f1 f1 f1
+[   33.480415]                                                ^
+[   33.481195]  c1d03d80: 00 00 00 00 00 00 00 00 00 00 04 f3 f3 f3 f3 f3
+[   33.482088]  c1d03e00: f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
+[   33.482978] ==================================================================
 
-|-----------+-------------------------------|
-| # of cpus | # of opened fds for turbostat |
-|-----------+-------------------------------|
-| 128       | 260                           |
-|-----------+-------------------------------|
-| 192       | 388                           |
-|-----------+-------------------------------|
-| 512       | 1028                          |
-|-----------+-------------------------------|
+We find the root cause of this OOB is that arm does not clear stale stack
+poison in the case of cpuidle.
 
-So, the new max limit would be sufficient up to 2^14 cpus (but this
-also depends on how many counters are enabled).
+This patch refer to arch/arm64/kernel/sleep.S to resolve this issue.
 
-Reviewed-by: Doug Smythies <dsmythies@telus.net>
-Tested-by: Doug Smythies <dsmythies@telus.net>
-Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+>From cited commit [1] that explain the problem
+
+Functions which the compiler has instrumented for KASAN place poison on
+the stack shadow upon entry and remove this poison prior to returning.
+
+In the case of cpuidle, CPUs exit the kernel a number of levels deep in
+C code.  Any instrumented functions on this critical path will leave
+portions of the stack shadow poisoned.
+
+If CPUs lose context and return to the kernel via a cold path, we
+restore a prior context saved in __cpu_suspend_enter are forgotten, and
+we never remove the poison they placed in the stack shadow area by
+functions calls between this and the actual exit of the kernel.
+
+Thus, (depending on stackframe layout) subsequent calls to instrumented
+functions may hit this stale poison, resulting in (spurious) KASAN
+splats to the console.
+
+To avoid this, clear any stale poison from the idle thread for a CPU
+prior to bringing a CPU online.
+
+>From cited commit [2]
+
+Extend to check for CONFIG_KASAN_STACK
+
+[1] commit 0d97e6d8024c ("arm64: kasan: clear stale stack poison")
+[2] commit d56a9ef84bd0 ("kasan, arm64: unpoison stack only with CONFIG_KASAN_STACK")
+
+Signed-off-by: Boy Wu <boy.wu@mediatek.com>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 5615f69bc209 ("ARM: 9016/2: Initialize the mapping of KASan shadow memory")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/arm/kernel/sleep.S | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 9602a4798f383..5b892c53fc2c2 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -53,6 +53,8 @@
- #define	NAME_BYTES 20
- #define PATH_BYTES 128
- 
-+#define MAX_NOFILE 0x8000
-+
- enum counter_scope { SCOPE_CPU, SCOPE_CORE, SCOPE_PACKAGE };
- enum counter_type { COUNTER_ITEMS, COUNTER_CYCLES, COUNTER_SECONDS, COUNTER_USEC };
- enum counter_format { FORMAT_RAW, FORMAT_DELTA, FORMAT_PERCENT };
-@@ -6719,6 +6721,22 @@ void cmdline(int argc, char **argv)
- 	}
- }
- 
-+void set_rlimit(void)
-+{
-+	struct rlimit limit;
-+
-+	if (getrlimit(RLIMIT_NOFILE, &limit) < 0)
-+		err(1, "Failed to get rlimit");
-+
-+	if (limit.rlim_max < MAX_NOFILE)
-+		limit.rlim_max = MAX_NOFILE;
-+	if (limit.rlim_cur < MAX_NOFILE)
-+		limit.rlim_cur = MAX_NOFILE;
-+
-+	if (setrlimit(RLIMIT_NOFILE, &limit) < 0)
-+		err(1, "Failed to set rlimit");
-+}
-+
- int main(int argc, char **argv)
- {
- 	outf = stderr;
-@@ -6731,6 +6749,9 @@ int main(int argc, char **argv)
- 
- 	probe_sysfs();
- 
-+	if (!getuid())
-+		set_rlimit();
-+
- 	turbostat_init();
- 
- 	msr_sum_record();
+diff --git a/arch/arm/kernel/sleep.S b/arch/arm/kernel/sleep.S
+index a86a1d4f34618..93afd1005b43c 100644
+--- a/arch/arm/kernel/sleep.S
++++ b/arch/arm/kernel/sleep.S
+@@ -127,6 +127,10 @@ cpu_resume_after_mmu:
+ 	instr_sync
+ #endif
+ 	bl	cpu_init		@ restore the und/abt/irq banked regs
++#if defined(CONFIG_KASAN) && defined(CONFIG_KASAN_STACK)
++	mov	r0, sp
++	bl	kasan_unpoison_task_stack_below
++#endif
+ 	mov	r0, #0			@ return zero on success
+ 	ldmfd	sp!, {r4 - r11, pc}
+ ENDPROC(cpu_resume_after_mmu)
 -- 
 2.43.0
 
