@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033578C5115
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8E38C5341
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885281F210A4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0B51C22E2B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B197112F5AD;
-	Tue, 14 May 2024 10:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3F16F085;
+	Tue, 14 May 2024 11:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CU14SXuF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTmLK3PE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704A012880A;
-	Tue, 14 May 2024 10:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CF022094;
+	Tue, 14 May 2024 11:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684041; cv=none; b=qC9pG7BOpuL8xSiWoNhP01Wn4YunknDNeU/Qw7azzG41WItbJH4JotAEQQBXX/FmQQj2Hz+0LxpGZMELeLoQvw2SanRmgWcfrZGTae3gmPGONv76bdYH7mPLG2wisR8B5BxwhRxdamtJSKWcAg5JzKPx6GVT8lKkm5uS7RYHjPs=
+	t=1715686399; cv=none; b=TnF0V57iITiXww/nXLlwlt3WzkwPBEDr1RhjOvJMYTDbVWicbuBqwgxSjtE9wcIT42d/lcuC/IWLAF3iU+OOua30Z3U+WE/MM7w228yUetqwSlD4BHTh2MRqoDpZnHMZ76b+ThmwpVmNXMbzKGw4Y6PVWmXYkGogzhqUzCt/neA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684041; c=relaxed/simple;
-	bh=4GYuSIIc/+c4nsxa8jCA/OaGlqlUONMZHkeb+uHdoY4=;
+	s=arc-20240116; t=1715686399; c=relaxed/simple;
+	bh=6Q8NINPQYgjnqceIgXFkdIlVVqozOiRYDlbYePg3mAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oU4Z3hxxrEJu65WpaF3FQU+bXrIjmLUAvSUfhUwJjNwSUGQoALjfw8SzJa8hYKFvOiIVeP0b2Vaxls6UI+vvRSJqVin1mRDXAZEj88lEZp3hk/hU7hvuvwbpqcWJScInPq1Jv9vxfPNBRj3m+1udIJadkphksdKuVmJzbCx75FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CU14SXuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D388DC32781;
-	Tue, 14 May 2024 10:54:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s3LnedpKC2Y3IgY9V1QaWSvrPZDMY5awKnmeN4xkPWhBB+IV0juBKUmkwHW0HSpYPZp49n4LHcJk8oSHpHFEZnpvu5bAFdSdrzUJVWJeNejdkmHp1IXwXZH7xKbxWkMAErAJG2tBGcvPWAjAKtEstZJGMFjrNuGSvdZ6HEeP9u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTmLK3PE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66373C2BD10;
+	Tue, 14 May 2024 11:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684041;
-	bh=4GYuSIIc/+c4nsxa8jCA/OaGlqlUONMZHkeb+uHdoY4=;
+	s=korg; t=1715686398;
+	bh=6Q8NINPQYgjnqceIgXFkdIlVVqozOiRYDlbYePg3mAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CU14SXuFnoroYdOuHnhMYHI+tL3vmgJzM+FpuiB1zyHT3VC9Ivp2MuCYI0iXYay5Q
-	 kYxvlDHVIZn9zwO0tmyhIQWogrtLw+fubiuYmkes1Hwj1mSJ1qgYxba9qce3hJvLNC
-	 W2Btq/IFEzZ2gk8qpIKP3h5bzkFonj+phJFWTu20=
+	b=uTmLK3PEj6FRLi49/WOSO8qgsYbSjDB5KW5Jx6ZTab63+CJ0xwf3GpG84NvlfnTPp
+	 uU6XhTNOoYICEUC/KnBeuzW4znNzgKpf2cdbAi1igmUFvqSR5AH6+k4AZVAELFE/vB
+	 I3fHmgZ3hOe/2C+pP6IqVTyHFPdWkzvhTWUaw54g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.8 282/336] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
-Date: Tue, 14 May 2024 12:18:06 +0200
-Message-ID: <20240514101049.265603868@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 125/236] drm/amdgpu: Refine IB schedule error logging
+Date: Tue, 14 May 2024 12:18:07 +0200
+Message-ID: <20240514101025.118026434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit d85cf67a339685beae1d0aee27b7f61da95455be upstream.
+[ Upstream commit 4b18a91faf1752f9bd69a4ed3aed2c8f6e5b0528 ]
 
-The EXT_RGMII_OOB_CTRL register can be written from different
-contexts. It is predominantly written from the adjust_link
-handler which is synchronized by the phydev->lock, but can
-also be written from a different context when configuring the
-mii in bcmgenet_mii_config().
+Downgrade to debug information when IBs are skipped. Also, use dev_* to
+identify the device.
 
-The chances of contention are quite low, but it is conceivable
-that adjust_link could occur during resume when WoL is enabled
-so use the phydev->lock synchronizer in bcmgenet_mii_config()
-to be sure.
-
-Fixes: afe3f907d20f ("net: bcmgenet: power on MII block for all MII modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmmii.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET MDIO routines
-  *
-- * Copyright (c) 2014-2017 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+index 3bf0e893c07df..f34bc9bb7045a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+@@ -301,12 +301,15 @@ static struct dma_fence *amdgpu_job_run(struct drm_sched_job *sched_job)
+ 		dma_fence_set_error(finished, -ECANCELED);
  
- #include <linux/acpi.h>
-@@ -274,6 +274,7 @@ int bcmgenet_mii_config(struct net_devic
- 	 * block for the interface to work, unconditionally clear the
- 	 * Out-of-band disable since we do not need it.
- 	 */
-+	mutex_lock(&phydev->lock);
- 	reg = bcmgenet_ext_readl(priv, EXT_RGMII_OOB_CTRL);
- 	reg &= ~OOB_DISABLE;
- 	if (priv->ext_phy) {
-@@ -285,6 +286,7 @@ int bcmgenet_mii_config(struct net_devic
- 			reg |= RGMII_MODE_EN;
+ 	if (finished->error < 0) {
+-		DRM_INFO("Skip scheduling IBs!\n");
++		dev_dbg(adev->dev, "Skip scheduling IBs in ring(%s)",
++			ring->name);
+ 	} else {
+ 		r = amdgpu_ib_schedule(ring, job->num_ibs, job->ibs, job,
+ 				       &fence);
+ 		if (r)
+-			DRM_ERROR("Error scheduling IBs (%d)\n", r);
++			dev_err(adev->dev,
++				"Error scheduling IBs (%d) in ring(%s)", r,
++				ring->name);
  	}
- 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
-+	mutex_unlock(&phydev->lock);
  
- 	if (init)
- 		dev_info(kdev, "configuring instance for %s\n", phy_name);
+ 	job->job_run_counter++;
+-- 
+2.43.0
+
 
 
 
