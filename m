@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F7D8C52AE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589D98C53D3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58C42B222C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A9001C227A1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C86E142E74;
-	Tue, 14 May 2024 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9292612E1C6;
+	Tue, 14 May 2024 11:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdKaIorO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EV03oxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB9E142911;
-	Tue, 14 May 2024 11:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F577EEE1;
+	Tue, 14 May 2024 11:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686053; cv=none; b=jjc9B8WPNmzukbvwWkwKxJhs9/bARlOGyqdmLwfRaGF2ptzxrvlfBYuzsbhXNvO9813KT4KaoKbyo/hEqb198gTKwZO1vyhWOLKnq+3LMSPm9gNn1qJXXbQgp8PCmU0gRGB5yN2dS+1wqpqvssVoYmQ4RVi3gqbl6m/W5vhNrR4=
+	t=1715686786; cv=none; b=MwrYjcMB3jckgr7dOeBV1A3VngUL3a9ta5mPZ/UxkdB712o3/HeL8oP/CwZRd9Y52CxiozmKOjV208hs0vmD4avcSpeYKNPh2CsFcuN7xE6mDc8Xxy1XPwUherwlhuD7zPzsX2yDE/8RA7xl4KUgt5Pl7EEvo36eaKkYNWe/Vao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686053; c=relaxed/simple;
-	bh=sdckKerdB3sKwN822QannyUICCCJ+39bR+9ZbZw9uU4=;
+	s=arc-20240116; t=1715686786; c=relaxed/simple;
+	bh=lHuKJgnjQa/T4r/QRRZ64kBfEGcVnKFEwey4VRODl0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrVQwe4ACS8OdpBE2xFZ48ugjNJYixZSy9lzlb6PIPyjYBQP/hClkvAunZdwr6a4/wWob7LQTEnQ2Wnp8jIZbWWYN1KOmP+HDT9VGokM5RAmcCHFozX83qnQyB/u9aG+Qwwi4q9IMQINPml1CJPuqnGnOgoq69J8RET2CxXlCpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdKaIorO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ECFC2BD10;
-	Tue, 14 May 2024 11:27:32 +0000 (UTC)
+	 MIME-Version; b=PZkyf6KGZz+hR5V9+J1L4IZkgLstM0uGWkW/WyzeHdzSX8Iwh4I6ccvXnp5HnL2fUD+xI/t2dl+YUeWs27mOT5TXkn1IIa7Zy7aFhkUZ1JdtuBNVebm4U4qaWtb0+Rk0X4wJswUim6zY54mFtyMgQ7xcHLgQD0GGiXDvTC/xyb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EV03oxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C408EC2BD10;
+	Tue, 14 May 2024 11:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686053;
-	bh=sdckKerdB3sKwN822QannyUICCCJ+39bR+9ZbZw9uU4=;
+	s=korg; t=1715686786;
+	bh=lHuKJgnjQa/T4r/QRRZ64kBfEGcVnKFEwey4VRODl0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdKaIorOzoW/oKC3EFc/i/VARCU0vPhB3i0CR75x+K3ar4WBHNR9P6rF4PrKjncIB
-	 JsltaF2d8zs5XuKYrm+CjggK32etuHCvjj3B+Z8NahnCOcPDF1iPHERhrnU8G+7Q8d
-	 zC/GRPn21PrDxgDTBHLteGBMHDzO/jlmY/OsMCFQ=
+	b=2EV03oxypb9MFApmYyt2gly9+sWPdo7saI3nC4sB2gueQ79g/PEvVeX3n6WWceSVm
+	 l+2WNspgC3pHq0szCbugGLQhorUH1a/WDpwW9uK3x35xFhpjroA8ZhSyzhwjyflMWZ
+	 VTGnqKaYZpQxkqeFDJFE49r8Jp402P2rU9jLB3QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Jiang <quic_tjiang@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 299/301] Bluetooth: qca: fix info leak when fetching board id
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 09/63] pinctrl: core: delete incorrect free in pinctrl_enable()
 Date: Tue, 14 May 2024 12:19:30 +0200
-Message-ID: <20240514101043.554055617@linuxfoundation.org>
+Message-ID: <20240514100948.365961367@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 0adcf6be1445ed50bfd4a451a7a782568f270197 upstream.
+[ Upstream commit 5038a66dad0199de60e5671603ea6623eb9e5c79 ]
 
-Add the missing sanity check when fetching the board id to avoid leaking
-slab data when later requesting the firmware.
+The "pctldev" struct is allocated in devm_pinctrl_register_and_init().
+It's a devm_ managed pointer that is freed by devm_pinctrl_dev_release(),
+so freeing it in pinctrl_enable() will lead to a double free.
 
-Fixes: a7f8dedb4be2 ("Bluetooth: qca: add support for QCA2066")
-Cc: stable@vger.kernel.org	# 6.7
-Cc: Tim Jiang <quic_tjiang@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The devm_pinctrl_dev_release() function frees the pindescs and destroys
+the mutex as well.
+
+Fixes: 6118714275f0 ("pinctrl: core: Fix pinctrl_register_and_init() with pinctrl_enable()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <578fbe56-44e9-487c-ae95-29b695650f7c@moroto.mountain>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/core.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -235,6 +235,11 @@ static int qca_read_fw_board_id(struct h
- 		goto out;
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 99f062546f77e..052894d3a2047 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -2036,13 +2036,7 @@ int pinctrl_enable(struct pinctrl_dev *pctldev)
+ 
+ 	error = pinctrl_claim_hogs(pctldev);
+ 	if (error) {
+-		dev_err(pctldev->dev, "could not claim hogs: %i\n",
+-			error);
+-		pinctrl_free_pindescs(pctldev, pctldev->desc->pins,
+-				      pctldev->desc->npins);
+-		mutex_destroy(&pctldev->mutex);
+-		kfree(pctldev);
+-
++		dev_err(pctldev->dev, "could not claim hogs: %i\n", error);
+ 		return error;
  	}
  
-+	if (skb->len < 3) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
-+
- 	*bid = (edl->data[1] << 8) + edl->data[2];
- 	bt_dev_dbg(hdev, "%s: bid = %x", __func__, *bid);
- 
+-- 
+2.43.0
+
 
 
 
