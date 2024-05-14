@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB648C541F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901AA8C5517
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDACB1C22A5E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 465BE1F21489
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E3E1386C8;
-	Tue, 14 May 2024 11:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CB254BFE;
+	Tue, 14 May 2024 11:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0TJx2Lk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHtVp/wB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D30136673;
-	Tue, 14 May 2024 11:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643873D0D1;
+	Tue, 14 May 2024 11:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686993; cv=none; b=Dg/CiPK3X2qoeah0HV32i+7ZTMc4y43NxghJerjHTbjubGiY3naVbQoXLW7mK1lWnqzb+bH8WStsBG0hR5RUOURFb4kq+O5hap+hSVNcpn7cxdV/MzWBT3leE8Fg78SKHnBLdns0hWly7DZrTnq/FTYKZTjYQzYSYaLc3ClRKuc=
+	t=1715687647; cv=none; b=DzTYMkd0wlheaCUmWwuPOQ2OVcPJEKKgbPd6OE5aoZ4ow5wDKCOjyOnmJ4rtZYu2L9+9cS/sDUAMxl6O5vbwpvp0hI6CkKa9u7fGyLOYHPzP9wSx8AzQGn6XrIOLBESQVJjpRtDcS99bwcLsEr2BnrVF36wMhopCU5nkoMp/Z8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686993; c=relaxed/simple;
-	bh=oy9a9W+2A0RX+2LRviCxiOlev49SUnhVEXoGPgjI98E=;
+	s=arc-20240116; t=1715687647; c=relaxed/simple;
+	bh=By0zXq4HP4doYcrdQScOkffWdxyopWvnzKfI68OkHRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4ijI1HQcPUw9WTs+pK6poLxqagI6Smr1Bq9rel0XcaDk44dC14vIPJwAmqIW/W2ePB1tlDXIecLgYfyVVkw+icl+CJeJydOrF2cjXOQQ/0oLNbE8zeHnJnnacqS8GODykCXTZnDHCsWPLH3QNJoCior3jSK3+C6J/19WtvvjUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0TJx2Lk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94161C32782;
-	Tue, 14 May 2024 11:43:12 +0000 (UTC)
+	 MIME-Version; b=AjJUuCNQ+XdahspZtOxncBcNP0vN/rf5rTQHXvQfw1W9gvCgyOsDtlVVYUTxj+L2+eHZ1bZJEfxlcXnztJepVEebUB0aWFI3bdJRK2TF8rssURPRMtvc3tHGdUXKlAqyjWNJJoafaBPCHnUMP1K0tFvDv5neuTxlUT6Pk9B9V+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHtVp/wB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF32AC2BD10;
+	Tue, 14 May 2024 11:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686993;
-	bh=oy9a9W+2A0RX+2LRviCxiOlev49SUnhVEXoGPgjI98E=;
+	s=korg; t=1715687647;
+	bh=By0zXq4HP4doYcrdQScOkffWdxyopWvnzKfI68OkHRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0TJx2LkVtwh45CHngnZ+D9VIJelG9blJ0mEyAhXqD/eThTHr3BheIt1kax3CQKc8
-	 ICJo8HIqr60PZAshRtLEg0FdBYcJ57b4BTTzV0DByEI898k/NT0uTj81xKqWnNgrrp
-	 4PHLpzOHJyLoiM9j+FuZ8OyZfAkYPLL4Unk1QFBk=
+	b=CHtVp/wBATPyGlnlX1yk2J7jkI7iTb3y1+5WzGulkonPlE+wkaNH9lcfmrGK1MrSM
+	 FSbZ77HgY9gAEoPiwVDL2PCfjdXl0DGw9pxv7UOr8A7O1zjYYrp9Wen4A6kmL6RT6E
+	 fpKG9oGQ7B8Qh/ApMBAl9oQGtzk1rcg0rTsKwF+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 03/84] wifi: nl80211: dont free NULL coalescing rule
-Date: Tue, 14 May 2024 12:19:14 +0200
-Message-ID: <20240514100951.820058416@linuxfoundation.org>
+Subject: [PATCH 5.15 057/168] drm/panel: ili9341: Use predefined error codes
+Date: Tue, 14 May 2024 12:19:15 +0200
+Message-ID: <20240514101008.844698619@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 801ea33ae82d6a9d954074fbcf8ea9d18f1543a7 ]
+[ Upstream commit da85f0aaa9f21999753b01d45c0343f885a8f905 ]
 
-If the parsing fails, we can dereference a NULL pointer here.
+In one case the -1 is returned which is quite confusing code for
+the wrong device ID, in another the ret is returning instead of
+plain 0 that also confusing as readed may ask the possible meaning
+of positive codes, which are never the case there. Convert both
+to use explicit predefined error codes to make it clear what's going
+on there.
 
-Cc: stable@vger.kernel.org
-Fixes: be29b99a9b51 ("cfg80211/nl80211: Add packet coalesce support")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240418105220.b328f80406e7.Id75d961050deb05b3e4e354e024866f350c68103@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Link: https://lore.kernel.org/r/20240425142706.2440113-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-4-andriy.shevchenko@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index c698fc458f5f9..0d15dd68565cb 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12023,6 +12023,8 @@ static int nl80211_set_coalesce(struct sk_buff *skb, struct genl_info *info)
- error:
- 	for (i = 0; i < new_coalesce.n_rules; i++) {
- 		tmp_rule = &new_coalesce.rules[i];
-+		if (!tmp_rule)
-+			continue;
- 		for (j = 0; j < tmp_rule->n_patterns; j++)
- 			kfree(tmp_rule->patterns[j].mask);
- 		kfree(tmp_rule->patterns);
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
+index f8afa922fe9ca..0d89779de22b0 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
+@@ -420,7 +420,7 @@ static int ili9341_dpi_prepare(struct drm_panel *panel)
+ 
+ 	ili9341_dpi_init(ili);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int ili9341_dpi_enable(struct drm_panel *panel)
+@@ -727,7 +727,7 @@ static int ili9341_probe(struct spi_device *spi)
+ 	else if (!strcmp(id->name, "yx240qv29"))
+ 		return ili9341_dbi_probe(spi, dc, reset);
+ 
+-	return -1;
++	return -ENODEV;
+ }
+ 
+ static int ili9341_remove(struct spi_device *spi)
 -- 
 2.43.0
 
