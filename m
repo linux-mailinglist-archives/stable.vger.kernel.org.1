@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-45028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D698C5568
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A0C8C54DD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F0CD1F21812
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 655211F21569
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7701E4B1;
-	Tue, 14 May 2024 11:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7E154BFE;
+	Tue, 14 May 2024 11:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXJtH3NG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUGRb2qA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA0CF9D4;
-	Tue, 14 May 2024 11:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F1B53392;
+	Tue, 14 May 2024 11:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687873; cv=none; b=fq4NppXNPSD95D3OOSGaCZFnkedSa80CheXMSDUyh0hgVUZF1Oh45WT3RuYlQEuHM3t+qBhHydJ5fBG2ShAejKjqGSbLG4n8igghb5dqZp63LmsFqZVpgFLLaOOrFwo4mW7AfqOy97n+XBfmamRqSst9dphci23eosPYCrLpfyA=
+	t=1715687494; cv=none; b=pQtVltPOTpdXFUp01g/qnwZFOoj0UDVH9e6hN4GlISYAjfJLvw/lQBtgblhn0sHDneBcmTuhHFraDxKz1CK/3WSb9kZRJlMdUxuDAvQ3+3N82gjnai36DWGVR1pALVP0oJmjaBaaIyTPAfZhDTPHQ7pHiqds9bHtjouFLlQMBzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687873; c=relaxed/simple;
-	bh=3/A9RiK5TsC67+gtH6OoVtXsAv8w6Af6DAvKViPt+mE=;
+	s=arc-20240116; t=1715687494; c=relaxed/simple;
+	bh=pYhO0VejNLfqCAFU0Zgc6sgsgmea9GnHUh0gYcMFevk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nj5UpwdYf63PKh4RzfDDj4h2DVDb4Ar2KUZsyouFacFxag/G1cTeSzj+AuMf9klyhjThUCJf869+b98lbJ8LsjLkUKB1R9cWSYrMomtlwopYUJsWMMGsqGodg8ebWGrXbk5S3njZzoAtgizIurVavc9z6nXL22nmSdtJMYuGnBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXJtH3NG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74E9C2BD10;
-	Tue, 14 May 2024 11:57:52 +0000 (UTC)
+	 MIME-Version; b=QpNVXtE9ZxyN077bj/yQhtNEdnGy8okK3gnk/mSnJWsRnmDBkTyXcuC+IlJfc2cHUdQ1/hYlgaWGu1gzKXwlTA+8DTm2151+T27pdWbXCFiFvj/N6RXgyDOMZ6U2HC8AnGqnfr1yimWYxb+ZHzbfMM9wwNDSdOTCFtxcDmiaweQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUGRb2qA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FF2C2BD10;
+	Tue, 14 May 2024 11:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687873;
-	bh=3/A9RiK5TsC67+gtH6OoVtXsAv8w6Af6DAvKViPt+mE=;
+	s=korg; t=1715687494;
+	bh=pYhO0VejNLfqCAFU0Zgc6sgsgmea9GnHUh0gYcMFevk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXJtH3NGPdw02rywGgZ/bGp7JinS0vBR5J+6lYJl8iVQHdoxmlB82sCCQRRUSoe8U
-	 cX94nJCkUkpOoqFNS7OcQDKTWxReb98lSS+YOtLWjOgSy0yhAJF05753pzkXmXYEl9
-	 ap0JpWmRwtD90ps3D3O8IBH0aHYbpewnXiHQJ3Aw=
+	b=XUGRb2qAxXLJ+cn1tSnitIBgx3E6OFEScuyysprL39H7s1mF4jSMe/vUk7J4K0a/a
+	 C9r1LPynGPtqmgSnre5HysRou0MH0oWdS1xHgkzfMnRY3CuvC53qDPlyplMzFMI8yM
+	 e1eje/0+WwjgXb/ZkLLCKJag/pQ+pGyoI+fYu4C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/168] Revert "Revert "ACPI: CPPC: Use access_width over bit_width for system memory accesses""
+	Alan Stern <stern@rowland.harvard.edu>,
+	Roger Whittaker <roger.whittaker@suse.com>
+Subject: [PATCH 5.10 094/111] usb: Fix regression caused by invalid ep0 maxpacket in virtual SuperSpeed device
 Date: Tue, 14 May 2024 12:20:32 +0200
-Message-ID: <20240514101011.741736314@linuxfoundation.org>
+Message-ID: <20240514101000.702961975@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-This reverts commit b54c4632946ae42f2b39ed38abd909bbf78cbcc2 which was a
-revert of a backport of commit 2f4a4d63a193be6fd530d180bb13c3592052904c
-upstream to 5.15.y.
+commit c78c3644b772e356ca452ae733a3c4de0fb11dc8 upstream.
 
-Cc: Jarred White <jarredwhite@linux.microsoft.com>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A virtual SuperSpeed device in the FreeBSD BVCP package
+(https://bhyve.npulse.net/) presents an invalid ep0 maxpacket size of 256.
+It stopped working with Linux following a recent commit because now we
+check these sizes more carefully than before.
+
+Fix this regression by using the bMaxpacketSize0 value in the device
+descriptor for SuperSpeed or faster devices, even if it is invalid.  This
+is a very simple-minded change; we might want to check more carefully for
+values that actually make some sense (for instance, no smaller than 64).
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: Roger Whittaker <roger.whittaker@suse.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1220569
+Link: https://lore.kernel.org/linux-usb/9efbd569-7059-4575-983f-0ea30df41871@suse.com/
+Fixes: 59cf44575456 ("USB: core: Fix oversight in SuperSpeed initialization")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/4058ac05-237c-4db4-9ecc-5af42bdb4501@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ drivers/usb/core/hub.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 7cc9183c8dc8e..408b1fda5702d 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -161,6 +161,13 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
- show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
- show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
- 
-+/* Check for valid access_width, otherwise, fallback to using bit_width */
-+#define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
-+
-+/* Shift and apply the mask for CPC reads/writes */
-+#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
-+					GENMASK(((reg)->bit_width), 0)))
-+
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
- {
-@@ -762,8 +769,10 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
- 			} else if (gas_t->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
- 				if (gas_t->address) {
- 					void __iomem *addr;
-+					size_t access_width;
- 
--					addr = ioremap(gas_t->address, gas_t->bit_width/8);
-+					access_width = GET_BIT_WIDTH(gas_t) / 8;
-+					addr = ioremap(gas_t->address, access_width);
- 					if (!addr)
- 						goto out_free;
- 					cpc_ptr->cpc_regs[i-2].sys_mem_vaddr = addr;
-@@ -936,6 +945,7 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- {
- 	int ret_val = 0;
- 	void __iomem *vaddr = NULL;
-+	int size;
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
-@@ -955,7 +965,9 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		return acpi_os_read_memory((acpi_physical_address)reg->address,
- 				val, reg->bit_width);
- 
--	switch (reg->bit_width) {
-+	size = GET_BIT_WIDTH(reg);
-+
-+	switch (size) {
- 	case 8:
- 		*val = readb_relaxed(vaddr);
- 		break;
-@@ -974,12 +986,16 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		ret_val = -EFAULT;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -5053,9 +5053,10 @@ hub_port_init(struct usb_hub *hub, struc
  	}
- 
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-+		*val = MASK_VAL(reg, *val);
-+
- 	return ret_val;
- }
- 
- static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- {
- 	int ret_val = 0;
-+	int size;
- 	void __iomem *vaddr = NULL;
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
-@@ -994,7 +1010,12 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
- 				val, reg->bit_width);
- 
--	switch (reg->bit_width) {
-+	size = GET_BIT_WIDTH(reg);
-+
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-+		val = MASK_VAL(reg, val);
-+
-+	switch (size) {
- 	case 8:
- 		writeb_relaxed(val, vaddr);
- 		break;
--- 
-2.43.0
-
+ 	if (usb_endpoint_maxp(&udev->ep0.desc) == i) {
+ 		;	/* Initial ep0 maxpacket guess is right */
+-	} else if ((udev->speed == USB_SPEED_FULL ||
++	} else if (((udev->speed == USB_SPEED_FULL ||
+ 				udev->speed == USB_SPEED_HIGH) &&
+-			(i == 8 || i == 16 || i == 32 || i == 64)) {
++			(i == 8 || i == 16 || i == 32 || i == 64)) ||
++			(udev->speed >= USB_SPEED_SUPER && i > 0)) {
+ 		/* Initial guess is wrong; use the descriptor's value */
+ 		if (udev->speed == USB_SPEED_FULL)
+ 			dev_dbg(&udev->dev, "ep0 maxpacket = %d\n", i);
 
 
 
