@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531B68C5199
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5DB8C5027
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A302281F76
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFF43284C3B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E2D13A265;
-	Tue, 14 May 2024 11:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2EB139D04;
+	Tue, 14 May 2024 10:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2m8laIg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udGEz0Qo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6731C5427E;
-	Tue, 14 May 2024 11:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE134139CE4;
+	Tue, 14 May 2024 10:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684757; cv=none; b=EQMBkX4ZNvaExC3gAcrgpcDIwPJ/VlbjQJdJtM4L6DUqSSYNZPNtlCQp9HwdSIwy+PONoIdDIj5TD8FxQUOirP15oyhH13uPjsJq27Uc98B/Dr7UzmvhoWXi20ah5RSUqpttW5wMzREbnIbwhkIkqnonHOfSNMOOF2T2/3gNcws=
+	t=1715683016; cv=none; b=B+coOdaxFrYKhta8zcYYQ7/Sfu3MPh7/tC27h92DacLwaPwfmqO46if0IhlxOv/a91CVA/cN9D/SNZowbaxgzHQnaui1eog30an+uLONjo8vlwcrKs7V7IyVOgXalt4c6h/8cX80AdUvYpW04QZYOPeYPRTkEliuRfeU65X+mjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684757; c=relaxed/simple;
-	bh=bB8knlYto49px5M2CdUdc/dUC4eIcaf1QP4nKG3KyW4=;
+	s=arc-20240116; t=1715683016; c=relaxed/simple;
+	bh=1dQCvDBaHOeb7LKXfEhlk5UUG4go6azYSckIR9z4oVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J09GIOaN+5iIe33sq2X33dtYseVue1ueZ8TSGmJu0eL69olbLXima6MWU69nfYa0U6UgdI8pAnwqAUo2YY7E4047zR19rZwHeQne8/FWkhkDfquK15epzuL97L/55MFxFXr6+ddywSzgmipEktj3hNCdDHK1JnZL+2efCb11jts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2m8laIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B6FC2BD10;
-	Tue, 14 May 2024 11:05:56 +0000 (UTC)
+	 MIME-Version; b=ZVhBgFRVLWlHygyLQqExM4JBEK0mMkWY8vtNamFNSrUtxYehvnPLD8ixNOMfxNhIuSq8orlHC13aW29uQXzbC8G8fRJTSVHNHEI29GV+zcKt6zrF853hnqWmQtcePdNIJUidxB+9pmcToZ46C1bfBQTmGsuMP6jYeFegqyFAJuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udGEz0Qo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3700C2BD10;
+	Tue, 14 May 2024 10:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684757;
-	bh=bB8knlYto49px5M2CdUdc/dUC4eIcaf1QP4nKG3KyW4=;
+	s=korg; t=1715683016;
+	bh=1dQCvDBaHOeb7LKXfEhlk5UUG4go6azYSckIR9z4oVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2m8laIgPfDYz216HltsmUSLIj0Fhy5EOfQuExjtof20+u76WGXQDYfyhhQy2dzlg
-	 N8IZohgkq1xABXVU+FoBbdwEZ+QBJEqZah/gWwyRdkNpnIUVUMiXns3uPmKHEsPnMI
-	 QitTLV95VC+3u4pD3dn7Uxee/dlViNbkEan1sZsY=
+	b=udGEz0Qo6NVPBp67CBnggxHjKQ2KOOOpR7A09GGnHe6DmpVOGo+/9E7WhwMVyF+Br
+	 gmGDYWJqHM30hFSpqgAqQV9mtStSUmM5SOcBAckDwWb4ODtuV99ImswIYVFf63a8WQ
+	 7YruABFLWxiFzcEny3Dm89iPi8LfU82IW3vGzq0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/301] ipv4: Fix uninit-value access in __ip_make_skb()
+Subject: [PATCH 6.8 152/336] accel/ivpu: Fix missed error message after VPU rename
 Date: Tue, 14 May 2024 12:15:56 +0200
-Message-ID: <20240514101035.456621616@linuxfoundation.org>
+Message-ID: <20240514101044.340992708@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-[ Upstream commit fc1092f51567277509563800a3c56732070b6aa4 ]
+[ Upstream commit 0d298e23292b7a5b58c5589fe33b96e95363214f ]
 
-KMSAN reported uninit-value access in __ip_make_skb() [1].  __ip_make_skb()
-tests HDRINCL to know if the skb has icmphdr. However, HDRINCL can cause a
-race condition. If calling setsockopt(2) with IP_HDRINCL changes HDRINCL
-while __ip_make_skb() is running, the function will access icmphdr in the
-skb even if it is not included. This causes the issue reported by KMSAN.
+Change "VPU" to "NPU" in ivpu_suspend() so it matches all other error
+messages.
 
-Check FLOWI_FLAG_KNOWN_NH on fl4->flowi4_flags instead of testing HDRINCL
-on the socket.
-
-Also, fl4->fl4_icmp_type and fl4->fl4_icmp_code are not initialized. These
-are union in struct flowi4 and are implicitly initialized by
-flowi4_init_output(), but we should not rely on specific union layout.
-
-Initialize these explicitly in raw_sendmsg().
-
-[1]
-BUG: KMSAN: uninit-value in __ip_make_skb+0x2b74/0x2d20 net/ipv4/ip_output.c:1481
- __ip_make_skb+0x2b74/0x2d20 net/ipv4/ip_output.c:1481
- ip_finish_skb include/net/ip.h:243 [inline]
- ip_push_pending_frames+0x4c/0x5c0 net/ipv4/ip_output.c:1508
- raw_sendmsg+0x2381/0x2690 net/ipv4/raw.c:654
- inet_sendmsg+0x27b/0x2a0 net/ipv4/af_inet.c:851
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x274/0x3c0 net/socket.c:745
- __sys_sendto+0x62c/0x7b0 net/socket.c:2191
- __do_sys_sendto net/socket.c:2203 [inline]
- __se_sys_sendto net/socket.c:2199 [inline]
- __x64_sys_sendto+0x130/0x200 net/socket.c:2199
- do_syscall_64+0xd8/0x1f0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3804 [inline]
- slab_alloc_node mm/slub.c:3845 [inline]
- kmem_cache_alloc_node+0x5f6/0xc50 mm/slub.c:3888
- kmalloc_reserve+0x13c/0x4a0 net/core/skbuff.c:577
- __alloc_skb+0x35a/0x7c0 net/core/skbuff.c:668
- alloc_skb include/linux/skbuff.h:1318 [inline]
- __ip_append_data+0x49ab/0x68c0 net/ipv4/ip_output.c:1128
- ip_append_data+0x1e7/0x260 net/ipv4/ip_output.c:1365
- raw_sendmsg+0x22b1/0x2690 net/ipv4/raw.c:648
- inet_sendmsg+0x27b/0x2a0 net/ipv4/af_inet.c:851
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x274/0x3c0 net/socket.c:745
- __sys_sendto+0x62c/0x7b0 net/socket.c:2191
- __do_sys_sendto net/socket.c:2203 [inline]
- __se_sys_sendto net/socket.c:2199 [inline]
- __x64_sys_sendto+0x130/0x200 net/socket.c:2199
- do_syscall_64+0xd8/0x1f0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
-
-CPU: 1 PID: 15709 Comm: syz-executor.7 Not tainted 6.8.0-11567-gb3603fcb79b1 #25
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
-
-Fixes: 99e5acae193e ("ipv4: Fix potential uninit variable access bug in __ip_make_skb()")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Link: https://lore.kernel.org/r/20240430123945.2057348-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240402104929.941186-8-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_output.c | 2 +-
- net/ipv4/raw.c       | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_pm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 196495ff3977b..2458461e24874 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -1469,7 +1469,7 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
- 		 * by icmp_hdr(skb)->type.
- 		 */
- 		if (sk->sk_type == SOCK_RAW &&
--		    !inet_test_bit(HDRINCL, sk))
-+		    !(fl4->flowi4_flags & FLOWI_FLAG_KNOWN_NH))
- 			icmp_type = fl4->fl4_icmp_type;
- 		else
- 			icmp_type = icmp_hdr(skb)->type;
-diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
-index ee55d0cbe4e63..39834b95ee59a 100644
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -604,6 +604,9 @@ static int raw_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
- 			   daddr, saddr, 0, 0, sk->sk_uid);
+diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
+index 2d706cb29a5a5..64618fc2cec40 100644
+--- a/drivers/accel/ivpu/ivpu_pm.c
++++ b/drivers/accel/ivpu/ivpu_pm.c
+@@ -62,7 +62,7 @@ static int ivpu_suspend(struct ivpu_device *vdev)
  
-+	fl4.fl4_icmp_type = 0;
-+	fl4.fl4_icmp_code = 0;
-+
- 	if (!hdrincl) {
- 		rfv.msg = msg;
- 		rfv.hlen = 0;
+ 	ret = ivpu_shutdown(vdev);
+ 	if (ret)
+-		ivpu_err(vdev, "Failed to shutdown VPU: %d\n", ret);
++		ivpu_err(vdev, "Failed to shutdown NPU: %d\n", ret);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
