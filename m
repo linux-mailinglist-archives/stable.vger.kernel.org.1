@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE8E8C5538
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C18F8C53DB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2648B282457
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5501F22095
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFF750278;
-	Tue, 14 May 2024 11:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1665C13D250;
+	Tue, 14 May 2024 11:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yk+19tnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCWtZMkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CE0F9D4;
-	Tue, 14 May 2024 11:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F2313CF93;
+	Tue, 14 May 2024 11:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687741; cv=none; b=bQmXuKkO5C44HBzljp/wAyKZjp6EftCEOcS5BzzhXmo4lUkE8MhI2I/T8VRCzuUkgccIph8j5ucfXydzFVxDgIDRThLZPfvvT34x7xslV9Z7dR/kIdfi43gb1bY2MthBFOVkEJwPjToa8ycIPs2Un5zK5oYY05aQfrPIw26138M=
+	t=1715686797; cv=none; b=HjSdY4+o4FhNtitl5DZ34n/0JzLbMSrK+6gkblXI3QgPNWtBFjmlrjn9f351JFmJrWlzM4Wikd6Trah5BkY3Mm9gOj1CWXr1ECw8nM+hGEyveV/Ot1rjUsBHoXao/86hS1D4sG34XbQBjzPeUs50bGug4wlDz5CK8ZM+MgOUbJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687741; c=relaxed/simple;
-	bh=OG7usIaceb2ndvasGwd5gLveFIldwxHMx8NUOBJkHQE=;
+	s=arc-20240116; t=1715686797; c=relaxed/simple;
+	bh=mf/+/MAXj+aouGQ0mMKFHFMkJAWbQd/SkAB9wYnLkco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuITTNftu1hd+YNLQpy/9QRcWFisrzqKnhUITOLzpeqn44zL9b/6Liyqt3Xuy4jRfhhrMdouAXiRcP0rmP/vt6+ckD4kzBPYGDtgCe9GEXs5+XBEDFRt9cueh2MxL+lzeAY/8HXbF7fZB9RJUw8aW3iyGrqSC3Rdvy0AW5XCKQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yk+19tnZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CB1C2BD10;
-	Tue, 14 May 2024 11:55:40 +0000 (UTC)
+	 MIME-Version; b=cF1ZYb2cTREBUNGQjxcwmdL2TL/TFtKa0SJXEWYchu6vYsLmwdz4TGVXlO1rq/ZlLjMlpt4QCl2UjwzojJPhE/0C8FRrpbMDulAeDPWfi9N76wLi2qboQH0BkN0S5tOSQhKPzXZA7/OPafYivkjdpaL0mBcJ2nRhQq7aH9VqGFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCWtZMkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF90C2BD10;
+	Tue, 14 May 2024 11:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687741;
-	bh=OG7usIaceb2ndvasGwd5gLveFIldwxHMx8NUOBJkHQE=;
+	s=korg; t=1715686797;
+	bh=mf/+/MAXj+aouGQ0mMKFHFMkJAWbQd/SkAB9wYnLkco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yk+19tnZxziJ1bBJlSn3dsOiQpIJfc5k0mRywGQiXzy0EsqVMLMoQxXkXl18OcTu6
-	 fb2FBG7Afg0tKBOToMIgl127H9nfDWNe/3he+XI8mxyVdx/EyphLp/jgSl/84zROHd
-	 1bttniZKyNd2Ll8z2WUSOQBqeqFMyseKejkXqze0=
+	b=rCWtZMkHaNfZumf+Rg6M2egM3SrCidk+nkUNYYFzhjizRY6N/l4f/XIHFODjwo+Ua
+	 lEPbMWWHp38QFtmoItenisZUaTYWIM9s9+oq5JF1RKi0dkT8dPlVrGExUqKDqnmuXf
+	 DehUZyCb8X6ej+T97bXhmyMFrzXhIeJA/5qgiz3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/168] gpio: wcove: Use -ENOTSUPP consistently
+Subject: [PATCH 4.19 26/63] scsi: bnx2fc: Remove spin_lock_bh while releasing resources after upload
 Date: Tue, 14 May 2024 12:19:47 +0200
-Message-ID: <20240514101010.052960733@linuxfoundation.org>
+Message-ID: <20240514100949.004812509@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit 0c3b532ad3fbf82884a2e7e83e37c7dcdd4d1d99 ]
+[ Upstream commit c214ed2a4dda35b308b0b28eed804d7ae66401f9 ]
 
-The GPIO library expects the drivers to return -ENOTSUPP in some
-cases and not using analogue POSIX code. Make the driver to follow
-this.
+The session resources are used by FW and driver when session is offloaded,
+once session is uploaded these resources are not used. The lock is not
+required as these fields won't be used any longer. The offload and upload
+calls are sequential, hence lock is not required.
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+This will suppress following BUG_ON():
+
+[  449.843143] ------------[ cut here ]------------
+[  449.848302] kernel BUG at mm/vmalloc.c:2727!
+[  449.853072] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+[  449.858712] CPU: 5 PID: 1996 Comm: kworker/u24:2 Not tainted 5.14.0-118.=
+el9.x86_64 #1
+Rebooting.
+[  449.867454] Hardware name: Dell Inc. PowerEdge R730/0WCJNT, BIOS 2.3.4 1=
+1/08/2016
+[  449.876966] Workqueue: fc_rport_eq fc_rport_work [libfc]
+[  449.882910] RIP: 0010:vunmap+0x2e/0x30
+[  449.887098] Code: 00 65 8b 05 14 a2 f0 4a a9 00 ff ff 00 75 1b 55 48 89 =
+fd e8 34 36 79 00 48 85 ed 74 0b 48 89 ef 31 f6 5d e9 14 fc ff ff 5d c3 <0f=
+> 0b 0f 1f 44 00 00 41 57 41 56 49 89 ce 41 55 49 89 fd 41 54 41
+[  449.908054] RSP: 0018:ffffb83d878b3d68 EFLAGS: 00010206
+[  449.913887] RAX: 0000000080000201 RBX: ffff8f4355133550 RCX: 000000000d4=
+00005
+[  449.921843] RDX: 0000000000000001 RSI: 0000000000001000 RDI: ffffb83da53=
+f5000
+[  449.929808] RBP: ffff8f4ac6675800 R08: ffffb83d878b3d30 R09: 00000000000=
+efbdf
+[  449.937774] R10: 0000000000000003 R11: ffff8f434573e000 R12: 00000000000=
+01000
+[  449.945736] R13: 0000000000001000 R14: ffffb83da53f5000 R15: ffff8f43d4e=
+a3ae0
+[  449.953701] FS:  0000000000000000(0000) GS:ffff8f529fc80000(0000) knlGS:=
+0000000000000000
+[  449.962732] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  449.969138] CR2: 00007f8cf993e150 CR3: 0000000efbe10003 CR4: 00000000003=
+706e0
+[  449.977102] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
+00000
+[  449.985065] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
+00400
+[  449.993028] Call Trace:
+[  449.995756]  __iommu_dma_free+0x96/0x100
+[  450.000139]  bnx2fc_free_session_resc+0x67/0x240 [bnx2fc]
+[  450.006171]  bnx2fc_upload_session+0xce/0x100 [bnx2fc]
+[  450.011910]  bnx2fc_rport_event_handler+0x9f/0x240 [bnx2fc]
+[  450.018136]  fc_rport_work+0x103/0x5b0 [libfc]
+[  450.023103]  process_one_work+0x1e8/0x3c0
+[  450.027581]  worker_thread+0x50/0x3b0
+[  450.031669]  ? rescuer_thread+0x370/0x370
+[  450.036143]  kthread+0x149/0x170
+[  450.039744]  ? set_kthread_struct+0x40/0x40
+[  450.044411]  ret_from_fork+0x22/0x30
+[  450.048404] Modules linked in: vfat msdos fat xfs nfs_layout_nfsv41_file=
+s rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver dm_service_time qedf qed c=
+rc8 bnx2fc libfcoe libfc scsi_transport_fc intel_rapl_msr intel_rapl_common=
+ x86_pkg_temp_thermal intel_powerclamp dcdbas rapl intel_cstate intel_uncor=
+e mei_me pcspkr mei ipmi_ssif lpc_ich ipmi_si fuse zram ext4 mbcache jbd2 l=
+oop nfsv3 nfs_acl nfs lockd grace fscache netfs irdma ice sd_mod t10_pi sg =
+ib_uverbs ib_core 8021q garp mrp stp llc mgag200 i2c_algo_bit drm_kms_helpe=
+r syscopyarea sysfillrect sysimgblt mxm_wmi fb_sys_fops cec crct10dif_pclmu=
+l ahci crc32_pclmul bnx2x drm ghash_clmulni_intel libahci rfkill i40e libat=
+a megaraid_sas mdio wmi sunrpc lrw dm_crypt dm_round_robin dm_multipath dm_=
+snapshot dm_bufio dm_mirror dm_region_hash dm_log dm_zero dm_mod linear rai=
+d10 raid456 async_raid6_recov async_memcpy async_pq async_xor async_tx raid=
+6_pq libcrc32c crc32c_intel raid1 raid0 iscsi_ibft squashfs be2iscsi bnx2i =
+cnic uio cxgb4i cxgb4 tls
+[  450.048497]  libcxgbi libcxgb qla4xxx iscsi_boot_sysfs iscsi_tcp libiscs=
+i_tcp libiscsi scsi_transport_iscsi edd ipmi_devintf ipmi_msghandler
+[  450.159753] ---[ end trace 712de2c57c64abc8 ]---
+
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240315071427.31842-1-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-wcove.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/bnx2fc/bnx2fc_tgt.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-wcove.c b/drivers/gpio/gpio-wcove.c
-index 16a0fae1e32eb..2df948e16eb71 100644
---- a/drivers/gpio/gpio-wcove.c
-+++ b/drivers/gpio/gpio-wcove.c
-@@ -104,7 +104,7 @@ static inline int to_reg(int gpio, enum ctrl_register type)
- 	unsigned int reg = type == CTRL_IN ? GPIO_IN_CTRL_BASE : GPIO_OUT_CTRL_BASE;
- 
- 	if (gpio >= WCOVE_GPIO_NUM)
--		return -EOPNOTSUPP;
-+		return -ENOTSUPP;
- 
- 	return reg + gpio;
- }
--- 
+diff --git a/drivers/scsi/bnx2fc/bnx2fc_tgt.c b/drivers/scsi/bnx2fc/bnx2fc_=
+tgt.c
+index e3d1c7c440c8c..c7d6842b293da 100644
+--- a/drivers/scsi/bnx2fc/bnx2fc_tgt.c
++++ b/drivers/scsi/bnx2fc/bnx2fc_tgt.c
+@@ -834,7 +834,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
+*hba,
+=20
+ 	BNX2FC_TGT_DBG(tgt, "Freeing up session resources\n");
+=20
+-	spin_lock_bh(&tgt->cq_lock);
+ 	ctx_base_ptr =3D tgt->ctx_base;
+ 	tgt->ctx_base =3D NULL;
+=20
+@@ -890,7 +889,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
+*hba,
+ 				    tgt->sq, tgt->sq_dma);
+ 		tgt->sq =3D NULL;
+ 	}
+-	spin_unlock_bh(&tgt->cq_lock);
+=20
+ 	if (ctx_base_ptr)
+ 		iounmap(ctx_base_ptr);
+--=20
 2.43.0
 
 
