@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E5D8C51AB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD488C5007
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 770C828282D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 734881F21B43
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B2113AD13;
-	Tue, 14 May 2024 11:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262A6135A4A;
+	Tue, 14 May 2024 10:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GspGBcnu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcXt5UtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CE866B5E;
-	Tue, 14 May 2024 11:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F01134CFE;
+	Tue, 14 May 2024 10:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684854; cv=none; b=OEk5ManXdQLNsKe7LMhSyIYAlKSaxsziHuKDzbFGDAWNael1OPpRlBu5mGAVlRxaQg+T23K6+xi8m3QO9V+wLouMLe258LRBYMRjH8pccubQCszBhbyq6SvOw4KzUBsyeTAV3pHNVEWBYuGkCmSmd9l/NXDH1aPVNmHdgrhAarQ=
+	t=1715682865; cv=none; b=AoabBCwcz2nQUU5zwOqpvBRjFh/YqnypxW+FsiCt6HZw4HWXZldTeb/fGkjSzZPVNTOGkO53NZmqbXmhSWAFeqc7eAVsg0SCPdM3/RtksnL3ZLat3iGFUbfMOcHGfDNX9fiSMcKktRhOgqFsI6JR64VBk8CvkO53EGeqWkZUMc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684854; c=relaxed/simple;
-	bh=PxxySRbN8zLQXOQ23cIR9oXQWS56Lbm8rxK+rqwjY+Y=;
+	s=arc-20240116; t=1715682865; c=relaxed/simple;
+	bh=FvA3XY1LD+JY68OKYbqS+Gojq6B0u+7cOX1A4jpRGpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIK4CINbsXAH4gRRmvEWgSBdhwAp/CKbbBWp4Vs8SLdLO+sCwnLdUULBb1MEvxZ0XJxJbJ+Wsvdl8dc75AYtTrx/bjo9kU9AgMT0gpvjeiKkPPlbYj1C18npGX+pfBHYJBlEbeOIsL415TN0WNxy2k39HMeH5QWR9ame8sHWU+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GspGBcnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12238C32782;
-	Tue, 14 May 2024 11:07:32 +0000 (UTC)
+	 MIME-Version; b=M9w7QsZPD2V3nQIYbb6TaBtLpBEV30wJ9DCIN83h5LS4nzEGJIYe7Quar2p3MxURQ72tsP7DYKBc9+s7OQ0CKLtMj9fEDkEXxPbZ2dAL7LwDo79/ZWGaoGOctC3n+A2fB1UOm10bxww2/XRSGiKUsqebZBd4klK/TzifRPks7jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcXt5UtB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D4BC2BD10;
+	Tue, 14 May 2024 10:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684853;
-	bh=PxxySRbN8zLQXOQ23cIR9oXQWS56Lbm8rxK+rqwjY+Y=;
+	s=korg; t=1715682865;
+	bh=FvA3XY1LD+JY68OKYbqS+Gojq6B0u+7cOX1A4jpRGpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GspGBcnu7IpgXbStV3VgZnnz+eIuXo7/9/Dk0stAuSte3deGo5SJAX0Jj8aCbd67Z
-	 hq4sSS7K6ZasY9UFX5FQUEEnzJxzDE0hopup5LDYMJTVlcWZ3m8YIpnlzWXNXYlf62
-	 iw1Z6uYox0BzjPyNZ6OG+5Yaq3XR/zw80Qv6iUQg=
+	b=OcXt5UtB/FGu9Cndi3PCbQ/AvVmLpbuzvt++2QoeHIN1b7lC4K0QoEmytsN4jPhgD
+	 mwc6CiyQ97stJq1KyDnoFaEiUbmfYexKVWgIocsD1SlhyTlVSOKU/sA9fs01j5QVM1
+	 b7tfK4tN7Vz+n7D/wAri3vkQXtjQHCII3MPcxPys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/301] ALSA: emu10k1: fix E-MU dock initialization
+Subject: [PATCH 6.8 125/336] scsi: ufs: core: Fix MCQ mode dev command timeout
 Date: Tue, 14 May 2024 12:15:29 +0200
-Message-ID: <20240514101034.434275284@linuxfoundation.org>
+Message-ID: <20240514101043.322014375@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit e8289fd3fa65d60cf04dab6f7845eda352c04ea6 ]
+[ Upstream commit 2a26a11e9c258b14be6fd98f8a85f20ac1fff66e ]
 
-A side effect of making the dock monitoring interrupt-driven was that
-we'd be very quick to program a freshly connected dock. However, for
-unclear reasons, the dock does not work when we do that - despite the
-FPGA netlist upload going just fine. We work around this by adding a
-delay before programming the dock; for safety, the value is several
-times as much as was determined empirically.
+When a dev command times out in MCQ mode, a successfully cleared command
+should cause a retry. However, because we currently return 0, the caller
+considers the command a success which causes the following error to be
+logged: "Invalid offset 0x0 in descriptor IDN 0x9, length 0x0".
 
-Note that a badly timed dock hot-plug would have triggered the problem
-even before the referenced commit - but now it would happen 100% instead
-of about 3% of the time, thus making it impossible to work around by
-re-plugging.
+Retry if clearing the command was successful.
 
-Fixes: fbb64eedf5a3 ("ALSA: emu10k1: make E-MU dock monitoring interrupt-driven")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218584
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Message-ID: <20240428093716.3198666-6-oswald.buddenhagen@gmx.de>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240328111244.3599-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/emu10k1/emu10k1_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/ufs/core/ufshcd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/emu10k1/emu10k1_main.c b/sound/pci/emu10k1/emu10k1_main.c
-index 86eaf5963502c..ade90c7ecd922 100644
---- a/sound/pci/emu10k1/emu10k1_main.c
-+++ b/sound/pci/emu10k1/emu10k1_main.c
-@@ -737,6 +737,12 @@ static void snd_emu1010_load_dock_firmware(struct snd_emu10k1 *emu)
- 	u32 tmp, tmp2;
- 	int err;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 14a6a100fcdb0..4a07a18cf835d 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -3172,7 +3172,9 @@ static int ufshcd_wait_for_dev_cmd(struct ufs_hba *hba,
  
-+	// The docking events clearly arrive prematurely - while the
-+	// Dock's FPGA seems to be successfully programmed, the Dock
-+	// fails to initialize subsequently if we don't give it some
-+	// time to "warm up" here.
-+	msleep(200);
-+
- 	dev_info(emu->card->dev, "emu1010: Loading Audio Dock Firmware\n");
- 	/* Return to Audio Dock programming mode */
- 	snd_emu1010_fpga_write(emu, EMU_HANA_FPGA_CONFIG,
+ 		/* MCQ mode */
+ 		if (is_mcq_enabled(hba)) {
+-			err = ufshcd_clear_cmd(hba, lrbp->task_tag);
++			/* successfully cleared the command, retry if needed */
++			if (ufshcd_clear_cmd(hba, lrbp->task_tag) == 0)
++				err = -EAGAIN;
+ 			hba->dev_cmd.complete = NULL;
+ 			return err;
+ 		}
 -- 
 2.43.0
 
