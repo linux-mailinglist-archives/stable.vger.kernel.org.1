@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-44394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3718C52A3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121FE8C5133
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26F1BB2212B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7461C1F2149D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C46B140367;
-	Tue, 14 May 2024 11:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160187F7EB;
+	Tue, 14 May 2024 10:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RT9hcJ1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrQZX+nZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A504F1E5;
-	Tue, 14 May 2024 11:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FDED531;
+	Tue, 14 May 2024 10:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686028; cv=none; b=rPLi7JRnHT6iDk6eJD3Id1fksT526lpPn5ayfN53X9axNugwOF/ZGexyOWpiRnEDYfXq/VHsI0v9li0iDLzpWAFCu9oml7xP5lUATmDPGpYMtgBAzny+J0SURjrnPJCI4Fb2rlpBarqy+IQoyWP781qoMTaXssQwz+2WOr0B5YA=
+	t=1715684176; cv=none; b=KMrRRXznzri/VnBcelf4ol6J5TexrsKZuxhlBWLDFK1JpqqynVSKM+KOyFh8+TTLG2Ay3y2DWMojeIYSrfnErdD/2m2lWK3hZbHq12lGtrvTUK5RHUOAmThV8eaoDW6PVPznlN6c/zpiya1jCGcl4SV3OnMVs1mvNXwCJzQKXIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686028; c=relaxed/simple;
-	bh=cdWNtugju7KUp25rkynGb9SgpU4MLHejvyIE1cY3AtU=;
+	s=arc-20240116; t=1715684176; c=relaxed/simple;
+	bh=rZmm9UkglMHxq1fu1Y86rpaMyI6NOfF8bsbSYsNudg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V8oZKM95e3jamu9InQSdsoNDlCOOvn/UNJc/kJ34JdMwc0a3f6BM1wU1d8Uc/Y3RSeyoQ2CZgywl2I2jkBOKGNtXbp3ewPuE/KjY33o3au7LBzMGTU3QFV2b51nVB5VwzN6WJF+8v6KmBLTyayOeB9tRX88OZorHlxK3xjIUptk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RT9hcJ1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A364C32782;
-	Tue, 14 May 2024 11:27:06 +0000 (UTC)
+	 MIME-Version; b=dWel/ENGPUid90jjJuxjG10jKeFsPrDwdl6ROSir8wnF7KzIvs7iU1xtMLq57At5soPoNHsS/A3Zow8v+B7U9WVgK5nC64dWNgS4MElpvMrTHzcTwxrZAqTzpl6hVNMVMjYAldotcEobLj9JbGNHTKTsaR32wv98c9yaXFDL06o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrQZX+nZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B22CC2BD10;
+	Tue, 14 May 2024 10:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686028;
-	bh=cdWNtugju7KUp25rkynGb9SgpU4MLHejvyIE1cY3AtU=;
+	s=korg; t=1715684176;
+	bh=rZmm9UkglMHxq1fu1Y86rpaMyI6NOfF8bsbSYsNudg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RT9hcJ1+A/NV6Hw3nAp7voydPPk4pk4o4fXNvFcVYg0HcfoAbC7WfG6i2txkjU+3n
-	 bnT6PEYTcA0S94aYFsRZBjbGoDp9fGKsbFfY0cmvH9GbRAtVXCw9ejpp2KTQgc4jd/
-	 SckQzkQfqfxTY6YRUpxc+34qbmG1DbOr/2oCGUFw=
+	b=hrQZX+nZz+86T1YO2NM0hAdw50SftG83XVjQKBpKdvkjQMzAAb4R7wQVtiyac/wSd
+	 D2bXf+cXGZPUMdynOzwxZVMzhH5c1WVpRNwfEKvMicGwgftMT/2TdCg9u+HWGAD2YE
+	 P/LN92WtJBiXVVnKp3ycCsU1psjXxXKIWhYNa8iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.6 269/301] drm/ttm: Print the memory decryption status just once
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.8 336/336] Bluetooth: qca: fix firmware check error path
 Date: Tue, 14 May 2024 12:19:00 +0200
-Message-ID: <20240514101042.419244506@linuxfoundation.org>
+Message-ID: <20240514101051.314434161@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 27906e5d78248b19bcdfdae72049338c828897bb upstream.
+commit 40d442f969fb1e871da6fca73d3f8aef1f888558 upstream.
 
-Stop printing the TT memory decryption status info each time tt is created
-and instead print it just once.
+A recent commit fixed the code that parses the firmware files before
+downloading them to the controller but introduced a memory leak in case
+the sanity checks ever fail.
 
-Reduces the spam in the system logs when running guests with SEV enabled.
+Make sure to free the firmware buffer before returning on errors.
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 71ce046327cf ("drm/ttm: Make sure the mapped tt pages are decrypted when needed")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v5.14+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240408155605.1398631-1-zack.rusin@broadcom.com
+Fixes: f905ae0be4b7 ("Bluetooth: qca: add missing firmware sanity checks")
+Cc: stable@vger.kernel.org      # 4.19
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_tt.c | 2 +-
+ drivers/bluetooth/btqca.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_tt.c b/drivers/gpu/drm/ttm/ttm_tt.c
-index 578a7c37f00b..d776e3f87064 100644
---- a/drivers/gpu/drm/ttm/ttm_tt.c
-+++ b/drivers/gpu/drm/ttm/ttm_tt.c
-@@ -92,7 +92,7 @@ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
- 	 */
- 	if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		page_flags |= TTM_TT_FLAG_DECRYPTED;
--		drm_info(ddev, "TT memory decryption enabled.");
-+		drm_info_once(ddev, "TT memory decryption enabled.");
- 	}
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -605,7 +605,7 @@ static int qca_download_firmware(struct
  
- 	bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
--- 
-2.45.0
-
+ 	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+ 	segment = data;
+ 	remain = size;
 
 
 
