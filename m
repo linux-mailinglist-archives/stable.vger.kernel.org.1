@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503DF8C52B1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA538C5488
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E61FB1F21713
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A898D1C21901
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4747614372E;
-	Tue, 14 May 2024 11:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E360B12BE9C;
+	Tue, 14 May 2024 11:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bipdx2kg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSYkVj9Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06665143721;
-	Tue, 14 May 2024 11:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A270243AD7;
+	Tue, 14 May 2024 11:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686059; cv=none; b=DjzkD6HRb7Sauq7tsSNY7y1Bc5ZDKSAfUWS8D01igkesmG48EjLP1V5kOyJzfSNn5sQ01LwLBhc0d32WTY3iHEmE2MeAM8PXCWfqqqm9FGbuvFyR1aF2ixb2iTj8GV7uVhKXMLTuWkfWDsuOG4xVI8g4k32rcPHfRvEawYL1uzk=
+	t=1715687256; cv=none; b=KWZ8aEtDcPHX4KEjb6cZO+qUR5YihF0G4vF6uabGbI2Fi14kDHPjyr3Hd3HBt5PXe8M9xbGfqLe3PauMX6/wm5K/V7zRuxB8F1Hua7NgLLBtIwdsCcbt2PvZsBfQ3mKpxY6g0ij/DzJQ5xzwpzVsMv1pE/W+K9BsZaLn/pfLNaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686059; c=relaxed/simple;
-	bh=dYIkfNZzJy/v+UNUbHHeUU01g7T4QPgsp2msNDjFSQw=;
+	s=arc-20240116; t=1715687256; c=relaxed/simple;
+	bh=+xBs4Sv0n4+fDXITo9sZ0x37e1z2R07ry4iwh15GOiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DndxgzFvlLxO6rpuOXxqsw3ePkY/lw2l/lD/bLeFnkTaEvNln+RLiuOKK9ZAGrqfU7/sOqUuad9yMug2Ao3vZ2BPpEUvJpNXDWVYWpg/1NsSRykWwAOm5ilFwXVeKIaeXBj2+xpqABmkvxDMcX6jxVXCqhUSlGqe6vGncB3HB08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bipdx2kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D91C2BD10;
-	Tue, 14 May 2024 11:27:38 +0000 (UTC)
+	 MIME-Version; b=cHY1PrTSkx7bfcG+qbVy5en2p9fumi0szZt/cpgcGJmYtvSZe6l/4xQoZFQzT5qubK6AOVQJdeVwmU6I2Bvh75yBA2WL058iPLsp5/ZQ/W1wlCYcTsHwRIWn/nM1OR843DNmT0ioGIvJjRVyHwFH6WRggPuXkcoaPILIBniw/co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSYkVj9Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FADBC2BD10;
+	Tue, 14 May 2024 11:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686058;
-	bh=dYIkfNZzJy/v+UNUbHHeUU01g7T4QPgsp2msNDjFSQw=;
+	s=korg; t=1715687256;
+	bh=+xBs4Sv0n4+fDXITo9sZ0x37e1z2R07ry4iwh15GOiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bipdx2kgEsI3dRibAQQ1754HowD6Ek5wVzhxoOCcjbbfgv8ImSlQKJMLRUC4ngeQj
-	 mAyGzZ6PpsWlSvjW4KdBuF5fWOmNo2YRZ/z+6iIOpMw1GLo4xpJZFM6rznrM/65Jgc
-	 Fg5Z05pR8HYeCj1n6UC0iw3dSRtGeBYV5yhSlW6s=
+	b=bSYkVj9ZdgGf0Ha+F+r9wEs0SmPqU6T6dIM0v1Xxx01+YrYxV95o1jLMGgLfFey3I
+	 zObj+BdMH4EaTurBePWo1HhWveiSvW0EZXpIC+TPU3Uob52DuYfMqLHrvHjR1d56MZ
+	 hz+nzxSc9QSLztNCNnSBphzqgLXBhdQSFomneV9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 301/301] Bluetooth: qca: fix firmware check error path
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 034/111] ASoC: meson: cards: select SND_DYNAMIC_MINORS
 Date: Tue, 14 May 2024 12:19:32 +0200
-Message-ID: <20240514101043.630623276@linuxfoundation.org>
+Message-ID: <20240514100958.422870175@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit 40d442f969fb1e871da6fca73d3f8aef1f888558 upstream.
+[ Upstream commit 6db26f9ea4edd8a17d39ab3c20111e3ccd704aef ]
 
-A recent commit fixed the code that parses the firmware files before
-downloading them to the controller but introduced a memory leak in case
-the sanity checks ever fail.
+Amlogic sound cards do create a lot of pcm interfaces, possibly more than
+8. Some pcm interfaces are internal (like DPCM backends and c2c) and not
+exposed to userspace.
 
-Make sure to free the firmware buffer before returning on errors.
+Those interfaces still increase the number passed to snd_find_free_minor(),
+which eventually exceeds 8 causing -EBUSY error on card registration if
+CONFIG_SND_DYNAMIC_MINORS=n and the interface is exposed to userspace.
 
-Fixes: f905ae0be4b7 ("Bluetooth: qca: add missing firmware sanity checks")
-Cc: stable@vger.kernel.org      # 4.19
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+select CONFIG_SND_DYNAMIC_MINORS for Amlogic cards to avoid the problem.
+
+Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240426134150.3053741-1-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/meson/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -605,7 +605,7 @@ static int qca_download_firmware(struct
+diff --git a/sound/soc/meson/Kconfig b/sound/soc/meson/Kconfig
+index b93ea33739f29..6458d5dc4902f 100644
+--- a/sound/soc/meson/Kconfig
++++ b/sound/soc/meson/Kconfig
+@@ -99,6 +99,7 @@ config SND_MESON_AXG_PDM
  
- 	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
- 	if (ret)
--		return ret;
-+		goto out;
+ config SND_MESON_CARD_UTILS
+ 	tristate
++	select SND_DYNAMIC_MINORS
  
- 	segment = data;
- 	remain = size;
+ config SND_MESON_CODEC_GLUE
+ 	tristate
+-- 
+2.43.0
+
 
 
 
