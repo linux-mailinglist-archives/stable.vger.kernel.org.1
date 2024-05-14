@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163A78C54A3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E139D8C5414
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47FEB1C23289
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F171F23319
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C1612DD87;
-	Tue, 14 May 2024 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99170135A68;
+	Tue, 14 May 2024 11:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGLeNECc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+SPzmD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5301781736;
-	Tue, 14 May 2024 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574C754903;
+	Tue, 14 May 2024 11:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687334; cv=none; b=u9VB8R4Ho/9xG7MqHPX9UYxzf0IwVeE3+vqrriHhTOfzHYkqamH2xueWGl7IrioyVbpl/N0HzzSMU/RfAi4aiVvvTvoxVt0csKsd6tnnfHW6kwGHybd+0Q8prt/ZYorLGzdpzktJKoiv9K0JxZtp0EzmLKEgy7Iv7/Zdeagygsc=
+	t=1715686955; cv=none; b=EqTkz2Ir8OYtOgIT+xJBcSiMJ+MUgfu18K7m0AgX6NISDEmiiP1wECOFBlQ2bg3KzTiGrO4No+ILXyTMX1exXQDrJZU9kTIUnq6bKFaidhWiLeh0RpDTx+SA1JnNPt2Ufg351Fi9jlGa70H5PuQtjQNrrjQqhcvLfOJSH52u0tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687334; c=relaxed/simple;
-	bh=ul2o3YBXmh8zRe6WpbsmXBAehj6VV2/eITwF4wnQDpY=;
+	s=arc-20240116; t=1715686955; c=relaxed/simple;
+	bh=sCuNPMwXhH+5rfLFNBar+qyBkYPGzc5deHEjwxPCH60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LwUT8brqMfGSOKMq+TZPSrhq0ewX7eL7gfcFDVwUeDTiOf4BcUPFB0nd+1hNME8GUg+iuMHjT8exUtaZHT1aYukDBgdibOTro4uJkZAcvV0NBCaAudG7qsHEqDauOCBsCG+SY0feWIjEcNbgGN+W97JIi4yj+vsLgWjvmckJ3Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGLeNECc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC5DC2BD10;
-	Tue, 14 May 2024 11:48:53 +0000 (UTC)
+	 MIME-Version; b=OC3nlyfZDQVZJsyyly3ynRGWXN3SANJQtHXtap4ge1jfaOHiBlsy5G2braQUwyapH1skOJgmSlMLj+ObQCh4U+8Bc1WcWXYw8md8FXY2v96s+OnpGsBILRcJruZubu9FmoXuR4MCw8rcLsSrfCMLLf2OjSasOt+2ytotsn2EbKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+SPzmD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D6CC2BD10;
+	Tue, 14 May 2024 11:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687334;
-	bh=ul2o3YBXmh8zRe6WpbsmXBAehj6VV2/eITwF4wnQDpY=;
+	s=korg; t=1715686955;
+	bh=sCuNPMwXhH+5rfLFNBar+qyBkYPGzc5deHEjwxPCH60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xGLeNECc6abDlOp1oXfYgsURUitQm2n96CdACpnwUrTmJ5wn4Xnv4x282pevqvzzb
-	 jTubKJpC6peNXcJ4hTOHBtnQ5hB+rlrh4fnAxZSz1JIlBfjhdTX8z88EmaKCKFdzyJ
-	 RPnVyKzyo81HaKKahdSF7Irln9dY6HGABJT2cgkg=
+	b=l+SPzmD0wv/oujtUkW+SQ1LD6EWajZJa5lkp4JK8c8iGhV+gYxCy8H+ywsYiK1Nss
+	 uf/8ZjYSG20JJUvqHFCD79YEP9I4VK5a56vnsEZG6KyyTx0PdauB+ivlGvIC4Htlsf
+	 pmCdAIXw+hPvfGcGGchKq9YngOhAZiBTYIkBK1Og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/111] net: qede: use return from qede_parse_flow_attr() for flow_spec
+Subject: [PATCH 5.4 16/84] nfs: make the rpc_stat per net namespace
 Date: Tue, 14 May 2024 12:19:27 +0200
-Message-ID: <20240514100958.234203952@linuxfoundation.org>
+Message-ID: <20240514100952.304663745@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 27b44414a34b108c5a37cd5b4894f606061d86e7 ]
+[ Upstream commit 1548036ef1204df65ca5a16e8b199c858cb80075 ]
 
-In qede_flow_spec_to_rule(), when calling
-qede_parse_flow_attr() then the return code
-was only used for a non-zero check, and then
--EINVAL was returned.
+Now that we're exposing the rpc stats on a per-network namespace basis,
+move this struct into struct nfs_net and use that to make sure only the
+per-network namespace stats are exposed.
 
-qede_parse_flow_attr() can currently fail with:
-* -EINVAL
-* -EOPNOTSUPP
-* -EPROTONOSUPPORT
-
-This patch changes the code to use the actual
-return code, not just return -EINVAL.
-
-The blaimed commit introduced qede_flow_spec_to_rule(),
-and this call to qede_parse_flow_attr(), it looks
-like it just duplicated how it was already used.
-
-Only compile tested.
-
-Fixes: 37c5d3efd7f8 ("qede: use ethtool_rx_flow_rule() to remove duplicated parser code")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_filter.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/nfs/client.c   | 5 ++++-
+ fs/nfs/inode.c    | 4 +++-
+ fs/nfs/internal.h | 2 --
+ fs/nfs/netns.h    | 2 ++
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-index 413e8331a0ce6..6e2913f2a791a 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-@@ -2011,10 +2011,9 @@ static int qede_flow_spec_to_rule(struct qede_dev *edev,
- 	if (IS_ERR(flow))
- 		return PTR_ERR(flow);
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index 35abe63655a9d..323cef064f2a4 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -72,7 +72,6 @@ const struct rpc_program nfs_program = {
+ 	.number			= NFS_PROGRAM,
+ 	.nrvers			= ARRAY_SIZE(nfs_version),
+ 	.version		= nfs_version,
+-	.stats			= &nfs_rpcstat,
+ 	.pipe_dir_name		= NFS_PIPE_DIRNAME,
+ };
  
--	if (qede_parse_flow_attr(edev, proto, flow->rule, t)) {
--		err = -EINVAL;
-+	err = qede_parse_flow_attr(edev, proto, flow->rule, t);
-+	if (err)
- 		goto err_out;
--	}
+@@ -492,6 +491,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
+ 			  const struct nfs_client_initdata *cl_init,
+ 			  rpc_authflavor_t flavor)
+ {
++	struct nfs_net		*nn = net_generic(clp->cl_net, nfs_net_id);
+ 	struct rpc_clnt		*clnt = NULL;
+ 	struct rpc_create_args args = {
+ 		.net		= clp->cl_net,
+@@ -503,6 +503,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
+ 		.servername	= clp->cl_hostname,
+ 		.nodename	= cl_init->nodename,
+ 		.program	= &nfs_program,
++		.stats		= &nn->rpcstats,
+ 		.version	= clp->rpc_ops->version,
+ 		.authflavor	= flavor,
+ 		.cred		= cl_init->cred,
+@@ -1077,6 +1078,8 @@ void nfs_clients_init(struct net *net)
+ #endif
+ 	spin_lock_init(&nn->nfs_client_lock);
+ 	nn->boot_time = ktime_get_real();
++	memset(&nn->rpcstats, 0, sizeof(nn->rpcstats));
++	nn->rpcstats.program = &nfs_program;
  
- 	/* Make sure location is valid and filter isn't already set */
- 	err = qede_flow_spec_validate(edev, &flow->rule->action, t,
+ 	nfs_netns_sysfs_setup(nn, net);
+ }
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index c154e7f98e6d8..96468ee4406fa 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2178,8 +2178,10 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ 
+ static int nfs_net_init(struct net *net)
+ {
++	struct nfs_net *nn = net_generic(net, nfs_net_id);
++
+ 	nfs_clients_init(net);
+-	rpc_proc_register(net, &nfs_rpcstat);
++	rpc_proc_register(net, &nn->rpcstats);
+ 	return nfs_fs_proc_net_init(net);
+ }
+ 
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index fcd35c98a9377..fb28750da761f 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -405,8 +405,6 @@ struct dentry * nfs_xdev_mount_common(struct file_system_type *, int,
+ void nfs_kill_super(struct super_block *);
+ void nfs_fill_super(struct super_block *, struct nfs_mount_info *);
+ 
+-extern struct rpc_stat nfs_rpcstat;
+-
+ extern int __init register_nfs_fs(void);
+ extern void __exit unregister_nfs_fs(void);
+ extern bool nfs_sb_active(struct super_block *sb);
+diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
+index c8374f74dce11..a68b21603ea9a 100644
+--- a/fs/nfs/netns.h
++++ b/fs/nfs/netns.h
+@@ -9,6 +9,7 @@
+ #include <linux/nfs4.h>
+ #include <net/net_namespace.h>
+ #include <net/netns/generic.h>
++#include <linux/sunrpc/stats.h>
+ 
+ struct bl_dev_msg {
+ 	int32_t status;
+@@ -34,6 +35,7 @@ struct nfs_net {
+ 	struct nfs_netns_client *nfs_client;
+ 	spinlock_t nfs_client_lock;
+ 	ktime_t boot_time;
++	struct rpc_stat rpcstats;
+ #ifdef CONFIG_PROC_FS
+ 	struct proc_dir_entry *proc_nfsfs;
+ #endif
 -- 
 2.43.0
 
