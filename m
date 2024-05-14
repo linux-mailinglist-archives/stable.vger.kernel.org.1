@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A818C529F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0B88C53CE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 369B0B22C8E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3CF1288DD4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F089D13FD85;
-	Tue, 14 May 2024 11:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E81313AA37;
+	Tue, 14 May 2024 11:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs2/dZDN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfmgUOwf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC344F1E5;
-	Tue, 14 May 2024 11:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DAA12FB00;
+	Tue, 14 May 2024 11:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686001; cv=none; b=R+GInM6c+ULT73UoU70gewSp1DmSxsgSN9XR3b15mdUmSeOa7iIoZiXlEo3+ZnOi2NzzDx1ojfwGEswLUBhMaOeKowdpQl9le5u3ZbUp4At8YE+k6lEwnRovclkUNShEbr84VMWM1ZcMGKbfNz2QA/z/2khbsdMMBRmoEy0Tsa0=
+	t=1715686769; cv=none; b=PjbLwf9aOQ8mc5bMG1abWkmvWUuuSKrCxmE1kqfHw90mnePp+yzVJW/+wGKys4vswAl/cZcacTH+yHmz56g0ketyTzoRl3NjjK278xSOB2t4VtM+caewD+q13T2G+qI4/IValqyWmYpMbHebMNL9BSJQNxJZY1LdE2fY0aO3CfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686001; c=relaxed/simple;
-	bh=grnUAatkmRCOXuowGyPCTaAcCBQcUmdwZ32WJy2/qTU=;
+	s=arc-20240116; t=1715686769; c=relaxed/simple;
+	bh=CJkk4txtha12BjPWDJt9ko7kJEofZi8zk1IN7otSZ3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcU+MWpZbSquE9gkrxT2gif3G92PlBjlnVfGSrPTbtyPbP/q2DQgqI5mjcQgpO6oUdqTt6FvdlFUeaXyYFJJYt7VfBgEXooox20Nig+aCfHfP1Fjf28ieAP7HQTiegAu0SALOVPELpozof0nmPJrZ4QGx6rzHRdXyci/5ya36IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs2/dZDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B23C2BD10;
-	Tue, 14 May 2024 11:26:40 +0000 (UTC)
+	 MIME-Version; b=CzQhuYFyvDmTyuPFcQZTQJ7jtgphme5OkCCPN4izzzJZcfzGBeaelO4HDpoFu7AofTQ5cXLAs+vdUEZUNEDum0XMfxUiaUFasw/VqBpUQWiqGi9g/fi+qfNqugbQHUP6nLQjIKXI9/rCYz9BENyZLwhu3wXAvffn4mF6xmGSPxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfmgUOwf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E710C2BD10;
+	Tue, 14 May 2024 11:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686001;
-	bh=grnUAatkmRCOXuowGyPCTaAcCBQcUmdwZ32WJy2/qTU=;
+	s=korg; t=1715686768;
+	bh=CJkk4txtha12BjPWDJt9ko7kJEofZi8zk1IN7otSZ3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xs2/dZDN97zrcmv5CCSr87Zoxh9caSKx/Kvp9zl6dSwt4GYF5nG0/leq4lNb5O2oQ
-	 4aBtPXZTkLx9Ff6f/CLoJcDZq33sarRTyFH5nC2IG6bdx/16hX/bIRA/V/X7l71tIP
-	 Y6gvldYS8gtwWq9QsYoYOaGMYqrYmZtbvHuP0lFg=
+	b=RfmgUOwfXpDtWKUeFdZC8GWfLeSAiSVucJ7ysiQHIKZFhlki4sOSJHvKAU/buSI1r
+	 pbvqdlt0YK6YEWJ3CKtS5UiT4M4eBhPSWmMe4nP6y3aQI4bqmO+Ni7Hz/Xj5cQyxaj
+	 kDE8xhdKOCSYkt8MDuXtsIXGwr45Sw5VH7+l0P9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 293/301] eventfs: Do not treat events directory different than other directories
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 03/63] wifi: nl80211: dont free NULL coalescing rule
 Date: Tue, 14 May 2024 12:19:24 +0200
-Message-ID: <20240514101043.323145487@linuxfoundation.org>
+Message-ID: <20240514100948.141530423@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 22e61e15af731dbe46704c775d2335e56fcef4e9 upstream.
+[ Upstream commit 801ea33ae82d6a9d954074fbcf8ea9d18f1543a7 ]
 
-Treat the events directory the same as other directories when it comes to
-permissions. The events directory was considered different because it's
-dentry is persistent, whereas the other directory dentries are created
-when accessed. But the way tracefs now does its ownership by using the
-root dentry's permissions as the default permissions, the events directory
-can get out of sync when a remount is performed setting the group and user
-permissions.
-
-Remove the special case for the events directory on setting the
-attributes. This allows the updates caused by remount to work properly as
-well as simplifies the code.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200906.002923579@goodmis.org
+If the parsing fails, we can dereference a NULL pointer here.
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be29b99a9b51 ("cfg80211/nl80211: Add packet coalesce support")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240418105220.b328f80406e7.Id75d961050deb05b3e4e354e024866f350c68103@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c |   16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ net/wireless/nl80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -163,21 +163,7 @@ static int eventfs_set_attr(struct mnt_i
- 	 * determined by the parent directory.
- 	 */
- 	if (dentry->d_inode->i_mode & S_IFDIR) {
--		/*
--		 * The events directory dentry is never freed, unless its
--		 * part of an instance that is deleted. It's attr is the
--		 * default for its child files and directories.
--		 * Do not update it. It's not used for its own mode or ownership.
--		 */
--		if (ei->is_events) {
--			/* But it still needs to know if it was modified */
--			if (iattr->ia_valid & ATTR_UID)
--				ei->attr.mode |= EVENTFS_SAVE_UID;
--			if (iattr->ia_valid & ATTR_GID)
--				ei->attr.mode |= EVENTFS_SAVE_GID;
--		} else {
--			update_attr(&ei->attr, iattr);
--		}
-+		update_attr(&ei->attr, iattr);
- 
- 	} else {
- 		name = dentry->d_name.name;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index df2989c35fd86..15f28203445cb 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -11492,6 +11492,8 @@ static int nl80211_set_coalesce(struct sk_buff *skb, struct genl_info *info)
+ error:
+ 	for (i = 0; i < new_coalesce.n_rules; i++) {
+ 		tmp_rule = &new_coalesce.rules[i];
++		if (!tmp_rule)
++			continue;
+ 		for (j = 0; j < tmp_rule->n_patterns; j++)
+ 			kfree(tmp_rule->patterns[j].mask);
+ 		kfree(tmp_rule->patterns);
+-- 
+2.43.0
+
 
 
 
