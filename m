@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2994D8C50E7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BA88C520D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C484628245A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF6521F2282F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F6853E30;
-	Tue, 14 May 2024 10:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8A512A159;
+	Tue, 14 May 2024 11:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UiAUpoy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHeKQSoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C7F4F88C;
-	Tue, 14 May 2024 10:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB9F54BFE;
+	Tue, 14 May 2024 11:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683827; cv=none; b=IzDH3wDX67QIbNYT9HBQzH7rLQtwxS3ebNqSRZez2nzOSEiJWfoC4ePfJUSn+XcFJ/DVvbQtYmjsAJ2xc1dIv3+4MT0Ocs8UEG3c7bycyVEysM0VJa+UeQRjl42aEMrQilHE2owgFVx/sgukPZ5yXcA3J/uae5g8U4hw3pNjdFw=
+	t=1715685411; cv=none; b=Bc5VTEXV8Ff63ztz1xGFc8MXikWwVAFtits2HV8K80XqFnCaHBvGLTult8aY9gYU/Y8bxa//6DUnYGoUvfych4qPAf93SW9YLThRgK0RJYQSBksw1o4THXCe2IosjVKD3HaLV4HaeMpNzzh2ZgbPzQ1pHE1eKc0OM5rjyQvQVig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683827; c=relaxed/simple;
-	bh=vrR2Yr7hT0YRNEwdDnpjHLbZUG9c2ZmwACrxhOSiJfg=;
+	s=arc-20240116; t=1715685411; c=relaxed/simple;
+	bh=m0iF1k2XTcsxIxWcvMp3VpxFgZvWvIuvQN1kbxua0kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptSutDhQSuoMhH1t0SCFBzw34qcmznh20fC4Ipcts3VZJeM/oknZ2KdxVOoTCfHbhT3xsp223BSNd9Ytc9tG80Ph3yZSE1rZlPU9yyALoX4hvTPZ3RQ+5xI1uw6ZUzd6AZ6uNVlUnOlfif8TZQjzVLEj4+5zkMTTcntBXbeadcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UiAUpoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A3AC2BD10;
-	Tue, 14 May 2024 10:50:26 +0000 (UTC)
+	 MIME-Version; b=G7i8QxdejD+NreTgwcMJvkh+0czqFHPJ1t70jcb9nRhswAKUICJ7X7sAz6CN+04LIWB7ZYejji4KHlf3mcjMEQ/iEk/lXC2151F4+4QA47QKuW6tzUtZ9yxPqZpgUzGbK4B+Lk+4vmNOfuG9/2jMe8e02CQ1TzIYmLAjdHP0Zo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHeKQSoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB21BC2BD10;
+	Tue, 14 May 2024 11:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683827;
-	bh=vrR2Yr7hT0YRNEwdDnpjHLbZUG9c2ZmwACrxhOSiJfg=;
+	s=korg; t=1715685411;
+	bh=m0iF1k2XTcsxIxWcvMp3VpxFgZvWvIuvQN1kbxua0kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UiAUpoyoFTOVru+2sCUvxqyNEpj3jPEBFT4tMRjh5VZQvUtRPv0gmhjqaIXXCAfE
-	 NaDcIgcUwqLuxAQoSkX2ZjjbbiWaF7cOurA/FR32LVJ7aKHumQ6iN9bJF9fBnfLK0l
-	 tnKqYfB7hDf+eSW5nS0usxeFbOVEmJyH+M5DGVeg=
+	b=UHeKQSoIQ3khPLeGwuBproSsQd4g8P+RXfiCCwS6bDwAjtUWQGqnjUMWEc1ZE3u2S
+	 GzwlxL67fIzOlT260z/0GLr1DdM+wJ/WYvVGcSxWYQrsxxyba6JiVeWx5aSelmAo/C
+	 9rMubr6+FdKBki2Ka0HTckjBbuUladHt5aXV7Z8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Peter Korsgaard <peter@korsgaard.com>
-Subject: [PATCH 6.8 250/336] usb: gadget: composite: fix OS descriptors w_value logic
-Date: Tue, 14 May 2024 12:17:34 +0200
-Message-ID: <20240514101048.057497447@linuxfoundation.org>
+	Roded Zats <rzats@paloaltonetworks.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 184/301] rtnetlink: Correct nested IFLA_VF_VLAN_LIST attribute validation
+Date: Tue, 14 May 2024 12:17:35 +0200
+Message-ID: <20240514101039.203597495@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Korsgaard <peter@korsgaard.com>
+From: Roded Zats <rzats@paloaltonetworks.com>
 
-commit ec6ce7075ef879b91a8710829016005dc8170f17 upstream.
+[ Upstream commit 1aec77b2bb2ed1db0f5efc61c4c1ca3813307489 ]
 
-The OS descriptors logic had the high/low byte of w_value inverted, causing
-the extended properties to not be accessible for interface != 0.
+Each attribute inside a nested IFLA_VF_VLAN_LIST is assumed to be a
+struct ifla_vf_vlan_info so the size of such attribute needs to be at least
+of sizeof(struct ifla_vf_vlan_info) which is 14 bytes.
+The current size validation in do_setvfinfo is against NLA_HDRLEN (4 bytes)
+which is less than sizeof(struct ifla_vf_vlan_info) so this validation
+is not enough and a too small attribute might be cast to a
+struct ifla_vf_vlan_info, this might result in an out of bands
+read access when accessing the saved (casted) entry in ivvl.
 
->From the Microsoft documentation:
-https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-os-1-0-descriptors-specification
-
-OS_Desc_CompatID.doc (w_index = 0x4):
-
-- wValue:
-
-  High Byte = InterfaceNumber.  InterfaceNumber is set to the number of the
-  interface or function that is associated with the descriptor, typically
-  0x00.  Because a device can have only one extended compat ID descriptor,
-  it should ignore InterfaceNumber, regardless of the value, and simply
-  return the descriptor.
-
-  Low Byte = 0.  PageNumber is used to retrieve descriptors that are larger
-  than 64 KB.  The header section is 16 bytes, so PageNumber is set to 0 for
-  this request.
-
-We currently do not support >64KB compat ID descriptors, so verify that the
-low byte is 0.
-
-OS_Desc_Ext_Prop.doc (w_index = 0x5):
-
-- wValue:
-
-  High byte = InterfaceNumber.  The high byte of wValue is set to the number
-  of the interface or function that is associated with the descriptor.
-
-  Low byte = PageNumber.  The low byte of wValue is used to retrieve
-  descriptors that are larger than 64 KB.  The header section is 10 bytes, so
-  PageNumber is set to 0 for this request.
-
-We also don't support >64KB extended properties, so verify that the low byte
-is 0 and use the high byte for the interface number.
-
-Fixes: 37a3a533429e ("usb: gadget: OS Feature Descriptors support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20240404100635.3215340-1-peter@korsgaard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79aab093a0b5 ("net: Update API for VF vlan protocol 802.1ad support")
+Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Link: https://lore.kernel.org/r/20240502155751.75705-1-rzats@paloaltonetworks.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/rtnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2112,7 +2112,7 @@ unknown:
- 			buf[5] = 0x01;
- 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
- 			case USB_RECIP_DEVICE:
--				if (w_index != 0x4 || (w_value >> 8))
-+				if (w_index != 0x4 || (w_value & 0xff))
- 					break;
- 				buf[6] = w_index;
- 				/* Number of ext compat interfaces */
-@@ -2128,9 +2128,9 @@ unknown:
- 				}
- 				break;
- 			case USB_RECIP_INTERFACE:
--				if (w_index != 0x5 || (w_value >> 8))
-+				if (w_index != 0x5 || (w_value & 0xff))
- 					break;
--				interface = w_value & 0xFF;
-+				interface = w_value >> 8;
- 				if (interface >= MAX_CONFIG_INTERFACES ||
- 				    !os_desc_cfg->interface[interface])
- 					break;
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index e8bf481e80f72..89964270cf27f 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2519,7 +2519,7 @@ static int do_setvfinfo(struct net_device *dev, struct nlattr **tb)
+ 
+ 		nla_for_each_nested(attr, tb[IFLA_VF_VLAN_LIST], rem) {
+ 			if (nla_type(attr) != IFLA_VF_VLAN_INFO ||
+-			    nla_len(attr) < NLA_HDRLEN) {
++			    nla_len(attr) < sizeof(struct ifla_vf_vlan_info)) {
+ 				return -EINVAL;
+ 			}
+ 			if (len >= MAX_VLAN_LIST_LEN)
+-- 
+2.43.0
+
 
 
 
