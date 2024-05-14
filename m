@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A558C544E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086718C53DC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E2B1F233CF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385021C22793
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90AE7602A;
-	Tue, 14 May 2024 11:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459B213D257;
+	Tue, 14 May 2024 11:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgeI7S8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7lyG/cN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979342D60A;
-	Tue, 14 May 2024 11:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0396413CF93;
+	Tue, 14 May 2024 11:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687108; cv=none; b=ezUwRmr6nxbNpUFbJkhK46kLZbftTB1z1PYZXfvs2ZWgJZ0GVVfAkKrsVhhrhdIqDTEn6vwIJZKPZmx4+AxtWklWNaRzTTqfX+XMPbEPaufUJH6dL0ye6cyJpyoLxaM01mdDIWjhsEW9tOcB64/piwP+8Ct9c2CaHUz2gUaQxsw=
+	t=1715686801; cv=none; b=GdG+TJSgbf+GGWRvqSgDHHlIhaieSgG9HY6G+IMYdqfjHgndEjC6ssAlHvzT3bhBHa9W8W7GVJ6b7L0p+nY8Cnt7mX2S5E6Fz4H2NnLgLusp7bLkMbiFFPl7sxshFK49RA7y06D+EjuDjROTfxJWjDn6VBQ5xRtD8O3Aajt+ziU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687108; c=relaxed/simple;
-	bh=RmlihunWvUCpiIagChMAEiWqsyZF6gDYzFAzJY4xiSk=;
+	s=arc-20240116; t=1715686801; c=relaxed/simple;
+	bh=qAjMEo/6jEjJgWbLBDSX+UFORDCwwq7rETOoH66/FeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/E1BNczJpst+IU+MFt/umXV7VBrT65A6TGgN+04wvYXSWTDiM12L3LN5SvWoBmabEfwd1UXiqElCGLo5Wy8QbqtygjZC7tnxjfQhIqA+g23jo6puIArwKtPAkMLWEUTBFRwdvyoZ/5lAFM2gvdpbe6bLvTdSfo4i+lojDUbZcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgeI7S8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F8BC2BD10;
-	Tue, 14 May 2024 11:45:07 +0000 (UTC)
+	 MIME-Version; b=VULvg2evwo4ppN/RrPE6DxLNELa0mEJ8Q7jizVMeFpD2jjdpdJ9pvHrYC0fr4sq/G7mZLWNNd/Bcn50d4eWCDusAUPOYVawG5g8whUIaWckKzVblQ88bDfEcuDGqgCIrj4e+VK3iVlguju41wHw14gj6I/L+Guc8fSpnWgDRi7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7lyG/cN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F16FC2BD10;
+	Tue, 14 May 2024 11:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687108;
-	bh=RmlihunWvUCpiIagChMAEiWqsyZF6gDYzFAzJY4xiSk=;
+	s=korg; t=1715686800;
+	bh=qAjMEo/6jEjJgWbLBDSX+UFORDCwwq7rETOoH66/FeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgeI7S8cBZ1kFNdXQNDm9qsLe9gWCMQBnOSvGb+hgR5KgzIyk6VrxDrunUgaG2dno
-	 QadSraPWalFI6WRJbiNnrp0UX9t9s3nVS1/8N9Vx2rG15Wi4ygqPGi2cQmhdrsYcgU
-	 ppXDkKicVhMUvTy3ftH6bEUHKOHXPvF+U7wxbUJY=
+	b=E7lyG/cNTipEXvTKY6UWzMdanWfAdtQVcJQtuYN6kIe1oiFUMMMJp3goQ489eBwtW
+	 uZ6PDWMDe2sRbM6tccKZc3iQT95qBgmOHWKDpcXpH5VXetPyD9VY7Mp9AojqB9BGIR
+	 /PqyxPRzoMLWaSJvuIaYcYMZLS7Y+tQRuUnOcED0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 36/84] wifi: cfg80211: fix rdev_dump_mpp() arguments order
-Date: Tue, 14 May 2024 12:19:47 +0200
-Message-ID: <20240514100953.051457768@linuxfoundation.org>
+Subject: [PATCH 4.19 27/63] ALSA: line6: Zero-initialize message buffers
+Date: Tue, 14 May 2024 12:19:48 +0200
+Message-ID: <20240514100949.043118044@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit ec50f3114e55406a1aad24b7dfaa1c3f4336d8eb ]
+[ Upstream commit c4e51e424e2c772ce1836912a8b0b87cd61bc9d5 ]
 
-Fix the order of arguments in the TP_ARGS macro
-for the rdev_dump_mpp tracepoint event.
+For shutting up spurious KMSAN uninit-value warnings, just replace
+kmalloc() calls with kzalloc() for the buffers used for
+communications.  There should be no real issue with the original code,
+but it's still better to cover.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240311164519.118398-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/00000000000084b18706150bcca5@google.com
+Message-ID: <20240402063628.26609-1-tiwai@suse.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/line6/driver.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 8677d7ab7d692..630b72355ebb5 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -938,7 +938,7 @@ TRACE_EVENT(rdev_get_mpp,
- TRACE_EVENT(rdev_dump_mpp,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
- 		 u8 *dst, u8 *mpp),
--	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
-+	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		NETDEV_ENTRY
+diff --git a/sound/usb/line6/driver.c b/sound/usb/line6/driver.c
+index 2399d500b8812..8970d4b3b42c3 100644
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -216,7 +216,7 @@ int line6_send_raw_message_async(struct usb_line6 *line6, const char *buffer,
+ 	struct urb *urb;
+ 
+ 	/* create message: */
+-	msg = kmalloc(sizeof(struct message), GFP_ATOMIC);
++	msg = kzalloc(sizeof(struct message), GFP_ATOMIC);
+ 	if (msg == NULL)
+ 		return -ENOMEM;
+ 
+@@ -694,7 +694,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 	int ret;
+ 
+ 	/* initialize USB buffers: */
+-	line6->buffer_listen = kmalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
++	line6->buffer_listen = kzalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
+ 	if (!line6->buffer_listen)
+ 		return -ENOMEM;
+ 
+@@ -703,7 +703,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 		return -ENOMEM;
+ 
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
+-		line6->buffer_message = kmalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
++		line6->buffer_message = kzalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
+ 		if (!line6->buffer_message)
+ 			return -ENOMEM;
+ 
 -- 
 2.43.0
 
