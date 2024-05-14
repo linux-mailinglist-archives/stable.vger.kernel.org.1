@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E878C51C0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A208C52E9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3279282941
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C9E8B220AD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE92E13B288;
-	Tue, 14 May 2024 11:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7139135A6A;
+	Tue, 14 May 2024 11:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+NrFsij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmNApqYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6DB1E495;
-	Tue, 14 May 2024 11:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42B7135415;
+	Tue, 14 May 2024 11:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684939; cv=none; b=oRwclKcI19TKnUehRG0Ixgg2DcBOpuGN6gp1HNBLDpCKBI5mMRRsT2fSLNFMkDRc5cV7A6Pz4Qtusv/L0jqdcRE47zhhihdxb2fxj+tdVfFZzq3C36Yv2Rjc2mlaCMdyaFEB2whUhWS2p/SB8KcsoLXvT8MLkIqJH3+2U0C+zQ8=
+	t=1715686185; cv=none; b=dG5kAHub1rfdUnzM/rqXHFo7ZscEBtWfs4lBcCnd7HJZV3QgYzXtNed9GB/uXsTL5JYX1xfsw8JbW1inc0NP1wLsAmkYeMONTvYA2i/wxX94yp7Bva7hbqYCIMhJFprpRrajKhyC4z7Gc5OFqtJ/zFZt/7VoOrkjJ1epiIJDa4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684939; c=relaxed/simple;
-	bh=Gcx6EfecaZ0FSwj4i887naUW2yA6ALPAdeMXdWqfNQw=;
+	s=arc-20240116; t=1715686185; c=relaxed/simple;
+	bh=/0jIIO6z8OPbVoLT8yutYhfjXD6I26xZ+o/9I8mcf/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOh8qaM3TTvioy9/seqZ92X04c2QyW1UFhr7XuqVUKgY5ENcG2Z0rUzqilfn/E+asUN0v1kZx2iWTa3/cx84bcqrCXqfyg9iXQ7DyU82J3j8L0SjJfuovcdY4k2nNmYj3Zp7tsjuLRObigEBpR/LnXJZKnBzEDRAPiZR83Uv9Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+NrFsij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D111C2BD10;
-	Tue, 14 May 2024 11:08:58 +0000 (UTC)
+	 MIME-Version; b=PbIjZ+/QRnmBSvMfxREwEau6LjCiNHM19QZn+yVD0yVvFQMCCNnYycXaekSvR3Cw/TBOmpukMfySRcdDM+yW/t7fi1BinsQ/937uMdOBeVii+DTDh627CZoO1BvS/CE+hK7x6ueotrPCfQlg7HAYukir3yI6SXusaMMVSJ7TTrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmNApqYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A890C2BD10;
+	Tue, 14 May 2024 11:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684939;
-	bh=Gcx6EfecaZ0FSwj4i887naUW2yA6ALPAdeMXdWqfNQw=;
+	s=korg; t=1715686185;
+	bh=/0jIIO6z8OPbVoLT8yutYhfjXD6I26xZ+o/9I8mcf/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+NrFsijMpZAr4b1VzcTFCQoZwuVQw3fvDpTEoLGde/iCO81NU058+oSNElGNqTyI
-	 kt+GMDMlD7k4h7Hm51Yqv4eA5Jq9CNGoJEb5DXROMw+g/EVzOmSrAgL7auYCXLnXxf
-	 wf8vWy1kGLuyQG5Q7t3lKRI4WvCUrTYb7VoSVc0Q=
+	b=jmNApqYqsuZFvhtXaCwakFHiO3YdJc3V9l0YyImBJ6RW8Ar4MG2najcRmtkzdN2H2
+	 OspoWy6WEBY6BkDd8iol0NUlYSH/VydE53QsvgR5eoM+GPzIWhSvNIPjV89/MbSXOP
+	 vQtr076xf9lJZSJ5tj3FJ7E3enJ126v92wXuKNMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/301] scsi: bnx2fc: Remove spin_lock_bh while releasing resources after upload
+Subject: [PATCH 6.1 020/236] cifs: use the least loaded channel for sending requests
 Date: Tue, 14 May 2024 12:16:22 +0200
-Message-ID: <20240514101036.443147666@linuxfoundation.org>
+Message-ID: <20240514101021.099519981@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit c214ed2a4dda35b308b0b28eed804d7ae66401f9 ]
+[ Upstream commit ea90708d3cf3d0d92c02afe445ad463fb3c6bf10 ]
 
-The session resources are used by FW and driver when session is offloaded,
-once session is uploaded these resources are not used. The lock is not
-required as these fields won't be used any longer. The offload and upload
-calls are sequential, hence lock is not required.
+Till now, we've used a simple round robin approach to
+distribute the requests between the channels. This does
+not work well if the channels consume the requests at
+different speeds, even if the advertised speeds are the
+same.
 
-This will suppress following BUG_ON():
+This change will allow the client to pick the channel
+with least number of requests currently in-flight. This
+will disregard the link speed, and select a channel
+based on the current load of the channels.
 
-[  449.843143] ------------[ cut here ]------------
-[  449.848302] kernel BUG at mm/vmalloc.c:2727!
-[  449.853072] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-[  449.858712] CPU: 5 PID: 1996 Comm: kworker/u24:2 Not tainted 5.14.0-118.=
-el9.x86_64 #1
-Rebooting.
-[  449.867454] Hardware name: Dell Inc. PowerEdge R730/0WCJNT, BIOS 2.3.4 1=
-1/08/2016
-[  449.876966] Workqueue: fc_rport_eq fc_rport_work [libfc]
-[  449.882910] RIP: 0010:vunmap+0x2e/0x30
-[  449.887098] Code: 00 65 8b 05 14 a2 f0 4a a9 00 ff ff 00 75 1b 55 48 89 =
-fd e8 34 36 79 00 48 85 ed 74 0b 48 89 ef 31 f6 5d e9 14 fc ff ff 5d c3 <0f=
-> 0b 0f 1f 44 00 00 41 57 41 56 49 89 ce 41 55 49 89 fd 41 54 41
-[  449.908054] RSP: 0018:ffffb83d878b3d68 EFLAGS: 00010206
-[  449.913887] RAX: 0000000080000201 RBX: ffff8f4355133550 RCX: 000000000d4=
-00005
-[  449.921843] RDX: 0000000000000001 RSI: 0000000000001000 RDI: ffffb83da53=
-f5000
-[  449.929808] RBP: ffff8f4ac6675800 R08: ffffb83d878b3d30 R09: 00000000000=
-efbdf
-[  449.937774] R10: 0000000000000003 R11: ffff8f434573e000 R12: 00000000000=
-01000
-[  449.945736] R13: 0000000000001000 R14: ffffb83da53f5000 R15: ffff8f43d4e=
-a3ae0
-[  449.953701] FS:  0000000000000000(0000) GS:ffff8f529fc80000(0000) knlGS:=
-0000000000000000
-[  449.962732] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  449.969138] CR2: 00007f8cf993e150 CR3: 0000000efbe10003 CR4: 00000000003=
-706e0
-[  449.977102] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
-00000
-[  449.985065] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
-00400
-[  449.993028] Call Trace:
-[  449.995756]  __iommu_dma_free+0x96/0x100
-[  450.000139]  bnx2fc_free_session_resc+0x67/0x240 [bnx2fc]
-[  450.006171]  bnx2fc_upload_session+0xce/0x100 [bnx2fc]
-[  450.011910]  bnx2fc_rport_event_handler+0x9f/0x240 [bnx2fc]
-[  450.018136]  fc_rport_work+0x103/0x5b0 [libfc]
-[  450.023103]  process_one_work+0x1e8/0x3c0
-[  450.027581]  worker_thread+0x50/0x3b0
-[  450.031669]  ? rescuer_thread+0x370/0x370
-[  450.036143]  kthread+0x149/0x170
-[  450.039744]  ? set_kthread_struct+0x40/0x40
-[  450.044411]  ret_from_fork+0x22/0x30
-[  450.048404] Modules linked in: vfat msdos fat xfs nfs_layout_nfsv41_file=
-s rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver dm_service_time qedf qed c=
-rc8 bnx2fc libfcoe libfc scsi_transport_fc intel_rapl_msr intel_rapl_common=
- x86_pkg_temp_thermal intel_powerclamp dcdbas rapl intel_cstate intel_uncor=
-e mei_me pcspkr mei ipmi_ssif lpc_ich ipmi_si fuse zram ext4 mbcache jbd2 l=
-oop nfsv3 nfs_acl nfs lockd grace fscache netfs irdma ice sd_mod t10_pi sg =
-ib_uverbs ib_core 8021q garp mrp stp llc mgag200 i2c_algo_bit drm_kms_helpe=
-r syscopyarea sysfillrect sysimgblt mxm_wmi fb_sys_fops cec crct10dif_pclmu=
-l ahci crc32_pclmul bnx2x drm ghash_clmulni_intel libahci rfkill i40e libat=
-a megaraid_sas mdio wmi sunrpc lrw dm_crypt dm_round_robin dm_multipath dm_=
-snapshot dm_bufio dm_mirror dm_region_hash dm_log dm_zero dm_mod linear rai=
-d10 raid456 async_raid6_recov async_memcpy async_pq async_xor async_tx raid=
-6_pq libcrc32c crc32c_intel raid1 raid0 iscsi_ibft squashfs be2iscsi bnx2i =
-cnic uio cxgb4i cxgb4 tls
-[  450.048497]  libcxgbi libcxgb qla4xxx iscsi_boot_sysfs iscsi_tcp libiscs=
-i_tcp libiscsi scsi_transport_iscsi edd ipmi_devintf ipmi_msghandler
-[  450.159753] ---[ end trace 712de2c57c64abc8 ]---
+For cases when all the channels are equally loaded,
+fall back to the old round robin method.
 
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240315071427.31842-1-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 8094a600245e ("smb3: missing lock when picking channel")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/bnx2fc/bnx2fc_tgt.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/client/transport.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/bnx2fc/bnx2fc_tgt.c b/drivers/scsi/bnx2fc/bnx2fc_=
-tgt.c
-index 2c246e80c1c4d..d91659811eb3c 100644
---- a/drivers/scsi/bnx2fc/bnx2fc_tgt.c
-+++ b/drivers/scsi/bnx2fc/bnx2fc_tgt.c
-@@ -833,7 +833,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
-*hba,
-=20
- 	BNX2FC_TGT_DBG(tgt, "Freeing up session resources\n");
-=20
--	spin_lock_bh(&tgt->cq_lock);
- 	ctx_base_ptr =3D tgt->ctx_base;
- 	tgt->ctx_base =3D NULL;
-=20
-@@ -889,7 +888,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
-*hba,
- 				    tgt->sq, tgt->sq_dma);
- 		tgt->sq =3D NULL;
- 	}
--	spin_unlock_bh(&tgt->cq_lock);
-=20
- 	if (ctx_base_ptr)
- 		iounmap(ctx_base_ptr);
---=20
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index 338b34c99b2de..da2bef3b7ac27 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1045,15 +1045,40 @@ cifs_cancelled_callback(struct mid_q_entry *mid)
+ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
+ {
+ 	uint index = 0;
++	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
++	struct TCP_Server_Info *server = NULL;
++	int i;
+ 
+ 	if (!ses)
+ 		return NULL;
+ 
+-	/* round robin */
+-	index = (uint)atomic_inc_return(&ses->chan_seq);
+-
+ 	spin_lock(&ses->chan_lock);
+-	index %= ses->chan_count;
++	for (i = 0; i < ses->chan_count; i++) {
++		server = ses->chans[i].server;
++		if (!server)
++			continue;
++
++		/*
++		 * strictly speaking, we should pick up req_lock to read
++		 * server->in_flight. But it shouldn't matter much here if we
++		 * race while reading this data. The worst that can happen is
++		 * that we could use a channel that's not least loaded. Avoiding
++		 * taking the lock could help reduce wait time, which is
++		 * important for this function
++		 */
++		if (server->in_flight < min_in_flight) {
++			min_in_flight = server->in_flight;
++			index = i;
++		}
++		if (server->in_flight > max_in_flight)
++			max_in_flight = server->in_flight;
++	}
++
++	/* if all channels are equally loaded, fall back to round-robin */
++	if (min_in_flight == max_in_flight) {
++		index = (uint)atomic_inc_return(&ses->chan_seq);
++		index %= ses->chan_count;
++	}
+ 	spin_unlock(&ses->chan_lock);
+ 
+ 	return ses->chans[index].server;
+-- 
 2.43.0
 
 
