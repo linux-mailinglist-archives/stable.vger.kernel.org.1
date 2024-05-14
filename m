@@ -1,54 +1,64 @@
-Return-Path: <stable+bounces-44359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10428C526B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FC48C5447
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 192B2282DCB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3858E283362
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B12C13AA4E;
-	Tue, 14 May 2024 11:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B5684D37;
+	Tue, 14 May 2024 11:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bb554lTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlzpkYjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4DA6311D;
-	Tue, 14 May 2024 11:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8408A4F88C;
+	Tue, 14 May 2024 11:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685875; cv=none; b=Po64o8nIVy5gEUufV09S8QF3nxV7d/s5veBpmDm6p8OBMDzydqr0q0turqEMR9I0vftA7XkOCOWcV89sP66arUPUWm6emOcbinu1IufZoChxyytBqnsDlapl77LWCaBtTrm3utQoCkXhwvguAmsp3G9G6dQ+j4mjSej1VAgaPpM=
+	t=1715686456; cv=none; b=GBhkUVJ2Ni33W6PwHZQGuxl3qGuoBzr97jagyfbmrR6MDJ5YQseWkSeDXuQHJPUTjbQ6s3LD6KQfS/LNIzmp0yirMeWQQ1GNjfOMD85kVB2UUhSqDvmdKuMhKcGhvUZbvtm7dKYPX3iJ7RV+UENpmODQq0TWW0Yz/PFR6SRZNGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685875; c=relaxed/simple;
-	bh=WIsf0VGw2jsEzRxyxQNHSg7TgR3Y/ORL9nWu16taMo8=;
+	s=arc-20240116; t=1715686456; c=relaxed/simple;
+	bh=Zblx6eghDnCf9QVQGohdsDUlht3MqxTw2dVxrmue9Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwJikt5FbngN0j5CxYHBbJTzHWmQimUBGFHEE5DtJfGY5tXarYHcByoMUyX++vQyETBTf/dpZJBZr9ShKhAV1eIBkeCjOmlNjF8j1CdYqArysi5WeuVIsYv/K6vXnRB9O+vPFP3UbLfZ7SF9q/DYbHJlFWZgxdq7VWYgDlcY1rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bb554lTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D70C2BD10;
-	Tue, 14 May 2024 11:24:32 +0000 (UTC)
+	 MIME-Version; b=a0rn9q7Hm50Y0t9cq277vsd5iEBGopvtUjr1yCuU7owr3iViCnKLW7gduvcDsOg2Ypx5gCJkSM/whSOo9og7PvCHgQF7UyBXYWWbgi9u9xoTjk1gBYiSL9ah+uAqeZC/t+W1dRETrhz1G8d1MvECghnY69KMkpnS22iSla4mStw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlzpkYjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BC7C32781;
+	Tue, 14 May 2024 11:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685875;
-	bh=WIsf0VGw2jsEzRxyxQNHSg7TgR3Y/ORL9nWu16taMo8=;
+	s=korg; t=1715686456;
+	bh=Zblx6eghDnCf9QVQGohdsDUlht3MqxTw2dVxrmue9Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bb554lTuY4umOcLO+yhdGrWDleL7gc6y/y8+GIhgVzw2y1cX06H625sr/sZDtssae
-	 F2hBhredH68WofWrm8aPHlH1lVAU/nUaJKzwrTdGD7kJzRmoBm9mJenrT4Udkcvs69
-	 dDTY9oRPo/QO9DiWkSg7iKzDEhieAtwt5hN+wMhw=
+	b=zlzpkYjGsJHTVA4ah6OOLkIrzOaPxyrVrIKmw+mba6UxYkeUPCmEz/COJAwf7ZKZZ
+	 5a11lwMdPF1OnEbT4dNsprnn7Nff2Z7iHT2NFJlPkrSI86l6EHGmJpCXpnB1dUtMRB
+	 G8T7/v95BipX9hQ5Y2MI1PCaofPFScIRNhCslfkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 234/301] usb: xhci-plat: Dont include xhci.h
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Fangrui Song <maskray@google.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Milian Wolff <milian.wolff@kdab.com>,
+	Pablo Galindo <pablogsal@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 143/236] perf unwind-libdw: Handle JIT-generated DSOs properly
 Date: Tue, 14 May 2024 12:18:25 +0200
-Message-ID: <20240514101041.089820114@linuxfoundation.org>
+Message-ID: <20240514101025.798775104@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +70,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 4a237d55446ff67655dc3eed2d4a41997536fc4c upstream.
+[ Upstream commit c966d23a351a33f8a977fd7efbb6f467132f7383 ]
 
-The xhci_plat.h should not need to include the entire xhci.h header.
-This can cause redefinition in dwc3 if it selectively includes some xHCI
-definitions. This is a prerequisite change for a fix to disable suspend
-during initialization for dwc3.
+Usually DSOs are mapped from the beginning of the file, so the base
+address of the DSO can be calculated by map->start - map->pgoff.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/310acfa01c957a10d9feaca3f7206269866ba2eb.1713394973.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, JIT DSOs which are generated by `perf inject -j`, are mapped
+only the code segment.  This makes unwind-libdw code confusing and
+rejects processing unwinds in the JIT DSOs.  It should use the map
+start address as base for them to fix the confusion.
+
+Fixes: 1fe627da30331024 ("perf unwind: Take pgoff into account when reporting elf to libdwfl")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Pablo Galindo <pablogsal@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231212070547.612536-3-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.h  |    4 +++-
- drivers/usb/host/xhci-rzv2m.c |    1 +
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ tools/perf/util/unwind-libdw.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-plat.h
-+++ b/drivers/usb/host/xhci-plat.h
-@@ -8,7 +8,9 @@
- #ifndef _XHCI_PLAT_H
- #define _XHCI_PLAT_H
+diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
+index 94aa40f6e3482..9a7bdc0e14cc2 100644
+--- a/tools/perf/util/unwind-libdw.c
++++ b/tools/perf/util/unwind-libdw.c
+@@ -45,6 +45,7 @@ static int __report_module(struct addr_location *al, u64 ip,
+ {
+ 	Dwfl_Module *mod;
+ 	struct dso *dso = NULL;
++	Dwarf_Addr base;
+ 	/*
+ 	 * Some callers will use al->sym, so we can't just use the
+ 	 * cheaper thread__find_map() here.
+@@ -57,24 +58,36 @@ static int __report_module(struct addr_location *al, u64 ip,
+ 	if (!dso)
+ 		return 0;
  
--#include "xhci.h"	/* for hcd_to_xhci() */
-+struct device;
-+struct platform_device;
-+struct usb_hcd;
++	/*
++	 * The generated JIT DSO files only map the code segment without
++	 * ELF headers.  Since JIT codes used to be packed in a memory
++	 * segment, calculating the base address using pgoff falls info
++	 * a different code in another DSO.  So just use the map->start
++	 * directly to pick the correct one.
++	 */
++	if (!strncmp(dso->long_name, "/tmp/jitted-", 12))
++		base = al->map->start;
++	else
++		base = al->map->start - al->map->pgoff;
++
+ 	mod = dwfl_addrmodule(ui->dwfl, ip);
+ 	if (mod) {
+ 		Dwarf_Addr s;
  
- struct xhci_plat_priv {
- 	const char *firmware_name;
---- a/drivers/usb/host/xhci-rzv2m.c
-+++ b/drivers/usb/host/xhci-rzv2m.c
-@@ -6,6 +6,7 @@
-  */
+ 		dwfl_module_info(mod, NULL, &s, NULL, NULL, NULL, NULL, NULL);
+-		if (s != al->map->start - al->map->pgoff)
+-			mod = 0;
++		if (s != base)
++			mod = NULL;
+ 	}
  
- #include <linux/usb/rzv2m_usb3drd.h>
-+#include "xhci.h"
- #include "xhci-plat.h"
- #include "xhci-rzv2m.h"
+ 	if (!mod)
+ 		mod = dwfl_report_elf(ui->dwfl, dso->short_name, dso->long_name, -1,
+-				      al->map->start - al->map->pgoff, false);
++				      base, false);
+ 	if (!mod) {
+ 		char filename[PATH_MAX];
  
+ 		if (dso__build_id_filename(dso, filename, sizeof(filename), false))
+ 			mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
+-					      al->map->start - al->map->pgoff, false);
++					      base, false);
+ 	}
+ 
+ 	if (mod) {
+-- 
+2.43.0
+
 
 
 
