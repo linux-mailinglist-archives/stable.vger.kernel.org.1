@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-43991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863E18C50AB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:09:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A028C5305
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE377B20B2B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:09:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD5F1F21730
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CFE13E40A;
-	Tue, 14 May 2024 10:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268A65A0FE;
+	Tue, 14 May 2024 11:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auQdPycC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+3Rs7ay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FCB2B9AD;
-	Tue, 14 May 2024 10:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ADF84D26;
+	Tue, 14 May 2024 11:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683559; cv=none; b=h1IviOzi4p7R549kL5b8FITVaTRSMv0x+OhIgHurqQGGvyIzh3WNaxs7f0YFk8kUillS4obXSJK4ghm/JDuPxN4TdjEH/TDg8yjH5YbCBBhAJHWRy1ue+yK2aPnbLyu3ofqd6Ihj5p+0gjx96u9BoAPgAVvwMSPIk32TNOrYtRU=
+	t=1715686266; cv=none; b=dFMlpsWvIEvlqZ/WK75NE1j18N5dCofJYNe7XVczi+wQn3c2+e9c0OMbHUXviJcVdDnHGM4H0Jc3C4xEMw9xFPHa2CA2NXrGA3NIBui546O5D0c0tNjPWtEzPvdZVK/iAtAgEeaPbG/0ViZqIsGHGoIt6PQJrfFDfzXO1uR6anc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683559; c=relaxed/simple;
-	bh=PW4mj89qXRM4vMx3GULJG5sZSWZbVvH5VXeQjBFSat4=;
+	s=arc-20240116; t=1715686266; c=relaxed/simple;
+	bh=DDyEZx+zuv4ywpVgyeg6bRX1o/zytidZozq54R/FBsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3tDmdui3721xMzAFEQzPi7vgPv8LHDpvB/zXpEIXnPC4y7cJU/aRMeY36ZkePn+E6K8f4D6nDvTT7BrZBLN6g8G+sb5TOaaTRz3kZXl6I0yzwYYqv+L02AR+GywD5n0BfWAFArnMmoWEq2vs+7uv3lLVuSNkBJMWVIGAPuWIuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auQdPycC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B56C32781;
-	Tue, 14 May 2024 10:45:55 +0000 (UTC)
+	 MIME-Version; b=bGnPKmmhmWVb09U9ny3EDrubgcDURSD75vcHJlVs6cmE4iFWTwqoTGmEEShFrg1cu95hTYU16ZVXyyOtxswXFJzEBfjmSjcyQQWv6ndoA8paKoo8JxTv4oChmfljDCAICIhhPpQSJaXefGhgO+XRqCnHOfq1YD4w3u8hTP9UJks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+3Rs7ay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFFAC2BD10;
+	Tue, 14 May 2024 11:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683559;
-	bh=PW4mj89qXRM4vMx3GULJG5sZSWZbVvH5VXeQjBFSat4=;
+	s=korg; t=1715686266;
+	bh=DDyEZx+zuv4ywpVgyeg6bRX1o/zytidZozq54R/FBsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auQdPycCLVDALlLFvMNmKIvH1IXEXnm7xwdPsXA7GQJg6cc5hieblILYtQ0PdaFE4
-	 cpXM/xMBs7hpkJnRpjBfMT/QJc82ddUDaDhCSpZvPeZYOhr0iRhYXKjvJlGem+PeD9
-	 HwlYLs1WUvq5A+fWlqvxjPxYdZVVcJdd8RyIz0NY=
+	b=u+3Rs7ayOVH+2OZwOgB110AotJ+GdyO+xv1a/ZqhFKwvdWdyzvqyYeu442u3UwgYz
+	 iEmlSsPI4IrjWbd3u5X79bFzznbryjhK2asxiJ7Iw4v3KAjKIqvnBJgV7FbedJBxWx
+	 YnEgOhXjjVcBfItvkwiwGaaGbnBdt0GRgCu8x/H4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 235/336] drm/meson: dw-hdmi: add bandgap setting for g12
+Subject: [PATCH 6.1 077/236] net: bridge: fix multicast-to-unicast with fraglist GSO
 Date: Tue, 14 May 2024 12:17:19 +0200
-Message-ID: <20240514101047.488200834@linuxfoundation.org>
+Message-ID: <20240514101023.293465100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 08001033121dd92b8297a5b7333636b466c30f13 ]
+[ Upstream commit 59c878cbcdd80ed39315573b3511d0acfd3501b5 ]
 
-When no mode is set, the utility pin appears to be grounded. No signal
-is getting through.
+Calling skb_copy on a SKB_GSO_FRAGLIST skb is not valid, since it returns
+an invalid linearized skb. This code only needs to change the ethernet
+header, so pskb_copy is the right function to call here.
 
-This is problematic because ARC and eARC use this line and may do so even
-if no display mode is set.
-
-This change enable the bandgap setting on g12 chip, which fix the problem
-with the utility pin. This is done by restoring init values on PHY init and
-disable.
-
-Fixes: 3b7c1237a72a ("drm/meson: Add G12A support for the DW-HDMI Glue")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240426160256.3089978-3-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240426160256.3089978-3-jbrunet@baylibre.com
+Fixes: 6db6f0eae605 ("bridge: multicast to unicast")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_dw_hdmi.c | 43 ++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 17 deletions(-)
+ net/bridge/br_forward.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-index a83d93078537d..5565f7777529f 100644
---- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-@@ -106,6 +106,8 @@
- #define HHI_HDMI_CLK_CNTL	0x1cc /* 0x73 */
- #define HHI_HDMI_PHY_CNTL0	0x3a0 /* 0xe8 */
- #define HHI_HDMI_PHY_CNTL1	0x3a4 /* 0xe9 */
-+#define  PHY_CNTL1_INIT		0x03900000
-+#define  PHY_INVERT		BIT(17)
- #define HHI_HDMI_PHY_CNTL2	0x3a8 /* 0xea */
- #define HHI_HDMI_PHY_CNTL3	0x3ac /* 0xeb */
- #define HHI_HDMI_PHY_CNTL4	0x3b0 /* 0xec */
-@@ -130,6 +132,8 @@ struct meson_dw_hdmi_data {
- 				    unsigned int addr);
- 	void		(*dwc_write)(struct meson_dw_hdmi *dw_hdmi,
- 				     unsigned int addr, unsigned int data);
-+	u32 cntl0_init;
-+	u32 cntl1_init;
- };
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index 4e3394a7d7d45..982e7a9ccc41c 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -261,7 +261,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
+ 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
+ 		return;
  
- struct meson_dw_hdmi {
-@@ -458,7 +462,9 @@ static void dw_hdmi_phy_disable(struct dw_hdmi *hdmi,
- 
- 	DRM_DEBUG_DRIVER("\n");
- 
--	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL0, 0);
-+	/* Fallback to init mode */
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL1, dw_hdmi->data->cntl1_init);
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL0, dw_hdmi->data->cntl0_init);
- }
- 
- static enum drm_connector_status dw_hdmi_read_hpd(struct dw_hdmi *hdmi,
-@@ -576,11 +582,22 @@ static const struct regmap_config meson_dw_hdmi_regmap_config = {
- 	.fast_io = true,
- };
- 
--static const struct meson_dw_hdmi_data meson_dw_hdmi_gx_data = {
-+static const struct meson_dw_hdmi_data meson_dw_hdmi_gxbb_data = {
- 	.top_read = dw_hdmi_top_read,
- 	.top_write = dw_hdmi_top_write,
- 	.dwc_read = dw_hdmi_dwc_read,
- 	.dwc_write = dw_hdmi_dwc_write,
-+	.cntl0_init = 0x0,
-+	.cntl1_init = PHY_CNTL1_INIT | PHY_INVERT,
-+};
-+
-+static const struct meson_dw_hdmi_data meson_dw_hdmi_gxl_data = {
-+	.top_read = dw_hdmi_top_read,
-+	.top_write = dw_hdmi_top_write,
-+	.dwc_read = dw_hdmi_dwc_read,
-+	.dwc_write = dw_hdmi_dwc_write,
-+	.cntl0_init = 0x0,
-+	.cntl1_init = PHY_CNTL1_INIT,
- };
- 
- static const struct meson_dw_hdmi_data meson_dw_hdmi_g12a_data = {
-@@ -588,6 +605,8 @@ static const struct meson_dw_hdmi_data meson_dw_hdmi_g12a_data = {
- 	.top_write = dw_hdmi_g12a_top_write,
- 	.dwc_read = dw_hdmi_g12a_dwc_read,
- 	.dwc_write = dw_hdmi_g12a_dwc_write,
-+	.cntl0_init = 0x000b4242, /* Bandgap */
-+	.cntl1_init = PHY_CNTL1_INIT,
- };
- 
- static void meson_dw_hdmi_init(struct meson_dw_hdmi *meson_dw_hdmi)
-@@ -626,18 +645,8 @@ static void meson_dw_hdmi_init(struct meson_dw_hdmi *meson_dw_hdmi)
- 	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_BIST_CNTL, BIT(12));
- 
- 	/* Setup PHY */
--	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
--			   0xffff << 16, 0x0390 << 16);
--
--	/* BIT_INVERT */
--	if (dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxl-dw-hdmi") ||
--	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxm-dw-hdmi") ||
--	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-g12a-dw-hdmi"))
--		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
--				   BIT(17), 0);
--	else
--		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
--				   BIT(17), BIT(17));
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL1, meson_dw_hdmi->data->cntl1_init);
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL0, meson_dw_hdmi->data->cntl0_init);
- 
- 	/* Enable HDMI-TX Interrupt */
- 	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_INTR_STAT_CLR,
-@@ -848,11 +857,11 @@ static const struct dev_pm_ops meson_dw_hdmi_pm_ops = {
- 
- static const struct of_device_id meson_dw_hdmi_of_table[] = {
- 	{ .compatible = "amlogic,meson-gxbb-dw-hdmi",
--	  .data = &meson_dw_hdmi_gx_data },
-+	  .data = &meson_dw_hdmi_gxbb_data },
- 	{ .compatible = "amlogic,meson-gxl-dw-hdmi",
--	  .data = &meson_dw_hdmi_gx_data },
-+	  .data = &meson_dw_hdmi_gxl_data },
- 	{ .compatible = "amlogic,meson-gxm-dw-hdmi",
--	  .data = &meson_dw_hdmi_gx_data },
-+	  .data = &meson_dw_hdmi_gxl_data },
- 	{ .compatible = "amlogic,meson-g12a-dw-hdmi",
- 	  .data = &meson_dw_hdmi_g12a_data },
- 	{ }
+-	skb = skb_copy(skb, GFP_ATOMIC);
++	skb = pskb_copy(skb, GFP_ATOMIC);
+ 	if (!skb) {
+ 		DEV_STATS_INC(dev, tx_dropped);
+ 		return;
 -- 
 2.43.0
 
