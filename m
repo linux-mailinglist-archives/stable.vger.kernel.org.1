@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-44920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A545B8C54F8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562758C525B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB40283A1A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDD741F22BBC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D28684DEA;
-	Tue, 14 May 2024 11:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A77C12F589;
+	Tue, 14 May 2024 11:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV2vBI4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIkRWHh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15341CFB2;
-	Tue, 14 May 2024 11:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F996311D;
+	Tue, 14 May 2024 11:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687560; cv=none; b=sdKw9kJWC+3BuPoCivGVjNlPyu/TQS/QCGbeiN7YCPLMJU9GYkoDCUfbZRW6Jw2K+T6qHJcoiNsUGBLMFl8ORH25k8adRESfCXaEz7lgr+iXII0tne5OH/o9cNkYJg+pqwztqV9GJV5O4kUMZkAYhTiSxF/QsRJW2yu83pfTxQM=
+	t=1715685818; cv=none; b=hXCL+VdGWwAKCK//hIKsgiod1Qqe3w2Sc+R7Xl+UwdqIftsoSjN9PCvRlMnfL1xr1MIIYt4sXcH1x+Ptc49eJXeQDAjRIFlX64S249zrHkWprTjsd/HZ7JhVWJRKGQDczg/o+hYY4uxh8hvv87u/+9cNw4Cs4kX8oIPI7BDdtKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687560; c=relaxed/simple;
-	bh=V7F7y6HzYK3fE4KLSX7vTyGFPl+m5iUQNtIS2rpfN+M=;
+	s=arc-20240116; t=1715685818; c=relaxed/simple;
+	bh=IKk6ZNHlSeqTOj2so2Vtg4AcpQCbkeGP89ampqKwSKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDhASnOnD71PcoB9phPEVy/yB/X7v+L2nCu7a1qrAJ52+JwB3Kuo7W2E2QU4eqbqBnoAgcpXs+xFLrvO/caWH6rEubak9nBbQbggNaBV5qkjQVSb/WuvcB+ny+QnBc/nVGohxQfSVg0P6SKH9QRYlb9kiMuvVeKGyqOGPg4Q1zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV2vBI4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58686C2BD10;
-	Tue, 14 May 2024 11:52:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y63jOJh/8NpTj4EY3xOiI0Gf22ZzTSjsplg/kosAnc2wgUJ7M9K9aMd89SzLqjJKFkvCYq4ynRskuO59X7BfV9H95mCiRYQt1s7UOAzukRICzhC6f5RMI3m51zeMX3WiE7sLHMFsDTCkFyiiweOAnIyLh9fMXeg7HxKyL4xxLn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIkRWHh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6210FC2BD10;
+	Tue, 14 May 2024 11:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687560;
-	bh=V7F7y6HzYK3fE4KLSX7vTyGFPl+m5iUQNtIS2rpfN+M=;
+	s=korg; t=1715685817;
+	bh=IKk6ZNHlSeqTOj2so2Vtg4AcpQCbkeGP89ampqKwSKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oV2vBI4oIWGGLDsHWkA2GYyk3xLl/rEiZeaa3iJjNS3BL1zXpv8STHgAfOex+wCbx
-	 5tiUUfyuhSKixo+raLUtmcFrOL4Te7IqrlllRc3J4p6AMnHTmK3er0262dGC4awLQK
-	 PuRgSh2TYI1nyOK6E6/b5Pk0HZVl9IaUBqK06gwI=
+	b=KIkRWHh1bmBixvp5WFFDwZBSSe9SjETMUsC+I/Tw76qCVZ+0AcyEgQY2HFvqnykfL
+	 9+DppQlk3EWLH8zGGu2ekkth4OAzUEhsAyXW9AYnEqdxDG6Grbs+ZeA8gGMqMMOGlM
+	 0Xi2HISzSrqk5wVs43s5XcCwa8eTToaZUmDTF3Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/168] bpf: Fix a verifier verbose message
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Carretero?= <cJ@zougloub.eu>,
+	Sasha Neftin <sasha.neftin@intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Dima Ruinskiy <dima.ruinskiy@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 253/301] e1000e: change usleep_range to udelay in PHY mdic access
 Date: Tue, 14 May 2024 12:18:44 +0200
-Message-ID: <20240514101007.678578093@linuxfoundation.org>
+Message-ID: <20240514101041.809415184@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 37eacb9f6e89fb399a79e952bc9c78eb3e16290e ]
+commit 387f295cb2150ed164905b648d76dfcbd3621778 upstream.
 
-Long ago a map file descriptor in a pseudo ldimm64 instruction could
-only be present as an immediate value insn[0].imm, and thus this value
-was used in a verbose verifier message printed when the file descriptor
-wasn't valid. Since addition of BPF_PSEUDO_MAP_IDX_VALUE/BPF_PSEUDO_MAP_IDX
-the insn[0].imm field can also contain an index pointing to the file
-descriptor in the attr.fd_array array. However, if the file descriptor
-is invalid, the verifier still prints the verbose message containing
-value of insn[0].imm. Patch the verifier message to always print the
-actual file descriptor value.
+This is a partial revert of commit 6dbdd4de0362 ("e1000e: Workaround
+for sporadic MDI error on Meteor Lake systems"). The referenced commit
+used usleep_range inside the PHY access routines, which are sometimes
+called from an atomic context. This can lead to a kernel panic in some
+scenarios, such as cable disconnection and reconnection on vPro systems.
 
-Fixes: 387544bfa291 ("bpf: Introduce fd_idx")
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240412141100.3562942-1-aspsk@isovalent.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Solve this by changing the usleep_range calls back to udelay.
+
+Fixes: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
+Cc: stable@vger.kernel.org
+Reported-by: Jérôme Carretero <cJ@zougloub.eu>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218740
+Closes: https://lore.kernel.org/lkml/a7eb665c74b5efb5140e6979759ed243072cb24a.camel@zougloub.eu/
+Co-developed-by: Sasha Neftin <sasha.neftin@intel.com>
+Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240429171040.1152516-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/intel/e1000e/phy.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 67b3254270221..94d952967fbf9 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -11875,8 +11875,7 @@ static int resolve_pseudo_ldimm64(struct bpf_verifier_env *env)
- 			f = fdget(fd);
- 			map = __bpf_map_get(f);
- 			if (IS_ERR(map)) {
--				verbose(env, "fd %d is not pointing to valid bpf_map\n",
--					insn[0].imm);
-+				verbose(env, "fd %d is not pointing to valid bpf_map\n", fd);
- 				return PTR_ERR(map);
- 			}
+--- a/drivers/net/ethernet/intel/e1000e/phy.c
++++ b/drivers/net/ethernet/intel/e1000e/phy.c
+@@ -157,7 +157,7 @@ s32 e1000e_read_phy_reg_mdic(struct e100
+ 		 * the lower time out
+ 		 */
+ 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
+-			usleep_range(50, 60);
++			udelay(50);
+ 			mdic = er32(MDIC);
+ 			if (mdic & E1000_MDIC_READY)
+ 				break;
+@@ -181,7 +181,7 @@ s32 e1000e_read_phy_reg_mdic(struct e100
+ 		 * reading duplicate data in the next MDIC transaction.
+ 		 */
+ 		if (hw->mac.type == e1000_pch2lan)
+-			usleep_range(100, 150);
++			udelay(100);
  
--- 
-2.43.0
-
+ 		if (success) {
+ 			*data = (u16)mdic;
+@@ -237,7 +237,7 @@ s32 e1000e_write_phy_reg_mdic(struct e10
+ 		 * the lower time out
+ 		 */
+ 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
+-			usleep_range(50, 60);
++			udelay(50);
+ 			mdic = er32(MDIC);
+ 			if (mdic & E1000_MDIC_READY)
+ 				break;
+@@ -261,7 +261,7 @@ s32 e1000e_write_phy_reg_mdic(struct e10
+ 		 * reading duplicate data in the next MDIC transaction.
+ 		 */
+ 		if (hw->mac.type == e1000_pch2lan)
+-			usleep_range(100, 150);
++			udelay(100);
+ 
+ 		if (success)
+ 			return 0;
 
 
 
