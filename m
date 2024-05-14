@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57938C541A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A548C5549
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B39F528718C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB44B1F227BE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E2913666D;
-	Tue, 14 May 2024 11:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC7F3B79C;
+	Tue, 14 May 2024 11:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axiYHqwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3iYdEc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FB213665B;
-	Tue, 14 May 2024 11:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190C1F9D4;
+	Tue, 14 May 2024 11:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686981; cv=none; b=giMkgjg3wl8Cr3C5ucDZCl92mjkCQjiglbwXQ6ekdK9z41N5zo6vMGL2OIi+rQcnEvji9w5Mtx9iS4Gys4gSSG5JLLYvXiQZ/8NAVh4BcSenWAL9k9OuhLXd5xzEZynvT93SyGWu434c/2Bat5LHwhrjBgjYgf3nCZOK/00P610=
+	t=1715687787; cv=none; b=jhxBLFXfJoAjt8+gExlbxwNWbxAhKy78JeMWNDpXhoTfUGAMd3GGsverX7/o+23NkptUUlSBgqC/TQmSXDR3E8wWXt2VWPusqldOvRqel8GO7zHdhIMU+fEwnzEa0vhuEGETdrsy/ButDa/mlPaVYK689Q7Z+2iwTc8LBe5arco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686981; c=relaxed/simple;
-	bh=rFYjyFhmS8CvPDaiu6+cn0WKEO4hnItjSBzaMLb86xc=;
+	s=arc-20240116; t=1715687787; c=relaxed/simple;
+	bh=dTO2IZshiySB7K/m84Ou0gRyTInFJjd3Am9TBTu28k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsM9/fFm6mKd0RDliFkJFDQ8cSNnqL1NlIPwg6GjmbwpUft9CBFkwgR86SU7dT47Yl7fR4whtlc3rdXwfcMsTynU2yCFUVcL8nHDxbpP/HUXTcIf0lRSw3MU5dpGkul6+XrVQumKUIY7tPa1TYRCMTWp4gjFOhku7xL6Zlj0YsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axiYHqwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C4BC2BD10;
-	Tue, 14 May 2024 11:43:00 +0000 (UTC)
+	 MIME-Version; b=iXqLqVxzRHXlH7uvTm1z9drGrmiLghsX0UstIvmvZc4Orqgis4oBZwszvma3Y6Obbcgpb349DOer3hKbLGA8gIFhFNWgPCfLJi3wKI9jErE0XOAl068cASPYausBHV2//UfXTmDxymT54OD4Xa8MecY2fnF9VnQPpqNxeg5gyrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3iYdEc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A32C2BD10;
+	Tue, 14 May 2024 11:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686981;
-	bh=rFYjyFhmS8CvPDaiu6+cn0WKEO4hnItjSBzaMLb86xc=;
+	s=korg; t=1715687786;
+	bh=dTO2IZshiySB7K/m84Ou0gRyTInFJjd3Am9TBTu28k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axiYHqwcjwqCFAHw8MuEVVvYU9r04RIeNSYw241OcpiP3QlGvswa+h195JCFn2ZLk
-	 7Qy8NqfTFSApwS2SOGZIZRoVg+zIRGYPWLxoGW2skrYeN1PmEl9+jv/XupehfYAJsm
-	 oXnqRr5R3V+FsJHyzNKKammJeXIMBzS7KtpIzSVU=
+	b=B3iYdEc3fxjOo0F5x8wnC9hMm/wyzd12zVyfuMEFnV29Sy7EPkmSDBuO843dtUNoA
+	 /rScDVYa3SF3v9sWJLP6F8MpgAkPWPA+O1rFgOjSSSACiRmbwWMqsVtaiS3OTX/w/b
+	 FUbhkAEXhFq3E+2Jh1QFoahJr/fTUQ5xQ9TlOANU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Chapman <jchapman@katalix.com>,
-	David Bauer <mail@david-bauer.net>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Peng Liu <liupeng17@lenovo.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 24/84] net l2tp: drop flow hash on forward
+Subject: [PATCH 5.15 077/168] tools/power turbostat: Fix Bzy_MHz documentation typo
 Date: Tue, 14 May 2024 12:19:35 +0200
-Message-ID: <20240514100952.604946344@linuxfoundation.org>
+Message-ID: <20240514101009.601689112@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Peng Liu <liupeng17@lenovo.com>
 
-[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
+[ Upstream commit 0b13410b52c4636aacb6964a4253a797c0fa0d16 ]
 
-Drop the flow-hash of the skb when forwarding to the L2TP netdev.
+The code calculates Bzy_MHz by multiplying TSC_delta * APERF_delta/MPERF_delta
+The man page erroneously showed that TSC_delta was divided.
 
-This avoids the L2TP qdisc from using the flow-hash from the outer
-packet, which is identical for every flow within the tunnel.
-
-This does not affect every platform but is specific for the ethernet
-driver. It depends on the platform including L4 information in the
-flow-hash.
-
-One such example is the Mediatek Filogic MT798x family of networking
-processors.
-
-Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
-Acked-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Peng Liu <liupeng17@lenovo.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_eth.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/power/x86/turbostat/turbostat.8 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
-index d3b520b9b2c9d..2c5853597aa90 100644
---- a/net/l2tp/l2tp_eth.c
-+++ b/net/l2tp/l2tp_eth.c
-@@ -149,6 +149,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
- 	/* checksums verified by L2TP */
- 	skb->ip_summed = CHECKSUM_NONE;
+diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
+index b3d4bf08e70b1..f382cd53cb4e8 100644
+--- a/tools/power/x86/turbostat/turbostat.8
++++ b/tools/power/x86/turbostat/turbostat.8
+@@ -322,7 +322,7 @@ below the processor's base frequency.
  
-+	/* drop outer flow-hash */
-+	skb_clear_hash(skb);
-+
- 	skb_dst_drop(skb);
- 	nf_reset_ct(skb);
+ Busy% = MPERF_delta/TSC_delta
  
+-Bzy_MHz = TSC_delta/APERF_delta/MPERF_delta/measurement_interval
++Bzy_MHz = TSC_delta*APERF_delta/MPERF_delta/measurement_interval
+ 
+ Note that these calculations depend on TSC_delta, so they
+ are not reliable during intervals when TSC_MHz is not running at the base frequency.
 -- 
 2.43.0
 
