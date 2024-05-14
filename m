@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1918C5055
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:02:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D998C52E7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BB21C208F6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:02:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C04CB21EDC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF9713C810;
-	Tue, 14 May 2024 10:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60110135A5D;
+	Tue, 14 May 2024 11:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXx8cGLF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4lSRHIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577195CDFA;
-	Tue, 14 May 2024 10:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E96812FB14;
+	Tue, 14 May 2024 11:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683206; cv=none; b=pdYOoSGnhVGZ2pRQK6ujFXemaocvD/Fz4m0fMucoH3dfR2M0Pqtt/T7eoqXGaS5oju0qFBcTjQ7dMOGWJOWYrfq1gI+vqIMkrjPbOUSVb5w6SvFZDra+EeOeOwQj/kjUUlInztJt73PDkOdrYiLKHaBXMsWaPFIwtdG0EjUlwdQ=
+	t=1715686180; cv=none; b=JTUpWT0G6/2Ulao5fEcZ0+h6tzV+e7pNAz5zCHAzEs9S04SEAyMh3eI9LVp/9/cBjJ1wi/qP5pzUic2d9FcOev1OilRtAsrR9KRLskYmJMYpDf1d3qW2kY/gGkMHcXLykjYpqSPiqL8NSbDa0nYcxgXmpnnZXFEzHWWP0jrgJlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683206; c=relaxed/simple;
-	bh=+gre0mXV16wwAwIifd79U20py2TSZ3p0cdAEUNizfAA=;
+	s=arc-20240116; t=1715686180; c=relaxed/simple;
+	bh=tm4L7hVxEsv65Jp+zGs1XeLtyau7GQjTn3PWsctm5UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1HAZfbUhczIjvhRmq0GNTAaGX8nZ/tgeKEBB/oVOnqTDC3Z+AAuKfmAVh8UASa48boq5y4SmIBduH6njuIDCdHGI7b/UVXhgBXt3iASsml3Bc1tRbdEFEZLx8mPSaYp/iTZo81+ZLkgTYbeu8P1fjwY4KtQXLS+0lVyfzglLG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXx8cGLF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FA4C2BD10;
-	Tue, 14 May 2024 10:40:04 +0000 (UTC)
+	 MIME-Version; b=sPnbDvLLm9NApm8C4PF9vL5PnxpwUhD28qCtGRTTgDwbzaAMQD5WplJsk24qFt8wM/vxAMZbWjDyp/4B/O0iWfxgQIBKtWk3Ok0LbkH3+v98azDxl8WGjVm9oDAtnPI/Xnc5jnURCpDNwvNHU9mBFPUMIS7J7ht6zXih5NPn3lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4lSRHIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D88C2BD10;
+	Tue, 14 May 2024 11:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683205;
-	bh=+gre0mXV16wwAwIifd79U20py2TSZ3p0cdAEUNizfAA=;
+	s=korg; t=1715686179;
+	bh=tm4L7hVxEsv65Jp+zGs1XeLtyau7GQjTn3PWsctm5UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXx8cGLFd8YG2lmaG4bd5yzkDggy+A5PozvgdN91mVfiwqdX3p9fTX0yQtTSBW25p
-	 itTMWsahn6qxO0Txz+DV90oxt8XYKWFytydYLBlSMKkgb10V8q0u5R1gmHvMds7Q/8
-	 mJIDenFdgYYcYADgydJb3aXvqh2Xp73UhW+QfRgM=
+	b=t4lSRHITJJ1speup1dv4Y1hsXaBHtnFoJBaNx2+LKjZ/ICX9wYyO8yy2hPtkwgTew
+	 iWVDTRtqDDHrVDCLweNq2uNwwysFImmZOgdvP69p3gAAQWvLFw52jfkfbAyf9MXooN
+	 OJLnUS/ZkwnlNAv/rPCimk6goX6z9TMMuoLMILF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Joerg Roedel <jroedel@suse.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 176/336] iommu: mtk: fix module autoloading
+Subject: [PATCH 6.1 018/236] kbuild: refactor host*_flags
 Date: Tue, 14 May 2024 12:16:20 +0200
-Message-ID: <20240514101045.247119224@linuxfoundation.org>
+Message-ID: <20240514101021.023558506@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 7537e31df80cb58c27f3b6fef702534ea87a5957 ]
+[ Upstream commit 16169a47d5c36046041527faafb5a3f5c86701c6 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from of_device_id table.
+Remove _host*_flags. No functional change is intended.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20240410164109.233308-1-krzk@kernel.org
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: ded103c7eb23 ("kbuild: rust: force `alloc` extern to allow "empty" Rust files")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c    | 1 +
- drivers/iommu/mtk_iommu_v1.c | 1 +
- 2 files changed, 2 insertions(+)
+ scripts/Makefile.host | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 7abe9e85a5706..51d0eba8cbdf3 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -1789,6 +1789,7 @@ static const struct of_device_id mtk_iommu_of_ids[] = {
- 	{ .compatible = "mediatek,mt8365-m4u", .data = &mt8365_data},
- 	{}
- };
-+MODULE_DEVICE_TABLE(of, mtk_iommu_of_ids);
+diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+index da133780b7518..4a02b31cd1029 100644
+--- a/scripts/Makefile.host
++++ b/scripts/Makefile.host
+@@ -80,25 +80,23 @@ host-rust	:= $(addprefix $(obj)/,$(host-rust))
+ #####
+ # Handle options to gcc. Support building with separate output directory
  
- static struct platform_driver mtk_iommu_driver = {
- 	.probe	= mtk_iommu_probe,
-diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
-index 25b41222abaec..32cc8341d3726 100644
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -599,6 +599,7 @@ static const struct of_device_id mtk_iommu_v1_of_ids[] = {
- 	{ .compatible = "mediatek,mt2701-m4u", },
- 	{}
- };
-+MODULE_DEVICE_TABLE(of, mtk_iommu_v1_of_ids);
+-_hostc_flags   = $(KBUILD_HOSTCFLAGS)   $(HOST_EXTRACFLAGS)   \
++hostc_flags    = -Wp,-MMD,$(depfile) \
++                 $(KBUILD_HOSTCFLAGS) $(HOST_EXTRACFLAGS) \
+                  $(HOSTCFLAGS_$(target-stem).o)
+-_hostcxx_flags = $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
++hostcxx_flags  = -Wp,-MMD,$(depfile) \
++                 $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
+                  $(HOSTCXXFLAGS_$(target-stem).o)
+-_hostrust_flags = $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
+-                  $(HOSTRUSTFLAGS_$(target-stem))
++hostrust_flags = $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
++                 $(HOSTRUSTFLAGS_$(target-stem))
  
- static const struct component_master_ops mtk_iommu_v1_com_ops = {
- 	.bind		= mtk_iommu_v1_bind,
+ # $(objtree)/$(obj) for including generated headers from checkin source files
+ ifeq ($(KBUILD_EXTMOD),)
+ ifdef building_out_of_srctree
+-_hostc_flags   += -I $(objtree)/$(obj)
+-_hostcxx_flags += -I $(objtree)/$(obj)
++hostc_flags   += -I $(objtree)/$(obj)
++hostcxx_flags += -I $(objtree)/$(obj)
+ endif
+ endif
+ 
+-hostc_flags    = -Wp,-MMD,$(depfile) $(_hostc_flags)
+-hostcxx_flags  = -Wp,-MMD,$(depfile) $(_hostcxx_flags)
+-hostrust_flags = $(_hostrust_flags)
+-
+ #####
+ # Compile programs on the host
+ 
 -- 
 2.43.0
 
