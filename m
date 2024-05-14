@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14B38C545B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4518B8C5566
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 463291F23319
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7700D1C21179
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BC785936;
-	Tue, 14 May 2024 11:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2DB26AC5;
+	Tue, 14 May 2024 11:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzy/oMfu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moMe4wL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260F2D60A;
-	Tue, 14 May 2024 11:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3EFF9D4;
+	Tue, 14 May 2024 11:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687142; cv=none; b=qMzpNEQShtLQ/dKiTqicdjwGUyP0jz/HYZoQOExTFbCd06eo/zUSibpZGUu08ZTe6jECNGn8p3Akz8je7KtCr11cwo5o8N48p9TQM8U0a691yhcfRbEH0kxoSnzyTZLbF8vqYppH2G2ceoSFeMmR4rQg8TYXLvBHcerQQQ/7hZw=
+	t=1715687867; cv=none; b=itDA8h1VvC2ieGWghas9rEKO0JjFo7reGSi8Ks/xnYem6VCSqMD1/N4gJVJ9eoAkdNdWxpnbAQqLXcsCxaLj6hlWBq1VcBlxMS6mmCBysf87bHn/bMhkUczBcMn4VBBleM/7DcPyi+lwKB+RduWkdabzD/1N42/SjA7JqrooJPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687142; c=relaxed/simple;
-	bh=xf5lhVBlD8yavVTWwpJAAj+q4rQd19W2JdPF95E+6E8=;
+	s=arc-20240116; t=1715687867; c=relaxed/simple;
+	bh=I/UFu5bG6wW616Xkvu3q/McnHOx8p4znNIJVWczuwKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mee816aeyE/aSndjKhSZ560Ap41DmSNsDbv9k6ZgrCaLFfwPIS0KX1Tre0mCxt0O/xBD+qQoellWYxofCCeQ9LjQSnN7+NAUvT4KSNHl6BkD1bOcPJKY7qCfqE3TD6kx3qvlCNLLDGcIgPDVNQhBD2ptcswg8rBQ5QYi2MatCY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzy/oMfu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53754C2BD10;
-	Tue, 14 May 2024 11:45:40 +0000 (UTC)
+	 MIME-Version; b=Og8AJTJCwIG+OQGBTKq5O73BUAMY4KxP2GckbTDl8Gh23VBLrxFst4GVJuONbiov/aAUhhqx50z9qEXJyf+AUAlV/HEDVojbEFhlJ3hgA03cH9aA0TRIFTBTFGrN16JmHLuglH/rVlYOPC4jXk0S10Oe3yfVf2kiWOdep3e2O9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moMe4wL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263B8C2BD10;
+	Tue, 14 May 2024 11:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687140;
-	bh=xf5lhVBlD8yavVTWwpJAAj+q4rQd19W2JdPF95E+6E8=;
+	s=korg; t=1715687867;
+	bh=I/UFu5bG6wW616Xkvu3q/McnHOx8p4znNIJVWczuwKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzy/oMfuxN6c8ymwpO2jOqsCgcwe+Cw7/B3KUxmzc5lvOye56A/cZe613jv41nClw
-	 D4FGR+GaJfddn9ttyeIsXbdHV8hwsS9ZMso/AKXNV7p4uIF55uNYXRLrIHR0vjwxK9
-	 nAza59wtbvuWSj0jgoBXhEEZWP7U/xBgW8i4NT0Q=
+	b=moMe4wL8vJLgmjueHP542RGlnzyAZ5LPZrDHDUqaLAJgoE+1plSNqesfOixC1k2vS
+	 YajsAU9BxgTWp3pPjGgqdekFVPejJLUYI4ZblOQvgBXWNghDa2f7Q1jvpeYgBJgkNw
+	 9S6kPZvH8cLgRtiaQ1PJBBmzf3Cq7UHGTXx0fG08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 79/84] net: fix out-of-bounds access in ops_init
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simon Ser <contact@emersion.fr>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 132/168] drm/connector: Add \n to message about demoting connector force-probes
 Date: Tue, 14 May 2024 12:20:30 +0200
-Message-ID: <20240514100954.655053349@linuxfoundation.org>
+Message-ID: <20240514101011.665874600@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
+[ Upstream commit 6897204ea3df808d342c8e4613135728bc538bcd ]
 
-net_alloc_generic is called by net_alloc, which is called without any
-locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
-is read twice, first to allocate an array, then to set s.len, which is
-later used to limit the bounds of the array access.
+The debug print clearly lacks a \n at the end. Add it.
 
-It is possible that the array is allocated and another thread is
-registering a new pernet ops, increments max_gen_ptrs, which is then used
-to set s.len with a larger than allocated length for the variable array.
-
-Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
-max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
-
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8f86c82aba8b ("drm/connector: demote connector force-probes for non-master clients")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Simon Ser <contact@emersion.fr>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240502153234.1.I2052f01c8d209d9ae9c300b87c6e4f60bd3cc99e@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net_namespace.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_connector.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -71,12 +71,15 @@ static unsigned int max_gen_ptrs = INITI
- 
- static struct net_generic *net_alloc_generic(void)
- {
-+	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
-+	unsigned int generic_size;
- 	struct net_generic *ng;
--	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
-+
-+	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
- 
- 	ng = kzalloc(generic_size, GFP_KERNEL);
- 	if (ng)
--		ng->s.len = max_gen_ptrs;
-+		ng->s.len = gen_ptrs;
- 
- 	return ng;
- }
-@@ -1231,7 +1234,11 @@ static int register_pernet_operations(st
- 		if (error < 0)
- 			return error;
- 		*ops->id = error;
--		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
-+		/* This does not require READ_ONCE as writers already hold
-+		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
-+		 * net_alloc_generic.
-+		 */
-+		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
+diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
+index cfe163103cfd7..1140292820bb1 100644
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -2460,7 +2460,7 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
+ 						     dev->mode_config.max_width,
+ 						     dev->mode_config.max_height);
+ 		else
+-			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe",
++			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe\n",
+ 				    connector->base.id, connector->name);
  	}
- 	error = __register_pernet_operations(list, ops);
- 	if (error) {
+ 
+-- 
+2.43.0
+
 
 
 
