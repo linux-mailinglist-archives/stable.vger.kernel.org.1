@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313B28C5024
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7E68C517E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6FD71F2110A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 484F3280EBC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F447139CF8;
-	Tue, 14 May 2024 10:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397C91386D1;
+	Tue, 14 May 2024 11:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dG9IFfEW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/IiICJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E209440862;
-	Tue, 14 May 2024 10:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE5C1386CC;
+	Tue, 14 May 2024 11:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682999; cv=none; b=Wx1iqTGqRDg+ha3SsU+pSgRDuavU7BY3D0N/Ibjpqp6/ADq2tMpjo1G0baqipvaizsV0/8A3t9+8Q5Ghw0NiviQXbpnAtB+q5XfC0j4ZBZT8LXxLyUyK5Y+VxouQROMP0svwU1GTFG+SRKppEs2s1FdE0UB15tAkCIDhzwQ78xM=
+	t=1715684432; cv=none; b=Gv7uI3SKYBa914ImYx3foPy3He/FOm5P+C99xZ2HAom80dQIPG4uq5lgM/Y4wFvB8IScAA80/YXQ+383XRA04/07MCpDDgE9hi1FyxSxTGohKbVz7aSjtdVSlr8WNNrEoCWBI+s+CEeZmFc+RbIH3epoNzpBYkmhtK6DGV+x1tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682999; c=relaxed/simple;
-	bh=voGrpGvSs8D1Ssakqjg/TiorZudk6hVBToWASPvyUn0=;
+	s=arc-20240116; t=1715684432; c=relaxed/simple;
+	bh=kxuuqiXnQtthnaXhYlElOm2RbUIpf3+Zx6d+nP590Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmIDPAaSWnRn0xtETkiFOEGaFa45LgUOo4uig40reDMDHeEaNQoopjDcsiYrXETtiozqzRU0jQSPVhg0GYsR1rY5xigNyasGlw9ZrYmN0EWpU5gWl8vteDmC5dBENwd2kWWqQlhtWGe9+x8Kd95u/rABJM0n9fvcpAA1uONIcwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dG9IFfEW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B90AC2BD10;
-	Tue, 14 May 2024 10:36:38 +0000 (UTC)
+	 MIME-Version; b=iQUYHA8sB5U0IEXElTufMpW2Tl5UwqlguOntDLFSHM2VDFeC0AaWTgJeTG25R1zQHEt3d28M5sC/pkZMT+IWlQGl/fVpogRPYiUd9m6z/CA8mRMFHd7OFtx53JCCCc5dgfaXqh+l3qOTbb6nihdMfoDJEN/a1tOh84r0YpKr1xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/IiICJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A170AC2BD10;
+	Tue, 14 May 2024 11:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682998;
-	bh=voGrpGvSs8D1Ssakqjg/TiorZudk6hVBToWASPvyUn0=;
+	s=korg; t=1715684431;
+	bh=kxuuqiXnQtthnaXhYlElOm2RbUIpf3+Zx6d+nP590Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dG9IFfEWNat7/3xmtlxgUr6B9YR8Ld7whjbTzTgiwzuW4RLtCvcFfaca4m321d4jz
-	 R9nUuIhYiiuE2dpZWO4z1hPDLGfsbvPDC9nNb7r/cK/wY78qBnwjE7wkOCqY44t6lE
-	 aAWn5/XlOfwAFesDIkE6Fdl+pO/902qE+n3OBvEI=
+	b=W/IiICJVnEXLNwsTB7x03xlT2FV0SZswzNchBigzF76ZrwMRDd5XrjKbvpJ8vp3vW
+	 7+ZdbCEE9gtlM/7c0lgtWxGvifijpI9H49yQt0JLgEkGvWCR7uBNHGX3QRuga6qHtF
+	 LYFSt6mWnxAfDkghEaf4ueY32J63L4lYNK3I2cSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Devyn Liu <liudingyuan@huawei.com>,
+	Jay Fang <f.fangjian@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 107/336] wifi: mac80211: fix prep_connection error path
-Date: Tue, 14 May 2024 12:15:11 +0200
-Message-ID: <20240514101042.644914481@linuxfoundation.org>
+Subject: [PATCH 6.6 041/301] spi: hisi-kunpeng: Delete the dump interface of data registers in debugfs
+Date: Tue, 14 May 2024 12:15:12 +0200
+Message-ID: <20240514101033.797449811@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Devyn Liu <liudingyuan@huawei.com>
 
-[ Upstream commit 2e6bd24339a6ff04413b2e49c0f2672d6f0edfa5 ]
+[ Upstream commit 7430764f5a85d30314aeef2d5438dff1fb0b1d68 ]
 
-If prep_channel fails in prep_connection, the code releases
-the deflink's chanctx, which is wrong since we may be using
-a different link. It's already wrong to even do that always
-though, since we might still have the station. Remove it
-only if prep_channel succeeded and later updates fail.
+Due to the reading of FIFO during the dump of data registers in
+debugfs, if SPI transmission is in progress, it will be affected
+and may result in transmission failure. Therefore, the dump
+interface of data registers in debugfs is removed.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240318184907.2780c1f08c3d.I033c9b15483933088f32a2c0789612a33dd33d82@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 2b2142f247eb ("spi: hisi-kunpeng: Add debugfs support")
+Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
+Reviewed-by: Jay Fang <f.fangjian@huawei.com>
+Link: https://lore.kernel.org/r/20240416015839.3323398-1-liudingyuan@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-hisi-kunpeng.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 94028b541beba..ac0073c8f96f4 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7294,7 +7294,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- 			sdata_info(sdata,
- 				   "failed to insert STA entry for the AP (error %d)\n",
- 				   err);
--			goto out_err;
-+			goto out_release_chan;
- 		}
- 	} else
- 		WARN_ON_ONCE(!ether_addr_equal(link->u.mgd.bssid, cbss->bssid));
-@@ -7305,8 +7305,9 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
- 
- 	return 0;
- 
-+out_release_chan:
-+	ieee80211_link_release_channel(link);
- out_err:
--	ieee80211_link_release_channel(&sdata->deflink);
- 	ieee80211_vif_set_links(sdata, 0, 0);
- 	return err;
- }
+diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
+index 35ef5e8e2ffd2..77e9738e42f60 100644
+--- a/drivers/spi/spi-hisi-kunpeng.c
++++ b/drivers/spi/spi-hisi-kunpeng.c
+@@ -151,8 +151,6 @@ static const struct debugfs_reg32 hisi_spi_regs[] = {
+ 	HISI_SPI_DBGFS_REG("ENR", HISI_SPI_ENR),
+ 	HISI_SPI_DBGFS_REG("FIFOC", HISI_SPI_FIFOC),
+ 	HISI_SPI_DBGFS_REG("IMR", HISI_SPI_IMR),
+-	HISI_SPI_DBGFS_REG("DIN", HISI_SPI_DIN),
+-	HISI_SPI_DBGFS_REG("DOUT", HISI_SPI_DOUT),
+ 	HISI_SPI_DBGFS_REG("SR", HISI_SPI_SR),
+ 	HISI_SPI_DBGFS_REG("RISR", HISI_SPI_RISR),
+ 	HISI_SPI_DBGFS_REG("ISR", HISI_SPI_ISR),
 -- 
 2.43.0
 
