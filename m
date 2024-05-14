@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF36A8C5175
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7218C5000
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F747B216C1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D33F2843FA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813FE133402;
-	Tue, 14 May 2024 11:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E328E134750;
+	Tue, 14 May 2024 10:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/Na5vCx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zChc7T26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0A854903;
-	Tue, 14 May 2024 11:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBDF134435;
+	Tue, 14 May 2024 10:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684533; cv=none; b=q9DcrMR5EDlu+mfeUJn0Ibq5p5xBngxLqIbhQ40PgTT6DwlU004zkkvepoBgs+9E/t3fAfFj6rjwcyqhwNWZSEGSfhqCUpL12TeyxVPmgkO7aaOBkR07/LyZwVYXHiFDc359SPfH+tXMJc0BkdEaPDoL72O2ewJswTEexQdXSDc=
+	t=1715682820; cv=none; b=Q6MxO6gQuInNs31eWGklYEfgVMFcAyY8hfypV9n78KHY2VBzqj0vndJLry+qb/Z04gemAjLYYaKPJ9JW/xr/VxLNfJ+TcslDysPuLr89SN8l7uddU4kKxaOsKsuB/KLSK+QAqhFqSursJ0tLpYkmphWgzsPgCeH2cELti+hVdTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684533; c=relaxed/simple;
-	bh=wGNYRzDPJD4qOdeP03wil/5aMLRuuXIANrB6f01pY08=;
+	s=arc-20240116; t=1715682820; c=relaxed/simple;
+	bh=08N7GbgcN/w1GmUmsuvz795Y4QUsGXfs3xECnaK5a+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yd6DhcYAkAfzzjf2zvIZ/RYO5qGRp8F40wfsP+ibN5dOB07jlMJb4lVx7ZZgGmc+UdMhmqBwK8DsE+HWbt2wc0K+CDBqh3Hn2IL+cWfmAdY0mGC0hz2UXCfvgpjxyhFJ3Ah/029JGnRjHTkB2cXVQoAsK2uPnzR4Ndeddlrv378=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/Na5vCx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C051C32782;
-	Tue, 14 May 2024 11:02:12 +0000 (UTC)
+	 MIME-Version; b=JqazEvvtDFR/pITRs8IwfWu1t2XATkqFSh/+lEWk9XUMQZ/nHjX9+BaWOuRgxC503yK1cMfI1YP2xD2cEyeZpWr1uErJsF5KdzEHGvBL1fGk3QXWd+6S+/ereX8hxONPIXbEfUtr5namf8Td44nQcY+qNrw9ia10+/0Q30Wmw/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zChc7T26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D149C2BD10;
+	Tue, 14 May 2024 10:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684533;
-	bh=wGNYRzDPJD4qOdeP03wil/5aMLRuuXIANrB6f01pY08=;
+	s=korg; t=1715682820;
+	bh=08N7GbgcN/w1GmUmsuvz795Y4QUsGXfs3xECnaK5a+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/Na5vCxcmfIR6El4Cp/baDn55oJL6GxoM9RHVpftAq2skRkbJVZXqwWdBN7FNAnM
-	 a3k+h8SBDEcpFRxrRK9+LezgOa/BIVYvHBqsAdUTOLJe6qOFjOvRyTjrallnYIVBjz
-	 LkNeJ8WlfN/ewaNthpzIgCpwylRswfXSpefRPFo8=
+	b=zChc7T26Fl0PywIDi13Tq4k+X01R8SbETDtkCuCipiCdA6A9bOx0g0dbLVlD2qy5V
+	 7RMbd15S3A/gPdZONHzmBZ7NFbCHasw/W0sVQ7P/8JoZY0C7TV1unkcU1w+fNMujJU
+	 jbKqlPpEa1r+iXSK9rbaagH+JcSXVVQTURCaKMlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Chapman <jchapman@katalix.com>,
-	David Bauer <mail@david-bauer.net>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Marco Elver <elver@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/301] net l2tp: drop flow hash on forward
+Subject: [PATCH 6.8 119/336] kbuild: Disable KCSAN for autogenerated *.mod.c intermediaries
 Date: Tue, 14 May 2024 12:15:23 +0200
-Message-ID: <20240514101034.208598300@linuxfoundation.org>
+Message-ID: <20240514101043.096184821@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +65,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
+[ Upstream commit 54babdc0343fff2f32dfaafaaa9e42c4db278204 ]
 
-Drop the flow-hash of the skb when forwarding to the L2TP netdev.
+When KCSAN and CONSTRUCTORS are enabled, one can trigger the
 
-This avoids the L2TP qdisc from using the flow-hash from the outer
-packet, which is identical for every flow within the tunnel.
+  "Unpatched return thunk in use. This should not happen!"
 
-This does not affect every platform but is specific for the ethernet
-driver. It depends on the platform including L4 information in the
-flow-hash.
+catch-all warning.
 
-One such example is the Mediatek Filogic MT798x family of networking
-processors.
+Usually, when objtool runs on the .o objects, it does generate a section
+.return_sites which contains all offsets in the objects to the return
+thunks of the functions present there. Those return thunks then get
+patched at runtime by the alternatives.
 
-Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
-Acked-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+KCSAN and CONSTRUCTORS add this to the object file's .text.startup
+section:
+
+  -------------------
+  Disassembly of section .text.startup:
+
+  ...
+
+  0000000000000010 <_sub_I_00099_0>:
+    10:   f3 0f 1e fa             endbr64
+    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
+                          15: R_X86_64_PLT32      __tsan_init-0x4
+    19:   e9 00 00 00 00          jmp    1e <__UNIQUE_ID___addressable_cryptd_alloc_aead349+0x6>
+                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
+  -------------------
+
+which, if it is built as a module goes through the intermediary stage of
+creating a <module>.mod.c file which, when translated, receives a second
+constructor:
+
+  -------------------
+  Disassembly of section .text.startup:
+
+  0000000000000010 <_sub_I_00099_0>:
+    10:   f3 0f 1e fa             endbr64
+    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
+                          15: R_X86_64_PLT32      __tsan_init-0x4
+    19:   e9 00 00 00 00          jmp    1e <_sub_I_00099_0+0xe>
+                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
+
+  ...
+
+  0000000000000030 <_sub_I_00099_0>:
+    30:   f3 0f 1e fa             endbr64
+    34:   e8 00 00 00 00          call   39 <_sub_I_00099_0+0x9>
+                          35: R_X86_64_PLT32      __tsan_init-0x4
+    39:   e9 00 00 00 00          jmp    3e <__ksymtab_cryptd_alloc_ahash+0x2>
+                          3a: R_X86_64_PLT32      __x86_return_thunk-0x4
+  -------------------
+
+in the .ko file.
+
+Objtool has run already so that second constructor's return thunk cannot
+be added to the .return_sites section and thus the return thunk remains
+unpatched and the warning rightfully fires.
+
+Drop KCSAN flags from the mod.c generation stage as those constructors
+do not contain data races one would be interested about.
+
+Debugged together with David Kaplan <David.Kaplan@amd.com> and Nikolay
+Borisov <nik.borisov@suse.com>.
+
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/r/0851a207-7143-417e-be31-8bf2b3afb57d@molgen.mpg.de
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_eth.c | 3 +++
- 1 file changed, 3 insertions(+)
+ scripts/Makefile.modfinal | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
-index f2ae03c404736..1f41d2f3b8c4e 100644
---- a/net/l2tp/l2tp_eth.c
-+++ b/net/l2tp/l2tp_eth.c
-@@ -136,6 +136,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
- 	/* checksums verified by L2TP */
- 	skb->ip_summed = CHECKSUM_NONE;
+diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+index 8568d256d6fbf..79fcf27316864 100644
+--- a/scripts/Makefile.modfinal
++++ b/scripts/Makefile.modfinal
+@@ -23,7 +23,7 @@ modname = $(notdir $(@:.mod.o=))
+ part-of-module = y
  
-+	/* drop outer flow-hash */
-+	skb_clear_hash(skb);
-+
- 	skb_dst_drop(skb);
- 	nf_reset_ct(skb);
+ quiet_cmd_cc_o_c = CC [M]  $@
+-      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV), $(c_flags)) -c -o $@ $<
++      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV) $(CFLAGS_KCSAN), $(c_flags)) -c -o $@ $<
  
+ %.mod.o: %.mod.c FORCE
+ 	$(call if_changed_dep,cc_o_c)
 -- 
 2.43.0
 
