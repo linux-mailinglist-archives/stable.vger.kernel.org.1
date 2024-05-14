@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-43955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7CC8C5069
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:04:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9377B8C520A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D69A1F21318
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:04:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D80AB21CFE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BAF13D2B3;
-	Tue, 14 May 2024 10:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A546B86245;
+	Tue, 14 May 2024 11:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ets2LoXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2ZAuYWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A855A0FE;
-	Tue, 14 May 2024 10:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633096D1A0;
+	Tue, 14 May 2024 11:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683317; cv=none; b=FhvpH+eH54/fUeD4uiQPX3E+QoODtnHAhOzzyvqdLQeCA9XCwwmkyl+3CvukEnUz3F0FyC2BNYX0X/XEOfETMJWhH4v5q3I/75HLbtkulGb03BmYgSD4pUrIEreHZVCdc2PjtfFDTIZBAY9NunJ12o9Hd2AYRZQo1/y1fQFQuaQ=
+	t=1715685284; cv=none; b=eRkSp0NvdhFqEvP5WClDEfddBowcpAb60WB4CD5cNpCkiFxmXxhfMJsaqzBNiNxnSEXlUi9HBiHR941n17wobtM9tI3BkI5QLy7w9EX5y8JAbU2S6R5NIo0tXFEgP1JYtBAlAtb27NcuKVwTpFFhCpnZH6mtW1IUb+TsMeUTZFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683317; c=relaxed/simple;
-	bh=pyB3StunfRgm6a7iUslpor9hgJKEEtRA3MxGkTgLVq0=;
+	s=arc-20240116; t=1715685284; c=relaxed/simple;
+	bh=Tle048T71ZPlGZbeJghKXDDhfPAO6Pz6u9HgAbZzsDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RoyWVgTbeFCl6a/IcSEgZcp17RTPgAIh9at/T5J+aAESo79RC1ilFNF3DOt0JbLN0JL5AaVFkgq+aYfb4E1p/e2j6hYci0u1840FZz+P+gRKKB96VnQ8m31b4DLibYBtDCXmSagGUUp6RWsXaa/7UZGfuHrP52kliztHJrTT9e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ets2LoXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61856C2BD10;
-	Tue, 14 May 2024 10:41:56 +0000 (UTC)
+	 MIME-Version; b=dqX/WDov0eSyoNGgZryKCjHxv7BA9G/IcsNgFoCUfFAaq/hrbN1Dsmh9o4emfECbHv2ET68c9aQ0rQzLqh2j60WFKLy20O1uemV2SDAIUID9M7X2otZ70GIGObl+AKPdu7bzSxqTIk8IGt2C0bA0BQPqfuSOK65xkGnXJtHcEVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2ZAuYWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B54C2BD10;
+	Tue, 14 May 2024 11:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683316;
-	bh=pyB3StunfRgm6a7iUslpor9hgJKEEtRA3MxGkTgLVq0=;
+	s=korg; t=1715685284;
+	bh=Tle048T71ZPlGZbeJghKXDDhfPAO6Pz6u9HgAbZzsDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ets2LoXEs/6B6V69Qe8/k3vkccMsaFyKOtVj4VEP6lEOVjelBPReInIjzlz4A/vit
-	 mJ/3RYe5jLHHBZ0BeOeF7jgXlGYtqdICy0lDabOFCUn73t5lLGSomZT7ro9EOMVLkC
-	 v0BeGaMX7GXqp4LQcI0gtMcAevAhl+G51QHwUCXQ=
+	b=U2ZAuYWb3hUD6mYyyTHlhaDDtoIMJ3gNDoi/jhzSbe8Kng7agTs8YSJvjjZTrbFos
+	 tTS63ZiM1LyeZaxv53KCwE5yGBzZVGWcCIZC6V/yfz6T7UsdbSQAMbULiTYGxqcXmw
+	 kNyUJKD4x/n5ic9vSw8HM4qNXCn1+lWZzYUWNDDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 199/336] tcp: Use refcount_inc_not_zero() in tcp_twsk_unique().
-Date: Tue, 14 May 2024 12:16:43 +0200
-Message-ID: <20240514101046.117716087@linuxfoundation.org>
+Subject: [PATCH 6.6 133/301] tools/power turbostat: Fix warning upon failed /dev/cpu_dma_latency read
+Date: Tue, 14 May 2024 12:16:44 +0200
+Message-ID: <20240514101037.269421125@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit f2db7230f73a80dbb179deab78f88a7947f0ab7e ]
+[ Upstream commit b6fe938317eed58e8c687bd5965a956e15fb5828 ]
 
-Anderson Nascimento reported a use-after-free splat in tcp_twsk_unique()
-with nice analysis.
+Previously a failed read of /dev/cpu_dma_latency erroneously complained
+turbostat: capget(CAP_SYS_ADMIN) failed, try "# setcap cap_sys_admin=ep ./turbostat
 
-Since commit ec94c2696f0b ("tcp/dccp: avoid one atomic operation for
-timewait hashdance"), inet_twsk_hashdance() sets TIME-WAIT socket's
-sk_refcnt after putting it into ehash and releasing the bucket lock.
+This went unnoticed because this file is typically visible to root,
+and turbostat was typically run as root.
 
-Thus, there is a small race window where other threads could try to
-reuse the port during connect() and call sock_hold() in tcp_twsk_unique()
-for the TIME-WAIT socket with zero refcnt.
+Going forward, when a non-root user can run turbostat...
+Complain about failed read access to this file only if --debug is used.
 
-If that happens, the refcnt taken by tcp_twsk_unique() is overwritten
-and sock_put() will cause underflow, triggering a real use-after-free
-somewhere else.
-
-To avoid the use-after-free, we need to use refcount_inc_not_zero() in
-tcp_twsk_unique() and give up on reusing the port if it returns false.
-
-[0]:
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 0 PID: 1039313 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
-CPU: 0 PID: 1039313 Comm: trigger Not tainted 6.8.6-200.fc39.x86_64 #1
-Hardware name: VMware, Inc. VMware20,1/440BX Desktop Reference Platform, BIOS VMW201.00V.21805430.B64.2305221830 05/22/2023
-RIP: 0010:refcount_warn_saturate+0xe5/0x110
-Code: 42 8e ff 0f 0b c3 cc cc cc cc 80 3d aa 13 ea 01 00 0f 85 5e ff ff ff 48 c7 c7 f8 8e b7 82 c6 05 96 13 ea 01 01 e8 7b 42 8e ff <0f> 0b c3 cc cc cc cc 48 c7 c7 50 8f b7 82 c6 05 7a 13 ea 01 01 e8
-RSP: 0018:ffffc90006b43b60 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff888009bb3ef0 RCX: 0000000000000027
-RDX: ffff88807be218c8 RSI: 0000000000000001 RDI: ffff88807be218c0
-RBP: 0000000000069d70 R08: 0000000000000000 R09: ffffc90006b439f0
-R10: ffffc90006b439e8 R11: 0000000000000003 R12: ffff8880029ede84
-R13: 0000000000004e20 R14: ffffffff84356dc0 R15: ffff888009bb3ef0
-FS:  00007f62c10926c0(0000) GS:ffff88807be00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020ccb000 CR3: 000000004628c005 CR4: 0000000000f70ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? refcount_warn_saturate+0xe5/0x110
- ? __warn+0x81/0x130
- ? refcount_warn_saturate+0xe5/0x110
- ? report_bug+0x171/0x1a0
- ? refcount_warn_saturate+0xe5/0x110
- ? handle_bug+0x3c/0x80
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? refcount_warn_saturate+0xe5/0x110
- tcp_twsk_unique+0x186/0x190
- __inet_check_established+0x176/0x2d0
- __inet_hash_connect+0x74/0x7d0
- ? __pfx___inet_check_established+0x10/0x10
- tcp_v4_connect+0x278/0x530
- __inet_stream_connect+0x10f/0x3d0
- inet_stream_connect+0x3a/0x60
- __sys_connect+0xa8/0xd0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0x83/0x170
- entry_SYSCALL_64_after_hwframe+0x78/0x80
-RIP: 0033:0x7f62c11a885d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d a3 45 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007f62c1091e58 EFLAGS: 00000296 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000020ccb004 RCX: 00007f62c11a885d
-RDX: 0000000000000010 RSI: 0000000020ccb000 RDI: 0000000000000003
-RBP: 00007f62c1091e90 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000296 R12: 00007f62c10926c0
-R13: ffffffffffffff88 R14: 0000000000000000 R15: 00007ffe237885b0
- </TASK>
-
-Fixes: ec94c2696f0b ("tcp/dccp: avoid one atomic operation for timewait hashdance")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Closes: https://lore.kernel.org/netdev/37a477a6-d39e-486b-9577-3463f655a6b7@allelesecurity.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240501213145.62261-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/power/x86/turbostat/turbostat.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 0c50c5a32b84a..68a065c0e5081 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -154,6 +154,12 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 	if (tcptw->tw_ts_recent_stamp &&
- 	    (!twp || (reuse && time_after32(ktime_get_seconds(),
- 					    tcptw->tw_ts_recent_stamp)))) {
-+		/* inet_twsk_hashdance() sets sk_refcnt after putting twsk
-+		 * and releasing the bucket lock.
-+		 */
-+		if (unlikely(!refcount_inc_not_zero(&sktw->sk_refcnt)))
-+			return 0;
-+
- 		/* In case of repair and re-using TIME-WAIT sockets we still
- 		 * want to be sure that it is safe as above but honor the
- 		 * sequence numbers and time stamps set as part of the repair
-@@ -174,7 +180,7 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 			tp->rx_opt.ts_recent	   = tcptw->tw_ts_recent;
- 			tp->rx_opt.ts_recent_stamp = tcptw->tw_ts_recent_stamp;
- 		}
--		sock_hold(sktw);
-+
- 		return 1;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 4dfeda4870f71..0561362301c53 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -5479,7 +5479,8 @@ void print_dev_latency(void)
+ 
+ 	fd = open(path, O_RDONLY);
+ 	if (fd < 0) {
+-		warnx("capget(CAP_SYS_ADMIN) failed, try \"# setcap cap_sys_admin=ep %s\"", progname);
++		if (debug)
++			warnx("Read %s failed", path);
+ 		return;
  	}
  
 -- 
