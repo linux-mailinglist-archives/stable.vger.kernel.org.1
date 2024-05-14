@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-44333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E2B8C524D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1FB8C5113
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6186B282C1A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58D16281B33
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B28312EBE6;
-	Tue, 14 May 2024 11:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303C12F38E;
+	Tue, 14 May 2024 10:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNmuPXdB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BySue374"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3789D4F60D;
-	Tue, 14 May 2024 11:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824B255C0A;
+	Tue, 14 May 2024 10:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685749; cv=none; b=t0pSXum0yNdD769GyJ6PkmEIa4uo8ytUjNLGbSGGUhYQfDVfAl6l2lMKUFSCAJjnJnMDCROcVENQUUPYMBkvejyG4DzGtSqDlCF6G1nqESQP40CtMfFBvNY4ZR6GK+Rxj3xcf/R9p7uUthmbjmDh3PYtSOFL1Ha+R9uZ055DdoM=
+	t=1715684020; cv=none; b=j0y30qECf3vOCI9RCGSk6i2Q/Ecqnx09YXQgnNDDAweSGLaL6VEx9BiRukAAwXwNDTRJj/1JDr1omfQPYsl8FINx0+yg0zJv5oSAmuUFIMCDfBNU4IKGbJ8JC2wCzf/5UdbWHjY4vhOzo3ihuBPNRR5/PfMqXj6rnDGoHOXLNxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685749; c=relaxed/simple;
-	bh=Y+e82n9EjH2l6i2+yOtomqdVlI3ePmVxG/A765UW+Uw=;
+	s=arc-20240116; t=1715684020; c=relaxed/simple;
+	bh=0aMJrJ7BMwgZflmJIHkx2GYxb41znff0C2ew35TyDWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5zT1gX/mTbZZ/4Ivk/QxNkFKh5OdzExaMbc9A6doIQ6kqKgnAybfyI/8ElzqTTlCGS0GFAqQ7LSItWfkcp30Zk2gMj0REfgQY8siPeQuHX1xJPsFLNjgy3HAomDScSIFc9e5JGdhq1JRNfAh2NGGluIvJK9T/P5RXKrrtZ+pR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNmuPXdB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510CBC2BD10;
-	Tue, 14 May 2024 11:22:28 +0000 (UTC)
+	 MIME-Version; b=mtrS/HNnQoWuD1WYlW2xVrc5LDHyE5P7RemYvpP5bCzqy3MPN7o/UqrFS8JSfP/QH4p3N1RTjX/jUtAWuuR2Tg0p2ISRGkocQ3k5Yg52XQ4rjtQb/2MBkp5XsnzF6k8Eu4QyEqv+Y7bmZ5gyOOVGtIubifHGf81w+jinL8Tk1mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BySue374; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBCFC32781;
+	Tue, 14 May 2024 10:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685749;
-	bh=Y+e82n9EjH2l6i2+yOtomqdVlI3ePmVxG/A765UW+Uw=;
+	s=korg; t=1715684020;
+	bh=0aMJrJ7BMwgZflmJIHkx2GYxb41znff0C2ew35TyDWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNmuPXdBhcyMnpjW9BZuVVlRBm9/c6lMZCCYT36hK3f1EUltqMkrrH+pdso8fzTOv
-	 ppfVe1zWjzjMp5mhEmgjRQ/0ST3+pkljLb5CWPMf0KW3rUdH+bVqoxXa3I7oui7IPB
-	 6VA1T4NJD1KEBp8+Gl5hniKbYcd4NKdy0itmIZm0=
+	b=BySue374enkaBHxkLXVhchV4QUI8QvT5egm/y6ANl2xScyFWZBRLaOgYWF4sgkfM8
+	 6IQEB6GTu125ItbbQkbo9otkAWSAc6ReEmPf4nMbw09euXhqrCSrzOJT71vobEb78S
+	 31MJpqyZOReMANkTGKYlCn21ZCJK6+PIfbYLscZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 6.6 240/301] firewire: ohci: fulfill timestamp for some local asynchronous transaction
+	Volodymyr Babchuk <volodymyr_babchuk@epam.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.8 307/336] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin configuration
 Date: Tue, 14 May 2024 12:18:31 +0200
-Message-ID: <20240514101041.315173871@linuxfoundation.org>
+Message-ID: <20240514101050.209536931@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
 
-commit 09773bf55aeabe3fd61745d900798dc1272c778a upstream.
+commit 819fe8c96a5172dfd960e5945e8f00f8fed32953 upstream.
 
-1394 OHCI driver generates packet data for the response subaction to the
-request subaction to some local registers. In the case, the driver should
-assign timestamp to them by itself.
+There are two issues with SDHC2 configuration for SA8155P-ADP,
+which prevent use of SDHC2 and causes issues with ethernet:
 
-This commit fulfills the timestamp for the subaction.
+- Card Detect pin for SHDC2 on SA8155P-ADP is connected to gpio4 of
+  PMM8155AU_1, not to SoC itself. SoC's gpio4 is used for DWMAC
+  TX. If sdhc driver probes after dwmac driver, it reconfigures
+  gpio4 and this breaks Ethernet MAC.
 
+- pinctrl configuration mentions gpio96 as CD pin. It seems it was
+  copied from some SM8150 example, because as mentioned above,
+  correct CD pin is gpio4 on PMM8155AU_1.
+
+This patch fixes both mentioned issues by providing correct pin handle
+and pinctrl configuration.
+
+Fixes: 0deb2624e2d0 ("arm64: dts: qcom: sa8155p-adp: Add support for uSD card")
 Cc: stable@vger.kernel.org
-Fixes: dcadfd7f7c74 ("firewire: core: use union for callback of transaction completion")
-Link: https://lore.kernel.org/r/20240429084709.707473-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+Link: https://lore.kernel.org/r/20240412190310.1647893-1-volodymyr_babchuk@epam.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/ohci.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8155p-adp.dts |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -1556,6 +1556,8 @@ static int handle_at_packet(struct conte
- #define HEADER_GET_DATA_LENGTH(q)	(((q) >> 16) & 0xffff)
- #define HEADER_GET_EXTENDED_TCODE(q)	(((q) >> 0) & 0xffff)
+--- a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
++++ b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
+@@ -367,6 +367,16 @@
+ 	};
+ };
  
-+static u32 get_cycle_time(struct fw_ohci *ohci);
++&pmm8155au_1_gpios {
++	pmm8155au_1_sdc2_cd: sdc2-cd-default-state {
++		pins = "gpio4";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		power-source = <0>;
++	};
++};
 +
- static void handle_local_rom(struct fw_ohci *ohci,
- 			     struct fw_packet *packet, u32 csr)
- {
-@@ -1580,6 +1582,8 @@ static void handle_local_rom(struct fw_o
- 				 (void *) ohci->config_rom + i, length);
- 	}
+ &qupv3_id_1 {
+ 	status = "okay";
+ };
+@@ -384,10 +394,10 @@
+ &sdhc_2 {
+ 	status = "okay";
  
-+	// Timestamping on behalf of the hardware.
-+	response.timestamp = cycle_time_to_ohci_tstamp(get_cycle_time(ohci));
- 	fw_core_handle_response(&ohci->card, &response);
- }
- 
-@@ -1628,6 +1632,8 @@ static void handle_local_lock(struct fw_
- 	fw_fill_response(&response, packet->header, RCODE_BUSY, NULL, 0);
- 
-  out:
-+	// Timestamping on behalf of the hardware.
-+	response.timestamp = cycle_time_to_ohci_tstamp(get_cycle_time(ohci));
- 	fw_core_handle_response(&ohci->card, &response);
- }
- 
-@@ -1670,8 +1676,6 @@ static void handle_local_request(struct
- 	}
- }
- 
--static u32 get_cycle_time(struct fw_ohci *ohci);
+-	cd-gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
++	cd-gpios = <&pmm8155au_1_gpios 4 GPIO_ACTIVE_LOW>;
+ 	pinctrl-names = "default", "sleep";
+-	pinctrl-0 = <&sdc2_on>;
+-	pinctrl-1 = <&sdc2_off>;
++	pinctrl-0 = <&sdc2_on &pmm8155au_1_sdc2_cd>;
++	pinctrl-1 = <&sdc2_off &pmm8155au_1_sdc2_cd>;
+ 	vqmmc-supply = <&vreg_l13c_2p96>; /* IO line power */
+ 	vmmc-supply = <&vreg_l17a_2p96>;  /* Card power line */
+ 	bus-width = <4>;
+@@ -505,13 +515,6 @@
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength = <16>;	/* 16 MA */
+ 		};
 -
- static void at_context_transmit(struct context *ctx, struct fw_packet *packet)
- {
- 	unsigned long flags;
+-		sd-cd-pins {
+-			pins = "gpio96";
+-			function = "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength = <2>;	/* 2 MA */
+-		};
+ 	};
+ 
+ 	sdc2_off: sdc2-off-state {
+@@ -532,13 +535,6 @@
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength = <2>;	/* 2 MA */
+ 		};
+-
+-		sd-cd-pins {
+-			pins = "gpio96";
+-			function = "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength = <2>;	/* 2 MA */
+-		};
+ 	};
+ 
+ 	usb2phy_ac_en1_default: usb2phy-ac-en1-default-state {
 
 
 
