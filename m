@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-44837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AC08C549C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC77F8C5393
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 038AC1C2301A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D07FA1C227DD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3350912D776;
-	Tue, 14 May 2024 11:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6603A12B14A;
+	Tue, 14 May 2024 11:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBUlMv6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQPgrPL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63227FBD3;
-	Tue, 14 May 2024 11:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2508A12AAC6;
+	Tue, 14 May 2024 11:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687320; cv=none; b=HylDO0Sajta9QF2dri13lCYmmDP+UTXK+75LHDw/o4Elirwmkzd8NqroP8xbxwuF2/03yyxHKvyfx7KcXw9xvvoUM2Jf1XGxL/4KpgJYU/7MuRTmKusJ79TYt5DKbeybZVW+WfYtE8Zj835TPrQQR+gkziOrvP6VJ3iv612G974=
+	t=1715686619; cv=none; b=ZlCuXOu2l7P11WlPtxyHciOeKWsP9sk6+EV2ukF6l5Rm7bZZJf5rcAN9DsZhogPeFlAAfPiBxMw5En/fJED7ZxQay+MmCagX7je0qefshbe4IZ8vn/0r8iWWAH80TAqKeuZ4txEGdxnh7spzoYiPi4gM7vyAhDGXCB78e5gdpZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687320; c=relaxed/simple;
-	bh=ivLQ5MgI4/46FAgV9olTEoknymNQY7NCmxkIkudbXC4=;
+	s=arc-20240116; t=1715686619; c=relaxed/simple;
+	bh=Tx/+rJ/GjFGQTvznpM1U7P5+xecK7UYuit2QIiMiNxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjZl0Kv9MX9iyTGBoefm4XV5HFxui+jEVnUcLV0c/CoeTdIyJYGflGbA56BPeVjpZH57QS35vUcJm0jXc5JqDY1+QCwSA9cl+amhKiO6s6GA4IHR2TScz5KfkhKDSXX2YyI2ZoF6bB7+Fd+t14nt0ojaOtohqSvr4dLTgj8QUEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBUlMv6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C31DC2BD10;
-	Tue, 14 May 2024 11:48:39 +0000 (UTC)
+	 MIME-Version; b=TAN/AYRxiD+2h1S6+SR6BK4/wJEYYCdP5lBRZdsmCWfc0skM4WxBSIngX47zP4qICZrUCyXvFyoA8O+MZgS9m11bcVLmH/aI0/2+mKo2foWGjufC+vAlVGTACksUlcfQWxQqt/EZLNf5A2hdd6+UvI7s6QoD9NKnvBLwOVssOjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQPgrPL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2082C2BD10;
+	Tue, 14 May 2024 11:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687319;
-	bh=ivLQ5MgI4/46FAgV9olTEoknymNQY7NCmxkIkudbXC4=;
+	s=korg; t=1715686619;
+	bh=Tx/+rJ/GjFGQTvznpM1U7P5+xecK7UYuit2QIiMiNxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZBUlMv6sznHKghBw4c3n3LcQMcg3E6ANC5oNTYr7rxta77dFezgsaQDbZNdv8RwX3
-	 rJKFUj3UDyEZfj+5cqC5fXokwYEahCXjL9R0ntf8LC6StTmQfmURCGdHGpxzGzCG5B
-	 nAeJzTK8fSbgC1yk2Bs9B7wMwIwHf0XYLybjEqoo=
+	b=aQPgrPL3NayoKxe6oHFSfKyxxy9DiLfMNlLbHNyHx6pmhJmtTAXyxUwnZV1g+Clnn
+	 Loj98+SwefNbbIZ6jQFWxwvQzj5SNtwCG0ByXwuAaFkhauqUz1LHBtnQKSdazv8OYu
+	 cbpTwinPiFBx4mBy3UXGXc8686i5fyIzlDMC9e9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+42a0dc856239de4de60e@syzkaller.appspotmail.com,
-	syzbot+c298c9f0e46a3c86332b@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 024/111] nsh: Restore skb->{protocol,data,mac_header} for outer header in nsh_gso_segment().
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 200/236] usb: dwc3: core: Prevent phy suspend during init
 Date: Tue, 14 May 2024 12:19:22 +0200
-Message-ID: <20240514100958.045145792@linuxfoundation.org>
+Message-ID: <20240514101027.958154174@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,185 +60,267 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 4b911a9690d72641879ea6d13cce1de31d346d79 ]
+commit 6d735722063a945de56472bdc6bfcb170fd43b86 upstream.
 
-syzbot triggered various splats (see [0] and links) by a crafted GSO
-packet of VIRTIO_NET_HDR_GSO_UDP layering the following protocols:
+GUSB3PIPECTL.SUSPENDENABLE and GUSB2PHYCFG.SUSPHY should be cleared
+during initialization. Suspend during initialization can result in
+undefined behavior due to clock synchronization failure, which often
+seen as core soft reset timeout.
 
-  ETH_P_8021AD + ETH_P_NSH + ETH_P_IPV6 + IPPROTO_UDP
+The programming guide recommended these bits to be cleared during
+initialization for DWC_usb3.0 version 1.94 and above (along with
+DWC_usb31 and DWC_usb32). The current check in the driver does not
+account if it's set by default setting from coreConsultant.
 
-NSH can encapsulate IPv4, IPv6, Ethernet, NSH, and MPLS.  As the inner
-protocol can be Ethernet, NSH GSO handler, nsh_gso_segment(), calls
-skb_mac_gso_segment() to invoke inner protocol GSO handlers.
+This is especially the case for DRD when switching mode to ensure the
+phy clocks are available to change mode. Depending on the
+platforms/design, some may be affected more than others. This is noted
+in the DWC_usb3x programming guide under the above registers.
 
-nsh_gso_segment() does the following for the original skb before
-calling skb_mac_gso_segment()
+Let's just disable them during driver load and mode switching. Restore
+them when the controller initialization completes.
 
-  1. reset skb->network_header
-  2. save the original skb->{mac_heaeder,mac_len} in a local variable
-  3. pull the NSH header
-  4. resets skb->mac_header
-  5. set up skb->mac_len and skb->protocol for the inner protocol.
+Note that some platforms workaround this issue by disabling phy suspend
+through "snps,dis_u3_susphy_quirk" and "snps,dis_u2_susphy_quirk" when
+they should not need to.
 
-and does the following for the segmented skb
-
-  6. set ntohs(ETH_P_NSH) to skb->protocol
-  7. push the NSH header
-  8. restore skb->mac_header
-  9. set skb->mac_header + mac_len to skb->network_header
- 10. restore skb->mac_len
-
-There are two problems in 6-7 and 8-9.
-
-  (a)
-  After 6 & 7, skb->data points to the NSH header, so the outer header
-  (ETH_P_8021AD in this case) is stripped when skb is sent out of netdev.
-
-  Also, if NSH is encapsulated by NSH + Ethernet (so NSH-Ethernet-NSH),
-  skb_pull() in the first nsh_gso_segment() will make skb->data point
-  to the middle of the outer NSH or Ethernet header because the Ethernet
-  header is not pulled by the second nsh_gso_segment().
-
-  (b)
-  While restoring skb->{mac_header,network_header} in 8 & 9,
-  nsh_gso_segment() does not assume that the data in the linear
-  buffer is shifted.
-
-  However, udp6_ufo_fragment() could shift the data and change
-  skb->mac_header accordingly as demonstrated by syzbot.
-
-  If this happens, even the restored skb->mac_header points to
-  the middle of the outer header.
-
-It seems nsh_gso_segment() has never worked with outer headers so far.
-
-At the end of nsh_gso_segment(), the outer header must be restored for
-the segmented skb, instead of the NSH header.
-
-To do that, let's calculate the outer header position relatively from
-the inner header and set skb->{data,mac_header,protocol} properly.
-
-[0]:
-BUG: KMSAN: uninit-value in ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:524 [inline]
-BUG: KMSAN: uninit-value in ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
-BUG: KMSAN: uninit-value in ipvlan_queue_xmit+0xf44/0x16b0 drivers/net/ipvlan/ipvlan_core.c:668
- ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:524 [inline]
- ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
- ipvlan_queue_xmit+0xf44/0x16b0 drivers/net/ipvlan/ipvlan_core.c:668
- ipvlan_start_xmit+0x5c/0x1a0 drivers/net/ipvlan/ipvlan_main.c:222
- __netdev_start_xmit include/linux/netdevice.h:4989 [inline]
- netdev_start_xmit include/linux/netdevice.h:5003 [inline]
- xmit_one net/core/dev.c:3547 [inline]
- dev_hard_start_xmit+0x244/0xa10 net/core/dev.c:3563
- __dev_queue_xmit+0x33ed/0x51c0 net/core/dev.c:4351
- dev_queue_xmit include/linux/netdevice.h:3171 [inline]
- packet_xmit+0x9c/0x6b0 net/packet/af_packet.c:276
- packet_snd net/packet/af_packet.c:3081 [inline]
- packet_sendmsg+0x8aef/0x9f10 net/packet/af_packet.c:3113
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- __sys_sendto+0x735/0xa10 net/socket.c:2191
- __do_sys_sendto net/socket.c:2203 [inline]
- __se_sys_sendto net/socket.c:2199 [inline]
- __x64_sys_sendto+0x125/0x1c0 net/socket.c:2199
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3819 [inline]
- slab_alloc_node mm/slub.c:3860 [inline]
- __do_kmalloc_node mm/slub.c:3980 [inline]
- __kmalloc_node_track_caller+0x705/0x1000 mm/slub.c:4001
- kmalloc_reserve+0x249/0x4a0 net/core/skbuff.c:582
- __alloc_skb+0x352/0x790 net/core/skbuff.c:651
- skb_segment+0x20aa/0x7080 net/core/skbuff.c:4647
- udp6_ufo_fragment+0xcab/0x1150 net/ipv6/udp_offload.c:109
- ipv6_gso_segment+0x14be/0x2ca0 net/ipv6/ip6_offload.c:152
- skb_mac_gso_segment+0x3e8/0x760 net/core/gso.c:53
- nsh_gso_segment+0x6f4/0xf70 net/nsh/nsh.c:108
- skb_mac_gso_segment+0x3e8/0x760 net/core/gso.c:53
- __skb_gso_segment+0x4b0/0x730 net/core/gso.c:124
- skb_gso_segment include/net/gso.h:83 [inline]
- validate_xmit_skb+0x107f/0x1930 net/core/dev.c:3628
- __dev_queue_xmit+0x1f28/0x51c0 net/core/dev.c:4343
- dev_queue_xmit include/linux/netdevice.h:3171 [inline]
- packet_xmit+0x9c/0x6b0 net/packet/af_packet.c:276
- packet_snd net/packet/af_packet.c:3081 [inline]
- packet_sendmsg+0x8aef/0x9f10 net/packet/af_packet.c:3113
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- __sys_sendto+0x735/0xa10 net/socket.c:2191
- __do_sys_sendto net/socket.c:2203 [inline]
- __se_sys_sendto net/socket.c:2199 [inline]
- __x64_sys_sendto+0x125/0x1c0 net/socket.c:2199
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-CPU: 1 PID: 5101 Comm: syz-executor421 Not tainted 6.8.0-rc5-syzkaller-00297-gf2e367d6ad3b #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-
-Fixes: c411ed854584 ("nsh: add GSO support")
-Reported-and-tested-by: syzbot+42a0dc856239de4de60e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=42a0dc856239de4de60e
-Reported-and-tested-by: syzbot+c298c9f0e46a3c86332b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c298c9f0e46a3c86332b
-Link: https://lore.kernel.org/netdev/20240415222041.18537-1-kuniyu@amazon.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240424023549.21862-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9ba3aca8fe82 ("usb: dwc3: Disable phy suspend after power-on reset")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20da4e5a0c4678c9587d3da23f83bdd6d77353e9.1713394973.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nsh/nsh.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/usb/dwc3/core.c   |   90 +++++++++++++++++++---------------------------
+ drivers/usb/dwc3/core.h   |    1 
+ drivers/usb/dwc3/gadget.c |    2 +
+ drivers/usb/dwc3/host.c   |   27 +++++++++++++
+ 4 files changed, 68 insertions(+), 52 deletions(-)
 
-diff --git a/net/nsh/nsh.c b/net/nsh/nsh.c
-index 0f23e5e8e03eb..3e0fc71d95a14 100644
---- a/net/nsh/nsh.c
-+++ b/net/nsh/nsh.c
-@@ -76,13 +76,15 @@ EXPORT_SYMBOL_GPL(nsh_pop);
- static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
- 				       netdev_features_t features)
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -104,6 +104,27 @@ static int dwc3_get_dr_mode(struct dwc3
+ 	return 0;
+ }
+ 
++void dwc3_enable_susphy(struct dwc3 *dwc, bool enable)
++{
++	u32 reg;
++
++	reg = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
++	if (enable && !dwc->dis_u3_susphy_quirk)
++		reg |= DWC3_GUSB3PIPECTL_SUSPHY;
++	else
++		reg &= ~DWC3_GUSB3PIPECTL_SUSPHY;
++
++	dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
++
++	reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++	if (enable && !dwc->dis_u2_susphy_quirk)
++		reg |= DWC3_GUSB2PHYCFG_SUSPHY;
++	else
++		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
++
++	dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
++}
++
+ void dwc3_set_prtcap(struct dwc3 *dwc, u32 mode)
  {
-+	unsigned int outer_hlen, mac_len, nsh_len;
- 	struct sk_buff *segs = ERR_PTR(-EINVAL);
- 	u16 mac_offset = skb->mac_header;
--	unsigned int nsh_len, mac_len;
--	__be16 proto;
-+	__be16 outer_proto, proto;
+ 	u32 reg;
+@@ -669,11 +690,8 @@ static int dwc3_core_ulpi_init(struct dw
+  */
+ static int dwc3_phy_setup(struct dwc3 *dwc)
+ {
+-	unsigned int hw_mode;
+ 	u32 reg;
  
- 	skb_reset_network_header(skb);
+-	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
+-
+ 	reg = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
  
-+	outer_proto = skb->protocol;
-+	outer_hlen = skb_mac_header_len(skb);
- 	mac_len = skb->mac_len;
+ 	/*
+@@ -683,21 +701,16 @@ static int dwc3_phy_setup(struct dwc3 *d
+ 	reg &= ~DWC3_GUSB3PIPECTL_UX_EXIT_PX;
  
- 	if (unlikely(!pskb_may_pull(skb, NSH_BASE_HDR_LEN)))
-@@ -112,10 +114,10 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
+ 	/*
+-	 * Above 1.94a, it is recommended to set DWC3_GUSB3PIPECTL_SUSPHY
+-	 * to '0' during coreConsultant configuration. So default value
+-	 * will be '0' when the core is reset. Application needs to set it
+-	 * to '1' after the core initialization is completed.
+-	 */
+-	if (!DWC3_VER_IS_WITHIN(DWC3, ANY, 194A))
+-		reg |= DWC3_GUSB3PIPECTL_SUSPHY;
+-
+-	/*
+-	 * For DRD controllers, GUSB3PIPECTL.SUSPENDENABLE must be cleared after
+-	 * power-on reset, and it can be set after core initialization, which is
+-	 * after device soft-reset during initialization.
++	 * Above DWC_usb3.0 1.94a, it is recommended to set
++	 * DWC3_GUSB3PIPECTL_SUSPHY to '0' during coreConsultant configuration.
++	 * So default value will be '0' when the core is reset. Application
++	 * needs to set it to '1' after the core initialization is completed.
++	 *
++	 * Similarly for DRD controllers, GUSB3PIPECTL.SUSPENDENABLE must be
++	 * cleared after power-on reset, and it can be set after core
++	 * initialization.
+ 	 */
+-	if (hw_mode == DWC3_GHWPARAMS0_MODE_DRD)
+-		reg &= ~DWC3_GUSB3PIPECTL_SUSPHY;
++	reg &= ~DWC3_GUSB3PIPECTL_SUSPHY;
+ 
+ 	if (dwc->u2ss_inp3_quirk)
+ 		reg |= DWC3_GUSB3PIPECTL_U2SSINP3OK;
+@@ -723,9 +736,6 @@ static int dwc3_phy_setup(struct dwc3 *d
+ 	if (dwc->tx_de_emphasis_quirk)
+ 		reg |= DWC3_GUSB3PIPECTL_TX_DEEPH(dwc->tx_de_emphasis);
+ 
+-	if (dwc->dis_u3_susphy_quirk)
+-		reg &= ~DWC3_GUSB3PIPECTL_SUSPHY;
+-
+ 	if (dwc->dis_del_phy_power_chg_quirk)
+ 		reg &= ~DWC3_GUSB3PIPECTL_DEPOCHANGE;
+ 
+@@ -773,24 +783,15 @@ static int dwc3_phy_setup(struct dwc3 *d
  	}
  
- 	for (skb = segs; skb; skb = skb->next) {
--		skb->protocol = htons(ETH_P_NSH);
--		__skb_push(skb, nsh_len);
--		skb->mac_header = mac_offset;
--		skb->network_header = skb->mac_header + mac_len;
-+		skb->protocol = outer_proto;
-+		__skb_push(skb, nsh_len + outer_hlen);
-+		skb_reset_mac_header(skb);
-+		skb_set_network_header(skb, outer_hlen);
- 		skb->mac_len = mac_len;
+ 	/*
+-	 * Above 1.94a, it is recommended to set DWC3_GUSB2PHYCFG_SUSPHY to
+-	 * '0' during coreConsultant configuration. So default value will
+-	 * be '0' when the core is reset. Application needs to set it to
+-	 * '1' after the core initialization is completed.
+-	 */
+-	if (!DWC3_VER_IS_WITHIN(DWC3, ANY, 194A))
+-		reg |= DWC3_GUSB2PHYCFG_SUSPHY;
+-
+-	/*
+-	 * For DRD controllers, GUSB2PHYCFG.SUSPHY must be cleared after
+-	 * power-on reset, and it can be set after core initialization, which is
+-	 * after device soft-reset during initialization.
++	 * Above DWC_usb3.0 1.94a, it is recommended to set
++	 * DWC3_GUSB2PHYCFG_SUSPHY to '0' during coreConsultant configuration.
++	 * So default value will be '0' when the core is reset. Application
++	 * needs to set it to '1' after the core initialization is completed.
++	 *
++	 * Similarly for DRD controllers, GUSB2PHYCFG.SUSPHY must be cleared
++	 * after power-on reset, and it can be set after core initialization.
+ 	 */
+-	if (hw_mode == DWC3_GHWPARAMS0_MODE_DRD)
+-		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
+-
+-	if (dwc->dis_u2_susphy_quirk)
+-		reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
++	reg &= ~DWC3_GUSB2PHYCFG_SUSPHY;
+ 
+ 	if (dwc->dis_enblslpm_quirk)
+ 		reg &= ~DWC3_GUSB2PHYCFG_ENBLSLPM;
+@@ -1238,21 +1239,6 @@ static int dwc3_core_init(struct dwc3 *d
+ 	if (ret)
+ 		goto err1;
+ 
+-	if (hw_mode == DWC3_GHWPARAMS0_MODE_DRD &&
+-	    !DWC3_VER_IS_WITHIN(DWC3, ANY, 194A)) {
+-		if (!dwc->dis_u3_susphy_quirk) {
+-			reg = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+-			reg |= DWC3_GUSB3PIPECTL_SUSPHY;
+-			dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
+-		}
+-
+-		if (!dwc->dis_u2_susphy_quirk) {
+-			reg = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+-			reg |= DWC3_GUSB2PHYCFG_SUSPHY;
+-			dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
+-		}
+-	}
+-
+ 	dwc3_core_setup_global_control(dwc);
+ 	dwc3_core_num_eps(dwc);
+ 
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1558,6 +1558,7 @@ int dwc3_event_buffers_setup(struct dwc3
+ void dwc3_event_buffers_cleanup(struct dwc3 *dwc);
+ 
+ int dwc3_core_soft_reset(struct dwc3 *dwc);
++void dwc3_enable_susphy(struct dwc3 *dwc, bool enable);
+ 
+ #if IS_ENABLED(CONFIG_USB_DWC3_HOST) || IS_ENABLED(CONFIG_USB_DWC3_DUAL_ROLE)
+ int dwc3_host_init(struct dwc3 *dwc);
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2831,6 +2831,7 @@ static int __dwc3_gadget_start(struct dw
+ 	dwc3_ep0_out_start(dwc);
+ 
+ 	dwc3_gadget_enable_irq(dwc);
++	dwc3_enable_susphy(dwc, true);
+ 
+ 	return 0;
+ 
+@@ -4573,6 +4574,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ 	if (!dwc->gadget)
+ 		return;
+ 
++	dwc3_enable_susphy(dwc, false);
+ 	usb_del_gadget(dwc->gadget);
+ 	dwc3_gadget_free_endpoints(dwc);
+ 	usb_put_gadget(dwc->gadget);
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -10,9 +10,30 @@
+ #include <linux/irq.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/usb.h>
++#include <linux/usb/hcd.h>
+ 
++#include "../host/xhci-plat.h"
+ #include "core.h"
+ 
++static void dwc3_xhci_plat_start(struct usb_hcd *hcd)
++{
++	struct platform_device *pdev;
++	struct dwc3 *dwc;
++
++	if (!usb_hcd_is_primary_hcd(hcd))
++		return;
++
++	pdev = to_platform_device(hcd->self.controller);
++	dwc = dev_get_drvdata(pdev->dev.parent);
++
++	dwc3_enable_susphy(dwc, true);
++}
++
++static const struct xhci_plat_priv dwc3_xhci_plat_quirk = {
++	.plat_start = dwc3_xhci_plat_start,
++};
++
+ static void dwc3_host_fill_xhci_irq_res(struct dwc3 *dwc,
+ 					int irq, char *name)
+ {
+@@ -122,6 +143,11 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 		}
  	}
  
--- 
-2.43.0
-
++	ret = platform_device_add_data(xhci, &dwc3_xhci_plat_quirk,
++				       sizeof(struct xhci_plat_priv));
++	if (ret)
++		goto err;
++
+ 	ret = platform_device_add(xhci);
+ 	if (ret) {
+ 		dev_err(dwc->dev, "failed to register xHCI device\n");
+@@ -136,6 +162,7 @@ err:
+ 
+ void dwc3_host_exit(struct dwc3 *dwc)
+ {
++	dwc3_enable_susphy(dwc, false);
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci = NULL;
+ }
 
 
 
