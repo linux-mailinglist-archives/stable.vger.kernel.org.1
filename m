@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8658C52F9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94438C509A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED211C21960
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46744B20C2C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECADF1386C6;
-	Tue, 14 May 2024 11:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F1B13DDA7;
+	Tue, 14 May 2024 10:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWl300zp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjbulS+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A986C84D26;
-	Tue, 14 May 2024 11:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A4313DDA3;
+	Tue, 14 May 2024 10:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686246; cv=none; b=vBz0G8mtcQ+mh0wNEUXIueqTpUrFvU/lbrDkbi0ayXbKiaPOEZQlX8VVvF9n9+fLhQYu2wEaKezD3IEY8wwqZ/PdTFtPS12K1FcltWOOyjR6m3m2g6JhRcFWZmr1clrhw8m47VwJum34qLpTcQ7ixDV85mjU5jCHI3tHclNSzZo=
+	t=1715683506; cv=none; b=TmHJ9QmTv83DMhYPgam0gwqasN2vp2ZkQjcqhXxxrJN6rZLWcGripttW998K4adzAO4MC9vPp2QFOVR9dYYsLYZHZNjLAEy753JufV+A0/S/gePA43CHeaI/5XzHhPYUMpMw+TCwU6M2NNDjf6TY4Spdwvg9BK2iqtKQVb43+2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686246; c=relaxed/simple;
-	bh=QR/5oZjAWio5zv1TydfH9gE9jrAosc4A+PJOvPeYNpE=;
+	s=arc-20240116; t=1715683506; c=relaxed/simple;
+	bh=5CiHR4Fben+FQVYHH1UYYoD+tlNt2VyzVygZS7cPFm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7rjAKkt/hO5E2LKcq53gp0RZSXVFLqf0mvA+gggJ4WhxaNtVsO5wrmxyAdRca6xIHDkDz2mDqpr+Ajm3B5WOi0VR5jSty3JyPO6xh20OZkHbruOi8ZPvYDQVaAYcwM75t+xaXg+z1Akpv9EMe6UG8ac+cAPexxYrurulrjyNYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWl300zp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CAFC2BD10;
-	Tue, 14 May 2024 11:30:46 +0000 (UTC)
+	 MIME-Version; b=ThDkjK7g1AVHT6bcUKBLgWgWtnYimDSmafZiw4vRPS/buai63IChegq1Kk2PPBy+/sMnDSyC+BltnoCCeKavofsAM0eg6UQXnGfGbIMXRiQcKSoMcVfDZb13tPnNebimehXizvXDwrySWJFutQ1c3pPMej8Ma8e1PuWc0zyB6i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjbulS+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A4AC2BD10;
+	Tue, 14 May 2024 10:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686246;
-	bh=QR/5oZjAWio5zv1TydfH9gE9jrAosc4A+PJOvPeYNpE=;
+	s=korg; t=1715683506;
+	bh=5CiHR4Fben+FQVYHH1UYYoD+tlNt2VyzVygZS7cPFm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWl300zpBp1oDLl3NKqrPrGAU21w9ia4Piy2wijv4WppmBfce3U6AgQs8YsCOlo8f
-	 03rHrFXx8GpjrG5bangVkLCjKYQDlfCAkm0/5I6vBYFLwrgjI9aXX/U3JwICpyxjr0
-	 +3zV5P3LheieKIzexQQltrWFBOlTtOqZwHFvbGu4=
+	b=vjbulS+FNxF6U0s/L0vCUcPcZ4XXXpHKipTfxw6W/ANEzpjJB5HvdRCrUxU5eMjdW
+	 D77nNseoHD2+JQnykZAjeipP+SJNXvqu8xD61winuX03Odm+Ld/3oMjso+ab45xZ1H
+	 m6IGKC/YhU6yTSVs9iurImzU71lBpBihurkr1akw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/236] ASoC: meson: cards: select SND_DYNAMIC_MINORS
+Subject: [PATCH 6.8 229/336] net: hns3: release PTP resources if pf initialization failed
 Date: Tue, 14 May 2024 12:17:13 +0200
-Message-ID: <20240514101023.066798401@linuxfoundation.org>
+Message-ID: <20240514101047.260398055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit 6db26f9ea4edd8a17d39ab3c20111e3ccd704aef ]
+[ Upstream commit 950aa42399893a170d9b57eda0e4a3ff91fd8b70 ]
 
-Amlogic sound cards do create a lot of pcm interfaces, possibly more than
-8. Some pcm interfaces are internal (like DPCM backends and c2c) and not
-exposed to userspace.
+During the PF initialization process, hclge_update_port_info may return an
+error code for some reason. At this point,  the ptp initialization has been
+completed. To void memory leaks, the resources that are applied by ptp
+should be released. Therefore, when hclge_update_port_info returns an error
+code, hclge_ptp_uninit is called to release the corresponding resources.
 
-Those interfaces still increase the number passed to snd_find_free_minor(),
-which eventually exceeds 8 causing -EBUSY error on card registration if
-CONFIG_SND_DYNAMIC_MINORS=n and the interface is exposed to userspace.
-
-select CONFIG_SND_DYNAMIC_MINORS for Amlogic cards to avoid the problem.
-
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240426134150.3053741-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: eaf83ae59e18 ("net: hns3: add querying fec ability from firmware")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/Kconfig b/sound/soc/meson/Kconfig
-index b93ea33739f29..6458d5dc4902f 100644
---- a/sound/soc/meson/Kconfig
-+++ b/sound/soc/meson/Kconfig
-@@ -99,6 +99,7 @@ config SND_MESON_AXG_PDM
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 6b84c1313f9bd..a5e63655fd88d 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -11751,7 +11751,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
  
- config SND_MESON_CARD_UTILS
- 	tristate
-+	select SND_DYNAMIC_MINORS
+ 	ret = hclge_update_port_info(hdev);
+ 	if (ret)
+-		goto err_mdiobus_unreg;
++		goto err_ptp_uninit;
  
- config SND_MESON_CODEC_GLUE
- 	tristate
+ 	INIT_KFIFO(hdev->mac_tnl_log);
+ 
+@@ -11802,6 +11802,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 	devl_unlock(hdev->devlink);
+ 	return 0;
+ 
++err_ptp_uninit:
++	hclge_ptp_uninit(hdev);
+ err_mdiobus_unreg:
+ 	if (hdev->hw.mac.phydev)
+ 		mdiobus_unregister(hdev->hw.mac.mdio_bus);
 -- 
 2.43.0
 
