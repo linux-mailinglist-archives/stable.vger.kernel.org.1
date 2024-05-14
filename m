@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4BF8C5515
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7678C5296
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D7281C235D1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE6A282F08
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F8453E30;
-	Tue, 14 May 2024 11:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8926113F459;
+	Tue, 14 May 2024 11:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R32GUkih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bEAiZYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D944E3D0D1;
-	Tue, 14 May 2024 11:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481776311D;
+	Tue, 14 May 2024 11:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687644; cv=none; b=cOED+PKrk76WbfUbP/vNF8mYWx0bAQRnrw4m5JmyiZHFmWz3ywwXCfRh4JwWq3ywZpQXf/Pv0ahI8Q3JXArViN0gDPWfV9+IQAX/ujNzEJbVxFwvCVQnFC3o8yb1lw+ISxGGT39rZISr1XvN0a12mys2rJPNOYxoX1XdwXWA8+s=
+	t=1715685951; cv=none; b=slVNzosQYTDTios8v7D3iBjIue6exEVlx9C1QUr73mllSGyFTXRNsN9+2UbkCmDXooudcKTxxZ21oQNWvslyDpURT39WlyyKzh5f+AiVETaaHrLQO5tpDX+c+GdL5trxymOIcAq8TYhz5lxxivA1djoeYP4Yu5wtYMBS7+YD1b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687644; c=relaxed/simple;
-	bh=keyttUwgn3oWMVEZOMcOnLds7Kw9WPxNOEP3LQimvtg=;
+	s=arc-20240116; t=1715685951; c=relaxed/simple;
+	bh=zS2meG26Tali+2y9sH/REtdzN1lAD2TQvofMmdV/BaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiBviJlS3pER+TxAHftofDfh3mcRiSmizoPjgrX3JCUMnp3fDRiQC3xjDAJpaXao6eh3Ucoj7DjUHmKhmrcVrYzjK2AHE8lcPBaHx0filMKFK1exovk4vxfB4CNaeX5LxcHi1wR0SW+UZ+84dpYtgwmRRS87EzhhNfIRIW4+hbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R32GUkih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6D0C2BD10;
-	Tue, 14 May 2024 11:54:03 +0000 (UTC)
+	 MIME-Version; b=o/EyvglebPn86aR8GymjM3QivRHt7+DiHuiXn6fNlsV1UubcSu17yV5trUWJaA6m4hq1jhj2UE9+aq2tefzxVTNk7pXY+bqpW0ggd0S7HYnXURhwQUtuteoLeSffTbleHKykLpmRH7XDFwQQSt8xyFtWK3Wt+dd99jwnuZ0nckQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bEAiZYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C15C2BD10;
+	Tue, 14 May 2024 11:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687644;
-	bh=keyttUwgn3oWMVEZOMcOnLds7Kw9WPxNOEP3LQimvtg=;
+	s=korg; t=1715685951;
+	bh=zS2meG26Tali+2y9sH/REtdzN1lAD2TQvofMmdV/BaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R32GUkihDNNwzCXFX9wnU26G1mk5g3MFIica3OKUgw2fXE70bGHs3z4ttetxPlqhe
-	 MILC9gPKxsc6B6zEftZHkBIZl7KWrY9Tfg3+Gi/IRWv2DwyAHN2c6PYJKEandaKKqy
-	 lPo+puxq4yURZuIOc9YKeKkh1+JKQ+if1nbCgWek=
+	b=1bEAiZYfvj8yVLxH5PYaWRbXKgjQgXZSZwWNyd1k8dBML1B8JbqOhvPus+24UMjtk
+	 u5VtfkL1CJFy+MGNPRKu56G5g/68wLUGsuO2qdXnVIqA5BCwpFVf4zPloV4kPqmHX9
+	 Bus/N9Yuq1G8K9UxtXPlgmPRUnc1Pc3FYV9lPsWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/168] drm/panel: ili9341: Respect deferred probe
+	syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 283/301] mm/userfaultfd: reset ptes when close() for wr-protected ones
 Date: Tue, 14 May 2024 12:19:14 +0200
-Message-ID: <20240514101008.807535007@linuxfoundation.org>
+Message-ID: <20240514101042.949731308@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Peter Xu <peterx@redhat.com>
 
-[ Upstream commit 740fc1e0509be3f7e2207e89125b06119ed62943 ]
+commit c88033efe9a391e72ba6b5df4b01d6e628f4e734 upstream.
 
-GPIO controller might not be available when driver is being probed.
-There are plenty of reasons why, one of which is deferred probe.
+Userfaultfd unregister includes a step to remove wr-protect bits from all
+the relevant pgtable entries, but that only covered an explicit
+UFFDIO_UNREGISTER ioctl, not a close() on the userfaultfd itself.  Cover
+that too.  This fixes a WARN trace.
 
-Since GPIOs are optional, return any error code we got to the upper
-layer, including deferred probe. With that in mind, use dev_err_probe()
-in order to avoid spamming the logs.
+The only user visible side effect is the user can observe leftover
+wr-protect bits even if the user close()ed on an userfaultfd when
+releasing the last reference of it.  However hopefully that should be
+harmless, and nothing bad should happen even if so.
 
-Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Link: https://lore.kernel.org/r/20240425142706.2440113-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change is now more important after the recent page-table-check
+patch we merged in mm-unstable (446dd9ad37d0 ("mm/page_table_check:
+support userfault wr-protect entries")), as we'll do sanity check on
+uffd-wp bits without vma context.  So it's better if we can 100%
+guarantee no uffd-wp bit leftovers, to make sure each report will be
+valid.
+
+Link: https://lore.kernel.org/all/000000000000ca4df20616a0fe16@google.com/
+Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
+Analyzed-by: David Hildenbrand <david@redhat.com>
+Link: https://lkml.kernel.org/r/20240422133311.2987675-1-peterx@redhat.com
+Reported-by: syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/userfaultfd.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-index e1542451ef9d0..f8afa922fe9ca 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-@@ -716,11 +716,11 @@ static int ili9341_probe(struct spi_device *spi)
- 
- 	reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset))
--		dev_err(dev, "Failed to get gpio 'reset'\n");
-+		return dev_err_probe(dev, PTR_ERR(reset), "Failed to get gpio 'reset'\n");
- 
- 	dc = devm_gpiod_get_optional(dev, "dc", GPIOD_OUT_LOW);
- 	if (IS_ERR(dc))
--		dev_err(dev, "Failed to get gpio 'dc'\n");
-+		return dev_err_probe(dev, PTR_ERR(dc), "Failed to get gpio 'dc'\n");
- 
- 	if (!strcmp(id->name, "sf-tc240t-9370-t"))
- 		return ili9341_dpi_probe(spi, dc, reset);
--- 
-2.43.0
-
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -921,6 +921,10 @@ static int userfaultfd_release(struct in
+ 			prev = vma;
+ 			continue;
+ 		}
++		/* Reset ptes for the whole vma range if wr-protected */
++		if (userfaultfd_wp(vma))
++			uffd_wp_range(vma, vma->vm_start,
++				      vma->vm_end - vma->vm_start, false);
+ 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
+ 		prev = vma_merge(&vmi, mm, prev, vma->vm_start, vma->vm_end,
+ 				 new_flags, vma->anon_vma,
 
 
 
