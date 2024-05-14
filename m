@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2C78C542A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70478C5519
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAB992898F3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B8091F2128B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E53A1386D2;
-	Tue, 14 May 2024 11:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8942957CA1;
+	Tue, 14 May 2024 11:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jtzj9/eN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zo7GpLyk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11DD1386C2;
-	Tue, 14 May 2024 11:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A1748CCC;
+	Tue, 14 May 2024 11:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686999; cv=none; b=Vv810uAaNz4miztfZVGFnyadiAjb0d9JhfR8uXLD/Byd26d6J+pOXh4lMzwOGHqCFI8WNabRXuQ/v+8gHyh5tZTwls2szoCS+RAV5KU/MheC6jpzCuek7jjTxL4N8MFT94YFzYH5G0xq7BbCrYu9U4THxYRuVZuHZm/QrG9oHVg=
+	t=1715687650; cv=none; b=DH7jwLyJ05FDCKJhpsnQdvv/wVJykyWvGWKgkUj6QeZJRE5QJAwyTL2RBBln4EJCFWnzCHKwTdfoPICX6b6RbyZtfW2OXJbQatCU28orMknG/5xryKYJ680DbBSBMOEGwr8/Dqvrmzdl5VupVprp4jE60V8T6vyfeTuiqx/y9t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686999; c=relaxed/simple;
-	bh=0u7wYwsQddrSr8uCfK+O28rgzMwa3DZV8+WID9TpmYI=;
+	s=arc-20240116; t=1715687650; c=relaxed/simple;
+	bh=Nk/CL1zoiTiQZ+Oorpd9wOwLi0bWOVc8QvVxeG/q1oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFepQFjogyt62vIj8zzUx306MoaIr7DQCQ290D+tf51diUQAvwJS9LKMNo5uIQsg1hx3ftoNhopzdQhgblIOyfhVJdvFw7KKDNm8XOHj+UmyoMM078yEpU4XiR26cKHdg0hQY+yumbYGZrJZ2tuW1Dg+I+q/bzt0gDfcykP/zQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jtzj9/eN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696E1C2BD10;
-	Tue, 14 May 2024 11:43:18 +0000 (UTC)
+	 MIME-Version; b=mxZqIOiwIp9OFokGk48X2n88MsC9GPIaDfM5jt5TOcWD09c2MocXEEVHICdEM5NkDc6Q1P8Dvp4MyYqKvu0ySarMHUS6qT7iG7S/c4E9WtnOdD+ojY6nmEi/Rnq81doozhBL9C67JBDxsUsvj0w/LaskmIsmhhjhuQ1Nlbz+5bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zo7GpLyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2303C2BD10;
+	Tue, 14 May 2024 11:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686998;
-	bh=0u7wYwsQddrSr8uCfK+O28rgzMwa3DZV8+WID9TpmYI=;
+	s=korg; t=1715687650;
+	bh=Nk/CL1zoiTiQZ+Oorpd9wOwLi0bWOVc8QvVxeG/q1oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jtzj9/eNPVKuqIjj1JQtljheHLWyFhWUb5vvCEEB/9YM7TLtjEfMI912BqLUTGlsY
-	 ZLmZsORTJhAl9WemB64P143OvpfaXPP8f8gdU3rHYD8c8phdw4t0uv/xO66hmyy/h5
-	 bUvlUPYean9RhPOOPy01IcmATe4ksbttrIlH94RA=
+	b=Zo7GpLykR6bjudTSLom8VQ4WBFOGf7XoLyAhpwKHdbeOMKEX7l1w9Z82U44ChDMYm
+	 Dc6cyezQzn+dUSG4Hk1WvQl7aJIxuljTkVLw1izZwq7ESkhmNOv3aIShUFoZJRmXsw
+	 IAG/4klzRpFMSW3hYS0OkC8dB/xe87NwOgTFSQPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Light Hsieh <light.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Richard Gobert <richardbgobert@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 05/84] pinctrl: mediatek: Check gpio pin number and use binary search in mtk_hw_pin_field_lookup()
+Subject: [PATCH 5.15 058/168] net: gro: add flush check in udp_gro_receive_segment
 Date: Tue, 14 May 2024 12:19:16 +0200
-Message-ID: <20240514100951.894392140@linuxfoundation.org>
+Message-ID: <20240514101008.881300595@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,183 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Light Hsieh <light.hsieh@mediatek.com>
+From: Richard Gobert <richardbgobert@gmail.com>
 
-[ Upstream commit 3de7deefce693bb9783bca4cb42a81653ebec4e9 ]
+[ Upstream commit 5babae777c61aa8a8679d59d3cdc54165ad96d42 ]
 
-1. Check if gpio pin number is in valid range to prevent from get invalid
-   pointer 'desc' in the following code:
-	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
+GRO-GSO path is supposed to be transparent and as such L3 flush checks are
+relevant to all UDP flows merging in GRO. This patch uses the same logic
+and code from tcp_gro_receive, terminating merge if flush is non zero.
 
-2. Improve  mtk_hw_pin_field_lookup()
-2.1 Modify mtk_hw_pin_field_lookup() to use binary search for accelerating
-     search.
-2.2 Correct message after the following check fail:
-    if (hw->soc->reg_cal && hw->soc->reg_cal[field].range) {
-		rc = &hw->soc->reg_cal[field];
-    The original message is:
-    	"Not support field %d for pin %d (%s)\n"
-    However, the check is on soc chip level, not on pin level yet.
-    So the message is corrected as:
-    	"Not support field %d for this soc\n"
-
-Signed-off-by: Light Hsieh <light.hsieh@mediatek.com>
-Link: https://lore.kernel.org/r/1579675994-7001-1-git-send-email-light.hsieh@mediatek.com
-Acked-by: Sean Wang <sean.wang@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: c5d3b64c568a ("pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE")
+Fixes: e20cf8d3f1f7 ("udp: implement GRO for plain UDP sockets.")
+Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../pinctrl/mediatek/pinctrl-mtk-common-v2.c  | 27 ++++++++++++++-----
- drivers/pinctrl/mediatek/pinctrl-paris.c      | 25 +++++++++++++++++
- 2 files changed, 46 insertions(+), 6 deletions(-)
+ net/ipv4/udp_offload.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
-index c3e6f3c1b4743..2795d0fd0f5bd 100644
---- a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
-@@ -68,32 +68,44 @@ static int mtk_hw_pin_field_lookup(struct mtk_pinctrl *hw,
- {
- 	const struct mtk_pin_field_calc *c, *e;
- 	const struct mtk_pin_reg_calc *rc;
-+	int start = 0, end, check;
-+	bool found = false;
- 	u32 bits;
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 7c6ac47b0bb18..c61268849948a 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -434,6 +434,7 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
+ 	struct sk_buff *p;
+ 	unsigned int ulen;
+ 	int ret = 0;
++	int flush;
  
- 	if (hw->soc->reg_cal && hw->soc->reg_cal[field].range) {
- 		rc = &hw->soc->reg_cal[field];
- 	} else {
- 		dev_dbg(hw->dev,
--			"Not support field %d for pin %d (%s)\n",
--			field, desc->number, desc->name);
-+			"Not support field %d for this soc\n", field);
- 		return -ENOTSUPP;
- 	}
+ 	/* requires non zero csum, for symmetry with GSO */
+ 	if (!uh->check) {
+@@ -467,13 +468,22 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
+ 			return p;
+ 		}
  
-+	end = rc->nranges - 1;
- 	c = rc->range;
- 	e = c + rc->nranges;
- 
--	while (c < e) {
--		if (desc->number >= c->s_pin && desc->number <= c->e_pin)
-+	while (start <= end) {
-+		check = (start + end) >> 1;
-+		if (desc->number >= rc->range[check].s_pin
-+		 && desc->number <= rc->range[check].e_pin) {
-+			found = true;
-+			break;
-+		} else if (start == end)
- 			break;
--		c++;
-+		else if (desc->number < rc->range[check].s_pin)
-+			end = check - 1;
++		flush = NAPI_GRO_CB(p)->flush;
++
++		if (NAPI_GRO_CB(p)->flush_id != 1 ||
++		    NAPI_GRO_CB(p)->count != 1 ||
++		    !NAPI_GRO_CB(p)->is_atomic)
++			flush |= NAPI_GRO_CB(p)->flush_id;
 +		else
-+			start = check + 1;
- 	}
- 
--	if (c >= e) {
-+	if (!found) {
- 		dev_dbg(hw->dev, "Not support field %d for pin = %d (%s)\n",
- 			field, desc->number, desc->name);
- 		return -ENOTSUPP;
- 	}
- 
-+	c = rc->range + check;
++			NAPI_GRO_CB(p)->is_atomic = false;
 +
- 	if (c->i_base > hw->nbase - 1) {
- 		dev_err(hw->dev,
- 			"Invalid base for field %d for pin = %d (%s)\n",
-@@ -182,6 +194,9 @@ int mtk_hw_set_value(struct mtk_pinctrl *hw, const struct mtk_pin_desc *desc,
- 	if (err)
- 		return err;
- 
-+	if (value < 0 || value > pf.mask)
-+		return -EINVAL;
-+
- 	if (!pf.next)
- 		mtk_rmw(hw, pf.index, pf.offset, pf.mask << pf.bitpos,
- 			(value & pf.mask) << pf.bitpos);
-diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index 31449514a8c0c..93fa44504bdd7 100644
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -81,6 +81,8 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 	int val, val2, err, reg, ret = 1;
- 	const struct mtk_pin_desc *desc;
- 
-+	if (pin >= hw->soc->npins)
-+		return -EINVAL;
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[pin];
- 
- 	switch (param) {
-@@ -205,6 +207,10 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 	int err = 0;
- 	u32 reg;
- 
-+	if (pin >= hw->soc->npins) {
-+		err = -EINVAL;
-+		goto err;
-+	}
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[pin];
- 
- 	switch ((u32)param) {
-@@ -690,6 +696,9 @@ static int mtk_gpio_get_direction(struct gpio_chip *chip, unsigned int gpio)
- 	const struct mtk_pin_desc *desc;
- 	int value, err;
- 
-+	if (gpio > hw->soc->npins)
-+		return -EINVAL;
-+
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
- 
- 	err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &value);
-@@ -705,6 +714,9 @@ static int mtk_gpio_get(struct gpio_chip *chip, unsigned int gpio)
- 	const struct mtk_pin_desc *desc;
- 	int value, err;
- 
-+	if (gpio > hw->soc->npins)
-+		return -EINVAL;
-+
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
- 
- 	err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DI, &value);
-@@ -719,6 +731,9 @@ static void mtk_gpio_set(struct gpio_chip *chip, unsigned int gpio, int value)
- 	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
- 	const struct mtk_pin_desc *desc;
- 
-+	if (gpio > hw->soc->npins)
-+		return;
-+
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[gpio];
- 
- 	mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DO, !!value);
-@@ -726,12 +741,22 @@ static void mtk_gpio_set(struct gpio_chip *chip, unsigned int gpio, int value)
- 
- static int mtk_gpio_direction_input(struct gpio_chip *chip, unsigned int gpio)
- {
-+	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
-+
-+	if (gpio > hw->soc->npins)
-+		return -EINVAL;
-+
- 	return pinctrl_gpio_direction_input(chip->base + gpio);
- }
- 
- static int mtk_gpio_direction_output(struct gpio_chip *chip, unsigned int gpio,
- 				     int value)
- {
-+	struct mtk_pinctrl *hw = gpiochip_get_data(chip);
-+
-+	if (gpio > hw->soc->npins)
-+		return -EINVAL;
-+
- 	mtk_gpio_set(chip, gpio, value);
- 
- 	return pinctrl_gpio_direction_output(chip->base + gpio);
+ 		/* Terminate the flow on len mismatch or if it grow "too much".
+ 		 * Under small packet flood GRO count could elsewhere grow a lot
+ 		 * leading to excessive truesize values.
+ 		 * On len mismatch merge the first packet shorter than gso_size,
+ 		 * otherwise complete the GRO packet.
+ 		 */
+-		if (ulen > ntohs(uh2->len)) {
++		if (ulen > ntohs(uh2->len) || flush) {
+ 			pp = p;
+ 		} else {
+ 			if (NAPI_GRO_CB(skb)->is_flist) {
 -- 
 2.43.0
 
