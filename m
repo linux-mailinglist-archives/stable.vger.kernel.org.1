@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369E38C51B9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F8B8C52C5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAFCF28280E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C836728336C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF71113B2AB;
-	Tue, 14 May 2024 11:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B483143756;
+	Tue, 14 May 2024 11:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQA+leYn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNt3SInr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D88D13B287;
-	Tue, 14 May 2024 11:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AFB143753;
+	Tue, 14 May 2024 11:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684966; cv=none; b=rw9pjZC0dy6OtRAGdeEoJMrOdmnt0JhUW++jnnOd7UxpcCMst0HjYvu/p4Oiq5bRCXq0RNzsyqVc2oXCvLmaPV+ihZuyPnlppNKg5/wasoPKrxRgPwLP8Xp03W1vJhO4zTkCQFIC2s9bp2WmpWlcE5EIWefl4W5krp4uDy8VBpw=
+	t=1715686105; cv=none; b=B0Umv5swvWzvnRDZGX19Wh8iOnpTnOjpu5pfcmAFGiU23EjTOKAHy4iOWziCtXPoz096ir27sPLl2vWBxWzzMDjh8RFMsSYyZVn7oB8nP8B6rHuvGY7QK4jMnbXMJwZAKcxzvC3969uUgHWNf6w1XyDfp0I2/oghN/Lo8UwOJPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684966; c=relaxed/simple;
-	bh=N0SFvdPQI8ShWS3TgeoJMGOJTcLe/FovMFDAcDtN4H8=;
+	s=arc-20240116; t=1715686105; c=relaxed/simple;
+	bh=s26b7fDb0J8FXwe7uMhFTd9LZaqYiizHRSNT7MXGP5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6wUThEaJlYGDDM2I3Qz8CDLwYvpKFNs8yIZ/qL3+Yc2B+Tg3DecW+lLpACeSz67wej1+t0cWnSN0QyKOWwExCdp2i8pKyU9Z11gG5WHKJ1W905WC49UNj93WWZ3dRC6sC4mTobpNMI8wi80cCoumyjLhqncMLknMrLr+WizwMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQA+leYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B422EC2BD10;
-	Tue, 14 May 2024 11:09:25 +0000 (UTC)
+	 MIME-Version; b=bThuavbsmJbzrmcRSXRTJg+x6W3zXUYoVUs4Ts4Jdka6XpB3Cu590e398DJ0525rPTkJUpjqQTM21ypEpL39gDR3wCVx2MYknbMIsOy8RT7MWK3g1UglWy80siKxsbS3+WcB3QDfIoTflu9Ew9t7rinC6BVLaYsTKOLLaQTsW1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNt3SInr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930C0C2BD10;
+	Tue, 14 May 2024 11:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684966;
-	bh=N0SFvdPQI8ShWS3TgeoJMGOJTcLe/FovMFDAcDtN4H8=;
+	s=korg; t=1715686105;
+	bh=s26b7fDb0J8FXwe7uMhFTd9LZaqYiizHRSNT7MXGP5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQA+leYnW/Dg3iio7k42IQqJv/OUIkwnbTQgVEqxU2Tj6lAKvWb9JN62jk8Oz+f7w
-	 ynwvsMqSRgBEAVgk/l4UchfY2g5S7kN7yUWfpV5HUZFJT+ZlO3YMIBT5sZdM9PTR4J
-	 O+/fxBQRzLZugI1y+w3+rkF+7sgzV2BorOvMB1OA=
+	b=hNt3SInr2n9JllWMPcVkndEiPPYKfMDg6lbm3aEuU5w/Q6rN6WmSfBMeycDt9hEUd
+	 /QBzZxaBO+wn+9ZAYeVFgDU1cFIdpKE/kwQGMNIWz9KtasQ6mVpnIQwQTgE/wGCmEy
+	 9kSZpxXyXppAIuWuuDk2K0hS7HRtkdcEtingTYGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jan Dakinevich <jan.dakinevich@salutedevices.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/301] drm/amdkfd: range check cp bad op exception interrupts
+Subject: [PATCH 6.1 023/236] pinctrl/meson: fix typo in PDMs pin name
 Date: Tue, 14 May 2024 12:16:25 +0200
-Message-ID: <20240514101036.554614483@linuxfoundation.org>
+Message-ID: <20240514101021.214214676@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Kim <Jonathan.Kim@amd.com>
+From: Jan Dakinevich <jan.dakinevich@salutedevices.com>
 
-[ Upstream commit 0cac183b98d8a8c692c98e8dba37df15a9e9210d ]
+[ Upstream commit 368a90e651faeeb7049a876599cf2b0d74954796 ]
 
-Due to a CP interrupt bug, bad packet garbage exception codes are raised.
-Do a range check so that the debugger and runtime do not receive garbage
-codes.
-Update the user api to guard exception code type checking as well.
+Other pins have _a or _x suffix, but this one doesn't have any. Most
+likely this is a typo.
 
-Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
-Tested-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: dabad1ff8561 ("pinctrl: meson: add pinctrl driver support for Meson-A1 SoC")
+Signed-off-by: Jan Dakinevich <jan.dakinevich@salutedevices.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Message-ID: <20240325113058.248022-1-jan.dakinevich@salutedevices.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/amdkfd/kfd_int_process_v10.c    |  3 ++-
- .../gpu/drm/amd/amdkfd/kfd_int_process_v11.c    |  3 ++-
- drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c |  3 ++-
- include/uapi/linux/kfd_ioctl.h                  | 17 ++++++++++++++---
- 4 files changed, 20 insertions(+), 6 deletions(-)
+ drivers/pinctrl/meson/pinctrl-meson-a1.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c
-index a7697ec8188e0..f85ca6cb90f56 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c
-@@ -336,7 +336,8 @@ static void event_interrupt_wq_v10(struct kfd_node *dev,
- 				break;
- 			}
- 			kfd_signal_event_interrupt(pasid, context_id0 & 0x7fffff, 23);
--		} else if (source_id == SOC15_INTSRC_CP_BAD_OPCODE) {
-+		} else if (source_id == SOC15_INTSRC_CP_BAD_OPCODE &&
-+			   KFD_DBG_EC_TYPE_IS_PACKET(KFD_DEBUG_CP_BAD_OP_ECODE(context_id0))) {
- 			kfd_set_dbg_ev_from_interrupt(dev, pasid,
- 				KFD_DEBUG_DOORBELL_ID(context_id0),
- 				KFD_EC_MASK(KFD_DEBUG_CP_BAD_OP_ECODE(context_id0)),
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c
-index 2a65792fd1162..3ca9c160da7c2 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c
-@@ -325,7 +325,8 @@ static void event_interrupt_wq_v11(struct kfd_node *dev,
- 		/* CP */
- 		if (source_id == SOC15_INTSRC_CP_END_OF_PIPE)
- 			kfd_signal_event_interrupt(pasid, context_id0, 32);
--		else if (source_id == SOC15_INTSRC_CP_BAD_OPCODE)
-+		else if (source_id == SOC15_INTSRC_CP_BAD_OPCODE &&
-+			 KFD_DBG_EC_TYPE_IS_PACKET(KFD_CTXID0_CP_BAD_OP_ECODE(context_id0)))
- 			kfd_set_dbg_ev_from_interrupt(dev, pasid,
- 				KFD_CTXID0_DOORBELL_ID(context_id0),
- 				KFD_EC_MASK(KFD_CTXID0_CP_BAD_OP_ECODE(context_id0)),
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-index 27cdaea405017..8a6729939ae55 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-@@ -385,7 +385,8 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
- 				break;
- 			}
- 			kfd_signal_event_interrupt(pasid, sq_int_data, 24);
--		} else if (source_id == SOC15_INTSRC_CP_BAD_OPCODE) {
-+		} else if (source_id == SOC15_INTSRC_CP_BAD_OPCODE &&
-+			   KFD_DBG_EC_TYPE_IS_PACKET(KFD_DEBUG_CP_BAD_OP_ECODE(context_id0))) {
- 			kfd_set_dbg_ev_from_interrupt(dev, pasid,
- 				KFD_DEBUG_DOORBELL_ID(context_id0),
- 				KFD_EC_MASK(KFD_DEBUG_CP_BAD_OP_ECODE(context_id0)),
-diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
-index eeb2fdcbdcb70..cd924c959d732 100644
---- a/include/uapi/linux/kfd_ioctl.h
-+++ b/include/uapi/linux/kfd_ioctl.h
-@@ -909,14 +909,25 @@ enum kfd_dbg_trap_exception_code {
- 				 KFD_EC_MASK(EC_DEVICE_NEW))
- #define KFD_EC_MASK_PROCESS	(KFD_EC_MASK(EC_PROCESS_RUNTIME) |	\
- 				 KFD_EC_MASK(EC_PROCESS_DEVICE_REMOVE))
-+#define KFD_EC_MASK_PACKET	(KFD_EC_MASK(EC_QUEUE_PACKET_DISPATCH_DIM_INVALID) |	\
-+				 KFD_EC_MASK(EC_QUEUE_PACKET_DISPATCH_GROUP_SEGMENT_SIZE_INVALID) |	\
-+				 KFD_EC_MASK(EC_QUEUE_PACKET_DISPATCH_CODE_INVALID) |	\
-+				 KFD_EC_MASK(EC_QUEUE_PACKET_RESERVED) |	\
-+				 KFD_EC_MASK(EC_QUEUE_PACKET_UNSUPPORTED) |	\
-+				 KFD_EC_MASK(EC_QUEUE_PACKET_DISPATCH_WORK_GROUP_SIZE_INVALID) |	\
-+				 KFD_EC_MASK(EC_QUEUE_PACKET_DISPATCH_REGISTER_INVALID) |	\
-+				 KFD_EC_MASK(EC_QUEUE_PACKET_VENDOR_UNSUPPORTED))
+diff --git a/drivers/pinctrl/meson/pinctrl-meson-a1.c b/drivers/pinctrl/meson/pinctrl-meson-a1.c
+index 79f5d753d7e1a..50a87d9618a8e 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson-a1.c
++++ b/drivers/pinctrl/meson/pinctrl-meson-a1.c
+@@ -250,7 +250,7 @@ static const unsigned int pdm_dclk_x_pins[]		= { GPIOX_10 };
+ static const unsigned int pdm_din2_a_pins[]		= { GPIOA_6 };
+ static const unsigned int pdm_din1_a_pins[]		= { GPIOA_7 };
+ static const unsigned int pdm_din0_a_pins[]		= { GPIOA_8 };
+-static const unsigned int pdm_dclk_pins[]		= { GPIOA_9 };
++static const unsigned int pdm_dclk_a_pins[]		= { GPIOA_9 };
  
- /* Checks for exception code types for KFD search */
-+#define KFD_DBG_EC_IS_VALID(ecode) (ecode > EC_NONE && ecode < EC_MAX)
- #define KFD_DBG_EC_TYPE_IS_QUEUE(ecode)					\
--			(!!(KFD_EC_MASK(ecode) & KFD_EC_MASK_QUEUE))
-+			(KFD_DBG_EC_IS_VALID(ecode) && !!(KFD_EC_MASK(ecode) & KFD_EC_MASK_QUEUE))
- #define KFD_DBG_EC_TYPE_IS_DEVICE(ecode)				\
--			(!!(KFD_EC_MASK(ecode) & KFD_EC_MASK_DEVICE))
-+			(KFD_DBG_EC_IS_VALID(ecode) && !!(KFD_EC_MASK(ecode) & KFD_EC_MASK_DEVICE))
- #define KFD_DBG_EC_TYPE_IS_PROCESS(ecode)				\
--			(!!(KFD_EC_MASK(ecode) & KFD_EC_MASK_PROCESS))
-+			(KFD_DBG_EC_IS_VALID(ecode) && !!(KFD_EC_MASK(ecode) & KFD_EC_MASK_PROCESS))
-+#define KFD_DBG_EC_TYPE_IS_PACKET(ecode)				\
-+			(KFD_DBG_EC_IS_VALID(ecode) && !!(KFD_EC_MASK(ecode) & KFD_EC_MASK_PACKET))
+ /* gen_clk */
+ static const unsigned int gen_clk_x_pins[]		= { GPIOX_7 };
+@@ -591,7 +591,7 @@ static struct meson_pmx_group meson_a1_periphs_groups[] = {
+ 	GROUP(pdm_din2_a,		3),
+ 	GROUP(pdm_din1_a,		3),
+ 	GROUP(pdm_din0_a,		3),
+-	GROUP(pdm_dclk,			3),
++	GROUP(pdm_dclk_a,		3),
+ 	GROUP(pwm_c_a,			3),
+ 	GROUP(pwm_b_a,			3),
  
+@@ -755,7 +755,7 @@ static const char * const spi_a_groups[] = {
  
- /* Runtime enable states */
+ static const char * const pdm_groups[] = {
+ 	"pdm_din0_x", "pdm_din1_x", "pdm_din2_x", "pdm_dclk_x", "pdm_din2_a",
+-	"pdm_din1_a", "pdm_din0_a", "pdm_dclk",
++	"pdm_din1_a", "pdm_din0_a", "pdm_dclk_a",
+ };
+ 
+ static const char * const gen_clk_groups[] = {
 -- 
 2.43.0
 
