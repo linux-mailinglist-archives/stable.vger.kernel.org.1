@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-43914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C6C8C502F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9521A8C52B6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C56751F20F8F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30A6428110A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD3F139D1D;
-	Tue, 14 May 2024 10:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042AA143721;
+	Tue, 14 May 2024 11:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1HcZdEX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8//Riiv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D49C136651;
-	Tue, 14 May 2024 10:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EB912FB3C;
+	Tue, 14 May 2024 11:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683055; cv=none; b=Hh/l1Q0RnmmFPADy29840oKoFjDBvHXwBt1pflLViXL+3MrAH1uhhrh9YktWLHSHL7Y7Vm7snuVecnkyX0TUUAQjTRUBbqzfI8qWhcXl3BG8+ni9ebX6fVJ0mVLBldY5KRgsSEttoYFpwd/tSxraMXqVl99VzhYmucw077SlFls=
+	t=1715686064; cv=none; b=rR+S2v44qCHMFniTZjLmNZwgC+fgaupyoe00qu3kmKuedLfbKkMgsQ8beclzoQ6V7Q4VGvchDzzwYJsXV2nZ+ovIjRFVhEzgLFobcQdeV8XJ6hR3CIHwtiDCoaaSm48iExXRS/vOUXBOqcVPPThULS8D0UQ4AKE25mi6idatyjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683055; c=relaxed/simple;
-	bh=9vBWJjInKYdDS9ZDz9oio/PLaS/n8QCn/q4+0LyLoSU=;
+	s=arc-20240116; t=1715686064; c=relaxed/simple;
+	bh=hDzIIEEcQZV+SBXGX9G98zDSQep+pegnfohMyvfEK4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtnlJS5rYT46Q4O3ZQuVkQzlHTmgH/xoJu5wWO25/B7UUhvYkWOPFFDpbmDJga2nxRxMguZwOPoXfxQWqvTz1MSwQKVbiIatUk3Z4hvjJdUMPHPY9mATOmGALTaUGTVtGs6frBcIcXA9RhrDIl/5LBhpWHBFZ3gUKxAVsA44J+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1HcZdEX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450D6C2BD10;
-	Tue, 14 May 2024 10:37:34 +0000 (UTC)
+	 MIME-Version; b=cu8PqJCVw1TUcTDfaz1Nt7BH/02z3CCQ0HD7Fi5g54i4zerIMTeluuXXHY2n1a6hW9zOeOkxftQBRDu8oMHoTv88fS9s/dBhnk/ZleZDAv2vvwmCcYuV5eypp46q3ToWN8XWoCAiV0DETJ1gqu8hI6A+QeY8VBUR4i1S3iAly9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8//Riiv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E998C2BD10;
+	Tue, 14 May 2024 11:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683055;
-	bh=9vBWJjInKYdDS9ZDz9oio/PLaS/n8QCn/q4+0LyLoSU=;
+	s=korg; t=1715686064;
+	bh=hDzIIEEcQZV+SBXGX9G98zDSQep+pegnfohMyvfEK4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1HcZdEXy+4Q0zwP+j8g5KaaSUuVwgFeVPKUQCEFz4lOsB18KIPe+w5e9i2L8bJuv
-	 +S/aMl3hVvcBEPyMSwsMGfu05L+ZD9LHDGnuBRJzW5M6REka1zA3j66YM3XVYrRIdM
-	 B2S4lystQna4AEIkIB+F6oFQ4Gix46NCODTICIaQ=
+	b=C8//Riiv+kwvvO6pYF7kW81Boy1mdRkle7+/1j5LzkieMlwAxj0UiyuA+mNEOCEJy
+	 3nKvBIgdYBWNtkOod9nu8fSf6xCG2q7DHBfpfjZPTU9R5N//mSTkntOaW9TqOIEcYl
+	 8BSzXmbjspU8xnwG0ZqBsBdvouft8F4M9bYeylwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bumyong Lee <bumyong.lee@samsung.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 159/336] drm/amdgpu: Refine IB schedule error logging
+Subject: [PATCH 6.1 001/236] dmaengine: pl330: issue_pending waits until WFP state
 Date: Tue, 14 May 2024 12:16:03 +0200
-Message-ID: <20240514101044.606348058@linuxfoundation.org>
+Message-ID: <20240514101020.381864125@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Bumyong Lee <bumyong.lee@samsung.com>
 
-[ Upstream commit 4b18a91faf1752f9bd69a4ed3aed2c8f6e5b0528 ]
+[ Upstream commit 22a9d9585812440211b0b34a6bc02ade62314be4 ]
 
-Downgrade to debug information when IBs are skipped. Also, use dev_* to
-identify the device.
+According to DMA-330 errata notice[1] 71930, DMAKILL
+cannot clear internal signal, named pipeline_req_active.
+it makes that pl330 would wait forever in WFP state
+although dma already send dma request if pl330 gets
+dma request before entering WFP state.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The errata suggests that polling until entering WFP state
+as workaround and then peripherals allows to issue dma request.
+
+[1]: https://developer.arm.com/documentation/genc008428/latest
+
+Signed-off-by: Bumyong Lee <bumyong.lee@samsung.com>
+Link: https://lore.kernel.org/r/20231219055026.118695-1-bumyong.lee@samsung.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: afc89870ea67 ("dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/dma/pl330.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-index 71a5cf37b472d..0b8c6581b62c0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-@@ -300,12 +300,15 @@ static struct dma_fence *amdgpu_job_run(struct drm_sched_job *sched_job)
- 		dma_fence_set_error(finished, -ECANCELED);
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 3cf0b38387ae5..c29744bfdf2c2 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -1053,6 +1053,9 @@ static bool _trigger(struct pl330_thread *thrd)
  
- 	if (finished->error < 0) {
--		DRM_INFO("Skip scheduling IBs!\n");
-+		dev_dbg(adev->dev, "Skip scheduling IBs in ring(%s)",
-+			ring->name);
- 	} else {
- 		r = amdgpu_ib_schedule(ring, job->num_ibs, job->ibs, job,
- 				       &fence);
- 		if (r)
--			DRM_ERROR("Error scheduling IBs (%d)\n", r);
-+			dev_err(adev->dev,
-+				"Error scheduling IBs (%d) in ring(%s)", r,
-+				ring->name);
- 	}
+ 	thrd->req_running = idx;
  
- 	job->job_run_counter++;
++	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
++		UNTIL(thrd, PL330_STATE_WFP);
++
+ 	return true;
+ }
+ 
 -- 
 2.43.0
 
