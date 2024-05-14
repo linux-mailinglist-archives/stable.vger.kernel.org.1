@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1958C5546
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CE78C54C3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B4401C21946
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C5DA1C23440
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9813D0D1;
-	Tue, 14 May 2024 11:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694AE6DD1D;
+	Tue, 14 May 2024 11:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGHOw8WK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAptGto+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96DF9D4;
-	Tue, 14 May 2024 11:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265B354903;
+	Tue, 14 May 2024 11:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687781; cv=none; b=qJzXxdXz/LCj5LhKGH4hJVohz0b1a9jqauA6ZONIZQ6scHRTFkmKCeHUuEG4f2Kj4Aa2nmkNUMW2Gyf+5HKpxogOadHQzcFGtuoyeJJ+pM1fAQen4dT8b8sruF8IChiHy6qkzKCNj7azoSMP33PfhAHreOQOFLmelV6uZafsEeA=
+	t=1715687430; cv=none; b=kJN1AsrqzJOImlMcfbXROwuGfpDnZhUzsuFQKKvF1CelEIQRK0zTuEgRdv5cT2Z4Ueih1AnaJmAXHuV/PWeoTTTIb4E60L/56u2n1HWWDAZYjohpxrJ/IrAl78qsq1lVBUWtSAfpkFfMg+nYXhPFnuJ8OR0sfN+n5TNHBnxIy3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687781; c=relaxed/simple;
-	bh=Oq5SdN1fV9Hp9dUaLtY4d+vTqN3j7cHRJNGKFxq432w=;
+	s=arc-20240116; t=1715687430; c=relaxed/simple;
+	bh=ELw69LJeHDkUDVkU45/VgKSyo8L+ZyTzywQkQxf/E8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMqec8YgzD+omZSvdJXQ1QM8ViAR4Dnwa5RbD8Ux43eLXT0pegR6Xyl1Ma7Jk0Cfa5psXx+jJnQ8gO7bYuqINDA6Au1gIm3sGaqIrgnyHj2LDTRQMnVOp0bY2Gzm7ayl7XXVwLCjLllywSMZdKLwrFZKfpwtLZm6aVrRFiRwFSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGHOw8WK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB360C2BD10;
-	Tue, 14 May 2024 11:56:20 +0000 (UTC)
+	 MIME-Version; b=Nhe5HGwNgEmiqB0ZQD4lm7PZqpNOrqFI1kp6qZKYL1JqPUxpCT7V6ql3bpnxA6VY76qy6PgobMeUnTlzNvaGibvx+CP71lQyw4jKNPCuku8+Nt6k5iKXkykODsUmCbbyHc13y4G0jLHywxO/4gHWnJUKFKyeC6rWbougWKYBdU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAptGto+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A301FC2BD10;
+	Tue, 14 May 2024 11:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687781;
-	bh=Oq5SdN1fV9Hp9dUaLtY4d+vTqN3j7cHRJNGKFxq432w=;
+	s=korg; t=1715687430;
+	bh=ELw69LJeHDkUDVkU45/VgKSyo8L+ZyTzywQkQxf/E8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGHOw8WKE3g99nGrjmOGSjBjQouKoFoMnhdPyKipdOir0LwKht28HwTrPPCaP3EJs
-	 rUhqIn7FIy2l0bTKM1R01Mt/RDO6TvPPTWfgvgyZ6QhAqMIQxIMnONxgS84i0F5iyl
-	 TsyrKbvWZBWRagfFlw2/vOIUhkMizWxDbUMMHgCE=
+	b=WAptGto+JyJ6CQQH6hCMHf5v7tS22jYEbfZqZLUiz/5eMVUv1mRDmYpoTOZuVDbcF
+	 XgGHAwtZ2RQNczEC2UHRehVVLVRS+MluQjjPNA8BDcQmW2acxa0VQoOT/c3Mr/J3ev
+	 x3bCuTglzMsco2nEym5mXAZ/SR3hDaiSpFyXaQSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/168] qibfs: fix dentry leak
+Subject: [PATCH 5.10 062/111] MIPS: scall: Save thread_info.syscall unconditionally on entry
 Date: Tue, 14 May 2024 12:20:00 +0200
-Message-ID: <20240514101010.538224789@linuxfoundation.org>
+Message-ID: <20240514100959.491162743@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,256 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit aa23317d0268b309bb3f0801ddd0d61813ff5afb ]
+[ Upstream commit 4370b673ccf240bf7587b0cb8e6726a5ccaf1f17 ]
 
-simple_recursive_removal() drops the pinning references to all positives
-in subtree.  For the cases when its argument has been kept alive by
-the pinning alone that's exactly the right thing to do, but here
-the argument comes from dcache lookup, that needs to be balanced by
-explicit dput().
+thread_info.syscall is used by syscall_get_nr to supply syscall nr
+over a thread stack frame.
 
-Fixes: e41d237818598 "qib_fs: switch to simple_recursive_removal()"
-Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Previously, thread_info.syscall is only saved at syscall_trace_enter
+when syscall tracing is enabled. However rest of the kernel code do
+expect syscall_get_nr to be available without syscall tracing. The
+previous design breaks collect_syscall.
+
+Move saving process to syscall entry to fix it.
+
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Link: https://github.com/util-linux/util-linux/issues/2867
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/qib/qib_fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/ptrace.h |  2 +-
+ arch/mips/kernel/asm-offsets.c |  1 +
+ arch/mips/kernel/ptrace.c      | 15 ++++++---------
+ arch/mips/kernel/scall32-o32.S | 23 +++++++++++++----------
+ arch/mips/kernel/scall64-n32.S |  3 ++-
+ arch/mips/kernel/scall64-n64.S |  3 ++-
+ arch/mips/kernel/scall64-o32.S | 33 +++++++++++++++++----------------
+ 7 files changed, 42 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
-index a0c5f3bdc3246..8665e506404f9 100644
---- a/drivers/infiniband/hw/qib/qib_fs.c
-+++ b/drivers/infiniband/hw/qib/qib_fs.c
-@@ -441,6 +441,7 @@ static int remove_device_files(struct super_block *sb,
- 		return PTR_ERR(dir);
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 2849a9b65a055..ae578860f7295 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -157,7 +157,7 @@ static inline long regs_return_value(struct pt_regs *regs)
+ #define instruction_pointer(regs) ((regs)->cp0_epc)
+ #define profile_pc(regs) instruction_pointer(regs)
+ 
+-extern asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall);
++extern asmlinkage long syscall_trace_enter(struct pt_regs *regs);
+ extern asmlinkage void syscall_trace_leave(struct pt_regs *regs);
+ 
+ extern void die(const char *, struct pt_regs *) __noreturn;
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index aebfda81120a1..6c5269d3aacba 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -100,6 +100,7 @@ void output_thread_info_defines(void)
+ 	OFFSET(TI_PRE_COUNT, thread_info, preempt_count);
+ 	OFFSET(TI_ADDR_LIMIT, thread_info, addr_limit);
+ 	OFFSET(TI_REGS, thread_info, regs);
++	OFFSET(TI_SYSCALL, thread_info, syscall);
+ 	DEFINE(_THREAD_SIZE, THREAD_SIZE);
+ 	DEFINE(_THREAD_MASK, THREAD_MASK);
+ 	DEFINE(_IRQ_STACK_SIZE, IRQ_STACK_SIZE);
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index db7c5be1d4a35..dd454b429ff73 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -1310,16 +1310,13 @@ long arch_ptrace(struct task_struct *child, long request,
+  * Notification of system call entry/exit
+  * - triggered by current->work.syscall_trace
+  */
+-asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
++asmlinkage long syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	user_exit();
+ 
+-	current_thread_info()->syscall = syscall;
+-
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE)) {
+ 		if (tracehook_report_syscall_entry(regs))
+ 			return -1;
+-		syscall = current_thread_info()->syscall;
  	}
- 	simple_recursive_removal(dir, NULL);
-+	dput(dir);
- 	return 0;
+ 
+ #ifdef CONFIG_SECCOMP
+@@ -1328,7 +1325,7 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
+ 		struct seccomp_data sd;
+ 		unsigned long args[6];
+ 
+-		sd.nr = syscall;
++		sd.nr = current_thread_info()->syscall;
+ 		sd.arch = syscall_get_arch(current);
+ 		syscall_get_arguments(current, regs, args);
+ 		for (i = 0; i < 6; i++)
+@@ -1338,23 +1335,23 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
+ 		ret = __secure_computing(&sd);
+ 		if (ret == -1)
+ 			return ret;
+-		syscall = current_thread_info()->syscall;
+ 	}
+ #endif
+ 
+ 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+ 		trace_sys_enter(regs, regs->regs[2]);
+ 
+-	audit_syscall_entry(syscall, regs->regs[4], regs->regs[5],
++	audit_syscall_entry(current_thread_info()->syscall,
++			    regs->regs[4], regs->regs[5],
+ 			    regs->regs[6], regs->regs[7]);
+ 
+ 	/*
+ 	 * Negative syscall numbers are mistaken for rejected syscalls, but
+ 	 * won't have had the return value set appropriately, so we do so now.
+ 	 */
+-	if (syscall < 0)
++	if (current_thread_info()->syscall < 0)
+ 		syscall_set_return_value(current, regs, -ENOSYS, 0);
+-	return syscall;
++	return current_thread_info()->syscall;
  }
+ 
+ /*
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index b449b68662a9a..80747719a35ca 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -80,6 +80,18 @@ loads_done:
+ 	PTR	load_a7, bad_stack_a7
+ 	.previous
+ 
++	/*
++	 * syscall number is in v0 unless we called syscall(__NR_###)
++	 * where the real syscall number is in a0
++	 */
++	subu	t2, v0,  __NR_O32_Linux
++	bnez	t2, 1f /* __NR_syscall at offset 0 */
++	LONG_S	a0, TI_SYSCALL($28)	# Save a0 as syscall number
++	b	2f
++1:
++	LONG_S	v0, TI_SYSCALL($28)	# Save v0 as syscall number
++2:
++
+ 	lw	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	and	t0, t1
+@@ -117,16 +129,7 @@ syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	a0, sp
+ 
+-	/*
+-	 * syscall number is in v0 unless we called syscall(__NR_###)
+-	 * where the real syscall number is in a0
+-	 */
+-	move	a1, v0
+-	subu	t2, v0,  __NR_O32_Linux
+-	bnez	t2, 1f /* __NR_syscall at offset 0 */
+-	lw	a1, PT_R4(sp)
+-
+-1:	jal	syscall_trace_enter
++	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
+ 
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index 35d8c86b160ea..a8679e34c95e3 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -44,6 +44,8 @@ NESTED(handle_sysn32, PT_SIZE, sp)
+ 
+ 	sd	a3, PT_R26(sp)		# save a3 for syscall restarting
+ 
++	LONG_S	v0, TI_SYSCALL($28)     # Store syscall number
++
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	LONG_L	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	and	t0, t1, t0
+@@ -72,7 +74,6 @@ syscall_common:
+ n32_syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	a0, sp
+-	move	a1, v0
+ 	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
+diff --git a/arch/mips/kernel/scall64-n64.S b/arch/mips/kernel/scall64-n64.S
+index 23b2e2b1609cf..a3b5ab509b412 100644
+--- a/arch/mips/kernel/scall64-n64.S
++++ b/arch/mips/kernel/scall64-n64.S
+@@ -47,6 +47,8 @@ NESTED(handle_sys64, PT_SIZE, sp)
+ 
+ 	sd	a3, PT_R26(sp)		# save a3 for syscall restarting
+ 
++	LONG_S	v0, TI_SYSCALL($28)     # Store syscall number
++
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	LONG_L	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	and	t0, t1, t0
+@@ -83,7 +85,6 @@ n64_syscall_exit:
+ syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	a0, sp
+-	move	a1, v0
+ 	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 50c9a57e0d3ad..6757368e9c940 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -79,6 +79,22 @@ loads_done:
+ 	PTR	load_a7, bad_stack_a7
+ 	.previous
+ 
++	/*
++	 * absolute syscall number is in v0 unless we called syscall(__NR_###)
++	 * where the real syscall number is in a0
++	 * note: NR_syscall is the first O32 syscall but the macro is
++	 * only defined when compiling with -mabi=32 (CONFIG_32BIT)
++	 * therefore __NR_O32_Linux is used (4000)
++	 */
++
++	subu	t2, v0,  __NR_O32_Linux
++	bnez	t2, 1f /* __NR_syscall at offset 0 */
++	LONG_S	a0, TI_SYSCALL($28)	# Save a0 as syscall number
++	b	2f
++1:
++	LONG_S	v0, TI_SYSCALL($28)	# Save v0 as syscall number
++2:
++
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	LONG_L	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	and	t0, t1, t0
+@@ -113,22 +129,7 @@ trace_a_syscall:
+ 	sd	a7, PT_R11(sp)		# For indirect syscalls
+ 
+ 	move	a0, sp
+-	/*
+-	 * absolute syscall number is in v0 unless we called syscall(__NR_###)
+-	 * where the real syscall number is in a0
+-	 * note: NR_syscall is the first O32 syscall but the macro is
+-	 * only defined when compiling with -mabi=32 (CONFIG_32BIT)
+-	 * therefore __NR_O32_Linux is used (4000)
+-	 */
+-	.set	push
+-	.set	reorder
+-	subu	t1, v0,  __NR_O32_Linux
+-	move	a1, v0
+-	bnez	t1, 1f /* __NR_syscall at offset 0 */
+-	ld	a1, PT_R4(sp) /* Arg1 for __NR_syscall case */
+-	.set	pop
+-
+-1:	jal	syscall_trace_enter
++	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
  
 -- 
 2.43.0
