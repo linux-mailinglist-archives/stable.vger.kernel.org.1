@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-43866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C96498C4FF5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E988C514F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AE0A1F212E7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D7712819A8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3C3524BE;
-	Tue, 14 May 2024 10:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA8212FF6A;
+	Tue, 14 May 2024 10:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsQVHnFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMS9a3GM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADA04F1F8;
-	Tue, 14 May 2024 10:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2862512FB21;
+	Tue, 14 May 2024 10:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682763; cv=none; b=Pi8XpInuhnHScjcHWxRXretdeOwM1vCP9I4S00pq+sKoKPsCB/6CDM6Q0EtV9kdaqYtQMDuG3gECvnffkjz6GlMqZsJFM5K9IwzwfwAtPkTOhQAuRRxk2RoYecuauDimM/IFq6r4KDhH6lNLZWHzd6gIEqLwUkrn5sFu6wp7ksg=
+	t=1715684245; cv=none; b=ENaxK+pV/RC6lJqUqbaxATCyl2poX1f7az0gvMt3cYLg7h5iRsn+ZNmvVSiBgUrwW4pGqTbOVsq9YVHdhGAo1LCFYKqoB0PZppj34enulfNHBMUAFJy6oxsQjC+nmxci9zlT1VuwFdXibwJKIJQD08Eisj9Tg0Wh+cdieCD5c6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682763; c=relaxed/simple;
-	bh=JD+rNRTC/3MGPrF1p/MOAO8UpKP1pkUO3HIgl4m8lQM=;
+	s=arc-20240116; t=1715684245; c=relaxed/simple;
+	bh=LLqIEYpPf4gsgNOqQfl63N8RsBuB//dSQ+DuRztV/Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htjkbjmU9m2v6ybdb1P3nL8HIHECcxGSLZcbg4l1Dkw6WLmhVFHBVjLVihRgA0woxsKz7B4ZuWYNa71or5xGP8WD6lrVttPaQcQIjAcg8EGavZIaWpg7hwZi0KyGQc+suHxwZh+oJPrXD7pA1S6hn1YHT2bEie5IMbnonzigEfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsQVHnFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E46C2BD10;
-	Tue, 14 May 2024 10:32:42 +0000 (UTC)
+	 MIME-Version; b=aGVgu+ixl1m2JZhwTXpn5N9FrM5tLZ5I3cvybv1HjpBHx55pHJgLI4nqVM1dNbGEro2IXqxkZQe+I4vgv29+I+V3y2C7U+8PyDXXHN/3fmCwikfT3+dxadIgGGGpPvJKCnC2rsaiqb2IrNXSo6kj7JtIMWKGA4xSCaxL+mIfECg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMS9a3GM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7BDC2BD10;
+	Tue, 14 May 2024 10:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682763;
-	bh=JD+rNRTC/3MGPrF1p/MOAO8UpKP1pkUO3HIgl4m8lQM=;
+	s=korg; t=1715684245;
+	bh=LLqIEYpPf4gsgNOqQfl63N8RsBuB//dSQ+DuRztV/Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CsQVHnFbynmvCSp60RkqYz6UyggvSVz0TLgb97/c72J0YSaN65qx4ajfRHJmKldms
-	 E1cqWMBPhypa4xYe0flDDETyAlb3coIsYyCqWmQ8Y2ZopLcSOxAABwsZ1jhxsTCKNN
-	 G6R/1N9kI54pywxyX6N9AFRZU2F/xEMqjNuqAa3Q=
+	b=cMS9a3GMXsaSE6OaZCL4ZGM/GyETrR5cXZ2fqk7U8f/BrTEpVCVL6GYVG5JN8iIMw
+	 2y0E8eEYdKbPrxAatuXOKsxGmZW3vhjUceeyH28U3zpfrba57JFb3pFiDAuZf1I0/a
+	 IuhqdbUYwa/FoetjUIINrABlPsWe6UpzOxQaTIL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 079/336] s390/qeth: Fix kernel panic after setting hsuid
+Subject: [PATCH 6.6 012/301] pinctrl: pinctrl-aspeed-g6: Fix register offset for pinconf of GPIOR-T
 Date: Tue, 14 May 2024 12:14:43 +0200
-Message-ID: <20240514101041.588360279@linuxfoundation.org>
+Message-ID: <20240514101032.697757585@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,232 +65,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit 8a2e4d37afb8500b276e5ee903dee06f50ab0494 ]
+[ Upstream commit c10cd03d69403fa0f00be8631bd4cb4690440ebd ]
 
-Symptom:
-When the hsuid attribute is set for the first time on an IQD Layer3
-device while the corresponding network interface is already UP,
-the kernel will try to execute a napi function pointer that is NULL.
+The register offset to disable the internal pull-down of GPIOR~T is 0x630
+instead of 0x620, as specified in the Ast2600 datasheet v15
+The datasheet can download from the official Aspeed website.
 
-Example:
----------------------------------------------------------------------------
-[ 2057.572696] illegal operation: 0001 ilc:1 [#1] SMP
-[ 2057.572702] Modules linked in: af_iucv qeth_l3 zfcp scsi_transport_fc sunrpc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6
-nft_reject nft_ct nf_tables_set nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables libcrc32c nfnetlink ghash_s390 prng xts aes_s390 des_s390 de
-s_generic sha3_512_s390 sha3_256_s390 sha512_s390 vfio_ccw vfio_mdev mdev vfio_iommu_type1 eadm_sch vfio ext4 mbcache jbd2 qeth_l2 bridge stp llc dasd_eckd_mod qeth dasd_mod
- qdio ccwgroup pkey zcrypt
-[ 2057.572739] CPU: 6 PID: 60182 Comm: stress_client Kdump: loaded Not tainted 4.18.0-541.el8.s390x #1
-[ 2057.572742] Hardware name: IBM 3931 A01 704 (LPAR)
-[ 2057.572744] Krnl PSW : 0704f00180000000 0000000000000002 (0x2)
-[ 2057.572748]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[ 2057.572751] Krnl GPRS: 0000000000000004 0000000000000000 00000000a3b008d8 0000000000000000
-[ 2057.572754]            00000000a3b008d8 cb923a29c779abc5 0000000000000000 00000000814cfd80
-[ 2057.572756]            000000000000012c 0000000000000000 00000000a3b008d8 00000000a3b008d8
-[ 2057.572758]            00000000bab6d500 00000000814cfd80 0000000091317e46 00000000814cfc68
-[ 2057.572762] Krnl Code:#0000000000000000: 0000                illegal
-                         >0000000000000002: 0000                illegal
-                          0000000000000004: 0000                illegal
-                          0000000000000006: 0000                illegal
-                          0000000000000008: 0000                illegal
-                          000000000000000a: 0000                illegal
-                          000000000000000c: 0000                illegal
-                          000000000000000e: 0000                illegal
-[ 2057.572800] Call Trace:
-[ 2057.572801] ([<00000000ec639700>] 0xec639700)
-[ 2057.572803]  [<00000000913183e2>] net_rx_action+0x2ba/0x398
-[ 2057.572809]  [<0000000091515f76>] __do_softirq+0x11e/0x3a0
-[ 2057.572813]  [<0000000090ce160c>] do_softirq_own_stack+0x3c/0x58
-[ 2057.572817] ([<0000000090d2cbd6>] do_softirq.part.1+0x56/0x60)
-[ 2057.572822]  [<0000000090d2cc60>] __local_bh_enable_ip+0x80/0x98
-[ 2057.572825]  [<0000000091314706>] __dev_queue_xmit+0x2be/0xd70
-[ 2057.572827]  [<000003ff803dd6d6>] afiucv_hs_send+0x24e/0x300 [af_iucv]
-[ 2057.572830]  [<000003ff803dd88a>] iucv_send_ctrl+0x102/0x138 [af_iucv]
-[ 2057.572833]  [<000003ff803de72a>] iucv_sock_connect+0x37a/0x468 [af_iucv]
-[ 2057.572835]  [<00000000912e7e90>] __sys_connect+0xa0/0xd8
-[ 2057.572839]  [<00000000912e9580>] sys_socketcall+0x228/0x348
-[ 2057.572841]  [<0000000091514e1a>] system_call+0x2a6/0x2c8
-[ 2057.572843] Last Breaking-Event-Address:
-[ 2057.572844]  [<0000000091317e44>] __napi_poll+0x4c/0x1d8
-[ 2057.572846]
-[ 2057.572847] Kernel panic - not syncing: Fatal exception in interrupt
--------------------------------------------------------------------------------------------
-
-Analysis:
-There is one napi structure per out_q: card->qdio.out_qs[i].napi
-The napi.poll functions are set during qeth_open().
-
-Since
-commit 1cfef80d4c2b ("s390/qeth: Don't call dev_close/dev_open (DOWN/UP)")
-qeth_set_offline()/qeth_set_online() no longer call dev_close()/
-dev_open(). So if qeth_free_qdio_queues() cleared
-card->qdio.out_qs[i].napi.poll while the network interface was UP and the
-card was offline, they are not set again.
-
-Reproduction:
-chzdev -e $devno layer2=0
-ip link set dev $network_interface up
-echo 0 > /sys/bus/ccwgroup/devices/0.0.$devno/online
-echo foo > /sys/bus/ccwgroup/devices/0.0.$devno/hsuid
-echo 1 > /sys/bus/ccwgroup/devices/0.0.$devno/online
--> Crash (can be enforced e.g. by af_iucv connect(), ip link down/up, ...)
-
-Note that a Completion Queue (CQ) is only enabled or disabled, when hsuid
-is set for the first time or when it is removed.
-
-Workarounds:
-- Set hsuid before setting the device online for the first time
-or
-- Use chzdev -d $devno; chzdev $devno hsuid=xxx; chzdev -e $devno;
-to set hsuid on an existing device. (this will remove and recreate the
-network interface)
-
-Fix:
-There is no need to free the output queues when a completion queue is
-added or removed.
-card->qdio.state now indicates whether the inbound buffer pool and the
-outbound queues are allocated.
-card->qdio.c_q indicates whether a CQ is allocated.
-
-Fixes: 1cfef80d4c2b ("s390/qeth: Don't call dev_close/dev_open (DOWN/UP)")
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240430091004.2265683-1-wintera@linux.ibm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 15711ba6ff19 ("pinctrl: aspeed-g6: Add AST2600 pinconf support")
+Reported-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Message-ID: <20240313092809.2596644-1-billy_tsai@aspeedtech.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/net/qeth_core_main.c | 61 ++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 34 deletions(-)
+ drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c | 34 +++++++++++-----------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
-index 601d00e09de4a..dc5ae75d462b9 100644
---- a/drivers/s390/net/qeth_core_main.c
-+++ b/drivers/s390/net/qeth_core_main.c
-@@ -364,30 +364,33 @@ static int qeth_cq_init(struct qeth_card *card)
- 	return rc;
- }
+diff --git a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
+index 80838dc54b3ab..7938741136a2c 100644
+--- a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
++++ b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
+@@ -43,7 +43,7 @@
+ #define SCU614		0x614 /* Disable GPIO Internal Pull-Down #1 */
+ #define SCU618		0x618 /* Disable GPIO Internal Pull-Down #2 */
+ #define SCU61C		0x61c /* Disable GPIO Internal Pull-Down #3 */
+-#define SCU620		0x620 /* Disable GPIO Internal Pull-Down #4 */
++#define SCU630		0x630 /* Disable GPIO Internal Pull-Down #4 */
+ #define SCU634		0x634 /* Disable GPIO Internal Pull-Down #5 */
+ #define SCU638		0x638 /* Disable GPIO Internal Pull-Down #6 */
+ #define SCU690		0x690 /* Multi-function Pin Control #24 */
+@@ -2494,38 +2494,38 @@ static struct aspeed_pin_config aspeed_g6_configs[] = {
+ 	ASPEED_PULL_DOWN_PINCONF(D14, SCU61C, 0),
  
-+static void qeth_free_cq(struct qeth_card *card)
-+{
-+	if (card->qdio.c_q) {
-+		qeth_free_qdio_queue(card->qdio.c_q);
-+		card->qdio.c_q = NULL;
-+	}
-+}
-+
- static int qeth_alloc_cq(struct qeth_card *card)
- {
- 	if (card->options.cq == QETH_CQ_ENABLED) {
- 		QETH_CARD_TEXT(card, 2, "cqon");
--		card->qdio.c_q = qeth_alloc_qdio_queue();
- 		if (!card->qdio.c_q) {
--			dev_err(&card->gdev->dev, "Failed to create completion queue\n");
--			return -ENOMEM;
-+			card->qdio.c_q = qeth_alloc_qdio_queue();
-+			if (!card->qdio.c_q) {
-+				dev_err(&card->gdev->dev,
-+					"Failed to create completion queue\n");
-+				return -ENOMEM;
-+			}
- 		}
- 	} else {
- 		QETH_CARD_TEXT(card, 2, "nocq");
--		card->qdio.c_q = NULL;
-+		qeth_free_cq(card);
- 	}
- 	return 0;
- }
+ 	/* GPIOS7 */
+-	ASPEED_PULL_DOWN_PINCONF(T24, SCU620, 23),
++	ASPEED_PULL_DOWN_PINCONF(T24, SCU630, 23),
+ 	/* GPIOS6 */
+-	ASPEED_PULL_DOWN_PINCONF(P23, SCU620, 22),
++	ASPEED_PULL_DOWN_PINCONF(P23, SCU630, 22),
+ 	/* GPIOS5 */
+-	ASPEED_PULL_DOWN_PINCONF(P24, SCU620, 21),
++	ASPEED_PULL_DOWN_PINCONF(P24, SCU630, 21),
+ 	/* GPIOS4 */
+-	ASPEED_PULL_DOWN_PINCONF(R26, SCU620, 20),
++	ASPEED_PULL_DOWN_PINCONF(R26, SCU630, 20),
+ 	/* GPIOS3*/
+-	ASPEED_PULL_DOWN_PINCONF(R24, SCU620, 19),
++	ASPEED_PULL_DOWN_PINCONF(R24, SCU630, 19),
+ 	/* GPIOS2 */
+-	ASPEED_PULL_DOWN_PINCONF(T26, SCU620, 18),
++	ASPEED_PULL_DOWN_PINCONF(T26, SCU630, 18),
+ 	/* GPIOS1 */
+-	ASPEED_PULL_DOWN_PINCONF(T25, SCU620, 17),
++	ASPEED_PULL_DOWN_PINCONF(T25, SCU630, 17),
+ 	/* GPIOS0 */
+-	ASPEED_PULL_DOWN_PINCONF(R23, SCU620, 16),
++	ASPEED_PULL_DOWN_PINCONF(R23, SCU630, 16),
  
--static void qeth_free_cq(struct qeth_card *card)
--{
--	if (card->qdio.c_q) {
--		qeth_free_qdio_queue(card->qdio.c_q);
--		card->qdio.c_q = NULL;
--	}
--}
--
- static enum iucv_tx_notify qeth_compute_cq_notification(int sbalf15,
- 							int delayed)
- {
-@@ -2628,6 +2631,10 @@ static int qeth_alloc_qdio_queues(struct qeth_card *card)
+ 	/* GPIOR7 */
+-	ASPEED_PULL_DOWN_PINCONF(U26, SCU620, 15),
++	ASPEED_PULL_DOWN_PINCONF(U26, SCU630, 15),
+ 	/* GPIOR6 */
+-	ASPEED_PULL_DOWN_PINCONF(W26, SCU620, 14),
++	ASPEED_PULL_DOWN_PINCONF(W26, SCU630, 14),
+ 	/* GPIOR5 */
+-	ASPEED_PULL_DOWN_PINCONF(T23, SCU620, 13),
++	ASPEED_PULL_DOWN_PINCONF(T23, SCU630, 13),
+ 	/* GPIOR4 */
+-	ASPEED_PULL_DOWN_PINCONF(U25, SCU620, 12),
++	ASPEED_PULL_DOWN_PINCONF(U25, SCU630, 12),
+ 	/* GPIOR3*/
+-	ASPEED_PULL_DOWN_PINCONF(V26, SCU620, 11),
++	ASPEED_PULL_DOWN_PINCONF(V26, SCU630, 11),
+ 	/* GPIOR2 */
+-	ASPEED_PULL_DOWN_PINCONF(V24, SCU620, 10),
++	ASPEED_PULL_DOWN_PINCONF(V24, SCU630, 10),
+ 	/* GPIOR1 */
+-	ASPEED_PULL_DOWN_PINCONF(U24, SCU620, 9),
++	ASPEED_PULL_DOWN_PINCONF(U24, SCU630, 9),
+ 	/* GPIOR0 */
+-	ASPEED_PULL_DOWN_PINCONF(V25, SCU620, 8),
++	ASPEED_PULL_DOWN_PINCONF(V25, SCU630, 8),
  
- 	QETH_CARD_TEXT(card, 2, "allcqdbf");
- 
-+	/* completion */
-+	if (qeth_alloc_cq(card))
-+		goto out_err;
-+
- 	if (atomic_cmpxchg(&card->qdio.state, QETH_QDIO_UNINITIALIZED,
- 		QETH_QDIO_ALLOCATED) != QETH_QDIO_UNINITIALIZED)
- 		return 0;
-@@ -2663,10 +2670,6 @@ static int qeth_alloc_qdio_queues(struct qeth_card *card)
- 		queue->priority = QETH_QIB_PQUE_PRIO_DEFAULT;
- 	}
- 
--	/* completion */
--	if (qeth_alloc_cq(card))
--		goto out_freeoutq;
--
- 	return 0;
- 
- out_freeoutq:
-@@ -2677,6 +2680,8 @@ static int qeth_alloc_qdio_queues(struct qeth_card *card)
- 	qeth_free_buffer_pool(card);
- out_buffer_pool:
- 	atomic_set(&card->qdio.state, QETH_QDIO_UNINITIALIZED);
-+	qeth_free_cq(card);
-+out_err:
- 	return -ENOMEM;
- }
- 
-@@ -2684,11 +2689,12 @@ static void qeth_free_qdio_queues(struct qeth_card *card)
- {
- 	int i, j;
- 
-+	qeth_free_cq(card);
-+
- 	if (atomic_xchg(&card->qdio.state, QETH_QDIO_UNINITIALIZED) ==
- 		QETH_QDIO_UNINITIALIZED)
- 		return;
- 
--	qeth_free_cq(card);
- 	for (j = 0; j < QDIO_MAX_BUFFERS_PER_Q; ++j) {
- 		if (card->qdio.in_q->bufs[j].rx_skb) {
- 			consume_skb(card->qdio.in_q->bufs[j].rx_skb);
-@@ -3742,24 +3748,11 @@ static void qeth_qdio_poll(struct ccw_device *cdev, unsigned long card_ptr)
- 
- int qeth_configure_cq(struct qeth_card *card, enum qeth_cq cq)
- {
--	int rc;
--
--	if (card->options.cq ==  QETH_CQ_NOTAVAILABLE) {
--		rc = -1;
--		goto out;
--	} else {
--		if (card->options.cq == cq) {
--			rc = 0;
--			goto out;
--		}
--
--		qeth_free_qdio_queues(card);
--		card->options.cq = cq;
--		rc = 0;
--	}
--out:
--	return rc;
-+	if (card->options.cq == QETH_CQ_NOTAVAILABLE)
-+		return -1;
- 
-+	card->options.cq = cq;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(qeth_configure_cq);
- 
+ 	/* GPIOX7 */
+ 	ASPEED_PULL_DOWN_PINCONF(AB10, SCU634, 31),
 -- 
 2.43.0
 
