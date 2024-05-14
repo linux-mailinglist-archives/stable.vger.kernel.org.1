@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DFE8C514B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7545D8C4FD9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E5B7281FB9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BEDB1F2156F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B52A84DEA;
-	Tue, 14 May 2024 10:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF1C130483;
+	Tue, 14 May 2024 10:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BLjLNJh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVAwUfWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E2512FF7D;
-	Tue, 14 May 2024 10:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C957CA1;
+	Tue, 14 May 2024 10:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684266; cv=none; b=j80vn0+sm/WxCyrd1aWV0OVJwaHF3K1Noqz8FOJ0sOXyVZ4+KyDZ5TAvVWRZjEwjBzPHzIAqZ4C+8euzn29zXyvf0AgQ8tgX5urk65aJ/FWfFoDmRk6erfOw5TWzHU8IjHLMGkfgn1wfOT0V9fV+Ok0NoT8QMPuHZrDIpnZU1wY=
+	t=1715682567; cv=none; b=iALODx1PLememF1ruL+S37q6mmxPxpm3BesLcxnn58lHTnRV2q678SFJ217JETDNkICsd4hFeDf8d6reupad4FDzuUhXmAVJgLRFIsj+PKqn8PgV4h+oQPu4lJfW/Su7X+cL2IIIoFQA3s4ckh1affXw7wM+EtUzNlvZLisrzas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684266; c=relaxed/simple;
-	bh=n2lz2kCF5lf+HUS042KAa6hEVw7YqDBF6iD6CAwJ83s=;
+	s=arc-20240116; t=1715682567; c=relaxed/simple;
+	bh=FCiHoCWPuyDQhYXqjEOx8391a09Q4wQRpAZw06H9fCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/hqgJ57vVZDxLie2TJGTP1jqmjMlW5c5HExNjDyGu0DcxnnBsBWdy3i5c1lP0xyfrFzhdfy4z5U+SC0HO4CBRggkv2w0BLO0EdaoP+EiGLuqJcO971XwGDAkPRLuU12ryI80myc0Pcr+3LvJ5Jll/5HS133m12hOckBx8tGc6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BLjLNJh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66681C2BD10;
-	Tue, 14 May 2024 10:57:45 +0000 (UTC)
+	 MIME-Version; b=Aom7OU88D3d37unwtv5m1cHb0Gek+aoBSMy/TYiYWYoEV+k+2Wpv1yQHBVFp+BBAC+5Dj8rhYXRsx7m9yP01Wwvp1p3VZg8WJnx7qYXjPlF/lxDyXK3rXbndGRcyAGufP5g7ZsilOp+Fi5DyPN/XiMhDcFb+zz1iMGdb5quvG5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVAwUfWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C696C2BD10;
+	Tue, 14 May 2024 10:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684265;
-	bh=n2lz2kCF5lf+HUS042KAa6hEVw7YqDBF6iD6CAwJ83s=;
+	s=korg; t=1715682567;
+	bh=FCiHoCWPuyDQhYXqjEOx8391a09Q4wQRpAZw06H9fCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BLjLNJhT0Xnb/I1DIPD8lUxTcprmhu8evrP5slsBiCPC9CLBxJXzI/EN5HHLQmQE
-	 5jCYcu2bBO01e2QF/pyp+VnXMazxP77RXzIUmlpKZWOQUIzpN1gsw07t3J2EMx3wZz
-	 uWlIhVIe942px095agUwaz9Sg+wipkNVP5hvdpnE=
+	b=SVAwUfWFUSWdkW063Yd7TzxdBrKBZZa1dxl8dOlUwQOUayolHgyiNmKhYvuBAWwzw
+	 ujInzgSGeBB28NvcWtvQ3F1wyaJQK6xeUIdwUJHw22RuLtAevtSc+XsyN5/moFe9HU
+	 Lp/zFLIGvsYIGw5r/94TqhTGviTP+l+vKLcyzr58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/301] pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE
+Subject: [PATCH 6.8 083/336] ipv4: Fix uninit-value access in __ip_make_skb()
 Date: Tue, 14 May 2024 12:14:47 +0200
-Message-ID: <20240514101032.856208879@linuxfoundation.org>
+Message-ID: <20240514101041.740824061@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit c5d3b64c568a344e998830e0e94a7c04e372f89b ]
+[ Upstream commit fc1092f51567277509563800a3c56732070b6aa4 ]
 
-There is a misinterpretation of some of the PIN_CONFIG_* options in this
-driver library. PIN_CONFIG_OUTPUT_ENABLE should refer to a buffer or
-switch in the output direction of the electrical path. The MediaTek
-hardware does not have such a thing. The driver incorrectly maps this
-option to the GPIO function's direction.
+KMSAN reported uninit-value access in __ip_make_skb() [1].  __ip_make_skb()
+tests HDRINCL to know if the skb has icmphdr. However, HDRINCL can cause a
+race condition. If calling setsockopt(2) with IP_HDRINCL changes HDRINCL
+while __ip_make_skb() is running, the function will access icmphdr in the
+skb even if it is not included. This causes the issue reported by KMSAN.
 
-Likewise, PIN_CONFIG_INPUT_ENABLE should refer to a buffer or switch in
-the input direction. The hardware does have such a mechanism, and is
-mapped to the IES bit. The driver however sets the direction in addition
-to the IES bit, which is incorrect. On readback, the IES bit isn't even
-considered.
+Check FLOWI_FLAG_KNOWN_NH on fl4->flowi4_flags instead of testing HDRINCL
+on the socket.
 
-Ironically, the driver does not support readback for PIN_CONFIG_OUTPUT,
-while its readback of PIN_CONFIG_{INPUT,OUTPUT}_ENABLE is what it should
-be doing for PIN_CONFIG_OUTPUT.
+Also, fl4->fl4_icmp_type and fl4->fl4_icmp_code are not initialized. These
+are union in struct flowi4 and are implicitly initialized by
+flowi4_init_output(), but we should not rely on specific union layout.
 
-Rework support for these three options, so that PIN_CONFIG_OUTPUT_ENABLE
-is completely removed, PIN_CONFIG_INPUT_ENABLE is only linked to the IES
-bit, and PIN_CONFIG_OUTPUT is linked to the GPIO function's direction
-and output level.
+Initialize these explicitly in raw_sendmsg().
 
-Fixes: 805250982bb5 ("pinctrl: mediatek: add pinctrl-paris that implements the vendor dt-bindings")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Message-ID: <20240327091336.3434141-3-wenst@chromium.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+[1]
+BUG: KMSAN: uninit-value in __ip_make_skb+0x2b74/0x2d20 net/ipv4/ip_output.c:1481
+ __ip_make_skb+0x2b74/0x2d20 net/ipv4/ip_output.c:1481
+ ip_finish_skb include/net/ip.h:243 [inline]
+ ip_push_pending_frames+0x4c/0x5c0 net/ipv4/ip_output.c:1508
+ raw_sendmsg+0x2381/0x2690 net/ipv4/raw.c:654
+ inet_sendmsg+0x27b/0x2a0 net/ipv4/af_inet.c:851
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x274/0x3c0 net/socket.c:745
+ __sys_sendto+0x62c/0x7b0 net/socket.c:2191
+ __do_sys_sendto net/socket.c:2203 [inline]
+ __se_sys_sendto net/socket.c:2199 [inline]
+ __x64_sys_sendto+0x130/0x200 net/socket.c:2199
+ do_syscall_64+0xd8/0x1f0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:3804 [inline]
+ slab_alloc_node mm/slub.c:3845 [inline]
+ kmem_cache_alloc_node+0x5f6/0xc50 mm/slub.c:3888
+ kmalloc_reserve+0x13c/0x4a0 net/core/skbuff.c:577
+ __alloc_skb+0x35a/0x7c0 net/core/skbuff.c:668
+ alloc_skb include/linux/skbuff.h:1318 [inline]
+ __ip_append_data+0x49ab/0x68c0 net/ipv4/ip_output.c:1128
+ ip_append_data+0x1e7/0x260 net/ipv4/ip_output.c:1365
+ raw_sendmsg+0x22b1/0x2690 net/ipv4/raw.c:648
+ inet_sendmsg+0x27b/0x2a0 net/ipv4/af_inet.c:851
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x274/0x3c0 net/socket.c:745
+ __sys_sendto+0x62c/0x7b0 net/socket.c:2191
+ __do_sys_sendto net/socket.c:2203 [inline]
+ __se_sys_sendto net/socket.c:2199 [inline]
+ __x64_sys_sendto+0x130/0x200 net/socket.c:2199
+ do_syscall_64+0xd8/0x1f0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+CPU: 1 PID: 15709 Comm: syz-executor.7 Not tainted 6.8.0-11567-gb3603fcb79b1 #25
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
+
+Fixes: 99e5acae193e ("ipv4: Fix potential uninit variable access bug in __ip_make_skb()")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Link: https://lore.kernel.org/r/20240430123945.2057348-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c | 38 +++++++-----------------
- 1 file changed, 11 insertions(+), 27 deletions(-)
+ net/ipv4/ip_output.c | 2 +-
+ net/ipv4/raw.c       | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index ea60de040e0a0..9cd7fe3c3e0df 100644
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -165,20 +165,21 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SR, &ret);
- 		break;
- 	case PIN_CONFIG_INPUT_ENABLE:
--	case PIN_CONFIG_OUTPUT_ENABLE:
-+		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_IES, &ret);
-+		if (!ret)
-+			err = -EINVAL;
-+		break;
-+	case PIN_CONFIG_OUTPUT:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
- 		if (err)
- 			break;
--		/*     CONFIG     Current direction return value
--		 * -------------  ----------------- ----------------------
--		 * OUTPUT_ENABLE       output       1 (= HW value)
--		 *                     input        0 (= HW value)
--		 * INPUT_ENABLE        output       0 (= reverse HW value)
--		 *                     input        1 (= reverse HW value)
--		 */
--		if (param == PIN_CONFIG_INPUT_ENABLE)
--			ret = !ret;
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 67d846622365e..a38e63669c54a 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1473,7 +1473,7 @@ struct sk_buff *__ip_make_skb(struct sock *sk,
+ 		 * by icmp_hdr(skb)->type.
+ 		 */
+ 		if (sk->sk_type == SOCK_RAW &&
+-		    !inet_test_bit(HDRINCL, sk))
++		    !(fl4->flowi4_flags & FLOWI_FLAG_KNOWN_NH))
+ 			icmp_type = fl4->fl4_icmp_type;
+ 		else
+ 			icmp_type = icmp_hdr(skb)->type;
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index 288f1846b3518..a1d8218fa1a2d 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -605,6 +605,9 @@ static int raw_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
+ 			   daddr, saddr, 0, 0, sk->sk_uid);
  
-+		if (!ret) {
-+			err = -EINVAL;
-+			break;
-+		}
++	fl4.fl4_icmp_type = 0;
++	fl4.fl4_icmp_code = 0;
 +
-+		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DO, &ret);
- 		break;
- 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
-@@ -283,26 +284,9 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 			break;
- 		err = hw->soc->bias_set_combo(hw, desc, 0, arg);
- 		break;
--	case PIN_CONFIG_OUTPUT_ENABLE:
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT,
--				       MTK_DISABLE);
--		/* Keep set direction to consider the case that a GPIO pin
--		 *  does not have SMT control
--		 */
--		if (err != -ENOTSUPP)
--			break;
--
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
--				       MTK_OUTPUT);
--		break;
- 	case PIN_CONFIG_INPUT_ENABLE:
- 		/* regard all non-zero value as enable */
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, !!arg);
--		if (err)
--			break;
--
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
--				       MTK_INPUT);
- 		break;
- 	case PIN_CONFIG_SLEW_RATE:
- 		/* regard all non-zero value as enable */
+ 	if (!hdrincl) {
+ 		rfv.msg = msg;
+ 		rfv.hlen = 0;
 -- 
 2.43.0
 
