@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3612F8C5163
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2C48C4FF3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E134E1F21E4E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 537B1283FE3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6D6136675;
-	Tue, 14 May 2024 11:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1DB47F5D;
+	Tue, 14 May 2024 10:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E94wT4j9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yd6+U1hJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4395136679;
-	Tue, 14 May 2024 10:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997EB22EF3;
+	Tue, 14 May 2024 10:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684400; cv=none; b=qkCe9aJBSR3hrUf390WieArOyLGu2GZFfTYFUirlA/e5peCc9C4bLLl9fjLvc4GY3D26zDPz5DKR1YOHMOv2d6rdQifbxqeSzHKKZDrITC+7x+rJowxSC1/iZoV7RPQ82NwaMxuO07iy4EcUyP8vm8bMlEbvSZCcrCm0JpgFi1g=
+	t=1715682730; cv=none; b=tuSozD5zVhjHMjlGtPWQKMTGiw5tLK23cwH3myKwO91Ae6TShwX2YOoeRZwf36kEND3Jgi2Sq/dBTFI8+VrJ0BWv7DMFmy92Z+HXVsraJjVfrL0YvqpYC2UvGW8TC35rw7YDdNPU8rSrk2IpotATYufRdT8AlRk7AD616Nu2RxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684400; c=relaxed/simple;
-	bh=hMN9kuV8Qc0+3495P5lO00390Hldd0Bx1w1PWbret+s=;
+	s=arc-20240116; t=1715682730; c=relaxed/simple;
+	bh=G3NmOMcbpsu15GLZ8fYyvilvgZ7XJfkbamQKb/GrfjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxV9wiOpPHCqwD7Cl9vpja5TDzhdyrns5XZ8LitENWc71ak/gNlo2hmTLfC58NWQczP97cTc0Q4vMyS/RGnshyC7V0VruhmWDwhOTrJNQVzMPnDgdJlnIEecO8hZSRxZVdDzYhAr7bmDvR0YEuDFAGHT9IYDW++5245y9etiYd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E94wT4j9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5897DC2BD10;
-	Tue, 14 May 2024 10:59:58 +0000 (UTC)
+	 MIME-Version; b=u+E98wwbawuSOcWQ80iLFU3nQhSJUF47sHgSdyAM80awbW0WG03s3EEtBARZ0+frgKUJJNX3jj0CfDyJhcaKO8ECGNF7BeBDGrAKmOvz1VLVMH2b0WCA6onQbDB7f7nD6YxRTwrCBE3IhS+QIut5m46EIMMOkilypjM4/uuslxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yd6+U1hJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4862C2BD10;
+	Tue, 14 May 2024 10:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684399;
-	bh=hMN9kuV8Qc0+3495P5lO00390Hldd0Bx1w1PWbret+s=;
+	s=korg; t=1715682730;
+	bh=G3NmOMcbpsu15GLZ8fYyvilvgZ7XJfkbamQKb/GrfjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E94wT4j9+FTfv8KuOx/aWVhv9INsoui8pbMDYGBgsRUgJqfKJBfUCPgFZmJfj6sWc
-	 0z9EnU0kzQyJjw8jBY0+UXgoSdvasJtxHR3FET1s2heV1YIT+58ryCqTj3EBfwUQZ3
-	 x+6u1vKY3EbVx2Q/DkkXDLVDo1QoYt+qB2K+qzdE=
+	b=yd6+U1hJIYtou55rVNo1mPQWodvGuhZ/h7jntT3DcaSyAoPSHNRuToFHp6OuLGo2f
+	 44M5Jc5qpgz5R7msGM4ZynL7ouVPWgTH+WyVzds5is2AWxju+2x6QfU99KGywSjvcu
+	 IHuDWRy6aFg6zyR/yyttwIw43Z3W5qSowKcbe0cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/301] spi: axi-spi-engine: use devm_spi_alloc_host()
+Subject: [PATCH 6.8 104/336] fs/9p: fix uninitialized values during inode evict
 Date: Tue, 14 May 2024 12:15:08 +0200
-Message-ID: <20240514101033.646561128@linuxfoundation.org>
+Message-ID: <20240514101042.532819449@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Eric Van Hensbergen <ericvh@kernel.org>
 
-[ Upstream commit e12cd96e8e93044646fdf4b2c9a1de62cfa01e7c ]
+[ Upstream commit 6630036b7c228f57c7893ee0403e92c2db2cd21d ]
 
-This modifies the AXI SPI Engine driver to use devm_spi_alloc_host()
-instead of spi_alloc_host() to simplify the code a bit.
+If an iget fails due to not being able to retrieve information
+from the server then the inode structure is only partially
+initialized.  When the inode gets evicted, references to
+uninitialized structures (like fscache cookies) were being
+made.
 
-In addition to simplifying the error paths in the probe function, we
-can also remove spi_controller_get/put() calls in the remove function
-since devm_spi_alloc_host() sets a flag to no longer decrement the
-controller reference count in the spi_unregister_controller() function.
+This patch checks for a bad_inode before doing anything other
+than clearing the inode from the cache.  Since the inode is
+bad, it shouldn't have any state associated with it that needs
+to be written back (and there really isn't a way to complete
+those anyways).
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20231117-axi-spi-engine-series-1-v1-4-cc59db999b87@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
+Reported-by: syzbot+eb83fe1cce5833cd66a0@syzkaller.appspotmail.com
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
+ fs/9p/vfs_inode.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index bdf0aa4ceb1df..77c1c115448d6 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -473,7 +473,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 32572982f72e6..7d42f0c6c644f 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -371,17 +371,21 @@ void v9fs_evict_inode(struct inode *inode)
+ 	struct v9fs_inode __maybe_unused *v9inode = V9FS_I(inode);
+ 	__le32 __maybe_unused version;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*spi_engine));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi_engine));
- 	if (!host)
- 		return -ENOMEM;
+-	truncate_inode_pages_final(&inode->i_data);
++	if (!is_bad_inode(inode)) {
++		truncate_inode_pages_final(&inode->i_data);
  
-@@ -482,22 +482,16 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	spin_lock_init(&spi_engine->lock);
+-	version = cpu_to_le32(v9inode->qid.version);
+-	netfs_clear_inode_writeback(inode, &version);
++		version = cpu_to_le32(v9inode->qid.version);
++		netfs_clear_inode_writeback(inode, &version);
  
- 	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
--	if (IS_ERR(spi_engine->clk)) {
--		ret = PTR_ERR(spi_engine->clk);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->clk))
-+		return PTR_ERR(spi_engine->clk);
+-	clear_inode(inode);
+-	filemap_fdatawrite(&inode->i_data);
++		clear_inode(inode);
++		filemap_fdatawrite(&inode->i_data);
  
- 	spi_engine->ref_clk = devm_clk_get_enabled(&pdev->dev, "spi_clk");
--	if (IS_ERR(spi_engine->ref_clk)) {
--		ret = PTR_ERR(spi_engine->ref_clk);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->ref_clk))
-+		return PTR_ERR(spi_engine->ref_clk);
- 
- 	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(spi_engine->base)) {
--		ret = PTR_ERR(spi_engine->base);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->base))
-+		return PTR_ERR(spi_engine->base);
- 
- 	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
- 	if (SPI_ENGINE_VERSION_MAJOR(version) != 1) {
-@@ -505,8 +499,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 			SPI_ENGINE_VERSION_MAJOR(version),
- 			SPI_ENGINE_VERSION_MINOR(version),
- 			SPI_ENGINE_VERSION_PATCH(version));
--		ret = -ENODEV;
--		goto err_put_host;
-+		return -ENODEV;
- 	}
- 
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
-@@ -515,7 +508,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
- 	if (ret)
--		goto err_put_host;
-+		return ret;
- 
- 	host->dev.of_node = pdev->dev.of_node;
- 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
-@@ -533,14 +526,12 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	return 0;
- err_free_irq:
- 	free_irq(irq, host);
--err_put_host:
--	spi_controller_put(host);
- 	return ret;
+ #ifdef CONFIG_9P_FSCACHE
+-	fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
++		if (v9fs_inode_cookie(v9inode))
++			fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
+ #endif
++	} else
++		clear_inode(inode);
  }
  
- static void spi_engine_remove(struct platform_device *pdev)
- {
--	struct spi_controller *host = spi_controller_get(platform_get_drvdata(pdev));
-+	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
- 	int irq = platform_get_irq(pdev, 0);
- 
-@@ -548,8 +539,6 @@ static void spi_engine_remove(struct platform_device *pdev)
- 
- 	free_irq(irq, host);
- 
--	spi_controller_put(host);
--
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
+ static int v9fs_test_inode(struct inode *inode, void *data)
 -- 
 2.43.0
 
