@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951398C54E1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FD08C50F5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDFE31C23C85
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 569A52819FA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054697602F;
-	Tue, 14 May 2024 11:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1047212AAC6;
+	Tue, 14 May 2024 10:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4UO2l0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u175IMqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B836B4CB2E;
-	Tue, 14 May 2024 11:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BCE4F88C;
+	Tue, 14 May 2024 10:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687508; cv=none; b=VCgmdG3UtgBK4/4wI28VKh1UE9QFV6VzRf3TNwNIpQSwg/dOmNy2uhMCHYXTHi+myBvo9K13B/VK8QIPDZIODN4hF+ZPNqfJsvbpJ8t4Rb6DClFn7yEPHQRBGNZFYgRi8CNr5dktIFQpWvbgMcZXRXpTSMt1WUiqSOvzE9N/K0g=
+	t=1715683917; cv=none; b=jtGDZkM0BFm45Ce4WbnAtIUyRqiN61GrarD/rdGFcVTqXII6O3dj7gF1g0eKwEawlybCtIaIrYCcGmrGi1s4ym84B43RpP3+zVwOvKbX1vzw3DPeKPLRe63Tg7K/8mhpSSxERxm4MM+aou6yN1hMPVuKsepNgXlvyS4uxBesEhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687508; c=relaxed/simple;
-	bh=1KqzeI2G30t67miZ7KkqF0uMSjojl+xbKcizj1AcS0U=;
+	s=arc-20240116; t=1715683917; c=relaxed/simple;
+	bh=w/y43mVhJDeXlSPoL4/MPBVKquBXZDQQVV7qJmvbpIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iaai9wNN2LI2wyXtxUvgGmtCHwfLYTX0dWEVE4k+6mvxkeqAhwbY6DaCH/umWuTJNt+CRlX0MrKyKWkGNWYGR1U0iBJXeYKZ9oTCZh73inUst7oDzqFJk7mbVZN8LXPbCtvIcC0DAHr9BryuchmCYGgstZa0c09MU3NyITL+mqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4UO2l0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40180C2BD10;
-	Tue, 14 May 2024 11:51:48 +0000 (UTC)
+	 MIME-Version; b=ndwV6xkMuVukzqMzvZ9Cg705IDTjQMsjSBd/Je1Cymkh1Cp9QL5t2LadN9IYGlRy4k/mPscmrsE9rE7QvogpyWPvnF5pcpb2Bqvmn9tru+x9ooLpVx0hdA9WD4q4YQtkNPkvVVBUkLkyY2TECQAyuTcoy5SsP8ZWYYa2tvxQ51w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u175IMqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA0EC2BD10;
+	Tue, 14 May 2024 10:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687508;
-	bh=1KqzeI2G30t67miZ7KkqF0uMSjojl+xbKcizj1AcS0U=;
+	s=korg; t=1715683917;
+	bh=w/y43mVhJDeXlSPoL4/MPBVKquBXZDQQVV7qJmvbpIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4UO2l0HeBKRFyV+QIq12lkA0tpM0N8KllvobfQ5F2WR2p0THj2mzkCLGiQ1dtNz3
-	 Q0eseSEZUSotTydEH8v9dJFBhh1E/O9FX1ebOJn8TZeecgT5/8qW2DxM28G7tqK8VM
-	 wvayhW1S+vuk9noVatiOfRR0syB2Ljn9XLlfyxv0=
+	b=u175IMqnq4KRTjqT4OFbDZ1N6rMVC4vj1NzwZ/8J/58RIsp5JoUPSxPTNbadZkGgc
+	 Sl2EZb5LBP410+WGKX7eppblgiciKJVVLh/xb/QdU/O7qVuWHdqFP3h7JiyL6xo18b
+	 iqm11Tzc4CqJ5m6SPWVLOI42jADteRjBaAAAHOeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bumyong Lee <bumyong.lee@samsung.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 001/168] dmaengine: pl330: issue_pending waits until WFP state
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.8 295/336] drm/amdkfd: dont allow mapping the MMIO HDP page with large pages
 Date: Tue, 14 May 2024 12:18:19 +0200
-Message-ID: <20240514101006.738162872@linuxfoundation.org>
+Message-ID: <20240514101049.751829805@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bumyong Lee <bumyong.lee@samsung.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 22a9d9585812440211b0b34a6bc02ade62314be4 ]
+commit be4a2a81b6b90d1a47eaeaace4cc8e2cb57b96c7 upstream.
 
-According to DMA-330 errata notice[1] 71930, DMAKILL
-cannot clear internal signal, named pipeline_req_active.
-it makes that pl330 would wait forever in WFP state
-although dma already send dma request if pl330 gets
-dma request before entering WFP state.
+We don't get the right offset in that case.  The GPU has
+an unused 4K area of the register BAR space into which you can
+remap registers.  We remap the HDP flush registers into this
+space to allow userspace (CPU or GPU) to flush the HDP when it
+updates VRAM.  However, on systems with >4K pages, we end up
+exposing PAGE_SIZE of MMIO space.
 
-The errata suggests that polling until entering WFP state
-as workaround and then peripherals allows to issue dma request.
-
-[1]: https://developer.arm.com/documentation/genc008428/latest
-
-Signed-off-by: Bumyong Lee <bumyong.lee@samsung.com>
-Link: https://lore.kernel.org/r/20231219055026.118695-1-bumyong.lee@samsung.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: afc89870ea67 ("dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d8e408a82704 ("drm/amdkfd: Expose HDP registers to user space")
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/pl330.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index ec8a1565630b6..ba152a0024201 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1053,6 +1053,9 @@ static bool _trigger(struct pl330_thread *thrd)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1138,7 +1138,7 @@ static int kfd_ioctl_alloc_memory_of_gpu
+ 			goto err_unlock;
+ 		}
+ 		offset = dev->adev->rmmio_remap.bus_addr;
+-		if (!offset) {
++		if (!offset || (PAGE_SIZE > 4096)) {
+ 			err = -ENOMEM;
+ 			goto err_unlock;
+ 		}
+@@ -2306,7 +2306,7 @@ static int criu_restore_memory_of_gpu(st
+ 			return -EINVAL;
+ 		}
+ 		offset = pdd->dev->adev->rmmio_remap.bus_addr;
+-		if (!offset) {
++		if (!offset || (PAGE_SIZE > 4096)) {
+ 			pr_err("amdgpu_amdkfd_get_mmio_remap_phys_addr failed\n");
+ 			return -ENOMEM;
+ 		}
+@@ -3347,6 +3347,9 @@ static int kfd_mmio_mmap(struct kfd_node
+ 	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
+ 		return -EINVAL;
  
- 	thrd->req_running = idx;
- 
-+	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
-+		UNTIL(thrd, PL330_STATE_WFP);
++	if (PAGE_SIZE > 4096)
++		return -EINVAL;
 +
- 	return true;
- }
+ 	address = dev->adev->rmmio_remap.bus_addr;
  
--- 
-2.43.0
-
+ 	vm_flags_set(vma, VM_IO | VM_DONTCOPY | VM_DONTEXPAND | VM_NORESERVE |
 
 
 
