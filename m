@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171BE8C5132
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:21:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDAE8C5257
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487F91C21458
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77B031F22BEF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855B37F49F;
-	Tue, 14 May 2024 10:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D456112F38F;
+	Tue, 14 May 2024 11:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWvBo6I3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrTW4u2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FF2D531;
-	Tue, 14 May 2024 10:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB451E4B0;
+	Tue, 14 May 2024 11:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684183; cv=none; b=l+EEa2eE8hma2qUfkXdK1uuds/iEM1+tQg2jbjadGwTWYsM3ciuIFOUrYUbquzklAAUVex0WgCDOGc7LjKg7ejkZ8jy+INt4sJDz8dEmOsPi9ToNfchytjrD7XyEJoeqnZuCS4eM38j86nIYxXcpRgw/k1XDJrYnEmnHK4bjaX8=
+	t=1715685796; cv=none; b=j7fGWAyWcIJ8E3XAuDwxq+SZp7oJCzL9UKWOesM/1UYFMcbh8FxDzCalixBYfkAVIJ6aXJMOr/+CVC38dZdYGNO0NEiD7cO4GcyvxbTHZDvwAiv8vkGfL0FGt2fH5jjyJzCwuXSlRUIbBBOUCN+HF5Uv58SYbXBKx/x/3WyiDu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684183; c=relaxed/simple;
-	bh=15PMqbAWaQ+AX5yWexu54No/76eCPF/VEApOkFIIp5o=;
+	s=arc-20240116; t=1715685796; c=relaxed/simple;
+	bh=uUVEHiK/2PMe1zySq0PDmYJaH+7ghOwymUVO56Li4Mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBfl1zNj3C25pa8f4rPLZuhhSd9k5Xj9xWY4lYQpDBtP5ukHGn4UvFE8V3kawkuRmVvZS8p7OHq0fgK825oJyZhwOjTI+u1b3kRsi5QjofoskL12wnTuxNadaRdDa+c9n1lfYcVRLnzJ7CGse3aTSz9ezw1U7CJM6urbSN6tOZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWvBo6I3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B77C2BD10;
-	Tue, 14 May 2024 10:56:21 +0000 (UTC)
+	 MIME-Version; b=FmJ05tMztE528QekwdgAoRv5uISo8Oe67sXUW//Ur6/cvB8Zl4Rn8mV2MWC0KsWzA29LWXQ/hOTrKFSuNetZg+fKt6aET3L5Nk3rc0HGflRg3rNrh0v5H4+JLDwG0IKfEyK5UCMy80jED+G1hocnMTddx75H6Ek3kOuPff//yFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrTW4u2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EDCC2BD10;
+	Tue, 14 May 2024 11:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684183;
-	bh=15PMqbAWaQ+AX5yWexu54No/76eCPF/VEApOkFIIp5o=;
+	s=korg; t=1715685796;
+	bh=uUVEHiK/2PMe1zySq0PDmYJaH+7ghOwymUVO56Li4Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zWvBo6I3ECaFfzb4fuZLQphchxOIvstCOJzr8WocdyklrPpJgeV9R351dZwBAQu6v
-	 7xDGKrt1A7KtbYbr/w4DQ6OjrtIARNvm6pz6X7LTU63/chiMtcqZ8wBd8zvgL89ZRw
-	 dO1W8vdG8vvZylC5ZTBOgwKFf4ekbSSgdv8wjJXk=
+	b=qrTW4u2bUV/Qh1OmYmYx8kGxSBbVhUrQYuSpmsQuSiMbHmnGpEqbHZlHtisw8aski
+	 /7aGlA4W3F3CPatwbRwxmIJ0/8al9isooA04N+Sfs9FjDOyFTWJjtI4xwMMpqCsIwQ
+	 q9TosUJDN76hKmJH2B/NcRlRMXi5xtC1EUXNU5c4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 314/336] mm: use memalloc_nofs_save() in page_cache_ra_order()
-Date: Tue, 14 May 2024 12:18:38 +0200
-Message-ID: <20240514101050.474446694@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 248/301] dt-bindings: iio: health: maxim,max30102: fix compatible check
+Date: Tue, 14 May 2024 12:18:39 +0200
+Message-ID: <20240514101041.620117297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 30153e4466647a17eebfced13eede5cbe4290e69 upstream.
+commit 89384a2b656b9dace4c965432a209d5c9c3a2a6f upstream.
 
-See commit f2c817bed58d ("mm: use memalloc_nofs_save in readahead path"),
-ensure that page_cache_ra_order() do not attempt to reclaim file-backed
-pages too, or it leads to a deadlock, found issue when test ext4 large
-folio.
+The "maxim,green-led-current-microamp" property is only available for
+the max30105 part (it provides an extra green LED), and must be set to
+false for the max30102 part.
 
- INFO: task DataXceiver for:7494 blocked for more than 120 seconds.
- "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- task:DataXceiver for state:D stack:0     pid:7494  ppid:1      flags:0x00000200
- Call trace:
-  __switch_to+0x14c/0x240
-  __schedule+0x82c/0xdd0
-  schedule+0x58/0xf0
-  io_schedule+0x24/0xa0
-  __folio_lock+0x130/0x300
-  migrate_pages_batch+0x378/0x918
-  migrate_pages+0x350/0x700
-  compact_zone+0x63c/0xb38
-  compact_zone_order+0xc0/0x118
-  try_to_compact_pages+0xb0/0x280
-  __alloc_pages_direct_compact+0x98/0x248
-  __alloc_pages+0x510/0x1110
-  alloc_pages+0x9c/0x130
-  folio_alloc+0x20/0x78
-  filemap_alloc_folio+0x8c/0x1b0
-  page_cache_ra_order+0x174/0x308
-  ondemand_readahead+0x1c8/0x2b8
-  page_cache_async_ra+0x68/0xb8
-  filemap_readahead.isra.0+0x64/0xa8
-  filemap_get_pages+0x3fc/0x5b0
-  filemap_splice_read+0xf4/0x280
-  ext4_file_splice_read+0x2c/0x48 [ext4]
-  vfs_splice_read.part.0+0xa8/0x118
-  splice_direct_to_actor+0xbc/0x288
-  do_splice_direct+0x9c/0x108
-  do_sendfile+0x328/0x468
-  __arm64_sys_sendfile64+0x8c/0x148
-  invoke_syscall+0x4c/0x118
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x4c/0x1f8
-  el0t_64_sync_handler+0xc0/0xc8
-  el0t_64_sync+0x188/0x190
+Instead, the max30100 part has been used for that, which is not
+supported by this binding (it has its own binding).
 
-Link: https://lkml.kernel.org/r/20240426112938.124740-1-wangkefeng.wang@huawei.com
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Zhang Yi <yi.zhang@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This error was introduced during the txt to yaml conversion.
+
+Fixes: 5a6a65b11e3a ("dt-bindings:iio:health:maxim,max30102: txt to yaml conversion")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/readahead.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -490,6 +490,7 @@ void page_cache_ra_order(struct readahea
- 	pgoff_t index = readahead_index(ractl);
- 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
- 	pgoff_t mark = index + ra->size - ra->async_size;
-+	unsigned int nofs;
- 	int err = 0;
- 	gfp_t gfp = readahead_gfp_mask(mapping);
- 
-@@ -506,6 +507,8 @@ void page_cache_ra_order(struct readahea
- 			new_order--;
- 	}
- 
-+	/* See comment in page_cache_ra_unbounded() */
-+	nofs = memalloc_nofs_save();
- 	filemap_invalidate_lock_shared(mapping);
- 	while (index <= limit) {
- 		unsigned int order = new_order;
-@@ -532,6 +535,7 @@ void page_cache_ra_order(struct readahea
- 
- 	read_pages(ractl);
- 	filemap_invalidate_unlock_shared(mapping);
-+	memalloc_nofs_restore(nofs);
- 
- 	/*
- 	 * If there were already pages in the page cache, then we may have
+--- a/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
++++ b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
+@@ -42,7 +42,7 @@ allOf:
+       properties:
+         compatible:
+           contains:
+-            const: maxim,max30100
++            const: maxim,max30102
+     then:
+       properties:
+         maxim,green-led-current-microamp: false
 
 
 
