@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A888C53E5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1958C5546
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB2B91F22DCE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B4401C21946
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400B713D2A4;
-	Tue, 14 May 2024 11:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9813D0D1;
+	Tue, 14 May 2024 11:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOZjHBln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGHOw8WK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F048B13D2A1;
-	Tue, 14 May 2024 11:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96DF9D4;
+	Tue, 14 May 2024 11:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686840; cv=none; b=WVmdj4et7mjHii8lPXxpBNOrDaG33a+7MVsL+9Zg+6vkXRpFOR78NLkzc2AKDTXPEih1Mz1lDCCV5wDR3xJQvIsSBrNxNO77cYYpC3BsCkRB3shehRpnHbtUQ36MxrhXcMxRUSQ3hUkoK9H337jbhDDbGKs5IhkYXldWM9ka9M0=
+	t=1715687781; cv=none; b=qJzXxdXz/LCj5LhKGH4hJVohz0b1a9jqauA6ZONIZQ6scHRTFkmKCeHUuEG4f2Kj4Aa2nmkNUMW2Gyf+5HKpxogOadHQzcFGtuoyeJJ+pM1fAQen4dT8b8sruF8IChiHy6qkzKCNj7azoSMP33PfhAHreOQOFLmelV6uZafsEeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686840; c=relaxed/simple;
-	bh=M8F7EGkGEuuUZfkEHMRaMFD6hKo1hwEzygetsbscb4w=;
+	s=arc-20240116; t=1715687781; c=relaxed/simple;
+	bh=Oq5SdN1fV9Hp9dUaLtY4d+vTqN3j7cHRJNGKFxq432w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bftHcZ9ABAZ0QCnhFHqd4REOg30iQW4i+5wX/lHMS3hlSlXgzx1y6JSbn4uvMh8owXK/q8bUaJTDA6/L3juqxQy3dc+0tRXTNP0za2Pp1HnquxBRLOYmKwtaXFErCuwB33WPP188yNQ5r2/CDrGK7+PGcXJPqI52FpWhdrNpC90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOZjHBln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A99C2BD10;
-	Tue, 14 May 2024 11:40:39 +0000 (UTC)
+	 MIME-Version; b=uMqec8YgzD+omZSvdJXQ1QM8ViAR4Dnwa5RbD8Ux43eLXT0pegR6Xyl1Ma7Jk0Cfa5psXx+jJnQ8gO7bYuqINDA6Au1gIm3sGaqIrgnyHj2LDTRQMnVOp0bY2Gzm7ayl7XXVwLCjLllywSMZdKLwrFZKfpwtLZm6aVrRFiRwFSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGHOw8WK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB360C2BD10;
+	Tue, 14 May 2024 11:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686839;
-	bh=M8F7EGkGEuuUZfkEHMRaMFD6hKo1hwEzygetsbscb4w=;
+	s=korg; t=1715687781;
+	bh=Oq5SdN1fV9Hp9dUaLtY4d+vTqN3j7cHRJNGKFxq432w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOZjHBlnwNgkbntZhXtLQ/tfrVoc3ugFxFrBj8cKZSf04M7eV27YgRcmZA3aAmBWR
-	 d5XjD4qoscQezznFLrEIyTMEWI4POJLK76QM6G5F25rruhg5PQ27Fxua7FmonaUTb6
-	 g6ZOhWCIY3c7vhZ85r9VhGeDLW1ICUJjDtDwHEFk=
+	b=OGHOw8WKE3g99nGrjmOGSjBjQouKoFoMnhdPyKipdOir0LwKht28HwTrPPCaP3EJs
+	 rUhqIn7FIy2l0bTKM1R01Mt/RDO6TvPPTWfgvgyZ6QhAqMIQxIMnONxgS84i0F5iyl
+	 TsyrKbvWZBWRagfFlw2/vOIUhkMizWxDbUMMHgCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 39/63] 9p: explicitly deny setlease attempts
+Subject: [PATCH 5.15 102/168] qibfs: fix dentry leak
 Date: Tue, 14 May 2024 12:20:00 +0200
-Message-ID: <20240514100949.489332659@linuxfoundation.org>
+Message-ID: <20240514101010.538224789@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 7a84602297d36617dbdadeba55a2567031e5165b ]
+[ Upstream commit aa23317d0268b309bb3f0801ddd0d61813ff5afb ]
 
-9p is a remote network protocol, and it doesn't support asynchronous
-notifications from the server. Ensure that we don't hand out any leases
-since we can't guarantee they'll be broken when a file's contents
-change.
+simple_recursive_removal() drops the pinning references to all positives
+in subtree.  For the cases when its argument has been kept alive by
+the pinning alone that's exactly the right thing to do, but here
+the argument comes from dcache lookup, that needs to be balanced by
+explicit dput().
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+Fixes: e41d237818598 "qib_fs: switch to simple_recursive_removal()"
+Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_file.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/qib/qib_fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
-index 61e0c552083fe..5bb565856a8f8 100644
---- a/fs/9p/vfs_file.c
-+++ b/fs/9p/vfs_file.c
-@@ -691,6 +691,7 @@ const struct file_operations v9fs_file_operations = {
- 	.lock = v9fs_file_lock,
- 	.mmap = generic_file_readonly_mmap,
- 	.fsync = v9fs_file_fsync,
-+	.setlease = simple_nosetlease,
- };
+diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
+index a0c5f3bdc3246..8665e506404f9 100644
+--- a/drivers/infiniband/hw/qib/qib_fs.c
++++ b/drivers/infiniband/hw/qib/qib_fs.c
+@@ -441,6 +441,7 @@ static int remove_device_files(struct super_block *sb,
+ 		return PTR_ERR(dir);
+ 	}
+ 	simple_recursive_removal(dir, NULL);
++	dput(dir);
+ 	return 0;
+ }
  
- const struct file_operations v9fs_file_operations_dotl = {
-@@ -726,4 +727,5 @@ const struct file_operations v9fs_mmap_file_operations_dotl = {
- 	.flock = v9fs_file_flock_dotl,
- 	.mmap = v9fs_mmap_file_mmap,
- 	.fsync = v9fs_file_fsync_dotl,
-+	.setlease = simple_nosetlease,
- };
 -- 
 2.43.0
 
