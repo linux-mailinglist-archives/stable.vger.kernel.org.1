@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBD48C546B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A1A8C555D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C4751C22B60
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0AF1F223AA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F68385C42;
-	Tue, 14 May 2024 11:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048321E4B0;
+	Tue, 14 May 2024 11:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/EE2TrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGVyNzGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DC3B1A3;
-	Tue, 14 May 2024 11:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E58F9D4;
+	Tue, 14 May 2024 11:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687175; cv=none; b=G4t7Y19NtNU/Dk0Iq5p2elgVoBfcqaF/5WXOK1UL/a3yC8Ve3Xos/62aJ5eMOLEh0uGOA2npMvyRJR+RMb07uTSLp8770o+3Yy33M06tZuhVxdJZjR+8yE9AnWqcaazuVaJfqhMmuHN4bGFtUDqR0WQvBUqGhS/1IiO58FLcMVI=
+	t=1715687838; cv=none; b=RKUbWlcjj0FvOKHw4Z6wpZMYAR0YZ1vG4IQ3HiMYhs7xL94eHsATvJKF9JMr107zVzW2Mb/MhfD4Oljf/mwuJKY1PLBtC0JuUkM76FFsseFXXiTJ42LMJxm406RJWO9W6RPA1pAbgkKUTdAyD0nTS0hKL/YesojVtnsFoy7VybM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687175; c=relaxed/simple;
-	bh=1fq89TFv6n3cj1g9l+N/84vCHumV1pV7flD92pYS7cQ=;
+	s=arc-20240116; t=1715687838; c=relaxed/simple;
+	bh=8vX5JLfIdpdcUPJoL1SA10ptrQvIccUHeRNUsv+SX6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PiFbQzvAQIkJMeEb8e7l0Dj+ZByVNO5+oKxYrlMgvJtaFV9Y6vb389Js2iunsZGq27HOevkdeRQ0aDCeZircHSmCgsDisknfMJTm/M2rGTbz8LTsirR4GLYvFYzLgDo0WBzjcv8Tgm9o+uKC5ZN1Xdb96TveIGXLALuDm7ZYrJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/EE2TrL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBF2C2BD10;
-	Tue, 14 May 2024 11:46:14 +0000 (UTC)
+	 MIME-Version; b=Z16djIVyVOBwDjUPYFMzZRg3qCJw8huNGhAtZV/J/1H4j5pKiqY+IxzjoFN1kHB28xrf/GAhNMVMyKusqxHfTc6Urldt9ywFDkMfO324qlieJHrGMy8RmG9RvlTnXT0iif0wiV4A1vGSfXM9hWgzfHAnMDOfnBUaV52pyeGm6Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGVyNzGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4A3C32781;
+	Tue, 14 May 2024 11:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687175;
-	bh=1fq89TFv6n3cj1g9l+N/84vCHumV1pV7flD92pYS7cQ=;
+	s=korg; t=1715687838;
+	bh=8vX5JLfIdpdcUPJoL1SA10ptrQvIccUHeRNUsv+SX6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/EE2TrLXMLEp0AM80wbl1ZcHi/q8CokmPUH57yPqsMX1C1woBelgYrirKb1CCsz/
-	 OuGRGNvvvd48ytyFbxePfr7LjAYPtSFkL5arHPVZyhXBrvxu6ptrhyiiGWAXhWdX61
-	 HKwzklV/wf1pxji3J6CxsMQ343Ib7yBFtXxxIkuA=
+	b=iGVyNzGXkfaSw/R5W65/Iqkt1CU2vTXnjDIQaNQCqrzZUyIFGBwJ7tdJKWbxpjeUW
+	 ERzYwXATwDl+JqinFcvnheZo8O7vK5t2tQGhHBgAdl5nbTZxbLb/Ev6Czyud4T/ZyS
+	 U3z4B6H/Qr/1/+XFPxlt+3wWKYNTOBNDYdfEWnP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jie Wang <wangjie125@huawei.com>,
+	Guangbin Huang <huangguangbin2@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 70/84] ipv6: fib6_rules: avoid possible NULL dereference in fib6_rule_action()
+Subject: [PATCH 5.15 123/168] net: hns3: create new cmdq hardware description structure hclge_comm_hw
 Date: Tue, 14 May 2024 12:20:21 +0200
-Message-ID: <20240514100954.316628055@linuxfoundation.org>
+Message-ID: <20240514101011.327603146@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit d101291b2681e5ab938554e3e323f7a7ee33e3aa ]
+[ Upstream commit 0a7b6d221868be6aa3249c70ffab707a265b89d6 ]
 
-syzbot is able to trigger the following crash [1],
-caused by unsafe ip6_dst_idev() use.
+Currently PF and VF cmdq APIs use struct hclge(vf)_hw to describe cmdq
+hardware information needed by hclge(vf)_cmd_send. There are a little
+differences between its child struct hclge_cmq_ring and hclgevf_cmq_ring.
+It is redundent to use two sets of structures to support same functions.
 
-Indeed ip6_dst_idev() can return NULL, and must always be checked.
+So this patch creates new set of common cmdq hardware description
+structures(hclge_comm_hw) to unify PF and VF cmdq functions. The struct
+hclge_desc is still kept to avoid too many meaningless replacement.
 
-[1]
+These new structures will be used to unify hclge(vf)_hw structures in PF
+and VF cmdq APIs in next patches.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 PID: 31648 Comm: syz-executor.0 Not tainted 6.9.0-rc4-next-20240417-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:__fib6_rule_action net/ipv6/fib6_rules.c:237 [inline]
- RIP: 0010:fib6_rule_action+0x241/0x7b0 net/ipv6/fib6_rules.c:267
-Code: 02 00 00 49 8d 9f d8 00 00 00 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 f9 32 bf f7 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 e0 32 bf f7 4c 8b 03 48 89 ef 4c
-RSP: 0018:ffffc9000fc1f2f0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1a772f98c8186700
-RDX: 0000000000000003 RSI: ffffffff8bcac4e0 RDI: ffffffff8c1f9760
-RBP: ffff8880673fb980 R08: ffffffff8fac15ef R09: 1ffffffff1f582bd
-R10: dffffc0000000000 R11: fffffbfff1f582be R12: dffffc0000000000
-R13: 0000000000000080 R14: ffff888076509000 R15: ffff88807a029a00
-FS:  00007f55e82ca6c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b31d23000 CR3: 0000000022b66000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  fib_rules_lookup+0x62c/0xdb0 net/core/fib_rules.c:317
-  fib6_rule_lookup+0x1fd/0x790 net/ipv6/fib6_rules.c:108
-  ip6_route_output_flags_noref net/ipv6/route.c:2637 [inline]
-  ip6_route_output_flags+0x38e/0x610 net/ipv6/route.c:2649
-  ip6_route_output include/net/ip6_route.h:93 [inline]
-  ip6_dst_lookup_tail+0x189/0x11a0 net/ipv6/ip6_output.c:1120
-  ip6_dst_lookup_flow+0xb9/0x180 net/ipv6/ip6_output.c:1250
-  sctp_v6_get_dst+0x792/0x1e20 net/sctp/ipv6.c:326
-  sctp_transport_route+0x12c/0x2e0 net/sctp/transport.c:455
-  sctp_assoc_add_peer+0x614/0x15c0 net/sctp/associola.c:662
-  sctp_connect_new_asoc+0x31d/0x6c0 net/sctp/socket.c:1099
-  __sctp_connect+0x66d/0xe30 net/sctp/socket.c:1197
-  sctp_connect net/sctp/socket.c:4819 [inline]
-  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
-  __sys_connect_file net/socket.c:2048 [inline]
-  __sys_connect+0x2df/0x310 net/socket.c:2065
-  __do_sys_connect net/socket.c:2075 [inline]
-  __se_sys_connect net/socket.c:2072 [inline]
-  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 5e5f3f0f8013 ("[IPV6] ADDRCONF: Convert ipv6_get_saddr() to ipv6_dev_get_saddr().")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240507163145.835254-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6639a7b95321 ("net: hns3: change type of numa_node_mask as nodemask_t")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/fib6_rules.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/Makefile  |  1 +
+ .../hns3/hns3_common/hclge_comm_cmd.h         | 55 +++++++++++++++++++
+ .../hisilicon/hns3/hns3pf/hclge_cmd.h         |  9 +--
+ 3 files changed, 57 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
 
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index cdc8a49d7fc34..3cf9dc2231036 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -227,8 +227,12 @@ static int __fib6_rule_action(struct fib_rule *rule, struct flowi *flp,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/Makefile b/drivers/net/ethernet/hisilicon/hns3/Makefile
+index 32e24e0945f5e..33e546cef2881 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/Makefile
++++ b/drivers/net/ethernet/hisilicon/hns3/Makefile
+@@ -6,6 +6,7 @@
+ ccflags-y += -I$(srctree)/$(src)
+ ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3pf
+ ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3vf
++ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3_common
  
- 	rt = lookup(net, table, flp6, arg->lookup_data, flags);
- 	if (rt != net->ipv6.ip6_null_entry) {
-+		struct inet6_dev *idev = ip6_dst_idev(&rt->dst);
+ obj-$(CONFIG_HNS3) += hnae3.o
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
+new file mode 100644
+index 0000000000000..f1e39003ceebe
+--- /dev/null
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
+@@ -0,0 +1,55 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++// Copyright (c) 2021-2021 Hisilicon Limited.
 +
-+		if (!idev)
-+			goto again;
- 		err = fib6_rule_saddr(net, rule, flags, flp6,
--				      ip6_dst_idev(&rt->dst)->dev);
-+				      idev->dev);
++#ifndef __HCLGE_COMM_CMD_H
++#define __HCLGE_COMM_CMD_H
++#include <linux/types.h>
++
++#include "hnae3.h"
++
++#define HCLGE_DESC_DATA_LEN		6
++struct hclge_desc {
++	__le16 opcode;
++	__le16 flag;
++	__le16 retval;
++	__le16 rsv;
++	__le32 data[HCLGE_DESC_DATA_LEN];
++};
++
++struct hclge_comm_cmq_ring {
++	dma_addr_t desc_dma_addr;
++	struct hclge_desc *desc;
++	struct pci_dev *pdev;
++	u32 head;
++	u32 tail;
++
++	u16 buf_size;
++	u16 desc_num;
++	int next_to_use;
++	int next_to_clean;
++	u8 ring_type; /* cmq ring type */
++	spinlock_t lock; /* Command queue lock */
++};
++
++enum hclge_comm_cmd_status {
++	HCLGE_COMM_STATUS_SUCCESS	= 0,
++	HCLGE_COMM_ERR_CSQ_FULL		= -1,
++	HCLGE_COMM_ERR_CSQ_TIMEOUT	= -2,
++	HCLGE_COMM_ERR_CSQ_ERROR	= -3,
++};
++
++struct hclge_comm_cmq {
++	struct hclge_comm_cmq_ring csq;
++	struct hclge_comm_cmq_ring crq;
++	u16 tx_timeout;
++	enum hclge_comm_cmd_status last_status;
++};
++
++struct hclge_comm_hw {
++	void __iomem *io_base;
++	void __iomem *mem_base;
++	struct hclge_comm_cmq cmq;
++	unsigned long comm_state;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+index cfbb7c51b0cb3..e07709ef239df 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+@@ -7,24 +7,17 @@
+ #include <linux/io.h>
+ #include <linux/etherdevice.h>
+ #include "hnae3.h"
++#include "hclge_comm_cmd.h"
  
- 		if (err == -EAGAIN)
- 			goto again;
+ #define HCLGE_CMDQ_TX_TIMEOUT		30000
+ #define HCLGE_CMDQ_CLEAR_WAIT_TIME	200
+ #define HCLGE_DESC_DATA_LEN		6
+ 
+ struct hclge_dev;
+-struct hclge_desc {
+-	__le16 opcode;
+ 
+ #define HCLGE_CMDQ_RX_INVLD_B		0
+ #define HCLGE_CMDQ_RX_OUTVLD_B		1
+ 
+-	__le16 flag;
+-	__le16 retval;
+-	__le16 rsv;
+-	__le32 data[HCLGE_DESC_DATA_LEN];
+-};
+-
+ struct hclge_cmq_ring {
+ 	dma_addr_t desc_dma_addr;
+ 	struct hclge_desc *desc;
 -- 
 2.43.0
 
