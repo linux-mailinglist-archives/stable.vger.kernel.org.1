@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3058C50EE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:15:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9568C5346
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FC0F1F21E8F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C6371C22FF0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABDD12A170;
-	Tue, 14 May 2024 10:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9685576035;
+	Tue, 14 May 2024 11:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glLj4BeZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tackMvK5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A2B4F88C;
-	Tue, 14 May 2024 10:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545A71D54D;
+	Tue, 14 May 2024 11:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683873; cv=none; b=A3BnmmSgxSlUZ/FN2yCVHW96cJK3gicvpelXi7nVY8nW7EUC3kC/5EQ/RxIVuVS9oQFqqnP0Awcqcs+WKHLHZDPgsbvKe7jLCOdcxTzJf2VEmqX0rcGwhXr4o9IKsotBl7tOnBdTfWqh4ryXM8RtcZGM1/e7bXQuGp05/qo1VWU=
+	t=1715686413; cv=none; b=Lrtq1dn/lf6pVIn7T1Jn9JszCpy0BtZTD36WI9CDsMdLRjvCiQkOMV8W4N9OJRTL19Us7yqOyokF5/jSAy4Lw4q6DKL2k6jpLz6EoAMVZ8aatLUViP8sZcS+de5mroVRQAqJ7gKKbUcIDTTUb6CyvC1gm3goLhTFg0ROLS5FOLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683873; c=relaxed/simple;
-	bh=fuVyx1cAq2VPG9iswknsiKBOhhFoHlxw5gTVwIznHp4=;
+	s=arc-20240116; t=1715686413; c=relaxed/simple;
+	bh=k7zkh1svK3HRUhG5aaIRomOwxUzMRQc+tEpsmpM8eMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMjuU8vYMqcNSyLdz/+HKrsRyBIuwIQ7xxknB7MbQgrTwkG8xy0fwcbLELNzVt1CSEXGF4kAMwqTPDwbts3mjySLIsCE670ejc1kUCdVLuuqHwXwH2EFCMq4A9cUdCrdziO3mz8Qnqa8Y0Kt5sLbcgQ1c8iyrsfrBiqX/FScP0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glLj4BeZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82619C2BD10;
-	Tue, 14 May 2024 10:51:12 +0000 (UTC)
+	 MIME-Version; b=p/uAA5V7j8JO1x3DF+jNNAyB3uJNSu67ma4VGCj8JMbjegQgLS5/abEksq1/PPD6CzMVzCBv+8GffV1G4Kt1+Byg8zIkoTlnnBQ5NMZ2WpclFNp9m6mZvrc4k02BB68QAuLlMJ9vwigTs1Jpw5LuOj/0GPu5n9akKzBUpz/Q6O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tackMvK5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09DBC2BD10;
+	Tue, 14 May 2024 11:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683873;
-	bh=fuVyx1cAq2VPG9iswknsiKBOhhFoHlxw5gTVwIznHp4=;
+	s=korg; t=1715686413;
+	bh=k7zkh1svK3HRUhG5aaIRomOwxUzMRQc+tEpsmpM8eMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glLj4BeZGgE3KddBQXveKonl4ycyMpeqYljk+5GzLenElGtS0dTtXti4HGaiTyFm3
-	 gjh0tIHJ3Epu0m25rHEhHgsTq+gbjn3WGD4dskNdvUGAoE+Eyl4ZWaO5NZCVO5FbOu
-	 4JgImGngq9VKdDs0f9SrVO6j+T9jufFEOyzNFZtA=
+	b=tackMvK5wkASU143+NmUXVlkUM0MOWaM/yMPc1PE/3IHNgc+qb+y49Ws3krqW4h/L
+	 lEq07JkHI1gVgN0KFuiMQZCmefiPf31KN12sQGnQHEQBXVTKJ8JIhFf3cLaqnpEh8r
+	 9/I7mgKllw8ZpM5LjDI/t3JXx5YZvQVZvcKsHt6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.8 288/336] slimbus: qcom-ngd-ctrl: Add timeout for wait operation
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 130/236] iommu: mtk: fix module autoloading
 Date: Tue, 14 May 2024 12:18:12 +0200
-Message-ID: <20240514101049.490320429@linuxfoundation.org>
+Message-ID: <20240514101025.304916808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viken Dadhaniya <quic_vdadhani@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-commit 98241a774db49988f25b7b3657026ce51ccec293 upstream.
+[ Upstream commit 7537e31df80cb58c27f3b6fef702534ea87a5957 ]
 
-In current driver qcom_slim_ngd_up_worker() indefinitely
-waiting for ctrl->qmi_up completion object. This is
-resulting in workqueue lockup on Kthread.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from of_device_id table.
 
-Added wait_for_completion_interruptible_timeout to
-allow the thread to wait for specific timeout period and
-bail out instead waiting infinitely.
-
-Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Viken Dadhaniya <quic_vdadhani@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240430091238.35209-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20240410164109.233308-1-krzk@kernel.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iommu/mtk_iommu.c    | 1 +
+ drivers/iommu/mtk_iommu_v1.c | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1451,7 +1451,11 @@ static void qcom_slim_ngd_up_worker(stru
- 	ctrl = container_of(work, struct qcom_slim_ngd_ctrl, ngd_up_work);
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index 0ba2a63a9538a..576163f88a4a5 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1570,6 +1570,7 @@ static const struct of_device_id mtk_iommu_of_ids[] = {
+ 	{ .compatible = "mediatek,mt8195-iommu-vpp",   .data = &mt8195_data_vpp},
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, mtk_iommu_of_ids);
  
- 	/* Make sure qmi service is up before continuing */
--	wait_for_completion_interruptible(&ctrl->qmi_up);
-+	if (!wait_for_completion_interruptible_timeout(&ctrl->qmi_up,
-+						       msecs_to_jiffies(MSEC_PER_SEC))) {
-+		dev_err(ctrl->dev, "QMI wait timeout\n");
-+		return;
-+	}
+ static struct platform_driver mtk_iommu_driver = {
+ 	.probe	= mtk_iommu_probe,
+diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
+index a978220eb620e..5dd06bcb507f6 100644
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -602,6 +602,7 @@ static const struct of_device_id mtk_iommu_v1_of_ids[] = {
+ 	{ .compatible = "mediatek,mt2701-m4u", },
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, mtk_iommu_v1_of_ids);
  
- 	mutex_lock(&ctrl->ssr_lock);
- 	qcom_slim_ngd_enable(ctrl, true);
+ static const struct component_master_ops mtk_iommu_v1_com_ops = {
+ 	.bind		= mtk_iommu_v1_bind,
+-- 
+2.43.0
+
 
 
 
