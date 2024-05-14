@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BA48C523D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3088C5350
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A553D1C20AAE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF3031C23155
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA754F1F8;
-	Tue, 14 May 2024 11:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F9E7CF34;
+	Tue, 14 May 2024 11:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnQa+Gd1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/2G8+Ep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A94B2943F;
-	Tue, 14 May 2024 11:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8790B6D1A0;
+	Tue, 14 May 2024 11:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685694; cv=none; b=rhv0FW+DSmS/UQhVhyAw/oJihMn6fWoJwjb0oeWfYjECORCfF0FG8OBgn9VxoJtWFvoi9iEW/d4/suqxEHL+pG0+B0mr/NcxJin2VmmhXa42PmAPVsx6arManiC5DziUFeAyXaTQYb8DAB20Lri+qfry+NYZV+gpsyTIKR8jSrI=
+	t=1715686433; cv=none; b=cVmSFriO8eGeiXEs5uQermWnomf6ruGQy2GXNTSvMe3/dWUpx1+pLylKN/xN6fnHbnXzy/lvEYMYlcv0y5XEFywjJb8AiUBGof5I56GmqzlRRDckSLN+yvp/F6BZiB/UQgTtX+/eM8OSRgybXZ8oegBkQco7+oz97KQEV4mtKRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685694; c=relaxed/simple;
-	bh=dHkVzL1WXiKzgod0KuwU3f/sX6gQEppuqy60hOSvOGM=;
+	s=arc-20240116; t=1715686433; c=relaxed/simple;
+	bh=NOY/PVExWXPvhqaPWw0VjQyrLU09yVu0RmJNfyUMrlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJ1hmSU3sZaueOxZrbXOzJXiIgYEzeRLyAHoi02JEPbUm1giKGBLl3jWpHu96UR6yFLaoZReCuWI75eZqtU9AwI2BdEtrq/RipMKYa1g4irswzK7xA3cIobVq3IknQoviU9nHjjp9/1CG5kBSCk5TVfKAlkiQfZ1IWKDvrcBafw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnQa+Gd1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FE7C2BD10;
-	Tue, 14 May 2024 11:21:32 +0000 (UTC)
+	 MIME-Version; b=AtNdKjG/dvtSRtFKLMUx6+N96nzftmgZYpppZfOYvyPK+4RwDaihrxgZF+3GW+Egvm9iw4hDCoLc8mgkv2rlPbWhP+EDHGFHFmmTj9pggAWgMY/UjUVBaRCrFxOHByqS8/iLcB7y24AKBX3XnbjYRUiMgnJxQkjw5/oZMqKiKq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/2G8+Ep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04076C2BD10;
+	Tue, 14 May 2024 11:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685693;
-	bh=dHkVzL1WXiKzgod0KuwU3f/sX6gQEppuqy60hOSvOGM=;
+	s=korg; t=1715686433;
+	bh=NOY/PVExWXPvhqaPWw0VjQyrLU09yVu0RmJNfyUMrlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnQa+Gd1eUc/D+vtCEMcoexb7wEQ96kh57Xn92VsqNDtqNMFDioUcrjMdjj89f7cD
-	 fAxxC6jc0lkOSf5l2+kMO4q7Qn5btfdVjQ335kz7GOAdS6A0H+Ae6ITiaqYHBE2r97
-	 uQ3HZ/L0UzK97XjEV0xQT0n99+t9mRauGpjXNV7E=
+	b=n/2G8+EpaXAMcvUNVP9CfZGl97YFmwJyLo7mIgdUjyuBuDBeWjo62XhoYzAug5DBR
+	 96g7ZjqTNRjgIqk5SpV+DuadJ3qAFq6rEZzKddiD8DQZ3XMdI5jEPwGdUOERQn8BS2
+	 +4JcIrgaE1DqBa+GD5Z6u4jQlSctwghylrRjDZFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Roger Whittaker <roger.whittaker@suse.com>
-Subject: [PATCH 6.6 227/301] usb: Fix regression caused by invalid ep0 maxpacket in virtual SuperSpeed device
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/236] clk: Dont hold prepare_lock when calling kref_put()
 Date: Tue, 14 May 2024 12:18:18 +0200
-Message-ID: <20240514101040.827722853@linuxfoundation.org>
+Message-ID: <20240514101025.531978864@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Stephen Boyd <sboyd@kernel.org>
 
-commit c78c3644b772e356ca452ae733a3c4de0fb11dc8 upstream.
+[ Upstream commit 6f63af7511e7058f3fa4ad5b8102210741c9f947 ]
 
-A virtual SuperSpeed device in the FreeBSD BVCP package
-(https://bhyve.npulse.net/) presents an invalid ep0 maxpacket size of 256.
-It stopped working with Linux following a recent commit because now we
-check these sizes more carefully than before.
+We don't need to hold the prepare_lock when dropping a ref on a struct
+clk_core. The release function is only freeing memory and any code with
+a pointer reference has already unlinked anything pointing to the
+clk_core. This reduces the holding area of the prepare_lock a bit.
 
-Fix this regression by using the bMaxpacketSize0 value in the device
-descriptor for SuperSpeed or faster devices, even if it is invalid.  This
-is a very simple-minded change; we might want to check more carefully for
-values that actually make some sense (for instance, no smaller than 64).
+Note that we also don't call free_clk() with the prepare_lock held.
+There isn't any reason to do that.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: Roger Whittaker <roger.whittaker@suse.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1220569
-Link: https://lore.kernel.org/linux-usb/9efbd569-7059-4575-983f-0ea30df41871@suse.com/
-Fixes: 59cf44575456 ("USB: core: Fix oversight in SuperSpeed initialization")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/4058ac05-237c-4db4-9ecc-5af42bdb4501@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-3-sboyd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/clk.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5077,9 +5077,10 @@ hub_port_init(struct usb_hub *hub, struc
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index fe1d45eac837c..8ecbb8f494655 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4435,7 +4435,8 @@ void clk_unregister(struct clk *clk)
+ 	if (ops == &clk_nodrv_ops) {
+ 		pr_err("%s: unregistered clock: %s\n", __func__,
+ 		       clk->core->name);
+-		goto unlock;
++		clk_prepare_unlock();
++		return;
  	}
- 	if (usb_endpoint_maxp(&udev->ep0.desc) == i) {
- 		;	/* Initial ep0 maxpacket guess is right */
--	} else if ((udev->speed == USB_SPEED_FULL ||
-+	} else if (((udev->speed == USB_SPEED_FULL ||
- 				udev->speed == USB_SPEED_HIGH) &&
--			(i == 8 || i == 16 || i == 32 || i == 64)) {
-+			(i == 8 || i == 16 || i == 32 || i == 64)) ||
-+			(udev->speed >= USB_SPEED_SUPER && i > 0)) {
- 		/* Initial guess is wrong; use the descriptor's value */
- 		if (udev->speed == USB_SPEED_FULL)
- 			dev_dbg(&udev->dev, "ep0 maxpacket = %d\n", i);
+ 	/*
+ 	 * Assign empty clock ops for consumers that might still hold
+@@ -4469,11 +4470,10 @@ void clk_unregister(struct clk *clk)
+ 	if (clk->core->protect_count)
+ 		pr_warn("%s: unregistering protected clock: %s\n",
+ 					__func__, clk->core->name);
++	clk_prepare_unlock();
+ 
+ 	kref_put(&clk->core->ref, __clk_release);
+ 	free_clk(clk);
+-unlock:
+-	clk_prepare_unlock();
+ }
+ EXPORT_SYMBOL_GPL(clk_unregister);
+ 
+@@ -4632,13 +4632,11 @@ void __clk_put(struct clk *clk)
+ 	if (clk->min_rate > 0 || clk->max_rate < ULONG_MAX)
+ 		clk_set_rate_range_nolock(clk, 0, ULONG_MAX);
+ 
+-	owner = clk->core->owner;
+-	kref_put(&clk->core->ref, __clk_release);
+-
+ 	clk_prepare_unlock();
+ 
++	owner = clk->core->owner;
++	kref_put(&clk->core->ref, __clk_release);
+ 	module_put(owner);
+-
+ 	free_clk(clk);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
