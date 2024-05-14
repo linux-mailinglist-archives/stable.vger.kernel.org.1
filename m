@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-43984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10ED8C5098
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4BC8C530F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4F91C20399
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41F0D2831C1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B5413DBBC;
-	Tue, 14 May 2024 10:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30065139CEC;
+	Tue, 14 May 2024 11:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtQ8iIeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H14a9s3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255242CCA3;
-	Tue, 14 May 2024 10:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EBC58AC4;
+	Tue, 14 May 2024 11:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683503; cv=none; b=IRnHeHyL+dsP7ZgVtJMYv0LXrzY8Kqt//fj1ohYNpzHzbMESfJuc08Yueu0Z3jY4SSQsdX0aVHkeQEKO/D8h074SliN8vR0FbSCgc71L51vbUmKuhnte7j++pxfoaesN9tW7xk3N3wOVlM00rVPXc2dK+pr2l1jenZ6WQztTQ3k=
+	t=1715686287; cv=none; b=L7xBoE1mCPZw2H9V+VnXTgw5Nu28tDqcNRgvHjopmTbGb2VmLpSfm38H22V0gFI51gOvmdNLsFqN4I0dH1I6H38wAxFKeAP+qSrnzVW5SHzVkA/ISDqRa16gTb6xZEwF4Hh6IJl1WDYUyKXI2tdlJFOTL2iEWr+l3JwejyWUlMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683503; c=relaxed/simple;
-	bh=12OZdOIN8pWf8HXmOIgLkLEY9Wq1xPnRQV62m3+BHi0=;
+	s=arc-20240116; t=1715686287; c=relaxed/simple;
+	bh=TPtO9X3FaYYFKXqnsXGx67TuGQluJ3Le2CBd5xh/RwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlbEMB0mx+oWwOx7tT4qXdv0GPFl8zGlP0slCswuIzyoxoVQh+N0W3nls6fup3e93Vg74tTKasXGUMP+yirvgqLTDpAWSqRJHvIDewjGcHPGzYRHM0Krf9gMqUcnYROo4eUyqWI6WUAgmFMeSchFif35t2AqbakiREhjS4lC80Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtQ8iIeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7C1C2BD10;
-	Tue, 14 May 2024 10:45:01 +0000 (UTC)
+	 MIME-Version; b=se6MDAnTNU4iWFd6XbahWL3KzGZMQZ6jno+kGgE/VW9r21SdZ9UKWw4g154eszd41dYHqT4NTGFSc43ob1PvTN+DE5Sy0f8IY83z1tWRAI0YBdPgnxKQWnTrvuFMVW63nwrwtrA2vV/IuBqMw00yJPCC0QzjiMZ8LndgvaL2Yhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H14a9s3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D12C2BD10;
+	Tue, 14 May 2024 11:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683502;
-	bh=12OZdOIN8pWf8HXmOIgLkLEY9Wq1xPnRQV62m3+BHi0=;
+	s=korg; t=1715686286;
+	bh=TPtO9X3FaYYFKXqnsXGx67TuGQluJ3Le2CBd5xh/RwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtQ8iIeSg9SMRTIbGkOUI6bMNIJtuWgvG383OFtaOFaBcftb38ttnW6EViVqfo1Qa
-	 f1VrHCzPhSaPysV84mMHKUukBt3ISdmyZx1YSIoARs6pM9fqPl3bC3SUYcCbVWmvTG
-	 GxYv58Fh779Sb+UsOdXKZrIz3nAYcG/E3KKGNsCg=
+	b=H14a9s3p21esqJqnHgvz3bxqjZbFx5VlkKDph29ZJqEM8Cf0s4qBiiZhq6lWalewk
+	 ahKXX3OkaCFaPz0oYQaeSobqtCqHBDE4z4gomGmUUJcMtyWQRmAS4+f/VY3hKBMxOG
+	 J1jc2eZydwBXkDYcLgWrl037Imd69zakAFURGroQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Devyn Liu <liudingyuan@huawei.com>,
+	Jay Fang <f.fangjian@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 211/336] netlink: specs: Add missing bridge linkinfo attrs
+Subject: [PATCH 6.1 053/236] spi: hisi-kunpeng: Delete the dump interface of data registers in debugfs
 Date: Tue, 14 May 2024 12:16:55 +0200
-Message-ID: <20240514101046.578947660@linuxfoundation.org>
+Message-ID: <20240514101022.360101384@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donald Hunter <donald.hunter@gmail.com>
+From: Devyn Liu <liudingyuan@huawei.com>
 
-[ Upstream commit 9adcac6506185dd1a727f1784b89f30cd217ef7e ]
+[ Upstream commit 7430764f5a85d30314aeef2d5438dff1fb0b1d68 ]
 
-Attributes for FDB learned entries were added to the if_link netlink api
-for bridge linkinfo but are missing from the rt_link.yaml spec. Add the
-missing attributes to the spec.
+Due to the reading of FIFO during the dump of data registers in
+debugfs, if SPI transmission is in progress, it will be affected
+and may result in transmission failure. Therefore, the dump
+interface of data registers in debugfs is removed.
 
-Fixes: ddd1ad68826d ("net: bridge: Add netlink knobs for number / max learned FDB entries")
-Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240503164304.87427-1-donald.hunter@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2b2142f247eb ("spi: hisi-kunpeng: Add debugfs support")
+Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
+Reviewed-by: Jay Fang <f.fangjian@huawei.com>
+Link: https://lore.kernel.org/r/20240416015839.3323398-1-liudingyuan@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/rt_link.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-hisi-kunpeng.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
-index 8e4d19adee8cd..4e702ac8bf66b 100644
---- a/Documentation/netlink/specs/rt_link.yaml
-+++ b/Documentation/netlink/specs/rt_link.yaml
-@@ -1144,6 +1144,12 @@ attribute-sets:
-       -
-         name: mcast-querier-state
-         type: binary
-+      -
-+        name: fdb-n-learned
-+        type: u32
-+      -
-+        name: fdb-max-learned
-+        type: u32
-   -
-     name: linkinfo-brport-attrs
-     name-prefix: ifla-brport-
+diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
+index 525cc0143a305..54730e93fba45 100644
+--- a/drivers/spi/spi-hisi-kunpeng.c
++++ b/drivers/spi/spi-hisi-kunpeng.c
+@@ -151,8 +151,6 @@ static const struct debugfs_reg32 hisi_spi_regs[] = {
+ 	HISI_SPI_DBGFS_REG("ENR", HISI_SPI_ENR),
+ 	HISI_SPI_DBGFS_REG("FIFOC", HISI_SPI_FIFOC),
+ 	HISI_SPI_DBGFS_REG("IMR", HISI_SPI_IMR),
+-	HISI_SPI_DBGFS_REG("DIN", HISI_SPI_DIN),
+-	HISI_SPI_DBGFS_REG("DOUT", HISI_SPI_DOUT),
+ 	HISI_SPI_DBGFS_REG("SR", HISI_SPI_SR),
+ 	HISI_SPI_DBGFS_REG("RISR", HISI_SPI_RISR),
+ 	HISI_SPI_DBGFS_REG("ISR", HISI_SPI_ISR),
 -- 
 2.43.0
 
