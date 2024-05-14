@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-43934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829D08C504F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:02:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDCD8C5197
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B321C1C20A1F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:02:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2FFD28281D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF1E13C68F;
-	Tue, 14 May 2024 10:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96FE13A3F0;
+	Tue, 14 May 2024 11:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YF/W67A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YV7DmIQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC3913C689;
-	Tue, 14 May 2024 10:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7545D54903;
+	Tue, 14 May 2024 11:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683175; cv=none; b=Zk/oS4xuE8jN6df0Blv/ZHGhYSzpQBguIAooYMhtiDFRwHDikHxAAYJWguyd0O7qQhUSZhek6/UKc4jmCKllc8UiiH2BVHQ6+LO3XELtszR4yp3Br2zM+mMb6tMrNohgDutPXdegEMC8imb/E/zIHh2KhUU7Ta7JRwkkTlFpkus=
+	t=1715684717; cv=none; b=D0D3umHdkMcjeLo2HpV4MCEdzfwcusnWpL/WEuBEFwX/fZCoFuZlC0WDrwyl7EIbVR2MxUyMsNnnp3Ht29gG1uww0ivi1iiBoE3ZvcP3zVbI+1PliTp6FfrXTiITLfdtOErUyMDQYYHoEFQzRBE5khm2C+V8z9N7eyVCtGQrjKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683175; c=relaxed/simple;
-	bh=iQpi7/GCLZYwqW5OF70V89qv+CLNB9gfbSE6vdViPLM=;
+	s=arc-20240116; t=1715684717; c=relaxed/simple;
+	bh=GdoPmmuz/AIDNS9sa+CX6VDmSBOutGjyV4MiVkUUFUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEGxMsZwfZ8MCSJHh9hpWzdX/gX0+kqyb+DDZgKd8xR3jjKbpDNSh6XrwlwITpxxB6Q+bggJ1bjfeNRbqs91oBTHjnvWiBJwopiGO8rmeuBxd98GOk3BSkGGhjHGaQ1Q1UTw0Olk7JYU9csmaIKK3u8qPId6ULcF+KxfaSTdJsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YF/W67A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6E5C2BD10;
-	Tue, 14 May 2024 10:39:34 +0000 (UTC)
+	 MIME-Version; b=Ppap3cg7vapBgWf47bFYka3+lVIqBXaRWs9QbdwqRjMhLHaBuly9DB8kzO9eS1uouCJUy6YJTYk0TXKSAQg6PgCEUFls1F5GDCYzjDA0nFJoI1qVbyWbMaUMscK8PwCNF10KD3w32gnxnmJqQ9R8NrOHN+BOci1+Z/+VR2/kLaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YV7DmIQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1735DC2BD10;
+	Tue, 14 May 2024 11:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683175;
-	bh=iQpi7/GCLZYwqW5OF70V89qv+CLNB9gfbSE6vdViPLM=;
+	s=korg; t=1715684717;
+	bh=GdoPmmuz/AIDNS9sa+CX6VDmSBOutGjyV4MiVkUUFUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YF/W67AzO9sV9BB+y48+IMteTPh9aNrgHQXeSCx93VVZQl5OPn4Afsrm6pQHqEaw
-	 /P+zu9nOMWgOMJkdcXJdvyKH4gs5+IdS+eAig4jSMj3tVnyhhTJ6EIIe7A6ZeNWO/d
-	 FWS/5IaGNLfNCZUspmJucMDpN8MJ190VG8Ye/1zM=
+	b=YV7DmIQKkc/ZoKjImZ/AGawRK1jkV9InXnkSqqgmuJQRCKj3WyOA7Uf0b1K+njuWl
+	 dh2LH2D54xXgz1v91YWuC2yEvt3c79CynDPjXCw3jsZ2NgxMBnJTDkGf2nZMJeTIDk
+	 Vfp/mLytZi15po7ScAO0bGSNZoVhxHAzleuC2wBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 147/336] scsi: target: Fix SELinux error when systemd-modules loads the target module
+Subject: [PATCH 6.6 080/301] vxlan: Pull inner IP header in vxlan_rcv().
 Date: Tue, 14 May 2024 12:15:51 +0200
-Message-ID: <20240514101044.151836730@linuxfoundation.org>
+Message-ID: <20240514101035.268937527@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 97a54ef596c3fd24ec2b227ba8aaf2cf5415e779 ]
+[ Upstream commit f7789419137b18e3847d0cc41afd788c3c00663d ]
 
-If the systemd-modules service loads the target module, the credentials of
-that userspace process will be used to validate the access to the target db
-directory.  SELinux will prevent it, reporting an error like the following:
+Ensure the inner IP header is part of skb's linear data before reading
+its ECN bits. Otherwise we might read garbage.
+One symptom is the system erroneously logging errors like
+"vxlan: non-ECT from xxx.xxx.xxx.xxx with TOS=xxxx".
 
-kernel: audit: type=1400 audit(1676301082.205:4): avc: denied  { read }
-for  pid=1020 comm="systemd-modules" name="target" dev="dm-3"
-ino=4657583 scontext=system_u:system_r:systemd_modules_load_t:s0
-tcontext=system_u:object_r:targetd_etc_rw_t:s0 tclass=dir permissive=0
+Similar bugs have been fixed in geneve, ip_tunnel and ip6_tunnel (see
+commit 1ca1ba465e55 ("geneve: make sure to pull inner header in
+geneve_rx()") for example). So let's reuse the same code structure for
+consistency. Maybe we'll can add a common helper in the future.
 
-Fix the error by using the kernel credentials to access the db directory
-
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Link: https://lore.kernel.org/r/20240215143944.847184-2-mlombard@redhat.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/1239c8db54efec341dd6455c77e0380f58923a3c.1714495737.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_configfs.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/vxlan/vxlan_core.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index c1fbcdd161826..c40217f44b1bc 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -3672,6 +3672,8 @@ static int __init target_core_init_configfs(void)
- {
- 	struct configfs_subsystem *subsys = &target_core_fabrics;
- 	struct t10_alua_lu_gp *lu_gp;
-+	struct cred *kern_cred;
-+	const struct cred *old_cred;
- 	int ret;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 7e5e60318045a..f98069920e27f 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1674,6 +1674,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 	bool raw_proto = false;
+ 	void *oiph;
+ 	__be32 vni = 0;
++	int nh;
  
- 	pr_debug("TARGET_CORE[0]: Loading Generic Kernel Storage"
-@@ -3748,11 +3750,21 @@ static int __init target_core_init_configfs(void)
- 	if (ret < 0)
- 		goto out;
+ 	/* Need UDP and VXLAN header to be present */
+ 	if (!pskb_may_pull(skb, VXLAN_HLEN))
+@@ -1762,9 +1763,25 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 		skb->pkt_type = PACKET_HOST;
+ 	}
  
-+	/* We use the kernel credentials to access the target directory */
-+	kern_cred = prepare_kernel_cred(&init_task);
-+	if (!kern_cred) {
-+		ret = -ENOMEM;
-+		goto out;
+-	oiph = skb_network_header(skb);
++	/* Save offset of outer header relative to skb->head,
++	 * because we are going to reset the network header to the inner header
++	 * and might change skb->head.
++	 */
++	nh = skb_network_header(skb) - skb->head;
++
+ 	skb_reset_network_header(skb);
+ 
++	if (!pskb_inet_may_pull(skb)) {
++		DEV_STATS_INC(vxlan->dev, rx_length_errors);
++		DEV_STATS_INC(vxlan->dev, rx_errors);
++		vxlan_vnifilter_count(vxlan, vni, vninode,
++				      VXLAN_VNI_STATS_RX_ERRORS, 0);
++		goto drop;
 +	}
-+	old_cred = override_creds(kern_cred);
- 	target_init_dbroot();
-+	revert_creds(old_cred);
-+	put_cred(kern_cred);
- 
- 	return 0;
- 
- out:
-+	target_xcopy_release_pt();
- 	configfs_unregister_subsystem(subsys);
- 	core_dev_release_virtual_lun0();
- 	rd_module_exit();
++
++	/* Get the outer header. */
++	oiph = skb->head + nh;
++
+ 	if (!vxlan_ecn_decapsulate(vs, oiph, skb)) {
+ 		DEV_STATS_INC(vxlan->dev, rx_frame_errors);
+ 		DEV_STATS_INC(vxlan->dev, rx_errors);
 -- 
 2.43.0
 
