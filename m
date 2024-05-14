@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA128C5386
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8738C528F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1383A1F23293
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00B081F21F3F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39B984E1D;
-	Tue, 14 May 2024 11:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E31713F449;
+	Tue, 14 May 2024 11:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/wJp4+3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyam7xGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FC747A6C;
-	Tue, 14 May 2024 11:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F766311D;
+	Tue, 14 May 2024 11:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686587; cv=none; b=qKh4ndMmnyzdK26jkHahV7tie0MpXhhItH0XUps9O0tsJF0AeHvhMolEEV1rbwCDweAcJbYexBreduDDfbO+2i/kQRPDI35cEx5aRLWtc7ao2aBhDB16E99lQvmDCD4m93fH3GetrCm2taFuA1gReWGhW5odVpW0lXhpgyYuiWw=
+	t=1715685939; cv=none; b=NgDsp8Q6l9x/ZCQk8LaUjbJ+XFTRptvKvO66eAJ4AJLwvU13LUOkHuXipHoxj5qAYYBePM6xSIp+yQ3LegJKeaRguoz8X7oioTknNBi5oqaIa6i5/gGb0/WHlYZj09+fd74W+/0u2nfKisxg05xWyHOzUS+koTssaeHZ0/aa5Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686587; c=relaxed/simple;
-	bh=D77+0cb0fBWXzIDX/4qH5+CWo89SVPKd+B8i1Ap9U8c=;
+	s=arc-20240116; t=1715685939; c=relaxed/simple;
+	bh=5wyuGDZNTRf4bUDcGsthorRnKTzQ2Pxde0tqzpDxzso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iADAYd6WDrbIF1n0E0d7xhsgQ9be+bZXeBJ5s4jlw5byJzmSSOpc9XAramFoxai3q0GTvoXlHddI+HWoT9Yw/I6E1iLfirdeb0Ix2Mme51PyM4uV39tr9j0kGvmwNhXsp2igZMbH6N5HNVQcbOl2IeDnHTRQ51iFBXh9c7r6Xhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/wJp4+3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20102C2BD10;
-	Tue, 14 May 2024 11:36:26 +0000 (UTC)
+	 MIME-Version; b=M//RWHHodSfuwlAgjai4eL7IWv/sYMVFkPPuhDxf4gX79QVlRBHBuZRaOTim6y9sDGg06AcV8vQ3d3y9JKuuaxYNHqLeq/OKRsGwV01+PdrHh13f7cXM4MkiVskrBKj2IP6LuOdxzVBONsW2dn2wpdx7tYxX8HdwkkhiUhvRs4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyam7xGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6489C2BD10;
+	Tue, 14 May 2024 11:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686587;
-	bh=D77+0cb0fBWXzIDX/4qH5+CWo89SVPKd+B8i1Ap9U8c=;
+	s=korg; t=1715685938;
+	bh=5wyuGDZNTRf4bUDcGsthorRnKTzQ2Pxde0tqzpDxzso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/wJp4+3Wgj7rqpl3VTfXeyeOlrev1471mTS5LSNqjstAU2RhH2ZML20vyvwxP2su
-	 o0YuF0fHyDwIkzEdVZ8mo2s2ZIv6iQ4tndvNe1xyir0+vDf4ulQI2A6md4XVN4/xDG
-	 DIR0S+YezF15fRqc5iyGtp+iaTg2FjMD8kmibmC8=
+	b=hyam7xGHu7odC9Tlq5vW0xDeBJ0nzH/8cbfa8yZgSVD4lP3sPHGaJe8Xx/AJr5Vte
+	 NY47JnbD02ZuccfgVYHS9B/VBqetyvSV3dpvlDyO7Q91E9Gu26HbKOGNNXYS+GFXZM
+	 lKaWYIBPQbL/lCmpm6mmYEQDMO1YnHwrEpA4xhuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1 190/236] rust: module: place generated init_module() function in .init.text
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mark Brown <broonie@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 281/301] selftests/mm: fix powerpc ARCH check
 Date: Tue, 14 May 2024 12:19:12 +0200
-Message-ID: <20240514101027.575206337@linuxfoundation.org>
+Message-ID: <20240514101042.874320941@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bertschinger <tahbertschinger@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 1b6170ff7a203a5e8354f19b7839fe8b897a9c0d upstream.
+commit 7e6423441b36e3a03907e2df84b73c414c9c3763 upstream.
 
-Currently Rust kernel modules have their init code placed in the `.text`
-section of the .ko file. I don't think this causes any real problems
-for Rust modules as long as all code called during initialization lives
-in `.text`.
+In commit 0518dbe97fe6 ("selftests/mm: fix cross compilation with LLVM")
+the logic to detect the machine architecture in the Makefile was changed
+to use ARCH, and only fallback to uname -m if ARCH is unset.  However the
+tests of ARCH were not updated to account for the fact that ARCH is
+"powerpc" for powerpc builds, not "ppc64".
 
-However, if a Rust `init_module()` function (that lives in `.text`)
-calls a function marked with `__init` (in C) or
-`#[link_section = ".init.text"]` (in Rust), then a warning is
-generated by modpost because that function lives in `.init.text`.
-For example:
+Fix it by changing the checks to look for "powerpc", and change the
+uname -m logic to convert "ppc64.*" into "powerpc".
 
-WARNING: modpost: fs/bcachefs/bcachefs: section mismatch in reference: init_module+0x6 (section: .text) -> _RNvXCsj7d3tFpT5JS_15bcachefs_moduleNtB2_8BcachefsNtCsjDtqRIL3JAG_6kernel6Module4init (section: .init.text)
+With that fixed the following tests now build for powerpc again:
+ * protection_keys
+ * va_high_addr_switch
+ * virtual_address_range
+ * write_to_hugetlbfs
 
-I ran into this while experimenting with converting the bcachefs kernel
-module from C to Rust. The module's `init()`, written in Rust, calls C
-functions like `bch2_vfs_init()` which are placed in `.init.text`.
-
-This patch places the macro-generated `init_module()` Rust function in
-the `.init.text` section. It also marks `init_module()` as unsafe--now
-it may not be called after module initialization completes because it
-may be freed already.
-
-Note that this is not enough on its own to actually get all the module
-initialization code in that section. The module author must still add
-the `#[link_section = ".init.text"]` attribute to the Rust `init()` in
-the `impl kernel::Module` block in order to then call `__init`
-functions. However, this patch enables module authors do so, when
-previously it would not be possible (without warnings).
-
-Signed-off-by: Thomas Bertschinger <tahbertschinger@gmail.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240206153806.567055-1-tahbertschinger@gmail.com
-[ Reworded title to add prefix. ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lkml.kernel.org/r/20240506115825.66415-1-mpe@ellerman.id.au
+Fixes: 0518dbe97fe6 ("selftests/mm: fix cross compilation with LLVM")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.4+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/macros/module.rs |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mm/Makefile |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -202,10 +202,15 @@ pub(crate) fn module(ts: TokenStream) ->
-             }};
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -12,7 +12,7 @@ uname_M := $(shell uname -m 2>/dev/null
+ else
+ uname_M := $(shell echo $(CROSS_COMPILE) | grep -o '^[a-z0-9]\+')
+ endif
+-ARCH ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/' -e 's/ppc64.*/ppc64/')
++ARCH ?= $(shell echo $(uname_M) | sed -e 's/aarch64.*/arm64/' -e 's/ppc64.*/powerpc/')
+ endif
  
-             // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-+            /// # Safety
-+            ///
-+            /// This function must not be called after module initialization, because it may be
-+            /// freed after that completes.
-             #[cfg(MODULE)]
-             #[doc(hidden)]
-             #[no_mangle]
--            pub extern \"C\" fn init_module() -> core::ffi::c_int {{
-+            #[link_section = \".init.text\"]
-+            pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {{
-                 __init()
-             }}
+ # Without this, failed build products remain, with up-to-date timestamps,
+@@ -95,13 +95,13 @@ TEST_GEN_FILES += $(BINARIES_64)
+ endif
+ else
  
+-ifneq (,$(findstring $(ARCH),ppc64))
++ifneq (,$(findstring $(ARCH),powerpc))
+ TEST_GEN_FILES += protection_keys
+ endif
+ 
+ endif
+ 
+-ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sparc64 x86_64))
++ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 powerpc riscv64 s390x sparc64 x86_64))
+ TEST_GEN_FILES += va_high_addr_switch
+ TEST_GEN_FILES += virtual_address_range
+ TEST_GEN_FILES += write_to_hugetlbfs
 
 
 
