@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1FB8C5113
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC2A8C5379
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58D16281B33
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA431F23317
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303C12F38E;
-	Tue, 14 May 2024 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A3046430;
+	Tue, 14 May 2024 11:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BySue374"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAoFD49S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824B255C0A;
-	Tue, 14 May 2024 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CFE2B9B3;
+	Tue, 14 May 2024 11:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684020; cv=none; b=j0y30qECf3vOCI9RCGSk6i2Q/Ecqnx09YXQgnNDDAweSGLaL6VEx9BiRukAAwXwNDTRJj/1JDr1omfQPYsl8FINx0+yg0zJv5oSAmuUFIMCDfBNU4IKGbJ8JC2wCzf/5UdbWHjY4vhOzo3ihuBPNRR5/PfMqXj6rnDGoHOXLNxA=
+	t=1715686549; cv=none; b=VPM3KB44xzSWX/6c19LN242p2roUcyB1I5cERYrOmuuSsQ+ZlbaoVsXCS3+Carakyp3LY+uX2EkKc9hdVGYUT6ehK+yaxjQLxUOEYbnwD9/3LK4Oa0SVHzlaMRkwrTu6J1sYiBJ7ADiMEgeW0bT59p2t+6IbYZ4gxP8wGRkQtek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684020; c=relaxed/simple;
-	bh=0aMJrJ7BMwgZflmJIHkx2GYxb41znff0C2ew35TyDWU=;
+	s=arc-20240116; t=1715686549; c=relaxed/simple;
+	bh=HE4mMW1O3ZKck8aBj6gNlwXX2IeUn+SiLFo/vRJhKM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtrS/HNnQoWuD1WYlW2xVrc5LDHyE5P7RemYvpP5bCzqy3MPN7o/UqrFS8JSfP/QH4p3N1RTjX/jUtAWuuR2Tg0p2ISRGkocQ3k5Yg52XQ4rjtQb/2MBkp5XsnzF6k8Eu4QyEqv+Y7bmZ5gyOOVGtIubifHGf81w+jinL8Tk1mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BySue374; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBCFC32781;
-	Tue, 14 May 2024 10:53:39 +0000 (UTC)
+	 MIME-Version; b=cmT7iEKFIgOyFVB9QF4zmgs/SNxll/tfU2EnloVrBrdBRDg69qr/EwuXOweToODE4Mlwqjv6HRGPVFkagsDA7kzOTHp6+F811XYOGfbnI2NXswLE2s4c5DuXlUmeha9kcVLg0Pf7WhEVnCV2tWrrm4pK6VfKyS1kpagLSFJUqA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAoFD49S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E13FC2BD10;
+	Tue, 14 May 2024 11:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684020;
-	bh=0aMJrJ7BMwgZflmJIHkx2GYxb41znff0C2ew35TyDWU=;
+	s=korg; t=1715686549;
+	bh=HE4mMW1O3ZKck8aBj6gNlwXX2IeUn+SiLFo/vRJhKM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BySue374enkaBHxkLXVhchV4QUI8QvT5egm/y6ANl2xScyFWZBRLaOgYWF4sgkfM8
-	 6IQEB6GTu125ItbbQkbo9otkAWSAc6ReEmPf4nMbw09euXhqrCSrzOJT71vobEb78S
-	 31MJpqyZOReMANkTGKYlCn21ZCJK6+PIfbYLscZw=
+	b=OAoFD49S7wBQwFGAAU6sePpOfE2Vh8JoJzOCUR2SDKIcSxhjcmdxJ63fpMla6qVuU
+	 Bpgzre13cwhK3xqoYp+W0RNX8tvgVP6OWMExoLQ1MA/ordYJElixdfVf32di/GBBjX
+	 5fI+60/2fWofNq/lfNdF/+ecsGzOzJ2HbRHNMhyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Volodymyr Babchuk <volodymyr_babchuk@epam.com>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.8 307/336] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin configuration
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 149/236] Bluetooth: Fix use-after-free bugs caused by sco_sock_timeout
 Date: Tue, 14 May 2024 12:18:31 +0200
-Message-ID: <20240514101050.209536931@linuxfoundation.org>
+Message-ID: <20240514101026.023686204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 819fe8c96a5172dfd960e5945e8f00f8fed32953 upstream.
+[ Upstream commit 483bc08181827fc475643272ffb69c533007e546 ]
 
-There are two issues with SDHC2 configuration for SA8155P-ADP,
-which prevent use of SDHC2 and causes issues with ethernet:
+When the sco connection is established and then, the sco socket
+is releasing, timeout_work will be scheduled to judge whether
+the sco disconnection is timeout. The sock will be deallocated
+later, but it is dereferenced again in sco_sock_timeout. As a
+result, the use-after-free bugs will happen. The root cause is
+shown below:
 
-- Card Detect pin for SHDC2 on SA8155P-ADP is connected to gpio4 of
-  PMM8155AU_1, not to SoC itself. SoC's gpio4 is used for DWMAC
-  TX. If sdhc driver probes after dwmac driver, it reconfigures
-  gpio4 and this breaks Ethernet MAC.
+    Cleanup Thread               |      Worker Thread
+sco_sock_release                 |
+  sco_sock_close                 |
+    __sco_sock_close             |
+      sco_sock_set_timer         |
+        schedule_delayed_work    |
+  sco_sock_kill                  |    (wait a time)
+    sock_put(sk) //FREE          |  sco_sock_timeout
+                                 |    sock_hold(sk) //USE
 
-- pinctrl configuration mentions gpio96 as CD pin. It seems it was
-  copied from some SM8150 example, because as mentioned above,
-  correct CD pin is gpio4 on PMM8155AU_1.
+The KASAN report triggered by POC is shown below:
 
-This patch fixes both mentioned issues by providing correct pin handle
-and pinctrl configuration.
+[   95.890016] ==================================================================
+[   95.890496] BUG: KASAN: slab-use-after-free in sco_sock_timeout+0x5e/0x1c0
+[   95.890755] Write of size 4 at addr ffff88800c388080 by task kworker/0:0/7
+...
+[   95.890755] Workqueue: events sco_sock_timeout
+[   95.890755] Call Trace:
+[   95.890755]  <TASK>
+[   95.890755]  dump_stack_lvl+0x45/0x110
+[   95.890755]  print_address_description+0x78/0x390
+[   95.890755]  print_report+0x11b/0x250
+[   95.890755]  ? __virt_addr_valid+0xbe/0xf0
+[   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
+[   95.890755]  kasan_report+0x139/0x170
+[   95.890755]  ? update_load_avg+0xe5/0x9f0
+[   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
+[   95.890755]  kasan_check_range+0x2c3/0x2e0
+[   95.890755]  sco_sock_timeout+0x5e/0x1c0
+[   95.890755]  process_one_work+0x561/0xc50
+[   95.890755]  worker_thread+0xab2/0x13c0
+[   95.890755]  ? pr_cont_work+0x490/0x490
+[   95.890755]  kthread+0x279/0x300
+[   95.890755]  ? pr_cont_work+0x490/0x490
+[   95.890755]  ? kthread_blkcg+0xa0/0xa0
+[   95.890755]  ret_from_fork+0x34/0x60
+[   95.890755]  ? kthread_blkcg+0xa0/0xa0
+[   95.890755]  ret_from_fork_asm+0x11/0x20
+[   95.890755]  </TASK>
+[   95.890755]
+[   95.890755] Allocated by task 506:
+[   95.890755]  kasan_save_track+0x3f/0x70
+[   95.890755]  __kasan_kmalloc+0x86/0x90
+[   95.890755]  __kmalloc+0x17f/0x360
+[   95.890755]  sk_prot_alloc+0xe1/0x1a0
+[   95.890755]  sk_alloc+0x31/0x4e0
+[   95.890755]  bt_sock_alloc+0x2b/0x2a0
+[   95.890755]  sco_sock_create+0xad/0x320
+[   95.890755]  bt_sock_create+0x145/0x320
+[   95.890755]  __sock_create+0x2e1/0x650
+[   95.890755]  __sys_socket+0xd0/0x280
+[   95.890755]  __x64_sys_socket+0x75/0x80
+[   95.890755]  do_syscall_64+0xc4/0x1b0
+[   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+[   95.890755]
+[   95.890755] Freed by task 506:
+[   95.890755]  kasan_save_track+0x3f/0x70
+[   95.890755]  kasan_save_free_info+0x40/0x50
+[   95.890755]  poison_slab_object+0x118/0x180
+[   95.890755]  __kasan_slab_free+0x12/0x30
+[   95.890755]  kfree+0xb2/0x240
+[   95.890755]  __sk_destruct+0x317/0x410
+[   95.890755]  sco_sock_release+0x232/0x280
+[   95.890755]  sock_close+0xb2/0x210
+[   95.890755]  __fput+0x37f/0x770
+[   95.890755]  task_work_run+0x1ae/0x210
+[   95.890755]  get_signal+0xe17/0xf70
+[   95.890755]  arch_do_signal_or_restart+0x3f/0x520
+[   95.890755]  syscall_exit_to_user_mode+0x55/0x120
+[   95.890755]  do_syscall_64+0xd1/0x1b0
+[   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
+[   95.890755]
+[   95.890755] The buggy address belongs to the object at ffff88800c388000
+[   95.890755]  which belongs to the cache kmalloc-1k of size 1024
+[   95.890755] The buggy address is located 128 bytes inside of
+[   95.890755]  freed 1024-byte region [ffff88800c388000, ffff88800c388400)
+[   95.890755]
+[   95.890755] The buggy address belongs to the physical page:
+[   95.890755] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88800c38a800 pfn:0xc388
+[   95.890755] head: order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[   95.890755] anon flags: 0x100000000000840(slab|head|node=0|zone=1)
+[   95.890755] page_type: 0xffffffff()
+[   95.890755] raw: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
+[   95.890755] raw: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
+[   95.890755] head: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
+[   95.890755] head: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
+[   95.890755] head: 0100000000000003 ffffea000030e201 ffffea000030e248 00000000ffffffff
+[   95.890755] head: 0000000800000000 0000000000000000 00000000ffffffff 0000000000000000
+[   95.890755] page dumped because: kasan: bad access detected
+[   95.890755]
+[   95.890755] Memory state around the buggy address:
+[   95.890755]  ffff88800c387f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   95.890755]  ffff88800c388000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   95.890755] >ffff88800c388080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   95.890755]                    ^
+[   95.890755]  ffff88800c388100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   95.890755]  ffff88800c388180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   95.890755] ==================================================================
 
-Fixes: 0deb2624e2d0 ("arm64: dts: qcom: sa8155p-adp: Add support for uSD card")
-Cc: stable@vger.kernel.org
-Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
-Link: https://lore.kernel.org/r/20240412190310.1647893-1-volodymyr_babchuk@epam.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this problem by adding a check protected by sco_conn_lock to judget
+whether the conn->hcon is null. Because the conn->hcon will be set to null,
+when the sock is releasing.
+
+Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8155p-adp.dts |   30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ net/bluetooth/sco.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
-+++ b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
-@@ -367,6 +367,16 @@
- 	};
- };
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index 4a6bf60f3e7aa..301cf802d32c4 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -84,6 +84,10 @@ static void sco_sock_timeout(struct work_struct *work)
+ 	struct sock *sk;
  
-+&pmm8155au_1_gpios {
-+	pmm8155au_1_sdc2_cd: sdc2-cd-default-state {
-+		pins = "gpio4";
-+		function = "normal";
-+		input-enable;
-+		bias-pull-up;
-+		power-source = <0>;
-+	};
-+};
-+
- &qupv3_id_1 {
- 	status = "okay";
- };
-@@ -384,10 +394,10 @@
- &sdhc_2 {
- 	status = "okay";
- 
--	cd-gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
-+	cd-gpios = <&pmm8155au_1_gpios 4 GPIO_ACTIVE_LOW>;
- 	pinctrl-names = "default", "sleep";
--	pinctrl-0 = <&sdc2_on>;
--	pinctrl-1 = <&sdc2_off>;
-+	pinctrl-0 = <&sdc2_on &pmm8155au_1_sdc2_cd>;
-+	pinctrl-1 = <&sdc2_off &pmm8155au_1_sdc2_cd>;
- 	vqmmc-supply = <&vreg_l13c_2p96>; /* IO line power */
- 	vmmc-supply = <&vreg_l17a_2p96>;  /* Card power line */
- 	bus-width = <4>;
-@@ -505,13 +515,6 @@
- 			bias-pull-up;		/* pull up */
- 			drive-strength = <16>;	/* 16 MA */
- 		};
--
--		sd-cd-pins {
--			pins = "gpio96";
--			function = "gpio";
--			bias-pull-up;		/* pull up */
--			drive-strength = <2>;	/* 2 MA */
--		};
- 	};
- 
- 	sdc2_off: sdc2-off-state {
-@@ -532,13 +535,6 @@
- 			bias-pull-up;		/* pull up */
- 			drive-strength = <2>;	/* 2 MA */
- 		};
--
--		sd-cd-pins {
--			pins = "gpio96";
--			function = "gpio";
--			bias-pull-up;		/* pull up */
--			drive-strength = <2>;	/* 2 MA */
--		};
- 	};
- 
- 	usb2phy_ac_en1_default: usb2phy-ac-en1-default-state {
+ 	sco_conn_lock(conn);
++	if (!conn->hcon) {
++		sco_conn_unlock(conn);
++		return;
++	}
+ 	sk = conn->sk;
+ 	if (sk)
+ 		sock_hold(sk);
+-- 
+2.43.0
+
 
 
 
