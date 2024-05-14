@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C18F8C53DB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F8D8C549B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5501F22095
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FF92289F70
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1665C13D250;
-	Tue, 14 May 2024 11:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11B653E37;
+	Tue, 14 May 2024 11:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCWtZMkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mKR4HiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F2313CF93;
-	Tue, 14 May 2024 11:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1CE7F7EB;
+	Tue, 14 May 2024 11:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686797; cv=none; b=HjSdY4+o4FhNtitl5DZ34n/0JzLbMSrK+6gkblXI3QgPNWtBFjmlrjn9f351JFmJrWlzM4Wikd6Trah5BkY3Mm9gOj1CWXr1ECw8nM+hGEyveV/Ot1rjUsBHoXao/86hS1D4sG34XbQBjzPeUs50bGug4wlDz5CK8ZM+MgOUbJY=
+	t=1715687302; cv=none; b=rNsYqG+FPqyqu3YDwlI7bPwUIOmUEdpfdKnfQgU7NQ7OVcjpQp/h3hmP6cwRtOiXKQqs6LoTl21zoTSLX/mzp+iHnRrZ+Pcs0ZNfsxwbHKVB4eoo1FPJGdlhwHHGAieL3LiUOag8HV9+sy3jCbuCit3IJK6dkZuoud0YobJ+VE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686797; c=relaxed/simple;
-	bh=mf/+/MAXj+aouGQ0mMKFHFMkJAWbQd/SkAB9wYnLkco=;
+	s=arc-20240116; t=1715687302; c=relaxed/simple;
+	bh=CGiv7w9fDKDJJsdNIkeegMNXGRwbaH/wpQrviB6Ubsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cF1ZYb2cTREBUNGQjxcwmdL2TL/TFtKa0SJXEWYchu6vYsLmwdz4TGVXlO1rq/ZlLjMlpt4QCl2UjwzojJPhE/0C8FRrpbMDulAeDPWfi9N76wLi2qboQH0BkN0S5tOSQhKPzXZA7/OPafYivkjdpaL0mBcJ2nRhQq7aH9VqGFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCWtZMkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF90C2BD10;
-	Tue, 14 May 2024 11:39:57 +0000 (UTC)
+	 MIME-Version; b=akFrmopZKvVmy8U8ZzuMj26msMLhGuGV+DRKtZUDUmEWSidYTNWIWdsuD33hwRffa+12dOCTFEBNUcSOV0gnP8CyThrAYrNlsXe1swZ6S+u3divYwuzPiJ8RWDLfnFScclscu+dySRRouXckmnprdlmqCG4l+0a9F3qzJ0Ie/ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mKR4HiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DD9C2BD10;
+	Tue, 14 May 2024 11:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686797;
-	bh=mf/+/MAXj+aouGQ0mMKFHFMkJAWbQd/SkAB9wYnLkco=;
+	s=korg; t=1715687302;
+	bh=CGiv7w9fDKDJJsdNIkeegMNXGRwbaH/wpQrviB6Ubsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCWtZMkHaNfZumf+Rg6M2egM3SrCidk+nkUNYYFzhjizRY6N/l4f/XIHFODjwo+Ua
-	 lEPbMWWHp38QFtmoItenisZUaTYWIM9s9+oq5JF1RKi0dkT8dPlVrGExUqKDqnmuXf
-	 DehUZyCb8X6ej+T97bXhmyMFrzXhIeJA/5qgiz3M=
+	b=2mKR4HiMbeptiqde37Rpzwn3jt8Bkt+P2I4MY6QXoyccawWY5BF2UCDRJXpIl5K48
+	 /UAuDbWnITmuHqgfeS4TIeglYii8zL9CZ70JMImWXuwFBSb4ixGmvCzlxk4nhapE9x
+	 2borR8lXDGgnjG0F4FUa+vZev0l7qqE64MBLa9QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nilesh Javali <njavali@marvell.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 26/63] scsi: bnx2fc: Remove spin_lock_bh while releasing resources after upload
+Subject: [PATCH 5.10 049/111] scsi: bnx2fc: Remove spin_lock_bh while releasing resources after upload
 Date: Tue, 14 May 2024 12:19:47 +0200
-Message-ID: <20240514100949.004812509@linuxfoundation.org>
+Message-ID: <20240514100958.996504601@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -154,10 +154,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
 
 diff --git a/drivers/scsi/bnx2fc/bnx2fc_tgt.c b/drivers/scsi/bnx2fc/bnx2fc_=
 tgt.c
-index e3d1c7c440c8c..c7d6842b293da 100644
+index a3e2a38aabf2f..283df0a9da167 100644
 --- a/drivers/scsi/bnx2fc/bnx2fc_tgt.c
 +++ b/drivers/scsi/bnx2fc/bnx2fc_tgt.c
-@@ -834,7 +834,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
+@@ -833,7 +833,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
 *hba,
 =20
  	BNX2FC_TGT_DBG(tgt, "Freeing up session resources\n");
@@ -166,7 +166,7 @@ index e3d1c7c440c8c..c7d6842b293da 100644
  	ctx_base_ptr =3D tgt->ctx_base;
  	tgt->ctx_base =3D NULL;
 =20
-@@ -890,7 +889,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
+@@ -889,7 +888,6 @@ static void bnx2fc_free_session_resc(struct bnx2fc_hba =
 *hba,
  				    tgt->sq, tgt->sq_dma);
  		tgt->sq =3D NULL;
