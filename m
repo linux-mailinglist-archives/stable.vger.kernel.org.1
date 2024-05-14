@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B30D8C54FE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFDB98C5260
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CECD1C230AC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844881F22C0C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D805A0FC;
-	Tue, 14 May 2024 11:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE7112F5A8;
+	Tue, 14 May 2024 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3WjK3pn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cykwc8QJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45155320F;
-	Tue, 14 May 2024 11:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D46F6311D;
+	Tue, 14 May 2024 11:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687575; cv=none; b=bsyJhI5vAMxxf4KaPYkCdoBXXpvV6YghJ5/WYRGHa6A8G++uVtURIwIN/XTbqRkAWalgmuwZHGjqLinuZ5Dh3F1S46C3h/FO5hc0egfW179WeSw/gXO4BwF7I7dcGadNEtVXRSH170jgbSOO4QShhFtuh5XMBCoW9rSNacKSgGo=
+	t=1715685848; cv=none; b=EFqmlmWN/0Bur7xZs53+Du8EVsCbcAZPXtdLX4K/w8XS2HPJik4GwxWJcjL9UWDOabjMLiu62GsGH384fs1BwPuUm2ACYgq5PXNEJnz1rXiGNFQp7eOZNfxZUd+RjK7gPti6JcAyZkh3r4q9EbhNHxdRIyH5/mMYorSzKl+2Y+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687575; c=relaxed/simple;
-	bh=tIBNYjor9NNWBEaqAReljwHoXHR0uBXUU25freWdVbg=;
+	s=arc-20240116; t=1715685848; c=relaxed/simple;
+	bh=rDh9/ChtzJsc9P2hiXDL+GHNHfYIHZ2sm0RB+iX76jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=amJRuEoFS76wummU8b1DPdlSwbW+72dtPOY5MHbmjY0A+1aNb/7lHfpggnZ+gsiJ6Lw2fGBkR5iSfEFlM36S+eywocrV5IgPrRevjkw4FbmIhVz9u3IqA902y9EyS4ZB6lSJHPw+bfw94SnOALWP5aDyqAwKrAMaES1CFiCeR1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3WjK3pn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BCFC32781;
-	Tue, 14 May 2024 11:52:54 +0000 (UTC)
+	 MIME-Version; b=b3gBgfS4RPga0AmZKYGfP+f0jVrB2zOADWv01q0/m+6GHd5AjzaakPkCYqSbx2AvavWyuF9Ksb7fJE7I01h9llizahmFBQKpVGAsoDAcfyFY0P8J0DYNQvI2UcR98U9sos6XBwiqINkgJGnU2Nvvsu5E59Z5Bem89lMW/66kAvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cykwc8QJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFE4C2BD10;
+	Tue, 14 May 2024 11:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687575;
-	bh=tIBNYjor9NNWBEaqAReljwHoXHR0uBXUU25freWdVbg=;
+	s=korg; t=1715685848;
+	bh=rDh9/ChtzJsc9P2hiXDL+GHNHfYIHZ2sm0RB+iX76jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3WjK3pnkWCRBVGeb8b7MZg+QfGMtC59oeEbd6hdAckIGtKiJuU/rlOAbcle+tz7U
-	 h2KrObLYhF0xbvIlJco5d7QZMAweJ59W5RnkDZCUU+BX5DjFJ54M0rjqvJ/0cay4P7
-	 F5LXQURotDqhk+NddE5j5ybGjsOo1y8ppoT38ZAw=
+	b=cykwc8QJT+Lne4Eydu/ZTpmL5txQbedpz7mOKcYLUGGIwkKK3mBcSHoOIRROxW2CO
+	 E099X376TSlJ1IEWH6DokVrztBXDxiakvubohh82Af6d36AgdcnVCWGS4X9EMcW6FP
+	 SpmPKKOJf6K8YRfzJd+kESv1rulNJ1ZccTtSBr7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/168] xdp: Add xdp_do_redirect_frame() for pre-computed xdp_frames
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 258/301] net: bcmgenet: synchronize UMAC_CMD access
 Date: Tue, 14 May 2024 12:18:49 +0200
-Message-ID: <20240514101007.865879234@linuxfoundation.org>
+Message-ID: <20240514101041.997916157@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,152 +60,191 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit 1372d34ccf6dd480332b2bcb2fd59a2b9a0df415 ]
+commit 0d5e2a82232605b337972fb2c7d0cbc46898aca1 upstream.
 
-Add an xdp_do_redirect_frame() variant which supports pre-computed
-xdp_frame structures. This will be used in bpf_prog_run() to avoid having
-to write to the xdp_frame structure when the XDP program doesn't modify the
-frame boundaries.
+The UMAC_CMD register is written from different execution
+contexts and has insufficient synchronization protections to
+prevent possible corruption. Of particular concern are the
+acceses from the phy_device delayed work context used by the
+adjust_link call and the BH context that may be used by the
+ndo_set_rx_mode call.
 
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/bpf/20220103150812.87914-6-toke@redhat.com
-Stable-dep-of: 5bcf0dcbf906 ("xdp: use flags field to disambiguate broadcast redirect")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A spinlock is added to the driver to protect contended register
+accesses (i.e. reg_lock) and it is used to synchronize accesses
+to UMAC_CMD.
+
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/filter.h |  4 +++
- net/core/filter.c      | 65 +++++++++++++++++++++++++++++++++++-------
- 2 files changed, 58 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   12 +++++++++++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |    4 +++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |    8 +++++++-
+ drivers/net/ethernet/broadcom/genet/bcmmii.c       |    2 ++
+ 4 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index ddaeb2afc022f..af0103bebb7bf 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1020,6 +1020,10 @@ int xdp_do_generic_redirect(struct net_device *dev, struct sk_buff *skb,
- int xdp_do_redirect(struct net_device *dev,
- 		    struct xdp_buff *xdp,
- 		    struct bpf_prog *prog);
-+int xdp_do_redirect_frame(struct net_device *dev,
-+			  struct xdp_buff *xdp,
-+			  struct xdp_frame *xdpf,
-+			  struct bpf_prog *prog);
- void xdp_do_flush(void);
- 
- /* The xdp_do_flush_map() helper has been renamed to drop the _map suffix, as
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 96441da61fca8..b756951c92494 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3987,26 +3987,44 @@ u32 xdp_master_redirect(struct xdp_buff *xdp)
- }
- EXPORT_SYMBOL_GPL(xdp_master_redirect);
- 
--int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
--		    struct bpf_prog *xdp_prog)
-+static inline int __xdp_do_redirect_xsk(struct bpf_redirect_info *ri,
-+					struct net_device *dev,
-+					struct xdp_buff *xdp,
-+					struct bpf_prog *xdp_prog)
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2469,14 +2469,18 @@ static void umac_enable_set(struct bcmge
  {
--	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
- 	enum bpf_map_type map_type = ri->map_type;
- 	void *fwd = ri->tgt_value;
- 	u32 map_id = ri->map_id;
--	struct xdp_frame *xdpf;
--	struct bpf_map *map;
- 	int err;
+ 	u32 reg;
  
- 	ri->map_id = 0; /* Valid map id idr range: [1,INT_MAX[ */
- 	ri->map_type = BPF_MAP_TYPE_UNSPEC;
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+-	if (reg & CMD_SW_RESET)
++	if (reg & CMD_SW_RESET) {
++		spin_unlock_bh(&priv->reg_lock);
+ 		return;
++	}
+ 	if (enable)
+ 		reg |= mask;
+ 	else
+ 		reg &= ~mask;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
  
--	if (map_type == BPF_MAP_TYPE_XSKMAP) {
--		err = __xsk_map_redirect(fwd, xdp);
--		goto out;
--	}
-+	err = __xsk_map_redirect(fwd, xdp);
-+	if (unlikely(err))
-+		goto err;
-+
-+	_trace_xdp_redirect_map(dev, xdp_prog, fwd, map_type, map_id, ri->tgt_index);
-+	return 0;
-+err:
-+	_trace_xdp_redirect_map_err(dev, xdp_prog, fwd, map_type, map_id, ri->tgt_index, err);
-+	return err;
-+}
-+
-+static __always_inline int __xdp_do_redirect_frame(struct bpf_redirect_info *ri,
-+						   struct net_device *dev,
-+						   struct xdp_frame *xdpf,
-+						   struct bpf_prog *xdp_prog)
-+{
-+	enum bpf_map_type map_type = ri->map_type;
-+	void *fwd = ri->tgt_value;
-+	u32 map_id = ri->map_id;
-+	struct bpf_map *map;
-+	int err;
-+
-+	ri->map_id = 0; /* Valid map id idr range: [1,INT_MAX[ */
-+	ri->map_type = BPF_MAP_TYPE_UNSPEC;
+ 	/* UniMAC stops on a packet boundary, wait for a full-size packet
+ 	 * to be processed
+@@ -2492,8 +2496,10 @@ static void reset_umac(struct bcmgenet_p
+ 	udelay(10);
  
--	xdpf = xdp_convert_buff_to_frame(xdp);
- 	if (unlikely(!xdpf)) {
- 		err = -EOVERFLOW;
- 		goto err;
-@@ -4043,7 +4061,6 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
- 		err = -EBADRQC;
+ 	/* issue soft reset and disable MAC while updating its registers */
++	spin_lock_bh(&priv->reg_lock);
+ 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
+ 	udelay(2);
++	spin_unlock_bh(&priv->reg_lock);
+ }
+ 
+ static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
+@@ -3616,16 +3622,19 @@ static void bcmgenet_set_rx_mode(struct
+ 	 * 3. The number of filters needed exceeds the number filters
+ 	 *    supported by the hardware.
+ 	*/
++	spin_lock(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
+ 	    (nfilter > MAX_MDF_FILTER)) {
+ 		reg |= CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
+ 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
+ 		return;
+ 	} else {
+ 		reg &= ~CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
  	}
  
--out:
- 	if (unlikely(err))
+ 	/* update MDF filter */
+@@ -4027,6 +4036,7 @@ static int bcmgenet_probe(struct platfor
  		goto err;
+ 	}
  
-@@ -4053,8 +4070,34 @@ int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
- 	_trace_xdp_redirect_map_err(dev, xdp_prog, fwd, map_type, map_id, ri->tgt_index, err);
- 	return err;
++	spin_lock_init(&priv->reg_lock);
+ 	spin_lock_init(&priv->lock);
+ 
+ 	/* Set default pause parameters */
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * Copyright (c) 2014-2020 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
+  */
+ 
+ #ifndef __BCMGENET_H__
+@@ -573,6 +573,8 @@ struct bcmgenet_rxnfc_rule {
+ /* device context */
+ struct bcmgenet_priv {
+ 	void __iomem *base;
++	/* reg_lock: lock to serialize access to shared registers */
++	spinlock_t reg_lock;
+ 	enum bcmgenet_version version;
+ 	struct net_device *dev;
+ 
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -2,7 +2,7 @@
+ /*
+  * Broadcom GENET (Gigabit Ethernet) Wake-on-LAN support
+  *
+- * Copyright (c) 2014-2020 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
+  */
+ 
+ #define pr_fmt(fmt)				"bcmgenet_wol: " fmt
+@@ -151,6 +151,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Can't suspend with WoL if MAC is still in reset */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if (reg & CMD_SW_RESET)
+ 		reg &= ~CMD_SW_RESET;
+@@ -158,6 +159,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* disable RX */
+ 	reg &= ~CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 	mdelay(10);
+ 
+ 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE)) {
+@@ -203,6 +205,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Enable CRC forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	priv->crc_fwd_en = 1;
+ 	reg |= CMD_CRC_FWD;
+@@ -210,6 +213,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* Receiver must be enabled for WOL MP detection */
+ 	reg |= CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	reg = UMAC_IRQ_MPD_R;
+ 	if (hfb_enable)
+@@ -256,7 +260,9 @@ void bcmgenet_wol_power_up_cfg(struct bc
+ 	}
+ 
+ 	/* Disable CRC Forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~CMD_CRC_FWD;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
  }
-+
-+int xdp_do_redirect(struct net_device *dev, struct xdp_buff *xdp,
-+		    struct bpf_prog *xdp_prog)
-+{
-+	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
-+	enum bpf_map_type map_type = ri->map_type;
-+
-+	if (map_type == BPF_MAP_TYPE_XSKMAP)
-+		return __xdp_do_redirect_xsk(ri, dev, xdp, xdp_prog);
-+
-+	return __xdp_do_redirect_frame(ri, dev, xdp_convert_buff_to_frame(xdp),
-+				       xdp_prog);
-+}
- EXPORT_SYMBOL_GPL(xdp_do_redirect);
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -75,6 +75,7 @@ static void bcmgenet_mac_config(struct n
+ 	reg |= RGMII_LINK;
+ 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
  
-+int xdp_do_redirect_frame(struct net_device *dev, struct xdp_buff *xdp,
-+			  struct xdp_frame *xdpf, struct bpf_prog *xdp_prog)
-+{
-+	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
-+	enum bpf_map_type map_type = ri->map_type;
-+
-+	if (map_type == BPF_MAP_TYPE_XSKMAP)
-+		return __xdp_do_redirect_xsk(ri, dev, xdp, xdp_prog);
-+
-+	return __xdp_do_redirect_frame(ri, dev, xdpf, xdp_prog);
-+}
-+EXPORT_SYMBOL_GPL(xdp_do_redirect_frame);
-+
- static int xdp_do_generic_redirect_map(struct net_device *dev,
- 				       struct sk_buff *skb,
- 				       struct xdp_buff *xdp,
--- 
-2.43.0
-
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
+ 		       CMD_HD_EN |
+@@ -87,6 +88,7 @@ static void bcmgenet_mac_config(struct n
+ 		reg |= CMD_TX_EN | CMD_RX_EN;
+ 	}
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
+ 	bcmgenet_eee_enable_set(dev,
 
 
 
