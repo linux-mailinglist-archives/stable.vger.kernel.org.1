@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BEA8C50C2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:12:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA978C51DD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B03C81F21C3C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AC361C21555
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9AD7602F;
-	Tue, 14 May 2024 10:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5396F077;
+	Tue, 14 May 2024 11:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELd5s+ZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dy24jBjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EF87581F;
-	Tue, 14 May 2024 10:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA95C6D1AF;
+	Tue, 14 May 2024 11:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683650; cv=none; b=pLh1rruXRtph2UIxhbFneCVX3Gt8imVPXqoVn4r9u3hmt6BKP6P+aWu7auvcry5dV0eZIA5jhoBJcmMhpe4OB92goNNE3EAW7x52w2Mpu3N7DVCZpxtiYPlpzfxgBT75RNT+ymoSwPM7uNt2Jfl0jF+mhkciO/2O61w1/rQSX7k=
+	t=1715685128; cv=none; b=IOxfzXps7xHvWF1GL4/xqO8d0nywu+kjvUApnDQoAwD1bcOgEcmhB3Nssv71+gwPYpQKSkBXxq5/vMubUnzH11esTwTrT4zH1r+4dug0PxiXlV5dpGuMrEGAkF+JZIYwEMdwplDRZEeuuaVVi/kzLdyaucGO6ufQq+Ba6XQ2hxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683650; c=relaxed/simple;
-	bh=6KdfiAlszUxhDiQcYCc9Xw+ruhxg6dHvgLhwOo843Pk=;
+	s=arc-20240116; t=1715685128; c=relaxed/simple;
+	bh=xM4iq3gbpbPnwXdWS4fR/O55kY/o9ayDMMa5gvBt4k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxSCq3UQlbNDPkZySy+fBvVRnpbWgzaV/FufY1x3niujJzuJ/pGwxkYuhxdmU9ax8MlFhlichZBbwfVjcVXV7h0TT7CF7rarSNV5Ziyo0kYtpXYNNwW9dN++VKfXFdTdNRO+8amMG3V44fVKZtgt2DySlchpvb23tEfN7ojBOlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELd5s+ZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF6AC2BD10;
-	Tue, 14 May 2024 10:47:29 +0000 (UTC)
+	 MIME-Version; b=hta2MmCDeTJQE8MT2tkTIg2GFp/jElQ8Ethqc3YS3VAUI02UN1J0qJv3EeP17KiZTi1wpKIs+KyfjRDi8B2169l7Im3YdkkBOnXvJZaE1yPH55VUW87HBEvhkzGGEO70mboDM/ynRSiAZuP831YQHSVezUnD8mRJqGKcIxSkLN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dy24jBjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACD6C2BD10;
+	Tue, 14 May 2024 11:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683650;
-	bh=6KdfiAlszUxhDiQcYCc9Xw+ruhxg6dHvgLhwOo843Pk=;
+	s=korg; t=1715685128;
+	bh=xM4iq3gbpbPnwXdWS4fR/O55kY/o9ayDMMa5gvBt4k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELd5s+ZBmkn9qKi8i48qYAPnBluObTLdW9twtFhsKLFAHvXvP03apXHVL/BwH5xSW
-	 PtTDKhfUKOT1uEk7PZaL5axNt4M8PblVGh4GPPOawL6ovK7B9zyOBun5YmHrvAb6Lp
-	 PMuYSxV5UGLD6UDcP9op/eQmeg35R27YepLJptDY=
+	b=dy24jBjRDpWlCr+Co1B4RyAXvFZmakThoCzJN2EbbCnwL3OackZqgCqgKDGNxeytF
+	 qQGNbUZPn4zmW5IqUHxG9hn0mfAAZxbMd0pR2my8MThmKQSsOFIbXoUF8mNSt7HpL5
+	 gOj/+c+nGIkyrYBCFhiVM7cQ27F+nQEAIKkWdSHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 209/336] hwmon: (corsair-cpro) Protect ccp->wait_input_report with a spinlock
+Subject: [PATCH 6.6 142/301] gpu: host1x: Do not setup DMA for virtual devices
 Date: Tue, 14 May 2024 12:16:53 +0200
-Message-ID: <20240514101046.504341727@linuxfoundation.org>
+Message-ID: <20240514101037.615099959@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit d02abd57e79469a026213f7f5827a98d909f236a ]
+[ Upstream commit 8ab58f6841b19423231c5db3378691ec80c778f8 ]
 
-Through hidraw, userspace can cause a status report to be sent
-from the device. The parsing in ccp_raw_event() may happen in
-parallel to a send_usb_cmd() call (which resets the completion
-for tracking the report) if it's running on a different CPU where
-bottom half interrupts are not disabled.
+The host1x devices are virtual compound devices and do not perform DMA
+accesses themselves, so they do not need to be set up for DMA.
 
-Add a spinlock around the complete_all() in ccp_raw_event() and
-reinit_completion() in send_usb_cmd() to prevent race issues.
+Ideally we would also not need to set up DMA masks for the virtual
+devices, but we currently still need those for legacy support on old
+hardware.
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-4-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240314154943.2487549-1-thierry.reding@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-cpro.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/gpu/host1x/bus.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 6ab4d2478b1fd..3e63666a61bd6 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/slab.h>
-+#include <linux/spinlock.h>
- #include <linux/types.h>
- 
- #define USB_VENDOR_ID_CORSAIR			0x1b1c
-@@ -77,6 +78,8 @@
- struct ccp_device {
- 	struct hid_device *hdev;
- 	struct device *hwmon_dev;
-+	/* For reinitializing the completion below */
-+	spinlock_t wait_input_report_lock;
- 	struct completion wait_input_report;
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
- 	u8 *cmd_buffer;
-@@ -118,7 +121,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	ccp->cmd_buffer[2] = byte2;
- 	ccp->cmd_buffer[3] = byte3;
- 
-+	/*
-+	 * Disable raw event parsing for a moment to safely reinitialize the
-+	 * completion. Reinit is done because hidraw could have triggered
-+	 * the raw event parsing and marked the ccp->wait_input_report
-+	 * completion as done.
-+	 */
-+	spin_lock_bh(&ccp->wait_input_report_lock);
- 	reinit_completion(&ccp->wait_input_report);
-+	spin_unlock_bh(&ccp->wait_input_report_lock);
- 
- 	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
- 	if (ret < 0)
-@@ -136,11 +147,12 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 	struct ccp_device *ccp = hid_get_drvdata(hdev);
- 
- 	/* only copy buffer when requested */
--	if (completion_done(&ccp->wait_input_report))
--		return 0;
--
--	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
--	complete_all(&ccp->wait_input_report);
-+	spin_lock(&ccp->wait_input_report_lock);
-+	if (!completion_done(&ccp->wait_input_report)) {
-+		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
-+		complete_all(&ccp->wait_input_report);
-+	}
-+	spin_unlock(&ccp->wait_input_report_lock);
- 
+diff --git a/drivers/gpu/host1x/bus.c b/drivers/gpu/host1x/bus.c
+index 84d042796d2e6..3937889fa912d 100644
+--- a/drivers/gpu/host1x/bus.c
++++ b/drivers/gpu/host1x/bus.c
+@@ -351,11 +351,6 @@ static int host1x_device_uevent(const struct device *dev,
  	return 0;
  }
-@@ -515,7 +527,9 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
  
- 	ccp->hdev = hdev;
- 	hid_set_drvdata(hdev, ccp);
-+
- 	mutex_init(&ccp->mutex);
-+	spin_lock_init(&ccp->wait_input_report_lock);
- 	init_completion(&ccp->wait_input_report);
+-static int host1x_dma_configure(struct device *dev)
+-{
+-	return of_dma_configure(dev, dev->of_node, true);
+-}
+-
+ static const struct dev_pm_ops host1x_device_pm_ops = {
+ 	.suspend = pm_generic_suspend,
+ 	.resume = pm_generic_resume,
+@@ -369,7 +364,6 @@ struct bus_type host1x_bus_type = {
+ 	.name = "host1x",
+ 	.match = host1x_device_match,
+ 	.uevent = host1x_device_uevent,
+-	.dma_configure = host1x_dma_configure,
+ 	.pm = &host1x_device_pm_ops,
+ };
  
- 	hid_device_io_start(hdev);
+@@ -458,8 +452,6 @@ static int host1x_device_add(struct host1x *host1x,
+ 	device->dev.bus = &host1x_bus_type;
+ 	device->dev.parent = host1x->dev;
+ 
+-	of_dma_configure(&device->dev, host1x->dev->of_node, true);
+-
+ 	device->dev.dma_parms = &device->dma_parms;
+ 	dma_set_max_seg_size(&device->dev, UINT_MAX);
+ 
 -- 
 2.43.0
 
