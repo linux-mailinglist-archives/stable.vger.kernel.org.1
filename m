@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-44556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FE48C536C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505A38C525A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C00728685A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7D241F22B87
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65358627C;
-	Tue, 14 May 2024 11:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B798012F584;
+	Tue, 14 May 2024 11:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ild21teT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaEnyLs0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5518026;
-	Tue, 14 May 2024 11:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760B26311D;
+	Tue, 14 May 2024 11:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686502; cv=none; b=XY8kG7C5vJ1cKk9RZAs0CFkrlgTPNIIdLZ/HT4o2q+G9liC1OT8+ubU3G+NOr/LG74SNos1OvcU3zxDd0eWMuaol8362ucHBhH8c/qv7ne556yfW9x1lkNR2Sg8h3lG+9rhSsL8ilmn5UfDZZ2ts11yOVXIZJvhkmW6oXJkCcjw=
+	t=1715685813; cv=none; b=bUufsOJdGa8csenTxv/wKaBjiM9328IUQmyCZXXIXAFTZ1sbDPA6YNw8CEv44yaPpb52PV/8DazkAGDPEwvj9LWPd1M3wnsMeVJcOM5h2iOhEnCHbCHNnZPkx77AX3KtO5YJOQbDAR0csdeuZ3dh0MYDLd/sJAq3ucdYy5F0zis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686502; c=relaxed/simple;
-	bh=bDcluG28gV33mLX7Yu2hL5wqpIpNCmzf0KBZaQzSNeY=;
+	s=arc-20240116; t=1715685813; c=relaxed/simple;
+	bh=HgciT3FTJZIhAKhPirME02yFWU2ZYAsq5wlc+QmP9L4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6s0iM4ckQk+gmSpWz/T1M/RpDTkcAzg5T927WC8AzGY8861zYNoqO/Flg6Dhp+agN+/Hm44D0v2QBTndN52UofYGLQVvU8fk3IFXohns1Nod0OlpetzsCqwsfbjoaEzHTDFvjMnLb0hLDMLjK8p26qc2UzoLjCuHguzzW7CZu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ild21teT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AC7C32782;
-	Tue, 14 May 2024 11:35:01 +0000 (UTC)
+	 MIME-Version; b=Q6F/KdicijqHFxug7dl3Jr+m9HAsBP6IpGoaae5B084Q6xS4l3YR7QZqz2IZttW3gIqUW3H9EaRZw2R49/nUKxGsEZqpC4yCZUwVwYR4jqW7UJ1Edcazfmxx2wj62HdDrrSZFQLSJnN4TXQkRnw6Az7/cP5Js3dieGzON8cZ2yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaEnyLs0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D221CC2BD10;
+	Tue, 14 May 2024 11:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686502;
-	bh=bDcluG28gV33mLX7Yu2hL5wqpIpNCmzf0KBZaQzSNeY=;
+	s=korg; t=1715685813;
+	bh=HgciT3FTJZIhAKhPirME02yFWU2ZYAsq5wlc+QmP9L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ild21teTNS9KUUtiRIysn8VYY/Eo2rpDFoYb/43MTVY7N+kTiT/gNxdodtNTpEM1i
-	 4dTCeOjwob2pkSB/3C/XNM4SmRId2UC/mBVFlVwHVmrcYMx5RbaCJEFY+2peOL9yF5
-	 AGETJja9UbS7lBSEdsiOYsAG4K5P04A7LAUBw/NY=
+	b=zaEnyLs0pzgJmW67puKEc+lF3xNYltk5aCyyzXcpP0eoSER/3TrfDzuXhWzN3i1gU
+	 cbWIQfHLd39v9ey9hd3IlDuSx2ESNifWXoQhOmI/wYQ7xt3Z5Mb64Mw641DEoaixhx
+	 lHJCVDR5MY5Bz3GWjo6ug34x8FQovams2Yz8Q2vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/236] timers: Rename del_timer() to timer_delete()
+	Alexander Potapenko <glider@google.com>,
+	syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 252/301] kmsan: compiler_types: declare __no_sanitize_or_inline
 Date: Tue, 14 May 2024 12:18:43 +0200
-Message-ID: <20240514101026.473010377@linuxfoundation.org>
+Message-ID: <20240514101041.771789675@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Alexander Potapenko <glider@google.com>
 
-[ Upstream commit bb663f0f3c396c6d05f6c5eeeea96ced20ff112e ]
+commit 90d1f14cbb9ddbfc532e2da13bf6e0ed8320e792 upstream.
 
-The timer related functions do not have a strict timer_ prefixed namespace
-which is really annoying.
+It turned out that KMSAN instruments READ_ONCE_NOCHECK(), resulting in
+false positive reports, because __no_sanitize_or_inline enforced inlining.
 
-Rename del_timer() to timer_delete() and provide del_timer()
-as a wrapper. Document that del_timer() is not for new code.
+Properly declare __no_sanitize_or_inline under __SANITIZE_MEMORY__, so
+that it does not __always_inline the annotated function.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201625.015535022@linutronix.de
-Stable-dep-of: 4893b8b3ef8d ("hsr: Simplify code for announcing HSR nodes timer setup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240426091622.3846771-1-glider@google.com
+Fixes: 5de0ce85f5a4 ("kmsan: mark noinstr as __no_sanitize_memory")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reported-by: syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com
+Link: https://lkml.kernel.org/r/000000000000826ac1061675b0e3@google.com
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/timer.h | 15 ++++++++++++++-
- kernel/time/timer.c   |  6 +++---
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ include/linux/compiler_types.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/timer.h b/include/linux/timer.h
-index 551fa467726f0..e338e173ce8bc 100644
---- a/include/linux/timer.h
-+++ b/include/linux/timer.h
-@@ -169,7 +169,6 @@ static inline int timer_pending(const struct timer_list * timer)
- }
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -280,6 +280,17 @@ struct ftrace_likely_data {
+ # define __no_kcsan
+ #endif
  
- extern void add_timer_on(struct timer_list *timer, int cpu);
--extern int del_timer(struct timer_list * timer);
- extern int mod_timer(struct timer_list *timer, unsigned long expires);
- extern int mod_timer_pending(struct timer_list *timer, unsigned long expires);
- extern int timer_reduce(struct timer_list *timer, unsigned long expires);
-@@ -184,6 +183,7 @@ extern void add_timer(struct timer_list *timer);
- 
- extern int try_to_del_timer_sync(struct timer_list *timer);
- extern int timer_delete_sync(struct timer_list *timer);
-+extern int timer_delete(struct timer_list *timer);
- 
- /**
-  * del_timer_sync - Delete a pending timer and wait for a running callback
-@@ -198,6 +198,19 @@ static inline int del_timer_sync(struct timer_list *timer)
- 	return timer_delete_sync(timer);
- }
- 
-+/**
-+ * del_timer - Delete a pending timer
-+ * @timer:	The timer to be deleted
++#ifdef __SANITIZE_MEMORY__
++/*
++ * Similarly to KASAN and KCSAN, KMSAN loses function attributes of inlined
++ * functions, therefore disabling KMSAN checks also requires disabling inlining.
 + *
-+ * See timer_delete() for detailed explanation.
-+ *
-+ * Do not use in new code. Use timer_delete() instead.
++ * __no_sanitize_or_inline effectively prevents KMSAN from reporting errors
++ * within the function and marks all its outputs as initialized.
 + */
-+static inline int del_timer(struct timer_list *timer)
-+{
-+	return timer_delete(timer);
-+}
++# define __no_sanitize_or_inline __no_kmsan_checks notrace __maybe_unused
++#endif
 +
- extern void init_timers(void);
- struct hrtimer;
- extern enum hrtimer_restart it_real_fn(struct hrtimer *);
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index f5f938140ceaf..e09852be4e638 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1255,7 +1255,7 @@ void add_timer_on(struct timer_list *timer, int cpu)
- EXPORT_SYMBOL_GPL(add_timer_on);
- 
- /**
-- * del_timer - Deactivate a timer.
-+ * timer_delete - Deactivate a timer
-  * @timer:	The timer to be deactivated
-  *
-  * The function only deactivates a pending timer, but contrary to
-@@ -1268,7 +1268,7 @@ EXPORT_SYMBOL_GPL(add_timer_on);
-  * * %0 - The timer was not pending
-  * * %1 - The timer was pending and deactivated
-  */
--int del_timer(struct timer_list *timer)
-+int timer_delete(struct timer_list *timer)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1284,7 +1284,7 @@ int del_timer(struct timer_list *timer)
- 
- 	return ret;
- }
--EXPORT_SYMBOL(del_timer);
-+EXPORT_SYMBOL(timer_delete);
- 
- /**
-  * try_to_del_timer_sync - Try to deactivate a timer
--- 
-2.43.0
-
+ #ifndef __no_sanitize_or_inline
+ #define __no_sanitize_or_inline __always_inline
+ #endif
 
 
 
