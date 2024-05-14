@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BBD8C5472
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA128C5386
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5749D1C22BB3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1383A1F23293
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363FE1272C0;
-	Tue, 14 May 2024 11:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39B984E1D;
+	Tue, 14 May 2024 11:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zebJzKcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/wJp4+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F871272D5;
-	Tue, 14 May 2024 11:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FC747A6C;
+	Tue, 14 May 2024 11:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687199; cv=none; b=h7CHMxoIu1Hl8E95jKbfA3FIMdn97MO6Dc828S1rLw3znPSsunmC1/tjtibhIZmgsG1ryMDGvSUAImuIn2K4pRBRkp+2/exRT5FMqwovUX4/6TSY1Ni6sM1gwe1JLUSnimjNwwUqFcwLHC/JqDrL+0jnowl1N7asEVigo3NYTZk=
+	t=1715686587; cv=none; b=qKh4ndMmnyzdK26jkHahV7tie0MpXhhItH0XUps9O0tsJF0AeHvhMolEEV1rbwCDweAcJbYexBreduDDfbO+2i/kQRPDI35cEx5aRLWtc7ao2aBhDB16E99lQvmDCD4m93fH3GetrCm2taFuA1gReWGhW5odVpW0lXhpgyYuiWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687199; c=relaxed/simple;
-	bh=VKi5aaCeTmRO/2aMt9yXAkgO01LQzE7LBs20zG8Rgrs=;
+	s=arc-20240116; t=1715686587; c=relaxed/simple;
+	bh=D77+0cb0fBWXzIDX/4qH5+CWo89SVPKd+B8i1Ap9U8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djB1V0QBfg7cKD14Ib6NPPRFT3RSKqH06B6LeYyVl5Hqd7+kVKIdccNztdcwMyaW8dd7rcLoWIOtV3a/S1k9h78M8GiVcn3Ys4Y20tP8axmgFZVILfSqqVuNBvC6bv39tjj2bVeTBiVofYBncsEXUogsNEFtImodvFEuLtCztM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zebJzKcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4FDC2BD10;
-	Tue, 14 May 2024 11:46:38 +0000 (UTC)
+	 MIME-Version; b=iADAYd6WDrbIF1n0E0d7xhsgQ9be+bZXeBJ5s4jlw5byJzmSSOpc9XAramFoxai3q0GTvoXlHddI+HWoT9Yw/I6E1iLfirdeb0Ix2Mme51PyM4uV39tr9j0kGvmwNhXsp2igZMbH6N5HNVQcbOl2IeDnHTRQ51iFBXh9c7r6Xhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/wJp4+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20102C2BD10;
+	Tue, 14 May 2024 11:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687198;
-	bh=VKi5aaCeTmRO/2aMt9yXAkgO01LQzE7LBs20zG8Rgrs=;
+	s=korg; t=1715686587;
+	bh=D77+0cb0fBWXzIDX/4qH5+CWo89SVPKd+B8i1Ap9U8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zebJzKcwJkySlLqA7JdxIF8JWkkMjqoqKQMs54Inu5yfP/EU+WdvVcD/mlHIGU860
-	 yi9Mn2/jsbRzUy2Zx6tg5WzNrauMGzpLQTnvbIdZogPXWcRMAHRh54ChuUbfZauuBw
-	 /u8pGjd4nZY5EFZaWahkmunQzBkVRonjnElUwiBo=
+	b=P/wJp4+3Wgj7rqpl3VTfXeyeOlrev1471mTS5LSNqjstAU2RhH2ZML20vyvwxP2su
+	 o0YuF0fHyDwIkzEdVZ8mo2s2ZIv6iQ4tndvNe1xyir0+vDf4ulQI2A6md4XVN4/xDG
+	 DIR0S+YezF15fRqc5iyGtp+iaTg2FjMD8kmibmC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/111] nfs: expose /proc/net/sunrpc/nfs in net namespaces
+	Thomas Bertschinger <tahbertschinger@gmail.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.1 190/236] rust: module: place generated init_module() function in .init.text
 Date: Tue, 14 May 2024 12:19:12 +0200
-Message-ID: <20240514100957.668256975@linuxfoundation.org>
+Message-ID: <20240514101027.575206337@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Thomas Bertschinger <tahbertschinger@gmail.com>
 
-[ Upstream commit d47151b79e3220e72ae323b8b8e9d6da20dc884e ]
+commit 1b6170ff7a203a5e8354f19b7839fe8b897a9c0d upstream.
 
-We're using nfs mounts inside of containers in production and noticed
-that the nfs stats are not exposed in /proc.  This is a problem for us
-as we use these stats for monitoring, and have to do this awkward bind
-mount from the main host into the container in order to get to these
-states.
+Currently Rust kernel modules have their init code placed in the `.text`
+section of the .ko file. I don't think this causes any real problems
+for Rust modules as long as all code called during initialization lives
+in `.text`.
 
-Add the rpc_proc_register call to the pernet operations entry and exit
-points so these stats can be exposed inside of network namespaces.
+However, if a Rust `init_module()` function (that lives in `.text`)
+calls a function marked with `__init` (in C) or
+`#[link_section = ".init.text"]` (in Rust), then a warning is
+generated by modpost because that function lives in `.init.text`.
+For example:
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: modpost: fs/bcachefs/bcachefs: section mismatch in reference: init_module+0x6 (section: .text) -> _RNvXCsj7d3tFpT5JS_15bcachefs_moduleNtB2_8BcachefsNtCsjDtqRIL3JAG_6kernel6Module4init (section: .init.text)
+
+I ran into this while experimenting with converting the bcachefs kernel
+module from C to Rust. The module's `init()`, written in Rust, calls C
+functions like `bch2_vfs_init()` which are placed in `.init.text`.
+
+This patch places the macro-generated `init_module()` Rust function in
+the `.init.text` section. It also marks `init_module()` as unsafe--now
+it may not be called after module initialization completes because it
+may be freed already.
+
+Note that this is not enough on its own to actually get all the module
+initialization code in that section. The module author must still add
+the `#[link_section = ".init.text"]` attribute to the Rust `init()` in
+the `impl kernel::Module` block in order to then call `__init`
+functions. However, this patch enables module authors do so, when
+previously it would not be possible (without warnings).
+
+Signed-off-by: Thomas Bertschinger <tahbertschinger@gmail.com>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240206153806.567055-1-tahbertschinger@gmail.com
+[ Reworded title to add prefix. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/inode.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ rust/macros/module.rs |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 36f415278c042..51c721e2f5555 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2226,11 +2226,13 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- static int nfs_net_init(struct net *net)
- {
- 	nfs_clients_init(net);
-+	rpc_proc_register(net, &nfs_rpcstat);
- 	return nfs_fs_proc_net_init(net);
- }
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -202,10 +202,15 @@ pub(crate) fn module(ts: TokenStream) ->
+             }};
  
- static void nfs_net_exit(struct net *net)
- {
-+	rpc_proc_unregister(net, "nfs");
- 	nfs_fs_proc_net_exit(net);
- 	nfs_clients_exit(net);
- }
-@@ -2289,15 +2291,12 @@ static int __init init_nfs_fs(void)
- 	if (err)
- 		goto out1;
+             // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
++            /// # Safety
++            ///
++            /// This function must not be called after module initialization, because it may be
++            /// freed after that completes.
+             #[cfg(MODULE)]
+             #[doc(hidden)]
+             #[no_mangle]
+-            pub extern \"C\" fn init_module() -> core::ffi::c_int {{
++            #[link_section = \".init.text\"]
++            pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {{
+                 __init()
+             }}
  
--	rpc_proc_register(&init_net, &nfs_rpcstat);
--
- 	err = register_nfs_fs();
- 	if (err)
- 		goto out0;
- 
- 	return 0;
- out0:
--	rpc_proc_unregister(&init_net, "nfs");
- 	nfs_destroy_directcache();
- out1:
- 	nfs_destroy_writepagecache();
-@@ -2330,7 +2329,6 @@ static void __exit exit_nfs_fs(void)
- 	nfs_destroy_nfspagecache();
- 	nfs_fscache_unregister();
- 	unregister_pernet_subsys(&nfs_net_ops);
--	rpc_proc_unregister(&init_net, "nfs");
- 	unregister_nfs_fs();
- 	nfs_fs_proc_exit();
- 	nfsiod_stop();
--- 
-2.43.0
-
 
 
 
