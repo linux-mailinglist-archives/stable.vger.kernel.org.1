@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098A28C53D9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9408C553F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD06E1C215E6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B361B21C28
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6010413D272;
-	Tue, 14 May 2024 11:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A096140849;
+	Tue, 14 May 2024 11:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvRqfvQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcIGMNHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE5313D268;
-	Tue, 14 May 2024 11:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E695219E7;
+	Tue, 14 May 2024 11:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686812; cv=none; b=KZbWPrnW2wwchxcZJwrEbDZRxSb08I8KzfwrasUNKZei836i9KP8f+Jo6OoPsIo0nK7gLzFWQK7j7u3wi8uru5geBpwa1umb/L8Xx94ciQzin/FdMXpDK+F6knk37pva1NWF5SvMErFdfULbzbu+PyizEZFm9Z7oe5c2sOE0AJs=
+	t=1715687761; cv=none; b=V0VICp7f048EVNy9BW2tFDATk8pyyCZSgNFL2F7NXmtoWJqBpYeXwfCEfQOpHTGyaZqYKtfM58JzR2l2l0B7OBou4rYEsGadfJyS/hTUYN5Bf6rfFPABZfvg0vBlhE8jbaEYcciM1oANUjqIxvSYyBTzqyemhlb867/i85crjKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686812; c=relaxed/simple;
-	bh=sDIg4QaO8de5X8Gozr6DyQfaDb73raeOVS+oiXDoOUI=;
+	s=arc-20240116; t=1715687761; c=relaxed/simple;
+	bh=mOVxdWbQMqWzPIn/juc9XiWijfzMtNMi7qvChB72KFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/iuqbsp+czAp9onDvb6ZGin6lXeO7ayuV4SDwv2sOGosfJ6LMk7j6jGxaJKKCR+XS69Dn7Jbo2uy9GZB3bH+7CIS5p2GZm+6GCmhPnDYFLiCX3gSVJHb27uzZcOi/5c2zeO0G1u8QQpjjyfB3TMJ0dW66Si+Oe/Wat9ow+tRFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvRqfvQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AD3C2BD10;
-	Tue, 14 May 2024 11:40:11 +0000 (UTC)
+	 MIME-Version; b=e1y2ZS018bx3tdYxXXOqojE7HMiJOEx1KS03zSBR4dPD7rbTRntvXvFW7uh8tpfh7IQ99EN+5QZVwgJhyggCK/H1Ks8kzPxjrHf/Xc4pxjfkZ9cwegWsR2zHYGpZ0x23aGw734r6Y3N6nz0UQLA/CmVIbGCIeO7KrD7cx4kC5lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcIGMNHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05F3C2BD10;
+	Tue, 14 May 2024 11:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686812;
-	bh=sDIg4QaO8de5X8Gozr6DyQfaDb73raeOVS+oiXDoOUI=;
+	s=korg; t=1715687761;
+	bh=mOVxdWbQMqWzPIn/juc9XiWijfzMtNMi7qvChB72KFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvRqfvQ7tsVuCm8iCsd0+5j29XWxUTQTDxKMZB1gEVc+YFX8BaRHE3MpyjOsEERWo
-	 /sTjJZxRWAm83PW3mOXmPZZORBDUjZOow5YnmubtVkSd1o5k/D1gWOFswrRuKsqbym
-	 rCzih1zO1q3QFBJTcqdy5d4YrsRDO5KUvku4n4zU=
+	b=GcIGMNHFTItUEh+n895wkwnNQq+BCDe+Q/5ShO54Vu/AAVxlumLqOiPnnPyuVJanB
+	 MgyRjeNHd4Mwm95tbxUXOZoSpcq+0ZTsNzlc/lD/iyNr50sF6liFrwsYC5cLrJmhbK
+	 zOaP7WpOnhKqV7fCAVCdAoLNDCEL+/xKzfg8bYdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Smythies <dsmythies@telus.net>,
-	Len Brown <len.brown@intel.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 31/63] tools/power turbostat: Fix added raw MSR output
-Date: Tue, 14 May 2024 12:19:52 +0200
-Message-ID: <20240514100949.192407129@linuxfoundation.org>
+Subject: [PATCH 5.15 095/168] bpf, sockmap: TCP data stall on recv before accept
+Date: Tue, 14 May 2024 12:19:53 +0200
+Message-ID: <20240514101010.276076986@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Smythies <dsmythies@telus.net>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit e5f4e68eed85fa8495d78cd966eecc2b27bb9e53 ]
+[ Upstream commit ea444185a6bf7da4dd0df1598ee953e4f7174858 ]
 
-When using --Summary mode, added MSRs in raw mode always
-print zeros. Print the actual register contents.
+A common mechanism to put a TCP socket into the sockmap is to hook the
+BPF_SOCK_OPS_{ACTIVE_PASSIVE}_ESTABLISHED_CB event with a BPF program
+that can map the socket info to the correct BPF verdict parser. When
+the user adds the socket to the map the psock is created and the new
+ops are assigned to ensure the verdict program will 'see' the sk_buffs
+as they arrive.
 
-Example, with patch:
+Part of this process hooks the sk_data_ready op with a BPF specific
+handler to wake up the BPF verdict program when data is ready to read.
+The logic is simple enough (posted here for easy reading)
 
-note the added column:
---add msr0x64f,u32,package,raw,REASON
+ static void sk_psock_verdict_data_ready(struct sock *sk)
+ {
+	struct socket *sock = sk->sk_socket;
 
-Where:
+	if (unlikely(!sock || !sock->ops || !sock->ops->read_skb))
+		return;
+	sock->ops->read_skb(sk, sk_psock_verdict_recv);
+ }
 
-0x64F is MSR_CORE_PERF_LIMIT_REASONS
+The oversight here is sk->sk_socket is not assigned until the application
+accepts() the new socket. However, its entirely ok for the peer application
+to do a connect() followed immediately by sends. The socket on the receiver
+is sitting on the backlog queue of the listening socket until its accepted
+and the data is queued up. If the peer never accepts the socket or is slow
+it will eventually hit data limits and rate limit the session. But,
+important for BPF sockmap hooks when this data is received TCP stack does
+the sk_data_ready() call but the read_skb() for this data is never called
+because sk_socket is missing. The data sits on the sk_receive_queue.
 
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.00    4800    35      1.42    0.76    0x00000000
-0.00    4801    34      1.42    0.76    0x00000000
-80.08   4531    66      108.17  107.52  0x08000000
-98.69   4530    66      133.21  132.54  0x08000000
-99.28   4505    66      128.26  127.60  0x0c000400
-99.65   4486    68      124.91  124.25  0x0c000400
-99.63   4483    68      124.90  124.25  0x0c000400
-79.34   4481    41      99.80   99.13   0x0c000000
-0.00    4801    41      1.40    0.73    0x0c000000
+Then once the socket is accepted if we never receive more data from the
+peer there will be no further sk_data_ready calls and all the data
+is still on the sk_receive_queue(). Then user calls recvmsg after accept()
+and for TCP sockets in sockmap we use the tcp_bpf_recvmsg_parser() handler.
+The handler checks for data in the sk_msg ingress queue expecting that
+the BPF program has already run from the sk_data_ready hook and enqueued
+the data as needed. So we are stuck.
 
-Where, for the test processor (i5-10600K):
+To fix do an unlikely check in recvmsg handler for data on the
+sk_receive_queue and if it exists wake up data_ready. We have the sock
+locked in both read_skb and recvmsg so should avoid having multiple
+runners.
 
-PKG Limit #1: 125.000 Watts, 8.000000 sec
-MSR bit 26 = log; bit 10 = status
-
-PKG Limit #2: 136.000 Watts, 0.002441 sec
-MSR bit 27 = log; bit 11 = status
-
-Example, without patch:
-
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.01    4800    35      1.43    0.77    0x00000000
-0.00    4801    35      1.39    0.73    0x00000000
-83.49   4531    66      112.71  112.06  0x00000000
-98.69   4530    68      133.35  132.69  0x00000000
-99.31   4500    67      127.96  127.30  0x00000000
-99.63   4483    69      124.91  124.25  0x00000000
-99.61   4481    69      124.90  124.25  0x00000000
-99.61   4481    71      124.92  124.25  0x00000000
-59.35   4479    42      75.03   74.37   0x00000000
-0.00    4800    42      1.39    0.73    0x00000000
-0.00    4801    42      1.42    0.76    0x00000000
-
-c000000
-
-[lenb: simplified patch to apply only to package scope]
-
-Signed-off-by: Doug Smythies <dsmythies@telus.net>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://lore.kernel.org/bpf/20230523025618.113937-7-john.fastabend@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/ipv4/tcp_bpf.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 2233cf722c692..0eeb339482c06 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -1524,9 +1524,10 @@ int sum_counters(struct thread_data *t, struct core_data *c,
- 	average.packages.rapl_dram_perf_status += p->rapl_dram_perf_status;
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index e3a9477293ce4..89204004eeb5e 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -195,6 +195,26 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 		return tcp_recvmsg(sk, msg, len, nonblock, flags, addr_len);
  
- 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW)
--			continue;
--		average.packages.counter[i] += p->counter[i];
-+		if ((mp->format == FORMAT_RAW) && (topo.num_packages == 0))
-+			average.packages.counter[i] = p->counter[i];
-+		else
-+			average.packages.counter[i] += p->counter[i];
- 	}
- 	return 0;
- }
+ 	lock_sock(sk);
++
++	/* We may have received data on the sk_receive_queue pre-accept and
++	 * then we can not use read_skb in this context because we haven't
++	 * assigned a sk_socket yet so have no link to the ops. The work-around
++	 * is to check the sk_receive_queue and in these cases read skbs off
++	 * queue again. The read_skb hook is not running at this point because
++	 * of lock_sock so we avoid having multiple runners in read_skb.
++	 */
++	if (unlikely(!skb_queue_empty(&sk->sk_receive_queue))) {
++		tcp_data_ready(sk);
++		/* This handles the ENOMEM errors if we both receive data
++		 * pre accept and are already under memory pressure. At least
++		 * let user know to retry.
++		 */
++		if (unlikely(!skb_queue_empty(&sk->sk_receive_queue))) {
++			copied = -EAGAIN;
++			goto out;
++		}
++	}
++
+ msg_bytes_ready:
+ 	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
+ 	if (!copied) {
 -- 
 2.43.0
 
