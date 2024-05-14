@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA218C52E6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49C28C505F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE8B1C218B5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1221A1C209BC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0A2135A68;
-	Tue, 14 May 2024 11:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E9D13C833;
+	Tue, 14 May 2024 10:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKN4Ww8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw/9ACYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC88B12FB14;
-	Tue, 14 May 2024 11:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEF613D260;
+	Tue, 14 May 2024 10:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686182; cv=none; b=txKTeel6WNugC1/D3KN9Xqj70al2FqPrv8d1SD2Xfc/6jJVCagqd4fjoEYSmh2FvhzNGZo49oPkftwiND0YqftH80VU0S4MIMAgOjlJ5sjjqRjcniOJ/34eOP1bEImOqVC3e51b6VudD/CU/1wPYs42JzPYv3lZly6ktNBGAy+0=
+	t=1715683276; cv=none; b=fO2l3A28mCgCyi9bD9rJFklfGIxK79n3tu7jWBSV0zQUv/LnuSmWUu9LcdkTbGVbCw6O9Rgmb5pElkXYsmVbaG7HpbCYOuRhnLjqPaN0fN9+kP0HSWbcXh/7Tfvn+Jt067Ks8gTkeunGVuFBC2paHRlEa9RZvRww+bfshCJSF0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686182; c=relaxed/simple;
-	bh=3xkHGTU4uP0iwNNiF0c4OCftbHtmypx0l7iQiwhLJuk=;
+	s=arc-20240116; t=1715683276; c=relaxed/simple;
+	bh=GyZYLyziwiFVWDxj6n5QXmXEJi9GwgAsOCKsxCbOVqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlXGZVX+WOypIwMEas9R6F0Q4jYBF9B5jYHPEKHr4/zZgYoU44CNGnHBTMVXh/AHTfQ00IDkOafHwbZdGZC/eYaMA7z9HaMS6h5lrK63Qx83dtkJrvS9I6U1G6B3vTRKZTVcSiYrC6M4bBoUjxEecAoRqwExU2tTb8Xv5Wc/0F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKN4Ww8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45ED0C2BD10;
-	Tue, 14 May 2024 11:29:42 +0000 (UTC)
+	 MIME-Version; b=aGH6DlTY18Zl8xSXfQBvpYyJIRmWXsv6cVrDTMDJRrDJvVeIRwZ3MFqA/DzXopTNfrBFSKCfgNDv1h4zSjn4jsxQhRh/ExLMpF4hSp4Rmf7ESYYzki0MmxuHdhrjlUhQZvDjv9ltkmyFQxUndYTku4lGfbEEQfJ2OXsiiHJ7dGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw/9ACYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85974C2BD10;
+	Tue, 14 May 2024 10:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686182;
-	bh=3xkHGTU4uP0iwNNiF0c4OCftbHtmypx0l7iQiwhLJuk=;
+	s=korg; t=1715683276;
+	bh=GyZYLyziwiFVWDxj6n5QXmXEJi9GwgAsOCKsxCbOVqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKN4Ww8TI60EFFKq4MxH7qKgB35UWYad0s+aGhfEZwMHW6SKfuIiCTT74Mywdcu6j
-	 aq63iTmACbrJmhjvdYOzBqACaL1KGIrDAWvC7kx2CvdgXdfRHosk7/8ePXCUyAw55u
-	 +iAlgM7QdJUyP0RcSuY7M9LncyYhGl58moUKNE/A=
+	b=Dw/9ACYtibt6lvixL8w1l2fX/4ljMPv0M/Zk1j42SAAw9OWUzu33EHb54DcgAuUJu
+	 4JxvE6IKMjgGXOhqJqC78PsekZQQTzzAG21+4dzwGUw12FFeVpf2m/R+4LG3o5E8MV
+	 Kd8fMkgxhWqFuXu29duM/d6X6qq3HHN4bp78sZvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+	Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/236] kbuild: specify output names separately for each emission type from rustc
+Subject: [PATCH 6.8 177/336] fs/9p: only translate RWX permissions for plain 9P2000
 Date: Tue, 14 May 2024 12:16:21 +0200
-Message-ID: <20240514101021.061560543@linuxfoundation.org>
+Message-ID: <20240514101045.286597641@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,179 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit 295d8398c67e314d99bb070f38883f83fe94a97a ]
+[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
 
-In Kbuild, two different rules must not write to the same file, but
-it happens when compiling rust source files.
+Garbage in plain 9P2000's perm bits is allowed through, which causes it
+to be able to set (among others) the suid bit. This was presumably not
+the intent since the unix extended bits are handled explicitly and
+conditionally on .u.
 
-For example, set CONFIG_SAMPLE_RUST_MINIMAL=m and run the following:
-
-  $ make -j$(nproc) samples/rust/rust_minimal.o samples/rust/rust_minimal.rsi \
-                    samples/rust/rust_minimal.s samples/rust/rust_minimal.ll
-    [snip]
-    RUSTC [M] samples/rust/rust_minimal.o
-    RUSTC [M] samples/rust/rust_minimal.rsi
-    RUSTC [M] samples/rust/rust_minimal.s
-    RUSTC [M] samples/rust/rust_minimal.ll
-  mv: cannot stat 'samples/rust/rust_minimal.d': No such file or directory
-  make[3]: *** [scripts/Makefile.build:334: samples/rust/rust_minimal.ll] Error 1
-  make[3]: *** Waiting for unfinished jobs....
-  mv: cannot stat 'samples/rust/rust_minimal.d': No such file or directory
-  make[3]: *** [scripts/Makefile.build:309: samples/rust/rust_minimal.o] Error 1
-  mv: cannot stat 'samples/rust/rust_minimal.d': No such file or directory
-  make[3]: *** [scripts/Makefile.build:326: samples/rust/rust_minimal.s] Error 1
-  make[2]: *** [scripts/Makefile.build:504: samples/rust] Error 2
-  make[1]: *** [scripts/Makefile.build:504: samples] Error 2
-  make: *** [Makefile:2008: .] Error 2
-
-The reason for the error is that 4 threads running in parallel renames
-the same file, samples/rust/rust_minimal.d.
-
-This does not happen when compiling C or assembly files because
--Wp,-MMD,$(depfile) explicitly specifies the dependency filepath.
-$(depfile) is a unique path for each target.
-
-Currently, rustc is only given --out-dir and --emit=<list-of-types>
-So, all the rust build rules output the dep-info into the default
-<CRATE_NAME>.d, which causes the path conflict.
-
-Fortunately, the --emit option is able to specify the output path
-individually, with the form --emit=<type>=<path>.
-
-Add --emit=dep-info=$(depfile) to the common part. Also, remove the
-redundant --out-dir because the output path is specified for each type.
-
-The code gets much cleaner because we do not need to rename *.d files.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Stable-dep-of: ded103c7eb23 ("kbuild: rust: force `alloc` extern to allow "empty" Rust files")
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/Makefile          | 11 +++++------
- scripts/Makefile.build | 14 +++++++-------
- scripts/Makefile.host  |  7 +++----
- 3 files changed, 15 insertions(+), 17 deletions(-)
+ fs/9p/vfs_inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 7700d3853404e..6d0c0e9757f21 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -322,10 +322,9 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
- quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
-       cmd_rustc_procmacro = \
- 	$(RUSTC_OR_CLIPPY) $(rust_common_flags) \
--		--emit=dep-info,link --extern proc_macro \
--		--crate-type proc-macro --out-dir $(objtree)/$(obj) \
-+		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
-+		--crate-type proc-macro \
- 		--crate-name $(patsubst lib%.so,%,$(notdir $@)) $<; \
--	mv $(objtree)/$(obj)/$(patsubst lib%.so,%,$(notdir $@)).d $(depfile); \
- 	sed -i '/^\#/d' $(depfile)
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 7d42f0c6c644f..ae3623bc4ef46 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -83,7 +83,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
+ 	int res;
+ 	int mode = stat->mode;
  
- # Procedural macros can only be used with the `rustc` that compiled it.
-@@ -339,10 +338,10 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
- 		$(filter-out $(skip_flags),$(rust_flags) $(rustc_target_flags)) \
--		--emit=dep-info,obj,metadata --crate-type rlib \
--		--out-dir $(objtree)/$(obj) -L$(objtree)/$(obj) \
-+		--emit=dep-info=$(depfile) --emit=obj=$@ \
-+		--emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
-+		--crate-type rlib -L$(objtree)/$(obj) \
- 		--crate-name $(patsubst %.o,%,$(notdir $@)) $<; \
--	mv $(objtree)/$(obj)/$(patsubst %.o,%,$(notdir $@)).d $(depfile); \
- 	sed -i '/^\#/d' $(depfile) \
- 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
- 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 41f3602fc8de7..9ae02542b9389 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -283,11 +283,11 @@ rust_common_cmd = \
- 	-Zcrate-attr=no_std \
- 	-Zcrate-attr='feature($(rust_allowed_features))' \
- 	--extern alloc --extern kernel \
--	--crate-type rlib --out-dir $(obj) -L $(objtree)/rust/ \
--	--crate-name $(basename $(notdir $@))
-+	--crate-type rlib -L $(objtree)/rust/ \
-+	--crate-name $(basename $(notdir $@)) \
-+	--emit=dep-info=$(depfile)
- 
- rust_handle_depfile = \
--	mv $(obj)/$(basename $(notdir $@)).d $(depfile); \
- 	sed -i '/^\#/d' $(depfile)
- 
- # `--emit=obj`, `--emit=asm` and `--emit=llvm-ir` imply a single codegen unit
-@@ -300,7 +300,7 @@ rust_handle_depfile = \
- 
- quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_o_rs = \
--	$(rust_common_cmd) --emit=dep-info,obj $<; \
-+	$(rust_common_cmd) --emit=obj=$@ $<; \
- 	$(rust_handle_depfile)
- 
- $(obj)/%.o: $(src)/%.rs FORCE
-@@ -308,7 +308,7 @@ $(obj)/%.o: $(src)/%.rs FORCE
- 
- quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_rsi_rs = \
--	$(rust_common_cmd) --emit=dep-info -Zunpretty=expanded $< >$@; \
-+	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
- 	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@; \
- 	$(rust_handle_depfile)
- 
-@@ -317,7 +317,7 @@ $(obj)/%.rsi: $(src)/%.rs FORCE
- 
- quiet_cmd_rustc_s_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_s_rs = \
--	$(rust_common_cmd) --emit=dep-info,asm $<; \
-+	$(rust_common_cmd) --emit=asm=$@ $<; \
- 	$(rust_handle_depfile)
- 
- $(obj)/%.s: $(src)/%.rs FORCE
-@@ -325,7 +325,7 @@ $(obj)/%.s: $(src)/%.rs FORCE
- 
- quiet_cmd_rustc_ll_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_ll_rs = \
--	$(rust_common_cmd) --emit=dep-info,llvm-ir $<; \
-+	$(rust_common_cmd) --emit=llvm-ir=$@ $<; \
- 	$(rust_handle_depfile)
- 
- $(obj)/%.ll: $(src)/%.rs FORCE
-diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-index 4a02b31cd1029..d812241144d44 100644
---- a/scripts/Makefile.host
-+++ b/scripts/Makefile.host
-@@ -86,7 +86,8 @@ hostc_flags    = -Wp,-MMD,$(depfile) \
- hostcxx_flags  = -Wp,-MMD,$(depfile) \
-                  $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
-                  $(HOSTCXXFLAGS_$(target-stem).o)
--hostrust_flags = $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-+hostrust_flags = --emit=dep-info=$(depfile) \
-+                 $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-                  $(HOSTRUSTFLAGS_$(target-stem))
- 
- # $(objtree)/$(obj) for including generated headers from checkin source files
-@@ -147,9 +148,7 @@ $(host-cxxobjs): $(obj)/%.o: $(src)/%.cc FORCE
- # host-rust -> Executable
- quiet_cmd_host-rust	= HOSTRUSTC $@
-       cmd_host-rust	= \
--	$(HOSTRUSTC) $(hostrust_flags) --emit=dep-info,link \
--		--out-dir=$(obj)/ $<; \
--	mv $(obj)/$(target-stem).d $(depfile); \
-+	$(HOSTRUSTC) $(hostrust_flags) --emit=link=$@ $<; \
- 	sed -i '/^\#/d' $(depfile)
- $(host-rust): $(obj)/%: $(src)/%.rs FORCE
- 	$(call if_changed_dep,host-rust)
+-	res = mode & S_IALLUGO;
++	res = mode & 0777; /* S_IRWXUGO */
+ 	if (v9fs_proto_dotu(v9ses)) {
+ 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
+ 			res |= S_ISUID;
 -- 
 2.43.0
 
