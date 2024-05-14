@@ -1,140 +1,369 @@
-Return-Path: <stable+bounces-45079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945068C578D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 16:04:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BF48C580E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 16:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B75E1F21F8A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 14:04:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EFF6B22B00
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 14:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236C21448FD;
-	Tue, 14 May 2024 14:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A6817B51E;
+	Tue, 14 May 2024 14:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V16J9SL6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dad7QvBI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD6A6D1A7;
-	Tue, 14 May 2024 14:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D70F17BB10;
+	Tue, 14 May 2024 14:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715695486; cv=none; b=WZLER6JREEOd10H/+KItI5e3TQGjtegB5EYCuwDFwt+jbF0FBCfUwKvOaOP6NWw+e3M3tweu+nb1nqYCsIaIVeUjiRPF4HXZIEn/e5HuzQ7AvhmQFK773FVAtUCfr0XfhX8kjL8PAAuS3hs/1ZeCvVUo5n8+SFtoIAac1nzwJ1U=
+	t=1715697246; cv=none; b=o1KxjfWNaifcKRqtqowglGal/6BBfCTM6mQBObvAC/Yex1Hkm8OsOrDUKpVtmvcLQDDHjazH6E4K45lhYEWfvbP1G7RZvG6p2LcNmks/fwkud4BDl/ndydyNh6w7AyV9ZBX7Sp+U4PAsXA67fu2jTCPKW8NbpmanSIB06NrxI3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715695486; c=relaxed/simple;
-	bh=roA5uGCbP+e8h4PQDitrEk7fpYUwL35HV0MhxPXymsI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=lVs9gAYPY/IGy7c27/vIGxFdXUdcbDEgRJOa2zZ+nyrqoIZLZ0KxfRj06heq0nLn+bLVlZf7pgU0g9oAgUXoRxN6FXDmsvDQgR1Hlm07UQQ0GFWvPxWn7cHbrBn2X6znnz8H26XfVmVu3FuaIF1fQMazNrGc7qtkCklGJdoGEgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V16J9SL6; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715695485; x=1747231485;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=roA5uGCbP+e8h4PQDitrEk7fpYUwL35HV0MhxPXymsI=;
-  b=V16J9SL6M2Kc7I9lhZkc5aJINdZ9gTMUETCu5R08XIhJ3z02nAadvAfj
-   8qBR4PReFgvhrufVcyXooB3Kt+iEKLtGckHhn5uHFkYbJVqJD3bZfrMYO
-   AyNX3Xgm4fWa2q44siOfnX9Jkxev/KGHj84KR4bAX/1M8hJI7plEmYdUL
-   Ev+HHupg/Ig9C5JmFTh1w0lYk5ynSxoXGO1D9u6Piz9Dt8RDhPYeIBI/7
-   lMEFtXOKCFwLOB+4vpjgl12tkqu0kuRruHe+nc8SdPEZVRpT/Go5at+yW
-   LvhynvkMVuybwRghzwyBLjgBRw6cwnO8r+J42UB7Q2N1eteiPSPZ4KbWF
-   g==;
-X-CSE-ConnectionGUID: TK4U5mcFR/eq6Jk3um84WQ==
-X-CSE-MsgGUID: z4uBX5T3TtC7pRfYinqIcA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="22279586"
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; 
-   d="scan'208";a="22279586"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2024 07:04:44 -0700
-X-CSE-ConnectionGUID: pR7pUOi8Taabsd581odKmA==
-X-CSE-MsgGUID: MvVByz+1QASJFJv03dHGzA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; 
-   d="scan'208";a="35230071"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.94])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2024 07:04:41 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Cc: Vadym Krevs <vkrevs@yahoo.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] tty: n_tty: Fix buffer offsets when lookahead is used
-Date: Tue, 14 May 2024 17:04:29 +0300
-Message-Id: <20240514140429.12087-1-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1715697246; c=relaxed/simple;
+	bh=kvSyTsnMXDYsuCW1EWDCcml8RyRRgdNeHZOY1IEZpt0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sdcWXmO37dR3c5D3lZN2dSAlJP17nPuOdX41gOgY0AMySeaGnswOC8CMw+lk4j0XV/kQsHvuCCNPZe03JdvMW40Zz8BTsj903xadZa20kpl7oB++r+t6iA11XJdJT+JBJy9QbXyYjtb1K5t1tnIMjY9Yv8Wl3/tDDrbdYIyjsw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dad7QvBI; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a59ad344f7dso19520366b.0;
+        Tue, 14 May 2024 07:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715697243; x=1716302043; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kvSyTsnMXDYsuCW1EWDCcml8RyRRgdNeHZOY1IEZpt0=;
+        b=Dad7QvBIgF74tfCij36vbWKoZY0O6RhkxEk+bARQzsQb4gjiruScPzs59dCK3vKLGm
+         Q1XSEzXgKDK3LM7ZtCD3j+sz7CJq1cqOBzEj5rueekqfIKQGVaTKhzP7EH2LGU2lgmJj
+         lCS7RdUXkHZ5yFqErWAEaR8b2EXqDsUO1ODKzyYy4//+S0Y06ec4Y3MxQG3hejoRnWbn
+         zmWfAD6mXjAuSTeP+TOYU6RdErmyUom/Ikrc01n5JoS07dLt7nszOD+Ba1n66Y2P6wXv
+         ku/6X0/T+BP/jYdf5JWOr9VNvSdHia8WYN5eGOORvcaTpb05SK21pof3P5c0AHPCsvXG
+         HhOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715697243; x=1716302043;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kvSyTsnMXDYsuCW1EWDCcml8RyRRgdNeHZOY1IEZpt0=;
+        b=STmMVzYYGmV81A0yHyi5KhXpSeXTBFwSCIacm2Dlauhige2ajiseQe3SmL2eEHvNiG
+         qwD6lVwK3KVYf7omYegvE2f+yG5jsAI5LOU1KK7GH+fFtE21PQ2bfVqn+OlhPizWtFDS
+         7WYqG0QQKcFlzvANWdrfVLmmDoHipqBm9IvsORSHSooZrSzI4IxbwU+Q/5kDRl/Mpx/s
+         koZGNpSki5XIXvOGytX8Ue5ct48zU3ixOTeTqD4nBDTLAhCQvymSwJnhKo0J6q4jxM+/
+         Cjl3jrelG8uunq08OHesOflao67cayZPvfbajZC+9nJ5gIVGJMGT3z7s5VFu8oKhKcx7
+         bIVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMQ8V8YIyFRMRV7yULQt+2iJoimt5FCD1d06vq5mKmHhTf2n2fPvkNqazIJj8PV8Q+vvtr9DDyCUtRi0sEs8VLwcykg568qce1fkkY6IFJhDG7h6I5+KyXbWB2/rWI1chUj6zwKDQF6cIaJStUZPbdIyAt7q9wjC0FJNmpdcSDMWYkStMo5q3FHgN65vSlaPmJWVATl7qR
+X-Gm-Message-State: AOJu0YzTS7oH5jWDF82BIh0CiMF5tUZ7kuZCfieJ5zt21XKiaUYMHbJQ
+	UEvSOfLOlHvZlHl+jR49Fa7zxDpbPLcMb0EI3OGqbILdZfopRD+b
+X-Google-Smtp-Source: AGHT+IGisZsYYuJpSHO6SXJJ11wxOP84sr7BbJsoJxY9upgHu5lJTphJGKaPF1hhgnvfoBVusGMqjw==
+X-Received: by 2002:a17:906:f809:b0:a59:d063:f5f5 with SMTP id a640c23a62f3a-a5a2d681271mr786990966b.70.1715697242417;
+        Tue, 14 May 2024 07:34:02 -0700 (PDT)
+Received: from [192.168.10.8] (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b01631sm728836866b.153.2024.05.14.07.34.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 May 2024 07:34:02 -0700 (PDT)
+Message-ID: <465a2ddb222beed7c90b36c523633fc5648715bb.camel@gmail.com>
+Subject: Re: [PATCH v5] can: mcp251xfd: fix infinite loop when xmit fails
+From: Vitor Soares <ivitro@gmail.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Thomas Kopp
+ <thomas.kopp@microchip.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Vitor Soares <vitor.soares@toradex.com>,
+ linux-can@vger.kernel.org,  netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 14 May 2024 15:34:01 +0100
+In-Reply-To: <20240514-corgi-of-marvelous-peace-968f5c-mkl@pengutronix.de>
+References: <20240514105822.99986-1-ivitro@gmail.com>
+	 <20240514-corgi-of-marvelous-peace-968f5c-mkl@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-When lookahead has "consumed" some characters (la_count > 0),
-n_tty_receive_buf_standard() and n_tty_receive_buf_closing() for
-characters beyond the la_count are given wrong cp/fp offsets which
-leads to duplicating and losing some characters.
+Hi Marc,
 
-If la_count > 0, correct buffer pointers and make count consistent too
-(the latter is not strictly necessary to fix the issue but seems more
-logical to adjust all variables immediately to keep state consistent).
+Appreciate your feedback.
 
-Reported-by: Vadym Krevs <vkrevs@yahoo.com>
-Fixes: 6bb6fa6908eb ("tty: Implement lookahead to process XON/XOFF timely")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218834
-Tested-by: Vadym Krevs <vkrevs@yahoo.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
- drivers/tty/n_tty.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+On Tue, 2024-05-14 at 14:23 +0200, Marc Kleine-Budde wrote:
+> On 14.05.2024 11:58:22, Vitor Soares wrote:
+> > From: Vitor Soares <vitor.soares@toradex.com>
+> >=20
+> > When the mcp251xfd_start_xmit() function fails, the driver stops
+> > processing messages, and the interrupt routine does not return,
+> > running indefinitely even after killing the running application.
+> >=20
+> > Error messages:
+> > [=C2=A0 441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmi=
+t: -16
+> > [=C2=A0 441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer n=
+ot empty.
+> > (seq=3D0x000017c7, tef_tail=3D0x000017cf, tef_head=3D0x000017d0,
+> > tx_head=3D0x000017d3).
+> > ... and repeat forever.
+> >=20
+> > The issue can be triggered when multiple devices share the same
+> > SPI interface. And there is concurrent access to the bus.
+> >=20
+> > The problem occurs because tx_ring->head increments even if
+> > mcp251xfd_start_xmit() fails. Consequently, the driver skips one
+> > TX package while still expecting a response in
+> > mcp251xfd_handle_tefif_one().
+> >=20
+> > This patch resolves the issue by starting a workqueue to write
+> > the tx obj synchronously if err =3D -EBUSY. In case of another error,
+> > it decrements tx_ring->head, removes skb from the echo stack, and
+> > drops the message.
+>=20
+> This looks quite good! Good work!
+>=20
+> I think you better move the allocation/destroy of the wq into the open()
+> and stop() callbacks. You have to destroy the workqueue before putting
+> the interface to sleep.
+>=20
+> >=20
+> > Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxF=
+D SPI
+> > CAN")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> > ---
+> >=20
+> > V4->V5:
+> > =C2=A0 - Start a workqueue to write tx obj with spi_sync() when spi_asy=
+nc() =3D=3D -
+> > EBUSY.
+> >=20
+> > V3->V4:
+> > =C2=A0 - Leave can_put_echo_skb() and stop the queue if needed, before
+> > mcp251xfd_tx_obj_write().
+> > =C2=A0 - Re-sync head and remove echo skb if mcp251xfd_tx_obj_write() f=
+ails.
+> > =C2=A0 - Revert -> return NETDEV_TX_BUSY if mcp251xfd_tx_obj_write() =
+=3D=3D -EBUSY.
+> >=20
+> > V2->V3:
+> > =C2=A0 - Add tx_dropped stats.
+> > =C2=A0 - netdev_sent_queue() only if can_put_echo_skb() succeed.
+> >=20
+> > V1->V2:
+> > =C2=A0 - Return NETDEV_TX_BUSY if mcp251xfd_tx_obj_write() =3D=3D -EBUS=
+Y.
+> > =C2=A0 - Rework the commit message to address the change above.
+> > =C2=A0 - Change can_put_echo_skb() to be called after mcp251xfd_tx_obj_=
+write()
+> > succeed.
+> > =C2=A0=C2=A0=C2=A0 Otherwise, we get Kernel NULL pointer dereference er=
+ror.
+> >=20
+> > =C2=A0.../net/can/spi/mcp251xfd/mcp251xfd-core.c=C2=A0=C2=A0=C2=A0 | 13=
+ ++++-
+> > =C2=A0drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c=C2=A0 | 51 +++++++++=
++++++++---
+> > =C2=A0drivers/net/can/spi/mcp251xfd/mcp251xfd.h=C2=A0=C2=A0=C2=A0=C2=A0=
+ |=C2=A0 5 ++
+> > =C2=A03 files changed, 60 insertions(+), 9 deletions(-)
+> >=20
+> > diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+> > b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+> > index 1d9057dc44f2..6cca853f2b1e 100644
+> > --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+> > +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+> > @@ -2141,15 +2141,25 @@ static int mcp251xfd_probe(struct spi_device *s=
+pi)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0goto out_free_candev;
+> > =C2=A0
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0priv->tx_work_obj =3D NULL;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0priv->wq =3D alloc_workqueue=
+("mcp251xfd_wq", WQ_FREEZABLE, 0);
+>=20
+> The m_can driver uses a ordered workqueue and you can add the name of
+> the spi device to the wq's name :)
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 priv->wq =3D alloc_ordered_wor=
+kqueue("%s-mcp251xfd_wq", WQ_FREEZABLE |
+> WQ_MEM_RECLAIM, dev_name(&spi->dev));
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!priv->wq) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0err =3D -ENOMEM;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto out_can_rx_offload_del;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0INIT_WORK(&priv->tx_work, mc=
+p251xfd_tx_obj_write_sync);
+> > +
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D mcp251xfd_regis=
+ter(priv);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0dev_err_probe(&spi->dev, err, "Failed to detect =
+%s.\n",
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mcp251xfd_get_model_str(priv));
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto out_can_rx_offload_del;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto out_can_free_wq;
+>=20
+> nitpick:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 out_destroy_workqueue;
+>=20
+> to match the function call.
+>=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > =C2=A0
+> > + out_can_free_wq:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0destroy_workqueue(priv->wq);
+> > =C2=A0 out_can_rx_offload_del:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0can_rx_offload_del(&pri=
+v->offload);
+> > =C2=A0 out_free_candev:
+> > @@ -2165,6 +2175,7 @@ static void mcp251xfd_remove(struct spi_device *s=
+pi)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mcp251xfd_priv *=
+priv =3D spi_get_drvdata(spi);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct net_device *ndev=
+ =3D priv->ndev;
+> > =C2=A0
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0destroy_workqueue(priv->wq);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0can_rx_offload_del(&pri=
+v->offload);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mcp251xfd_unregister(pr=
+iv);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0spi->max_speed_hz =3D p=
+riv->spi_max_speed_hz_orig;
+> > diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > index 160528d3cc26..1e7ddf316643 100644
+> > --- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > +++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tx.c
+> > @@ -131,6 +131,41 @@ mcp251xfd_tx_obj_from_skb(const struct mcp251xfd_p=
+riv
+> > *priv,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_obj->xfer[0].len =3D=
+ len;
+> > =C2=A0}
+> > =C2=A0
+> > +static void mcp251xfd_tx_failure_drop(const struct mcp251xfd_priv *pri=
+v,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 st=
+ruct mcp251xfd_tx_ring *tx_ring,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 in=
+t err)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct net_device *ndev =3D =
+priv->ndev;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct net_device_stats *sta=
+ts =3D &ndev->stats;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned int frame_len =3D 0=
+;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u8 tx_head;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_ring->head--;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0stats->tx_dropped++;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tx_head =3D mcp251xfd_get_tx=
+_head(tx_ring);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0can_free_echo_skb(ndev, tx_h=
+ead, &frame_len);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0netdev_completed_queue(ndev,=
+ 1, frame_len);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0netif_wake_queue(ndev);
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (net_ratelimit())
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0netdev_err(priv->ndev, "ERROR in %s: %d\n", __func__, =
+err);
+> > +}
+> > +
+> > +void mcp251xfd_tx_obj_write_sync(struct work_struct *ws)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mcp251xfd_priv *priv =
+=3D container_of(ws, struct
+> > mcp251xfd_priv,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ tx_work);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mcp251xfd_tx_obj *tx_=
+obj =3D priv->tx_work_obj;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct mcp251xfd_tx_ring *tx=
+_ring =3D priv->tx;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int err;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0err =3D spi_sync(priv->spi, =
+&tx_obj->msg);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (err)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0mcp251xfd_tx_failure_drop(priv, tx_ring, err);
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0priv->tx_work_obj =3D NULL;
+>=20
+> Race condition:
+> - after spi_sync() the CAN frame is send
+> - after the TX complete IRQ the TX queue is restarted
+> - the xmit handler might get BUSY
+> - fill the tx_work_obj again
+>=20
+> > +}
+> > +
+> > =C2=A0static int mcp251xfd_tx_obj_write(const struct mcp251xfd_priv *pr=
+iv,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mcp251xfd_tx_=
+obj *tx_obj)
+> > =C2=A0{
+> > @@ -175,7 +210,7 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff *sk=
+b,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (can_dev_dropped_skb=
+(ndev, skb))
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return NETDEV_TX_OK;
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (mcp251xfd_tx_busy(priv, =
+tx_ring))
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (mcp251xfd_tx_busy(priv, =
+tx_ring) || priv->tx_work_obj)
+>=20
+> This should not happen, but better save than sorry.
 
-diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
-index f252d0b5a434..5e9ca4376d68 100644
---- a/drivers/tty/n_tty.c
-+++ b/drivers/tty/n_tty.c
-@@ -1619,15 +1619,25 @@ static void __receive_buf(struct tty_struct *tty, const u8 *cp, const u8 *fp,
- 	else if (ldata->raw || (L_EXTPROC(tty) && !preops))
- 		n_tty_receive_buf_raw(tty, cp, fp, count);
- 	else if (tty->closing && !L_EXTPROC(tty)) {
--		if (la_count > 0)
-+		if (la_count > 0) {
- 			n_tty_receive_buf_closing(tty, cp, fp, la_count, true);
--		if (count > la_count)
--			n_tty_receive_buf_closing(tty, cp, fp, count - la_count, false);
-+			cp += la_count;
-+			if (fp)
-+				fp += la_count;
-+			count -= la_count;
-+		}
-+		if (count > 0)
-+			n_tty_receive_buf_closing(tty, cp, fp, count, false);
- 	} else {
--		if (la_count > 0)
-+		if (la_count > 0) {
- 			n_tty_receive_buf_standard(tty, cp, fp, la_count, true);
--		if (count > la_count)
--			n_tty_receive_buf_standard(tty, cp, fp, count - la_count, false);
-+			cp += la_count;
-+			if (fp)
-+				fp += la_count;
-+			count -= la_count;
-+		}
-+		if (count > 0)
-+			n_tty_receive_buf_standard(tty, cp, fp, count, false);
- 
- 		flush_echoes(tty);
- 		if (tty->ops->flush_chars)
--- 
-2.39.2
 
+As there is the race condition you mentioned above, on this condition:
+priv->tx_work_obj =3D tx_obj --> xmit will return NETDEV_TX_BUSY
+
+or
+
+priv->tx_work_obj =3D NULL --> It goes through the rest of the code or the
+workqueue may sleep after setting tx_work_obj to NULL. Should I use work_bu=
+sy()
+here instead or do you have another suggestion?
+
+
+Everything else is clear to me and I'm addressing it for the v6.
+
+Best regards,
+Vitor Soares
 
