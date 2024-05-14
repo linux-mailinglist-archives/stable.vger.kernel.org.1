@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429918C5259
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC8E8C54F5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2051F216F9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ED0E1C22FB9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66C512F39E;
-	Tue, 14 May 2024 11:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A905953E37;
+	Tue, 14 May 2024 11:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOhzuNLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9ZbFOT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832BC6311D;
-	Tue, 14 May 2024 11:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688A81CFB2;
+	Tue, 14 May 2024 11:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685809; cv=none; b=juuKIx0uJQGngakhrEafGrvwjb9jq8nO+8qxoCYaRHMB3vWdFQbjA42NtPM7LIMajb/dsTu3qklbivP79et8/ixoExn7NB1qWBXnW1+iIgzVQJZdsvSZ/bLWqhFfMw2sQXAoOMNRbGt9LWXXFXsxzUPJ8+9bZ0JIBx9wYlFvtXE=
+	t=1715687552; cv=none; b=aD8g3vZVDNChEkodJvQL89un9tAxslpw3NS0jkEZlAy6+nN/YdtLP4eUZZDvxz4DCUfFtkhii7RIhtZYpvwKqyVyUYaKXIiUClcHb4HPCUR2AFfFonwSvVBmaD3bmWiIjuuOLosgZ1hEjNZaj8GDXbaO6lZsnKWBIljU9a6GINY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685809; c=relaxed/simple;
-	bh=7HlWov6TmsN81XALdpCoHZj+y2Q2bhdYyax8hobOAhg=;
+	s=arc-20240116; t=1715687552; c=relaxed/simple;
+	bh=ylIsmzbzM9t7YqO3HEnPQ+CZEwdA+eIyAO8nPAcyV8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eC3wWl318v/k7tioOuOD07yVOq8x+6tM/4Lp+C+BadRx2iinc7aY6rwj54IkPNhvNVrY7urm5mxR+7vsZL7r04VHcx664sngJNmx6hNTsKCyXYPZAr5/RluIRHb8XNXN/boZ8GdgtmNB6ntyD0cw6uMktP1PEcY2y5lW3d64KXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOhzuNLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE82C2BD10;
-	Tue, 14 May 2024 11:23:28 +0000 (UTC)
+	 MIME-Version; b=t3yBik950LAJgeCqi2jWNMYdPSCfpkXzB0pY+Tjj1UTCROvXRNw6kEa7Cax/GnBdRnbg2ukR03y1RtUkbC3FRhMngqB2wrZVtMjydhwdX9Gh1Ag/onaxIeyvpRPj2Pg8JSIQDmpw0bR4VpnoOtHrNvWgMVOLndnxyhIDfs93ETg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9ZbFOT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D6DC2BD10;
+	Tue, 14 May 2024 11:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685809;
-	bh=7HlWov6TmsN81XALdpCoHZj+y2Q2bhdYyax8hobOAhg=;
+	s=korg; t=1715687552;
+	bh=ylIsmzbzM9t7YqO3HEnPQ+CZEwdA+eIyAO8nPAcyV8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOhzuNLqFVLgT47/lB5puNYmcjTNYCOyV4wTSDpGgzlD8eT2vsydYBhhUhkZXYXCj
-	 ViFlLpY/WTr5LhQ+kGs5ux+zLUIU79hbsW9Ae33kty1EYEk/BIPYHkUDWbf6N5PAzE
-	 XOjUnbmox/EdgInolnjKVzgCPdUArPc/uEZYnhbE=
+	b=E9ZbFOT+UB8e353oCTSQrLs4YgM8rtwd0HZ/ZaG3ch4WwHMAM9Q2ojeUKb820+tbX
+	 ZbARBpcnDWV/mO4atFOsvw5aH+50VrWkV5JctdpYGmfAntICkRpPxFm4kNDiLsF3/g
+	 pOaMBUcKXj5ycz+EQfPfyamRPx25UFBHhPSyz/Ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 251/301] iio: accel: mxc4005: Interrupt handling fixes
+	Vincent Li <vincent.mc.li@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 024/168] bpf, kconfig: Fix DEBUG_INFO_BTF_MODULES Kconfig definition
 Date: Tue, 14 May 2024 12:18:42 +0200
-Message-ID: <20240514101041.733094583@linuxfoundation.org>
+Message-ID: <20240514101007.600335544@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 57a1592784d622ecee0b71940c65429173996b33 upstream.
+[ Upstream commit 229087f6f1dc2d0c38feba805770f28529980ec0 ]
 
-There are 2 issues with interrupt handling in the mxc4005 driver:
+Turns out that due to CONFIG_DEBUG_INFO_BTF_MODULES not having an
+explicitly specified "menu item name" in Kconfig, it's basically
+impossible to turn it off (see [0]).
 
-1. mxc4005_set_trigger_state() writes MXC4005_REG_INT_MASK1_BIT_DRDYE
-(0x01) to INT_MASK1 to enable the interrupt, but to disable the interrupt
-it writes ~MXC4005_REG_INT_MASK1_BIT_DRDYE which is 0xfe, so it enables
-all other interrupt sources in the INT_SRC1 register. On the MXC4005 this
-is not an issue because only bit 0 of the register is used. On the MXC6655
-OTOH this is a problem since bit7 is used as TC (Temperature Compensation)
-disable bit and writing 1 to this disables Temperature Compensation which
-should only be done when running self-tests on the chip.
+This patch fixes the issue by defining menu name for
+CONFIG_DEBUG_INFO_BTF_MODULES, which makes it actually adjustable
+and independent of CONFIG_DEBUG_INFO_BTF, in the sense that one can
+have DEBUG_INFO_BTF=y and DEBUG_INFO_BTF_MODULES=n.
 
-Write 0 instead of ~MXC4005_REG_INT_MASK1_BIT_DRDYE to disable
-the interrupts to fix this.
+We still keep it as defaulting to Y, of course.
 
-2. The datasheets for the MXC4005 / MXC6655 do not state what the reset
-value for the INT_MASK0 and INT_MASK1 registers is and since these are
-write only we also cannot learn this from the hw. Presumably the reset
-value for both is all 0, which means all interrupts disabled.
-
-Explicitly set both registers to 0 from mxc4005_chip_init() to ensure
-both masks are actually set to 0.
-
-Fixes: 79846e33aac1 ("iio: accel: mxc4005: add support for mxc6655")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240326113700.56725-2-hdegoede@redhat.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5f9ae91f7c0d ("kbuild: Build kernel module BTFs if BTF is enabled and pahole supports it")
+Reported-by: Vincent Li <vincent.mc.li@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/CAK3+h2xiFfzQ9UXf56nrRRP=p1+iUxGoEP5B+aq9MDT5jLXDSg@mail.gmail.com [0]
+Link: https://lore.kernel.org/bpf/20240404220344.3879270-1-andrii@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/mxc4005.c |   24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ lib/Kconfig.debug | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/accel/mxc4005.c
-+++ b/drivers/iio/accel/mxc4005.c
-@@ -27,9 +27,13 @@
- #define MXC4005_REG_ZOUT_UPPER		0x07
- #define MXC4005_REG_ZOUT_LOWER		0x08
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 28faea9b5da62..2025b624fbb67 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -319,7 +319,7 @@ config DEBUG_INFO_DWARF5
+ endchoice # "DWARF version"
  
-+#define MXC4005_REG_INT_MASK0		0x0A
-+
- #define MXC4005_REG_INT_MASK1		0x0B
- #define MXC4005_REG_INT_MASK1_BIT_DRDYE	0x01
+ config DEBUG_INFO_BTF
+-	bool "Generate BTF typeinfo"
++	bool "Generate BTF type information"
+ 	depends on !DEBUG_INFO_SPLIT && !DEBUG_INFO_REDUCED
+ 	depends on !GCC_PLUGIN_RANDSTRUCT || COMPILE_TEST
+ 	help
+@@ -331,7 +331,8 @@ config PAHOLE_HAS_SPLIT_BTF
+ 	def_bool PAHOLE_VERSION >= 119
  
-+#define MXC4005_REG_INT_CLR0		0x00
-+
- #define MXC4005_REG_INT_CLR1		0x01
- #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
- 
-@@ -113,7 +117,9 @@ static bool mxc4005_is_readable_reg(stru
- static bool mxc4005_is_writeable_reg(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-+	case MXC4005_REG_INT_CLR0:
- 	case MXC4005_REG_INT_CLR1:
-+	case MXC4005_REG_INT_MASK0:
- 	case MXC4005_REG_INT_MASK1:
- 	case MXC4005_REG_CONTROL:
- 		return true;
-@@ -330,17 +336,13 @@ static int mxc4005_set_trigger_state(str
- {
- 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
- 	struct mxc4005_data *data = iio_priv(indio_dev);
-+	unsigned int val;
- 	int ret;
- 
- 	mutex_lock(&data->mutex);
--	if (state) {
--		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
--				   MXC4005_REG_INT_MASK1_BIT_DRDYE);
--	} else {
--		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
--				   ~MXC4005_REG_INT_MASK1_BIT_DRDYE);
--	}
- 
-+	val = state ? MXC4005_REG_INT_MASK1_BIT_DRDYE : 0;
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, val);
- 	if (ret < 0) {
- 		mutex_unlock(&data->mutex);
- 		dev_err(data->dev, "failed to update reg_int_mask1");
-@@ -382,6 +384,14 @@ static int mxc4005_chip_init(struct mxc4
- 
- 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
- 
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
-+	if (ret < 0)
-+		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
-+
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, 0);
-+	if (ret < 0)
-+		return dev_err_probe(data->dev, ret, "writing INT_MASK1\n");
-+
- 	return 0;
- }
- 
+ config DEBUG_INFO_BTF_MODULES
+-	def_bool y
++	bool "Generate BTF type information for kernel modules"
++	default y
+ 	depends on DEBUG_INFO_BTF && MODULES && PAHOLE_HAS_SPLIT_BTF
+ 	help
+ 	  Generate compact split BTF type information for kernel modules.
+-- 
+2.43.0
+
 
 
 
