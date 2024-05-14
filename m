@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-44237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA958C51DE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E339F8C50B2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29A511F213EA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E45EB20A8C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E173745E7;
-	Tue, 14 May 2024 11:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5002113E8AF;
+	Tue, 14 May 2024 10:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUxnbE3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLJAu/OK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9D21D54D;
-	Tue, 14 May 2024 11:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F1413E8A5;
+	Tue, 14 May 2024 10:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685145; cv=none; b=LAF/nPYoBPCnvU0STNdDnjcGK4tQjazwj8mbXmJ0okdRy8yRsx931PMUWgId3V7j0h8v1lQxEEceVQKSTQg+ynwJB7UReKWsGOdgHGNI+C8vJ6dr6O01jlCR1qtl+/W4riiFDsKANio3cjPGizDpPfV0DWj6WL/Jd7QuMtKZZEI=
+	t=1715683587; cv=none; b=AHo5GY++8swCVIIalmJNvxMChbuFqPyFoslOdCVKn7FrhxmAEqMhSKP0W7UnYAozGafe1KGC64S6wWiEo/3SwWmAwyaLE3daE3BRzbiiTIxe/jt52T53HmtS/hQND9RcccBVkEBhDLXkZ0eyJW8mMSdFVY+P5wopHZwBRjZNjwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685145; c=relaxed/simple;
-	bh=y8umImRYyETy0H8PXuq/f8r8IS7NGApUF4DTfJ5+N0w=;
+	s=arc-20240116; t=1715683587; c=relaxed/simple;
+	bh=GpLGX9kVoP0ZTbXVl8i6ai9lK9IYxSquGk+Mof7L+W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CpJ2zfOP/gIhfOJM98iJf8OjWlyTXSISZQSCZ0nkpbxTUmLXMRc7/bdveEB/A560Y6cvREpD3ueIbPPIa5GHuisqigti8ZE3QNqkMXUDnJ4UvIdDqT4pgy+g2RWWCIlT2d2kRiieqj4pA650KaMIbK4Rs/E53nJ9jzOjpHspAw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUxnbE3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3581CC2BD10;
-	Tue, 14 May 2024 11:12:23 +0000 (UTC)
+	 MIME-Version; b=hwj1iq58XC7mnB6CWD0THbwvlvJQlk6twAnJwhvqBsgGT02OknQN4FXZjrq5x8MHMFrdQqL3fmnsLw7dpTnArRrUjFJttBilEQqR/IjtEgzSk0+iuzc87ZJZ9Ir+ONsD4P5ejZHLQHuXXSY7x50xSEdpb8MWqrxmb6a3Tca/pq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLJAu/OK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A07C2BD10;
+	Tue, 14 May 2024 10:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685145;
-	bh=y8umImRYyETy0H8PXuq/f8r8IS7NGApUF4DTfJ5+N0w=;
+	s=korg; t=1715683586;
+	bh=GpLGX9kVoP0ZTbXVl8i6ai9lK9IYxSquGk+Mof7L+W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUxnbE3hwgGIpUM+Wc1U/HZg8QKaKUErJm47aMlQPgHRyASlcjvn3RXY74shXSCms
-	 xxydYDWrALhwE7NmrHYg0hMN6fttwGb8UbeLp0hXIYS2B5grbqeKvU430jxqOXIKJa
-	 vxT4PQ0hht6z4O2Dw5Idi1PxHCI/JHFMzaJdF/dI=
+	b=FLJAu/OKG3AUpap9NYSatw4dmCr/qOgs7wxMWBCIC2kTxGl2bDE1UNlsLlw2FRBzS
+	 jkz3XEQjAtSJ+K3f+dCj9zkAP5EZcoJnFZLob8P1uvpYUCPwGOy4aRPdM2B6SWEbm3
+	 Y0ye/GwTx71tM60kmk3UnouC7F1St4EOU7JSyCbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Ernst <justin.ernst@hpe.com>,
-	Thomas Renninger <trenn@suse.de>,
-	Len Brown <len.brown@intel.com>,
+	syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/301] tools/power/turbostat: Fix uncore frequency file string
-Date: Tue, 14 May 2024 12:16:55 +0200
-Message-ID: <20240514101037.690121429@linuxfoundation.org>
+Subject: [PATCH 6.8 212/336] nfc: nci: Fix kcov check in nci_rx_work()
+Date: Tue, 14 May 2024 12:16:56 +0200
+Message-ID: <20240514101046.616317911@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Ernst <justin.ernst@hpe.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 60add818ab2543b7e4f2bfeaacf2504743c1eb50 ]
+[ Upstream commit 19e35f24750ddf860c51e51c68cf07ea181b4881 ]
 
-Running turbostat on a 16 socket HPE Scale-up Compute 3200 (SapphireRapids) fails with:
-turbostat: /sys/devices/system/cpu/intel_uncore_frequency/package_010_die_00/current_freq_khz: open failed: No such file or directory
+Commit 7e8cdc97148c ("nfc: Add KCOV annotations") added
+kcov_remote_start_common()/kcov_remote_stop() pair into nci_rx_work(),
+with an assumption that kcov_remote_stop() is called upon continue of
+the for loop. But commit d24b03535e5e ("nfc: nci: Fix uninit-value in
+nci_dev_up and nci_ntf_packet") forgot to call kcov_remote_stop() before
+break of the for loop.
 
-We observe the sysfs uncore frequency directories named:
-...
-package_09_die_00/
-package_10_die_00/
-package_11_die_00/
-...
-package_15_die_00/
-
-The culprit is an incorrect sprintf format string "package_0%d_die_0%d" used
-with each instance of reading uncore frequency files. uncore-frequency-common.c
-creates the sysfs directory with the format "package_%02d_die_%02d". Once the
-package value reaches double digits, the formats diverge.
-
-Change each instance of "package_0%d_die_0%d" to "package_%02d_die_%02d".
-
-[lenb: deleted the probe part of this patch, as it was already fixed]
-
-Signed-off-by: Justin Ernst <justin.ernst@hpe.com>
-Reviewed-by: Thomas Renninger <trenn@suse.de>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Reported-by: syzbot <syzbot+0438378d6f157baae1a2@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=0438378d6f157baae1a2
+Fixes: d24b03535e5e ("nfc: nci: Fix uninit-value in nci_dev_up and nci_ntf_packet")
+Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/6d10f829-5a0c-405a-b39a-d7266f3a1a0b@I-love.SAKURA.ne.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nfc/nci/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 0561362301c53..ffa964ddbacef 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -1969,7 +1969,7 @@ unsigned long long get_uncore_mhz(int package, int die)
- {
- 	char path[128];
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 0d26c8ec9993e..b133dc55304ce 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1518,6 +1518,7 @@ static void nci_rx_work(struct work_struct *work)
  
--	sprintf(path, "/sys/devices/system/cpu/intel_uncore_frequency/package_0%d_die_0%d/current_freq_khz", package,
-+	sprintf(path, "/sys/devices/system/cpu/intel_uncore_frequency/package_%02d_die_%02d/current_freq_khz", package,
- 		die);
+ 		if (!nci_plen(skb->data)) {
+ 			kfree_skb(skb);
++			kcov_remote_stop();
+ 			break;
+ 		}
  
- 	return (snapshot_sysfs_counter(path) / 1000);
 -- 
 2.43.0
 
