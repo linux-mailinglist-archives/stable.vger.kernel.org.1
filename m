@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587A68C520B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9BB8C50E5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107821F224AE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53315282291
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681F212A14F;
-	Tue, 14 May 2024 11:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F6F129E86;
+	Tue, 14 May 2024 10:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx5ZbzuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXy/NOGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2748B54BFE;
-	Tue, 14 May 2024 11:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A246BFAC;
+	Tue, 14 May 2024 10:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685395; cv=none; b=fePxc9Qv2ns5R2EM0tsASq2FN4NEpdZDab5FPZAKzMSswWyZ0v7xmT1gMFCZsIq/Dp1CWMwMC2NnP6FhPdfOSwrtXrj2ZKImKAHt0I1Hreg1U2IWfzo901mJAukQqF5S24tqkENDtpDxbJWjsAYgX4SzLotlEMqWHzGv+WNjo/g=
+	t=1715683817; cv=none; b=uwRcQ2DsNCjC28pwtjWYJtSW79gTHCcgakWyDrf42aIA5FO3TQGflEcuXA9Qyvp6+h8/Zqtkzx1+UHAhSlJxAoDvIz5+yOHkfQK9NaIFfafFWlLYfUEr1cHw+FOim5paS16MsHK3jgsSWw+vtv2rQAc9GrEdgNyChwQ97RVvxQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685395; c=relaxed/simple;
-	bh=bqLo8Elj7qSXvxJNo9CIh1IA7z5ecVSH+Fw792Rg5Nw=;
+	s=arc-20240116; t=1715683817; c=relaxed/simple;
+	bh=L3bO2XzDsaH84akNwcK/OU/jtv/oIhR0PglE6P/EKfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jj8ClxNqfcomo59mTdSHcMjU3/EjNbSHFiDomcW/x+8m5DtfigFIo/PvOQBcLGjQ5hXKfloTK3HjpN3Rqvc3yFSolKTxbqE4GqsTH5IorAnBD79XXmpstU1tKGyL0wcyY7wGppNLueCFpLbPtVJDjMTMhr4zqJEfI2SJYOTooiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx5ZbzuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D03C2BD10;
-	Tue, 14 May 2024 11:16:33 +0000 (UTC)
+	 MIME-Version; b=BCLl+KO0ASYMl3WA4jErlOcX/HtOY9FU6Si8ntTqEVfnNxJCYSkQnyRPUULCNJKZLLzLGc7et64ceEh0jCJrF581AQyjiZesjEV2OaW+Io4xxq4ZuaKyzBRBgonRO/aQWMMFkqic9DbWfCGubkAjCcIJVGNSs65ql82rs+TPHdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXy/NOGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31464C2BD10;
+	Tue, 14 May 2024 10:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685395;
-	bh=bqLo8Elj7qSXvxJNo9CIh1IA7z5ecVSH+Fw792Rg5Nw=;
+	s=korg; t=1715683817;
+	bh=L3bO2XzDsaH84akNwcK/OU/jtv/oIhR0PglE6P/EKfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kx5ZbzuQvhoMJ1XUKxYfNwTxAAb7EE0mqV9BoqQnJ585++J5QlBlqVMTOy5gEKby8
-	 CxlGouVBwoFRcNbLm5brDRz7q02wbU0cEdMY7ABMFPHOyyJ2cu19v3TBRd8kY70WYh
-	 NypaakaPW4PwjwvOmiy7/fkciSFbEUgTZER1SrFc=
+	b=IXy/NOGcMb35cuTtE2lnry6nolW8FDoz5dOOO5FD2g/fJpaCPWHArcudgnTB97zeM
+	 ThJ7DqsujlUMyZStEXZ+26Rrdk2SywvTkrClNDMaDWpAbXiBPizgXbsDw6zVfgtn+G
+	 Qt36okSFxslTCxPeklWkvXjlyYkGzwmejCSp4ErM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/301] Bluetooth: HCI: Fix potential null-ptr-deref
+	Gerd Hoffmann <kraxel@redhat.com>,
+	David Laight <David.Laight@aculab.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.8 248/336] usb: ohci: Prevent missed ohci interrupts
 Date: Tue, 14 May 2024 12:17:32 +0200
-Message-ID: <20240514101039.090383400@linuxfoundation.org>
+Message-ID: <20240514101047.983146013@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit d2706004a1b8b526592e823d7e52551b518a7941 ]
+commit fe81f354841641c7f71163b84912b25c169ed8ec upstream.
 
-Fix potential null-ptr-deref in hci_le_big_sync_established_evt().
+Testing ohci functionality with qemu's pci-ohci emulation often results
+in ohci interface stalls, resulting in hung task timeouts.
 
-Fixes: f777d8827817 (Bluetooth: ISO: Notify user space about failed bis connections)
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is caused by lost interrupts between the emulation and the
+Linux kernel code. Additional interrupts raised while the ohci interrupt
+handler in Linux is running and before the handler clears the interrupt
+status are not handled. The fix for a similar problem in ehci suggests
+that the problem is likely caused by edge-triggered MSI interrupts. See
+commit 0b60557230ad ("usb: ehci: Prevent missed ehci interrupts with
+edge-triggered MSI") for details.
+
+Ensure that the ohci interrupt code handles all pending interrupts before
+returning to solve the problem.
+
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: David Laight <David.Laight@aculab.com>
+Cc: stable@vger.kernel.org
+Fixes: 306c54d0edb6 ("usb: hcd: Try MSI interrupts on PCI devices")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+Link: https://lore.kernel.org/r/20240429154010.1507366-1-linux@roeck-us.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/ohci-hcd.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 1b4abf8e90f6b..9274d32550493 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -7200,6 +7200,8 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
- 			u16 handle = le16_to_cpu(ev->bis[i]);
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -888,6 +888,7 @@ static irqreturn_t ohci_irq (struct usb_
+ 	/* Check for an all 1's result which is a typical consequence
+ 	 * of dead, unclocked, or unplugged (CardBus...) devices
+ 	 */
++again:
+ 	if (ints == ~(u32)0) {
+ 		ohci->rh_state = OHCI_RH_HALTED;
+ 		ohci_dbg (ohci, "device removed!\n");
+@@ -982,6 +983,13 @@ static irqreturn_t ohci_irq (struct usb_
+ 	}
+ 	spin_unlock(&ohci->lock);
  
- 			bis = hci_conn_hash_lookup_handle(hdev, handle);
-+			if (!bis)
-+				continue;
++	/* repeat until all enabled interrupts are handled */
++	if (ohci->rh_state != OHCI_RH_HALTED) {
++		ints = ohci_readl(ohci, &regs->intrstatus);
++		if (ints && (ints & ohci_readl(ohci, &regs->intrenable)))
++			goto again;
++	}
++
+ 	return IRQ_HANDLED;
+ }
  
- 			set_bit(HCI_CONN_BIG_SYNC_FAILED, &bis->flags);
- 			hci_connect_cfm(bis, ev->status);
--- 
-2.43.0
-
 
 
 
