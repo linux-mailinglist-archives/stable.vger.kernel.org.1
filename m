@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9BF8C5306
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 688C98C50AC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AF69281938
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 999721C20B56
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1271113956A;
-	Tue, 14 May 2024 11:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD5313E41D;
+	Tue, 14 May 2024 10:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyjXn8P8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DS9keg+7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59EE84D26;
-	Tue, 14 May 2024 11:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D371386D5;
+	Tue, 14 May 2024 10:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686269; cv=none; b=oDJdHblrfvJ89kr6ZHEE7ZBb2x06ZQU4q0iU+qtpf2pOs6JyLkXIfW93Mr/rIxH3C3dsI8CKCt70S6QLnO7KE+vYrL1pcQJmHfigU9cGpCl8HAKUonNiA/kTz+zpe8Lz4/iWa9okFUuxisSc29MSfFqbwLsUPDqv3hdadKDqKBg=
+	t=1715683563; cv=none; b=L5hjA6t0HD+nlHcKcfyGnSa/YbxXH8HYgrrt91RXGcgzBo73HTowZs728zOke1JPlP9ggfVEY1skdpMWE/khqgrR8++7GtGMrPfD83ODlIkOX5Nr4AuHPeDFEP+PTeme2fTQWRmT24kRwz+RceAPD9qCNAYEt4rdM6iQKAr1bCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686269; c=relaxed/simple;
-	bh=aZB+F0QpHQnxbIN/ve6GQ5K3AC15BTf0LBQL9xBoBmo=;
+	s=arc-20240116; t=1715683563; c=relaxed/simple;
+	bh=sDJFqaXK8clfuV+m3mFzZL4SRuJi695ihJX6vFRYoRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcEOKXAJE36rxnKnKGrKVF99qGw7UUBGVJqBZIL1sCb83/YUUAVcOtIQ6ABXE5E5EhJ+UVSsbHdX3OVmCPJMpGQ5QdGhJFKhAc/B4KYgovM26UuRyilpa0hwYfJNusV5x3gmt+/B9RcIn7wqfsoSY/0+4LBv5r0mKR79kVjzc8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyjXn8P8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415AEC2BD10;
-	Tue, 14 May 2024 11:31:09 +0000 (UTC)
+	 MIME-Version; b=SYMXcoBlgc4HTFFxVGxAvVL24ne7OICIKtSn9t6udrejV18l2PBorjUY98fDRtUS/zovf+8BgYhjpr1n7iEXBrWb3ZpWe/lO+yVFU2lT86xDdbAvtIKnvrGiP825LFTH16pE6NCtma1M3JxyRiDqjvA80JUGnCST8RqCctSYp64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DS9keg+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A70FC2BD10;
+	Tue, 14 May 2024 10:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686269;
-	bh=aZB+F0QpHQnxbIN/ve6GQ5K3AC15BTf0LBQL9xBoBmo=;
+	s=korg; t=1715683563;
+	bh=sDJFqaXK8clfuV+m3mFzZL4SRuJi695ihJX6vFRYoRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VyjXn8P8QCzLeWlfU7RK2yhVShBhV2xSfDy1m/Vst+H5rIrsJS6fn1Pd1GrFyDMKj
-	 g+4aGo+dfHePd9fMr1XlzN9Tm9NogGPRxibfXU4CK9MsX2NIkd53YWppNT2PlemJtC
-	 dxMzFy9XI8cLGATjNMGZR4T9rXuCEDrbBaaBIESQ=
+	b=DS9keg+75UtYq35wUfoTOweYsFNCwp91CtOGUPten3VF74bOvw6rI7wNQJ8jgH4fl
+	 EWk47qUGk8IFiW/swkVRJXJi46IgDej08pddcsXJ88cCE/saebBNpRcHsdh3aEIHqb
+	 f0sjn8S5wAmLoedK/KHiay4XEvSRi95QnryA4wUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	"David S. Miller" <davem@davemloft.net>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simon Ser <contact@emersion.fr>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/236] net: core: reject skb_copy(_expand) for fraglist GSO skbs
+Subject: [PATCH 6.8 236/336] drm/connector: Add \n to message about demoting connector force-probes
 Date: Tue, 14 May 2024 12:17:20 +0200
-Message-ID: <20240514101023.331927004@linuxfoundation.org>
+Message-ID: <20240514101047.524932510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit d091e579b864fa790dd6a0cd537a22c383126681 ]
+[ Upstream commit 6897204ea3df808d342c8e4613135728bc538bcd ]
 
-SKB_GSO_FRAGLIST skbs must not be linearized, otherwise they become
-invalid. Return NULL if such an skb is passed to skb_copy or
-skb_copy_expand, in order to prevent a crash on a potential later
-call to skb_gso_segment.
+The debug print clearly lacks a \n at the end. Add it.
 
-Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8f86c82aba8b ("drm/connector: demote connector force-probes for non-master clients")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Simon Ser <contact@emersion.fr>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240502153234.1.I2052f01c8d209d9ae9c300b87c6e4f60bd3cc99e@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/drm_connector.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index e38a4c7449f62..4d46788cd493a 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1720,11 +1720,17 @@ static inline int skb_alloc_rx_flag(const struct sk_buff *skb)
- 
- struct sk_buff *skb_copy(const struct sk_buff *skb, gfp_t gfp_mask)
- {
--	int headerlen = skb_headroom(skb);
--	unsigned int size = skb_end_offset(skb) + skb->data_len;
--	struct sk_buff *n = __alloc_skb(size, gfp_mask,
--					skb_alloc_rx_flag(skb), NUMA_NO_NODE);
-+	struct sk_buff *n;
-+	unsigned int size;
-+	int headerlen;
-+
-+	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
-+		return NULL;
- 
-+	headerlen = skb_headroom(skb);
-+	size = skb_end_offset(skb) + skb->data_len;
-+	n = __alloc_skb(size, gfp_mask,
-+			skb_alloc_rx_flag(skb), NUMA_NO_NODE);
- 	if (!n)
- 		return NULL;
- 
-@@ -2037,12 +2043,17 @@ struct sk_buff *skb_copy_expand(const struct sk_buff *skb,
- 	/*
- 	 *	Allocate the copy buffer
- 	 */
--	struct sk_buff *n = __alloc_skb(newheadroom + skb->len + newtailroom,
--					gfp_mask, skb_alloc_rx_flag(skb),
--					NUMA_NO_NODE);
--	int oldheadroom = skb_headroom(skb);
- 	int head_copy_len, head_copy_off;
-+	struct sk_buff *n;
-+	int oldheadroom;
-+
-+	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
-+		return NULL;
- 
-+	oldheadroom = skb_headroom(skb);
-+	n = __alloc_skb(newheadroom + skb->len + newtailroom,
-+			gfp_mask, skb_alloc_rx_flag(skb),
-+			NUMA_NO_NODE);
- 	if (!n)
- 		return NULL;
+diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
+index b0516505f7ae9..4d2df7f64dc51 100644
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -2940,7 +2940,7 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
+ 						     dev->mode_config.max_width,
+ 						     dev->mode_config.max_height);
+ 		else
+-			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe",
++			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe\n",
+ 				    connector->base.id, connector->name);
+ 	}
  
 -- 
 2.43.0
