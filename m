@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29ACF8C54A0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7AC8C53B0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B08C828A01F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0B4A1F233C8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75EAB12D76A;
-	Tue, 14 May 2024 11:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8C212E1D7;
+	Tue, 14 May 2024 11:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtSzhgg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giU3uUed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AA685956;
-	Tue, 14 May 2024 11:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875EB12E1DC;
+	Tue, 14 May 2024 11:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687314; cv=none; b=UDzRyxmEhZWvdBXhueaxFFDVUpa7MnC6CRTELbLQKYDR7n7CBQTWdz1HOOBEsmynXPnk6HU9q5v2ydveP0V6zHe5wqhOZVPJ5FiUw27r4eydtyLZ2wL1c+5TeKDbk09hgUfps2xc8EElYoSbbxkrwsU3blNgVtfVI4lIJIo+ZRU=
+	t=1715686697; cv=none; b=jlI6EO2JRPGxaZExYeUzTfC7WBvseSsnAnFJ/SpQIP4KoJHEzgmR6y1zP0Grk4B2Nu6QBIuiHZCv1knB1scLxNkSLLXXoieT+kO8C9YOkWcnpEvRAguz70eqhV7KewPgbxrCjJQ8ifp89XEbJ1AKI5EWE+0r8R3dcoIGFVFxyog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687314; c=relaxed/simple;
-	bh=hKHD2iiXACbWu5zDxYy4Luqfjq0YvDkoXNRMubrXBxc=;
+	s=arc-20240116; t=1715686697; c=relaxed/simple;
+	bh=rKlTy7KMoAXhL7PRSEy0H80MqIaBq+4JLy6eW+YLoDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGX4KHy0jpd9gKQNJbGM5oCRrbJRkcxJFxt/Wm6Tcn3N2FddJ3eYyobYYdYkCFuD72prs5rukbafRAOz9EfbxQ2nDR/eK4n8u7JFHPaUIVdgdws/4PvE1wIl1/csd3Q1wEkb2V3RRepFefkFk8yLLmtJmrDWSPxAIuMPdM9J/Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtSzhgg3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFD5C2BD10;
-	Tue, 14 May 2024 11:48:33 +0000 (UTC)
+	 MIME-Version; b=n7r3YTadaffvLDh77lqxislPjFTjCrBeMiWBT+9OQ0DBHNwTqXgLajQHPbdpDRXPKax6SwjWFO5k168aEhpy3BSnBETi/yzF0hD62alu7KCjE6c+hBOqZLEZgiCxfUH+O/1192keYb+vkSKR6dZOKExMvk6ye5c+4j9anTIdq/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giU3uUed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B766EC2BD10;
+	Tue, 14 May 2024 11:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687314;
-	bh=hKHD2iiXACbWu5zDxYy4Luqfjq0YvDkoXNRMubrXBxc=;
+	s=korg; t=1715686697;
+	bh=rKlTy7KMoAXhL7PRSEy0H80MqIaBq+4JLy6eW+YLoDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtSzhgg3cC1wAZ7BGnPFGpSLsPrbV7bx2WjM6m86/v8fkxfEoR0Zo8R65BWnJwszg
-	 HITZ5ebKmgUvD+KnvOUfB9+DOCfmYvcAxxyF4D9MKdv4/hIkfLlupiUEQrPIovO78y
-	 b13fxiarpaynTopQABsg55EVU08F8MK7zPsVpVyY=
+	b=giU3uUedUgyuyxZ7dj8TalCRGdcJL+RCmS1abLLiBGW3TSSYCHXcEiUr91fvxyrLG
+	 0fjHxoMZTkPjqupLA8ajzHz7bUV4s5W+q9F1n0rOfnGrQFBPwtBI0z11twvEqQOACq
+	 VIZbWG1qvAWb0TxwJKoG9QbzZb3jkOeB+KVJfsis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Maarten Vanraes <maarten@rmail.be>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 052/111] net: bcmgenet: Reset RBUF on first open
+	Conor Dooley <conor.dooley@microchip.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 228/236] spi: microchip-core-qspi: fix setting spi bus clock rate
 Date: Tue, 14 May 2024 12:19:50 +0200
-Message-ID: <20240514100959.111227476@linuxfoundation.org>
+Message-ID: <20240514101029.013661174@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit 0a6380cb4c6b5c1d6dad226ba3130f9090f0ccea ]
+commit ef13561d2b163ac0ae6befa53bca58a26dc3320b upstream.
 
-If the RBUF logic is not reset when the kernel starts then there
-may be some data left over from any network boot loader. If the
-64-byte packet headers are enabled then this can be fatal.
+Before ORing the new clock rate with the control register value read
+from the hardware, the existing clock rate needs to be masked off as
+otherwise the existing value will interfere with the new one.
 
-Extend bcmgenet_dma_disable to do perform the reset, but not when
-called from bcmgenet_resume in order to preserve a wake packet.
-
-N.B. This different handling of resume is just based on a hunch -
-why else wouldn't one reset the RBUF as well as the TBUF? If this
-isn't the case then it's easy to change the patch to make the RBUF
-reset unconditional.
-
-See: https://github.com/raspberrypi/linux/issues/3850
-See: https://github.com/raspberrypi/firmware/issues/1882
-
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Maarten Vanraes <maarten@rmail.be>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/20240508-fox-unpiloted-b97e1535627b@spud
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/spi/spi-microchip-core-qspi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index ed0589a1a00d8..b2309d2fbc2df 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3252,7 +3252,7 @@ static void bcmgenet_get_hw_addr(struct bcmgenet_priv *priv,
- }
+diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
+index 03d125a71fd9..09f16471c537 100644
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -283,6 +283,7 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
+ 	}
  
- /* Returns a reusable dma control register value */
--static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
-+static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv, bool flush_rx)
- {
- 	unsigned int i;
- 	u32 reg;
-@@ -3277,6 +3277,14 @@ static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
- 	udelay(10);
- 	bcmgenet_umac_writel(priv, 0, UMAC_TX_FLUSH);
- 
-+	if (flush_rx) {
-+		reg = bcmgenet_rbuf_ctrl_get(priv);
-+		bcmgenet_rbuf_ctrl_set(priv, reg | BIT(0));
-+		udelay(10);
-+		bcmgenet_rbuf_ctrl_set(priv, reg);
-+		udelay(10);
-+	}
-+
- 	return dma_ctrl;
- }
- 
-@@ -3340,8 +3348,8 @@ static int bcmgenet_open(struct net_device *dev)
- 
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
- 
--	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	/* Disable RX/TX DMA and flush TX and RX queues */
-+	dma_ctrl = bcmgenet_dma_disable(priv, true);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
-@@ -4199,7 +4207,7 @@ static int bcmgenet_resume(struct device *d)
- 			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
- 
- 	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	dma_ctrl = bcmgenet_dma_disable(priv, false);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
+ 	control = readl_relaxed(qspi->regs + REG_CONTROL);
++	control &= ~CONTROL_CLKRATE_MASK;
+ 	control |= baud_rate_val << CONTROL_CLKRATE_SHIFT;
+ 	writel_relaxed(control, qspi->regs + REG_CONTROL);
+ 	control = readl_relaxed(qspi->regs + REG_CONTROL);
 -- 
-2.43.0
+2.45.0
 
 
 
