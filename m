@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-44306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C348C5229
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6D88C5114
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FD91C21725
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74E9F282509
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AD712D74F;
-	Tue, 14 May 2024 11:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60DE12F5A8;
+	Tue, 14 May 2024 10:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5qGf2yE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xB3HHlgg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69208002F;
-	Tue, 14 May 2024 11:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834DC12880A;
+	Tue, 14 May 2024 10:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685596; cv=none; b=pJB7CLFVE/6FzrnBLu0DUpLompiXoMF14i2lHoTXy9RCl+x1QMLhA0/asR07TuBB7PMhNvqfc4fLszA4DZfxYHDewbiiF6rhtQ1pi1NE0BCvw9BGr7r1w9pLgjyY/GZa+xOhG/DeopXknzFmMPGsZYTyGtxuh06+qLhUWnqBxik=
+	t=1715684037; cv=none; b=Z8dvwIF15dhdDN9XnpB+DYkqkEVaoa0v1UY5fvDAA1Y8zVpPVkbcLpInV5qc7Izj2xqughb4dqErnvaICQFPvtQwx0VKtQt23gdiZ2X7mhuiTDsir9qnDOpWzfdHu24Dk3m6eKTiFNdRNPBi6awxXz2ue619iUGEoynIDQ72MBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685596; c=relaxed/simple;
-	bh=VTCTdyYtMoB4qUhxgsLK8fj07O2Vx4UUd9pdTz5JF3Y=;
+	s=arc-20240116; t=1715684037; c=relaxed/simple;
+	bh=j7cTDN9lQsMNumzVc6tamDvBtakzEmzUwt3zsEv/+Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwPF8dRNu8VLIuj11uIOEBiIRmq0qMH0E1zpmyPRy8M/j8mD+4OXn9v+yUHNKwwQfD3A7LL8QUigiNpFfqNT5+KeixQMNosK9R8izqy5VxcWvUH1xqTvmGhngixaMygiUq5RiCuD86BmVp5ZZfbJVIW1uwoXc0Kyc4G8RYubcfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5qGf2yE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273CBC2BD10;
-	Tue, 14 May 2024 11:19:55 +0000 (UTC)
+	 MIME-Version; b=QKOLolfodKQS28K2+FpAzz791IW/E5iesOHlk9eh9ft5JqYUsOmPMo5IG11ZAAlNSON3hlP4FKH8khSHsG8iNhrTHUKA+N8IEnbBADI/VUplAdmyN2BxubAlQ2BzRhO9R5qnDOdZwjhNqoDC4k9YijEIKYosLAoSR0rrM5M+ZOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xB3HHlgg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9137C32781;
+	Tue, 14 May 2024 10:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685596;
-	bh=VTCTdyYtMoB4qUhxgsLK8fj07O2Vx4UUd9pdTz5JF3Y=;
+	s=korg; t=1715684037;
+	bh=j7cTDN9lQsMNumzVc6tamDvBtakzEmzUwt3zsEv/+Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5qGf2yEGgooxjeqtGw9TwuVCMnQugNz2PokcgLCjqbQvUukIQKwMUPHxbbZGsDCK
-	 q3ORn4tuNOfjLkGcdSAwKDY0DcL1/9bWN0vtWa9iPhzPig7qBz8xDMO9kng7aHBHJ0
-	 5lD7K0vrO8EK/B7mrUa0+XafGxheswn5pPUtYbhQ=
+	b=xB3HHlggD3KeiF1Wlr84qGlnWyujSeBTEc42SoODFDRkivs64NWl7Gk8HBboc3bGA
+	 /j2YcHqtGlw3MuNcawhWmWKnX5CR6xOT3ZQWv0aiGwMnLHlqeif6kSzddtq/+iy+YS
+	 Wysk9tuHQGytxoDeVzpPCZC3Q6T4aYyB4brnGPUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/301] drm/meson: dw-hdmi: add bandgap setting for g12
-Date: Tue, 14 May 2024 12:18:04 +0200
-Message-ID: <20240514101040.302967332@linuxfoundation.org>
+	Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 6.8 281/336] xtensa: fix MAKE_PC_FROM_RA second argument
+Date: Tue, 14 May 2024 12:18:05 +0200
+Message-ID: <20240514101049.229159501@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +60,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 08001033121dd92b8297a5b7333636b466c30f13 ]
+commit 0e60f0b75884677fb9f4f2ad40d52b43451564d5 upstream.
 
-When no mode is set, the utility pin appears to be grounded. No signal
-is getting through.
+Xtensa has two-argument MAKE_PC_FROM_RA macro to convert a0 to an actual
+return address because when windowed ABI is used call{,x}{4,8,12}
+opcodes stuff encoded window size into the top 2 bits of the register
+that becomes a return address in the called function. Second argument of
+that macro is supposed to be an address having these 2 topmost bits set
+correctly, but the comment suggested that that could be the stack
+address. However the stack doesn't have to be in the same 1GByte region
+as the code, especially in noMMU XIP configurations.
 
-This is problematic because ARC and eARC use this line and may do so even
-if no display mode is set.
+Fix the comment and use either _text or regs->pc as the second argument
+for the MAKE_PC_FROM_RA macro.
 
-This change enable the bandgap setting on g12 chip, which fix the problem
-with the utility pin. This is done by restoring init values on PHY init and
-disable.
-
-Fixes: 3b7c1237a72a ("drm/meson: Add G12A support for the DW-HDMI Glue")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240426160256.3089978-3-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240426160256.3089978-3-jbrunet@baylibre.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/meson/meson_dw_hdmi.c | 43 ++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 17 deletions(-)
+ arch/xtensa/include/asm/processor.h |    8 ++++----
+ arch/xtensa/include/asm/ptrace.h    |    2 +-
+ arch/xtensa/kernel/process.c        |    5 +++--
+ arch/xtensa/kernel/stacktrace.c     |    3 ++-
+ 4 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-index a83d93078537d..5565f7777529f 100644
---- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-@@ -106,6 +106,8 @@
- #define HHI_HDMI_CLK_CNTL	0x1cc /* 0x73 */
- #define HHI_HDMI_PHY_CNTL0	0x3a0 /* 0xe8 */
- #define HHI_HDMI_PHY_CNTL1	0x3a4 /* 0xe9 */
-+#define  PHY_CNTL1_INIT		0x03900000
-+#define  PHY_INVERT		BIT(17)
- #define HHI_HDMI_PHY_CNTL2	0x3a8 /* 0xea */
- #define HHI_HDMI_PHY_CNTL3	0x3ac /* 0xeb */
- #define HHI_HDMI_PHY_CNTL4	0x3b0 /* 0xec */
-@@ -130,6 +132,8 @@ struct meson_dw_hdmi_data {
- 				    unsigned int addr);
- 	void		(*dwc_write)(struct meson_dw_hdmi *dw_hdmi,
- 				     unsigned int addr, unsigned int data);
-+	u32 cntl0_init;
-+	u32 cntl1_init;
- };
+--- a/arch/xtensa/include/asm/processor.h
++++ b/arch/xtensa/include/asm/processor.h
+@@ -115,9 +115,9 @@
+ #define MAKE_RA_FOR_CALL(ra,ws)   (((ra) & 0x3fffffff) | (ws) << 30)
  
- struct meson_dw_hdmi {
-@@ -458,7 +462,9 @@ static void dw_hdmi_phy_disable(struct dw_hdmi *hdmi,
+ /* Convert return address to a valid pc
+- * Note: We assume that the stack pointer is in the same 1GB ranges as the ra
++ * Note: 'text' is the address within the same 1GB range as the ra
+  */
+-#define MAKE_PC_FROM_RA(ra,sp)    (((ra) & 0x3fffffff) | ((sp) & 0xc0000000))
++#define MAKE_PC_FROM_RA(ra, text) (((ra) & 0x3fffffff) | ((unsigned long)(text) & 0xc0000000))
  
- 	DRM_DEBUG_DRIVER("\n");
+ #elif defined(__XTENSA_CALL0_ABI__)
  
--	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL0, 0);
-+	/* Fallback to init mode */
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL1, dw_hdmi->data->cntl1_init);
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL0, dw_hdmi->data->cntl0_init);
- }
+@@ -127,9 +127,9 @@
+ #define MAKE_RA_FOR_CALL(ra, ws)   (ra)
  
- static enum drm_connector_status dw_hdmi_read_hpd(struct dw_hdmi *hdmi,
-@@ -576,11 +582,22 @@ static const struct regmap_config meson_dw_hdmi_regmap_config = {
- 	.fast_io = true,
- };
+ /* Convert return address to a valid pc
+- * Note: We assume that the stack pointer is in the same 1GB ranges as the ra
++ * Note: 'text' is not used as 'ra' is always the full address
+  */
+-#define MAKE_PC_FROM_RA(ra, sp)    (ra)
++#define MAKE_PC_FROM_RA(ra, text)  (ra)
  
--static const struct meson_dw_hdmi_data meson_dw_hdmi_gx_data = {
-+static const struct meson_dw_hdmi_data meson_dw_hdmi_gxbb_data = {
- 	.top_read = dw_hdmi_top_read,
- 	.top_write = dw_hdmi_top_write,
- 	.dwc_read = dw_hdmi_dwc_read,
- 	.dwc_write = dw_hdmi_dwc_write,
-+	.cntl0_init = 0x0,
-+	.cntl1_init = PHY_CNTL1_INIT | PHY_INVERT,
-+};
-+
-+static const struct meson_dw_hdmi_data meson_dw_hdmi_gxl_data = {
-+	.top_read = dw_hdmi_top_read,
-+	.top_write = dw_hdmi_top_write,
-+	.dwc_read = dw_hdmi_dwc_read,
-+	.dwc_write = dw_hdmi_dwc_write,
-+	.cntl0_init = 0x0,
-+	.cntl1_init = PHY_CNTL1_INIT,
- };
+ #else
+ #error Unsupported Xtensa ABI
+--- a/arch/xtensa/include/asm/ptrace.h
++++ b/arch/xtensa/include/asm/ptrace.h
+@@ -87,7 +87,7 @@ struct pt_regs {
+ # define user_mode(regs) (((regs)->ps & 0x00000020)!=0)
+ # define instruction_pointer(regs) ((regs)->pc)
+ # define return_pointer(regs) (MAKE_PC_FROM_RA((regs)->areg[0], \
+-					       (regs)->areg[1]))
++					       (regs)->pc))
  
- static const struct meson_dw_hdmi_data meson_dw_hdmi_g12a_data = {
-@@ -588,6 +605,8 @@ static const struct meson_dw_hdmi_data meson_dw_hdmi_g12a_data = {
- 	.top_write = dw_hdmi_g12a_top_write,
- 	.dwc_read = dw_hdmi_g12a_dwc_read,
- 	.dwc_write = dw_hdmi_g12a_dwc_write,
-+	.cntl0_init = 0x000b4242, /* Bandgap */
-+	.cntl1_init = PHY_CNTL1_INIT,
- };
+ # ifndef CONFIG_SMP
+ #  define profile_pc(regs) instruction_pointer(regs)
+--- a/arch/xtensa/kernel/process.c
++++ b/arch/xtensa/kernel/process.c
+@@ -47,6 +47,7 @@
+ #include <asm/asm-offsets.h>
+ #include <asm/regs.h>
+ #include <asm/hw_breakpoint.h>
++#include <asm/sections.h>
+ #include <asm/traps.h>
  
- static void meson_dw_hdmi_init(struct meson_dw_hdmi *meson_dw_hdmi)
-@@ -626,18 +645,8 @@ static void meson_dw_hdmi_init(struct meson_dw_hdmi *meson_dw_hdmi)
- 	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_BIST_CNTL, BIT(12));
+ extern void ret_from_fork(void);
+@@ -380,7 +381,7 @@ unsigned long __get_wchan(struct task_st
+ 	int count = 0;
  
- 	/* Setup PHY */
--	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
--			   0xffff << 16, 0x0390 << 16);
--
--	/* BIT_INVERT */
--	if (dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxl-dw-hdmi") ||
--	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxm-dw-hdmi") ||
--	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-g12a-dw-hdmi"))
--		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
--				   BIT(17), 0);
--	else
--		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
--				   BIT(17), BIT(17));
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL1, meson_dw_hdmi->data->cntl1_init);
-+	regmap_write(priv->hhi, HHI_HDMI_PHY_CNTL0, meson_dw_hdmi->data->cntl0_init);
+ 	sp = p->thread.sp;
+-	pc = MAKE_PC_FROM_RA(p->thread.ra, p->thread.sp);
++	pc = MAKE_PC_FROM_RA(p->thread.ra, _text);
  
- 	/* Enable HDMI-TX Interrupt */
- 	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_INTR_STAT_CLR,
-@@ -848,11 +857,11 @@ static const struct dev_pm_ops meson_dw_hdmi_pm_ops = {
+ 	do {
+ 		if (sp < stack_page + sizeof(struct task_struct) ||
+@@ -392,7 +393,7 @@ unsigned long __get_wchan(struct task_st
  
- static const struct of_device_id meson_dw_hdmi_of_table[] = {
- 	{ .compatible = "amlogic,meson-gxbb-dw-hdmi",
--	  .data = &meson_dw_hdmi_gx_data },
-+	  .data = &meson_dw_hdmi_gxbb_data },
- 	{ .compatible = "amlogic,meson-gxl-dw-hdmi",
--	  .data = &meson_dw_hdmi_gx_data },
-+	  .data = &meson_dw_hdmi_gxl_data },
- 	{ .compatible = "amlogic,meson-gxm-dw-hdmi",
--	  .data = &meson_dw_hdmi_gx_data },
-+	  .data = &meson_dw_hdmi_gxl_data },
- 	{ .compatible = "amlogic,meson-g12a-dw-hdmi",
- 	  .data = &meson_dw_hdmi_g12a_data },
- 	{ }
--- 
-2.43.0
-
+ 		/* Stack layout: sp-4: ra, sp-3: sp' */
+ 
+-		pc = MAKE_PC_FROM_RA(SPILL_SLOT(sp, 0), sp);
++		pc = MAKE_PC_FROM_RA(SPILL_SLOT(sp, 0), _text);
+ 		sp = SPILL_SLOT(sp, 1);
+ 	} while (count++ < 16);
+ 	return 0;
+--- a/arch/xtensa/kernel/stacktrace.c
++++ b/arch/xtensa/kernel/stacktrace.c
+@@ -13,6 +13,7 @@
+ #include <linux/stacktrace.h>
+ 
+ #include <asm/ftrace.h>
++#include <asm/sections.h>
+ #include <asm/stacktrace.h>
+ #include <asm/traps.h>
+ #include <linux/uaccess.h>
+@@ -189,7 +190,7 @@ void walk_stackframe(unsigned long *sp,
+ 		if (a1 <= (unsigned long)sp)
+ 			break;
+ 
+-		frame.pc = MAKE_PC_FROM_RA(a0, a1);
++		frame.pc = MAKE_PC_FROM_RA(a0, _text);
+ 		frame.sp = a1;
+ 
+ 		if (fn(&frame, data))
 
 
 
