@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-44425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CFC8C52CF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23B18C52CE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF622B20BBA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774D21F22BB1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BDE12FB07;
-	Tue, 14 May 2024 11:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381FD1304A2;
+	Tue, 14 May 2024 11:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTZ4Vqyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7cc/Bl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3237CD531;
-	Tue, 14 May 2024 11:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78FBD531;
+	Tue, 14 May 2024 11:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686125; cv=none; b=qx2NNoRh4NWsCIIJqqyCe8LhPugB6FV1UgL79fVK6F00JZWq/5Q1eqj4K564gUA77x6YUnKpqobwXulg4ruycEXxT1MxpVOKCbUy40oJ6lGLWnziAIznc8bgWcEFZzOPTwPmvNoLOPOjgXt+rsDJquzqw1+o+L9mYIaPhg6PVy0=
+	t=1715686131; cv=none; b=jq1z1gZZI6TyISk+ahkCGqc7vvrv97tiuGIw8QJo7qO/H7BS6v6WXHD1KCBu4sZTszeo80wzkSgmJxu8d37PNwaQVesxxdfG8NH1WlecnDnGy7VLEVlHNotC07wudT4u5wrmLBKn2vzTk0eKaIF9+AigpmrjRN6opnO++0AHb4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686125; c=relaxed/simple;
-	bh=Pt+Ll6aOJvJFBsB1EeH5dX+1bAJLBmGh75mV+Y4QDPI=;
+	s=arc-20240116; t=1715686131; c=relaxed/simple;
+	bh=sUNFUjrJ+OmqpRohsmloIfW4CzyLCBThH2w+pQTqHM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FUJI8bGMUPRdbzSvMMBR4DlJaruJ+nCBpsBMMidJKx3bKWs9f0NLVHilowisX13CZfYIaWI3l/rkt1NoBKT/dWixokJJ8Uj/+V/qu2wzS/SnLNQobAhwO9FrlT+eq8jw5x5XrneFeGZTSYBD8Puz+bGWINhjkbM8hAoiaoZt6qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTZ4Vqyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6E6C32781;
-	Tue, 14 May 2024 11:28:44 +0000 (UTC)
+	 MIME-Version; b=BDTlxbLRub8WAZfgJKaqQjHEAabnITO9Xc+6VVbefaBFHRaNJf5JC4AWWsnQRNxwt7YYyVtxp2VVnhGP//AY/BUzNPESrAqOG/SD9qdDj3va2dWG440YgZgdFgvW0He9k/GLktUj0xd5WQSitwaTgI67990dK9oSgov9htxARgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7cc/Bl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD99C2BD10;
+	Tue, 14 May 2024 11:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686125;
-	bh=Pt+Ll6aOJvJFBsB1EeH5dX+1bAJLBmGh75mV+Y4QDPI=;
+	s=korg; t=1715686130;
+	bh=sUNFUjrJ+OmqpRohsmloIfW4CzyLCBThH2w+pQTqHM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTZ4VqyhHlri1qHrf2yXNt4Esxq9GWzxeCu3fzABJdL/702lTuW57ycIVe06W85gP
-	 lT1740OeFbCin1KQ7NgTw9O9IaCDQhQgUz8MJRWC8KvG0AKGfKP3W3sr+FwI1P4jFI
-	 nPGzwbJG56DBN6zpRNvoTVZpxS9Z6mCd0D6IICIs=
+	b=L7cc/Bl7IEL+UCZX19B4fzqkTFTH8kJIMVm2cf8wrfdvq9LgqIXNbCZ5KRMs0VTo9
+	 kRMuo6w6JGKdwZzxTAtmp/L/3777xbxUQv7lYicthSlM5S3BpG5oNX0LkeQnTxq4i2
+	 jwHi6wdlKnEH3ZxWMq9lxohdma4ExIndERCdnpkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/236] nfs: Handle error of rpc_proc_register() in nfs_net_init().
-Date: Tue, 14 May 2024 12:16:32 +0200
-Message-ID: <20240514101021.484925251@linuxfoundation.org>
+Subject: [PATCH 6.1 031/236] pinctrl: Introduce struct pinfunction and PINCTRL_PINFUNCTION() macro
+Date: Tue, 14 May 2024 12:16:33 +0200
+Message-ID: <20240514101021.522992816@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
 References: <20240514101020.320785513@linuxfoundation.org>
@@ -67,102 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 24457f1be29f1e7042e50a7749f5c2dde8c433c8 ]
+[ Upstream commit 443a0a0f0cf4f432c7af6654b7f2f920d411d379 ]
 
-syzkaller reported a warning [0] triggered while destroying immature
-netns.
+There are many pin control drivers define their own data type for
+pin function representation which is the same or embed the same data
+as newly introduced one. Provide the data type and convenient macro
+for all pin control drivers.
 
-rpc_proc_register() was called in init_nfs_fs(), but its error
-has been ignored since at least the initial commit 1da177e4c3f4
-("Linux-2.6.12-rc2").
-
-Recently, commit d47151b79e32 ("nfs: expose /proc/net/sunrpc/nfs
-in net namespaces") converted the procfs to per-netns and made
-the problem more visible.
-
-Even when rpc_proc_register() fails, nfs_net_init() could succeed,
-and thus nfs_net_exit() will be called while destroying the netns.
-
-Then, remove_proc_entry() will be called for non-existing proc
-directory and trigger the warning below.
-
-Let's handle the error of rpc_proc_register() properly in nfs_net_init().
-
-[0]:
-name 'nfs'
-WARNING: CPU: 1 PID: 1710 at fs/proc/generic.c:711 remove_proc_entry+0x1bb/0x2d0 fs/proc/generic.c:711
-Modules linked in:
-CPU: 1 PID: 1710 Comm: syz-executor.2 Not tainted 6.8.0-12822-gcd51db110a7e #12
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:remove_proc_entry+0x1bb/0x2d0 fs/proc/generic.c:711
-Code: 41 5d 41 5e c3 e8 85 09 b5 ff 48 c7 c7 88 58 64 86 e8 09 0e 71 02 e8 74 09 b5 ff 4c 89 e6 48 c7 c7 de 1b 80 84 e8 c5 ad 97 ff <0f> 0b eb b1 e8 5c 09 b5 ff 48 c7 c7 88 58 64 86 e8 e0 0d 71 02 eb
-RSP: 0018:ffffc9000c6d7ce0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff8880422b8b00 RCX: ffffffff8110503c
-RDX: ffff888030652f00 RSI: ffffffff81105045 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: ffffffff81bb62cb R12: ffffffff84807ffc
-R13: ffff88804ad6fcc0 R14: ffffffff84807ffc R15: ffffffff85741ff8
-FS:  00007f30cfba8640(0000) GS:ffff88807dd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ff51afe8000 CR3: 000000005a60a005 CR4: 0000000000770ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- rpc_proc_unregister+0x64/0x70 net/sunrpc/stats.c:310
- nfs_net_exit+0x1c/0x30 fs/nfs/inode.c:2438
- ops_exit_list+0x62/0xb0 net/core/net_namespace.c:170
- setup_net+0x46c/0x660 net/core/net_namespace.c:372
- copy_net_ns+0x244/0x590 net/core/net_namespace.c:505
- create_new_namespaces+0x2ed/0x770 kernel/nsproxy.c:110
- unshare_nsproxy_namespaces+0xae/0x160 kernel/nsproxy.c:228
- ksys_unshare+0x342/0x760 kernel/fork.c:3322
- __do_sys_unshare kernel/fork.c:3393 [inline]
- __se_sys_unshare kernel/fork.c:3391 [inline]
- __x64_sys_unshare+0x1f/0x30 kernel/fork.c:3391
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x4f/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x46/0x4e
-RIP: 0033:0x7f30d0febe5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007f30cfba7cc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000110
-RAX: ffffffffffffffda RBX: 00000000004bbf80 RCX: 00007f30d0febe5d
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000000006c020600
-RBP: 00000000004bbf80 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
-R13: 000000000000000b R14: 00007f30d104c530 R15: 0000000000000000
- </TASK>
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: fed6d9a8e6a6 ("pinctrl: baytrail: Fix selecting gpio pinctrl state")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/pinctrl/pinctrl.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index fae1e009cd6cf..cf8c3771e4bfb 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2336,7 +2336,12 @@ static int nfs_net_init(struct net *net)
- 	struct nfs_net *nn = net_generic(net, nfs_net_id);
+diff --git a/include/linux/pinctrl/pinctrl.h b/include/linux/pinctrl/pinctrl.h
+index 487117ccb1bc2..fb25085d09224 100644
+--- a/include/linux/pinctrl/pinctrl.h
++++ b/include/linux/pinctrl/pinctrl.h
+@@ -206,6 +206,26 @@ extern int pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
+ 				const char *pin_group, const unsigned **pins,
+ 				unsigned *num_pins);
  
- 	nfs_clients_init(net);
--	rpc_proc_register(net, &nn->rpcstats);
++/**
++ * struct pinfunction - Description about a function
++ * @name: Name of the function
++ * @groups: An array of groups for this function
++ * @ngroups: Number of groups in @groups
++ */
++struct pinfunction {
++	const char *name;
++	const char * const *groups;
++	size_t ngroups;
++};
 +
-+	if (!rpc_proc_register(net, &nn->rpcstats)) {
-+		nfs_clients_exit(net);
-+		return -ENOMEM;
++/* Convenience macro to define a single named pinfunction */
++#define PINCTRL_PINFUNCTION(_name, _groups, _ngroups)	\
++(struct pinfunction) {					\
++		.name = (_name),			\
++		.groups = (_groups),			\
++		.ngroups = (_ngroups),			\
 +	}
 +
- 	return nfs_fs_proc_net_init(net);
- }
- 
+ #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_PINCTRL)
+ extern struct pinctrl_dev *of_pinctrl_get(struct device_node *np);
+ #else
 -- 
 2.43.0
 
