@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACAE8C554A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB868C5523
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52BB428CF57
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE9BFB22995
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3448B13FD83;
-	Tue, 14 May 2024 11:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9963C6F06A;
+	Tue, 14 May 2024 11:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4Va3GR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd053gLR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76B35028C;
-	Tue, 14 May 2024 11:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5750A3D0D1;
+	Tue, 14 May 2024 11:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685997; cv=none; b=E+8hc/0cPC1HBcY4T/4u6MxCcD39ramHubvTYC4RMr5dBb6meHkgbatunHwzAsIxyTpmigHuPq6HNPKig13U264j0Qb5TCgDxg+1Q1lSWdVVOOwbhzyLk1B8tgm4PWlc1rbwUuBoigsa2m9RKs8jA4ezxqL3TMt3MWFpT0U0wCk=
+	t=1715687673; cv=none; b=OzJyqCiBycd6mBg6a1wS1LDu6ZyXhW6/mRTdjgTYnZGBKWFhtaPrDelbWT5NSjhw44txCJc5F+zZsr2HSfwS/qRClbOunA6SdS9kJBEKSJL5VCnH9Ea7VE/1w32z9IKvXcsTwwZ9lrRa/qwhPHi7p8KGFmER+lXWVSOhctsdSKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685997; c=relaxed/simple;
-	bh=6epk6uQ1/B02hZMjBiS3ieyBIYhZo/BqRBDd2TY/+Gs=;
+	s=arc-20240116; t=1715687673; c=relaxed/simple;
+	bh=R5Lc/Yvk0Vy4BlAGKMl1H4e9ycacRFWxKE5tTqxCt1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbqhVQO3OL99hpOtWTQe/634yFe44nZmoFNQ2LhZNsXQ6Z8j89XvILORwU9Qtdu0SvUhMm9apiqQ5un4/gIGo2q9EOqVF4qJz5ko/s6JVfivtpQRMrYbchKcFvgSV+H0gAjJX3kvEaUiwa7A9rAuj/h+iUso0GSSksABPqZDYpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4Va3GR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA43FC2BD10;
-	Tue, 14 May 2024 11:26:35 +0000 (UTC)
+	 MIME-Version; b=P9U7g735YNOMjU3w+7iNBKcjA2OtnguW6yBlLniMUIs6UO5C88sxLcjVzfce1ZsxpjV6fvrSYUP37+zgtiko6vAUQwMG0aS4wsGzpvVLArqAxxRrJgzg/hD/gVG372iEwuQ2sU8Ob9KoU2vZT7CleJd6kSXgR/z1dA8d3FMlL2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd053gLR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CF3C2BD10;
+	Tue, 14 May 2024 11:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685996;
-	bh=6epk6uQ1/B02hZMjBiS3ieyBIYhZo/BqRBDd2TY/+Gs=;
+	s=korg; t=1715687673;
+	bh=R5Lc/Yvk0Vy4BlAGKMl1H4e9ycacRFWxKE5tTqxCt1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4Va3GR9lYXdqdHLRLY9+LpS093bqESWRDmG5QiL43JwxZJ7DruCa1B0nCfnwjUSm
-	 Mqmk2JMEfkxjC2/XtDrOBLzAG7Y+D4xULgqOkxNmN+LCiTdlbsgH7ZRCgi2tKBUyBb
-	 mkihVo+wfTKjqVabE8FnmoJ4YyZ+QaiDO1hqzfQs=
+	b=Hd053gLR685mCMC8llbsSTPn/CZPMmZea8wVxbZhyLW68LrQXIQ6YHUN/dODxgYMm
+	 Eav19lSs/z6Vkjd1fs8v9eHSW7FBVg0IUJHtpbCnsHSMVy5XkAHctqD/FnFYJ6xspo
+	 XYMwPxvXw6dsQcw5cx3srE1WRFpKn4F3doktiBaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 292/301] eventfs: Do not differentiate the toplevel events directory
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 065/168] gfs2: Fix invalid metadata access in punch_hole
 Date: Tue, 14 May 2024 12:19:23 +0200
-Message-ID: <20240514101043.285854666@linuxfoundation.org>
+Message-ID: <20240514101009.152040040@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Andrew Price <anprice@redhat.com>
 
-commit d53891d348ac3eceaf48f4732a1f4f5c0e0a55ce upstream.
+[ Upstream commit c95346ac918c5badf51b9a7ac58a26d3bd5bb224 ]
 
-The toplevel events directory is really no different than the events
-directory of instances. Having the two be different caused
-inconsistencies and made it harder to fix the permissions bugs.
+In punch_hole(), when the offset lies in the final block for a given
+height, there is no hole to punch, but the maximum size check fails to
+detect that.  Consequently, punch_hole() will try to punch a hole beyond
+the end of the metadata and fail.  Fix the maximum size check.
 
-Make all events directories act the same.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.846448710@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c |   29 ++++++++---------------------
- fs/tracefs/internal.h    |    7 +++----
- 2 files changed, 11 insertions(+), 25 deletions(-)
+ fs/gfs2/bmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -57,7 +57,6 @@ enum {
- 	EVENTFS_SAVE_MODE	= BIT(16),
- 	EVENTFS_SAVE_UID	= BIT(17),
- 	EVENTFS_SAVE_GID	= BIT(18),
--	EVENTFS_TOPLEVEL	= BIT(19),
- };
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index 0ec1eaf338338..d2011c3c33fc2 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -1704,7 +1704,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	struct buffer_head *dibh, *bh;
+ 	struct gfs2_holder rd_gh;
+ 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
+-	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
++	unsigned int bsize = 1 << bsize_shift;
++	u64 lblock = (offset + bsize - 1) >> bsize_shift;
+ 	__u16 start_list[GFS2_MAX_META_HEIGHT];
+ 	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
+ 	unsigned int start_aligned, end_aligned;
+@@ -1715,7 +1716,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	u64 prev_bnr = 0;
+ 	__be64 *start, *end;
  
- #define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
-@@ -196,14 +195,10 @@ static int eventfs_set_attr(struct mnt_i
- 	return ret;
- }
- 
--static void update_top_events_attr(struct eventfs_inode *ei, struct super_block *sb)
-+static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
- {
- 	struct inode *root;
- 
--	/* Only update if the "events" was on the top level */
--	if (!ei || !(ei->attr.mode & EVENTFS_TOPLEVEL))
--		return;
--
- 	/* Get the tracefs root inode. */
- 	root = d_inode(sb->s_root);
- 	ei->attr.uid = root->i_uid;
-@@ -216,10 +211,10 @@ static void set_top_events_ownership(str
- 	struct eventfs_inode *ei = ti->private;
- 
- 	/* The top events directory doesn't get automatically updated */
--	if (!ei || !ei->is_events || !(ei->attr.mode & EVENTFS_TOPLEVEL))
-+	if (!ei || !ei->is_events)
- 		return;
- 
--	update_top_events_attr(ei, inode->i_sb);
-+	update_events_attr(ei, inode->i_sb);
- 
- 	if (!(ei->attr.mode & EVENTFS_SAVE_UID))
- 		inode->i_uid = ei->attr.uid;
-@@ -248,7 +243,7 @@ static int eventfs_permission(struct mnt
- 	return generic_permission(idmap, inode, mask);
- }
- 
--static const struct inode_operations eventfs_root_dir_inode_operations = {
-+static const struct inode_operations eventfs_dir_inode_operations = {
- 	.lookup		= eventfs_root_lookup,
- 	.setattr	= eventfs_set_attr,
- 	.getattr	= eventfs_get_attr,
-@@ -316,7 +311,7 @@ static struct eventfs_inode *eventfs_fin
- 		// Walk upwards until you find the events inode
- 	} while (!ei->is_events);
- 
--	update_top_events_attr(ei, dentry->d_sb);
-+	update_events_attr(ei, dentry->d_sb);
- 
- 	return ei;
- }
-@@ -420,7 +415,7 @@ static struct dentry *lookup_dir_entry(s
- 	update_inode_attr(dentry, inode, &ei->attr,
- 			  S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
- 
--	inode->i_op = &eventfs_root_dir_inode_operations;
-+	inode->i_op = &eventfs_dir_inode_operations;
- 	inode->i_fop = &eventfs_file_operations;
- 
- 	/* All directories will have the same inode number */
-@@ -769,14 +764,6 @@ struct eventfs_inode *eventfs_create_eve
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
--	/*
--	 * If the events directory is of the top instance, then parent
--	 * is NULL. Set the attr.mode to reflect this and its permissions will
--	 * default to the tracefs root dentry.
--	 */
--	if (!parent)
--		ei->attr.mode = EVENTFS_TOPLEVEL;
--
- 	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
-@@ -785,13 +772,13 @@ struct eventfs_inode *eventfs_create_eve
- 	INIT_LIST_HEAD(&ei->list);
- 
- 	ti = get_tracefs(inode);
--	ti->flags |= TRACEFS_EVENT_INODE | TRACEFS_EVENT_TOP_INODE;
-+	ti->flags |= TRACEFS_EVENT_INODE;
- 	ti->private = ei;
- 
- 	inode->i_mode = S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
- 	inode->i_uid = uid;
- 	inode->i_gid = gid;
--	inode->i_op = &eventfs_root_dir_inode_operations;
-+	inode->i_op = &eventfs_dir_inode_operations;
- 	inode->i_fop = &eventfs_file_operations;
- 
- 	dentry->d_fsdata = get_ei(ei);
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -4,10 +4,9 @@
- 
- enum {
- 	TRACEFS_EVENT_INODE		= BIT(1),
--	TRACEFS_EVENT_TOP_INODE		= BIT(2),
--	TRACEFS_GID_PERM_SET		= BIT(3),
--	TRACEFS_UID_PERM_SET		= BIT(4),
--	TRACEFS_INSTANCE_INODE		= BIT(5),
-+	TRACEFS_GID_PERM_SET		= BIT(2),
-+	TRACEFS_UID_PERM_SET		= BIT(3),
-+	TRACEFS_INSTANCE_INODE		= BIT(4),
- };
- 
- struct tracefs_inode {
+-	if (offset >= maxsize) {
++	if (offset + bsize - 1 >= maxsize) {
+ 		/*
+ 		 * The starting point lies beyond the allocated meta-data;
+ 		 * there are no blocks do deallocate.
+-- 
+2.43.0
+
 
 
 
