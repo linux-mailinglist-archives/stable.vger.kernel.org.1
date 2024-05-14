@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5A98C53DA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04BF8C5427
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D7001C22A40
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB7B287D10
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5749013C9BB;
-	Tue, 14 May 2024 11:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889B8136648;
+	Tue, 14 May 2024 11:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziF7WRPd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XkMkFyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E3C13C833;
-	Tue, 14 May 2024 11:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4775284D26;
+	Tue, 14 May 2024 11:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686792; cv=none; b=Smn/0iDtXBDNJrqfpTtZH90vsImoBMiEY1xrf/Rqq0xq9DaBN3ggD9TVkTf7yKYLSfoAbJPo3wv7NBPgOtaxCUixzRaqwTpBGoPgP2G2P/8iGT/dtUzV6mSOSIy9AwUGfG2MB+jgzGBfofuX+hxMZM4YN+t+/YOeWVvNmE7wJaU=
+	t=1715686987; cv=none; b=tNpiwg1jAQ7IkmcTFalwD2L2yCqRTc+Ga5jRaqp7oEPKiYTGQpw9D7Aq7gXH2NTblhX1INzDqzvqyy8ifARwRHMRVvvA4YIKKclrbrKHPKXTmne4rG/cFyyBB7lv+g9Fbc04HTcSA7Q4VGzKIM95IX9EDXB69hqzywaLoufuIN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686792; c=relaxed/simple;
-	bh=C3Am/4bzD1PSMX0/CBZNUbzt1XAr4Jzk0HywqsHr3+A=;
+	s=arc-20240116; t=1715686987; c=relaxed/simple;
+	bh=N4x6nPQB7Z8sBDNSS7R25K86giBWgQ9VLRUcyQVV+A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/g9zkb9S/nHDSbi1OhCsedx1eGA6XpvSwTm4bwRJOjebz09OHYg4a1koGzJGp0QL8HxUpxAgZWb+TT7Ad7R/TPzZy1tnXYE46hGv3/sP19ynNXLXyRCm1cIWuv/SuvbGFPNobl0MTzT0nDT6QGk6QX9bbw3PQp8QJ4uIcu9jgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziF7WRPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F33EC2BD10;
-	Tue, 14 May 2024 11:39:51 +0000 (UTC)
+	 MIME-Version; b=Cw4gQgw3263r2uDgPSXv8o5A4w3qkck7pzCi6nmwWc84SfMRlaLJALdu+F73MCJQ1w64PQ5ZvRCye4enSk2f9ovLehGR493HkUz+Up4m9PpFUKq2OQpRlTU4ml70rMbi2ECKHuPYFCHOMoOkYTIMRrs4tT43sAHdasYNSECYwLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XkMkFyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59A6C2BD10;
+	Tue, 14 May 2024 11:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686791;
-	bh=C3Am/4bzD1PSMX0/CBZNUbzt1XAr4Jzk0HywqsHr3+A=;
+	s=korg; t=1715686987;
+	bh=N4x6nPQB7Z8sBDNSS7R25K86giBWgQ9VLRUcyQVV+A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziF7WRPdfPPOPL2gJbiZ6WphYLSjwntwfe1EjlLagTjFJ2Qvko39Z4IBVYRQ4iBme
-	 WZ8d3KRWNlhY48BYZjZmJQAVHi2d8c5HfnjJJCEoNjsjv2TEupXlERU846vxiomiP1
-	 ZO+ybKWicG+sUIheZsjIuG3OExPMoilsfaWBKoqE=
+	b=1XkMkFyZl4SeMPF69Tu1JtLMWtxEN0mqlG/rPkngLmsrgSeW9X15e2clQ8M6MeZEy
+	 tAsWSZPSlW85ZfZJMwnr5xv94cKtu0l6/BBjtqyaPpsTVb5g1HoNzGGOZN2gDxvDen
+	 U41PCtjvYsP8bw4riPZqcSlYzS8u91QM0M6FKaPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Chapman <jchapman@katalix.com>,
-	David Bauer <mail@david-bauer.net>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 16/63] net l2tp: drop flow hash on forward
+Subject: [PATCH 5.4 26/84] ASoC: meson: axg-card: make links nonatomic
 Date: Tue, 14 May 2024 12:19:37 +0200
-Message-ID: <20240514100948.629085293@linuxfoundation.org>
+Message-ID: <20240514100952.679705745@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
+[ Upstream commit e138233e56e9829e65b6293887063a1a3ccb2d68 ]
 
-Drop the flow-hash of the skb when forwarding to the L2TP netdev.
+Non atomic operations need to be performed in the trigger callback
+of the TDM interfaces. Those are BEs but what matters is the nonatomic
+flag of the FE in the DPCM context. Just set nonatomic for everything so,
+at least, it is clear.
 
-This avoids the L2TP qdisc from using the flow-hash from the outer
-packet, which is identical for every flow within the tunnel.
-
-This does not affect every platform but is specific for the ethernet
-driver. It depends on the platform including L4 information in the
-flow-hash.
-
-One such example is the Mediatek Filogic MT798x family of networking
-processors.
-
-Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
-Acked-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20211020114217.133153-2-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_eth.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/meson/axg-card.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
-index 8aadc4f3bb9e9..b0d520c8bdfd6 100644
---- a/net/l2tp/l2tp_eth.c
-+++ b/net/l2tp/l2tp_eth.c
-@@ -154,6 +154,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
- 	/* checksums verified by L2TP */
- 	skb->ip_summed = CHECKSUM_NONE;
+diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
+index 7126344017fa6..36a004192b562 100644
+--- a/sound/soc/meson/axg-card.c
++++ b/sound/soc/meson/axg-card.c
+@@ -568,6 +568,7 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
  
-+	/* drop outer flow-hash */
-+	skb_clear_hash(skb);
-+
- 	skb_dst_drop(skb);
- 	nf_reset(skb);
+ 	dai_link->cpus = cpu;
+ 	dai_link->num_cpus = 1;
++	dai_link->nonatomic = true;
  
+ 	ret = axg_card_parse_dai(card, np, &dai_link->cpus->of_node,
+ 				 &dai_link->cpus->dai_name);
 -- 
 2.43.0
 
