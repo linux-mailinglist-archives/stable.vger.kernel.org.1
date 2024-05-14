@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7488C5015
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB3E8C51A7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5A41C212AC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CF661C21504
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB4B13957D;
-	Tue, 14 May 2024 10:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAD013AD09;
+	Tue, 14 May 2024 11:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzH0sZac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXrzbft0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA16139568;
-	Tue, 14 May 2024 10:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3B81E495;
+	Tue, 14 May 2024 11:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682924; cv=none; b=ge6rYfaaNW3cNnoAVty0JfaO2/E1V2dz8Z30GhU82GGIC1bHvBv0kep41QznkVW9wfCvD1G7+Xi6s2WLqMXMnwzWw4B7vGGJErGG4x8KPtBRu2T/kagtAReHAjIed8M3YCRdLe9i0RWKTWheHN2Dylo6urf216RXZYgYbzI7QYI=
+	t=1715684848; cv=none; b=fksYHHZbebep9IOrGY0I0FDrEjco+xBbBPjz9NXZkRT7GB+6/BLeR85dPT9b3gFiUq5E8nmU56cG34OJ7LJ1q6C6xRbiFhgeI19hBMZNiX7k8eQNwmSUAL/jUfCQ2O5lIvdgsIpCmjSeHm1AiB9X9loXeavy0RSTjFmAKxg6Rdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682924; c=relaxed/simple;
-	bh=s6BkkEeegm+U7YA9FV1k0TR6iKmtucVVRj1WmxAeayw=;
+	s=arc-20240116; t=1715684848; c=relaxed/simple;
+	bh=w3GVX0rfRKc4kyFTjiT8xFevfP295Hcb9eeNiuOeVzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5LO5gs5E22GL0Xs/u5LXIeBpfxGMYr6/iziw4/S29cn+EROxroqGGD+v3FPdeHPLbkT78pIl6pXQ97nekNEsgLzacDjyZ1H+OaPRjXbxntF1XIt+DEyoLTYFkgN3yNK926Af4O9EoSdbHBpeCPKOBTSCxaA9WvM44EVHJF6+hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzH0sZac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B347C2BD10;
-	Tue, 14 May 2024 10:35:23 +0000 (UTC)
+	 MIME-Version; b=Bejd4HKmEM4amdUnc+KrELvfzoFCwuyRtPFY4hLdf22RAih3PNxcpl0acMCP7twF4/R1ZhZmUWrPi9f510VOl6bo9IMGy1pFs7a35n8etpP3vi6er3sKcaA9TD1shI0vx3qyZH70U+LgNSO/INcG3nHRzoCOSU/642j2uMa94ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXrzbft0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4F3C2BD10;
+	Tue, 14 May 2024 11:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682923;
-	bh=s6BkkEeegm+U7YA9FV1k0TR6iKmtucVVRj1WmxAeayw=;
+	s=korg; t=1715684847;
+	bh=w3GVX0rfRKc4kyFTjiT8xFevfP295Hcb9eeNiuOeVzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzH0sZacVgMw8BqEmJTaZkHpQ8UH92Th+3yH/W/bOc6RoEIsEELoayLSUeamVUz0u
-	 7WVolHdjLtgYZcT6EAYLpo65jhheUjJbwOU927Q+xRHdhEw8iuW+YG3VzkJWPtV/lB
-	 ZB7iWzqI39wrQ2+wf3vZrDwQk69USsb2YPq+DtQ4=
+	b=XXrzbft021emYWw2YS6BT2jrUkq5b4MSKXaz/PUUdccYbL8w1sQSSxAkdihtrqxih
+	 DRVNdbnE64Df92NwLIZDp8K+29qAfAN1fSxxvWXBV/JLm7050gmSkwh5hyvyLZd8kn
+	 bpA0N1hkCxi0b6lHHxRK69ndxaTA1HOo5BWC2iBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Smythies <dsmythies@telus.net>,
-	Len Brown <len.brown@intel.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 134/336] tools/power turbostat: Fix added raw MSR output
+Subject: [PATCH 6.6 067/301] ASoC: meson: axg-card: make links nonatomic
 Date: Tue, 14 May 2024 12:15:38 +0200
-Message-ID: <20240514101043.658669849@linuxfoundation.org>
+Message-ID: <20240514101034.772445449@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Smythies <dsmythies@telus.net>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit e5f4e68eed85fa8495d78cd966eecc2b27bb9e53 ]
+[ Upstream commit dcba52ace7d4c12e2c8c273eff55ea03a84c8baf ]
 
-When using --Summary mode, added MSRs in raw mode always
-print zeros. Print the actual register contents.
+Non atomic operations need to be performed in the trigger callback
+of the TDM interfaces. Those are BEs but what matters is the nonatomic
+flag of the FE in the DPCM context. Just set nonatomic for everything so,
+at least, what is done is clear.
 
-Example, with patch:
-
-note the added column:
---add msr0x64f,u32,package,raw,REASON
-
-Where:
-
-0x64F is MSR_CORE_PERF_LIMIT_REASONS
-
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.00    4800    35      1.42    0.76    0x00000000
-0.00    4801    34      1.42    0.76    0x00000000
-80.08   4531    66      108.17  107.52  0x08000000
-98.69   4530    66      133.21  132.54  0x08000000
-99.28   4505    66      128.26  127.60  0x0c000400
-99.65   4486    68      124.91  124.25  0x0c000400
-99.63   4483    68      124.90  124.25  0x0c000400
-79.34   4481    41      99.80   99.13   0x0c000000
-0.00    4801    41      1.40    0.73    0x0c000000
-
-Where, for the test processor (i5-10600K):
-
-PKG Limit #1: 125.000 Watts, 8.000000 sec
-MSR bit 26 = log; bit 10 = status
-
-PKG Limit #2: 136.000 Watts, 0.002441 sec
-MSR bit 27 = log; bit 11 = status
-
-Example, without patch:
-
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.01    4800    35      1.43    0.77    0x00000000
-0.00    4801    35      1.39    0.73    0x00000000
-83.49   4531    66      112.71  112.06  0x00000000
-98.69   4530    68      133.35  132.69  0x00000000
-99.31   4500    67      127.96  127.30  0x00000000
-99.63   4483    69      124.91  124.25  0x00000000
-99.61   4481    69      124.90  124.25  0x00000000
-99.61   4481    71      124.92  124.25  0x00000000
-59.35   4479    42      75.03   74.37   0x00000000
-0.00    4800    42      1.39    0.73    0x00000000
-0.00    4801    42      1.42    0.76    0x00000000
-
-c000000
-
-[lenb: simplified patch to apply only to package scope]
-
-Signed-off-by: Doug Smythies <dsmythies@telus.net>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240426152946.3078805-3-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/meson/axg-card.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 7a334377f92b9..fca7913f6c84d 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -2444,9 +2444,10 @@ int sum_counters(struct thread_data *t, struct core_data *c, struct pkg_data *p)
- 	average.packages.rapl_dram_perf_status += p->rapl_dram_perf_status;
+diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
+index f10c0c17863eb..b6f5b4572012d 100644
+--- a/sound/soc/meson/axg-card.c
++++ b/sound/soc/meson/axg-card.c
+@@ -318,6 +318,7 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
  
- 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW)
--			continue;
--		average.packages.counter[i] += p->counter[i];
-+		if ((mp->format == FORMAT_RAW) && (topo.num_packages == 0))
-+			average.packages.counter[i] = p->counter[i];
-+		else
-+			average.packages.counter[i] += p->counter[i];
- 	}
- 	return 0;
- }
+ 	dai_link->cpus = cpu;
+ 	dai_link->num_cpus = 1;
++	dai_link->nonatomic = true;
+ 
+ 	ret = meson_card_parse_dai(card, np, dai_link->cpus);
+ 	if (ret)
 -- 
 2.43.0
 
