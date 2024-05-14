@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE568C54F3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0257A8C5137
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C152B20C22
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E43E61F215D9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCC3127B73;
-	Tue, 14 May 2024 11:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D9C80C04;
+	Tue, 14 May 2024 10:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOl/1tK4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtFV/b8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAA75028C;
-	Tue, 14 May 2024 11:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3593B7F48C;
+	Tue, 14 May 2024 10:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687543; cv=none; b=tEkVdxSoZyTZFhR+oouCaLgUhqXQyS1JT9Td6wUgVSGwXXebSkRbvTp5nxasjfCEvfz1SxYgelWXXU6lYB+aNNrECGrbGeOwCelFjBzj7YHHiHtC0EHsD4cEqlaigREt2EQoYzZjgoxnc7i+SBF2mzO/RkK5KD/1Diw7Tjs3Vr4=
+	t=1715684190; cv=none; b=iczuGUbxWEMCYZuHUlAW2SO/KiTzs94iWR1bonbesRKhyrr1/ToBH9l+YrtARM0ZB67PnJ7kaD8463zAAkohMb3/qlS+I44Eq7F70/Qjw17gRZTHkKmQjHGrOfFhYC1boWdO6o1yEfyzjqDeo1JyPQSLt9b2HOMUSGBhOaW6rJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687543; c=relaxed/simple;
-	bh=y20qB1PMaT5oLfc+bmZNkE52xRg1vVPu68YpVgxlGHg=;
+	s=arc-20240116; t=1715684190; c=relaxed/simple;
+	bh=2pakhCK3e0ePbOYdUJ5EEsrgZJez2uBasQ7jj/QfwAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuUU0JiwJI/MYsv42ZWLxVpMo8Yp8XYtCYJ0vHMJ1uamkCfZcNu5ZlmAgw4ARD2AGUk6ILmM67bPUrpbTlU8DfzNYHoBfDEj/bAJ1panjxYxjEqrIqirApOX26A/sSR00Jbkhff8nZ47ucQQMvkMIFHkahMKvfXkvddKoeAjPZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOl/1tK4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CC0C32781;
-	Tue, 14 May 2024 11:52:22 +0000 (UTC)
+	 MIME-Version; b=a0W7LGHZoCmAsW7wvpLLuCCxGRsacTtWoUuIzJg/2F5Y9GNSHagxGiKMJJ8Vts6LP+SVWYPaG5DmnuRXfNuNbQc+tEXxpy3CYZeaoma3upb5EyRsCNv8v9NhKwAx1i93yWoKdjtSwcnmezOIn53xNt6+Lxg6qkuqlQwXWmi3JZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtFV/b8i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD4FC2BD10;
+	Tue, 14 May 2024 10:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687543;
-	bh=y20qB1PMaT5oLfc+bmZNkE52xRg1vVPu68YpVgxlGHg=;
+	s=korg; t=1715684190;
+	bh=2pakhCK3e0ePbOYdUJ5EEsrgZJez2uBasQ7jj/QfwAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOl/1tK4pKPx1jfYggGknl9pnTBIx20Brc9KFARFdj7vxZyBXGk92HzRbl076IBNR
-	 tLv0X0lAVVsww0qTOEwMoFmPF82k5Z2cB2QG7t6hIP1w3XHBOhXGuOHYhDnG7tLwcU
-	 6J+bQGhpIA9QT3QvFaYPyWSUIvMe+6tqZh4jvfdA=
+	b=WtFV/b8inE2n8LiONO040L1g3etAa6hTrlJw8WzVz7n1MPibYOSzFHNgBkeDU+K5j
+	 dK7CG1+0YqiOAd3YDOqT6NJyoeWEWmOcRynIMzey8mjRndR4WHurSgIdG0Sr68PBRX
+	 VU+DtHk/uQF6TAW+RzNILYmV+L/za9YcOlhWDjCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/168] power: supply: mt6360_charger: Fix of_match for usb-otg-vbus regulator
+	syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 315/336] mm/userfaultfd: reset ptes when close() for wr-protected ones
 Date: Tue, 14 May 2024 12:18:39 +0200
-Message-ID: <20240514101007.488399071@linuxfoundation.org>
+Message-ID: <20240514101050.511648846@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Peter Xu <peterx@redhat.com>
 
-[ Upstream commit 1e0fb113646182e073539db96016b00cfeb18ecc ]
+commit c88033efe9a391e72ba6b5df4b01d6e628f4e734 upstream.
 
-The of_match shall correspond to the name of the regulator subnode,
-or the deprecated `regulator-compatible` property must be used:
-failing to do so, the regulator won't probe (and the driver will
-as well not probe).
+Userfaultfd unregister includes a step to remove wr-protect bits from all
+the relevant pgtable entries, but that only covered an explicit
+UFFDIO_UNREGISTER ioctl, not a close() on the userfaultfd itself.  Cover
+that too.  This fixes a WARN trace.
 
-Since the devicetree binding for this driver is actually correct
-and wants DTs to use the "usb-otg-vbus-regulator" subnode name,
-fix this driver by aligning the `of_match` string to what the DT
-binding wants.
+The only user visible side effect is the user can observe leftover
+wr-protect bits even if the user close()ed on an userfaultfd when
+releasing the last reference of it.  However hopefully that should be
+harmless, and nothing bad should happen even if so.
 
-Fixes: 0402e8ebb8b8 ("power: supply: mt6360_charger: add MT6360 charger support")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240410084405.1389378-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change is now more important after the recent page-table-check
+patch we merged in mm-unstable (446dd9ad37d0 ("mm/page_table_check:
+support userfault wr-protect entries")), as we'll do sanity check on
+uffd-wp bits without vma context.  So it's better if we can 100%
+guarantee no uffd-wp bit leftovers, to make sure each report will be
+valid.
+
+Link: https://lore.kernel.org/all/000000000000ca4df20616a0fe16@google.com/
+Fixes: f369b07c8614 ("mm/uffd: reset write protection when unregister with wp-mode")
+Analyzed-by: David Hildenbrand <david@redhat.com>
+Link: https://lkml.kernel.org/r/20240422133311.2987675-1-peterx@redhat.com
+Reported-by: syzbot+d8426b591c36b21c750e@syzkaller.appspotmail.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/mt6360_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/userfaultfd.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/power/supply/mt6360_charger.c b/drivers/power/supply/mt6360_charger.c
-index f1248faf59058..383bf19819dfb 100644
---- a/drivers/power/supply/mt6360_charger.c
-+++ b/drivers/power/supply/mt6360_charger.c
-@@ -591,7 +591,7 @@ static const struct regulator_ops mt6360_chg_otg_ops = {
- };
- 
- static const struct regulator_desc mt6360_otg_rdesc = {
--	.of_match = "usb-otg-vbus",
-+	.of_match = "usb-otg-vbus-regulator",
- 	.name = "usb-otg-vbus",
- 	.ops = &mt6360_chg_otg_ops,
- 	.owner = THIS_MODULE,
--- 
-2.43.0
-
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -925,6 +925,10 @@ static int userfaultfd_release(struct in
+ 			prev = vma;
+ 			continue;
+ 		}
++		/* Reset ptes for the whole vma range if wr-protected */
++		if (userfaultfd_wp(vma))
++			uffd_wp_range(vma, vma->vm_start,
++				      vma->vm_end - vma->vm_start, false);
+ 		new_flags = vma->vm_flags & ~__VM_UFFD_FLAGS;
+ 		vma = vma_modify_flags_uffd(&vmi, prev, vma, vma->vm_start,
+ 					    vma->vm_end, new_flags,
 
 
 
