@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FB98C5125
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559398C5370
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6DCC1C2094B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795901C22312
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE4A46430;
-	Tue, 14 May 2024 10:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE14F127B73;
+	Tue, 14 May 2024 11:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMsWcrv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kG6SShCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2938D43AD7;
-	Tue, 14 May 2024 10:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7968F53E30;
+	Tue, 14 May 2024 11:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684104; cv=none; b=FYCieCYUeWf9Yn3qAquD5KzIy3BITairPpQiMyWRrI2+baPJ1XA/DytHgK/UFke/qv+9Dvx98rpvenwPF/WehiY9Q6lBmXMwqmOgsiTbV4gYwKsQJKPEjS4tHBCxyas6NYtOIUoJHTG2pL5z/2vbQ6oYfS2QV6mtnHRasdvO8F0=
+	t=1715686523; cv=none; b=DqJDE6x8Qxx9GfQFz5lhYiTRHBSLOe6Cd26gl1IX8Hw2d/ZKMojLS0oakAL64Q9Mdz9eO+U4//YzEvGBv389TpdqKr/+7LPqHKHa9odtbUdFgzAzZb9GITN+uC90VSToAxtbLm7gFSDBhGKJodE3vanvevdGyiKV+TJMVKGREQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684104; c=relaxed/simple;
-	bh=LqSbpyecp2pbxRpJoMOlKBqv5u3y28nssQiyB7TPxfc=;
+	s=arc-20240116; t=1715686523; c=relaxed/simple;
+	bh=jfmX4PvHyfcCdScPjv1WvqRijtPUIDQbVbF+KvreRYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljdR4cpGra+ELcdFvFJoAb4bOWJIARkP0QbjmmDpoLLwes7Hj+g1+Uq1ZvjNEniU9pykg4d/41LzbTa2M8/H9oBrTzvd5ls0e3/zYank+wxgdz+5FzrIUXLPakkfWZiAsCRaWLnm1fRMbrGhPKeW4EBLjjFGtWgY/pUL8er0bWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMsWcrv+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C119AC2BD10;
-	Tue, 14 May 2024 10:55:02 +0000 (UTC)
+	 MIME-Version; b=UILkh7y1voOmmCQNOXLGWlNI4uP1vMn91i9/4r/YdhWcNJ4WOOzXgDJcWslCrGhUqLuSUVZbZHZzgP/emB/MGW79LjnT7m0lgDoBEpYTVaWJAzOvLRVfmW4G4zMMAfdlUQ4U+DTqdE3VwZmlk66f+tzk2Z6nZ9nrq706CFImqEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kG6SShCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E3DC2BD10;
+	Tue, 14 May 2024 11:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684103;
-	bh=LqSbpyecp2pbxRpJoMOlKBqv5u3y28nssQiyB7TPxfc=;
+	s=korg; t=1715686523;
+	bh=jfmX4PvHyfcCdScPjv1WvqRijtPUIDQbVbF+KvreRYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMsWcrv+vGe5JwVvRnpn2KkURGFu8eoVe7GM1E7ZLRHd7NpU6Yfr8GlTUoY6iqNQx
-	 jSsShlUbAn9kGMCIhhNvksAgZ/LLW0xvvNnlHjyU16AhX/gfBB8VYLYlqhpZxWppnb
-	 8DCjYPucwgNzQHuZWwaRIR8tuYGNpUi/q8vT7zsA=
+	b=kG6SShCjGWk2NGSHXyoa8TtrwWCNrL+sERpmUimLW2tHMC9fdrFJfBoU7TpesSCl4
+	 DQUL+gb3I66Vk9jO2gHqTSWeRhjSOUSLq12K3Ly5khNo1MjDvv3egG6gKEulCwq5KR
+	 hga7Ey+0jFBvOhvuUKCOGJf0aoFtIiSSDTtMIsIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.8 325/336] tracefs: Reset permissions on remount if permissions are options
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 167/236] net: hns3: using user configure after hardware reset
 Date: Tue, 14 May 2024 12:18:49 +0200
-Message-ID: <20240514101050.893145891@linuxfoundation.org>
+Message-ID: <20240514101026.697879808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,251 +65,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-commit baa23a8d4360d981a49913841a726edede5cdd54 upstream.
+[ Upstream commit 05eb60e9648cca0beeebdbcd263b599fb58aee48 ]
 
-There's an inconsistency with the way permissions are handled in tracefs.
-Because the permissions are generated when accessed, they default to the
-root inode's permission if they were never set by the user. If the user
-sets the permissions, then a flag is set and the permissions are saved via
-the inode (for tracefs files) or an internal attribute field (for
-eventfs).
+When a reset occurring, it's supposed to recover user's configuration.
+Currently, the port info(speed, duplex and autoneg) is stored in hclge_mac
+and will be scheduled updated. Consider the case that reset was happened
+consecutively. During the first reset, the port info is configured with
+a temporary value cause the PHY is reset and looking for best link config.
+Second reset start and use pervious configuration which is not the user's.
+The specific process is as follows:
 
-But if a remount happens that specify the permissions, all the files that
-were not changed by the user gets updated, but the ones that were are not.
-If the user were to remount the file system with a given permission, then
-all files and directories within that file system should be updated.
++------+               +----+                +----+
+| USER |               | PF |                | HW |
++---+--+               +-+--+                +-+--+
+    |  ethtool --reset   |                     |
+    +------------------->|    reset command    |
+    |  ethtool --reset   +-------------------->|
+    +------------------->|                     +---+
+    |                    +---+                 |   |
+    |                    |   |reset currently  |   | HW RESET
+    |                    |   |and wait to do   |   |
+    |                    |<--+                 |   |
+    |                    | send pervious cfg   |<--+
+    |                    | (1000M FULL AN_ON)  |
+    |                    +-------------------->|
+    |                    | read cfg(time task) |
+    |                    | (10M HALF AN_OFF)   +---+
+    |                    |<--------------------+   | cfg take effect
+    |                    |    reset command    |<--+
+    |                    +-------------------->|
+    |                    |                     +---+
+    |                    | send pervious cfg   |   | HW RESET
+    |                    | (10M HALF AN_OFF)   |<--+
+    |                    +-------------------->|
+    |                    | read cfg(time task) |
+    |                    |  (10M HALF AN_OFF)  +---+
+    |                    |<--------------------+   | cfg take effect
+    |                    |                     |   |
+    |                    | read cfg(time task) |<--+
+    |                    |  (10M HALF AN_OFF)  |
+    |                    |<--------------------+
+    |                    |                     |
+    v                    v                     v
 
-This can cause security issues if a file's permission was updated but the
-admin forgot about it. They could incorrectly think that remounting with
-permissions set would update all files, but miss some.
+To avoid aboved situation, this patch introduced req_speed, req_duplex,
+req_autoneg to store user's configuration and it only be used after
+hardware reset and to recover user's configuration
 
-For example:
-
- # cd /sys/kernel/tracing
- # chgrp 1002 current_tracer
- # ls -l
-[..]
- -rw-r-----  1 root root 0 May  1 21:25 buffer_size_kb
- -rw-r-----  1 root root 0 May  1 21:25 buffer_subbuf_size_kb
- -r--r-----  1 root root 0 May  1 21:25 buffer_total_size_kb
- -rw-r-----  1 root lkp  0 May  1 21:25 current_tracer
- -rw-r-----  1 root root 0 May  1 21:25 dynamic_events
- -r--r-----  1 root root 0 May  1 21:25 dyn_ftrace_total_info
- -r--r-----  1 root root 0 May  1 21:25 enabled_functions
-
-Where current_tracer now has group "lkp".
-
- # mount -o remount,gid=1001 .
- # ls -l
- -rw-r-----  1 root tracing 0 May  1 21:25 buffer_size_kb
- -rw-r-----  1 root tracing 0 May  1 21:25 buffer_subbuf_size_kb
- -r--r-----  1 root tracing 0 May  1 21:25 buffer_total_size_kb
- -rw-r-----  1 root lkp     0 May  1 21:25 current_tracer
- -rw-r-----  1 root tracing 0 May  1 21:25 dynamic_events
- -r--r-----  1 root tracing 0 May  1 21:25 dyn_ftrace_total_info
- -r--r-----  1 root tracing 0 May  1 21:25 enabled_functions
-
-Everything changed but the "current_tracer".
-
-Add a new link list that keeps track of all the tracefs_inodes which has
-the permission flags that tell if the file/dir should use the root inode's
-permission or not. Then on remount, clear all the flags so that the
-default behavior of using the root inode's permission is done for all
-files and directories.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.529542160@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5f2b3e4dcc0 ("net: hns3: add support for imp-controlled PHYs")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c |   29 ++++++++++++++++++++
- fs/tracefs/inode.c       |   65 ++++++++++++++++++++++++++++++++++++++++++++++-
- fs/tracefs/internal.h    |    7 ++++-
- 3 files changed, 99 insertions(+), 2 deletions(-)
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.h   |  3 +++
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -265,6 +265,35 @@ static const struct file_operations even
- 	.llseek		= generic_file_llseek,
- };
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 9db363fbc34fd..a0ac1748f4ea4 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -1624,6 +1624,9 @@ static int hclge_configure(struct hclge_dev *hdev)
+ 			cfg.default_speed, ret);
+ 		return ret;
+ 	}
++	hdev->hw.mac.req_speed = hdev->hw.mac.speed;
++	hdev->hw.mac.req_autoneg = AUTONEG_ENABLE;
++	hdev->hw.mac.req_duplex = DUPLEX_FULL;
  
-+/*
-+ * On a remount of tracefs, if UID or GID options are set, then
-+ * the mount point inode permissions should be used.
-+ * Reset the saved permission flags appropriately.
-+ */
-+void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid)
-+{
-+	struct eventfs_inode *ei = ti->private;
-+
-+	if (!ei)
-+		return;
-+
-+	if (update_uid)
-+		ei->attr.mode &= ~EVENTFS_SAVE_UID;
-+
-+	if (update_gid)
-+		ei->attr.mode &= ~EVENTFS_SAVE_GID;
-+
-+	if (!ei->entry_attrs)
-+		return;
-+
-+	for (int i = 0; i < ei->nr_entries; i++) {
-+		if (update_uid)
-+			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_UID;
-+		if (update_gid)
-+			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_GID;
-+	}
-+}
-+
- /* Return the evenfs_inode of the "events" directory */
- static struct eventfs_inode *eventfs_find_events(struct dentry *dentry)
- {
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -30,20 +30,47 @@ static struct vfsmount *tracefs_mount;
- static int tracefs_mount_count;
- static bool tracefs_registered;
+ 	hclge_parse_link_mode(hdev, cfg.speed_ability);
  
-+/*
-+ * Keep track of all tracefs_inodes in order to update their
-+ * flags if necessary on a remount.
-+ */
-+static DEFINE_SPINLOCK(tracefs_inode_lock);
-+static LIST_HEAD(tracefs_inodes);
-+
- static struct inode *tracefs_alloc_inode(struct super_block *sb)
- {
- 	struct tracefs_inode *ti;
-+	unsigned long flags;
+@@ -3429,9 +3432,9 @@ hclge_set_phy_link_ksettings(struct hnae3_handle *handle,
+ 		return ret;
+ 	}
  
- 	ti = kmem_cache_alloc(tracefs_inode_cachep, GFP_KERNEL);
- 	if (!ti)
- 		return NULL;
+-	hdev->hw.mac.autoneg = cmd->base.autoneg;
+-	hdev->hw.mac.speed = cmd->base.speed;
+-	hdev->hw.mac.duplex = cmd->base.duplex;
++	hdev->hw.mac.req_autoneg = cmd->base.autoneg;
++	hdev->hw.mac.req_speed = cmd->base.speed;
++	hdev->hw.mac.req_duplex = cmd->base.duplex;
+ 	linkmode_copy(hdev->hw.mac.advertising, cmd->link_modes.advertising);
  
-+	spin_lock_irqsave(&tracefs_inode_lock, flags);
-+	list_add_rcu(&ti->list, &tracefs_inodes);
-+	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
-+
- 	return &ti->vfs_inode;
- }
- 
-+static void tracefs_free_inode_rcu(struct rcu_head *rcu)
-+{
-+	struct tracefs_inode *ti;
-+
-+	ti = container_of(rcu, struct tracefs_inode, rcu);
-+	kmem_cache_free(tracefs_inode_cachep, ti);
-+}
-+
- static void tracefs_free_inode(struct inode *inode)
- {
--	kmem_cache_free(tracefs_inode_cachep, get_tracefs(inode));
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&tracefs_inode_lock, flags);
-+	list_del_rcu(&ti->list);
-+	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
-+
-+	call_rcu(&ti->rcu, tracefs_free_inode_rcu);
- }
- 
- static ssize_t default_read_file(struct file *file, char __user *buf,
-@@ -313,6 +340,8 @@ static int tracefs_apply_options(struct
- 	struct tracefs_fs_info *fsi = sb->s_fs_info;
- 	struct inode *inode = d_inode(sb->s_root);
- 	struct tracefs_mount_opts *opts = &fsi->mount_opts;
-+	struct tracefs_inode *ti;
-+	bool update_uid, update_gid;
- 	umode_t tmp_mode;
- 
- 	/*
-@@ -332,6 +361,25 @@ static int tracefs_apply_options(struct
- 	if (!remount || opts->opts & BIT(Opt_gid))
- 		inode->i_gid = opts->gid;
- 
-+	if (remount && (opts->opts & BIT(Opt_uid) || opts->opts & BIT(Opt_gid))) {
-+
-+		update_uid = opts->opts & BIT(Opt_uid);
-+		update_gid = opts->opts & BIT(Opt_gid);
-+
-+		rcu_read_lock();
-+		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
-+			if (update_uid)
-+				ti->flags &= ~TRACEFS_UID_PERM_SET;
-+
-+			if (update_gid)
-+				ti->flags &= ~TRACEFS_GID_PERM_SET;
-+
-+			if (ti->flags & TRACEFS_EVENT_INODE)
-+				eventfs_remount(ti, update_uid, update_gid);
-+		}
-+		rcu_read_unlock();
-+	}
-+
  	return 0;
- }
+@@ -3464,9 +3467,9 @@ static int hclge_tp_port_init(struct hclge_dev *hdev)
+ 	if (!hnae3_dev_phy_imp_supported(hdev))
+ 		return 0;
  
-@@ -398,7 +446,22 @@ static int tracefs_d_revalidate(struct d
- 	return !(ei && ei->is_freed);
- }
+-	cmd.base.autoneg = hdev->hw.mac.autoneg;
+-	cmd.base.speed = hdev->hw.mac.speed;
+-	cmd.base.duplex = hdev->hw.mac.duplex;
++	cmd.base.autoneg = hdev->hw.mac.req_autoneg;
++	cmd.base.speed = hdev->hw.mac.req_speed;
++	cmd.base.duplex = hdev->hw.mac.req_duplex;
+ 	linkmode_copy(cmd.link_modes.advertising, hdev->hw.mac.advertising);
  
-+static void tracefs_d_iput(struct dentry *dentry, struct inode *inode)
-+{
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+
-+	/*
-+	 * This inode is being freed and cannot be used for
-+	 * eventfs. Clear the flag so that it doesn't call into
-+	 * eventfs during the remount flag updates. The eventfs_inode
-+	 * gets freed after an RCU cycle, so the content will still
-+	 * be safe if the iteration is going on now.
-+	 */
-+	ti->flags &= ~TRACEFS_EVENT_INODE;
-+}
-+
- static const struct dentry_operations tracefs_dentry_operations = {
-+	.d_iput = tracefs_d_iput,
- 	.d_revalidate = tracefs_d_revalidate,
- 	.d_release = tracefs_d_release,
- };
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -11,8 +11,12 @@ enum {
- };
- 
- struct tracefs_inode {
--	struct inode            vfs_inode;
-+	union {
-+		struct inode            vfs_inode;
-+		struct rcu_head		rcu;
-+	};
- 	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
-+	struct list_head	list;
- 	unsigned long           flags;
- 	void                    *private;
- };
-@@ -75,6 +79,7 @@ struct dentry *tracefs_end_creating(stru
- struct dentry *tracefs_failed_creating(struct dentry *dentry);
- struct inode *tracefs_get_inode(struct super_block *sb);
- 
-+void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
- void eventfs_d_release(struct dentry *dentry);
- 
- #endif /* _TRACEFS_INTERNAL_H */
+ 	return hclge_set_phy_link_ksettings(&hdev->vport->nic, &cmd);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+index f6fef790e16c1..5207cb132c33c 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+@@ -256,11 +256,14 @@ struct hclge_mac {
+ 	u8 media_type;	/* port media type, e.g. fibre/copper/backplane */
+ 	u8 mac_addr[ETH_ALEN];
+ 	u8 autoneg;
++	u8 req_autoneg;
+ 	u8 duplex;
++	u8 req_duplex;
+ 	u8 support_autoneg;
+ 	u8 speed_type;	/* 0: sfp speed, 1: active speed */
+ 	u8 lane_num;
+ 	u32 speed;
++	u32 req_speed;
+ 	u32 max_speed;
+ 	u32 speed_ability; /* speed ability supported by current media */
+ 	u32 module_type; /* sub media type, e.g. kr/cr/sr/lr */
+-- 
+2.43.0
+
 
 
 
