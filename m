@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-44019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453D98C50D4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:13:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3878C532F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D63F7B20C88
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:13:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE181C22AB0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6C013F433;
-	Tue, 14 May 2024 10:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076BB13C66C;
+	Tue, 14 May 2024 11:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAbzi097"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2OmxatW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A2384D23;
-	Tue, 14 May 2024 10:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C4513C3FB;
+	Tue, 14 May 2024 11:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683728; cv=none; b=ngvREClMJqeTg6f2fHoang2im3+xF2vYr4Il1tiYyZFlp46pRDodfc6D61ujkmpJ5T5SYwYv27P47OCxF6PNfLPilpm2B9VSGSxuwNO62KXKxORor1OjEEpMKRHvfY7lkxZd3We8RxeMR3tCOPaEwEQS+vatTG4RwkzE5edu2OM=
+	t=1715686344; cv=none; b=ChwF2JfAHIp6ggCBZ1kIgwIyrZ85PUQQifQfJaW2D5QUdoBLnuO6aB/yMdKf475/t+3Wpjs32W7ZPOXxJTsQi2w1CxDLh5kwilhA8XvPMFnXfwf22mEWB048CYiA94XMda0rE01vHdhxhXKWJMS9NHvlF1Te3eJKA1sa8xrhWVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683728; c=relaxed/simple;
-	bh=2i/FiEJi97rv1jjKIQ7Q6bx6jaHJRihGC729yQysATQ=;
+	s=arc-20240116; t=1715686344; c=relaxed/simple;
+	bh=XJXnNb5RKr17O3h/QuhZXvfGmrXFSXyXXwX+InympNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3fdc63pMKGMIBRutVYvU8AbbSwKbtGNsrLO3sCgiTnwkEXzzktsfIsliCbuVr6k5CnOam5utJDM8vUQOiosL1pCF5sktw2V/HtXcLOvmK5gJNm4igpyzU8/FNPgTAAI2iSRtRpN6uETwO35XTLUJBgUoFkDhgmRBgOYP3yaGT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAbzi097; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2439DC2BD10;
-	Tue, 14 May 2024 10:48:46 +0000 (UTC)
+	 MIME-Version; b=OVFKGwbMLqxwp8qoL6Kaud9zxDkaZGZ9O5rFJ1KNWW8yF0zG/hy2LXSw0PM9wE99RNd9Q/gjPV9WDmuMAdtXS0aiVMl26i5oSHeU7HqJoKWavPyb71Y5FOtVjCiSJ/yOxZAdk4v2Av/J12mAdZjyjRTFRg0lX8+npUKt9Hp3CC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2OmxatW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DFEC2BD10;
+	Tue, 14 May 2024 11:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683727;
-	bh=2i/FiEJi97rv1jjKIQ7Q6bx6jaHJRihGC729yQysATQ=;
+	s=korg; t=1715686344;
+	bh=XJXnNb5RKr17O3h/QuhZXvfGmrXFSXyXXwX+InympNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAbzi097HIJyA1wF1gCfPDKeDQDjCrhNBfQDjeRV8UAgBTVExEh5SZCt6AshE2gmb
-	 5EzOX7tiX80ac991NIbwDQal1mb2Udup5qhVXN2G8cu+JjLB1kvuwcxXPh3g2ldiLG
-	 +Do1JK+xy+IcgmBOZDq+IpfYdbx1HThbxIAMf2oM=
+	b=S2OmxatWHX44N16HEp7Bt0AwzCDiB0RDNvnMo09LIBKCwYidQMqk9NrLioQpLh4WD
+	 WcbMa/jMFXTsbibEQOslq5KqS38uorC2Ofs336sTS+qRbJk7LJdUaNcru6EJ7+Xbg2
+	 ifpGkKFlBGHSExHTxHm34hV/MJ7TyULkv7HYzYk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Machek <pavel@denx.de>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.8 263/336] btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Marco Elver <elver@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/236] kbuild: Disable KCSAN for autogenerated *.mod.c intermediaries
 Date: Tue, 14 May 2024 12:17:47 +0200
-Message-ID: <20240514101048.543948983@linuxfoundation.org>
+Message-ID: <20240514101024.356169804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 9af503d91298c3f2945e73703f0e00995be08c30 upstream.
+[ Upstream commit 54babdc0343fff2f32dfaafaaa9e42c4db278204 ]
 
-The previous patch that replaced BUG_ON by error handling forgot to
-unlock the mutex in the error path.
+When KCSAN and CONSTRUCTORS are enabled, one can trigger the
 
-Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
-Reported-by: Pavel Machek <pavel@denx.de>
-Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
-CC: stable@vger.kernel.org
-Reviewed-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  "Unpatched return thunk in use. This should not happen!"
+
+catch-all warning.
+
+Usually, when objtool runs on the .o objects, it does generate a section
+.return_sites which contains all offsets in the objects to the return
+thunks of the functions present there. Those return thunks then get
+patched at runtime by the alternatives.
+
+KCSAN and CONSTRUCTORS add this to the object file's .text.startup
+section:
+
+  -------------------
+  Disassembly of section .text.startup:
+
+  ...
+
+  0000000000000010 <_sub_I_00099_0>:
+    10:   f3 0f 1e fa             endbr64
+    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
+                          15: R_X86_64_PLT32      __tsan_init-0x4
+    19:   e9 00 00 00 00          jmp    1e <__UNIQUE_ID___addressable_cryptd_alloc_aead349+0x6>
+                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
+  -------------------
+
+which, if it is built as a module goes through the intermediary stage of
+creating a <module>.mod.c file which, when translated, receives a second
+constructor:
+
+  -------------------
+  Disassembly of section .text.startup:
+
+  0000000000000010 <_sub_I_00099_0>:
+    10:   f3 0f 1e fa             endbr64
+    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
+                          15: R_X86_64_PLT32      __tsan_init-0x4
+    19:   e9 00 00 00 00          jmp    1e <_sub_I_00099_0+0xe>
+                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
+
+  ...
+
+  0000000000000030 <_sub_I_00099_0>:
+    30:   f3 0f 1e fa             endbr64
+    34:   e8 00 00 00 00          call   39 <_sub_I_00099_0+0x9>
+                          35: R_X86_64_PLT32      __tsan_init-0x4
+    39:   e9 00 00 00 00          jmp    3e <__ksymtab_cryptd_alloc_ahash+0x2>
+                          3a: R_X86_64_PLT32      __x86_return_thunk-0x4
+  -------------------
+
+in the .ko file.
+
+Objtool has run already so that second constructor's return thunk cannot
+be added to the .return_sites section and thus the return thunk remains
+unpatched and the warning rightfully fires.
+
+Drop KCSAN flags from the mod.c generation stage as those constructors
+do not contain data races one would be interested about.
+
+Debugged together with David Kaplan <David.Kaplan@amd.com> and Nikolay
+Borisov <nik.borisov@suse.com>.
+
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/r/0851a207-7143-417e-be31-8bf2b3afb57d@molgen.mpg.de
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/Makefile.modfinal | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3456,6 +3456,7 @@ again:
- 			 * alignment and size).
- 			 */
- 			ret = -EUCLEAN;
-+			mutex_unlock(&fs_info->reclaim_bgs_lock);
- 			goto error;
- 		}
+diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+index 3af5e5807983a..650d59388336f 100644
+--- a/scripts/Makefile.modfinal
++++ b/scripts/Makefile.modfinal
+@@ -23,7 +23,7 @@ modname = $(notdir $(@:.mod.o=))
+ part-of-module = y
  
+ quiet_cmd_cc_o_c = CC [M]  $@
+-      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV), $(c_flags)) -c -o $@ $<
++      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV) $(CFLAGS_KCSAN), $(c_flags)) -c -o $@ $<
+ 
+ %.mod.o: %.mod.c FORCE
+ 	$(call if_changed_dep,cc_o_c)
+-- 
+2.43.0
+
 
 
 
