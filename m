@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863108C5430
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479648C54B8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27B041F218AD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE7BB1F211A4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6745A139CFB;
-	Tue, 14 May 2024 11:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE72A12EBCB;
+	Tue, 14 May 2024 11:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yesmkauj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4o9GLfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC3139CE4;
-	Tue, 14 May 2024 11:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B98266B5E;
+	Tue, 14 May 2024 11:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687039; cv=none; b=sncDXd/isT00lsmNMHCtV3IOWhu+/8z4WGWxanYSvFbFV3uDgzlScoCOdIhEGPZCdWKMlwJnTCKj8fh2NvMVGEX2MWZD3CGhjJUAaN4KgbgwXdgR3YFllCUrcqGcxV0crEpd3BdR/cjVNsB020uQb340WQ4a57yzTY6khj1/lfA=
+	t=1715687403; cv=none; b=ltFh12k2S51IE1vxFkymccWIGECJz1Pj2SC9EU0ggix5/YGaT+8K0hWuBbJAOmiSwLztNmJOvcsQyF4csjZLxgNGo1qG6oGkT5JQ70SMB1bI2gLtMtpKuXsetaDHucPQy0Y1VFCY4nEHof7mmovV8RClGnikT4XFE1DDQiqdLXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687039; c=relaxed/simple;
-	bh=/wAh/74Dyg2OGUIGg3htN1sZ/SK9X6GlRrmarqRdme8=;
+	s=arc-20240116; t=1715687403; c=relaxed/simple;
+	bh=4NiFA5iYhx917NnDre4gTckDvFML6mlt6uE+zRO97mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sQzLqA0LhqJF2Xw2iPoBQKtxRFYDbrKY02c7f51upFxjrDex1VNr6JdCqNatzZJLmbtz7w3Cc2Oit1pXF3DgBBkZ5Ns8PrcJeUB25WnQ9HJNCIUIspGtonTUZ2FVdrOkfHaewrJaPNTjrcjYTMb94WXKZE05LJ5J/GTdgewZXVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yesmkauj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A538EC2BD10;
-	Tue, 14 May 2024 11:43:58 +0000 (UTC)
+	 MIME-Version; b=sB4dYkLsVgUqsd5kCDpQnEOz+7R/wVI/gwU2WyTfWdB4wizGbJP2CYZz9ozEDGdLvFHYRpF0aUuNdBjgNFTrieck3EDpoLGjLcpTfo85vlVM2erVzDMmMxdOBeex09uN4Onbl5VMxqwaIaSH88Ugf5QwG2j6aypOwPUB63E6jlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4o9GLfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25258C2BD10;
+	Tue, 14 May 2024 11:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687039;
-	bh=/wAh/74Dyg2OGUIGg3htN1sZ/SK9X6GlRrmarqRdme8=;
+	s=korg; t=1715687403;
+	bh=4NiFA5iYhx917NnDre4gTckDvFML6mlt6uE+zRO97mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yesmkaujeUP4xeff/henBmcp4gw8nYMmF2DtsOpkq6pT6b12In/04MyZvBbu2eBTn
-	 t/mrIxCwr3xJ5DyzN5iKQTdTtvZXPbbDfKxPon2jAI15Xlh+k9q3DHOJY73cy7yFaP
-	 RmvEI0p/jcuC36aQm0U074z0RftR/wTVss4JWpcI=
+	b=L4o9GLfgQyq3lGWOpZA+svzHrr9VAiFiLL3p/loYTVcpV+d9mnEADKzJ9iVbyFEZh
+	 0EXYxdCV2nniDzM8Xeo7caTvd6A+Iy87vVS2dBBOcATLEmNLBvSVrTwcsxLXQsWrJ4
+	 z0hyOMswlGO84neACGto9qLCc2zDrkYIGERdZ0BE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Liu <liupeng17@lenovo.com>,
-	Len Brown <len.brown@intel.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 44/84] tools/power turbostat: Fix Bzy_MHz documentation typo
+Subject: [PATCH 5.10 057/111] btrfs: make btrfs_clear_delalloc_extent() free delalloc reserve
 Date: Tue, 14 May 2024 12:19:55 +0200
-Message-ID: <20240514100953.347026677@linuxfoundation.org>
+Message-ID: <20240514100959.300482845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Liu <liupeng17@lenovo.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 0b13410b52c4636aacb6964a4253a797c0fa0d16 ]
+[ Upstream commit 3c6f0c5ecc8910d4ffb0dfe85609ebc0c91c8f34 ]
 
-The code calculates Bzy_MHz by multiplying TSC_delta * APERF_delta/MPERF_delta
-The man page erroneously showed that TSC_delta was divided.
+Currently, this call site in btrfs_clear_delalloc_extent() only converts
+the reservation. We are marking it not delalloc, so I don't think it
+makes sense to keep the rsv around.  This is a path where we are not
+sure to join a transaction, so it leads to incorrect free-ing during
+umount.
 
-Signed-off-by: Peng Liu <liupeng17@lenovo.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Helps with the pass rate of generic/269 and generic/475.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.8 | 2 +-
+ fs/btrfs/inode.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
-index a6db83a88e852..25a560c41321d 100644
---- a/tools/power/x86/turbostat/turbostat.8
-+++ b/tools/power/x86/turbostat/turbostat.8
-@@ -318,7 +318,7 @@ below the processor's base frequency.
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 591caac2bf814..1f99d7dced17a 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2070,7 +2070,7 @@ void btrfs_clear_delalloc_extent(struct inode *vfs_inode,
+ 		 */
+ 		if (*bits & EXTENT_CLEAR_META_RESV &&
+ 		    root != fs_info->tree_root)
+-			btrfs_delalloc_release_metadata(inode, len, false);
++			btrfs_delalloc_release_metadata(inode, len, true);
  
- Busy% = MPERF_delta/TSC_delta
- 
--Bzy_MHz = TSC_delta/APERF_delta/MPERF_delta/measurement_interval
-+Bzy_MHz = TSC_delta*APERF_delta/MPERF_delta/measurement_interval
- 
- Note that these calculations depend on TSC_delta, so they
- are not reliable during intervals when TSC_MHz is not running at the base frequency.
+ 		/* For sanity tests. */
+ 		if (btrfs_is_testing(fs_info))
 -- 
 2.43.0
 
