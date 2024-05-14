@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-43779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1D28C4F96
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 933658C4F99
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F9E62817DC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:51:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70719281DE5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB2612D761;
-	Tue, 14 May 2024 10:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF4D12D772;
+	Tue, 14 May 2024 10:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YB0uBbwh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAg+blv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08697433BE;
-	Tue, 14 May 2024 10:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77431433BE;
+	Tue, 14 May 2024 10:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682174; cv=none; b=GNknlFtaUIPGZwBljs+4MpZ4KfvUsvHDb8Pzj9aQrso+EPW2RmbkNXnjUNNvVOMEqzxDY9jkQT62l4jpcfn9iJm5ov0t0qcDwGuZ2XLKeKrYSkrdxiagtHVHHj+qrJCp0LZeZiRJTnrf3Jlh7sOV7Is3853I1tR8oISisfWAILw=
+	t=1715682185; cv=none; b=Q0QkIiZFYCcCWDKTq0vOOTuIEHFzIUpns1PSQyEINxWBU8GYtyvAdM+SyzrmiyVayez/fxrhUZfV84StR3Wmx0kGXqSdsnY3UvXC6XCp1CyUsrFhErNJsqSEoo9t4O6h9kH7ibzjh1IgYynmsqrpjhoU4hUO7tT4Tvg8dgnMdQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682174; c=relaxed/simple;
-	bh=rcL29BkXqnHFLJ3MscXEkxHoQ/av5ALLAuF8hAD+M88=;
+	s=arc-20240116; t=1715682185; c=relaxed/simple;
+	bh=sVu2m8TyWS6UgrapaGe1r82uXUbCyjKtGJ+L6cYh44U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrKH0W1lyKr4REKT0MYGGIegOi/IjPN1pyiSf+URX4Kpxpei3gdDik5u680l0fdmiwxkU2M2qg7LMJoehcK9iwZ7FmpwwbRK3TbI/NOdkxYXHn2jIKGn41IOJsrqvTdohmcglLH5KjS3evTgrwgFrI1Rb/etR8gJ5rPN//stOuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YB0uBbwh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D297AC2BD10;
-	Tue, 14 May 2024 10:22:52 +0000 (UTC)
+	 MIME-Version; b=KOEHrMZ7LvtWZWfNZDh3CJjbSnV8kmkYqJ+O/+kvzTD1G1yDcARBnwaf+0G8qvepz+eUqN21wW+rkf+AUUPyUBarjCAJ2V54C+ukkTpksNJ8VP6Iqhfo+adSTFXb3Ay7/H4m8THFUb/QJ9V5b9SZR72sFs63do+D0ZKceNU3LGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAg+blv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAB3C2BD10;
+	Tue, 14 May 2024 10:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682173;
-	bh=rcL29BkXqnHFLJ3MscXEkxHoQ/av5ALLAuF8hAD+M88=;
+	s=korg; t=1715682185;
+	bh=sVu2m8TyWS6UgrapaGe1r82uXUbCyjKtGJ+L6cYh44U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YB0uBbwhHp1E2AVhdOH+EAjxkp8vvisSkwUphSF6S28XW91YJ+ElVt70oslZcj4Bu
-	 2btWS4KGiOgdyvkBcTRdYy+TIkxTVr/1obT3ssXjiVEq8Syhr5G5roUEDb/fpPA88m
-	 7pRHgBoJWB2986gWVT2QB/Y8bQSpMkbLsyBMde1g=
+	b=gAg+blv+RMbFdMi2PlttRpLErMjJfM4lzwYIK/t3N7XSrBr5Hnuxd5YvOGkzoIFvs
+	 QADHAEQgHd3xxz8qf19D+pa8uxA65n1mjuW40SfewnEyw2P5hz+wn8xwKnFCkYZ/c3
+	 ZrtONriVVVKPm61yjooZmn9Q/A5x4bmNydeI14hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Mark Brown <broonie@kernel.org>,
+	Vincent Li <vincent.mc.li@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 024/336] regulator: change devm_regulator_get_enable_optional() stub to return Ok
-Date: Tue, 14 May 2024 12:13:48 +0200
-Message-ID: <20240514101039.518663873@linuxfoundation.org>
+Subject: [PATCH 6.8 025/336] bpf, kconfig: Fix DEBUG_INFO_BTF_MODULES Kconfig definition
+Date: Tue, 14 May 2024 12:13:49 +0200
+Message-ID: <20240514101039.555696386@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
 References: <20240514101038.595152603@linuxfoundation.org>
@@ -67,49 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit ff33132605c1a0acea59e4c523cb7c6fabe856b2 ]
+[ Upstream commit 229087f6f1dc2d0c38feba805770f28529980ec0 ]
 
-The devm_regulator_get_enable_optional() should be a 'call and forget'
-API, meaning, when it is used to enable the regulators, the API does not
-provide a handle to do any further control of the regulators. It gives
-no real benefit to return an error from the stub if CONFIG_REGULATOR is
-not set.
+Turns out that due to CONFIG_DEBUG_INFO_BTF_MODULES not having an
+explicitly specified "menu item name" in Kconfig, it's basically
+impossible to turn it off (see [0]).
 
-On the contrary, returning an error is causing problems to drivers when
-hardware is such it works out just fine with no regulator control.
-Returning an error forces drivers to specifically handle the case where
-CONFIG_REGULATOR is not set, making the mere existence of the stub
-questionalble.
+This patch fixes the issue by defining menu name for
+CONFIG_DEBUG_INFO_BTF_MODULES, which makes it actually adjustable
+and independent of CONFIG_DEBUG_INFO_BTF, in the sense that one can
+have DEBUG_INFO_BTF=y and DEBUG_INFO_BTF_MODULES=n.
 
-Change the stub implementation for the
-devm_regulator_get_enable_optional() to return Ok so drivers do not
-separately handle the case where the CONFIG_REGULATOR is not set.
+We still keep it as defaulting to Y, of course.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: da279e6965b3 ("regulator: Add devm helpers for get and enable")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/ZiedtOE00Zozd3XO@fedora
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5f9ae91f7c0d ("kbuild: Build kernel module BTFs if BTF is enabled and pahole supports it")
+Reported-by: Vincent Li <vincent.mc.li@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/CAK3+h2xiFfzQ9UXf56nrRRP=p1+iUxGoEP5B+aq9MDT5jLXDSg@mail.gmail.com [0]
+Link: https://lore.kernel.org/bpf/20240404220344.3879270-1-andrii@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/regulator/consumer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/Kconfig.debug | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
-index 71232fb7dda31..ed180ca419dad 100644
---- a/include/linux/regulator/consumer.h
-+++ b/include/linux/regulator/consumer.h
-@@ -326,7 +326,7 @@ static inline int devm_regulator_get_enable(struct device *dev, const char *id)
- static inline int devm_regulator_get_enable_optional(struct device *dev,
- 						     const char *id)
- {
--	return -ENODEV;
-+	return 0;
- }
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index ef36b829ae1f5..6352d59c57461 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -375,7 +375,7 @@ config DEBUG_INFO_SPLIT
+ 	  Incompatible with older versions of ccache.
  
- static inline struct regulator *__must_check
+ config DEBUG_INFO_BTF
+-	bool "Generate BTF typeinfo"
++	bool "Generate BTF type information"
+ 	depends on !DEBUG_INFO_SPLIT && !DEBUG_INFO_REDUCED
+ 	depends on !GCC_PLUGIN_RANDSTRUCT || COMPILE_TEST
+ 	depends on BPF_SYSCALL
+@@ -408,7 +408,8 @@ config PAHOLE_HAS_LANG_EXCLUDE
+ 	  using DEBUG_INFO_BTF_MODULES.
+ 
+ config DEBUG_INFO_BTF_MODULES
+-	def_bool y
++	bool "Generate BTF type information for kernel modules"
++	default y
+ 	depends on DEBUG_INFO_BTF && MODULES && PAHOLE_HAS_SPLIT_BTF
+ 	help
+ 	  Generate compact split BTF type information for kernel modules.
 -- 
 2.43.0
 
