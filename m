@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1437C8C5360
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2858C5109
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37C071C22D33
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028441F21EE8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AA485C4E;
-	Tue, 14 May 2024 11:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8B312EBCA;
+	Tue, 14 May 2024 10:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K65k1BaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnuMAcMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4892C18026;
-	Tue, 14 May 2024 11:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C08155C0A;
+	Tue, 14 May 2024 10:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686485; cv=none; b=mt1ITaRZni9UH9qZM0NeoYAsMp9AtDjGn1wYG3nsoI9oHnWMSKa0zMtZC3skKf3l8qGUF4WnYrkyg9fsYJJFRz1d2vtf4wkoTC385byEdz2UK9370H5cKXBVR0NFO9Ow+YjnLb35GO1XJY8uYs3qFCfddTr8dDz3dcy9dwSszj4=
+	t=1715683988; cv=none; b=T6zj7F9R0XLOiUFjaBFRHaGWUfTYaT9+hKP8Q8DsfAbByPsj7g2gmt5jRnHunjzsX9b1m9QrSdEg07YNIOdmRdZFMqNA8Q10fw+Et97x5vRPwNeE9IrWntyUR8/SlcbpZI+G9J6KhzB9INn3rigEnwWvt05CjrFte/mMx5QcYd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686485; c=relaxed/simple;
-	bh=rdu8KKOnhP7zm+6vjhsiUrnNpaSi7BqgNfeWWQ+8YYE=;
+	s=arc-20240116; t=1715683988; c=relaxed/simple;
+	bh=/h1uSR9tuF+sBzE8pczOcq7cIDq7uz3dk6LwvJZGDFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/sFC6vflQoVHlSDso6gCZKau8GODwoYZyjYb+EB+yNX+FCMbTw6JJqQkmmaPS1v0R3vow6n8unZYtOIV/7yrvPxU50N36W0TEhiu35vZ9PwDICjQMlN3eHZJxcQ6ZiRDOpLzh1lfi56MaLaUvirKgc7PkLRKvXaeYjh93cYjPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K65k1BaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F48C2BD10;
-	Tue, 14 May 2024 11:34:44 +0000 (UTC)
+	 MIME-Version; b=buuNgzO0uo5LsjAD9TO6RfDvMVL4Mb9rs/mXGL0Z/h+Qy/q53IOsTT87K+CnLPTMld7Ggc8cGH/K3Qqw34jC2iSEIvmYiKYT84uqk652dOmmW1MpsbN8Sl5Uf+akG5YCZWassnBY9qxwEyitKOpEaHIJfSCJWdSqzOptg9CbGEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnuMAcMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5BBC2BD10;
+	Tue, 14 May 2024 10:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686485;
-	bh=rdu8KKOnhP7zm+6vjhsiUrnNpaSi7BqgNfeWWQ+8YYE=;
+	s=korg; t=1715683988;
+	bh=/h1uSR9tuF+sBzE8pczOcq7cIDq7uz3dk6LwvJZGDFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K65k1BaIygboTCUjSBCNzIVtcRNLjW/pgnxDD+2KpgXowoyXf9HfVRYg45mOCsX4f
-	 QHoIS6PicKgBPxYWKAMoLogH2I9/zmxXvGab83n1SkF2jMQxR+UYcuby/XLwCkN9Dr
-	 h5o9ePhGLuktPW7L4Ito7AqC39TT25I3kyS+I4wg=
+	b=vnuMAcMeQpKbaVLiQu0WajR5YEKe2xMkgIS9zeMgti3boEraIdvTnE3Wql8mAt5CR
+	 sbcMcfNNlzWPwsA9x33OECPyvOKt7/R9ISYa6c2xGgCNbGhc8h8IYfEakKYPJ1NstJ
+	 LJ2gxvFKUiQQ/5mYZNfS4drWUsEi27KSTEHWzuEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/236] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.8 305/336] drm/amd/display: Handle Y carry-over in VCP X.Y calculation
 Date: Tue, 14 May 2024 12:18:29 +0200
-Message-ID: <20240514101025.948933953@linuxfoundation.org>
+Message-ID: <20240514101050.134991138@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,150 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit 94062790aedb505bdda209b10bea47b294d6394f ]
+commit 719564737a9ac3d0b49c314450b56cf6f7d71358 upstream.
 
-TCP_SYN_RECV state is really special, it is only used by
-cross-syn connections, mostly used by fuzzers.
+Theoretically rare corner case where ceil(Y) results in rounding up to
+an integer. If this happens, the 1 should be carried over to the X
+value.
 
-In the following crash [1], syzbot managed to trigger a divide
-by zero in tcp_rcv_space_adjust()
-
-A socket makes the following state transitions,
-without ever calling tcp_init_transfer(),
-meaning tcp_init_buffer_space() is also not called.
-
-         TCP_CLOSE
-connect()
-         TCP_SYN_SENT
-         TCP_SYN_RECV
-shutdown() -> tcp_shutdown(sk, SEND_SHUTDOWN)
-         TCP_FIN_WAIT1
-
-To fix this issue, change tcp_shutdown() to not
-perform a TCP_SYN_RECV -> TCP_FIN_WAIT1 transition,
-which makes no sense anyway.
-
-When tcp_rcv_state_process() later changes socket state
-from TCP_SYN_RECV to TCP_ESTABLISH, then look at
-sk->sk_shutdown to finally enter TCP_FIN_WAIT1 state,
-and send a FIN packet from a sane socket state.
-
-This means tcp_send_fin() can now be called from BH
-context, and must use GFP_ATOMIC allocations.
-
-[1]
-divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 1 PID: 5084 Comm: syz-executor358 Not tainted 6.9.0-rc6-syzkaller-00022-g98369dccd2f8 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:tcp_rcv_space_adjust+0x2df/0x890 net/ipv4/tcp_input.c:767
-Code: e3 04 4c 01 eb 48 8b 44 24 38 0f b6 04 10 84 c0 49 89 d5 0f 85 a5 03 00 00 41 8b 8e c8 09 00 00 89 e8 29 c8 48 0f af c3 31 d2 <48> f7 f1 48 8d 1c 43 49 8d 96 76 08 00 00 48 89 d0 48 c1 e8 03 48
-RSP: 0018:ffffc900031ef3f0 EFLAGS: 00010246
-RAX: 0c677a10441f8f42 RBX: 000000004fb95e7e RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000027d4b11f R08: ffffffff89e535a4 R09: 1ffffffff25e6ab7
-R10: dffffc0000000000 R11: ffffffff8135e920 R12: ffff88802a9f8d30
-R13: dffffc0000000000 R14: ffff88802a9f8d00 R15: 1ffff1100553f2da
-FS:  00005555775c0380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1155bf2304 CR3: 000000002b9f2000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
-  tcp_recvmsg_locked+0x106d/0x25a0 net/ipv4/tcp.c:2513
-  tcp_recvmsg+0x25d/0x920 net/ipv4/tcp.c:2578
-  inet6_recvmsg+0x16a/0x730 net/ipv6/af_inet6.c:680
-  sock_recvmsg_nosec net/socket.c:1046 [inline]
-  sock_recvmsg+0x109/0x280 net/socket.c:1068
-  ____sys_recvmsg+0x1db/0x470 net/socket.c:2803
-  ___sys_recvmsg net/socket.c:2845 [inline]
-  do_recvmmsg+0x474/0xae0 net/socket.c:2939
-  __sys_recvmmsg net/socket.c:3018 [inline]
-  __do_sys_recvmmsg net/socket.c:3041 [inline]
-  __se_sys_recvmmsg net/socket.c:3034 [inline]
-  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3034
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7faeb6363db9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcc1997168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007faeb6363db9
-RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000001c
-R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240501125448.896529-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c        | 4 ++--
- net/ipv4/tcp_input.c  | 2 ++
- net/ipv4/tcp_output.c | 4 +++-
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index f01c0a5d2c37b..3447a09ee83a2 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2831,7 +2831,7 @@ void tcp_shutdown(struct sock *sk, int how)
- 	/* If we've already sent a FIN, or it's a closed state, skip this. */
- 	if ((1 << sk->sk_state) &
- 	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
--	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {
-+	     TCPF_CLOSE_WAIT)) {
- 		/* Clear out any half completed packets.  FIN if needed. */
- 		if (tcp_close_state(sk))
- 			tcp_send_fin(sk);
-@@ -2940,7 +2940,7 @@ void __tcp_close(struct sock *sk, long timeout)
- 		 * machine. State transitions:
- 		 *
- 		 * TCP_ESTABLISHED -> TCP_FIN_WAIT1
--		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (forget it, it's impossible)
-+		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (it is difficult)
- 		 * TCP_CLOSE_WAIT -> TCP_LAST_ACK
- 		 *
- 		 * are legal only when FIN has been sent (i.e. in window),
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 34460c9b37ae2..4c9da94553365 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6597,6 +6597,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+--- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c
+@@ -395,6 +395,12 @@ void dcn31_hpo_dp_link_enc_set_throttled
+ 				x),
+ 			25));
  
- 		tcp_initialize_rcv_mss(sk);
- 		tcp_fast_path_on(tp);
-+		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+			tcp_shutdown(sk, SEND_SHUTDOWN);
- 		break;
- 
- 	case TCP_FIN_WAIT1: {
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 67087da45a1f7..15f814c1e1693 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -3480,7 +3480,9 @@ void tcp_send_fin(struct sock *sk)
- 			return;
- 		}
- 	} else {
--		skb = alloc_skb_fclone(MAX_TCP_HEADER, sk->sk_allocation);
-+		skb = alloc_skb_fclone(MAX_TCP_HEADER,
-+				       sk_gfp_mask(sk, GFP_ATOMIC |
-+						       __GFP_NOWARN));
- 		if (unlikely(!skb))
- 			return;
- 
--- 
-2.43.0
-
++	// If y rounds up to integer, carry it over to x.
++	if (y >> 25) {
++		x += 1;
++		y = 0;
++	}
++
+ 	switch (stream_encoder_inst) {
+ 	case 0:
+ 		REG_SET_2(DP_DPHY_SYM32_VC_RATE_CNTL0, 0,
 
 
 
