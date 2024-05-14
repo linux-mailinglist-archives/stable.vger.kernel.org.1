@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-43932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82A88C504B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:01:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460FB8C5192
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 823991F21B63
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:01:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F121C216A1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C55C13B2A8;
-	Tue, 14 May 2024 10:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB09A13A3E8;
+	Tue, 14 May 2024 11:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYCBI5Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDXlSjOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098C357CBC;
-	Tue, 14 May 2024 10:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A39313A272;
+	Tue, 14 May 2024 11:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683165; cv=none; b=eLu/qawcCSh6ib8gbOsy3pQHKsn7u7de967VbHGGXQoKXgv05HfohW4xHfp3RC+YLN7oygHlVd7sl7+uX8ZNQpiX2rcbyUR5mW8dslLnev9QNnKWztVWYILAYuT5oVwFMqhl2dmJ+gjpr9YE659ubK0TKY7Ocgfc4sVejEMOQ7k=
+	t=1715684706; cv=none; b=PfHwNyloVETKsuZGImIaXxfhK25312WrbKOM+mqUyPftJZmwxq7JbDfA3Ac/UbvqxLPZBb5bfm8RYHwuI7L2Zlzkw3qo0o+ykzKzhDSStwlHpb7FkCUoTuQfeQSay9+SSxWnJpL6raYu6tidaGeMDPCiqyXQwvMXY5mgBXOdG/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683165; c=relaxed/simple;
-	bh=OXebOZYgVt5/rhhBk3HKlJBZwqdrKCtU2aA9RaLq+x4=;
+	s=arc-20240116; t=1715684706; c=relaxed/simple;
+	bh=8kpMxIrJDA6DxYiFDyetO7+SKkmYLjtZiz73OcnTT94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5BDpY1zKH+5L5GbV8wVuBP0HvQ8Md7fBmMlZ6/Lu+Rj6AUT14h6KYnZ3cGr1rMnm10Cg+YitGWfoIaOlgjqg7IHaql4RtnOwgI3a6Kdys/opXyzeHlPVKx5ul2mdrVPgX6LeHNKFdrAMXUKK7Ishq01JVI/UQgmXDUGYJk7GZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYCBI5Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A06C2BD10;
-	Tue, 14 May 2024 10:39:23 +0000 (UTC)
+	 MIME-Version; b=QhRNYSPo45bOnN8xBFGKlt70fSIWHD9V9kxJbrfZq/JXdYC+XQ3MulHBjnUxljk8jVxdDp6Wp6eizRfQgcszKkNu7RWEVVzt+mcogyTujsRGaoOO7wxFwn0h6QbOnv3B42cOz9Gpl45hQz5yNkYTZ8xDRF+z1jrYwGaDvO1sAhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDXlSjOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B9DC2BD10;
+	Tue, 14 May 2024 11:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683164;
-	bh=OXebOZYgVt5/rhhBk3HKlJBZwqdrKCtU2aA9RaLq+x4=;
+	s=korg; t=1715684706;
+	bh=8kpMxIrJDA6DxYiFDyetO7+SKkmYLjtZiz73OcnTT94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wYCBI5LooyFx0eqB35A/+LogNjojk7P2tmBKkxKKHNaveOD02ggwxrbIOCjwr/6WL
-	 3gjWE15rhXm3ZhquuwifHjFqBHb65svdofmubAFCZH1Tjzrouk3wFSOulsgqoyUOQR
-	 mRd8RkwYj8hbbFVsjjQFGYESu1fO/Rv3uetQFisE=
+	b=FDXlSjObojq/6p6DsdX+IjXw7k6eZ/ZvDTat8prhVtFR1qdUTkMwC/Rf47dWlvDI6
+	 T4bhAvxjxZXMOJR/822jkaX5q81gq3qFSm7UioPb/woqaBin6ZwE3AHglReMtcFyuu
+	 +PJPcYKDsN6jQdLO10yFhJ4/i5OQ1TVLsvQvuyTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 145/336] memblock tests: fix undefined reference to `BIT
+Subject: [PATCH 6.6 078/301] rxrpc: Clients must accept conn from any address
 Date: Tue, 14 May 2024 12:15:49 +0200
-Message-ID: <20240514101044.073562442@linuxfoundation.org>
+Message-ID: <20240514101035.194141226@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Jeffrey Altman <jaltman@auristor.com>
 
-[ Upstream commit 592447f6cb3c20d606d6c5d8e6af68e99707b786 ]
+[ Upstream commit 8953285d7bd63c12b007432a9b4587fa2fad49fb ]
 
-commit 772dd0342727 ("mm: enumerate all gfp flags") define gfp flags
-with the help of BIT, while gfp_types.h doesn't include header file for
-the definition. This through an error on building memblock tests.
+The find connection logic of Transarc's Rx was modified in the mid-1990s
+to support multi-homed servers which might send a response packet from
+an address other than the destination address in the received packet.
+The rules for accepting a packet by an Rx initiator (RX_CLIENT_CONNECTION)
+were altered to permit acceptance of a packet from any address provided
+that the port number was unchanged and all of the connection identifiers
+matched (Epoch, CID, SecurityClass, ...).
 
-Let's include linux/bits.h to fix it.
+This change applies the same rules to the Linux implementation which makes
+it consistent with IBM AFS 3.6, Arla, OpenAFS and AuriStorFS.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-CC: Suren Baghdasaryan <surenb@google.com>
-CC: Michal Hocko <mhocko@suse.com>
-Link: https://lore.kernel.org/r/20240402132701.29744-4-richard.weiyang@gmail.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Signed-off-by: Jeffrey Altman <jaltman@auristor.com>
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Link: https://lore.kernel.org/r/20240419163057.4141728-1-marc.dionne@auristor.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/gfp_types.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/rxrpc/conn_object.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 1b6053da8754e..495ebf5f2cb6d 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -2,6 +2,8 @@
- #ifndef __LINUX_GFP_TYPES_H
- #define __LINUX_GFP_TYPES_H
- 
-+#include <linux/bits.h>
-+
- /* The typedef is in types.h but we want the documentation here */
- #if 0
- /**
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index df8a271948a1c..7aa58129ae455 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -118,18 +118,13 @@ struct rxrpc_connection *rxrpc_find_client_connection_rcu(struct rxrpc_local *lo
+ 	switch (srx->transport.family) {
+ 	case AF_INET:
+ 		if (peer->srx.transport.sin.sin_port !=
+-		    srx->transport.sin.sin_port ||
+-		    peer->srx.transport.sin.sin_addr.s_addr !=
+-		    srx->transport.sin.sin_addr.s_addr)
++		    srx->transport.sin.sin_port)
+ 			goto not_found;
+ 		break;
+ #ifdef CONFIG_AF_RXRPC_IPV6
+ 	case AF_INET6:
+ 		if (peer->srx.transport.sin6.sin6_port !=
+-		    srx->transport.sin6.sin6_port ||
+-		    memcmp(&peer->srx.transport.sin6.sin6_addr,
+-			   &srx->transport.sin6.sin6_addr,
+-			   sizeof(struct in6_addr)) != 0)
++		    srx->transport.sin6.sin6_port)
+ 			goto not_found;
+ 		break;
+ #endif
 -- 
 2.43.0
 
