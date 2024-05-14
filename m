@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-45030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D158C556A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8848C54DF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAC731F22BA7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86F511F22C91
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7779A1D54D;
-	Tue, 14 May 2024 11:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683205FDB5;
+	Tue, 14 May 2024 11:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAn67PLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sg+AmP6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D53F9D4;
-	Tue, 14 May 2024 11:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267E553361;
+	Tue, 14 May 2024 11:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687879; cv=none; b=cdpvRQkveSKbru4gDdUIgqYeggsmuX4rTEncn/DZQBDpDUbRA/6ryrSCRDN54R8Wzbf71JCX5B2y/oai5IZ7gLEkmdq/cFZHCLaCN+pejhV4nSgkyhG1tKPmkbvUUwIAeA1jUCoqkFtqLGnJntjAX1wssvbkq9zH/yaD+UwBALw=
+	t=1715687500; cv=none; b=MGXCGybqGRiiMK/FBUow+CZpzvsYUpfWNo/UKSJ/ea1WVXS52tiU3flA5jBvK6BTBlKPUNnUPRTR+Y9xye/a4NoQ8802hZ115rZtrGN5cPYpVc0T8W+UjrrYcwnigIaUz9YtaKZpDvLh+1RFof9gGDX0T5sN6KHrYsoBb6Cg/1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687879; c=relaxed/simple;
-	bh=cjb9eMcWfNXnqZ/Khotr4BZ2nD08J0J3qD64xQ5+zAY=;
+	s=arc-20240116; t=1715687500; c=relaxed/simple;
+	bh=AF3KgWwJbARw3DYft610vHlHzeM9Q6d/4o0pNB3fv9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvpXklrxl4LR2FUJnw2KHBEkhY7ApIod73OZmHU+03zvol0C4fY1r/CD59QL91ZSozffVoFRamcLa67Sfg9DK/WkNzouQ3fIBVSVchnyr8pkjVKWHI9Fl8F2r7zelL91toFq7mHLiQN/bBX2Uu1GqpTpqh9/9MzMVdtbPKAEBtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAn67PLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B5AC2BD10;
-	Tue, 14 May 2024 11:57:58 +0000 (UTC)
+	 MIME-Version; b=IFdqW0SQhe0QxohUieDUWpiFNAfrXQRvWEji7qw2Cn9zN/3lU2icr2NrQ36o6Vl+K+vED2p1OeKZvwpnwEPMf6wz9rPILK2ECdAxIcg2vv43tfTiMmFa6AjAqSaXt1Ne+0Ul4AdWXGQRWBioQoESDcM0YC1w7TzxI6t2wa2cNZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sg+AmP6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A433AC2BD10;
+	Tue, 14 May 2024 11:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687879;
-	bh=cjb9eMcWfNXnqZ/Khotr4BZ2nD08J0J3qD64xQ5+zAY=;
+	s=korg; t=1715687500;
+	bh=AF3KgWwJbARw3DYft610vHlHzeM9Q6d/4o0pNB3fv9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAn67PLf9CW1BMJ23nom8UXoSc+e+akmfbYDWdNnsSRd59Kmq0YRpWciIF1ZeTtPC
-	 DexYsvPuKPbraYUUxLE0LAVJb9S+kH6KO3jnrMfHDPWmPRqqxwU41ByVf+XUOrH6EL
-	 0sYoMhGJQ7TEklCczrf5ecDtoO70/BUFz7hFSR8A=
+	b=sg+AmP6i7TzLu0kyqKJQLPTfk8Zb84xuB7L6/IhfpNts+ef5Reh+/SpPmK8XRXJt1
+	 H+7senaXk0n5/53Lu7ibLZ3qBU51Xt1+rS8xavS97VjL4JzPrIBAi4jOlbnf1XAjLW
+	 xfnrSVePB8kJ7uMNGx4gEBtLUsmKGswScMG4EdZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/168] ACPI: CPPC: Fix access width used for PCC registers
+	stable <stable@kernel.org>,
+	Peter Korsgaard <peter@korsgaard.com>
+Subject: [PATCH 5.10 096/111] usb: gadget: composite: fix OS descriptors w_value logic
 Date: Tue, 14 May 2024 12:20:34 +0200
-Message-ID: <20240514101011.818347703@linuxfoundation.org>
+Message-ID: <20240514101000.778009955@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+From: Peter Korsgaard <peter@korsgaard.com>
 
-commit f489c948028b69cea235d9c0de1cc10eeb26a172 upstream
+commit ec6ce7075ef879b91a8710829016005dc8170f17 upstream.
 
-commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system
-memory accesses") modified cpc_read()/cpc_write() to use access_width to
-read CPC registers.
+The OS descriptors logic had the high/low byte of w_value inverted, causing
+the extended properties to not be accessible for interface != 0.
 
-However, for PCC registers the access width field in the ACPI register
-macro specifies the PCC subspace ID.  For non-zero PCC subspace ID it is
-incorrectly treated as access width. This causes errors when reading
-from PCC registers in the CPPC driver.
+>From the Microsoft documentation:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-os-1-0-descriptors-specification
 
-For PCC registers, base the size of read/write on the bit width field.
-The debug message in cpc_read()/cpc_write() is updated to print relevant
-information for the address space type used to read the register.
+OS_Desc_CompatID.doc (w_index = 0x4):
 
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ eahariha: Backport to v5.15 by dropping SystemIO bits as commit
-  a2c8f92bea5f is not present ]
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- wValue:
+
+  High Byte = InterfaceNumber.  InterfaceNumber is set to the number of the
+  interface or function that is associated with the descriptor, typically
+  0x00.  Because a device can have only one extended compat ID descriptor,
+  it should ignore InterfaceNumber, regardless of the value, and simply
+  return the descriptor.
+
+  Low Byte = 0.  PageNumber is used to retrieve descriptors that are larger
+  than 64 KB.  The header section is 16 bytes, so PageNumber is set to 0 for
+  this request.
+
+We currently do not support >64KB compat ID descriptors, so verify that the
+low byte is 0.
+
+OS_Desc_Ext_Prop.doc (w_index = 0x5):
+
+- wValue:
+
+  High byte = InterfaceNumber.  The high byte of wValue is set to the number
+  of the interface or function that is associated with the descriptor.
+
+  Low byte = PageNumber.  The low byte of wValue is used to retrieve
+  descriptors that are larger than 64 KB.  The header section is 10 bytes, so
+  PageNumber is set to 0 for this request.
+
+We also don't support >64KB extended properties, so verify that the low byte
+is 0 and use the high byte for the interface number.
+
+Fixes: 37a3a533429e ("usb: gadget: OS Feature Descriptors support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20240404100635.3215340-1-peter@korsgaard.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 48 ++++++++++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 12 deletions(-)
+ drivers/usb/gadget/composite.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 6aa456cda0ed9..6dcce036adb9c 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -955,17 +955,24 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	}
- 
- 	*val = 0;
--	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	size = GET_BIT_WIDTH(reg);
-+
-+	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_read_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_read_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
- 
- 	switch (size) {
- 	case 8:
-@@ -981,8 +988,13 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		*val = readq_relaxed(vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot read %u bit width from system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		ret_val = -EFAULT;
- 	}
- 
-@@ -1000,17 +1012,24 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
--	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	size = GET_BIT_WIDTH(reg);
-+
-+	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_write_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		val = MASK_VAL(reg, val);
-@@ -1029,8 +1048,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		writeq_relaxed(val, vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot write %u bit width to system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		ret_val = -EFAULT;
- 		break;
- 	}
--- 
-2.43.0
-
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1925,7 +1925,7 @@ unknown:
+ 			buf[5] = 0x01;
+ 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
+ 			case USB_RECIP_DEVICE:
+-				if (w_index != 0x4 || (w_value >> 8))
++				if (w_index != 0x4 || (w_value & 0xff))
+ 					break;
+ 				buf[6] = w_index;
+ 				/* Number of ext compat interfaces */
+@@ -1941,9 +1941,9 @@ unknown:
+ 				}
+ 				break;
+ 			case USB_RECIP_INTERFACE:
+-				if (w_index != 0x5 || (w_value >> 8))
++				if (w_index != 0x5 || (w_value & 0xff))
+ 					break;
+-				interface = w_value & 0xFF;
++				interface = w_value >> 8;
+ 				if (interface >= MAX_CONFIG_INTERFACES ||
+ 				    !os_desc_cfg->interface[interface])
+ 					break;
 
 
 
