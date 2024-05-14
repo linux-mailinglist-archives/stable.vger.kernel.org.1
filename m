@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BF28C51B3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1918C5055
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD0ED282898
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BB21C208F6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16FC13AD3E;
-	Tue, 14 May 2024 11:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF9713C810;
+	Tue, 14 May 2024 10:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egeMoTgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXx8cGLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB1B1E495;
-	Tue, 14 May 2024 11:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577195CDFA;
+	Tue, 14 May 2024 10:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684924; cv=none; b=RsPuZuKABNXmmDk0Xv/lfRgV7k4a2g1i1E6PwRouYj8XYvaJPoAS8iUVjR8GQRnQfYQvzA/ieaDXy5tFQe9grH2TCf2H7KeYF4ZHj/S+VC8BfOq+jKl47r6N1XZAYyvQIFjYYHheJtkhXCDetQlEAfQReGvuqfiYiLjuZmUykDY=
+	t=1715683206; cv=none; b=pdYOoSGnhVGZ2pRQK6ujFXemaocvD/Fz4m0fMucoH3dfR2M0Pqtt/T7eoqXGaS5oju0qFBcTjQ7dMOGWJOWYrfq1gI+vqIMkrjPbOUSVb5w6SvFZDra+EeOeOwQj/kjUUlInztJt73PDkOdrYiLKHaBXMsWaPFIwtdG0EjUlwdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684924; c=relaxed/simple;
-	bh=3xsdb9kKlSFjxddmgORKVwPL+1f3rzd5OnMMZvOe+b0=;
+	s=arc-20240116; t=1715683206; c=relaxed/simple;
+	bh=+gre0mXV16wwAwIifd79U20py2TSZ3p0cdAEUNizfAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=queRW0FBYlYmYCzgPC7eEQCQssHyc1xiS6NWzk6eKxlP9+wRu10hV12zDkgzJDURI+CfCJD7x5JDckOs5oR7NaDMoMS7k1VxOIBbOU/7wztRGO7JWpNRbPw6gOOQELjlrCGqlNl16JwObxEnC70fhVt+B5d4P0jJE6WIsnrCpKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egeMoTgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5927C2BD10;
-	Tue, 14 May 2024 11:08:42 +0000 (UTC)
+	 MIME-Version; b=n1HAZfbUhczIjvhRmq0GNTAaGX8nZ/tgeKEBB/oVOnqTDC3Z+AAuKfmAVh8UASa48boq5y4SmIBduH6njuIDCdHGI7b/UVXhgBXt3iASsml3Bc1tRbdEFEZLx8mPSaYp/iTZo81+ZLkgTYbeu8P1fjwY4KtQXLS+0lVyfzglLG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXx8cGLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FA4C2BD10;
+	Tue, 14 May 2024 10:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684924;
-	bh=3xsdb9kKlSFjxddmgORKVwPL+1f3rzd5OnMMZvOe+b0=;
+	s=korg; t=1715683205;
+	bh=+gre0mXV16wwAwIifd79U20py2TSZ3p0cdAEUNizfAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=egeMoTgbHvcVRmu5r/oMwjAozjVC0LI52rsd3CevuAIbrqZ19ns10n/ZQvYznDCUx
-	 cF3EI6Xg5mGh35hd2YHfQRHl8bZFlnzcqf47dSV/yZ6eHusWnRLx9Ax9vxE5pTfq1i
-	 T6HfZdR3ZAStmatMvVhlgHeZzm74GKFvYo4VfPV4=
+	b=DXx8cGLFd8YG2lmaG4bd5yzkDggy+A5PozvgdN91mVfiwqdX3p9fTX0yQtTSBW25p
+	 itTMWsahn6qxO0Txz+DV90oxt8XYKWFytydYLBlSMKkgb10V8q0u5R1gmHvMds7Q/8
+	 mJIDenFdgYYcYADgydJb3aXvqh2Xp73UhW+QfRgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/301] net: mark racy access on sk->sk_rcvbuf
+Subject: [PATCH 6.8 176/336] iommu: mtk: fix module autoloading
 Date: Tue, 14 May 2024 12:16:20 +0200
-Message-ID: <20240514101036.366546637@linuxfoundation.org>
+Message-ID: <20240514101045.247119224@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit c2deb2e971f5d9aca941ef13ee05566979e337a4 ]
+[ Upstream commit 7537e31df80cb58c27f3b6fef702534ea87a5957 ]
 
-sk->sk_rcvbuf in __sock_queue_rcv_skb() and __sk_receive_skb() can be
-changed by other threads. Mark this as benign using READ_ONCE().
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from of_device_id table.
 
-This patch is aimed at reducing the number of benign races reported by
-KCSAN in order to focus future debugging effort on harmful races.
-
-Signed-off-by: linke li <lilinke99@qq.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20240410164109.233308-1-krzk@kernel.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/mtk_iommu.c    | 1 +
+ drivers/iommu/mtk_iommu_v1.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1471c0a862b36..7f64a7b95cfb2 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -486,7 +486,7 @@ int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
- 	unsigned long flags;
- 	struct sk_buff_head *list = &sk->sk_receive_queue;
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index 7abe9e85a5706..51d0eba8cbdf3 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1789,6 +1789,7 @@ static const struct of_device_id mtk_iommu_of_ids[] = {
+ 	{ .compatible = "mediatek,mt8365-m4u", .data = &mt8365_data},
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, mtk_iommu_of_ids);
  
--	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf) {
-+	if (atomic_read(&sk->sk_rmem_alloc) >= READ_ONCE(sk->sk_rcvbuf)) {
- 		atomic_inc(&sk->sk_drops);
- 		trace_sock_rcvqueue_full(sk, skb);
- 		return -ENOMEM;
-@@ -556,7 +556,7 @@ int __sk_receive_skb(struct sock *sk, struct sk_buff *skb,
+ static struct platform_driver mtk_iommu_driver = {
+ 	.probe	= mtk_iommu_probe,
+diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
+index 25b41222abaec..32cc8341d3726 100644
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -599,6 +599,7 @@ static const struct of_device_id mtk_iommu_v1_of_ids[] = {
+ 	{ .compatible = "mediatek,mt2701-m4u", },
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, mtk_iommu_v1_of_ids);
  
- 	skb->dev = NULL;
- 
--	if (sk_rcvqueues_full(sk, sk->sk_rcvbuf)) {
-+	if (sk_rcvqueues_full(sk, READ_ONCE(sk->sk_rcvbuf))) {
- 		atomic_inc(&sk->sk_drops);
- 		goto discard_and_relse;
- 	}
+ static const struct component_master_ops mtk_iommu_v1_com_ops = {
+ 	.bind		= mtk_iommu_v1_bind,
 -- 
 2.43.0
 
