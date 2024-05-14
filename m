@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-43951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFAC8C5061
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:03:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1748C52DB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E48281127
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:03:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0911EB21C67
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499BC13D252;
-	Tue, 14 May 2024 10:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EEE1350EF;
+	Tue, 14 May 2024 11:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAma9LgN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqyoGUGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051D15CDFA;
-	Tue, 14 May 2024 10:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035541CAA4;
+	Tue, 14 May 2024 11:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683290; cv=none; b=jg0VaELE5JBYuAhIzZqhESpyJrX42gmLmZBebCEOW3+bD5F0CQYzXH1BuEqOY8hAZVwCk4h8bS5P8ltqJhCDz3IgtzIwnec6kJOAuPl1yDR4mbkswbl/KRFxl//IFqllSFFE6aWxH4J29R1HESDCYNIpv/w6IiH7kNZwHaLeYC4=
+	t=1715686151; cv=none; b=Rp0WG3ZJMUZqnNgbnT2PUyIz+sapMv1OrOSUz4fahZpRzxCxfMdsEFngmi5NH/JZNhb6gV+ccBNpc1PBCcD/uGtOgJx3LpEe4aEOscNBFeBvFabzYVSBbGBhC5MYJEBeYJxiIDT6Vr9E6nexj3yGBgiMFzwHgLx62uEnzFP26QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683290; c=relaxed/simple;
-	bh=lKJf40iKQSJzVbKfMyS6hlqf86AASP0bMnKC8lHWKpY=;
+	s=arc-20240116; t=1715686151; c=relaxed/simple;
+	bh=pmBmqqtuTUTQyJ2oQRWVtZFU58a8T9mqxKGppAHVWgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9I90+bOeY5m+TUJfgK2gJg5EgzReuDCe5xBMFW9bK/SLpWR/TV/vcdzbHUVCCb2uebteReE9EaY8jEPRwrPKGSLuaxuYLueYScAnfANLmNkZ8qUeDaZbGmhAYK/BMzDjgFbE6YHF4Tawi//nGi6IbkXAXjWgaRxSDsghTlimIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAma9LgN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410ABC2BD10;
-	Tue, 14 May 2024 10:41:26 +0000 (UTC)
+	 MIME-Version; b=NP/SMTKnqVhgDAOkVx8SHTHAexP1nqZUXHn3JIAPgUMzGyWnDOj/tKxrMK/Ire5olkGWk1opjr6i+U8fMPx214wPP5ct1IpS1PWR2vjM/CkqurMeXcDgyoYnDvEDrPwtW2jo5nB4EIsAYGU3rIZZuf6J/dvICQZJK80dXRIlCuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqyoGUGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8052AC2BD10;
+	Tue, 14 May 2024 11:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683289;
-	bh=lKJf40iKQSJzVbKfMyS6hlqf86AASP0bMnKC8lHWKpY=;
+	s=korg; t=1715686150;
+	bh=pmBmqqtuTUTQyJ2oQRWVtZFU58a8T9mqxKGppAHVWgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAma9LgN6ElTul63KTmlP6ACIdj9kXmijTuEJFwSyScMTm9jQnGj21bafSLXs6Vaw
-	 FK3pVd7jDWCjgY+DaWrvEiO1P68tk5CN5INPEIMo7pD4QH6MtVBe7pQcb19tXFyN2R
-	 UWdgrEXZcaREM60QRW3w7KwTPCKf0kvqwR74KO4Y=
+	b=LqyoGUGk1ukjsyInT2watfGhCVc2dIZpEVUxl5Kc+qXA/1pD3S/cnQCy1WwKXZKVj
+	 YlTz+nBYMovhQoTJsg8xWacAZw3DRe0lqC27OOhi1hge9wRrrrwpY7/YyMKK9H2/Hf
+	 XnWmmzYJlGyZn47ISDGXw/BSpJga6fw0EuEnUdqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Aleksander Mazur <deweloper@wp.pl>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 195/336] qibfs: fix dentry leak
-Date: Tue, 14 May 2024 12:16:39 +0200
-Message-ID: <20240514101045.968261203@linuxfoundation.org>
+Subject: [PATCH 6.1 038/236] regulator: change stubbed devm_regulator_get_enable to return Ok
+Date: Tue, 14 May 2024 12:16:40 +0200
+Message-ID: <20240514101021.788814284@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit aa23317d0268b309bb3f0801ddd0d61813ff5afb ]
+[ Upstream commit 96e20adc43c4f81e9163a5188cee75a6dd393e09 ]
 
-simple_recursive_removal() drops the pinning references to all positives
-in subtree.  For the cases when its argument has been kept alive by
-the pinning alone that's exactly the right thing to do, but here
-the argument comes from dcache lookup, that needs to be balanced by
-explicit dput().
+The devm_regulator_get_enable() should be a 'call and forget' API,
+meaning, when it is used to enable the regulators, the API does not
+provide a handle to do any further control of the regulators. It gives
+no real benefit to return an error from the stub if CONFIG_REGULATOR is
+not set.
 
-Fixes: e41d237818598 "qib_fs: switch to simple_recursive_removal()"
-Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+On the contrary, returning and error is causing problems to drivers when
+hardware is such it works out just fine with no regulator control.
+Returning an error forces drivers to specifically handle the case where
+CONFIG_REGULATOR is not set, making the mere existence of the stub
+questionalble. Furthermore, the stub of the regulator_enable() seems to
+be returning Ok.
+
+Change the stub implementation for the devm_regulator_get_enable() to
+return Ok so drivers do not separately handle the case where the
+CONFIG_REGULATOR is not set.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Reported-by: Aleksander Mazur <deweloper@wp.pl>
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: da279e6965b3 ("regulator: Add devm helpers for get and enable")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/ZiYF6d1V1vSPcsJS@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/qib/qib_fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/regulator/consumer.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
-index 455e966eeff39..b27791029fa93 100644
---- a/drivers/infiniband/hw/qib/qib_fs.c
-+++ b/drivers/infiniband/hw/qib/qib_fs.c
-@@ -439,6 +439,7 @@ static int remove_device_files(struct super_block *sb,
- 		return PTR_ERR(dir);
- 	}
- 	simple_recursive_removal(dir, NULL);
-+	dput(dir);
- 	return 0;
+diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
+index ee3b4a0146119..eea165685588a 100644
+--- a/include/linux/regulator/consumer.h
++++ b/include/linux/regulator/consumer.h
+@@ -361,7 +361,7 @@ devm_regulator_get_exclusive(struct device *dev, const char *id)
+ 
+ static inline int devm_regulator_get_enable(struct device *dev, const char *id)
+ {
+-	return -ENODEV;
++	return 0;
  }
  
+ static inline int devm_regulator_get_enable_optional(struct device *dev,
 -- 
 2.43.0
 
