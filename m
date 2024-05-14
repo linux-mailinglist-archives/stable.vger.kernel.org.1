@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-43844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C068C4FE1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A7C8C5150
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453001F217A3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967621C211D3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CA94F60D;
-	Tue, 14 May 2024 10:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890D640862;
+	Tue, 14 May 2024 10:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psUlIsFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBDVcS/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7869C12F5AE;
-	Tue, 14 May 2024 10:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483D4320F;
+	Tue, 14 May 2024 10:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682603; cv=none; b=h9EQgps6psbjTC8kjv50rbHN0skJIREg5f+Ot/LBkf4vDbfKb711XSJ1Qu5mIQb2fCFW9nr54dQx546lyIBZEMtdmT8CtFE5ApUBLhPSovqdbRCiDa6nUvskSkBVAFGTPaYY/iKJyGF58HkJAimMGArbv1aq3c89wkjThL9lnZ4=
+	t=1715684311; cv=none; b=TVTWuh40tDSpZYjSQIANHhoQwl0Kmn7UOU2kVlp2xtAOXKMlehcz+BGC98cnoMwn8yssr8LCndj5NxyG12t7d3puUaW9V61mae19vwHiRhZr06JwXpapfbFaorRm0UwHm2624JDnF4i/liuu9+L7XSibb/B3l98YZZSJKirL0Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682603; c=relaxed/simple;
-	bh=nwo62xetlF7f57keP+sHoRFx4AbOaFqST44wADBzs2w=;
+	s=arc-20240116; t=1715684311; c=relaxed/simple;
+	bh=eP1Nqcn31fPYr5tWlhCIARhg5nBKZivf1AUbhrVuj7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLBhqvM6LOfLlbfQNKCpFGXidRbXF1xlrFEeBJtX8ahZOHX4pRtz0P8HPmuu9+TSspUXiPxMIADEbQdDs/s7vcOGsfU8EgCOUClPqMUF5btCEEsDBXZ9cw4RaDmgz9TVUtJ0hjmMTUg9URbR0Z6G77WFKB/7ycoo4BNw7nw3FDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psUlIsFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE161C2BD10;
-	Tue, 14 May 2024 10:30:02 +0000 (UTC)
+	 MIME-Version; b=aRAUefpNCzvz/DlSQiinUb+EkGhZqpQ69osVkk0njQfcFpFw4zDwmp58dbSPgiNG1GOCtPGwXyAhYgpeV6JUqNcMexJOln1VmErPlgbzb60cfdhWTo1VWUmjkCD+vlNNexZ45XkfdukEfEZtRx9+12/g6mIE3yabC7cjurtjT8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBDVcS/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638C5C2BD10;
+	Tue, 14 May 2024 10:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682603;
-	bh=nwo62xetlF7f57keP+sHoRFx4AbOaFqST44wADBzs2w=;
+	s=korg; t=1715684311;
+	bh=eP1Nqcn31fPYr5tWlhCIARhg5nBKZivf1AUbhrVuj7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psUlIsFHDGFfYdXLUsfDNVrjt3NYjC/ea20Su1IoYrzPywTFdLXFvNG7oBRjK3Ipc
-	 QTlqP1zIcA4Ou233wx8617PvkdPyWKzzzUUguZsnp29nddCMgtGGa9yjoHJxhqgSDT
-	 uaMd95KBSsJgsQJkiSkRrHfNLYtvYREYvtRchWuM=
+	b=vBDVcS/a71NENT6+N+uK1eKID/wi07CHVetoElBwx2Q5REAfB7VtwBFUr6fGUH+l/
+	 K7Pfn+KfT/noeQcW8wNTLaJZtLiAuDtbpdVX50R54gZKIJzdFleQhTJBc9j8YJnRhy
+	 TvAutA9x/j4zUT/p8TkwZsf3H4q757TDRiXyGiZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nageswara R Sastry <rnsastry@linux.ibm.com>,
-	Nayna Jain <nayna@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 089/336] powerpc/pseries: make max polling consistent for longer H_CALLs
+Subject: [PATCH 6.6 022/301] power: rt9455: hide unused rt9455_boost_voltage_values
 Date: Tue, 14 May 2024 12:14:53 +0200
-Message-ID: <20240514101041.966716375@linuxfoundation.org>
+Message-ID: <20240514101033.083534343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nayna Jain <nayna@linux.ibm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 784354349d2c988590c63a5a001ca37b2a6d4da1 ]
+[ Upstream commit 452d8950db3e839aba1bb13bc5378f4bac11fa04 ]
 
-Currently, plpks_confirm_object_flushed() function polls for 5msec in
-total instead of 5sec.
+The rt9455_boost_voltage_values[] array is only used when USB PHY
+support is enabled, causing a W=1 warning otherwise:
 
-Keep max polling time consistent for all the H_CALLs, which take longer
-than expected, to be 5sec. Also, make use of fsleep() everywhere to
-insert delay.
+drivers/power/supply/rt9455_charger.c:200:18: error: 'rt9455_boost_voltage_values' defined but not used [-Werror=unused-const-variable=]
 
-Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform KeyStore")
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240418031230.170954-1-nayna@linux.ibm.com
+Enclose the definition in the same #ifdef as the references to it.
+
+Fixes: e86d69dd786e ("power_supply: Add support for Richtek RT9455 battery charger")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240403080702.3509288-10-arnd@kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/plpks.h       |  5 ++---
- arch/powerpc/platforms/pseries/plpks.c | 10 +++++-----
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/power/supply/rt9455_charger.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-index 23b77027c9163..7a84069759b03 100644
---- a/arch/powerpc/include/asm/plpks.h
-+++ b/arch/powerpc/include/asm/plpks.h
-@@ -44,9 +44,8 @@
- #define PLPKS_MAX_DATA_SIZE		4000
+diff --git a/drivers/power/supply/rt9455_charger.c b/drivers/power/supply/rt9455_charger.c
+index c345a77f9f78c..e4dbacd50a437 100644
+--- a/drivers/power/supply/rt9455_charger.c
++++ b/drivers/power/supply/rt9455_charger.c
+@@ -192,6 +192,7 @@ static const int rt9455_voreg_values[] = {
+ 	4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000
+ };
  
- // Timeouts for PLPKS operations
--#define PLPKS_MAX_TIMEOUT		5000 // msec
--#define PLPKS_FLUSH_SLEEP		10 // msec
--#define PLPKS_FLUSH_SLEEP_RANGE		400
-+#define PLPKS_MAX_TIMEOUT		(5 * USEC_PER_SEC)
-+#define PLPKS_FLUSH_SLEEP		10000 // usec
++#if IS_ENABLED(CONFIG_USB_PHY)
+ /*
+  * When the charger is in boost mode, REG02[7:2] represent boost output
+  * voltage.
+@@ -207,6 +208,7 @@ static const int rt9455_boost_voltage_values[] = {
+ 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
+ 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
+ };
++#endif
  
- struct plpks_var {
- 	char *component;
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index febe18f251d0c..4a595493d28ae 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -415,8 +415,7 @@ static int plpks_confirm_object_flushed(struct label *label,
- 			break;
- 		}
- 
--		usleep_range(PLPKS_FLUSH_SLEEP,
--			     PLPKS_FLUSH_SLEEP + PLPKS_FLUSH_SLEEP_RANGE);
-+		fsleep(PLPKS_FLUSH_SLEEP);
- 		timeout = timeout + PLPKS_FLUSH_SLEEP;
- 	} while (timeout < PLPKS_MAX_TIMEOUT);
- 
-@@ -464,9 +463,10 @@ int plpks_signed_update_var(struct plpks_var *var, u64 flags)
- 
- 		continuetoken = retbuf[0];
- 		if (pseries_status_to_err(rc) == -EBUSY) {
--			int delay_ms = get_longbusy_msecs(rc);
--			mdelay(delay_ms);
--			timeout += delay_ms;
-+			int delay_us = get_longbusy_msecs(rc) * 1000;
-+
-+			fsleep(delay_us);
-+			timeout += delay_us;
- 		}
- 		rc = pseries_status_to_err(rc);
- 	} while (rc == -EBUSY && timeout < PLPKS_MAX_TIMEOUT);
+ /* REG07[3:0] (VMREG) in uV */
+ static const int rt9455_vmreg_values[] = {
 -- 
 2.43.0
 
