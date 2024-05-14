@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-44100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD988C513D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:25:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0C18C5382
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221EE1F21160
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF181C22B83
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E36612FB28;
-	Tue, 14 May 2024 10:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6673855C3B;
+	Tue, 14 May 2024 11:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6xkJ148"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uM/3QhwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAFD12FB12;
-	Tue, 14 May 2024 10:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9C74E1C9;
+	Tue, 14 May 2024 11:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684223; cv=none; b=NP/mpYQjRgxoPxctUzYsSm37rvoqgjowzczgr31N2NWY+1DuQQ4GKzc8qXekfVzA26EQkAyT7AxqPb+7yiGfhy8u5gFhXTow4PHhAlR1buJf38bV/+f2AlhUrrQKDAnkVhRSb1GEplSaBj66UCOLzywl1FQwxu5XdBHeYwdl/xM=
+	t=1715686573; cv=none; b=ZcxbnegHN9IABYyicvuXe/VYbABX0vi8Ai22YDtzQLpum/Rmp3utswpiFsORjrKG62KiAlxXYUh0bB1IsSB0q7kjCYZbW214V02b7o5Dxp4/A/9ti9qFqpGcrDMXChLN9pLvev5bUA2ScMTHtmTNEXwtnoFM6E7eoDU7P4vdgtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684223; c=relaxed/simple;
-	bh=v0hT5kLsmmtM1LnIN9vVCh9r5+7NCos8OkiD6uBqVps=;
+	s=arc-20240116; t=1715686573; c=relaxed/simple;
+	bh=6QjDsIw/JeAG3uVovWgs/kBuaJKbXelatoT4VxUhUJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SZgC7Fk3LU9rtgOYx1UoLXvhnAVCfNtVieulo0az5U+V5u6+E4vegel+6u39HjXZ10J3T/Huhmpr7yFgT6wy5yY0y5lJyPD0/PkSEM8BzqK+Pzgsn7WKeKO3uVK3UZIKJj6AwXgwMtnrjRXY9lJqr07VVZHwVQVNh2X7ixI8048=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6xkJ148; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2DFC2BD10;
-	Tue, 14 May 2024 10:57:02 +0000 (UTC)
+	 MIME-Version; b=Vz49kyw5yEMBFLVOQ44ZL3w0DQB5rdKDWruOwEoPzltYSUS4MW8P/K9UWZL1/ZhOtoFpk/ZNSV1s/ALPayEmnlplshvpuLwg5Wg7k4qx/PTX7ghR6e28SGbNXVNu/81B3LheitSatv4so++aTlsW+jzkCTHUUhUp0CcMiIBkHoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uM/3QhwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C33C2BD10;
+	Tue, 14 May 2024 11:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684223;
-	bh=v0hT5kLsmmtM1LnIN9vVCh9r5+7NCos8OkiD6uBqVps=;
+	s=korg; t=1715686573;
+	bh=6QjDsIw/JeAG3uVovWgs/kBuaJKbXelatoT4VxUhUJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6xkJ148VoEaYfHSZ6FE3RX6GK5L7uz6gL7iNVYExqMHa4JoaOAvbnxW7IOwMohNr
-	 s55LLopT/vSZ5LEvs1NkOPcDWhnoThBKowt4PWcLypZhdlEjbU3wk4V/JEHOATVxiA
-	 48YMTcucTFMTcjTeOTuy4o/sars3Pmxk+jtV5VzQ=
+	b=uM/3QhwFpmai0kSORoZ6itHzyRY2LFCtIBfusRDDEW1cGAOdUiVKxzgQ+aqRPdbVq
+	 c+JszncNA8C7QJc2lyNfJzGRDjsyN9CStHZ1Bz2aYZuAcXhACARkZZhP0CJBwZ6hoL
+	 Xme/8+x3QLv9hCRO7U8f8vA4mD+bvXlqAnMRe3Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 6.8 311/336] misc/pvpanic-pci: register attributes via pci_driver
+	Roded Zats <rzats@paloaltonetworks.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 153/236] rtnetlink: Correct nested IFLA_VF_VLAN_LIST attribute validation
 Date: Tue, 14 May 2024 12:18:35 +0200
-Message-ID: <20240514101050.359236673@linuxfoundation.org>
+Message-ID: <20240514101026.174659948@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,48 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Roded Zats <rzats@paloaltonetworks.com>
 
-commit ee59be35d7a8be7fcaa2d61fb89734ab5c25e4ee upstream.
+[ Upstream commit 1aec77b2bb2ed1db0f5efc61c4c1ca3813307489 ]
 
-In __pci_register_driver(), the pci core overwrites the dev_groups field of
-the embedded struct device_driver with the dev_groups from the outer
-struct pci_driver unconditionally.
+Each attribute inside a nested IFLA_VF_VLAN_LIST is assumed to be a
+struct ifla_vf_vlan_info so the size of such attribute needs to be at least
+of sizeof(struct ifla_vf_vlan_info) which is 14 bytes.
+The current size validation in do_setvfinfo is against NLA_HDRLEN (4 bytes)
+which is less than sizeof(struct ifla_vf_vlan_info) so this validation
+is not enough and a too small attribute might be cast to a
+struct ifla_vf_vlan_info, this might result in an out of bands
+read access when accessing the saved (casted) entry in ivvl.
 
-Set dev_groups in the pci_driver to make sure it is used.
-
-This was broken since the introduction of pvpanic-pci.
-
-Fixes: db3a4f0abefd ("misc/pvpanic: add PCI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Fixes: ded13b9cfd59 ("PCI: Add support for dev_groups to struct pci_driver")
-Link: https://lore.kernel.org/r/20240411-pvpanic-pci-dev-groups-v1-1-db8cb69f1b09@weissschuh.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79aab093a0b5 ("net: Update API for VF vlan protocol 802.1ad support")
+Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Link: https://lore.kernel.org/r/20240502155751.75705-1-rzats@paloaltonetworks.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pvpanic/pvpanic-pci.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/core/rtnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/pvpanic/pvpanic-pci.c
-+++ b/drivers/misc/pvpanic/pvpanic-pci.c
-@@ -44,8 +44,6 @@ static struct pci_driver pvpanic_pci_dri
- 	.name =         "pvpanic-pci",
- 	.id_table =     pvpanic_pci_id_tbl,
- 	.probe =        pvpanic_pci_probe,
--	.driver = {
--		.dev_groups = pvpanic_dev_groups,
--	},
-+	.dev_groups =   pvpanic_dev_groups,
- };
- module_pci_driver(pvpanic_pci_driver);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index ac379e4590f8d..80169afb888d2 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2443,7 +2443,7 @@ static int do_setvfinfo(struct net_device *dev, struct nlattr **tb)
+ 
+ 		nla_for_each_nested(attr, tb[IFLA_VF_VLAN_LIST], rem) {
+ 			if (nla_type(attr) != IFLA_VF_VLAN_INFO ||
+-			    nla_len(attr) < NLA_HDRLEN) {
++			    nla_len(attr) < sizeof(struct ifla_vf_vlan_info)) {
+ 				return -EINVAL;
+ 			}
+ 			if (len >= MAX_VLAN_LIST_LEN)
+-- 
+2.43.0
+
 
 
 
