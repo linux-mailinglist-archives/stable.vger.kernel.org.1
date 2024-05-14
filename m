@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9E98C51CB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9F18C503A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5619C1F2182F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5D71284BC0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1581513C692;
-	Tue, 14 May 2024 11:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C75F13A89C;
+	Tue, 14 May 2024 10:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZD4mIiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UqHxWCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C595B6BB39;
-	Tue, 14 May 2024 11:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196D413A412;
+	Tue, 14 May 2024 10:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685056; cv=none; b=JPIAkfiPmyRMMC/PVXzChhdqsOcB1uc6mhsfJqo4y1w3fI64i1XBuyAZQ1F6gv0fi+gIZcZhk4hF40hog2wwimFWI855qm9Vcta5X+LTv8LI12rXx17oJzB85Do97vFgqI3HgQuqkNsiwXBtiNjWyCgegMupiQH3w2ddd25/Wuk=
+	t=1715683096; cv=none; b=Dsx2z6lxfpdlmaADCMEXTxQlovyfokr0TM5FCiNReybmGsAiBbASjp7Kumc+ncVu+SOll8O0YayrICpQGNtuuP0qcn89Z/P1Lj5aEBwmLridmWzjoR9WhJkZP1TWdz19BRkopMP2X1W6No34HxU8lZ1w2ks9q0E0NnpooIRhG1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685056; c=relaxed/simple;
-	bh=DQDomxYBp6Je3bwv1njHfIZBqo/e2aI9TTO1O0Rm1NQ=;
+	s=arc-20240116; t=1715683096; c=relaxed/simple;
+	bh=Fz2wgZzYqIVgzg7XOxjL/0BHH5x3Z+9gMM289236PrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQhbit8RdWkshvECVhB953zy/OHocxqR5RcpwnYB3OfpnKmdq7yoXizzMNXE0sLEqILdkcOCdkW3fmS15EQUN0+e0D6GP2isRuTuAccIwd26N4TuGuEyPHQd98kima9v03xaxjMdx95z3nwfADlvpZJ2gL9ngD06ovnA6kQ+SGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZD4mIiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1838FC2BD10;
-	Tue, 14 May 2024 11:10:55 +0000 (UTC)
+	 MIME-Version; b=tjG4+nTJmK6wQPgJ0ZROISIVvUR29iyWWUxbJo7haTXifCw+mUdECMhKeelg7wSpjPaPI2YjK4lwYR420C9EQrHqIQVrXxxK3Klx2/20brxf1pJ4qJCD0tA6291kjC/6DXjHiFhU1DA1cWs7A/I9JCnr4zTIi9CsXZuA2IZn6z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UqHxWCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706D9C2BD10;
+	Tue, 14 May 2024 10:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685056;
-	bh=DQDomxYBp6Je3bwv1njHfIZBqo/e2aI9TTO1O0Rm1NQ=;
+	s=korg; t=1715683095;
+	bh=Fz2wgZzYqIVgzg7XOxjL/0BHH5x3Z+9gMM289236PrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZD4mIiStDPDj/7NOL+Sre76DKgU9xMCXEL0q18GM2J+64W12L1s6FwaR5WbHWEC8
-	 uwDBNS5Vqo3j/ULgrB9fj36OYvz44JKfa4nWmIKn5MRrZkFVmpUhzQS+55YzmkDnoH
-	 3de85Pmb7bdYhjVAkQ9cWrNtVonuXdm5nOp/oUhI=
+	b=1UqHxWCKeeS/eGQ8tzPVHhwNbX+c11iDl69pRSiUJGufsm8XM4+vgZG+QiiBkuE8O
+	 rSd0uRmT2f/QCI8RTngBx8LA3MZR6NN+pshPxRAnNZRQCv+mzqCAjFbeoPfX3ZTc6X
+	 BwIHWbIH1Q1UQs7gJg/dhTFzv4ZddAv31u1oh0m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	James Zhu <James.Zhu@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/301] scsi: lpfc: Move NPIVs transport unregistration to after resource clean up
-Date: Tue, 14 May 2024 12:16:08 +0200
-Message-ID: <20240514101035.914546982@linuxfoundation.org>
+Subject: [PATCH 6.8 165/336] drm/amdgpu: Fix VCN allocation in CPX partition
+Date: Tue, 14 May 2024 12:16:09 +0200
+Message-ID: <20240514101044.834599506@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 4ddf01f2f1504fa08b766e8cfeec558e9f8eef6c ]
+[ Upstream commit f7e232de51bb1b45646e5b7dc4ebcf13510f2630 ]
 
-There are cases after NPIV deletion where the fabric switch still believes
-the NPIV is logged into the fabric.  This occurs when a vport is
-unregistered before the Remove All DA_ID CT and LOGO ELS are sent to the
-fabric.
+VCN need not be shared in CPX mode always for all GFX 9.4.3 SOC SKUs. In
+certain configs, VCN instance can be exclusively allocated to a
+partition even under CPX mode.
 
-Currently fc_remove_host(), which calls dev_loss_tmo for all D_IDs including
-the fabric D_ID, removes the last ndlp reference and frees the ndlp rport
-object.  This sometimes causes the race condition where the final DA_ID and
-LOGO are skipped from being sent to the fabric switch.
-
-Fix by moving the fc_remove_host() and scsi_remove_host() calls after DA_ID
-and LOGO are sent.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240305200503.57317-3-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: James Zhu <James.Zhu@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_vport.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_vport.c b/drivers/scsi/lpfc/lpfc_vport.c
-index 6c7559cf1a4b6..9e0e9e02d2c47 100644
---- a/drivers/scsi/lpfc/lpfc_vport.c
-+++ b/drivers/scsi/lpfc/lpfc_vport.c
-@@ -683,10 +683,6 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
- 	lpfc_free_sysfs_attr(vport);
- 	lpfc_debugfs_terminate(vport);
+diff --git a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+index d6f808acfb17b..fbb43ae7624f4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
++++ b/drivers/gpu/drm/amd/amdgpu/aqua_vanjaram.c
+@@ -62,6 +62,11 @@ void aqua_vanjaram_doorbell_index_init(struct amdgpu_device *adev)
+ 	adev->doorbell_index.max_assignment = AMDGPU_DOORBELL_LAYOUT1_MAX_ASSIGNMENT << 1;
+ }
  
--	/* Remove FC host to break driver binding. */
--	fc_remove_host(shost);
--	scsi_remove_host(shost);
--
- 	/* Send the DA_ID and Fabric LOGO to cleanup Nameserver entries. */
- 	ndlp = lpfc_findnode_did(vport, Fabric_DID);
- 	if (!ndlp)
-@@ -730,6 +726,10 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
- 
- skip_logo:
- 
-+	/* Remove FC host to break driver binding. */
-+	fc_remove_host(shost);
-+	scsi_remove_host(shost);
++static bool aqua_vanjaram_xcp_vcn_shared(struct amdgpu_device *adev)
++{
++	return (adev->xcp_mgr->num_xcps > adev->vcn.num_vcn_inst);
++}
 +
- 	lpfc_cleanup(vport);
+ static void aqua_vanjaram_set_xcp_id(struct amdgpu_device *adev,
+ 			     uint32_t inst_idx, struct amdgpu_ring *ring)
+ {
+@@ -87,7 +92,7 @@ static void aqua_vanjaram_set_xcp_id(struct amdgpu_device *adev,
+ 	case AMDGPU_RING_TYPE_VCN_ENC:
+ 	case AMDGPU_RING_TYPE_VCN_JPEG:
+ 		ip_blk = AMDGPU_XCP_VCN;
+-		if (adev->xcp_mgr->mode == AMDGPU_CPX_PARTITION_MODE)
++		if (aqua_vanjaram_xcp_vcn_shared(adev))
+ 			inst_mask = 1 << (inst_idx * 2);
+ 		break;
+ 	default:
+@@ -140,10 +145,12 @@ static int aqua_vanjaram_xcp_sched_list_update(
  
- 	/* Remove scsi host now.  The nodes are cleaned up. */
+ 		aqua_vanjaram_xcp_gpu_sched_update(adev, ring, ring->xcp_id);
+ 
+-		/* VCN is shared by two partitions under CPX MODE */
++		/* VCN may be shared by two partitions under CPX MODE in certain
++		 * configs.
++		 */
+ 		if ((ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC ||
+-			ring->funcs->type == AMDGPU_RING_TYPE_VCN_JPEG) &&
+-			adev->xcp_mgr->mode == AMDGPU_CPX_PARTITION_MODE)
++		     ring->funcs->type == AMDGPU_RING_TYPE_VCN_JPEG) &&
++		    aqua_vanjaram_xcp_vcn_shared(adev))
+ 			aqua_vanjaram_xcp_gpu_sched_update(adev, ring, ring->xcp_id + 1);
+ 	}
+ 
 -- 
 2.43.0
 
