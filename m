@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE488C554F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A97B8C53C7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01FF51F2150D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96EB7288AAE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B144D2B9AD;
-	Tue, 14 May 2024 11:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAD212F581;
+	Tue, 14 May 2024 11:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3Jy2iuH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqTSaos1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680601CFB2;
-	Tue, 14 May 2024 11:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD8276028;
+	Tue, 14 May 2024 11:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687801; cv=none; b=PP9hcCCNCgDvZpQYPRj3iYYvrRtE2FETJ2kCtYCikiy5e1lGZUb8pryTQeuY59a0HCxPkKAKef/HlZW/A3h4izqje8rLcbCl7VO+PRqtpx9OlNJM0tRzPFwgFn/UmkRv/zkOBqTNB+TeNVs5O9aaMIu+4TJoc8VkBjTw14aR3/w=
+	t=1715686746; cv=none; b=rRvVAjj88xsQQ4nm7N6I1MZjObsntqIt6Lv7m9OAPZc7oMinIB1ILWVS5bKsu31vbIIvkNSYemziEzgkwXsj5S2QCdBALuOCoQLu6TwjNrLFhz4RpygCERw3Wgg3elltXrSPi6iGvD0Lm9E1euKtaIKBaHSfpwx2dyKQNIHDpf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687801; c=relaxed/simple;
-	bh=Qi801E/MSBTtGZs08fkb7a7IVwnrXN2czcDAQMRMxfo=;
+	s=arc-20240116; t=1715686746; c=relaxed/simple;
+	bh=GS7TFFG6u8fmxU3hmQ5iLPiCWjD2Gabu9aovzXZokXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4pJ/hMNiu3qIIJxutls6oQsdLg9JYLTkDuE9OW73wlD6wLvf0qTEmRYlVvaNwLL7Y7Mx9dIWtSuhjoH4hArgSVfzFUflNU5xgkdTh4YiwMMu8DbcQ6ecHam/JI1HBBLI6/CpuETIsq32AQFoABtlfgfVCMnt0X2AFQ5XLIgu0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3Jy2iuH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50C0C32781;
-	Tue, 14 May 2024 11:56:40 +0000 (UTC)
+	 MIME-Version; b=pXtrDfkA+rh4chzP1BiQdAREh7GvImkLQ/y4kQUsRPhbCmPpe/N7CRJIjdmkgZz5E18eUR3cRbfWA6srj6J33jvuLJIjZv/vLOmisHXt3fI3dCi0cuZ9eG4AKAcU+O+b6jMj2ZSObmlDQH8v7YvcGNYikulpdJG78Aw0Kcy7q0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqTSaos1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A336C2BD10;
+	Tue, 14 May 2024 11:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687801;
-	bh=Qi801E/MSBTtGZs08fkb7a7IVwnrXN2czcDAQMRMxfo=;
+	s=korg; t=1715686746;
+	bh=GS7TFFG6u8fmxU3hmQ5iLPiCWjD2Gabu9aovzXZokXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3Jy2iuHzKq7XeucMGqAiQ8zU+ADIpoCHrqs+cvI8raOF3PVhevKexIU8ORka9acp
-	 inzHqqZiWo3erQ9c+T4mhYTNQxZtvofs3SmqarQCcBFaudSwu9i+uJsTI3ve+8+ARf
-	 RViaRhn9AyvMgNiPHlYoutrC9U8Vw/acStF5Up3E=
+	b=jqTSaos10fhYWMCSxbRYJlBNP+MB9e38EhGsj2bcYL6qK74iQy3A2g5KAC7yD+L4T
+	 WvHfn4P+OInz4IRuRQTRyeroiFSHk6DQb9EKgJy1gwR2zF0C6qRAA4RhhpiwF9dET1
+	 /SywIKBF25AbbHnjBHgvF48D+qaOOEsVLxHStI2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/168] btrfs: make btrfs_clear_delalloc_extent() free delalloc reserve
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 214/236] net: bcmgenet: synchronize UMAC_CMD access
 Date: Tue, 14 May 2024 12:19:36 +0200
-Message-ID: <20240514101009.639498840@linuxfoundation.org>
+Message-ID: <20240514101028.484420034@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit 3c6f0c5ecc8910d4ffb0dfe85609ebc0c91c8f34 ]
+commit 0d5e2a82232605b337972fb2c7d0cbc46898aca1 upstream.
 
-Currently, this call site in btrfs_clear_delalloc_extent() only converts
-the reservation. We are marking it not delalloc, so I don't think it
-makes sense to keep the rsv around.  This is a path where we are not
-sure to join a transaction, so it leads to incorrect free-ing during
-umount.
+The UMAC_CMD register is written from different execution
+contexts and has insufficient synchronization protections to
+prevent possible corruption. Of particular concern are the
+acceses from the phy_device delayed work context used by the
+adjust_link call and the BH context that may be used by the
+ndo_set_rx_mode call.
 
-Helps with the pass rate of generic/269 and generic/475.
+A spinlock is added to the driver to protect contended register
+accesses (i.e. reg_lock) and it is used to synchronize accesses
+to UMAC_CMD.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   12 +++++++++++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |    4 +++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |    8 +++++++-
+ drivers/net/ethernet/broadcom/genet/bcmmii.c       |    2 ++
+ 4 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index c7d8a18daaf50..07c6ab4ba0d43 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -2261,7 +2261,7 @@ void btrfs_clear_delalloc_extent(struct inode *vfs_inode,
- 		 */
- 		if (*bits & EXTENT_CLEAR_META_RESV &&
- 		    root != fs_info->tree_root)
--			btrfs_delalloc_release_metadata(inode, len, false);
-+			btrfs_delalloc_release_metadata(inode, len, true);
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2468,14 +2468,18 @@ static void umac_enable_set(struct bcmge
+ {
+ 	u32 reg;
  
- 		/* For sanity tests. */
- 		if (btrfs_is_testing(fs_info))
--- 
-2.43.0
-
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+-	if (reg & CMD_SW_RESET)
++	if (reg & CMD_SW_RESET) {
++		spin_unlock_bh(&priv->reg_lock);
+ 		return;
++	}
+ 	if (enable)
+ 		reg |= mask;
+ 	else
+ 		reg &= ~mask;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	/* UniMAC stops on a packet boundary, wait for a full-size packet
+ 	 * to be processed
+@@ -2491,8 +2495,10 @@ static void reset_umac(struct bcmgenet_p
+ 	udelay(10);
+ 
+ 	/* issue soft reset and disable MAC while updating its registers */
++	spin_lock_bh(&priv->reg_lock);
+ 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
+ 	udelay(2);
++	spin_unlock_bh(&priv->reg_lock);
+ }
+ 
+ static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
+@@ -3615,16 +3621,19 @@ static void bcmgenet_set_rx_mode(struct
+ 	 * 3. The number of filters needed exceeds the number filters
+ 	 *    supported by the hardware.
+ 	*/
++	spin_lock(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
+ 	    (nfilter > MAX_MDF_FILTER)) {
+ 		reg |= CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
+ 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
+ 		return;
+ 	} else {
+ 		reg &= ~CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
+ 	}
+ 
+ 	/* update MDF filter */
+@@ -4026,6 +4035,7 @@ static int bcmgenet_probe(struct platfor
+ 		goto err;
+ 	}
+ 
++	spin_lock_init(&priv->reg_lock);
+ 	spin_lock_init(&priv->lock);
+ 
+ 	/* Set default pause parameters */
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * Copyright (c) 2014-2020 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
+  */
+ 
+ #ifndef __BCMGENET_H__
+@@ -573,6 +573,8 @@ struct bcmgenet_rxnfc_rule {
+ /* device context */
+ struct bcmgenet_priv {
+ 	void __iomem *base;
++	/* reg_lock: lock to serialize access to shared registers */
++	spinlock_t reg_lock;
+ 	enum bcmgenet_version version;
+ 	struct net_device *dev;
+ 
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -2,7 +2,7 @@
+ /*
+  * Broadcom GENET (Gigabit Ethernet) Wake-on-LAN support
+  *
+- * Copyright (c) 2014-2020 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
+  */
+ 
+ #define pr_fmt(fmt)				"bcmgenet_wol: " fmt
+@@ -133,6 +133,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Can't suspend with WoL if MAC is still in reset */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if (reg & CMD_SW_RESET)
+ 		reg &= ~CMD_SW_RESET;
+@@ -140,6 +141,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* disable RX */
+ 	reg &= ~CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 	mdelay(10);
+ 
+ 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE)) {
+@@ -185,6 +187,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Enable CRC forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	priv->crc_fwd_en = 1;
+ 	reg |= CMD_CRC_FWD;
+@@ -192,6 +195,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* Receiver must be enabled for WOL MP detection */
+ 	reg |= CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	reg = UMAC_IRQ_MPD_R;
+ 	if (hfb_enable)
+@@ -238,7 +242,9 @@ void bcmgenet_wol_power_up_cfg(struct bc
+ 	}
+ 
+ 	/* Disable CRC Forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~CMD_CRC_FWD;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ }
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -78,6 +78,7 @@ static void bcmgenet_mac_config(struct n
+ 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
+ 	mutex_unlock(&phydev->lock);
+ 
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
+ 		       CMD_HD_EN |
+@@ -90,6 +91,7 @@ static void bcmgenet_mac_config(struct n
+ 		reg |= CMD_TX_EN | CMD_RX_EN;
+ 	}
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
+ 	bcmgenet_eee_enable_set(dev,
 
 
 
