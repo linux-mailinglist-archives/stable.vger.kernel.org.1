@@ -1,150 +1,110 @@
-Return-Path: <stable+bounces-43760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EE78C4DC9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:40:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C3338C4E88
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 161231C214CA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 08:40:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2E5FB214FB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 09:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD72182B5;
-	Tue, 14 May 2024 08:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82DC28E11;
+	Tue, 14 May 2024 09:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R7zQuAb5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qcrYibdz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3430B1CABD
-	for <stable@vger.kernel.org>; Tue, 14 May 2024 08:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0240423774
+	for <stable@vger.kernel.org>; Tue, 14 May 2024 09:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715675975; cv=none; b=IzK+I98zgu9maFpgwoyfW16mtwXwXazAasi4dtx3jRPM6jQKx8/ne9i1a1kgJOrMIGXv7CfpgHp+s6PauSyoRt3qrIODppCYatlWCyny8v7EErL71KtPzOqrQuKBPYhF6bwq9oPWthQFm5PBASmOd2vssjDrex9nbYFKCBtwlWs=
+	t=1715678099; cv=none; b=k+L/axLie1+EJza5vQuU5883dm/QfzI7j+Ed0qNADnqXujmQgAR2rSX88YNpKHO2xQVJeiYhHJWGrWLC5089aJWvUOthW+tEeVR5B/KoM+JFKvWwXpSy9U22ABa2i5B153D2i3qZlFWxFxS07blSKGs9aw5efutDUM+ZzGjZQJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715675975; c=relaxed/simple;
-	bh=/qKAckkSIiFrpRIvGGkfqQ5SXkqsX83t/RMU22jS5PA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z5d++U4W2yXe/19p0dhAjjDdgXhrJIbTycmsN56OPXfHqs/y3RDXKFslE7VNUCBAAG7XuBOsyKcsYE5A69bOnNOIsk/5w2uSwSQYhtFj47p1ePWBiHPhUmDPOaRH0bqWQ1GWgp4/JaFcmYG11GCY4yb1/WrcLH9HGOJVStoha0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R7zQuAb5; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-34d8d11a523so3349313f8f.2
-        for <stable@vger.kernel.org>; Tue, 14 May 2024 01:39:34 -0700 (PDT)
+	s=arc-20240116; t=1715678099; c=relaxed/simple;
+	bh=icODbfYucz8iEZrgAXkiUdXTmzMqOGwAC8BcHGY3Tbw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wl7wqqurecbrZkUB22dJcjSvay0Z8lcUVNqIvhIzszverHlcI87WbRIBSQTYRhE3DiwV7Nrl8MdPYWN+VWxaiJ5+k8JBbMxE4eG36XbTUQ7TsBViCwoPlaJKJbiT6sxNTB5wcWbNEwq2dRi9JjcxkLqFs+wXKRcRoBiJ2FJt0G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qcrYibdz; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-61b4cbb8834so53083507b3.0
+        for <stable@vger.kernel.org>; Tue, 14 May 2024 02:14:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715675973; x=1716280773; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LS0peL0MwvyMOdZgt++EgygrPaWPwT8KTIWTL9DYX6c=;
-        b=R7zQuAb5AIK2KHe+S0ocEt0Va5DaqfJuMbJ/WDud8ZxAB6Mu9PbMxPmrRA34DpcuA4
-         0Asqm8dXWhA+X2KC6XC3YmbGgHXFSkacz5BxOrSV7woAy4ti/oZmu1okS0+vtnqVWM3e
-         JrImIWG2ri+PQ4QLog+RbsDbkshOnoSbrJMfc85MAGB+aCrV3exaSlNaFVKUFpc2Q6wV
-         GkD1PD6BGvnhl+YhhFjEBIsp/qScrtHpwm0qPz+/h59dPh7kLkwT8f0wB+v9hOKDqvMB
-         VmlCcMpgIJM700b420amoWh0tBd99j7CldiclSOEgjT/EzI/T3HvmzqhyrZazfMOT6k/
-         o66A==
+        d=linaro.org; s=google; t=1715678097; x=1716282897; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HwiEG+/aSeVq+45AIyqwaFB4r49uUU/xCyg6kp9PQPw=;
+        b=qcrYibdzw8ejm3DTwFw0aQ1+8lS7v2cSxPOunX5wyzvQ3VIB47U7vUt+w0Mhhvmp7Z
+         z5P7kDVAcGymKYdHPrjLIaeJK/ImNxN8LnlWBwQ7gZ/zPT1rBmsqgeNyZqgTcqhyA6Vf
+         J1xROsideLdaV4Fo00Swsvk9uNh801DspFGapE3Y7wX0j3udajKlB/tjQbk3+7105lzX
+         miKVMNy8RwOWj9fc+fJxPwImi7TroSZzDytSgAkfdW7PB1PqLbyYQFm+uwLuTGGXuAew
+         wE3bKYXJuE1Kyek921rT/w91vx2Dh98ZXnNatzi+4zPzqP1KnuoqMqWLhVGELXnRlHfy
+         fDEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715675973; x=1716280773;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1715678097; x=1716282897;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LS0peL0MwvyMOdZgt++EgygrPaWPwT8KTIWTL9DYX6c=;
-        b=msdEn3LfaZju+11vFq+ZD4LZa8XzMeoMpLINQBG3LijuIJekn+qorhR0LAeSv2dJR1
-         OHsnrvU/4/MNblAUdSEK0cf0t5zGSm6ixV/f3T2O61dfLO6KC1m0++EytW72WAKO84Sv
-         6DRvfwZ7Ijih85PScPAYIMxY3ALbZgGLgPJwCZIIy+Wmfpfa+myU2WoYTSkXAsQVo6yb
-         TcWi2/IvL1mKvV4VksaZ4gItF3a2WJi3b1KfMCKaqnMM6ovd6i7Htbu61JJ5jL+r7e22
-         qTrsNaghgEvLsytWMsrZCX/INj36L5zs0u1nd6i+vO1uMDAjVIVPcr4NbksCghL6HNid
-         D1AQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtUAWM1oOnNrrdGdBvoVMuyW3LirHmSldKCaC2WHxHAW1Du96y4+aSnstszteOb6Cx4W6oB4mxizxGkDNWdEErq+XTrZDv
-X-Gm-Message-State: AOJu0YysUgzVgK7Cpe4/GIN7InLS/Rl6plBnzcLlWeT4nkDwUekh0ita
-	/L+Si8ICPYLh61n068gvswLgZ30JbS2BDonhMuIdYgRtfwNb23zC
-X-Google-Smtp-Source: AGHT+IG+XBuPesGABN/DU+tou/THngVBqGizh2m2vmGjA1o+1uvBhmfyckrEfobGo05Gwci94M+ziQ==
-X-Received: by 2002:adf:c049:0:b0:351:b56e:8bad with SMTP id ffacd0b85a97d-351b56e8c40mr4194712f8f.50.1715675972374;
-        Tue, 14 May 2024 01:39:32 -0700 (PDT)
-Received: from fedora.iskraemeco.si ([193.77.86.250])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502e5e0b0esm12890517f8f.26.2024.05.14.01.39.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 May 2024 01:39:31 -0700 (PDT)
-From: Uros Bizjak <ubizjak@gmail.com>
-To: 
-Cc: Uros Bizjak <ubizjak@gmail.com>,
-	Charlemagne Lasse <charlemagnelasse@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] x86/percpu: Use __force to cast from __percpu address space
-Date: Tue, 14 May 2024 10:39:18 +0200
-Message-ID: <20240514083920.3369074-1-ubizjak@gmail.com>
-X-Mailer: git-send-email 2.45.0
+        bh=HwiEG+/aSeVq+45AIyqwaFB4r49uUU/xCyg6kp9PQPw=;
+        b=UXJUApecC7FM7T2Fr5moywW9/qkWLFT3rAEASRikBWpn98gYtXtztHEmtm29Fq3a73
+         3wYvwS0WSM+L1ZtcwA6tZGMH+oZNe6Iu3wMlqxEM9XJLgCDmJCkgg7cPwoGNLqVgE7xg
+         jUEFZ4wc9UCtNvuH5wELZw9HVgJ3vnP5dDKcJUzJlQU5Eh+SYEq354Tr9X6Gj0YlYJwA
+         GPhHoBstWhmL49y+kvUZuWh4zbE9pq4lLF81IEOSCWYvopCLGObmG57fH7jcYu+5KLzr
+         itjFTxLsxDoW5DKIY7kTPKe4LSbDnwBK5HjMhv22JkTqneuLNc+DjFQTX/Xe6wpZys98
+         eUSA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHCpS0veLp6qhCyKwLz7cZ8tUoBVanLYHd68tycsieHQ5Wgwd8WT+H9L5Fq89YuM1TTuIFA3CaHJxyO8Zhx0TSpRUi61ua
+X-Gm-Message-State: AOJu0YwXbmz+SbH88L/TRWmX+Wn812ZC2zJVKoCJJrA+T/8szQsvgmK8
+	5V6hZevPfjhi8gCdLNnAVG7VzxSClM484GXBO7ZhXOqkPvQBXDDoEaiu1BSMWTbCNjTW+GYCd49
+	HrB52K6akMUhA0v18QBAa037heC4DNCDEN5Pbiw==
+X-Google-Smtp-Source: AGHT+IHTndqU8L/COCyzxzWqR9ztoQ2UlOx5uP/3CeJVhfGg7caer2qbn+5Tp3fV+rceU+UurQnOt0LPpOXSqHkDU54=
+X-Received: by 2002:a05:690c:660e:b0:61a:af67:1cfd with SMTP id
+ 00721157ae682-622aff906e3mr134790487b3.5.1715678097010; Tue, 14 May 2024
+ 02:14:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAMSo37XWZ118=R9tFHZqw+wc7Sy_QNHHLdkQhaxjhCeuQQhDJw@mail.gmail.com>
+ <20240514070033.5795-1-jtornosm@redhat.com>
+In-Reply-To: <20240514070033.5795-1-jtornosm@redhat.com>
+From: Yongqin Liu <yongqin.liu@linaro.org>
+Date: Tue, 14 May 2024 11:14:46 +0200
+Message-ID: <CAMSo37VywwR8qbNWhOo9kS0QzACE0NcYwJXG_GKT9zcKn4GitQ@mail.gmail.com>
+Subject: Re: [PATCH v2] net: usb: ax88179_178a: avoid writing the mac address
+ before first reading
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: amit.pundir@linaro.org, davem@davemloft.net, edumazet@google.com, 
+	inventor500@vivaldi.net, jarkko.palviainen@gmail.com, jstultz@google.com, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org, 
+	sumit.semwal@linaro.org, vadim.fedorenko@linux.dev, vmartensson@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-commit a55c1fdad5f61b4bfe42319694b23671a758cb28 upstream.
+Hi Jose
+On Tue, 14 May 2024 at 09:00, Jose Ignacio Tornos Martinez
+<jtornosm@redhat.com> wrote:
+>
+> Hello Yongqin,
+>
+> I could not get a lot of information from the logs, but at least I
+> identified the device.
+> Anyway, I found the issue and the solution is being applied:
+> https://lore.kernel.org/netdev/171564122955.1634.5508968909715338167.git-patchwork-notify@kernel.org/
+Ah, I was not aware of it:(
 
-Fix Sparse warning when casting from __percpu address space by using
-__force in the cast. x86 named address spaces are not considered to
-be subspaces of the generic (flat) address space, so explicit casts
-are required to convert pointers between these address spaces and the
-generic address space (the application should cast to uintptr_t and
-apply the segment base offset). The cast to uintptr_t removes
-__percpu address space tag and Sparse reports:
+Thanks a lot for the work!
 
-  warning: cast removes address space '__percpu' of expression
-
-Use __force to inform Sparse that the cast is intentional.
-
-The patch deviates from upstream commit due to the unification of
-arch_raw_cpu_ptr() defines in the commit:
-
-  4e5b0e8003df ("x86/percpu: Unify arch_raw_cpu_ptr() defines").
-
-Fixes: 9a462b9eafa6 ("x86/percpu: Use compiler segment prefix qualifier")
-Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAFGhKbzev7W4aHwhFPWwMZQEHenVgZUj7=aunFieVqZg3mt14A@mail.gmail.com/
-Cc: stable@vger.kernel.org # v6.8
-Link: https://lore.kernel.org/r/20240402175058.52649-1-ubizjak@gmail.com
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
----
- arch/x86/include/asm/percpu.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-index 44958ebaf626..66ed36b8cdb4 100644
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -70,7 +70,7 @@
- 	unsigned long tcp_ptr__;				\
- 	tcp_ptr__ = __raw_cpu_read(, this_cpu_off);		\
- 								\
--	tcp_ptr__ += (unsigned long)(ptr);			\
-+	tcp_ptr__ += (__force unsigned long)(ptr);		\
- 	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;		\
- })
- #else /* CONFIG_USE_X86_SEG_SUPPORT */
-@@ -85,7 +85,7 @@
- 	     : "=r" (tcp_ptr__)					\
- 	     : "m" (__my_cpu_var(this_cpu_off)));		\
- 								\
--	tcp_ptr__ += (unsigned long)(ptr);			\
-+	tcp_ptr__ += (__force unsigned long)(ptr);		\
- 	(typeof(*(ptr)) __kernel __force *)tcp_ptr__;		\
- })
- #endif /* CONFIG_USE_X86_SEG_SUPPORT */
-@@ -102,8 +102,8 @@
- #endif /* CONFIG_SMP */
- 
- #define __my_cpu_type(var)	typeof(var) __percpu_seg_override
--#define __my_cpu_ptr(ptr)	(__my_cpu_type(*ptr) *)(uintptr_t)(ptr)
--#define __my_cpu_var(var)	(*__my_cpu_ptr(&var))
-+#define __my_cpu_ptr(ptr)	(__my_cpu_type(*(ptr))*)(__force uintptr_t)(ptr)
-+#define __my_cpu_var(var)	(*__my_cpu_ptr(&(var)))
- #define __percpu_arg(x)		__percpu_prefix "%" #x
- #define __force_percpu_arg(x)	__force_percpu_prefix "%" #x
- 
 -- 
-2.45.0
-
+Best Regards,
+Yongqin Liu
+---------------------------------------------------------------
+#mailing list
+linaro-android@lists.linaro.org
+http://lists.linaro.org/mailman/listinfo/linaro-android
 
