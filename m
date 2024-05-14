@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34548C530D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10ED8C5098
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11B60281EBF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4F91C20399
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516E5139597;
-	Tue, 14 May 2024 11:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B5413DBBC;
+	Tue, 14 May 2024 10:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in1bt71s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtQ8iIeS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F87D139590;
-	Tue, 14 May 2024 11:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255242CCA3;
+	Tue, 14 May 2024 10:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686284; cv=none; b=L6eqlIpY0WrTsOSVOcF0DPfqSTRLCCKX9X8Gw7hoL+aTLIJDUvSyw5cDUL1AC6kowqD0MGd4jmDNwoTtfxk2J3l3VHd7Yl1qk2G9v7Fx3eW42yflzrPd3o0PD3h3YAKeA1biUogQCVXWpyZi03kYH4PTaDfcTZCcG2/Qnn7fL9M=
+	t=1715683503; cv=none; b=IRnHeHyL+dsP7ZgVtJMYv0LXrzY8Kqt//fj1ohYNpzHzbMESfJuc08Yueu0Z3jY4SSQsdX0aVHkeQEKO/D8h074SliN8vR0FbSCgc71L51vbUmKuhnte7j++pxfoaesN9tW7xk3N3wOVlM00rVPXc2dK+pr2l1jenZ6WQztTQ3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686284; c=relaxed/simple;
-	bh=SbYdU1tNfsc1EttR4DzXoKEwNOdPif34K1tOeCvjtyg=;
+	s=arc-20240116; t=1715683503; c=relaxed/simple;
+	bh=12OZdOIN8pWf8HXmOIgLkLEY9Wq1xPnRQV62m3+BHi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltsMu6ATFnhjcI5nYe+9TbEeFGgSU/f+mHFuLMozUlVnoQ9kUBnIapeujzO6eF6+CBaL58fMJmSBu+tmroQIjOSfkvEbtAQjs9i+Z7ve+y7Tdt3+X2nzR0FQOPCt28+s+58k1apbM+sAKv6yf9Ff/SMuTPMYD8cd04PyY/M1dO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in1bt71s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D6DC4AF09;
-	Tue, 14 May 2024 11:31:23 +0000 (UTC)
+	 MIME-Version; b=QlbEMB0mx+oWwOx7tT4qXdv0GPFl8zGlP0slCswuIzyoxoVQh+N0W3nls6fup3e93Vg74tTKasXGUMP+yirvgqLTDpAWSqRJHvIDewjGcHPGzYRHM0Krf9gMqUcnYROo4eUyqWI6WUAgmFMeSchFif35t2AqbakiREhjS4lC80Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtQ8iIeS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7C1C2BD10;
+	Tue, 14 May 2024 10:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686283;
-	bh=SbYdU1tNfsc1EttR4DzXoKEwNOdPif34K1tOeCvjtyg=;
+	s=korg; t=1715683502;
+	bh=12OZdOIN8pWf8HXmOIgLkLEY9Wq1xPnRQV62m3+BHi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=in1bt71sTqN+hvwKYNmOmc5Kj2na3vGRgGhJmlZDFruqi0SYhTo59SL05YfZp857e
-	 SDS3MP3GFVAE/Uosbd8PGQmmN0NZJi62JCe9vLkA8FGLo16L9xzIYVq7yFqdbF3zRu
-	 E6Zn7t5A5aWqg4eEcYShdWhPWCNGwY3RZTHhEU6c=
+	b=dtQ8iIeSg9SMRTIbGkOUI6bMNIJtuWgvG383OFtaOFaBcftb38ttnW6EViVqfo1Qa
+	 f1VrHCzPhSaPysV84mMHKUukBt3ISdmyZx1YSIoARs6pM9fqPl3bC3SUYcCbVWmvTG
+	 GxYv58Fh779Sb+UsOdXKZrIz3nAYcG/E3KKGNsCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/236] spi: axi-spi-engine: fix version format string
-Date: Tue, 14 May 2024 12:16:54 +0200
-Message-ID: <20240514101022.320956265@linuxfoundation.org>
+Subject: [PATCH 6.8 211/336] netlink: specs: Add missing bridge linkinfo attrs
+Date: Tue, 14 May 2024 12:16:55 +0200
+Message-ID: <20240514101046.578947660@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Donald Hunter <donald.hunter@gmail.com>
 
-[ Upstream commit 0064db9ce4aa7cc794e6f4aed60dee0f94fc9bcf ]
+[ Upstream commit 9adcac6506185dd1a727f1784b89f30cd217ef7e ]
 
-The version format string in the AXI SPI Engine driver was probably
-intended to print the version number in the same format as the DT
-compatible string (e.g. 1.00.a). However, the version just uses
-semantic versioning so formatting the patch number as a character
-is not correct and would result in printing control characters for
-patch numbers less than 32.
+Attributes for FDB learned entries were added to the if_link netlink api
+for bridge linkinfo but are missing from the rt_link.yaml spec. Add the
+missing attributes to the spec.
 
-Fixes: b1353d1c1d45 ("spi: Add Analog Devices AXI SPI Engine controller support")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20240412-axi-spi-engine-version-printf-v1-1-95e1e842c1a6@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ddd1ad68826d ("net: bridge: Add netlink knobs for number / max learned FDB entries")
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240503164304.87427-1-donald.hunter@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/netlink/specs/rt_link.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 719e4f7445361..a5f0a61b266f1 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -532,7 +532,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- 	version = readl(spi_engine->base + ADI_AXI_REG_VERSION);
- 	if (ADI_AXI_PCORE_VER_MAJOR(version) != 1) {
--		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%c\n",
-+		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%u\n",
- 			ADI_AXI_PCORE_VER_MAJOR(version),
- 			ADI_AXI_PCORE_VER_MINOR(version),
- 			ADI_AXI_PCORE_VER_PATCH(version));
+diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
+index 8e4d19adee8cd..4e702ac8bf66b 100644
+--- a/Documentation/netlink/specs/rt_link.yaml
++++ b/Documentation/netlink/specs/rt_link.yaml
+@@ -1144,6 +1144,12 @@ attribute-sets:
+       -
+         name: mcast-querier-state
+         type: binary
++      -
++        name: fdb-n-learned
++        type: u32
++      -
++        name: fdb-max-learned
++        type: u32
+   -
+     name: linkinfo-brport-attrs
+     name-prefix: ifla-brport-
 -- 
 2.43.0
 
