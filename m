@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3528C5462
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E438C54BA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0401F233D5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9658228A3A3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8105D4500E;
-	Tue, 14 May 2024 11:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9669312E1DF;
+	Tue, 14 May 2024 11:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRKlESCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iNMf6Nr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA3C2B9B3;
-	Tue, 14 May 2024 11:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554D354903;
+	Tue, 14 May 2024 11:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687161; cv=none; b=VqlbK3MaEmoojVm4VcVLgwhyShtrRxyssPzu8T+fyLnvMyVRXG3WjKQ9HqF01SzlCdoZ6nCNFtrl7Qt7Lj+KG6Bmy3hY9AZc3ls9xjWrfQ2mwBC9KR+CND/Y23z6NYMmdJ7YfCl+71UYgKzMkPXrZcbC9hCyh/BK/mN+t2/MIK0=
+	t=1715687386; cv=none; b=tpVr6567FVdZKHJZqDy6xvhfuk0DYM5/bdWU/ZVcP8jW5YXrvS9690t8eOHxu7U/ahEBPKKj9oytzuIKVigAUmtqutyMxzAlY75T1RncooebvAXwMn2VwS8gx49VHnYjHZi9Uec/Tf5wDDCczsz437sYQpMLJ/pzV5X1KbiZSEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687161; c=relaxed/simple;
-	bh=3QX6bM/sYHugvU1AuXwWtJnXCl1z9TsMbBC330uHmZ4=;
+	s=arc-20240116; t=1715687386; c=relaxed/simple;
+	bh=3SBNEUDi19zXf8A1hSae9Xf31OW3y3d6Dyfk1RHRy1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/de5zotNYubFT+zlBTK9vyHIHyKL2K/1TqIGeWjkMS5sys2ByMoeqrRCVgWJoP3W+qVKQsEdOoQLRNdcuDnp7nyd3+c/LVYMLgefA26/25URPNmFFTvTVG+pAG2LpTGKltkipT36yMqwnsY72MAj002Pzmejw//g0tsfvQODjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRKlESCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33C6C2BD10;
-	Tue, 14 May 2024 11:46:00 +0000 (UTC)
+	 MIME-Version; b=jIOuFXaiXirA+hMsaUTtqN1PA5/WRsnR6+hyHURhVnIarVYlPcgiyPPHpmAVZz5ndVWuvzdLfxdReksHyzqfi8tU2f0DCb8w7cmVNV6WvVUINT3yW2NCFAvBi7mUjchKuYB9a8WVZCAtyNtoqEgFPXe6wu46jJEAClo2eNBMZ/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iNMf6Nr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D28C2BD10;
+	Tue, 14 May 2024 11:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687161;
-	bh=3QX6bM/sYHugvU1AuXwWtJnXCl1z9TsMbBC330uHmZ4=;
+	s=korg; t=1715687386;
+	bh=3SBNEUDi19zXf8A1hSae9Xf31OW3y3d6Dyfk1RHRy1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRKlESCMhtWqqoKRyTlWbrAuXgwy42VAQnySCk49OrdlhMkBvCMCmi3M3tXm/+Lzq
-	 s2XqeoDGwHfQ7EzfPY18mIJKAxoWb0lFywbz7n9rnZOfoCVdyAD/cfX91q3ffldT7e
-	 c6NCMfnA2bbzkE4n2zaPyAOkzmhSqybupHyvp87E=
+	b=1iNMf6NrIraK5fB84EJWFJQfcMtWD12diruHlRyHZ3pFxoDOmsG9uU9g8N3EZoWBe
+	 IAtRTsjNFS3AHs1COZ74/vQRUKyPn2fOT9FieE68UmZR760tqkxCuSijxnEjPxTQTd
+	 2Ar5F/uSvEeuW4IX+iXR5JCrMzYzZ+21R8+GKt+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Duoming Zhou <duoming@zju.edu.cn>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 65/84] Bluetooth: Fix use-after-free bugs caused by sco_sock_timeout
+Subject: [PATCH 5.10 078/111] Bluetooth: Fix use-after-free bugs caused by sco_sock_timeout
 Date: Tue, 14 May 2024 12:20:16 +0200
-Message-ID: <20240514100954.129036166@linuxfoundation.org>
+Message-ID: <20240514101000.097503452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -189,10 +189,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index a3b15b4e176ea..4c81883ba25e3 100644
+index 2115ca6d7e178..ae788d3e0c53a 100644
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -82,6 +82,10 @@ static void sco_sock_timeout(struct work_struct *work)
+@@ -83,6 +83,10 @@ static void sco_sock_timeout(struct work_struct *work)
  	struct sock *sk;
  
  	sco_conn_lock(conn);
