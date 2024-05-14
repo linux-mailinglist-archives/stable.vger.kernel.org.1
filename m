@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529798C53AD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228448C549F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E94711F23346
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA45B289F66
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8388E12E1D3;
-	Tue, 14 May 2024 11:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FEE12D75A;
+	Tue, 14 May 2024 11:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r94IWaHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGC9J/SH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC7212E1C9;
-	Tue, 14 May 2024 11:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216947A57;
+	Tue, 14 May 2024 11:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686691; cv=none; b=oXJOqvuWQpUALQFUuljtoTzKFCvq5hPJ5xP/ASLPdi7gqHZxeIkUBbwiTiqGzIwoya35CUFiFs9w3VbfRq0T3kA56RurGZx4oMzmIIDAYvNwIZ6dguFiougzBCnMdINONuZwuyqGHCY484dir19nrMv067Fo7argYD8IAMePop4=
+	t=1715687311; cv=none; b=NYRwOJkokQQZf43J+FBiaGE3nqYnxhgqR10YAikBqeVWiabKSt3bCPrG1KElF+moSfq/1wTmUoYdlTumRm1o3tqIQCoHsptN6VekAXDTio3ne/vCOcNguAsd1aa+VfF60F2FsF4aDnKrzpH4R1XvcTanvv/fjxckErb/LcXxCtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686691; c=relaxed/simple;
-	bh=Z4P2q9wc8hYhKjp5FEFdh8y2QvYV9OuVtWAW+h/0CtE=;
+	s=arc-20240116; t=1715687311; c=relaxed/simple;
+	bh=XyaNF08O0NiusxhzrQOYum0GtzXQvLqah2wGGU9HR5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1S3+wix4FDRAN4TnUxYNiYc7nTxcyaWcb3YaD/W16lSM+ScPCfiifQlRc48hPejv1eLONvxXbRLakEa3XnaWdiIwhwJsrwUVrAFj9h2jZoyYqskhd9c0yjRGPAxOfQO+egOyWl2JiH1fZpoHAe3cQQ2cRs2M1eIU9cOn7bnbPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r94IWaHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3632C2BD10;
-	Tue, 14 May 2024 11:38:10 +0000 (UTC)
+	 MIME-Version; b=W3ijjDaB9YxmzmyaXAsbH/mOarSPK1/YLHn07JBXV4rXiWtC+w8geBS0qFJArLxBqJcwmar6+R0HdEGfEqv0j4jFegbiVoVnQK0LjTg9saTAzXxvYLEddewyChbZJXWjJMemv8KJXo0ygVJ3gYDJ/KhacSZiKQqY97X8/SKioek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGC9J/SH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB95C2BD10;
+	Tue, 14 May 2024 11:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686691;
-	bh=Z4P2q9wc8hYhKjp5FEFdh8y2QvYV9OuVtWAW+h/0CtE=;
+	s=korg; t=1715687311;
+	bh=XyaNF08O0NiusxhzrQOYum0GtzXQvLqah2wGGU9HR5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r94IWaHaI9RkjwAZrqbTOscu2r0ouF0nnM7cjxapVtYvj6YEJYqddTH6SZRx6iNbe
-	 9uRMnkZKb8aSCRO4Y+l2WsvLVYbIK9sapjaSOn3HfFWuhl1cUxFfJ+iqBVy4TOLsEK
-	 WSyzhcJJ1dAA6FzTS9EepLMAvw1wACv+ukCk4NjA=
+	b=LGC9J/SHO3VHAUxi4UZmMN9iZMIqKcXXwR/5qr2/Idl5COi8EBw7XXGR5W/6gVxxl
+	 4/KaIe0zNoHvM/00FcOHuNtZ/q7RWFf6dBEo9gsElY16y56dtgto4i/chUvNxl6f0P
+	 M7/1zhEQPRD9AcOviD0vSEeWyqa8mKun+Wucs3FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 226/236] mm: use memalloc_nofs_save() in page_cache_ra_order()
-Date: Tue, 14 May 2024 12:19:48 +0200
-Message-ID: <20240514101028.937553122@linuxfoundation.org>
+	syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 051/111] ALSA: line6: Zero-initialize message buffers
+Date: Tue, 14 May 2024 12:19:49 +0200
+Message-ID: <20240514100959.073061401@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 30153e4466647a17eebfced13eede5cbe4290e69 upstream.
+[ Upstream commit c4e51e424e2c772ce1836912a8b0b87cd61bc9d5 ]
 
-See commit f2c817bed58d ("mm: use memalloc_nofs_save in readahead path"),
-ensure that page_cache_ra_order() do not attempt to reclaim file-backed
-pages too, or it leads to a deadlock, found issue when test ext4 large
-folio.
+For shutting up spurious KMSAN uninit-value warnings, just replace
+kmalloc() calls with kzalloc() for the buffers used for
+communications.  There should be no real issue with the original code,
+but it's still better to cover.
 
- INFO: task DataXceiver for:7494 blocked for more than 120 seconds.
- "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- task:DataXceiver for state:D stack:0     pid:7494  ppid:1      flags:0x00000200
- Call trace:
-  __switch_to+0x14c/0x240
-  __schedule+0x82c/0xdd0
-  schedule+0x58/0xf0
-  io_schedule+0x24/0xa0
-  __folio_lock+0x130/0x300
-  migrate_pages_batch+0x378/0x918
-  migrate_pages+0x350/0x700
-  compact_zone+0x63c/0xb38
-  compact_zone_order+0xc0/0x118
-  try_to_compact_pages+0xb0/0x280
-  __alloc_pages_direct_compact+0x98/0x248
-  __alloc_pages+0x510/0x1110
-  alloc_pages+0x9c/0x130
-  folio_alloc+0x20/0x78
-  filemap_alloc_folio+0x8c/0x1b0
-  page_cache_ra_order+0x174/0x308
-  ondemand_readahead+0x1c8/0x2b8
-  page_cache_async_ra+0x68/0xb8
-  filemap_readahead.isra.0+0x64/0xa8
-  filemap_get_pages+0x3fc/0x5b0
-  filemap_splice_read+0xf4/0x280
-  ext4_file_splice_read+0x2c/0x48 [ext4]
-  vfs_splice_read.part.0+0xa8/0x118
-  splice_direct_to_actor+0xbc/0x288
-  do_splice_direct+0x9c/0x108
-  do_sendfile+0x328/0x468
-  __arm64_sys_sendfile64+0x8c/0x148
-  invoke_syscall+0x4c/0x118
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x4c/0x1f8
-  el0t_64_sync_handler+0xc0/0xc8
-  el0t_64_sync+0x188/0x190
-
-Link: https://lkml.kernel.org/r/20240426112938.124740-1-wangkefeng.wang@huawei.com
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Zhang Yi <yi.zhang@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+7fb05ccf7b3d2f9617b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/00000000000084b18706150bcca5@google.com
+Message-ID: <20240402063628.26609-1-tiwai@suse.de>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/readahead.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/line6/driver.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -504,6 +504,7 @@ void page_cache_ra_order(struct readahea
- 	pgoff_t index = readahead_index(ractl);
- 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
- 	pgoff_t mark = index + ra->size - ra->async_size;
-+	unsigned int nofs;
- 	int err = 0;
- 	gfp_t gfp = readahead_gfp_mask(mapping);
+diff --git a/sound/usb/line6/driver.c b/sound/usb/line6/driver.c
+index b67617b68e509..f4437015d43a7 100644
+--- a/sound/usb/line6/driver.c
++++ b/sound/usb/line6/driver.c
+@@ -202,7 +202,7 @@ int line6_send_raw_message_async(struct usb_line6 *line6, const char *buffer,
+ 	struct urb *urb;
  
-@@ -520,6 +521,8 @@ void page_cache_ra_order(struct readahea
- 			new_order--;
- 	}
+ 	/* create message: */
+-	msg = kmalloc(sizeof(struct message), GFP_ATOMIC);
++	msg = kzalloc(sizeof(struct message), GFP_ATOMIC);
+ 	if (msg == NULL)
+ 		return -ENOMEM;
  
-+	/* See comment in page_cache_ra_unbounded() */
-+	nofs = memalloc_nofs_save();
- 	filemap_invalidate_lock_shared(mapping);
- 	while (index <= limit) {
- 		unsigned int order = new_order;
-@@ -548,6 +551,7 @@ void page_cache_ra_order(struct readahea
+@@ -688,7 +688,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 	int ret;
  
- 	read_pages(ractl);
- 	filemap_invalidate_unlock_shared(mapping);
-+	memalloc_nofs_restore(nofs);
+ 	/* initialize USB buffers: */
+-	line6->buffer_listen = kmalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
++	line6->buffer_listen = kzalloc(LINE6_BUFSIZE_LISTEN, GFP_KERNEL);
+ 	if (!line6->buffer_listen)
+ 		return -ENOMEM;
  
- 	/*
- 	 * If there were already pages in the page cache, then we may have
+@@ -697,7 +697,7 @@ static int line6_init_cap_control(struct usb_line6 *line6)
+ 		return -ENOMEM;
+ 
+ 	if (line6->properties->capabilities & LINE6_CAP_CONTROL_MIDI) {
+-		line6->buffer_message = kmalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
++		line6->buffer_message = kzalloc(LINE6_MIDI_MESSAGE_MAXLEN, GFP_KERNEL);
+ 		if (!line6->buffer_message)
+ 			return -ENOMEM;
+ 
+-- 
+2.43.0
+
 
 
 
