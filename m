@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E82A8C54F2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73CD8C536E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 426F61F20FDB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE5DB2864A1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE8C127E35;
-	Tue, 14 May 2024 11:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46928625C;
+	Tue, 14 May 2024 11:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psvboVHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyp+sVkC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F081CFB2;
-	Tue, 14 May 2024 11:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B8518026;
+	Tue, 14 May 2024 11:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687549; cv=none; b=Fz2jN3VmJcQbQkmD1W8LHJIgo24D1e//CfykMhGEEAInPlgZaZRdyf5NKNXWBovXy2I+KbgxhAzwGQ+ZmsRKaZz/QYviyFPOHdcuBMoVp/6WW7OEkUJ8VE3hoXzcrM1apQOxvUqWGlzH7LT7vUy2a9qsfdeApUqHcmVTDQCOqG8=
+	t=1715686499; cv=none; b=BBUKBbA/plQLLQ1APA49kWfHsBOMjvTES8Uk2QNh8UPk8c17RmKQeH2pY3DD4oBJeg+3QA/K599evRTvSj8bdwN/whs2YS2XLYClc3XmQFHqzayaOM+0Dm4CsrIYyDaP+vRFgvU8NdVXneyv3uz7jim7fC4jvFepqsVhUvDAmoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687549; c=relaxed/simple;
-	bh=/jnVRxWKxiM4N2LmbVCx/5s0jnA1Bx4HX8A0u6VICpw=;
+	s=arc-20240116; t=1715686499; c=relaxed/simple;
+	bh=U+yG7XTlwu3R+eq6s1VPa+zbyxE2q748dRj1MxMc26Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFOQ23nLsfv8kq7foJaRKf/FSS5msAXd089wwXVK7oUp7S1WEtnuTnfAtim/E+h6Cno9B/Z9IJ25ABjaekZ4DxkfbJM5tsHsfcCUG+Dmwno9y0bp3GKgDUawNhae4eLN/yKvF6EwYswV1TylVyEl2BOlDTPwyXMdNZTRhWA6ryo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psvboVHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8E6C2BD10;
-	Tue, 14 May 2024 11:52:28 +0000 (UTC)
+	 MIME-Version; b=mu1B1zDb7h3AUoS5fQTNDSBQkrCwQ3vhLLgZU7jBdxOxtD8RCInKidCJiIPqUej0mwmH5qRcIDWlbU4JjlSME399M80nVKX9JBhuI0K71tK3vhuhaqQrAKJPUCeNEoIv0Gro0bp0qZNcq0rjzA/DMWUeKKzZqCusmZuH5EkYmG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyp+sVkC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292D0C32781;
+	Tue, 14 May 2024 11:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687549;
-	bh=/jnVRxWKxiM4N2LmbVCx/5s0jnA1Bx4HX8A0u6VICpw=;
+	s=korg; t=1715686499;
+	bh=U+yG7XTlwu3R+eq6s1VPa+zbyxE2q748dRj1MxMc26Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psvboVHblBPPlKE/YFXmCDBYELdok6aEF72ByGtkmeq9W5SQ/wrShwbQN3hpmimAN
-	 e/KEMwG3wpD+onC/iEqNWCxfZZmnZaYZRmkvFrM98RA8kESs+hgYeZ1R0M8PqV/GtL
-	 auoAzR3VIVoRryjmxrv9ntb0d95BbQ1YlkDmLNjY=
+	b=jyp+sVkCp5ROb20weWG5GOHpQ0aeG2hfJR4YVm0/r/gJwtfOAgoz6aHneyorYNDN2
+	 XW85ZWJfC6jy8HevQ/36WiXevRtgb0Gv1+fclrEbWMlSfQD/LhaSDOMQQJRGLonaca
+	 FW/KZjTd3gh0Sh6IXUOKrMFDNw88SbpivzMbo3Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/168] regulator: mt6360: De-capitalize devicetree regulator subnodes
-Date: Tue, 14 May 2024 12:18:41 +0200
-Message-ID: <20240514101007.564261556@linuxfoundation.org>
+Subject: [PATCH 6.1 160/236] timers: Get rid of del_singleshot_timer_sync()
+Date: Tue, 14 May 2024 12:18:42 +0200
+Message-ID: <20240514101026.435894556@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit d3cf8a17498dd9104c04ad28eeac3ef3339f9f9f ]
+[ Upstream commit 9a5a305686971f4be10c6d7251c8348d74b3e014 ]
 
-The MT6360 regulator binding, the example in the MT6360 mfd binding, and
-the devicetree users of those bindings are rightfully declaring MT6360
-regulator subnodes with non-capital names, and luckily without using the
-deprecated regulator-compatible property.
+del_singleshot_timer_sync() used to be an optimization for deleting timers
+which are not rearmed from the timer callback function.
 
-With this driver declaring capitalized BUCKx/LDOx as of_match string for
-the node names, obviously no regulator gets probed: fix that by changing
-the MT6360_REGULATOR_DESC macro to add a "match" parameter which gets
-assigned to the of_match.
+This optimization turned out to be broken and got mapped to
+del_timer_sync() about 17 years ago.
 
-Fixes: d321571d5e4c ("regulator: mt6360: Add support for MT6360 regulator")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://msgid.link/r/20240409144438.410060-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Get rid of the undocumented indirection and use del_timer_sync() directly.
+
+No functional change.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Link: https://lore.kernel.org/r/20221123201624.706987932@linutronix.de
+Stable-dep-of: 4893b8b3ef8d ("hsr: Simplify code for announcing HSR nodes timer setup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/mt6360-regulator.c | 32 +++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/char/tpm/tpm-dev-common.c     | 4 ++--
+ drivers/staging/wlan-ng/hfa384x_usb.c | 4 ++--
+ drivers/staging/wlan-ng/prism2usb.c   | 6 +++---
+ include/linux/timer.h                 | 2 --
+ kernel/time/timer.c                   | 2 +-
+ net/sunrpc/xprt.c                     | 2 +-
+ 6 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/regulator/mt6360-regulator.c b/drivers/regulator/mt6360-regulator.c
-index 4d34be94d1663..fc464a4450dc5 100644
---- a/drivers/regulator/mt6360-regulator.c
-+++ b/drivers/regulator/mt6360-regulator.c
-@@ -319,15 +319,15 @@ static unsigned int mt6360_regulator_of_map_mode(unsigned int hw_mode)
+diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
+index dc4c0a0a51290..30b4c288c1bbc 100644
+--- a/drivers/char/tpm/tpm-dev-common.c
++++ b/drivers/char/tpm/tpm-dev-common.c
+@@ -155,7 +155,7 @@ ssize_t tpm_common_read(struct file *file, char __user *buf,
+ out:
+ 	if (!priv->response_length) {
+ 		*off = 0;
+-		del_singleshot_timer_sync(&priv->user_read_timer);
++		del_timer_sync(&priv->user_read_timer);
+ 		flush_work(&priv->timeout_work);
  	}
+ 	mutex_unlock(&priv->buffer_mutex);
+@@ -262,7 +262,7 @@ __poll_t tpm_common_poll(struct file *file, poll_table *wait)
+ void tpm_common_release(struct file *file, struct file_priv *priv)
+ {
+ 	flush_work(&priv->async_work);
+-	del_singleshot_timer_sync(&priv->user_read_timer);
++	del_timer_sync(&priv->user_read_timer);
+ 	flush_work(&priv->timeout_work);
+ 	file->private_data = NULL;
+ 	priv->response_length = 0;
+diff --git a/drivers/staging/wlan-ng/hfa384x_usb.c b/drivers/staging/wlan-ng/hfa384x_usb.c
+index 02fdef7a16c87..c7cd54171d994 100644
+--- a/drivers/staging/wlan-ng/hfa384x_usb.c
++++ b/drivers/staging/wlan-ng/hfa384x_usb.c
+@@ -1116,8 +1116,8 @@ static int hfa384x_usbctlx_complete_sync(struct hfa384x *hw,
+ 		if (ctlx == get_active_ctlx(hw)) {
+ 			spin_unlock_irqrestore(&hw->ctlxq.lock, flags);
+ 
+-			del_singleshot_timer_sync(&hw->reqtimer);
+-			del_singleshot_timer_sync(&hw->resptimer);
++			del_timer_sync(&hw->reqtimer);
++			del_timer_sync(&hw->resptimer);
+ 			hw->req_timer_done = 1;
+ 			hw->resp_timer_done = 1;
+ 			usb_kill_urb(&hw->ctlx_urb);
+diff --git a/drivers/staging/wlan-ng/prism2usb.c b/drivers/staging/wlan-ng/prism2usb.c
+index e13da7fadffff..c13f1699e5a2f 100644
+--- a/drivers/staging/wlan-ng/prism2usb.c
++++ b/drivers/staging/wlan-ng/prism2usb.c
+@@ -170,9 +170,9 @@ static void prism2sta_disconnect_usb(struct usb_interface *interface)
+ 		 */
+ 		prism2sta_ifstate(wlandev, P80211ENUM_ifstate_disable);
+ 
+-		del_singleshot_timer_sync(&hw->throttle);
+-		del_singleshot_timer_sync(&hw->reqtimer);
+-		del_singleshot_timer_sync(&hw->resptimer);
++		del_timer_sync(&hw->throttle);
++		del_timer_sync(&hw->reqtimer);
++		del_timer_sync(&hw->resptimer);
+ 
+ 		/* Unlink all the URBs. This "removes the wheels"
+ 		 * from the entire CTLX handling mechanism.
+diff --git a/include/linux/timer.h b/include/linux/timer.h
+index 6d18f04ad7039..551fa467726f0 100644
+--- a/include/linux/timer.h
++++ b/include/linux/timer.h
+@@ -198,8 +198,6 @@ static inline int del_timer_sync(struct timer_list *timer)
+ 	return timer_delete_sync(timer);
  }
  
--#define MT6360_REGULATOR_DESC(_name, _sname, ereg, emask, vreg,	vmask,	\
--			      mreg, mmask, streg, stmask, vranges,	\
--			      vcnts, offon_delay, irq_tbls)		\
-+#define MT6360_REGULATOR_DESC(match, _name, _sname, ereg, emask, vreg,	\
-+			      vmask, mreg, mmask, streg, stmask,	\
-+			      vranges, vcnts, offon_delay, irq_tbls)	\
- {									\
- 	.desc = {							\
- 		.name = #_name,						\
- 		.supply_name = #_sname,					\
- 		.id =  MT6360_REGULATOR_##_name,			\
--		.of_match = of_match_ptr(#_name),			\
-+		.of_match = of_match_ptr(match),			\
- 		.regulators_node = of_match_ptr("regulator"),		\
- 		.of_map_mode = mt6360_regulator_of_map_mode,		\
- 		.owner = THIS_MODULE,					\
-@@ -351,21 +351,29 @@ static unsigned int mt6360_regulator_of_map_mode(unsigned int hw_mode)
- }
+-#define del_singleshot_timer_sync(t) del_timer_sync(t)
+-
+ extern void init_timers(void);
+ struct hrtimer;
+ extern enum hrtimer_restart it_real_fn(struct hrtimer *);
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 59469897432bc..f5f938140ceaf 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1963,7 +1963,7 @@ signed long __sched schedule_timeout(signed long timeout)
+ 	timer_setup_on_stack(&timer.timer, process_timeout, 0);
+ 	__mod_timer(&timer.timer, expire, MOD_TIMER_NOTPENDING);
+ 	schedule();
+-	del_singleshot_timer_sync(&timer.timer);
++	del_timer_sync(&timer.timer);
  
- static const struct mt6360_regulator_desc mt6360_regulator_descs[] =  {
--	MT6360_REGULATOR_DESC(BUCK1, BUCK1_VIN, 0x117, 0x40, 0x110, 0xff, 0x117, 0x30, 0x117, 0x04,
-+	MT6360_REGULATOR_DESC("buck1", BUCK1, BUCK1_VIN,
-+			      0x117, 0x40, 0x110, 0xff, 0x117, 0x30, 0x117, 0x04,
- 			      buck_vout_ranges, 256, 0, buck1_irq_tbls),
--	MT6360_REGULATOR_DESC(BUCK2, BUCK2_VIN, 0x127, 0x40, 0x120, 0xff, 0x127, 0x30, 0x127, 0x04,
-+	MT6360_REGULATOR_DESC("buck2", BUCK2, BUCK2_VIN,
-+			      0x127, 0x40, 0x120, 0xff, 0x127, 0x30, 0x127, 0x04,
- 			      buck_vout_ranges, 256, 0, buck2_irq_tbls),
--	MT6360_REGULATOR_DESC(LDO6, LDO_VIN3, 0x137, 0x40, 0x13B, 0xff, 0x137, 0x30, 0x137, 0x04,
-+	MT6360_REGULATOR_DESC("ldo6", LDO6, LDO_VIN3,
-+			      0x137, 0x40, 0x13B, 0xff, 0x137, 0x30, 0x137, 0x04,
- 			      ldo_vout_ranges1, 256, 0, ldo6_irq_tbls),
--	MT6360_REGULATOR_DESC(LDO7, LDO_VIN3, 0x131, 0x40, 0x135, 0xff, 0x131, 0x30, 0x131, 0x04,
-+	MT6360_REGULATOR_DESC("ldo7", LDO7, LDO_VIN3,
-+			      0x131, 0x40, 0x135, 0xff, 0x131, 0x30, 0x131, 0x04,
- 			      ldo_vout_ranges1, 256, 0, ldo7_irq_tbls),
--	MT6360_REGULATOR_DESC(LDO1, LDO_VIN1, 0x217, 0x40, 0x21B, 0xff, 0x217, 0x30, 0x217, 0x04,
-+	MT6360_REGULATOR_DESC("ldo1", LDO1, LDO_VIN1,
-+			      0x217, 0x40, 0x21B, 0xff, 0x217, 0x30, 0x217, 0x04,
- 			      ldo_vout_ranges2, 256, 0, ldo1_irq_tbls),
--	MT6360_REGULATOR_DESC(LDO2, LDO_VIN1, 0x211, 0x40, 0x215, 0xff, 0x211, 0x30, 0x211, 0x04,
-+	MT6360_REGULATOR_DESC("ldo2", LDO2, LDO_VIN1,
-+			      0x211, 0x40, 0x215, 0xff, 0x211, 0x30, 0x211, 0x04,
- 			      ldo_vout_ranges2, 256, 0, ldo2_irq_tbls),
--	MT6360_REGULATOR_DESC(LDO3, LDO_VIN1, 0x205, 0x40, 0x209, 0xff, 0x205, 0x30, 0x205, 0x04,
-+	MT6360_REGULATOR_DESC("ldo3", LDO3, LDO_VIN1,
-+			      0x205, 0x40, 0x209, 0xff, 0x205, 0x30, 0x205, 0x04,
- 			      ldo_vout_ranges2, 256, 100, ldo3_irq_tbls),
--	MT6360_REGULATOR_DESC(LDO5, LDO_VIN2, 0x20B, 0x40, 0x20F, 0x7f, 0x20B, 0x30, 0x20B, 0x04,
-+	MT6360_REGULATOR_DESC("ldo5", LDO5, LDO_VIN2,
-+			      0x20B, 0x40, 0x20F, 0x7f, 0x20B, 0x30, 0x20B, 0x04,
- 			      ldo_vout_ranges3, 128, 100, ldo5_irq_tbls),
- };
+ 	/* Remove the timer from the object tracker */
+ 	destroy_timer_on_stack(&timer.timer);
+diff --git a/net/sunrpc/xprt.c b/net/sunrpc/xprt.c
+index 656cec2083718..ab453ede54f0c 100644
+--- a/net/sunrpc/xprt.c
++++ b/net/sunrpc/xprt.c
+@@ -1164,7 +1164,7 @@ xprt_request_enqueue_receive(struct rpc_task *task)
+ 	spin_unlock(&xprt->queue_lock);
+ 
+ 	/* Turn off autodisconnect */
+-	del_singleshot_timer_sync(&xprt->timer);
++	del_timer_sync(&xprt->timer);
+ 	return 0;
+ }
  
 -- 
 2.43.0
