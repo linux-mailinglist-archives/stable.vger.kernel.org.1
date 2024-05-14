@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735818C5387
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0089B8C5474
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4EA286FDC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 329151C22C99
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA994127E2F;
-	Tue, 14 May 2024 11:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B8C127E02;
+	Tue, 14 May 2024 11:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxSj2PO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucgvtQWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7773647A6C;
-	Tue, 14 May 2024 11:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C573F1272D5;
+	Tue, 14 May 2024 11:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686590; cv=none; b=jPrDWu6DFZju9UMjUCuXMrV/qhncBaPBgU/adQBqpgsjrkhon7uv+H8coXWpzZZoRWars5ERexvzGfAmFpjCW6Cg62YEZI3lkPjzi4NDXQl5om3QK8S7yz3tHmA8AfE5C0YgEnQ6bZTvJhE6C56HZzBE6sFuU53GhSPk09/JQFA=
+	t=1715687201; cv=none; b=q4YgWhxvIqN8j8vXFTO2Tji4IIGbvgX8Xvethlb/ucyJ15r8fXpy2WNUPwu7fis+z2C5EjaoRLKBsh089g4z1IB533IpSEG1C0Pvk6aaKRWuOl4FPSFnNEpIBJm6eTRfx8D5FvO9mP5azdV5Q4dmbOtYkaXJhG2lPx2/6P/f+kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686590; c=relaxed/simple;
-	bh=euW6YYcjyLpPf+/r72ROwP1soKHVfh3v+Rwsg+owjpk=;
+	s=arc-20240116; t=1715687201; c=relaxed/simple;
+	bh=0U44cHLO5ECJkAA7ZRi29YM8MHNk34IUExD6W6IRegs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KPpx/j9o5OYrHaaaiCZqXLug9Oio2YxtjBd2XwwCf5dPoB/BJ4oP3yxBmzxQs5zcTwvIA32c6WZOH1SitlpJstJxcsM0v3fOD3ruDCYu1uz9PD09Um72QI1Mlk5uNtgb1xqA+okiQxG9mh58kR+7hKHXZS5wJExxBrX9PsJNpKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxSj2PO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEC5C2BD10;
-	Tue, 14 May 2024 11:36:29 +0000 (UTC)
+	 MIME-Version; b=AmkK6RHmnBUupYyyHsEZazjztTK8LqEIV3PQCMDUkxDd/9sUSdw+55HPzI6bDC6tjpN/0DTBk10fYX9r2hQn8QvBR+h6Pz9v89DHNX8EUyMytiN9NoW9KbbMT27hOxGQnh9buVLF4fYOjq4tCzOeytZ1xKzcgKjEn+sP1vbrlR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucgvtQWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F13BC2BD10;
+	Tue, 14 May 2024 11:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686590;
-	bh=euW6YYcjyLpPf+/r72ROwP1soKHVfh3v+Rwsg+owjpk=;
+	s=korg; t=1715687201;
+	bh=0U44cHLO5ECJkAA7ZRi29YM8MHNk34IUExD6W6IRegs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxSj2PO4gmQ78HneinjXyou0JD5ifomHpyKdw6By9rMZuzd2YlQ9CShPjnXxwt9FY
-	 CXDcwFux+HFBqz6R7YcWxJ19gFYjFsmsAj0Dwgj0Uh+/so293I307QV+Q+d5mS8HTq
-	 dOih6So3vM/Z8Rd4UnWDUnba0QGKv0iSI/vgwSyA=
+	b=ucgvtQWjrAYI8HUKUhRrSVPEQPQSw8w11yy8kbW/ASxtdAJtt5XkYdmLV9jYni/GW
+	 z7R/xHg9HJq5gD/X9paLpynAlA+uzK3emEbi/ErYd0Pz5FzWe0q7gtzL69iexqJGl4
+	 o2WgGb9gu8VtXin3xdz/S+ZqDqsrK4mnV1bsRYPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1 191/236] rust: macros: fix soundness issue in `module!` macro
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 015/111] nfs: make the rpc_stat per net namespace
 Date: Tue, 14 May 2024 12:19:13 +0200
-Message-ID: <20240514101027.612238591@linuxfoundation.org>
+Message-ID: <20240514100957.704993599@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,266 +60,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benno Lossin <benno.lossin@proton.me>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 7044dcff8301b29269016ebd17df27c4736140d2 upstream.
+[ Upstream commit 1548036ef1204df65ca5a16e8b199c858cb80075 ]
 
-The `module!` macro creates glue code that are called by C to initialize
-the Rust modules using the `Module::init` function. Part of this glue
-code are the local functions `__init` and `__exit` that are used to
-initialize/destroy the Rust module.
+Now that we're exposing the rpc stats on a per-network namespace basis,
+move this struct into struct nfs_net and use that to make sure only the
+per-network namespace stats are exposed.
 
-These functions are safe and also visible to the Rust mod in which the
-`module!` macro is invoked. This means that they can be called by other
-safe Rust code. But since they contain `unsafe` blocks that rely on only
-being called at the right time, this is a soundness issue.
-
-Wrap these generated functions inside of two private modules, this
-guarantees that the public functions cannot be called from the outside.
-Make the safe functions `unsafe` and add SAFETY comments.
-
-Cc: stable@vger.kernel.org
-Reported-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/629
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Link: https://lore.kernel.org/r/20240401185222.12015-1-benno.lossin@proton.me
-[ Moved `THIS_MODULE` out of the private-in-private modules since it
-  should remain public, as Dirk Behme noticed [1]. Capitalized comments,
-  avoided newline in non-list SAFETY comments and reworded to add
-  Reported-by and newline. ]
-Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/x/near/433512583 [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/macros/module.rs |  190 ++++++++++++++++++++++++++++++--------------------
- 1 file changed, 115 insertions(+), 75 deletions(-)
+ fs/nfs/client.c   | 5 ++++-
+ fs/nfs/inode.c    | 4 +++-
+ fs/nfs/internal.h | 2 --
+ fs/nfs/netns.h    | 2 ++
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -179,17 +179,6 @@ pub(crate) fn module(ts: TokenStream) ->
-             /// Used by the printing macros, e.g. [`info!`].
-             const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index 818ff8b1b99da..1437eb31dd034 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -73,7 +73,6 @@ const struct rpc_program nfs_program = {
+ 	.number			= NFS_PROGRAM,
+ 	.nrvers			= ARRAY_SIZE(nfs_version),
+ 	.version		= nfs_version,
+-	.stats			= &nfs_rpcstat,
+ 	.pipe_dir_name		= NFS_PIPE_DIRNAME,
+ };
  
--            /// The \"Rust loadable module\" mark.
--            //
--            // This may be best done another way later on, e.g. as a new modinfo
--            // key or a new section. For the moment, keep it simple.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[used]
--            static __IS_RUST_MODULE: () = ();
+@@ -501,6 +500,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
+ 			  const struct nfs_client_initdata *cl_init,
+ 			  rpc_authflavor_t flavor)
+ {
++	struct nfs_net		*nn = net_generic(clp->cl_net, nfs_net_id);
+ 	struct rpc_clnt		*clnt = NULL;
+ 	struct rpc_create_args args = {
+ 		.net		= clp->cl_net,
+@@ -512,6 +512,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
+ 		.servername	= clp->cl_hostname,
+ 		.nodename	= cl_init->nodename,
+ 		.program	= &nfs_program,
++		.stats		= &nn->rpcstats,
+ 		.version	= clp->rpc_ops->version,
+ 		.authflavor	= flavor,
+ 		.cred		= cl_init->cred,
+@@ -1110,6 +1111,8 @@ void nfs_clients_init(struct net *net)
+ #endif
+ 	spin_lock_init(&nn->nfs_client_lock);
+ 	nn->boot_time = ktime_get_real();
++	memset(&nn->rpcstats, 0, sizeof(nn->rpcstats));
++	nn->rpcstats.program = &nfs_program;
+ 
+ 	nfs_netns_sysfs_setup(nn, net);
+ }
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 51c721e2f5555..4ae50340c1152 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2225,8 +2225,10 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ 
+ static int nfs_net_init(struct net *net)
+ {
++	struct nfs_net *nn = net_generic(net, nfs_net_id);
++
+ 	nfs_clients_init(net);
+-	rpc_proc_register(net, &nfs_rpcstat);
++	rpc_proc_register(net, &nn->rpcstats);
+ 	return nfs_fs_proc_net_init(net);
+ }
+ 
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index a7e0970b5bfe1..9a72abfb46abc 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -435,8 +435,6 @@ int nfs_try_get_tree(struct fs_context *);
+ int nfs_get_tree_common(struct fs_context *);
+ void nfs_kill_super(struct super_block *);
+ 
+-extern struct rpc_stat nfs_rpcstat;
 -
--            static mut __MOD: Option<{type_}> = None;
--
-             // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
-             // freed until the module is unloaded.
-             #[cfg(MODULE)]
-@@ -201,81 +190,132 @@ pub(crate) fn module(ts: TokenStream) ->
-                 kernel::ThisModule::from_ptr(core::ptr::null_mut())
-             }};
+ extern int __init register_nfs_fs(void);
+ extern void __exit unregister_nfs_fs(void);
+ extern bool nfs_sb_active(struct super_block *sb);
+diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
+index c8374f74dce11..a68b21603ea9a 100644
+--- a/fs/nfs/netns.h
++++ b/fs/nfs/netns.h
+@@ -9,6 +9,7 @@
+ #include <linux/nfs4.h>
+ #include <net/net_namespace.h>
+ #include <net/netns/generic.h>
++#include <linux/sunrpc/stats.h>
  
--            // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
--            /// # Safety
--            ///
--            /// This function must not be called after module initialization, because it may be
--            /// freed after that completes.
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            #[link_section = \".init.text\"]
--            pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {{
--                __init()
--            }}
--
--            #[cfg(MODULE)]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn cleanup_module() {{
--                __exit()
--            }}
-+            // Double nested modules, since then nobody can access the public items inside.
-+            mod __module_init {{
-+                mod __module_init {{
-+                    use super::super::{type_};
-+
-+                    /// The \"Rust loadable module\" mark.
-+                    //
-+                    // This may be best done another way later on, e.g. as a new modinfo
-+                    // key or a new section. For the moment, keep it simple.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[used]
-+                    static __IS_RUST_MODULE: () = ();
-+
-+                    static mut __MOD: Option<{type_}> = None;
-+
-+                    // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
-+                    /// # Safety
-+                    ///
-+                    /// This function must not be called after module initialization, because it may be
-+                    /// freed after that completes.
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    #[link_section = \".init.text\"]
-+                    pub unsafe extern \"C\" fn init_module() -> core::ffi::c_int {{
-+                        // SAFETY: This function is inaccessible to the outside due to the double
-+                        // module wrapping it. It is called exactly once by the C side via its
-+                        // unique name.
-+                        unsafe {{ __init() }}
-+                    }}
- 
--            // Built-in modules are initialized through an initcall pointer
--            // and the identifiers need to be unique.
--            #[cfg(not(MODULE))]
--            #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
--            #[doc(hidden)]
--            #[link_section = \"{initcall_section}\"]
--            #[used]
--            pub static __{name}_initcall: extern \"C\" fn() -> core::ffi::c_int = __{name}_init;
-+                    #[cfg(MODULE)]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn cleanup_module() {{
-+                        // SAFETY:
-+                        // - This function is inaccessible to the outside due to the double
-+                        //   module wrapping it. It is called exactly once by the C side via its
-+                        //   unique name,
-+                        // - furthermore it is only called after `init_module` has returned `0`
-+                        //   (which delegates to `__init`).
-+                        unsafe {{ __exit() }}
-+                    }}
- 
--            #[cfg(not(MODULE))]
--            #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
--            core::arch::global_asm!(
--                r#\".section \"{initcall_section}\", \"a\"
--                __{name}_initcall:
--                    .long   __{name}_init - .
--                    .previous
--                \"#
--            );
-+                    // Built-in modules are initialized through an initcall pointer
-+                    // and the identifiers need to be unique.
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
-+                    #[doc(hidden)]
-+                    #[link_section = \"{initcall_section}\"]
-+                    #[used]
-+                    pub static __{name}_initcall: extern \"C\" fn() -> core::ffi::c_int = __{name}_init;
-+
-+                    #[cfg(not(MODULE))]
-+                    #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
-+                    core::arch::global_asm!(
-+                        r#\".section \"{initcall_section}\", \"a\"
-+                        __{name}_initcall:
-+                            .long   __{name}_init - .
-+                            .previous
-+                        \"#
-+                    );
-+
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_init() -> core::ffi::c_int {{
-+                        // SAFETY: This function is inaccessible to the outside due to the double
-+                        // module wrapping it. It is called exactly once by the C side via its
-+                        // placement above in the initcall section.
-+                        unsafe {{ __init() }}
-+                    }}
- 
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_init() -> core::ffi::c_int {{
--                __init()
--            }}
-+                    #[cfg(not(MODULE))]
-+                    #[doc(hidden)]
-+                    #[no_mangle]
-+                    pub extern \"C\" fn __{name}_exit() {{
-+                        // SAFETY:
-+                        // - This function is inaccessible to the outside due to the double
-+                        //   module wrapping it. It is called exactly once by the C side via its
-+                        //   unique name,
-+                        // - furthermore it is only called after `__{name}_init` has returned `0`
-+                        //   (which delegates to `__init`).
-+                        unsafe {{ __exit() }}
-+                    }}
- 
--            #[cfg(not(MODULE))]
--            #[doc(hidden)]
--            #[no_mangle]
--            pub extern \"C\" fn __{name}_exit() {{
--                __exit()
--            }}
-+                    /// # Safety
-+                    ///
-+                    /// This function must only be called once.
-+                    unsafe fn __init() -> core::ffi::c_int {{
-+                        match <{type_} as kernel::Module>::init(&super::super::THIS_MODULE) {{
-+                            Ok(m) => {{
-+                                // SAFETY: No data race, since `__MOD` can only be accessed by this
-+                                // module and there only `__init` and `__exit` access it. These
-+                                // functions are only called once and `__exit` cannot be called
-+                                // before or during `__init`.
-+                                unsafe {{
-+                                    __MOD = Some(m);
-+                                }}
-+                                return 0;
-+                            }}
-+                            Err(e) => {{
-+                                return e.to_errno();
-+                            }}
-+                        }}
-+                    }}
- 
--            fn __init() -> core::ffi::c_int {{
--                match <{type_} as kernel::Module>::init(&THIS_MODULE) {{
--                    Ok(m) => {{
-+                    /// # Safety
-+                    ///
-+                    /// This function must
-+                    /// - only be called once,
-+                    /// - be called after `__init` has been called and returned `0`.
-+                    unsafe fn __exit() {{
-+                        // SAFETY: No data race, since `__MOD` can only be accessed by this module
-+                        // and there only `__init` and `__exit` access it. These functions are only
-+                        // called once and `__init` was already called.
-                         unsafe {{
--                            __MOD = Some(m);
-+                            // Invokes `drop()` on `__MOD`, which should be used for cleanup.
-+                            __MOD = None;
-                         }}
--                        return 0;
--                    }}
--                    Err(e) => {{
--                        return e.to_errno();
-                     }}
--                }}
--            }}
- 
--            fn __exit() {{
--                unsafe {{
--                    // Invokes `drop()` on `__MOD`, which should be used for cleanup.
--                    __MOD = None;
-+                    {modinfo}
-                 }}
-             }}
--
--            {modinfo}
-         ",
-         type_ = info.type_,
-         name = info.name,
+ struct bl_dev_msg {
+ 	int32_t status;
+@@ -34,6 +35,7 @@ struct nfs_net {
+ 	struct nfs_netns_client *nfs_client;
+ 	spinlock_t nfs_client_lock;
+ 	ktime_t boot_time;
++	struct rpc_stat rpcstats;
+ #ifdef CONFIG_PROC_FS
+ 	struct proc_dir_entry *proc_nfsfs;
+ #endif
+-- 
+2.43.0
+
 
 
 
