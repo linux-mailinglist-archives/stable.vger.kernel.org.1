@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC268C54EF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6D98C5364
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD3F1F2180E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E45A31F232F2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2458127E18;
-	Tue, 14 May 2024 11:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298538615E;
+	Tue, 14 May 2024 11:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yB2DWe9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIiYGnpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711045028C;
-	Tue, 14 May 2024 11:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFEB18026;
+	Tue, 14 May 2024 11:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687546; cv=none; b=Vk8hPbRbIOf/8w5+r543tXQ88KgUwJmzLkH5D3WpZFtVB2HMliNlV3MAKO86OXrIDyXyjJLQOGxYRLcDt8zNoU1CwlcaNRpD7pQ+Daf/hdDvUaSPpYX1Hh+Z8cXIKdq0Gj+3NhjuEaHoXEZ2BaaBpk3u9ZVsiBOAQLCBANml7JQ=
+	t=1715686494; cv=none; b=dcPHtDEP9m2hRkSfnT8ly+mOwishTT0etryZUOWL977HpCyCiJpPn4LxbHbNfQkj1iyru7vqF3y30bLHQjlHXjUN8Uv4w3uo8LBLKsbVd80Offa5D20X2mssIwERNmQkh9Jc5Al8nwpZ92ZwZERxuVEqbzXG6jNi7pstbUJjTSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687546; c=relaxed/simple;
-	bh=Pmfo8r73Yy9Yz7OGcyMPQYyqQ4HwllQv5BdE/1ppnLo=;
+	s=arc-20240116; t=1715686494; c=relaxed/simple;
+	bh=XAUP8ECSIyQ78EKbmqv2uUGorVdBUyh9u9xvyeksT+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1d53p8/5RIaxiPI285NQK5SBNZysG9IDUdFiRfgAJhZ3EPUP6+fU0eg3v+TxN6JX6uIXJigaQfJnky0Uo8KSCZSTxy8qCH3aUesCditWR71G3T1DSP/v3GMiwq/3jeys6vilxJp0SWVaexac1vIBid0xf3wR63nTSjXXbG0QD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yB2DWe9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA259C2BD10;
-	Tue, 14 May 2024 11:52:25 +0000 (UTC)
+	 MIME-Version; b=tOZesj+QPUSwfJLtcs4Jf/3qCLwOSc5HwOz+8nFkVRDfJ8Njmlc8Txohqwmerd2hRfS3WgwDc1QDK/KqaJJd9sw0polNTMqyCXy55v6pxBbPqvYmUkc3C3YNAuXOz5cq0tLCbZqcXtJlSNOiPzLTXOOKZcoI0oH5hFW9Hi6jdZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIiYGnpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6213BC2BD10;
+	Tue, 14 May 2024 11:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687546;
-	bh=Pmfo8r73Yy9Yz7OGcyMPQYyqQ4HwllQv5BdE/1ppnLo=;
+	s=korg; t=1715686493;
+	bh=XAUP8ECSIyQ78EKbmqv2uUGorVdBUyh9u9xvyeksT+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yB2DWe9KHef7DtGOaK2n+T2pZ8uAgGosrhQSOf/qpz9Q3WWpPnNp7aavrZQa+Heqc
-	 Ng8RB6wvcjL/QWThVph0NwdN2sopaN+npJ1nVl8xxSLynIhg1qkRA+DFBvqJJ3AEqk
-	 P6yUYLsgaRJpQAYxZUIih8k2Wer1/0h0wa8GzLJU=
+	b=CIiYGnpe+RG6HhWAFdc84Ku5rLuzCqX1gc6yyZdEFYpnm9xE7/Gb5xZk+2BllQgDs
+	 yuBTYSqhQTq98gQvov/QY1KBM5g5bn9nv1PqIxS6L1bVqBkdmQhLjyXZiu+LHsLxbb
+	 xb2DXPgRkENSth/tYy+uT7qh3eIKOL7CQXWMKQ50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zeng Heng <zengheng4@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/168] pinctrl: devicetree: fix refcount leak in pinctrl_dt_to_map()
+Subject: [PATCH 6.1 158/236] net: bridge: fix corrupted ethernet header on multicast-to-unicast
 Date: Tue, 14 May 2024 12:18:40 +0200
-Message-ID: <20240514101007.526689826@linuxfoundation.org>
+Message-ID: <20240514101026.361542462@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit a0cedbcc8852d6c77b00634b81e41f17f29d9404 ]
+[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
 
-If we fail to allocate propname buffer, we need to drop the reference
-count we just took. Because the pinctrl_dt_free_maps() includes the
-droping operation, here we call it directly.
+The change from skb_copy to pskb_copy unfortunately changed the data
+copying to omit the ethernet header, since it was pulled before reaching
+this point. Fix this by calling __skb_push/pull around pskb_copy.
 
-Fixes: 91d5c5060ee2 ("pinctrl: devicetree: fix null pointer dereferencing in pinctrl_dt_to_map")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <20240415105328.3651441-1-zengheng4@huawei.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/bridge/br_forward.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index eac55fee5281c..0220228c50404 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -220,14 +220,16 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 	for (state = 0; ; state++) {
- 		/* Retrieve the pinctrl-* property */
- 		propname = kasprintf(GFP_KERNEL, "pinctrl-%d", state);
--		if (!propname)
--			return -ENOMEM;
-+		if (!propname) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
- 		prop = of_find_property(np, propname, &size);
- 		kfree(propname);
- 		if (!prop) {
- 			if (state == 0) {
--				of_node_put(np);
--				return -ENODEV;
-+				ret = -ENODEV;
-+				goto err;
- 			}
- 			break;
- 		}
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index 982e7a9ccc41c..9661698e86e40 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -253,6 +253,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
+ {
+ 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
+ 	const unsigned char *src = eth_hdr(skb)->h_source;
++	struct sk_buff *nskb;
+ 
+ 	if (!should_deliver(p, skb))
+ 		return;
+@@ -261,12 +262,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
+ 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
+ 		return;
+ 
+-	skb = pskb_copy(skb, GFP_ATOMIC);
+-	if (!skb) {
++	__skb_push(skb, ETH_HLEN);
++	nskb = pskb_copy(skb, GFP_ATOMIC);
++	__skb_pull(skb, ETH_HLEN);
++	if (!nskb) {
+ 		DEV_STATS_INC(dev, tx_dropped);
+ 		return;
+ 	}
+ 
++	skb = nskb;
++	__skb_pull(skb, ETH_HLEN);
+ 	if (!is_broadcast_ether_addr(addr))
+ 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
+ 
 -- 
 2.43.0
 
