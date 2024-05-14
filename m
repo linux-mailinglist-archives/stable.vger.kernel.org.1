@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32E08C5349
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BB78C5119
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A72A285F66
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3C4B1F22129
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE82F7602B;
-	Tue, 14 May 2024 11:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669CF53370;
+	Tue, 14 May 2024 10:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwJ9cHDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQPi74jT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCA21D54D;
-	Tue, 14 May 2024 11:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C3812FB03;
+	Tue, 14 May 2024 10:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686407; cv=none; b=hEdNTq1cl9FGH4m4vfNkh5b53QI0ktOSas2k4KvarVilt+WU3mV3SkQIxqC1mbHrwuuSush+YXFh0Z+3tmNPJDPiFjkk4vgHPso19/TF7nto8+4U6ULYI0VZo9rmp2ENLYVqLbw/oYei5KTrRvjWHXZNffgRvbyejxDc/S/jCN8=
+	t=1715684061; cv=none; b=ilEV4m+lGj+CgwbN9g9mgV0aG6AclU3ceQeQxmaVmJnw83OmPV3kFggETHlIVdI6dIocLMI8EKX5wjVYOiz0sSrn0UFsMx3yZot2SbIb0OYudDJkCn2YHLkA6DGp1+4bYKj20wm/d5D/H1adj7aI4+pqf6gdb8KOZnjeG7EO5Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686407; c=relaxed/simple;
-	bh=yAR5izUyWCC9GYNkEJfo19EFqBSH25mgFzYDEMOb8oI=;
+	s=arc-20240116; t=1715684061; c=relaxed/simple;
+	bh=nohMFwGU9om1mJSuCwHNDkJZ9tAPCSzy7dqh5mK3E5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UrFU/Yxzbk+1bku7vhm+/I4Rj37iCmqSXogguaQofBouKa8O3H0v0vfNNtVipc8JhROW7V0qzDwx+/eaoZoqhnolben2claiU203u6Ae7wQhLFglDL086UpHVH0AfyqDqV3FktRZcLVhfzYgQQeDfaXEe1+n6bhvZHj1Sltdu3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwJ9cHDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16435C2BD10;
-	Tue, 14 May 2024 11:33:26 +0000 (UTC)
+	 MIME-Version; b=i9LWc+8w6jPFoyJhMgGVDRZXxEYZuplYfEk0HR2gC9nwPcREFUDEDuTSZ3fSu9UCdXlS4kNzOOtauM+YsyjanLcebaq2cpvLoGgHqVJaxEqsEgo05aRIieeInuo3vPCObmzDrwBG52aWp48+yuDhzAOdG50RXkvsSBUvjRY8iaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQPi74jT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E07C2BD10;
+	Tue, 14 May 2024 10:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686407;
-	bh=yAR5izUyWCC9GYNkEJfo19EFqBSH25mgFzYDEMOb8oI=;
+	s=korg; t=1715684061;
+	bh=nohMFwGU9om1mJSuCwHNDkJZ9tAPCSzy7dqh5mK3E5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwJ9cHDVoZRjxfi2ats97cROl/o+Tr9bECuixTNPWbdQp8vYTfRjAgIU5KZqkoqcG
-	 wNyW6sSwv0dKypaRcu2A3IfLFjDuG2AZx3qi+oxRSNMhDA9seaYUlW86Y2Sw4rl9fD
-	 yEE+4r9h3QxE89P+p9gBswhx221InsBKu5pVGM+g=
+	b=OQPi74jT985Km7Bk3TdwV/sf8cevhfy132R6kD7kEshVokUfrlAn8yekGucvbKxsr
+	 e+7xiifWvdpv2LsPel+wQVP/yTS4BjBmNb8Mq3aztl5fRSMSwagZwh2gI9rkdK0Z2g
+	 MdFK67ukrVV5BV51/37su6WRCPxf226m23ZM5v+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/236] uio_hv_generic: Dont free decrypted memory
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Jai Luthra <j-luthra@ti.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.8 286/336] ASoC: ti: davinci-mcasp: Fix race condition during probe
 Date: Tue, 14 May 2024 12:18:10 +0200
-Message-ID: <20240514101025.230318575@linuxfoundation.org>
+Message-ID: <20240514101049.415702817@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
 
-[ Upstream commit 3d788b2fbe6a1a1a9e3db09742b90809d51638b7 ]
+commit d18ca8635db2f88c17acbdf6412f26d4f6aff414 upstream.
 
-In CoCo VMs it is possible for the untrusted host to cause
-set_memory_encrypted() or set_memory_decrypted() to fail such that an
-error is returned and the resulting memory is shared. Callers need to
-take care to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional or security
-issues.
+When using davinci-mcasp as CPU DAI with simple-card, there are some
+conditions that cause simple-card to finish registering a sound card before
+davinci-mcasp finishes registering all sound components. This creates a
+non-working sound card from userspace with no problem indication apart
+from not being able to play/record audio on a PCM stream. The issue
+arises during simultaneous probe execution of both drivers. Specifically,
+the simple-card driver, awaiting a CPU DAI, proceeds as soon as
+davinci-mcasp registers its DAI. However, this process can lead to the
+client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
+being preempted before PCM DMA registration on davinci-mcasp finishes.
+This situation occurs when the probes of both drivers run concurrently.
+Below is the code path for this condition. To solve the issue, defer
+davinci-mcasp CPU DAI registration to the last step in the audio part of
+it. This way, simple-card CPU DAI parsing will be deferred until all
+audio components are registered.
 
-The VMBus device UIO driver could free decrypted/shared pages if
-set_memory_decrypted() fails. Check the decrypted field in the gpadl
-to decide whether to free the memory.
+Fail Code Path:
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20240311161558.1310-5-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240311161558.1310-5-mhklinux@outlook.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+simple-card.c: probe starts
+simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns EPROBE_DEFER, no CPU DAI yet
+davinci-mcasp.c: probe starts
+davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
+simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc_register_card()
+simple-card.c: finish probe
+davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
+davinci-mcasp.c: probe finish
+
+Cc: stable@vger.kernel.org
+Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on configured DMA controller")
+Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Reviewed-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_hv_generic.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ sound/soc/ti/davinci-mcasp.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
-index c08a6cfd119f2..e5789dfcaff61 100644
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -181,12 +181,14 @@ hv_uio_cleanup(struct hv_device *dev, struct hv_uio_private_data *pdata)
- {
- 	if (pdata->send_gpadl.gpadl_handle) {
- 		vmbus_teardown_gpadl(dev->channel, &pdata->send_gpadl);
--		vfree(pdata->send_buf);
-+		if (!pdata->send_gpadl.decrypted)
-+			vfree(pdata->send_buf);
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -2417,12 +2417,6 @@ static int davinci_mcasp_probe(struct pl
+ 
+ 	mcasp_reparent_fck(pdev);
+ 
+-	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
+-					      &davinci_mcasp_dai[mcasp->op_mode], 1);
+-
+-	if (ret != 0)
+-		goto err;
+-
+ 	ret = davinci_mcasp_get_dma_type(mcasp);
+ 	switch (ret) {
+ 	case PCM_EDMA:
+@@ -2449,6 +2443,12 @@ static int davinci_mcasp_probe(struct pl
+ 		goto err;
  	}
  
- 	if (pdata->recv_gpadl.gpadl_handle) {
- 		vmbus_teardown_gpadl(dev->channel, &pdata->recv_gpadl);
--		vfree(pdata->recv_buf);
-+		if (!pdata->recv_gpadl.decrypted)
-+			vfree(pdata->recv_buf);
- 	}
- }
- 
-@@ -295,7 +297,8 @@ hv_uio_probe(struct hv_device *dev,
- 	ret = vmbus_establish_gpadl(channel, pdata->recv_buf,
- 				    RECV_BUFFER_SIZE, &pdata->recv_gpadl);
++	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
++					      &davinci_mcasp_dai[mcasp->op_mode], 1);
++
++	if (ret != 0)
++		goto err;
++
+ no_audio:
+ 	ret = davinci_mcasp_init_gpiochip(mcasp);
  	if (ret) {
--		vfree(pdata->recv_buf);
-+		if (!pdata->recv_gpadl.decrypted)
-+			vfree(pdata->recv_buf);
- 		goto fail_close;
- 	}
- 
-@@ -317,7 +320,8 @@ hv_uio_probe(struct hv_device *dev,
- 	ret = vmbus_establish_gpadl(channel, pdata->send_buf,
- 				    SEND_BUFFER_SIZE, &pdata->send_gpadl);
- 	if (ret) {
--		vfree(pdata->send_buf);
-+		if (!pdata->send_gpadl.decrypted)
-+			vfree(pdata->send_buf);
- 		goto fail_close;
- 	}
- 
--- 
-2.43.0
-
 
 
 
