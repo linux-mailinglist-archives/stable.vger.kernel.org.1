@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12108C5200
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8DB8C50B7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD0632829D5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 198171C211C2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB18B1292D2;
-	Tue, 14 May 2024 11:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E83D13F015;
+	Tue, 14 May 2024 10:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/ubUAly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpuBqsP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8654BFE;
-	Tue, 14 May 2024 11:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0B36D1B4;
+	Tue, 14 May 2024 10:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685340; cv=none; b=eVuPSRTcH+STufBiiayUaGhMOPK/Js6gdrkU2kTLD27riQ9JihhAltgli3XHYqLc0Gn4GY5bV2AFq08e20pf7KWn72ZsusznX32aGobMCq3nEXam0qHVrzbu3aJfFQ5/6N8U3HSTzz92jyD3CnVzu557dY2UKc3lsqALlytmAOM=
+	t=1715683599; cv=none; b=He9UYaIJv5SIcGLd5nbO8Ej+vZHkZVOrA4xPAPjCz++bZNjvyeGf7uBWLcOoHB3OivZt8FcCxSnFrqcnnq9cJ2sM/w99rnhLgBUt1zGFcG+4S3e76v7JVdntGosOF+HntiZkdK3XiEc+MtxQBKpVVA92DcjeqQX859xSAYvm7a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685340; c=relaxed/simple;
-	bh=DqY1oSmx3Ja7UajFq61UR1ouPaeUPXDRlpPUJOmgvtE=;
+	s=arc-20240116; t=1715683599; c=relaxed/simple;
+	bh=vNY0tcemwQha521ETWDiovU/GBBi1CqKpeYx0OVVcck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1PFkNoeSNeO8z17BCaKmOCET3sWKhGkdIVSAiZa3iEJ5QVNIhlFLuw+444VquLFUXrzZ0MfFUckdXHmYK7b9fVAs9mEws2+A3QBEXtdv15JCZ3IDT+NFIIUZBx8nU8rPUJaYzHZrYjzejhDvV/tA+YkJ+1QsTogg/n3JMQyUqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/ubUAly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E014DC2BD10;
-	Tue, 14 May 2024 11:15:39 +0000 (UTC)
+	 MIME-Version; b=n0GFFnB1t3/tNrxsliSWu/fm7rXzvbC9q9JSzsvlW8FThEM0t4huUlM/uPFcm9ntfKyVk1cfvR+FgOH0KS08RVMXYhFm+NLjdC8QTxFF+c9rDXW8/c8Xo9IqyGDtE7UaywrplwjAo9wSpB8gERxJrnt4Rd8YU5/QawPb9/KvW/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpuBqsP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB54C2BD10;
+	Tue, 14 May 2024 10:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685340;
-	bh=DqY1oSmx3Ja7UajFq61UR1ouPaeUPXDRlpPUJOmgvtE=;
+	s=korg; t=1715683598;
+	bh=vNY0tcemwQha521ETWDiovU/GBBi1CqKpeYx0OVVcck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/ubUAlyLRfaI3DzvddtWfYF6Lp8N4VS97zeX8EF/DTYfjmvDEd2iqphXYj5z92XP
-	 Z39Fm+R0Zm9NRmbbYizafTPPvNwm4e43ye5qZUpJ2WBqvoTLRiA8+6UhkQs9Xs92PD
-	 /cWn2NXLoFvqlaOGuzyxxSnON1IJeNtovAwPhqcE=
+	b=fpuBqsP928EckNToUwETyI/9ZkHgcl/NpnQQkhqA9qYyNNssX3GtCPEMEiynn4zGi
+	 JXVxbamDLmm6Tdk48W4GaqUfRvrSMcgk0dR7mrymZmjpyHk12tuT7A8cckJACQT0DL
+	 df9dHgDlfNmCwr9hj9tKBcLPAQP9+ttItZKrO87Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Gabe Teeger <gabe.teeger@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/301] blk-iocost: do not WARN if iocg was already offlined
-Date: Tue, 14 May 2024 12:17:23 +0200
-Message-ID: <20240514101038.751094704@linuxfoundation.org>
+Subject: [PATCH 6.8 240/336] drm/amd/display: Atom Integrated System Info v2_2 for DCN35
+Date: Tue, 14 May 2024 12:17:24 +0200
+Message-ID: <20240514101047.675152807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Gabe Teeger <gabe.teeger@amd.com>
 
-[ Upstream commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 ]
+[ Upstream commit 9a35d205f466501dcfe5625ca313d944d0ac2d60 ]
 
-In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
-is intended to confirm iocg is active when it has debt. However, warn
-can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
-is run at that time:
+New request from KMD/VBIOS in order to support new UMA carveout
+model. This fixes a null dereference from accessing
+Ctx->dc_bios->integrated_info while it was NULL.
 
-  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
-  Call trace:
-  iocg_pay_debt+0x14c/0x190
-  iocg_kick_waitq+0x438/0x4c0
-  iocg_waitq_timer_fn+0xd8/0x130
-  __run_hrtimer+0x144/0x45c
-  __hrtimer_run_queues+0x16c/0x244
-  hrtimer_interrupt+0x2cc/0x7b0
+DAL parses through the BIOS and extracts the necessary
+integrated_info but was missing a case for the new BIOS
+version 2.3.
 
-The warn in this situation is meaningless. Since this iocg is being
-removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
-is canceled after removing 'active_list' in ioc_pd_free(), which ensures
-iocg is freed after iocg_waitq_timer_fn() returns.
-
-Therefore, add the check if iocg was already offlined to avoid warn
-when removing a blkcg or disk.
-
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Gabe Teeger <gabe.teeger@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index a382b3a39820a..0dca77591d66c 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1439,8 +1439,11 @@ static void iocg_pay_debt(struct ioc_gq *iocg, u64 abs_vpay,
- 	lockdep_assert_held(&iocg->ioc->lock);
- 	lockdep_assert_held(&iocg->waitq.lock);
- 
--	/* make sure that nobody messed with @iocg */
--	WARN_ON_ONCE(list_empty(&iocg->active_list));
-+	/*
-+	 * make sure that nobody messed with @iocg. Check iocg->pd.online
-+	 * to avoid warn when removing blkcg or disk.
-+	 */
-+	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
- 	WARN_ON_ONCE(iocg->inuse > 1);
- 
- 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 05f392501c0ae..ab31643b10969 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -2948,6 +2948,7 @@ static enum bp_result construct_integrated_info(
+ 				result = get_integrated_info_v2_1(bp, info);
+ 				break;
+ 			case 2:
++			case 3:
+ 				result = get_integrated_info_v2_2(bp, info);
+ 				break;
+ 			default:
 -- 
 2.43.0
 
