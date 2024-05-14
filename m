@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0618C5207
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 497258C50E0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2834C1F22140
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A77AFB20F2E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECD67D07E;
-	Tue, 14 May 2024 11:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C922128832;
+	Tue, 14 May 2024 10:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQnkSvCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmT/Eurg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951BC54BFE;
-	Tue, 14 May 2024 11:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41B96BFAC;
+	Tue, 14 May 2024 10:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685372; cv=none; b=oxlrMhzMN7Cd2mOOrASvr8YpC842wzx2PyiEQu9QZrYPDf9RSrLalH1DCzXjdnl43+vyio+dJ097siElJQc47K3v0v6bFAbfMS7+xcuxMu5n4xTo8K7xug01l6Ty5N8lr6gcJzaAGpeBftlyK/wiHi5NnjTcGEFClsAxIQ82Ggc=
+	t=1715683781; cv=none; b=Ugxgm+0e2iu6/kiIuxCo1FxyZWWVwFL09HuDH2WH6vlX4Eoerfzct/X4bm21qBgWZFi/rl4yym8rx6o4Jf/DkQGcAnblfha2BkrrTkG1SrR2g0iU8C7DAlDu5fkmEPCTzg7Zyz4wqctZkcoiVMQeRhBeVAiZPbsZiP0pzeB3q5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685372; c=relaxed/simple;
-	bh=OH7XlctKP86jfOlumD4a3tQkmyQ+cwrgMX6zagfihLw=;
+	s=arc-20240116; t=1715683781; c=relaxed/simple;
+	bh=ybEviFUEj+4sT90hYvmb7ifQ2VcD/wLpn78VE/2qTKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYfNeVr2P3P0K+taivbKiqwbB0vomsb67Uf7nZYtD5SjJx+9YWajpzlljIzLfYrM1j4QulGy/C7VCmzxNYw94vbPqcscFAPZOla4pkFqfQefTlWSruYnA2p1h+Rm2GZYNTh7RdykwGFky3Md7kCtA0UdnW1HlErCYvrQwZtvsOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQnkSvCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0075AC2BD10;
-	Tue, 14 May 2024 11:16:11 +0000 (UTC)
+	 MIME-Version; b=oDFV4gJiioI7Uz+3cArKGCSpBO0M8hgYDrQhthbgUFr4aJEDl6+i4QUGt7OuDpNTS0hlgyCaeqeWxNLHuCR1f5oPfg56CDvwcE86FAuf1K+g8XG85+bLYYHX/s8MGjRHNcYS7nDfmzNeDfBNS0s8ymMYk7LqIg5EXWVofp6lL8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmT/Eurg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDACC2BD10;
+	Tue, 14 May 2024 10:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685372;
-	bh=OH7XlctKP86jfOlumD4a3tQkmyQ+cwrgMX6zagfihLw=;
+	s=korg; t=1715683780;
+	bh=ybEviFUEj+4sT90hYvmb7ifQ2VcD/wLpn78VE/2qTKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQnkSvCyeeOUr58icxw+2jJ0CMjUAaLGqFUksGYNSibqpDF90MSE3jGbks96ujBnD
-	 cX8XImordlwtb9OQaOWlIefOaLqNrhqKrU72EOL8G8+7eerqp9ml20Fsu/1L8SAbzF
-	 KKUOfgDd29LzahttHtw33RsNKV+ypYOA6GFH8lgM=
+	b=RmT/EurgvPsIeb/X3OL+0IzudIjsuwwX6OHO+dINBY9nddGnm5aV7NyS2peXyDIrG
+	 EbHoQkkZyWYAY1MByZ7jihOMGy1QyPYY5POy5na7yQY3PJ4VAM69EDQBL2MlYVGH3O
+	 fPSk+UjByLyRHV3RdN5I5a2YhBVvJXVBccJV1Vmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/301] tcp: Use refcount_inc_not_zero() in tcp_twsk_unique().
-Date: Tue, 14 May 2024 12:17:29 +0200
-Message-ID: <20240514101038.977661311@linuxfoundation.org>
+	stable@kernel.org,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.8 246/336] usb: typec: ucsi: Fix connector check on init
+Date: Tue, 14 May 2024 12:17:30 +0200
+Message-ID: <20240514101047.907840995@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,123 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit f2db7230f73a80dbb179deab78f88a7947f0ab7e ]
+commit ce4c8d21054ae9396cd759fe6e8157b525616dc4 upstream.
 
-Anderson Nascimento reported a use-after-free splat in tcp_twsk_unique()
-with nice analysis.
+Fix issues when initially checking for a connector change:
+- Use the correct connector number not the entire CCI.
+- Call ->read under the PPM lock.
+- Remove a bogus READ_ONCE.
 
-Since commit ec94c2696f0b ("tcp/dccp: avoid one atomic operation for
-timewait hashdance"), inet_twsk_hashdance() sets TIME-WAIT socket's
-sk_refcnt after putting it into ehash and releasing the bucket lock.
-
-Thus, there is a small race window where other threads could try to
-reuse the port during connect() and call sock_hold() in tcp_twsk_unique()
-for the TIME-WAIT socket with zero refcnt.
-
-If that happens, the refcnt taken by tcp_twsk_unique() is overwritten
-and sock_put() will cause underflow, triggering a real use-after-free
-somewhere else.
-
-To avoid the use-after-free, we need to use refcount_inc_not_zero() in
-tcp_twsk_unique() and give up on reusing the port if it returns false.
-
-[0]:
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 0 PID: 1039313 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
-CPU: 0 PID: 1039313 Comm: trigger Not tainted 6.8.6-200.fc39.x86_64 #1
-Hardware name: VMware, Inc. VMware20,1/440BX Desktop Reference Platform, BIOS VMW201.00V.21805430.B64.2305221830 05/22/2023
-RIP: 0010:refcount_warn_saturate+0xe5/0x110
-Code: 42 8e ff 0f 0b c3 cc cc cc cc 80 3d aa 13 ea 01 00 0f 85 5e ff ff ff 48 c7 c7 f8 8e b7 82 c6 05 96 13 ea 01 01 e8 7b 42 8e ff <0f> 0b c3 cc cc cc cc 48 c7 c7 50 8f b7 82 c6 05 7a 13 ea 01 01 e8
-RSP: 0018:ffffc90006b43b60 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff888009bb3ef0 RCX: 0000000000000027
-RDX: ffff88807be218c8 RSI: 0000000000000001 RDI: ffff88807be218c0
-RBP: 0000000000069d70 R08: 0000000000000000 R09: ffffc90006b439f0
-R10: ffffc90006b439e8 R11: 0000000000000003 R12: ffff8880029ede84
-R13: 0000000000004e20 R14: ffffffff84356dc0 R15: ffff888009bb3ef0
-FS:  00007f62c10926c0(0000) GS:ffff88807be00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020ccb000 CR3: 000000004628c005 CR4: 0000000000f70ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? refcount_warn_saturate+0xe5/0x110
- ? __warn+0x81/0x130
- ? refcount_warn_saturate+0xe5/0x110
- ? report_bug+0x171/0x1a0
- ? refcount_warn_saturate+0xe5/0x110
- ? handle_bug+0x3c/0x80
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? refcount_warn_saturate+0xe5/0x110
- tcp_twsk_unique+0x186/0x190
- __inet_check_established+0x176/0x2d0
- __inet_hash_connect+0x74/0x7d0
- ? __pfx___inet_check_established+0x10/0x10
- tcp_v4_connect+0x278/0x530
- __inet_stream_connect+0x10f/0x3d0
- inet_stream_connect+0x3a/0x60
- __sys_connect+0xa8/0xd0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0x83/0x170
- entry_SYSCALL_64_after_hwframe+0x78/0x80
-RIP: 0033:0x7f62c11a885d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d a3 45 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007f62c1091e58 EFLAGS: 00000296 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000020ccb004 RCX: 00007f62c11a885d
-RDX: 0000000000000010 RSI: 0000000020ccb000 RDI: 0000000000000003
-RBP: 00007f62c1091e90 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000296 R12: 00007f62c10926c0
-R13: ffffffffffffff88 R14: 0000000000000000 R15: 00007ffe237885b0
- </TASK>
-
-Fixes: ec94c2696f0b ("tcp/dccp: avoid one atomic operation for timewait hashdance")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Closes: https://lore.kernel.org/netdev/37a477a6-d39e-486b-9577-3463f655a6b7@allelesecurity.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240501213145.62261-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 808a8b9e0b87 ("usb: typec: ucsi: Check for notifications after init")
+Cc: stable@kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240401210515.1902048-1-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_ipv4.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index c7ffab37a34cd..c464ced7137ee 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -154,6 +154,12 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 	if (tcptw->tw_ts_recent_stamp &&
- 	    (!twp || (reuse && time_after32(ktime_get_seconds(),
- 					    tcptw->tw_ts_recent_stamp)))) {
-+		/* inet_twsk_hashdance() sets sk_refcnt after putting twsk
-+		 * and releasing the bucket lock.
-+		 */
-+		if (unlikely(!refcount_inc_not_zero(&sktw->sk_refcnt)))
-+			return 0;
-+
- 		/* In case of repair and re-using TIME-WAIT sockets we still
- 		 * want to be sure that it is safe as above but honor the
- 		 * sequence numbers and time stamps set as part of the repair
-@@ -174,7 +180,7 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 			tp->rx_opt.ts_recent	   = tcptw->tw_ts_recent;
- 			tp->rx_opt.ts_recent_stamp = tcptw->tw_ts_recent_stamp;
- 		}
--		sock_hold(sktw);
-+
- 		return 1;
- 	}
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1460,11 +1460,13 @@ static int ucsi_init(struct ucsi *ucsi)
+ 	ucsi->connector = connector;
+ 	ucsi->ntfy = ntfy;
  
--- 
-2.43.0
-
++	mutex_lock(&ucsi->ppm_lock);
+ 	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	mutex_unlock(&ucsi->ppm_lock);
+ 	if (ret)
+ 		return ret;
+-	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
+-		ucsi_connector_change(ucsi, cci);
++	if (UCSI_CCI_CONNECTOR(cci))
++		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
+ 
+ 	return 0;
+ 
 
 
 
