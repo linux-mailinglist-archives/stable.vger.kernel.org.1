@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 971828C54C5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 097FA8C5548
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D6D1C23710
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D7F61C21EB1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792C66EB45;
-	Tue, 14 May 2024 11:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFFE3D3B8;
+	Tue, 14 May 2024 11:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xf+Dyuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsaqJLAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D3A54903;
-	Tue, 14 May 2024 11:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291A1F9D4;
+	Tue, 14 May 2024 11:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687434; cv=none; b=DdBZtXU1KBnr/HBh4/7zs4wKxnK5Wjxzg84t3tjVk2pqGMrrS/mbfKznI2yuYv5rH+LZWzQqdzeIpTbuLMXNIbVyd6H/A6PUPPZOJeHUdGDeP6z2UoHVV3siLOSsfBtAQKdS6pfF3MWv4mJsUesFaDysI1ZufO8I5mIBjpWEZPM=
+	t=1715687784; cv=none; b=usEoWl+k95DZxojv2CiSkNHKE5Qr6jbqOtJDeGGEZ71fZ1mvZ9qiVoVYVqx0Hf3K7U9S7pe9jv3hFkkSQV45DNodLOVtosrJXdFpU0Xk4XsNsGoszmGEZm4/yUDotMYyskLsAxtmXyh7BWF6QjBubgR07XNzr7+QPY0VszM85AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687434; c=relaxed/simple;
-	bh=THcLFfwniJoCmmI2WO8C3v/z8k1yEuQkL13irXc03+0=;
+	s=arc-20240116; t=1715687784; c=relaxed/simple;
+	bh=tjvPhV4dwm/5581HqbeTqnPmCFB9+FKjDPNeeMITZ8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aoWTeJRN394oyxxuSAoUFTlo2JRXdYFKfBp3p+xEAchQJ2EYpSkeHXz6YYTrGngP3WHGX6koJCSqvklKFpGfnp1dSxOHu2LCiSzq+5+rtAzrmhyNT6Xop6mcnLbYYejDJbS/TJ3jKamq7EN19f+8dZ+7+WIgEk/EePPzVjvzRbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xf+Dyuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC7BC2BD10;
-	Tue, 14 May 2024 11:50:33 +0000 (UTC)
+	 MIME-Version; b=OPOmVp/JhEhYtvDRpf64qgd7hGn+Am32UMhCFO3SrrHGPNBWO4LxkOj8N3TTTPkU+UKetzDGLqh1uoOXrJHZk0e3oCZhuRnFurd69q7QvtGF7N7jW9gJgzImOq3NImsJBOL5qOrDxnfAlNv+V20YvTdCRynPp+EehzBexG9280g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsaqJLAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAA8C2BD10;
+	Tue, 14 May 2024 11:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687433;
-	bh=THcLFfwniJoCmmI2WO8C3v/z8k1yEuQkL13irXc03+0=;
+	s=korg; t=1715687784;
+	bh=tjvPhV4dwm/5581HqbeTqnPmCFB9+FKjDPNeeMITZ8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xf+DyucJydogLeo31QaCB2+oBGJupCzO0E9iF1xtwQ1z8XA/Icd6q5fFMplXtz7s
-	 RtTnn6JhvLkzyzQusP8eeOGCDh7+BdKteJmZkouclXSdaIl+aCWemwje0IeDNJ3G1b
-	 +IKW0N3LfozoGLvvuE+wzLPqLYrrc0gQTKn9F6gg=
+	b=GsaqJLAvkJRrnDGXNWX08VIHHexcvECZd9hrxNlhI87mxxfOfoue/sd8TSYjiJoo6
+	 8bklK3XQUVm8wO7XG2bLuIPNX7FXYKAgIbJZSurhFbhCHGQTsipunFmLbnV8iGCpEf
+	 I0MGTiRrWaHbKY+0dr0zeVAbzA8Lyxw2OLkAOLKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <joneslee@google.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	John Stultz <jstultz@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Paul Davey <paul.davey@alliedtelesis.co.nz>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/111] selftests: timers: Fix valid-adjtimex signed left-shift undefined behavior
+Subject: [PATCH 5.15 103/168] xfrm: Preserve vlan tags for transport mode software GRO
 Date: Tue, 14 May 2024 12:20:01 +0200
-Message-ID: <20240514100959.529106960@linuxfoundation.org>
+Message-ID: <20240514101010.574685085@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +62,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Paul Davey <paul.davey@alliedtelesis.co.nz>
 
-[ Upstream commit 076361362122a6d8a4c45f172ced5576b2d4a50d ]
+[ Upstream commit 58fbfecab965014b6e3cc956a76b4a96265a1add ]
 
-The struct adjtimex freq field takes a signed value who's units are in
-shifted (<<16) parts-per-million.
+The software GRO path for esp transport mode uses skb_mac_header_rebuild
+prior to re-injecting the packet via the xfrm_napi_dev.  This only
+copies skb->mac_len bytes of header which may not be sufficient if the
+packet contains 802.1Q tags or other VLAN tags.  Worse copying only the
+initial header will leave a packet marked as being VLAN tagged but
+without the corresponding tag leading to mangling when it is later
+untagged.
 
-Unfortunately for negative adjustments, the straightforward use of:
+The VLAN tags are important when receiving the decrypted esp transport
+mode packet after GRO processing to ensure it is received on the correct
+interface.
 
-  freq = ppm << 16 trips undefined behavior warnings with clang:
+Therefore record the full mac header length in xfrm*_transport_input for
+later use in corresponding xfrm*_transport_finish to copy the entire mac
+header when rebuilding the mac header for GRO.  The skb->data pointer is
+left pointing skb->mac_header bytes after the start of the mac header as
+is expected by the network stack and network and transport header
+offsets reset to this location.
 
-valid-adjtimex.c:66:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -499<<16,
-        ~~~~^
-valid-adjtimex.c:67:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -450<<16,
-        ~~~~^
-..
-
-Fix it by using a multiply by (1 << 16) instead of shifting negative values
-in the valid-adjtimex test case. Align the values for better readability.
-
-Reported-by: Lee Jones <joneslee@google.com>
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240409202222.2830476-1-jstultz@google.com
-Link: https://lore.kernel.org/lkml/0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com/
+Fixes: 7785bba299a8 ("esp: Add a software GRO codepath")
+Signed-off-by: Paul Davey <paul.davey@alliedtelesis.co.nz>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/timers/valid-adjtimex.c | 73 +++++++++----------
- 1 file changed, 36 insertions(+), 37 deletions(-)
+ include/linux/skbuff.h | 15 +++++++++++++++
+ include/net/xfrm.h     |  3 +++
+ net/ipv4/xfrm4_input.c |  6 +++++-
+ net/ipv6/xfrm6_input.c |  6 +++++-
+ net/xfrm/xfrm_input.c  |  8 ++++++++
+ 5 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/timers/valid-adjtimex.c b/tools/testing/selftests/timers/valid-adjtimex.c
-index 48b9a803235a8..d13ebde203221 100644
---- a/tools/testing/selftests/timers/valid-adjtimex.c
-+++ b/tools/testing/selftests/timers/valid-adjtimex.c
-@@ -21,9 +21,6 @@
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  *   GNU General Public License for more details.
-  */
--
--
--
- #include <stdio.h>
- #include <stdlib.h>
- #include <time.h>
-@@ -62,45 +59,47 @@ int clear_time_state(void)
- #define NUM_FREQ_OUTOFRANGE 4
- #define NUM_FREQ_INVALID 2
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 7ed1d4472c0c8..15de91c65a09a 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2735,6 +2735,21 @@ static inline void skb_mac_header_rebuild(struct sk_buff *skb)
+ 	}
+ }
  
-+#define SHIFTED_PPM (1 << 16)
++/* Move the full mac header up to current network_header.
++ * Leaves skb->data pointing at offset skb->mac_len into the mac_header.
++ * Must be provided the complete mac header length.
++ */
++static inline void skb_mac_header_rebuild_full(struct sk_buff *skb, u32 full_mac_len)
++{
++	if (skb_mac_header_was_set(skb)) {
++		const unsigned char *old_mac = skb_mac_header(skb);
 +
- long valid_freq[NUM_FREQ_VALID] = {
--	-499<<16,
--	-450<<16,
--	-400<<16,
--	-350<<16,
--	-300<<16,
--	-250<<16,
--	-200<<16,
--	-150<<16,
--	-100<<16,
--	-75<<16,
--	-50<<16,
--	-25<<16,
--	-10<<16,
--	-5<<16,
--	-1<<16,
-+	 -499 * SHIFTED_PPM,
-+	 -450 * SHIFTED_PPM,
-+	 -400 * SHIFTED_PPM,
-+	 -350 * SHIFTED_PPM,
-+	 -300 * SHIFTED_PPM,
-+	 -250 * SHIFTED_PPM,
-+	 -200 * SHIFTED_PPM,
-+	 -150 * SHIFTED_PPM,
-+	 -100 * SHIFTED_PPM,
-+	  -75 * SHIFTED_PPM,
-+	  -50 * SHIFTED_PPM,
-+	  -25 * SHIFTED_PPM,
-+	  -10 * SHIFTED_PPM,
-+	   -5 * SHIFTED_PPM,
-+	   -1 * SHIFTED_PPM,
- 	-1000,
--	1<<16,
--	5<<16,
--	10<<16,
--	25<<16,
--	50<<16,
--	75<<16,
--	100<<16,
--	150<<16,
--	200<<16,
--	250<<16,
--	300<<16,
--	350<<16,
--	400<<16,
--	450<<16,
--	499<<16,
-+	    1 * SHIFTED_PPM,
-+	    5 * SHIFTED_PPM,
-+	   10 * SHIFTED_PPM,
-+	   25 * SHIFTED_PPM,
-+	   50 * SHIFTED_PPM,
-+	   75 * SHIFTED_PPM,
-+	  100 * SHIFTED_PPM,
-+	  150 * SHIFTED_PPM,
-+	  200 * SHIFTED_PPM,
-+	  250 * SHIFTED_PPM,
-+	  300 * SHIFTED_PPM,
-+	  350 * SHIFTED_PPM,
-+	  400 * SHIFTED_PPM,
-+	  450 * SHIFTED_PPM,
-+	  499 * SHIFTED_PPM,
- };
++		skb_set_mac_header(skb, -full_mac_len);
++		memmove(skb_mac_header(skb), old_mac, full_mac_len);
++		__skb_push(skb, full_mac_len - skb->mac_len);
++	}
++}
++
+ static inline int skb_checksum_start_offset(const struct sk_buff *skb)
+ {
+ 	return skb->csum_start - skb_headroom(skb);
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 6156ed2950f97..2e2e30d31a763 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -1019,6 +1019,9 @@ struct xfrm_offload {
+ #define CRYPTO_INVALID_PACKET_SYNTAX		64
+ #define CRYPTO_INVALID_PROTOCOL			128
  
- long outofrange_freq[NUM_FREQ_OUTOFRANGE] = {
--	-1000<<16,
--	-550<<16,
--	550<<16,
--	1000<<16,
-+	-1000 * SHIFTED_PPM,
-+	 -550 * SHIFTED_PPM,
-+	  550 * SHIFTED_PPM,
-+	 1000 * SHIFTED_PPM,
++	/* Used to keep whole l2 header for transport mode GRO */
++	__u32			orig_mac_len;
++
+ 	__u8			proto;
+ 	__u8			inner_ipproto;
  };
+diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+index eac206a290d05..1f50517289fd9 100644
+--- a/net/ipv4/xfrm4_input.c
++++ b/net/ipv4/xfrm4_input.c
+@@ -61,7 +61,11 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+ 	ip_send_check(iph);
  
- #define LONG_MAX (~0UL>>1)
+ 	if (xo && (xo->flags & XFRM_GRO)) {
+-		skb_mac_header_rebuild(skb);
++		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
++		 * works correctly in the presence of vlan tags.
++		 */
++		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
++		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
+ 		return 0;
+ 	}
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index 4907ab241d6be..7dbefbb338ca5 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -56,7 +56,11 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ 	skb_postpush_rcsum(skb, skb_network_header(skb), nhlen);
+ 
+ 	if (xo && (xo->flags & XFRM_GRO)) {
+-		skb_mac_header_rebuild(skb);
++		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
++		 * works correctly in the presence of vlan tags.
++		 */
++		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
++		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
+ 		return 0;
+ 	}
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index a6861832710d9..7f326a01cbcea 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -400,11 +400,15 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
+  */
+ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
+ {
++	struct xfrm_offload *xo = xfrm_offload(skb);
+ 	int ihl = skb->data - skb_transport_header(skb);
+ 
+ 	if (skb->transport_header != skb->network_header) {
+ 		memmove(skb_transport_header(skb),
+ 			skb_network_header(skb), ihl);
++		if (xo)
++			xo->orig_mac_len =
++				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
+ 		skb->network_header = skb->transport_header;
+ 	}
+ 	ip_hdr(skb)->tot_len = htons(skb->len + ihl);
+@@ -415,11 +419,15 @@ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
+ static int xfrm6_transport_input(struct xfrm_state *x, struct sk_buff *skb)
+ {
+ #if IS_ENABLED(CONFIG_IPV6)
++	struct xfrm_offload *xo = xfrm_offload(skb);
+ 	int ihl = skb->data - skb_transport_header(skb);
+ 
+ 	if (skb->transport_header != skb->network_header) {
+ 		memmove(skb_transport_header(skb),
+ 			skb_network_header(skb), ihl);
++		if (xo)
++			xo->orig_mac_len =
++				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
+ 		skb->network_header = skb->transport_header;
+ 	}
+ 	ipv6_hdr(skb)->payload_len = htons(skb->len + ihl -
 -- 
 2.43.0
 
