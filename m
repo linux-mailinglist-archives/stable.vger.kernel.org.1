@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23328C53EB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F318C5438
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723371F23317
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1B732840B1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94B612FB3E;
-	Tue, 14 May 2024 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E1D13A24B;
+	Tue, 14 May 2024 11:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pb71dimX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8WMPCse"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7813B12FB33;
-	Tue, 14 May 2024 11:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284BA139D1E;
+	Tue, 14 May 2024 11:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686851; cv=none; b=kelIgv24bkCNvyH9x4LQ4Swnx9wimqaLvdetAgs/3Jth7hDpeqjgYR5acKwVi1di3dcuqemWvKPVGQlpNvuv00WqVsa1dDBagXMQ6Mf8b7hIubAT1k++ub7XB297NP4TRaomZ+LkI9H8+3icFcKjFs2dvzUdCLL1erSidoK5N3w=
+	t=1715687068; cv=none; b=Y4GqS28ROl0JubJR2sGWWbRGKot1/AfNnlIaMPVySPywGhPFGkrVvB8Ej1LsUaD/N7Aj4VDOU+ZkTwx+pCTpSnt4d0K+uza8bKaRxZrr4+OBmPfDrA4KGxzwC2osCWzH2iuijswY/wIDd/eg/MEwdux/CGQsXlxxu6cnuIz3AZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686851; c=relaxed/simple;
-	bh=sxTksFff/TyIIlKjRXcTkulFYExTqRCkvCvvsftXxjU=;
+	s=arc-20240116; t=1715687068; c=relaxed/simple;
+	bh=yYosZi+aEBC1xhJe1FjW83MsY1x8dsdAFRlzpFInz08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FCi7BYv6bD3zjkJe5pt8MjzbvISDG2jgv/TkalLiXXAatOBjtuuk4TFdC9wqeYQGAH2bWjwzqxPuvDWDOtdCxMZALYysGBFNtQC0ppi06LmHndYkborHWCN9o/OVbHZ3H9PUg/rJjcbIIJoyBKcRMdQmruIF+KNXbUbC6v16f+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pb71dimX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0300C2BD10;
-	Tue, 14 May 2024 11:40:50 +0000 (UTC)
+	 MIME-Version; b=fkVKT68Lr/dLsoGlRNYkI23IGta2lMKTgPNFKmvC4EB3fNXcGgi5Zs6I01wI0LXYJ6uhx9QS9EeYfSd41AiSv2PSbS8pepRtA0fGnyXFY1HV7kprpA2NtajMs+Okr8SiazWR2fqNU4nn1WTt2GDcYZEpf8sPWdI1l6rcVP20NII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8WMPCse; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1192C2BD10;
+	Tue, 14 May 2024 11:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686851;
-	bh=sxTksFff/TyIIlKjRXcTkulFYExTqRCkvCvvsftXxjU=;
+	s=korg; t=1715687068;
+	bh=yYosZi+aEBC1xhJe1FjW83MsY1x8dsdAFRlzpFInz08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pb71dimXS0PYUE6RWL9XTRCUY1FmMOIMYYBqbTdmuVnoJs2pBGua5vQHXgxaEnuME
-	 cbvQe+040ZJxxzZXlJo7r/55gVDUoUqBNeOsof2MgMquJulqZNvMhuIiKVWYTjHv1r
-	 vUCSVOh8XgPBiMjEMRDijgspnPs9o94E6nCWkWMA=
+	b=P8WMPCsev8KWCCSsMWkhUQ2vDx0vo8xZ+a06gsAkS4ZkeVqJLOqJqHe5xYjK44J5/
+	 NNdBv5YpIgT0TtmSkVKuBEZ4QmqV2s8HLlG/QdHIjUWTAQis/+EXH4scU+3D5lVjh/
+	 KBghPXn2mHFKQcYc3/SouMIHGkjP0WV8lBR5UL0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanillan Wang <vanillanwang@163.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 43/63] net:usb:qmi_wwan: support Rolling modules
+Subject: [PATCH 5.4 53/84] 9p: explicitly deny setlease attempts
 Date: Tue, 14 May 2024 12:20:04 +0200
-Message-ID: <20240514100949.641490355@linuxfoundation.org>
+Message-ID: <20240514100953.681076081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit d362046021ea122309da8c8e0b6850c792ca97b5 ]
+[ Upstream commit 7a84602297d36617dbdadeba55a2567031e5165b ]
 
-Update the qmi_wwan driver support for the Rolling
-LTE modules.
+9p is a remote network protocol, and it doesn't support asynchronous
+notifications from the server. Ensure that we don't hand out any leases
+since we can't guarantee they'll be broken when a file's contents
+change.
 
-- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
-interface for /Linux/Chrome OS)
-0x0104: RMNET, diag, at, pipe
-
-Here are the outputs of usb-devices:
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0104 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling Module
-S:  SerialNumber=ba2eb033
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
-Link: https://lore.kernel.org/r/20240416120713.24777-1-vanillanwang@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/9p/vfs_file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index f787b9a4f9a9e..b4d436f985cfb 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1383,6 +1383,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
- 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
- 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
-+	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
+diff --git a/fs/9p/vfs_file.c b/fs/9p/vfs_file.c
+index ee9cabac12041..14d6cb0316212 100644
+--- a/fs/9p/vfs_file.c
++++ b/fs/9p/vfs_file.c
+@@ -676,6 +676,7 @@ const struct file_operations v9fs_file_operations = {
+ 	.lock = v9fs_file_lock,
+ 	.mmap = generic_file_readonly_mmap,
+ 	.fsync = v9fs_file_fsync,
++	.setlease = simple_nosetlease,
+ };
  
- 	/* 4. Gobi 1000 devices */
- 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
+ const struct file_operations v9fs_file_operations_dotl = {
+@@ -711,4 +712,5 @@ const struct file_operations v9fs_mmap_file_operations_dotl = {
+ 	.flock = v9fs_file_flock_dotl,
+ 	.mmap = v9fs_mmap_file_mmap,
+ 	.fsync = v9fs_file_fsync_dotl,
++	.setlease = simple_nosetlease,
+ };
 -- 
 2.43.0
 
