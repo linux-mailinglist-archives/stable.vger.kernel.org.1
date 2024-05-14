@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA6A8C5228
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C388C535C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7216282991
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58EB11F232D7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C402129A6F;
-	Tue, 14 May 2024 11:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EE88594E;
+	Tue, 14 May 2024 11:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USkmSju8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1YMKlvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9F755C0A;
-	Tue, 14 May 2024 11:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B3018026;
+	Tue, 14 May 2024 11:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685579; cv=none; b=eBrBLqTKdCQ8TBr9FQIYAC+FMwvRnjxiMM+fj/JB2SvuvWtkT9+xNTZvRi543lVZPaH33C3o9z5lbR5jYe/W6eYNHloJHRui3X9nyh+2mp1qpvPsVg/W7kV37lYMTkKIADY24flSC1smsfJVq2+KJfsqG/2ga4o55gmjjdUE40s=
+	t=1715686471; cv=none; b=lSe/jQqrmpkd5i+u8FMBR7D1p3ayKc55kHW8UkCNOw8z0fhe8paAWv1xqrJBgEriBOjeBhw3SmcBeuKxVa0A+9dagmH6D2UiVs75x7+ZZ4w8jNpmFJ64X9WGpum6BXLmRG1Ct+XHObKrKL4zYjRklQM/SySXtGtc5iNiEoyk9Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685579; c=relaxed/simple;
-	bh=otVT6hWJiNy+1d/c2RToUVY/6fLACQ7HjHsEpvGny+A=;
+	s=arc-20240116; t=1715686471; c=relaxed/simple;
+	bh=fp9Dgj7caFJ9kPFSxkAQvpQXfskk3DM6hvRcoH2T9Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5m8ztgolGclFYpPhBxSME4s2e93m1dqhe0VRjdEcdIEqVU6LiALxhK2PAVKTeuamxQi7iROqaWkSPYP46ZJ1UiBH3ID+RUKr2XbCV4DF1qiusVC3W5aRRGsSmw7yqzt+YKD2+9eWwwD5edWk6iLeS3cgi8roKs8um8bVDWsxn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USkmSju8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75361C2BD10;
-	Tue, 14 May 2024 11:19:36 +0000 (UTC)
+	 MIME-Version; b=A5Q5R4HY5XaR4tBL6n48Z9nHx4DsbGsbKd1jgVPJKH8Vxg7m4P8baAVvm0FLkvzWGWeE/jyoWdb1vmWhD7KCp036syjXde61PrfF0yeOQYrHFKX/FOLMdP6Czn2cz0tQDjPPL7Syc7YZJ4B+NH2XYBgvF/dpisuzrHJ6p0YS4xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1YMKlvU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F25C2BD10;
+	Tue, 14 May 2024 11:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685579;
-	bh=otVT6hWJiNy+1d/c2RToUVY/6fLACQ7HjHsEpvGny+A=;
+	s=korg; t=1715686470;
+	bh=fp9Dgj7caFJ9kPFSxkAQvpQXfskk3DM6hvRcoH2T9Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USkmSju8qlCIeGrLrma642sk1WmQJUZUylNGaUjqk5GgO3FV130payjnsw5pnh/39
-	 xdIuIka3DXKNXx5bM8jnbEGWyjQ3iZZfltFX0IaMRZ3FMXCVGc5n7gM1ghMMETidkH
-	 68f/CkOV2FuMmOA/czYJgPwENSH6kUEVjzxQXVVE=
+	b=k1YMKlvUfXWzE4LG+jp3ghELoGsXHeflM0Eol2weGTddu6169btcVjxy6g5XTTLSX
+	 pVjHg8YLhLMVsJxdY7g40cHCwaaYWoElTqE+2RQoJqaHItpcv/dNq09YBpsirVysvl
+	 LBKFdFN8DjUfhGcQX0Ag5dpHg6yBGNZWgEgpeFEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Song Shuai <songshuaishuai@tinylab.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/301] net: hns3: fix port vlan filter not disabled issue
+Subject: [PATCH 6.1 118/236] memblock tests: fix undefined reference to `panic
 Date: Tue, 14 May 2024 12:18:00 +0200
-Message-ID: <20240514101040.151362983@linuxfoundation.org>
+Message-ID: <20240514101024.851479311@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit f5db7a3b65c84d723ca5e2bb6e83115180ab6336 ]
+[ Upstream commit e0f5a8e74be88f2476e58b25d3b49a9521bdc4ec ]
 
-According to hardware limitation, for device support modify
-VLAN filter state but not support bypass port VLAN filter,
-it should always disable the port VLAN filter. but the driver
-enables port VLAN filter when initializing, if there is no
-VLAN(except VLAN 0) id added, the driver will disable it
-in service task. In most time, it works fine. But there is
-a time window before the service task shceduled and net device
-being registered. So if user adds VLAN at this time, the driver
-will not update the VLAN filter state,  and the port VLAN filter
-remains enabled.
+commit e96c6b8f212a ("memblock: report failures when memblock_can_resize
+is not set") introduced the usage of panic, which is not defined in
+memblock test.
 
-To fix the problem, if support modify VLAN filter state but not
-support bypass port VLAN filter, set the port vlan filter to "off".
+Let's define it directly in panic.h to fix it.
 
-Fixes: 184cd221a863 ("net: hns3: disable port VLAN filter when support function level VLAN filter control")
-Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+CC: Song Shuai <songshuaishuai@tinylab.org>
+CC: Mike Rapoport <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20240402132701.29744-3-richard.weiyang@gmail.com
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/include/linux/kernel.h |  1 +
+ tools/include/linux/panic.h  | 19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 tools/include/linux/panic.h
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 9858124665aa6..3b74cce46ac65 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -9898,6 +9898,7 @@ static int hclge_set_vlan_protocol_type(struct hclge_dev *hdev)
- static int hclge_init_vlan_filter(struct hclge_dev *hdev)
- {
- 	struct hclge_vport *vport;
-+	bool enable = true;
- 	int ret;
- 	int i;
+diff --git a/tools/include/linux/kernel.h b/tools/include/linux/kernel.h
+index 4b0673bf52c2e..07cfad817d539 100644
+--- a/tools/include/linux/kernel.h
++++ b/tools/include/linux/kernel.h
+@@ -8,6 +8,7 @@
+ #include <linux/build_bug.h>
+ #include <linux/compiler.h>
+ #include <linux/math.h>
++#include <linux/panic.h>
+ #include <endian.h>
+ #include <byteswap.h>
  
-@@ -9917,8 +9918,12 @@ static int hclge_init_vlan_filter(struct hclge_dev *hdev)
- 		vport->cur_vlan_fltr_en = true;
- 	}
- 
-+	if (test_bit(HNAE3_DEV_SUPPORT_VLAN_FLTR_MDF_B, hdev->ae_dev->caps) &&
-+	    !test_bit(HNAE3_DEV_SUPPORT_PORT_VLAN_BYPASS_B, hdev->ae_dev->caps))
-+		enable = false;
+diff --git a/tools/include/linux/panic.h b/tools/include/linux/panic.h
+new file mode 100644
+index 0000000000000..9c8f17a41ce8e
+--- /dev/null
++++ b/tools/include/linux/panic.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _TOOLS_LINUX_PANIC_H
++#define _TOOLS_LINUX_PANIC_H
 +
- 	return hclge_set_vlan_filter_ctrl(hdev, HCLGE_FILTER_TYPE_PORT,
--					  HCLGE_FILTER_FE_INGRESS, true, 0);
-+					  HCLGE_FILTER_FE_INGRESS, enable, 0);
- }
- 
- static int hclge_init_vlan_type(struct hclge_dev *hdev)
++#include <stdarg.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++static inline void panic(const char *fmt, ...)
++{
++	va_list argp;
++
++	va_start(argp, fmt);
++	vfprintf(stderr, fmt, argp);
++	va_end(argp);
++	exit(-1);
++}
++
++#endif
 -- 
 2.43.0
 
