@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA82A8C5542
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F708C54C2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A341F22ECE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B9001F219CE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6D033985;
-	Tue, 14 May 2024 11:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B9212EBE8;
+	Tue, 14 May 2024 11:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gldvdVvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vj/48+vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D142F9D4;
-	Tue, 14 May 2024 11:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E437D54903;
+	Tue, 14 May 2024 11:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687772; cv=none; b=rhAXSm9sNiKGtr0mUmJo2kSTvhHYlNRxB0I522CLHWUPq6Kr3VALbK4Zz5WwupEJ2WMCO1dYIzCAoRkh9TUKXG6WAz9M+2oAsfzMS7zK3zuFKTyb6XgaQ6/fVXgupCs/S4MSdb0jYkpDowC5AbkKgwpmxhEIIyT3NnpjJ/rQ9rI=
+	t=1715687421; cv=none; b=ZpgSeTww30+XPfekoJ8F1BPnBO6Y3awAtP+sn8uCYCqoa4WTRnCKy2o8Z0AhZT8b+e4wCnh0+zep3Qdexq5E1vBdcT0VNL8JkEwL2cgzi0KOPM79xas06hbiR9w+En36Tyc66TxnhUI2tPVkNc9GKxRCpaJ1xliv9Hw2efdCzFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687772; c=relaxed/simple;
-	bh=5Kt15Vp9AHI9oKtwE4bN/5ld/B6ugx/gm1drrexM8Zg=;
+	s=arc-20240116; t=1715687421; c=relaxed/simple;
+	bh=g2pffUxSpgHvdhHHLd+tWPwJHA1sNACxpBY+BTM1O68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nv7jlRdW+T1VfpipyBzJZWUZZ4nrI90a5rYgFUpVHzAwi/Nj4OxEP/nWU3o2Z5XtToKXLCMQyV68PSlSkmzEzvluvDdTqcsBaQfWiC1wT0lhl5V6q1q4DL3Rz7pjnAARTdlwA2R9ISyf77WvEgzlr9vfr/SgKbBRoem1t/WkSOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gldvdVvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2318AC32781;
-	Tue, 14 May 2024 11:56:11 +0000 (UTC)
+	 MIME-Version; b=N9Zqan63FM7NAS4frIZ0YfCPWaIw1D2o78dtx9byRKHk6W3zUGzAb18I0leNAqnVbCaUno1syFN0OdVeu0Jws9Y34aWG0Cjf1+n5yEQAvnzRDhM6RvGQSRVgsz/oKs0nQ6t1ovivmV5m6LAMiP6/Td+JHFWfpfFuvZFQGEStV7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vj/48+vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D887C2BD10;
+	Tue, 14 May 2024 11:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687772;
-	bh=5Kt15Vp9AHI9oKtwE4bN/5ld/B6ugx/gm1drrexM8Zg=;
+	s=korg; t=1715687420;
+	bh=g2pffUxSpgHvdhHHLd+tWPwJHA1sNACxpBY+BTM1O68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gldvdVvgAZcb+d2gM2FEoFBmhmCEjzpdNwKsv+/DOzqaBw9VU9yL1PmTdAfdLmXGg
-	 2FDRQXqBLldMah0uoTqWiTrHoyqvez5C378WxD2ijGBp2UaXBBMdrqGSBq1cBFt6tC
-	 6sjhZcsPDJs6SKEmmBB2QsYXSaFGQ/MLFv11hhYI=
+	b=Vj/48+vd914tgglrGg2+G4z4ahJeFUZypQUZVDf03HEUY31oLm1UQt+C4wAsERgQN
+	 peQ6GkYuTjhmSFwjCAqfbTxC/UeD6kU7Ml+hT/R75fiID76lb9FMjQz/ov+qQM1dXc
+	 H0LGU8s/HUX3Y2EVnFZm4GovHMWkElX98mYR5KYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	William Findlay <will@isovalent.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/168] bpf, sockmap: Improved check for empty queue
+Subject: [PATCH 5.10 059/111] scsi: target: Fix SELinux error when systemd-modules loads the target module
 Date: Tue, 14 May 2024 12:19:57 +0200
-Message-ID: <20240514101010.426565013@linuxfoundation.org>
+Message-ID: <20240514100959.375723053@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,180 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 405df89dd52cbcd69a3cd7d9a10d64de38f854b2 ]
+[ Upstream commit 97a54ef596c3fd24ec2b227ba8aaf2cf5415e779 ]
 
-We noticed some rare sk_buffs were stepping past the queue when system was
-under memory pressure. The general theory is to skip enqueueing
-sk_buffs when its not necessary which is the normal case with a system
-that is properly provisioned for the task, no memory pressure and enough
-cpu assigned.
+If the systemd-modules service loads the target module, the credentials of
+that userspace process will be used to validate the access to the target db
+directory.  SELinux will prevent it, reporting an error like the following:
 
-But, if we can't allocate memory due to an ENOMEM error when enqueueing
-the sk_buff into the sockmap receive queue we push it onto a delayed
-workqueue to retry later. When a new sk_buff is received we then check
-if that queue is empty. However, there is a problem with simply checking
-the queue length. When a sk_buff is being processed from the ingress queue
-but not yet on the sockmap msg receive queue its possible to also recv
-a sk_buff through normal path. It will check the ingress queue which is
-zero and then skip ahead of the pkt being processed.
+kernel: audit: type=1400 audit(1676301082.205:4): avc: denied  { read }
+for  pid=1020 comm="systemd-modules" name="target" dev="dm-3"
+ino=4657583 scontext=system_u:system_r:systemd_modules_load_t:s0
+tcontext=system_u:object_r:targetd_etc_rw_t:s0 tclass=dir permissive=0
 
-Previously we used sock lock from both contexts which made the problem
-harder to hit, but not impossible.
+Fix the error by using the kernel credentials to access the db directory
 
-To fix instead of popping the skb from the queue entirely we peek the
-skb from the queue and do the copy there. This ensures checks to the
-queue length are non-zero while skb is being processed. Then finally
-when the entire skb has been copied to user space queue or another
-socket we pop it off the queue. This way the queue length check allows
-bypassing the queue only after the list has been completely processed.
-
-To reproduce issue we run NGINX compliance test with sockmap running and
-observe some flakes in our testing that we attributed to this issue.
-
-Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: William Findlay <will@isovalent.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20230523025618.113937-5-john.fastabend@gmail.com
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Link: https://lore.kernel.org/r/20240215143944.847184-2-mlombard@redhat.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skmsg.h |  1 -
- net/core/skmsg.c      | 32 ++++++++------------------------
- 2 files changed, 8 insertions(+), 25 deletions(-)
+ drivers/target/target_core_configfs.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index 07a8e7c695373..422b391d931fe 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -73,7 +73,6 @@ struct sk_psock_link {
- };
- 
- struct sk_psock_work_state {
--	struct sk_buff			*skb;
- 	u32				len;
- 	u32				off;
- };
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 51ab1e617d922..675fd86279d87 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -615,16 +615,12 @@ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
- 
- static void sk_psock_skb_state(struct sk_psock *psock,
- 			       struct sk_psock_work_state *state,
--			       struct sk_buff *skb,
- 			       int len, int off)
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index 56ae882fb7b39..4d2fbe1429b69 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -3532,6 +3532,8 @@ static int __init target_core_init_configfs(void)
  {
- 	spin_lock_bh(&psock->ingress_lock);
- 	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
--		state->skb = skb;
- 		state->len = len;
- 		state->off = off;
--	} else {
--		sock_drop(psock->sk, skb);
- 	}
- 	spin_unlock_bh(&psock->ingress_lock);
- }
-@@ -635,23 +631,17 @@ static void sk_psock_backlog(struct work_struct *work)
- 	struct sk_psock *psock = container_of(dwork, struct sk_psock, work);
- 	struct sk_psock_work_state *state = &psock->work_state;
- 	struct sk_buff *skb = NULL;
-+	u32 len = 0, off = 0;
- 	bool ingress;
--	u32 len, off;
+ 	struct configfs_subsystem *subsys = &target_core_fabrics;
+ 	struct t10_alua_lu_gp *lu_gp;
++	struct cred *kern_cred;
++	const struct cred *old_cred;
  	int ret;
  
- 	mutex_lock(&psock->work_mutex);
--	if (unlikely(state->skb)) {
--		spin_lock_bh(&psock->ingress_lock);
--		skb = state->skb;
-+	if (unlikely(state->len)) {
- 		len = state->len;
- 		off = state->off;
--		state->skb = NULL;
--		spin_unlock_bh(&psock->ingress_lock);
- 	}
--	if (skb)
--		goto start;
+ 	pr_debug("TARGET_CORE[0]: Loading Generic Kernel Storage"
+@@ -3608,11 +3610,21 @@ static int __init target_core_init_configfs(void)
+ 	if (ret < 0)
+ 		goto out;
  
--	while ((skb = skb_dequeue(&psock->ingress_skb))) {
-+	while ((skb = skb_peek(&psock->ingress_skb))) {
- 		len = skb->len;
- 		off = 0;
- 		if (skb_bpf_strparser(skb)) {
-@@ -660,7 +650,6 @@ static void sk_psock_backlog(struct work_struct *work)
- 			off = stm->offset;
- 			len = stm->full_len;
- 		}
--start:
- 		ingress = skb_bpf_ingress(skb);
- 		skb_bpf_redirect_clear(skb);
- 		do {
-@@ -670,8 +659,7 @@ static void sk_psock_backlog(struct work_struct *work)
- 							  len, ingress);
- 			if (ret <= 0) {
- 				if (ret == -EAGAIN) {
--					sk_psock_skb_state(psock, state, skb,
--							   len, off);
-+					sk_psock_skb_state(psock, state, len, off);
++	/* We use the kernel credentials to access the target directory */
++	kern_cred = prepare_kernel_cred(&init_task);
++	if (!kern_cred) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	old_cred = override_creds(kern_cred);
+ 	target_init_dbroot();
++	revert_creds(old_cred);
++	put_cred(kern_cred);
  
- 					/* Delay slightly to prioritize any
- 					 * other work that might be here.
-@@ -683,15 +671,16 @@ static void sk_psock_backlog(struct work_struct *work)
- 				/* Hard errors break pipe and stop xmit. */
- 				sk_psock_report_error(psock, ret ? -ret : EPIPE);
- 				sk_psock_clear_state(psock, SK_PSOCK_TX_ENABLED);
--				sock_drop(psock->sk, skb);
- 				goto end;
- 			}
- 			off += ret;
- 			len -= ret;
- 		} while (len);
+ 	return 0;
  
--		if (!ingress)
-+		skb = skb_dequeue(&psock->ingress_skb);
-+		if (!ingress) {
- 			kfree_skb(skb);
-+		}
- 	}
- end:
- 	mutex_unlock(&psock->work_mutex);
-@@ -784,11 +773,6 @@ static void __sk_psock_zap_ingress(struct sk_psock *psock)
- 		skb_bpf_redirect_clear(skb);
- 		sock_drop(psock->sk, skb);
- 	}
--	kfree_skb(psock->work_state.skb);
--	/* We null the skb here to ensure that calls to sk_psock_backlog
--	 * do not pick up the free'd skb.
--	 */
--	psock->work_state.skb = NULL;
- 	__sk_psock_purge_ingress_msg(psock);
- }
- 
-@@ -807,7 +791,6 @@ void sk_psock_stop(struct sk_psock *psock)
- 	spin_lock_bh(&psock->ingress_lock);
- 	sk_psock_clear_state(psock, SK_PSOCK_TX_ENABLED);
- 	sk_psock_cork_free(psock);
--	__sk_psock_zap_ingress(psock);
- 	spin_unlock_bh(&psock->ingress_lock);
- }
- 
-@@ -822,6 +805,7 @@ static void sk_psock_destroy(struct work_struct *work)
- 	sk_psock_done_strp(psock);
- 
- 	cancel_delayed_work_sync(&psock->work);
-+	__sk_psock_zap_ingress(psock);
- 	mutex_destroy(&psock->work_mutex);
- 
- 	psock_progs_drop(&psock->progs);
+ out:
++	target_xcopy_release_pt();
+ 	configfs_unregister_subsystem(subsys);
+ 	core_dev_release_virtual_lun0();
+ 	rd_module_exit();
 -- 
 2.43.0
 
