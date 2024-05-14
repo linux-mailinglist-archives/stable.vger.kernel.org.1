@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C67D8C51FA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC558C5077
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8281C2098A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666871F21B63
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95F186252;
-	Tue, 14 May 2024 11:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E8213D53E;
+	Tue, 14 May 2024 10:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjTM5F2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrcAhAX1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BDB84E1D;
-	Tue, 14 May 2024 11:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED51313D2B7;
+	Tue, 14 May 2024 10:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685299; cv=none; b=rUPPi9FEi97+OCXse4Yv445T41PekVA3zRIHx0rmNL3OOnEBJ/VEcLWW6JxyTyPXHkvcLpGsbgJYYyye+6df+uRI3yTVTZaHo9Rp196lKcG6lF83otEl1YGiBqsVHa9Amhpsh57+pDfNtz0QHfeZIhryYcSaKZBdB01khsIaDG4=
+	t=1715683345; cv=none; b=MU/yHlhefTorV93EGOctVaR1ztk3v7VTXMdJBNjP6qUdUG7JJvKXrj9fMNEvKl5I9lX2mspXD3kotDqp5MsiBICE8HUgkunOyoCTXyNOGFHF9CLMnxHqkGSMLTf8r7LIldE/0A4FbtZuxKf/3U9OKkrKPZPZFK2/9O+YPVNVtCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685299; c=relaxed/simple;
-	bh=8NpsOtwUBKiQN3/zetauamaImrJ7ZWh8t9qNigQ7IDk=;
+	s=arc-20240116; t=1715683345; c=relaxed/simple;
+	bh=3X9hGJ/CoyUyGZKtnrWrpiobyEVAN+5gKKQ9gmVoVEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGvK9g4VwCLUEUO5aix5cIP5doBJ6EtysEl28Q58tHGwNaHyep2xOK4suW2zcDlW0cp66nzjqFLa4DatUnSIqFb5mJBKIOlEw87+EVKpCx3jA53snhUld9+sNa/qQY+w4TO+Fc3tVXb+ulT+oExCVqR/Lyab19P0iFwUvS0nSYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjTM5F2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8483FC2BD10;
-	Tue, 14 May 2024 11:14:55 +0000 (UTC)
+	 MIME-Version; b=g7Ah1mrCxk/Dr4aO+PjhXhtL5PqaUN0v8+sUvLyEm+9XA+ygiPySBkYoOsBrDEd/OFNtz7uoWNhXNhkXxdoRn53ULqLCdn84hPB8vJTjNvH9cG2m87cvjyzhbOPjV3qWnv2uc5NVWDL/VKng8u5rlWD4coXZUULg9qdGF9WUHUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrcAhAX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23215C2BD10;
+	Tue, 14 May 2024 10:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685299;
-	bh=8NpsOtwUBKiQN3/zetauamaImrJ7ZWh8t9qNigQ7IDk=;
+	s=korg; t=1715683344;
+	bh=3X9hGJ/CoyUyGZKtnrWrpiobyEVAN+5gKKQ9gmVoVEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjTM5F2p2kfpH+YuD1EKHjfN+S0+qoGRsBK5VGGsfNjlDAbBJbMKE+iizz2w8TuIL
-	 Tj/EbR2EVwcPL/POB6bgHMGZuiSELErzJ6pEw/EHu/UGR7aKPUi7HUQg04GMpINBcA
-	 CmH6omJgi9hJS0+06LiNBdARP1x4zmKegDvyBFu4=
+	b=OrcAhAX1BULShPsGqYd3S7zM9+99EgVbTVhCb2RvKMTPOh+7puDEc4xGT2GLE+xLo
+	 iIeGgWK/CLa6KJ1asjG2ItG6pPAnpL9Dgwl5HzEKz2CMjPWOVZPIrrSnUHipblmSW1
+	 yepJJYnj8mqI6lRcvJkFTTtDi7vFdCxHVAd9+ciQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/301] btrfs: make btrfs_clear_delalloc_extent() free delalloc reserve
-Date: Tue, 14 May 2024 12:16:45 +0200
-Message-ID: <20240514101037.314866342@linuxfoundation.org>
+Subject: [PATCH 6.8 202/336] arm64: dts: mediatek: mt8183-pico6: Fix bluetooth node
+Date: Tue, 14 May 2024 12:16:46 +0200
+Message-ID: <20240514101046.229771729@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 3c6f0c5ecc8910d4ffb0dfe85609ebc0c91c8f34 ]
+[ Upstream commit cd17bcbd2b33d7c816b80640ae2fef2507576278 ]
 
-Currently, this call site in btrfs_clear_delalloc_extent() only converts
-the reservation. We are marking it not delalloc, so I don't think it
-makes sense to keep the rsv around.  This is a path where we are not
-sure to join a transaction, so it leads to incorrect free-ing during
-umount.
+Bluetooth is not a random device connected to the MMC/SD controller. It
+is function 2 of the SDIO device.
 
-Helps with the pass rate of generic/269 and generic/475.
+Fix the address of the bluetooth node. Also fix the node name and drop
+the label.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 055ef10ccdd4 ("arm64: dts: mt8183: Add jacuzzi pico/pico6 board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 33d0efa5ed794..5ddee801a8303 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -2510,7 +2510,7 @@ void btrfs_clear_delalloc_extent(struct btrfs_inode *inode,
- 		 */
- 		if (bits & EXTENT_CLEAR_META_RESV &&
- 		    root != fs_info->tree_root)
--			btrfs_delalloc_release_metadata(inode, len, false);
-+			btrfs_delalloc_release_metadata(inode, len, true);
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
+index a2e74b8293206..6a7ae616512d6 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
+@@ -82,7 +82,8 @@
+ };
  
- 		/* For sanity tests. */
- 		if (btrfs_is_testing(fs_info))
+ &mmc1 {
+-	bt_reset: bt-reset {
++	bluetooth@2 {
++		reg = <2>;
+ 		compatible = "mediatek,mt7921s-bluetooth";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&bt_pins_reset>;
 -- 
 2.43.0
 
