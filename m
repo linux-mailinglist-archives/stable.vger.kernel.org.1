@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9CF8C5361
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8C58C5243
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3F20286693
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F59D280EBC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20E785C41;
-	Tue, 14 May 2024 11:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF186CDA3;
+	Tue, 14 May 2024 11:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXwpb97C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00AY8bjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D38418026;
-	Tue, 14 May 2024 11:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793482943F;
+	Tue, 14 May 2024 11:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686482; cv=none; b=Oa0guWLtUVXfZgy7pU/zXR023FjiQWLhkNNJWNSjTZKyiLsIPQfLn2E40JEAXXF5jVMHE+sQWfKt70j83ygQaiO0f9P0RVBOKLIQS+IfsybQu8iOkrEZsfonwe3+GRoiA5nVI3HZydwtVPM6z82YSFNFeebGrX09hxN2hPmlZ3A=
+	t=1715685723; cv=none; b=lBsDdlMlJp/3sp3QculiFvYD+9LcK1ZmI7XQ8lm+ea2TKiVX+RpNLxv8A0quiTl1wzfbM/87KQd/vffXyhBRt8kLV8UbG/jgj2y8o1O8sXq8InGc37bQs9ac0FBn4XEBSTADmO/sf/zbpgjBh8XYpTjOTQwAApKJoSsx+64DWAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686482; c=relaxed/simple;
-	bh=wubmRb/QT9XC5myQMTCHBSbXZE5xntcuvclhrbU6Xrc=;
+	s=arc-20240116; t=1715685723; c=relaxed/simple;
+	bh=0AsmcKHxPlQKh3yx5jom0vPeMT12dxLtXG3gfkTAXyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnV6e4Xg/fYnWo2XABN7uKt4Z3V1AbuLoUyxOvX/fNuLGtaS/RoEDcg6a8pmcxpI1OxxCPoOeXnQ/xwog/H0DaCmQ05WAFfGu+SsfdDBefDSSgI0AA8Q0Z6S4ow4XMOpXlsNxJ2Dw2xA9HBCiRaFATHVa7Ybfl+Fhhiz6fWSRGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXwpb97C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E961FC2BD10;
-	Tue, 14 May 2024 11:34:41 +0000 (UTC)
+	 MIME-Version; b=gApfzA0ZTb+z8Ve9NdEKiMfce3/tNQjoiNt428QPq7aEIWi7u1h4UEZxQ3CaKSle+BqPI3UfvMYosKRu4nmBLT/w6gt8NJ+RawH++4Z3qyeWkcPZzB+h4VKnyceyiOmi8l043zZS4qUUCjFlK40XHaqTHxYU8lcIVAHjsmv/8tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00AY8bjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8CDEC2BD10;
+	Tue, 14 May 2024 11:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686482;
-	bh=wubmRb/QT9XC5myQMTCHBSbXZE5xntcuvclhrbU6Xrc=;
+	s=korg; t=1715685723;
+	bh=0AsmcKHxPlQKh3yx5jom0vPeMT12dxLtXG3gfkTAXyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gXwpb97CJy/OdGRM/mWi/rMhQWmJ2eCH+G651fwhjlXO2TRLwUdHMFzCkbwFdmPSQ
-	 9u5RGf/rc0geuvI6Jp/GAdjZEljwAz5v4Hkj4hCwLgOns2YTb85YyJTjuIU/RBJtpX
-	 YQCXZQ8Rs5e46wLgaYmbCygu2Tvr15WTgcjU8Ap4=
+	b=00AY8bjtJHF+L7YnsVqyhIK1DvF8XhvIPklpKWmj3D19FvDtIMFHOHjabxlrG4FaU
+	 1Pb8g++cfuMdkZq+T3fPyKRrpfprDCsGOEKaXLTPwMoQhSpJsNivGGYl7w19VfrHKO
+	 klb9bM3lq8TmCZeNs7IbeJWx63DgVo21gXuOPfOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Smythies <dsmythies@telus.net>,
-	Len Brown <len.brown@intel.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/236] tools/power turbostat: Fix added raw MSR output
+Subject: [PATCH 6.6 203/301] net/smc: fix neighbour and rtable leak in smc_ib_find_route()
 Date: Tue, 14 May 2024 12:17:54 +0200
-Message-ID: <20240514101024.624117947@linuxfoundation.org>
+Message-ID: <20240514101039.924598825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Smythies <dsmythies@telus.net>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-[ Upstream commit e5f4e68eed85fa8495d78cd966eecc2b27bb9e53 ]
+[ Upstream commit 2ddc0dd7fec86ee53b8928a5cca5fbddd4fc7c06 ]
 
-When using --Summary mode, added MSRs in raw mode always
-print zeros. Print the actual register contents.
+In smc_ib_find_route(), the neighbour found by neigh_lookup() and rtable
+resolved by ip_route_output_flow() are not released or put before return.
+It may cause the refcount leak, so fix it.
 
-Example, with patch:
-
-note the added column:
---add msr0x64f,u32,package,raw,REASON
-
-Where:
-
-0x64F is MSR_CORE_PERF_LIMIT_REASONS
-
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.00    4800    35      1.42    0.76    0x00000000
-0.00    4801    34      1.42    0.76    0x00000000
-80.08   4531    66      108.17  107.52  0x08000000
-98.69   4530    66      133.21  132.54  0x08000000
-99.28   4505    66      128.26  127.60  0x0c000400
-99.65   4486    68      124.91  124.25  0x0c000400
-99.63   4483    68      124.90  124.25  0x0c000400
-79.34   4481    41      99.80   99.13   0x0c000000
-0.00    4801    41      1.40    0.73    0x0c000000
-
-Where, for the test processor (i5-10600K):
-
-PKG Limit #1: 125.000 Watts, 8.000000 sec
-MSR bit 26 = log; bit 10 = status
-
-PKG Limit #2: 136.000 Watts, 0.002441 sec
-MSR bit 27 = log; bit 11 = status
-
-Example, without patch:
-
-Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
-0.01    4800    35      1.43    0.77    0x00000000
-0.00    4801    35      1.39    0.73    0x00000000
-83.49   4531    66      112.71  112.06  0x00000000
-98.69   4530    68      133.35  132.69  0x00000000
-99.31   4500    67      127.96  127.30  0x00000000
-99.63   4483    69      124.91  124.25  0x00000000
-99.61   4481    69      124.90  124.25  0x00000000
-99.61   4481    71      124.92  124.25  0x00000000
-59.35   4479    42      75.03   74.37   0x00000000
-0.00    4800    42      1.39    0.73    0x00000000
-0.00    4801    42      1.42    0.76    0x00000000
-
-c000000
-
-[lenb: simplified patch to apply only to package scope]
-
-Signed-off-by: Doug Smythies <dsmythies@telus.net>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Link: https://lore.kernel.org/r/20240506015439.108739-1-guwen@linux.alibaba.com
+Fixes: e5c4744cfb59 ("net/smc: add SMC-Rv2 connection establishment")
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240507125331.2808-1-guwen@linux.alibaba.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/smc/smc_ib.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index b113900d94879..9018e47e0bc26 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -1811,9 +1811,10 @@ int sum_counters(struct thread_data *t, struct core_data *c, struct pkg_data *p)
- 	average.packages.rapl_dram_perf_status += p->rapl_dram_perf_status;
- 
- 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
--		if (mp->format == FORMAT_RAW)
--			continue;
--		average.packages.counter[i] += p->counter[i];
-+		if ((mp->format == FORMAT_RAW) && (topo.num_packages == 0))
-+			average.packages.counter[i] = p->counter[i];
-+		else
-+			average.packages.counter[i] += p->counter[i];
- 	}
- 	return 0;
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 89981dbe46c94..598ac9ead64b7 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -209,13 +209,18 @@ int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
+ 	if (IS_ERR(rt))
+ 		goto out;
+ 	if (rt->rt_uses_gateway && rt->rt_gw_family != AF_INET)
+-		goto out;
+-	neigh = rt->dst.ops->neigh_lookup(&rt->dst, NULL, &fl4.daddr);
+-	if (neigh) {
+-		memcpy(nexthop_mac, neigh->ha, ETH_ALEN);
+-		*uses_gateway = rt->rt_uses_gateway;
+-		return 0;
+-	}
++		goto out_rt;
++	neigh = dst_neigh_lookup(&rt->dst, &fl4.daddr);
++	if (!neigh)
++		goto out_rt;
++	memcpy(nexthop_mac, neigh->ha, ETH_ALEN);
++	*uses_gateway = rt->rt_uses_gateway;
++	neigh_release(neigh);
++	ip_rt_put(rt);
++	return 0;
++
++out_rt:
++	ip_rt_put(rt);
+ out:
+ 	return -ENOENT;
  }
 -- 
 2.43.0
