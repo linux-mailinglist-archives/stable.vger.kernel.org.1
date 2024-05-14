@@ -1,145 +1,133 @@
-Return-Path: <stable+bounces-45081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F888C5830
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 16:43:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC13C8C5844
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 16:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94696B22BC3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 14:43:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 586BDB21AC0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 14:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F9617BB37;
-	Tue, 14 May 2024 14:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9D117EB81;
+	Tue, 14 May 2024 14:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cqv5U9MX"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="2kCFN+9M"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2D2158213;
-	Tue, 14 May 2024 14:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAAC1E487
+	for <stable@vger.kernel.org>; Tue, 14 May 2024 14:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715697817; cv=none; b=ayAf2V6Ih7wk42e/gwH8uPBuwmZ8N3fIlYA7fZFGGs3et2GySm5siHLRANR12T4TLZ8N/YXIpi52czui7NBj5OIzkbuLlPTewjRk6UTMEg8l4jq1gHFKJGMxW8er5Hh8ozhr/yW9cpS3aNqApOMMaktgHXd/qP1M4Px3NIQiLcI=
+	t=1715698100; cv=none; b=k1povd3JSunWsPwk5/zWMjtbYPgaJPVQQxzCusZrbGEZZGYXLNvNHzkM6kqNT2n+ne68a2b5CaeRRwfdp9JLs75sCZJc5BfjlG6c7x4f0PQ1HErA/60FdPqVeI25jADrH5ZRc3XRmXcKeOPmdUAZZqDbU8xOfVz43M/4YXEdnQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715697817; c=relaxed/simple;
-	bh=yjz8BI8fWaQQVWoDkSf+/J9WJUV/N1nI3QgP6yJ6s4g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Z0/QTc+F8yX9HZiK3M3JhGvsjdOLsIU/Y0vmGAm4i6McUu7IIqqbjRtwRrmmOhCCkTMGmMDdjbFN2sMA8QTP8sIkwiICSqylnACzEGp+QRj4LxnLgcppe2N1CCH1nBN3TxEXRc/1fMWTwpfBDbkCzmCBhw7WIAbAVwtaZSwGmXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Cqv5U9MX; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44EA3WtS004117;
-	Tue, 14 May 2024 14:43:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=aAjjICOleHXNnITLx80ygde13/wbWjLWPL4FqboldaM=; b=Cq
-	v5U9MXDpZxIXRfktQIkC5+6NX5gBJZEWYaN5HlzMFm8Go3vSkUpQiI8IAkJ1xJ0o
-	RJtXDawnU03/u3fu8NbndpnELudbmBcbiezI09M4Bt23J4aWjFzHwnxgg2lE2kBc
-	dhuClwcWbi9iy1lvM7lSmMtxfxZzA+s8a5l3Mu1f8hEyZTl5ZzVE8RiPHZjnMijk
-	70/51pM6Mug9mPSHMDpfFLcHXj/J8BVAi1Fqt6h7/ZF8alRZhY541G5P7qOmLvpZ
-	qTfsKp9WXfko6YvfFs9Kxmt+jifhFeAivhxYr2Unbl1orl8Y4vSDEaVp3wXzgvAV
-	mJhWSTgs0E4zWHMtqpFw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y45vb8n82-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 14:43:28 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44EEhRtK019301
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 14:43:27 GMT
-Received: from [10.110.0.4] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 14 May
- 2024 07:43:26 -0700
-Message-ID: <12a208d7-f36b-4953-abff-323a15452b3c@quicinc.com>
-Date: Tue, 14 May 2024 07:43:25 -0700
+	s=arc-20240116; t=1715698100; c=relaxed/simple;
+	bh=v5cKs+69XP5Np4L0qIMo+yZTTs38YWffGnAEMsOYqxU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FFwKTncnjyQQVNW1uFSwxAiOLwsskdCnN4cRk927aXLiPhbfsvnoaZ7r2ZniQQYT1vt8WZkYiRTiG8ADOqDBoQLOL0aueNglc/OxWJVu1i9Jcz2bB7HedzBMKBBIU0ihV+vU6YU3MMzFb2fsMM2s89vA+Awafz2svnijUTGbezg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=2kCFN+9M; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6f449ea8e37so4875311b3a.3
+        for <stable@vger.kernel.org>; Tue, 14 May 2024 07:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1715698098; x=1716302898; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KZk3CwTUVB475tkoToAu9QenbV4AhIaVymB/BlnOoyw=;
+        b=2kCFN+9MmYwF5pI1UUsbYW7ZhtJDbAYPwo6SqYU0s0jjzU7ORu1EQXjQ+1Og9Jagcb
+         CIEbZlkjySwUTSJ5spm706Y+TUpIJULE7seKjsqutvWLh6qN+7D3DWlasJGtRqew/zZd
+         /ksERnUpAXeWBvBeDqoLkk7fLJ2CRXNEutlK5ePrXkpZCL45huXh4NH6SxNPuNC3/5xq
+         Iq8uvk0HiyWTGvcb3/+otkDgTOTaq5nZAV5QIM2acErIJ1KKgW364eUQ5qEhznlHzCDm
+         0mDA/Xs/SWCeraaKFmax6GSYEPaA8i65dLCNWlx+2JBGr75xRT2OXtyRnjQfvuvzWBWj
+         XoKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715698098; x=1716302898;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KZk3CwTUVB475tkoToAu9QenbV4AhIaVymB/BlnOoyw=;
+        b=M1n1ovEhCTmbPgH6hQdcJmbQb4I7mujnJHRVH/7PzvVUg7+qr7BLZm/1Ga+NVojTNO
+         yoqddiCKJpO+w33bi503hpaEYN6D7GM2tNJn5yQNJuO3tfSZ7eOb+HlIf0MmR7qSWJ/W
+         CcX9cDnMskqrEXOeIZx1xMYT73YsUZg/5N0NbXA63U7NQ+IaWm/LS1Zr42Pb6Lp55dfY
+         uDKDYyHATllifwfLUI0ogFpUV/wgPCasGv3o6tWhk5DkwW3NRRCA6Q+53ud83Q/wLrZ1
+         8k9uqxxzRy3lK4ci6hSwq6pC1eNZvAGtjP3Yq8cEqDOjr1pmYiToBGijNXXzH5eQqFrr
+         5G2w==
+X-Gm-Message-State: AOJu0Yxd+wGPOV985/4UPutufjDJBShHPCYsOqjApdUmzmMvwDl0vfoh
+	hfmOe/CIBuEhMoIhjS0qdqWckunM9PdiCtgD8QePSZ/JbpqPuFXd4aKI4LHJhxbAEOD26B7u43R
+	tJGBmOCTefv44EGGciHsZ/cba2oycLkpnSIudOA==
+X-Google-Smtp-Source: AGHT+IEMDE14BQJ7hwbgCihLMNzbQ80px+rakB3WXBnAWf/pBUQIv0Chn06Qv5WDJjyyU8qAjhHS3Rmz0+zRhzvLJo0=
+X-Received: by 2002:a05:6a20:748f:b0:1af:acf5:f9e5 with SMTP id
+ adf61e73a8af0-1afde0b7309mr20033005637.23.1715698098122; Tue, 14 May 2024
+ 07:48:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
-Content-Language: en-US
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Kalle Valo
-	<kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        Stephen Boyd
-	<swboyd@chromium.org>,
-        Rakesh Pillai <quic_pillair@quicinc.com>
-CC: <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <linux-kbuild@vger.kernel.org>
-References: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
+References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 14 May 2024 23:48:06 +0900
+Message-ID: <CAKL4bV4=MjQAWTEvvp9pJ4JD4ZbC=7hjhbc2S=Ri_uPMvRG6Eg@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/301] 6.6.31-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 4OmYH8MLtWgkn02V-bn8b6U1_Y2cZtnJ
-X-Proofpoint-ORIG-GUID: 4OmYH8MLtWgkn02V-bn8b6U1_Y2cZtnJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-14_08,2024-05-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 mlxscore=0 suspectscore=0 spamscore=0 malwarescore=0
- adultscore=0 mlxlogscore=911 phishscore=0 priorityscore=1501 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405140104
+Content-Transfer-Encoding: quoted-printable
 
-On 5/11/2024 3:49 AM, Dmitry Baryshkov wrote:
-> If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
-> modules, compilation fails with:
-> 
-> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
-> drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
-> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
-> drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
-> 
-> Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
-> built as module if QCOM_RPROC_COMMON is built as module too.
-> 
-> Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
->  drivers/net/wireless/ath/ath10k/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wireless/ath/ath10k/Kconfig
-> index e6ea884cafc1..4f385f4a8cef 100644
-> --- a/drivers/net/wireless/ath/ath10k/Kconfig
-> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
-> @@ -45,6 +45,7 @@ config ATH10K_SNOC
->  	depends on ATH10K
->  	depends on ARCH_QCOM || COMPILE_TEST
->  	depends on QCOM_SMEM
-> +	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
->  	select QCOM_SCM
->  	select QCOM_QMI_HELPERS
->  	help
-> 
-> ---
-> base-commit: 75fa778d74b786a1608d55d655d42b480a6fa8bd
-> change-id: 20240511-ath10k-snoc-dep-862a9da2e6bb
+Hi Greg
 
-I see how this fixes the problem, but this doesn't seem like an ideal
-solution. The fact that the *_ssr_notifier() functions are correctly protected
-by conditional compilation ideally should mean that clients don't need to call
-call out this as a dependency. Otherwise, it would mean we'd need to do this
-for all feature flags.
+On Tue, May 14, 2024 at 8:29=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.31 release.
+> There are 301 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 16 May 2024 10:09:32 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.31-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-+linux-kbuild just to make sure there isn't a better approach.
+6.6.31-rc1 tested.
 
-/jeff
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+[    0.000000] Linux version 6.6.31-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.1.1 20240507, GNU ld (GNU
+Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Tue May 14 23:21:48 JST 2024
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
