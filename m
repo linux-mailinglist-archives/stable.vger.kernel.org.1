@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DF98C533A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA478C520C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC711C22C81
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2B3A2828D6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6799513C67D;
-	Tue, 14 May 2024 11:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A331129E8E;
+	Tue, 14 May 2024 11:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I30YWRxC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR5g19M/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F6913C67A;
-	Tue, 14 May 2024 11:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0323D54BFE;
+	Tue, 14 May 2024 11:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686373; cv=none; b=ta1436ANOSvoI6H0z7kxqYUZEEuvWF0STLB0TqWdO790tX9EyQXz5p+3/VgrSru3YTuIQeVPtuiaSjlIyAiqyZsZOmCaeOg8LqGfhFrHoo3Uig+sQW8vpfKtWuVHSmDdiVvmmtyFvyRQfkB3RXLhZdzxD/bVvd7bmuSmzKTOyQY=
+	t=1715685367; cv=none; b=enwpukiulJhNRWgx894ifpOjWNViGGOEBE/SH6wz9F09u0i6/N6ZI9aJhGMDtnyWoR8cYCdBDNivs29MgAUaQwWqCzD3BU6UqYU7vFrSh68VjGne7NXf0BRqr2MmCpRJc4oVS9OH5nhVI/Rg8DiKqwSAlCrOEb5b0ak8sKPTwIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686373; c=relaxed/simple;
-	bh=ARSlAm+WpfUAQu1fuaHRjP0eUvo0cZKh18KaGZJU6zY=;
+	s=arc-20240116; t=1715685367; c=relaxed/simple;
+	bh=7hZXaXZRQlNPpL2PzEpuDA3DJnYt9m9HDmZKoMuc+Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUBrDbTRHmc7gK7ge9aDp3rYrYdY7MwGvrXq0l0j99tJdtwnA2zG2Q1c4Waghhjvc8du/j4GHGz8VJxVdIQrJ3we3VuTe7+oHV7QqgV6kIV7Lzk6ILAE8/BFA4CMK5FIks9uofTo/B4qOACsBiE8mbuld3M4WX/4hTarN3xC++E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I30YWRxC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F286C2BD10;
-	Tue, 14 May 2024 11:32:52 +0000 (UTC)
+	 MIME-Version; b=qPXwGLlwhsQQUZxoblgS+KuYd6jTwFBRQZOgd2voLhrCbciaoUnOlcU6+f4b3Oo23rAgCcc9C26lN1vZSX0CCm9oPPmz4Y+5DSP7GEeI64rAGQRCV/xbTiiKj4pm3CeE9ZMGnT/iCxVEwDfoQRo0LItDrFWZQk93mu1sB4K693w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR5g19M/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CABC2BD10;
+	Tue, 14 May 2024 11:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686372;
-	bh=ARSlAm+WpfUAQu1fuaHRjP0eUvo0cZKh18KaGZJU6zY=;
+	s=korg; t=1715685366;
+	bh=7hZXaXZRQlNPpL2PzEpuDA3DJnYt9m9HDmZKoMuc+Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I30YWRxC2z3RIeZwnAdcM1PCgjNgbis4uybI3mdsqjm8floo36seB29DdBbjB/oBd
-	 8pQ6R6O99ebSh+XedzVBP7ujk+3Eglrobavr9zT8Vz9AY4AdASRzwUoKQLAMg+t7O0
-	 asAVbRfuoiQWxWTMIH5aWgAxImgtKBply99x+rIA=
+	b=VR5g19M/WLFZ+NJ+spvypwm96VZMVKmIzrAdTDNCobvAC7wOPwbuoornGqnpg03uz
+	 xipQT0U+Nqj+Aad8lgzGPsRxJ1fie7QxOG2dyt8N3KB6ZK5RghJHdgSXBJHhBsS1zK
+	 /m86XL09ZsDRieQwwKmT3oByO1fxJKWaDJDGiPcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Wagner <wagnerch42@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/236] clk: sunxi-ng: h6: Reparent CPUX during PLL CPUX rate change
-Date: Tue, 14 May 2024 12:17:27 +0200
-Message-ID: <20240514101023.597900121@linuxfoundation.org>
+Subject: [PATCH 6.6 177/301] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
+Date: Tue, 14 May 2024 12:17:28 +0200
+Message-ID: <20240514101038.940468760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7e91ed763dc07437777bd012af7a2bd4493731ff ]
+[ Upstream commit 94062790aedb505bdda209b10bea47b294d6394f ]
 
-While PLL CPUX clock rate change when CPU is running from it works in
-vast majority of cases, now and then it causes instability. This leads
-to system crashes and other undefined behaviour. After a lot of testing
-(30+ hours) while also doing a lot of frequency switches, we can't
-observe any instability issues anymore when doing reparenting to stable
-clock like 24 MHz oscillator.
+TCP_SYN_RECV state is really special, it is only used by
+cross-syn connections, mostly used by fuzzers.
 
-Fixes: 524353ea480b ("clk: sunxi-ng: add support for the Allwinner H6 CCU")
-Reported-by: Chad Wagner <wagnerch42@gmail.com>
-Link: https://forum.libreelec.tv/thread/27295-orange-pi-3-lts-freezes/
-Tested-by: Chad Wagner <wagnerch42@gmail.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20231013181712.2128037-1-jernej.skrabec@gmail.com
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+In the following crash [1], syzbot managed to trigger a divide
+by zero in tcp_rcv_space_adjust()
+
+A socket makes the following state transitions,
+without ever calling tcp_init_transfer(),
+meaning tcp_init_buffer_space() is also not called.
+
+         TCP_CLOSE
+connect()
+         TCP_SYN_SENT
+         TCP_SYN_RECV
+shutdown() -> tcp_shutdown(sk, SEND_SHUTDOWN)
+         TCP_FIN_WAIT1
+
+To fix this issue, change tcp_shutdown() to not
+perform a TCP_SYN_RECV -> TCP_FIN_WAIT1 transition,
+which makes no sense anyway.
+
+When tcp_rcv_state_process() later changes socket state
+from TCP_SYN_RECV to TCP_ESTABLISH, then look at
+sk->sk_shutdown to finally enter TCP_FIN_WAIT1 state,
+and send a FIN packet from a sane socket state.
+
+This means tcp_send_fin() can now be called from BH
+context, and must use GFP_ATOMIC allocations.
+
+[1]
+divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 1 PID: 5084 Comm: syz-executor358 Not tainted 6.9.0-rc6-syzkaller-00022-g98369dccd2f8 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ RIP: 0010:tcp_rcv_space_adjust+0x2df/0x890 net/ipv4/tcp_input.c:767
+Code: e3 04 4c 01 eb 48 8b 44 24 38 0f b6 04 10 84 c0 49 89 d5 0f 85 a5 03 00 00 41 8b 8e c8 09 00 00 89 e8 29 c8 48 0f af c3 31 d2 <48> f7 f1 48 8d 1c 43 49 8d 96 76 08 00 00 48 89 d0 48 c1 e8 03 48
+RSP: 0018:ffffc900031ef3f0 EFLAGS: 00010246
+RAX: 0c677a10441f8f42 RBX: 000000004fb95e7e RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000027d4b11f R08: ffffffff89e535a4 R09: 1ffffffff25e6ab7
+R10: dffffc0000000000 R11: ffffffff8135e920 R12: ffff88802a9f8d30
+R13: dffffc0000000000 R14: ffff88802a9f8d00 R15: 1ffff1100553f2da
+FS:  00005555775c0380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f1155bf2304 CR3: 000000002b9f2000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+  tcp_recvmsg_locked+0x106d/0x25a0 net/ipv4/tcp.c:2513
+  tcp_recvmsg+0x25d/0x920 net/ipv4/tcp.c:2578
+  inet6_recvmsg+0x16a/0x730 net/ipv6/af_inet6.c:680
+  sock_recvmsg_nosec net/socket.c:1046 [inline]
+  sock_recvmsg+0x109/0x280 net/socket.c:1068
+  ____sys_recvmsg+0x1db/0x470 net/socket.c:2803
+  ___sys_recvmsg net/socket.c:2845 [inline]
+  do_recvmmsg+0x474/0xae0 net/socket.c:2939
+  __sys_recvmmsg net/socket.c:3018 [inline]
+  __do_sys_recvmmsg net/socket.c:3041 [inline]
+  __se_sys_recvmmsg net/socket.c:3034 [inline]
+  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3034
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7faeb6363db9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffcc1997168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007faeb6363db9
+RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000001c
+R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20240501125448.896529-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-h6.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_input.c  | 2 ++
+ net/ipv4/tcp_output.c | 4 +++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-index 42568c6161814..892df807275c8 100644
---- a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-@@ -1181,11 +1181,18 @@ static const u32 usb2_clk_regs[] = {
- 	SUN50I_H6_USB3_CLK_REG,
- };
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index f8df35f7352a5..7bf774bdb9386 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2710,7 +2710,7 @@ void tcp_shutdown(struct sock *sk, int how)
+ 	/* If we've already sent a FIN, or it's a closed state, skip this. */
+ 	if ((1 << sk->sk_state) &
+ 	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
+-	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {
++	     TCPF_CLOSE_WAIT)) {
+ 		/* Clear out any half completed packets.  FIN if needed. */
+ 		if (tcp_close_state(sk))
+ 			tcp_send_fin(sk);
+@@ -2819,7 +2819,7 @@ void __tcp_close(struct sock *sk, long timeout)
+ 		 * machine. State transitions:
+ 		 *
+ 		 * TCP_ESTABLISHED -> TCP_FIN_WAIT1
+-		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (forget it, it's impossible)
++		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (it is difficult)
+ 		 * TCP_CLOSE_WAIT -> TCP_LAST_ACK
+ 		 *
+ 		 * are legal only when FIN has been sent (i.e. in window),
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index e6c4929549428..f938442b202d7 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6627,6 +6627,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
  
-+static struct ccu_mux_nb sun50i_h6_cpu_nb = {
-+	.common		= &cpux_clk.common,
-+	.cm		= &cpux_clk.mux,
-+	.delay_us       = 1,
-+	.bypass_index   = 0, /* index of 24 MHz oscillator */
-+};
-+
- static int sun50i_h6_ccu_probe(struct platform_device *pdev)
- {
- 	void __iomem *reg;
-+	int i, ret;
- 	u32 val;
--	int i;
+ 		tcp_initialize_rcv_mss(sk);
+ 		tcp_fast_path_on(tp);
++		if (sk->sk_shutdown & SEND_SHUTDOWN)
++			tcp_shutdown(sk, SEND_SHUTDOWN);
+ 		break;
  
- 	reg = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(reg))
-@@ -1252,7 +1259,15 @@ static int sun50i_h6_ccu_probe(struct platform_device *pdev)
- 	val |= BIT(24);
- 	writel(val, reg + SUN50I_H6_HDMI_CEC_CLK_REG);
+ 	case TCP_FIN_WAIT1: {
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index ab3b7b4b4429b..5631041ae12cb 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3533,7 +3533,9 @@ void tcp_send_fin(struct sock *sk)
+ 			return;
+ 		}
+ 	} else {
+-		skb = alloc_skb_fclone(MAX_TCP_HEADER, sk->sk_allocation);
++		skb = alloc_skb_fclone(MAX_TCP_HEADER,
++				       sk_gfp_mask(sk, GFP_ATOMIC |
++						       __GFP_NOWARN));
+ 		if (unlikely(!skb))
+ 			return;
  
--	return devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_h6_ccu_desc);
-+	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_h6_ccu_desc);
-+	if (ret)
-+		return ret;
-+
-+	/* Reparent CPU during PLL CPUX rate changes */
-+	ccu_mux_notifier_register(pll_cpux_clk.common.hw.clk,
-+				  &sun50i_h6_cpu_nb);
-+
-+	return 0;
- }
- 
- static const struct of_device_id sun50i_h6_ccu_ids[] = {
 -- 
 2.43.0
 
