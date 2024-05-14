@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699378C518A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584CC8C501E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D85E1F225DA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8A7AB209ED
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B9513A259;
-	Tue, 14 May 2024 11:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA44139599;
+	Tue, 14 May 2024 10:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw2C09kr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIyF8M6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B4B13A256;
-	Tue, 14 May 2024 11:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B668DDC0;
+	Tue, 14 May 2024 10:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684662; cv=none; b=bRZNaIL+UtFCku2fi/Bk3pas4dL68PGfMdzUeqybahYbP1djdHTPhbl5mdmQQg900b2MlHs9ec5Oh3Fv9/dYouHjs6x8hyVTE0TuCIj2pIqisyhI102y3llzzkw0SMLFbBaRa9007Aj6NfXZRsCXJ5K1AKzP0Wf5me/17SMFMQY=
+	t=1715682960; cv=none; b=o5vF9Ob6a61G8Qnj6+kAv9CFtmMrO5GMnNpWsIl97Wic37SBLG61QINuBZS+dyd76FYObnqVa0NBbvf4HNz5vWARk3dcn7elK3g8eG9ZX5p6dLgyFbeJUSfVf3erK8y2GDi1w8uQIGQ+Tw0Px/3pxp937sR10jMzMfaOeH/daoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684662; c=relaxed/simple;
-	bh=HGml4OBI/BbGmWcRU1RpSAXxYDyKCkfyetwDAlT7rIk=;
+	s=arc-20240116; t=1715682960; c=relaxed/simple;
+	bh=zMb/K+nEME9CxALgTSF9tk6HFAEKDzzzTd5YEqhoxPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xmy5wWUxxUAVMJS4yieI/NtGiSdGJ24IatHHiLm01nEyCAsWQJKbvT83/PsWXCNH1XyqdHMrNH3DybFzIPAzcovrsYZv6Vi1DwYAeZgeZFExpOQm57Qq6W9GL19fS8y1a7vRH6RpyX1Gb0jSRee16kEi3F+x/SeIoPSwMTo5t0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw2C09kr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93587C2BD10;
-	Tue, 14 May 2024 11:04:21 +0000 (UTC)
+	 MIME-Version; b=BrN4xg3Z+iZsK1uvX4QqPiOZ3/RV3FBEcEH2xULLjw71Yz7tDHl8e/K7/NlHvSITOAIxCkxhtkRZdpjOEsymWw1sJxhph+QNCJDYO1Ce59EKcrWdiwAkha8VdhumDXqNzDePZeVgqcKxVteZs5YvxYIzPF/JXH1onh283NGOOsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIyF8M6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5457C2BD10;
+	Tue, 14 May 2024 10:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684662;
-	bh=HGml4OBI/BbGmWcRU1RpSAXxYDyKCkfyetwDAlT7rIk=;
+	s=korg; t=1715682960;
+	bh=zMb/K+nEME9CxALgTSF9tk6HFAEKDzzzTd5YEqhoxPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dw2C09krt30b2cB3cLlCPE11Z0NEQtbWUiu4Qs4svdavhDhpthfTd8Mj4EOdOHJ3x
-	 k3JIyinR27CfwHEbLUDzCqFz1XWWkKep/YitpVLKoOENJ1SUPyEafHQGEJIYIgaUjM
-	 s1b8YNmbk5wp0vSTnb3QriAZei78KtQfR3kimLUE=
+	b=WIyF8M6u5iEnINXKYKP5+fvRp+XLBYaZJ5US159Wb2F3Y2xYVPlSlxxjK2d/MU0IG
+	 hFE7ATy0w1rtnQnVsYNWgJXO72/qpFceAEE/Hxvv8KMnuGOD6/H56fbzVdg91z/QZ0
+	 UXTsC8SvH891Ms9hCrlWtBu7f3WtzcQE5Bo/0w4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"John B. Wyatt IV" <jwyatt@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/301] cxgb4: Properly lock TX queue for the selftest.
-Date: Tue, 14 May 2024 12:15:43 +0200
-Message-ID: <20240514101034.969002948@linuxfoundation.org>
+Subject: [PATCH 6.8 140/336] tools/power turbostat: Fix warning upon failed /dev/cpu_dma_latency read
+Date: Tue, 14 May 2024 12:15:44 +0200
+Message-ID: <20240514101043.885926244@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 9067eccdd7849dd120d5495dbd5a686fa6ed2c1a ]
+[ Upstream commit b6fe938317eed58e8c687bd5965a956e15fb5828 ]
 
-The selftest for the driver sends a dummy packet and checks if the
-packet will be received properly as it should be. The regular TX path
-and the selftest can use the same network queue so locking is required
-and was missing in the selftest path. This was addressed in the commit
-cited below.
-Unfortunately locking the TX queue requires BH to be disabled which is
-not the case in selftest path which is invoked in process context.
-Lockdep should be complaining about this.
+Previously a failed read of /dev/cpu_dma_latency erroneously complained
+turbostat: capget(CAP_SYS_ADMIN) failed, try "# setcap cap_sys_admin=ep ./turbostat
 
-Use __netif_tx_lock_bh() for TX queue locking.
+This went unnoticed because this file is typically visible to root,
+and turbostat was typically run as root.
 
-Fixes: c650e04898072 ("cxgb4: Fix race between loopback and normal Tx path")
-Reported-by: "John B. Wyatt IV" <jwyatt@redhat.com>
-Closes: https://lore.kernel.org/all/Zic0ot5aGgR-V4Ks@thinkpad2021/
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20240429091147.YWAaal4v@linutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Going forward, when a non-root user can run turbostat...
+Complain about failed read access to this file only if --debug is used.
+
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/sge.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-index 98dd78551d89a..fff1ce835bc0d 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-@@ -2684,12 +2684,12 @@ int cxgb4_selftest_lb_pkt(struct net_device *netdev)
- 	lb->loopback = 1;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index a4a40a6e1b957..3438ad938d7e4 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -5545,7 +5545,8 @@ void print_dev_latency(void)
  
- 	q = &adap->sge.ethtxq[pi->first_qset];
--	__netif_tx_lock(q->txq, smp_processor_id());
-+	__netif_tx_lock_bh(q->txq);
- 
- 	reclaim_completed_tx(adap, &q->q, -1, true);
- 	credits = txq_avail(&q->q) - ndesc;
- 	if (unlikely(credits < 0)) {
--		__netif_tx_unlock(q->txq);
-+		__netif_tx_unlock_bh(q->txq);
- 		return -ENOMEM;
+ 	fd = open(path, O_RDONLY);
+ 	if (fd < 0) {
+-		warnx("capget(CAP_SYS_ADMIN) failed, try \"# setcap cap_sys_admin=ep %s\"", progname);
++		if (debug)
++			warnx("Read %s failed", path);
+ 		return;
  	}
  
-@@ -2724,7 +2724,7 @@ int cxgb4_selftest_lb_pkt(struct net_device *netdev)
- 	init_completion(&lb->completion);
- 	txq_advance(&q->q, ndesc);
- 	cxgb4_ring_tx_db(adap, &q->q, ndesc);
--	__netif_tx_unlock(q->txq);
-+	__netif_tx_unlock_bh(q->txq);
- 
- 	/* wait for the pkt to return */
- 	ret = wait_for_completion_timeout(&lb->completion, 10 * HZ);
 -- 
 2.43.0
 
