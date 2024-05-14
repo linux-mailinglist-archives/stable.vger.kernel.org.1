@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3C48C5334
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C90A8C5230
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBACF2859E5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 251B6B22402
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE2013C3FE;
-	Tue, 14 May 2024 11:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F5D54F87;
+	Tue, 14 May 2024 11:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQOqebdn"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT+yK2g6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA6B13C3F5;
-	Tue, 14 May 2024 11:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855CE6CDC9;
+	Tue, 14 May 2024 11:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686341; cv=none; b=AXGOPKPZyCd+PEOGtXFr9/4QMhN3VZ2JSWCdlYF8ixLUtcXdbTlDvpmRJhjwRCeikVXysNQrEIk6owQ9Ojj6UNMnHcnKceEYTz6IvroUcDGNkUvauHImAqp/VfUL7AK/+FPCxQ7hnoj3hpswLZaDzafB+oEwIk6cZmFRbsxwqAo=
+	t=1715685519; cv=none; b=TbA3rxzbijUyRBeHgd36ZOJmdoR1uRvdho0MBdz5sCE3tjiKip4Bs25z1SUDEvaCg43WHFoz8cFij9UkE3RemRbejgI/MKBpQNyfTOa5zP2Jz9hOp+sTimL2dEicSVHcaUtQ1IndmZ4Hc0yg5kngHvIDJyYXAtvdP+Myo5QgkJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686341; c=relaxed/simple;
-	bh=xKVCEx8qhNOV7NO4wShED/uDsd5kqQPX/tXx2PMHfHI=;
+	s=arc-20240116; t=1715685519; c=relaxed/simple;
+	bh=al7Sk76qkvhvJw4iG2MPeiCIHkXp4XuRokw49HsDQUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQzFEP7jb2SwpYFCvqFHlEVwz2zu2VRMMEaa8EH2XYuQ3GLKRiV/Zzxm9ThF8hfO6lm2FxwRUkXqg44cI4azdjFCHaU794I7gM6MIwSx7DW5CqvqC1gygnOP9XFMMFotn03QgZGLt2WrS2MwtBRb3cjOKqbgJfmw6XJBMAdw62g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQOqebdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137CFC2BD10;
-	Tue, 14 May 2024 11:32:20 +0000 (UTC)
+	 MIME-Version; b=toxyvB4zMEyleySdynjRN335QpQqLR/LkAvi1KXlSChIT8sqP33q1tLMzswaxDEDD0hIIPn06m2Crl7RB1+GDWn2V7LtminbWl8MJTjznHYCsClLanVhcdTt8JHeey/bQ6IavbYaTJkSfblfBNvnm8Emzjd2B/7ewxqemWtiA1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT+yK2g6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8390C4AF09;
+	Tue, 14 May 2024 11:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686341;
-	bh=xKVCEx8qhNOV7NO4wShED/uDsd5kqQPX/tXx2PMHfHI=;
+	s=korg; t=1715685519;
+	bh=al7Sk76qkvhvJw4iG2MPeiCIHkXp4XuRokw49HsDQUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQOqebdn+avRtNJ+oAxwxEdemGr9IMRDAIyGxmWhtIxFp1yTuEB0U4YrjboqBLXDR
-	 QudE5ubOoDmxZLEoXAM4iJaOA60EHZFoEdUqOmrBkqKz2taosYgMCh4UayKbWTvD+N
-	 OIHgWdg3ZUfRCsZ68twIuPZYh5mcUJqcv+zX7RJA=
+	b=AT+yK2g6iy/CLBagg3nx/yBw90Usio8vzdkYhsKRd4sZEmquUFkkqTcY/QeOH29cZ
+	 fThLQaD4p1nfNkZikfdC8A3Io0DUBxA47dfaJHpGsB9qiUrvXciYegjA6I6Id5hbhx
+	 WE21l8pXtKb1x47OiVA8GGkNzORIREJBJru6f/7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/236] bpf: Check bloom filter map value size
+	patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+	Simon Wilkinson <sxw@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeffrey Altman <"jaltman@auristor.commailto:jaltman"@auristor.com>
+Subject: [PATCH 6.6 195/301] rxrpc: Fix congestion control algorithm
 Date: Tue, 14 May 2024 12:17:46 +0200
-Message-ID: <20240514101024.318388766@linuxfoundation.org>
+Message-ID: <20240514101039.617287185@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a8d89feba7e54e691ca7c4efc2a6264fa83f3687 ]
+[ Upstream commit ba4e103848d3a2a28a0445e39f4a9564187efe54 ]
 
-This patch adds a missing check to bloom filter creating, rejecting
-values above KMALLOC_MAX_SIZE. This brings the bloom map in line with
-many other map types.
+Make the following fixes to the congestion control algorithm:
 
-The lack of this protection can cause kernel crashes for value sizes
-that overflow int's. Such a crash was caught by syzkaller. The next
-patch adds more guard-rails at a lower level.
+ (1) Don't vary the cwnd starting value by the size of RXRPC_TX_SMSS since
+     that's currently held constant - set to the size of a jumbo subpacket
+     payload so that we can create jumbo packets on the fly.  The current
+     code invariably picks 3 as the starting value.
 
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20240327024245.318299-2-andreimatei1@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+     Further, the starting cwnd needs to be an even number because we ack
+     every other packet, so set it to 4.
+
+ (2) Don't cut ssthresh when we see an ACK come from the peer with a
+     receive window (rwind) less than ssthresh.  ssthresh keeps track of
+     characteristics of the connection whereas rwind may be reduced by the
+     peer for any reason - and may be reduced to 0.
+
+Fixes: 1fc4fa2ac93d ("rxrpc: Fix congestion management")
+Fixes: 0851115090a3 ("rxrpc: Reduce ssthresh to peer's receive window")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Suggested-by: Simon Wilkinson <sxw@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com <mailto:jaltman@auristor.com>>
+Link: https://lore.kernel.org/r/20240503150749.1001323-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bloom_filter.c                           | 13 +++++++++++++
- .../selftests/bpf/prog_tests/bloom_filter_map.c     |  6 ++++++
- 2 files changed, 19 insertions(+)
+ net/rxrpc/ar-internal.h | 2 +-
+ net/rxrpc/call_object.c | 7 +------
+ net/rxrpc/input.c       | 3 ---
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/bpf/bloom_filter.c b/kernel/bpf/bloom_filter.c
-index 48ee750849f25..78e810f49c445 100644
---- a/kernel/bpf/bloom_filter.c
-+++ b/kernel/bpf/bloom_filter.c
-@@ -88,6 +88,18 @@ static int bloom_map_get_next_key(struct bpf_map *map, void *key, void *next_key
- 	return -EOPNOTSUPP;
- }
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index bda3f6690b321..d431376bb120a 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -688,7 +688,7 @@ struct rxrpc_call {
+ 	 * packets) rather than bytes.
+ 	 */
+ #define RXRPC_TX_SMSS		RXRPC_JUMBO_DATALEN
+-#define RXRPC_MIN_CWND		(RXRPC_TX_SMSS > 2190 ? 2 : RXRPC_TX_SMSS > 1095 ? 3 : 4)
++#define RXRPC_MIN_CWND		4
+ 	u8			cong_cwnd;	/* Congestion window size */
+ 	u8			cong_extra;	/* Extra to send for congestion management */
+ 	u8			cong_ssthresh;	/* Slow-start threshold */
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index 0a50341d920af..29385908099ef 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -175,12 +175,7 @@ struct rxrpc_call *rxrpc_alloc_call(struct rxrpc_sock *rx, gfp_t gfp,
+ 	call->rx_winsize = rxrpc_rx_window_size;
+ 	call->tx_winsize = 16;
  
-+/* Called from syscall */
-+static int bloom_map_alloc_check(union bpf_attr *attr)
-+{
-+	if (attr->value_size > KMALLOC_MAX_SIZE)
-+		/* if value_size is bigger, the user space won't be able to
-+		 * access the elements.
-+		 */
-+		return -E2BIG;
-+
-+	return 0;
-+}
-+
- static struct bpf_map *bloom_map_alloc(union bpf_attr *attr)
- {
- 	u32 bitset_bytes, bitset_mask, nr_hash_funcs, nr_bits;
-@@ -196,6 +208,7 @@ static int bloom_map_check_btf(const struct bpf_map *map,
- BTF_ID_LIST_SINGLE(bpf_bloom_map_btf_ids, struct, bpf_bloom_filter)
- const struct bpf_map_ops bloom_filter_map_ops = {
- 	.map_meta_equal = bpf_map_meta_equal,
-+	.map_alloc_check = bloom_map_alloc_check,
- 	.map_alloc = bloom_map_alloc,
- 	.map_free = bloom_map_free,
- 	.map_get_next_key = bloom_map_get_next_key,
-diff --git a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-index d2d9e965eba59..f79815b7e951b 100644
---- a/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bloom_filter_map.c
-@@ -2,6 +2,7 @@
- /* Copyright (c) 2021 Facebook */
+-	if (RXRPC_TX_SMSS > 2190)
+-		call->cong_cwnd = 2;
+-	else if (RXRPC_TX_SMSS > 1095)
+-		call->cong_cwnd = 3;
+-	else
+-		call->cong_cwnd = 4;
++	call->cong_cwnd = RXRPC_MIN_CWND;
+ 	call->cong_ssthresh = RXRPC_TX_MAX_WINDOW;
  
- #include <sys/syscall.h>
-+#include <limits.h>
- #include <test_progs.h>
- #include "bloom_filter_map.skel.h"
+ 	call->rxnet = rxnet;
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index 718ffd184ddb6..f7304e06aadca 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -688,9 +688,6 @@ static void rxrpc_input_ack_trailer(struct rxrpc_call *call, struct sk_buff *skb
+ 		call->tx_winsize = rwind;
+ 	}
  
-@@ -21,6 +22,11 @@ static void test_fail_cases(void)
- 	if (!ASSERT_LT(fd, 0, "bpf_map_create bloom filter invalid value size 0"))
- 		close(fd);
+-	if (call->cong_ssthresh > rwind)
+-		call->cong_ssthresh = rwind;
+-
+ 	mtu = min(ntohl(trailer->maxMTU), ntohl(trailer->ifMTU));
  
-+	/* Invalid value size: too big */
-+	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, INT32_MAX, 100, NULL);
-+	if (!ASSERT_LT(fd, 0, "bpf_map_create bloom filter invalid value too large"))
-+		close(fd);
-+
- 	/* Invalid max entries size */
- 	fd = bpf_map_create(BPF_MAP_TYPE_BLOOM_FILTER, NULL, 0, sizeof(value), 0, NULL);
- 	if (!ASSERT_LT(fd, 0, "bpf_map_create bloom filter invalid max entries size"))
+ 	peer = call->peer;
 -- 
 2.43.0
 
