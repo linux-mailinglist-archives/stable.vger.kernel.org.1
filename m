@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B9A8C5218
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337CF8C532E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B65842829D5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64D9E1C22A60
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBC212B16E;
-	Tue, 14 May 2024 11:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F102E13B593;
+	Tue, 14 May 2024 11:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC6EF3TK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFVEooNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B4B6CDC9;
-	Tue, 14 May 2024 11:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9AE13C3F5;
+	Tue, 14 May 2024 11:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685468; cv=none; b=DKICr1EMwpPSH5tVUjKWFGaeQxRBhOYEJcSZBPEw1qIIKvecm8KAxtYkEOyVlYAe5J7MyLnPmXQX10Ez/OY7K7aTsJrOHHainzy7yEbVnZCu05aC/yRhp4KROoFzleaifuOaDn6RBauG8vLZ3qf2ez75WJkuYztAVRXz839Hv6E=
+	t=1715686338; cv=none; b=bRwPjYmPtp4+i6TA3tUsRh7LiHygyLJeEI/S9NHroNRhlZkf33/r+UMB2iG3bljb0PZyKBHKBk6tFIyL2cs9WWzRWGTBs9WwhWrHd3voayniQCjHuIF+oSbBnrwhv4HqrG9XTDB0kA/bnXjjhRQXZhsnAJvUQmgrBq2pSynkRVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685468; c=relaxed/simple;
-	bh=DsRtHs0D5LF44jBz8GxTS7BIaO3CdGwNPrMmLtBgFvU=;
+	s=arc-20240116; t=1715686338; c=relaxed/simple;
+	bh=FoUcC11yACV+cCC5Ct9fO41bVrYdpU2QlKpPeVC1zf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFaui78r6Pg9luCQemDJq9aPOqOZ7LuEz+YTzjp1UQvWEAnjLjDpMoFNtO7Hl4m1gy2bra75BVb5nZsMyFN+xLhE1OJybXmKyjz+ZGkWKlM9XbV2ydoo54KA0QF55dP7gjZNDj0a+FzVc7zLxq8Pf/4EULxRKtzS4ZBevgP6FYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC6EF3TK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F50C2BD10;
-	Tue, 14 May 2024 11:17:47 +0000 (UTC)
+	 MIME-Version; b=gnabW7xFn8wQWILJ3GCOAX/cIknKaZz3Fq0J3Pm9x8m0Z33pbPODwtbjlLGm2Uqx3XcOFni2SBePyIf5WrX8OEg7lRZgr0pQjRwPu3bJgYJCN9b3UkHVna8z1K/EpkyxIRQ6rCWbiv/Se1xI0D0iXkJjC1zBdJDlqjn4o6K05eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFVEooNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33370C2BD10;
+	Tue, 14 May 2024 11:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685468;
-	bh=DsRtHs0D5LF44jBz8GxTS7BIaO3CdGwNPrMmLtBgFvU=;
+	s=korg; t=1715686338;
+	bh=FoUcC11yACV+cCC5Ct9fO41bVrYdpU2QlKpPeVC1zf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tC6EF3TKE09VLncBtdFaswpmCLGUhYoSpBcCSv1iROhmhUyAoy1VHI+hWoem7NdWj
-	 5POmP3J+xG7TCXIjoZXKlr0ZgqyMqhE8o1mWEaxRGrLP9QDbo4yxXzjzSqopl33qF/
-	 bIKq7DQh+pafHcQEEgIuph08IOPTzAWWsD2zP5Rc=
+	b=WFVEooNyNxkJH5/ZdLvLmU+u2QdKjYc6aqOZPZ6uxtCF6a9i/hzKKoQsv+WeuWsOs
+	 IzfzEHHdeHPMwnDwgCPUHkqUJQTHsfhYwS97EXw9hL/snXmE3VUySDgqoXQgYKvwSp
+	 i2QpL2Gi0NN/6RA2lWNijCSam/rjndbaTy1nCXy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Boris Burkov <boris@bur.io>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/301] selftests: test_bridge_neigh_suppress.sh: Fix failures due to duplicate MAC
-Date: Tue, 14 May 2024 12:17:44 +0200
-Message-ID: <20240514101039.541349712@linuxfoundation.org>
+Subject: [PATCH 6.1 103/236] btrfs: return accurate error code on open failure in open_fs_devices()
+Date: Tue, 14 May 2024 12:17:45 +0200
+Message-ID: <20240514101024.279955272@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-[ Upstream commit 9a169c267e946b0f47f67e8ccc70134708ccf3d4 ]
+[ Upstream commit 2f1aeab9fca1a5f583be1add175d1ee95c213cfa ]
 
-When creating the topology for the test, three veth pairs are created in
-the initial network namespace before being moved to one of the network
-namespaces created by the test.
+When attempting to exclusive open a device which has no exclusive open
+permission, such as a physical device associated with the flakey dm
+device, the open operation will fail, resulting in a mount failure.
 
-On systems where systemd-udev uses MACAddressPolicy=persistent (default
-since systemd version 242), this will result in some net devices having
-the same MAC address since they were created with the same name in the
-initial network namespace. In turn, this leads to arping / ndisc6
-failing since packets are dropped by the bridge's loopback filter.
+In this particular scenario, we erroneously return -EINVAL instead of the
+correct error code provided by the bdev_open_by_path() function, which is
+-EBUSY.
 
-Fix by creating each net device in the correct network namespace instead
-of moving it there from the initial network namespace.
+Fix this, by returning error code from the bdev_open_by_path() function.
+With this correction, the mount error message will align with that of
+ext4 and xfs.
 
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/netdev/20240426074015.251854d4@kernel.org/
-Fixes: 7648ac72dcd7 ("selftests: net: Add bridge neighbor suppression test")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/20240507113033.1732534-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/net/test_bridge_neigh_suppress.sh    | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ fs/btrfs/volumes.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/test_bridge_neigh_suppress.sh b/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-index 8533393a4f186..02b986c9c247d 100755
---- a/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-+++ b/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-@@ -154,17 +154,9 @@ setup_topo()
- 		setup_topo_ns $ns
- 	done
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index ab5d410d560e7..a92069fbc0287 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1233,25 +1233,32 @@ static int open_fs_devices(struct btrfs_fs_devices *fs_devices,
+ 	struct btrfs_device *device;
+ 	struct btrfs_device *latest_dev = NULL;
+ 	struct btrfs_device *tmp_device;
++	int ret = 0;
  
--	ip link add name veth0 type veth peer name veth1
--	ip link set dev veth0 netns $h1 name eth0
--	ip link set dev veth1 netns $sw1 name swp1
--
--	ip link add name veth0 type veth peer name veth1
--	ip link set dev veth0 netns $sw1 name veth0
--	ip link set dev veth1 netns $sw2 name veth0
--
--	ip link add name veth0 type veth peer name veth1
--	ip link set dev veth0 netns $h2 name eth0
--	ip link set dev veth1 netns $sw2 name swp1
-+	ip -n $h1 link add name eth0 type veth peer name swp1 netns $sw1
-+	ip -n $sw1 link add name veth0 type veth peer name veth0 netns $sw2
-+	ip -n $h2 link add name eth0 type veth peer name swp1 netns $sw2
- }
+ 	flags |= FMODE_EXCL;
  
- setup_host_common()
+ 	list_for_each_entry_safe(device, tmp_device, &fs_devices->devices,
+ 				 dev_list) {
+-		int ret;
++		int ret2;
+ 
+-		ret = btrfs_open_one_device(fs_devices, device, flags, holder);
+-		if (ret == 0 &&
++		ret2 = btrfs_open_one_device(fs_devices, device, flags, holder);
++		if (ret2 == 0 &&
+ 		    (!latest_dev || device->generation > latest_dev->generation)) {
+ 			latest_dev = device;
+-		} else if (ret == -ENODATA) {
++		} else if (ret2 == -ENODATA) {
+ 			fs_devices->num_devices--;
+ 			list_del(&device->dev_list);
+ 			btrfs_free_device(device);
+ 		}
++		if (ret == 0 && ret2 != 0)
++			ret = ret2;
+ 	}
+-	if (fs_devices->open_devices == 0)
++
++	if (fs_devices->open_devices == 0) {
++		if (ret)
++			return ret;
+ 		return -EINVAL;
++	}
+ 
+ 	fs_devices->opened = 1;
+ 	fs_devices->latest_dev = latest_dev;
 -- 
 2.43.0
 
