@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-44723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04BF8C5427
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4568C548D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB7B287D10
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B35DC1C22B37
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889B8136648;
-	Tue, 14 May 2024 11:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD7812C464;
+	Tue, 14 May 2024 11:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XkMkFyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LesZtUuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4775284D26;
-	Tue, 14 May 2024 11:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04C343AD7;
+	Tue, 14 May 2024 11:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686987; cv=none; b=tNpiwg1jAQ7IkmcTFalwD2L2yCqRTc+Ga5jRaqp7oEPKiYTGQpw9D7Aq7gXH2NTblhX1INzDqzvqyy8ifARwRHMRVvvA4YIKKclrbrKHPKXTmne4rG/cFyyBB7lv+g9Fbc04HTcSA7Q4VGzKIM95IX9EDXB69hqzywaLoufuIN0=
+	t=1715687271; cv=none; b=VIMLHQdU+nsAOj5+wffxZj1yAk28WTYNfxvxTNv3s9Mce64MjdoXPvkHp4oJaSO3BIK6Y6H87knpL+0LxSgMTIHN085179RNP2F8EOzKWEBJLaeJMmstA5WfhFBtEBh7WtFI3TCPy6t9/1rWn5l7SxozW33d2XgmzJyYRow+LKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686987; c=relaxed/simple;
-	bh=N4x6nPQB7Z8sBDNSS7R25K86giBWgQ9VLRUcyQVV+A0=;
+	s=arc-20240116; t=1715687271; c=relaxed/simple;
+	bh=kc+Z63ttr5ZhEvA7sc+dnYX0/uq7o/IskxnPkRNGGdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cw4gQgw3263r2uDgPSXv8o5A4w3qkck7pzCi6nmwWc84SfMRlaLJALdu+F73MCJQ1w64PQ5ZvRCye4enSk2f9ovLehGR493HkUz+Up4m9PpFUKq2OQpRlTU4ml70rMbi2ECKHuPYFCHOMoOkYTIMRrs4tT43sAHdasYNSECYwLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XkMkFyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59A6C2BD10;
-	Tue, 14 May 2024 11:43:06 +0000 (UTC)
+	 MIME-Version; b=nRE87X/4GWTkezBJkz1L9JmIaiAHT2siYRlb3VTBHIAU9Qi0a2tBgAs3AyUCrGXYX5YBORVyxE1UdE/BAS0tDkIt+5+AN2P01ALWhGEVgIW8kYp4JBVXPqaESmJhoDurS8r0dNCO1PZ1h3/YY93watBeGNy7q8qSDymDp1VHvzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LesZtUuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78575C2BD10;
+	Tue, 14 May 2024 11:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686987;
-	bh=N4x6nPQB7Z8sBDNSS7R25K86giBWgQ9VLRUcyQVV+A0=;
+	s=korg; t=1715687270;
+	bh=kc+Z63ttr5ZhEvA7sc+dnYX0/uq7o/IskxnPkRNGGdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XkMkFyZl4SeMPF69Tu1JtLMWtxEN0mqlG/rPkngLmsrgSeW9X15e2clQ8M6MeZEy
-	 tAsWSZPSlW85ZfZJMwnr5xv94cKtu0l6/BBjtqyaPpsTVb5g1HoNzGGOZN2gDxvDen
-	 U41PCtjvYsP8bw4riPZqcSlYzS8u91QM0M6FKaPg=
+	b=LesZtUuFBz/63VNsNRIQ3BRVHR/F1dx6ioF+jt0RnrOy4H3YlBAEabXxSo8zkqcaJ
+	 SnIucsJSoiKtPXkESsjeF3kRxRL/Yu1+lVovnfzXWle/a75Iiy3wb9L6T79CZMWxc4
+	 PZt148FmgSYrrIncaFBsktNHks7tV8EVtB+azxAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Tung Nguyen <tung.q.nguyen@dektech.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 26/84] ASoC: meson: axg-card: make links nonatomic
+Subject: [PATCH 5.10 039/111] tipc: fix a possible memleak in tipc_buf_append
 Date: Tue, 14 May 2024 12:19:37 +0200
-Message-ID: <20240514100952.679705745@linuxfoundation.org>
+Message-ID: <20240514100958.612151243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit e138233e56e9829e65b6293887063a1a3ccb2d68 ]
+[ Upstream commit 97bf6f81b29a8efaf5d0983251a7450e5794370d ]
 
-Non atomic operations need to be performed in the trigger callback
-of the TDM interfaces. Those are BEs but what matters is the nonatomic
-flag of the FE in the DPCM context. Just set nonatomic for everything so,
-at least, it is clear.
+__skb_linearize() doesn't free the skb when it fails, so move
+'*buf = NULL' after __skb_linearize(), so that the skb can be
+freed on the err path.
 
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20211020114217.133153-2-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b7df21cf1b79 ("tipc: skb_linearize the head skb when reassembling msgs")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Link: https://lore.kernel.org/r/90710748c29a1521efac4f75ea01b3b7e61414cf.1714485818.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-card.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/tipc/msg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-index 7126344017fa6..36a004192b562 100644
---- a/sound/soc/meson/axg-card.c
-+++ b/sound/soc/meson/axg-card.c
-@@ -568,6 +568,7 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
- 
- 	dai_link->cpus = cpu;
- 	dai_link->num_cpus = 1;
-+	dai_link->nonatomic = true;
- 
- 	ret = axg_card_parse_dai(card, np, &dai_link->cpus->of_node,
- 				 &dai_link->cpus->dai_name);
+diff --git a/net/tipc/msg.c b/net/tipc/msg.c
+index 91dcf648d32bb..b2b102d6f5819 100644
+--- a/net/tipc/msg.c
++++ b/net/tipc/msg.c
+@@ -148,9 +148,9 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
+ 	if (fragid == FIRST_FRAGMENT) {
+ 		if (unlikely(head))
+ 			goto err;
+-		*buf = NULL;
+ 		if (skb_has_frag_list(frag) && __skb_linearize(frag))
+ 			goto err;
++		*buf = NULL;
+ 		frag = skb_unshare(frag, GFP_ATOMIC);
+ 		if (unlikely(!frag))
+ 			goto err;
 -- 
 2.43.0
 
