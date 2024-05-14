@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7088F8C5347
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448E88C50ED
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15AA81F232EB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74A751C213E4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765F176045;
-	Tue, 14 May 2024 11:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA7612A174;
+	Tue, 14 May 2024 10:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VC1iq8HT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoNaza7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B6C1D54D;
-	Tue, 14 May 2024 11:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB514F88C;
+	Tue, 14 May 2024 10:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686416; cv=none; b=TQz8CDBgUBzF4x8Loob6iVVoRYkidZibYS3k1TnskutJTVlK3fv3+PKL0+bPmhdgFuHsFTiResrAAofHS1TM5dx/jMbN8+Hdi2r4v2jyK3eJem81AvC/2WSekedsL3fFBxpNM6mCpShRIzeyVm4X4W7gBr5h26rv2nq0EGEYpkY=
+	t=1715683878; cv=none; b=MKDjC09XwupK1L3vv6kxMymVlysQ81VQZhE4hk0cshd6c0vdnd9U84m4CRtiX/V6Ogx1L32MneYebGoMXCWzw1Qti0UcnOxVo61VzVrlEpbMIotBeQT585iHVux7G5S4hcI8DSpXlrIZSUQj6Nd1Kfb+f6RcAemEs358LEmji+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686416; c=relaxed/simple;
-	bh=gcVr5uD9pRFCh9V2BlbUBo7Jzuz6q6yUF2qmKqS03l8=;
+	s=arc-20240116; t=1715683878; c=relaxed/simple;
+	bh=UFEQVNNIHgIph5B26xb4qgkXps8eboKAGAnUGtOZqH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IllbNTTEGhQw7kpkcoBT6+Ky5z50vLKuxTzo/2755khKFGmo3F1hpVO0BsD4tbUYLFg1NqkXCSKjtfHF7643RBAASW98qS8L3V3Fx9XbRHesGdK0AS9c+zvNYbIabnhHo08aseArvXfoq5QhdsKZlYxkJ394PmCMh1ZgJQQqASI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VC1iq8HT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1045C2BD10;
-	Tue, 14 May 2024 11:33:35 +0000 (UTC)
+	 MIME-Version; b=itKAXdeclzzt7EGic3eS3yFA1AUFFbqzllA67Pl7u8R6RBu1h+vhG9uY2zRWDlf7TbLehJCesVqIJeUbPtwbevV/wNNCVPfKFgJlj+nnXBjeAYaH+n5iGKvISn9anyPqEGHzyTjwFAR9LNrm5QxiYmwTXgGvhhNvd445ikajmQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoNaza7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8E7C2BD10;
+	Tue, 14 May 2024 10:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686416;
-	bh=gcVr5uD9pRFCh9V2BlbUBo7Jzuz6q6yUF2qmKqS03l8=;
+	s=korg; t=1715683878;
+	bh=UFEQVNNIHgIph5B26xb4qgkXps8eboKAGAnUGtOZqH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VC1iq8HT6trC5EW+zRaTJXG8pKhp0ZQM8KIyCJ7U3+2JryDrW0UrvYQCRPbBZKOC4
-	 txOZs5xa5i51kZSEnyF0bKRmLP49gQTHMxkZtZIDFoiwXGQqmhLipqpvjiQ3K8KJbh
-	 hFaK3+71X2BVsZCfFvj8XKO9fZU7VLtXHauieqBY=
+	b=YoNaza7rfmoEaaqB76B+0DInRqHFAOGXMJIPEC6QDpu4x6M9ncS6E5eUgDfHVCYG5
+	 CZeJE//hL5dVrInabjuCgk/1McMNWKnNVl9oq0jEs0VwBWujLVbrl+JEhIjvZiTqCP
+	 hkBA+1Cw/MwaCiG7Xi4Ldtd7jZAD8c+kqb7leTKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/236] fs/9p: only translate RWX permissions for plain 9P2000
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.8 289/336] clk: samsung: Revert "clk: Use device_get_match_data()"
 Date: Tue, 14 May 2024 12:18:13 +0200
-Message-ID: <20240514101025.342938704@linuxfoundation.org>
+Message-ID: <20240514101049.527481172@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Sindholt <opensource@zhasha.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
+commit aacb99de1099346244d488bdf7df489a44278574 upstream.
 
-Garbage in plain 9P2000's perm bits is allowed through, which causes it
-to be able to set (among others) the suid bit. This was presumably not
-the intent since the unix extended bits are handled explicitly and
-conditionally on .u.
+device_get_match_data() function should not be used on the device other
+than the one matched to the given driver, because it always returns the
+match_data of the matched driver. In case of exynos-clkout driver, the
+original code matches the OF IDs on the PARENT device, so replacing it
+with of_device_get_match_data() broke the driver.
 
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This has been already pointed once in commit 2bc5febd05ab ("clk: samsung:
+Revert "clk: samsung: exynos-clkout: Use of_device_get_match_data()"").
+To avoid further confusion, add a comment about this special case, which
+requires direct of_match_device() call to pass custom IDs array.
+
+This partially reverts commit 409c39ec92a35e3708f5b5798c78eae78512cd71.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 409c39ec92a3 ("clk: Use device_get_match_data()")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20240425075628.838497-1-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240430184656.357805-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/9p/vfs_inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/samsung/clk-exynos-clkout.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 5e2657c1dbbe6..a0c5a372dcf62 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -85,7 +85,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
- 	int res;
- 	int mode = stat->mode;
+diff --git a/drivers/clk/samsung/clk-exynos-clkout.c b/drivers/clk/samsung/clk-exynos-clkout.c
+index 3484e6cc80ad..503c6f5b20d5 100644
+--- a/drivers/clk/samsung/clk-exynos-clkout.c
++++ b/drivers/clk/samsung/clk-exynos-clkout.c
+@@ -13,9 +13,9 @@
+ #include <linux/io.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
++#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm.h>
+-#include <linux/property.h>
  
--	res = mode & S_IALLUGO;
-+	res = mode & 0777; /* S_IRWXUGO */
- 	if (v9fs_proto_dotu(v9ses)) {
- 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
- 			res |= S_ISUID;
+ #define EXYNOS_CLKOUT_NR_CLKS		1
+ #define EXYNOS_CLKOUT_PARENTS		32
+@@ -84,17 +84,24 @@ MODULE_DEVICE_TABLE(of, exynos_clkout_ids);
+ static int exynos_clkout_match_parent_dev(struct device *dev, u32 *mux_mask)
+ {
+ 	const struct exynos_clkout_variant *variant;
++	const struct of_device_id *match;
+ 
+ 	if (!dev->parent) {
+ 		dev_err(dev, "not instantiated from MFD\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	variant = device_get_match_data(dev->parent);
+-	if (!variant) {
++	/*
++	 * 'exynos_clkout_ids' arrays is not the ids array matched by
++	 * the dev->parent driver, so of_device_get_match_data() or
++	 * device_get_match_data() cannot be used here.
++	 */
++	match = of_match_device(exynos_clkout_ids, dev->parent);
++	if (!match) {
+ 		dev_err(dev, "cannot match parent device\n");
+ 		return -EINVAL;
+ 	}
++	variant = match->data;
+ 
+ 	*mux_mask = variant->mux_mask;
+ 
 -- 
-2.43.0
+2.45.0
 
 
 
