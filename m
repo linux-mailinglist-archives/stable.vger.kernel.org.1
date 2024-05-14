@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-44887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30168C54D0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4E38C5593
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 303921C2385B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBB121C21FEB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD8574427;
-	Tue, 14 May 2024 11:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07311E4B1;
+	Tue, 14 May 2024 11:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dBSJexj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg5JXv6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAE73BBF2;
-	Tue, 14 May 2024 11:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE730F9D4;
+	Tue, 14 May 2024 11:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687465; cv=none; b=nLCMgVemgiHgy80dFRVBESNvGma6SLwWEhwYFBwB5fDBu5qSQjH/4D1pbDf7PMuP9FgZfTKcZc6VUKQ6+HiCf3KZb4FcQlZgcSKMg9TdFrMAlMO2YlIPkPDo645dDmWpk05x7vStDG1JibuieN/ssllFawW2F7tr6rSpoDQW5ao=
+	t=1715687976; cv=none; b=stiE+jkOqmCJSmF4H5D/oQ+DyfWvKS7FZHPa4wmXz3srEmoxf0qMdasjP0B/nxJg5t9Mr9frsphREypIri9nX/nLI+BIfbYFzZ1Eu2qIJpATJs3pPq3fRW8hvQuKHDGmOZHKekksp8ynEUlPUd1OzoNuwdG3BtnU6fn9MOS5yaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687465; c=relaxed/simple;
-	bh=3aLsSyxqIwkJpC+46PQ46z01Kid4eTgcrS8xiA99PBQ=;
+	s=arc-20240116; t=1715687976; c=relaxed/simple;
+	bh=LFkr9uwHs++i8g8JokYF+LT/8sDBIhEy0D5CsF8IK0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIqMlae4j78mwtuXaquvUH+D7/JsiiQDMocg0h0R65jyFdar3Ft9jLTytM0fBLtvqw9jqtwLSqpR9rKswCokgmvCfLOJVL+DyqY67A7v54AOggXa0gXrBu9o++APHXoVQPUnUIt19up4fZRxqMYS+ygFbc+Mfw508L43qHUMAvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dBSJexj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A27C2BD10;
-	Tue, 14 May 2024 11:51:04 +0000 (UTC)
+	 MIME-Version; b=jGmljh5aJMSrNRGOJCIIw1SiuVYIbWlYYBxMj4xyN6sbNm+HB4Q1ZFiLSNoquNkdKKjVMQeOSrH0mZPLgxwQKSx5zfFiJVOp3bjb1BXZXfH5epu8svSKybHKaKlVVcXQOB8QmnrhvQhVYIRaA9TNyjIO1uKvnsxN6sNEZjxLEiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg5JXv6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39082C2BD10;
+	Tue, 14 May 2024 11:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687465;
-	bh=3aLsSyxqIwkJpC+46PQ46z01Kid4eTgcrS8xiA99PBQ=;
+	s=korg; t=1715687976;
+	bh=LFkr9uwHs++i8g8JokYF+LT/8sDBIhEy0D5CsF8IK0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dBSJexjiZQ17Xl0drnMWdwouYuhZrMwf98kHDlkrvzzgoACqQj3volbSF9o9ZSZU
-	 UpcIyexJG8CT9G+/FfYHKNfzAN4ygmzbtxWd2gCAjNbb2DGIRaThvukuCKvZn3FPOh
-	 2DpGQNIzidHzUGGQ10ZNvUgAuDCwEHZ+fNkJC02M=
+	b=tg5JXv6K2EaZDh928FPfNWBvpwokcJev6oJassBNe+fkIairSHT/FEID2OBKf3JsY
+	 x8at8ypwZdYgSYJgKKP1hV7wRTp0X/X4NcreCzfopNi2z5QORkxFfs1sfE1ixW0ONN
+	 nizZwjVaDSRLEwUFDksLCEMZxm4TaGB51uBUnO0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Jim Cromie <jim.cromie@gmail.com>
-Subject: [PATCH 5.10 106/111] dyndbg: fix old BUG_ON in >control parser
+	Chris Wulff <chris.wulff@biamp.com>
+Subject: [PATCH 5.15 146/168] usb: gadget: f_fs: Fix a race condition when processing setup packets.
 Date: Tue, 14 May 2024 12:20:44 +0200
-Message-ID: <20240514101001.161240751@linuxfoundation.org>
+Message-ID: <20240514101012.276602729@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Cromie <jim.cromie@gmail.com>
+From: Chris Wulff <Chris.Wulff@biamp.com>
 
-commit 00e7d3bea2ce7dac7bee1cf501fb071fd0ea8f6c upstream.
+commit 0aea736ddb877b93f6d2dd8cf439840d6b4970a9 upstream.
 
-Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
-really look), lets make sure by removing it, doing pr_err and return
--EINVAL instead.
+If the USB driver passes a pointer into the TRB buffer for creq, this
+buffer can be overwritten with the status response as soon as the event
+is queued. This can make the final check return USB_GADGET_DELAYED_STATUS
+when it shouldn't. Instead use the stored wLength.
 
+Fixes: 4d644abf2569 ("usb: gadget: f_fs: Only return delayed status when len is 0")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
-Link: https://lore.kernel.org/r/20240429193145.66543-2-jim.cromie@gmail.com
+Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
+Link: https://lore.kernel.org/r/CO1PR17MB5419BD664264A558B2395E28E1112@CO1PR17MB5419.namprd17.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/dynamic_debug.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/dynamic_debug.c
-+++ b/lib/dynamic_debug.c
-@@ -260,7 +260,11 @@ static int ddebug_tokenize(char *buf, ch
- 		} else {
- 			for (end = buf; *end && !isspace(*end); end++)
- 				;
--			BUG_ON(end == buf);
-+			if (end == buf) {
-+				pr_err("parse err after word:%d=%s\n", nwords,
-+				       nwords ? words[nwords - 1] : "<none>");
-+				return -EINVAL;
-+			}
- 		}
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -3414,7 +3414,7 @@ static int ffs_func_setup(struct usb_fun
+ 	__ffs_event_add(ffs, FUNCTIONFS_SETUP);
+ 	spin_unlock_irqrestore(&ffs->ev.waitq.lock, flags);
  
- 		/* `buf' is start of word, `end' is one past its end */
+-	return creq->wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
++	return ffs->ev.setup.wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
+ }
+ 
+ static bool ffs_func_req_match(struct usb_function *f,
 
 
 
