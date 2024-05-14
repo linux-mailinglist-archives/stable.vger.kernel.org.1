@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-43977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A108C508F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:06:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558FD8C51EB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C33CA281759
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:06:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8756F1C216BE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B264913DB8A;
-	Tue, 14 May 2024 10:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DCF763F7;
+	Tue, 14 May 2024 11:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPkVN2EQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvYdkx59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FB56BFBB;
-	Tue, 14 May 2024 10:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8CF76028;
+	Tue, 14 May 2024 11:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683467; cv=none; b=o2GSxSGtHnWCZ7x82Ysk7pH7n8ysl5tZLj/wmYzrbCKkMGEFFX5t5sB92F1cevcQAE83JhkYBdSBq27H9guCYrR/fDVl8sKLlGLFQ/3zQbejeP8fM7SfCVbw2fH6ldZkE5Dbv5f8oxEXZLekPd5qf2rS/mq83lRkt5JJS8N+iDs=
+	t=1715685230; cv=none; b=Sl4B2fvs6N5qr7Df8JSCfq6uKBOZW+YREt6nT78GywjcL/bxrhsrqr2bdphBEHdeK42BRJGQw+6F7SaPVCovLX55z6EGdZWscYthlGzuc7wE9OkiL3jM3sMsywyX/RBZ2OCTRbusVSaOuJTpWIDHeUto1smMX+jg83S10hR5tJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683467; c=relaxed/simple;
-	bh=+dfb71cBrElcnunDduxpHuLMwJ9BInceTavh/eHbqMk=;
+	s=arc-20240116; t=1715685230; c=relaxed/simple;
+	bh=c2tqDX+Tu/5PekSXAYf6jSF7f2+zYHUOK8Yg7gmVDZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z10K7K0LKfL4za7jPB/08TAb1hRwWs1TYxK2c0cQF5NWpNxu6uTTPD8ilJOwN/pinam8lJtuSb6h/w3uZS7Tk1xJ2HyLNOUfaIuTHOVS5An5LrQByMiNSPFhn0/+tznRaiqI/I27ga9oIQ77cPcDM7/bKBUsvo4rk/ZFdsTzx2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPkVN2EQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AE3C2BD10;
-	Tue, 14 May 2024 10:44:26 +0000 (UTC)
+	 MIME-Version; b=ZUPIE0r8YK9pGlBAUroWoOwkqNd9X9aTvV/XeVti+B5hbWKRdx8Qa7suypMrUw7sqPhVsaDqre9O/TY4IGnLSW6IlCgwK8hcMYoHkkAH5pRhTCqMNN7cfb3qux/6sKGknHQL/QdBWUGbcXuKFtukz9TUkDVOOIcamp7v1Uibkos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvYdkx59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C34C2BD10;
+	Tue, 14 May 2024 11:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683467;
-	bh=+dfb71cBrElcnunDduxpHuLMwJ9BInceTavh/eHbqMk=;
+	s=korg; t=1715685230;
+	bh=c2tqDX+Tu/5PekSXAYf6jSF7f2+zYHUOK8Yg7gmVDZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPkVN2EQVW3pW61RWCbgnU+KJ5jQ84gCBnYbCie4Naq3N6cgwBVpytEYEaxVeayeK
-	 ud/vP2HVFLj0sp9hkCU+R44Al3rA2QKT5u3b/FyH4EwEiGKpz+FqLV2wX2edT26DSL
-	 R7siA+AKw2lVISIZJRStXs+sbrN4PNyRYB6Y3SY0=
+	b=rvYdkx59Y8v16JdHp2kehrvafRChTlQoDwtRNROEjZyQgdLhr33s+a7OvBeigEmRz
+	 AGn5ULPH9oeis5501WCI9E7c0cO8u+4NnSeMnLwRpX0GZQgepd4wOMgSkA/e8vlKGc
+	 U/FwDhHSdIVGSuM0LiHO+uH31FJqaPLa2l+XpnVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 222/336] hsr: Simplify code for announcing HSR nodes timer setup
+Subject: [PATCH 6.6 155/301] Drivers: hv: vmbus: Dont free ring buffers that couldnt be re-encrypted
 Date: Tue, 14 May 2024 12:17:06 +0200
-Message-ID: <20240514101046.996886922@linuxfoundation.org>
+Message-ID: <20240514101038.109221594@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 4893b8b3ef8db2b182d1a1bebf6c7acf91405000 ]
+[ Upstream commit 30d18df6567be09c1433e81993e35e3da573ac48 ]
 
-Up till now the code to start HSR announce timer, which triggers sending
-supervisory frames, was assuming that hsr_netdev_notify() would be called
-at least twice for hsrX interface. This was required to have different
-values for old and current values of network device's operstate.
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_encrypted() or set_memory_decrypted() to fail such that an
+error is returned and the resulting memory is shared. Callers need to
+take care to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional or security
+issues.
 
-This is problematic for a case where hsrX interface is already in the
-operational state when hsr_netdev_notify() is called, so timer is not
-configured to trigger and as a result the hsrX is not sending supervisory
-frames to HSR ring.
+The VMBus ring buffer code could free decrypted/shared pages if
+set_memory_decrypted() fails. Check the decrypted field in the struct
+vmbus_gpadl for the ring buffers to decide whether to free the memory.
 
-This error has been discovered when hsr_ping.sh script was run. To be
-more specific - for the hsr1 and hsr2 the hsr_netdev_notify() was
-called at least twice with different IF_OPER_{LOWERDOWN|DOWN|UP} states
-assigned in hsr_check_carrier_and_operstate(hsr). As a result there was
-no issue with sending supervisory frames.
-However, with hsr3, the notify function was called only once with
-operstate set to IF_OPER_UP and timer responsible for triggering
-supervisory frames was not fired.
-
-The solution is to use netif_oper_up() and netif_running() helper
-functions to assess if network hsrX device is up.
-Only then, when the timer is not already pending, it is started.
-Otherwise it is deactivated.
-
-Fixes: f421436a591d ("net/hsr: Add support for the High-availability Seamless Redundancy protocol (HSRv0)")
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240507111214.3519800-1-lukma@denx.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20240311161558.1310-6-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240311161558.1310-6-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_device.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ drivers/hv/channel.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index be0e43f46556e..03a42de7511e8 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -71,39 +71,36 @@ static bool hsr_check_carrier(struct hsr_port *master)
- 	return false;
- }
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index bb5abdcda18f8..47e1bd8de9fcf 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -153,7 +153,9 @@ void vmbus_free_ring(struct vmbus_channel *channel)
+ 	hv_ringbuffer_cleanup(&channel->inbound);
  
--static void hsr_check_announce(struct net_device *hsr_dev,
--			       unsigned char old_operstate)
-+static void hsr_check_announce(struct net_device *hsr_dev)
- {
- 	struct hsr_priv *hsr;
- 
- 	hsr = netdev_priv(hsr_dev);
--
--	if (READ_ONCE(hsr_dev->operstate) == IF_OPER_UP && old_operstate != IF_OPER_UP) {
--		/* Went up */
--		hsr->announce_count = 0;
--		mod_timer(&hsr->announce_timer,
--			  jiffies + msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
-+	if (netif_running(hsr_dev) && netif_oper_up(hsr_dev)) {
-+		/* Enable announce timer and start sending supervisory frames */
-+		if (!timer_pending(&hsr->announce_timer)) {
-+			hsr->announce_count = 0;
-+			mod_timer(&hsr->announce_timer, jiffies +
-+				  msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
-+		}
-+	} else {
-+		/* Deactivate the announce timer  */
-+		timer_delete(&hsr->announce_timer);
- 	}
--
--	if (READ_ONCE(hsr_dev->operstate) != IF_OPER_UP && old_operstate == IF_OPER_UP)
--		/* Went down */
--		del_timer(&hsr->announce_timer);
- }
- 
- void hsr_check_carrier_and_operstate(struct hsr_priv *hsr)
- {
- 	struct hsr_port *master;
--	unsigned char old_operstate;
- 	bool has_carrier;
- 
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	/* netif_stacked_transfer_operstate() cannot be used here since
- 	 * it doesn't set IF_OPER_LOWERLAYERDOWN (?)
- 	 */
--	old_operstate = READ_ONCE(master->dev->operstate);
- 	has_carrier = hsr_check_carrier(master);
- 	hsr_set_operstate(master, has_carrier);
--	hsr_check_announce(master->dev, old_operstate);
-+	hsr_check_announce(master->dev);
- }
- 
- int hsr_get_max_mtu(struct hsr_priv *hsr)
+ 	if (channel->ringbuffer_page) {
+-		__free_pages(channel->ringbuffer_page,
++		/* In a CoCo VM leak the memory if it didn't get re-encrypted */
++		if (!channel->ringbuffer_gpadlhandle.decrypted)
++			__free_pages(channel->ringbuffer_page,
+ 			     get_order(channel->ringbuffer_pagecount
+ 				       << PAGE_SHIFT));
+ 		channel->ringbuffer_page = NULL;
 -- 
 2.43.0
 
