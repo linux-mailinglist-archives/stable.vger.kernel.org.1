@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B301B8C4FFC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9394A8C5168
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DD6B2812E2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B76D281A5B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441707E574;
-	Tue, 14 May 2024 10:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF9C1386CF;
+	Tue, 14 May 2024 11:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYORrd31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8+NzEZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1650288;
-	Tue, 14 May 2024 10:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6FE136672;
+	Tue, 14 May 2024 11:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682805; cv=none; b=nCdlJpsqLw9CNEKRjlvqyNGXgJZLQb3t9yvT49Yrq9ZcNP20yfNjdqxxlBQYard8pP6rhYZpcdYJWkxGbb6xUTFh9CKCwl3SJhNsLkl986iKD2rTgllTW3NFGN+ibzQttl2dpzKbEyDFRSE3fo86+LFzvByB0/81bwUoQI2txZ8=
+	t=1715684436; cv=none; b=mGsNSwLS3OTzIoMfRkl7wsuyInmryzNg8JZLZTPle4ySGjDVnJu5gSs4TbeHTaztYRN2J2O8NVvf0cNaQTKWHs2FWG2QJ32gwbQjEGIaD5RREXDA+xHCXdO3ai2ovGNXIh1jZnChxO2MDxhN2CtxXJ1IcW5DlBfNfkkcrfPbRMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682805; c=relaxed/simple;
-	bh=0zuZg89sKUIhVTC0ov2iVHk620pnHf+bxF9kgNp0dhk=;
+	s=arc-20240116; t=1715684436; c=relaxed/simple;
+	bh=Y+a9026LXxXLxHvs73t3N2kSo4efq92vKY9YZbXUYXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJOBAjyGlcB7UsL6jYR1WLyclj1ZImCAkUv277hK3dYkkHhavhy7F4YxTO3335HoHabNi+0DhX7X7mbgfsdB1DGts1RRbkD0zssa/0lOKcABZK3VrMcwz7otfZnfwKpeFbQaFmg0AaWMkjP4DjVfAfV83+DA58i8iBTN86hIp8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYORrd31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007D7C2BD10;
-	Tue, 14 May 2024 10:33:21 +0000 (UTC)
+	 MIME-Version; b=PqgkE4tvev97DKZdU3biLs0bzhmoSvTWHq8p22UjHZHLN410cOqm1YYsvCtPOjgYxEyozoruEF2qSHdkCbJHGI9bODqVlu6J43b8Wb3OmhnGd6Yx6CogKmD7vyduPAVAmUot0ScJZhsk/4CpMcSjuxmZZMk5SO8kHMiV/hDivjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8+NzEZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396E2C2BD10;
+	Tue, 14 May 2024 11:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682804;
-	bh=0zuZg89sKUIhVTC0ov2iVHk620pnHf+bxF9kgNp0dhk=;
+	s=korg; t=1715684436;
+	bh=Y+a9026LXxXLxHvs73t3N2kSo4efq92vKY9YZbXUYXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYORrd311cHdd8KCjtnwVeBZEbcSijm3nxMcnqOXcy/UXcC6WmxD/h8ea/oWlWceE
-	 IZqKDZUpiW3kUgsqtcFLngYhJLMuNW9ZU8gkP5PdRsgdAwaVgdgjNt4WtMWDIIgd1u
-	 HdcFW7paPOjqfd2g55J1pEs2ssqnWUbi/oj6LwtU=
+	b=u8+NzEZcrP+5XAfZSt1k7Zwe8PVfQ+LREwc7tkR8zEO7vLjRr/GRM4hcoFeHxtXbS
+	 LfHFs/aOd6oQ4qRbEkpxpBrgvOuxX75Q6jjnyjKFYnvmLKZA2WH8iTWDkmbFP7MJTu
+	 mA2WwNiHHe7N6g9LAuzDptKbwQtSzP3jTBQO7RWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ivan Babrou <ivan@cloudflare.com>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 108/336] wifi: iwlwifi: read txq->read_ptr under lock
-Date: Tue, 14 May 2024 12:15:12 +0200
-Message-ID: <20240514101042.682608950@linuxfoundation.org>
+Subject: [PATCH 6.6 042/301] bpf, arm64: Fix incorrect runtime stats
+Date: Tue, 14 May 2024 12:15:13 +0200
+Message-ID: <20240514101033.834638644@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Xu Kuohai <xukuohai@huawei.com>
 
-[ Upstream commit c2ace6300600c634553657785dfe5ea0ed688ac2 ]
+[ Upstream commit dc7d7447b56bcc9cf79a9c22e4edad200a298e4c ]
 
-If we read txq->read_ptr without lock, we can read the same
-value twice, then obtain the lock, and reclaim from there
-to two different places, but crucially reclaim the same
-entry twice, resulting in the WARN_ONCE() a little later.
-Fix that by reading txq->read_ptr under lock.
+When __bpf_prog_enter() returns zero, the arm64 register x20 that stores
+prog start time is not assigned to zero, causing incorrect runtime stats.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240319100755.bf4c62196504.I978a7ca56c6bd6f1bf42c15aa923ba03366a840b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+To fix it, assign the return value of bpf_prog_enter() to x20 register
+immediately upon its return.
+
+Fixes: efc9909fdce0 ("bpf, arm64: Add bpf trampoline for arm64")
+Reported-by: Ivan Babrou <ivan@cloudflare.com>
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Ivan Babrou <ivan@cloudflare.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240416064208.2919073-2-xukuohai@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/queue/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/net/bpf_jit_comp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-index ca74b1b63cac1..0efa304904bd3 100644
---- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
-@@ -1588,9 +1588,9 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 		return;
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 29196dce9b91d..166619348b98e 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -1738,15 +1738,15 @@ static void invoke_bpf_prog(struct jit_ctx *ctx, struct bpf_tramp_link *l,
  
- 	tfd_num = iwl_txq_get_cmd_index(txq, ssn);
--	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
+ 	emit_call(enter_prog, ctx);
  
- 	spin_lock_bh(&txq->lock);
-+	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
++	/* save return value to callee saved register x20 */
++	emit(A64_MOV(1, A64_R(20), A64_R(0)), ctx);
++
+ 	/* if (__bpf_prog_enter(prog) == 0)
+ 	 *         goto skip_exec_of_prog;
+ 	 */
+ 	branch = ctx->image + ctx->idx;
+ 	emit(A64_NOP, ctx);
  
- 	if (!test_bit(txq_id, trans->txqs.queue_used)) {
- 		IWL_DEBUG_TX_QUEUES(trans, "Q %d inactive - ignoring idx %d\n",
+-	/* save return value to callee saved register x20 */
+-	emit(A64_MOV(1, A64_R(20), A64_R(0)), ctx);
+-
+ 	emit(A64_ADD_I(1, A64_R(0), A64_SP, args_off), ctx);
+ 	if (!p->jited)
+ 		emit_addr_mov_i64(A64_R(1), (const u64)p->insnsi, ctx);
 -- 
 2.43.0
 
