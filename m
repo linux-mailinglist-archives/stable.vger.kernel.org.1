@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-44669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7595D8C53E0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B1D8C53B7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08F201F2328A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56D4B1C22A2E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8B313D29A;
-	Tue, 14 May 2024 11:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9924C43AD6;
+	Tue, 14 May 2024 11:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8Knn78X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOcjBcOS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C7A6CDA3;
-	Tue, 14 May 2024 11:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574B612E1E2;
+	Tue, 14 May 2024 11:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686830; cv=none; b=bmj8oWsFhAjQdOlatS73wgpFt7tCF0Y8FAPGvKeVJhWCUNAumppaH1a/XKsB3Ud8HG9doKsg0J774mmcD9B1iNjy4mT7rM4OiucDOMS0ZVPgBThcUMfSo8cCymYIfatpqafAtirAsspyhzeNs1OGAUrghZ1EI4qeH66/gPNPDX0=
+	t=1715686720; cv=none; b=VmuQv9jE/2DJwZ0110gFpyyt9jxg4icx3XaX/PjD1nFQMnJH1LwcdqRO4XLub26nHjekERHEH6beelCX3Da4CJZFYuDhx0gTJkEnfGA/ZnDvZysYj+ncnlDPc4EcNG4abUAF5bve2Y6gQ3kMA9s8/kO4WZtx4CWts2+9qqoTAUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686830; c=relaxed/simple;
-	bh=L+ofnmxiA6tAdfipsA/ceDn8MTxqGBKOU1kq05c9LEs=;
+	s=arc-20240116; t=1715686720; c=relaxed/simple;
+	bh=beJhPZwHZ5WIlLY+GtS9B9eQhQcEjoFlN4CwDMgDnYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8yDq8y96xsG/ZfiSxTeqdv8IJFQaiix9UbWWffvFluYm1N1hvxW1m2elBi7bX1Ilmcc8eZL1REyl4OAa9ZFDnNNOyvEGU3u/osotTZuKGVV8EBF4mSKRdIrQ1TPXDv1Oxg8Zer27bfmfy8s6uHhQlrHY9WQySGuGs7qItflKCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8Knn78X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6BCC2BD10;
-	Tue, 14 May 2024 11:40:29 +0000 (UTC)
+	 MIME-Version; b=kSQKi2noB1Ym1+INxW53f1uJt9C5EK2/um75+D6Hl0EVVoGRIW0XJZ7VyK1rWDe6YwWsT2CpvbAb7+VOd18r2tkTAk7bKx9D0C9Zo9UA7figuX7YcCJJjI5YcLW7jna0hTSkinak6Vrjh3G0BAIlNLXwGuYWp5yGzlSU6Ry2BLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOcjBcOS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9299AC2BD10;
+	Tue, 14 May 2024 11:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686830;
-	bh=L+ofnmxiA6tAdfipsA/ceDn8MTxqGBKOU1kq05c9LEs=;
+	s=korg; t=1715686720;
+	bh=beJhPZwHZ5WIlLY+GtS9B9eQhQcEjoFlN4CwDMgDnYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8Knn78XBmaEiRe1u80sqzqAw+djhPcAPvm5IRR8b+Uy/10AGTkJXqmH1MBTNoOmF
-	 S+BtBUE8TipU3gx7E5WWKkczUtT/4k5ZsgTt9uOd13RSgZUpQV7bWZthUJbGMnl96C
-	 h1bmCBAoRT2xZN80NdT6y0CT/7yD8P82J7FxasRw=
+	b=hOcjBcOS5nKnrzwPs7uUI2zs8H1zdGWE/KKhHfoetQNvS8mo6aPupIU637woJKnP0
+	 JUF3RjznsKssIUM71eWz864LRcp30D+ebbvEYhvT1j7LtwTuPB/sAWuNB1B4aYuiRV
+	 fYYU6GDS9Bco9cNcJ1mhcndtY0DXJRuauzT2gDf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <joneslee@google.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	John Stultz <jstultz@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 36/63] selftests: timers: Fix valid-adjtimex signed left-shift undefined behavior
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 235/236] Bluetooth: qca: fix info leak when fetching fw build id
 Date: Tue, 14 May 2024 12:19:57 +0200
-Message-ID: <20240514100949.378272520@linuxfoundation.org>
+Message-ID: <20240514101029.280210928@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 076361362122a6d8a4c45f172ced5576b2d4a50d ]
+commit cda0d6a198e2a7ec6f176c36173a57bdd8af7af2 upstream.
 
-The struct adjtimex freq field takes a signed value who's units are in
-shifted (<<16) parts-per-million.
+Add the missing sanity checks and move the 255-byte build-id buffer off
+the stack to avoid leaking stack data through debugfs in case the
+build-info reply is malformed.
 
-Unfortunately for negative adjustments, the straightforward use of:
-
-  freq = ppm << 16 trips undefined behavior warnings with clang:
-
-valid-adjtimex.c:66:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -499<<16,
-        ~~~~^
-valid-adjtimex.c:67:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -450<<16,
-        ~~~~^
-..
-
-Fix it by using a multiply by (1 << 16) instead of shifting negative values
-in the valid-adjtimex test case. Align the values for better readability.
-
-Reported-by: Lee Jones <joneslee@google.com>
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240409202222.2830476-1-jstultz@google.com
-Link: https://lore.kernel.org/lkml/0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c0187b0bd3e9 ("Bluetooth: btqca: Add support to read FW build version for WCN3991 BTSoC")
+Cc: stable@vger.kernel.org	# 5.12
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/timers/valid-adjtimex.c | 73 +++++++++----------
- 1 file changed, 36 insertions(+), 37 deletions(-)
+ drivers/bluetooth/btqca.c |   25 +++++++++++++++++++++----
+ drivers/bluetooth/btqca.h |    1 -
+ 2 files changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/timers/valid-adjtimex.c b/tools/testing/selftests/timers/valid-adjtimex.c
-index 48b9a803235a8..d13ebde203221 100644
---- a/tools/testing/selftests/timers/valid-adjtimex.c
-+++ b/tools/testing/selftests/timers/valid-adjtimex.c
-@@ -21,9 +21,6 @@
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  *   GNU General Public License for more details.
-  */
--
--
--
- #include <stdio.h>
- #include <stdlib.h>
- #include <time.h>
-@@ -62,45 +59,47 @@ int clear_time_state(void)
- #define NUM_FREQ_OUTOFRANGE 4
- #define NUM_FREQ_INVALID 2
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -99,7 +99,8 @@ static int qca_read_fw_build_info(struct
+ {
+ 	struct sk_buff *skb;
+ 	struct edl_event_hdr *edl;
+-	char cmd, build_label[QCA_FW_BUILD_VER_LEN];
++	char *build_label;
++	char cmd;
+ 	int build_lbl_len, err = 0;
  
-+#define SHIFTED_PPM (1 << 16)
+ 	bt_dev_dbg(hdev, "QCA read fw build info");
+@@ -114,6 +115,11 @@ static int qca_read_fw_build_info(struct
+ 		return err;
+ 	}
+ 
++	if (skb->len < sizeof(*edl)) {
++		err = -EILSEQ;
++		goto out;
++	}
 +
- long valid_freq[NUM_FREQ_VALID] = {
--	-499<<16,
--	-450<<16,
--	-400<<16,
--	-350<<16,
--	-300<<16,
--	-250<<16,
--	-200<<16,
--	-150<<16,
--	-100<<16,
--	-75<<16,
--	-50<<16,
--	-25<<16,
--	-10<<16,
--	-5<<16,
--	-1<<16,
-+	 -499 * SHIFTED_PPM,
-+	 -450 * SHIFTED_PPM,
-+	 -400 * SHIFTED_PPM,
-+	 -350 * SHIFTED_PPM,
-+	 -300 * SHIFTED_PPM,
-+	 -250 * SHIFTED_PPM,
-+	 -200 * SHIFTED_PPM,
-+	 -150 * SHIFTED_PPM,
-+	 -100 * SHIFTED_PPM,
-+	  -75 * SHIFTED_PPM,
-+	  -50 * SHIFTED_PPM,
-+	  -25 * SHIFTED_PPM,
-+	  -10 * SHIFTED_PPM,
-+	   -5 * SHIFTED_PPM,
-+	   -1 * SHIFTED_PPM,
- 	-1000,
--	1<<16,
--	5<<16,
--	10<<16,
--	25<<16,
--	50<<16,
--	75<<16,
--	100<<16,
--	150<<16,
--	200<<16,
--	250<<16,
--	300<<16,
--	350<<16,
--	400<<16,
--	450<<16,
--	499<<16,
-+	    1 * SHIFTED_PPM,
-+	    5 * SHIFTED_PPM,
-+	   10 * SHIFTED_PPM,
-+	   25 * SHIFTED_PPM,
-+	   50 * SHIFTED_PPM,
-+	   75 * SHIFTED_PPM,
-+	  100 * SHIFTED_PPM,
-+	  150 * SHIFTED_PPM,
-+	  200 * SHIFTED_PPM,
-+	  250 * SHIFTED_PPM,
-+	  300 * SHIFTED_PPM,
-+	  350 * SHIFTED_PPM,
-+	  400 * SHIFTED_PPM,
-+	  450 * SHIFTED_PPM,
-+	  499 * SHIFTED_PPM,
- };
+ 	edl = (struct edl_event_hdr *)(skb->data);
+ 	if (!edl) {
+ 		bt_dev_err(hdev, "QCA read fw build info with no header");
+@@ -129,14 +135,25 @@ static int qca_read_fw_build_info(struct
+ 		goto out;
+ 	}
  
- long outofrange_freq[NUM_FREQ_OUTOFRANGE] = {
--	-1000<<16,
--	-550<<16,
--	550<<16,
--	1000<<16,
-+	-1000 * SHIFTED_PPM,
-+	 -550 * SHIFTED_PPM,
-+	  550 * SHIFTED_PPM,
-+	 1000 * SHIFTED_PPM,
- };
++	if (skb->len < sizeof(*edl) + 1) {
++		err = -EILSEQ;
++		goto out;
++	}
++
+ 	build_lbl_len = edl->data[0];
+-	if (build_lbl_len <= QCA_FW_BUILD_VER_LEN - 1) {
+-		memcpy(build_label, edl->data + 1, build_lbl_len);
+-		*(build_label + build_lbl_len) = '\0';
++
++	if (skb->len < sizeof(*edl) + 1 + build_lbl_len) {
++		err = -EILSEQ;
++		goto out;
+ 	}
  
- #define LONG_MAX (~0UL>>1)
--- 
-2.43.0
-
++	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
++	if (!build_label)
++		goto out;
++
+ 	hci_set_fw_info(hdev, "%s", build_label);
+ 
++	kfree(build_label);
+ out:
+ 	kfree_skb(skb);
+ 	return err;
+--- a/drivers/bluetooth/btqca.h
++++ b/drivers/bluetooth/btqca.h
+@@ -47,7 +47,6 @@
+ #define get_soc_ver(soc_id, rom_ver)	\
+ 	((le32_to_cpu(soc_id) << 16) | (le16_to_cpu(rom_ver)))
+ 
+-#define QCA_FW_BUILD_VER_LEN		255
+ #define QCA_HSP_GF_SOC_ID			0x1200
+ #define QCA_HSP_GF_SOC_MASK			0x0000ff00
+ 
 
 
 
