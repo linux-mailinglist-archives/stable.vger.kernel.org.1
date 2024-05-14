@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-45065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A43C8C5598
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDFF8C54D2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6007E28E05A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:59:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26641B22BD5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57BBF9D4;
-	Tue, 14 May 2024 11:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B3D757E1;
+	Tue, 14 May 2024 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5GhvaLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcC7WW7P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940801CFB2;
-	Tue, 14 May 2024 11:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606F556B79;
+	Tue, 14 May 2024 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687979; cv=none; b=dco2ti4KpFHNA89osWgM1pnqYw7j50Ln1lO9FkXQls29sl6WEcVQbN25eQhQaLgLf4O1UX40Vwj+S34ktz4/M2n7rMtqa1EH8wjmwaGAnpGeUscxo73qYqlOZvpc75TAiXb3uRKHTYTxRF4xScfl7jx7vc959Zt7GxBiYhBbIGM=
+	t=1715687468; cv=none; b=EuKgNwby899cHIAn8Od1Ua606NoLgudwskxXBwGShfYJ8rjCtQUGb3B2IMf6yUPnBx1YS0AOqjfPP8i+wZ3qMGN5Zi8HnqddeTFsr9bGo6no8pb5T13NDEDIS9v/M1YLjpFRxrHjvNfmMr5A1NUoU9h+BAE5i4oRdsqoLwkQA+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687979; c=relaxed/simple;
-	bh=0Ylsqt4JjEkHKgnjzH8x8rWZS5s3O2fxhtPJ4Xa7AcM=;
+	s=arc-20240116; t=1715687468; c=relaxed/simple;
+	bh=HNwmx20SnWQY639Awp9bDeg5/Eg2NmtwpEt9Szfc0g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSkPpj8MStqQaPUlRTqj4VX7VT2kWLbTYjFZSYU0czOHBm0NENG4Qy2Z4AnAKi3KkHXdiVgFPgz4srY7L+CdkO1Qzf1nNR+xQnDIQ4FBHvE4SOnWJhJLuzLVZxpxtqewUzJTOeEuMyfRceVrDmxSReh8etyMdD3hPpBgd59yTgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5GhvaLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A21FC2BD10;
-	Tue, 14 May 2024 11:59:38 +0000 (UTC)
+	 MIME-Version; b=P2683kd2aG+4Q5Iqw1QXI5t3+LfM01SZOxE2m4ZacLGFTje6usvZ7YkAgT5fpsMJU8TdvopBtyhyH9HEVgFT6CIzuWuUKUnCBO9gpRfMchUauNvRCW3ZhOvjrkVtuqTzZboL+TwRgLPpqb6fQkyjWcw8KlxUD9Sj7Z0AkakgEkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcC7WW7P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC67C2BD10;
+	Tue, 14 May 2024 11:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687979;
-	bh=0Ylsqt4JjEkHKgnjzH8x8rWZS5s3O2fxhtPJ4Xa7AcM=;
+	s=korg; t=1715687468;
+	bh=HNwmx20SnWQY639Awp9bDeg5/Eg2NmtwpEt9Szfc0g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5GhvaLU5tEQx83B3pcPe5oo1ld/61qQHVQvgXno5bW7QWkcP2+5wOFUWXDteCxjk
-	 OJLW/OWiknNq/p0K4sHk1eWdiObuH9TOdnUO2vB1BBIh9gdYX3ds/UAfSMBRiTm/rz
-	 yZ9Wws4bD6UmanCmyVVDrsiyM0FEgZn8LoeXNi9w=
+	b=KcC7WW7PaAYL10nageCsJ22/fl8GX5v6Pi9cy55hISE7tUM0TDdJTQbqf9MkWnvYk
+	 WsS+8Y0qXQBCWb54PdUQO6P6znwV0n8FvUsp8yXOkcMCqbql4IwsK4RSAmJbJnCN2B
+	 v3Aepl4pDrchPvwa/sjOszjxA3FY+kiC4URcNffo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 147/168] usb: xhci-plat: Dont include xhci.h
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 5.10 107/111] mei: me: add lunar lake point M DID
 Date: Tue, 14 May 2024 12:20:45 +0200
-Message-ID: <20240514101012.313045685@linuxfoundation.org>
+Message-ID: <20240514101001.198396183@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 4a237d55446ff67655dc3eed2d4a41997536fc4c upstream.
+commit 4108a30f1097eead0f6bd5d885e6bf093b4d460f upstream.
 
-The xhci_plat.h should not need to include the entire xhci.h header.
-This can cause redefinition in dwc3 if it selectively includes some xHCI
-definitions. This is a prerequisite change for a fix to disable suspend
-during initialization for dwc3.
+Add Lunar (Point) Lake M device id.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/310acfa01c957a10d9feaca3f7206269866ba2eb.1713394973.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240421135631.223362-1-tomas.winkler@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-plat.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/usb/host/xhci-plat.h
-+++ b/drivers/usb/host/xhci-plat.h
-@@ -8,7 +8,9 @@
- #ifndef _XHCI_PLAT_H
- #define _XHCI_PLAT_H
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -115,6 +115,8 @@
+ #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+ #define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
  
--#include "xhci.h"	/* for hcd_to_xhci() */
-+struct device;
-+struct platform_device;
-+struct usb_hcd;
++#define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -121,6 +121,8 @@ static const struct pci_device_id mei_me
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
  
- struct xhci_plat_priv {
- 	const char *firmware_name;
++	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
