@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F8B8C52C5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7150C8C5079
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C836728336C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1479DB21044
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B483143756;
-	Tue, 14 May 2024 11:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4047513D626;
+	Tue, 14 May 2024 10:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNt3SInr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etPrKJsC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AFB143753;
-	Tue, 14 May 2024 11:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F112D69D2F;
+	Tue, 14 May 2024 10:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686105; cv=none; b=B0Umv5swvWzvnRDZGX19Wh8iOnpTnOjpu5pfcmAFGiU23EjTOKAHy4iOWziCtXPoz096ir27sPLl2vWBxWzzMDjh8RFMsSYyZVn7oB8nP8B6rHuvGY7QK4jMnbXMJwZAKcxzvC3969uUgHWNf6w1XyDfp0I2/oghN/Lo8UwOJPw=
+	t=1715683412; cv=none; b=CEi4h1CUClkY7msxiAx+zR66I9TxZaH0QfGgjum5cIogESpimrDu8tSRkzc0AYtv4RSB+KuI6yZ1kCQQLQDa+3Wa7pbbsKjxVYhuxZzDZgICnvFbmPe0qGVMTnjGerOURUyI8dhaqlRxavjuQUsyRznXmzlZZDWWpUcQ+xAECGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686105; c=relaxed/simple;
-	bh=s26b7fDb0J8FXwe7uMhFTd9LZaqYiizHRSNT7MXGP5k=;
+	s=arc-20240116; t=1715683412; c=relaxed/simple;
+	bh=EHzDHpay2D8hlnoOmJ+nB5b3ImK7/R9Htzpas16XlqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bThuavbsmJbzrmcRSXRTJg+x6W3zXUYoVUs4Ts4Jdka6XpB3Cu590e398DJ0525rPTkJUpjqQTM21ypEpL39gDR3wCVx2MYknbMIsOy8RT7MWK3g1UglWy80siKxsbS3+WcB3QDfIoTflu9Ew9t7rinC6BVLaYsTKOLLaQTsW1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNt3SInr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930C0C2BD10;
-	Tue, 14 May 2024 11:28:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jqnzHAsxvgUN7Upg7FPKnuxboEa22Vf7zDWA7WGpCLOfDbqknwD4flTeHwUcmvV9p9o0y2vXg5pWb4YNZw5WzYEA+6STa8PJMKzZYYV2u+QTpQOYWHPJWBv9B5HmKj9kldHk0TQ2NCEgQ3T3LpyNGKFCjrP0s7kFa3rjj9UhUYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etPrKJsC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CFDC2BD10;
+	Tue, 14 May 2024 10:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686105;
-	bh=s26b7fDb0J8FXwe7uMhFTd9LZaqYiizHRSNT7MXGP5k=;
+	s=korg; t=1715683411;
+	bh=EHzDHpay2D8hlnoOmJ+nB5b3ImK7/R9Htzpas16XlqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNt3SInr2n9JllWMPcVkndEiPPYKfMDg6lbm3aEuU5w/Q6rN6WmSfBMeycDt9hEUd
-	 /QBzZxaBO+wn+9ZAYeVFgDU1cFIdpKE/kwQGMNIWz9KtasQ6mVpnIQwQTgE/wGCmEy
-	 9kSZpxXyXppAIuWuuDk2K0hS7HRtkdcEtingTYGM=
+	b=etPrKJsCgEzKLmOwzBW2+R7/Unk6XOOB3XA4eGtbtMqSvVkFKE/LBsZMa6nouqZpo
+	 DgAVVjYwUTZl0KF+z68vw5GhCymm+jJiaWOescs/mDeW4t3jAibgUFOYprRW4tYBFY
+	 iUnEaeTsYkLlkTG64eX1ASevckHck/Wa2ysocucw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Dakinevich <jan.dakinevich@salutedevices.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	=?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/236] pinctrl/meson: fix typo in PDMs pin name
+Subject: [PATCH 6.8 181/336] powerpc/crypto/chacha-p10: Fix failure on non Power10
 Date: Tue, 14 May 2024 12:16:25 +0200
-Message-ID: <20240514101021.214214676@linuxfoundation.org>
+Message-ID: <20240514101045.436919558@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Dakinevich <jan.dakinevich@salutedevices.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 368a90e651faeeb7049a876599cf2b0d74954796 ]
+[ Upstream commit 69630926011c1f7170a465b7b5c228deb66e9372 ]
 
-Other pins have _a or _x suffix, but this one doesn't have any. Most
-likely this is a typo.
+The chacha-p10-crypto module provides optimised chacha routines for
+Power10. It also selects CRYPTO_ARCH_HAVE_LIB_CHACHA which says it
+provides chacha_crypt_arch() to generic code.
 
-Fixes: dabad1ff8561 ("pinctrl: meson: add pinctrl driver support for Meson-A1 SoC")
-Signed-off-by: Jan Dakinevich <jan.dakinevich@salutedevices.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Message-ID: <20240325113058.248022-1-jan.dakinevich@salutedevices.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Notably the module needs to provide chacha_crypt_arch() regardless of
+whether it is loaded on Power10 or an older CPU.
+
+The implementation of chacha_crypt_arch() already has a fallback to
+chacha_crypt_generic(), however the module as a whole fails to load on
+pre-Power10, because of the use of module_cpu_feature_match().
+
+This breaks for example loading wireguard:
+
+  jostaberry-1:~ # modprobe -v wireguard
+  insmod /lib/modules/6.8.0-lp155.8.g7e0e887-default/kernel/arch/powerpc/crypto/chacha-p10-crypto.ko.zst
+  modprobe: ERROR: could not insert 'wireguard': No such device
+
+Fix it by removing module_cpu_feature_match(), and instead check the
+CPU feature manually. If the CPU feature is not found, the module
+still loads successfully, but doesn't register the Power10 specific
+algorithms. That allows chacha_crypt_generic() to remain available for
+use, fixing the problem.
+
+  [root@fedora ~]# modprobe -v wireguard
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/net/ipv4/udp_tunnel.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/net/ipv6/ip6_udp_tunnel.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/lib/crypto/libchacha.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/arch/powerpc/crypto/chacha-p10-crypto.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/lib/crypto/libchacha20poly1305.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/drivers/net/wireguard/wireguard.ko
+  [   18.910452][  T721] wireguard: allowedips self-tests: pass
+  [   18.914999][  T721] wireguard: nonce counter self-tests: pass
+  [   19.029066][  T721] wireguard: ratelimiter self-tests: pass
+  [   19.029257][  T721] wireguard: WireGuard 1.0.0 loaded. See www.wireguard.com for information.
+  [   19.029361][  T721] wireguard: Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+
+Reported-by: Michal Suchánek <msuchanek@suse.de>
+Closes: https://lore.kernel.org/all/20240315122005.GG20665@kitsune.suse.cz/
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240328130200.3041687-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson-a1.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/crypto/chacha-p10-glue.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson-a1.c b/drivers/pinctrl/meson/pinctrl-meson-a1.c
-index 79f5d753d7e1a..50a87d9618a8e 100644
---- a/drivers/pinctrl/meson/pinctrl-meson-a1.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson-a1.c
-@@ -250,7 +250,7 @@ static const unsigned int pdm_dclk_x_pins[]		= { GPIOX_10 };
- static const unsigned int pdm_din2_a_pins[]		= { GPIOA_6 };
- static const unsigned int pdm_din1_a_pins[]		= { GPIOA_7 };
- static const unsigned int pdm_din0_a_pins[]		= { GPIOA_8 };
--static const unsigned int pdm_dclk_pins[]		= { GPIOA_9 };
-+static const unsigned int pdm_dclk_a_pins[]		= { GPIOA_9 };
+diff --git a/arch/powerpc/crypto/chacha-p10-glue.c b/arch/powerpc/crypto/chacha-p10-glue.c
+index 74fb86b0d2097..7c728755852e1 100644
+--- a/arch/powerpc/crypto/chacha-p10-glue.c
++++ b/arch/powerpc/crypto/chacha-p10-glue.c
+@@ -197,6 +197,9 @@ static struct skcipher_alg algs[] = {
  
- /* gen_clk */
- static const unsigned int gen_clk_x_pins[]		= { GPIOX_7 };
-@@ -591,7 +591,7 @@ static struct meson_pmx_group meson_a1_periphs_groups[] = {
- 	GROUP(pdm_din2_a,		3),
- 	GROUP(pdm_din1_a,		3),
- 	GROUP(pdm_din0_a,		3),
--	GROUP(pdm_dclk,			3),
-+	GROUP(pdm_dclk_a,		3),
- 	GROUP(pwm_c_a,			3),
- 	GROUP(pwm_b_a,			3),
+ static int __init chacha_p10_init(void)
+ {
++	if (!cpu_has_feature(CPU_FTR_ARCH_31))
++		return 0;
++
+ 	static_branch_enable(&have_p10);
  
-@@ -755,7 +755,7 @@ static const char * const spi_a_groups[] = {
+ 	return crypto_register_skciphers(algs, ARRAY_SIZE(algs));
+@@ -204,10 +207,13 @@ static int __init chacha_p10_init(void)
  
- static const char * const pdm_groups[] = {
- 	"pdm_din0_x", "pdm_din1_x", "pdm_din2_x", "pdm_dclk_x", "pdm_din2_a",
--	"pdm_din1_a", "pdm_din0_a", "pdm_dclk",
-+	"pdm_din1_a", "pdm_din0_a", "pdm_dclk_a",
- };
+ static void __exit chacha_p10_exit(void)
+ {
++	if (!static_branch_likely(&have_p10))
++		return;
++
+ 	crypto_unregister_skciphers(algs, ARRAY_SIZE(algs));
+ }
  
- static const char * const gen_clk_groups[] = {
+-module_cpu_feature_match(PPC_MODULE_FEATURE_P10, chacha_p10_init);
++module_init(chacha_p10_init);
+ module_exit(chacha_p10_exit);
+ 
+ MODULE_DESCRIPTION("ChaCha and XChaCha stream ciphers (P10 accelerated)");
 -- 
 2.43.0
 
