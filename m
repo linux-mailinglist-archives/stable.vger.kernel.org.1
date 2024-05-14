@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-44347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562758C525B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DD38C5367
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDD741F22BBC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5951F232FF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A77C12F589;
-	Tue, 14 May 2024 11:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A624786258;
+	Tue, 14 May 2024 11:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIkRWHh1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/G6foXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F996311D;
-	Tue, 14 May 2024 11:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C3E18026;
+	Tue, 14 May 2024 11:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685818; cv=none; b=hXCL+VdGWwAKCK//hIKsgiod1Qqe3w2Sc+R7Xl+UwdqIftsoSjN9PCvRlMnfL1xr1MIIYt4sXcH1x+Ptc49eJXeQDAjRIFlX64S249zrHkWprTjsd/HZ7JhVWJRKGQDczg/o+hYY4uxh8hvv87u/+9cNw4Cs4kX8oIPI7BDdtKE=
+	t=1715686505; cv=none; b=MpZA8IBPlSOeeOSTPWftSIK1xr32pgj6b2lR0zg47i/oqO2ggDWZlJTiCVlgrczqXV/dGrhvvWRlcVc8hPaDJgOzAa8J28ADNdPWFGYKLFZQ6bOwxtN3PMQxEmiB1x6iin/clOd3C8nuI2+Pbq7HMthvfjtfSJ6FYlaJlYtb3Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685818; c=relaxed/simple;
-	bh=IKk6ZNHlSeqTOj2so2Vtg4AcpQCbkeGP89ampqKwSKk=;
+	s=arc-20240116; t=1715686505; c=relaxed/simple;
+	bh=LgwuEqL4srKO/GTsa9k3xmzlIuPHOhV9+sF5A8dC/Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y63jOJh/8NpTj4EY3xOiI0Gf22ZzTSjsplg/kosAnc2wgUJ7M9K9aMd89SzLqjJKFkvCYq4ynRskuO59X7BfV9H95mCiRYQt1s7UOAzukRICzhC6f5RMI3m51zeMX3WiE7sLHMFsDTCkFyiiweOAnIyLh9fMXeg7HxKyL4xxLn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIkRWHh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6210FC2BD10;
-	Tue, 14 May 2024 11:23:37 +0000 (UTC)
+	 MIME-Version; b=mT6QvrRO1SEbSzITQH4QMUCzHHcWuhK+dz8GEHjzd6CGAURmOBuhg2Wd1CfOS2we0cLZw4SNVQoi+olCL07VScjnyMOJixpzWND0s5MrMxQ/VUdqoVh6Bu5OcDrYXTzF1UIdI3jo7hxhcRVYTJK6kc2F0gDsJpOgOWkrIPkXpt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/G6foXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17F3C2BD10;
+	Tue, 14 May 2024 11:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685817;
-	bh=IKk6ZNHlSeqTOj2so2Vtg4AcpQCbkeGP89ampqKwSKk=;
+	s=korg; t=1715686505;
+	bh=LgwuEqL4srKO/GTsa9k3xmzlIuPHOhV9+sF5A8dC/Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIkRWHh1bmBixvp5WFFDwZBSSe9SjETMUsC+I/Tw76qCVZ+0AcyEgQY2HFvqnykfL
-	 9+DppQlk3EWLH8zGGu2ekkth4OAzUEhsAyXW9AYnEqdxDG6Grbs+ZeA8gGMqMMOGlM
-	 0Xi2HISzSrqk5wVs43s5XcCwa8eTToaZUmDTF3Pg=
+	b=q/G6foXYh1kgGY+QFGWuzFo06jb3d/yBhu77bms55Y2Q3aPTVFFlclifRU++Ir6QH
+	 4GvP2CjgnpbukAwuNnYrKKH2u/MfAVtQFO/SCM/kFYnSxNFoAevbl8gi5HKZj8kHSC
+	 Mp22CkQZ94P0WR+m4bYQl+brNaVZAyNal0jMCE1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Carretero?= <cJ@zougloub.eu>,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 253/301] e1000e: change usleep_range to udelay in PHY mdic access
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 162/236] net-sysfs: convert dev->operstate reads to lockless ones
 Date: Tue, 14 May 2024 12:18:44 +0200
-Message-ID: <20240514101041.809415184@linuxfoundation.org>
+Message-ID: <20240514101026.510398919@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +60,162 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 387f295cb2150ed164905b648d76dfcbd3621778 upstream.
+[ Upstream commit 004d138364fd10dd5ff8ceb54cfdc2d792a7b338 ]
 
-This is a partial revert of commit 6dbdd4de0362 ("e1000e: Workaround
-for sporadic MDI error on Meteor Lake systems"). The referenced commit
-used usleep_range inside the PHY access routines, which are sometimes
-called from an atomic context. This can lead to a kernel panic in some
-scenarios, such as cable disconnection and reconnection on vPro systems.
+operstate_show() can omit dev_base_lock acquisition only
+to read dev->operstate.
 
-Solve this by changing the usleep_range calls back to udelay.
+Annotate accesses to dev->operstate.
 
-Fixes: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
-Cc: stable@vger.kernel.org
-Reported-by: Jérôme Carretero <cJ@zougloub.eu>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218740
-Closes: https://lore.kernel.org/lkml/a7eb665c74b5efb5140e6979759ed243072cb24a.camel@zougloub.eu/
-Co-developed-by: Sasha Neftin <sasha.neftin@intel.com>
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240429171040.1152516-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Writers still acquire dev_base_lock for mutual exclusion.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 4893b8b3ef8d ("hsr: Simplify code for announcing HSR nodes timer setup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/phy.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bridge/br_netlink.c |  3 ++-
+ net/core/link_watch.c   |  4 ++--
+ net/core/net-sysfs.c    |  4 +---
+ net/core/rtnetlink.c    |  4 ++--
+ net/hsr/hsr_device.c    | 10 +++++-----
+ net/ipv6/addrconf.c     |  2 +-
+ 6 files changed, 13 insertions(+), 14 deletions(-)
 
---- a/drivers/net/ethernet/intel/e1000e/phy.c
-+++ b/drivers/net/ethernet/intel/e1000e/phy.c
-@@ -157,7 +157,7 @@ s32 e1000e_read_phy_reg_mdic(struct e100
- 		 * the lower time out
- 		 */
- 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--			usleep_range(50, 60);
-+			udelay(50);
- 			mdic = er32(MDIC);
- 			if (mdic & E1000_MDIC_READY)
- 				break;
-@@ -181,7 +181,7 @@ s32 e1000e_read_phy_reg_mdic(struct e100
- 		 * reading duplicate data in the next MDIC transaction.
- 		 */
- 		if (hw->mac.type == e1000_pch2lan)
--			usleep_range(100, 150);
-+			udelay(100);
+diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+index d38eff27767dc..e9e5c77ef0f4a 100644
+--- a/net/bridge/br_netlink.c
++++ b/net/bridge/br_netlink.c
+@@ -439,7 +439,8 @@ static int br_fill_ifinfo(struct sk_buff *skb,
+ 			  u32 filter_mask, const struct net_device *dev,
+ 			  bool getlink)
+ {
+-	u8 operstate = netif_running(dev) ? dev->operstate : IF_OPER_DOWN;
++	u8 operstate = netif_running(dev) ? READ_ONCE(dev->operstate) :
++					    IF_OPER_DOWN;
+ 	struct nlattr *af = NULL;
+ 	struct net_bridge *br;
+ 	struct ifinfomsg *hdr;
+diff --git a/net/core/link_watch.c b/net/core/link_watch.c
+index aa6cb1f90966f..13513efcfbfe8 100644
+--- a/net/core/link_watch.c
++++ b/net/core/link_watch.c
+@@ -53,7 +53,7 @@ static void rfc2863_policy(struct net_device *dev)
+ {
+ 	unsigned char operstate = default_operstate(dev);
  
- 		if (success) {
- 			*data = (u16)mdic;
-@@ -237,7 +237,7 @@ s32 e1000e_write_phy_reg_mdic(struct e10
- 		 * the lower time out
- 		 */
- 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--			usleep_range(50, 60);
-+			udelay(50);
- 			mdic = er32(MDIC);
- 			if (mdic & E1000_MDIC_READY)
- 				break;
-@@ -261,7 +261,7 @@ s32 e1000e_write_phy_reg_mdic(struct e10
- 		 * reading duplicate data in the next MDIC transaction.
- 		 */
- 		if (hw->mac.type == e1000_pch2lan)
--			usleep_range(100, 150);
-+			udelay(100);
+-	if (operstate == dev->operstate)
++	if (operstate == READ_ONCE(dev->operstate))
+ 		return;
  
- 		if (success)
- 			return 0;
+ 	write_lock(&dev_base_lock);
+@@ -73,7 +73,7 @@ static void rfc2863_policy(struct net_device *dev)
+ 		break;
+ 	}
+ 
+-	dev->operstate = operstate;
++	WRITE_ONCE(dev->operstate, operstate);
+ 
+ 	write_unlock(&dev_base_lock);
+ }
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 8409d41405dfe..fdf3308b03350 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -306,11 +306,9 @@ static ssize_t operstate_show(struct device *dev,
+ 	const struct net_device *netdev = to_net_dev(dev);
+ 	unsigned char operstate;
+ 
+-	read_lock(&dev_base_lock);
+-	operstate = netdev->operstate;
++	operstate = READ_ONCE(netdev->operstate);
+ 	if (!netif_running(netdev))
+ 		operstate = IF_OPER_DOWN;
+-	read_unlock(&dev_base_lock);
+ 
+ 	if (operstate >= ARRAY_SIZE(operstates))
+ 		return -EINVAL; /* should not happen */
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 80169afb888d2..1163226c025c1 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -876,9 +876,9 @@ static void set_operstate(struct net_device *dev, unsigned char transition)
+ 		break;
+ 	}
+ 
+-	if (dev->operstate != operstate) {
++	if (READ_ONCE(dev->operstate) != operstate) {
+ 		write_lock(&dev_base_lock);
+-		dev->operstate = operstate;
++		WRITE_ONCE(dev->operstate, operstate);
+ 		write_unlock(&dev_base_lock);
+ 		netdev_state_change(dev);
+ 	}
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 83906d093f0ae..89e694f1c3bd3 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -31,8 +31,8 @@ static bool is_slave_up(struct net_device *dev)
+ static void __hsr_set_operstate(struct net_device *dev, int transition)
+ {
+ 	write_lock(&dev_base_lock);
+-	if (dev->operstate != transition) {
+-		dev->operstate = transition;
++	if (READ_ONCE(dev->operstate) != transition) {
++		WRITE_ONCE(dev->operstate, transition);
+ 		write_unlock(&dev_base_lock);
+ 		netdev_state_change(dev);
+ 	} else {
+@@ -78,14 +78,14 @@ static void hsr_check_announce(struct net_device *hsr_dev,
+ 
+ 	hsr = netdev_priv(hsr_dev);
+ 
+-	if (hsr_dev->operstate == IF_OPER_UP && old_operstate != IF_OPER_UP) {
++	if (READ_ONCE(hsr_dev->operstate) == IF_OPER_UP && old_operstate != IF_OPER_UP) {
+ 		/* Went up */
+ 		hsr->announce_count = 0;
+ 		mod_timer(&hsr->announce_timer,
+ 			  jiffies + msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
+ 	}
+ 
+-	if (hsr_dev->operstate != IF_OPER_UP && old_operstate == IF_OPER_UP)
++	if (READ_ONCE(hsr_dev->operstate) != IF_OPER_UP && old_operstate == IF_OPER_UP)
+ 		/* Went down */
+ 		del_timer(&hsr->announce_timer);
+ }
+@@ -100,7 +100,7 @@ void hsr_check_carrier_and_operstate(struct hsr_priv *hsr)
+ 	/* netif_stacked_transfer_operstate() cannot be used here since
+ 	 * it doesn't set IF_OPER_LOWERLAYERDOWN (?)
+ 	 */
+-	old_operstate = master->dev->operstate;
++	old_operstate = READ_ONCE(master->dev->operstate);
+ 	has_carrier = hsr_check_carrier(master);
+ 	hsr_set_operstate(master, has_carrier);
+ 	hsr_check_announce(master->dev, old_operstate);
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 3866deaadbb66..16a9a21f6af19 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5979,7 +5979,7 @@ static int inet6_fill_ifinfo(struct sk_buff *skb, struct inet6_dev *idev,
+ 	    (dev->ifindex != dev_get_iflink(dev) &&
+ 	     nla_put_u32(skb, IFLA_LINK, dev_get_iflink(dev))) ||
+ 	    nla_put_u8(skb, IFLA_OPERSTATE,
+-		       netif_running(dev) ? dev->operstate : IF_OPER_DOWN))
++		       netif_running(dev) ? READ_ONCE(dev->operstate) : IF_OPER_DOWN))
+ 		goto nla_put_failure;
+ 	protoinfo = nla_nest_start_noflag(skb, IFLA_PROTINFO);
+ 	if (!protoinfo)
+-- 
+2.43.0
+
 
 
 
