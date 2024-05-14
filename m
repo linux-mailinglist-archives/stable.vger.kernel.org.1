@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-44352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189F88C5264
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EE38C50FC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CF9B282D93
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6B041C21474
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FFA12F5A5;
-	Tue, 14 May 2024 11:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8AF12D755;
+	Tue, 14 May 2024 10:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukvp20/j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvFMlt8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826EE6311D;
-	Tue, 14 May 2024 11:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29FD6CDC9;
+	Tue, 14 May 2024 10:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685844; cv=none; b=VCnv1gaz8miDaUNBxDvRYYmlMl31StmZ5bEnrmoJpkiAYAZ/wPtg5g+Fh9fnJ7N7Txta2VYqg6xvwy6jB4/NHgvIoRXqUzzf2F9IYaeqxklWM9VLvbQtGnVMQJWZ/mFD29Q5Ug61n63e/i7EDT82gzu6/uGHdENlqRVuKdrOGtI=
+	t=1715683949; cv=none; b=hNTBFpbTRWeDu/D4v4uThG5qeL7/wTLusCyMGXiQDnM7RndWWOF/31qCVBOs/oeDt0XzyQcWjaVZjRZ6oyThYDE5LbYehAIeKd50YcvBYvFd5tXt7fF5oX4GQZkRFGNFXrAtIthgRoIXAb7Sv+r1ayYDAetmaTVyT6F829Pw1oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685844; c=relaxed/simple;
-	bh=iNDRcOmXBH4elN4vCkfwbuKZb47GIMcaG4p27c00+bg=;
+	s=arc-20240116; t=1715683949; c=relaxed/simple;
+	bh=Vhu9frgZTtzjqKefU4M0DJEKlUADe+xuppHv2RYgawc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dbUCCKdM1rNvSMQ1JvsdPnZtQssH9pyfUaYffSS6btl90gk9kcjKYbvthmpIGNkqndV7nHkY4wyc+iuiZI825wAY+A4rRxAZ8GRVBjoR/IeokPmDvZru+/WMqEaXu45bVHoYJ7MbyZKxTJ/I74/+HY0upEEksEBdyD3jE2bQlfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukvp20/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD095C2BD10;
-	Tue, 14 May 2024 11:24:03 +0000 (UTC)
+	 MIME-Version; b=YMd5pts1ZiMkKWrC98tZ5dHvlsGkWdipM0CvlhcCZPrx7ElR7DTpNrR0Ype4qt87RIL2dpy4GihaqA7llimBZimj5ZOm6FVK8qinDKZkL8rB7DhNadWNUDHbqOyf+/d6mH4y90frvj2Ke6gNoP2lA7j88Rs5zWcHMMu95fqIP3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvFMlt8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E812C2BD10;
+	Tue, 14 May 2024 10:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685844;
-	bh=iNDRcOmXBH4elN4vCkfwbuKZb47GIMcaG4p27c00+bg=;
+	s=korg; t=1715683948;
+	bh=Vhu9frgZTtzjqKefU4M0DJEKlUADe+xuppHv2RYgawc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukvp20/jHyPizXzl/wqnmws1TOiHsxPtj/DFvKrzZMNfqPlIyXJ/0lW+wxHoQ1mVh
-	 JATDznVAoRCMjAH1g4usBP+KIWKSgRzuMPRUU1dt5M/hx9hlG/VhVuvUSk0ULIeZrP
-	 Cor+N+PFURXbiAnOEMnsUuNZER/Q6GSvZ94g/pTs=
+	b=uvFMlt8TqKsETWFtf4zmNj6pBanpDACaFfC9CjbtmihB3Fh5CpStPb4nKJJlUJrKJ
+	 GUZRku6pijK2TNN4bioQqciA7If7gj3j+DUu/wIMqnREdMOgu7MXtn+Ns8nGuzngE9
+	 QMmzmmLBFSKp5PPcr5nQbnbu956SSA4Fe1wN9Sjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Avdeev <me@provod.works>
-Subject: [PATCH 6.6 231/301] usb: gadget: uvc: use correct buffer size when parsing configfs lists
-Date: Tue, 14 May 2024 12:18:22 +0200
-Message-ID: <20240514101040.977039726@linuxfoundation.org>
+	20240228012313.5934-1-yaolu@kylinos.cn,
+	Matt Coster <matt.coster@imgtec.com>,
+	Frank Binns <frank.binns@imgtec.com>
+Subject: [PATCH 6.8 299/336] drm/imagination: Ensure PVR_MIPS_PT_PAGE_COUNT is never zero
+Date: Tue, 14 May 2024 12:18:23 +0200
+Message-ID: <20240514101049.906771061@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Avdeev <me@provod.works>
+From: Matt Coster <matt.coster@imgtec.com>
 
-commit 650ae71c80749fc7cb8858c8049f532eaec64410 upstream.
+commit e4236b14fe32a8d92686ec656c870a6bb1d6f50a upstream.
 
-This commit fixes uvc gadget support on 32-bit platforms.
+When the host page size was more than 4 times larger than the FW page
+size, this macro evaluated to zero resulting in zero-sized arrays.
 
-Commit 0df28607c5cb ("usb: gadget: uvc: Generalise helper functions for
-reuse") introduced a helper function __uvcg_iter_item_entries() to aid
-with parsing lists of items on configfs attributes stores. This function
-is a generalization of another very similar function, which used a
-stack-allocated temporary buffer of fixed size for each item in the list
-and used the sizeof() operator to check for potential buffer overruns.
-The new function was changed to allocate the now variably sized temp
-buffer on heap, but wasn't properly updated to also check for max buffer
-size using the computed size instead of sizeof() operator.
+Use DIV_ROUND_UP() to ensure the correct behavior.
 
-As a result, the maximum item size was 7 (plus null terminator) on
-64-bit platforms, and 3 on 32-bit ones. While 7 is accidentally just
-barely enough, 3 is definitely too small for some of UVC configfs
-attributes. For example, dwFrameInteval, specified in 100ns units,
-usually has 6-digit item values, e.g. 166666 for 60fps.
-
+Reported-by: 20240228012313.5934-1-yaolu@kylinos.cn
+Closes: https://lore.kernel.org/dri-devel/20240228012313.5934-1-yaolu@kylinos.cn
+Link: https://lore.kernel.org/dri-devel/20240228012313.5934-1-yaolu@kylinos.cn
+Fixes: 927f3e0253c1 ("drm/imagination: Implement MIPS firmware processor and MMU support")
 Cc: stable@vger.kernel.org
-Fixes: 0df28607c5cb ("usb: gadget: uvc: Generalise helper functions for reuse")
-Signed-off-by: Ivan Avdeev <me@provod.works>
-Link: https://lore.kernel.org/r/20240413150124.1062026-1-me@provod.works
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Reviewed-by: Frank Binns <frank.binns@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/uvc_configfs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/imagination/pvr_fw_mips.h |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/uvc_configfs.c
-+++ b/drivers/usb/gadget/function/uvc_configfs.c
-@@ -92,10 +92,10 @@ static int __uvcg_iter_item_entries(cons
+--- a/drivers/gpu/drm/imagination/pvr_fw_mips.h
++++ b/drivers/gpu/drm/imagination/pvr_fw_mips.h
+@@ -7,13 +7,14 @@
+ #include "pvr_rogue_mips.h"
  
- 	while (pg - page < len) {
- 		i = 0;
--		while (i < sizeof(buf) && (pg - page < len) &&
-+		while (i < bufsize && (pg - page < len) &&
- 		       *pg != '\0' && *pg != '\n')
- 			buf[i++] = *pg++;
--		if (i == sizeof(buf)) {
-+		if (i == bufsize) {
- 			ret = -EINVAL;
- 			goto out_free_buf;
- 		}
+ #include <asm/page.h>
++#include <linux/math.h>
+ #include <linux/types.h>
+ 
+ /* Forward declaration from pvr_gem.h. */
+ struct pvr_gem_object;
+ 
+-#define PVR_MIPS_PT_PAGE_COUNT ((ROGUE_MIPSFW_MAX_NUM_PAGETABLE_PAGES * ROGUE_MIPSFW_PAGE_SIZE_4K) \
+-				>> PAGE_SHIFT)
++#define PVR_MIPS_PT_PAGE_COUNT DIV_ROUND_UP(ROGUE_MIPSFW_MAX_NUM_PAGETABLE_PAGES * ROGUE_MIPSFW_PAGE_SIZE_4K, PAGE_SIZE)
++
+ /**
+  * struct pvr_fw_mips_data - MIPS-specific data
+  */
 
 
 
