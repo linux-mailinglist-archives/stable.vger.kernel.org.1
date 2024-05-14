@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3484D8C547E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BBD8C5532
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99521B21AAC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4323428489F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0889B129A99;
-	Tue, 14 May 2024 11:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D07041C6C;
+	Tue, 14 May 2024 11:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQyyncLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xa1SMpHI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCA31E4B0;
-	Tue, 14 May 2024 11:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4F62B9AD;
+	Tue, 14 May 2024 11:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687227; cv=none; b=NtJwyE80k2g11cSdvZJXUSGGh/P7P0fLIenzsr3JjnSjNNxfAqk6gZ0izmeQlrCYSHnFMCg78Xr9HuOOOMMIzULmnWrYwd9Rwjy2sCLedCGHF1zEvZdNp++Z7lcTJN2tam2N+kMveF+QpTy7duHirArIw6lFFLJKPt7jdhAirfw=
+	t=1715687711; cv=none; b=RLxiwdq/dIEl1WzPnrntoIGCYqy50qNJ/r9OfAYjYq1waXgQ8xO/EjLg13+I/R/9Dllr7b7I77qEug8YF/CgUoEI10s+HLlOsiNU86wds3b/y9xSYgizOvTBEH0aVID89rlv94mB76hwQSat46vkB3+39kCqDaQVRKpLr20pH1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687227; c=relaxed/simple;
-	bh=WXr6jMSl8LaMLli3C/rHHlK2bPYFAdNmxuqXzLbyXWs=;
+	s=arc-20240116; t=1715687711; c=relaxed/simple;
+	bh=cHv1FC6yt5yTOHY9urG06SEWB7WJsAqaC4HU218Zkxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGUpJkYOIovXmyDAh6aIjnfrI/B8ZedaJyo4ijcn7uW4RhjyTIJsy7enTO9MCt44yGai9yIKTgC5aRgiWFiYuE3+Nkm6g0djoVSyzggfZU6MWFYYqSeQp4liXPMdx77pQdDWJEtavAf1P0VWE+Wg8jWzpX/ASj6LazxdHAm6OYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQyyncLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BEEC2BD10;
-	Tue, 14 May 2024 11:47:07 +0000 (UTC)
+	 MIME-Version; b=dvjYE/q5337iJrw5UGg1yauHn2oAy+7tcPIwzdXaCmSs23stIYsCl9mSFRYJlpLd/4RvUAl/MU7iXV4W2hvcbZMkp9xt7Ey7CPAJRQOFCpY0Pn3l/oCojtCNmAIQY6qUycJfk9TejnCxbJjCF0UlfEq5dA5ZCkwLZlhfAjMtfmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xa1SMpHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A10C2BD10;
+	Tue, 14 May 2024 11:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687227;
-	bh=WXr6jMSl8LaMLli3C/rHHlK2bPYFAdNmxuqXzLbyXWs=;
+	s=korg; t=1715687710;
+	bh=cHv1FC6yt5yTOHY9urG06SEWB7WJsAqaC4HU218Zkxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQyyncLeUnufJ5zFEqR+IgdOCo+WGPAnin1sTGUcmpWYZvf1Bli9IPJjw4gqtT3di
-	 gmnd4V8VmZ+aNZHpPmUxWOvz8K8gSTo8E9rU3DddDhFhPxnDwTUYHnAwdiB0Ir5hKy
-	 IMjnmWp/dQCTECl/bJLkbjQ9c4MQSWdSTyqG1u8U=
+	b=Xa1SMpHIkERg6Wx4jR2JS+3JmHCXs+j9QPpOswL3RNimUg7a9XBJYxAMUWUSmKgTR
+	 EMHEwED52G5i9hqxVGg1nENG6mgIWhBljS/Lfh9Iv5RlD2wfFLkjOMkmBFZm65MKDe
+	 +c2ck5gvHDVYsIi63cokDJohWp+zyM7wI3sgXj7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Okazaki <dtokazaki@google.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 006/111] eeprom: at24: fix memory corruption race condition
-Date: Tue, 14 May 2024 12:19:04 +0200
-Message-ID: <20240514100957.364191611@linuxfoundation.org>
+Subject: [PATCH 5.15 047/168] ALSA: hda: intel-sdw-acpi: fix usage of device_get_named_child_node()
+Date: Tue, 14 May 2024 12:19:05 +0200
+Message-ID: <20240514101008.468037250@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Okazaki <dtokazaki@google.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit f42c97027fb75776e2e9358d16bf4a99aeb04cf2 ]
+[ Upstream commit c158cf914713efc3bcdc25680c7156c48c12ef6a ]
 
-If the eeprom is not accessible, an nvmem device will be registered, the
-read will fail, and the device will be torn down. If another driver
-accesses the nvmem device after the teardown, it will reference
-invalid memory.
+The documentation for device_get_named_child_node() mentions this
+important point:
 
-Move the failure point before registering the nvmem device.
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
 
-Signed-off-by: Daniel Okazaki <dtokazaki@google.com>
-Fixes: b20eb4c1f026 ("eeprom: at24: drop unnecessary label")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240422174337.2487142-1-dtokazaki@google.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Add fwnode_handle_put() to avoid a leaked reference.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Fixes: 08c2a4bc9f2a ("ALSA: hda: move Intel SoundWire ACPI scan to dedicated module")
+Message-ID: <20240426152731.38420-1-pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/at24.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ sound/hda/intel-sdw-acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 65a7517c031a7..02bea44369435 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -782,15 +782,6 @@ static int at24_probe(struct i2c_client *client)
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
+diff --git a/sound/hda/intel-sdw-acpi.c b/sound/hda/intel-sdw-acpi.c
+index b7758dbe23714..7c1e47aa4e7a7 100644
+--- a/sound/hda/intel-sdw-acpi.c
++++ b/sound/hda/intel-sdw-acpi.c
+@@ -41,6 +41,8 @@ static bool is_link_enabled(struct fwnode_handle *fw_node, int i)
+ 				 "intel-quirk-mask",
+ 				 &quirk_mask);
  
--	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
--	if (IS_ERR(at24->nvmem)) {
--		pm_runtime_disable(dev);
--		if (!pm_runtime_status_suspended(dev))
--			regulator_disable(at24->vcc_reg);
--		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
--				     "failed to register nvmem\n");
--	}
--
- 	/*
- 	 * Perform a one-byte test read to verify that the
- 	 * chip is functional.
-@@ -803,6 +794,15 @@ static int at24_probe(struct i2c_client *client)
- 		return -ENODEV;
- 	}
- 
-+	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
-+	if (IS_ERR(at24->nvmem)) {
-+		pm_runtime_disable(dev);
-+		if (!pm_runtime_status_suspended(dev))
-+			regulator_disable(at24->vcc_reg);
-+		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
-+				     "failed to register nvmem\n");
-+	}
++	fwnode_handle_put(link);
 +
- 	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
- 	if (cdata == &at24_data_spd)
- 		at24_probe_temp_sensor(client);
+ 	if (quirk_mask & SDW_INTEL_QUIRK_MASK_BUS_DISABLE)
+ 		return false;
+ 
 -- 
 2.43.0
 
