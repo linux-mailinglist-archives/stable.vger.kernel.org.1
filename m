@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-44607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038BC8C53AE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503DF8C52B1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D500C287D59
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E61FB1F21713
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F9812D76E;
-	Tue, 14 May 2024 11:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4747614372E;
+	Tue, 14 May 2024 11:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUyTaP43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bipdx2kg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E652F12C554;
-	Tue, 14 May 2024 11:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06665143721;
+	Tue, 14 May 2024 11:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686651; cv=none; b=uFusSjLr84GEk4osEVCLbFST0BXurD53h5eOmsHCpxQXrcs8+93sZO8tPO9fmqBdZpVkdKPF6s4hwQ0cbfC0oGY7tbYnx7N2/yVoQf1L8fpRuKpKdXM7pCIB28vg43ZdgqZE1Uvg7b39ZKs6PWgdR4peg6gVVAsBHG1YOnpG6Vw=
+	t=1715686059; cv=none; b=DjzkD6HRb7Sauq7tsSNY7y1Bc5ZDKSAfUWS8D01igkesmG48EjLP1V5kOyJzfSNn5sQ01LwLBhc0d32WTY3iHEmE2MeAM8PXCWfqqqm9FGbuvFyR1aF2ixb2iTj8GV7uVhKXMLTuWkfWDsuOG4xVI8g4k32rcPHfRvEawYL1uzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686651; c=relaxed/simple;
-	bh=Tlr+8oj6hm8aYYX0KCYqWV8EcDI+shbJJHjggsjnqy8=;
+	s=arc-20240116; t=1715686059; c=relaxed/simple;
+	bh=dYIkfNZzJy/v+UNUbHHeUU01g7T4QPgsp2msNDjFSQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETyjU0+zlXwNkGynSR+T29VWTY1ELbbPcong/oGsGnFqMgpIOGw+3ZOqgzEfRz1Xy6v7jgMqY+olpG/zsD2Vg+5pjmiMFJEL046qcVIRorkywzOVawFgxTe3V7A4gXu5iz1udSssTpNIl5pqEM6k5Yj/42ZOvXiCLLjaWXk5urU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUyTaP43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D20EC2BD10;
-	Tue, 14 May 2024 11:37:30 +0000 (UTC)
+	 MIME-Version; b=DndxgzFvlLxO6rpuOXxqsw3ePkY/lw2l/lD/bLeFnkTaEvNln+RLiuOKK9ZAGrqfU7/sOqUuad9yMug2Ao3vZ2BPpEUvJpNXDWVYWpg/1NsSRykWwAOm5ilFwXVeKIaeXBj2+xpqABmkvxDMcX6jxVXCqhUSlGqe6vGncB3HB08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bipdx2kg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D91C2BD10;
+	Tue, 14 May 2024 11:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686650;
-	bh=Tlr+8oj6hm8aYYX0KCYqWV8EcDI+shbJJHjggsjnqy8=;
+	s=korg; t=1715686058;
+	bh=dYIkfNZzJy/v+UNUbHHeUU01g7T4QPgsp2msNDjFSQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUyTaP438WYSg/g5zpU2a5A7Z+4qR3Hy8ZgwQU39en8X6gWUUBNSxqhe6g21N0yj/
-	 kT3psV9lQuJRmE0VKFMuMBVUe7POyX3Lcvci3HL95cgy+XSYDZeBjlv59EOTD1XKin
-	 VdL35iDX9175mviiYmXGTSxqz5joxZdsR4tkq2NM=
+	b=bipdx2kgEsI3dRibAQQ1754HowD6Ek5wVzhxoOCcjbbfgv8ImSlQKJMLRUC4ngeQj
+	 mAyGzZ6PpsWlSvjW4KdBuF5fWOmNo2YRZ/z+6iIOpMw1GLo4xpJZFM6rznrM/65Jgc
+	 Fg5Z05pR8HYeCj1n6UC0iw3dSRtGeBYV5yhSlW6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 210/236] kmsan: compiler_types: declare __no_sanitize_or_inline
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 301/301] Bluetooth: qca: fix firmware check error path
 Date: Tue, 14 May 2024 12:19:32 +0200
-Message-ID: <20240514101028.333130213@linuxfoundation.org>
+Message-ID: <20240514101043.630623276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 90d1f14cbb9ddbfc532e2da13bf6e0ed8320e792 upstream.
+commit 40d442f969fb1e871da6fca73d3f8aef1f888558 upstream.
 
-It turned out that KMSAN instruments READ_ONCE_NOCHECK(), resulting in
-false positive reports, because __no_sanitize_or_inline enforced inlining.
+A recent commit fixed the code that parses the firmware files before
+downloading them to the controller but introduced a memory leak in case
+the sanity checks ever fail.
 
-Properly declare __no_sanitize_or_inline under __SANITIZE_MEMORY__, so
-that it does not __always_inline the annotated function.
+Make sure to free the firmware buffer before returning on errors.
 
-Link: https://lkml.kernel.org/r/20240426091622.3846771-1-glider@google.com
-Fixes: 5de0ce85f5a4 ("kmsan: mark noinstr as __no_sanitize_memory")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Reported-by: syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com
-Link: https://lkml.kernel.org/r/000000000000826ac1061675b0e3@google.com
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f905ae0be4b7 ("Bluetooth: qca: add missing firmware sanity checks")
+Cc: stable@vger.kernel.org      # 4.19
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler_types.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/bluetooth/btqca.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -226,6 +226,17 @@ struct ftrace_likely_data {
- # define __no_kcsan
- #endif
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -605,7 +605,7 @@ static int qca_download_firmware(struct
  
-+#ifdef __SANITIZE_MEMORY__
-+/*
-+ * Similarly to KASAN and KCSAN, KMSAN loses function attributes of inlined
-+ * functions, therefore disabling KMSAN checks also requires disabling inlining.
-+ *
-+ * __no_sanitize_or_inline effectively prevents KMSAN from reporting errors
-+ * within the function and marks all its outputs as initialized.
-+ */
-+# define __no_sanitize_or_inline __no_kmsan_checks notrace __maybe_unused
-+#endif
-+
- #ifndef __no_sanitize_or_inline
- #define __no_sanitize_or_inline __always_inline
- #endif
+ 	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+ 	segment = data;
+ 	remain = size;
 
 
 
