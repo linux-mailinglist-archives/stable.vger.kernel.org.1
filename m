@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-45038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411018C5574
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3190F8C5443
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4195B217DE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9DE1F233F3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673761E4B0;
-	Tue, 14 May 2024 11:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888B16BFBB;
+	Tue, 14 May 2024 11:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRw81B0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vo8PafTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27668F9D4;
-	Tue, 14 May 2024 11:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DCC1E495;
+	Tue, 14 May 2024 11:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687902; cv=none; b=iCpoYLOLgpV9o/1PlUFTsrmOshQ8peQMGATZ0CXUa7PJ7966AuV+qT+XZlE7GrQUCXy95WLHswnxTIvYkM4HTjUXOmxSfsrkj71trry58XiWBYaMll0iZxKPkXga3fspDuNII4n4TNqJ6S4M4OYFcKPvFV8s8VRM63DeC7JXpt0=
+	t=1715687091; cv=none; b=lEQKG2APsYm1M2LCk7xITwfP1uLimL62meDW4GB5wbrpyxlXc3LKlRk+H1FVlpRLXgcULUf3eVUHAuVTQmkOovQl8ZdZt9hZzEVDdreQDCSBB53q2/U09/Rx42Lx3MqyMYYvfmT9T4IKypiyW0cpWz6ZKxAdh37dSBM1TgvaQgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687902; c=relaxed/simple;
-	bh=QAdWOLByrqwRdzoEvyeuEhaI0uQNsZ/i09jHfHFhkII=;
+	s=arc-20240116; t=1715687091; c=relaxed/simple;
+	bh=uRk9EEati40Q7usAr5kw2CKNM/lT3LuGlM2HrTXJkhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H+lwpBH2zOFwi7qLsuSgMoICwac6Mqso3ZiTpg1ZWOSm1kaanoD6cRrkBm4HkzoNiu7dXWUDkkDL9h7i3i6pf7ssKWvLMqZS6liDTCcEjnckeoCFB9MY3vjKND/YG0YqNS729CoNE5aOFIl696uNyhQUt+hNuyoSyUb99Mjs5tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRw81B0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF02C2BD10;
-	Tue, 14 May 2024 11:58:21 +0000 (UTC)
+	 MIME-Version; b=BmbpPrcoYKl9qeK1mJSzGO1b8ThrgKsNVaVDlaa7nenvl5eAH0nzBLdjo7QhjEsNKUyshTfq8cDMmPqCtE2U+75ciOVdRcy7ov74ktcP0lMoj874FOSvbyjjwqBY14ITU4nSV3/GcG5rrJUb/iU0mssD7bpV7UMqKJtHJLlA5PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vo8PafTn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65AEC2BD10;
+	Tue, 14 May 2024 11:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687902;
-	bh=QAdWOLByrqwRdzoEvyeuEhaI0uQNsZ/i09jHfHFhkII=;
+	s=korg; t=1715687091;
+	bh=uRk9EEati40Q7usAr5kw2CKNM/lT3LuGlM2HrTXJkhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRw81B0YTIE7fMO983nc6ulHue1zoampEKvySpIxkt6QvfnU2LiV99ZnM24eEebdv
-	 GDSaFnRpmcJWz7NwwJoZPKLnK9BxmADpCMzfbWad08yFhreXdTBQccYosDbM+FjDIq
-	 89Gsd/Dy4x0boy2nyyQjkmTcJANPMOhIxdiYv16I=
+	b=vo8PafTncOUW9kV5kWfBRIbPPET+FeLkqQV9KSJRfqNEYRmUida3cm+bUjbM+O91X
+	 OuoyzecaGl48CBYz+Pz7I4R5kC7HqHfU3FZd7WPEdkjJegCAwWfvxnKpGhCnawn+j7
+	 DaIU+1puTh3TVPkOnUu+BuT64j3lLy4L4AQhgSgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Shmidt <dimitrysh@google.com>,
+	Neil Armstrong <narmstrong@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/168] phonet: fix rtm_phonet_notify() skb allocation
+Subject: [PATCH 5.4 60/84] ASoC: meson: axg-card: Fix nonatomic links
 Date: Tue, 14 May 2024 12:20:11 +0200
-Message-ID: <20240514101010.950935427@linuxfoundation.org>
+Message-ID: <20240514100953.944523265@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Neil Armstrong <narmstrong@baylibre.com>
 
-[ Upstream commit d8cac8568618dcb8a51af3db1103e8d4cc4aeea7 ]
+[ Upstream commit 0c9b152c72e53016e96593bdbb8cffe2176694b9 ]
 
-fill_route() stores three components in the skb:
+This commit e138233e56e9829e65b6293887063a1a3ccb2d68 causes the
+following system crash when using audio on G12A/G12B & SM1 systems:
 
-- struct rtmsg
-- RTA_DST (u8)
-- RTA_OIF (u32)
+ BUG: sleeping function called from invalid context at kernel/locking/mutex.c:282
+  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/0
+ preempt_count: 10001, expected: 0
+ RCU nest depth: 0, expected: 0
+ Preemption disabled at:
+ schedule_preempt_disabled+0x20/0x2c
 
-Therefore, rtm_phonet_notify() should use
+ mutex_lock+0x24/0x60
+ _snd_pcm_stream_lock_irqsave+0x20/0x3c
+ snd_pcm_period_elapsed+0x24/0xa4
+ axg_fifo_pcm_irq_block+0x64/0xdc
+ __handle_irq_event_percpu+0x104/0x264
+ handle_irq_event+0x48/0xb4
+ ...
+ start_kernel+0x3f0/0x484
+ __primary_switched+0xc0/0xc8
 
-NLMSG_ALIGN(sizeof(struct rtmsg)) +
-nla_total_size(1) +
-nla_total_size(4)
+Revert this commit until the crash is fixed.
 
-Fixes: f062f41d0657 ("Phonet: routing table Netlink interface")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Link: https://lore.kernel.org/r/20240502161700.1804476-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e138233e56e9829e65b6 ("ASoC: meson: axg-card: make links nonatomic")
+Reported-by: Dmitry Shmidt <dimitrysh@google.com>
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Acked-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20220421155725.2589089-2-narmstrong@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/phonet/pn_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/meson/axg-card.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
-index 59aebe2968907..dd4c7e9a634fb 100644
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -193,7 +193,7 @@ void rtm_phonet_notify(int event, struct net_device *dev, u8 dst)
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
+diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
+index 36a004192b562..7126344017fa6 100644
+--- a/sound/soc/meson/axg-card.c
++++ b/sound/soc/meson/axg-card.c
+@@ -568,7 +568,6 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
  
--	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
-+	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct rtmsg)) +
- 			nla_total_size(1) + nla_total_size(4), GFP_KERNEL);
- 	if (skb == NULL)
- 		goto errout;
+ 	dai_link->cpus = cpu;
+ 	dai_link->num_cpus = 1;
+-	dai_link->nonatomic = true;
+ 
+ 	ret = axg_card_parse_dai(card, np, &dai_link->cpus->of_node,
+ 				 &dai_link->cpus->dai_name);
 -- 
 2.43.0
 
