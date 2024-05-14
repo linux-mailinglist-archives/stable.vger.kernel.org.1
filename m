@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5FE8C50E6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2621A8C5319
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 407E81C211CF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B74DEB21646
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A261292FC;
-	Tue, 14 May 2024 10:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCB013AA41;
+	Tue, 14 May 2024 11:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6djCY+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUOr8QMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CC64F88C;
-	Tue, 14 May 2024 10:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7909313AA37;
+	Tue, 14 May 2024 11:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683822; cv=none; b=Nzf6qJku9gim3DQHh6QvhgaHtAeiUuWNlN+jYBMx73I29N6D9YeFj9tZlbgNahYI8hkhzOPRg/Ypy5z34sgt2rPmcIEquPi+q0RVLD4HRxis9xOOHKeQ5MvqYcDW6oPwBuvHcEMdNain4joTXwrcOrMK8jjJz80nRmjIJTQG/6E=
+	t=1715686304; cv=none; b=CHhfePfe2QL1HRTbqIDd1jNqUhNfRm1NbqAnN5pn7hdQp0NQNdLqnY8JHbgczj3nW4O20Uy0FoSblmQxbKZb4A/8p+J4yqmDqgGdGi8CbtsdqjXitooVNB/H1jRxgkw+ixzjH9y1ADscrVi4IczIPFw1xdxnAKYI2I5rmmS0Qjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683822; c=relaxed/simple;
-	bh=Eos4OcCI7g9uJnE92Nu1817+q45HS7whLcyKSLfWgNM=;
+	s=arc-20240116; t=1715686304; c=relaxed/simple;
+	bh=17MLXq0HamUWyq9OMNNvKXWKtw/19BrzuvgHl8f61fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0/XjGA0RN+XyXvmzPK1YvAJeV4ui7S6bAStf5HC2UkflVEbdbmaPMRqgFgdT3m7z3EMhYZj5yG/IPUTP+jUgvPEl5ZvPkvnAILr60ZRoIV7z0D0cf3detyrwVFH2sNM31A2ZtS3oB0fKNFkRXtOFiTqTKXBG2WuMKZDV6QAplA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6djCY+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7754C2BD10;
-	Tue, 14 May 2024 10:50:20 +0000 (UTC)
+	 MIME-Version; b=hAfj2Ft7LX70PAUaxzQn8wPRvMjdvVTv03kIpXt+C10BNjKzUvdu9H77vo0nrxYLsSqnegeeLCSweQ37X47NAODKCP9nzs1IuL07P+gm2undhO+aZlQbWQsV1wnt9CQiXunAUnC5FczvZYfJWSw2egN9E8v8i8agD4IQstLdMbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUOr8QMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD430C32782;
+	Tue, 14 May 2024 11:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683821;
-	bh=Eos4OcCI7g9uJnE92Nu1817+q45HS7whLcyKSLfWgNM=;
+	s=korg; t=1715686304;
+	bh=17MLXq0HamUWyq9OMNNvKXWKtw/19BrzuvgHl8f61fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6djCY+PGvCXr/qeF11cwYQn95ElgsVid+nXdA6eCvjem33nB2+Lm8At0DGmxJrWE
-	 9c+gROgWfya3FUkxhIWTL3HdTq42NljDQCksJxRU5L9Tk177ReOCdtZIk9CG7F00Kg
-	 M1Lkk2w16s8wOgqu17kgYBSc62OjjUMsraLmS43E=
+	b=OUOr8QMiV+QdPrOYmchglZNkmqgoGI1G82Xb2ZzdHHi00WFF7KHelmsNUGTIrV0Xc
+	 bdWIKzxuntNw1tbSX5Y76MShLlys2ROZaGei2h5Z8a6RW+KSKB8G+gGtTApMjVGdro
+	 6MqP3xnNQwX76nL/5VuEA1F0aBiTPH7n1o0gAm0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	xingwei lee <xrivendell7@gmail.com>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Yue Sun <samsun1006219@gmail.com>
-Subject: [PATCH 6.8 249/336] USB: core: Fix access violation during port device removal
-Date: Tue, 14 May 2024 12:17:33 +0200
-Message-ID: <20240514101048.019939558@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 092/236] KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()
+Date: Tue, 14 May 2024 12:17:34 +0200
+Message-ID: <20240514101023.863227511@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-commit a4b46d450c49f32e9d4247b421e58083fde304ce upstream.
+[ Upstream commit 6ddb4f372fc63210034b903d96ebbeb3c7195adb ]
 
-Testing with KASAN and syzkaller revealed a bug in port.c:disable_store():
-usb_hub_to_struct_hub() can return NULL if the hub that the port belongs to
-is concurrently removed, but the function does not check for this
-possibility before dereferencing the returned value.
+vgic_v2_parse_attr() is responsible for finding the vCPU that matches
+the user-provided CPUID, which (of course) may not be valid. If the ID
+is invalid, kvm_get_vcpu_by_id() returns NULL, which isn't handled
+gracefully.
 
-It turns out that the first dereference is unnecessary, since hub->intfdev
-is the parent of the port device, so it can be changed easily.  Adding a
-check for hub == NULL prevents further problems.
+Similar to the GICv3 uaccess flow, check that kvm_get_vcpu_by_id()
+actually returns something and fail the ioctl if not.
 
-The same bug exists in the disable_show() routine, and it can be fixed the
-same way.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-and-tested-by: Yue Sun <samsun1006219@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Link: https://lore.kernel.org/linux-usb/CAEkJfYON+ry7xPx=AiLR9jzUNT+i_Va68ACajOC3HoacOfL1ig@mail.gmail.com/
-Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
-CC: Michael Grzeschik <m.grzeschik@pengutronix.de>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/393aa580-15a5-44ca-ad3b-6462461cd313@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 7d450e282171 ("KVM: arm/arm64: vgic-new: Add userland access to VGIC dist registers")
+Reported-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240424173959.3776798-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/port.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -50,13 +50,15 @@ static ssize_t disable_show(struct devic
- 	struct usb_port *port_dev = to_usb_port(dev);
- 	struct usb_device *hdev = to_usb_device(dev->parent->parent);
- 	struct usb_hub *hub = usb_hub_to_struct_hub(hdev);
--	struct usb_interface *intf = to_usb_interface(hub->intfdev);
-+	struct usb_interface *intf = to_usb_interface(dev->parent);
- 	int port1 = port_dev->portnum;
- 	u16 portstatus, unused;
- 	bool disabled;
- 	int rc;
- 	struct kernfs_node *kn;
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+index 97ead28f81425..63731fb3d8f63 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -337,12 +337,12 @@ int kvm_register_vgic_device(unsigned long type)
+ int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
+ 		       struct vgic_reg_attr *reg_attr)
+ {
+-	int cpuid;
++	int cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
  
-+	if (!hub)
-+		return -ENODEV;
- 	hub_get(hub);
- 	rc = usb_autopm_get_interface(intf);
- 	if (rc < 0)
-@@ -100,12 +102,14 @@ static ssize_t disable_store(struct devi
- 	struct usb_port *port_dev = to_usb_port(dev);
- 	struct usb_device *hdev = to_usb_device(dev->parent->parent);
- 	struct usb_hub *hub = usb_hub_to_struct_hub(hdev);
--	struct usb_interface *intf = to_usb_interface(hub->intfdev);
-+	struct usb_interface *intf = to_usb_interface(dev->parent);
- 	int port1 = port_dev->portnum;
- 	bool disabled;
- 	int rc;
- 	struct kernfs_node *kn;
+-	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+-
+-	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
+ 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
++	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
++	if (!reg_attr->vcpu)
++		return -EINVAL;
  
-+	if (!hub)
-+		return -ENODEV;
- 	rc = kstrtobool(buf, &disabled);
- 	if (rc)
- 		return rc;
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
