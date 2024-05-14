@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-43996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC008C50B3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12108C5200
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEBBB28118D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:10:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD0632829D5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3855461674;
-	Tue, 14 May 2024 10:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB18B1292D2;
+	Tue, 14 May 2024 11:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKK17hEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/ubUAly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26AF6E611;
-	Tue, 14 May 2024 10:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8654BFE;
+	Tue, 14 May 2024 11:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683592; cv=none; b=OofZfusDtXCHHnMfZUyhEUL28rUgzbdlOIt4EVUcFz0s6OiyEx5TK8wgib1O+Ijc1XffIVRkJ6dpfL7u5ktgFhQREsOyVrYRIUq9jYSDZ61gARc5A5o+1yitbNVg3kLfjpa7jJZJ6xw7Y4tTLzvyK1veeg8h5MthcnzNo5yRcLw=
+	t=1715685340; cv=none; b=eVuPSRTcH+STufBiiayUaGhMOPK/Js6gdrkU2kTLD27riQ9JihhAltgli3XHYqLc0Gn4GY5bV2AFq08e20pf7KWn72ZsusznX32aGobMCq3nEXam0qHVrzbu3aJfFQ5/6N8U3HSTzz92jyD3CnVzu557dY2UKc3lsqALlytmAOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683592; c=relaxed/simple;
-	bh=jvPG3mk2+7eU/OryOq6gx6Wha8r3q/V+P49KcWGJmsA=;
+	s=arc-20240116; t=1715685340; c=relaxed/simple;
+	bh=DqY1oSmx3Ja7UajFq61UR1ouPaeUPXDRlpPUJOmgvtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJTKEsFmGUi02sNhYr6fZFn0TMQNM5IOuFS7F8aq6WrSmeJiYyeY2182CXMiMnxTkMwecTkBgqjXi4AfMpVmLNIT4PFXJWoshvkCoKiJ4uT8EJ6QqUiXGYT0s6/jpoZq5D9bgNt1vDH3HYTSv8cqlfeHP56SR47BDsHIZrpeFhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKK17hEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8FEC32781;
-	Tue, 14 May 2024 10:46:31 +0000 (UTC)
+	 MIME-Version; b=u1PFkNoeSNeO8z17BCaKmOCET3sWKhGkdIVSAiZa3iEJ5QVNIhlFLuw+444VquLFUXrzZ0MfFUckdXHmYK7b9fVAs9mEws2+A3QBEXtdv15JCZ3IDT+NFIIUZBx8nU8rPUJaYzHZrYjzejhDvV/tA+YkJ+1QsTogg/n3JMQyUqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/ubUAly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E014DC2BD10;
+	Tue, 14 May 2024 11:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683591;
-	bh=jvPG3mk2+7eU/OryOq6gx6Wha8r3q/V+P49KcWGJmsA=;
+	s=korg; t=1715685340;
+	bh=DqY1oSmx3Ja7UajFq61UR1ouPaeUPXDRlpPUJOmgvtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKK17hEtWsjbAIbCrOPZdz2l5IoWniZG1j65GUFYgylFAwfFMEIwiNYfHaTOmQnTX
-	 gd3QLAgpQLQDZllBT1s1fwsqmpIwQbAkCh1LKr5a72HyKYf58YCisv4DYbMbw5agLq
-	 IAczcReFNQKHuyLrmeYSch62XAyadOvlxx4icKcE=
+	b=f/ubUAlyLRfaI3DzvddtWfYF6Lp8N4VS97zeX8EF/DTYfjmvDEd2iqphXYj5z92XP
+	 Z39Fm+R0Zm9NRmbbYizafTPPvNwm4e43ye5qZUpJ2WBqvoTLRiA8+6UhkQs9Xs92PD
+	 /cWn2NXLoFvqlaOGuzyxxSnON1IJeNtovAwPhqcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 239/336] gpiolib: cdev: fix uninitialised kfifo
+Subject: [PATCH 6.6 172/301] blk-iocost: do not WARN if iocg was already offlined
 Date: Tue, 14 May 2024 12:17:23 +0200
-Message-ID: <20240514101047.637097342@linuxfoundation.org>
+Message-ID: <20240514101038.751094704@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit ee0166b637a5e376118e9659e5b4148080f1d27e ]
+[ Upstream commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 ]
 
-If a line is requested with debounce, and that results in debouncing
-in software, and the line is subsequently reconfigured to enable edge
-detection then the allocation of the kfifo to contain edge events is
-overlooked.  This results in events being written to and read from an
-uninitialised kfifo.  Read events are returned to userspace.
+In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
+is intended to confirm iocg is active when it has debt. However, warn
+can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
+is run at that time:
 
-Initialise the kfifo in the case where the software debounce is
-already active.
+  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
+  Call trace:
+  iocg_pay_debt+0x14c/0x190
+  iocg_kick_waitq+0x438/0x4c0
+  iocg_waitq_timer_fn+0xd8/0x130
+  __run_hrtimer+0x144/0x45c
+  __hrtimer_run_queues+0x16c/0x244
+  hrtimer_interrupt+0x2cc/0x7b0
 
-Fixes: 65cff7046406 ("gpiolib: cdev: support setting debounce")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240510065342.36191-1-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+The warn in this situation is meaningless. Since this iocg is being
+removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
+is canceled after removing 'active_list' in ioc_pd_free(), which ensures
+iocg is freed after iocg_waitq_timer_fn() returns.
+
+Therefore, add the check if iocg was already offlined to avoid warn
+when removing a blkcg or disk.
+
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ block/blk-iocost.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 0b94c398c0649..5cca9e8803495 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1199,6 +1199,8 @@ static int edge_detector_update(struct line *line,
- 				struct gpio_v2_line_config *lc,
- 				unsigned int line_idx, u64 edflags)
- {
-+	u64 eflags;
-+	int ret;
- 	u64 active_edflags = READ_ONCE(line->edflags);
- 	unsigned int debounce_period_us =
- 			gpio_v2_line_config_debounce_period(lc, line_idx);
-@@ -1210,6 +1212,18 @@ static int edge_detector_update(struct line *line,
- 	/* sw debounced and still will be...*/
- 	if (debounce_period_us && READ_ONCE(line->sw_debounced)) {
- 		line_set_debounce_period(line, debounce_period_us);
-+		/*
-+		 * ensure event fifo is initialised if edge detection
-+		 * is now enabled.
-+		 */
-+		eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
-+		if (eflags && !kfifo_initialized(&line->req->events)) {
-+			ret = kfifo_alloc(&line->req->events,
-+					  line->req->event_buffer_size,
-+					  GFP_KERNEL);
-+			if (ret)
-+				return ret;
-+		}
- 		return 0;
- 	}
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index a382b3a39820a..0dca77591d66c 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1439,8 +1439,11 @@ static void iocg_pay_debt(struct ioc_gq *iocg, u64 abs_vpay,
+ 	lockdep_assert_held(&iocg->ioc->lock);
+ 	lockdep_assert_held(&iocg->waitq.lock);
  
+-	/* make sure that nobody messed with @iocg */
+-	WARN_ON_ONCE(list_empty(&iocg->active_list));
++	/*
++	 * make sure that nobody messed with @iocg. Check iocg->pd.online
++	 * to avoid warn when removing blkcg or disk.
++	 */
++	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
+ 	WARN_ON_ONCE(iocg->inuse > 1);
+ 
+ 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
 -- 
 2.43.0
 
