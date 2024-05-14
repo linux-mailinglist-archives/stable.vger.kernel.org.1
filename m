@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDC38C53F0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE8F8C556D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DB8E1F218AD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5452B21E7C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC01012FF78;
-	Tue, 14 May 2024 11:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE811D54D;
+	Tue, 14 May 2024 11:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKmN5JYP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIOIplF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859A5FDD2;
-	Tue, 14 May 2024 11:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7DCF9D4;
+	Tue, 14 May 2024 11:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686868; cv=none; b=i781wKVgjfeoCoffcKdgLkKi9MEJhGbFf5s+/S1wJHw6LsOjGwTh/TcszIxI+ch8jrdFSmF/nvFJvHSM5BEnk4BimssR1dztEpg8HmCnrpfv3+s6EIDha4uqGG7wHogPjrL3wsWzaNCR+bxPjnhvcfi6DFEfR2kT6TToOnu2edI=
+	t=1715687885; cv=none; b=IWDwsxyz+SCUu05rXLxvSJvW/qq6QkcNutoB0oUo96LJ4mQJc18RTTsfcdmsWuNxO70MsxivDerhYqiSYQuxiCAPsOya6Zbsm+izjmQq0prDAZV6BfqCSObV2I+cWHGR2u2RbMG1dnmEHygNChopTBsWZw33u2gybqaQcH9r9Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686868; c=relaxed/simple;
-	bh=cg8BQAb6jEH/Sxi0rVSz9dhApdHjYCFuGn6acmHddHw=;
+	s=arc-20240116; t=1715687885; c=relaxed/simple;
+	bh=ISeYqwm0IIkRcfq+yxMWEZePu5AiDAab+mtztrHIxVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL9zhviB10ckrO0CbaWaVSQ9EoqsiOW5ODkm+LLeCGlt5gcFIXJ0fhSWlGLFw8M0Taz+CF1QF6LWOzoSgE88R/69orpmZkIzWOkEDhxssZwJZsLreli2AnTerv4Iz+fk3WeD0pBt4ibXRgcFRblxXuvv7tiqfOxez9UI/Fckq8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKmN5JYP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8E1C32781;
-	Tue, 14 May 2024 11:41:08 +0000 (UTC)
+	 MIME-Version; b=AYBS/jS4CpqM1yEIlDRVHKtmV08qNMsfkUv54gQ21wdE2xOKBrB+5alVzvDLqiabjMrVzk2KezQG0clyvckUEBbWj4kx2Ql9WoM2FZXEXiANHB1RlsMcWTu8K/oJVaDRZAms0U+OH1S8WQC9/o+Os3fGRpBvljRRBexfqN9+kzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIOIplF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66466C2BD10;
+	Tue, 14 May 2024 11:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686868;
-	bh=cg8BQAb6jEH/Sxi0rVSz9dhApdHjYCFuGn6acmHddHw=;
+	s=korg; t=1715687884;
+	bh=ISeYqwm0IIkRcfq+yxMWEZePu5AiDAab+mtztrHIxVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKmN5JYPJBv1HqaI7gbtbvweeKawvx4Hx2DySTsGuPd90HCTWn8GzIopZ2G/peEmQ
-	 0cWv4ZoTxVmZoMOwlrj/pd5UW1qwLGSQddsfMVI6+Z8R76Il9LocYaYm7p9nZ3fte+
-	 jDSuZldkR5kQh2vESfi8y+xOyyl0CroixH5HwMOI=
+	b=ZIOIplF+NbhLoTawaYb4wCe4+SQd1uQIzEWkC8odKKjbRrXH7wgd7BcggsvuUvjFd
+	 IefjL2UfEJbSP1BUodqvE9FWg5Vjl+dD1o7OfXjabJSsCt5h+QcKHoPpq9y4WPJGct
+	 gXLvsmNk1infCw+V96VKmDOg/gA7AeGjn+RGoxJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 48/63] Bluetooth: Fix use-after-free bugs caused by sco_sock_timeout
+Subject: [PATCH 5.15 111/168] hwmon: (corsair-cpro) Use complete_all() instead of complete() in ccp_raw_event()
 Date: Tue, 14 May 2024 12:20:09 +0200
-Message-ID: <20240514100949.827387247@linuxfoundation.org>
+Message-ID: <20240514101010.874715286@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-[ Upstream commit 483bc08181827fc475643272ffb69c533007e546 ]
+[ Upstream commit 3a034a7b0715eb51124a5263890b1ed39978ed3a ]
 
-When the sco connection is established and then, the sco socket
-is releasing, timeout_work will be scheduled to judge whether
-the sco disconnection is timeout. The sock will be deallocated
-later, but it is dereferenced again in sco_sock_timeout. As a
-result, the use-after-free bugs will happen. The root cause is
-shown below:
+In ccp_raw_event(), the ccp->wait_input_report completion is
+completed once. Since we're waiting for exactly one report in
+send_usb_cmd(), use complete_all() instead of complete()
+to mark the completion as spent.
 
-    Cleanup Thread               |      Worker Thread
-sco_sock_release                 |
-  sco_sock_close                 |
-    __sco_sock_close             |
-      sco_sock_set_timer         |
-        schedule_delayed_work    |
-  sco_sock_kill                  |    (wait a time)
-    sock_put(sk) //FREE          |  sco_sock_timeout
-                                 |    sock_hold(sk) //USE
-
-The KASAN report triggered by POC is shown below:
-
-[   95.890016] ==================================================================
-[   95.890496] BUG: KASAN: slab-use-after-free in sco_sock_timeout+0x5e/0x1c0
-[   95.890755] Write of size 4 at addr ffff88800c388080 by task kworker/0:0/7
-...
-[   95.890755] Workqueue: events sco_sock_timeout
-[   95.890755] Call Trace:
-[   95.890755]  <TASK>
-[   95.890755]  dump_stack_lvl+0x45/0x110
-[   95.890755]  print_address_description+0x78/0x390
-[   95.890755]  print_report+0x11b/0x250
-[   95.890755]  ? __virt_addr_valid+0xbe/0xf0
-[   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
-[   95.890755]  kasan_report+0x139/0x170
-[   95.890755]  ? update_load_avg+0xe5/0x9f0
-[   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
-[   95.890755]  kasan_check_range+0x2c3/0x2e0
-[   95.890755]  sco_sock_timeout+0x5e/0x1c0
-[   95.890755]  process_one_work+0x561/0xc50
-[   95.890755]  worker_thread+0xab2/0x13c0
-[   95.890755]  ? pr_cont_work+0x490/0x490
-[   95.890755]  kthread+0x279/0x300
-[   95.890755]  ? pr_cont_work+0x490/0x490
-[   95.890755]  ? kthread_blkcg+0xa0/0xa0
-[   95.890755]  ret_from_fork+0x34/0x60
-[   95.890755]  ? kthread_blkcg+0xa0/0xa0
-[   95.890755]  ret_from_fork_asm+0x11/0x20
-[   95.890755]  </TASK>
-[   95.890755]
-[   95.890755] Allocated by task 506:
-[   95.890755]  kasan_save_track+0x3f/0x70
-[   95.890755]  __kasan_kmalloc+0x86/0x90
-[   95.890755]  __kmalloc+0x17f/0x360
-[   95.890755]  sk_prot_alloc+0xe1/0x1a0
-[   95.890755]  sk_alloc+0x31/0x4e0
-[   95.890755]  bt_sock_alloc+0x2b/0x2a0
-[   95.890755]  sco_sock_create+0xad/0x320
-[   95.890755]  bt_sock_create+0x145/0x320
-[   95.890755]  __sock_create+0x2e1/0x650
-[   95.890755]  __sys_socket+0xd0/0x280
-[   95.890755]  __x64_sys_socket+0x75/0x80
-[   95.890755]  do_syscall_64+0xc4/0x1b0
-[   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
-[   95.890755]
-[   95.890755] Freed by task 506:
-[   95.890755]  kasan_save_track+0x3f/0x70
-[   95.890755]  kasan_save_free_info+0x40/0x50
-[   95.890755]  poison_slab_object+0x118/0x180
-[   95.890755]  __kasan_slab_free+0x12/0x30
-[   95.890755]  kfree+0xb2/0x240
-[   95.890755]  __sk_destruct+0x317/0x410
-[   95.890755]  sco_sock_release+0x232/0x280
-[   95.890755]  sock_close+0xb2/0x210
-[   95.890755]  __fput+0x37f/0x770
-[   95.890755]  task_work_run+0x1ae/0x210
-[   95.890755]  get_signal+0xe17/0xf70
-[   95.890755]  arch_do_signal_or_restart+0x3f/0x520
-[   95.890755]  syscall_exit_to_user_mode+0x55/0x120
-[   95.890755]  do_syscall_64+0xd1/0x1b0
-[   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
-[   95.890755]
-[   95.890755] The buggy address belongs to the object at ffff88800c388000
-[   95.890755]  which belongs to the cache kmalloc-1k of size 1024
-[   95.890755] The buggy address is located 128 bytes inside of
-[   95.890755]  freed 1024-byte region [ffff88800c388000, ffff88800c388400)
-[   95.890755]
-[   95.890755] The buggy address belongs to the physical page:
-[   95.890755] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88800c38a800 pfn:0xc388
-[   95.890755] head: order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[   95.890755] anon flags: 0x100000000000840(slab|head|node=0|zone=1)
-[   95.890755] page_type: 0xffffffff()
-[   95.890755] raw: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
-[   95.890755] raw: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
-[   95.890755] head: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
-[   95.890755] head: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
-[   95.890755] head: 0100000000000003 ffffea000030e201 ffffea000030e248 00000000ffffffff
-[   95.890755] head: 0000000800000000 0000000000000000 00000000ffffffff 0000000000000000
-[   95.890755] page dumped because: kasan: bad access detected
-[   95.890755]
-[   95.890755] Memory state around the buggy address:
-[   95.890755]  ffff88800c387f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   95.890755]  ffff88800c388000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755] >ffff88800c388080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755]                    ^
-[   95.890755]  ffff88800c388100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755]  ffff88800c388180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755] ==================================================================
-
-Fix this problem by adding a check protected by sco_conn_lock to judget
-whether the conn->hcon is null. Because the conn->hcon will be set to null,
-when the sock is releasing.
-
-Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-3-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/sco.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwmon/corsair-cpro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index d8726327bc05e..42b5d56d85a56 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -82,6 +82,10 @@ static void sco_sock_timeout(struct work_struct *work)
- 	struct sock *sk;
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index 0a9cbb556188f..543a741fe5473 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -140,7 +140,7 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
+ 		return 0;
  
- 	sco_conn_lock(conn);
-+	if (!conn->hcon) {
-+		sco_conn_unlock(conn);
-+		return;
-+	}
- 	sk = conn->sk;
- 	if (sk)
- 		sock_hold(sk);
+ 	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
+-	complete(&ccp->wait_input_report);
++	complete_all(&ccp->wait_input_report);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
