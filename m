@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33EE8C522A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E988C5332
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12B181C2114C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4534D2859F9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095C312D755;
-	Tue, 14 May 2024 11:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F97413C669;
+	Tue, 14 May 2024 11:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnTzQHEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS7N//Hu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC76B53E30;
-	Tue, 14 May 2024 11:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4529D13C3CA;
+	Tue, 14 May 2024 11:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685603; cv=none; b=lFJ8xdLddsBaLNqWXyJy2ussMN5500WoDP6MHUe8ozmJFAGyJscMM/1PELQiA52Mf/fbDyOKGkT0rYoGkIfKNNzn6QzgqDKquv/2xLWZrOVFAAdtYc8a4rFziyHncS7ZGfbpP29u4qh+nbRgKIoogMolHBiQieEVbsxlwIod5nY=
+	t=1715686347; cv=none; b=C2XhMzOthqDwUu/F6jeF5u61RbM+yZEHLo0u3i10dMGNCty4YsUxSBCUuApgoUnwjHYUMYIMJTM0V7Ah0XoDrVZHnK0IId6AY4/mCur08z6xDghGp3NLYvDn32q3Fb2N+M9xcu5OSneIOXReADwWmr839UPwLWRWQlzRseQwfJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685603; c=relaxed/simple;
-	bh=/+LejgYF+0t21hoP/0Q+tH2uHxgCGVjpqA4j6InBoQw=;
+	s=arc-20240116; t=1715686347; c=relaxed/simple;
+	bh=lX3a6QUs8vuIundfGs39xASM30AmBRnyJtjWd1MzHdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hf6IC9k4ddDrsWTo7HdkqHhXvNbwySQY6KTCyWiXtcOmkKRKa4wbIPlegcNcjU4lw+P//IU1p46V3XCyIvew+Z88gdjBQj99AJHprpziy+wGUFDAVO5ITAtRQDf8fO/HLVXZ5oCJ1TUy15g8yMv3CXg8l1vtIYLa3pKIhPPjONQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnTzQHEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5FAC2BD10;
-	Tue, 14 May 2024 11:20:02 +0000 (UTC)
+	 MIME-Version; b=QMyccrpkOVmmUaSW20EMzDaWfesy22OcG3qs/7l7cB8nnJckEHqtzVuSEES/DTdlsJ59KZHlNo8O5TXkU5QC0GXR+jQlIss00Uz2yOP2pF0GX1ft+cXs/tsVl1P6duCzYItrxcQ5vmYPemRdfYYEEwvNKBs+6lsARnxDoQJqI+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS7N//Hu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00EAC2BD10;
+	Tue, 14 May 2024 11:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685603;
-	bh=/+LejgYF+0t21hoP/0Q+tH2uHxgCGVjpqA4j6InBoQw=;
+	s=korg; t=1715686347;
+	bh=lX3a6QUs8vuIundfGs39xASM30AmBRnyJtjWd1MzHdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnTzQHEOIW1gfybQQY/2WL4NmH7jRRet7mkJ/qc5o6LebWt2Sz6XmQ7GB8YU+LH2S
-	 gDqKGZ2exlxZfSjO81SqPXECmpqaPRd7kbVE+dCd3PErpSMR28VAE/2Qer7I6Gsouo
-	 WI4P8+ReOnpzcFu85LiPRDt34jZhPx7xSCz7Lbjo=
+	b=pS7N//HuRi2JW27s2vpwFwWxU2zVvcV5T2IxqYFmwcIzNvuNdpVy31C9Hx7sht8J8
+	 j/4J21mDAPiTf2zrR2Q3nZx+KVJ9jLyBljPWCUpZNsm//vkBmyCw1nt4nlH+3OzJQE
+	 /V3oXw96TtR1u22+TcAAiBxVOxpxQRPWkJhHQaFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeffrey Altman <"jaltman@auristor.commailto:jaltman"@auristor.com>
-Subject: [PATCH 6.6 196/301] rxrpc: Only transmit one ACK per jumbo packet received
-Date: Tue, 14 May 2024 12:17:47 +0200
-Message-ID: <20240514101039.656268436@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 106/236] scsi: ufs: core: WLUN suspend dev/link state error recovery
+Date: Tue, 14 May 2024 12:17:48 +0200
+Message-ID: <20240514101024.394991825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 012b7206918dcc5a4dcf1432b3e643114c95957e ]
+[ Upstream commit 6bc5e70b1c792b31b497e48b4668a9a2909aca0d ]
 
-Only generate one ACK packet for all the subpackets in a jumbo packet.  If
-we would like to generate more than one ACK, we prioritise them base on
-their reason code, in the order, highest first:
+When wl suspend error occurs, for example BKOP or SSU timeout, the host
+triggers an error handler and returns -EBUSY to break the wl suspend
+process.  However, it is possible for the runtime PM to enter wl suspend
+again before the error handler has finished, and return -EINVAL because the
+device is in an error state. To address this, ensure that the rumtime PM
+waits for the error handler to finish, or trigger the error handler in such
+cases, because returning -EINVAL can cause the I/O to hang.
 
-   OutOfSeq > NoSpace > ExceedsWin > Duplicate > Requested > Delay > Idle
-
-For the first four, we reference the lowest offending subpacket; for the
-last three, the highest.
-
-This reduces the number of ACKs we end up transmitting to one per UDP
-packet transmitted to reduce network loading and packet parsing.
-
-Fixes: 5d7edbc9231e ("rxrpc: Get rid of the Rx ring")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com <mailto:jaltman@auristor.com>>
-Link: https://lore.kernel.org/r/20240503150749.1001323-3-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240329015036.15707-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/input.c | 46 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
+ drivers/ufs/core/ufshcd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index f7304e06aadca..5dfda1ac51dda 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -9,6 +9,17 @@
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index f3c25467e571f..948449a13247c 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -9044,7 +9044,10 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
  
- #include "ar-internal.h"
- 
-+/* Override priority when generating ACKs for received DATA */
-+static const u8 rxrpc_ack_priority[RXRPC_ACK__INVALID] = {
-+	[RXRPC_ACK_IDLE]		= 1,
-+	[RXRPC_ACK_DELAY]		= 2,
-+	[RXRPC_ACK_REQUESTED]		= 3,
-+	[RXRPC_ACK_DUPLICATE]		= 4,
-+	[RXRPC_ACK_EXCEEDS_WINDOW]	= 5,
-+	[RXRPC_ACK_NOSPACE]		= 6,
-+	[RXRPC_ACK_OUT_OF_SEQUENCE]	= 7,
-+};
-+
- static void rxrpc_proto_abort(struct rxrpc_call *call, rxrpc_seq_t seq,
- 			      enum rxrpc_abort_reason why)
- {
-@@ -366,7 +377,7 @@ static void rxrpc_input_queue_data(struct rxrpc_call *call, struct sk_buff *skb,
-  * Process a DATA packet.
-  */
- static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
--				 bool *_notify)
-+				 bool *_notify, rxrpc_serial_t *_ack_serial, int *_ack_reason)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct sk_buff *oos;
-@@ -419,8 +430,6 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
- 		/* Send an immediate ACK if we fill in a hole */
- 		else if (!skb_queue_empty(&call->rx_oos_queue))
- 			ack_reason = RXRPC_ACK_DELAY;
--		else
--			call->ackr_nr_unacked++;
- 
- 		window++;
- 		if (after(window, wtop)) {
-@@ -498,12 +507,16 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
+ 	/* UFS device & link must be active before we enter in this function */
+ 	if (!ufshcd_is_ufs_dev_active(hba) || !ufshcd_is_link_active(hba)) {
+-		ret = -EINVAL;
++		/*  Wait err handler finish or trigger err recovery */
++		if (!ufshcd_eh_in_progress(hba))
++			ufshcd_force_error_recovery(hba);
++		ret = -EBUSY;
+ 		goto enable_scaling;
  	}
  
- send_ack:
--	if (ack_reason >= 0)
--		rxrpc_send_ACK(call, ack_reason, serial,
--			       rxrpc_propose_ack_input_data);
--	else
--		rxrpc_propose_delay_ACK(call, serial,
--					rxrpc_propose_ack_input_data);
-+	if (ack_reason >= 0) {
-+		if (rxrpc_ack_priority[ack_reason] > rxrpc_ack_priority[*_ack_reason]) {
-+			*_ack_serial = serial;
-+			*_ack_reason = ack_reason;
-+		} else if (rxrpc_ack_priority[ack_reason] == rxrpc_ack_priority[*_ack_reason] &&
-+			   ack_reason == RXRPC_ACK_REQUESTED) {
-+			*_ack_serial = serial;
-+			*_ack_reason = ack_reason;
-+		}
-+	}
- }
- 
- /*
-@@ -514,9 +527,11 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
- 	struct rxrpc_jumbo_header jhdr;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb), *jsp;
- 	struct sk_buff *jskb;
-+	rxrpc_serial_t ack_serial = 0;
- 	unsigned int offset = sizeof(struct rxrpc_wire_header);
- 	unsigned int len = skb->len - offset;
- 	bool notify = false;
-+	int ack_reason = 0;
- 
- 	while (sp->hdr.flags & RXRPC_JUMBO_PACKET) {
- 		if (len < RXRPC_JUMBO_SUBPKTLEN)
-@@ -536,7 +551,7 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
- 		jsp = rxrpc_skb(jskb);
- 		jsp->offset = offset;
- 		jsp->len = RXRPC_JUMBO_DATALEN;
--		rxrpc_input_data_one(call, jskb, &notify);
-+		rxrpc_input_data_one(call, jskb, &notify, &ack_serial, &ack_reason);
- 		rxrpc_free_skb(jskb, rxrpc_skb_put_jumbo_subpacket);
- 
- 		sp->hdr.flags = jhdr.flags;
-@@ -549,7 +564,16 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
- 
- 	sp->offset = offset;
- 	sp->len    = len;
--	rxrpc_input_data_one(call, skb, &notify);
-+	rxrpc_input_data_one(call, skb, &notify, &ack_serial, &ack_reason);
-+
-+	if (ack_reason > 0) {
-+		rxrpc_send_ACK(call, ack_reason, ack_serial,
-+			       rxrpc_propose_ack_input_data);
-+	} else {
-+		call->ackr_nr_unacked++;
-+		rxrpc_propose_delay_ACK(call, sp->hdr.serial,
-+					rxrpc_propose_ack_input_data);
-+	}
- 	if (notify) {
- 		trace_rxrpc_notify_socket(call->debug_id, sp->hdr.serial);
- 		rxrpc_notify_socket(call);
 -- 
 2.43.0
 
