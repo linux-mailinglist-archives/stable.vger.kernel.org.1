@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E139D8C5414
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AAA8C52B4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F171F23319
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53448B222BA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99170135A68;
-	Tue, 14 May 2024 11:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B51D143731;
+	Tue, 14 May 2024 11:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+SPzmD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVF+m5+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574C754903;
-	Tue, 14 May 2024 11:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC96012DDBD;
+	Tue, 14 May 2024 11:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686955; cv=none; b=EqTkz2Ir8OYtOgIT+xJBcSiMJ+MUgfu18K7m0AgX6NISDEmiiP1wECOFBlQ2bg3KzTiGrO4No+ILXyTMX1exXQDrJZU9kTIUnq6bKFaidhWiLeh0RpDTx+SA1JnNPt2Ufg351Fi9jlGa70H5PuQtjQNrrjQqhcvLfOJSH52u0tc=
+	t=1715686062; cv=none; b=V0rMciutJ7UCxTt/BAQCs2KEnfN6vSdffhOpOUXpSWq6m6D0L7NEQpx2SXSVI66zlvIt8Tn8iQFTJzuN5TiDqYWndDEg6YayF+ovEQnWp+r35lV/ToCzPItbtasbACejydKJZZCqr9d7hu1SlYtEUOTBNWu6wVazlg5rPRCslyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686955; c=relaxed/simple;
-	bh=sCuNPMwXhH+5rfLFNBar+qyBkYPGzc5deHEjwxPCH60=;
+	s=arc-20240116; t=1715686062; c=relaxed/simple;
+	bh=hazMWLSeuCxOgn67+HiNDGcSAv4wO4/A8qiAUtK1l+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OC3nlyfZDQVZJsyyly3ynRGWXN3SANJQtHXtap4ge1jfaOHiBlsy5G2braQUwyapH1skOJgmSlMLj+ObQCh4U+8Bc1WcWXYw8md8FXY2v96s+OnpGsBILRcJruZubu9FmoXuR4MCw8rcLsSrfCMLLf2OjSasOt+2ytotsn2EbKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+SPzmD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D6CC2BD10;
-	Tue, 14 May 2024 11:42:34 +0000 (UTC)
+	 MIME-Version; b=SxceFamiATyvIvGbqr/sWpWxevTIWXXG9xThdJDaSbOgn1T2O44xhnli9BeZgOjiAfAYqNIX7gW3vo3lXSc9DFPwoRSMzCpdnH7GbZFmLS9EVyBuSoaGaRJAZMMBjyQjwCDjVfcJ6+uQ1/c1SGAqfIEyE/BZXX/M9PERb9XEZXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVF+m5+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622A6C2BD10;
+	Tue, 14 May 2024 11:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686955;
-	bh=sCuNPMwXhH+5rfLFNBar+qyBkYPGzc5deHEjwxPCH60=;
+	s=korg; t=1715686061;
+	bh=hazMWLSeuCxOgn67+HiNDGcSAv4wO4/A8qiAUtK1l+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+SPzmD0wv/oujtUkW+SQ1LD6EWajZJa5lkp4JK8c8iGhV+gYxCy8H+ywsYiK1Nss
-	 uf/8ZjYSG20JJUvqHFCD79YEP9I4VK5a56vnsEZG6KyyTx0PdauB+ivlGvIC4Htlsf
-	 pmCdAIXw+hPvfGcGGchKq9YngOhAZiBTYIkBK1Og=
+	b=gVF+m5+1s4PIpFuhEAyDI+3G8j4bPHo2yVokH+TiPu0rAXOdUBcc9DzAV7ewtpq1o
+	 T2yvMTQt4mcV0+zkukCXhuVdNZThFgDPc4bE14VbSzXLErD+1FwUHRHOO9VwM/owjc
+	 JdlanR022D/9wV9rMczs0YWGZD9YdSLFpOlj3uK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/84] nfs: make the rpc_stat per net namespace
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 296/301] Bluetooth: qca: add missing firmware sanity checks
 Date: Tue, 14 May 2024 12:19:27 +0200
-Message-ID: <20240514100952.304663745@linuxfoundation.org>
+Message-ID: <20240514101043.437623364@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +61,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 1548036ef1204df65ca5a16e8b199c858cb80075 ]
+commit 2e4edfa1e2bd821a317e7d006517dcf2f3fac68d upstream.
 
-Now that we're exposing the rpc stats on a per-network namespace basis,
-move this struct into struct nfs_net and use that to make sure only the
-per-network namespace stats are exposed.
+Add the missing sanity checks when parsing the firmware files before
+downloading them to avoid accessing and corrupting memory beyond the
+vmalloced buffer.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 83e81961ff7e ("Bluetooth: btqca: Introduce generic QCA ROME support")
+Cc: stable@vger.kernel.org	# 4.10
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/client.c   | 5 ++++-
- fs/nfs/inode.c    | 4 +++-
- fs/nfs/internal.h | 2 --
- fs/nfs/netns.h    | 2 ++
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btqca.c |   38 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 35abe63655a9d..323cef064f2a4 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -72,7 +72,6 @@ const struct rpc_program nfs_program = {
- 	.number			= NFS_PROGRAM,
- 	.nrvers			= ARRAY_SIZE(nfs_version),
- 	.version		= nfs_version,
--	.stats			= &nfs_rpcstat,
- 	.pipe_dir_name		= NFS_PIPE_DIRNAME,
- };
- 
-@@ -492,6 +491,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 			  const struct nfs_client_initdata *cl_init,
- 			  rpc_authflavor_t flavor)
- {
-+	struct nfs_net		*nn = net_generic(clp->cl_net, nfs_net_id);
- 	struct rpc_clnt		*clnt = NULL;
- 	struct rpc_create_args args = {
- 		.net		= clp->cl_net,
-@@ -503,6 +503,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 		.servername	= clp->cl_hostname,
- 		.nodename	= cl_init->nodename,
- 		.program	= &nfs_program,
-+		.stats		= &nn->rpcstats,
- 		.version	= clp->rpc_ops->version,
- 		.authflavor	= flavor,
- 		.cred		= cl_init->cred,
-@@ -1077,6 +1078,8 @@ void nfs_clients_init(struct net *net)
- #endif
- 	spin_lock_init(&nn->nfs_client_lock);
- 	nn->boot_time = ktime_get_real();
-+	memset(&nn->rpcstats, 0, sizeof(nn->rpcstats));
-+	nn->rpcstats.program = &nfs_program;
- 
- 	nfs_netns_sysfs_setup(nn, net);
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -268,9 +268,10 @@ int qca_send_pre_shutdown_cmd(struct hci
  }
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index c154e7f98e6d8..96468ee4406fa 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2178,8 +2178,10 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ EXPORT_SYMBOL_GPL(qca_send_pre_shutdown_cmd);
  
- static int nfs_net_init(struct net *net)
+-static void qca_tlv_check_data(struct hci_dev *hdev,
++static int qca_tlv_check_data(struct hci_dev *hdev,
+ 			       struct qca_fw_config *config,
+-		u8 *fw_data, enum qca_btsoc_type soc_type)
++			       u8 *fw_data, size_t fw_size,
++			       enum qca_btsoc_type soc_type)
  {
-+	struct nfs_net *nn = net_generic(net, nfs_net_id);
+ 	const u8 *data;
+ 	u32 type_len;
+@@ -286,6 +287,9 @@ static void qca_tlv_check_data(struct hc
+ 
+ 	switch (config->type) {
+ 	case ELF_TYPE_PATCH:
++		if (fw_size < 7)
++			return -EINVAL;
 +
- 	nfs_clients_init(net);
--	rpc_proc_register(net, &nfs_rpcstat);
-+	rpc_proc_register(net, &nn->rpcstats);
- 	return nfs_fs_proc_net_init(net);
+ 		config->dnld_mode = QCA_SKIP_EVT_VSE_CC;
+ 		config->dnld_type = QCA_SKIP_EVT_VSE_CC;
+ 
+@@ -294,6 +298,9 @@ static void qca_tlv_check_data(struct hc
+ 		bt_dev_dbg(hdev, "File version      : 0x%x", fw_data[6]);
+ 		break;
+ 	case TLV_TYPE_PATCH:
++		if (fw_size < sizeof(struct tlv_type_hdr) + sizeof(struct tlv_type_patch))
++			return -EINVAL;
++
+ 		tlv = (struct tlv_type_hdr *)fw_data;
+ 		type_len = le32_to_cpu(tlv->type_len);
+ 		tlv_patch = (struct tlv_type_patch *)tlv->data;
+@@ -333,6 +340,9 @@ static void qca_tlv_check_data(struct hc
+ 		break;
+ 
+ 	case TLV_TYPE_NVM:
++		if (fw_size < sizeof(struct tlv_type_hdr))
++			return -EINVAL;
++
+ 		tlv = (struct tlv_type_hdr *)fw_data;
+ 
+ 		type_len = le32_to_cpu(tlv->type_len);
+@@ -341,17 +351,26 @@ static void qca_tlv_check_data(struct hc
+ 		BT_DBG("TLV Type\t\t : 0x%x", type_len & 0x000000ff);
+ 		BT_DBG("Length\t\t : %d bytes", length);
+ 
++		if (fw_size < length + (tlv->data - fw_data))
++			return -EINVAL;
++
+ 		idx = 0;
+ 		data = tlv->data;
+-		while (idx < length) {
++		while (idx < length - sizeof(struct tlv_type_nvm)) {
+ 			tlv_nvm = (struct tlv_type_nvm *)(data + idx);
+ 
+ 			tag_id = le16_to_cpu(tlv_nvm->tag_id);
+ 			tag_len = le16_to_cpu(tlv_nvm->tag_len);
+ 
++			if (length < idx + sizeof(struct tlv_type_nvm) + tag_len)
++				return -EINVAL;
++
+ 			/* Update NVM tags as needed */
+ 			switch (tag_id) {
+ 			case EDL_TAG_ID_HCI:
++				if (tag_len < 3)
++					return -EINVAL;
++
+ 				/* HCI transport layer parameters
+ 				 * enabling software inband sleep
+ 				 * onto controller side.
+@@ -367,6 +386,9 @@ static void qca_tlv_check_data(struct hc
+ 				break;
+ 
+ 			case EDL_TAG_ID_DEEP_SLEEP:
++				if (tag_len < 1)
++					return -EINVAL;
++
+ 				/* Sleep enable mask
+ 				 * enabling deep sleep feature on controller.
+ 				 */
+@@ -375,14 +397,16 @@ static void qca_tlv_check_data(struct hc
+ 				break;
+ 			}
+ 
+-			idx += (sizeof(u16) + sizeof(u16) + 8 + tag_len);
++			idx += sizeof(struct tlv_type_nvm) + tag_len;
+ 		}
+ 		break;
+ 
+ 	default:
+ 		BT_ERR("Unknown TLV type %d", config->type);
+-		break;
++		return -EINVAL;
+ 	}
++
++	return 0;
  }
  
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index fcd35c98a9377..fb28750da761f 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -405,8 +405,6 @@ struct dentry * nfs_xdev_mount_common(struct file_system_type *, int,
- void nfs_kill_super(struct super_block *);
- void nfs_fill_super(struct super_block *, struct nfs_mount_info *);
+ static int qca_tlv_send_segment(struct hci_dev *hdev, int seg_size,
+@@ -532,7 +556,9 @@ static int qca_download_firmware(struct
+ 	memcpy(data, fw->data, size);
+ 	release_firmware(fw);
  
--extern struct rpc_stat nfs_rpcstat;
--
- extern int __init register_nfs_fs(void);
- extern void __exit unregister_nfs_fs(void);
- extern bool nfs_sb_active(struct super_block *sb);
-diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
-index c8374f74dce11..a68b21603ea9a 100644
---- a/fs/nfs/netns.h
-+++ b/fs/nfs/netns.h
-@@ -9,6 +9,7 @@
- #include <linux/nfs4.h>
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
-+#include <linux/sunrpc/stats.h>
+-	qca_tlv_check_data(hdev, config, data, soc_type);
++	ret = qca_tlv_check_data(hdev, config, data, size, soc_type);
++	if (ret)
++		return ret;
  
- struct bl_dev_msg {
- 	int32_t status;
-@@ -34,6 +35,7 @@ struct nfs_net {
- 	struct nfs_netns_client *nfs_client;
- 	spinlock_t nfs_client_lock;
- 	ktime_t boot_time;
-+	struct rpc_stat rpcstats;
- #ifdef CONFIG_PROC_FS
- 	struct proc_dir_entry *proc_nfsfs;
- #endif
--- 
-2.43.0
-
+ 	segment = data;
+ 	remain = size;
 
 
 
