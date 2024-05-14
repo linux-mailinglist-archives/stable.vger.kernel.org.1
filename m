@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9394A8C5168
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 425D98C500B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B76D281A5B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D41FDB2140D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF9C1386CF;
-	Tue, 14 May 2024 11:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F6213665A;
+	Tue, 14 May 2024 10:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8+NzEZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfGjsbYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6FE136672;
-	Tue, 14 May 2024 11:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43401136651;
+	Tue, 14 May 2024 10:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684436; cv=none; b=mGsNSwLS3OTzIoMfRkl7wsuyInmryzNg8JZLZTPle4ySGjDVnJu5gSs4TbeHTaztYRN2J2O8NVvf0cNaQTKWHs2FWG2QJ32gwbQjEGIaD5RREXDA+xHCXdO3ai2ovGNXIh1jZnChxO2MDxhN2CtxXJ1IcW5DlBfNfkkcrfPbRMw=
+	t=1715682877; cv=none; b=iWB8m/PojaMwrXG9zWkSiyeMuQCmRwqckiwRPef29BojYvvP8c8P65i+x06P3/eHq8hQj0WREcw9JKEH7xhD8MJJf+qlZ7unsXcQCL4BQ9va4L+s5qxad1UWpnHytgcNtbBhvCQGZYYJelqbwtGtq6GVa+j2UNvYhzsgezM3sOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684436; c=relaxed/simple;
-	bh=Y+a9026LXxXLxHvs73t3N2kSo4efq92vKY9YZbXUYXA=;
+	s=arc-20240116; t=1715682877; c=relaxed/simple;
+	bh=Sx3/MGUHMGdtohUx4V8LWCuYxx3ngp+8LiQZAYY2OBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqgkE4tvev97DKZdU3biLs0bzhmoSvTWHq8p22UjHZHLN410cOqm1YYsvCtPOjgYxEyozoruEF2qSHdkCbJHGI9bODqVlu6J43b8Wb3OmhnGd6Yx6CogKmD7vyduPAVAmUot0ScJZhsk/4CpMcSjuxmZZMk5SO8kHMiV/hDivjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8+NzEZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396E2C2BD10;
-	Tue, 14 May 2024 11:00:35 +0000 (UTC)
+	 MIME-Version; b=MzKpGpJCiP9LQxSCXnr4x1i0TAv6Q5skrMAef2wl6sHJyO7p47lQEK0ni8O2GnW8V0LdIaMmcWsmYp52+0GsE1T/KPa44+YVK/Tjd0/UqpMgBN28k/AFoT0bWN/Bx+CbZB/rYVCIdpGkmDGG9U9zxw997mEPW+3t6en7QjhW6Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfGjsbYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99924C2BD10;
+	Tue, 14 May 2024 10:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684436;
-	bh=Y+a9026LXxXLxHvs73t3N2kSo4efq92vKY9YZbXUYXA=;
+	s=korg; t=1715682877;
+	bh=Sx3/MGUHMGdtohUx4V8LWCuYxx3ngp+8LiQZAYY2OBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8+NzEZcrP+5XAfZSt1k7Zwe8PVfQ+LREwc7tkR8zEO7vLjRr/GRM4hcoFeHxtXbS
-	 LfHFs/aOd6oQ4qRbEkpxpBrgvOuxX75Q6jjnyjKFYnvmLKZA2WH8iTWDkmbFP7MJTu
-	 mA2WwNiHHe7N6g9LAuzDptKbwQtSzP3jTBQO7RWA=
+	b=gfGjsbYqnSpuPfQ/OUvpijNB0J2jewBQKbfpASJdzxzfYdZGG95jlPIMLKiDk+dsb
+	 J4yTLG/30An5iGiL8U4gPh2OIO64Z7JP1cL7TrDfP06S+wH9nAYSF/JBQGBXZ7K+JD
+	 +ZHB+BxbWvCUTHEASRlGzQ2/W20UTQ3P3pIHjq5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Babrou <ivan@cloudflare.com>,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/301] bpf, arm64: Fix incorrect runtime stats
+Subject: [PATCH 6.8 109/336] wifi: iwlwifi: mvm: guard against invalid STA ID on removal
 Date: Tue, 14 May 2024 12:15:13 +0200
-Message-ID: <20240514101033.834638644@linuxfoundation.org>
+Message-ID: <20240514101042.719974061@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit dc7d7447b56bcc9cf79a9c22e4edad200a298e4c ]
+[ Upstream commit 17f64517bf5c26af56b6c3566273aad6646c3c4f ]
 
-When __bpf_prog_enter() returns zero, the arm64 register x20 that stores
-prog start time is not assigned to zero, causing incorrect runtime stats.
+Guard against invalid station IDs in iwl_mvm_mld_rm_sta_id as that would
+result in out-of-bounds array accesses. This prevents issues should the
+driver get into a bad state during error handling.
 
-To fix it, assign the return value of bpf_prog_enter() to x20 register
-immediately upon its return.
-
-Fixes: efc9909fdce0 ("bpf, arm64: Add bpf trampoline for arm64")
-Reported-by: Ivan Babrou <ivan@cloudflare.com>
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Ivan Babrou <ivan@cloudflare.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240416064208.2919073-2-xukuohai@huaweicloud.com
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240320232419.d523167bda9c.I1cffd86363805bf86a95d8bdfd4b438bb54baddc@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 29196dce9b91d..166619348b98e 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -1738,15 +1738,15 @@ static void invoke_bpf_prog(struct jit_ctx *ctx, struct bpf_tramp_link *l,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 1628bf55458fc..23e64a757cfe8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -855,10 +855,15 @@ int iwl_mvm_mld_rm_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
  
- 	emit_call(enter_prog, ctx);
+ int iwl_mvm_mld_rm_sta_id(struct iwl_mvm *mvm, u8 sta_id)
+ {
+-	int ret = iwl_mvm_mld_rm_sta_from_fw(mvm, sta_id);
++	int ret;
  
-+	/* save return value to callee saved register x20 */
-+	emit(A64_MOV(1, A64_R(20), A64_R(0)), ctx);
+ 	lockdep_assert_held(&mvm->mutex);
+ 
++	if (WARN_ON(sta_id == IWL_MVM_INVALID_STA))
++		return 0;
 +
- 	/* if (__bpf_prog_enter(prog) == 0)
- 	 *         goto skip_exec_of_prog;
- 	 */
- 	branch = ctx->image + ctx->idx;
- 	emit(A64_NOP, ctx);
- 
--	/* save return value to callee saved register x20 */
--	emit(A64_MOV(1, A64_R(20), A64_R(0)), ctx);
--
- 	emit(A64_ADD_I(1, A64_R(0), A64_SP, args_off), ctx);
- 	if (!p->jited)
- 		emit_addr_mov_i64(A64_R(1), (const u64)p->insnsi, ctx);
++	ret = iwl_mvm_mld_rm_sta_from_fw(mvm, sta_id);
++
+ 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[sta_id], NULL);
+ 	RCU_INIT_POINTER(mvm->fw_id_to_link_sta[sta_id], NULL);
+ 	return ret;
 -- 
 2.43.0
 
