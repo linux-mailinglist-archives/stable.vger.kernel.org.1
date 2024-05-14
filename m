@@ -1,52 +1,59 @@
-Return-Path: <stable+bounces-45054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EBA8C5588
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E0B8C5589
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5131F22BA5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:59:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD52C1F22DCE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5676E1E4B0;
-	Tue, 14 May 2024 11:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEB92B9AD;
+	Tue, 14 May 2024 11:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmGDXWU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oX1h94jR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16322F9D4;
-	Tue, 14 May 2024 11:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4EFF9D4;
+	Tue, 14 May 2024 11:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687948; cv=none; b=qpfI0yWcuqUSrKofdyvop5SjYZc5v8fRoppx79nX187Mo11FRHgy7S+LlHr0V8vzG2Ev0RkwEr22vUReu4Zk2mEEges1TN1mmPxF2gwrace476pAxiqFtYr/YtZ5RMMO10Llrqq7WbvXMIzPDycHgXN8ZT1/CWPtbYclSWUSeY0=
+	t=1715687953; cv=none; b=rIAC9fcHjaGqH6IaUGRiKgqedM624+wK81O3VF6s7t7n9s0bsBE5T6wQtFKPpn8fCEqZNQsRiAJe8TV9aWYZtVm+x8mU7u/C2tSIUyvxuBJpJqqYPEmLXerKM+u1Gz4BIdUd3ZGk9pIsB9sOwOlYr0hbi6I1CzT3dzHvz5V0JEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687948; c=relaxed/simple;
-	bh=PzYECumVNweACoihCkiR5HseUw6jIP+J3+t2i7iMXlE=;
+	s=arc-20240116; t=1715687953; c=relaxed/simple;
+	bh=g2IbNihOtzpOb1bCRRWE5U/uOcIpNeClRG+bPOVV1Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oK+yfdWa8qSKx60j3MnB4LABpbVvWVTj1OoquiVXDFgSpXrCdDPtli0GZdQFlIpiOfm/SU+MWG20ieK1Sz01ByW2PMwnwh9J7QFX7vP7ZFPME/L0THlmDdY+aGkR436Luto0I3DdQldc1EVWaJMirl09VdRTVciOlzWZjU1sj+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmGDXWU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882D5C2BD10;
-	Tue, 14 May 2024 11:59:07 +0000 (UTC)
+	 MIME-Version; b=Z1UrNRulhz3k2oewF3FqAyIRE/QZvmrevlIlneIR7hylZRq+mk43d6HA0eL9nSv+HR6jv5P3CbJBc37WOAlKB/24ZoXUG663CfTNUluTeBgKOvQmsV2mZ1OtjLYThfly98Iagpv9x+oEj+jNr//YFcqIgkxyJhdT5yrz2NC6rUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oX1h94jR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A01FC2BD10;
+	Tue, 14 May 2024 11:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687947;
-	bh=PzYECumVNweACoihCkiR5HseUw6jIP+J3+t2i7iMXlE=;
+	s=korg; t=1715687953;
+	bh=g2IbNihOtzpOb1bCRRWE5U/uOcIpNeClRG+bPOVV1Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmGDXWU5Fumqq1H8XSRUl2OQc8el7HuP+R47KXTXlJbz4eI4FSGZMj9kBfU+WKttp
-	 rKZKGIqACgow1YUEr/JnOWYqKjbj/eZ0Vudq8aLhLb9dp0KVNe/VtzL5yaGobWe63G
-	 Yjga/jDsdLpoFOfezi9j9Ed92T/Mqhg3dQkLEVog=
+	b=oX1h94jRJ6e3uuVGJGcL/zddfRRgG76XhTy7ikuFl2xN1eIaNesbwDp8aL73sg0jo
+	 rgkq4BXJ2xgJKT7o/X1pk+Hs8xOMdOytO6Jw2NZuJA8IZcik41jJnQ8WhR40dFWU4U
+	 mTi7FP1tJIEYXdfkaZmuQcqvkC9UjOmmmkhmEUfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 5.15 161/168] mei: me: add lunar lake point M DID
-Date: Tue, 14 May 2024 12:20:59 +0200
-Message-ID: <20240514101012.835845569@linuxfoundation.org>
+	Zack Rusin <zack.rusin@broadcom.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 5.15 162/168] drm/vmwgfx: Fix invalid reads in fence signaled events
+Date: Tue, 14 May 2024 12:21:00 +0200
+Message-ID: <20240514101012.872812793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
 References: <20240514101006.678521560@linuxfoundation.org>
@@ -65,44 +72,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-commit 4108a30f1097eead0f6bd5d885e6bf093b4d460f upstream.
+commit a37ef7613c00f2d72c8fc08bd83fb6cc76926c8c upstream.
 
-Add Lunar (Point) Lake M device id.
+Correctly set the length of the drm_event to the size of the structure
+that's actually used.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240421135631.223362-1-tomas.winkler@intel.com
+The length of the drm_event was set to the parent structure instead of
+to the drm_vmw_event_fence which is supposed to be read. drm_read
+uses the length parameter to copy the event to the user space thus
+resuling in oob reads.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
+Cc: David Airlie <airlied@gmail.com>
+CC: Daniel Vetter <daniel@ffwll.ch>
+Cc: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v3.4+
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425192748.1761522-1-zack.rusin@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -115,6 +115,8 @@
- #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
- #define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+@@ -1068,7 +1068,7 @@ static int vmw_event_fence_action_create
+ 	}
  
-+#define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
-+
- /*
-  * MEI HW Section
-  */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -121,6 +121,8 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
+ 	event->event.base.type = DRM_VMW_EVENT_FENCE_SIGNALED;
+-	event->event.base.length = sizeof(*event);
++	event->event.base.length = sizeof(event->event);
+ 	event->event.user_data = user_data;
  
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
-+
- 	/* required last entry */
- 	{0, }
- };
+ 	ret = drm_event_reserve_init(dev, file_priv, &event->base, &event->event.base);
 
 
 
