@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-44212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE12D8C51C2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BBA8C5056
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:03:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BC691C217E7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 779121F21363
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6500013C66F;
-	Tue, 14 May 2024 11:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F08B13C823;
+	Tue, 14 May 2024 10:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNi/SUAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzNZGV4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224C313B287;
-	Tue, 14 May 2024 11:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAF013C684;
+	Tue, 14 May 2024 10:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684991; cv=none; b=hFrQSlL6mgb25vld1vpS0E7XGX0L44Qr0cHDBw2z5f8BLNOJhweRZIuUCvTLVhqH0Xge//mwgQ6OhekMJEka958D3Rx7VJD0Qtz/qGZ7N6TixgElNI/Tl87kjxnFmtT3iPFVOGjIBVzmhbcj/lYlAvh0d9fk9X7Ch86pbaYB5Oo=
+	t=1715683222; cv=none; b=Bq7IeAVDDmDQSIrLO+Bg71k5fZ1aPIRpEup8OvStJSHhp4Aoqit7zwiwK6YYJRpYSDsA68KkIyPpHz0uTbr3ODf77zl4u/YodOFzNbwcLtE5Ah0fZUoMs6bQXAiOV8xo7toTqiJjmavDCqtWGIhKE4NhmvAAmRR6ZFdseZeVlJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684991; c=relaxed/simple;
-	bh=E9N6uVbucIWdnidfGxPlPUc+HgD985D8sxHpeL2wmls=;
+	s=arc-20240116; t=1715683222; c=relaxed/simple;
+	bh=lnBoh8UnJTPDYi+I6A1D9l79a0x5a5YOngcpH76iDhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AowTBaNOm5MVWzgMXtswChwi263Juvr5xHTrfU2pgYpmoig45yrqrCnx9QU1++gSj2Z5WBD2dvQ14vQy1MVObGiRxCrGy/y+eb0kVqaW7e/ymu79B3ARUEDb633FSAjoqA8A4O1MUOpbiY9KDzlPoRBMeJ7GcINo0DQ58YCJgns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNi/SUAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF3FC32781;
-	Tue, 14 May 2024 11:09:50 +0000 (UTC)
+	 MIME-Version; b=sZcgda717zBI2r/vP8PCHzG2G1av2Wr14CkrAuuZ5A7dP+owlHqdYjpAh6pq6yvmHHOvimwOC5C/3wQKobtH3K/k84YS8XvGjwtGMAuXY8AJu4f7BZb/TMC7GPoaNQ0aqrVqXBQnkydP3ewcnM5adfr+0bS4Q+MMOSirGM7tOLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzNZGV4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CCFC2BD10;
+	Tue, 14 May 2024 10:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684991;
-	bh=E9N6uVbucIWdnidfGxPlPUc+HgD985D8sxHpeL2wmls=;
+	s=korg; t=1715683221;
+	bh=lnBoh8UnJTPDYi+I6A1D9l79a0x5a5YOngcpH76iDhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNi/SUAOlF5uFe3JBfrZzCGzgmrATldPR9spszEbwJxntwiqOUU+ZxP0QOy7Vd0yl
-	 /wrl1bRHCbksm9U1qEe5ii4J+45RPLqC2vsNw9y7YhSkqGAzjSwcAcd8pHU7W5X4Zl
-	 B3D9FZ6zHRh6Rk/af4Y/tnUu8TlMI7EAom+0PLSs=
+	b=nzNZGV4PQ/AKI4jmSXfqshMgNiikuCOgu8jNkqbN9zEOnWaCboZBihWOnXxwXPcqc
+	 k6ifLsoppp38p156XAcxkxEdND9iUjoNGGo19BsmIjQQnVpSE3IJyh03//0El/0/Ke
+	 9+a75/stvtktXbFDFNwMFlS1gXJNT6xX28R+ah3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/301] ASoC: SOF: Intel: hda-dsp: Skip IMR boot on ACE platforms in case of S3 suspend
-Date: Tue, 14 May 2024 12:16:29 +0200
-Message-ID: <20240514101036.706316071@linuxfoundation.org>
+Subject: [PATCH 6.8 186/336] fs/9p: drop inodes immediately on non-.L too
+Date: Tue, 14 May 2024 12:16:30 +0200
+Message-ID: <20240514101045.623505873@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +62,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit c61115b37ff964d63191dbf4a058f481daabdf57 ]
+[ Upstream commit 7fd524b9bd1be210fe79035800f4bd78a41b349f ]
 
-SoCs with ACE architecture are tailored to use s2idle instead deep (S3)
-suspend state and the IMR content is lost when the system is forced to
-enter even to S3.
-When waking up from S3 state the IMR boot will fail as the content is lost.
-Set the skip_imr_boot flag to make sure that we don't try IMR in this case.
-
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://msgid.link/r/20240322112504.4192-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-dsp.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ fs/9p/vfs_super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/intel/hda-dsp.c b/sound/soc/sof/intel/hda-dsp.c
-index 44f39a520bb39..e80a2a5ec56a1 100644
---- a/sound/soc/sof/intel/hda-dsp.c
-+++ b/sound/soc/sof/intel/hda-dsp.c
-@@ -681,17 +681,27 @@ static int hda_suspend(struct snd_sof_dev *sdev, bool runtime_suspend)
- 	struct sof_intel_hda_dev *hda = sdev->pdata->hw_pdata;
- 	const struct sof_intel_dsp_desc *chip = hda->desc;
- 	struct hdac_bus *bus = sof_to_bus(sdev);
-+	bool imr_lost = false;
- 	int ret, j;
- 
- 	/*
--	 * The memory used for IMR boot loses its content in deeper than S3 state
--	 * We must not try IMR boot on next power up (as it will fail).
--	 *
-+	 * The memory used for IMR boot loses its content in deeper than S3
-+	 * state on CAVS platforms.
-+	 * On ACE platforms due to the system architecture the IMR content is
-+	 * lost at S3 state already, they are tailored for s2idle use.
-+	 * We must not try IMR boot on next power up in these cases as it will
-+	 * fail.
-+	 */
-+	if (sdev->system_suspend_target > SOF_SUSPEND_S3 ||
-+	    (chip->hw_ip_version >= SOF_INTEL_ACE_1_0 &&
-+	     sdev->system_suspend_target == SOF_SUSPEND_S3))
-+		imr_lost = true;
-+
-+	/*
- 	 * In case of firmware crash or boot failure set the skip_imr_boot to true
- 	 * as well in order to try to re-load the firmware to do a 'cold' boot.
- 	 */
--	if (sdev->system_suspend_target > SOF_SUSPEND_S3 ||
--	    sdev->fw_state == SOF_FW_CRASHED ||
-+	if (imr_lost || sdev->fw_state == SOF_FW_CRASHED ||
- 	    sdev->fw_state == SOF_FW_BOOT_FAILED)
- 		hda->skip_imr_boot = true;
- 
+diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
+index 941f7d0e0bfa2..23cc67f29af20 100644
+--- a/fs/9p/vfs_super.c
++++ b/fs/9p/vfs_super.c
+@@ -310,6 +310,7 @@ static const struct super_operations v9fs_super_ops = {
+ 	.alloc_inode = v9fs_alloc_inode,
+ 	.free_inode = v9fs_free_inode,
+ 	.statfs = simple_statfs,
++	.drop_inode = v9fs_drop_inode,
+ 	.evict_inode = v9fs_evict_inode,
+ 	.show_options = v9fs_show_options,
+ 	.umount_begin = v9fs_umount_begin,
 -- 
 2.43.0
 
