@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-44540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FC48C5447
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932FE8C5103
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3858E283362
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B66241C20E75
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B5684D37;
-	Tue, 14 May 2024 11:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477AF12DDA9;
+	Tue, 14 May 2024 10:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlzpkYjG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vD174nBb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8408A4F88C;
-	Tue, 14 May 2024 11:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0171E12DD91;
+	Tue, 14 May 2024 10:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686456; cv=none; b=GBhkUVJ2Ni33W6PwHZQGuxl3qGuoBzr97jagyfbmrR6MDJ5YQseWkSeDXuQHJPUTjbQ6s3LD6KQfS/LNIzmp0yirMeWQQ1GNjfOMD85kVB2UUhSqDvmdKuMhKcGhvUZbvtm7dKYPX3iJ7RV+UENpmODQq0TWW0Yz/PFR6SRZNGs=
+	t=1715683958; cv=none; b=g4H0V9vWU1Pc9AbsmRHuyHV8kbA3Hm1ifA8UQoUo709Xj6Z59Fiow893fvDBrcyhkmwQb/G7/ulTPcwkVEHbVWeUAe2rqMoFSWWhXg7SuNXZHe9zp10xWbQPuemeuZlmjcXFX5SwSGW+jTgAs6T7GVJQ6f9ZliySRao1B20pYzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686456; c=relaxed/simple;
-	bh=Zblx6eghDnCf9QVQGohdsDUlht3MqxTw2dVxrmue9Rg=;
+	s=arc-20240116; t=1715683958; c=relaxed/simple;
+	bh=CW2l/B6vRc358Xh0bbAWhL4uJcOdyijyPUDmqmLgWCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0rn9q7Hm50Y0t9cq277vsd5iEBGopvtUjr1yCuU7owr3iViCnKLW7gduvcDsOg2Ypx5gCJkSM/whSOo9og7PvCHgQF7UyBXYWWbgi9u9xoTjk1gBYiSL9ah+uAqeZC/t+W1dRETrhz1G8d1MvECghnY69KMkpnS22iSla4mStw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlzpkYjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BC7C32781;
-	Tue, 14 May 2024 11:34:15 +0000 (UTC)
+	 MIME-Version; b=o9HmAOcZIZab/4j2AgYUbP2F9cSZnMCdUSW1f4AW8GO1lD1pvp685C7eTBXzhm6+Ha5kroIgO/kR3AtY2bk1nHKXbeBvQJ4dCgfnqFG5dItYLFv4VxmybscwESQD5HoZLsQtlPeIT6PQiT1rpQvZk3SNQd7Kntcw21vAUIzLDhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vD174nBb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63582C2BD10;
+	Tue, 14 May 2024 10:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686456;
-	bh=Zblx6eghDnCf9QVQGohdsDUlht3MqxTw2dVxrmue9Rg=;
+	s=korg; t=1715683957;
+	bh=CW2l/B6vRc358Xh0bbAWhL4uJcOdyijyPUDmqmLgWCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zlzpkYjGsJHTVA4ah6OOLkIrzOaPxyrVrIKmw+mba6UxYkeUPCmEz/COJAwf7ZKZZ
-	 5a11lwMdPF1OnEbT4dNsprnn7Nff2Z7iHT2NFJlPkrSI86l6EHGmJpCXpnB1dUtMRB
-	 G8T7/v95BipX9hQ5Y2MI1PCaofPFScIRNhCslfkw=
+	b=vD174nBbf3S/Ek6zS92C3n9khPh5qgdw6HmyaEKyOMtM4e1ZWCqjUVOvA6uIa8vCa
+	 eYc+KnVOEeDfUKWIFlVrabjWIqJIYmjhvzNUJkBacQdYtY/5j9Cs0tac+cbaXPiDxY
+	 1hlXlAZWsq9V/kjl3Zmxz4RXPoeaoB2Ez/iDjolc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/236] perf unwind-libdw: Handle JIT-generated DSOs properly
+	Lyude Paul <lyude@redhat.com>,
+	Ben Skeggs <bskeggs@nvidia.com>
+Subject: [PATCH 6.8 301/336] drm/nouveau/gsp: Use the sg allocator for level 2 of radix3
 Date: Tue, 14 May 2024 12:18:25 +0200
-Message-ID: <20240514101025.798775104@linuxfoundation.org>
+Message-ID: <20240514101049.982000890@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +61,215 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Lyude Paul <lyude@redhat.com>
 
-[ Upstream commit c966d23a351a33f8a977fd7efbb6f467132f7383 ]
+commit 6f572a80545773833f00c9a65e9242ab6fedb192 upstream.
 
-Usually DSOs are mapped from the beginning of the file, so the base
-address of the DSO can be calculated by map->start - map->pgoff.
+Currently we allocate all 3 levels of radix3 page tables using
+nvkm_gsp_mem_ctor(), which uses dma_alloc_coherent() for allocating all of
+the relevant memory. This can end up failing in scenarios where the system
+has very high memory fragmentation, and we can't find enough contiguous
+memory to allocate level 2 of the page table.
 
-However, JIT DSOs which are generated by `perf inject -j`, are mapped
-only the code segment.  This makes unwind-libdw code confusing and
-rejects processing unwinds in the JIT DSOs.  It should use the map
-start address as base for them to fix the confusion.
+Currently, this can result in runtime PM issues on systems where memory
+fragmentation is high - as we'll fail to allocate the page table for our
+suspend/resume buffer:
 
-Fixes: 1fe627da30331024 ("perf unwind: Take pgoff into account when reporting elf to libdwfl")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-3-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  kworker/10:2: page allocation failure: order:7, mode:0xcc0(GFP_KERNEL),
+  nodemask=(null),cpuset=/,mems_allowed=0
+  CPU: 10 PID: 479809 Comm: kworker/10:2 Not tainted
+  6.8.6-201.ChopperV6.fc39.x86_64 #1
+  Hardware name: SLIMBOOK Executive/Executive, BIOS N.1.10GRU06 02/02/2024
+  Workqueue: pm pm_runtime_work
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x64/0x80
+   warn_alloc+0x165/0x1e0
+   ? __alloc_pages_direct_compact+0xb3/0x2b0
+   __alloc_pages_slowpath.constprop.0+0xd7d/0xde0
+   __alloc_pages+0x32d/0x350
+   __dma_direct_alloc_pages.isra.0+0x16a/0x2b0
+   dma_direct_alloc+0x70/0x270
+   nvkm_gsp_radix3_sg+0x5e/0x130 [nouveau]
+   r535_gsp_fini+0x1d4/0x350 [nouveau]
+   nvkm_subdev_fini+0x67/0x150 [nouveau]
+   nvkm_device_fini+0x95/0x1e0 [nouveau]
+   nvkm_udevice_fini+0x53/0x70 [nouveau]
+   nvkm_object_fini+0xb9/0x240 [nouveau]
+   nvkm_object_fini+0x75/0x240 [nouveau]
+   nouveau_do_suspend+0xf5/0x280 [nouveau]
+   nouveau_pmops_runtime_suspend+0x3e/0xb0 [nouveau]
+   pci_pm_runtime_suspend+0x67/0x1e0
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   __rpm_callback+0x41/0x170
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   rpm_callback+0x5d/0x70
+   ? __pfx_pci_pm_runtime_suspend+0x10/0x10
+   rpm_suspend+0x120/0x6a0
+   pm_runtime_work+0x98/0xb0
+   process_one_work+0x171/0x340
+   worker_thread+0x27b/0x3a0
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xe5/0x120
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x31/0x50
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
+
+Luckily, we don't actually need to allocate coherent memory for the page
+table thanks to being able to pass the GPU a radix3 page table for
+suspend/resume data. So, let's rewrite nvkm_gsp_radix3_sg() to use the sg
+allocator for level 2. We continue using coherent allocations for lvl0 and
+1, since they only take a single page.
+
+V2:
+* Don't forget to actually jump to the next scatterlist when we reach the
+  end of the scatterlist we're currently on when writing out the page table
+  for level 2
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240429182318.189668-2-lyude@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/unwind-libdw.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h |    4 -
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c    |   79 ++++++++++++++--------
+ 2 files changed, 55 insertions(+), 28 deletions(-)
 
-diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
-index 94aa40f6e3482..9a7bdc0e14cc2 100644
---- a/tools/perf/util/unwind-libdw.c
-+++ b/tools/perf/util/unwind-libdw.c
-@@ -45,6 +45,7 @@ static int __report_module(struct addr_location *al, u64 ip,
+--- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+@@ -15,7 +15,9 @@ struct nvkm_gsp_mem {
+ };
+ 
+ struct nvkm_gsp_radix3 {
+-	struct nvkm_gsp_mem mem[3];
++	struct nvkm_gsp_mem lvl0;
++	struct nvkm_gsp_mem lvl1;
++	struct sg_table lvl2;
+ };
+ 
+ int nvkm_gsp_sg(struct nvkm_device *, u64 size, struct sg_table *);
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -1620,7 +1620,7 @@ r535_gsp_wpr_meta_init(struct nvkm_gsp *
+ 	meta->magic = GSP_FW_WPR_META_MAGIC;
+ 	meta->revision = GSP_FW_WPR_META_REVISION;
+ 
+-	meta->sysmemAddrOfRadix3Elf = gsp->radix3.mem[0].addr;
++	meta->sysmemAddrOfRadix3Elf = gsp->radix3.lvl0.addr;
+ 	meta->sizeOfRadix3Elf = gsp->fb.wpr2.elf.size;
+ 
+ 	meta->sysmemAddrOfBootloader = gsp->boot.fw.addr;
+@@ -1914,8 +1914,9 @@ nvkm_gsp_sg(struct nvkm_device *device,
+ static void
+ nvkm_gsp_radix3_dtor(struct nvkm_gsp *gsp, struct nvkm_gsp_radix3 *rx3)
  {
- 	Dwfl_Module *mod;
- 	struct dso *dso = NULL;
-+	Dwarf_Addr base;
- 	/*
- 	 * Some callers will use al->sym, so we can't just use the
- 	 * cheaper thread__find_map() here.
-@@ -57,24 +58,36 @@ static int __report_module(struct addr_location *al, u64 ip,
- 	if (!dso)
- 		return 0;
+-	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--)
+-		nvkm_gsp_mem_dtor(gsp, &rx3->mem[i]);
++	nvkm_gsp_sg_free(gsp->subdev.device, &rx3->lvl2);
++	nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
++	nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
+ }
  
-+	/*
-+	 * The generated JIT DSO files only map the code segment without
-+	 * ELF headers.  Since JIT codes used to be packed in a memory
-+	 * segment, calculating the base address using pgoff falls info
-+	 * a different code in another DSO.  So just use the map->start
-+	 * directly to pick the correct one.
-+	 */
-+	if (!strncmp(dso->long_name, "/tmp/jitted-", 12))
-+		base = al->map->start;
-+	else
-+		base = al->map->start - al->map->pgoff;
+ /**
+@@ -1951,36 +1952,60 @@ static int
+ nvkm_gsp_radix3_sg(struct nvkm_gsp *gsp, struct sg_table *sgt, u64 size,
+ 		   struct nvkm_gsp_radix3 *rx3)
+ {
+-	u64 addr;
++	struct sg_dma_page_iter sg_dma_iter;
++	struct scatterlist *sg;
++	size_t bufsize;
++	u64 *pte;
++	int ret, i, page_idx = 0;
+ 
+-	for (int i = ARRAY_SIZE(rx3->mem) - 1; i >= 0; i--) {
+-		u64 *ptes;
+-		size_t bufsize;
+-		int ret, idx;
++	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl0);
++	if (ret)
++		return ret;
+ 
+-		bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
+-		ret = nvkm_gsp_mem_ctor(gsp, bufsize, &rx3->mem[i]);
+-		if (ret)
+-			return ret;
++	ret = nvkm_gsp_mem_ctor(gsp, GSP_PAGE_SIZE, &rx3->lvl1);
++	if (ret)
++		goto lvl1_fail;
+ 
+-		ptes = rx3->mem[i].data;
+-		if (i == 2) {
+-			struct scatterlist *sgl;
+-
+-			for_each_sgtable_dma_sg(sgt, sgl, idx) {
+-				for (int j = 0; j < sg_dma_len(sgl) / GSP_PAGE_SIZE; j++)
+-					*ptes++ = sg_dma_address(sgl) + (GSP_PAGE_SIZE * j);
+-			}
+-		} else {
+-			for (int j = 0; j < size / GSP_PAGE_SIZE; j++)
+-				*ptes++ = addr + GSP_PAGE_SIZE * j;
++	// Allocate level 2
++	bufsize = ALIGN((size / GSP_PAGE_SIZE) * sizeof(u64), GSP_PAGE_SIZE);
++	ret = nvkm_gsp_sg(gsp->subdev.device, bufsize, &rx3->lvl2);
++	if (ret)
++		goto lvl2_fail;
 +
- 	mod = dwfl_addrmodule(ui->dwfl, ip);
- 	if (mod) {
- 		Dwarf_Addr s;
++	// Write the bus address of level 1 to level 0
++	pte = rx3->lvl0.data;
++	*pte = rx3->lvl1.addr;
++
++	// Write the bus address of each page in level 2 to level 1
++	pte = rx3->lvl1.data;
++	for_each_sgtable_dma_page(&rx3->lvl2, &sg_dma_iter, 0)
++		*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
++
++	// Finally, write the bus address of each page in sgt to level 2
++	for_each_sgtable_sg(&rx3->lvl2, sg, i) {
++		void *sgl_end;
++
++		pte = sg_virt(sg);
++		sgl_end = (void *)pte + sg->length;
++
++		for_each_sgtable_dma_page(sgt, &sg_dma_iter, page_idx) {
++			*pte++ = sg_page_iter_dma_address(&sg_dma_iter);
++			page_idx++;
++
++			// Go to the next scatterlist for level 2 if we've reached the end
++			if ((void *)pte >= sgl_end)
++				break;
+ 		}
++	}
  
- 		dwfl_module_info(mod, NULL, &s, NULL, NULL, NULL, NULL, NULL);
--		if (s != al->map->start - al->map->pgoff)
--			mod = 0;
-+		if (s != base)
-+			mod = NULL;
+-		size = rx3->mem[i].size;
+-		addr = rx3->mem[i].addr;
++	if (ret) {
++lvl2_fail:
++		nvkm_gsp_mem_dtor(gsp, &rx3->lvl1);
++lvl1_fail:
++		nvkm_gsp_mem_dtor(gsp, &rx3->lvl0);
  	}
  
- 	if (!mod)
- 		mod = dwfl_report_elf(ui->dwfl, dso->short_name, dso->long_name, -1,
--				      al->map->start - al->map->pgoff, false);
-+				      base, false);
- 	if (!mod) {
- 		char filename[PATH_MAX];
+-	return 0;
++	return ret;
+ }
  
- 		if (dso__build_id_filename(dso, filename, sizeof(filename), false))
- 			mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
--					      al->map->start - al->map->pgoff, false);
-+					      base, false);
- 	}
+ int
+@@ -2012,7 +2037,7 @@ r535_gsp_fini(struct nvkm_gsp *gsp, bool
+ 		sr = gsp->sr.meta.data;
+ 		sr->magic = GSP_FW_SR_META_MAGIC;
+ 		sr->revision = GSP_FW_SR_META_REVISION;
+-		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.mem[0].addr;
++		sr->sysmemAddrOfSuspendResumeData = gsp->sr.radix3.lvl0.addr;
+ 		sr->sizeOfSuspendResumeData = len;
  
- 	if (mod) {
--- 
-2.43.0
-
+ 		mbox0 = lower_32_bits(gsp->sr.meta.addr);
 
 
 
