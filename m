@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A888C528D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042848C53A4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A97801F21AB7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBBE1F23155
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50C613D524;
-	Tue, 14 May 2024 11:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A5112DD98;
+	Tue, 14 May 2024 11:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NY1nLb7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH29T6aU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A252A13F442;
-	Tue, 14 May 2024 11:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0400612D77B;
+	Tue, 14 May 2024 11:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685924; cv=none; b=T7zBTsJ66S1TMnqVYQUbkcS53qkZNzWmTQf0xt67hf5KMpAtG+WxInfdbMZx+EqG9frxVIKlFkl4x3S31ZkIb/m3VPutKAv+Me2g5S4K8srZY3mBtb2Mz9bfK+vNuQT/zDA/CgTkb7sVhH0ChsZJe633zCbNR71ibwHeniMkZmM=
+	t=1715686671; cv=none; b=P8Ks+LLvYvusjx72FTcQ65/QAr+yn+DVTU6k4uVd/N1oDWaHHvPna8RrPIoBDBBJEDtagESL3O6FlYmTUE1YQs/LojxiJN2l77w/SkZyvre3gfeR4WX43ibAPvk/XLCU5gCL0EtOuLp3rzm/7Gj9wJD30gUrFS6fnLwuujllqqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685924; c=relaxed/simple;
-	bh=Ly9t1H2AFWsfe9nESvq6ON8JgfmY57Gh/ptXV1Rmtho=;
+	s=arc-20240116; t=1715686671; c=relaxed/simple;
+	bh=F7GDXgiBiSSyDL6oIvfiZ3wfoVtcrmo6rmYsU/ZMjhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0phdOvqf3cPHF0V6xPpp9I24mPpJ/9J1zukJ5Hl88SzbknPfYaNvJlJjx3stFL4ek8GBP8wGWKAzksRv3oLTqsXe7t1uyW/GlrTo4taI1jzeW+CfpOw4N0e8TFPKqSbZd4KnSZzpky61ybh1JGK3+jgrTp4qSEZY+3a1WNjXTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NY1nLb7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0A4C2BD10;
-	Tue, 14 May 2024 11:25:23 +0000 (UTC)
+	 MIME-Version; b=gU4qYy8MmkrKkNGYJq4oMCo45L0j1NyEYQuKpGQdwznGvBN4WL+oYKT9b/PrQg77klvHJfOvkNMbiNACev4kXEu9kC+Hm5P3okiKxKmhJ7mg2x/tLQo3TH3+7I14DjqqzFQ3nq44yjWMdQ6SiN2gKNNtLWPk+1FUB/9RKaxDBmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH29T6aU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80294C2BD10;
+	Tue, 14 May 2024 11:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685924;
-	bh=Ly9t1H2AFWsfe9nESvq6ON8JgfmY57Gh/ptXV1Rmtho=;
+	s=korg; t=1715686670;
+	bh=F7GDXgiBiSSyDL6oIvfiZ3wfoVtcrmo6rmYsU/ZMjhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NY1nLb7+qnOzjG5vQO6di+amvfoKDUfzyF0qsb20cwfIVT42DeQ50tWb4WURFpO46
-	 XzcMuaL+hGghPIOdaHNzzf50hmmdeivYUBTt58sC5pJKdbs9qpcEOBCjOAlyPtMv1M
-	 SmWCOMJzwadys8rsmPnjvsigk3W/r8or5VwoA5MQ=
+	b=qH29T6aUARPbC6ri4YIpkaqSo9EGgcAn7fN4me88jKOx3XISJqf4V0g2lMVRMQDhE
+	 HH2TR4R8TxnWxsyDxFhGb0mxhfU2SkH1IA2bw8cdmjyfDvFtaz6SDUf66iNxToKo/W
+	 yFzsDeoULvaxUzObac8s8HLkRCZPkyRfEhN/dXTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 278/301] net: fix out-of-bounds access in ops_init
+	Gary Guo <gary@garyguo.net>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Asahi Lina <lina@asahilina.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.1 187/236] rust: error: Rename to_kernel_errno() -> to_errno()
 Date: Tue, 14 May 2024 12:19:09 +0200
-Message-ID: <20240514101042.761577143@linuxfoundation.org>
+Message-ID: <20240514101027.463010855@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Asahi Lina <lina@asahilina.net>
 
-commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
+commit 46384d0990bf99ed8b597e8794ea581e2a647710 upstream.
 
-net_alloc_generic is called by net_alloc, which is called without any
-locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
-is read twice, first to allocate an array, then to set s.len, which is
-later used to limit the bounds of the array access.
+This is kernel code, so specifying "kernel" is redundant. Let's simplify
+things and just call it to_errno().
 
-It is possible that the array is allocated and another thread is
-registering a new pernet ops, increments max_gen_ptrs, which is then used
-to set s.len with a larger than allocated length for the variable array.
-
-Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
-max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
-
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+Link: https://lore.kernel.org/r/20230224-rust-error-v3-1-03779bddc02b@asahilina.net
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/net_namespace.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ rust/kernel/error.rs  |    2 +-
+ rust/macros/module.rs |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -69,12 +69,15 @@ DEFINE_COOKIE(net_cookie);
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -25,7 +25,7 @@ pub struct Error(core::ffi::c_int);
  
- static struct net_generic *net_alloc_generic(void)
- {
-+	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
-+	unsigned int generic_size;
- 	struct net_generic *ng;
--	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
-+
-+	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
- 
- 	ng = kzalloc(generic_size, GFP_KERNEL);
- 	if (ng)
--		ng->s.len = max_gen_ptrs;
-+		ng->s.len = gen_ptrs;
- 
- 	return ng;
+ impl Error {
+     /// Returns the kernel error code.
+-    pub fn to_kernel_errno(self) -> core::ffi::c_int {
++    pub fn to_errno(self) -> core::ffi::c_int {
+         self.0
+     }
  }
-@@ -1229,7 +1232,11 @@ static int register_pernet_operations(st
- 		if (error < 0)
- 			return error;
- 		*ops->id = error;
--		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
-+		/* This does not require READ_ONCE as writers already hold
-+		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
-+		 * net_alloc_generic.
-+		 */
-+		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
- 	}
- 	error = __register_pernet_operations(list, ops);
- 	if (error) {
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -258,7 +258,7 @@ pub(crate) fn module(ts: TokenStream) ->
+                         return 0;
+                     }}
+                     Err(e) => {{
+-                        return e.to_kernel_errno();
++                        return e.to_errno();
+                     }}
+                 }}
+             }}
 
 
 
