@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EEA8C51C1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC58D8C52C6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4AB81F225BC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9C812833E1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCC013C66C;
-	Tue, 14 May 2024 11:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155407B3E5;
+	Tue, 14 May 2024 11:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXb5pzxo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCxXLMht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB9D13B287;
-	Tue, 14 May 2024 11:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B6F1CAA4;
+	Tue, 14 May 2024 11:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684986; cv=none; b=ZPznAUt7OLN8Gy6FZd04K2vdItLtWKpdj1weHlpxesUE3JR4CvYbQDzHnEAjGPt74NHZN+HLdnQPTIVCYxeo2o+ggy5XSZi3tQvpz7bSzhjWalBstgydnvoHTreckyFFRlzndFgwceYJaPtaxtZotZOc1vLFbvzvhM2sr48fZLk=
+	t=1715686113; cv=none; b=GoxTF7RKX7mqVDTlW3U6D2Ykzgvl1KjIsfEpA7bqIeJdmbSRccQ7w1rrexlVP0TrlkNFTf+9d8YmXtAQ9GtA+U6hqLkpG7vX27dSWpU75NuH3LN+tOBXsXHn+kyQKp6F8Qkyv1Q4DWYPPqQH90/YsxhG8YiL7cHuNvCROX/tBsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684986; c=relaxed/simple;
-	bh=HkwiJxzAqHrE/ejWkSHfkclKMG5CB29qQs/YuURHR4A=;
+	s=arc-20240116; t=1715686113; c=relaxed/simple;
+	bh=+A8VqBsldHDFjA3X1BUKGJ2ZNHund59hO/WzwrjeqB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlMtyCrwLqXZ1cbinKTcr/l3P0cnXAFp5AX7j5TzJmEXQP5PE80DS5WYQgcD5EjNJ/cSt1Y0FWWcFNYKZjyvWrn0krgGdjwAHizoqj8F6swbkYdDIwVli51zWKAujI2+yXIsdshy13dmAas1VpQus4jSFy6CLgd2gnikKr15Awo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXb5pzxo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FE6C2BD10;
-	Tue, 14 May 2024 11:09:45 +0000 (UTC)
+	 MIME-Version; b=JiqooED44XT5lUbIMKOGQxKzZOhHCGd2hUfMJo+IRf1wbu7Ba3pl6fy7aO6n2aYLyJzYn4gwlpsMUeTrJzTPRz8lJPtCH9EQGnDejpTndTKaiKw4pcUIDjQn750ZawmXFA9YREMp8A6rLNuCr3eQdZhtkMVqHne++zSPxMexYk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCxXLMht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4262AC2BD10;
+	Tue, 14 May 2024 11:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684986;
-	bh=HkwiJxzAqHrE/ejWkSHfkclKMG5CB29qQs/YuURHR4A=;
+	s=korg; t=1715686113;
+	bh=+A8VqBsldHDFjA3X1BUKGJ2ZNHund59hO/WzwrjeqB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXb5pzxom6vSfSHapPAbnHd383kh1a3wTHXHjoNy89Lru825o+KnycC48YZavwlM7
-	 DK67fEIp8CS1hqXtJyaeYpcVV2A8Nzz7Qd7o5+8Wv8afuiDndjJKZOdXVNOf8aYxpb
-	 nfzsNVfHZb7nbpET6J25/5RtBlWrYSiuZDeQLYDs=
+	b=YCxXLMhtPgmcffsotE0Gdl8abrOqbfUQzNbG9jjRqgJo9SuWQSmpC2LG1DBUaWS7v
+	 0yjtY9yfVGnt407XKX0fsp27kKUjH+vwJQUh/Vtftp/xIcjX0IIj1MMEYuts+iKUHw
+	 ysnklWO1D8LSTpUABMYJ8ct4Hr4ikfs34ijNZ02k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Marco Elver <elver@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/301] kbuild: Disable KCSAN for autogenerated *.mod.c intermediaries
+Subject: [PATCH 6.1 026/236] pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE
 Date: Tue, 14 May 2024 12:16:28 +0200
-Message-ID: <20240514101036.667105203@linuxfoundation.org>
+Message-ID: <20240514101021.331613103@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 54babdc0343fff2f32dfaafaaa9e42c4db278204 ]
+[ Upstream commit c5d3b64c568a344e998830e0e94a7c04e372f89b ]
 
-When KCSAN and CONSTRUCTORS are enabled, one can trigger the
+There is a misinterpretation of some of the PIN_CONFIG_* options in this
+driver library. PIN_CONFIG_OUTPUT_ENABLE should refer to a buffer or
+switch in the output direction of the electrical path. The MediaTek
+hardware does not have such a thing. The driver incorrectly maps this
+option to the GPIO function's direction.
 
-  "Unpatched return thunk in use. This should not happen!"
+Likewise, PIN_CONFIG_INPUT_ENABLE should refer to a buffer or switch in
+the input direction. The hardware does have such a mechanism, and is
+mapped to the IES bit. The driver however sets the direction in addition
+to the IES bit, which is incorrect. On readback, the IES bit isn't even
+considered.
 
-catch-all warning.
+Ironically, the driver does not support readback for PIN_CONFIG_OUTPUT,
+while its readback of PIN_CONFIG_{INPUT,OUTPUT}_ENABLE is what it should
+be doing for PIN_CONFIG_OUTPUT.
 
-Usually, when objtool runs on the .o objects, it does generate a section
-.return_sites which contains all offsets in the objects to the return
-thunks of the functions present there. Those return thunks then get
-patched at runtime by the alternatives.
+Rework support for these three options, so that PIN_CONFIG_OUTPUT_ENABLE
+is completely removed, PIN_CONFIG_INPUT_ENABLE is only linked to the IES
+bit, and PIN_CONFIG_OUTPUT is linked to the GPIO function's direction
+and output level.
 
-KCSAN and CONSTRUCTORS add this to the object file's .text.startup
-section:
-
-  -------------------
-  Disassembly of section .text.startup:
-
-  ...
-
-  0000000000000010 <_sub_I_00099_0>:
-    10:   f3 0f 1e fa             endbr64
-    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
-                          15: R_X86_64_PLT32      __tsan_init-0x4
-    19:   e9 00 00 00 00          jmp    1e <__UNIQUE_ID___addressable_cryptd_alloc_aead349+0x6>
-                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
-  -------------------
-
-which, if it is built as a module goes through the intermediary stage of
-creating a <module>.mod.c file which, when translated, receives a second
-constructor:
-
-  -------------------
-  Disassembly of section .text.startup:
-
-  0000000000000010 <_sub_I_00099_0>:
-    10:   f3 0f 1e fa             endbr64
-    14:   e8 00 00 00 00          call   19 <_sub_I_00099_0+0x9>
-                          15: R_X86_64_PLT32      __tsan_init-0x4
-    19:   e9 00 00 00 00          jmp    1e <_sub_I_00099_0+0xe>
-                          1a: R_X86_64_PLT32      __x86_return_thunk-0x4
-
-  ...
-
-  0000000000000030 <_sub_I_00099_0>:
-    30:   f3 0f 1e fa             endbr64
-    34:   e8 00 00 00 00          call   39 <_sub_I_00099_0+0x9>
-                          35: R_X86_64_PLT32      __tsan_init-0x4
-    39:   e9 00 00 00 00          jmp    3e <__ksymtab_cryptd_alloc_ahash+0x2>
-                          3a: R_X86_64_PLT32      __x86_return_thunk-0x4
-  -------------------
-
-in the .ko file.
-
-Objtool has run already so that second constructor's return thunk cannot
-be added to the .return_sites section and thus the return thunk remains
-unpatched and the warning rightfully fires.
-
-Drop KCSAN flags from the mod.c generation stage as those constructors
-do not contain data races one would be interested about.
-
-Debugged together with David Kaplan <David.Kaplan@amd.com> and Nikolay
-Borisov <nik.borisov@suse.com>.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/r/0851a207-7143-417e-be31-8bf2b3afb57d@molgen.mpg.de
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 805250982bb5 ("pinctrl: mediatek: add pinctrl-paris that implements the vendor dt-bindings")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Message-ID: <20240327091336.3434141-3-wenst@chromium.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.modfinal | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/mediatek/pinctrl-paris.c | 38 +++++++-----------------
+ 1 file changed, 11 insertions(+), 27 deletions(-)
 
-diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-index b3a6aa8fbe8cb..1979913aff682 100644
---- a/scripts/Makefile.modfinal
-+++ b/scripts/Makefile.modfinal
-@@ -23,7 +23,7 @@ modname = $(notdir $(@:.mod.o=))
- part-of-module = y
+diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
+index 3f2297ee2b765..ee72c6894a5d7 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-paris.c
++++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
+@@ -160,20 +160,21 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SR, &ret);
+ 		break;
+ 	case PIN_CONFIG_INPUT_ENABLE:
+-	case PIN_CONFIG_OUTPUT_ENABLE:
++		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_IES, &ret);
++		if (!ret)
++			err = -EINVAL;
++		break;
++	case PIN_CONFIG_OUTPUT:
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
+ 		if (err)
+ 			break;
+-		/*     CONFIG     Current direction return value
+-		 * -------------  ----------------- ----------------------
+-		 * OUTPUT_ENABLE       output       1 (= HW value)
+-		 *                     input        0 (= HW value)
+-		 * INPUT_ENABLE        output       0 (= reverse HW value)
+-		 *                     input        1 (= reverse HW value)
+-		 */
+-		if (param == PIN_CONFIG_INPUT_ENABLE)
+-			ret = !ret;
  
- quiet_cmd_cc_o_c = CC [M]  $@
--      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV), $(c_flags)) -c -o $@ $<
-+      cmd_cc_o_c = $(CC) $(filter-out $(CC_FLAGS_CFI) $(CFLAGS_GCOV) $(CFLAGS_KCSAN), $(c_flags)) -c -o $@ $<
- 
- %.mod.o: %.mod.c FORCE
- 	$(call if_changed_dep,cc_o_c)
++		if (!ret) {
++			err = -EINVAL;
++			break;
++		}
++
++		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DO, &ret);
+ 		break;
+ 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
+@@ -278,26 +279,9 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+ 			break;
+ 		err = hw->soc->bias_set_combo(hw, desc, 0, arg);
+ 		break;
+-	case PIN_CONFIG_OUTPUT_ENABLE:
+-		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT,
+-				       MTK_DISABLE);
+-		/* Keep set direction to consider the case that a GPIO pin
+-		 *  does not have SMT control
+-		 */
+-		if (err != -ENOTSUPP)
+-			break;
+-
+-		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
+-				       MTK_OUTPUT);
+-		break;
+ 	case PIN_CONFIG_INPUT_ENABLE:
+ 		/* regard all non-zero value as enable */
+ 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, !!arg);
+-		if (err)
+-			break;
+-
+-		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
+-				       MTK_INPUT);
+ 		break;
+ 	case PIN_CONFIG_SLEW_RATE:
+ 		/* regard all non-zero value as enable */
 -- 
 2.43.0
 
