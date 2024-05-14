@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE2D8C52DF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7CC8C5069
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC2B2825C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D69A1F21318
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6F11353FD;
-	Tue, 14 May 2024 11:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BAF13D2B3;
+	Tue, 14 May 2024 10:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQRKgVJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ets2LoXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1AF1CAA4;
-	Tue, 14 May 2024 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A855A0FE;
+	Tue, 14 May 2024 10:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686162; cv=none; b=Vkboy3Ce1y5JSlsa9vLVBmyqwcQyb3iPurgD63EDrMoO5SFFgpy6N4N2Bp/9YkqyQVbVLXldMePbTrNfgx2PypFLJG/J1exokPthGM6CiVezHiI7+aeI3we//BL7csofpiKl9QVyuUQVfOHxUz7MWyggcZXU154uaPEw8C4QPN0=
+	t=1715683317; cv=none; b=FhvpH+eH54/fUeD4uiQPX3E+QoODtnHAhOzzyvqdLQeCA9XCwwmkyl+3CvukEnUz3F0FyC2BNYX0X/XEOfETMJWhH4v5q3I/75HLbtkulGb03BmYgSD4pUrIEreHZVCdc2PjtfFDTIZBAY9NunJ12o9Hd2AYRZQo1/y1fQFQuaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686162; c=relaxed/simple;
-	bh=XEHyhOvIjYKcF3d6/yG4nICuRiLMMiCFdT+Fg8sjJ1w=;
+	s=arc-20240116; t=1715683317; c=relaxed/simple;
+	bh=pyB3StunfRgm6a7iUslpor9hgJKEEtRA3MxGkTgLVq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bK1Dz+wDBC6oXUbSEbxI2ljkxmpKYN5J4aQ9oxSApKPOBr/1+0Hn7YBQAuto+wzUkOPElRJOvMCSHTkzlbjgZbDPA4SaTo7Jz4zMBxKY1JQFd9SYNERURuKhytN3+9xtaSxY7yWg3fwfoJ8OjJyMTCtyxnAaj9ydnDIs6Ojlkw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQRKgVJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06922C2BD10;
-	Tue, 14 May 2024 11:29:21 +0000 (UTC)
+	 MIME-Version; b=RoyWVgTbeFCl6a/IcSEgZcp17RTPgAIh9at/T5J+aAESo79RC1ilFNF3DOt0JbLN0JL5AaVFkgq+aYfb4E1p/e2j6hYci0u1840FZz+P+gRKKB96VnQ8m31b4DLibYBtDCXmSagGUUp6RWsXaa/7UZGfuHrP52kliztHJrTT9e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ets2LoXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61856C2BD10;
+	Tue, 14 May 2024 10:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686162;
-	bh=XEHyhOvIjYKcF3d6/yG4nICuRiLMMiCFdT+Fg8sjJ1w=;
+	s=korg; t=1715683316;
+	bh=pyB3StunfRgm6a7iUslpor9hgJKEEtRA3MxGkTgLVq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQRKgVJAwT27eVyNo15HBtBCfEp3ozMDr7Gh+bNkrSlKCWMzEuyty5wtUPP8oEnHj
-	 YLxvbgFflFHLIbvj/gRV/0qY34YpvUqGnpTupJJC3ENoPnK0WmuQbBT9MD9XPnweib
-	 Sw+tXS3aE2T/iOGZsG00B/aRQwpxkhjKPbt7r9oY=
+	b=ets2LoXEs/6B6V69Qe8/k3vkccMsaFyKOtVj4VEP6lEOVjelBPReInIjzlz4A/vit
+	 mJ/3RYe5jLHHBZ0BeOeF7jgXlGYtqdICy0lDabOFCUn73t5lLGSomZT7ro9EOMVLkC
+	 v0BeGaMX7GXqp4LQcI0gtMcAevAhl+G51QHwUCXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+aa8c8ec2538929f18f2d@syzkaller.appspotmail.com,
-	Jason Xing <kernelxing@tencent.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/236] bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue
+Subject: [PATCH 6.8 199/336] tcp: Use refcount_inc_not_zero() in tcp_twsk_unique().
 Date: Tue, 14 May 2024 12:16:43 +0200
-Message-ID: <20240514101021.902083529@linuxfoundation.org>
+Message-ID: <20240514101046.117716087@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +64,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 6648e613226e18897231ab5e42ffc29e63fa3365 ]
+[ Upstream commit f2db7230f73a80dbb179deab78f88a7947f0ab7e ]
 
-Fix NULL pointer data-races in sk_psock_skb_ingress_enqueue() which
-syzbot reported [1].
+Anderson Nascimento reported a use-after-free splat in tcp_twsk_unique()
+with nice analysis.
 
-[1]
-BUG: KCSAN: data-race in sk_psock_drop / sk_psock_skb_ingress_enqueue
+Since commit ec94c2696f0b ("tcp/dccp: avoid one atomic operation for
+timewait hashdance"), inet_twsk_hashdance() sets TIME-WAIT socket's
+sk_refcnt after putting it into ehash and releasing the bucket lock.
 
-write to 0xffff88814b3278b8 of 8 bytes by task 10724 on cpu 1:
- sk_psock_stop_verdict net/core/skmsg.c:1257 [inline]
- sk_psock_drop+0x13e/0x1f0 net/core/skmsg.c:843
- sk_psock_put include/linux/skmsg.h:459 [inline]
- sock_map_close+0x1a7/0x260 net/core/sock_map.c:1648
- unix_release+0x4b/0x80 net/unix/af_unix.c:1048
- __sock_release net/socket.c:659 [inline]
- sock_close+0x68/0x150 net/socket.c:1421
- __fput+0x2c1/0x660 fs/file_table.c:422
- __fput_sync+0x44/0x60 fs/file_table.c:507
- __do_sys_close fs/open.c:1556 [inline]
- __se_sys_close+0x101/0x1b0 fs/open.c:1541
- __x64_sys_close+0x1f/0x30 fs/open.c:1541
- do_syscall_64+0xd3/0x1d0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+Thus, there is a small race window where other threads could try to
+reuse the port during connect() and call sock_hold() in tcp_twsk_unique()
+for the TIME-WAIT socket with zero refcnt.
 
-read to 0xffff88814b3278b8 of 8 bytes by task 10713 on cpu 0:
- sk_psock_data_ready include/linux/skmsg.h:464 [inline]
- sk_psock_skb_ingress_enqueue+0x32d/0x390 net/core/skmsg.c:555
- sk_psock_skb_ingress_self+0x185/0x1e0 net/core/skmsg.c:606
- sk_psock_verdict_apply net/core/skmsg.c:1008 [inline]
- sk_psock_verdict_recv+0x3e4/0x4a0 net/core/skmsg.c:1202
- unix_read_skb net/unix/af_unix.c:2546 [inline]
- unix_stream_read_skb+0x9e/0xf0 net/unix/af_unix.c:2682
- sk_psock_verdict_data_ready+0x77/0x220 net/core/skmsg.c:1223
- unix_stream_sendmsg+0x527/0x860 net/unix/af_unix.c:2339
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0x140/0x180 net/socket.c:745
- ____sys_sendmsg+0x312/0x410 net/socket.c:2584
- ___sys_sendmsg net/socket.c:2638 [inline]
- __sys_sendmsg+0x1e9/0x280 net/socket.c:2667
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x46/0x50 net/socket.c:2674
- do_syscall_64+0xd3/0x1d0
- entry_SYSCALL_64_after_hwframe+0x6d/0x75
+If that happens, the refcnt taken by tcp_twsk_unique() is overwritten
+and sock_put() will cause underflow, triggering a real use-after-free
+somewhere else.
 
-value changed: 0xffffffff83d7feb0 -> 0x0000000000000000
+To avoid the use-after-free, we need to use refcount_inc_not_zero() in
+tcp_twsk_unique() and give up on reusing the port if it returns false.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 10713 Comm: syz-executor.4 Tainted: G        W          6.8.0-syzkaller-08951-gfe46a7dd189e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
+[0]:
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 0 PID: 1039313 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+CPU: 0 PID: 1039313 Comm: trigger Not tainted 6.8.6-200.fc39.x86_64 #1
+Hardware name: VMware, Inc. VMware20,1/440BX Desktop Reference Platform, BIOS VMW201.00V.21805430.B64.2305221830 05/22/2023
+RIP: 0010:refcount_warn_saturate+0xe5/0x110
+Code: 42 8e ff 0f 0b c3 cc cc cc cc 80 3d aa 13 ea 01 00 0f 85 5e ff ff ff 48 c7 c7 f8 8e b7 82 c6 05 96 13 ea 01 01 e8 7b 42 8e ff <0f> 0b c3 cc cc cc cc 48 c7 c7 50 8f b7 82 c6 05 7a 13 ea 01 01 e8
+RSP: 0018:ffffc90006b43b60 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff888009bb3ef0 RCX: 0000000000000027
+RDX: ffff88807be218c8 RSI: 0000000000000001 RDI: ffff88807be218c0
+RBP: 0000000000069d70 R08: 0000000000000000 R09: ffffc90006b439f0
+R10: ffffc90006b439e8 R11: 0000000000000003 R12: ffff8880029ede84
+R13: 0000000000004e20 R14: ffffffff84356dc0 R15: ffff888009bb3ef0
+FS:  00007f62c10926c0(0000) GS:ffff88807be00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020ccb000 CR3: 000000004628c005 CR4: 0000000000f70ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? refcount_warn_saturate+0xe5/0x110
+ ? __warn+0x81/0x130
+ ? refcount_warn_saturate+0xe5/0x110
+ ? report_bug+0x171/0x1a0
+ ? refcount_warn_saturate+0xe5/0x110
+ ? handle_bug+0x3c/0x80
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? refcount_warn_saturate+0xe5/0x110
+ tcp_twsk_unique+0x186/0x190
+ __inet_check_established+0x176/0x2d0
+ __inet_hash_connect+0x74/0x7d0
+ ? __pfx___inet_check_established+0x10/0x10
+ tcp_v4_connect+0x278/0x530
+ __inet_stream_connect+0x10f/0x3d0
+ inet_stream_connect+0x3a/0x60
+ __sys_connect+0xa8/0xd0
+ __x64_sys_connect+0x18/0x20
+ do_syscall_64+0x83/0x170
+ entry_SYSCALL_64_after_hwframe+0x78/0x80
+RIP: 0033:0x7f62c11a885d
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d a3 45 0c 00 f7 d8 64 89 01 48
+RSP: 002b:00007f62c1091e58 EFLAGS: 00000296 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 0000000020ccb004 RCX: 00007f62c11a885d
+RDX: 0000000000000010 RSI: 0000000020ccb000 RDI: 0000000000000003
+RBP: 00007f62c1091e90 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000296 R12: 00007f62c10926c0
+R13: ffffffffffffff88 R14: 0000000000000000 R15: 00007ffe237885b0
+ </TASK>
 
-Prior to this, commit 4cd12c6065df ("bpf, sockmap: Fix NULL pointer
-dereference in sk_psock_verdict_data_ready()") fixed one NULL pointer
-similarly due to no protection of saved_data_ready. Here is another
-different caller causing the same issue because of the same reason. So
-we should protect it with sk_callback_lock read lock because the writer
-side in the sk_psock_drop() uses "write_lock_bh(&sk->sk_callback_lock);".
-
-To avoid errors that could happen in future, I move those two pairs of
-lock into the sk_psock_data_ready(), which is suggested by John Fastabend.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Reported-by: syzbot+aa8c8ec2538929f18f2d@syzkaller.appspotmail.com
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=aa8c8ec2538929f18f2d
-Link: https://lore.kernel.org/all/20240329134037.92124-1-kerneljasonxing@gmail.com
-Link: https://lore.kernel.org/bpf/20240404021001.94815-1-kerneljasonxing@gmail.com
+Fixes: ec94c2696f0b ("tcp/dccp: avoid one atomic operation for timewait hashdance")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Closes: https://lore.kernel.org/netdev/37a477a6-d39e-486b-9577-3463f655a6b7@allelesecurity.com/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240501213145.62261-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skmsg.h | 2 ++
- net/core/skmsg.c      | 5 +----
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ net/ipv4/tcp_ipv4.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index bd4418377bacf..062fe440f5d09 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -456,10 +456,12 @@ static inline void sk_psock_put(struct sock *sk, struct sk_psock *psock)
- 
- static inline void sk_psock_data_ready(struct sock *sk, struct sk_psock *psock)
- {
-+	read_lock_bh(&sk->sk_callback_lock);
- 	if (psock->saved_data_ready)
- 		psock->saved_data_ready(sk);
- 	else
- 		sk->sk_data_ready(sk);
-+	read_unlock_bh(&sk->sk_callback_lock);
- }
- 
- static inline void psock_set_prog(struct bpf_prog **pprog,
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 39643f78cf782..8b0459a6b629f 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1217,11 +1217,8 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
- 
- 		rcu_read_lock();
- 		psock = sk_psock(sk);
--		if (psock) {
--			read_lock_bh(&sk->sk_callback_lock);
-+		if (psock)
- 			sk_psock_data_ready(sk, psock);
--			read_unlock_bh(&sk->sk_callback_lock);
--		}
- 		rcu_read_unlock();
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 0c50c5a32b84a..68a065c0e5081 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -154,6 +154,12 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 	if (tcptw->tw_ts_recent_stamp &&
+ 	    (!twp || (reuse && time_after32(ktime_get_seconds(),
+ 					    tcptw->tw_ts_recent_stamp)))) {
++		/* inet_twsk_hashdance() sets sk_refcnt after putting twsk
++		 * and releasing the bucket lock.
++		 */
++		if (unlikely(!refcount_inc_not_zero(&sktw->sk_refcnt)))
++			return 0;
++
+ 		/* In case of repair and re-using TIME-WAIT sockets we still
+ 		 * want to be sure that it is safe as above but honor the
+ 		 * sequence numbers and time stamps set as part of the repair
+@@ -174,7 +180,7 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 			tp->rx_opt.ts_recent	   = tcptw->tw_ts_recent;
+ 			tp->rx_opt.ts_recent_stamp = tcptw->tw_ts_recent_stamp;
+ 		}
+-		sock_hold(sktw);
++
+ 		return 1;
  	}
- }
+ 
 -- 
 2.43.0
 
