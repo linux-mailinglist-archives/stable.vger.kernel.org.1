@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A964F8C51AE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162B08C5046
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 146D1B2215D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35924282E00
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9944713AD25;
-	Tue, 14 May 2024 11:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788055A109;
+	Tue, 14 May 2024 10:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCA4vbOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/rCjD2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5596066B5E;
-	Tue, 14 May 2024 11:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3178B54903;
+	Tue, 14 May 2024 10:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684894; cv=none; b=fgUYr4hvUj0M6UyEJ68LR+2DBse53H7kZggjDmzaBBNb092x5ntv3JIN2urOas6+G11nVK/JA30QPv+fewaNitfhhLeffwz+g4ztSn0y/YLWyERek3G2XbUUe9/9d9TVpvZzUbnDa5VFahellHCrKTn8LjUP/Ny/BBRCw6jFvuc=
+	t=1715683142; cv=none; b=guku1h414VO4oQMaZcOw+yyLbgMCct6t7ViTFGDQmohQV9769FIxnGuhvckaTqy8RS9BLVJtwPFCm8d6AFjXpzBFq0VrX9/eeiRXNbOZtxfPhzLj5aEq/FDpOkZb/1ucW6x/lSVpztxGiR3hU8FCCvJNp82QcKB8GhY+jCL4UgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684894; c=relaxed/simple;
-	bh=e/b1TQwGCj06uVpoiye6/km+NPuIyIXw6ui1IEr4sH0=;
+	s=arc-20240116; t=1715683142; c=relaxed/simple;
+	bh=t8o94IorgW5ro0uq/Z9PbUmCAzJIpf3Kp63HPDh9ZWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQyCHfExy1SRxUubRje4aLAYvFD2dMbY6NV7Ptdm7hYl9DxUJP250+ySldfVNwWYBDyL5xdEdpza/dihE+jlw0hNFBrb2aDfs3KNt7nhWe6blVu92n2kvQtySndvQRkFMvbjRibqp9BOvrMIe/Anhp2KVnWwke0gQRmxx8tj3lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCA4vbOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27EAC2BD10;
-	Tue, 14 May 2024 11:08:13 +0000 (UTC)
+	 MIME-Version; b=EDonf609Kn6cnPv8EkeumHqUYFA1xAh+8Z6DmJu05nC/+GXkafrmDo8XR8m+/pyKx8tVIvOcuhs4vQ/x6Di2uV0dAy3G84CPjA5X1VO/daS89bRSClKX5jRFXAuMZE4NJGx/XW0LqCeFCbYToL7NESBa1qm12WzGRCRGBxijpjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/rCjD2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B6AC2BD10;
+	Tue, 14 May 2024 10:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684894;
-	bh=e/b1TQwGCj06uVpoiye6/km+NPuIyIXw6ui1IEr4sH0=;
+	s=korg; t=1715683141;
+	bh=t8o94IorgW5ro0uq/Z9PbUmCAzJIpf3Kp63HPDh9ZWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCA4vbOoUdKbErMT10P/auMkTCEZiSRlwrAfI73sVbDwGLlsRwh5Zf/hTbvgtv8fx
-	 6xr38/0PGDT3+4vn/b/Qz73hKKisnkMTUAvJh76TnyHslMrqv4Pr8hpe2aJvm5Ogdj
-	 DzpTOBAKjpmxBwEjBSBXMnhVxDL4lHvdf+2W9570=
+	b=y/rCjD2Sb2J23fvdazGKYw5lo9yARtumO4xuuU9I+sL3jOHdou0jSD8lxjplIpKFb
+	 w1V0RnQM0qfe1NFqC/+6nElldwhXSHNGD9731iIKNGJmqGKptr2+P50OioxiMtJbNp
+	 aCnjKhycMpzLREg7hgJmge44YlGmXyzKfBQGu+Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/301] wifi: cfg80211: fix rdev_dump_mpp() arguments order
+Subject: [PATCH 6.8 172/336] Drivers: hv: vmbus: Dont free ring buffers that couldnt be re-encrypted
 Date: Tue, 14 May 2024 12:16:16 +0200
-Message-ID: <20240514101036.214671311@linuxfoundation.org>
+Message-ID: <20240514101045.096893326@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit ec50f3114e55406a1aad24b7dfaa1c3f4336d8eb ]
+[ Upstream commit 30d18df6567be09c1433e81993e35e3da573ac48 ]
 
-Fix the order of arguments in the TP_ARGS macro
-for the rdev_dump_mpp tracepoint event.
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_encrypted() or set_memory_decrypted() to fail such that an
+error is returned and the resulting memory is shared. Callers need to
+take care to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional or security
+issues.
 
-Found by Linux Verification Center (linuxtesting.org).
+The VMBus ring buffer code could free decrypted/shared pages if
+set_memory_decrypted() fails. Check the decrypted field in the struct
+vmbus_gpadl for the ring buffers to decide whether to free the memory.
 
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240311164519.118398-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20240311161558.1310-6-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240311161558.1310-6-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hv/channel.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 617c0d0dfa963..e89443173c7b4 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1015,7 +1015,7 @@ TRACE_EVENT(rdev_get_mpp,
- TRACE_EVENT(rdev_dump_mpp,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
- 		 u8 *dst, u8 *mpp),
--	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
-+	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		NETDEV_ENTRY
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index 98259b4925029..fb8cd8469328e 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -153,7 +153,9 @@ void vmbus_free_ring(struct vmbus_channel *channel)
+ 	hv_ringbuffer_cleanup(&channel->inbound);
+ 
+ 	if (channel->ringbuffer_page) {
+-		__free_pages(channel->ringbuffer_page,
++		/* In a CoCo VM leak the memory if it didn't get re-encrypted */
++		if (!channel->ringbuffer_gpadlhandle.decrypted)
++			__free_pages(channel->ringbuffer_page,
+ 			     get_order(channel->ringbuffer_pagecount
+ 				       << PAGE_SHIFT));
+ 		channel->ringbuffer_page = NULL;
 -- 
 2.43.0
 
