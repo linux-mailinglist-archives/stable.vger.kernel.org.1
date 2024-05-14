@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-44870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440E68C54C0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6574A8C54E2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72FB71C2366E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81748285960
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D8712EBE2;
-	Tue, 14 May 2024 11:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAA96DD08;
+	Tue, 14 May 2024 11:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNTbV8ww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhKRYiBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDCA54903;
-	Tue, 14 May 2024 11:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0A3433BE;
+	Tue, 14 May 2024 11:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687415; cv=none; b=JZqHw7U0aPM22qz4kJ6v97BwNGhE1/7j5pQASKCaDDd0LwA8M16WTS62KiARDDvciCAIr8hT+FGkO9Wid8uxVNYKhT5kDnMNLukC1/Wob4a2wI/o9lHERprWv4tVtTFJN97Lz05sD9B7sHMiPzbGqGYEDnOdoLgz8fL8c4fibew=
+	t=1715687506; cv=none; b=W6+1SMkM9Ts35HSL8fg0vTmV4JJCospkuHuXoHiiXRXdpSrKk8c7AjeiFMW3zNFMWlluvLNddcOI9SZSsU93eNCFmnq6+CHg92NLimQB2OJ4O4cL+Ar0YPgreFoip5ynSCu7UiD9h6GAr4ZAqgUDV6Fs51zp9ziXVuq6kJUCq9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687415; c=relaxed/simple;
-	bh=Wl/td2HGS/s9/VGZNUH+vjYhT0wVMoUNklxqA7XosqY=;
+	s=arc-20240116; t=1715687506; c=relaxed/simple;
+	bh=78je0SbMoO3GZYDyh6pvEJ2k+cCFv7hNxpwzkhcdV2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GU3xLaxLJjZJ2B1wywVKO2cbjfJ+SPZmnNel7qp7D3z22g8MUr5MjmXgtL7a8+Ki1X8//f2nB7MEtYpB+5fHi5z5J4GNdV39yU5D3kAf4x22lzYtkYJvNz0YRoraXUngYH7sl26tPByD5libw7xKl9RRqZ+RsJT7GeJbV6UV3vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNTbV8ww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9606DC2BD10;
-	Tue, 14 May 2024 11:50:14 +0000 (UTC)
+	 MIME-Version; b=pPnV2ikVwBAWCs9S8i63fM95tVcvAlmqVM8a1+KwLGpt10XxGMFsXCAHx1/vZw6eYdP+Va0imACj4eIkjE3ePfZd0r/w7vjeTA8hmHRuonuJVjr+4GzLD31/4ppAdP/owLmrTb/sBeEmeZTwqymX70Q+L2mkWuYbD9aDPfYhlVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhKRYiBg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECBBC2BD10;
+	Tue, 14 May 2024 11:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687415;
-	bh=Wl/td2HGS/s9/VGZNUH+vjYhT0wVMoUNklxqA7XosqY=;
+	s=korg; t=1715687505;
+	bh=78je0SbMoO3GZYDyh6pvEJ2k+cCFv7hNxpwzkhcdV2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WNTbV8ww8l5+33ZOzFvF6cL52R4BLrW5maMTvrUtzQ4BicOIVKbJjB1URtFzfxnFq
-	 4a+YRaz5gh7KjgA3DtzCuDTjUZwD3vAsbDXnVozmyrY+3elMfm4eIqNe/kDSPwCND8
-	 NN6BwPoEDVpm5Io6A4hGACaoMn2NxRg1noo+EV84=
+	b=FhKRYiBgctXU9a6y/DGiIfox59YXruw0ScCYgKJzynBoWVqZ5kOeivJLyRkh5pAj7
+	 yRfNUNsR2SIXaBkSHHoGAxti+ESR/Ler82e1d278wv46pkjPFk/oCxBZwjWEtOcO+8
+	 pYIANHUQ42yUsNEb++RVtix9xNbNNPLgG4ZMrKho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/111] ipv6: fib6_rules: avoid possible NULL dereference in fib6_rule_action()
-Date: Tue, 14 May 2024 12:20:25 +0200
-Message-ID: <20240514101000.437068198@linuxfoundation.org>
+Subject: [PATCH 5.10 088/111] net: hns3: use appropriate barrier function after setting a bit value
+Date: Tue, 14 May 2024 12:20:26 +0200
+Message-ID: <20240514101000.473793533@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
 References: <20240514100957.114746054@linuxfoundation.org>
@@ -68,89 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit d101291b2681e5ab938554e3e323f7a7ee33e3aa ]
+[ Upstream commit 094c281228529d333458208fd02fcac3b139d93b ]
 
-syzbot is able to trigger the following crash [1],
-caused by unsafe ip6_dst_idev() use.
+There is a memory barrier in followed case. When set the port down,
+hclgevf_set_timmer will set DOWN in state. Meanwhile, the service task has
+different behaviour based on whether the state is DOWN. Thus, to make sure
+service task see DOWN, use smp_mb__after_atomic after calling set_bit().
 
-Indeed ip6_dst_idev() can return NULL, and must always be checked.
+          CPU0                        CPU1
+========================== ===================================
+hclgevf_set_timer_task()    hclgevf_periodic_service_task()
+  set_bit(DOWN,state)         test_bit(DOWN,state)
 
-[1]
+pf also has this issue.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 PID: 31648 Comm: syz-executor.0 Not tainted 6.9.0-rc4-next-20240417-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:__fib6_rule_action net/ipv6/fib6_rules.c:237 [inline]
- RIP: 0010:fib6_rule_action+0x241/0x7b0 net/ipv6/fib6_rules.c:267
-Code: 02 00 00 49 8d 9f d8 00 00 00 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 f9 32 bf f7 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 e0 32 bf f7 4c 8b 03 48 89 ef 4c
-RSP: 0018:ffffc9000fc1f2f0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1a772f98c8186700
-RDX: 0000000000000003 RSI: ffffffff8bcac4e0 RDI: ffffffff8c1f9760
-RBP: ffff8880673fb980 R08: ffffffff8fac15ef R09: 1ffffffff1f582bd
-R10: dffffc0000000000 R11: fffffbfff1f582be R12: dffffc0000000000
-R13: 0000000000000080 R14: ffff888076509000 R15: ffff88807a029a00
-FS:  00007f55e82ca6c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b31d23000 CR3: 0000000022b66000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  fib_rules_lookup+0x62c/0xdb0 net/core/fib_rules.c:317
-  fib6_rule_lookup+0x1fd/0x790 net/ipv6/fib6_rules.c:108
-  ip6_route_output_flags_noref net/ipv6/route.c:2637 [inline]
-  ip6_route_output_flags+0x38e/0x610 net/ipv6/route.c:2649
-  ip6_route_output include/net/ip6_route.h:93 [inline]
-  ip6_dst_lookup_tail+0x189/0x11a0 net/ipv6/ip6_output.c:1120
-  ip6_dst_lookup_flow+0xb9/0x180 net/ipv6/ip6_output.c:1250
-  sctp_v6_get_dst+0x792/0x1e20 net/sctp/ipv6.c:326
-  sctp_transport_route+0x12c/0x2e0 net/sctp/transport.c:455
-  sctp_assoc_add_peer+0x614/0x15c0 net/sctp/associola.c:662
-  sctp_connect_new_asoc+0x31d/0x6c0 net/sctp/socket.c:1099
-  __sctp_connect+0x66d/0xe30 net/sctp/socket.c:1197
-  sctp_connect net/sctp/socket.c:4819 [inline]
-  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
-  __sys_connect_file net/socket.c:2048 [inline]
-  __sys_connect+0x2df/0x310 net/socket.c:2065
-  __do_sys_connect net/socket.c:2075 [inline]
-  __se_sys_connect net/socket.c:2072 [inline]
-  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 5e5f3f0f8013 ("[IPV6] ADDRCONF: Convert ipv6_get_saddr() to ipv6_dev_get_saddr().")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: ff200099d271 ("net: hns3: remove unnecessary work in hclgevf_main")
+Fixes: 1c6dfe6fc6f7 ("net: hns3: remove mailbox and reset work in hclge_main")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240507163145.835254-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/fib6_rules.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 3 +--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index 55cd23b7a9357..cf9a44fb8243d 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -232,8 +232,12 @@ static int __fib6_rule_action(struct fib_rule *rule, struct flowi *flp,
- 	rt = pol_lookup_func(lookup,
- 			     net, table, flp6, arg->lookup_data, flags);
- 	if (rt != net->ipv6.ip6_null_entry) {
-+		struct inet6_dev *idev = ip6_dst_idev(&rt->dst);
-+
-+		if (!idev)
-+			goto again;
- 		err = fib6_rule_saddr(net, rule, flags, flp6,
--				      ip6_dst_idev(&rt->dst)->dev);
-+				      idev->dev);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index c14c391a0cec6..5dbee850fef53 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7005,8 +7005,7 @@ static void hclge_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 		/* Set the DOWN flag here to disable link updating */
+ 		set_bit(HCLGE_STATE_DOWN, &hdev->state);
  
- 		if (err == -EAGAIN)
- 			goto again;
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclge_flush_link_update(hdev);
+ 	}
+ }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 2bb0ce1761fb0..be41117ec1465 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2583,8 +2583,7 @@ static void hclgevf_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 	} else {
+ 		set_bit(HCLGEVF_STATE_DOWN, &hdev->state);
+ 
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclgevf_flush_link_update(hdev);
+ 	}
+ }
 -- 
 2.43.0
 
