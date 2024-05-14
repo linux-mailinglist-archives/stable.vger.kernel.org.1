@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-44312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034D58C5234
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2668C5344
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99A5B1F22779
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B4C1F232AB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB2F3D0D1;
-	Tue, 14 May 2024 11:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F3876026;
+	Tue, 14 May 2024 11:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPkzoMoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KqmnXSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A168A200BF;
-	Tue, 14 May 2024 11:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FCB1D54D;
+	Tue, 14 May 2024 11:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685635; cv=none; b=OSrfmAOp9RNbOuUeoaE7yuGWR2QwDE+bURK5GoxtFVrbhbwbohqggq8H8T3pJUuSv20Dur4znUmVm/U4B5EHWuXyeg/wWYQij0B/+lsRxCH5Akbn73ts0FuQXe6AFOLNV3ish0rW6QIhc1931+DuueIB+vL1Gey5kjCQxQW9+54=
+	t=1715686404; cv=none; b=tHzljzUHp6wWY85xBbuo42an6ZKpJagKlwDh6e/cLdoSTrBZrEdK45vKruPL4XAEaD23OEOmJX2ebgI97+emKApPjVGBXvzW7xF7tLH2auILjox9w18nujjqbUQZXy5QQo84oKChvVcmjlYDHkIAVn21KDUlkYdMaLMnKogbPgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685635; c=relaxed/simple;
-	bh=qt7IUO2q1JqS5PXhjNHoqAavAyCsj7PF2HFjTBHKMmA=;
+	s=arc-20240116; t=1715686404; c=relaxed/simple;
+	bh=v9bstt9p8yRDXB/sXWPSB3KfENRgrnv2m/5GS/MViNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlwkAhSCQIKNwP2zzR/+xYBKaX3auFLPFflhYegYsFHcV6abPIxBgp/ubUy1+6cgbbM+DY8BU1jjE7q/BEL5y4LPNZv4/wYzNjUjtdfH6R0i1i+2BwitDV+hTRqZTNDpuYq+k1ioktMrCJi9yI2UoWdxt+FlQ/qRdrS+OR34veA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPkzoMoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C296BC4AF09;
-	Tue, 14 May 2024 11:20:34 +0000 (UTC)
+	 MIME-Version; b=GkGJEWxx10qYStq1e14trV3qP8yMqHn63gufODXczBBDb2WqmN9QMf/8yMmu+0XME2BzF9N9uMZb9WDZnLQ9Aa+WuxtTvAyisZJX2FXWZVyW88FCI7ytZ3v1rzk2FRVXr6L0KVEOKOpFyruT7mhPB7sRg3hB4Me2ozAsVA3Hn8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KqmnXSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2899CC32781;
+	Tue, 14 May 2024 11:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685635;
-	bh=qt7IUO2q1JqS5PXhjNHoqAavAyCsj7PF2HFjTBHKMmA=;
+	s=korg; t=1715686404;
+	bh=v9bstt9p8yRDXB/sXWPSB3KfENRgrnv2m/5GS/MViNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPkzoMoD3TiD3pf93duvtNAz/gMwP7Yz+SWpUg8/3/8lEE3+uUqqs6TmzurVCGgxf
-	 BlsRRhBK4U0soYB0soAcMJGaTKBDM2wkunLRn6/BsttbrTgdltl2oblBu/FQlAxEVE
-	 yESez2pJfgmkPJ74iTsFjJwKmBy94mbbAdzbcWtM=
+	b=1KqmnXSOErO4O6cF8mJNl/NWR/XwGBAHcMoNgXCpqe4RaxMu+AQLQbB46DuYi6FSe
+	 yA4XHfRjb5HKMmarKDKDW1piVcEnVdLj6jRBvWYANPYG5v8EQDiavW/uj5Rdtd+vUw
+	 Xgg4+jUyoq1yRllnvHcyTr/KlY61fAHMsB6YjG9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/301] gpiolib: cdev: fix uninitialised kfifo
+Subject: [PATCH 6.1 127/236] Drivers: hv: vmbus: Track decrypted status in vmbus_gpadl
 Date: Tue, 14 May 2024 12:18:09 +0200
-Message-ID: <20240514101040.489812495@linuxfoundation.org>
+Message-ID: <20240514101025.192277278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +65,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-[ Upstream commit ee0166b637a5e376118e9659e5b4148080f1d27e ]
+[ Upstream commit 211f514ebf1ef5de37b1cf6df9d28a56cfd242ca ]
 
-If a line is requested with debounce, and that results in debouncing
-in software, and the line is subsequently reconfigured to enable edge
-detection then the allocation of the kfifo to contain edge events is
-overlooked.  This results in events being written to and read from an
-uninitialised kfifo.  Read events are returned to userspace.
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_encrypted() or set_memory_decrypted() to fail such that an
+error is returned and the resulting memory is shared. Callers need to
+take care to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional or security
+issues.
 
-Initialise the kfifo in the case where the software debounce is
-already active.
+In order to make sure callers of vmbus_establish_gpadl() and
+vmbus_teardown_gpadl() don't return decrypted/shared pages to
+allocators, add a field in struct vmbus_gpadl to keep track of the
+decryption status of the buffers. This will allow the callers to
+know if they should free or leak the pages.
 
-Fixes: 65cff7046406 ("gpiolib: cdev: support setting debounce")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240510065342.36191-1-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20240311161558.1310-3-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240311161558.1310-3-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/hv/channel.c   | 25 +++++++++++++++++++++----
+ include/linux/hyperv.h |  1 +
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 7037dc47ca0e0..b4b71e68b90de 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1243,6 +1243,8 @@ static int edge_detector_update(struct line *line,
- 				struct gpio_v2_line_config *lc,
- 				unsigned int line_idx, u64 edflags)
- {
-+	u64 eflags;
-+	int ret;
- 	u64 active_edflags = READ_ONCE(line->edflags);
- 	unsigned int debounce_period_us =
- 			gpio_v2_line_config_debounce_period(lc, line_idx);
-@@ -1254,6 +1256,18 @@ static int edge_detector_update(struct line *line,
- 	/* sw debounced and still will be...*/
- 	if (debounce_period_us && READ_ONCE(line->sw_debounced)) {
- 		line_set_debounce_period(line, debounce_period_us);
-+		/*
-+		 * ensure event fifo is initialised if edge detection
-+		 * is now enabled.
-+		 */
-+		eflags = edflags & GPIO_V2_LINE_EDGE_FLAGS;
-+		if (eflags && !kfifo_initialized(&line->req->events)) {
-+			ret = kfifo_alloc(&line->req->events,
-+					  line->req->event_buffer_size,
-+					  GFP_KERNEL);
-+			if (ret)
-+				return ret;
-+		}
- 		return 0;
- 	}
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index 56f7e06c673e4..bb5abdcda18f8 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -472,9 +472,18 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 		(atomic_inc_return(&vmbus_connection.next_gpadl_handle) - 1);
  
+ 	ret = create_gpadl_header(type, kbuffer, size, send_offset, &msginfo);
+-	if (ret)
++	if (ret) {
++		gpadl->decrypted = false;
+ 		return ret;
++	}
+ 
++	/*
++	 * Set the "decrypted" flag to true for the set_memory_decrypted()
++	 * success case. In the failure case, the encryption state of the
++	 * memory is unknown. Leave "decrypted" as true to ensure the
++	 * memory will be leaked instead of going back on the free list.
++	 */
++	gpadl->decrypted = true;
+ 	ret = set_memory_decrypted((unsigned long)kbuffer,
+ 				   PFN_UP(size));
+ 	if (ret) {
+@@ -563,9 +572,15 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 
+ 	kfree(msginfo);
+ 
+-	if (ret)
+-		set_memory_encrypted((unsigned long)kbuffer,
+-				     PFN_UP(size));
++	if (ret) {
++		/*
++		 * If set_memory_encrypted() fails, the decrypted flag is
++		 * left as true so the memory is leaked instead of being
++		 * put back on the free list.
++		 */
++		if (!set_memory_encrypted((unsigned long)kbuffer, PFN_UP(size)))
++			gpadl->decrypted = false;
++	}
+ 
+ 	return ret;
+ }
+@@ -886,6 +901,8 @@ int vmbus_teardown_gpadl(struct vmbus_channel *channel, struct vmbus_gpadl *gpad
+ 	if (ret)
+ 		pr_warn("Fail to set mem host visibility in GPADL teardown %d.\n", ret);
+ 
++	gpadl->decrypted = ret;
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(vmbus_teardown_gpadl);
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index 4fbd5d8417111..811d59cf891ba 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -832,6 +832,7 @@ struct vmbus_gpadl {
+ 	u32 gpadl_handle;
+ 	u32 size;
+ 	void *buffer;
++	bool decrypted;
+ };
+ 
+ struct vmbus_channel {
 -- 
 2.43.0
 
