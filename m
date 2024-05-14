@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC58D8C52C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AE68C507F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9C812833E1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 592511C20B0D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155407B3E5;
-	Tue, 14 May 2024 11:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF9B13D881;
+	Tue, 14 May 2024 10:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCxXLMht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGLOO1hM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B6F1CAA4;
-	Tue, 14 May 2024 11:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDB413D880;
+	Tue, 14 May 2024 10:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686113; cv=none; b=GoxTF7RKX7mqVDTlW3U6D2Ykzgvl1KjIsfEpA7bqIeJdmbSRccQ7w1rrexlVP0TrlkNFTf+9d8YmXtAQ9GtA+U6hqLkpG7vX27dSWpU75NuH3LN+tOBXsXHn+kyQKp6F8Qkyv1Q4DWYPPqQH90/YsxhG8YiL7cHuNvCROX/tBsk=
+	t=1715683426; cv=none; b=QAWL6v6vyiriw7eWcPq0SOpgOz+E79U/5VmCC1eiVvIJyg2h4UdFkcZ0KGH2EA6/ukORDbxtRpYGcSnGKSY7ipAWuQ84H35TD+RfV24vSeWs3ZDbgGKgA95Fv1i4BhClYLtwCNVOGm2vFSy9Nh+SxUm/GlpM4THe1XCC4P+oFw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686113; c=relaxed/simple;
-	bh=+A8VqBsldHDFjA3X1BUKGJ2ZNHund59hO/WzwrjeqB0=;
+	s=arc-20240116; t=1715683426; c=relaxed/simple;
+	bh=CsmfO8fn1coRVRqTKjw4QaHuBS7gEa5/Wd1zL8zgiJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiqooED44XT5lUbIMKOGQxKzZOhHCGd2hUfMJo+IRf1wbu7Ba3pl6fy7aO6n2aYLyJzYn4gwlpsMUeTrJzTPRz8lJPtCH9EQGnDejpTndTKaiKw4pcUIDjQn750ZawmXFA9YREMp8A6rLNuCr3eQdZhtkMVqHne++zSPxMexYk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCxXLMht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4262AC2BD10;
-	Tue, 14 May 2024 11:28:33 +0000 (UTC)
+	 MIME-Version; b=KBxBkMm96poW1UfzloiWOm8gy3LMA0lgJptjicfhsMmswzQYxkrsOIAuLVU34SUIzP+EoVjW32jQnG50jcSa2Ya+DcX0c92ToVUEXDf/b6gHoSprkkMkhn5q0mOzVQUZHcpugWbewzFzHfw8h5xJkYayyL+j6+L0NntPhZBobgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGLOO1hM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9468CC2BD10;
+	Tue, 14 May 2024 10:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686113;
-	bh=+A8VqBsldHDFjA3X1BUKGJ2ZNHund59hO/WzwrjeqB0=;
+	s=korg; t=1715683426;
+	bh=CsmfO8fn1coRVRqTKjw4QaHuBS7gEa5/Wd1zL8zgiJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCxXLMhtPgmcffsotE0Gdl8abrOqbfUQzNbG9jjRqgJo9SuWQSmpC2LG1DBUaWS7v
-	 0yjtY9yfVGnt407XKX0fsp27kKUjH+vwJQUh/Vtftp/xIcjX0IIj1MMEYuts+iKUHw
-	 ysnklWO1D8LSTpUABMYJ8ct4Hr4ikfs34ijNZ02k=
+	b=xGLOO1hMNhv1/G2r9NVIisPoyFC1EwZAMKeG82UzTCBz9tUa0dTaEfERqVLKcWLdY
+	 6nMe1oSxm698gwa50mZzM89Vli5fGk3L0diGcMgc+SL2wN4WIYqcNa1OFvGhlK3zXZ
+	 WEgiQR2zBLQQeOeAAkKdR+RUGXsPRfaX2cEKMueQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/236] pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE
+Subject: [PATCH 6.8 184/336] clk: Dont hold prepare_lock when calling kref_put()
 Date: Tue, 14 May 2024 12:16:28 +0200
-Message-ID: <20240514101021.331613103@linuxfoundation.org>
+Message-ID: <20240514101045.549216279@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Stephen Boyd <sboyd@kernel.org>
 
-[ Upstream commit c5d3b64c568a344e998830e0e94a7c04e372f89b ]
+[ Upstream commit 6f63af7511e7058f3fa4ad5b8102210741c9f947 ]
 
-There is a misinterpretation of some of the PIN_CONFIG_* options in this
-driver library. PIN_CONFIG_OUTPUT_ENABLE should refer to a buffer or
-switch in the output direction of the electrical path. The MediaTek
-hardware does not have such a thing. The driver incorrectly maps this
-option to the GPIO function's direction.
+We don't need to hold the prepare_lock when dropping a ref on a struct
+clk_core. The release function is only freeing memory and any code with
+a pointer reference has already unlinked anything pointing to the
+clk_core. This reduces the holding area of the prepare_lock a bit.
 
-Likewise, PIN_CONFIG_INPUT_ENABLE should refer to a buffer or switch in
-the input direction. The hardware does have such a mechanism, and is
-mapped to the IES bit. The driver however sets the direction in addition
-to the IES bit, which is incorrect. On readback, the IES bit isn't even
-considered.
+Note that we also don't call free_clk() with the prepare_lock held.
+There isn't any reason to do that.
 
-Ironically, the driver does not support readback for PIN_CONFIG_OUTPUT,
-while its readback of PIN_CONFIG_{INPUT,OUTPUT}_ENABLE is what it should
-be doing for PIN_CONFIG_OUTPUT.
-
-Rework support for these three options, so that PIN_CONFIG_OUTPUT_ENABLE
-is completely removed, PIN_CONFIG_INPUT_ENABLE is only linked to the IES
-bit, and PIN_CONFIG_OUTPUT is linked to the GPIO function's direction
-and output level.
-
-Fixes: 805250982bb5 ("pinctrl: mediatek: add pinctrl-paris that implements the vendor dt-bindings")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Message-ID: <20240327091336.3434141-3-wenst@chromium.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240325184204.745706-3-sboyd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c | 38 +++++++-----------------
- 1 file changed, 11 insertions(+), 27 deletions(-)
+ drivers/clk/clk.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index 3f2297ee2b765..ee72c6894a5d7 100644
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -160,20 +160,21 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SR, &ret);
- 		break;
- 	case PIN_CONFIG_INPUT_ENABLE:
--	case PIN_CONFIG_OUTPUT_ENABLE:
-+		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_IES, &ret);
-+		if (!ret)
-+			err = -EINVAL;
-+		break;
-+	case PIN_CONFIG_OUTPUT:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
- 		if (err)
- 			break;
--		/*     CONFIG     Current direction return value
--		 * -------------  ----------------- ----------------------
--		 * OUTPUT_ENABLE       output       1 (= HW value)
--		 *                     input        0 (= HW value)
--		 * INPUT_ENABLE        output       0 (= reverse HW value)
--		 *                     input        1 (= reverse HW value)
--		 */
--		if (param == PIN_CONFIG_INPUT_ENABLE)
--			ret = !ret;
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index cf1fc0edfdbca..260e901d0ba70 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -4552,7 +4552,8 @@ void clk_unregister(struct clk *clk)
+ 	if (ops == &clk_nodrv_ops) {
+ 		pr_err("%s: unregistered clock: %s\n", __func__,
+ 		       clk->core->name);
+-		goto unlock;
++		clk_prepare_unlock();
++		return;
+ 	}
+ 	/*
+ 	 * Assign empty clock ops for consumers that might still hold
+@@ -4586,11 +4587,10 @@ void clk_unregister(struct clk *clk)
+ 	if (clk->core->protect_count)
+ 		pr_warn("%s: unregistering protected clock: %s\n",
+ 					__func__, clk->core->name);
++	clk_prepare_unlock();
  
-+		if (!ret) {
-+			err = -EINVAL;
-+			break;
-+		}
-+
-+		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DO, &ret);
- 		break;
- 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
-@@ -278,26 +279,9 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 			break;
- 		err = hw->soc->bias_set_combo(hw, desc, 0, arg);
- 		break;
--	case PIN_CONFIG_OUTPUT_ENABLE:
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT,
--				       MTK_DISABLE);
--		/* Keep set direction to consider the case that a GPIO pin
--		 *  does not have SMT control
--		 */
--		if (err != -ENOTSUPP)
--			break;
+ 	kref_put(&clk->core->ref, __clk_release);
+ 	free_clk(clk);
+-unlock:
+-	clk_prepare_unlock();
+ }
+ EXPORT_SYMBOL_GPL(clk_unregister);
+ 
+@@ -4749,13 +4749,11 @@ void __clk_put(struct clk *clk)
+ 	if (clk->min_rate > 0 || clk->max_rate < ULONG_MAX)
+ 		clk_set_rate_range_nolock(clk, 0, ULONG_MAX);
+ 
+-	owner = clk->core->owner;
+-	kref_put(&clk->core->ref, __clk_release);
 -
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
--				       MTK_OUTPUT);
--		break;
- 	case PIN_CONFIG_INPUT_ENABLE:
- 		/* regard all non-zero value as enable */
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, !!arg);
--		if (err)
--			break;
+ 	clk_prepare_unlock();
+ 
++	owner = clk->core->owner;
++	kref_put(&clk->core->ref, __clk_release);
+ 	module_put(owner);
 -
--		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
--				       MTK_INPUT);
- 		break;
- 	case PIN_CONFIG_SLEW_RATE:
- 		/* regard all non-zero value as enable */
+ 	free_clk(clk);
+ }
+ 
 -- 
 2.43.0
 
