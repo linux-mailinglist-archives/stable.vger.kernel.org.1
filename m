@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-44573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E567C8C537A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CE78C52A1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 228911C22CE3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C27D1F21FB9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418D147A79;
-	Tue, 14 May 2024 11:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2798613FD9C;
+	Tue, 14 May 2024 11:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esPNdtnu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQRpAbjx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92A847A57;
-	Tue, 14 May 2024 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C774F1E5;
+	Tue, 14 May 2024 11:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686553; cv=none; b=JwWUBCxVbmqmn6UNkEUMheTyNPI2QpJ7lXuP+YP5Raoa8/gqjftniWT93JmJPs29hOYbrIOfVaI77E6Ksj5TZevF1AJc0a1jlquUpzUy4TdgJZ+8nIcXcPBqiG6QRwwTJE6ue6BHK5V8P7XW2NsvumoooN810D9dtZebvIh7lsI=
+	t=1715686019; cv=none; b=XhWcbqHvVi3QxkG5UmaIoN5gP9nHi2XNnGCDOhET8SgWJjOpxHM3XSbxdWJPf5g8frmfQzjb4ppDQ9Cq+UObODeIKNvpXiYXXlBRxjyigeL/WwCsOLnvzx8nX7GkYSD1BwlV1QHW4sM7sUlFSNetGVjAFc3baGu3SLGA7Bb1x1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686553; c=relaxed/simple;
-	bh=HOUFTI+uRHVS7tUi10XoF0Uo3jRh6wr6w65jj0LyP4M=;
+	s=arc-20240116; t=1715686019; c=relaxed/simple;
+	bh=DAwwgOELdP+fjFQLOMwWfB3qhWZLqDbdGBeQ7lJl3y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2yXHivD7idXXz8EI8EqCa/psfCu03LT4Ox9H/sJmPqI3P523NbYMJ6KA19T8H7g2SE4vgR6lDw4h5q5ntJx8TZXV1Bh7cwzComUv9utiMfLRLnu+0QvxpYpQ62QWElvkcLhT4717tu/nsLM4UmqmYmCXal5WZxjKUvP3Dwzhow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esPNdtnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70876C2BD10;
-	Tue, 14 May 2024 11:35:52 +0000 (UTC)
+	 MIME-Version; b=ES89+61ggsTC3bROm0606ZEb1j06Sq+Ky3I60CBk0X+Tw0pKhkNxFPBZceuwlXK4EaMs/oPTVCqe8veHtnFR5TVmamcPTDX9SFA71QsToUOZym6fwuwbCqOvn9vWLNL/DwiOGNpzBJtFopUd4R+OldieaF3w2601xk0MJ5wKiCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQRpAbjx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1278C2BD10;
+	Tue, 14 May 2024 11:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686552;
-	bh=HOUFTI+uRHVS7tUi10XoF0Uo3jRh6wr6w65jj0LyP4M=;
+	s=korg; t=1715686019;
+	bh=DAwwgOELdP+fjFQLOMwWfB3qhWZLqDbdGBeQ7lJl3y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esPNdtnuP4K8AGHBjXZTe+BlK6TAjhDp9MessUHoj4iSzw3q4LKf7bdeanz8/4+qp
-	 /yozV2fdgJoW0ioRNMAs5DdwilIOv9P+tX8HiYo5nczFgWZPWm21JdbLmdpw4Ltck6
-	 YlZjHOPADnXUh8DhGYw7p7PvcAS+jdH5uhTZKsDM=
+	b=YQRpAbjxbMwkR3uZrhVFjXS2ZhtiQ43Bus9jQU9q57PZj0i7438gwxEIOiPyHqHbw
+	 4BBY5jrMs66e3dwAQRB2dxkVY7Gz8aTDSkpL1G+zisNl1ZvM+TerWe4kerKJ78YuqA
+	 VY9UYxqn3b0LgoiISkThQ+72QP69FvWH8IGwuxpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Simon Ser <contact@emersion.fr>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/236] drm/connector: Add \n to message about demoting connector force-probes
+	Dan Moulding <dan@danm.net>,
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 6.6 267/301] Revert "drm/nouveau/firmware: Fix SG_DEBUG error with nvkm_firmware_ctor()"
 Date: Tue, 14 May 2024 12:18:58 +0200
-Message-ID: <20240514101027.044159339@linuxfoundation.org>
+Message-ID: <20240514101042.344516025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 6897204ea3df808d342c8e4613135728bc538bcd ]
+commit a222a6470d7eea91193946e8162066fa88da64c2 upstream.
 
-The debug print clearly lacks a \n at the end. Add it.
+This reverts commit 52a6947bf576b97ff8e14bb0a31c5eaf2d0d96e2.
 
-Fixes: 8f86c82aba8b ("drm/connector: demote connector force-probes for non-master clients")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240502153234.1.I2052f01c8d209d9ae9c300b87c6e4f60bd3cc99e@changeid
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This causes loading failures in
+[    0.367379] nouveau 0000:01:00.0: NVIDIA GP104 (134000a1)
+[    0.474499] nouveau 0000:01:00.0: bios: version 86.04.50.80.13
+[    0.474620] nouveau 0000:01:00.0: pmu: firmware unavailable
+[    0.474977] nouveau 0000:01:00.0: fb: 8192 MiB GDDR5
+[    0.484371] nouveau 0000:01:00.0: sec2(acr): mbox 00000001 00000000
+[    0.484377] nouveau 0000:01:00.0: sec2(acr):load: boot failed: -5
+[    0.484379] nouveau 0000:01:00.0: acr: init failed, -5
+[    0.484466] nouveau 0000:01:00.0: init failed with -5
+[    0.484468] nouveau: DRM-master:00000000:00000080: init failed with -5
+[    0.484470] nouveau 0000:01:00.0: DRM-master: Device allocation failed: -5
+[    0.485078] nouveau 0000:01:00.0: probe with driver nouveau failed with error -50
+
+I tried tracking it down but ran out of time this week, will revisit next week.
+
+Reported-by: Dan Moulding <dan@danm.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_connector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/core/firmware.c |   19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index 27de2a97f1d11..3d18d840ef3b6 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -2707,7 +2707,7 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
- 						     dev->mode_config.max_width,
- 						     dev->mode_config.max_height);
- 		else
--			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe",
-+			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe\n",
- 				    connector->base.id, connector->name);
- 	}
+--- a/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
++++ b/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
+@@ -187,9 +187,7 @@ nvkm_firmware_dtor(struct nvkm_firmware
+ 		break;
+ 	case NVKM_FIRMWARE_IMG_DMA:
+ 		nvkm_memory_unref(&memory);
+-		dma_unmap_single(fw->device->dev, fw->phys, sg_dma_len(&fw->mem.sgl),
+-				 DMA_TO_DEVICE);
+-		kfree(fw->img);
++		dma_free_coherent(fw->device->dev, sg_dma_len(&fw->mem.sgl), fw->img, fw->phys);
+ 		break;
+ 	default:
+ 		WARN_ON(1);
+@@ -213,17 +211,14 @@ nvkm_firmware_ctor(const struct nvkm_fir
+ 		fw->img = kmemdup(src, fw->len, GFP_KERNEL);
+ 		break;
+ 	case NVKM_FIRMWARE_IMG_DMA: {
++		dma_addr_t addr;
++
+ 		len = ALIGN(fw->len, PAGE_SIZE);
  
--- 
-2.43.0
-
+-		fw->img = kmalloc(len, GFP_KERNEL);
+-		if (!fw->img)
+-			return -ENOMEM;
+-
+-		memcpy(fw->img, src, fw->len);
+-		fw->phys = dma_map_single(fw->device->dev, fw->img, len, DMA_TO_DEVICE);
+-		if (dma_mapping_error(fw->device->dev, fw->phys)) {
+-			kfree(fw->img);
+-			return -EFAULT;
++		fw->img = dma_alloc_coherent(fw->device->dev, len, &addr, GFP_KERNEL);
++		if (fw->img) {
++			memcpy(fw->img, src, fw->len);
++			fw->phys = addr;
+ 		}
+ 
+ 		sg_init_one(&fw->mem.sgl, fw->img, len);
 
 
 
