@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-43859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984CB8C4FF6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C4A8C5161
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7690528401F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0CCE28222D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2FE46430;
-	Tue, 14 May 2024 10:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC38135A69;
+	Tue, 14 May 2024 10:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgZDhmM9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIqEeXuy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC4129D06;
-	Tue, 14 May 2024 10:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABADB134CDC;
+	Tue, 14 May 2024 10:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682713; cv=none; b=N6VMpsbM+d9TcE9rLlO+ew01ppO3RpXHe0W+mRkyq6QcBnTbrYAGNbHjpmRDR/snmC5Q1cAxQnxzklyU5IuUEtCBX5kG8twreESSIsLpFpUVe3XnkR+0Mvn72a3X/iR2uIYnYizT1ToMf4fEZ7C2LKqg1rLMhdjSqVxynep/DBo=
+	t=1715684368; cv=none; b=r32PWdej+50YdkaZJcyz5Rt5jWurkDKgbSktRH2Ri77hP5TBEK61I0U671OvWPFy4nkwwKnm0DEIygb+ip7PWiUgLjwL13KPcplq2oeEBoMFvpeZ3wfc2Q/EYr8wcwlIyNyuw8n3DxMHKVSYbQwwVrxMufhUcIr5oW+eht0OSXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682713; c=relaxed/simple;
-	bh=WgSDYBxn8FNRfC9gVOoj6bkEuXTlHgaJUztt/4j7INE=;
+	s=arc-20240116; t=1715684368; c=relaxed/simple;
+	bh=YaAcgaFLiZGwaOqdJ+Dw8e8vrMncJuOAZCYSFu/RwlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXMSs5LnrXUdJwUrtAVoIlhda2kV7LUlHywSiSS4aZkpmBd17Lt9DgBvzRBPI4aAa2I0Ehn7UtGHci7/Od0lgquBl5alcrd6ZBEdY01TJevbhs9LQpbsfXD4lWJxwdbWvUhmQt74tXYU/mj43dS4lRcrPXSdpvMKdB8xNTm+hd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgZDhmM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA4AC2BD10;
-	Tue, 14 May 2024 10:31:51 +0000 (UTC)
+	 MIME-Version; b=I81Q8/XrliCZRpcJdHoRqJOCsg+9ITGoJli2En+SpVomqNK/RnvD0WYbQgcbZ6Jh4HX0OHPqAuPnBTwNRnTI3aaG6WHUg8ZcpVa+Uu6vZ4oiCIFkz8tHxG5bgyKjQZm5hOVE6SzD2hNJgyLPDSUB/9oyhv5uCHpacnUPBb5qxM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIqEeXuy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF813C4AF0A;
+	Tue, 14 May 2024 10:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682713;
-	bh=WgSDYBxn8FNRfC9gVOoj6bkEuXTlHgaJUztt/4j7INE=;
+	s=korg; t=1715684368;
+	bh=YaAcgaFLiZGwaOqdJ+Dw8e8vrMncJuOAZCYSFu/RwlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgZDhmM9OdwPFUCemPpGZjJ+8Sc3uJSeez3o9wEyzmi8dh1UPqzVRHEwGMUgbYQtZ
-	 b3ZnSJ3pHkOwuAUdq+F7QqQhwxqsyjyr310u4fR4yYED/tEaQTU4W8DdncpMAWSfkc
-	 CzTZmExSRLnjGVuP5TI5w0aqhXz5gdGJmR2reF0s=
+	b=IIqEeXuyW8lOxH4GhYFkDYm9fSFoTWkAJmJs6nve8xgFgShtZpwZ85F98o5oMIyWQ
+	 xHBRio2+BV8EsyYL9o7LN3ODgQmM7bnzKEEUtzSPmxJTaNSsGqFKQrJJ4VdcVGBF9h
+	 HSMzkVGX0yg9ADXlLZtwJ14ESRe1Ptn9g2no/Tbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Altman <jaltman@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 076/336] rxrpc: Clients must accept conn from any address
+Subject: [PATCH 6.6 009/301] eeprom: at24: Probe for DDR3 thermal sensor in the SPD case
 Date: Tue, 14 May 2024 12:14:40 +0200
-Message-ID: <20240514101041.474982715@linuxfoundation.org>
+Message-ID: <20240514101032.584452781@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeffrey Altman <jaltman@auristor.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 8953285d7bd63c12b007432a9b4587fa2fad49fb ]
+[ Upstream commit caba40ec3531b0849f44502a03117796e8c9f4a1 ]
 
-The find connection logic of Transarc's Rx was modified in the mid-1990s
-to support multi-homed servers which might send a response packet from
-an address other than the destination address in the received packet.
-The rules for accepting a packet by an Rx initiator (RX_CLIENT_CONNECTION)
-were altered to permit acceptance of a packet from any address provided
-that the port number was unchanged and all of the connection identifiers
-matched (Epoch, CID, SecurityClass, ...).
+The DDR3 SPD data structure advertises the presence of a thermal
+sensor on a DDR3 module in byte 32, bit 7. Let's use this information
+to explicitly instantiate the thermal sensor I2C client instead of
+having to rely on class-based I2C probing.
 
-This change applies the same rules to the Linux implementation which makes
-it consistent with IBM AFS 3.6, Arla, OpenAFS and AuriStorFS.
+The temp sensor i2c address can be derived from the SPD i2c address,
+so we can directly instantiate the device and don't have to probe
+for it. If the temp sensor has been instantiated already by other
+means (e.g. class-based auto-detection), then the busy-check in
+i2c_new_client_device will detect this.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Signed-off-by: Jeffrey Altman <jaltman@auristor.com>
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Link: https://lore.kernel.org/r/20240419163057.4141728-1-marc.dionne@auristor.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note: Thermal sensors on DDR4 DIMM's are instantiated from the
+      ee1004 driver.
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/68113672-3724-44d5-9ff8-313dd6628f8c@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f42c97027fb7 ("eeprom: at24: fix memory corruption race condition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_object.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/misc/eeprom/at24.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index df8a271948a1c..7aa58129ae455 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -118,18 +118,13 @@ struct rxrpc_connection *rxrpc_find_client_connection_rcu(struct rxrpc_local *lo
- 	switch (srx->transport.family) {
- 	case AF_INET:
- 		if (peer->srx.transport.sin.sin_port !=
--		    srx->transport.sin.sin_port ||
--		    peer->srx.transport.sin.sin_addr.s_addr !=
--		    srx->transport.sin.sin_addr.s_addr)
-+		    srx->transport.sin.sin_port)
- 			goto not_found;
- 		break;
- #ifdef CONFIG_AF_RXRPC_IPV6
- 	case AF_INET6:
- 		if (peer->srx.transport.sin6.sin6_port !=
--		    srx->transport.sin6.sin6_port ||
--		    memcmp(&peer->srx.transport.sin6.sin6_addr,
--			   &srx->transport.sin6.sin6_addr,
--			   sizeof(struct in6_addr)) != 0)
-+		    srx->transport.sin6.sin6_port)
- 			goto not_found;
- 		break;
- #endif
+diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+index dbbf7db4ff2f4..e6d688817b106 100644
+--- a/drivers/misc/eeprom/at24.c
++++ b/drivers/misc/eeprom/at24.c
+@@ -581,6 +581,31 @@ static unsigned int at24_get_offset_adj(u8 flags, unsigned int byte_len)
+ 	}
+ }
+ 
++static void at24_probe_temp_sensor(struct i2c_client *client)
++{
++	struct at24_data *at24 = i2c_get_clientdata(client);
++	struct i2c_board_info info = { .type = "jc42" };
++	int ret;
++	u8 val;
++
++	/*
++	 * Byte 2 has value 11 for DDR3, earlier versions don't
++	 * support the thermal sensor present flag
++	 */
++	ret = at24_read(at24, 2, &val, 1);
++	if (ret || val != 11)
++		return;
++
++	/* Byte 32, bit 7 is set if temp sensor is present */
++	ret = at24_read(at24, 32, &val, 1);
++	if (ret || !(val & BIT(7)))
++		return;
++
++	info.addr = 0x18 | (client->addr & 7);
++
++	i2c_new_client_device(client->adapter, &info);
++}
++
+ static int at24_probe(struct i2c_client *client)
+ {
+ 	struct regmap_config regmap_config = { };
+@@ -780,6 +805,10 @@ static int at24_probe(struct i2c_client *client)
+ 		}
+ 	}
+ 
++	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
++	if (cdata == &at24_data_spd)
++		at24_probe_temp_sensor(client);
++
+ 	pm_runtime_idle(dev);
+ 
+ 	if (writable)
 -- 
 2.43.0
 
