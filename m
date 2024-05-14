@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB108C559B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6C68C54D7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C99E28E0E7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:59:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12052B22DE3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FD32943F;
-	Tue, 14 May 2024 11:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E1148CCC;
+	Tue, 14 May 2024 11:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSEN16RA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRwTydB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ACFF9D4;
-	Tue, 14 May 2024 11:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EF94594C;
+	Tue, 14 May 2024 11:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687985; cv=none; b=RUG9ocCgSk7CGVGs+WxZVko5cBoDuIM9R2r6w5WDd1HSAwso94cR9XU+kJGXWYGwU/fINrFyT1UB+xytqg+t6XR177B9mZ1zMM0IEcFScJ4OOT3NXXVye4KiVRi6pOaNCiHA8h7VLH7U6S+YnJERh1vZRwGz83ZIP0NDhfzUDqQ=
+	t=1715687479; cv=none; b=jbSulSjpUQyJKzW8dD0Z12kcQf0aRC7v9T94fDjMOiZ74wXjUlJd0gmttTHjcisaMVdpRBapUU9awmqb6BLTpPD9/PuBTi0me+aykBJJT0KG45y3e4sZQQqQmupeuid/OlkOGPWJYPZ5vu588AJOjcGmYjh3pNwnBPAgHN0bQBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687985; c=relaxed/simple;
-	bh=59VMYjlddIE5XZk6Xx7Aw5spS1X773IGZdB8CiwSGc0=;
+	s=arc-20240116; t=1715687479; c=relaxed/simple;
+	bh=owlWFrzGyOVGbkb3H/hhg2v0wSAxV7IWygCPJ1lyFWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXytePSFUfCesf7COlsRGQFo2fTB8HXwT1TU1SxjPbxFRscbKheJ6DKcQ3VTfRIOqYAnS7QldlZZT60XBB8lxnNdvIywpmMj85InP4F2aJ7TjzPriqMapfI/0BQhsMgI4/uQj72F4hwfKqyfX0NJ8R5F2nfLF8x0qfsiudMBpvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSEN16RA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B4AC32781;
-	Tue, 14 May 2024 11:59:44 +0000 (UTC)
+	 MIME-Version; b=FJmbZG+/Le0lMoBOefutBrMpBshSr240ig35tZ4KYfhcB/PKNukozrnPHkJL9WCA4CMyLsvw2Io5Joxkmc8Zsz+bvlXvjBMWMmhIlukzAW6tvq1AtWLO3O7hGjW6GdhJSf2DiOwbkvf5KNNkqpVTbUs++Hs3JkecMGcj4yyWm+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRwTydB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1DBC32781;
+	Tue, 14 May 2024 11:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687985;
-	bh=59VMYjlddIE5XZk6Xx7Aw5spS1X773IGZdB8CiwSGc0=;
+	s=korg; t=1715687479;
+	bh=owlWFrzGyOVGbkb3H/hhg2v0wSAxV7IWygCPJ1lyFWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSEN16RA1Sfedm7zu3QykCdlbJHUI9qJIq+XCy9uK4j1C7zXT9sn9fmoCvDqIX6ag
-	 8D9gVXn11UBavqk5kOlC0OgAV3LWdkeXiXdh3hRiCuAK43ZcZSY4rvswRK6dYAdgUU
-	 kfvAQxnTguf9kXbAZs4Oh+14bhZLoH13yoHYriKM=
+	b=SRwTydB6bSPYLJsuH0F4WD2pndg5L4ryMyzPUaz+r7wm94spPOxj/YJ/pQHROM5Wt
+	 ErMejyDIJJ7VAIM/hdjkEOfCmMKKW5yF+XWC1+pOnXSjy22gZTTkeQZd/kJSOQJiJr
+	 TZoHWIPilnN+VrqJsGdUh6oiP/I4ZBubs/WSOaDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aman Dhoot <amandhoot12@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 149/168] ALSA: hda/realtek: Fix mute led of HP Laptop 15-da3001TU
-Date: Tue, 14 May 2024 12:20:47 +0200
-Message-ID: <20240514101012.386766394@linuxfoundation.org>
+	Lakshmi Yadlapati <lakshmiy@us.ibm.com>,
+	Eddie James <eajames@linux.ibm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 110/111] hwmon: (pmbus/ucd9000) Increase delay from 250 to 500us
+Date: Tue, 14 May 2024 12:20:48 +0200
+Message-ID: <20240514101001.313809384@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aman Dhoot <amandhoot12@gmail.com>
+From: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
 
-commit 2d5af3ab9e6f1cf1468b2a5221b5c1f7f46c3333 upstream.
+commit 26e8383b116d0dbe74e28f86646563ab46d66d83 upstream.
 
-This patch simply add SND_PCI_QUIRK for HP Laptop 15-da3001TU to fixed
-mute led of laptop.
+Following the failure observed with a delay of 250us, experiments were
+conducted with various delays. It was found that a delay of 350us
+effectively mitigated the issue.
 
-Signed-off-by: Aman Dhoot <amandhoot12@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/CAMTp=B+3NG65Z684xMwHqdXDJhY+DJK-kuSw4adn6xwnG+b5JA@mail.gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+To provide a more optimal solution while still allowing a margin for
+stability, the delay is being adjusted to 500us.
+
+Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+Link: https://lore.kernel.org/r/20240507194603.1305750-1-lakshmiy@us.ibm.com
+Fixes: 8d655e6523764 ("hwmon: (ucd90320) Add minimum delay between bus accesses")
+Reviewed-by: Eddie James <eajames@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/pmbus/ucd9000.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9131,6 +9131,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x869d, "HP", ALC236_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+--- a/drivers/hwmon/pmbus/ucd9000.c
++++ b/drivers/hwmon/pmbus/ucd9000.c
+@@ -80,11 +80,11 @@ struct ucd9000_debugfs_entry {
+  * It has been observed that the UCD90320 randomly fails register access when
+  * doing another access right on the back of a register write. To mitigate this
+  * make sure that there is a minimum delay between a write access and the
+- * following access. The 250us is based on experimental data. At a delay of
+- * 200us the issue seems to go away. Add a bit of extra margin to allow for
++ * following access. The 500 is based on experimental data. At a delay of
++ * 350us the issue seems to go away. Add a bit of extra margin to allow for
+  * system to system differences.
+  */
+-#define UCD90320_WAIT_DELAY_US 250
++#define UCD90320_WAIT_DELAY_US 500
+ 
+ static inline void ucd90320_wait(const struct ucd9000_data *data)
+ {
 
 
 
