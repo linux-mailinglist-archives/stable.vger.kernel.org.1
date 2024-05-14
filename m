@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BAE8C51EC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FF08C52F1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12E15B21CAF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6C111C21A17
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA718762C1;
-	Tue, 14 May 2024 11:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CC3136653;
+	Tue, 14 May 2024 11:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYmZYOHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXRtZPIy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6732476028;
-	Tue, 14 May 2024 11:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764E257CBC;
+	Tue, 14 May 2024 11:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685214; cv=none; b=g0tiK0zdqt+yTv7i8JW0vxG+fR5vZpO9EeJIZIdJWUV+kzIWdmHC/AEVkE/AmdhkI3vn+sXx+OwDxcszCvcS5SUyTjLpRPemj1kjE2NvqU+YuIV8XY4Dat9a/BikgQxSNF6cMxqyNJy7qgoxxsIFKOCKSdqvRdTFXdQTBbMd230=
+	t=1715686217; cv=none; b=jsoQiV0pLV1ymJ24c8uhNbgiJY4/G4PHH31DuTj3RVlWr3ZjrrcD6Vy4PjMme//EXNYoBuMVzwkGU18Da22Vl7XpREeeEb9auD6+2ynAkQxZwZDN9lTLHxWUeYU+PLYxVSv4Svwbmn2UOnmxqbHuLi5tUlhis3/PjRWqC8SsLmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685214; c=relaxed/simple;
-	bh=Q5Uyn4KfVnV64kxcBYyCjs3gQD7dnIwjjcZ44Tow/x4=;
+	s=arc-20240116; t=1715686217; c=relaxed/simple;
+	bh=zbIvUhFPju41Phl9gJFCNba652ouMo3YXluXbOrt3RU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sM1EiW+/dqptYzpqqWgw0Y79G/zWawUZCL3xgJ+McjIKww/eqx+rMEFCNkrX7g3++BXuwmmQNnvgX6znJ/wjTDaWyiVuaCWIA6b9MTl3EJ9Oo1mcJl2pYQ8cu9XvB9+Oicekq1jaxD9b23wQZ8NMo4ylaqyNNLXYvrbFL1lBc/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYmZYOHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE935C2BD10;
-	Tue, 14 May 2024 11:13:32 +0000 (UTC)
+	 MIME-Version; b=ZydOrtHxgYHhlf2MBB2cuj3FVvoYZvaywTA83ESGXxRAPfb/4kLEyoZ3hX1OPAhQ0Rw2CN5qTCUQiIl2M5i/zEzUoRfkIaKAQ9+URqJPVlDXPvuKVwrXLIOzSqMmO59ZhKRXQTCQgh33t4BBjG2zGd0HTSKW3obWP7vNvZfukLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXRtZPIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D6AC2BD10;
+	Tue, 14 May 2024 11:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685214;
-	bh=Q5Uyn4KfVnV64kxcBYyCjs3gQD7dnIwjjcZ44Tow/x4=;
+	s=korg; t=1715686217;
+	bh=zbIvUhFPju41Phl9gJFCNba652ouMo3YXluXbOrt3RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYmZYOHt+JCVlzdf0KnHIVZM7YTlH+1hc2d/26A9ak2+05u2jFOIiwjtw++RrbVFk
-	 D6Ow5HscDScehJhTZK6vtww+jzwj4YJk572yV3ghZzCcJ2W/vufuYgVhRnxv8jDhmm
-	 6EIqkW+7FAgjshoOXLFatiX74P1PsQ7161hknd6U=
+	b=zXRtZPIyXNeN0017D2Qho1fQmWw1cJ0BOUW7iy4I8qmijJyelIksWIwQ0pp4DipV5
+	 ifXEboC7jTKbHRNQNKPimtWiNOTABODfLo3zfhlWPt4mZMfLhE+DYL3ALk3r1W1NaB
+	 p+fWSUWzxcEj177JXjRMx4gQNeVUQQvsbWYGjLBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/301] hv_netvsc: Dont free decrypted memory
+Subject: [PATCH 6.1 062/236] s390/vdso: Add CFI for RA register to asm macro vdso_func
 Date: Tue, 14 May 2024 12:17:04 +0200
-Message-ID: <20240514101038.033266200@linuxfoundation.org>
+Message-ID: <20240514101022.710711267@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Jens Remus <jremus@linux.ibm.com>
 
-[ Upstream commit bbf9ac34677b57506a13682b31a2a718934c0e31 ]
+[ Upstream commit b961ec10b9f9719987470236feb50c967db5a652 ]
 
-In CoCo VMs it is possible for the untrusted host to cause
-set_memory_encrypted() or set_memory_decrypted() to fail such that an
-error is returned and the resulting memory is shared. Callers need to
-take care to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional or security
-issues.
+The return-address (RA) register r14 is specified as volatile in the
+s390x ELF ABI [1]. Nevertheless proper CFI directives must be provided
+for an unwinder to restore the return address, if the RA register
+value is changed from its value at function entry, as it is the case.
 
-The netvsc driver could free decrypted/shared pages if
-set_memory_decrypted() fails. Check the decrypted field in the gpadl
-to decide whether to free the memory.
+[1]: s390x ELF ABI, https://github.com/IBM/s390x-abi/releases
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20240311161558.1310-4-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240311161558.1310-4-mhklinux@outlook.com>
+Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/dwarf.h               | 1 +
+ arch/s390/kernel/vdso64/vdso_user_wrapper.S | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-index 4f9658a741024..b2f27e505f76c 100644
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -154,8 +154,11 @@ static void free_netvsc_device(struct rcu_head *head)
- 	int i;
+diff --git a/arch/s390/include/asm/dwarf.h b/arch/s390/include/asm/dwarf.h
+index 4f21ae561e4dd..390906b8e386e 100644
+--- a/arch/s390/include/asm/dwarf.h
++++ b/arch/s390/include/asm/dwarf.h
+@@ -9,6 +9,7 @@
+ #define CFI_DEF_CFA_OFFSET	.cfi_def_cfa_offset
+ #define CFI_ADJUST_CFA_OFFSET	.cfi_adjust_cfa_offset
+ #define CFI_RESTORE		.cfi_restore
++#define CFI_REL_OFFSET		.cfi_rel_offset
  
- 	kfree(nvdev->extension);
--	vfree(nvdev->recv_buf);
--	vfree(nvdev->send_buf);
-+
-+	if (!nvdev->recv_buf_gpadl_handle.decrypted)
-+		vfree(nvdev->recv_buf);
-+	if (!nvdev->send_buf_gpadl_handle.decrypted)
-+		vfree(nvdev->send_buf);
- 	bitmap_free(nvdev->send_section_map);
- 
- 	for (i = 0; i < VRSS_CHANNEL_MAX; i++) {
+ #ifdef CONFIG_AS_CFI_VAL_OFFSET
+ #define CFI_VAL_OFFSET		.cfi_val_offset
+diff --git a/arch/s390/kernel/vdso64/vdso_user_wrapper.S b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
+index 97f0c0a669a59..0625381359df4 100644
+--- a/arch/s390/kernel/vdso64/vdso_user_wrapper.S
++++ b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
+@@ -23,8 +23,10 @@ __kernel_\func:
+ 	CFI_DEF_CFA_OFFSET (STACK_FRAME_OVERHEAD + WRAPPER_FRAME_SIZE)
+ 	CFI_VAL_OFFSET 15, -STACK_FRAME_OVERHEAD
+ 	stg	%r14,STACK_FRAME_OVERHEAD(%r15)
++	CFI_REL_OFFSET 14, STACK_FRAME_OVERHEAD
+ 	brasl	%r14,__s390_vdso_\func
+ 	lg	%r14,STACK_FRAME_OVERHEAD(%r15)
++	CFI_RESTORE 14
+ 	aghi	%r15,WRAPPER_FRAME_SIZE
+ 	CFI_DEF_CFA_OFFSET STACK_FRAME_OVERHEAD
+ 	CFI_RESTORE 15
 -- 
 2.43.0
 
