@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3190F8C5443
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB4F8C54B0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9DE1F233F3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229B41F2161C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888B16BFBB;
-	Tue, 14 May 2024 11:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3954712AAE9;
+	Tue, 14 May 2024 11:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vo8PafTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUMPvXnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DCC1E495;
-	Tue, 14 May 2024 11:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE7D5A0F9;
+	Tue, 14 May 2024 11:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687091; cv=none; b=lEQKG2APsYm1M2LCk7xITwfP1uLimL62meDW4GB5wbrpyxlXc3LKlRk+H1FVlpRLXgcULUf3eVUHAuVTQmkOovQl8ZdZt9hZzEVDdreQDCSBB53q2/U09/Rx42Lx3MqyMYYvfmT9T4IKypiyW0cpWz6ZKxAdh37dSBM1TgvaQgw=
+	t=1715687369; cv=none; b=NbSHgeCSTHo2WbZ8tZDcRj50RmztuHzT+Vq7LkzI2XTyTBpdnX7+eIdDj4EC5JmGQU6y10laz+GWmZDs+tvn4UoI1OTC/fmXsu2Y4sAzfG/HIE1HqYsqHFMbSXtamQ91KVzNELIowdyvuc9lzL5/jy3wH8emLtRIBdH6ppuUDOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687091; c=relaxed/simple;
-	bh=uRk9EEati40Q7usAr5kw2CKNM/lT3LuGlM2HrTXJkhg=;
+	s=arc-20240116; t=1715687369; c=relaxed/simple;
+	bh=khmNw4MCXq7eKt+nwzTBGjiSe/K1vALluh5/9yrwKYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmbpPrcoYKl9qeK1mJSzGO1b8ThrgKsNVaVDlaa7nenvl5eAH0nzBLdjo7QhjEsNKUyshTfq8cDMmPqCtE2U+75ciOVdRcy7ov74ktcP0lMoj874FOSvbyjjwqBY14ITU4nSV3/GcG5rrJUb/iU0mssD7bpV7UMqKJtHJLlA5PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vo8PafTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65AEC2BD10;
-	Tue, 14 May 2024 11:44:50 +0000 (UTC)
+	 MIME-Version; b=prV6ds/tFXMLjXma5I+CoM3TVuBqEE2nkYVu5Wkx8OS0fTPYl7HvnbepcyVvgq+S8hOP/3bUssX+Hpvu+sl+mAkn2qqnUOtYFZxcQRLAcWL62moTlPDJNt/7IvqZvpJ/BGkx0tMdKzpKdINTSqEukN0u2LPGbilPSQhfjGXp/So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUMPvXnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68004C2BD10;
+	Tue, 14 May 2024 11:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687091;
-	bh=uRk9EEati40Q7usAr5kw2CKNM/lT3LuGlM2HrTXJkhg=;
+	s=korg; t=1715687368;
+	bh=khmNw4MCXq7eKt+nwzTBGjiSe/K1vALluh5/9yrwKYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vo8PafTncOUW9kV5kWfBRIbPPET+FeLkqQV9KSJRfqNEYRmUida3cm+bUjbM+O91X
-	 OuoyzecaGl48CBYz+Pz7I4R5kC7HqHfU3FZd7WPEdkjJegCAwWfvxnKpGhCnawn+j7
-	 DaIU+1puTh3TVPkOnUu+BuT64j3lLy4L4AQhgSgc=
+	b=EUMPvXnFx5gxbahPqIziaNx+xBO52C+c/5AE0tAZGe45EVkijGGuZ1whN9xIBZtxj
+	 LuCHYZRUIfTmp8hVZf4dYSIJJuKQltvmCeAfiPbvihJgONiykhayVxFqzE7qASZN0Z
+	 wmeiD0qCPL1xlKr/eLfjUBysXHXHS80/W0wm0AJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jerome Brunet <jbrunet@baylibre.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 60/84] ASoC: meson: axg-card: Fix nonatomic links
+Subject: [PATCH 5.10 073/111] ASoC: meson: axg-card: Fix nonatomic links
 Date: Tue, 14 May 2024 12:20:11 +0200
-Message-ID: <20240514100953.944523265@linuxfoundation.org>
+Message-ID: <20240514100959.907045091@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -106,17 +106,17 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 deletion(-)
 
 diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-index 36a004192b562..7126344017fa6 100644
+index cbbaa55d92a66..2b77010c2c5ce 100644
 --- a/sound/soc/meson/axg-card.c
 +++ b/sound/soc/meson/axg-card.c
-@@ -568,7 +568,6 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
+@@ -320,7 +320,6 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
  
  	dai_link->cpus = cpu;
  	dai_link->num_cpus = 1;
 -	dai_link->nonatomic = true;
  
- 	ret = axg_card_parse_dai(card, np, &dai_link->cpus->of_node,
- 				 &dai_link->cpus->dai_name);
+ 	ret = meson_card_parse_dai(card, np, &dai_link->cpus->of_node,
+ 				   &dai_link->cpus->dai_name);
 -- 
 2.43.0
 
