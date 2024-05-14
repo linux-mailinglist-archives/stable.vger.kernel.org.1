@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-43915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52698C502E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61098C5031
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224641C20CE6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36DA11F21194
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1FF13A24A;
-	Tue, 14 May 2024 10:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AB313A24D;
+	Tue, 14 May 2024 10:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsEzsoGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUmfOvjQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF63136651;
-	Tue, 14 May 2024 10:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E434205D;
+	Tue, 14 May 2024 10:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683060; cv=none; b=EFOCXAf2lxex5uj5wOMsFBedsMN9F3trvIniHBOwj4IaGc1x+apu5kGB1P+gvYi53WcmwLbkiS0/pLBRaB8W73UTogFiG7o70gitJXh+VAGxqT83ageUKYXYFwSDXgEj+OUc5Ky2VIvMfqgSjbXn2mRnRY3A1zZHSuc4bPaRSnA=
+	t=1715683069; cv=none; b=g0YPbUYee7IJLhfHVM2Q4UZMrqE3mqA7hT5FYJz0JLkwrf7KdRy9dnnFIFdHDRpYrBu6W08L67mhPNQ1rOpCF48TyoAIA8DgQnrudG0CUn3ll5pAnnTKwmErXuY+I2wbT2KNsz/LM/nDFE5yD44O9ON9awCOXMNysCjFB3CAwMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683060; c=relaxed/simple;
-	bh=fXZkLPV3T71KBlt0ObUgITgTZJdOs4NPFb7n6uH8qGY=;
+	s=arc-20240116; t=1715683069; c=relaxed/simple;
+	bh=6pwAItDthvPIXvKBD310uiOf/xEoNrXJb8dcrI4T5rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MuzeXunptnAHldwDy4728Cp5Bjel+RnCB0pOB4oGAr8tRRJ5j/nCl9cz+4SZVO5vrq+J/anYgijcaLKAeW2a0/UL94cO56a6AQc/cWpj1Ie87RWsPcF3pxnYVQtJaPThoH3fLp69j5ycEqRKGviAeYCi6oC5kuNzeW2vKpkFpGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsEzsoGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA02C2BD10;
-	Tue, 14 May 2024 10:37:39 +0000 (UTC)
+	 MIME-Version; b=peyhR6a3OFB91IRfpXf3g72U2hOxhMVelVnAbl8R+NLgVhRaYxIgWr0qAcA/KdIHsSxH9SGbbJH8d9wvsiDHgvICioJdkKBiezvnpNei3pdahumx8lXvwCNVF52x2edMjZXatWK53BhZz3OH/zw9KohDewb8AzV1n7gy+zkpTXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUmfOvjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AE1C2BD10;
+	Tue, 14 May 2024 10:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683060;
-	bh=fXZkLPV3T71KBlt0ObUgITgTZJdOs4NPFb7n6uH8qGY=;
+	s=korg; t=1715683069;
+	bh=6pwAItDthvPIXvKBD310uiOf/xEoNrXJb8dcrI4T5rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VsEzsoGR+v/JqqPJNPFnN1VvorpNPjhTRXkoGx2k7NwUzxpKz9AOFADNGqS49oFy8
-	 P8ggcgJmGsqc2civOXuzB/NcJG6zX5wBQkbHrtZeWgU3OBexVa6FgapUQY91JwRs05
-	 Nh1x08ZTbFkY/iVF01V568WuhDVMzfD15NalibAQ=
+	b=pUmfOvjQsMN1+pDYTZAgMF0HvhntNkBpkw0c7jqDB9pTULirOOXpQYG7t7JBGCxPe
+	 j/lEF76d2O/6fnfD66fjW1n2q4WDL8tZ7wXrNvtxbJqmoq+1MShijuBjokC53CQMh4
+	 XwtX3F4X40Jc21geerFTa8ErdfPhL4Mno1yANpwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ma <li.ma@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 160/336] drm/amd/display: add DCN 351 version for microcode load
-Date: Tue, 14 May 2024 12:16:04 +0200
-Message-ID: <20240514101044.643253632@linuxfoundation.org>
+Subject: [PATCH 6.8 161/336] drm/amdgpu: add smu 14.0.1 discovery support
+Date: Tue, 14 May 2024 12:16:05 +0200
+Message-ID: <20240514101044.682156612@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
 References: <20240514101038.595152603@linuxfoundation.org>
@@ -67,45 +66,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Ma <li.ma@amd.com>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-[ Upstream commit d4396924c3d44f34d0643f650e70892e07f3677f ]
+[ Upstream commit 533eefb9be76c3b23d220ee18edfda8eb56cefff ]
 
-There is a new DCN veriosn 3.5.1 need to load
+This patch to add smu 14.0.1 support
 
-Signed-off-by: Li Ma <li.ma@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
 Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 718e533ab46dd..0d3e553647993 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -147,6 +147,9 @@ MODULE_FIRMWARE(FIRMWARE_NAVI12_DMCU);
- #define FIRMWARE_DCN_35_DMUB "amdgpu/dcn_3_5_dmcub.bin"
- MODULE_FIRMWARE(FIRMWARE_DCN_35_DMUB);
- 
-+#define FIRMWARE_DCN_351_DMUB "amdgpu/dcn_3_5_1_dmcub.bin"
-+MODULE_FIRMWARE(FIRMWARE_DCN_351_DMUB);
-+
- /* Number of bytes in PSP header for firmware. */
- #define PSP_HEADER_BYTES 0x100
- 
-@@ -4776,6 +4779,9 @@ static int dm_init_microcode(struct amdgpu_device *adev)
- 	case IP_VERSION(3, 5, 0):
- 		fw_name_dmub = FIRMWARE_DCN_35_DMUB;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index 4f9900779ef9e..ff28265838ec0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -1867,6 +1867,7 @@ static int amdgpu_discovery_set_smu_ip_blocks(struct amdgpu_device *adev)
+ 		amdgpu_device_ip_block_add(adev, &smu_v13_0_ip_block);
  		break;
-+	case IP_VERSION(3, 5, 1):
-+		fw_name_dmub = FIRMWARE_DCN_351_DMUB;
-+		break;
+ 	case IP_VERSION(14, 0, 0):
++	case IP_VERSION(14, 0, 1):
+ 		amdgpu_device_ip_block_add(adev, &smu_v14_0_ip_block);
+ 		break;
  	default:
- 		/* ASIC doesn't support DMUB. */
- 		return 0;
 -- 
 2.43.0
 
