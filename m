@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADC78C5177
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AAC8C4FE8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB2DBB218E3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BE61F210E7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0378B139580;
-	Tue, 14 May 2024 11:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B376A3C467;
+	Tue, 14 May 2024 10:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrrOWIXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHcrDsl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B558454903;
-	Tue, 14 May 2024 11:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711AD320F;
+	Tue, 14 May 2024 10:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684550; cv=none; b=RaIunmgzX9khZWV0EoRX/I2MNifoGkP/st86sgqCUgak3Qjj2iWtbpP6rYj3qo74ywjqcsZ5ISgsB/O2cDru8d2KcdNhJYnzUkY6OvJEk/umeXjMpa+SUSgVbM7cNuec1Igw475cOYPKwbdgwyb68U2lpWf9YDdNlkv17MejtDA=
+	t=1715682659; cv=none; b=hV0n/4XrHE/z9wz4Yp4bJ9Z8cZsh40KS29/j8quKhQO+g91LrfbtZI3LmEMYhg4CfY//u8QsJbRTBZxkzIOTJeXxFjX9r7QPeVoq+6Hga1ALJQ0/ZacqOen2n0IG+e1WLq1Ka1x2jK+5mIafTlPYzDIR8g5lMoco2Y1to2+HQYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684550; c=relaxed/simple;
-	bh=ULwvIifB8lb68Wx6we9NfWIDFeXBWTvBFhdD38jrk+Y=;
+	s=arc-20240116; t=1715682659; c=relaxed/simple;
+	bh=Er9FHRW3yZrQ956jGWxEjQixDDtaX4dnSqm56waWEec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBbfvV0iJCYPEwFdZroTQoSDWjt+xRjWe0jnL29TbK4mopD4P3xXRhTs4e6ZFcvJXFnCdEhSkWx9QYYhlffQsFEGi9Iws1yrRXNFZOpKIC1iakCCIlhmabeDKBKeDwk7vjLfGKVtxKyw2brfMFY14CIk7T+BJALKUllitd/Lw/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrrOWIXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA96C2BD10;
-	Tue, 14 May 2024 11:02:29 +0000 (UTC)
+	 MIME-Version; b=sIOl90wOmXq5U1a2ZaiHh9IphP1YZHi4B1nH6mSfX9FyU4SB5LsEtPNKuZ/L3Nm5iAywsVlVBpm2TUz/Rv+NQlXiu8QxTlQvQd057WeAqL0i5344uhjx38F9A2tqWjVfq2Zv8vNC6KdIoQs0Q2ews0B8ZLQT+gA8YZwEq5PWI8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHcrDsl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F4AC32782;
+	Tue, 14 May 2024 10:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684550;
-	bh=ULwvIifB8lb68Wx6we9NfWIDFeXBWTvBFhdD38jrk+Y=;
+	s=korg; t=1715682659;
+	bh=Er9FHRW3yZrQ956jGWxEjQixDDtaX4dnSqm56waWEec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrrOWIXlF9qPCZ+w7HWDgoIuFeHVGEkjwEznu6vejytzw/LbnoQyZXPqDHxwmHFBY
-	 MKeTM/JQn31vJZwGz5c26KEfjPLMoLXl1iALWEL/1QpdujsOyQzIRqV7xD6jJET2AZ
-	 1/EexcaARAZjLdC10amUDJsCbykVZ9j6W+BGgljM=
+	b=iHcrDsl7o6DQeQOlvmfr2xlkLwMmHejU/VW6OQo42Y1K30++MOmjwpHoSr8UHsX31
+	 VLrNXZUHKlp1KWP4zvUIr4KslXpuPcOFFO1q7EuZ1X1WNEx9PBQkxBE279DBbDrA++
+	 O5mWv5JNuZ0o5HATXcbyFvBi1GxGBZhDcmJTZmII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Mark Brown <broonie@kernel.org>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/301] regulator: change devm_regulator_get_enable_optional() stub to return Ok
+Subject: [PATCH 6.8 094/336] exfat: fix timing of synchronizing bitmap and inode
 Date: Tue, 14 May 2024 12:14:58 +0200
-Message-ID: <20240514101033.270725175@linuxfoundation.org>
+Message-ID: <20240514101042.154695071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit ff33132605c1a0acea59e4c523cb7c6fabe856b2 ]
+[ Upstream commit d7ed5232f0f16181506373d73e711190d5e0c868 ]
 
-The devm_regulator_get_enable_optional() should be a 'call and forget'
-API, meaning, when it is used to enable the regulators, the API does not
-provide a handle to do any further control of the regulators. It gives
-no real benefit to return an error from the stub if CONFIG_REGULATOR is
-not set.
+Commit(f55c096f62f1 exfat: do not zero the extended part) changed
+the timing of synchronizing bitmap and inode in exfat_cont_expand().
+The change caused xfstests generic/013 to fail if 'dirsync' or 'sync'
+is enabled. So this commit restores the timing.
 
-On the contrary, returning an error is causing problems to drivers when
-hardware is such it works out just fine with no regulator control.
-Returning an error forces drivers to specifically handle the case where
-CONFIG_REGULATOR is not set, making the mere existence of the stub
-questionalble.
-
-Change the stub implementation for the
-devm_regulator_get_enable_optional() to return Ok so drivers do not
-separately handle the case where the CONFIG_REGULATOR is not set.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: da279e6965b3 ("regulator: Add devm helpers for get and enable")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/ZiedtOE00Zozd3XO@fedora
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f55c096f62f1 ("exfat: do not zero the extended part")
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/regulator/consumer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/file.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
-index e3e58d5a84e2a..2c526c8d10cc4 100644
---- a/include/linux/regulator/consumer.h
-+++ b/include/linux/regulator/consumer.h
-@@ -371,7 +371,7 @@ static inline int devm_regulator_get_enable(struct device *dev, const char *id)
- static inline int devm_regulator_get_enable_optional(struct device *dev,
- 						     const char *id)
- {
--	return -ENODEV;
-+	return 0;
- }
+diff --git a/fs/exfat/file.c b/fs/exfat/file.c
+index cc00f1a7a1e18..9adfc38ca7dac 100644
+--- a/fs/exfat/file.c
++++ b/fs/exfat/file.c
+@@ -51,7 +51,7 @@ static int exfat_cont_expand(struct inode *inode, loff_t size)
+ 	clu.flags = ei->flags;
  
- static inline struct regulator *__must_check
+ 	ret = exfat_alloc_cluster(inode, new_num_clusters - num_clusters,
+-			&clu, IS_DIRSYNC(inode));
++			&clu, inode_needs_sync(inode));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -77,12 +77,11 @@ static int exfat_cont_expand(struct inode *inode, loff_t size)
+ 	ei->i_size_aligned = round_up(size, sb->s_blocksize);
+ 	ei->i_size_ondisk = ei->i_size_aligned;
+ 	inode->i_blocks = round_up(size, sbi->cluster_size) >> 9;
++	mark_inode_dirty(inode);
+ 
+-	if (IS_DIRSYNC(inode))
++	if (IS_SYNC(inode))
+ 		return write_inode_now(inode, 1);
+ 
+-	mark_inode_dirty(inode);
+-
+ 	return 0;
+ 
+ free_clu:
 -- 
 2.43.0
 
