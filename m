@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-44272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875228C5208
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F878C533C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAC4C1C2166A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED0DB1F232C3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F40129E81;
-	Tue, 14 May 2024 11:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33146E61F;
+	Tue, 14 May 2024 11:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Co2NfRY5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQHUdWTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078AD54BFE;
-	Tue, 14 May 2024 11:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CFE6E5ED;
+	Tue, 14 May 2024 11:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685378; cv=none; b=WnQQNw2zSeGbxNMBwXAgf342jg7OqRsrTCCw7FMW3wXEccrurHNjaUYK+GkYE0fC12sF2eZCnb+peJYPS33q4sc0q8sffB6ZyyO8XMykplAaZcwqjDw9Dwdy8hm7sI3cWscANQ2kUivLOUIpiVy+Pjr872XPAcjXpeFo0HEuFDw=
+	t=1715686381; cv=none; b=mv374IOstqcXBBQrjJ360bXyi3XhGfZs7vM83RZZ2l300qfJ/Dl5w5jxYyO0B0i2/RPEKB5wPLMEc38T7FzFgerpORdv9AqqZTygcR52OtQJOGjX03xOzfgJXlzifAQbPCZphwAkk+D9hFE7AQkCDp1xzoUqGW6E48BKGfqUDMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685378; c=relaxed/simple;
-	bh=uB1TLk71LvTfhJap37/V1FK00CSHdzNM4Cm0aQ4ty7E=;
+	s=arc-20240116; t=1715686381; c=relaxed/simple;
+	bh=zXp5ripADO5ysTk3ZCIgddCxbvIoh+X6Y0oRFDltAe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTWDIRsqCvPUzt20xVv/0Xso4f00mosaHBbnIDbqeTnW87EK7bNYdfwBWQIb58txttOIVc/JqyHDX1K9vdjyr8G/nMELWITdsXDUuiBLri736vVneALKUHIrDAZBv4o6RQOtGLSAkhnY7Y1jVSRHXIClnXrBlj+wlnG422mZniU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Co2NfRY5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D73C2BD10;
-	Tue, 14 May 2024 11:16:17 +0000 (UTC)
+	 MIME-Version; b=cg+KvNnVQEcD0XDHdak8LtscDcwlwdC0/3elJkvBCE4+LV+xUh5rgDu07OxOMGMMWM6tYAazyoM9Xwv5lUoCTq8p4d6rfv8Ycc2bvxXp8qLgN9r30hSyS6tICL6DPIOLHEblajZNWLskKKLg0O3Sk5upaoYBCUzlNsFghAhU874=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQHUdWTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA2EC2BD10;
+	Tue, 14 May 2024 11:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685377;
-	bh=uB1TLk71LvTfhJap37/V1FK00CSHdzNM4Cm0aQ4ty7E=;
+	s=korg; t=1715686381;
+	bh=zXp5ripADO5ysTk3ZCIgddCxbvIoh+X6Y0oRFDltAe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Co2NfRY5hMi+8xxBkobYGOFhYNN0jS4HukE1pJ8XfgaPnR4QJ6kd/CDSgISD0GxNV
-	 19b9h3o1p6PgGrSshUAL6/8sZtDIx7e/aHfDNAOKiqebguBVBzjaeNZpsLd8H7EK9U
-	 fyPNYtgFicLVMELkX6eAwpxJR1ZejulFdp0Ll6sQ=
+	b=WQHUdWTA5wwhWfPCg1J/Rzz5FQD+Fj3fRD/t41gBYTcKqgR6CSQc//FtqJTkDYx7v
+	 J7QcGk05pw/nYme0HaLInVUhlWv+2L5bVaHkVeagONSHa3Th6ynYzvXGPSfNZdS1Ko
+	 jLHImGjuOECK+jGwx6BGzDvxRNr1MHE7d0kgHM+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nayna Jain <nayna@linux.ibm.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Russell Currey <ruscur@russell.cc>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/301] Bluetooth: Fix use-after-free bugs caused by sco_sock_timeout
+Subject: [PATCH 6.1 088/236] powerpc/pseries: Implement signed update for PLPKS objects
 Date: Tue, 14 May 2024 12:17:30 +0200
-Message-ID: <20240514101039.015390460@linuxfoundation.org>
+Message-ID: <20240514101023.710898376@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +65,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Nayna Jain <nayna@linux.ibm.com>
 
-[ Upstream commit 483bc08181827fc475643272ffb69c533007e546 ]
+[ Upstream commit 899d9b8fee66da820eadc60b2a70090eb83db761 ]
 
-When the sco connection is established and then, the sco socket
-is releasing, timeout_work will be scheduled to judge whether
-the sco disconnection is timeout. The sock will be deallocated
-later, but it is dereferenced again in sco_sock_timeout. As a
-result, the use-after-free bugs will happen. The root cause is
-shown below:
+The Platform Keystore provides a signed update interface which can be used
+to create, replace or append to certain variables in the PKS in a secure
+fashion, with the hypervisor requiring that the update be signed using the
+Platform Key.
 
-    Cleanup Thread               |      Worker Thread
-sco_sock_release                 |
-  sco_sock_close                 |
-    __sco_sock_close             |
-      sco_sock_set_timer         |
-        schedule_delayed_work    |
-  sco_sock_kill                  |    (wait a time)
-    sock_put(sk) //FREE          |  sco_sock_timeout
-                                 |    sock_hold(sk) //USE
+Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
+driver to allow signed updates to PKS objects.
 
-The KASAN report triggered by POC is shown below:
+(The plpks driver doesn't need to do any cryptography or otherwise handle
+the actual signed variable contents - that will be handled by userspace
+tooling.)
 
-[   95.890016] ==================================================================
-[   95.890496] BUG: KASAN: slab-use-after-free in sco_sock_timeout+0x5e/0x1c0
-[   95.890755] Write of size 4 at addr ffff88800c388080 by task kworker/0:0/7
-...
-[   95.890755] Workqueue: events sco_sock_timeout
-[   95.890755] Call Trace:
-[   95.890755]  <TASK>
-[   95.890755]  dump_stack_lvl+0x45/0x110
-[   95.890755]  print_address_description+0x78/0x390
-[   95.890755]  print_report+0x11b/0x250
-[   95.890755]  ? __virt_addr_valid+0xbe/0xf0
-[   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
-[   95.890755]  kasan_report+0x139/0x170
-[   95.890755]  ? update_load_avg+0xe5/0x9f0
-[   95.890755]  ? sco_sock_timeout+0x5e/0x1c0
-[   95.890755]  kasan_check_range+0x2c3/0x2e0
-[   95.890755]  sco_sock_timeout+0x5e/0x1c0
-[   95.890755]  process_one_work+0x561/0xc50
-[   95.890755]  worker_thread+0xab2/0x13c0
-[   95.890755]  ? pr_cont_work+0x490/0x490
-[   95.890755]  kthread+0x279/0x300
-[   95.890755]  ? pr_cont_work+0x490/0x490
-[   95.890755]  ? kthread_blkcg+0xa0/0xa0
-[   95.890755]  ret_from_fork+0x34/0x60
-[   95.890755]  ? kthread_blkcg+0xa0/0xa0
-[   95.890755]  ret_from_fork_asm+0x11/0x20
-[   95.890755]  </TASK>
-[   95.890755]
-[   95.890755] Allocated by task 506:
-[   95.890755]  kasan_save_track+0x3f/0x70
-[   95.890755]  __kasan_kmalloc+0x86/0x90
-[   95.890755]  __kmalloc+0x17f/0x360
-[   95.890755]  sk_prot_alloc+0xe1/0x1a0
-[   95.890755]  sk_alloc+0x31/0x4e0
-[   95.890755]  bt_sock_alloc+0x2b/0x2a0
-[   95.890755]  sco_sock_create+0xad/0x320
-[   95.890755]  bt_sock_create+0x145/0x320
-[   95.890755]  __sock_create+0x2e1/0x650
-[   95.890755]  __sys_socket+0xd0/0x280
-[   95.890755]  __x64_sys_socket+0x75/0x80
-[   95.890755]  do_syscall_64+0xc4/0x1b0
-[   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
-[   95.890755]
-[   95.890755] Freed by task 506:
-[   95.890755]  kasan_save_track+0x3f/0x70
-[   95.890755]  kasan_save_free_info+0x40/0x50
-[   95.890755]  poison_slab_object+0x118/0x180
-[   95.890755]  __kasan_slab_free+0x12/0x30
-[   95.890755]  kfree+0xb2/0x240
-[   95.890755]  __sk_destruct+0x317/0x410
-[   95.890755]  sco_sock_release+0x232/0x280
-[   95.890755]  sock_close+0xb2/0x210
-[   95.890755]  __fput+0x37f/0x770
-[   95.890755]  task_work_run+0x1ae/0x210
-[   95.890755]  get_signal+0xe17/0xf70
-[   95.890755]  arch_do_signal_or_restart+0x3f/0x520
-[   95.890755]  syscall_exit_to_user_mode+0x55/0x120
-[   95.890755]  do_syscall_64+0xd1/0x1b0
-[   95.890755]  entry_SYSCALL_64_after_hwframe+0x67/0x6f
-[   95.890755]
-[   95.890755] The buggy address belongs to the object at ffff88800c388000
-[   95.890755]  which belongs to the cache kmalloc-1k of size 1024
-[   95.890755] The buggy address is located 128 bytes inside of
-[   95.890755]  freed 1024-byte region [ffff88800c388000, ffff88800c388400)
-[   95.890755]
-[   95.890755] The buggy address belongs to the physical page:
-[   95.890755] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff88800c38a800 pfn:0xc388
-[   95.890755] head: order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[   95.890755] anon flags: 0x100000000000840(slab|head|node=0|zone=1)
-[   95.890755] page_type: 0xffffffff()
-[   95.890755] raw: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
-[   95.890755] raw: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
-[   95.890755] head: 0100000000000840 ffff888006842dc0 0000000000000000 0000000000000001
-[   95.890755] head: ffff88800c38a800 000000000010000a 00000001ffffffff 0000000000000000
-[   95.890755] head: 0100000000000003 ffffea000030e201 ffffea000030e248 00000000ffffffff
-[   95.890755] head: 0000000800000000 0000000000000000 00000000ffffffff 0000000000000000
-[   95.890755] page dumped because: kasan: bad access detected
-[   95.890755]
-[   95.890755] Memory state around the buggy address:
-[   95.890755]  ffff88800c387f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   95.890755]  ffff88800c388000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755] >ffff88800c388080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755]                    ^
-[   95.890755]  ffff88800c388100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755]  ffff88800c388180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   95.890755] ==================================================================
-
-Fix this problem by adding a check protected by sco_conn_lock to judget
-whether the conn->hcon is null. Because the conn->hcon will be set to null,
-when the sock is releasing.
-
-Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+[ajd: split patch, add timeout handling and misc cleanups]
+Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20230210080401.345462-18-ajd@linux.ibm.com
+Stable-dep-of: 784354349d2c ("powerpc/pseries: make max polling consistent for longer H_CALLs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/sco.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/include/asm/hvcall.h      |  1 +
+ arch/powerpc/platforms/pseries/plpks.c | 74 ++++++++++++++++++++++++--
+ arch/powerpc/platforms/pseries/plpks.h |  5 ++
+ 3 files changed, 75 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 3cc9fab8e8384..ede7391f3aa98 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -83,6 +83,10 @@ static void sco_sock_timeout(struct work_struct *work)
- 	struct sock *sk;
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 95fd7f9485d55..c099780385dd3 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -335,6 +335,7 @@
+ #define H_RPT_INVALIDATE	0x448
+ #define H_SCM_FLUSH		0x44C
+ #define H_GET_ENERGY_SCALE_INFO	0x450
++#define H_PKS_SIGNED_UPDATE	0x454
+ #define H_WATCHDOG		0x45C
+ #define MAX_HCALL_OPCODE	H_WATCHDOG
  
- 	sco_conn_lock(conn);
-+	if (!conn->hcon) {
-+		sco_conn_unlock(conn);
-+		return;
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index 06b52fe12c88b..3efbfd25d35d0 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -74,6 +74,12 @@ static int pseries_status_to_err(int rc)
+ 		err = -ENOENT;
+ 		break;
+ 	case H_BUSY:
++	case H_LONG_BUSY_ORDER_1_MSEC:
++	case H_LONG_BUSY_ORDER_10_MSEC:
++	case H_LONG_BUSY_ORDER_100_MSEC:
++	case H_LONG_BUSY_ORDER_1_SEC:
++	case H_LONG_BUSY_ORDER_10_SEC:
++	case H_LONG_BUSY_ORDER_100_SEC:
+ 		err = -EBUSY;
+ 		break;
+ 	case H_AUTHORITY:
+@@ -174,14 +180,17 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
+ 				     u16 namelen)
+ {
+ 	struct label *label;
+-	size_t slen;
++	size_t slen = 0;
+ 
+ 	if (!name || namelen > PLPKS_MAX_NAME_SIZE)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	slen = strlen(component);
+-	if (component && slen > sizeof(label->attr.prefix))
+-		return ERR_PTR(-EINVAL);
++	// Support NULL component for signed updates
++	if (component) {
++		slen = strlen(component);
++		if (slen > sizeof(label->attr.prefix))
++			return ERR_PTR(-EINVAL);
 +	}
- 	sk = conn->sk;
- 	if (sk)
- 		sock_hold(sk);
+ 
+ 	label = kzalloc(sizeof(*label), GFP_KERNEL);
+ 	if (!label)
+@@ -264,6 +273,61 @@ static int plpks_confirm_object_flushed(struct label *label,
+ 	return rc;
+ }
+ 
++int plpks_signed_update_var(struct plpks_var *var, u64 flags)
++{
++	unsigned long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
++	int rc;
++	struct label *label;
++	struct plpks_auth *auth;
++	u64 continuetoken = 0;
++	u64 timeout = 0;
++
++	if (!var->data || var->datalen <= 0 || var->namelen > PLPKS_MAX_NAME_SIZE)
++		return -EINVAL;
++
++	if (!(var->policy & PLPKS_SIGNEDUPDATE))
++		return -EINVAL;
++
++	// Signed updates need the component to be NULL.
++	if (var->component)
++		return -EINVAL;
++
++	auth = construct_auth(PLPKS_OS_OWNER);
++	if (IS_ERR(auth))
++		return PTR_ERR(auth);
++
++	label = construct_label(var->component, var->os, var->name, var->namelen);
++	if (IS_ERR(label)) {
++		rc = PTR_ERR(label);
++		goto out;
++	}
++
++	do {
++		rc = plpar_hcall9(H_PKS_SIGNED_UPDATE, retbuf,
++				  virt_to_phys(auth), virt_to_phys(label),
++				  label->size, var->policy, flags,
++				  virt_to_phys(var->data), var->datalen,
++				  continuetoken);
++
++		continuetoken = retbuf[0];
++		if (pseries_status_to_err(rc) == -EBUSY) {
++			int delay_ms = get_longbusy_msecs(rc);
++			mdelay(delay_ms);
++			timeout += delay_ms;
++		}
++		rc = pseries_status_to_err(rc);
++	} while (rc == -EBUSY && timeout < PLPKS_MAX_TIMEOUT);
++
++	if (!rc)
++		rc = plpks_confirm_object_flushed(label, auth);
++
++	kfree(label);
++out:
++	kfree(auth);
++
++	return rc;
++}
++
+ int plpks_write_var(struct plpks_var var)
+ {
+ 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
+@@ -314,7 +378,7 @@ int plpks_remove_var(char *component, u8 varos, struct plpks_var_name vname)
+ 	struct label *label;
+ 	int rc;
+ 
+-	if (!component || vname.namelen > PLPKS_MAX_NAME_SIZE)
++	if (vname.namelen > PLPKS_MAX_NAME_SIZE)
+ 		return -EINVAL;
+ 
+ 	auth = construct_auth(PLPKS_OS_OWNER);
+diff --git a/arch/powerpc/platforms/pseries/plpks.h b/arch/powerpc/platforms/pseries/plpks.h
+index 6afb44ee74a16..ccbec26fcbd8b 100644
+--- a/arch/powerpc/platforms/pseries/plpks.h
++++ b/arch/powerpc/platforms/pseries/plpks.h
+@@ -66,6 +66,11 @@ struct plpks_var_name_list {
+ 	struct plpks_var_name varlist[];
+ };
+ 
++/**
++ * Updates the authenticated variable. It expects NULL as the component.
++ */
++int plpks_signed_update_var(struct plpks_var *var, u64 flags);
++
+ /**
+  * Writes the specified var and its data to PKS.
+  * Any caller of PKS driver should present a valid component type for
 -- 
 2.43.0
 
