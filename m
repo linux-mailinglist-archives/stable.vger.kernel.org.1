@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA878C5247
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07E68C50D8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB7612829AE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E28271C213E4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4243553361;
-	Tue, 14 May 2024 11:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FF88627C;
+	Tue, 14 May 2024 10:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4UDKnhg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hunq+P3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E302943F;
-	Tue, 14 May 2024 11:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFE369950;
+	Tue, 14 May 2024 10:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685709; cv=none; b=SREgsnhpNhdcaq8SBtzObJck5G+O6F2wLw31LyRX4Kk1Jn3ZbIC+KUjVa00YNlpCB1b5J6xOmaZYhtJMTHlvKHmCM/nBCy8+rTaX25k10kv+Y6EMjbZPnuUtF7LHttqLkz3/P578KXjrSXhHwlgk+CLWYstCJ2BCb00RQsgGdy4=
+	t=1715683751; cv=none; b=ozTXFDXJjkHnL0yQ9Ai9mciz3PrWJVlTqOGeM5zJl1GGUY3jxVv5dFBTLfzaCEttVDCkZfeu5AsP5HVFADK9BarLe4E3FTXzqUSehWY4N5k2i3hDXGWfRWm6zP5J7Zf6Ze0t+sGNeITvnOF98zlcriTFAA0Dawd6dg6nuE78liw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685709; c=relaxed/simple;
-	bh=rhaw9rUGaKtfmqpeMGvoqXaRlNjxB3GeerVJZOp694Y=;
+	s=arc-20240116; t=1715683751; c=relaxed/simple;
+	bh=WdmI/3PHx/AUo2sTDBiIE6IrIIAwlRfECQPLK1qZrf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDhoL36lsQbn+PpaiFV7W88kvXMWPPCmg5uSdbGpe7GRz+sa9YcewogfqcUDmN6b9cIv+UPIuZjHpD2Kt89RRz4YsDENzrHd0JnR+WLWNQ3QYAyB9lr5F3meV2nYzBjC+7z6AxfkTkTEt08h8Y2X7XvutKvh0JfY+M/CZV8ifLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4UDKnhg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA049C2BD10;
-	Tue, 14 May 2024 11:21:47 +0000 (UTC)
+	 MIME-Version; b=bHkojuG8D0pvOVARfzrliD7VfObWdo3J0YEWw+Pgh3BQot8U72PHpQXCUgjyDCOGZfghF0zpMnE8zJ4VJHMpdZTz8qIFwNa/ajwYP0pMwi5hDkDVARr9PgXE7ph2+TplpuQZFYIWZ6333SbI52gv2cFWhoqatzsj+rkLmbOJZOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hunq+P3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4222FC2BD10;
+	Tue, 14 May 2024 10:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685708;
-	bh=rhaw9rUGaKtfmqpeMGvoqXaRlNjxB3GeerVJZOp694Y=;
+	s=korg; t=1715683750;
+	bh=WdmI/3PHx/AUo2sTDBiIE6IrIIAwlRfECQPLK1qZrf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4UDKnhgFbuV8ViEbsrKaKbkfy5UDAy4PegBaGOT35nd1UuNJtZp9HRXqQ0zpwCzf
-	 pbyf3KT4NEcS6g6Us2h6DhSLOx9EgxmQ2zgJRzXl4vWd0OA0/jiO3rtU2yqFxtneSY
-	 ZjNguvZrdlf/EL9JMGuD4kg907iuSAE24zCsqrBE=
+	b=Hunq+P3EaKLW372tuYS4RQyDpqtFDTH6ii48m9mxcw199/6r80TFUV3M1xRWJa2+K
+	 iCZ72zVM9bLldKG4dY0n4hwZyqBONnTKfNF+HdinSeCXRbmnkdNCxBPHX4tcLJvvqS
+	 +CDV2Y68+F78Fg/NZ21cEY3uhgXEXfAXBSL6VwyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 200/301] hsr: Simplify code for announcing HSR nodes timer setup
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Marius Fleischer <fleischermarius@gmail.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 267/336] maple_tree: fix mas_empty_area_rev() null pointer dereference
 Date: Tue, 14 May 2024 12:17:51 +0200
-Message-ID: <20240514101039.812102707@linuxfoundation.org>
+Message-ID: <20240514101048.699046587@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-[ Upstream commit 4893b8b3ef8db2b182d1a1bebf6c7acf91405000 ]
+commit 955a923d2809803980ff574270f81510112be9cf upstream.
 
-Up till now the code to start HSR announce timer, which triggers sending
-supervisory frames, was assuming that hsr_netdev_notify() would be called
-at least twice for hsrX interface. This was required to have different
-values for old and current values of network device's operstate.
+Currently the code calls mas_start() followed by mas_data_end() if the
+maple state is MA_START, but mas_start() may return with the maple state
+node == NULL.  This will lead to a null pointer dereference when checking
+information in the NULL node, which is done in mas_data_end().
 
-This is problematic for a case where hsrX interface is already in the
-operational state when hsr_netdev_notify() is called, so timer is not
-configured to trigger and as a result the hsrX is not sending supervisory
-frames to HSR ring.
+Avoid setting the offset if there is no node by waiting until after the
+maple state is checked for an empty or single entry state.
 
-This error has been discovered when hsr_ping.sh script was run. To be
-more specific - for the hsr1 and hsr2 the hsr_netdev_notify() was
-called at least twice with different IF_OPER_{LOWERDOWN|DOWN|UP} states
-assigned in hsr_check_carrier_and_operstate(hsr). As a result there was
-no issue with sending supervisory frames.
-However, with hsr3, the notify function was called only once with
-operstate set to IF_OPER_UP and timer responsible for triggering
-supervisory frames was not fired.
+A user could trigger the events to cause a kernel oops by unmapping all
+vmas to produce an empty maple tree, then mapping a vma that would cause
+the scenario described above.
 
-The solution is to use netif_oper_up() and netif_running() helper
-functions to assess if network hsrX device is up.
-Only then, when the timer is not already pending, it is started.
-Otherwise it is deactivated.
-
-Fixes: f421436a591d ("net/hsr: Add support for the High-availability Seamless Redundancy protocol (HSRv0)")
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240507111214.3519800-1-lukma@denx.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240422203349.2418465-1-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Marius Fleischer <fleischermarius@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAJg=8jyuSxDL6XvqEXY_66M20psRK2J53oBTP+fjV5xpW2-R6w@mail.gmail.com/
+Link: https://lore.kernel.org/lkml/CAJg=8jyuSxDL6XvqEXY_66M20psRK2J53oBTP+fjV5xpW2-R6w@mail.gmail.com/
+Tested-by: Marius Fleischer <fleischermarius@gmail.com>
+Tested-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_device.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ lib/maple_tree.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index cd337385e8592..c5f7bd01379ce 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -71,39 +71,36 @@ static bool hsr_check_carrier(struct hsr_port *master)
- 	return false;
- }
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5061,18 +5061,18 @@ int mas_empty_area_rev(struct ma_state *
+ 	if (size == 0 || max - min < size - 1)
+ 		return -EINVAL;
  
--static void hsr_check_announce(struct net_device *hsr_dev,
--			       unsigned char old_operstate)
-+static void hsr_check_announce(struct net_device *hsr_dev)
- {
- 	struct hsr_priv *hsr;
+-	if (mas_is_start(mas)) {
++	if (mas_is_start(mas))
+ 		mas_start(mas);
+-		mas->offset = mas_data_end(mas);
+-	} else if (mas->offset >= 2) {
+-		mas->offset -= 2;
+-	} else if (!mas_rewind_node(mas)) {
++	else if ((mas->offset < 2) && (!mas_rewind_node(mas)))
+ 		return -EBUSY;
+-	}
  
- 	hsr = netdev_priv(hsr_dev);
--
--	if (READ_ONCE(hsr_dev->operstate) == IF_OPER_UP && old_operstate != IF_OPER_UP) {
--		/* Went up */
--		hsr->announce_count = 0;
--		mod_timer(&hsr->announce_timer,
--			  jiffies + msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
-+	if (netif_running(hsr_dev) && netif_oper_up(hsr_dev)) {
-+		/* Enable announce timer and start sending supervisory frames */
-+		if (!timer_pending(&hsr->announce_timer)) {
-+			hsr->announce_count = 0;
-+			mod_timer(&hsr->announce_timer, jiffies +
-+				  msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
-+		}
-+	} else {
-+		/* Deactivate the announce timer  */
-+		timer_delete(&hsr->announce_timer);
- 	}
--
--	if (READ_ONCE(hsr_dev->operstate) != IF_OPER_UP && old_operstate == IF_OPER_UP)
--		/* Went down */
--		del_timer(&hsr->announce_timer);
- }
+-	/* Empty set. */
+-	if (mas_is_none(mas) || mas_is_ptr(mas))
++	if (unlikely(mas_is_none(mas) || mas_is_ptr(mas)))
+ 		return mas_sparse_area(mas, min, max, size, false);
++	else if (mas->offset >= 2)
++		mas->offset -= 2;
++	else
++		mas->offset = mas_data_end(mas);
++
  
- void hsr_check_carrier_and_operstate(struct hsr_priv *hsr)
- {
- 	struct hsr_port *master;
--	unsigned char old_operstate;
- 	bool has_carrier;
- 
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	/* netif_stacked_transfer_operstate() cannot be used here since
- 	 * it doesn't set IF_OPER_LOWERLAYERDOWN (?)
- 	 */
--	old_operstate = READ_ONCE(master->dev->operstate);
- 	has_carrier = hsr_check_carrier(master);
- 	hsr_set_operstate(master, has_carrier);
--	hsr_check_announce(master->dev, old_operstate);
-+	hsr_check_announce(master->dev);
- }
- 
- int hsr_get_max_mtu(struct hsr_priv *hsr)
--- 
-2.43.0
-
+ 	/* The start of the window can only be within these values. */
+ 	mas->index = min;
 
 
 
