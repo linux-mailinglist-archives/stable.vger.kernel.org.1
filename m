@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D768C55A2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 14:02:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30458C548A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2524B2847C1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DCCCB227AB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996DC6BFBB;
-	Tue, 14 May 2024 11:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4986D12B16A;
+	Tue, 14 May 2024 11:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K48vbDIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rerc0+pG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C596BB39;
-	Tue, 14 May 2024 11:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0504E12B17A;
+	Tue, 14 May 2024 11:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687699; cv=none; b=rwwiJmt1qfis6KMJY/ClEArJbqH2bUJU38IKjO+zwaCFrwxR5iwiws0hBkwn0OWTHVoyHvGLXuh8YBGbv/+UOEIg+DfI2rmIHnARBvVACxnDaip5WSZXw6O71HncaTRtVP2ClU4WuSKu5fMJXktJlTU2T1L9d2A8Q+WctPHQ0ak=
+	t=1715687254; cv=none; b=k5jIGhZLuM519EPVGvvcmPPWvkvPdLF3hEOq6glh4NtC3s5HO/OLcZe9CSAH+cHqIPsu4/chfGOElOT661d4LxItvschohLSiDe/qmooyDaxKiZaGlvYeA5cmqQhhl0P641kHxYh1i62ZV+OhTKaG8rlvxjxfBU+d+QVNAf6Wfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687699; c=relaxed/simple;
-	bh=dGr60cel/2giwY6sXb8PWAbJyyocT+9TnOXeFOSfJWk=;
+	s=arc-20240116; t=1715687254; c=relaxed/simple;
+	bh=QLzuD14hO1irDzPShCtzyjZt+4NwZ7z+Fewzw7EkFG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCZvAhtgmfxi+PJ2XDt39hvZC1I/s31nWLI5Tx+w6lVOV1bNFPEpSbjvYEtSzkQ/JHctN/Mz7Qjwis/TkA6gp8X54HYMC+n6MRq6pEKA0eZfTLXhb+2iMfPYLdjrRjlwsZ5hbkrrhmdUD2MadWIkLvvaVo1t2BJrcgaglkOs6X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K48vbDIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3671C32781;
-	Tue, 14 May 2024 11:54:58 +0000 (UTC)
+	 MIME-Version; b=rb78lsc3Ub6BGsWL8LgSnZI00TCD2O5s+8nA+kLgGXpsgA8dG6K34snietln+sJfohf/RJLYdOdzMC//VC/b96izZ9Hs8so1gSsDsV2yACAzUoHNQYT5P6/8ZBR4DVIVYeXIX6lXVEWOGSihx7mrWDGgzV/RjdSEDFkEFyqOAzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rerc0+pG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7ADC2BD10;
+	Tue, 14 May 2024 11:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687699;
-	bh=dGr60cel/2giwY6sXb8PWAbJyyocT+9TnOXeFOSfJWk=;
+	s=korg; t=1715687253;
+	bh=QLzuD14hO1irDzPShCtzyjZt+4NwZ7z+Fewzw7EkFG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K48vbDIfU1RrhYoVl4atsQKon25luD+dMc+xbTVUxDYrtcUyNE2oXACHmXJxRNchc
-	 l103P1jl6eTo3+UK1VskHez3uYF8VWyhXLLsOMkWV0QXYohW/dM1DNruo4ACqmzWYm
-	 kOP+NO51c6hhnW+/dqZJ/lBZu73/iTTk+PCxMgHw=
+	b=Rerc0+pGTCjb1U9VPH3xTsdrTCQzaSqCX0Qo+IHv78YyKo0wJ85LRH7tBhEew17tK
+	 XMtegyeF9BLdLanuOAwD5KteAFj1Swm2C5jny/z4BSNg7wfajdqyeVHTTzSAeJd/AF
+	 Al871kt+JdlX06VjmVcfs3wLrk/n+6CvYcl/BerE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Maarten Vanraes <maarten@rmail.be>,
-	"David S. Miller" <davem@davemloft.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/168] net: bcmgenet: Reset RBUF on first open
+Subject: [PATCH 5.10 033/111] ASoC: Fix 7/8 spaces indentation in Kconfig
 Date: Tue, 14 May 2024 12:19:31 +0200
-Message-ID: <20240514101009.451522854@linuxfoundation.org>
+Message-ID: <20240514100958.385491503@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 0a6380cb4c6b5c1d6dad226ba3130f9090f0ccea ]
+[ Upstream commit 5268e0bf7123c422892fec362f5be2bcae9bbb95 ]
 
-If the RBUF logic is not reset when the kernel starts then there
-may be some data left over from any network boot loader. If the
-64-byte packet headers are enabled then this can be fatal.
+Some entries used 7 or 8 spaces instead if a single TAB.
 
-Extend bcmgenet_dma_disable to do perform the reset, but not when
-called from bcmgenet_resume in order to preserve a wake packet.
-
-N.B. This different handling of resume is just based on a hunch -
-why else wouldn't one reset the RBUF as well as the TBUF? If this
-isn't the case then it's easy to change the patch to make the RBUF
-reset unconditional.
-
-See: https://github.com/raspberrypi/linux/issues/3850
-See: https://github.com/raspberrypi/firmware/issues/1882
-
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Maarten Vanraes <maarten@rmail.be>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20201110174904.3413846-1-geert@linux-m68k.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 6db26f9ea4ed ("ASoC: meson: cards: select SND_DYNAMIC_MINORS")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ sound/soc/codecs/Kconfig       | 18 +++++++++---------
+ sound/soc/generic/Kconfig      |  2 +-
+ sound/soc/intel/boards/Kconfig |  2 +-
+ sound/soc/meson/Kconfig        |  2 +-
+ sound/soc/pxa/Kconfig          | 14 +++++++-------
+ 5 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index a2b736a9d20cc..9db391e5b4f4f 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3256,7 +3256,7 @@ static void bcmgenet_get_hw_addr(struct bcmgenet_priv *priv,
- }
+diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
+index 04a7070c78e28..a8b9eb6ce2ea8 100644
+--- a/sound/soc/codecs/Kconfig
++++ b/sound/soc/codecs/Kconfig
+@@ -517,7 +517,7 @@ config SND_SOC_AK5558
+ 	select REGMAP_I2C
  
- /* Returns a reusable dma control register value */
--static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
-+static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv, bool flush_rx)
- {
- 	unsigned int i;
- 	u32 reg;
-@@ -3281,6 +3281,14 @@ static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
- 	udelay(10);
- 	bcmgenet_umac_writel(priv, 0, UMAC_TX_FLUSH);
+ config SND_SOC_ALC5623
+-       tristate "Realtek ALC5623 CODEC"
++	tristate "Realtek ALC5623 CODEC"
+ 	depends on I2C
  
-+	if (flush_rx) {
-+		reg = bcmgenet_rbuf_ctrl_get(priv);
-+		bcmgenet_rbuf_ctrl_set(priv, reg | BIT(0));
-+		udelay(10);
-+		bcmgenet_rbuf_ctrl_set(priv, reg);
-+		udelay(10);
-+	}
-+
- 	return dma_ctrl;
- }
+ config SND_SOC_ALC5632
+@@ -733,7 +733,7 @@ config SND_SOC_JZ4770_CODEC
+ 	  will be called snd-soc-jz4770-codec.
  
-@@ -3344,8 +3352,8 @@ static int bcmgenet_open(struct net_device *dev)
+ config SND_SOC_L3
+-       tristate
++	tristate
  
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
+ config SND_SOC_DA7210
+ 	tristate
+@@ -773,10 +773,10 @@ config SND_SOC_HDMI_CODEC
+ 	select HDMI
  
--	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	/* Disable RX/TX DMA and flush TX and RX queues */
-+	dma_ctrl = bcmgenet_dma_disable(priv, true);
+ config SND_SOC_ES7134
+-       tristate "Everest Semi ES7134 CODEC"
++	tristate "Everest Semi ES7134 CODEC"
  
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
-@@ -4201,7 +4209,7 @@ static int bcmgenet_resume(struct device *d)
- 			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
+ config SND_SOC_ES7241
+-       tristate "Everest Semi ES7241 CODEC"
++	tristate "Everest Semi ES7241 CODEC"
  
- 	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	dma_ctrl = bcmgenet_dma_disable(priv, false);
+ config SND_SOC_ES8316
+ 	tristate "Everest Semi ES8316 CODEC"
+@@ -974,10 +974,10 @@ config SND_SOC_PCM186X_SPI
+ 	select REGMAP_SPI
  
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
+ config SND_SOC_PCM3008
+-       tristate
++	tristate
+ 
+ config SND_SOC_PCM3060
+-       tristate
++	tristate
+ 
+ config SND_SOC_PCM3060_I2C
+ 	tristate "Texas Instruments PCM3060 CODEC - I2C"
+@@ -1440,7 +1440,7 @@ config SND_SOC_UDA1334
+ 	  rate) and mute.
+ 
+ config SND_SOC_UDA134X
+-       tristate
++	tristate
+ 
+ config SND_SOC_UDA1380
+ 	tristate
+@@ -1765,8 +1765,8 @@ config SND_SOC_MT6660
+ 	  Select M to build this as module.
+ 
+ config SND_SOC_NAU8540
+-       tristate "Nuvoton Technology Corporation NAU85L40 CODEC"
+-       depends on I2C
++	tristate "Nuvoton Technology Corporation NAU85L40 CODEC"
++	depends on I2C
+ 
+ config SND_SOC_NAU8810
+ 	tristate "Nuvoton Technology Corporation NAU88C10 CODEC"
+diff --git a/sound/soc/generic/Kconfig b/sound/soc/generic/Kconfig
+index a90c3b28bce5f..4cafcf0e2bbfd 100644
+--- a/sound/soc/generic/Kconfig
++++ b/sound/soc/generic/Kconfig
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config SND_SIMPLE_CARD_UTILS
+-       tristate
++	tristate
+ 
+ config SND_SIMPLE_CARD
+ 	tristate "ASoC Simple sound card support"
+diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
+index c10c37803c670..dddb672a6d553 100644
+--- a/sound/soc/intel/boards/Kconfig
++++ b/sound/soc/intel/boards/Kconfig
+@@ -552,7 +552,7 @@ config SND_SOC_INTEL_SOUNDWIRE_SOF_MACH
+ 	select SND_SOC_RT715_SDCA_SDW
+ 	select SND_SOC_RT5682_SDW
+ 	select SND_SOC_DMIC
+-        help
++	help
+ 	  Add support for Intel SoundWire-based platforms connected to
+ 	  MAX98373, RT700, RT711, RT1308 and RT715
+ 	  If unsure select "N".
+diff --git a/sound/soc/meson/Kconfig b/sound/soc/meson/Kconfig
+index ce0cbdc69b2ec..b93ea33739f29 100644
+--- a/sound/soc/meson/Kconfig
++++ b/sound/soc/meson/Kconfig
+@@ -98,7 +98,7 @@ config SND_MESON_AXG_PDM
+ 	  in the Amlogic AXG SoC family
+ 
+ config SND_MESON_CARD_UTILS
+-       tristate
++	tristate
+ 
+ config SND_MESON_CODEC_GLUE
+ 	tristate
+diff --git a/sound/soc/pxa/Kconfig b/sound/soc/pxa/Kconfig
+index 0ac85eada75cb..9d40e8a206d10 100644
+--- a/sound/soc/pxa/Kconfig
++++ b/sound/soc/pxa/Kconfig
+@@ -221,13 +221,13 @@ config SND_PXA2XX_SOC_MIOA701
+ 	  MIO A701.
+ 
+ config SND_PXA2XX_SOC_IMOTE2
+-       tristate "SoC Audio support for IMote 2"
+-       depends on SND_PXA2XX_SOC && MACH_INTELMOTE2 && I2C
+-       select SND_PXA2XX_SOC_I2S
+-       select SND_SOC_WM8940
+-       help
+-	 Say Y if you want to add support for SoC audio on the
+-	 IMote 2.
++	tristate "SoC Audio support for IMote 2"
++	depends on SND_PXA2XX_SOC && MACH_INTELMOTE2 && I2C
++	select SND_PXA2XX_SOC_I2S
++	select SND_SOC_WM8940
++	help
++	  Say Y if you want to add support for SoC audio on the
++	  IMote 2.
+ 
+ config SND_MMP_SOC_BROWNSTONE
+ 	tristate "SoC Audio support for Marvell Brownstone"
 -- 
 2.43.0
 
