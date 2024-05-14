@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCDB8C5492
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8CF8C551E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C273289DFD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE4CE1C236CA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C19912C47A;
-	Tue, 14 May 2024 11:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086426D1A7;
+	Tue, 14 May 2024 11:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdHetJCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUNITRBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65943AD7;
-	Tue, 14 May 2024 11:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9723D0D1;
+	Tue, 14 May 2024 11:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687273; cv=none; b=ZizaZz7Ixf0hHGVGslWJir2GKiGeUxA/KpDW8zQ06Ex6C7+nXrdTiTYhQb7+3SC7LcpjtmAPLZp1T0Cum8TwHQmKbHyCdEc+xAZFxmrzXtnL6cpxEJrE9Vz1vm8YpSUVy8ahpRnwRkuQ9whEU+VvsxvAct46HwOrdK3yabYV4Oo=
+	t=1715687664; cv=none; b=ojHJNG4qSpDvHdCplExO2lYKTf3Fd/0sWDikMAm7DJg4g2+Wk6qYkIkh9QQUEQP9/vu+Q10Gon+Bnp2oUKFRa0KRPok8iFxMHlG4E01rh+r4uzv0Tw2X8v2YV6CS3kjTrEDj1Li99oD4GAxWZj5mggdRhzMK4yfmHV8SGSoraW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687273; c=relaxed/simple;
-	bh=wx7DjBKHy9bjflbFUjSvLSkCKkF6UswSsBu3hcg1tow=;
+	s=arc-20240116; t=1715687664; c=relaxed/simple;
+	bh=TVEGiEsHddPVRwkohZyHgRrPjcxXQyhZDH5DrJ+f+fQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPbzYF33eL4frGaTbKmHRzlq+bJ96YyRrFpEcl+qA6zYmPnvo4aI+YichUdidhgU02iesKuyomS4j+o0BRJIl5e72fmpGMV23x3lyszyEeNN7zlWuVMR4Lnuxt/7H73FQ4H/i+j4JVeW53k62GTS34PPuDItrb6QOlohaB0wsQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdHetJCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54585C2BD10;
-	Tue, 14 May 2024 11:47:53 +0000 (UTC)
+	 MIME-Version; b=EUMs3hvuXzcWTqWzEPux3ICb5PZWHXLpLqq5bOX08dwB15EOPb/m1sAhhpdyapIa/q5A7xE2/H+xoC3Bkxnz42G/oE3agDhtHm9ps6Sf0CiyFG5jIziCe3IT0A8AFtEGgXltuLZIWsl1+x3t3+1CQ/PtjudODqwJZs7nahYxdCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUNITRBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CD6C2BD10;
+	Tue, 14 May 2024 11:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687273;
-	bh=wx7DjBKHy9bjflbFUjSvLSkCKkF6UswSsBu3hcg1tow=;
+	s=korg; t=1715687664;
+	bh=TVEGiEsHddPVRwkohZyHgRrPjcxXQyhZDH5DrJ+f+fQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdHetJCQVZ80F+mcaVAmRcjheWKygaEVhvcDVWjrByLPNfQa7Vb18deTlcZO34G9X
-	 X8MNrFgSyICXJDLu28Qu/K4/W2j6B/AMvkWRQ6V3tascdfE4pG8E0Mbf2e3GZTmU2a
-	 yalilKYB05RxYfz9SjRu2fXDOEGWQfSFawbIbr2Y=
+	b=mUNITRBzHjInalZqo8Pds3MCo3WUCjtwiDX6Ve2t4xsG5BUlfRMBfKSzORSN1yxht
+	 zTNvAl/ddO05zOyGwcZt0ouA9lmboLZwU8Z7Ie9LXZHsVbQeE2q0jrfung9wRQTil2
+	 jEzH3uWhn23Oif8SZSnDpOZXFARVbOxEDV8mWTEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/111] bna: ensure the copied buf is NUL terminated
+Subject: [PATCH 5.15 062/168] scsi: lpfc: Move NPIVs transport unregistration to after resource clean up
 Date: Tue, 14 May 2024 12:19:20 +0200
-Message-ID: <20240514100957.969067500@linuxfoundation.org>
+Message-ID: <20240514101009.039815838@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 8c34096c7fdf272fd4c0c37fe411cd2e3ed0ee9f ]
+[ Upstream commit 4ddf01f2f1504fa08b766e8cfeec558e9f8eef6c ]
 
-Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
-userspace to that buffer. Later, we use sscanf on this buffer but we don't
-ensure that the string is terminated inside the buffer, this can lead to
-OOB read when using sscanf. Fix this issue by using memdup_user_nul
-instead of memdup_user.
+There are cases after NPIV deletion where the fabric switch still believes
+the NPIV is logged into the fabric.  This occurs when a vport is
+unregistered before the Remove All DA_ID CT and LOGO ELS are sent to the
+fabric.
 
-Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-2-f1f1b53a10f4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Currently fc_remove_host(), which calls dev_loss_tmo for all D_IDs including
+the fabric D_ID, removes the last ndlp reference and frees the ndlp rport
+object.  This sometimes causes the race condition where the final DA_ID and
+LOGO are skipped from being sent to the fabric switch.
+
+Fix by moving the fc_remove_host() and scsi_remove_host() calls after DA_ID
+and LOGO are sent.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240305200503.57317-3-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_vport.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-index 04ad0f2b9677e..777f0d7e48192 100644
---- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-@@ -312,7 +312,7 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
- 	void *kern_buf;
+diff --git a/drivers/scsi/lpfc/lpfc_vport.c b/drivers/scsi/lpfc/lpfc_vport.c
+index da9a1f72d9383..b1071226e27fb 100644
+--- a/drivers/scsi/lpfc/lpfc_vport.c
++++ b/drivers/scsi/lpfc/lpfc_vport.c
+@@ -651,10 +651,6 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
+ 	lpfc_free_sysfs_attr(vport);
+ 	lpfc_debugfs_terminate(vport);
  
- 	/* Copy the user space buf */
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+-	/* Remove FC host to break driver binding. */
+-	fc_remove_host(shost);
+-	scsi_remove_host(shost);
+-
+ 	/* Send the DA_ID and Fabric LOGO to cleanup Nameserver entries. */
+ 	ndlp = lpfc_findnode_did(vport, Fabric_DID);
+ 	if (!ndlp)
+@@ -700,6 +696,10 @@ lpfc_vport_delete(struct fc_vport *fc_vport)
  
-@@ -372,7 +372,7 @@ bnad_debugfs_write_regwr(struct file *file, const char __user *buf,
- 	void *kern_buf;
+ skip_logo:
  
- 	/* Copy the user space buf */
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
++	/* Remove FC host to break driver binding. */
++	fc_remove_host(shost);
++	scsi_remove_host(shost);
++
+ 	lpfc_cleanup(vport);
  
+ 	/* Remove scsi host now.  The nodes are cleaned up. */
 -- 
 2.43.0
 
