@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-44009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D48C8C50C4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:12:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A63DA8C5210
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEC891C20D46
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:12:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2391F22776
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F24976045;
-	Tue, 14 May 2024 10:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4CB12AAC6;
+	Tue, 14 May 2024 11:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e02X8lE0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO4mtuIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4E66D1D7;
-	Tue, 14 May 2024 10:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686FF12A14B;
+	Tue, 14 May 2024 11:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683667; cv=none; b=mnlds6yMHF6olFrNybRfOb5Hl9oMgQwsP7tiWgN/LuHGVOpph1ssKP8f1Qc2qneYsIvk1ziUBxDaSWgyz61yKz3/FYVNKedGdu6AVGcinYPLo8gg/l0oWray9mbG0UrzhOYHWUzRNfYGtIimEvPJpfUiOmjVkUG7mcK1mkGSKTg=
+	t=1715685429; cv=none; b=kr+e4j8Cou8j0cDhZVoBYYReIdIpe5aoSaLL4Tc5XXC8WGj/60wjXaPBzl6v5fTCb5b3XfIUiemgmz2LINWElpUCxFuCoPHeqeTss/7nG0QUjAZYrR2ng/FXQzYVU9+xuafv0R95EAJ2WDKgFMkMCAnps3/HosfuyjjtNn+7gPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683667; c=relaxed/simple;
-	bh=Nqcik0J2YwPrnfexbU8TqPYpZ7cDs1OLhMupOo9yE9c=;
+	s=arc-20240116; t=1715685429; c=relaxed/simple;
+	bh=t7To3Kh/QnzfUsk4093oUd3bXJFUyuOhon2F5Ts7L6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnT/n5BH+TffxTEuAGcJyytYoP6xaWRyvJPcGrU+Nai5M5U0LmsTNjQz9nloQuI+jbmIlQrfO5XQFYb8y/QaubLI+FTVgRAcfKt6ejPunGwEy2uV0046tuTydOtOZ9nvzRroxg1FeOKWjJ3ZwDzFAvBFVeZ6x5i8QF09LkpB/M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e02X8lE0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B2CC2BD10;
-	Tue, 14 May 2024 10:47:46 +0000 (UTC)
+	 MIME-Version; b=LwD70eGieZ8Qr9wtmUSTJ6ASX0ZN5xdX8NZdN1+vTVIDUDEKrEhyS7oq2FFQfIbnAdEeHRDb1BQ2nyteDu8cNtwttdXlb3pYKc4lhizhWWKviQIvagHUGvWLJLHwzT7YLXuFuvYBwg+xjfERVRFSu5rZyyIgKO4FOD005Zwtd8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO4mtuIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EC4C2BD10;
+	Tue, 14 May 2024 11:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683667;
-	bh=Nqcik0J2YwPrnfexbU8TqPYpZ7cDs1OLhMupOo9yE9c=;
+	s=korg; t=1715685429;
+	bh=t7To3Kh/QnzfUsk4093oUd3bXJFUyuOhon2F5Ts7L6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e02X8lE0b2cxVW1pDzKGrx3j7UvQExVEQXBASIKKXEAKK5/urwjVYFO6E3CvRgv/z
-	 O7mkSKvjrbptZCu8qpMb6bXnDJyc3o2RwosAsBVxf9IOOpdEO15SCVtqwmEzsd+vO7
-	 iXMGQpBQZf05gtHerz+hZ92ZjREt+jDiQXyfKZN4=
+	b=tO4mtuIiGetFa6EZoVTLf0wDzNjHD2kFQr+C+PVtnRRUsB32d/g6yYB2ln18cinn8
+	 y+j4EgblY+qjbeZmiwDnl0+QV31xDJ1I1kehOKbaQHEhxJWtb4oF5qQDkB4bBi+KDp
+	 6u+4bjTY6ZV1gORoD3+TH9q6MmMnl515WPWjU6sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.8 254/336] usb: xhci-plat: Dont include xhci.h
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 187/301] hwmon: (corsair-cpro) Protect ccp->wait_input_report with a spinlock
 Date: Tue, 14 May 2024 12:17:38 +0200
-Message-ID: <20240514101048.207187549@linuxfoundation.org>
+Message-ID: <20240514101039.316078865@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-commit 4a237d55446ff67655dc3eed2d4a41997536fc4c upstream.
+[ Upstream commit d02abd57e79469a026213f7f5827a98d909f236a ]
 
-The xhci_plat.h should not need to include the entire xhci.h header.
-This can cause redefinition in dwc3 if it selectively includes some xHCI
-definitions. This is a prerequisite change for a fix to disable suspend
-during initialization for dwc3.
+Through hidraw, userspace can cause a status report to be sent
+from the device. The parsing in ccp_raw_event() may happen in
+parallel to a send_usb_cmd() call (which resets the completion
+for tracking the report) if it's running on a different CPU where
+bottom half interrupts are not disabled.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/310acfa01c957a10d9feaca3f7206269866ba2eb.1713394973.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a spinlock around the complete_all() in ccp_raw_event() and
+reinit_completion() in send_usb_cmd() to prevent race issues.
+
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-4-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.h  |    4 +++-
- drivers/usb/host/xhci-rzv2m.c |    1 +
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/hwmon/corsair-cpro.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/host/xhci-plat.h
-+++ b/drivers/usb/host/xhci-plat.h
-@@ -8,7 +8,9 @@
- #ifndef _XHCI_PLAT_H
- #define _XHCI_PLAT_H
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index e65e3825af974..280b90646a873 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -16,6 +16,7 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/slab.h>
++#include <linux/spinlock.h>
+ #include <linux/types.h>
  
--#include "xhci.h"	/* for hcd_to_xhci() */
-+struct device;
-+struct platform_device;
-+struct usb_hcd;
+ #define USB_VENDOR_ID_CORSAIR			0x1b1c
+@@ -77,6 +78,8 @@
+ struct ccp_device {
+ 	struct hid_device *hdev;
+ 	struct device *hwmon_dev;
++	/* For reinitializing the completion below */
++	spinlock_t wait_input_report_lock;
+ 	struct completion wait_input_report;
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
+ 	u8 *cmd_buffer;
+@@ -118,7 +121,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	ccp->cmd_buffer[2] = byte2;
+ 	ccp->cmd_buffer[3] = byte3;
  
- struct xhci_plat_priv {
- 	const char *firmware_name;
---- a/drivers/usb/host/xhci-rzv2m.c
-+++ b/drivers/usb/host/xhci-rzv2m.c
-@@ -6,6 +6,7 @@
-  */
++	/*
++	 * Disable raw event parsing for a moment to safely reinitialize the
++	 * completion. Reinit is done because hidraw could have triggered
++	 * the raw event parsing and marked the ccp->wait_input_report
++	 * completion as done.
++	 */
++	spin_lock_bh(&ccp->wait_input_report_lock);
+ 	reinit_completion(&ccp->wait_input_report);
++	spin_unlock_bh(&ccp->wait_input_report_lock);
  
- #include <linux/usb/rzv2m_usb3drd.h>
-+#include "xhci.h"
- #include "xhci-plat.h"
- #include "xhci-rzv2m.h"
+ 	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+ 	if (ret < 0)
+@@ -136,11 +147,12 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
+ 	struct ccp_device *ccp = hid_get_drvdata(hdev);
  
+ 	/* only copy buffer when requested */
+-	if (completion_done(&ccp->wait_input_report))
+-		return 0;
+-
+-	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
+-	complete_all(&ccp->wait_input_report);
++	spin_lock(&ccp->wait_input_report_lock);
++	if (!completion_done(&ccp->wait_input_report)) {
++		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
++		complete_all(&ccp->wait_input_report);
++	}
++	spin_unlock(&ccp->wait_input_report_lock);
+ 
+ 	return 0;
+ }
+@@ -515,7 +527,9 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 
+ 	ccp->hdev = hdev;
+ 	hid_set_drvdata(hdev, ccp);
++
+ 	mutex_init(&ccp->mutex);
++	spin_lock_init(&ccp->wait_input_report_lock);
+ 	init_completion(&ccp->wait_input_report);
+ 
+ 	hid_device_io_start(hdev);
+-- 
+2.43.0
+
 
 
 
