@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-44483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8467C8C5312
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19A08C51FF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53731C21C59
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC0B282910
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2615C84D26;
-	Tue, 14 May 2024 11:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99CD6D1A7;
+	Tue, 14 May 2024 11:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0j1kXaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p59qrupJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9999139D1E;
-	Tue, 14 May 2024 11:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AD654BFE;
+	Tue, 14 May 2024 11:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686292; cv=none; b=MUBxPvDSyGsekBgsXeELTDtT8VtN98carqnd4RFWkETH69g1HY3e7mG6MmTdsXhvLmCxf4kJsYY9EjIZlB52mEGlUcR/I86O2lhhtZlkbF85p8vHKmnq2T5+Z+OgodGhb1K/2dyeeHu7Dua3G1zOdmgsoNHPwy62/QSAvn1GST4=
+	t=1715685336; cv=none; b=J9gxiGP2o//iow9PBvcBjxN06RZhir/UPyLSaP5QljM7ZExrUeDsjRL9um8tQJi0AUCkHkG6eT9q8u1+GsaqNoCjSmleT0X1deNZOAEQCnnM71xSRuzDUi2+rVfO2PJeycDpt17knBeaxxwCoNBTXUR7IeyUghmoi8q9Bo6ZDKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686292; c=relaxed/simple;
-	bh=D1VprFPC9wYKFgOYxyOB3qoaiCB6sJdv+9UY7r2qhoY=;
+	s=arc-20240116; t=1715685336; c=relaxed/simple;
+	bh=c8TA8XLbXQPHLx1bg+Iq7cP+lxZFAhRcaj4H8HTLWCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KF6kmYxTzXNWghhG3J0slBsZA0ZUPbAzZFR7Sx214VtYJkgg4QwJG0araye615CEpq5N398hYQ6rkmY0kiSEVpbA9lUPaM//tZgurX4IfhDM+bXvU36Z5s17livQ5n8UESe0B34+AQcXh/sglGwfZbxtAv/G3fFEY20RHMv5O3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0j1kXaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B873C2BD10;
-	Tue, 14 May 2024 11:31:31 +0000 (UTC)
+	 MIME-Version; b=UwDWe7hL/b5TuKZHO+mrEqZalpleXIPz2c6LCGefVMeo8ei4diG1C+5LUOmpzfPJo5tgy+mLGi1Zf7z+E0d8jjziHxdkx9WRsywEqXCL5WzvNQAqTLeTtYM5DutOul5yH6OdzzzstYG1R+kLLKlEkYZzj06ukpr0urnDdfikYkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p59qrupJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86ABC2BD10;
+	Tue, 14 May 2024 11:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686292;
-	bh=D1VprFPC9wYKFgOYxyOB3qoaiCB6sJdv+9UY7r2qhoY=;
+	s=korg; t=1715685336;
+	bh=c8TA8XLbXQPHLx1bg+Iq7cP+lxZFAhRcaj4H8HTLWCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0j1kXajDplZO9oWEeWppm+SNuhTKtHr2wHoArNtBl++nYq3Hl8ea1ngVHkxI7CgO
-	 FbPG+VsmHTvBw/okpN94sW70e2VmAnFgdICXUmMzYODarkkPGyUGEFkSH1Mf3j+6A5
-	 pK+QgHjJaZNTv4tctcL1c4EoQXMmWQDXRjwvAe+4=
+	b=p59qrupJ1qiu5HKd8Y4qT0ainCc8bqDf8imb45cdfYES2YNcjGakk5cOJwU//gfbV
+	 rRu6SkpTggsWvruRguCSYzWNcV6bg8Ypg08AMWIK4UmHaT6FqzS14RJ5JwLMNGtNzP
+	 eFTTLxNy7MUmKn/JIGsHm/Hq2Jeq9wUV/Bn+Crjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Vanillan Wang <vanillanwang@163.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/236] vxlan: Pull inner IP header in vxlan_rcv().
+Subject: [PATCH 6.6 171/301] net:usb:qmi_wwan: support Rolling modules
 Date: Tue, 14 May 2024 12:17:22 +0200
-Message-ID: <20240514101023.407725848@linuxfoundation.org>
+Message-ID: <20240514101038.712170883@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-[ Upstream commit f7789419137b18e3847d0cc41afd788c3c00663d ]
+[ Upstream commit d362046021ea122309da8c8e0b6850c792ca97b5 ]
 
-Ensure the inner IP header is part of skb's linear data before reading
-its ECN bits. Otherwise we might read garbage.
-One symptom is the system erroneously logging errors like
-"vxlan: non-ECT from xxx.xxx.xxx.xxx with TOS=xxxx".
+Update the qmi_wwan driver support for the Rolling
+LTE modules.
 
-Similar bugs have been fixed in geneve, ip_tunnel and ip6_tunnel (see
-commit 1ca1ba465e55 ("geneve: make sure to pull inner header in
-geneve_rx()") for example). So let's reuse the same code structure for
-consistency. Maybe we'll can add a common helper in the future.
+- VID:PID 33f8:0104, RW101-GL for laptop debug M.2 cards(with RMNET
+interface for /Linux/Chrome OS)
+0x0104: RMNET, diag, at, pipe
 
-Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/1239c8db54efec341dd6455c77e0380f58923a3c.1714495737.git.gnault@redhat.com
+Here are the outputs of usb-devices:
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0104 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling Module
+S:  SerialNumber=ba2eb033
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Link: https://lore.kernel.org/r/20240416120713.24777-1-vanillanwang@163.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index fbd36dff9ec27..01ce289f4abf0 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1721,6 +1721,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	bool raw_proto = false;
- 	void *oiph;
- 	__be32 vni = 0;
-+	int nh;
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index e2e181378f412..edc34402e787f 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1431,6 +1431,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x2692, 0x9025, 4)},    /* Cellient MPL200 (rebranded Qualcomm 05c6:9025) */
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1312, 4)},	/* u-blox LARA-R6 01B */
+ 	{QMI_QUIRK_SET_DTR(0x1546, 0x1342, 4)},	/* u-blox LARA-L6 */
++	{QMI_QUIRK_SET_DTR(0x33f8, 0x0104, 4)}, /* Rolling RW101 RMNET */
  
- 	/* Need UDP and VXLAN header to be present */
- 	if (!pskb_may_pull(skb, VXLAN_HLEN))
-@@ -1809,9 +1810,25 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		skb->pkt_type = PACKET_HOST;
- 	}
- 
--	oiph = skb_network_header(skb);
-+	/* Save offset of outer header relative to skb->head,
-+	 * because we are going to reset the network header to the inner header
-+	 * and might change skb->head.
-+	 */
-+	nh = skb_network_header(skb) - skb->head;
-+
- 	skb_reset_network_header(skb);
- 
-+	if (!pskb_inet_may_pull(skb)) {
-+		DEV_STATS_INC(vxlan->dev, rx_length_errors);
-+		DEV_STATS_INC(vxlan->dev, rx_errors);
-+		vxlan_vnifilter_count(vxlan, vni, vninode,
-+				      VXLAN_VNI_STATS_RX_ERRORS, 0);
-+		goto drop;
-+	}
-+
-+	/* Get the outer header. */
-+	oiph = skb->head + nh;
-+
- 	if (!vxlan_ecn_decapsulate(vs, oiph, skb)) {
- 		++vxlan->dev->stats.rx_frame_errors;
- 		++vxlan->dev->stats.rx_errors;
+ 	/* 4. Gobi 1000 devices */
+ 	{QMI_GOBI1K_DEVICE(0x05c6, 0x9212)},	/* Acer Gobi Modem Device */
 -- 
 2.43.0
 
