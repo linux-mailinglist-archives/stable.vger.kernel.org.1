@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-44270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA478C520C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309318C50C1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2B3A2828D6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E8A22823D1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A331129E8E;
-	Tue, 14 May 2024 11:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F69976028;
+	Tue, 14 May 2024 10:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR5g19M/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZRHRuoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0323D54BFE;
-	Tue, 14 May 2024 11:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2EB6DD1D;
+	Tue, 14 May 2024 10:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685367; cv=none; b=enwpukiulJhNRWgx894ifpOjWNViGGOEBE/SH6wz9F09u0i6/N6ZI9aJhGMDtnyWoR8cYCdBDNivs29MgAUaQwWqCzD3BU6UqYU7vFrSh68VjGne7NXf0BRqr2MmCpRJc4oVS9OH5nhVI/Rg8DiKqwSAlCrOEb5b0ak8sKPTwIs=
+	t=1715683655; cv=none; b=PKCA/r3VCJnrru5S9ImwRWzm9mX84ldh5oYnto6uL8Ko5ofeJ/X/hMTvJ426e4SxznwfLW6sWclQzRxLHV4DuzeQGAGbu4ZhoEkZ8RCpD6vVIEG07C5z7sx2Au+rurbNAtlQJat/gwInpBqWUWO4+AFAU8lKvZdt3pkIkNd6VwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685367; c=relaxed/simple;
-	bh=7hZXaXZRQlNPpL2PzEpuDA3DJnYt9m9HDmZKoMuc+Vk=;
+	s=arc-20240116; t=1715683655; c=relaxed/simple;
+	bh=m52KnLi0ZdeAL0t5UN0lh9zpHE/Y5CObrP31hQ4s8lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPXwGLlwhsQQUZxoblgS+KuYd6jTwFBRQZOgd2voLhrCbciaoUnOlcU6+f4b3Oo23rAgCcc9C26lN1vZSX0CCm9oPPmz4Y+5DSP7GEeI64rAGQRCV/xbTiiKj4pm3CeE9ZMGnT/iCxVEwDfoQRo0LItDrFWZQk93mu1sB4K693w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR5g19M/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CABC2BD10;
-	Tue, 14 May 2024 11:16:05 +0000 (UTC)
+	 MIME-Version; b=l/+xcNMqITv93bsFg/D2OSX34g4OKjrynSum/0HCMpiLuRM+Ylxl4pxec8aMFJNVTN/M2UUizcjhenaGBKw3g2Laj8ajOlFT+6gfywtPNPbjMgpDzzaXGSAbSwxnWX4asYWVZWt2pa7U8Nu4qb7D2PU9E8z9OENdmoYEWvlHsBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZRHRuoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F115BC2BD10;
+	Tue, 14 May 2024 10:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685366;
-	bh=7hZXaXZRQlNPpL2PzEpuDA3DJnYt9m9HDmZKoMuc+Vk=;
+	s=korg; t=1715683654;
+	bh=m52KnLi0ZdeAL0t5UN0lh9zpHE/Y5CObrP31hQ4s8lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR5g19M/WLFZ+NJ+spvypwm96VZMVKmIzrAdTDNCobvAC7wOPwbuoornGqnpg03uz
-	 xipQT0U+Nqj+Aad8lgzGPsRxJ1fie7QxOG2dyt8N3KB6ZK5RghJHdgSXBJHhBsS1zK
-	 /m86XL09ZsDRieQwwKmT3oByO1fxJKWaDJDGiPcw=
+	b=kZRHRuoG8ZJueI+zHOWlhS4r//V93+j7PMpPpIrBs/a/AESHslhKg1JHfsPhIXDsc
+	 8RjvxZZBU0OWIdB8L5nTIceNVKPCWe4qY3NpXOKKghAylODutg+Fs7n8hZkhHDDfSa
+	 vo7bytYrkwQzQNJceCBX97mQ8/K8rTreruxWTxmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/301] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
+	Maxime Ripard <mripard@kernel.org>,
+	Alex Constantino <dreaming.about.electric.sheep@gmail.com>,
+	Timo Lindfors <timo.lindfors@iki.fi>,
+	Dave Airlie <airlied@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.8 244/336] Reapply "drm/qxl: simplify qxl_fence_wait"
 Date: Tue, 14 May 2024 12:17:28 +0200
-Message-ID: <20240514101038.940468760@linuxfoundation.org>
+Message-ID: <20240514101047.831949132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,150 +69,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 94062790aedb505bdda209b10bea47b294d6394f ]
+commit 3628e0383dd349f02f882e612ab6184e4bb3dc10 upstream.
 
-TCP_SYN_RECV state is really special, it is only used by
-cross-syn connections, mostly used by fuzzers.
+This reverts commit 07ed11afb68d94eadd4ffc082b97c2331307c5ea.
 
-In the following crash [1], syzbot managed to trigger a divide
-by zero in tcp_rcv_space_adjust()
+Stephen Rostedt reports:
+ "I went to run my tests on my VMs and the tests hung on boot up.
+  Unfortunately, the most I ever got out was:
 
-A socket makes the following state transitions,
-without ever calling tcp_init_transfer(),
-meaning tcp_init_buffer_space() is also not called.
+  [   93.607888] Testing event system initcall: OK
+  [   93.667730] Running tests on all trace events:
+  [   93.669757] Testing all events: OK
+  [   95.631064] ------------[ cut here ]------------
+  Timed out after 60 seconds"
 
-         TCP_CLOSE
-connect()
-         TCP_SYN_SENT
-         TCP_SYN_RECV
-shutdown() -> tcp_shutdown(sk, SEND_SHUTDOWN)
-         TCP_FIN_WAIT1
+and further debugging points to a possible circular locking dependency
+between the console_owner locking and the worker pool locking.
 
-To fix this issue, change tcp_shutdown() to not
-perform a TCP_SYN_RECV -> TCP_FIN_WAIT1 transition,
-which makes no sense anyway.
+Reverting the commit allows Steve's VM to boot to completion again.
 
-When tcp_rcv_state_process() later changes socket state
-from TCP_SYN_RECV to TCP_ESTABLISH, then look at
-sk->sk_shutdown to finally enter TCP_FIN_WAIT1 state,
-and send a FIN packet from a sane socket state.
+[ This may obviously result in the "[TTM] Buffer eviction failed"
+  messages again, which was the reason for that original revert. But at
+  this point this seems preferable to a non-booting system... ]
 
-This means tcp_send_fin() can now be called from BH
-context, and must use GFP_ATOMIC allocations.
-
-[1]
-divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 1 PID: 5084 Comm: syz-executor358 Not tainted 6.9.0-rc6-syzkaller-00022-g98369dccd2f8 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:tcp_rcv_space_adjust+0x2df/0x890 net/ipv4/tcp_input.c:767
-Code: e3 04 4c 01 eb 48 8b 44 24 38 0f b6 04 10 84 c0 49 89 d5 0f 85 a5 03 00 00 41 8b 8e c8 09 00 00 89 e8 29 c8 48 0f af c3 31 d2 <48> f7 f1 48 8d 1c 43 49 8d 96 76 08 00 00 48 89 d0 48 c1 e8 03 48
-RSP: 0018:ffffc900031ef3f0 EFLAGS: 00010246
-RAX: 0c677a10441f8f42 RBX: 000000004fb95e7e RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000027d4b11f R08: ffffffff89e535a4 R09: 1ffffffff25e6ab7
-R10: dffffc0000000000 R11: ffffffff8135e920 R12: ffff88802a9f8d30
-R13: dffffc0000000000 R14: ffff88802a9f8d00 R15: 1ffff1100553f2da
-FS:  00005555775c0380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1155bf2304 CR3: 000000002b9f2000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
-  tcp_recvmsg_locked+0x106d/0x25a0 net/ipv4/tcp.c:2513
-  tcp_recvmsg+0x25d/0x920 net/ipv4/tcp.c:2578
-  inet6_recvmsg+0x16a/0x730 net/ipv6/af_inet6.c:680
-  sock_recvmsg_nosec net/socket.c:1046 [inline]
-  sock_recvmsg+0x109/0x280 net/socket.c:1068
-  ____sys_recvmsg+0x1db/0x470 net/socket.c:2803
-  ___sys_recvmsg net/socket.c:2845 [inline]
-  do_recvmmsg+0x474/0xae0 net/socket.c:2939
-  __sys_recvmmsg net/socket.c:3018 [inline]
-  __do_sys_recvmmsg net/socket.c:3041 [inline]
-  __se_sys_recvmmsg net/socket.c:3034 [inline]
-  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3034
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7faeb6363db9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcc1997168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007faeb6363db9
-RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000001c
-R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240501125448.896529-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-bisected-by: Steven Rostedt <rostedt@goodmis.org>
+Link: https://lore.kernel.org/all/20240502081641.457aa25f@gandalf.local.home/
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Cc: Alex Constantino <dreaming.about.electric.sheep@gmail.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Timo Lindfors <timo.lindfors@iki.fi>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c        | 4 ++--
- net/ipv4/tcp_input.c  | 2 ++
- net/ipv4/tcp_output.c | 4 +++-
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/qxl/qxl_release.c |   50 +++-----------------------------------
+ include/linux/dma-fence.h         |    7 -----
+ 2 files changed, 5 insertions(+), 52 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index f8df35f7352a5..7bf774bdb9386 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2710,7 +2710,7 @@ void tcp_shutdown(struct sock *sk, int how)
- 	/* If we've already sent a FIN, or it's a closed state, skip this. */
- 	if ((1 << sk->sk_state) &
- 	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
--	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {
-+	     TCPF_CLOSE_WAIT)) {
- 		/* Clear out any half completed packets.  FIN if needed. */
- 		if (tcp_close_state(sk))
- 			tcp_send_fin(sk);
-@@ -2819,7 +2819,7 @@ void __tcp_close(struct sock *sk, long timeout)
- 		 * machine. State transitions:
- 		 *
- 		 * TCP_ESTABLISHED -> TCP_FIN_WAIT1
--		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (forget it, it's impossible)
-+		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (it is difficult)
- 		 * TCP_CLOSE_WAIT -> TCP_LAST_ACK
- 		 *
- 		 * are legal only when FIN has been sent (i.e. in window),
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e6c4929549428..f938442b202d7 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6627,6 +6627,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+--- a/drivers/gpu/drm/qxl/qxl_release.c
++++ b/drivers/gpu/drm/qxl/qxl_release.c
+@@ -58,56 +58,16 @@ static long qxl_fence_wait(struct dma_fe
+ 			   signed long timeout)
+ {
+ 	struct qxl_device *qdev;
+-	struct qxl_release *release;
+-	int count = 0, sc = 0;
+-	bool have_drawable_releases;
+ 	unsigned long cur, end = jiffies + timeout;
  
- 		tcp_initialize_rcv_mss(sk);
- 		tcp_fast_path_on(tp);
-+		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+			tcp_shutdown(sk, SEND_SHUTDOWN);
- 		break;
+ 	qdev = container_of(fence->lock, struct qxl_device, release_lock);
+-	release = container_of(fence, struct qxl_release, base);
+-	have_drawable_releases = release->type == QXL_RELEASE_DRAWABLE;
  
- 	case TCP_FIN_WAIT1: {
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index ab3b7b4b4429b..5631041ae12cb 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -3533,7 +3533,9 @@ void tcp_send_fin(struct sock *sk)
- 			return;
- 		}
- 	} else {
--		skb = alloc_skb_fclone(MAX_TCP_HEADER, sk->sk_allocation);
-+		skb = alloc_skb_fclone(MAX_TCP_HEADER,
-+				       sk_gfp_mask(sk, GFP_ATOMIC |
-+						       __GFP_NOWARN));
- 		if (unlikely(!skb))
- 			return;
+-retry:
+-	sc++;
+-
+-	if (dma_fence_is_signaled(fence))
+-		goto signaled;
+-
+-	qxl_io_notify_oom(qdev);
+-
+-	for (count = 0; count < 11; count++) {
+-		if (!qxl_queue_garbage_collect(qdev, true))
+-			break;
+-
+-		if (dma_fence_is_signaled(fence))
+-			goto signaled;
+-	}
+-
+-	if (dma_fence_is_signaled(fence))
+-		goto signaled;
+-
+-	if (have_drawable_releases || sc < 4) {
+-		if (sc > 2)
+-			/* back off */
+-			usleep_range(500, 1000);
+-
+-		if (time_after(jiffies, end))
+-			return 0;
+-
+-		if (have_drawable_releases && sc > 300) {
+-			DMA_FENCE_WARN(fence,
+-				       "failed to wait on release %llu after spincount %d\n",
+-				       fence->context & ~0xf0000000, sc);
+-			goto signaled;
+-		}
+-		goto retry;
+-	}
+-	/*
+-	 * yeah, original sync_obj_wait gave up after 3 spins when
+-	 * have_drawable_releases is not set.
+-	 */
++	if (!wait_event_timeout(qdev->release_event,
++				(dma_fence_is_signaled(fence) ||
++				 (qxl_io_notify_oom(qdev), 0)),
++				timeout))
++		return 0;
  
--- 
-2.43.0
-
+-signaled:
+ 	cur = jiffies;
+ 	if (time_after(cur, end))
+ 		return 0;
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -682,11 +682,4 @@ static inline bool dma_fence_is_containe
+ 	return dma_fence_is_array(fence) || dma_fence_is_chain(fence);
+ }
+ 
+-#define DMA_FENCE_WARN(f, fmt, args...) \
+-	do {								\
+-		struct dma_fence *__ff = (f);				\
+-		pr_warn("f %llu#%llu: " fmt, __ff->context, __ff->seqno,\
+-			 ##args);					\
+-	} while (0)
+-
+ #endif /* __LINUX_DMA_FENCE_H */
 
 
 
