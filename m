@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD22B8C52EF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7978C5091
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59BA1C219FF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3F91F20F44
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA97C13664E;
-	Tue, 14 May 2024 11:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A07013D8B7;
+	Tue, 14 May 2024 10:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pElWbWng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmfJZbuP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993ED57CBC;
-	Tue, 14 May 2024 11:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172536BFBB;
+	Tue, 14 May 2024 10:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686214; cv=none; b=b9KT5KdHzL1CB2kmrRam7xyDVAaQM1yVaeORdYdQIxwQ4Pvct1MDCmNGVzaUKZlpK/GbUXoqqCW5JaTvM0PrMHNUHac/nhxHpJpUBIX8v/EmbZxSx9f1iSofPMI8HQ5O2fnTZmNqRPGvsSFxWTI+wjfSx4huuCnSnV2PRDfEJ7Q=
+	t=1715683452; cv=none; b=MMqZss+ulW2qf8Cjx5JGGoWqinqZF5M24rpFT2R7BJb2mthXRoPkmsvIa2dsHlQCWMJFTNVNpEz3RiAyNicggKve08NPHjNVWs3RDFX4JWYXLXJj5J6E8oYPVR1VnS5Ef4lVN1LIa8QJyfP1wV8gOOKSyleBpdVvklnLL+JMtGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686214; c=relaxed/simple;
-	bh=HU1HTID8z7AUH4GYu3FLbhnwuPMwuEuyl4i3KoYLGMA=;
+	s=arc-20240116; t=1715683452; c=relaxed/simple;
+	bh=312FFyGUHSCTnybX8ftzEW0F2gN3iSzsOifGkJoB7zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3IhhsQT/l7Hu5sx3O8mYYLMiFb1rYcRY1PueruARscmcPffjZ9X21BSVjCnIVXGJXIHU1Ai9/HYEmh1/mLZeTNxYe2ijBOVDkpG/X6naL8LkWQHD+RFMZx8eGJWKjugjHjEMmu7bqBWaexByyfHzCAIkOoczg0Tsd/0a5oiDrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pElWbWng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDBCC2BD10;
-	Tue, 14 May 2024 11:30:13 +0000 (UTC)
+	 MIME-Version; b=o8d+Jb6BgIDpqN40vDeeU7LjtkYle/KNDjpqptnwMApDuXdQSy85XRz5y3fPHVpK/BizEuBMI6c8WhOcIAPFUuh5IamqOsUA6XxwZ7VIPxjcmfcfPyu5T4by41BY6DYm1EIgmCFXamVCsFZ7RtDO8Xh25YIZG7qlQaHT7iRtZhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmfJZbuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C859C2BD10;
+	Tue, 14 May 2024 10:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686214;
-	bh=HU1HTID8z7AUH4GYu3FLbhnwuPMwuEuyl4i3KoYLGMA=;
+	s=korg; t=1715683451;
+	bh=312FFyGUHSCTnybX8ftzEW0F2gN3iSzsOifGkJoB7zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pElWbWngVTq7S8GUxKlIL4MucgFMV8Hb3OnhXCyKqJHJsz7ZUQer3IQg8oQ08l4Qo
-	 EY1RUtf6mI1qnYPNgFaPNClyYR5FR//Wojrl7PuqHMVYDNh/Vx/+0QRWcO5MBqExxi
-	 LlFMVPhCzTCILIC/3hP458meMwas80D2no/wpcNU=
+	b=tmfJZbuPmI7NkULi7fcPeC/QdSzmgEVEzy62n9L+tgx6d95rIJ7r/CiOLMy28fdhh
+	 JzAhqmEpMylT4mKxsApEKaeYEqlznDfaepLvurYYK2+ZkBu2GEHIZBzuxQhgCG0G+5
+	 OAU1kMlIsmn7+MtWW4rOquzTaK2WI39PkAOcoJJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Chapman <jchapman@katalix.com>,
-	David Bauer <mail@david-bauer.net>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/236] net l2tp: drop flow hash on forward
+Subject: [PATCH 6.8 219/336] dt-bindings: net: mediatek: remove wrongly added clocks and SerDes
 Date: Tue, 14 May 2024 12:17:03 +0200
-Message-ID: <20240514101022.673473185@linuxfoundation.org>
+Message-ID: <20240514101046.883724137@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
+[ Upstream commit cc349b0771dccebf0fa9f5e1822ac444aef11448 ]
 
-Drop the flow-hash of the skb when forwarding to the L2TP netdev.
+Several clocks as well as both sgmiisys phandles were added by mistake
+to the Ethernet bindings for MT7988. Also, the total number of clocks
+didn't match with the actual number of items listed.
 
-This avoids the L2TP qdisc from using the flow-hash from the outer
-packet, which is identical for every flow within the tunnel.
+This happened because the vendor driver which served as a reference uses
+a high number of syscon phandles to access various parts of the SoC
+which wasn't acceptable upstream. Hence several parts which have never
+previously been supported (such SerDes PHY and USXGMII PCS) are going to
+be implemented by separate drivers. As a result the device tree will
+look much more sane.
 
-This does not affect every platform but is specific for the ethernet
-driver. It depends on the platform including L4 information in the
-flow-hash.
+Quickly align the bindings with the upcoming reality of the drivers
+actually adding support for the remaining Ethernet-related features of
+the MT7988 SoC.
 
-One such example is the Mediatek Filogic MT798x family of networking
-processors.
-
-Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
-Acked-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c94a9aabec36 ("dt-bindings: net: mediatek,net: add mt7988-eth binding")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/1569290b21cc787a424469ed74456a7e976b102d.1715084326.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_eth.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../devicetree/bindings/net/mediatek,net.yaml | 22 ++-----------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
-index f2ae03c404736..1f41d2f3b8c4e 100644
---- a/net/l2tp/l2tp_eth.c
-+++ b/net/l2tp/l2tp_eth.c
-@@ -136,6 +136,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
- 	/* checksums verified by L2TP */
- 	skb->ip_summed = CHECKSUM_NONE;
+diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+index e74502a0afe86..3202dc7967c5b 100644
+--- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+@@ -337,8 +337,8 @@ allOf:
+           minItems: 4
  
-+	/* drop outer flow-hash */
-+	skb_clear_hash(skb);
-+
- 	skb_dst_drop(skb);
- 	nf_reset_ct(skb);
+         clocks:
+-          minItems: 34
+-          maxItems: 34
++          minItems: 24
++          maxItems: 24
  
+         clock-names:
+           items:
+@@ -351,18 +351,6 @@ allOf:
+             - const: ethwarp_wocpu1
+             - const: ethwarp_wocpu0
+             - const: esw
+-            - const: netsys0
+-            - const: netsys1
+-            - const: sgmii_tx250m
+-            - const: sgmii_rx250m
+-            - const: sgmii2_tx250m
+-            - const: sgmii2_rx250m
+-            - const: top_usxgmii0_sel
+-            - const: top_usxgmii1_sel
+-            - const: top_sgm0_sel
+-            - const: top_sgm1_sel
+-            - const: top_xfi_phy0_xtal_sel
+-            - const: top_xfi_phy1_xtal_sel
+             - const: top_eth_gmii_sel
+             - const: top_eth_refck_50m_sel
+             - const: top_eth_sys_200m_sel
+@@ -375,16 +363,10 @@ allOf:
+             - const: top_netsys_sync_250m_sel
+             - const: top_netsys_ppefb_250m_sel
+             - const: top_netsys_warp_sel
+-            - const: wocpu1
+-            - const: wocpu0
+             - const: xgp1
+             - const: xgp2
+             - const: xgp3
+ 
+-        mediatek,sgmiisys:
+-          minItems: 2
+-          maxItems: 2
+-
+ patternProperties:
+   "^mac@[0-1]$":
+     type: object
 -- 
 2.43.0
 
