@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F6A8C5206
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DF98C533A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E65291C21514
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC711C22C81
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377EC129E8C;
-	Tue, 14 May 2024 11:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6799513C67D;
+	Tue, 14 May 2024 11:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSiEuidO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I30YWRxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0708129E74;
-	Tue, 14 May 2024 11:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F6913C67A;
+	Tue, 14 May 2024 11:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685363; cv=none; b=qgiHaW8NldQcr3MsZzcTVgGmhEfpKwIf3vOD3SDIvSrYUd5ZH7cmKiTMlRv6f8yJrUtrTGBsrDMEjoS5+qzuUJhOs2w0Yks53KFoZfvOFQmCAh4J9PSpqhJJuFz58E8hU+saUMLY/t3yKRJoecrMoKyUQEP3vMxE9muktRgOSJQ=
+	t=1715686373; cv=none; b=ta1436ANOSvoI6H0z7kxqYUZEEuvWF0STLB0TqWdO790tX9EyQXz5p+3/VgrSru3YTuIQeVPtuiaSjlIyAiqyZsZOmCaeOg8LqGfhFrHoo3Uig+sQW8vpfKtWuVHSmDdiVvmmtyFvyRQfkB3RXLhZdzxD/bVvd7bmuSmzKTOyQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685363; c=relaxed/simple;
-	bh=+BezlPcr993MEj8rjnB6AgDeyZTYQj6id9+oYDNOXh0=;
+	s=arc-20240116; t=1715686373; c=relaxed/simple;
+	bh=ARSlAm+WpfUAQu1fuaHRjP0eUvo0cZKh18KaGZJU6zY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEx0hnGsjzGFsqbLJVzhtH4bJi+Wzt45oUdxK64AaRaI2TXSTOBZZg+u8hzLpIEuhhZoiqE/r6S2QRjwCUdBSC34u9YHgIummPcQb44UUd0lov8LS1A5s7dNnXvXvcvq7HmYKXKUOYqQF2IGRtIiPU/RurzWeRGLq9aGS6vXbcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSiEuidO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BBFC2BD10;
-	Tue, 14 May 2024 11:16:02 +0000 (UTC)
+	 MIME-Version; b=eUBrDbTRHmc7gK7ge9aDp3rYrYdY7MwGvrXq0l0j99tJdtwnA2zG2Q1c4Waghhjvc8du/j4GHGz8VJxVdIQrJ3we3VuTe7+oHV7QqgV6kIV7Lzk6ILAE8/BFA4CMK5FIks9uofTo/B4qOACsBiE8mbuld3M4WX/4hTarN3xC++E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I30YWRxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F286C2BD10;
+	Tue, 14 May 2024 11:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685362;
-	bh=+BezlPcr993MEj8rjnB6AgDeyZTYQj6id9+oYDNOXh0=;
+	s=korg; t=1715686372;
+	bh=ARSlAm+WpfUAQu1fuaHRjP0eUvo0cZKh18KaGZJU6zY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSiEuidO6kT/EymC3LbVSQZO4ajzoaKMYGPafcsF2Yba6+0rEbBZGXU+qCTGnyEUv
-	 KRi7HcgSTy7N52A+RiaxC+Ib/Ugbnul0PHzoCv5Poymus+nBLSykXUIshHi1sVxsOE
-	 He/lJoSnpptZtlA/I9yERyKPIi0H7xW3piu5OdkA=
+	b=I30YWRxC2z3RIeZwnAdcM1PCgjNgbis4uybI3mdsqjm8floo36seB29DdBbjB/oBd
+	 8pQ6R6O99ebSh+XedzVBP7ujk+3Eglrobavr9zT8Vz9AY4AdASRzwUoKQLAMg+t7O0
+	 asAVbRfuoiQWxWTMIH5aWgAxImgtKBply99x+rIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boy Wu <boy.wu@mediatek.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Chad Wagner <wagnerch42@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/301] ARM: 9381/1: kasan: clear stale stack poison
+Subject: [PATCH 6.1 085/236] clk: sunxi-ng: h6: Reparent CPUX during PLL CPUX rate change
 Date: Tue, 14 May 2024 12:17:27 +0200
-Message-ID: <20240514101038.902786781@linuxfoundation.org>
+Message-ID: <20240514101023.597900121@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,118 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boy.Wu <boy.wu@mediatek.com>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-[ Upstream commit c4238686f9093b98bd6245a348bcf059cdce23af ]
+[ Upstream commit 7e91ed763dc07437777bd012af7a2bd4493731ff ]
 
-We found below OOB crash:
+While PLL CPUX clock rate change when CPU is running from it works in
+vast majority of cases, now and then it causes instability. This leads
+to system crashes and other undefined behaviour. After a lot of testing
+(30+ hours) while also doing a lot of frequency switches, we can't
+observe any instability issues anymore when doing reparenting to stable
+clock like 24 MHz oscillator.
 
-[   33.452494] ==================================================================
-[   33.453513] BUG: KASAN: stack-out-of-bounds in refresh_cpu_vm_stats.constprop.0+0xcc/0x2ec
-[   33.454660] Write of size 164 at addr c1d03d30 by task swapper/0/0
-[   33.455515]
-[   33.455767] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G           O       6.1.25-mainline #1
-[   33.456880] Hardware name: Generic DT based system
-[   33.457555]  unwind_backtrace from show_stack+0x18/0x1c
-[   33.458326]  show_stack from dump_stack_lvl+0x40/0x4c
-[   33.459072]  dump_stack_lvl from print_report+0x158/0x4a4
-[   33.459863]  print_report from kasan_report+0x9c/0x148
-[   33.460616]  kasan_report from kasan_check_range+0x94/0x1a0
-[   33.461424]  kasan_check_range from memset+0x20/0x3c
-[   33.462157]  memset from refresh_cpu_vm_stats.constprop.0+0xcc/0x2ec
-[   33.463064]  refresh_cpu_vm_stats.constprop.0 from tick_nohz_idle_stop_tick+0x180/0x53c
-[   33.464181]  tick_nohz_idle_stop_tick from do_idle+0x264/0x354
-[   33.465029]  do_idle from cpu_startup_entry+0x20/0x24
-[   33.465769]  cpu_startup_entry from rest_init+0xf0/0xf4
-[   33.466528]  rest_init from arch_post_acpi_subsys_init+0x0/0x18
-[   33.467397]
-[   33.467644] The buggy address belongs to stack of task swapper/0/0
-[   33.468493]  and is located at offset 112 in frame:
-[   33.469172]  refresh_cpu_vm_stats.constprop.0+0x0/0x2ec
-[   33.469917]
-[   33.470165] This frame has 2 objects:
-[   33.470696]  [32, 76) 'global_zone_diff'
-[   33.470729]  [112, 276) 'global_node_diff'
-[   33.471294]
-[   33.472095] The buggy address belongs to the physical page:
-[   33.472862] page:3cd72da8 refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x41d03
-[   33.473944] flags: 0x1000(reserved|zone=0)
-[   33.474565] raw: 00001000 ed741470 ed741470 00000000 00000000 00000000 ffffffff 00000001
-[   33.475656] raw: 00000000
-[   33.476050] page dumped because: kasan: bad access detected
-[   33.476816]
-[   33.477061] Memory state around the buggy address:
-[   33.477732]  c1d03c00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   33.478630]  c1d03c80: 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00 00 00 00
-[   33.479526] >c1d03d00: 00 04 f2 f2 f2 f2 00 00 00 00 00 00 f1 f1 f1 f1
-[   33.480415]                                                ^
-[   33.481195]  c1d03d80: 00 00 00 00 00 00 00 00 00 00 04 f3 f3 f3 f3 f3
-[   33.482088]  c1d03e00: f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
-[   33.482978] ==================================================================
-
-We find the root cause of this OOB is that arm does not clear stale stack
-poison in the case of cpuidle.
-
-This patch refer to arch/arm64/kernel/sleep.S to resolve this issue.
-
->From cited commit [1] that explain the problem
-
-Functions which the compiler has instrumented for KASAN place poison on
-the stack shadow upon entry and remove this poison prior to returning.
-
-In the case of cpuidle, CPUs exit the kernel a number of levels deep in
-C code.  Any instrumented functions on this critical path will leave
-portions of the stack shadow poisoned.
-
-If CPUs lose context and return to the kernel via a cold path, we
-restore a prior context saved in __cpu_suspend_enter are forgotten, and
-we never remove the poison they placed in the stack shadow area by
-functions calls between this and the actual exit of the kernel.
-
-Thus, (depending on stackframe layout) subsequent calls to instrumented
-functions may hit this stale poison, resulting in (spurious) KASAN
-splats to the console.
-
-To avoid this, clear any stale poison from the idle thread for a CPU
-prior to bringing a CPU online.
-
->From cited commit [2]
-
-Extend to check for CONFIG_KASAN_STACK
-
-[1] commit 0d97e6d8024c ("arm64: kasan: clear stale stack poison")
-[2] commit d56a9ef84bd0 ("kasan, arm64: unpoison stack only with CONFIG_KASAN_STACK")
-
-Signed-off-by: Boy Wu <boy.wu@mediatek.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Fixes: 5615f69bc209 ("ARM: 9016/2: Initialize the mapping of KASan shadow memory")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 524353ea480b ("clk: sunxi-ng: add support for the Allwinner H6 CCU")
+Reported-by: Chad Wagner <wagnerch42@gmail.com>
+Link: https://forum.libreelec.tv/thread/27295-orange-pi-3-lts-freezes/
+Tested-by: Chad Wagner <wagnerch42@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20231013181712.2128037-1-jernej.skrabec@gmail.com
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/sleep.S | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/sunxi-ng/ccu-sun50i-h6.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/kernel/sleep.S b/arch/arm/kernel/sleep.S
-index a86a1d4f34618..93afd1005b43c 100644
---- a/arch/arm/kernel/sleep.S
-+++ b/arch/arm/kernel/sleep.S
-@@ -127,6 +127,10 @@ cpu_resume_after_mmu:
- 	instr_sync
- #endif
- 	bl	cpu_init		@ restore the und/abt/irq banked regs
-+#if defined(CONFIG_KASAN) && defined(CONFIG_KASAN_STACK)
-+	mov	r0, sp
-+	bl	kasan_unpoison_task_stack_below
-+#endif
- 	mov	r0, #0			@ return zero on success
- 	ldmfd	sp!, {r4 - r11, pc}
- ENDPROC(cpu_resume_after_mmu)
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
+index 42568c6161814..892df807275c8 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
+@@ -1181,11 +1181,18 @@ static const u32 usb2_clk_regs[] = {
+ 	SUN50I_H6_USB3_CLK_REG,
+ };
+ 
++static struct ccu_mux_nb sun50i_h6_cpu_nb = {
++	.common		= &cpux_clk.common,
++	.cm		= &cpux_clk.mux,
++	.delay_us       = 1,
++	.bypass_index   = 0, /* index of 24 MHz oscillator */
++};
++
+ static int sun50i_h6_ccu_probe(struct platform_device *pdev)
+ {
+ 	void __iomem *reg;
++	int i, ret;
+ 	u32 val;
+-	int i;
+ 
+ 	reg = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(reg))
+@@ -1252,7 +1259,15 @@ static int sun50i_h6_ccu_probe(struct platform_device *pdev)
+ 	val |= BIT(24);
+ 	writel(val, reg + SUN50I_H6_HDMI_CEC_CLK_REG);
+ 
+-	return devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_h6_ccu_desc);
++	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_h6_ccu_desc);
++	if (ret)
++		return ret;
++
++	/* Reparent CPU during PLL CPUX rate changes */
++	ccu_mux_notifier_register(pll_cpux_clk.common.hw.clk,
++				  &sun50i_h6_cpu_nb);
++
++	return 0;
+ }
+ 
+ static const struct of_device_id sun50i_h6_ccu_ids[] = {
 -- 
 2.43.0
 
