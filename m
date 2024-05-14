@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF94D8C53E4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1758C53B6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B23D289719
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DEF11C208EC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5216813D299;
-	Tue, 14 May 2024 11:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E22B12EBC3;
+	Tue, 14 May 2024 11:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHhtTqOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2jfiUM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E71213D28D;
-	Tue, 14 May 2024 11:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3EE12E1E2;
+	Tue, 14 May 2024 11:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686827; cv=none; b=ToJWCHR7lTlCqzd5ghdXpa0ZtOp2BmmkGZg7n4Uk8VPFrbrZ+9qyeCHho/sTCsCwdjMKCDINiZUShtnsfi6iBtBe7ZVQo7iWCiqkInkLROm36DupQutfHpLjDEhtmZs6Sn2bFAbhxufcw80ynAUV0KFGi4TwOHKlyIciACQ5a2s=
+	t=1715686717; cv=none; b=i+7KLelpxzqA2CX5xa15kf8e5uxgwgMwpilpG3uFee5A/djJtlcldGwuiItZr89V9B2WbN+mTm+ueAQwHBvmXJXsGnK/AAuooagEy5mPoWYFC4Wx3AMo+oUUQBXRVi0ZniDrzBB1sW4joK3gvqm5/UvRSvQwEVexA7cxQfBXKSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686827; c=relaxed/simple;
-	bh=zgXrxs5jirDEVQ7V3Px2uaRtKyNSmg/PYy/SrTrmB9M=;
+	s=arc-20240116; t=1715686717; c=relaxed/simple;
+	bh=o1Wr5i9efbq0tY/7RW7sFc0InXWlNLbVBCMfFIGGuhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAdFNru87pS982QRDfAPwKx1QQlr9cFuXQ0yD4hWdlJKutpCtVy5HFH1q/S2KYu5AaW3X3CrUJrXYT1erUjy/NJj8Mz8iw/vd533ELTW59ODjbBCTgnAWh9MDIrc3USLhKhaDRFxsu5+kbuPRJ5GVFJJ1Cgn9/nAUqu6T33aVYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHhtTqOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF3EC2BD10;
-	Tue, 14 May 2024 11:40:26 +0000 (UTC)
+	 MIME-Version; b=WkB9AFls8xYmyV6gmeaarzUPRFRKRnSZnRZG8G90lFudxxvYQ/DyQIBiAu4H4d5g2XK6165WZ+AJZ0Hx2t+dsQM4D5rRgC0fNgDfCq09vbh+BKOKCmd/uaCeO5D5FfJxK4Nu4ymTkE4onSrv+AVjmYSTvB4TyuMTWizrjAlqKPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2jfiUM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF86C2BD10;
+	Tue, 14 May 2024 11:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686826;
-	bh=zgXrxs5jirDEVQ7V3Px2uaRtKyNSmg/PYy/SrTrmB9M=;
+	s=korg; t=1715686717;
+	bh=o1Wr5i9efbq0tY/7RW7sFc0InXWlNLbVBCMfFIGGuhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHhtTqOzjhrbjy6Y+Bk6dbr8srvF/6QF9aD4MB5N1aSo1OW49kFbA6CPsKUJ0mhhf
-	 YIsBVZYlMRjQrq6beBO/sxR+VXQMuV4fEEs1On/u9B/W0PG+u0ar2HVkduwt0pCXI5
-	 XQkNGy2+/xcsdERjAZvfdGIs6pvm46iwytGsw39I=
+	b=j2jfiUM4RUTNj+/uJSPyWJ13X0A7HcvyY2Pz21YlK3qw0b4xK0g4pAZK0GwI3gMx4
+	 JfHJOEQkQVR+4p4CBrZCRCR5+Y/xBCQIg8O7TJw0NWzc4jEop0hCWu9tHTozIlWSiu
+	 gPd2L/gBg4dcrFFj+jT8/46Y17pd1qvm/Hn2oDTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 35/63] scsi: target: Fix SELinux error when systemd-modules loads the target module
+	Tim Jiang <quic_tjiang@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 234/236] Bluetooth: qca: fix info leak when fetching board id
 Date: Tue, 14 May 2024 12:19:56 +0200
-Message-ID: <20240514100949.340518891@linuxfoundation.org>
+Message-ID: <20240514101029.241840373@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 97a54ef596c3fd24ec2b227ba8aaf2cf5415e779 ]
+commit 0adcf6be1445ed50bfd4a451a7a782568f270197 upstream.
 
-If the systemd-modules service loads the target module, the credentials of
-that userspace process will be used to validate the access to the target db
-directory.  SELinux will prevent it, reporting an error like the following:
+Add the missing sanity check when fetching the board id to avoid leaking
+slab data when later requesting the firmware.
 
-kernel: audit: type=1400 audit(1676301082.205:4): avc: denied  { read }
-for  pid=1020 comm="systemd-modules" name="target" dev="dm-3"
-ino=4657583 scontext=system_u:system_r:systemd_modules_load_t:s0
-tcontext=system_u:object_r:targetd_etc_rw_t:s0 tclass=dir permissive=0
-
-Fix the error by using the kernel credentials to access the db directory
-
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Link: https://lore.kernel.org/r/20240215143944.847184-2-mlombard@redhat.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a7f8dedb4be2 ("Bluetooth: qca: add support for QCA2066")
+Cc: stable@vger.kernel.org	# 6.7
+Cc: Tim Jiang <quic_tjiang@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_configfs.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/bluetooth/btqca.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index f6b1549f41422..10fbfa7df46ab 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -3240,6 +3240,8 @@ static int __init target_core_init_configfs(void)
- {
- 	struct configfs_subsystem *subsys = &target_core_fabrics;
- 	struct t10_alua_lu_gp *lu_gp;
-+	struct cred *kern_cred;
-+	const struct cred *old_cred;
- 	int ret;
- 
- 	pr_debug("TARGET_CORE[0]: Loading Generic Kernel Storage"
-@@ -3316,11 +3318,21 @@ static int __init target_core_init_configfs(void)
- 	if (ret < 0)
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -235,6 +235,11 @@ static int qca_read_fw_board_id(struct h
  		goto out;
+ 	}
  
-+	/* We use the kernel credentials to access the target directory */
-+	kern_cred = prepare_kernel_cred(&init_task);
-+	if (!kern_cred) {
-+		ret = -ENOMEM;
++	if (skb->len < 3) {
++		err = -EILSEQ;
 +		goto out;
 +	}
-+	old_cred = override_creds(kern_cred);
- 	target_init_dbroot();
-+	revert_creds(old_cred);
-+	put_cred(kern_cred);
++
+ 	*bid = (edl->data[1] << 8) + edl->data[2];
+ 	bt_dev_dbg(hdev, "%s: bid = %x", __func__, *bid);
  
- 	return 0;
- 
- out:
-+	target_xcopy_release_pt();
- 	configfs_unregister_subsystem(subsys);
- 	core_dev_release_virtual_lun0();
- 	rd_module_exit();
--- 
-2.43.0
-
 
 
 
