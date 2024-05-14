@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847FD8C5368
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 307A68C511E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B25801C22F45
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62AE01C21504
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830A7126F1E;
-	Tue, 14 May 2024 11:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33922B9B3;
+	Tue, 14 May 2024 10:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd6zt9Sx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWq7c00t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB9018026;
-	Tue, 14 May 2024 11:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF971CFB2;
+	Tue, 14 May 2024 10:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686508; cv=none; b=KPNXY3gTQmIJi3upxJqbE2p1FfbgyErx2yH6L1U9SNRmHgTjCoaxncnGiR/twZc8bYV5jVSdJUeV8a4UkiUn9QykjIHMvyOrV4HpicqZX/tKLWqO0fa2hFFzV6iap+EXoblEUjokFI7eEzdbyuPNnvWjMFlNIsQ3OAKBTt7SksY=
+	t=1715684081; cv=none; b=IsepKMUc4ux3EyCgqKX2ei+V7UV3svEhSqXyxmeYyiPjhHIYnehwspD54XXDAFuu8iYSlutUco5ANvPWBtTveJfFGj3haCpsZeQJa9ySQJNEIHKo7GDwojChkpC2RG6S1iovIV9syoSCGekdNy7f0/WL+KLZTPENWsBgWLOeRxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686508; c=relaxed/simple;
-	bh=hoJT3CvfPA2bcRUNKQ3qDV7hCOL2/Tdl16aC5yawDRI=;
+	s=arc-20240116; t=1715684081; c=relaxed/simple;
+	bh=bPalp78YuqGu3+su+mqtYErbv4PUgU5OHI5GPnozLjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEJCioUnUgI2RTn8SZH6mVvjCjiJ9kk6gv6VlY2lslb6WcuZf/yqhkneBb/CDzwmQ+XCcKffQWmB7Bs/wKH5YturQPqOqT4gn99u2UXdkFyIvy2+le57g0zjjaMsbnEnSDhwXsa0D7mkrI+BGoXM+WnK0R44NtT60KEfWNmTGJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd6zt9Sx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD392C2BD10;
-	Tue, 14 May 2024 11:35:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jU1M+hA8fH8zVh+MF5fH2WvZv/5P6YqXSAVUUtL4fjjdsSd/Zxzu2eOUuvKlk2EtQ1fbqy9XWcSs5IyiUVlplEB4QSz2NE9E1KSopTiMBfeVkE32InwYibjHOXCk5lFazucexsGuF3vCSueEbv2WEPhYxRvcsMRhwjWhiOzkAjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWq7c00t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089EBC2BD10;
+	Tue, 14 May 2024 10:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686508;
-	bh=hoJT3CvfPA2bcRUNKQ3qDV7hCOL2/Tdl16aC5yawDRI=;
+	s=korg; t=1715684081;
+	bh=bPalp78YuqGu3+su+mqtYErbv4PUgU5OHI5GPnozLjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jd6zt9Sxh03JvjUPaClkhAPdz5wiMtxEGZKFTFDEPY39EH4wceEedbfRLcriwGYJq
-	 jm4rPdyov0VJK9ii8dPk3lrGxs58zWMHaLnQ6JhjPIV9949ugGdOmTSpL0SlRss0gQ
-	 iH07FhQXupza8poZ3X4TY7rWTEMJpmVe+WHk7E6w=
+	b=iWq7c00tvUOV/cGgKc7ZkY/m5Cvze2tPKBmxOYfDp+tyogv8plS/7jCOIJq+KCYzW
+	 6dkS+lghPsly5+tbafnJ+JNc9VIzKz6M+5Rr2o7klOdFxcVQirdQBvVdE+9huy4nZe
+	 gO9PUW45aNxpFQciXJWpEUm/z2UaWmDJFsI1N9Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/236] hsr: Simplify code for announcing HSR nodes timer setup
-Date: Tue, 14 May 2024 12:18:45 +0200
-Message-ID: <20240514101026.547714180@linuxfoundation.org>
+	=?UTF-8?q?=CE=95=CE=9B=CE=95=CE=9D=CE=97=20=CE=A4=CE=96=CE=91=CE=92=CE=95=CE=9B=CE=9B=CE=91?= <helentzavellas@yahoo.gr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.8 322/336] ksmbd: off ipv6only for both ipv4/ipv6 binding
+Date: Tue, 14 May 2024 12:18:46 +0200
+Message-ID: <20240514101050.780619621@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 4893b8b3ef8db2b182d1a1bebf6c7acf91405000 ]
+commit cc00bc83f26eb8f2d8d9f56b949b62fd774d8432 upstream.
 
-Up till now the code to start HSR announce timer, which triggers sending
-supervisory frames, was assuming that hsr_netdev_notify() would be called
-at least twice for hsrX interface. This was required to have different
-values for old and current values of network device's operstate.
+ΕΛΕΝΗ reported that ksmbd binds to the IPV6 wildcard (::) by default for
+ipv4 and ipv6 binding. So IPV4 connections are successful only when
+the Linux system parameter bindv6only is set to 0 [default value].
+If this parameter is set to 1, then the ipv6 wildcard only represents
+any IPV6 address. Samba creates different sockets for ipv4 and ipv6
+by default. This patch off sk_ipv6only to support IPV4/IPV6 connections
+without creating two sockets.
 
-This is problematic for a case where hsrX interface is already in the
-operational state when hsr_netdev_notify() is called, so timer is not
-configured to trigger and as a result the hsrX is not sending supervisory
-frames to HSR ring.
-
-This error has been discovered when hsr_ping.sh script was run. To be
-more specific - for the hsr1 and hsr2 the hsr_netdev_notify() was
-called at least twice with different IF_OPER_{LOWERDOWN|DOWN|UP} states
-assigned in hsr_check_carrier_and_operstate(hsr). As a result there was
-no issue with sending supervisory frames.
-However, with hsr3, the notify function was called only once with
-operstate set to IF_OPER_UP and timer responsible for triggering
-supervisory frames was not fired.
-
-The solution is to use netif_oper_up() and netif_running() helper
-functions to assess if network hsrX device is up.
-Only then, when the timer is not already pending, it is started.
-Otherwise it is deactivated.
-
-Fixes: f421436a591d ("net/hsr: Add support for the High-availability Seamless Redundancy protocol (HSRv0)")
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240507111214.3519800-1-lukma@denx.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: ΕΛΕΝΗ ΤΖΑΒΕΛΛΑ <helentzavellas@yahoo.gr>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_device.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ fs/smb/server/transport_tcp.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 89e694f1c3bd3..ad75724b69adf 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -71,39 +71,36 @@ static bool hsr_check_carrier(struct hsr_port *master)
- 	return false;
- }
- 
--static void hsr_check_announce(struct net_device *hsr_dev,
--			       unsigned char old_operstate)
-+static void hsr_check_announce(struct net_device *hsr_dev)
- {
- 	struct hsr_priv *hsr;
- 
- 	hsr = netdev_priv(hsr_dev);
--
--	if (READ_ONCE(hsr_dev->operstate) == IF_OPER_UP && old_operstate != IF_OPER_UP) {
--		/* Went up */
--		hsr->announce_count = 0;
--		mod_timer(&hsr->announce_timer,
--			  jiffies + msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
-+	if (netif_running(hsr_dev) && netif_oper_up(hsr_dev)) {
-+		/* Enable announce timer and start sending supervisory frames */
-+		if (!timer_pending(&hsr->announce_timer)) {
-+			hsr->announce_count = 0;
-+			mod_timer(&hsr->announce_timer, jiffies +
-+				  msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
-+		}
-+	} else {
-+		/* Deactivate the announce timer  */
-+		timer_delete(&hsr->announce_timer);
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -448,6 +448,10 @@ static int create_socket(struct interfac
+ 		sin6.sin6_family = PF_INET6;
+ 		sin6.sin6_addr = in6addr_any;
+ 		sin6.sin6_port = htons(server_conf.tcp_port);
++
++		lock_sock(ksmbd_socket->sk);
++		ksmbd_socket->sk->sk_ipv6only = false;
++		release_sock(ksmbd_socket->sk);
  	}
--
--	if (READ_ONCE(hsr_dev->operstate) != IF_OPER_UP && old_operstate == IF_OPER_UP)
--		/* Went down */
--		del_timer(&hsr->announce_timer);
- }
  
- void hsr_check_carrier_and_operstate(struct hsr_priv *hsr)
- {
- 	struct hsr_port *master;
--	unsigned char old_operstate;
- 	bool has_carrier;
- 
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	/* netif_stacked_transfer_operstate() cannot be used here since
- 	 * it doesn't set IF_OPER_LOWERLAYERDOWN (?)
- 	 */
--	old_operstate = READ_ONCE(master->dev->operstate);
- 	has_carrier = hsr_check_carrier(master);
- 	hsr_set_operstate(master, has_carrier);
--	hsr_check_announce(master->dev, old_operstate);
-+	hsr_check_announce(master->dev);
- }
- 
- int hsr_get_max_mtu(struct hsr_priv *hsr)
--- 
-2.43.0
-
+ 	ksmbd_tcp_nodelay(ksmbd_socket);
 
 
 
