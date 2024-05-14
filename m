@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB88C54B9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A978C5468
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD34528A44A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8201F233CE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E3912E1F9;
-	Tue, 14 May 2024 11:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F9D85953;
+	Tue, 14 May 2024 11:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAsr1iM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofXjuqZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E5512E1E2;
-	Tue, 14 May 2024 11:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CCD2B9B3;
+	Tue, 14 May 2024 11:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687392; cv=none; b=r02DFu2/XUeHD3HBh7F3Y3XJEUac+/80BVfC6QXW8fXZqLBq9MmcsOOi1XpZNVM+MLlHERHu07HrxmRjinTxduVezofxHPbFVm2nCq9p+sicp8+4f2VHqS9sZM6pVEXsX345zrpjvFm8RQLRQismzmfzRjNDdj1uSMS5hKV1yhc=
+	t=1715687167; cv=none; b=dHwHZ8kg37KezmNVknTKnRvp3gC4DV/K6QKdlaoKaxvRd+49gDL7NN7CoI7kfUNj1DGh+aglyFY4IZCIbxmLoW3BR2Cu0xM5FPy3+yD9ocogE1bh/Ie0IB+Npt2wGg6RuXt9a5/tvqbV1Gkgheg6qANgc/8m7AmxDIVYl/aSgGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687392; c=relaxed/simple;
-	bh=iy8T05sE1KVG7kH1qLEI+AZjfgb2Xg7tcFYaE2AsJJ0=;
+	s=arc-20240116; t=1715687167; c=relaxed/simple;
+	bh=T2NXiTBL1C6i8nPlCknmv/5sF0F4KLfxmnQWwfYsyHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzU1WlA3Lr9YfYC/CB7hoOZ7q1wQIl6i7WXGitjNTFWAodOG2o9sZNdVCzIgTGyMDtHzez59m4odhqshXPaJS4DJwNXnhZ6/nLtVEm+sBBKEXHL1853UnlQi6cBS/bVfQiCSs7QpMo+FGbaGJC4JTrMDFn5ViaeYcMSRC0VREmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAsr1iM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9631CC2BD10;
-	Tue, 14 May 2024 11:49:51 +0000 (UTC)
+	 MIME-Version; b=U2avAzfln09gq6b0SsiESFzyt9Cr+hPNbjIUaczbM6GVixJSLVBYxXpc15MOQpbVumtSkj5qyxwuK+mjeFGlwwIaqLinnP/4K4j9hbAGS0yJbo0Duaur19YBvoBXCDNRE0Q8KA7n58Z5+vTZBpo0+9lwDpbsPXR8d2wCbWC+OKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofXjuqZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7149FC2BD10;
+	Tue, 14 May 2024 11:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687392;
-	bh=iy8T05sE1KVG7kH1qLEI+AZjfgb2Xg7tcFYaE2AsJJ0=;
+	s=korg; t=1715687166;
+	bh=T2NXiTBL1C6i8nPlCknmv/5sF0F4KLfxmnQWwfYsyHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAsr1iM6FJhM34PbklU70EHqHPYeWKEnNgeLcMTqRZEKybdGrN490dTAjzI6F0P/o
-	 2USyfSj4jnK/nL42g6PcyceRainv7u3WFvx+AtWqU2Fs6Ag437NehPxnDH4DT+i/8A
-	 u2Y3iqQWWyU6fzqdLWRo8EMCpt6VU2+Zq1MeVgnE=
+	b=ofXjuqZTirmUOTu/ETkHgnmaM59sT8jU0cxf26jWh/ZnfZVo/oeV6Ym2kn2oSTrIq
+	 YIITIz5bLTyuPfAmOdI7RII/6Vg80+pIjWGVjKnwLOOsS/Hmh5ZeAEnFdc37g4V0m3
+	 u4XaqD/wAnpWdB7thmB8BEaK+3xWiG7Xhk82lLJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/111] rtnetlink: Correct nested IFLA_VF_VLAN_LIST attribute validation
+Subject: [PATCH 5.4 67/84] rtnetlink: Correct nested IFLA_VF_VLAN_LIST attribute validation
 Date: Tue, 14 May 2024 12:20:18 +0200
-Message-ID: <20240514101000.174531098@linuxfoundation.org>
+Message-ID: <20240514100954.205407846@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 8938320f7ba3b..2806b9ed63879 100644
+index ee599636f817f..2b7ad5cf8fbfd 100644
 --- a/net/core/rtnetlink.c
 +++ b/net/core/rtnetlink.c
-@@ -2379,7 +2379,7 @@ static int do_setvfinfo(struct net_device *dev, struct nlattr **tb)
+@@ -2252,7 +2252,7 @@ static int do_setvfinfo(struct net_device *dev, struct nlattr **tb)
  
  		nla_for_each_nested(attr, tb[IFLA_VF_VLAN_LIST], rem) {
  			if (nla_type(attr) != IFLA_VF_VLAN_INFO ||
