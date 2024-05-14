@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-44116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611768C5154
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593148C5185
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A34281EFF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A731F2271A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F56130495;
-	Tue, 14 May 2024 10:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869E1139D1B;
+	Tue, 14 May 2024 11:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2m3tOG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9j4RLtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37D17B3E5;
-	Tue, 14 May 2024 10:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F19139D15;
+	Tue, 14 May 2024 11:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684320; cv=none; b=X/ZIP31P/M8UEBf20EKBfw3XaAzSFCOeFt5Ak82lY3F6sSwkqd+RQKsTb+K924rEFcwjS7szZtFhqeEqAdBY9399zxVLI0MteyCaUUcuB6V02gSzVcNJyt0AcvfEw7nB/Rh+JlhUGzFjuvkwGFU98VQnGESXlQ0wDR2gOzkRzxc=
+	t=1715684623; cv=none; b=i7zajfW5F904BAF8u6XxaqsYjp8Z0Prd6JQDwHBEd0DnFcY+NMwF9OmWpTplEqL232Gw5SzBKgUGObJfVf3h3T6gWGOzDvzSKxLN4YJX7DiZQfVGuKbXpkOGQDrHSwB7XbQMcnwnrgJs3h3q3QX6ElI+LOdLNLCXrQcIUXp3/OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684320; c=relaxed/simple;
-	bh=PO3kM1xeeqlL8jrxv22/Xyn6bZc29w85Xmsu/V7kTP0=;
+	s=arc-20240116; t=1715684623; c=relaxed/simple;
+	bh=B2xlL3tkl4l7QJ8YW8gY4cyT4PDFo0hnsUo1BUWr+Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACdExYKjRBGytQoUCbsLC7pPv65wDSgxNR80ymvLNUkSoPYQSN+B4lDAuMeGCX44j/TM8I5pj39ZqchbDt/jD5vS08o63dadKylJ52hEDlWsrUNpKhpxS2cWCzj3tnjIflaPgWvXZXXK+qMXgJvAHZq+99ol/HTMFVWXW4i83hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2m3tOG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D921BC2BD10;
-	Tue, 14 May 2024 10:58:38 +0000 (UTC)
+	 MIME-Version; b=YSMwKWDFmEtu0zFc1+aIGTV6uHez42k5RvVRnz4nWv+06p3kmeqzHmKb+ahioox0uJlYFBofqcIs74gve5Q5jYQS3t7erOEPyRFaJJAF8SzULBv5H32Oh7YMH0VBy+uJzRs9Gvc+XhyxJQyNnuyMUjZzpYGSvMHTJcZRCWsrPRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9j4RLtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D45C2BD10;
+	Tue, 14 May 2024 11:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684319;
-	bh=PO3kM1xeeqlL8jrxv22/Xyn6bZc29w85Xmsu/V7kTP0=;
+	s=korg; t=1715684623;
+	bh=B2xlL3tkl4l7QJ8YW8gY4cyT4PDFo0hnsUo1BUWr+Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2m3tOG7miBfb2Hcl0yDtAh+g4OKzQrc4xBVZEKiARnCyHwaDXM/izqO60eEfC61d
-	 wY9FcJvid6xw7DVqliH1xfc4nr71DskXofty7zxtN5MEHD5InqJV7ZdwxcDv0m/mMn
-	 tp5mI7JsGtm/6syh4NQQULBF9NlVgKzmYvq6zmYA=
+	b=O9j4RLtMKGhqe6nvUeE4IewuAgr39g1k92YXY7Aet/BD71gSRVC4cMna/OzDS2wMV
+	 d+1cfaghhJ3o9VJlIqYK61p7AalaGQmPUrXN7NdQKNAoR9T7gzIGkmIFog2V+U/xhC
+	 rb3dS68SxnNciBCEpWvQiEUb6q2ZoZtXgXOVSX8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zeng Heng <zengheng4@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/301] power: supply: mt6360_charger: Fix of_match for usb-otg-vbus regulator
-Date: Tue, 14 May 2024 12:14:54 +0200
-Message-ID: <20240514101033.120955883@linuxfoundation.org>
+Subject: [PATCH 6.6 024/301] pinctrl: devicetree: fix refcount leak in pinctrl_dt_to_map()
+Date: Tue, 14 May 2024 12:14:55 +0200
+Message-ID: <20240514101033.158214285@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
 References: <20240514101032.219857983@linuxfoundation.org>
@@ -67,43 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Zeng Heng <zengheng4@huawei.com>
 
-[ Upstream commit 1e0fb113646182e073539db96016b00cfeb18ecc ]
+[ Upstream commit a0cedbcc8852d6c77b00634b81e41f17f29d9404 ]
 
-The of_match shall correspond to the name of the regulator subnode,
-or the deprecated `regulator-compatible` property must be used:
-failing to do so, the regulator won't probe (and the driver will
-as well not probe).
+If we fail to allocate propname buffer, we need to drop the reference
+count we just took. Because the pinctrl_dt_free_maps() includes the
+droping operation, here we call it directly.
 
-Since the devicetree binding for this driver is actually correct
-and wants DTs to use the "usb-otg-vbus-regulator" subnode name,
-fix this driver by aligning the `of_match` string to what the DT
-binding wants.
-
-Fixes: 0402e8ebb8b8 ("power: supply: mt6360_charger: add MT6360 charger support")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240410084405.1389378-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 91d5c5060ee2 ("pinctrl: devicetree: fix null pointer dereferencing in pinctrl_dt_to_map")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <20240415105328.3651441-1-zengheng4@huawei.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/mt6360_charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/devicetree.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/mt6360_charger.c b/drivers/power/supply/mt6360_charger.c
-index 1305cba61edd4..aca123783efcc 100644
---- a/drivers/power/supply/mt6360_charger.c
-+++ b/drivers/power/supply/mt6360_charger.c
-@@ -588,7 +588,7 @@ static const struct regulator_ops mt6360_chg_otg_ops = {
- };
- 
- static const struct regulator_desc mt6360_otg_rdesc = {
--	.of_match = "usb-otg-vbus",
-+	.of_match = "usb-otg-vbus-regulator",
- 	.name = "usb-otg-vbus",
- 	.ops = &mt6360_chg_otg_ops,
- 	.owner = THIS_MODULE,
+diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
+index 6e0a40962f384..5ee746cb81f59 100644
+--- a/drivers/pinctrl/devicetree.c
++++ b/drivers/pinctrl/devicetree.c
+@@ -220,14 +220,16 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
+ 	for (state = 0; ; state++) {
+ 		/* Retrieve the pinctrl-* property */
+ 		propname = kasprintf(GFP_KERNEL, "pinctrl-%d", state);
+-		if (!propname)
+-			return -ENOMEM;
++		if (!propname) {
++			ret = -ENOMEM;
++			goto err;
++		}
+ 		prop = of_find_property(np, propname, &size);
+ 		kfree(propname);
+ 		if (!prop) {
+ 			if (state == 0) {
+-				of_node_put(np);
+-				return -ENODEV;
++				ret = -ENODEV;
++				goto err;
+ 			}
+ 			break;
+ 		}
 -- 
 2.43.0
 
