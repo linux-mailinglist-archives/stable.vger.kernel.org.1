@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-43924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817B88C503F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:00:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CB08C52B5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039392826CE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0EF1F22A98
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3267D13AD07;
-	Tue, 14 May 2024 10:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66A0143737;
+	Tue, 14 May 2024 11:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arNnj4Ql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9WZ23Ko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04B813AA5C;
-	Tue, 14 May 2024 10:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCB45FDD2;
+	Tue, 14 May 2024 11:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683111; cv=none; b=dBrYCGBDErCJ6Zonl8zPud4sWz9Yrqscjx5BO7T4IiY+ixFwlPhYO1fRQa8XasI3v/vffxkTLLoTi2qLscqKvXSVffDeFUCiseWdhJ/j9Z57Pkvy+zn5XbCdsIPzcmoRqZTTuWdHzmdhudWKVS+IodprTPyTioUWyJbtLxHZmzc=
+	t=1715686067; cv=none; b=g2wZX0cT20JzQr2dIbS2VEPx1mR2w6PSAqdYJMHtX7o5cq4Babyy7fn0B7kfFN2MTm7GsJrF09bMgeLdj13xhoBoZtpgTRhBTxXjRznRpO8uWwlfLcFDf9JfM8Cp1P+fnf3QweeDqMLMs0QJMnCiQHodecgNvADjwni99T2Qizk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683111; c=relaxed/simple;
-	bh=ySlTYPtMjBI72p+lwi9ss/L9CF+6ya+bM9GN8JEqpwU=;
+	s=arc-20240116; t=1715686067; c=relaxed/simple;
+	bh=lEzs8hNTEm3I3jovpZzbZg2vzA5Dz178l5eX+yosyRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DvMI+ULc/kpHWrqoGxSwRzIvQAw7mMo56T7F3XLGg3BuqsAjeeNok+2INPwlXbVFNuE4og2j+puF9Cq2Y0B+zbbe85BDjYuXTSIow+rrgWccF1fLnufytvSFsJT0UB5crBzES9YHfmql22G1iZJjfTMh4cfJyd3Z9jvBmxK3mpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arNnj4Ql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6C0C2BD10;
-	Tue, 14 May 2024 10:38:30 +0000 (UTC)
+	 MIME-Version; b=HcsJS1rcq/mqDDV0LYwfAG/ADN352LSfNJEQPnrcW1QUzzVPw9ZmkcgPIvST45zgV9Osnk07/Z+zjaNqRHxQqUIEx2DQP1QuuT+JaF2gIS/ro+E4z7/RvkInZGlJhBN67OYENAvAFkXpS1psI1s50f/vMsiqu16Iqdswmkc0IiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9WZ23Ko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF574C2BD10;
+	Tue, 14 May 2024 11:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683110;
-	bh=ySlTYPtMjBI72p+lwi9ss/L9CF+6ya+bM9GN8JEqpwU=;
+	s=korg; t=1715686067;
+	bh=lEzs8hNTEm3I3jovpZzbZg2vzA5Dz178l5eX+yosyRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arNnj4Ql1d08XOjGCYqT5xAU9i4x5JdoRcG0QHoVtr8Z7M26aMm7YF3OWoKcrMSfw
-	 ibmpzxU6gKHyLCBuC6Pu0F8g24Z21VvfGNotUDkRGihTsCt2TQX8CxdyF4sgxSrPUW
-	 ydBpTpwvhsMtnqlgMrQFQmIaIqh90A0PwIA0lBe8=
+	b=W9WZ23Ko4PrAAwvPpwjWTsye0Qtmz0xIJH2IurGEDcmgcInpltQ3HpQvJeYgthluo
+	 eyeVaZG7rsfgKrkoctFYd6DJbCbo+2ViNy8KNyO6U+FOEw6OJel1CcBzjXxF+tlErj
+	 QAjcwSNmigRk0UpPNguU580Dnz7znE/yvP6qH/oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Colin Cross <ccross@google.com>,
+	David Howells <dhowells@redhat.com>,
+	"Eric W . Biederman" <ebiederm@xmission.com>,
+	Hugh Dickins <hughd@google.com>,
+	kernel test robot <lkp@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Peter Xu <peterx@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	William Kucharski <william.kucharski@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 168/336] Drivers: hv: vmbus: Leak pages if set_memory_encrypted() fails
+Subject: [PATCH 6.1 010/236] mm: add private field of first tail to struct page and struct folio
 Date: Tue, 14 May 2024 12:16:12 +0200
-Message-ID: <20240514101044.946352599@linuxfoundation.org>
+Message-ID: <20240514101020.720859275@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +74,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 
-[ Upstream commit 03f5a999adba062456c8c818a683beb1b498983a ]
+[ Upstream commit d340625f4849ab5dbfebbc7d84709fbfcd39e52f ]
 
-In CoCo VMs it is possible for the untrusted host to cause
-set_memory_encrypted() or set_memory_decrypted() to fail such that an
-error is returned and the resulting memory is shared. Callers need to
-take care to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional or security
-issues.
+Allow struct folio to store hugetlb metadata that is contained in the
+private field of the first tail page.  On 32-bit, _private_1 aligns with
+page[1].private.
 
-VMBus code could free decrypted pages if set_memory_encrypted()/decrypted()
-fails. Leak the pages if this happens.
-
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20240311161558.1310-2-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240311161558.1310-2-mhklinux@outlook.com>
+Link: https://lkml.kernel.org/r/20220922154207.1575343-3-sidhartha.kumar@oracle.com
+Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Colin Cross <ccross@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: "Eric W . Biederman" <ebiederm@xmission.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: kernel test robot <lkp@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: William Kucharski <william.kucharski@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/connection.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ include/linux/mm_types.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
-index 3cabeeabb1cac..f001ae880e1db 100644
---- a/drivers/hv/connection.c
-+++ b/drivers/hv/connection.c
-@@ -237,8 +237,17 @@ int vmbus_connect(void)
- 				vmbus_connection.monitor_pages[0], 1);
- 	ret |= set_memory_decrypted((unsigned long)
- 				vmbus_connection.monitor_pages[1], 1);
--	if (ret)
-+	if (ret) {
-+		/*
-+		 * If set_memory_decrypted() fails, the encryption state
-+		 * of the memory is unknown. So leak the memory instead
-+		 * of risking returning decrypted memory to the free list.
-+		 * For simplicity, always handle both pages the same.
-+		 */
-+		vmbus_connection.monitor_pages[0] = NULL;
-+		vmbus_connection.monitor_pages[1] = NULL;
- 		goto cleanup;
-+	}
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 247aedb18d5c3..a9c1d611029d1 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -144,6 +144,7 @@ struct page {
+ 			atomic_t compound_pincount;
+ #ifdef CONFIG_64BIT
+ 			unsigned int compound_nr; /* 1 << compound_order */
++			unsigned long _private_1;
+ #endif
+ 		};
+ 		struct {	/* Second tail page of compound page */
+@@ -264,6 +265,7 @@ struct page {
+  * @_total_mapcount: Do not use directly, call folio_entire_mapcount().
+  * @_pincount: Do not use directly, call folio_maybe_dma_pinned().
+  * @_folio_nr_pages: Do not use directly, call folio_nr_pages().
++ * @_private_1: Do not use directly, call folio_get_private_1().
+  *
+  * A folio is a physically, virtually and logically contiguous set
+  * of bytes.  It is a power-of-two in size, and it is aligned to that
+@@ -311,6 +313,7 @@ struct folio {
+ #ifdef CONFIG_64BIT
+ 	unsigned int _folio_nr_pages;
+ #endif
++	unsigned long _private_1;
+ };
  
- 	/*
- 	 * Set_memory_decrypted() will change the memory contents if
-@@ -337,13 +346,19 @@ void vmbus_disconnect(void)
- 		vmbus_connection.int_page = NULL;
- 	}
+ #define FOLIO_MATCH(pg, fl)						\
+@@ -338,6 +341,7 @@ FOLIO_MATCH(compound_mapcount, _total_mapcount);
+ FOLIO_MATCH(compound_pincount, _pincount);
+ #ifdef CONFIG_64BIT
+ FOLIO_MATCH(compound_nr, _folio_nr_pages);
++FOLIO_MATCH(_private_1, _private_1);
+ #endif
+ #undef FOLIO_MATCH
  
--	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[0], 1);
--	set_memory_encrypted((unsigned long)vmbus_connection.monitor_pages[1], 1);
-+	if (vmbus_connection.monitor_pages[0]) {
-+		if (!set_memory_encrypted(
-+			(unsigned long)vmbus_connection.monitor_pages[0], 1))
-+			hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
-+		vmbus_connection.monitor_pages[0] = NULL;
-+	}
- 
--	hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
--	hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
--	vmbus_connection.monitor_pages[0] = NULL;
--	vmbus_connection.monitor_pages[1] = NULL;
-+	if (vmbus_connection.monitor_pages[1]) {
-+		if (!set_memory_encrypted(
-+			(unsigned long)vmbus_connection.monitor_pages[1], 1))
-+			hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
-+		vmbus_connection.monitor_pages[1] = NULL;
-+	}
+@@ -383,6 +387,16 @@ static inline void *folio_get_private(struct folio *folio)
+ 	return folio->private;
  }
  
- /*
++static inline void folio_set_private_1(struct folio *folio, unsigned long private)
++{
++	folio->_private_1 = private;
++}
++
++static inline unsigned long folio_get_private_1(struct folio *folio)
++{
++	return folio->_private_1;
++}
++
+ struct page_frag_cache {
+ 	void * va;
+ #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
 -- 
 2.43.0
 
