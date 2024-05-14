@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887818C5496
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814DA8C53C8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B50F11C23043
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3EB7288A7B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E4512CDBB;
-	Tue, 14 May 2024 11:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADEB12F584;
+	Tue, 14 May 2024 11:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbVd78DS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Spgz8WMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA3883CD9;
-	Tue, 14 May 2024 11:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3787512F39C;
+	Tue, 14 May 2024 11:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687294; cv=none; b=UN9J1ePdzTot4gY9a4NsV89IbMoL0LY72Z3N52VTmm7ensnyhIPHvmioRf/dJmsDPMYU8/N+QGCZSkKhW8FlvNRPu3WGHvUYS8kIZPCgywpE0hQOz4odV/ylGUtYhqlq4cDD9JTdEZ++7NKKi6e1L6O/FADWR8+OaXj0MX8Yid4=
+	t=1715686743; cv=none; b=jYPz0nl9XA7Hemh7lD1wvq99uhcUL6xVFxHptMog8YXJ9PquV/tTo+Q3g0MVouNQkaXPtDdTVuQeo25v/YG4TuH7GqmRkYKtmZ3XBF9oRYdXDP0KCLZ8MxRWZ0SuKE11WSk7a0lIemPiaNE8yExLTfSLz5n1AR2ksJDZ5ES388o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687294; c=relaxed/simple;
-	bh=So/vg8k6kKdZvww0HI03JiGjVMUTqARA07aRal7dxWQ=;
+	s=arc-20240116; t=1715686743; c=relaxed/simple;
+	bh=XSyC8XY6CIy3w5MEmbaE5IQrfS2kRxRE7B47iIpnSoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcrp0iZcKAywNBkHeqcys4XYCOm7z04CVQnrzRGK54k9bgmxq3//BCNp4oogRZFj4zxwn3shwcrXj/kLWpzkbqp4cMr15eB2ktkl9fwtsP47RL9732paeF+kgW+m4KGaFvoaTh9NlnJyK1EMbgx4QEaxyguCEKFLJdU/g9fo1nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbVd78DS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E83C2BD10;
-	Tue, 14 May 2024 11:48:13 +0000 (UTC)
+	 MIME-Version; b=BqoPb1t2m5HBYs8MBaMlhAU8C8EkgxKNRRuD11Nv8MBIAnlzMoFoMkM99/93gf/F9ELwV/McDYkISH5adb7gEJxwFIGQzvOYUB9oijvEhw/do68psk6FQValsJ1qWa1SeU4WGxfatrU9xQ4m2vqVLRFrpB2bTzYUISPssKQnYB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Spgz8WMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E86C32782;
+	Tue, 14 May 2024 11:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687293;
-	bh=So/vg8k6kKdZvww0HI03JiGjVMUTqARA07aRal7dxWQ=;
+	s=korg; t=1715686743;
+	bh=XSyC8XY6CIy3w5MEmbaE5IQrfS2kRxRE7B47iIpnSoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbVd78DSMdFcFTQVLIGvIaNJQhNFJGFOD8Osfbyg1fawJPnq+EaubhRn8Z6UhYBPd
-	 5nGQG8jzAtrfsclwuiytCCl0PJWaV/pccxP8NpBEAfUpsBXNTJjV91p9qcrY7nt1UC
-	 7q+eQC/nq3Hb1z6NAyDnTLLta2xS7Qa0U8bhTj1g=
+	b=Spgz8WMyUTPPN8rUZXlCphb6Zey/VZYXSd/tdZbwkL29Y96sSH3ldfKv1wBtlq7oU
+	 hZZeHcFs2KUT3Jy9h1LBZTXE9/ytsv4S4Kmi4sZLY+YSeNOHP02BZRaJZbGpi2Ic/i
+	 vLWhoudRT0JKlBwEyec95kdcuvVikd7YlkZfKXow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/111] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
-Date: Tue, 14 May 2024 12:19:44 +0200
-Message-ID: <20240514100958.883778112@linuxfoundation.org>
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 223/236] drm/amd/display: Handle Y carry-over in VCP X.Y calculation
+Date: Tue, 14 May 2024 12:19:45 +0200
+Message-ID: <20240514101028.822793738@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
+commit 719564737a9ac3d0b49c314450b56cf6f7d71358 upstream.
 
-Running kernel-doc on ieee80211_i.h flagged the following:
-net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
-net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
+Theoretically rare corner case where ceil(Y) results in rounding up to
+an integer. If this happens, the 1 should be carried over to the X
+value.
 
-Fix these warnings.
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/ieee80211_i.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index bd349ae9ee4b4..782ff56c5aff1 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -112,7 +112,7 @@ struct ieee80211_bss {
- };
+--- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hpo_dp_link_encoder.c
+@@ -393,6 +393,12 @@ void dcn31_hpo_dp_link_enc_set_throttled
+ 				x),
+ 			25));
  
- /**
-- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
-+ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
-  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
-  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
-  *
-@@ -125,7 +125,7 @@ enum ieee80211_bss_corrupt_data_flags {
- };
- 
- /**
-- * enum ieee80211_valid_data_flags - BSS valid data flags
-+ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
-  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
--- 
-2.43.0
-
++	// If y rounds up to integer, carry it over to x.
++	if (y >> 25) {
++		x += 1;
++		y = 0;
++	}
++
+ 	switch (stream_encoder_inst) {
+ 	case 0:
+ 		REG_SET_2(DP_DPHY_SYM32_VC_RATE_CNTL0, 0,
 
 
 
