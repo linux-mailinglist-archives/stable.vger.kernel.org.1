@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900448C516A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D688C4FE5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 442061F20EEB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5CD283E60
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DADA1386D8;
-	Tue, 14 May 2024 11:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C632A1CFB2;
+	Tue, 14 May 2024 10:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIToCth2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4dZsC6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB63136672;
-	Tue, 14 May 2024 11:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F692B9AD;
+	Tue, 14 May 2024 10:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684452; cv=none; b=AJq/DGfKM6bXRLacDBD/4kTcrYjt9KGeOlnxwPsFIt7u+NPUOv4FM+GKMhjaGnKh1WM86LS+P0FAISOgnQ925/OpWYG9q8rLDcNJJKpIWa92McsXzmLVo+8YA3dE142cXJwyG/r0vWHqo7Pl6QYXCVR8ad6w0RXaJAdjsctZfvw=
+	t=1715682653; cv=none; b=hXgIBjLIP6KnjsXkYJBFTPpRZ0a1QQEwuvCLpZdvTSsUwK80xKaRcZ/ILH1zwv0QfM25GrMbr8HUSV3UkAU0qc8xmw4Oq8IaR49+YjmuI4PjH1WRBNpCFX6/SYqo5FtKYQ06mi6gED/E5Q0I3a9C+FLqvgi5i+Wkh2/GbzolVvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684452; c=relaxed/simple;
-	bh=18gU+Vc/Hn5LyDZcFD14q6SoKkhLFEItosHPd7vc7Ew=;
+	s=arc-20240116; t=1715682653; c=relaxed/simple;
+	bh=rSJvJ4KgnKlab+WjxYuPpO3eo3pnqxFYMO2hQtRAh6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcrBJ6i+ErFz52dUFrHJPQc85YYbvcG33GMJFAh1uBCeRDY/Sg/kktEqbr48trynDNQTOM7HZn7EOFyRd0WdRmMEdLBB5OtsQq/buh8qpwBXyz007Or9IKvW9S9WNVZ+/wg2Q8DwybBeT6gLA6+sfoPaobIdcCsO5dPRDfyVRTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIToCth2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5D4C2BD10;
-	Tue, 14 May 2024 11:00:51 +0000 (UTC)
+	 MIME-Version; b=hfh4E4ESofvkzSxzOMHFHLDUmtkoh1YuYtIItcidDrIIhqnsmQ19g0/ObGbUfu0Uno682hBaxWlnjglY2FxwG4fZy5oVV4eglyDwl0QDlZc8ZWQ42J7p1bEAjZP5F0PwGDNoXZL3GQ6FLEUuyLPFSOYZJ8D6WIZLmRQocJ+0BEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4dZsC6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E92EC2BD10;
+	Tue, 14 May 2024 10:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684452;
-	bh=18gU+Vc/Hn5LyDZcFD14q6SoKkhLFEItosHPd7vc7Ew=;
+	s=korg; t=1715682653;
+	bh=rSJvJ4KgnKlab+WjxYuPpO3eo3pnqxFYMO2hQtRAh6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIToCth2xAbnz9VqT3up0eHZUO3jw1G50/x6G//RWcIJT0IsVvcvYkK5U72bhp+Fh
-	 AhStEoKgEyDslGVRG/kjwY4fjOIk8jCZWOrdEruQjYChX/HfDoy7rAKeaMBbbfHWgM
-	 3tIEuvo6H1A3+tZqWGQPya8IwFBx50v53BTnqaso=
+	b=d4dZsC6baPaSzpz/g1QkLAmiWq9xfGEHHslfUfwfn8da0W0Y1ZRzbTEX3b2a8UVuh
+	 cxma39d2qrnA22itM+QP5VS+XmHwSETpQ453GuXKDzaI30tD+K5q9o1TgmuffbMFNB
+	 8VpX0ZWUwU5/gacaWNDF3t8voCCsRXZD9EC00rhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Aleksander Mazur <deweloper@wp.pl>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Mark Brown <broonie@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/301] regulator: change stubbed devm_regulator_get_enable to return Ok
+Subject: [PATCH 6.8 093/336] KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()
 Date: Tue, 14 May 2024 12:14:57 +0200
-Message-ID: <20240514101033.232937406@linuxfoundation.org>
+Message-ID: <20240514101042.117117631@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 96e20adc43c4f81e9163a5188cee75a6dd393e09 ]
+[ Upstream commit 6ddb4f372fc63210034b903d96ebbeb3c7195adb ]
 
-The devm_regulator_get_enable() should be a 'call and forget' API,
-meaning, when it is used to enable the regulators, the API does not
-provide a handle to do any further control of the regulators. It gives
-no real benefit to return an error from the stub if CONFIG_REGULATOR is
-not set.
+vgic_v2_parse_attr() is responsible for finding the vCPU that matches
+the user-provided CPUID, which (of course) may not be valid. If the ID
+is invalid, kvm_get_vcpu_by_id() returns NULL, which isn't handled
+gracefully.
 
-On the contrary, returning and error is causing problems to drivers when
-hardware is such it works out just fine with no regulator control.
-Returning an error forces drivers to specifically handle the case where
-CONFIG_REGULATOR is not set, making the mere existence of the stub
-questionalble. Furthermore, the stub of the regulator_enable() seems to
-be returning Ok.
+Similar to the GICv3 uaccess flow, check that kvm_get_vcpu_by_id()
+actually returns something and fail the ioctl if not.
 
-Change the stub implementation for the devm_regulator_get_enable() to
-return Ok so drivers do not separately handle the case where the
-CONFIG_REGULATOR is not set.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reported-by: Aleksander Mazur <deweloper@wp.pl>
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: da279e6965b3 ("regulator: Add devm helpers for get and enable")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/ZiYF6d1V1vSPcsJS@drtxq0yyyyyyyyyyyyyby-3.rev.dnainternet.fi
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7d450e282171 ("KVM: arm/arm64: vgic-new: Add userland access to VGIC dist registers")
+Reported-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240424173959.3776798-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/regulator/consumer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
-index 39b666b40ea61..e3e58d5a84e2a 100644
---- a/include/linux/regulator/consumer.h
-+++ b/include/linux/regulator/consumer.h
-@@ -365,7 +365,7 @@ devm_regulator_get_exclusive(struct device *dev, const char *id)
- 
- static inline int devm_regulator_get_enable(struct device *dev, const char *id)
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+index f48b8dab8b3d2..1d26bb5b02f4b 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -338,12 +338,12 @@ int kvm_register_vgic_device(unsigned long type)
+ int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
+ 		       struct vgic_reg_attr *reg_attr)
  {
--	return -ENODEV;
-+	return 0;
- }
+-	int cpuid;
++	int cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
  
- static inline int devm_regulator_get_enable_optional(struct device *dev,
+-	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+-
+-	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
+ 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
++	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
++	if (!reg_attr->vcpu)
++		return -EINVAL;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
