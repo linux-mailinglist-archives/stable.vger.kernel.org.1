@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18328C5269
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6EE8C5508
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E540B22093
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B1971F22B96
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52FA13D275;
-	Tue, 14 May 2024 11:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5279F6CDC4;
+	Tue, 14 May 2024 11:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A12suBtl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlVXGuex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE476311D;
-	Tue, 14 May 2024 11:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC4C320F;
+	Tue, 14 May 2024 11:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685887; cv=none; b=Kg5mrSPcsVmIL5IFnWo/7kMivs55IsHaZ0nEJjGeN1/6mcEyP7UMxreWIyhB+dOWLHkn8w9nW5dl6oDhm7I4srKy/aKSD1v5TLgUmLGGE1613KnJU/MMYf0uSm+r1pLw0mmdVlfqyTzyqaVtixv1TDpT/LIG/k8BMdi618H4+E8=
+	t=1715687604; cv=none; b=SpvlhLeGuie3nay51Vzv3aKdaruHNXQ5AytqXvsuV5Lc5htJQpSdI1xaRQqlcOFuk9hQMyj0axpCp2lu6aa8IXcP1ju+ASsDaxzishTDXYmEjjQo4PM2UPoSel/RbvWkNc6xTh1XLs+N3Po53lYtkPQXLRZRKmmWEbTRYGLGvIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685887; c=relaxed/simple;
-	bh=LXV+ZjnuDjyDDleo0LoYyUv1WccqMEPwcst/tiipykM=;
+	s=arc-20240116; t=1715687604; c=relaxed/simple;
+	bh=renBbfZWZyfsF7DofksrQGfjTh1XQMTStE/HnxjLeRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxRcOq7skZLep//GTP1VXR7Mt8oePyxA0IWsB88u7BkSiY1caCAIf9QcS03x6Rjk+LLl1QW5gV4gsoF/NNABj18mTFjb8kcS1iBK2VIh0WU6UG/pz2IbaaIt/Tzhn+9XYjVvdWqa8qByZmkvPrfyAO4+PcfitKwioAwFOkHVCMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A12suBtl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BDEC2BD10;
-	Tue, 14 May 2024 11:24:46 +0000 (UTC)
+	 MIME-Version; b=rAJcHOfI1emVd2//Oi3Dp9MHnPZ00QHY+SeO7Dw+koifS8jdftVLaB8DSYP4S+mXErWGllNkV9gsG/VdgAkBraJYNWMJHUUYWkGj+srw9emYPg/mF/vlTjrCaJY72pn2aSC30uNXFXMMT0iomGb1Mdu/ArOFW47BdO1fa1Thuq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlVXGuex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88ABFC32782;
+	Tue, 14 May 2024 11:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685887;
-	bh=LXV+ZjnuDjyDDleo0LoYyUv1WccqMEPwcst/tiipykM=;
+	s=korg; t=1715687603;
+	bh=renBbfZWZyfsF7DofksrQGfjTh1XQMTStE/HnxjLeRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A12suBtlmZTpHrD5Azhe/DLDCkKtPsgttPoXSRecc/ZB5xfAEnZL2NCO/eXdddrXz
-	 iWTdBvQA6ulwZ07uIT01j5FkOSypdzbB8l5ZdT9Lo8FBvPATfVFXG+aYdIlxXFR8vL
-	 bZtWRnS9XqmE31pl9FX++BB2SSupZv6j4kjWF+po=
+	b=FlVXGuexFzAgnVkIx4GEKPM1kt2NXo2ujQx7zVTR0Y2N8RDTsOFOLDZj9erbQhK6v
+	 424hGZpwwfagLJw/RaS223Tmn4HPEvo9A8UWSQqgR2jGob5QihB5lY2Sy1DllIAr4u
+	 oTUrxq6ctM4/907J21R8DJVX42J8KS7bQkMAc6vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 237/301] usb: typec: tcpm: unregister existing source caps before re-registration
+	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 010/168] pinctrl: pinctrl-aspeed-g6: Fix register offset for pinconf of GPIOR-T
 Date: Tue, 14 May 2024 12:18:28 +0200
-Message-ID: <20240514101041.202661931@linuxfoundation.org>
+Message-ID: <20240514101007.075620283@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-commit 230ecdf71a644c9c73e0e6735b33173074ae3f94 upstream.
+[ Upstream commit c10cd03d69403fa0f00be8631bd4cb4690440ebd ]
 
-Check and unregister existing source caps in tcpm_register_source_caps
-function before registering new ones. This change fixes following
-warning when port partner resends source caps after negotiating PD contract
-for the purpose of re-negotiation.
+The register offset to disable the internal pull-down of GPIOR~T is 0x630
+instead of 0x620, as specified in the Ast2600 datasheet v15
+The datasheet can download from the official Aspeed website.
 
-[  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
-[  343.135071][  T151] Call trace:
-[  343.135076][  T151]  dump_backtrace+0xe8/0x108
-[  343.135099][  T151]  show_stack+0x18/0x24
-[  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
-[  343.135119][  T151]  dump_stack+0x18/0x24
-[  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
-[  343.135137][  T151]  kobject_add_internal+0x228/0x424
-[  343.135146][  T151]  kobject_add+0x94/0x10c
-[  343.135152][  T151]  device_add+0x1b0/0x4c0
-[  343.135187][  T151]  device_register+0x20/0x34
-[  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
-[  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
-[  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
-[  343.135227][  T151]  kthread+0x114/0x1bc
-[  343.135235][  T151]  ret_from_fork+0x10/0x20
-[  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
-
-Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
-Cc: linux-usb@vger.kernel.org
-Cc: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240424223227.1807844-1-amitsd@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 15711ba6ff19 ("pinctrl: aspeed-g6: Add AST2600 pinconf support")
+Reported-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Message-ID: <20240313092809.2596644-1-billy_tsai@aspeedtech.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c | 34 +++++++++++-----------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2422,7 +2422,7 @@ static int tcpm_register_sink_caps(struc
- {
- 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
- 	struct usb_power_delivery_capabilities_desc caps = { };
--	struct usb_power_delivery_capabilities *cap;
-+	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
+diff --git a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
+index 54064714d73fb..b223583dfb73c 100644
+--- a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
++++ b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
+@@ -43,7 +43,7 @@
+ #define SCU614		0x614 /* Disable GPIO Internal Pull-Down #1 */
+ #define SCU618		0x618 /* Disable GPIO Internal Pull-Down #2 */
+ #define SCU61C		0x61c /* Disable GPIO Internal Pull-Down #3 */
+-#define SCU620		0x620 /* Disable GPIO Internal Pull-Down #4 */
++#define SCU630		0x630 /* Disable GPIO Internal Pull-Down #4 */
+ #define SCU634		0x634 /* Disable GPIO Internal Pull-Down #5 */
+ #define SCU638		0x638 /* Disable GPIO Internal Pull-Down #6 */
+ #define SCU690		0x690 /* Multi-function Pin Control #24 */
+@@ -2487,38 +2487,38 @@ static struct aspeed_pin_config aspeed_g6_configs[] = {
+ 	ASPEED_PULL_DOWN_PINCONF(D14, SCU61C, 0),
  
- 	if (!port->partner_pd)
- 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
-@@ -2432,6 +2432,9 @@ static int tcpm_register_sink_caps(struc
- 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
- 	caps.role = TYPEC_SINK;
+ 	/* GPIOS7 */
+-	ASPEED_PULL_DOWN_PINCONF(T24, SCU620, 23),
++	ASPEED_PULL_DOWN_PINCONF(T24, SCU630, 23),
+ 	/* GPIOS6 */
+-	ASPEED_PULL_DOWN_PINCONF(P23, SCU620, 22),
++	ASPEED_PULL_DOWN_PINCONF(P23, SCU630, 22),
+ 	/* GPIOS5 */
+-	ASPEED_PULL_DOWN_PINCONF(P24, SCU620, 21),
++	ASPEED_PULL_DOWN_PINCONF(P24, SCU630, 21),
+ 	/* GPIOS4 */
+-	ASPEED_PULL_DOWN_PINCONF(R26, SCU620, 20),
++	ASPEED_PULL_DOWN_PINCONF(R26, SCU630, 20),
+ 	/* GPIOS3*/
+-	ASPEED_PULL_DOWN_PINCONF(R24, SCU620, 19),
++	ASPEED_PULL_DOWN_PINCONF(R24, SCU630, 19),
+ 	/* GPIOS2 */
+-	ASPEED_PULL_DOWN_PINCONF(T26, SCU620, 18),
++	ASPEED_PULL_DOWN_PINCONF(T26, SCU630, 18),
+ 	/* GPIOS1 */
+-	ASPEED_PULL_DOWN_PINCONF(T25, SCU620, 17),
++	ASPEED_PULL_DOWN_PINCONF(T25, SCU630, 17),
+ 	/* GPIOS0 */
+-	ASPEED_PULL_DOWN_PINCONF(R23, SCU620, 16),
++	ASPEED_PULL_DOWN_PINCONF(R23, SCU630, 16),
  
-+	if (cap)
-+		usb_power_delivery_unregister_capabilities(cap);
-+
- 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
- 	if (IS_ERR(cap))
- 		return PTR_ERR(cap);
+ 	/* GPIOR7 */
+-	ASPEED_PULL_DOWN_PINCONF(U26, SCU620, 15),
++	ASPEED_PULL_DOWN_PINCONF(U26, SCU630, 15),
+ 	/* GPIOR6 */
+-	ASPEED_PULL_DOWN_PINCONF(W26, SCU620, 14),
++	ASPEED_PULL_DOWN_PINCONF(W26, SCU630, 14),
+ 	/* GPIOR5 */
+-	ASPEED_PULL_DOWN_PINCONF(T23, SCU620, 13),
++	ASPEED_PULL_DOWN_PINCONF(T23, SCU630, 13),
+ 	/* GPIOR4 */
+-	ASPEED_PULL_DOWN_PINCONF(U25, SCU620, 12),
++	ASPEED_PULL_DOWN_PINCONF(U25, SCU630, 12),
+ 	/* GPIOR3*/
+-	ASPEED_PULL_DOWN_PINCONF(V26, SCU620, 11),
++	ASPEED_PULL_DOWN_PINCONF(V26, SCU630, 11),
+ 	/* GPIOR2 */
+-	ASPEED_PULL_DOWN_PINCONF(V24, SCU620, 10),
++	ASPEED_PULL_DOWN_PINCONF(V24, SCU630, 10),
+ 	/* GPIOR1 */
+-	ASPEED_PULL_DOWN_PINCONF(U24, SCU620, 9),
++	ASPEED_PULL_DOWN_PINCONF(U24, SCU630, 9),
+ 	/* GPIOR0 */
+-	ASPEED_PULL_DOWN_PINCONF(V25, SCU620, 8),
++	ASPEED_PULL_DOWN_PINCONF(V25, SCU630, 8),
+ 
+ 	/* GPIOX7 */
+ 	ASPEED_PULL_DOWN_PINCONF(AB10, SCU634, 31),
+-- 
+2.43.0
+
 
 
 
