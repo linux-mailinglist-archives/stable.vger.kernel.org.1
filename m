@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEC58C5323
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:43:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5B48C5211
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA75284D92
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:43:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEF0F1C215D2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFFA143861;
-	Tue, 14 May 2024 11:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A02B12AAC9;
+	Tue, 14 May 2024 11:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSzi17kF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh/cpdNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A99143759;
-	Tue, 14 May 2024 11:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3973C54BFE;
+	Tue, 14 May 2024 11:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686318; cv=none; b=BHVolOoUaOh1ZzejoOl/VBMRF4GqznHE5VqbnaZKLALoXzjnEjVTKvz1+8MZKe8T2F0bOmcPRFuVwUR6W5Hcp59ZIaAHSVZ1uCPhPX+tJqvc66TPNQzdp3XdaiZMKmu43orcczj8hE7wdkManvsBJ+0d1n4vndPCM9Gp2LZXFk4=
+	t=1715685436; cv=none; b=HwgLEjgz4Jr66rKgkaVx94sa1E2LVbfQa78N3aEIz2W3WqllNYyb2A8hL4rgdPeBUTmQRUZ45i2K2gtOWCkNGofvTlWW3FbcA6An+nKiivAs8AdhfBD1IaTzVHu/8ys1qAjdizPHNa9zoHSHizTeIiUqS1z5btGcDb1XvOBPETM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686318; c=relaxed/simple;
-	bh=c4XKEWmD7sOXZdE8qxJNZhzEMuKDHk+fUV0DEX67uPE=;
+	s=arc-20240116; t=1715685436; c=relaxed/simple;
+	bh=cQ1kG9PFK0z2eJGgZ/SIJp8C+pYqRdcEkcu5N/Qsu+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnvBuutxzdiaanvqdz/uuE66vyAbS1sU11zyGieok04QE3ArX22Wmd9OYZn6Db2vrcss9BUCqQsf4G7KEdhgOnZ2uGEbsZprwGrvTMPUcXZMoU4j933j5fd9dChHSxWapQAXWR9vrILiMHl5jwL5tBjpxRPBBHLKHp0dnk3pExs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSzi17kF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F384C2BD10;
-	Tue, 14 May 2024 11:31:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aQuU1kk+6ae+mm6ylv9q6Oz3yolKTjdjyum7tlTTXKMJPinARBgJ/9LaRlT/5KHwcJdsMPFwXe/JyZVKWW1KiWjn2B96dSR0IMaZSrYwfBLTQYn1Ljvz5n9JX4nl+b/gtvs/0ygmxYuOxSWxx3TwkHffral2h7PwKkt+FoMEp94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh/cpdNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67698C2BD10;
+	Tue, 14 May 2024 11:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686318;
-	bh=c4XKEWmD7sOXZdE8qxJNZhzEMuKDHk+fUV0DEX67uPE=;
+	s=korg; t=1715685436;
+	bh=cQ1kG9PFK0z2eJGgZ/SIJp8C+pYqRdcEkcu5N/Qsu+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSzi17kFxLC14RKk2SsDcgbc24l4HqRwft6edNa+x/47QIve6AVbfbwqUjW9WqlQ0
-	 8sbYDd+liV1cZL+6QRxAyrp4ZQvUVZSBtOu1ebffEjdnXQAmZUHaC85jUv1VT52QDy
-	 Mo3z52H9Qk5fo36zXP4526oXfmBtu33RBEs6OiFQ=
+	b=gh/cpdNjWF7k04gw6CtNONLSv6OYWa7IKv6HqaxZnvfkjd6J4WJHgQoHcWRdLE2La
+	 hqGj0Y9z6DFwIJn+aGQ5ROWgnhpt5oWxaUKCXvLFb1Uu8zzUi/d/AaVhaznvWe0Uqf
+	 KpazvNlJ4AttoPqqCkXGC1DKDlGdvDRRiVorTinU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/236] gfs2: Fix invalid metadata access in punch_hole
+Subject: [PATCH 6.6 188/301] phonet: fix rtm_phonet_notify() skb allocation
 Date: Tue, 14 May 2024 12:17:39 +0200
-Message-ID: <20240514101024.054277627@linuxfoundation.org>
+Message-ID: <20240514101039.352896279@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c95346ac918c5badf51b9a7ac58a26d3bd5bb224 ]
+[ Upstream commit d8cac8568618dcb8a51af3db1103e8d4cc4aeea7 ]
 
-In punch_hole(), when the offset lies in the final block for a given
-height, there is no hole to punch, but the maximum size check fails to
-detect that.  Consequently, punch_hole() will try to punch a hole beyond
-the end of the metadata and fail.  Fix the maximum size check.
+fill_route() stores three components in the skb:
 
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+- struct rtmsg
+- RTA_DST (u8)
+- RTA_OIF (u32)
+
+Therefore, rtm_phonet_notify() should use
+
+NLMSG_ALIGN(sizeof(struct rtmsg)) +
+nla_total_size(1) +
+nla_total_size(4)
+
+Fixes: f062f41d0657 ("Phonet: routing table Netlink interface")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
+Link: https://lore.kernel.org/r/20240502161700.1804476-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/bmap.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/phonet/pn_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index e7537fd305dd2..9ad11e5bf14c3 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -1702,7 +1702,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	struct buffer_head *dibh, *bh;
- 	struct gfs2_holder rd_gh;
- 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
--	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
-+	unsigned int bsize = 1 << bsize_shift;
-+	u64 lblock = (offset + bsize - 1) >> bsize_shift;
- 	__u16 start_list[GFS2_MAX_META_HEIGHT];
- 	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
- 	unsigned int start_aligned, end_aligned;
-@@ -1713,7 +1714,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	u64 prev_bnr = 0;
- 	__be64 *start, *end;
+diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
+index 59aebe2968907..dd4c7e9a634fb 100644
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -193,7 +193,7 @@ void rtm_phonet_notify(int event, struct net_device *dev, u8 dst)
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
  
--	if (offset >= maxsize) {
-+	if (offset + bsize - 1 >= maxsize) {
- 		/*
- 		 * The starting point lies beyond the allocated meta-data;
- 		 * there are no blocks do deallocate.
+-	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
++	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct rtmsg)) +
+ 			nla_total_size(1) + nla_total_size(4), GFP_KERNEL);
+ 	if (skb == NULL)
+ 		goto errout;
 -- 
 2.43.0
 
