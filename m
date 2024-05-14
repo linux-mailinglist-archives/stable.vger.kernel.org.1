@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086DE8C54F1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304E68C5357
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3F7D28B00C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D7081C22BCA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E1F85C42;
-	Tue, 14 May 2024 11:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D0784FD2;
+	Tue, 14 May 2024 11:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjM+Rwof"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EupyhC0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4029085955;
-	Tue, 14 May 2024 11:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6218218026;
+	Tue, 14 May 2024 11:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687526; cv=none; b=iERYLkHJRC3jLcETJdzucI8tbIaCc1Iw6IxTT3ZKCHZF7JohoDbyXG0xIPJ+wEtglvGWiCtuQFagpdkQNznHkpqISwgFJuj0/+ZgSemRofMeiSxPsy6kpcaCEMVk0itEA1bAASx9pQKvjuZX+xSBxe0FgiP3YQDFDvyU5nxp0Y4=
+	t=1715686459; cv=none; b=UZtF/1O3GM915+KqitQocKu9x4bw6h+h6uF9OEMIPUJ6E0YkTVTWC2Yh5FGdcxjOyfRkhQb0vaIzlYMXWuLki7/vTEaETFEIBeE0JxX2nutHQ4uB9qNJgQqtymGwZu76di5X4ZNzyJqAetCk5ec9Aieowzw7rBgZnCz+FomDNDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687526; c=relaxed/simple;
-	bh=54xKi9RhPgvPsfhYme1TmRxBuozpICh3moJxCd+z1tY=;
+	s=arc-20240116; t=1715686459; c=relaxed/simple;
+	bh=uMAJLqwMijo/1MQBWUAZH8l6Z3QGX40Hdxgvd9rNuEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEcmuGmYzdniAl+pUtHVnbMa9m8sFB9LxtETtuDLswBFdANJhQ0YI8gI/JdJsueL+l4B1MeaYSwcpSz1DzPkDnmnSnC6HbFukzs38mOB0C3Bozf8oRTHlMZTyqnhrU76xnIkWX083nM6Lp7CYDi9GNfqFLLo+uXc89QZrPPrINo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjM+Rwof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96B0C2BD10;
-	Tue, 14 May 2024 11:52:05 +0000 (UTC)
+	 MIME-Version; b=KwtSMeY1RZoOO1LTlOqZH265lVgZv2s9cDpHs/loQ2dKK1+uyIle5kKIRNIDPJ4yMozafYJbNFpR2Xq+V+yQd780GEll2XsQh4Vk0h4m/VbHlj9Zzoowb/U40SNjzQJr4D9r8FhC6+jaEthBs3DAlCsToiz371ODYa4Rt5F2p5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EupyhC0E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB371C32782;
+	Tue, 14 May 2024 11:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687526;
-	bh=54xKi9RhPgvPsfhYme1TmRxBuozpICh3moJxCd+z1tY=;
+	s=korg; t=1715686459;
+	bh=uMAJLqwMijo/1MQBWUAZH8l6Z3QGX40Hdxgvd9rNuEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZjM+RwofV0Sd4wOkQ2eWER/9dEKAAkdcaaE+4LPsp+RvMLEoHZccgRz125fQQojiQ
-	 Yw4V9D1WNj+0PNe6KwZOeXhP3Wr9t+6n0rWcF48es2fjTqqu8vYs7coUlqBWM7Dq/n
-	 IBKSbBgytCBqTFELHx/xwW0nut/9FSoGAQt4mQwU=
+	b=EupyhC0EFEcVztxvxQbKjr6kKpSAyjtHdXfaWIOPDlaCaGYh043SlIlZMXe5bacmX
+	 gDE6l/Eyg5GlWKmisMOB8SqTp0G1hxkqmKv5gh/HsLIvg2LJi44NrKTtK7QxBG3kZT
+	 8wapDd+5cymhObYP2JygTe8LpgFzwiLv89i2xOOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/168] eeprom: at24: Use dev_err_probe for nvmem register failure
-Date: Tue, 14 May 2024 12:18:25 +0200
-Message-ID: <20240514101006.962553097@linuxfoundation.org>
+Subject: [PATCH 6.1 144/236] qibfs: fix dentry leak
+Date: Tue, 14 May 2024 12:18:26 +0200
+Message-ID: <20240514101025.835836967@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit a3c10035d12f5ec10915d5c00c2e8f7d7c066182 ]
+[ Upstream commit aa23317d0268b309bb3f0801ddd0d61813ff5afb ]
 
-When using nvmem layouts it is possible devm_nvmem_register returns
--EPROBE_DEFER, resulting in an 'empty' in
-/sys/kernel/debug/devices_deferred. Use dev_err_probe for providing
-additional information.
+simple_recursive_removal() drops the pinning references to all positives
+in subtree.  For the cases when its argument has been kept alive by
+the pinning alone that's exactly the right thing to do, but here
+the argument comes from dcache lookup, that needs to be balanced by
+explicit dput().
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: f42c97027fb7 ("eeprom: at24: fix memory corruption race condition")
+Fixes: e41d237818598 "qib_fs: switch to simple_recursive_removal()"
+Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/at24.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/qib/qib_fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
-index 305ffad131a29..b100bbc888668 100644
---- a/drivers/misc/eeprom/at24.c
-+++ b/drivers/misc/eeprom/at24.c
-@@ -762,7 +762,8 @@ static int at24_probe(struct i2c_client *client)
- 		pm_runtime_disable(dev);
- 		if (!pm_runtime_status_suspended(dev))
- 			regulator_disable(at24->vcc_reg);
--		return PTR_ERR(at24->nvmem);
-+		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
-+				     "failed to register nvmem\n");
+diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
+index a973905afd132..182a89bb24ef4 100644
+--- a/drivers/infiniband/hw/qib/qib_fs.c
++++ b/drivers/infiniband/hw/qib/qib_fs.c
+@@ -440,6 +440,7 @@ static int remove_device_files(struct super_block *sb,
+ 		return PTR_ERR(dir);
  	}
+ 	simple_recursive_removal(dir, NULL);
++	dput(dir);
+ 	return 0;
+ }
  
- 	/*
 -- 
 2.43.0
 
