@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126BF8C51F4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D0F8C5067
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95469B22531
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFFE1C20A90
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A277603F;
-	Tue, 14 May 2024 11:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4776813D2AD;
+	Tue, 14 May 2024 10:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihdZNYg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoGMAWKD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D666D1A0;
-	Tue, 14 May 2024 11:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053E95A0FE;
+	Tue, 14 May 2024 10:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685274; cv=none; b=W/rwsBhX1fYjwlO95lxMaP2DNclSsKxO+EXJIRWBx0nUmjr+lHI8plUiEAJNte7w8COj1QKRk1/8AhppODauJYcGsF4WxlmNQRbtYGH11UBw3LupfLPUfR0p5wQV7oUyQIXHiEhl0Rmdk8XE15pyv7FUa94XjsxjcfHTxaFsF1Q=
+	t=1715683312; cv=none; b=IhGo7MwZbv5EO5/B5oiO3+RzxnaDDlFDAR9ji2V7DhRQM35vrnLSSF+lUpMe6XMnxJ8fwVHOGqf3oMe/zvvtpRxCKzutJWCU/d2K8hKynXEhQ7giBso8UPcD0EbW9vfHMMpH3sDGuVqYKoz3u0vmEJujIJCULXxsJr2gGi+1ndg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685274; c=relaxed/simple;
-	bh=UEbdgKuOPZoVhvqKBmUvE8T/xkKdZtjjT5iPs82uRTM=;
+	s=arc-20240116; t=1715683312; c=relaxed/simple;
+	bh=AP5uvqgm1MsLvEIlAEL2KMaV2VbkfxWDN7fr35fL2zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BjAM6I4hhjKCqNe84onK8DcvTemvGa5rOI+n4faY5xthusrdu1TLiT2rteXtn2MtJaY9U6ARTap4QbiF+dBs9C7ZeJan0LRdivnOO7PlXxI3xk80h2JVwwlXlOiHprbgVpw3R7b8cWqp1/wcMQx8r30jcBOMut9vD5TKieu9MaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihdZNYg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F054C2BD10;
-	Tue, 14 May 2024 11:14:33 +0000 (UTC)
+	 MIME-Version; b=VakIsjLZBjXyQ19UGoxIKRu7IusVaLpXIo7HuNoxlV1N0Qtghj51SycbBR67OaJ9pNm1C0Wtm02+NFr/NaLdTrvnFPgpZwJ6EqkTxlqO7vMr3SzvsGO7QBMaSg4fbnLFC6PykGgxeWJHmjlj/irLWPHHFeFXUY5I5eYbUqJ0Rbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoGMAWKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F52C2BD10;
+	Tue, 14 May 2024 10:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685274;
-	bh=UEbdgKuOPZoVhvqKBmUvE8T/xkKdZtjjT5iPs82uRTM=;
+	s=korg; t=1715683311;
+	bh=AP5uvqgm1MsLvEIlAEL2KMaV2VbkfxWDN7fr35fL2zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihdZNYg6J4RSH6RLOLK1l843sDfcYWhsnNqBGEzrzVOUh/G9UVDR7wX8HB+kxL9S3
-	 MT2L8N4AfSudqgyuHDm6uxsocAhr9Lf7h0ssnB29H3D58fQxpdWsh0hwJjbJyd4exb
-	 wCjLV6cLKAXtiWOlj60va9hhTn7ZZ2Mpo1nJIFVc=
+	b=yoGMAWKDN3d0ECMR7W7NXer+hWrdnWoVbnxHjTrbP0pA0idMea6JLf1JLlWirtaGA
+	 uqzyIGoppB9LmUGv6Os/gYogQDVxKuKyfoGWCXCCJL15oFoBiRp4r9iz7UqEnlyrde
+	 /jeanEajJVhR4pcT551xZb12FJVih9fBz12ffw0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Liu <liupeng17@lenovo.com>,
-	Len Brown <len.brown@intel.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/301] tools/power turbostat: Fix Bzy_MHz documentation typo
+Subject: [PATCH 6.8 198/336] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
 Date: Tue, 14 May 2024 12:16:42 +0200
-Message-ID: <20240514101037.194023238@linuxfoundation.org>
+Message-ID: <20240514101046.079985808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Liu <liupeng17@lenovo.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0b13410b52c4636aacb6964a4253a797c0fa0d16 ]
+[ Upstream commit 94062790aedb505bdda209b10bea47b294d6394f ]
 
-The code calculates Bzy_MHz by multiplying TSC_delta * APERF_delta/MPERF_delta
-The man page erroneously showed that TSC_delta was divided.
+TCP_SYN_RECV state is really special, it is only used by
+cross-syn connections, mostly used by fuzzers.
 
-Signed-off-by: Peng Liu <liupeng17@lenovo.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+In the following crash [1], syzbot managed to trigger a divide
+by zero in tcp_rcv_space_adjust()
+
+A socket makes the following state transitions,
+without ever calling tcp_init_transfer(),
+meaning tcp_init_buffer_space() is also not called.
+
+         TCP_CLOSE
+connect()
+         TCP_SYN_SENT
+         TCP_SYN_RECV
+shutdown() -> tcp_shutdown(sk, SEND_SHUTDOWN)
+         TCP_FIN_WAIT1
+
+To fix this issue, change tcp_shutdown() to not
+perform a TCP_SYN_RECV -> TCP_FIN_WAIT1 transition,
+which makes no sense anyway.
+
+When tcp_rcv_state_process() later changes socket state
+from TCP_SYN_RECV to TCP_ESTABLISH, then look at
+sk->sk_shutdown to finally enter TCP_FIN_WAIT1 state,
+and send a FIN packet from a sane socket state.
+
+This means tcp_send_fin() can now be called from BH
+context, and must use GFP_ATOMIC allocations.
+
+[1]
+divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 1 PID: 5084 Comm: syz-executor358 Not tainted 6.9.0-rc6-syzkaller-00022-g98369dccd2f8 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ RIP: 0010:tcp_rcv_space_adjust+0x2df/0x890 net/ipv4/tcp_input.c:767
+Code: e3 04 4c 01 eb 48 8b 44 24 38 0f b6 04 10 84 c0 49 89 d5 0f 85 a5 03 00 00 41 8b 8e c8 09 00 00 89 e8 29 c8 48 0f af c3 31 d2 <48> f7 f1 48 8d 1c 43 49 8d 96 76 08 00 00 48 89 d0 48 c1 e8 03 48
+RSP: 0018:ffffc900031ef3f0 EFLAGS: 00010246
+RAX: 0c677a10441f8f42 RBX: 000000004fb95e7e RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000027d4b11f R08: ffffffff89e535a4 R09: 1ffffffff25e6ab7
+R10: dffffc0000000000 R11: ffffffff8135e920 R12: ffff88802a9f8d30
+R13: dffffc0000000000 R14: ffff88802a9f8d00 R15: 1ffff1100553f2da
+FS:  00005555775c0380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f1155bf2304 CR3: 000000002b9f2000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+  tcp_recvmsg_locked+0x106d/0x25a0 net/ipv4/tcp.c:2513
+  tcp_recvmsg+0x25d/0x920 net/ipv4/tcp.c:2578
+  inet6_recvmsg+0x16a/0x730 net/ipv6/af_inet6.c:680
+  sock_recvmsg_nosec net/socket.c:1046 [inline]
+  sock_recvmsg+0x109/0x280 net/socket.c:1068
+  ____sys_recvmsg+0x1db/0x470 net/socket.c:2803
+  ___sys_recvmsg net/socket.c:2845 [inline]
+  do_recvmmsg+0x474/0xae0 net/socket.c:2939
+  __sys_recvmmsg net/socket.c:3018 [inline]
+  __do_sys_recvmmsg net/socket.c:3041 [inline]
+  __se_sys_recvmmsg net/socket.c:3034 [inline]
+  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3034
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7faeb6363db9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffcc1997168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007faeb6363db9
+RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000001c
+R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20240501125448.896529-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.8 | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_input.c  | 2 ++
+ net/ipv4/tcp_output.c | 4 +++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
-index 8f08c3fd498d5..1ba6340d3b3da 100644
---- a/tools/power/x86/turbostat/turbostat.8
-+++ b/tools/power/x86/turbostat/turbostat.8
-@@ -370,7 +370,7 @@ below the processor's base frequency.
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 5887eac87bd28..94b129301d38a 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2709,7 +2709,7 @@ void tcp_shutdown(struct sock *sk, int how)
+ 	/* If we've already sent a FIN, or it's a closed state, skip this. */
+ 	if ((1 << sk->sk_state) &
+ 	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
+-	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {
++	     TCPF_CLOSE_WAIT)) {
+ 		/* Clear out any half completed packets.  FIN if needed. */
+ 		if (tcp_close_state(sk))
+ 			tcp_send_fin(sk);
+@@ -2818,7 +2818,7 @@ void __tcp_close(struct sock *sk, long timeout)
+ 		 * machine. State transitions:
+ 		 *
+ 		 * TCP_ESTABLISHED -> TCP_FIN_WAIT1
+-		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (forget it, it's impossible)
++		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (it is difficult)
+ 		 * TCP_CLOSE_WAIT -> TCP_LAST_ACK
+ 		 *
+ 		 * are legal only when FIN has been sent (i.e. in window),
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index df7b13f0e5e0d..ff10be8c76cf0 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6752,6 +6752,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
  
- Busy% = MPERF_delta/TSC_delta
+ 		tcp_initialize_rcv_mss(sk);
+ 		tcp_fast_path_on(tp);
++		if (sk->sk_shutdown & SEND_SHUTDOWN)
++			tcp_shutdown(sk, SEND_SHUTDOWN);
+ 		break;
  
--Bzy_MHz = TSC_delta/APERF_delta/MPERF_delta/measurement_interval
-+Bzy_MHz = TSC_delta*APERF_delta/MPERF_delta/measurement_interval
+ 	case TCP_FIN_WAIT1: {
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index e3167ad965676..02caeb7bcf634 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3563,7 +3563,9 @@ void tcp_send_fin(struct sock *sk)
+ 			return;
+ 		}
+ 	} else {
+-		skb = alloc_skb_fclone(MAX_TCP_HEADER, sk->sk_allocation);
++		skb = alloc_skb_fclone(MAX_TCP_HEADER,
++				       sk_gfp_mask(sk, GFP_ATOMIC |
++						       __GFP_NOWARN));
+ 		if (unlikely(!skb))
+ 			return;
  
- Note that these calculations depend on TSC_delta, so they
- are not reliable during intervals when TSC_MHz is not running at the base frequency.
 -- 
 2.43.0
 
