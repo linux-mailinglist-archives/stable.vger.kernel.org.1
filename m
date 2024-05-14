@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24A18C548B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3031C8C53A0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65ABA1F2323E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EB56287FB0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7731612BF27;
-	Tue, 14 May 2024 11:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DC612DD85;
+	Tue, 14 May 2024 11:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqV29MRZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7MeL7RK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AF912BF08;
-	Tue, 14 May 2024 11:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FBD12D77F;
+	Tue, 14 May 2024 11:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687265; cv=none; b=gV51Hv48VcJMfi+V2FBEBuLVrobZtaP6vPFTAnWy5FgIXwO3evtCScGmXm2tqyUVuZdobg7gveW++At7fLZIOPdCI0sVWvecmRepMM/UMdQTrDcdDwSiX17IcZj94qPbHmYRSQ2SfHT3CiVHJZXa6LyhrDxhyxBHIc4B8zK4VyQ=
+	t=1715686659; cv=none; b=qliZhI6b6fjVlBvfqoU31tstTF1z4F8TlwuskUB1yc76NZJxSXD0Xwlc9fzlhfYdbz1dZ4tqEuJ1C21r7EVA4QZGPfRvsEqjm8W3ywhmpxIQDKjCpdZ74pzebCRAI3ny7Bgmz6uiaAdCbb5MlJzGv/7XGGeN4Vtk1yO67VrBEf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687265; c=relaxed/simple;
-	bh=w6EYMLUFotkESdOjNlE2wIWEQrLlgI4mgMlzY+tk3sw=;
+	s=arc-20240116; t=1715686659; c=relaxed/simple;
+	bh=pvj2TIUmvUXZTuf/ur/s2FdWZ9PFC2xy2ID2TEnymMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADfPFjg1V86kytf/yctNpG+rTSlOtY39hRN7T7MYEGKA7ochsTEGyHcwECvUpwqDGgjssXLiQ60zoOb0f/AoRnW/XmLr3odY9ns2RuiYGu3/DXKAWirAAD7ecizIMm/LHq1jICDf8h8/JsGt9BGkmGB1Ym67Esh6JxtlbQpoc54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqV29MRZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF184C2BD10;
-	Tue, 14 May 2024 11:47:44 +0000 (UTC)
+	 MIME-Version; b=vDXfLINYpAclbeu1hmxaaO1bGcdJpHw4dMhjCc5EkBW1MRIIft9nz9+yF5HRXLxAlo/eh6uVAh03K8C84tSQr93cL68FvRFyuptgw6hH+0uYgmB27STKPzHKVzNDdfr7VjmFAO0jORPiKdHeviMPqlccyhHKsx1TqXHurxUr5Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7MeL7RK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D45FC2BD10;
+	Tue, 14 May 2024 11:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687265;
-	bh=w6EYMLUFotkESdOjNlE2wIWEQrLlgI4mgMlzY+tk3sw=;
+	s=korg; t=1715686659;
+	bh=pvj2TIUmvUXZTuf/ur/s2FdWZ9PFC2xy2ID2TEnymMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqV29MRZ5CESb+0MpeI/x6PaolBwGr7bBTZBfq5Tj8mHfCW/eySLXuBYQgHOjXVD+
-	 BS9908rm4yRxNYExO9FJqI71tQrIxiw1nzpnh3qdNB+E/W+db68z9qDlT2ovZiHQUK
-	 QDYxRROCas+TvvVlDVLo3jHW5hfqCqfer4qHcU2U=
+	b=Z7MeL7RKW5bOgub9Ndg1TXQnedurlG4IEL+NvPapv8wvdgRLNRgUI6B0oHbw9aH+i
+	 +3zcsvvD8A0OEwV+q9zCn3qrKAbdfAnwXtu1V22XblajayZkU5wcrhooDoHIP0oQjl
+	 mxAWZZD+u3HlpXz2ExWdKtWZ/12nxEYLmdpp/RJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/111] net: bridge: fix multicast-to-unicast with fraglist GSO
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 213/236] net: bcmgenet: synchronize use of bcmgenet_set_rx_mode()
 Date: Tue, 14 May 2024 12:19:35 +0200
-Message-ID: <20240514100958.536530357@linuxfoundation.org>
+Message-ID: <20240514101028.446079670@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit 59c878cbcdd80ed39315573b3511d0acfd3501b5 ]
+commit 2dbe5f19368caae63b1f59f5bc2af78c7d522b3a upstream.
 
-Calling skb_copy on a SKB_GSO_FRAGLIST skb is not valid, since it returns
-an invalid linearized skb. This code only needs to change the ethernet
-header, so pskb_copy is the right function to call here.
+The ndo_set_rx_mode function is synchronized with the
+netif_addr_lock spinlock and BHs disabled. Since this
+function is also invoked directly from the driver the
+same synchronization should be applied.
 
-Fixes: 6db6f0eae605 ("bridge: multicast to unicast")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Fixes: 72f96347628e ("net: bcmgenet: set Rx mode before starting netif")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_forward.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index f2ef75c7ccc68..3a70682e63524 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -253,7 +253,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2,7 +2,7 @@
+ /*
+  * Broadcom GENET (Gigabit Ethernet) controller driver
+  *
+- * Copyright (c) 2014-2020 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
+  */
  
--	skb = skb_copy(skb, GFP_ATOMIC);
-+	skb = pskb_copy(skb, GFP_ATOMIC);
- 	if (!skb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
--- 
-2.43.0
-
+ #define pr_fmt(fmt)				"bcmgenet: " fmt
+@@ -3352,7 +3352,9 @@ static void bcmgenet_netif_start(struct
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 
+ 	/* Start the network engine */
++	netif_addr_lock_bh(dev);
+ 	bcmgenet_set_rx_mode(dev);
++	netif_addr_unlock_bh(dev);
+ 	bcmgenet_enable_rx_napi(priv);
+ 
+ 	umac_enable_set(priv, CMD_TX_EN | CMD_RX_EN, true);
 
 
 
