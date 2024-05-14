@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-45023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0588E8C5564
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 858648C5457
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211291C21C3B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1BF11C22A17
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598551E4B1;
-	Tue, 14 May 2024 11:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5161A6DCE3;
+	Tue, 14 May 2024 11:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeVERb9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iKnZRXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18216F9D4;
-	Tue, 14 May 2024 11:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F12D2D60A;
+	Tue, 14 May 2024 11:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687859; cv=none; b=cOnFiDXw2DjT0RoNVLCePX9K9KRMS3FgDG5yAoBWMbj2aoIDdPcD27j+FrWFNeVgBx3e35hHYZMWwaX+wTKRHrRvZY+ePje7Eky7I6naDBboMijiIWwt9QeQX3zyXBgl2d1XZwz9QTKOlR+GhLdcuVDEjTf4vTNAza+ATvZlQTE=
+	t=1715687135; cv=none; b=IyGnq2/ObfvCW+ieShMB5GMTZDIcqg1g8CXqkp3mtSVi3OfgZs41u+pVp8iIc59lUUfPwy7QCNIvZdwsxoyg+FJ+FB76WG2eh3YHiRpbmilR0bdBXa8NAyFsIu1hcrFQy+WGO1fYLHcyuWmYFlmxx4ieOf4f7cl51efQEfM/a5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687859; c=relaxed/simple;
-	bh=rVZo/0pnCNksjm280XZKS8jXDFtjlE8EAcs1moOrIC4=;
+	s=arc-20240116; t=1715687135; c=relaxed/simple;
+	bh=MJQ1x0LHfHJx6gdox1ywThqcujcwhjJS19GSS/nDzvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcKy8djGdhcYCq/Cj6MliltcVeRulyJhxPDzZ/fk+u5H+ZCRJjVyTtn8r8eKA3EG65Z720endNJ2NwJe0RlWAYl/Id8nXusfBo4sd0hK2B8x7XrCoY2PQkds6QPlcvjbBIQB6kQ1Upq51fJxNot/s+2b8U5sJKSbzEbwzrKX5Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeVERb9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9884BC2BD10;
-	Tue, 14 May 2024 11:57:38 +0000 (UTC)
+	 MIME-Version; b=VUd9Y3uJ/u3sVH+ZotSquCAWykGjSCmtMe10x3Jch0hwMUyOhggb44PAQMFAJjqKqHHswOLrG63SKURk+Pwi5jx7/XKJnFcOXUXv4Mc+ZOPpc6SjI2JsJ3oqu5whrIXdqr4/M/IdcAF0sIZ6Ue/VzFG/B1VbcRd/YO7Hb+p6PVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iKnZRXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802ECC2BD10;
+	Tue, 14 May 2024 11:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687859;
-	bh=rVZo/0pnCNksjm280XZKS8jXDFtjlE8EAcs1moOrIC4=;
+	s=korg; t=1715687134;
+	bh=MJQ1x0LHfHJx6gdox1ywThqcujcwhjJS19GSS/nDzvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeVERb9psLcijY9MZ5wKDp9uzat+smztptmvwAjwtC9t0MjvRb0cfUaChyHehQGYB
-	 yXp2BSqtV7zRS8gP2Sr/Z6Fi514/PUkHQIFpi42lwS+bsjpOlknbHmwO51OR3vU+LR
-	 CF42AuK3tqOtxJm8VgrO9gdRaWmGc1nIdDtDYNzk=
+	b=1iKnZRXmHEyzONEDzjIDDeO8LAdULvY31JnQ/Kxo0HcUV0lXCtEYdEBXmvUPE2WWX
+	 SoKDRGC+qMejSvPY4QDDwq8HM3k3Jpc2q3WhgQkDzdvZpMBlwd2nI7+UM357gGLjo+
+	 4XZZYFiZWj6j2hZGgyxqWqZskxzBDHVqNxBj5hlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/168] net: hns3: fix port vlan filter not disabled issue
-Date: Tue, 14 May 2024 12:20:27 +0200
-Message-ID: <20240514101011.552443496@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jim Cromie <jim.cromie@gmail.com>
+Subject: [PATCH 5.4 77/84] dyndbg: fix old BUG_ON in >control parser
+Date: Tue, 14 May 2024 12:20:28 +0200
+Message-ID: <20240514100954.578318931@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Jim Cromie <jim.cromie@gmail.com>
 
-[ Upstream commit f5db7a3b65c84d723ca5e2bb6e83115180ab6336 ]
+commit 00e7d3bea2ce7dac7bee1cf501fb071fd0ea8f6c upstream.
 
-According to hardware limitation, for device support modify
-VLAN filter state but not support bypass port VLAN filter,
-it should always disable the port VLAN filter. but the driver
-enables port VLAN filter when initializing, if there is no
-VLAN(except VLAN 0) id added, the driver will disable it
-in service task. In most time, it works fine. But there is
-a time window before the service task shceduled and net device
-being registered. So if user adds VLAN at this time, the driver
-will not update the VLAN filter state,  and the port VLAN filter
-remains enabled.
+Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
+really look), lets make sure by removing it, doing pr_err and return
+-EINVAL instead.
 
-To fix the problem, if support modify VLAN filter state but not
-support bypass port VLAN filter, set the port vlan filter to "off".
-
-Fixes: 184cd221a863 ("net: hns3: disable port VLAN filter when support function level VLAN filter control")
-Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
+Link: https://lore.kernel.org/r/20240429193145.66543-2-jim.cromie@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/dynamic_debug.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 6a346165d5881..d58048b056781 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -10105,6 +10105,7 @@ static int hclge_set_vlan_protocol_type(struct hclge_dev *hdev)
- static int hclge_init_vlan_filter(struct hclge_dev *hdev)
- {
- 	struct hclge_vport *vport;
-+	bool enable = true;
- 	int ret;
- 	int i;
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -244,7 +244,11 @@ static int ddebug_tokenize(char *buf, ch
+ 		} else {
+ 			for (end = buf; *end && !isspace(*end); end++)
+ 				;
+-			BUG_ON(end == buf);
++			if (end == buf) {
++				pr_err("parse err after word:%d=%s\n", nwords,
++				       nwords ? words[nwords - 1] : "<none>");
++				return -EINVAL;
++			}
+ 		}
  
-@@ -10124,8 +10125,12 @@ static int hclge_init_vlan_filter(struct hclge_dev *hdev)
- 		vport->cur_vlan_fltr_en = true;
- 	}
- 
-+	if (test_bit(HNAE3_DEV_SUPPORT_VLAN_FLTR_MDF_B, hdev->ae_dev->caps) &&
-+	    !test_bit(HNAE3_DEV_SUPPORT_PORT_VLAN_BYPASS_B, hdev->ae_dev->caps))
-+		enable = false;
-+
- 	return hclge_set_vlan_filter_ctrl(hdev, HCLGE_FILTER_TYPE_PORT,
--					  HCLGE_FILTER_FE_INGRESS, true, 0);
-+					  HCLGE_FILTER_FE_INGRESS, enable, 0);
- }
- 
- static int hclge_init_vlan_type(struct hclge_dev *hdev)
--- 
-2.43.0
-
+ 		/* `buf' is start of word, `end' is one past its end */
 
 
 
