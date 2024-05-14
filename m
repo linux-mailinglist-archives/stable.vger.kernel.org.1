@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-44694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7EC8C5402
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968088C54BD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 180911C22A7A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 153491F2154A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE89135401;
-	Tue, 14 May 2024 11:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A101712EBD7;
+	Tue, 14 May 2024 11:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+mdp7va"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWwhzX2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699FF1353F2;
-	Tue, 14 May 2024 11:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB8A66B5E;
+	Tue, 14 May 2024 11:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686903; cv=none; b=i6FvqT8k1Ex25l7AVXDp9ft1YodETfXUn2KFqYLFBp7ptSww9f+iBb38a76emcxXsIW9pyIESEz4++JKs6y53DYrlC+ryT2FiaYpwCuIq5Q6o5GBwO+r2gaviU1YKsFhX2E2H387zfLhtJtuEfxpe1Zfkz/5Qm4cnDSxQRTMoFU=
+	t=1715687409; cv=none; b=VP5TOSTcZFXrSH22Zd004NH6Zie2zqP/GZYz8vX4fNKIwbagZpVBEc+XuDBrFxKbcJ6zE8MipQKTqJNNacYtyM0gQHlFftbfRgIN2bvbMcThx6i+APz1Wf/Wk0ppGpeWu/5rU0XUZVNxXT8wzlfaxxBtqNwuZC/pH2J3+2GPAIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686903; c=relaxed/simple;
-	bh=Suq4RmgYXgBO7AsxU0FO9ZQXfHEpvDu7dG2YF1g9+vQ=;
+	s=arc-20240116; t=1715687409; c=relaxed/simple;
+	bh=IKD1G8Fc2p52fIWDXBeceo+acW5r5mM1BzPJGEQpHeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RbCdbyvYJ3nSyubcLyMpheyngC1QlW/TR0AzQbihNoFECjhr3s2ww/RnpYo9BIlywLdRm9A5xKATKEHOSAiiylQkr4tacCzblWPM4wAUkl/Htxmv7uTucSOp+zZlYUSEOAunMiK8aemiKlieDMtPxkJZxS9KrX3YPO3aYvXQx+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+mdp7va; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E647AC32782;
-	Tue, 14 May 2024 11:41:42 +0000 (UTC)
+	 MIME-Version; b=Xm4nw389Q+c4SqEEYe4qcDjEJktcXsrfXhPZ1PfXvP3J/hpIXlaxycj8jdHAS2vU4sMMT6Iur8elu4iN9/Bf9ASfsoBOG03cOqhhqGHCvBItlgLFRSz4usP87sAaDUr0WHuEPv0UPsBv0XluQrFKMTk++Kp8UwPPRmmV2JV0vV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWwhzX2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BA7C2BD10;
+	Tue, 14 May 2024 11:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686903;
-	bh=Suq4RmgYXgBO7AsxU0FO9ZQXfHEpvDu7dG2YF1g9+vQ=;
+	s=korg; t=1715687409;
+	bh=IKD1G8Fc2p52fIWDXBeceo+acW5r5mM1BzPJGEQpHeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+mdp7vaBxL3fv9UzXt57HKYTXlKNYRAM4WreOsIqABiVyahtTdGf17roEQvwghos
-	 EqUpY+iqexfHxlg+9k/NdTg/zY3ftJ37EAe3DOxlLGtPxiDGSKzXAxUt2qvESl+7jw
-	 B+oRJgur4oApvI9QYlz3Up8O5OPuqL2q5O+IhS6U=
+	b=tWwhzX2aijd6puHwOdlpG1G0jOopnaNUZWPlNbEdZIEtVNpJ3HGMJuvuy8mtE5nv/
+	 o+Vc8m9qiuGm8rm5o9juj005IbM40qB/BXU4bQyYjHiNT2LspWQ3giXEDcJXUDIfEL
+	 XZJiLoyjn9yg85kxG2TR3q/El7ZnL/FlBWxuWWzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 4.19 62/63] net: fix out-of-bounds access in ops_init
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrey Konovalov <andreyknvl@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 085/111] kcov: Remove kcov include from sched.h and move it to its users.
 Date: Tue, 14 May 2024 12:20:23 +0200
-Message-ID: <20240514100950.350685808@linuxfoundation.org>
+Message-ID: <20240514101000.361183064@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
+[ Upstream commit 183f47fcaa54a5ffe671d990186d330ac8c63b10 ]
 
-net_alloc_generic is called by net_alloc, which is called without any
-locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
-is read twice, first to allocate an array, then to set s.len, which is
-later used to limit the bounds of the array access.
+The recent addition of in_serving_softirq() to kconv.h results in
+compile failure on PREEMPT_RT because it requires
+task_struct::softirq_disable_cnt. This is not available if kconv.h is
+included from sched.h.
 
-It is possible that the array is allocated and another thread is
-registering a new pernet ops, increments max_gen_ptrs, which is then used
-to set s.len with a larger than allocated length for the variable array.
+It is not needed to include kconv.h from sched.h. All but the net/ user
+already include the kconv header file.
 
-Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
-max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
+Move the include of the kconv.h header from sched.h it its users.
+Additionally include sched.h from kconv.h to ensure that everything
+task_struct related is available.
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Acked-by: Andrey Konovalov <andreyknvl@google.com>
+Link: https://lkml.kernel.org/r/20210218173124.iy5iyqv3a4oia4vv@linutronix.de
+Stable-dep-of: 19e35f24750d ("nfc: nci: Fix kcov check in nci_rx_work()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net_namespace.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/usb/usbip/usbip_common.h | 1 +
+ include/linux/kcov.h             | 1 +
+ include/linux/sched.h            | 1 -
+ net/core/skbuff.c                | 1 +
+ net/mac80211/iface.c             | 1 +
+ net/mac80211/rx.c                | 1 +
+ 6 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -63,12 +63,15 @@ static unsigned int max_gen_ptrs = INITI
+diff --git a/drivers/usb/usbip/usbip_common.h b/drivers/usb/usbip/usbip_common.h
+index a7e6ce96f62c7..02cd91cb3f831 100644
+--- a/drivers/usb/usbip/usbip_common.h
++++ b/drivers/usb/usbip/usbip_common.h
+@@ -18,6 +18,7 @@
+ #include <linux/usb.h>
+ #include <linux/wait.h>
+ #include <linux/sched/task.h>
++#include <linux/kcov.h>
+ #include <uapi/linux/usbip.h>
  
- static struct net_generic *net_alloc_generic(void)
- {
-+	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
-+	unsigned int generic_size;
- 	struct net_generic *ng;
--	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
-+
-+	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
+ #undef pr_fmt
+diff --git a/include/linux/kcov.h b/include/linux/kcov.h
+index a10e84707d820..b48128b717f1f 100644
+--- a/include/linux/kcov.h
++++ b/include/linux/kcov.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_KCOV_H
+ #define _LINUX_KCOV_H
  
- 	ng = kzalloc(generic_size, GFP_KERNEL);
- 	if (ng)
--		ng->s.len = max_gen_ptrs;
-+		ng->s.len = gen_ptrs;
++#include <linux/sched.h>
+ #include <uapi/linux/kcov.h>
  
- 	return ng;
- }
-@@ -1032,7 +1035,11 @@ static int register_pernet_operations(st
- 		if (error < 0)
- 			return error;
- 		*ops->id = error;
--		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
-+		/* This does not require READ_ONCE as writers already hold
-+		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
-+		 * net_alloc_generic.
-+		 */
-+		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
- 	}
- 	error = __register_pernet_operations(list, ops);
- 	if (error) {
+ struct task_struct;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index aa015416c5693..3613c3f43b83e 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -14,7 +14,6 @@
+ #include <linux/pid.h>
+ #include <linux/sem.h>
+ #include <linux/shm.h>
+-#include <linux/kcov.h>
+ #include <linux/mutex.h>
+ #include <linux/plist.h>
+ #include <linux/hrtimer.h>
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index fd53b66f2ca1d..b0c2d6f018003 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -60,6 +60,7 @@
+ #include <linux/prefetch.h>
+ #include <linux/if_vlan.h>
+ #include <linux/mpls.h>
++#include <linux/kcov.h>
+ 
+ #include <net/protocol.h>
+ #include <net/dst.h>
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 3a15ef8dd3228..06ce138eedf1b 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -15,6 +15,7 @@
+ #include <linux/if_arp.h>
+ #include <linux/netdevice.h>
+ #include <linux/rtnetlink.h>
++#include <linux/kcov.h>
+ #include <net/mac80211.h>
+ #include <net/ieee80211_radiotap.h>
+ #include "ieee80211_i.h"
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 97a63b940482d..65fea564c9c00 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -17,6 +17,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/rcupdate.h>
+ #include <linux/export.h>
++#include <linux/kcov.h>
+ #include <linux/bitops.h>
+ #include <net/mac80211.h>
+ #include <net/ieee80211_radiotap.h>
+-- 
+2.43.0
+
 
 
 
