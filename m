@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A98D8C550C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8218C510F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FCEA1F22CE1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEE851C21164
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0F23D971;
-	Tue, 14 May 2024 11:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05ECB12F597;
+	Tue, 14 May 2024 10:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gl/9LoBh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfsmZGEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C9B320F;
-	Tue, 14 May 2024 11:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B788112880A;
+	Tue, 14 May 2024 10:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687613; cv=none; b=nnbDvthWWFMwBNaOcIoCN0re+BfSfwdUwJ1TsLy6bqwDLmurRKaTibeoMFOpVkTqGONXZvsX+ar9nIWybSUFlLH4mvw0NDSGyae7Y1Xe9EGJYkQkeJVzxylyrbzkELr8iZ/cHKRGLcc3xuno4xunB2WIac4ip+gPENB+HHcI9DY=
+	t=1715684024; cv=none; b=clM3o0sFEeUi9b2zlUNHfKVeu7U2koHWp1FzDQpRnuq1ZpisZihQQZrWKCHQDLfKVGRHkNxQKhvoyXoQq9AoH1TyTPBllBULAScCtU71000PCnxFByZBGMRVb1O3oK9AINpxcWxPzNnyzMme7eAhKMi/uL8z4QqTtlCJTlECWf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687613; c=relaxed/simple;
-	bh=6OmtiUvY2ZeQlT8lzG4p5C+xosPtQMRPiJkuTJA0bus=;
+	s=arc-20240116; t=1715684024; c=relaxed/simple;
+	bh=r3h1Ni6qDiut4kpEBJ7sKO+7g3HEW+4YuFgobmfQu8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E39D6kiu987UTw2lQa6KvCdQaylMU47mlGbmwKWVo2Ga5k2BQhsbelOl6SJCsUlqQ5j+wc3YjMx6+bSHAVvf2OHJM+7/+9lQOUmidIdSJTIe/GdKdK8ZC/JR09Kl7x2hmoMDnm48GXsErVqVpz5ejnwaNFtz2J6EBqAGaF62O0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gl/9LoBh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE94C2BD10;
-	Tue, 14 May 2024 11:53:32 +0000 (UTC)
+	 MIME-Version; b=qMQa1V+4ajGg05FoQssljkFuSYAw7mAHDYJ0KoGEBXVlqO532M1Z6AHQcdY0kJb1m6IDIhEvM3HSvUOXfrB9iDfPpwNmLd1khf5ZrhVWiKaQyTP7Ch+hq59OV34/IqJK35p7TlpJb0irQAKGzSScwK4Qw8JwBOXYdTQqXut8qIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfsmZGEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B03DC2BD10;
+	Tue, 14 May 2024 10:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687612;
-	bh=6OmtiUvY2ZeQlT8lzG4p5C+xosPtQMRPiJkuTJA0bus=;
+	s=korg; t=1715684024;
+	bh=r3h1Ni6qDiut4kpEBJ7sKO+7g3HEW+4YuFgobmfQu8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gl/9LoBhU0lpgegW0FYe50wMPJ5rK5ecNELiu/2DI7e+Ne22PVNDiVd0CNhRVd2x4
-	 UQ72BPc1ptoz6c/GZwiDFipq2uRj4gxrFOeX+R7G7VR0OnFtdxGzyLFUrzynohA5tv
-	 Y8ZgLkWTsDOkN4mBOxV5AihX2OEcEMGBO1QkaIcE=
+	b=cfsmZGEbCLV25CdEfvaaSnhYQOJMbSxgTior+wuLuxuFOXMG1RuXLDBe8HU6Gpr15
+	 wi9Sks+nA+dCU4sO5BD2v1JUSIicHBvxsXazQC55DyAkcaofSJwo/mpwvYkkeOdJOy
+	 UdQLayx/iE75qg/AAWf8kQITYFdy9JYkPZnnQlI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/168] pinctrl: mediatek: paris: Rework mtk_pinconf_{get,set} switch/case logic
-Date: Tue, 14 May 2024 12:18:31 +0200
-Message-ID: <20240514101007.188252802@linuxfoundation.org>
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.8 308/336] iommu/arm-smmu: Use the correct type in nvidia_smmu_context_fault()
+Date: Tue, 14 May 2024 12:18:32 +0200
+Message-ID: <20240514101050.247264460@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,304 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 9b780fa1ff14663c2e0f07ad098b96b8337f27a4 ]
+commit 65ade5653f5ab5a21635e51d0c65e95f490f5b6f upstream.
 
-The current code deals with optional features by testing for the
-function pointers and returning -ENOTSUPP if it is not valid. This is
-done for multiple pin config settings and results in the code that
-handles the supporting cases to get indented by one level. This is
-aggrevated by the fact that some features require another level of
-conditionals.
+This was missed because of the function pointer indirection.
 
-Instead of assigning the same error code in all unsupported optional
-feature cases, simply have that error code as the default, and break
-out of the switch/case block whenever a feature is unsupported, or an
-error is returned. This reduces indentation by one level for the useful
-code.
+nvidia_smmu_context_fault() is also installed as a irq function, and the
+'void *' was changed to a struct arm_smmu_domain. Since the iommu_domain
+is embedded at a non-zero offset this causes nvidia_smmu_context_fault()
+to miscompute the offset. Fixup the types.
 
-Also replace the goto statements with break statements. The result is
-the same, as the gotos simply exit the switch/case block, which can
-also be achieved with a break statement. With the latter the intent
-is clear and easier to understand.
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000120
+  Mem abort info:
+    ESR = 0x0000000096000004
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x04: level 0 translation fault
+  Data abort info:
+    ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+  user pgtable: 4k pages, 48-bit VAs, pgdp=0000000107c9f000
+  [0000000000000120] pgd=0000000000000000, p4d=0000000000000000
+  Internal error: Oops: 0000000096000004 [#1] SMP
+  Modules linked in:
+  CPU: 1 PID: 47 Comm: kworker/u25:0 Not tainted 6.9.0-0.rc7.58.eln136.aarch64 #1
+  Hardware name: Unknown NVIDIA Jetson Orin NX/NVIDIA Jetson Orin NX, BIOS 3.1-32827747 03/19/2023
+  Workqueue: events_unbound deferred_probe_work_func
+  pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : nvidia_smmu_context_fault+0x1c/0x158
+  lr : __free_irq+0x1d4/0x2e8
+  sp : ffff80008044b6f0
+  x29: ffff80008044b6f0 x28: ffff000080a60b18 x27: ffffd32b5172e970
+  x26: 0000000000000000 x25: ffff0000802f5aac x24: ffff0000802f5a30
+  x23: ffff0000802f5b60 x22: 0000000000000057 x21: 0000000000000000
+  x20: ffff0000802f5a00 x19: ffff000087d4cd80 x18: ffffffffffffffff
+  x17: 6234362066666666 x16: 6630303078302d30 x15: ffff00008156d888
+  x14: 0000000000000000 x13: ffff0000801db910 x12: ffff00008156d6d0
+  x11: 0000000000000003 x10: ffff0000801db918 x9 : ffffd32b50f94d9c
+  x8 : 1fffe0001032fda1 x7 : ffff00008197ed00 x6 : 000000000000000f
+  x5 : 000000000000010e x4 : 000000000000010e x3 : 0000000000000000
+  x2 : ffffd32b51720cd8 x1 : ffff000087e6f700 x0 : 0000000000000057
+  Call trace:
+   nvidia_smmu_context_fault+0x1c/0x158
+   __free_irq+0x1d4/0x2e8
+   free_irq+0x3c/0x80
+   devm_free_irq+0x64/0xa8
+   arm_smmu_domain_free+0xc4/0x158
+   iommu_domain_free+0x44/0xa0
+   iommu_deinit_device+0xd0/0xf8
+   __iommu_group_remove_device+0xcc/0xe0
+   iommu_bus_notifier+0x64/0xa8
+   notifier_call_chain+0x78/0x148
+   blocking_notifier_call_chain+0x4c/0x90
+   bus_notify+0x44/0x70
+   device_del+0x264/0x3e8
+   pci_remove_bus_device+0x84/0x120
+   pci_remove_root_bus+0x5c/0xc0
+   dw_pcie_host_deinit+0x38/0xe0
+   tegra_pcie_config_rp+0xc0/0x1f0
+   tegra_pcie_dw_probe+0x34c/0x700
+   platform_probe+0x70/0xe8
+   really_probe+0xc8/0x3a0
+   __driver_probe_device+0x84/0x160
+   driver_probe_device+0x44/0x130
+   __device_attach_driver+0xc4/0x170
+   bus_for_each_drv+0x90/0x100
+   __device_attach+0xa8/0x1c8
+   device_initial_probe+0x1c/0x30
+   bus_probe_device+0xb0/0xc0
+   deferred_probe_work_func+0xbc/0x120
+   process_one_work+0x194/0x490
+   worker_thread+0x284/0x3b0
+   kthread+0xf4/0x108
+   ret_from_fork+0x10/0x20
+  Code: a9b97bfd 910003fd a9025bf5 f85a0035 (b94122a1)
 
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20220308100956.2750295-8-wenst@chromium.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: 08f66a8edd08 ("pinctrl: mediatek: paris: Fix PIN_CONFIG_INPUT_SCHMITT_ENABLE readback")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e0976331ad11 ("iommu/arm-smmu: Pass arm_smmu_domain to internal functions")
+Reported-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Closes: https://lore.kernel.org/all/jto5e3ili4auk6sbzpnojdvhppgwuegir7mpd755anfhwcbkfz@2u5gh7bxb4iv
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Tested-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Acked-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/0-v1-24ce064de41f+4ac-nvidia_smmu_fault_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c | 144 ++++++++++-------------
- 1 file changed, 61 insertions(+), 83 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-nvidia.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index 0fa1c36148c23..f17325a738eaa 100644
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -79,37 +79,34 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- {
- 	struct mtk_pinctrl *hw = pinctrl_dev_get_drvdata(pctldev);
- 	u32 param = pinconf_to_config_param(*config);
--	int pullup, err, reg, ret = 1;
-+	int pullup, reg, err = -ENOTSUPP, ret = 1;
- 	const struct mtk_pin_desc *desc;
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-nvidia.c b/drivers/iommu/arm/arm-smmu/arm-smmu-nvidia.c
+index 87bf522b9d2e..957d988b6d83 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-nvidia.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-nvidia.c
+@@ -221,11 +221,9 @@ static irqreturn_t nvidia_smmu_context_fault(int irq, void *dev)
+ 	unsigned int inst;
+ 	irqreturn_t ret = IRQ_NONE;
+ 	struct arm_smmu_device *smmu;
+-	struct iommu_domain *domain = dev;
+-	struct arm_smmu_domain *smmu_domain;
++	struct arm_smmu_domain *smmu_domain = dev;
+ 	struct nvidia_smmu *nvidia;
  
--	if (pin >= hw->soc->npins) {
--		err = -EINVAL;
--		goto out;
--	}
-+	if (pin >= hw->soc->npins)
-+		return -EINVAL;
-+
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[pin];
- 
- 	switch (param) {
- 	case PIN_CONFIG_BIAS_DISABLE:
- 	case PIN_CONFIG_BIAS_PULL_UP:
- 	case PIN_CONFIG_BIAS_PULL_DOWN:
--		if (hw->soc->bias_get_combo) {
--			err = hw->soc->bias_get_combo(hw, desc, &pullup, &ret);
--			if (err)
--				goto out;
--			if (ret == MTK_PUPD_SET_R1R0_00)
--				ret = MTK_DISABLE;
--			if (param == PIN_CONFIG_BIAS_DISABLE) {
--				if (ret != MTK_DISABLE)
--					err = -EINVAL;
--			} else if (param == PIN_CONFIG_BIAS_PULL_UP) {
--				if (!pullup || ret == MTK_DISABLE)
--					err = -EINVAL;
--			} else if (param == PIN_CONFIG_BIAS_PULL_DOWN) {
--				if (pullup || ret == MTK_DISABLE)
--					err = -EINVAL;
--			}
--		} else {
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_get_combo)
-+			break;
-+		err = hw->soc->bias_get_combo(hw, desc, &pullup, &ret);
-+		if (err)
-+			break;
-+		if (ret == MTK_PUPD_SET_R1R0_00)
-+			ret = MTK_DISABLE;
-+		if (param == PIN_CONFIG_BIAS_DISABLE) {
-+			if (ret != MTK_DISABLE)
-+				err = -EINVAL;
-+		} else if (param == PIN_CONFIG_BIAS_PULL_UP) {
-+			if (!pullup || ret == MTK_DISABLE)
-+				err = -EINVAL;
-+		} else if (param == PIN_CONFIG_BIAS_PULL_DOWN) {
-+			if (pullup || ret == MTK_DISABLE)
-+				err = -EINVAL;
- 		}
- 		break;
- 	case PIN_CONFIG_SLEW_RATE:
-@@ -119,7 +116,7 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 	case PIN_CONFIG_OUTPUT_ENABLE:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
- 		if (err)
--			goto out;
-+			break;
- 		/*     CONFIG     Current direction return value
- 		 * -------------  ----------------- ----------------------
- 		 * OUTPUT_ENABLE       output       1 (= HW value)
-@@ -134,23 +131,21 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
- 		if (err)
--			goto out;
-+			break;
- 		/* return error when in output mode
- 		 * because schmitt trigger only work in input mode
- 		 */
- 		if (ret) {
- 			err = -EINVAL;
--			goto out;
-+			break;
- 		}
- 
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SMT, &ret);
--
- 		break;
- 	case PIN_CONFIG_DRIVE_STRENGTH:
--		if (hw->soc->drive_get)
--			err = hw->soc->drive_get(hw, desc, &ret);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->drive_get)
-+			break;
-+		err = hw->soc->drive_get(hw, desc, &ret);
- 		break;
- 	case MTK_PIN_CONFIG_TDSEL:
- 	case MTK_PIN_CONFIG_RDSEL:
-@@ -160,23 +155,18 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 		break;
- 	case MTK_PIN_CONFIG_PU_ADV:
- 	case MTK_PIN_CONFIG_PD_ADV:
--		if (hw->soc->adv_pull_get) {
--			pullup = param == MTK_PIN_CONFIG_PU_ADV;
--			err = hw->soc->adv_pull_get(hw, desc, pullup, &ret);
--		} else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_pull_get)
-+			break;
-+		pullup = param == MTK_PIN_CONFIG_PU_ADV;
-+		err = hw->soc->adv_pull_get(hw, desc, pullup, &ret);
- 		break;
- 	case MTK_PIN_CONFIG_DRV_ADV:
--		if (hw->soc->adv_drive_get)
--			err = hw->soc->adv_drive_get(hw, desc, &ret);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_drive_get)
-+			break;
-+		err = hw->soc->adv_drive_get(hw, desc, &ret);
- 		break;
--	default:
--		err = -ENOTSUPP;
- 	}
- 
--out:
- 	if (!err)
- 		*config = pinconf_to_config_packed(param, ret);
- 
-@@ -188,33 +178,29 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- {
- 	struct mtk_pinctrl *hw = pinctrl_dev_get_drvdata(pctldev);
- 	const struct mtk_pin_desc *desc;
--	int err = 0;
-+	int err = -ENOTSUPP;
- 	u32 reg;
- 
--	if (pin >= hw->soc->npins) {
--		err = -EINVAL;
--		goto err;
--	}
-+	if (pin >= hw->soc->npins)
-+		return -EINVAL;
-+
- 	desc = (const struct mtk_pin_desc *)&hw->soc->pins[pin];
- 
- 	switch ((u32)param) {
- 	case PIN_CONFIG_BIAS_DISABLE:
--		if (hw->soc->bias_set_combo)
--			err = hw->soc->bias_set_combo(hw, desc, 0, MTK_DISABLE);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_set_combo)
-+			break;
-+		err = hw->soc->bias_set_combo(hw, desc, 0, MTK_DISABLE);
- 		break;
- 	case PIN_CONFIG_BIAS_PULL_UP:
--		if (hw->soc->bias_set_combo)
--			err = hw->soc->bias_set_combo(hw, desc, 1, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_set_combo)
-+			break;
-+		err = hw->soc->bias_set_combo(hw, desc, 1, arg);
- 		break;
- 	case PIN_CONFIG_BIAS_PULL_DOWN:
--		if (hw->soc->bias_set_combo)
--			err = hw->soc->bias_set_combo(hw, desc, 0, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->bias_set_combo)
-+			break;
-+		err = hw->soc->bias_set_combo(hw, desc, 0, arg);
- 		break;
- 	case PIN_CONFIG_OUTPUT_ENABLE:
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT,
-@@ -223,7 +209,7 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		 *  does not have SMT control
- 		 */
- 		if (err != -ENOTSUPP)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
- 				       MTK_OUTPUT);
-@@ -232,7 +218,7 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		/* regard all non-zero value as enable */
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, !!arg);
- 		if (err)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
- 				       MTK_INPUT);
-@@ -245,7 +231,7 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DO,
- 				       arg);
- 		if (err)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
- 				       MTK_OUTPUT);
-@@ -257,15 +243,14 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		 */
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR, !arg);
- 		if (err)
--			goto err;
-+			break;
- 
- 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT, !!arg);
- 		break;
- 	case PIN_CONFIG_DRIVE_STRENGTH:
--		if (hw->soc->drive_set)
--			err = hw->soc->drive_set(hw, desc, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->drive_set)
-+			break;
-+		err = hw->soc->drive_set(hw, desc, arg);
- 		break;
- 	case MTK_PIN_CONFIG_TDSEL:
- 	case MTK_PIN_CONFIG_RDSEL:
-@@ -275,26 +260,19 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 		break;
- 	case MTK_PIN_CONFIG_PU_ADV:
- 	case MTK_PIN_CONFIG_PD_ADV:
--		if (hw->soc->adv_pull_set) {
--			bool pullup;
--
--			pullup = param == MTK_PIN_CONFIG_PU_ADV;
--			err = hw->soc->adv_pull_set(hw, desc, pullup,
--						    arg);
--		} else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_pull_set)
-+			break;
-+		err = hw->soc->adv_pull_set(hw, desc,
-+					    (param == MTK_PIN_CONFIG_PU_ADV),
-+					    arg);
- 		break;
- 	case MTK_PIN_CONFIG_DRV_ADV:
--		if (hw->soc->adv_drive_set)
--			err = hw->soc->adv_drive_set(hw, desc, arg);
--		else
--			err = -ENOTSUPP;
-+		if (!hw->soc->adv_drive_set)
-+			break;
-+		err = hw->soc->adv_drive_set(hw, desc, arg);
- 		break;
--	default:
--		err = -ENOTSUPP;
- 	}
- 
--err:
- 	return err;
- }
+-	smmu_domain = container_of(domain, struct arm_smmu_domain, domain);
+ 	smmu = smmu_domain->smmu;
+ 	nvidia = to_nvidia_smmu(smmu);
  
 -- 
-2.43.0
+2.45.0
 
 
 
