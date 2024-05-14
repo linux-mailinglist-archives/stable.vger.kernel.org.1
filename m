@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB868C5523
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A818C529F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE9BFB22995
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 369B0B22C8E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9963C6F06A;
-	Tue, 14 May 2024 11:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F089D13FD85;
+	Tue, 14 May 2024 11:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd053gLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs2/dZDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5750A3D0D1;
-	Tue, 14 May 2024 11:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC344F1E5;
+	Tue, 14 May 2024 11:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687673; cv=none; b=OzJyqCiBycd6mBg6a1wS1LDu6ZyXhW6/mRTdjgTYnZGBKWFhtaPrDelbWT5NSjhw44txCJc5F+zZsr2HSfwS/qRClbOunA6SdS9kJBEKSJL5VCnH9Ea7VE/1w32z9IKvXcsTwwZ9lrRa/qwhPHi7p8KGFmER+lXWVSOhctsdSKk=
+	t=1715686001; cv=none; b=R+GInM6c+ULT73UoU70gewSp1DmSxsgSN9XR3b15mdUmSeOa7iIoZiXlEo3+ZnOi2NzzDx1ojfwGEswLUBhMaOeKowdpQl9le5u3ZbUp4At8YE+k6lEwnRovclkUNShEbr84VMWM1ZcMGKbfNz2QA/z/2khbsdMMBRmoEy0Tsa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687673; c=relaxed/simple;
-	bh=R5Lc/Yvk0Vy4BlAGKMl1H4e9ycacRFWxKE5tTqxCt1g=;
+	s=arc-20240116; t=1715686001; c=relaxed/simple;
+	bh=grnUAatkmRCOXuowGyPCTaAcCBQcUmdwZ32WJy2/qTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9U7g735YNOMjU3w+7iNBKcjA2OtnguW6yBlLniMUIs6UO5C88sxLcjVzfce1ZsxpjV6fvrSYUP37+zgtiko6vAUQwMG0aS4wsGzpvVLArqAxxRrJgzg/hD/gVG372iEwuQ2sU8Ob9KoU2vZT7CleJd6kSXgR/z1dA8d3FMlL2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd053gLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CF3C2BD10;
-	Tue, 14 May 2024 11:54:32 +0000 (UTC)
+	 MIME-Version; b=RcU+MWpZbSquE9gkrxT2gif3G92PlBjlnVfGSrPTbtyPbP/q2DQgqI5mjcQgpO6oUdqTt6FvdlFUeaXyYFJJYt7VfBgEXooox20Nig+aCfHfP1Fjf28ieAP7HQTiegAu0SALOVPELpozof0nmPJrZ4QGx6rzHRdXyci/5ya36IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs2/dZDN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B23C2BD10;
+	Tue, 14 May 2024 11:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687673;
-	bh=R5Lc/Yvk0Vy4BlAGKMl1H4e9ycacRFWxKE5tTqxCt1g=;
+	s=korg; t=1715686001;
+	bh=grnUAatkmRCOXuowGyPCTaAcCBQcUmdwZ32WJy2/qTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hd053gLR685mCMC8llbsSTPn/CZPMmZea8wVxbZhyLW68LrQXIQ6YHUN/dODxgYMm
-	 Eav19lSs/z6Vkjd1fs8v9eHSW7FBVg0IUJHtpbCnsHSMVy5XkAHctqD/FnFYJ6xspo
-	 XYMwPxvXw6dsQcw5cx3srE1WRFpKn4F3doktiBaE=
+	b=Xs2/dZDN97zrcmv5CCSr87Zoxh9caSKx/Kvp9zl6dSwt4GYF5nG0/leq4lNb5O2oQ
+	 4aBtPXZTkLx9Ff6f/CLoJcDZq33sarRTyFH5nC2IG6bdx/16hX/bIRA/V/X7l71tIP
+	 Y6gvldYS8gtwWq9QsYoYOaGMYqrYmZtbvHuP0lFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/168] gfs2: Fix invalid metadata access in punch_hole
-Date: Tue, 14 May 2024 12:19:23 +0200
-Message-ID: <20240514101009.152040040@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 293/301] eventfs: Do not treat events directory different than other directories
+Date: Tue, 14 May 2024 12:19:24 +0200
+Message-ID: <20240514101043.323145487@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit c95346ac918c5badf51b9a7ac58a26d3bd5bb224 ]
+commit 22e61e15af731dbe46704c775d2335e56fcef4e9 upstream.
 
-In punch_hole(), when the offset lies in the final block for a given
-height, there is no hole to punch, but the maximum size check fails to
-detect that.  Consequently, punch_hole() will try to punch a hole beyond
-the end of the metadata and fail.  Fix the maximum size check.
+Treat the events directory the same as other directories when it comes to
+permissions. The events directory was considered different because it's
+dentry is persistent, whereas the other directory dentries are created
+when accessed. But the way tracefs now does its ownership by using the
+root dentry's permissions as the default permissions, the events directory
+can get out of sync when a remount is performed setting the group and user
+permissions.
 
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the special case for the events directory on setting the
+attributes. This allows the updates caused by remount to work properly as
+well as simplifies the code.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240502200906.002923579@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/bmap.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/tracefs/event_inode.c |   16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index 0ec1eaf338338..d2011c3c33fc2 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -1704,7 +1704,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	struct buffer_head *dibh, *bh;
- 	struct gfs2_holder rd_gh;
- 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
--	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
-+	unsigned int bsize = 1 << bsize_shift;
-+	u64 lblock = (offset + bsize - 1) >> bsize_shift;
- 	__u16 start_list[GFS2_MAX_META_HEIGHT];
- 	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
- 	unsigned int start_aligned, end_aligned;
-@@ -1715,7 +1716,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	u64 prev_bnr = 0;
- 	__be64 *start, *end;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -163,21 +163,7 @@ static int eventfs_set_attr(struct mnt_i
+ 	 * determined by the parent directory.
+ 	 */
+ 	if (dentry->d_inode->i_mode & S_IFDIR) {
+-		/*
+-		 * The events directory dentry is never freed, unless its
+-		 * part of an instance that is deleted. It's attr is the
+-		 * default for its child files and directories.
+-		 * Do not update it. It's not used for its own mode or ownership.
+-		 */
+-		if (ei->is_events) {
+-			/* But it still needs to know if it was modified */
+-			if (iattr->ia_valid & ATTR_UID)
+-				ei->attr.mode |= EVENTFS_SAVE_UID;
+-			if (iattr->ia_valid & ATTR_GID)
+-				ei->attr.mode |= EVENTFS_SAVE_GID;
+-		} else {
+-			update_attr(&ei->attr, iattr);
+-		}
++		update_attr(&ei->attr, iattr);
  
--	if (offset >= maxsize) {
-+	if (offset + bsize - 1 >= maxsize) {
- 		/*
- 		 * The starting point lies beyond the allocated meta-data;
- 		 * there are no blocks do deallocate.
--- 
-2.43.0
-
+ 	} else {
+ 		name = dentry->d_name.name;
 
 
 
