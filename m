@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB558C5422
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F7D8C53C5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BDE7289378
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC02F1F2182E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61744136652;
-	Tue, 14 May 2024 11:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0D912F58B;
+	Tue, 14 May 2024 11:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5yPE6Bm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWnf9ORH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE3A136648;
-	Tue, 14 May 2024 11:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE25576028;
+	Tue, 14 May 2024 11:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686970; cv=none; b=nIIaSQSoLCIGlqgFXNIf06E3bMR9Pgk+K0mNLQhVmnWQVfHuzUbb3p+SqgRVGitYmuwjzNx63gReif5Mxz2VG96445sKvPkHTsoYA/gRdkNrLhWrb5g8ALBDfr6TMadiq7t0cqy/rX89rRgwifKgt9B+7iehfDKRhWJV5l+aGeo=
+	t=1715686751; cv=none; b=YQe7zFCslNsEdATEH2oSp8sHsnliCOYpqGnQqAG+R15HFeinRHh9TDQFtwKfTOCJOJXz+3hF1SOVH5zX9ZLKcQdxP0UTKjrekKH26zdgJNKpBwTpevlSBfIDJPUdhpRqkovJU0+N+kaqFufqPbSAKXaZo68frTXlmL4Sedl2+Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686970; c=relaxed/simple;
-	bh=IE/J9FVin4CcLoAyEONvEwPthLpn0G/hjFhibTmYpUI=;
+	s=arc-20240116; t=1715686751; c=relaxed/simple;
+	bh=Ys10ZJYmRgK9vQ/ypMm7i2iSOJAhzNd3sRy0KjLPvDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2rBS8WHZUH+Q9/ks70mcgKeswibxInVZJTiqe0i8rMniBjIVzCkh6UT2Im+zD40mrcp6I/X1pZJzBXCRW8Fz0TYQUxwTc4L6niC986M1+7PSe0Xui0KhampGl4dPzDkwbyBaIbzHq1lS4wRVIpx1wttPaDLRaWK9iTMS5ESHiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5yPE6Bm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC87C2BD10;
-	Tue, 14 May 2024 11:42:49 +0000 (UTC)
+	 MIME-Version; b=aMQ+ZEBCAP9LfDSgkH3hT77SXsx0aKkm47UVDHpgb60t86ObUxWBxNfliqGk302GmUIMz5pZWpEEM/5UVXA/A3ywJvZq9RfGIvWfNphGEqPeAvYfhJeYjwLuS8qYW+2bzp3WPRyNmb3GZkFTv/CFVRTiQUgVfw2Hv6cxCKmP2PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWnf9ORH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EAAC2BD10;
+	Tue, 14 May 2024 11:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686969;
-	bh=IE/J9FVin4CcLoAyEONvEwPthLpn0G/hjFhibTmYpUI=;
+	s=korg; t=1715686751;
+	bh=Ys10ZJYmRgK9vQ/ypMm7i2iSOJAhzNd3sRy0KjLPvDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5yPE6BmlAXw44poRlPygS+5Tzc2ZdipQfnpNzRQD+p0N0hp5ZyiedBp28Y5gyS4u
-	 MQtkhhwOacyGqg0ADaTL9lInvexfx6k2x7Dl5WSvxJQMkngMhPqkYHbp1BXOECjnaW
-	 6R9xCz60fgFkLzo1JZ+92r4+kbQB/7mK8Y9JpEsI=
+	b=dWnf9ORHMl6ENwj/GAFAQpXHFSJaS20HXF++FLOA3I8+vSGYH8PqXpUeNFaFf+JCi
+	 khd9abgVNcH+pbwwyxEiP5BaMDgJAJuxgR8aUjDVcQ+Zy4dItTGRdNRw/kOz3zDBHk
+	 d9CEp4QFARInytxK4nfHlsvqDbDbuErP9MFM21N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 20/84] s390/mm: Fix storage key clearing for guest huge pages
+Subject: [PATCH 4.19 10/63] power: rt9455: hide unused rt9455_boost_voltage_values
 Date: Tue, 14 May 2024 12:19:31 +0200
-Message-ID: <20240514100952.454929224@linuxfoundation.org>
+Message-ID: <20240514100948.403872634@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 843c3280686fc1a83d89ee1e0b5599c9f6b09d0c ]
+[ Upstream commit 452d8950db3e839aba1bb13bc5378f4bac11fa04 ]
 
-The function __storage_key_init_range() expects the end address to be
-the first byte outside the range to be initialized. I.e. end - start
-should be the size of the area to be initialized.
+The rt9455_boost_voltage_values[] array is only used when USB PHY
+support is enabled, causing a W=1 warning otherwise:
 
-The current code works because __storage_key_init_range() will still loop
-over every page in the range, but it is slower than using sske_frame().
+drivers/power/supply/rt9455_charger.c:200:18: error: 'rt9455_boost_voltage_values' defined but not used [-Werror=unused-const-variable=]
 
-Fixes: 964c2c05c9f3 ("s390/mm: Clear huge page storage keys on enable_skey")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240416114220.28489-2-imbrenda@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Enclose the definition in the same #ifdef as the references to it.
+
+Fixes: e86d69dd786e ("power_supply: Add support for Richtek RT9455 battery charger")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240403080702.3509288-10-arnd@kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/gmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/rt9455_charger.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-index 19ee8355b2a7f..5c41d1ab2a622 100644
---- a/arch/s390/mm/gmap.c
-+++ b/arch/s390/mm/gmap.c
-@@ -2610,7 +2610,7 @@ static int __s390_enable_skey_hugetlb(pte_t *pte, unsigned long addr,
- 		return 0;
+diff --git a/drivers/power/supply/rt9455_charger.c b/drivers/power/supply/rt9455_charger.c
+index cfdbde9daf94b..70722c0709936 100644
+--- a/drivers/power/supply/rt9455_charger.c
++++ b/drivers/power/supply/rt9455_charger.c
+@@ -202,6 +202,7 @@ static const int rt9455_voreg_values[] = {
+ 	4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000
+ };
  
- 	start = pmd_val(*pmd) & HPAGE_MASK;
--	end = start + HPAGE_SIZE - 1;
-+	end = start + HPAGE_SIZE;
- 	__storage_key_init_range(start, end);
- 	set_bit(PG_arch_1, &page->flags);
- 	cond_resched();
++#if IS_ENABLED(CONFIG_USB_PHY)
+ /*
+  * When the charger is in boost mode, REG02[7:2] represent boost output
+  * voltage.
+@@ -217,6 +218,7 @@ static const int rt9455_boost_voltage_values[] = {
+ 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
+ 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
+ };
++#endif
+ 
+ /* REG07[3:0] (VMREG) in uV */
+ static const int rt9455_vmreg_values[] = {
 -- 
 2.43.0
 
