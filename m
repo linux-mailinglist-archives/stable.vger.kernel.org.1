@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9913C8C54DC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB108C559B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 059C728AA45
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C99E28E0E7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ECE76057;
-	Tue, 14 May 2024 11:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FD32943F;
+	Tue, 14 May 2024 11:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03LwpFdc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSEN16RA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D007603F;
-	Tue, 14 May 2024 11:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ACFF9D4;
+	Tue, 14 May 2024 11:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687477; cv=none; b=Myd7JRFGYRLN8OfIAz75ZCGGuz6dZ6SoepD+q5G1dyGoCiQ1g1f8qcRc0ZZjzKr8jxJx0ijR3enoGu39BPCrbJljQb2ShVy6bMMDEFtv2W7gl5yasHN3p0mN18WQYxZ4tJEul/0MiZxNVvXXFJulOna4mP1t9RwZ4n3YLngFMtE=
+	t=1715687985; cv=none; b=RUG9ocCgSk7CGVGs+WxZVko5cBoDuIM9R2r6w5WDd1HSAwso94cR9XU+kJGXWYGwU/fINrFyT1UB+xytqg+t6XR177B9mZ1zMM0IEcFScJ4OOT3NXXVye4KiVRi6pOaNCiHA8h7VLH7U6S+YnJERh1vZRwGz83ZIP0NDhfzUDqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687477; c=relaxed/simple;
-	bh=8VZ4xr8O1m1o1uMAR1Ds6DwvrKzh8KJo5miCQ1p0hss=;
+	s=arc-20240116; t=1715687985; c=relaxed/simple;
+	bh=59VMYjlddIE5XZk6Xx7Aw5spS1X773IGZdB8CiwSGc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bT/ZvmfZYQXp7wOU8FOVZCBANBifLegpLNovXFn9AMdBaQyxNlAKv0fvL82MPGqgRHNgmI3hTKeRiZ/AwUOX4GtQ1wDKep/lqQr5HCjp1JQTkj9L81K8tIiYcNIoiaURnrDCb6RAxRIV8myPvkGcQgf1dhjmf+qZ6fS4kzT5dDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03LwpFdc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A76AC2BD10;
-	Tue, 14 May 2024 11:51:16 +0000 (UTC)
+	 MIME-Version; b=KXytePSFUfCesf7COlsRGQFo2fTB8HXwT1TU1SxjPbxFRscbKheJ6DKcQ3VTfRIOqYAnS7QldlZZT60XBB8lxnNdvIywpmMj85InP4F2aJ7TjzPriqMapfI/0BQhsMgI4/uQj72F4hwfKqyfX0NJ8R5F2nfLF8x0qfsiudMBpvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSEN16RA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B4AC32781;
+	Tue, 14 May 2024 11:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687476;
-	bh=8VZ4xr8O1m1o1uMAR1Ds6DwvrKzh8KJo5miCQ1p0hss=;
+	s=korg; t=1715687985;
+	bh=59VMYjlddIE5XZk6Xx7Aw5spS1X773IGZdB8CiwSGc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03LwpFdcuYBO2nXKAHUCt+9F6h1EMlwZHcWla+A6ZTBoeOecxpzTSiGLu7R/dWgbI
-	 XRUJ99rGWx/PRR9+O3Oh3Vl3w0EUvsa+JQP1ZRtTeNxYu6/z48P8Eb8iYTSPZrSv2X
-	 FtcwqXKtbECylDIgifOSSTgeZQLW5E23R9yhD01g=
+	b=ZSEN16RA1Sfedm7zu3QykCdlbJHUI9qJIq+XCy9uK4j1C7zXT9sn9fmoCvDqIX6ag
+	 8D9gVXn11UBavqk5kOlC0OgAV3LWdkeXiXdh3hRiCuAK43ZcZSY4rvswRK6dYAdgUU
+	 kfvAQxnTguf9kXbAZs4Oh+14bhZLoH13yoHYriKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 109/111] net: fix out-of-bounds access in ops_init
+	Aman Dhoot <amandhoot12@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 149/168] ALSA: hda/realtek: Fix mute led of HP Laptop 15-da3001TU
 Date: Tue, 14 May 2024 12:20:47 +0200
-Message-ID: <20240514101001.276286084@linuxfoundation.org>
+Message-ID: <20240514101012.386766394@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Aman Dhoot <amandhoot12@gmail.com>
 
-commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
+commit 2d5af3ab9e6f1cf1468b2a5221b5c1f7f46c3333 upstream.
 
-net_alloc_generic is called by net_alloc, which is called without any
-locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
-is read twice, first to allocate an array, then to set s.len, which is
-later used to limit the bounds of the array access.
+This patch simply add SND_PCI_QUIRK for HP Laptop 15-da3001TU to fixed
+mute led of laptop.
 
-It is possible that the array is allocated and another thread is
-registering a new pernet ops, increments max_gen_ptrs, which is then used
-to set s.len with a larger than allocated length for the variable array.
-
-Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
-max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
-
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Aman Dhoot <amandhoot12@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/CAMTp=B+3NG65Z684xMwHqdXDJhY+DJK-kuSw4adn6xwnG+b5JA@mail.gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/net_namespace.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -86,12 +86,15 @@ u64 __net_gen_cookie(struct net *net)
- 
- static struct net_generic *net_alloc_generic(void)
- {
-+	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
-+	unsigned int generic_size;
- 	struct net_generic *ng;
--	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
-+
-+	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
- 
- 	ng = kzalloc(generic_size, GFP_KERNEL);
- 	if (ng)
--		ng->s.len = max_gen_ptrs;
-+		ng->s.len = gen_ptrs;
- 
- 	return ng;
- }
-@@ -1241,7 +1244,11 @@ static int register_pernet_operations(st
- 		if (error < 0)
- 			return error;
- 		*ops->id = error;
--		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
-+		/* This does not require READ_ONCE as writers already hold
-+		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
-+		 * net_alloc_generic.
-+		 */
-+		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
- 	}
- 	error = __register_pernet_operations(list, ops);
- 	if (error) {
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9131,6 +9131,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x869d, "HP", ALC236_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
 
 
 
