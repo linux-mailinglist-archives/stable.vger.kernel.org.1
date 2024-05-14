@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB778C51FB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81698C5070
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2EC1C20BBD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26DA5B20C99
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E9D86134;
-	Tue, 14 May 2024 11:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC8013D535;
+	Tue, 14 May 2024 10:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VReROB4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nbAghlk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB8918026;
-	Tue, 14 May 2024 11:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691A013D514;
+	Tue, 14 May 2024 10:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685310; cv=none; b=f6lB8+351J4LBtrdA8V5ERjJeLluCduF85h3NKWABam0jSzE95iS4uSqXZbKHnFsJ6qOOVjd368J3m+ko+Hz7UHY+gUxt0L78H1WyGDjYEEkjSOK3LrbpWCxx9SUEiZeVRPzvIm60UsTvsJbkp80I+2EjeE95CPHl+2FgpeD59Q=
+	t=1715683353; cv=none; b=GFVqzjB1or4o0QxmjIyh4YO+qgZ7ZIzw/G6F2wF0zH/lgmu47Lr5KPWtsEIpJXdrJQNlkt/7DLUz/3tkj6obnjmAFCatMMPNgjSHbn0KRa4hAmD1uXmpASGpKCQ+qZDekAR/ugbOW8s7l+8ra0DQWyhgfBSgAh6qrQqplwKZKd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685310; c=relaxed/simple;
-	bh=iOV/5lnwZO2zr8zmhe61XnvlwAhpx7Ryow6kqvedYNs=;
+	s=arc-20240116; t=1715683353; c=relaxed/simple;
+	bh=q/QBK7P5CUxElN6Rev/8KP9aI+ZFHZsEM4pQoifcxM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0suFIg21g0UgCNK+q2uqBVawDs2NaN8gHdyjekIFLetPuofjuGwXSHPuBlkVMNM1QfpPPiTVqwX58QGDn8iO8jry/KXujqvBLUnudNW2n4TbANA+ajrNIVmExb7JFecqORAjRwa0fQWYKMM95dmzG9LZn1AWeTGy0opXVV3VsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VReROB4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9449C2BD10;
-	Tue, 14 May 2024 11:15:09 +0000 (UTC)
+	 MIME-Version; b=MRtA+/EG2vznrwbYk3e7l+qhA5lKgEY4Gx5Qvi8k81XLjvHlpHHcmlH4YPXhuckBIdW7OR1wohhN3wZKV7Yr9dtpJn/fBy74+Uw2g+/UCMYum1snwsOfcJl2XPPWvJHvcW+enWuzRndVWnIojXwIQTeUzdyhHNmh1yPMkpFwTe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nbAghlk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098E0C2BD10;
+	Tue, 14 May 2024 10:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685310;
-	bh=iOV/5lnwZO2zr8zmhe61XnvlwAhpx7Ryow6kqvedYNs=;
+	s=korg; t=1715683353;
+	bh=q/QBK7P5CUxElN6Rev/8KP9aI+ZFHZsEM4pQoifcxM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VReROB4pXs9TGRKSU94KN4e6zb4AKSRVTEXkjM+ESf3WWBmAR8UqWiUvLdYpgQ9x2
-	 lItn8rVJnJwlSTO7gkLlmLW2l2bByr/tVH13u++CMq0/YqVp+n6vx+dhCATFqxXGmV
-	 IaPhRHnyNNEnRWhga+6OKfB2k3EF5vbU+YA72W+8=
+	b=2nbAghlkRXwf5ND8muRElLPWymTvYCLFIiATYwUF33tEBCHwvdcoqnsHeJGt8ClCC
+	 Vym6IHJpXUbzdvINVYsFFmBsTHBRgSrCzQHzaAdrxoKsSDGWrzLyn6D3ZTiYydkSTy
+	 4PWNab3atn7Gah6kJOQ1l/FXQJPdf0mBqzjzoLPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/301] btrfs: always clear PERTRANS metadata during commit
-Date: Tue, 14 May 2024 12:16:46 +0200
-Message-ID: <20240514101037.352187463@linuxfoundation.org>
+Subject: [PATCH 6.8 203/336] Bluetooth: HCI: Fix potential null-ptr-deref
+Date: Tue, 14 May 2024 12:16:47 +0200
+Message-ID: <20240514101046.266795912@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-[ Upstream commit 6e68de0bb0ed59e0554a0c15ede7308c47351e2d ]
+[ Upstream commit d2706004a1b8b526592e823d7e52551b518a7941 ]
 
-It is possible to clear a root's IN_TRANS tag from the radix tree, but
-not clear its PERTRANS, if there is some error in between. Eliminate
-that possibility by moving the free up to where we clear the tag.
+Fix potential null-ptr-deref in hci_le_big_sync_established_evt().
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: f777d8827817 (Bluetooth: ISO: Notify user space about failed bis connections)
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 457ec7d02a9ac..0548072c642fb 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1449,6 +1449,7 @@ static noinline int commit_fs_roots(struct btrfs_trans_handle *trans)
- 			radix_tree_tag_clear(&fs_info->fs_roots_radix,
- 					(unsigned long)root->root_key.objectid,
- 					BTRFS_ROOT_TRANS_TAG);
-+			btrfs_qgroup_free_meta_all_pertrans(root);
- 			spin_unlock(&fs_info->fs_roots_radix_lock);
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 9d1063c51ed29..0f56ad33801e3 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -7181,6 +7181,8 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
+ 			u16 handle = le16_to_cpu(ev->bis[i]);
  
- 			btrfs_free_log(trans, root);
-@@ -1473,7 +1474,6 @@ static noinline int commit_fs_roots(struct btrfs_trans_handle *trans)
- 			if (ret2)
- 				return ret2;
- 			spin_lock(&fs_info->fs_roots_radix_lock);
--			btrfs_qgroup_free_meta_all_pertrans(root);
- 		}
- 	}
- 	spin_unlock(&fs_info->fs_roots_radix_lock);
+ 			bis = hci_conn_hash_lookup_handle(hdev, handle);
++			if (!bis)
++				continue;
+ 
+ 			set_bit(HCI_CONN_BIG_SYNC_FAILED, &bis->flags);
+ 			hci_connect_cfm(bis, ev->status);
 -- 
 2.43.0
 
