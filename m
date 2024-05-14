@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E471D8C52EC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC45E8C51E7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DDC91C218FF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 655AD1F227DB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADCE133402;
-	Tue, 14 May 2024 11:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF5B76036;
+	Tue, 14 May 2024 11:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Znua4nlW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MX+kQKll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA85457CBC;
-	Tue, 14 May 2024 11:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD776D1A1;
+	Tue, 14 May 2024 11:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686208; cv=none; b=lkXK56F84gqfM3cSJmw1ssaZZ6OLMwCTWYywaVXWfzuH0MhlgbjkWWiUoDDpn4z2vgiH4TXwJOrSdxE7ctnkNyc1UhM0pMPWt6DDbQAJkLwlOLO/OvCnHuvvZ3sN9njdbIWB4b9H4/N6GVGCM//YKCZ+Z2aDMba8pnF6ejJlklA=
+	t=1715685192; cv=none; b=MSy+CYo4ffbg+PwVGXS4JBL0qt/LNauiIphUARW3cefVaHbd0tO5YxhCdU5vxStnVFTnY4RTdEttqGTVEpvb1jTHXkRS74Iv4kbn7Y7NAXJlCtYAFuCoQM9XQ+tI/c2AlQ4Uz4Qd+GpWPcnUo+O5VDxJQ1eseoq6ICCIB2Haixk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686208; c=relaxed/simple;
-	bh=Mofh6irf3Nb8fXS4VFx48ggHNSti9LRzlXRzaprrXK4=;
+	s=arc-20240116; t=1715685192; c=relaxed/simple;
+	bh=z4n4L417RAsombjttlhBVVHZhX7i2r1VL80gD6ApZRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4iEQTrJsnpx3IloQ71qkB98nJxpGnTVqEEHuEP/eGd/1OE0VdVyi0z4IiEwFIdFzdUwjuhMuOjt0HHC5RbhHM7MBwyq1cWbLu+dfEkynAWO46fpmfXLo28D6vHQYCUhOcEK/EXHx9DPz7uPs25MUq1f99THZQW6mCssgo7juJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Znua4nlW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31274C2BD10;
-	Tue, 14 May 2024 11:30:08 +0000 (UTC)
+	 MIME-Version; b=FNqKYIs7z5OPVu0KVnhAQvnpZVNLyO1tTVSVCk0/dQiFlTv1CNa0+ETuX2hGD0ogHA4DIqzhfkgtjJkD0Qi0wOUFqQJ+ApqZP0KT/VtPNamlYimYgUxFzLyJggJxzpO21Cp8gvJ4ZQuCfmD8OgUxEdfOLGBhIjJvXMsNC4B3ovY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MX+kQKll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8689BC2BD10;
+	Tue, 14 May 2024 11:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686208;
-	bh=Mofh6irf3Nb8fXS4VFx48ggHNSti9LRzlXRzaprrXK4=;
+	s=korg; t=1715685192;
+	bh=z4n4L417RAsombjttlhBVVHZhX7i2r1VL80gD6ApZRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Znua4nlWeoxVTt6WcAlYTwkrGlrCcD24O4i9r5gQ3UStNpDl8c6HtlfAjoYb716uI
-	 WLHw10h/DYOA09M47ITR1bmeXm6lvremh2KK0QgLcSP8kEuZMCos/X7if5w5TreET9
-	 vUxFdJg/n6wyA+XIybmpk7bsGsdEMmDuf2oW/Qf0=
+	b=MX+kQKll9h2kIUw9CpEv+vp14L04IECdlyE6oZuVhibf9NpIDpfMuomEYrK14yaWT
+	 HthjCkXSBgxsQp3WI5rN++Nh31L/kE79DfxSmtv9qtGNKXaBMiuJYEDO1g1ywDY5vt
+	 /RS9ZT7NKo3MF5mIoFVwFSTYKtn99KRbzxizJdHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <joneslee@google.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/236] octeontx2-af: avoid off-by-one read from userspace
+Subject: [PATCH 6.6 150/301] selftests: timers: Fix valid-adjtimex signed left-shift undefined behavior
 Date: Tue, 14 May 2024 12:17:01 +0200
-Message-ID: <20240514101022.597457272@linuxfoundation.org>
+Message-ID: <20240514101037.919374350@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit f299ee709fb45036454ca11e90cb2810fe771878 ]
+[ Upstream commit 076361362122a6d8a4c45f172ced5576b2d4a50d ]
 
-We try to access count + 1 byte from userspace with memdup_user(buffer,
-count + 1). However, the userspace only provides buffer of count bytes and
-only these count bytes are verified to be okay to access. To ensure the
-copied buffer is NUL terminated, we use memdup_user_nul instead.
+The struct adjtimex freq field takes a signed value who's units are in
+shifted (<<16) parts-per-million.
 
-Fixes: 3a2eb515d136 ("octeontx2-af: Fix an off by one in rvu_dbg_qsize_write()")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-6-f1f1b53a10f4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Unfortunately for negative adjustments, the straightforward use of:
+
+  freq = ppm << 16 trips undefined behavior warnings with clang:
+
+valid-adjtimex.c:66:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+        -499<<16,
+        ~~~~^
+valid-adjtimex.c:67:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+        -450<<16,
+        ~~~~^
+..
+
+Fix it by using a multiply by (1 << 16) instead of shifting negative values
+in the valid-adjtimex test case. Align the values for better readability.
+
+Reported-by: Lee Jones <joneslee@google.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20240409202222.2830476-1-jstultz@google.com
+Link: https://lore.kernel.org/lkml/0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../testing/selftests/timers/valid-adjtimex.c | 73 +++++++++----------
+ 1 file changed, 36 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index cc5d342e026c7..a3c1d82032f55 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -999,12 +999,10 @@ static ssize_t rvu_dbg_qsize_write(struct file *filp,
- 	u16 pcifunc;
- 	int ret, lf;
- 
--	cmd_buf = memdup_user(buffer, count + 1);
-+	cmd_buf = memdup_user_nul(buffer, count);
- 	if (IS_ERR(cmd_buf))
- 		return -ENOMEM;
- 
--	cmd_buf[count] = '\0';
+diff --git a/tools/testing/selftests/timers/valid-adjtimex.c b/tools/testing/selftests/timers/valid-adjtimex.c
+index 48b9a803235a8..d13ebde203221 100644
+--- a/tools/testing/selftests/timers/valid-adjtimex.c
++++ b/tools/testing/selftests/timers/valid-adjtimex.c
+@@ -21,9 +21,6 @@
+  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  *   GNU General Public License for more details.
+  */
 -
- 	cmd_buf_tmp = strchr(cmd_buf, '\n');
- 	if (cmd_buf_tmp) {
- 		*cmd_buf_tmp = '\0';
+-
+-
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <time.h>
+@@ -62,45 +59,47 @@ int clear_time_state(void)
+ #define NUM_FREQ_OUTOFRANGE 4
+ #define NUM_FREQ_INVALID 2
+ 
++#define SHIFTED_PPM (1 << 16)
++
+ long valid_freq[NUM_FREQ_VALID] = {
+-	-499<<16,
+-	-450<<16,
+-	-400<<16,
+-	-350<<16,
+-	-300<<16,
+-	-250<<16,
+-	-200<<16,
+-	-150<<16,
+-	-100<<16,
+-	-75<<16,
+-	-50<<16,
+-	-25<<16,
+-	-10<<16,
+-	-5<<16,
+-	-1<<16,
++	 -499 * SHIFTED_PPM,
++	 -450 * SHIFTED_PPM,
++	 -400 * SHIFTED_PPM,
++	 -350 * SHIFTED_PPM,
++	 -300 * SHIFTED_PPM,
++	 -250 * SHIFTED_PPM,
++	 -200 * SHIFTED_PPM,
++	 -150 * SHIFTED_PPM,
++	 -100 * SHIFTED_PPM,
++	  -75 * SHIFTED_PPM,
++	  -50 * SHIFTED_PPM,
++	  -25 * SHIFTED_PPM,
++	  -10 * SHIFTED_PPM,
++	   -5 * SHIFTED_PPM,
++	   -1 * SHIFTED_PPM,
+ 	-1000,
+-	1<<16,
+-	5<<16,
+-	10<<16,
+-	25<<16,
+-	50<<16,
+-	75<<16,
+-	100<<16,
+-	150<<16,
+-	200<<16,
+-	250<<16,
+-	300<<16,
+-	350<<16,
+-	400<<16,
+-	450<<16,
+-	499<<16,
++	    1 * SHIFTED_PPM,
++	    5 * SHIFTED_PPM,
++	   10 * SHIFTED_PPM,
++	   25 * SHIFTED_PPM,
++	   50 * SHIFTED_PPM,
++	   75 * SHIFTED_PPM,
++	  100 * SHIFTED_PPM,
++	  150 * SHIFTED_PPM,
++	  200 * SHIFTED_PPM,
++	  250 * SHIFTED_PPM,
++	  300 * SHIFTED_PPM,
++	  350 * SHIFTED_PPM,
++	  400 * SHIFTED_PPM,
++	  450 * SHIFTED_PPM,
++	  499 * SHIFTED_PPM,
+ };
+ 
+ long outofrange_freq[NUM_FREQ_OUTOFRANGE] = {
+-	-1000<<16,
+-	-550<<16,
+-	550<<16,
+-	1000<<16,
++	-1000 * SHIFTED_PPM,
++	 -550 * SHIFTED_PPM,
++	  550 * SHIFTED_PPM,
++	 1000 * SHIFTED_PPM,
+ };
+ 
+ #define LONG_MAX (~0UL>>1)
 -- 
 2.43.0
 
