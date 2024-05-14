@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437B88C5481
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392348C5271
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF7ED289B0D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5BCB1F229E2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4FE129E7F;
-	Tue, 14 May 2024 11:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E48413D516;
+	Tue, 14 May 2024 11:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxhLGRES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDWsPdec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A941E4B0;
-	Tue, 14 May 2024 11:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E05613D50C;
+	Tue, 14 May 2024 11:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687230; cv=none; b=EUpiVyIEwCltcwLFoay7OeoYZTEb3oWdqF0wKUwGaFOBx1KHzrIDoFvQ3AFwqeX45Mo84FjdqDVWBz6VYW0FLPVKfJpFDxWOoWUZsMqz/3Mj7pJgvaewXvGbXkUUvMeYGQmM0wXiP3jn7JPFtW9f7qczaAn+hYrm47tpGhG3zVg=
+	t=1715685908; cv=none; b=RZBE4wjmv7ceBxerK/B1yztFwiK/mnABDhmxGhwuYdKeS07mVfY1Buw6apXGnr/ULd+6Q2Uavbp1g5n7caj/YjhWa/BPIWqa+72pwRw/SO9lp2KO9uOdwcpIKz+1winv2cg1+Xeldpn5MKcMKEWKON7TaPA4LQauPrhhLbcadDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687230; c=relaxed/simple;
-	bh=Nw4rTzmqyJIw3gJ2hOqZyTV4LUM3na9dLZF8FdBsmpY=;
+	s=arc-20240116; t=1715685908; c=relaxed/simple;
+	bh=vpBrGLXfYAruUlpauA8xWgNTJJ5e4Ni0K5eVsZ9hfRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8tzHjjBcYrkqLgsCS4LyezPqLbm6j7fE2Or5VXm4TKAAWwmn2w8qQt5LVQ/YWo4wfIE5V6yv58BvIup4GrkX3CFA0oDeo1DZtKOeRJkHUrEDbQBFnsLezaFdI3R6C14I/NHL4y0cZHaY8vdW8wgN3YC9MeAQ6H64MLR5CYv8zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxhLGRES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CA5C2BD10;
-	Tue, 14 May 2024 11:47:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wj/3wb7LJG2bV/EzvwN6+qffVLszmGt0R5+iKRPRlGZ5YL/MmjUiQpRW1PBoVydAJncu7xdidhb4lKpOG/skMV+h/VoIHBInPkmO7XbPoYyf6vz4xyN5BrS0WZxie56/iN5O7CAjG4aAAgRTaAbNCbmFiu89Px3PHYQl4VvC/5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDWsPdec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225DEC2BD10;
+	Tue, 14 May 2024 11:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687230;
-	bh=Nw4rTzmqyJIw3gJ2hOqZyTV4LUM3na9dLZF8FdBsmpY=;
+	s=korg; t=1715685908;
+	bh=vpBrGLXfYAruUlpauA8xWgNTJJ5e4Ni0K5eVsZ9hfRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cxhLGRESWLlsXHrFov6yeAWsSLGW2c4V6Uu3pFqgav7IcodgZLfODdxNpMeaEZm9r
-	 z0+3lGoybO3MtVklrwIfEZvFdf2K7yGwOIrk1+G3XV68PJr2DOj02tYau1vy7Ikr8g
-	 7vWlGMIwn+0OFUMg9lGB9c6EuChFDldxmmqqwOvM=
+	b=dDWsPdecAIIXLOVZvNXAzHMs/KM2sgURtTF1fTH6/UKl8LaWUxTsz0u0ZgH0pGLVW
+	 SPcnq/PfmmMA+RguaK2z02ISbemeIdkJxt+S5RJZLiPcwJY9z5ig2wKMcKlTeD2j+a
+	 SOkYEfMdZB2+97XJmGm+IY883bgi/eqB3uhYESWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/111] pinctrl: pinctrl-aspeed-g6: Fix register offset for pinconf of GPIOR-T
+	Jani Nikula <jani.nikula@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Karthikeyan Ramasubramanian <kramasub@chromium.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.6 274/301] drm/i915/bios: Fix parsing backlight BDB data
 Date: Tue, 14 May 2024 12:19:05 +0200
-Message-ID: <20240514100957.402229768@linuxfoundation.org>
+Message-ID: <20240514101042.612492377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Karthikeyan Ramasubramanian <kramasub@chromium.org>
 
-[ Upstream commit c10cd03d69403fa0f00be8631bd4cb4690440ebd ]
+commit 43b26bdd2ee5cfca80939be910d5b23a50cd7f9d upstream.
 
-The register offset to disable the internal pull-down of GPIOR~T is 0x630
-instead of 0x620, as specified in the Ast2600 datasheet v15
-The datasheet can download from the official Aspeed website.
+Starting BDB version 239, hdr_dpcd_refresh_timeout is introduced to
+backlight BDB data. Commit 700034566d68 ("drm/i915/bios: Define more BDB
+contents") updated the backlight BDB data accordingly. This broke the
+parsing of backlight BDB data in VBT for versions 236 - 238 (both
+inclusive) and hence the backlight controls are not responding on units
+with the concerned BDB version.
 
-Fixes: 15711ba6ff19 ("pinctrl: aspeed-g6: Add AST2600 pinconf support")
-Reported-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Message-ID: <20240313092809.2596644-1-billy_tsai@aspeedtech.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+backlight_control information has been present in backlight BDB data
+from at least BDB version 191 onwards, if not before. Hence this patch
+extracts the backlight_control information for BDB version 191 or newer.
+Tested on Chromebooks using Jasperlake SoC (reports bdb->version = 236).
+Tested on Chromebooks using Raptorlake SoC (reports bdb->version = 251).
+
+v2: removed checking the block size of the backlight BDB data
+    [vsyrjala: this is completely safe thanks to commit e163cfb4c96d
+     ("drm/i915/bios: Make copies of VBT data blocks")]
+
+Fixes: 700034566d68 ("drm/i915/bios: Define more BDB contents")
+Cc: stable@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240221180622.v2.1.I0690aa3e96a83a43b3fc33f50395d334b2981826@changeid
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit c286f6a973c66c0d993ecab9f7162c790e7064c8)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c | 34 +++++++++++-----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/i915/display/intel_bios.c     |   19 ++++---------------
+ drivers/gpu/drm/i915/display/intel_vbt_defs.h |    5 -----
+ 2 files changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
-index c2ba4064ce5b2..3e05444537ed1 100644
---- a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
-+++ b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
-@@ -43,7 +43,7 @@
- #define SCU614		0x614 /* Disable GPIO Internal Pull-Down #1 */
- #define SCU618		0x618 /* Disable GPIO Internal Pull-Down #2 */
- #define SCU61C		0x61c /* Disable GPIO Internal Pull-Down #3 */
--#define SCU620		0x620 /* Disable GPIO Internal Pull-Down #4 */
-+#define SCU630		0x630 /* Disable GPIO Internal Pull-Down #4 */
- #define SCU634		0x634 /* Disable GPIO Internal Pull-Down #5 */
- #define SCU638		0x638 /* Disable GPIO Internal Pull-Down #6 */
- #define SCU694		0x694 /* Multi-function Pin Control #25 */
-@@ -2471,38 +2471,38 @@ static struct aspeed_pin_config aspeed_g6_configs[] = {
- 	ASPEED_PULL_DOWN_PINCONF(D14, SCU61C, 0),
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -1035,22 +1035,11 @@ parse_lfp_backlight(struct drm_i915_priv
+ 	panel->vbt.backlight.type = INTEL_BACKLIGHT_DISPLAY_DDI;
+ 	panel->vbt.backlight.controller = 0;
+ 	if (i915->display.vbt.version >= 191) {
+-		size_t exp_size;
++		const struct lfp_backlight_control_method *method;
  
- 	/* GPIOS7 */
--	ASPEED_PULL_DOWN_PINCONF(T24, SCU620, 23),
-+	ASPEED_PULL_DOWN_PINCONF(T24, SCU630, 23),
- 	/* GPIOS6 */
--	ASPEED_PULL_DOWN_PINCONF(P23, SCU620, 22),
-+	ASPEED_PULL_DOWN_PINCONF(P23, SCU630, 22),
- 	/* GPIOS5 */
--	ASPEED_PULL_DOWN_PINCONF(P24, SCU620, 21),
-+	ASPEED_PULL_DOWN_PINCONF(P24, SCU630, 21),
- 	/* GPIOS4 */
--	ASPEED_PULL_DOWN_PINCONF(R26, SCU620, 20),
-+	ASPEED_PULL_DOWN_PINCONF(R26, SCU630, 20),
- 	/* GPIOS3*/
--	ASPEED_PULL_DOWN_PINCONF(R24, SCU620, 19),
-+	ASPEED_PULL_DOWN_PINCONF(R24, SCU630, 19),
- 	/* GPIOS2 */
--	ASPEED_PULL_DOWN_PINCONF(T26, SCU620, 18),
-+	ASPEED_PULL_DOWN_PINCONF(T26, SCU630, 18),
- 	/* GPIOS1 */
--	ASPEED_PULL_DOWN_PINCONF(T25, SCU620, 17),
-+	ASPEED_PULL_DOWN_PINCONF(T25, SCU630, 17),
- 	/* GPIOS0 */
--	ASPEED_PULL_DOWN_PINCONF(R23, SCU620, 16),
-+	ASPEED_PULL_DOWN_PINCONF(R23, SCU630, 16),
+-		if (i915->display.vbt.version >= 236)
+-			exp_size = sizeof(struct bdb_lfp_backlight_data);
+-		else if (i915->display.vbt.version >= 234)
+-			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_234;
+-		else
+-			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_191;
+-
+-		if (get_blocksize(backlight_data) >= exp_size) {
+-			const struct lfp_backlight_control_method *method;
+-
+-			method = &backlight_data->backlight_control[panel_type];
+-			panel->vbt.backlight.type = method->type;
+-			panel->vbt.backlight.controller = method->controller;
+-		}
++		method = &backlight_data->backlight_control[panel_type];
++		panel->vbt.backlight.type = method->type;
++		panel->vbt.backlight.controller = method->controller;
+ 	}
  
- 	/* GPIOR7 */
--	ASPEED_PULL_DOWN_PINCONF(U26, SCU620, 15),
-+	ASPEED_PULL_DOWN_PINCONF(U26, SCU630, 15),
- 	/* GPIOR6 */
--	ASPEED_PULL_DOWN_PINCONF(W26, SCU620, 14),
-+	ASPEED_PULL_DOWN_PINCONF(W26, SCU630, 14),
- 	/* GPIOR5 */
--	ASPEED_PULL_DOWN_PINCONF(T23, SCU620, 13),
-+	ASPEED_PULL_DOWN_PINCONF(T23, SCU630, 13),
- 	/* GPIOR4 */
--	ASPEED_PULL_DOWN_PINCONF(U25, SCU620, 12),
-+	ASPEED_PULL_DOWN_PINCONF(U25, SCU630, 12),
- 	/* GPIOR3*/
--	ASPEED_PULL_DOWN_PINCONF(V26, SCU620, 11),
-+	ASPEED_PULL_DOWN_PINCONF(V26, SCU630, 11),
- 	/* GPIOR2 */
--	ASPEED_PULL_DOWN_PINCONF(V24, SCU620, 10),
-+	ASPEED_PULL_DOWN_PINCONF(V24, SCU630, 10),
- 	/* GPIOR1 */
--	ASPEED_PULL_DOWN_PINCONF(U24, SCU620, 9),
-+	ASPEED_PULL_DOWN_PINCONF(U24, SCU630, 9),
- 	/* GPIOR0 */
--	ASPEED_PULL_DOWN_PINCONF(V25, SCU620, 8),
-+	ASPEED_PULL_DOWN_PINCONF(V25, SCU630, 8),
+ 	panel->vbt.backlight.pwm_freq_hz = entry->pwm_freq_hz;
+--- a/drivers/gpu/drm/i915/display/intel_vbt_defs.h
++++ b/drivers/gpu/drm/i915/display/intel_vbt_defs.h
+@@ -897,11 +897,6 @@ struct lfp_brightness_level {
+ 	u16 reserved;
+ } __packed;
  
- 	/* GPIOX7 */
- 	ASPEED_PULL_DOWN_PINCONF(AB10, SCU634, 31),
--- 
-2.43.0
-
+-#define EXP_BDB_LFP_BL_DATA_SIZE_REV_191 \
+-	offsetof(struct bdb_lfp_backlight_data, brightness_level)
+-#define EXP_BDB_LFP_BL_DATA_SIZE_REV_234 \
+-	offsetof(struct bdb_lfp_backlight_data, brightness_precision_bits)
+-
+ struct bdb_lfp_backlight_data {
+ 	u8 entry_size;
+ 	struct lfp_backlight_data_entry data[16];
 
 
 
