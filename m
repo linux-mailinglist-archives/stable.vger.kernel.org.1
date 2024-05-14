@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A51C8C5078
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACB78C52C4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 404B628205B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7D9D283288
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E874B13D62B;
-	Tue, 14 May 2024 10:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57B114374B;
+	Tue, 14 May 2024 11:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFVsBybT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWK4iWKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42BA13D625;
-	Tue, 14 May 2024 10:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A095143748;
+	Tue, 14 May 2024 11:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683396; cv=none; b=aKYVuB9AGuRcxcHk4pemEzHAWKx4O06KEbBmuWE7p6bDOLPjKRE92sXPFI/+w2KeHUlVuUFwQ568hqZAVs5Fqak9YpCvADQAaRZcd8UYfCXt42cjIQR/EKlBU3SvebNeKbnI6OOsPDMahQThN8UzcE3WcvOXOPnGRca8At/XIUY=
+	t=1715686099; cv=none; b=CMPvJAIDHNAUiJVaTipYHVdeAi3zHxg1byO0zueUPbHx9d0GtTet6JQ4MFPiWXLahuc6Uka/X1ej9OOzLNtuAIQAjCYneBL/nXeezRZSIYwwK4NPuwSCaFbPvVnflPV8Tg7iCANZIy+8LOBrn+RMxoT4Ywoe+kbf2nDPfPF7PCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683396; c=relaxed/simple;
-	bh=VjY/4/XLA1tA+D7CXFZpEufgBVaQbdvE7uFe2TvdlKg=;
+	s=arc-20240116; t=1715686099; c=relaxed/simple;
+	bh=c9QmwjSAJooUXDY14N8BbcLV81BAnvl4BPanWNJgJkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j49I9mjUW32q6VcS2FHLfCZmEroKghNBbCc8EK1GlKnTzULxbg1JNNZ2nrz6p4JoWsTq/beoEnlx6iM79vAIT3prC02McsYjkOfq8aNJOkhUy3N54ukMXDPbKPYsm/ssuU0bypIXb3Pc8tigG/pRCZa0EiwJSYfVDWVjLVfSbGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFVsBybT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87345C2BD10;
-	Tue, 14 May 2024 10:43:15 +0000 (UTC)
+	 MIME-Version; b=E4O1X4/2vDDPg9fXhhKzotwTHW1i5d0Eu3pIh4yAcL3MT5B2sT/vgak9LNr7tPJtuoq04aS7pk/14mjMSDWIbCjsxiBYizlYwRH2jx5J/KkDyC+ZP5xi7C2mUoeRy1F0lLNxZBwkaAQB5xuIIsG3GVfa25uhTSmRD4JSN7/JAwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWK4iWKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D330EC2BD10;
+	Tue, 14 May 2024 11:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683396;
-	bh=VjY/4/XLA1tA+D7CXFZpEufgBVaQbdvE7uFe2TvdlKg=;
+	s=korg; t=1715686099;
+	bh=c9QmwjSAJooUXDY14N8BbcLV81BAnvl4BPanWNJgJkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFVsBybTfc9c67A/GoSqM+OQzzxfsIq72sFlW2lhr+maQ840EaPbkphaKjmuQg6t/
-	 3Hg425Y6UNcEXr7okTWcF6xpYhEduP6CbRkMbto3x0hIkHKpFRNcM7CYGMj7EfkgsS
-	 pZZtASWR0oyWeAz9JL+tcImQLgO2t1CwmzGDJ7kE=
+	b=jWK4iWKKL6JB/D5NTe9JsR7AIx3a6fauVfYkRARWE4AJwhakq3bpHDBUhN6ROskZB
+	 uxz8DbP/psy6FZK7+Dt/btvkyqZiEUjjVEx+03p+Qz+ZCzqDKY4mOaO+QxaVjOId6l
+	 vWUpfTV15PG68eUHAy4301QATWGa5jEtiKSHAal0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 179/336] fs/9p: fix the cache always being enabled on files with qid flags
+Subject: [PATCH 6.1 021/236] smb3: missing lock when picking channel
 Date: Tue, 14 May 2024 12:16:23 +0200
-Message-ID: <20240514101045.362482874@linuxfoundation.org>
+Message-ID: <20240514101021.139144876@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Sindholt <opensource@zhasha.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 4e5d208cc9bd5fbc95d536fa223b4b14c37b8ca8 ]
+[ Upstream commit 8094a600245e9b28eb36a13036f202ad67c1f887 ]
 
-I'm not sure why this check was ever here. After updating to 6.6 I
-suddenly found caching had been turned on by default and neither
-cache=none nor the new directio would turn it off. After walking through
-the new code very manually I realized that it's because the caching has
-to be, in effect, turned off explicitly by setting P9L_DIRECT and
-whenever a file has a flag, in my case QTAPPEND, it doesn't get set.
+Coverity spotted a place where we should have been holding the
+channel lock when accessing the ses channel index.
 
-Setting aside QTDIR which seems to ignore the new fid->mode entirely,
-the rest of these either should be subject to the same cache rules as
-every other QTFILE or perhaps very explicitly not cached in the case of
-QTAUTH.
-
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+Addresses-Coverity: 1582039 ("Data race condition (MISSING_LOCK)")
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/fid.h | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/smb/client/transport.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/9p/fid.h b/fs/9p/fid.h
-index 29281b7c38870..0d6138bee2a3d 100644
---- a/fs/9p/fid.h
-+++ b/fs/9p/fid.h
-@@ -49,9 +49,6 @@ static inline struct p9_fid *v9fs_fid_clone(struct dentry *dentry)
- static inline void v9fs_fid_add_modes(struct p9_fid *fid, unsigned int s_flags,
- 	unsigned int s_cache, unsigned int f_flags)
- {
--	if (fid->qid.type != P9_QTFILE)
--		return;
--
- 	if ((!s_cache) ||
- 	   ((fid->qid.version == 0) && !(s_flags & V9FS_IGNORE_QV)) ||
- 	   (s_flags & V9FS_DIRECT_IO) || (f_flags & O_DIRECT)) {
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index da2bef3b7ac27..3fdafb9297f13 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1079,9 +1079,11 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
+ 		index = (uint)atomic_inc_return(&ses->chan_seq);
+ 		index %= ses->chan_count;
+ 	}
++
++	server = ses->chans[index].server;
+ 	spin_unlock(&ses->chan_lock);
+ 
+-	return ses->chans[index].server;
++	return server;
+ }
+ 
+ int
 -- 
 2.43.0
 
