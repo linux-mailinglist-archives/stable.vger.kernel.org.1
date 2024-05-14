@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9348C546C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E20D8C537B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9071F215BD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50591F230A6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B004486258;
-	Tue, 14 May 2024 11:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666174DA13;
+	Tue, 14 May 2024 11:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUbK+uAn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijgu3E/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0EA85C65;
-	Tue, 14 May 2024 11:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2374D47A57;
+	Tue, 14 May 2024 11:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687184; cv=none; b=Oo1NzvkIHIfhy/L72w4uL0OZycVeJXpJjH0iNlj+UERnVSjCbEV8qMpyFNFfdIAoW62UtahScwHBMhR3eT68iGMs98NQMoWlV8xl2WtHTf8ZN2ptOFOL3KNEU06i5HjJjTm7emf2eXlWX8l8PRAQDWVOxJFluekQzkE5zucv4Hs=
+	t=1715686556; cv=none; b=cdmZQ+ah7Zu0L4PyBRND26mOMHOxQQ5BSurnK7gk9hluoTBFwgrwVil4VfXd6ZQkuEvHbCXFynpxd03ZJlNKMz+hUOmN7aL6sHIIHU25FgaD/ArB+SPxxPatKLUUBUJuaQlPpVmb3SLIRGB1/GZxXhk0yyMaPju202GK7/P387A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687184; c=relaxed/simple;
-	bh=6RuABS4oIpkm/gIyyLXEkwzypYFPJUDUr2IWcNcqkQs=;
+	s=arc-20240116; t=1715686556; c=relaxed/simple;
+	bh=xEuGX6Al4W1VpG1Z5SKJ+VJ2SOjM3SKNilw4CaYcI6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9FiyCxtg9MbPSLM2x6ouezG+kfhUGDWnuerkpkpk6yiKWMHAAQtonW0068K77HUI1CzkWaUs3/SmVWaNohlDdk49shR1YTK2RffjNRqYh5JrkYaBokSS2W597+c/0ULGh1+WqRD6UJ67QJ+y3dbRi7Xt1S1U2Kvuw/EwA3mg5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUbK+uAn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E078BC2BD10;
-	Tue, 14 May 2024 11:46:23 +0000 (UTC)
+	 MIME-Version; b=oQ7f9HMyyGNmT7NldSWQjp3FBi5lKhQtdaBfMKqGOZuZM5EaeWArt1uMNmYRYvfry20K8Bs0CBEVTcNGhBfRxuRmxluv0UXC990JZr9xww510l9x9quFcTFzqz0vI8zwHv6c2D5q6OU9hBoiER89L9ct2Utuk8enfIR8ARLDL5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijgu3E/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BBDC2BD10;
+	Tue, 14 May 2024 11:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687184;
-	bh=6RuABS4oIpkm/gIyyLXEkwzypYFPJUDUr2IWcNcqkQs=;
+	s=korg; t=1715686555;
+	bh=xEuGX6Al4W1VpG1Z5SKJ+VJ2SOjM3SKNilw4CaYcI6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUbK+uAn1iQpdgdqZZOeg5WtYRWrcRlMO3L90QMy6n9Z/yP2y8kwuxAkaajdA0llX
-	 1gBVsqfUtDr9+OkQIvHAqbJg4keDsRfZWecP3ODpx2K4w5t8t5gB8yoBmU1VsLRDUq
-	 Jl9S8uLMsPGgGP+PaN+yHlgMiPNTn+zirCh/kFCc=
+	b=ijgu3E/PiAez8W+EwEawWp8Rdnye9SDvSJpXXR6QpANyETXnVbby8efqDP367DgIF
+	 5BLu9jglbAJMLLeSucywYQhmSBYesRwXJJ4Siw9tYZqgXDcpx9a21i1tQdfgGfaBeS
+	 yoOw15fFPv44+nE4AOHuQZ+9+X+5CM+E+SkCZZxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bumyong Lee <bumyong.lee@samsung.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 001/111] dmaengine: pl330: issue_pending waits until WFP state
+Subject: [PATCH 6.1 177/236] dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users
 Date: Tue, 14 May 2024 12:18:59 +0200
-Message-ID: <20240514100957.174837993@linuxfoundation.org>
+Message-ID: <20240514101027.081418731@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bumyong Lee <bumyong.lee@samsung.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 22a9d9585812440211b0b34a6bc02ade62314be4 ]
+[ Upstream commit cd94d1b182d2986378550c9087571991bfee01d4 ]
 
-According to DMA-330 errata notice[1] 71930, DMAKILL
-cannot clear internal signal, named pipeline_req_active.
-it makes that pl330 would wait forever in WFP state
-although dma already send dma request if pl330 gets
-dma request before entering WFP state.
+Limit the workaround introduced by commit 31729e8c21ec ("drm/amd/pm: fixes
+a random hang in S4 for SMU v13.0.4/11") to only run in the s4 path.
 
-The errata suggests that polling until entering WFP state
-as workaround and then peripherals allows to issue dma request.
-
-[1]: https://developer.arm.com/documentation/genc008428/latest
-
-Signed-off-by: Bumyong Lee <bumyong.lee@samsung.com>
-Link: https://lore.kernel.org/r/20231219055026.118695-1-bumyong.lee@samsung.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: afc89870ea67 ("dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"")
+Cc: Tim Huang <Tim.Huang@amd.com>
+Fixes: 31729e8c21ec ("drm/amd/pm: fixes a random hang in S4 for SMU v13.0.4/11")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3351
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pl330.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index 627aa9e9bc12a..c71b5c8255217 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1053,6 +1053,9 @@ static bool _trigger(struct pl330_thread *thrd)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
+index 21b374d121819..5de31961319a2 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
+@@ -222,7 +222,7 @@ static int smu_v13_0_4_system_features_control(struct smu_context *smu, bool en)
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int ret = 0;
  
- 	thrd->req_running = idx;
- 
-+	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
-+		UNTIL(thrd, PL330_STATE_WFP);
-+
- 	return true;
- }
- 
+-	if (!en && !adev->in_s0ix) {
++	if (!en && adev->in_s4) {
+ 		/* Adds a GFX reset as workaround just before sending the
+ 		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
+ 		 * an invalid state.
 -- 
 2.43.0
 
