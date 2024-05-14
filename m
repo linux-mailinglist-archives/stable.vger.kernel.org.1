@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3088C5350
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 951398C54E1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF3031C23155
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDFE31C23C85
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F9E7CF34;
-	Tue, 14 May 2024 11:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054697602F;
+	Tue, 14 May 2024 11:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/2G8+Ep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4UO2l0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8790B6D1A0;
-	Tue, 14 May 2024 11:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B836B4CB2E;
+	Tue, 14 May 2024 11:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686433; cv=none; b=cVmSFriO8eGeiXEs5uQermWnomf6ruGQy2GXNTSvMe3/dWUpx1+pLylKN/xN6fnHbnXzy/lvEYMYlcv0y5XEFywjJb8AiUBGof5I56GmqzlRRDckSLN+yvp/F6BZiB/UQgTtX+/eM8OSRgybXZ8oegBkQco7+oz97KQEV4mtKRE=
+	t=1715687508; cv=none; b=VCgmdG3UtgBK4/4wI28VKh1UE9QFV6VzRf3TNwNIpQSwg/dOmNy2uhMCHYXTHi+myBvo9K13B/VK8QIPDZIODN4hF+ZPNqfJsvbpJ8t4Rb6DClFn7yEPHQRBGNZFYgRi8CNr5dktIFQpWvbgMcZXRXpTSMt1WUiqSOvzE9N/K0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686433; c=relaxed/simple;
-	bh=NOY/PVExWXPvhqaPWw0VjQyrLU09yVu0RmJNfyUMrlU=;
+	s=arc-20240116; t=1715687508; c=relaxed/simple;
+	bh=1KqzeI2G30t67miZ7KkqF0uMSjojl+xbKcizj1AcS0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtNdKjG/dvtSRtFKLMUx6+N96nzftmgZYpppZfOYvyPK+4RwDaihrxgZF+3GW+Egvm9iw4hDCoLc8mgkv2rlPbWhP+EDHGFHFmmTj9pggAWgMY/UjUVBaRCrFxOHByqS8/iLcB7y24AKBX3XnbjYRUiMgnJxQkjw5/oZMqKiKq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/2G8+Ep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04076C2BD10;
-	Tue, 14 May 2024 11:33:52 +0000 (UTC)
+	 MIME-Version; b=iaai9wNN2LI2wyXtxUvgGmtCHwfLYTX0dWEVE4k+6mvxkeqAhwbY6DaCH/umWuTJNt+CRlX0MrKyKWkGNWYGR1U0iBJXeYKZ9oTCZh73inUst7oDzqFJk7mbVZN8LXPbCtvIcC0DAHr9BryuchmCYGgstZa0c09MU3NyITL+mqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4UO2l0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40180C2BD10;
+	Tue, 14 May 2024 11:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686433;
-	bh=NOY/PVExWXPvhqaPWw0VjQyrLU09yVu0RmJNfyUMrlU=;
+	s=korg; t=1715687508;
+	bh=1KqzeI2G30t67miZ7KkqF0uMSjojl+xbKcizj1AcS0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/2G8+EpaXAMcvUNVP9CfZGl97YFmwJyLo7mIgdUjyuBuDBeWjo62XhoYzAug5DBR
-	 96g7ZjqTNRjgIqk5SpV+DuadJ3qAFq6rEZzKddiD8DQZ3XMdI5jEPwGdUOERQn8BS2
-	 +4JcIrgaE1DqBa+GD5Z6u4jQlSctwghylrRjDZFc=
+	b=S4UO2l0HeBKRFyV+QIq12lkA0tpM0N8KllvobfQ5F2WR2p0THj2mzkCLGiQ1dtNz3
+	 Q0eseSEZUSotTydEH8v9dJFBhh1E/O9FX1ebOJn8TZeecgT5/8qW2DxM28G7tqK8VM
+	 wvayhW1S+vuk9noVatiOfRR0syB2Ljn9XLlfyxv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Bumyong Lee <bumyong.lee@samsung.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/236] clk: Dont hold prepare_lock when calling kref_put()
-Date: Tue, 14 May 2024 12:18:18 +0200
-Message-ID: <20240514101025.531978864@linuxfoundation.org>
+Subject: [PATCH 5.15 001/168] dmaengine: pl330: issue_pending waits until WFP state
+Date: Tue, 14 May 2024 12:18:19 +0200
+Message-ID: <20240514101006.738162872@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <sboyd@kernel.org>
+From: Bumyong Lee <bumyong.lee@samsung.com>
 
-[ Upstream commit 6f63af7511e7058f3fa4ad5b8102210741c9f947 ]
+[ Upstream commit 22a9d9585812440211b0b34a6bc02ade62314be4 ]
 
-We don't need to hold the prepare_lock when dropping a ref on a struct
-clk_core. The release function is only freeing memory and any code with
-a pointer reference has already unlinked anything pointing to the
-clk_core. This reduces the holding area of the prepare_lock a bit.
+According to DMA-330 errata notice[1] 71930, DMAKILL
+cannot clear internal signal, named pipeline_req_active.
+it makes that pl330 would wait forever in WFP state
+although dma already send dma request if pl330 gets
+dma request before entering WFP state.
 
-Note that we also don't call free_clk() with the prepare_lock held.
-There isn't any reason to do that.
+The errata suggests that polling until entering WFP state
+as workaround and then peripherals allows to issue dma request.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240325184204.745706-3-sboyd@kernel.org
+[1]: https://developer.arm.com/documentation/genc008428/latest
+
+Signed-off-by: Bumyong Lee <bumyong.lee@samsung.com>
+Link: https://lore.kernel.org/r/20231219055026.118695-1-bumyong.lee@samsung.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: afc89870ea67 ("dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/dma/pl330.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index fe1d45eac837c..8ecbb8f494655 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4435,7 +4435,8 @@ void clk_unregister(struct clk *clk)
- 	if (ops == &clk_nodrv_ops) {
- 		pr_err("%s: unregistered clock: %s\n", __func__,
- 		       clk->core->name);
--		goto unlock;
-+		clk_prepare_unlock();
-+		return;
- 	}
- 	/*
- 	 * Assign empty clock ops for consumers that might still hold
-@@ -4469,11 +4470,10 @@ void clk_unregister(struct clk *clk)
- 	if (clk->core->protect_count)
- 		pr_warn("%s: unregistering protected clock: %s\n",
- 					__func__, clk->core->name);
-+	clk_prepare_unlock();
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index ec8a1565630b6..ba152a0024201 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -1053,6 +1053,9 @@ static bool _trigger(struct pl330_thread *thrd)
  
- 	kref_put(&clk->core->ref, __clk_release);
- 	free_clk(clk);
--unlock:
--	clk_prepare_unlock();
- }
- EXPORT_SYMBOL_GPL(clk_unregister);
+ 	thrd->req_running = idx;
  
-@@ -4632,13 +4632,11 @@ void __clk_put(struct clk *clk)
- 	if (clk->min_rate > 0 || clk->max_rate < ULONG_MAX)
- 		clk_set_rate_range_nolock(clk, 0, ULONG_MAX);
- 
--	owner = clk->core->owner;
--	kref_put(&clk->core->ref, __clk_release);
--
- 	clk_prepare_unlock();
- 
-+	owner = clk->core->owner;
-+	kref_put(&clk->core->ref, __clk_release);
- 	module_put(owner);
--
- 	free_clk(clk);
++	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
++		UNTIL(thrd, PL330_STATE_WFP);
++
+ 	return true;
  }
  
 -- 
