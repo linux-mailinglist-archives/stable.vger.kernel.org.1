@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13408C5497
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346198C5534
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 722BF1F23577
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65F381C231A5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287D212D1FD;
-	Tue, 14 May 2024 11:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907995103D;
+	Tue, 14 May 2024 11:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LieipCb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8qQhlYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE7B12CDBF;
-	Tue, 14 May 2024 11:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE7C2B9AD;
+	Tue, 14 May 2024 11:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687296; cv=none; b=BkiN8cUk6UEeKzsYvKL5IyXQkqtZEgKGJZPI1Lx6W7ta2aU6l7+jmu/uKlSZga2wbY6TuGAdLzJp8moMMvDQwuuP+lF9I3veQjltq6AvWMCy0IrFt7fxlXEfwLBiYmmJ3hrj1LTzH+y/Agw6djcudvP52wi75EbzKYGk+mbbE2g=
+	t=1715687735; cv=none; b=MeAmCAlJlgleuoKVCaWXe3SbXhKFU1bibch5VJTjyMJHbv4eCI0BLIl0Y+z5k6E+1FQ/trq8Gptaq1qBb9UOgMYBG7qnMqDDZAQA6NKISUcG6rR6ay8H6olfo4hDkx20e8SRk/M3LVKOVjw4SaOknZTCbI4dOGGWjSKjahxigpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687296; c=relaxed/simple;
-	bh=csIFm0mQsk6y3B+XLZ2eO1q7jMdtx11CPH+OTlz9Uio=;
+	s=arc-20240116; t=1715687735; c=relaxed/simple;
+	bh=sgqj05B5GawxJfb35kz89bS7zAfC1u6mzDAfiFhAt+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvLGH5P0//XCK1Q+0Zz+HpCgX7ySa4nPU3bC0tpEFR4UADyaOoiGcGGhTNkBcA0m18K0QoduYzQeRlj6hj+DJ4mquqUyBT37s81WgYnilbyeYZGyvjdxXnDi7Zr5yZbPqjZJIdRMMbh+0fukoIgnaP7+SF7p6BfWFnXQ/F+Kemk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LieipCb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AB1C2BD10;
-	Tue, 14 May 2024 11:48:16 +0000 (UTC)
+	 MIME-Version; b=TZYdpttkNkeWkkTcS6UwN7Rbyzf1mcTyYJ+5GiBplUZfrjjy2+PdQhcAOVrVBlgZwmJMw5Sk/02dQ2EZ2hqYlMEr21dPpuLYYtXFHbuibRHCywr0ITklJxn5URSpXapfpvdyKiMyOQnco07dVDktctoWDp1TRGStbGjrq7Jw2gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8qQhlYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE990C2BD10;
+	Tue, 14 May 2024 11:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687296;
-	bh=csIFm0mQsk6y3B+XLZ2eO1q7jMdtx11CPH+OTlz9Uio=;
+	s=korg; t=1715687735;
+	bh=sgqj05B5GawxJfb35kz89bS7zAfC1u6mzDAfiFhAt+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LieipCb6TPLJk6TPHo2PeBY1vQrMJGvt+Xk1w8kY+9hj6oY5Rhkdd2upwSTnyS0zz
-	 2v9Bfz5x1WTR/zIIE/WH5w0SroNSwQ/J59oPNbzTBc1MHen+KVPWbko9fXpYD1tzUf
-	 gCVMZNO3quX0lQQjhB6KHcdvFsNrqZtmCrMhNedk=
+	b=w8qQhlYJ8Tiyx3yPGaNQszzEJ9Yvjbbslv7vWxWFXWuf7YlleaQuXq3DQ2ne9BKK7
+	 5sXVubuDUiBH3eBvpHpKDpNJcSDCi9gLg8B6BL6mCXrVgAL8u5f23/FSuAiLfcKOcA
+	 7lmJgmWRvbAm9hFo578TKzB1LCHPhOcbNxrBnRvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/111] wifi: cfg80211: fix rdev_dump_mpp() arguments order
+Subject: [PATCH 5.15 087/168] fs/9p: translate O_TRUNC into OTRUNC
 Date: Tue, 14 May 2024 12:19:45 +0200
-Message-ID: <20240514100958.921777209@linuxfoundation.org>
+Message-ID: <20240514101009.977369357@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit ec50f3114e55406a1aad24b7dfaa1c3f4336d8eb ]
+[ Upstream commit 87de39e70503e04ddb58965520b15eb9efa7eef3 ]
 
-Fix the order of arguments in the TP_ARGS macro
-for the rdev_dump_mpp tracepoint event.
+This one hits both 9P2000 and .u as it appears v9fs has never translated
+the O_TRUNC flag.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240311164519.118398-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/9p/vfs_inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 6e218a0acd4e3..edc824c103e83 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -968,7 +968,7 @@ TRACE_EVENT(rdev_get_mpp,
- TRACE_EVENT(rdev_dump_mpp,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
- 		 u8 *dst, u8 *mpp),
--	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
-+	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		NETDEV_ENTRY
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 75907f77f9e38..ef103ef392ee3 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -178,6 +178,9 @@ int v9fs_uflags2omode(int uflags, int extended)
+ 		break;
+ 	}
+ 
++	if (uflags & O_TRUNC)
++		ret |= P9_OTRUNC;
++
+ 	if (extended) {
+ 		if (uflags & O_EXCL)
+ 			ret |= P9_OEXCL;
 -- 
 2.43.0
 
