@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6C68C54D7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2790B8C5599
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12052B22DE3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6AC21F22B18
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E1148CCC;
-	Tue, 14 May 2024 11:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6603B1D54D;
+	Tue, 14 May 2024 11:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRwTydB6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iIp5y6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EF94594C;
-	Tue, 14 May 2024 11:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B79F9D4;
+	Tue, 14 May 2024 11:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687479; cv=none; b=jbSulSjpUQyJKzW8dD0Z12kcQf0aRC7v9T94fDjMOiZ74wXjUlJd0gmttTHjcisaMVdpRBapUU9awmqb6BLTpPD9/PuBTi0me+aykBJJT0KG45y3e4sZQQqQmupeuid/OlkOGPWJYPZ5vu588AJOjcGmYjh3pNwnBPAgHN0bQBY=
+	t=1715687988; cv=none; b=hGpV7LNavWFKwP3DMCwms26rq9JAY2MD46ukIrx5d4wwEp5Ln0/hznUS/o0P3hu5sfx/liVZQsE3/JcGXSyu5CYYzSTXJe40eA5dGIwQN7Y09V8QFDNcfinDbsRyHsYvIxCmgYW7Y0FfHubGdcq9flLlGyxb7fpYfVRfpVZvdGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687479; c=relaxed/simple;
-	bh=owlWFrzGyOVGbkb3H/hhg2v0wSAxV7IWygCPJ1lyFWQ=;
+	s=arc-20240116; t=1715687988; c=relaxed/simple;
+	bh=tkrRzYzQd3Ql2P95dYHzhssonUR1wIY2UahfcRQsHNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJmbZG+/Le0lMoBOefutBrMpBshSr240ig35tZ4KYfhcB/PKNukozrnPHkJL9WCA4CMyLsvw2Io5Joxkmc8Zsz+bvlXvjBMWMmhIlukzAW6tvq1AtWLO3O7hGjW6GdhJSf2DiOwbkvf5KNNkqpVTbUs++Hs3JkecMGcj4yyWm+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRwTydB6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1DBC32781;
-	Tue, 14 May 2024 11:51:19 +0000 (UTC)
+	 MIME-Version; b=tBlNSeQQ98KdFPa0gPw2oswcdzQjxOrDNfuFZ1cNSLWomM01izRJK85Lr3HFCbjxNW0k873g58/C39vwB4AKsJOR2BLjCNG+ZOLMALr0gxXmDr1hOGw1zM+aZ60utHFD3quP89K57o3fXugoXlGDPmNYlcRvXxebo+Eptb9Bwi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iIp5y6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2173C2BD10;
+	Tue, 14 May 2024 11:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687479;
-	bh=owlWFrzGyOVGbkb3H/hhg2v0wSAxV7IWygCPJ1lyFWQ=;
+	s=korg; t=1715687988;
+	bh=tkrRzYzQd3Ql2P95dYHzhssonUR1wIY2UahfcRQsHNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SRwTydB6bSPYLJsuH0F4WD2pndg5L4ryMyzPUaz+r7wm94spPOxj/YJ/pQHROM5Wt
-	 ErMejyDIJJ7VAIM/hdjkEOfCmMKKW5yF+XWC1+pOnXSjy22gZTTkeQZd/kJSOQJiJr
-	 TZoHWIPilnN+VrqJsGdUh6oiP/I4ZBubs/WSOaDA=
+	b=1iIp5y6ZHhdZ/7ast+pS6GshkCXt3a6enqO0JzCWZscochIY070jyN+gXH4ar3AHK
+	 njo5TjHKFKPHffahufT9FUh9hlysvOWEWjbRn0LFlIWdHi+tgiXkpdM5CjCdCHoYjq
+	 lLqAINK2rXPI9KvuRerYzydojKNwOffnKA3rswU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lakshmi Yadlapati <lakshmiy@us.ibm.com>,
-	Eddie James <eajames@linux.ibm.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 110/111] hwmon: (pmbus/ucd9000) Increase delay from 250 to 500us
+	Pavel Machek <pavel@denx.de>,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 150/168] btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()
 Date: Tue, 14 May 2024 12:20:48 +0200
-Message-ID: <20240514101001.313809384@linuxfoundation.org>
+Message-ID: <20240514101012.423821437@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-commit 26e8383b116d0dbe74e28f86646563ab46d66d83 upstream.
+commit 9af503d91298c3f2945e73703f0e00995be08c30 upstream.
 
-Following the failure observed with a delay of 250us, experiments were
-conducted with various delays. It was found that a delay of 350us
-effectively mitigated the issue.
+The previous patch that replaced BUG_ON by error handling forgot to
+unlock the mutex in the error path.
 
-To provide a more optimal solution while still allowing a margin for
-stability, the delay is being adjusted to 500us.
-
-Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-Link: https://lore.kernel.org/r/20240507194603.1305750-1-lakshmiy@us.ibm.com
-Fixes: 8d655e6523764 ("hwmon: (ucd90320) Add minimum delay between bus accesses")
-Reviewed-by: Eddie James <eajames@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
+Reported-by: Pavel Machek <pavel@denx.de>
+Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
+CC: stable@vger.kernel.org
+Reviewed-by: Pavel Machek <pavel@denx.de>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/ucd9000.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/volumes.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/hwmon/pmbus/ucd9000.c
-+++ b/drivers/hwmon/pmbus/ucd9000.c
-@@ -80,11 +80,11 @@ struct ucd9000_debugfs_entry {
-  * It has been observed that the UCD90320 randomly fails register access when
-  * doing another access right on the back of a register write. To mitigate this
-  * make sure that there is a minimum delay between a write access and the
-- * following access. The 250us is based on experimental data. At a delay of
-- * 200us the issue seems to go away. Add a bit of extra margin to allow for
-+ * following access. The 500 is based on experimental data. At a delay of
-+ * 350us the issue seems to go away. Add a bit of extra margin to allow for
-  * system to system differences.
-  */
--#define UCD90320_WAIT_DELAY_US 250
-+#define UCD90320_WAIT_DELAY_US 500
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3374,6 +3374,7 @@ again:
+ 			 * alignment and size).
+ 			 */
+ 			ret = -EUCLEAN;
++			mutex_unlock(&fs_info->reclaim_bgs_lock);
+ 			goto error;
+ 		}
  
- static inline void ucd90320_wait(const struct ucd9000_data *data)
- {
 
 
 
