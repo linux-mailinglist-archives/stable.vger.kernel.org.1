@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18268C51CD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356A48C503C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A5991F22532
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEF8F1F21586
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81FE13C699;
-	Tue, 14 May 2024 11:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068CB13AA20;
+	Tue, 14 May 2024 10:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKWftMyJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi8GDNMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4AB2B9AD;
-	Tue, 14 May 2024 11:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B789513A412;
+	Tue, 14 May 2024 10:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685064; cv=none; b=YkExA+xHeieu5zzVOLt0MI+T8zACEDE3Hvm3oezc/4hKCwHL9JBcUd1kxaJPxZ4nqoJrT5GGAfWlp0nQzdaGdB5u60G+k0Zd4mvufqDbIyYVNTcArCRlV2vKo7/E9iXqON6pybebPIsfCaGAOaxy1h+vweTO56c7RdEmO4ds1QE=
+	t=1715683100; cv=none; b=PI1Gr+U3yxJ4iIo+xRIfEU7ErBJt9OCYv3gIXXE9sokGDvMyzpNATXMfRgLf0s1ZiTv/KCdq5sLybIRdonyVwsxo9CGfnC2SWhe6abFT15fLWFfAsVmSVo1FL5HMAL2+g5vhVzVufsqAQxXe9Z17llM5FNL4PzB3VKqojQWAW98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685064; c=relaxed/simple;
-	bh=vpdBpMtfK/5Dnz1aBsYCYLoz1QBUsh2zzSLGgJSAfNM=;
+	s=arc-20240116; t=1715683100; c=relaxed/simple;
+	bh=Mf9Zqvi5+nQSjP765QSZzLtzrSwqxDT8euR042qBz2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNXR0fOCvz+A+Y562/KYvrFhqUjo+zw52slbx+bdI8aFesvVR899o4Syg90JD6JsXUc5IDM3OAkx6jPKTgNeziASM4MhPUFVpkYJrMYPX8B5VUbnBDDk5WXhEBCwYKaoEY97071VStx8Eq8OI9QfW/gilrp2/gDVVtJl8Hg/Nik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKWftMyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3FCC2BD10;
-	Tue, 14 May 2024 11:11:03 +0000 (UTC)
+	 MIME-Version; b=LGIHSSXQM1T2aM8pf2B8OyvnsiwJkEUMbRMxxSvYERQW8Ssy4cpXJWFZP3t87EucbXeld8PzCSINTMtKKXicyWj6Gtyjj+2ot5C4yrOtWop7grtOf3n8gpPUC1zE5f7s5RJgYYz/ZUNHdaLeWES3/zZS/LC2mwpcAq2uihZHSVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi8GDNMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E9BC2BD10;
+	Tue, 14 May 2024 10:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685064;
-	bh=vpdBpMtfK/5Dnz1aBsYCYLoz1QBUsh2zzSLGgJSAfNM=;
+	s=korg; t=1715683100;
+	bh=Mf9Zqvi5+nQSjP765QSZzLtzrSwqxDT8euR042qBz2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKWftMyJMN+OnFDnDXOarezDb9xh4oyldKyNZgo91iwXLcEegqnboe34XNJAdcylZ
-	 Wrl7s/fbuXd2Ht/8lVYTWxFMPfM4XrZEZUg02ZMQNl6xj4NWQ2+ZhY2+Nu5iYQOm3q
-	 7kVrkEg3TpF8ClFpwnmqerUdRtlsF++t6t98THrs=
+	b=pi8GDNMF+G9MiitGRyeQb05tUslp5PERwsLY7UL7qDFqxQgLXZINN5fdxMWxbYXiq
+	 JU/Am2808vR+RPwZswKkGkSpbEdozbT7IONdiE0FLMjPis0gDj5aDOXx0UfvN0WHxs
+	 +Frbzd9ivKPERspcPXW1cdr/kXMiG4oBX+zm15VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Zhigang Luo <Zhigang.Luo@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/301] scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
+Subject: [PATCH 6.8 166/336] amd/amdkfd: sync all devices to wait all processes being evicted
 Date: Tue, 14 May 2024 12:16:10 +0200
-Message-ID: <20240514101035.989436732@linuxfoundation.org>
+Message-ID: <20240514101044.871240121@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Zhigang Luo <Zhigang.Luo@amd.com>
 
-[ Upstream commit bb011631435c705cdeddca68d5c85fd40a4320f9 ]
+[ Upstream commit d06af584be5a769d124b7302b32a033e9559761d ]
 
-Typically when an out of resource CQE status is detected, the
-lpfc_ramp_down_queue_handler() logic is called to help reduce I/O load by
-reducing an sdev's queue_depth.
+If there are more than one device doing reset in parallel, the first
+device will call kfd_suspend_all_processes() to evict all processes
+on all devices, this call takes time to finish. other device will
+start reset and recover without waiting. if the process has not been
+evicted before doing recover, it will be restored, then caused page
+fault.
 
-However, the current lpfc_rampdown_queue_depth() logic does not help reduce
-queue_depth.  num_cmd_success is never updated and is always zero, which
-means new_queue_depth will always be set to sdev->queue_depth.  So,
-new_queue_depth = sdev->queue_depth - new_queue_depth always sets
-new_queue_depth to zero.  And, scsi_change_queue_depth(sdev, 0) is
-essentially a no-op.
-
-Change the lpfc_ramp_down_queue_handler() logic to set new_queue_depth
-equal to sdev->queue_depth subtracted from number of times num_rsrc_err was
-incremented.  If num_rsrc_err is >= sdev->queue_depth, then set
-new_queue_depth equal to 1.  Eventually, the frequency of Good_Status
-frames will signal SCSI upper layer to auto increase the queue_depth back
-to the driver default of 64 via scsi_handle_queue_ramp_up().
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240305200503.57317-5-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc.h      |  1 -
- drivers/scsi/lpfc/lpfc_scsi.c | 13 ++++---------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index 04d608ea91060..be016732ab2ea 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -1325,7 +1325,6 @@ struct lpfc_hba {
- 	struct timer_list fabric_block_timer;
- 	unsigned long bit_flags;
- 	atomic_t num_rsrc_err;
--	atomic_t num_cmd_success;
- 	unsigned long last_rsrc_error_time;
- 	unsigned long last_ramp_down_time;
- #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index bf879d81846b6..cf506556f3b0b 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -167,11 +167,10 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
- 	struct Scsi_Host  *shost;
- 	struct scsi_device *sdev;
- 	unsigned long new_queue_depth;
--	unsigned long num_rsrc_err, num_cmd_success;
-+	unsigned long num_rsrc_err;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 0a9cf9dfc2243..fcf6558d019e5 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -944,7 +944,6 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
+ {
+ 	struct kfd_node *node;
  	int i;
+-	int count;
  
- 	num_rsrc_err = atomic_read(&phba->num_rsrc_err);
--	num_cmd_success = atomic_read(&phba->num_cmd_success);
+ 	if (!kfd->init_complete)
+ 		return;
+@@ -952,12 +951,10 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
+ 	/* for runtime suspend, skip locking kfd */
+ 	if (!run_pm) {
+ 		mutex_lock(&kfd_processes_mutex);
+-		count = ++kfd_locked;
+-		mutex_unlock(&kfd_processes_mutex);
+-
+ 		/* For first KFD device suspend all the KFD processes */
+-		if (count == 1)
++		if (++kfd_locked == 1)
+ 			kfd_suspend_all_processes();
++		mutex_unlock(&kfd_processes_mutex);
+ 	}
  
- 	/*
- 	 * The error and success command counters are global per
-@@ -186,20 +185,16 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
- 		for (i = 0; i <= phba->max_vports && vports[i] != NULL; i++) {
- 			shost = lpfc_shost_from_vport(vports[i]);
- 			shost_for_each_device(sdev, shost) {
--				new_queue_depth =
--					sdev->queue_depth * num_rsrc_err /
--					(num_rsrc_err + num_cmd_success);
--				if (!new_queue_depth)
--					new_queue_depth = sdev->queue_depth - 1;
-+				if (num_rsrc_err >= sdev->queue_depth)
-+					new_queue_depth = 1;
- 				else
- 					new_queue_depth = sdev->queue_depth -
--								new_queue_depth;
-+						num_rsrc_err;
- 				scsi_change_queue_depth(sdev, new_queue_depth);
- 			}
- 		}
- 	lpfc_destroy_vport_work_array(phba, vports);
- 	atomic_set(&phba->num_rsrc_err, 0);
--	atomic_set(&phba->num_cmd_success, 0);
- }
+ 	for (i = 0; i < kfd->num_nodes; i++) {
+@@ -968,7 +965,7 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
  
- /**
+ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
+ {
+-	int ret, count, i;
++	int ret, i;
+ 
+ 	if (!kfd->init_complete)
+ 		return 0;
+@@ -982,12 +979,10 @@ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
+ 	/* for runtime resume, skip unlocking kfd */
+ 	if (!run_pm) {
+ 		mutex_lock(&kfd_processes_mutex);
+-		count = --kfd_locked;
+-		mutex_unlock(&kfd_processes_mutex);
+-
+-		WARN_ONCE(count < 0, "KFD suspend / resume ref. error");
+-		if (count == 0)
++		if (--kfd_locked == 0)
+ 			ret = kfd_resume_all_processes();
++		WARN_ONCE(kfd_locked < 0, "KFD suspend / resume ref. error");
++		mutex_unlock(&kfd_processes_mutex);
+ 	}
+ 
+ 	return ret;
 -- 
 2.43.0
 
