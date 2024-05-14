@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B358C53BD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02888C5494
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EE6128864A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 715441F234D0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80C812EBE8;
-	Tue, 14 May 2024 11:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC1C12CD8A;
+	Tue, 14 May 2024 11:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9Zn3Hte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJdyuizu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C7812E1DA;
-	Tue, 14 May 2024 11:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5C612C54A;
+	Tue, 14 May 2024 11:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686734; cv=none; b=PrB0n9Kl4BvMLm/RnSTlpBZ/SJs+Jr7xlfkiC9XrRwFTuCHq0h+rEda4etIGbVpXoSwWLgI8RQumbzaXlkgHcNykLYQkwcSN/ilPj1KFvqTkf3lhT39BD16q/ngulpt6ibuivRffJVPLwF3STFf9nIRRVGu4Clr9Ps96BLd1YbI=
+	t=1715687288; cv=none; b=hD4tvYKiVNL7auNXyC+InMjAiIGRRBBM8e8XU0X2DeqUarqxq3xtxveET7rZ6YC+CJGpHZRmxJipmvud/ZO+P6wZmpTwOy7ajJO0jkfZUANhEFJkHpwsRBorRBG4ZUYyVnvIvTL/6q7PDxhN58bXTDnYTe9C020CEvKH3O80uyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686734; c=relaxed/simple;
-	bh=AI6C4XACa46aMitUWRusQ7aVS15SmNokgEzUEBV21Uw=;
+	s=arc-20240116; t=1715687288; c=relaxed/simple;
+	bh=wkh7XVJ+4wxZeLas6Gp+tPAt9z1bjFl1Oe8u9IsGE2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPNO2dohMIk1dNxIAKT1vA/vCOn3V2d3B/5QL9K1z2yz18B4M5yqlDN5WKNIumYm2dT8baAXb20DZghTargV0qnFd2bzjUF9yea+xaZfn0ECq6wxZtNhc4quUBTVUdfm52ehOLmtwf6RPgvd2oBtylssGOSzijaDDhUkSUZpYUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9Zn3Hte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6CAC2BD10;
-	Tue, 14 May 2024 11:38:53 +0000 (UTC)
+	 MIME-Version; b=h+99zOdDBadXJphjFlTrY34XSPZlfnIXxo4ZE12G+MN3Q533vwBStfTDvgehrO7yD4C4K8WXncG1ooAJpjTi8bMN7CJLEI2xPtxa5sp+Kjt40yi1WXqH571pc9Eii9N3gKcKh3dpWuyIHtM/IpxN3JZXZoQ3D8uO7fe8apbgTwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJdyuizu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C3FC2BD10;
+	Tue, 14 May 2024 11:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686734;
-	bh=AI6C4XACa46aMitUWRusQ7aVS15SmNokgEzUEBV21Uw=;
+	s=korg; t=1715687288;
+	bh=wkh7XVJ+4wxZeLas6Gp+tPAt9z1bjFl1Oe8u9IsGE2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9Zn3HteTVKQs7ni4pgvJh/EUZL+z+49qyO/CwikTEjmaDO7+891nBpxcZj2MaLak
-	 OJfCkId6Fk2H+kZKwRbbYGE9yzFqUjvYZ8ORfaOgGH56J7YphGtlkabMFaA1Fp84Wn
-	 cJ/DKfTl3b3oX6ZBGuMpEUwoCJxEkm3bAlM+zfMM=
+	b=uJdyuizuiFsfE+NBUEo8eX+zeOK0FxUZId0/ZWalOvZsz4NEZtASCA7/cVFELR5jW
+	 wA2ioSpqN7g/g6WXAe2uxOAszqPALLJg+s2kRLrALlI83Hh9hQxSSdRNVoelUh2RaT
+	 yIslgsrxNmULh71xYMsCn7yw8FQ9kl1w1TtbvjAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 220/236] drm/amdkfd: dont allow mapping the MMIO HDP page with large pages
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 044/111] scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
 Date: Tue, 14 May 2024 12:19:42 +0200
-Message-ID: <20240514101028.708058293@linuxfoundation.org>
+Message-ID: <20240514100958.809000740@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit be4a2a81b6b90d1a47eaeaace4cc8e2cb57b96c7 upstream.
+[ Upstream commit bb011631435c705cdeddca68d5c85fd40a4320f9 ]
 
-We don't get the right offset in that case.  The GPU has
-an unused 4K area of the register BAR space into which you can
-remap registers.  We remap the HDP flush registers into this
-space to allow userspace (CPU or GPU) to flush the HDP when it
-updates VRAM.  However, on systems with >4K pages, we end up
-exposing PAGE_SIZE of MMIO space.
+Typically when an out of resource CQE status is detected, the
+lpfc_ramp_down_queue_handler() logic is called to help reduce I/O load by
+reducing an sdev's queue_depth.
 
-Fixes: d8e408a82704 ("drm/amdkfd: Expose HDP registers to user space")
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the current lpfc_rampdown_queue_depth() logic does not help reduce
+queue_depth.  num_cmd_success is never updated and is always zero, which
+means new_queue_depth will always be set to sdev->queue_depth.  So,
+new_queue_depth = sdev->queue_depth - new_queue_depth always sets
+new_queue_depth to zero.  And, scsi_change_queue_depth(sdev, 0) is
+essentially a no-op.
+
+Change the lpfc_ramp_down_queue_handler() logic to set new_queue_depth
+equal to sdev->queue_depth subtracted from number of times num_rsrc_err was
+incremented.  If num_rsrc_err is >= sdev->queue_depth, then set
+new_queue_depth equal to 1.  Eventually, the frequency of Good_Status
+frames will signal SCSI upper layer to auto increase the queue_depth back
+to the driver default of 64 via scsi_handle_queue_ramp_up().
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240305200503.57317-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc.h      |  1 -
+ drivers/scsi/lpfc/lpfc_scsi.c | 13 ++++---------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1106,7 +1106,7 @@ static int kfd_ioctl_alloc_memory_of_gpu
- 			goto err_unlock;
- 		}
- 		offset = dev->adev->rmmio_remap.bus_addr;
--		if (!offset) {
-+		if (!offset || (PAGE_SIZE > 4096)) {
- 			err = -ENOMEM;
- 			goto err_unlock;
- 		}
-@@ -2215,7 +2215,7 @@ static int criu_restore_memory_of_gpu(st
- 			return -EINVAL;
- 		}
- 		offset = pdd->dev->adev->rmmio_remap.bus_addr;
--		if (!offset) {
-+		if (!offset || (PAGE_SIZE > 4096)) {
- 			pr_err("amdgpu_amdkfd_get_mmio_remap_phys_addr failed\n");
- 			return -ENOMEM;
- 		}
-@@ -2886,6 +2886,9 @@ static int kfd_mmio_mmap(struct kfd_dev
- 	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
- 		return -EINVAL;
+diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
+index cf69f831a7253..8f1b5b0ee8cd8 100644
+--- a/drivers/scsi/lpfc/lpfc.h
++++ b/drivers/scsi/lpfc/lpfc.h
+@@ -1065,7 +1065,6 @@ struct lpfc_hba {
+ 	unsigned long bit_flags;
+ #define	FABRIC_COMANDS_BLOCKED	0
+ 	atomic_t num_rsrc_err;
+-	atomic_t num_cmd_success;
+ 	unsigned long last_rsrc_error_time;
+ 	unsigned long last_ramp_down_time;
+ #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index b4b87e5d8b291..2121534838747 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -246,11 +246,10 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
+ 	struct Scsi_Host  *shost;
+ 	struct scsi_device *sdev;
+ 	unsigned long new_queue_depth;
+-	unsigned long num_rsrc_err, num_cmd_success;
++	unsigned long num_rsrc_err;
+ 	int i;
  
-+	if (PAGE_SIZE > 4096)
-+		return -EINVAL;
-+
- 	address = dev->adev->rmmio_remap.bus_addr;
+ 	num_rsrc_err = atomic_read(&phba->num_rsrc_err);
+-	num_cmd_success = atomic_read(&phba->num_cmd_success);
  
- 	vma->vm_flags |= VM_IO | VM_DONTCOPY | VM_DONTEXPAND | VM_NORESERVE |
+ 	/*
+ 	 * The error and success command counters are global per
+@@ -265,20 +264,16 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
+ 		for (i = 0; i <= phba->max_vports && vports[i] != NULL; i++) {
+ 			shost = lpfc_shost_from_vport(vports[i]);
+ 			shost_for_each_device(sdev, shost) {
+-				new_queue_depth =
+-					sdev->queue_depth * num_rsrc_err /
+-					(num_rsrc_err + num_cmd_success);
+-				if (!new_queue_depth)
+-					new_queue_depth = sdev->queue_depth - 1;
++				if (num_rsrc_err >= sdev->queue_depth)
++					new_queue_depth = 1;
+ 				else
+ 					new_queue_depth = sdev->queue_depth -
+-								new_queue_depth;
++						num_rsrc_err;
+ 				scsi_change_queue_depth(sdev, new_queue_depth);
+ 			}
+ 		}
+ 	lpfc_destroy_vport_work_array(phba, vports);
+ 	atomic_set(&phba->num_rsrc_err, 0);
+-	atomic_set(&phba->num_cmd_success, 0);
+ }
+ 
+ /**
+-- 
+2.43.0
+
 
 
 
