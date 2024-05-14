@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22888C5479
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACAE8C554A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCA3E287841
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52BB428CF57
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BBF12B177;
-	Tue, 14 May 2024 11:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3448B13FD83;
+	Tue, 14 May 2024 11:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qb3s9A1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4Va3GR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071CC12AAC6;
-	Tue, 14 May 2024 11:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76B35028C;
+	Tue, 14 May 2024 11:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686622; cv=none; b=QW2MaB4vy04+TwOwzF0swzMRQxoFh8v1sZat2RxqUpirEb9f6qteGKjj879mncKi5O367F1HqfctTpKEyMtVeryrBpiaDiRfw2MOb2AUaSKsfxrP/FbC6WeQkAs6lbT/thlOe3cJsWFyBM2qK2uu4YIqXX+nLiHvxUuw0l5SUJg=
+	t=1715685997; cv=none; b=E+8hc/0cPC1HBcY4T/4u6MxCcD39ramHubvTYC4RMr5dBb6meHkgbatunHwzAsIxyTpmigHuPq6HNPKig13U264j0Qb5TCgDxg+1Q1lSWdVVOOwbhzyLk1B8tgm4PWlc1rbwUuBoigsa2m9RKs8jA4ezxqL3TMt3MWFpT0U0wCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686622; c=relaxed/simple;
-	bh=DXsKGd6gOe3SgDYdjhcaliY4Ai7uuqKL3a+uZM68mKQ=;
+	s=arc-20240116; t=1715685997; c=relaxed/simple;
+	bh=6epk6uQ1/B02hZMjBiS3ieyBIYhZo/BqRBDd2TY/+Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0dYLaYdNGqJs+4h3ukCSUk9d9UIOEHgG9LfvcSdZAibIF9GJnN+Ezo4H653D8m6W7R0X2OsSiBOs97gZCLoKc2rW/x2OptXZEGDT4wu83gng0gQXo0f1l505/OL0JoTq/8fbGMztRS2AcsjJfIHLGkpF87k83HFAm8a2VpAefg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qb3s9A1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FEFC2BD10;
-	Tue, 14 May 2024 11:37:01 +0000 (UTC)
+	 MIME-Version; b=bbqhVQO3OL99hpOtWTQe/634yFe44nZmoFNQ2LhZNsXQ6Z8j89XvILORwU9Qtdu0SvUhMm9apiqQ5un4/gIGo2q9EOqVF4qJz5ko/s6JVfivtpQRMrYbchKcFvgSV+H0gAjJX3kvEaUiwa7A9rAuj/h+iUso0GSSksABPqZDYpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4Va3GR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA43FC2BD10;
+	Tue, 14 May 2024 11:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686621;
-	bh=DXsKGd6gOe3SgDYdjhcaliY4Ai7uuqKL3a+uZM68mKQ=;
+	s=korg; t=1715685996;
+	bh=6epk6uQ1/B02hZMjBiS3ieyBIYhZo/BqRBDd2TY/+Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qb3s9A1jtySZOno5ylqwe10JtAKuaoG7DHOoT0TNujX0Sc8wgVtSbRNupc4qAyr53
-	 1eDVfhMgCPZFEumeXIvapp+4WNo6SOduZniRyRjjdKNEUtfY9ACa2AuAGd8x76WUYm
-	 e9EfCBj0CRq0aGzjm8CcKNudEB5momMXcaHnoCGU=
+	b=b4Va3GR9lYXdqdHLRLY9+LpS093bqESWRDmG5QiL43JwxZJ7DruCa1B0nCfnwjUSm
+	 Mqmk2JMEfkxjC2/XtDrOBLzAG7Y+D4xULgqOkxNmN+LCiTdlbsgH7ZRCgi2tKBUyBb
+	 mkihVo+wfTKjqVabE8FnmoJ4YyZ+QaiDO1hqzfQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 201/236] usb: typec: tcpm: unregister existing source caps before re-registration
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 292/301] eventfs: Do not differentiate the toplevel events directory
 Date: Tue, 14 May 2024 12:19:23 +0200
-Message-ID: <20240514101027.995680714@linuxfoundation.org>
+Message-ID: <20240514101043.285854666@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +64,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 230ecdf71a644c9c73e0e6735b33173074ae3f94 upstream.
+commit d53891d348ac3eceaf48f4732a1f4f5c0e0a55ce upstream.
 
-Check and unregister existing source caps in tcpm_register_source_caps
-function before registering new ones. This change fixes following
-warning when port partner resends source caps after negotiating PD contract
-for the purpose of re-negotiation.
+The toplevel events directory is really no different than the events
+directory of instances. Having the two be different caused
+inconsistencies and made it harder to fix the permissions bugs.
 
-[  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
-[  343.135071][  T151] Call trace:
-[  343.135076][  T151]  dump_backtrace+0xe8/0x108
-[  343.135099][  T151]  show_stack+0x18/0x24
-[  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
-[  343.135119][  T151]  dump_stack+0x18/0x24
-[  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
-[  343.135137][  T151]  kobject_add_internal+0x228/0x424
-[  343.135146][  T151]  kobject_add+0x94/0x10c
-[  343.135152][  T151]  device_add+0x1b0/0x4c0
-[  343.135187][  T151]  device_register+0x20/0x34
-[  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
-[  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
-[  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
-[  343.135227][  T151]  kthread+0x114/0x1bc
-[  343.135235][  T151]  ret_from_fork+0x10/0x20
-[  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
+Make all events directories act the same.
 
-Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
-Cc: linux-usb@vger.kernel.org
+Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.846448710@goodmis.org
+
 Cc: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240424223227.1807844-1-amitsd@google.com
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   29 ++++++++---------------------
+ fs/tracefs/internal.h    |    7 +++----
+ 2 files changed, 11 insertions(+), 25 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2416,7 +2416,7 @@ static int tcpm_register_sink_caps(struc
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -57,7 +57,6 @@ enum {
+ 	EVENTFS_SAVE_MODE	= BIT(16),
+ 	EVENTFS_SAVE_UID	= BIT(17),
+ 	EVENTFS_SAVE_GID	= BIT(18),
+-	EVENTFS_TOPLEVEL	= BIT(19),
+ };
+ 
+ #define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
+@@ -196,14 +195,10 @@ static int eventfs_set_attr(struct mnt_i
+ 	return ret;
+ }
+ 
+-static void update_top_events_attr(struct eventfs_inode *ei, struct super_block *sb)
++static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
  {
- 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
- 	struct usb_power_delivery_capabilities_desc caps = { };
--	struct usb_power_delivery_capabilities *cap;
-+	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
+ 	struct inode *root;
  
- 	if (!port->partner_pd)
- 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
-@@ -2426,6 +2426,9 @@ static int tcpm_register_sink_caps(struc
- 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
- 	caps.role = TYPEC_SINK;
+-	/* Only update if the "events" was on the top level */
+-	if (!ei || !(ei->attr.mode & EVENTFS_TOPLEVEL))
+-		return;
+-
+ 	/* Get the tracefs root inode. */
+ 	root = d_inode(sb->s_root);
+ 	ei->attr.uid = root->i_uid;
+@@ -216,10 +211,10 @@ static void set_top_events_ownership(str
+ 	struct eventfs_inode *ei = ti->private;
  
-+	if (cap)
-+		usb_power_delivery_unregister_capabilities(cap);
-+
- 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
- 	if (IS_ERR(cap))
- 		return PTR_ERR(cap);
+ 	/* The top events directory doesn't get automatically updated */
+-	if (!ei || !ei->is_events || !(ei->attr.mode & EVENTFS_TOPLEVEL))
++	if (!ei || !ei->is_events)
+ 		return;
+ 
+-	update_top_events_attr(ei, inode->i_sb);
++	update_events_attr(ei, inode->i_sb);
+ 
+ 	if (!(ei->attr.mode & EVENTFS_SAVE_UID))
+ 		inode->i_uid = ei->attr.uid;
+@@ -248,7 +243,7 @@ static int eventfs_permission(struct mnt
+ 	return generic_permission(idmap, inode, mask);
+ }
+ 
+-static const struct inode_operations eventfs_root_dir_inode_operations = {
++static const struct inode_operations eventfs_dir_inode_operations = {
+ 	.lookup		= eventfs_root_lookup,
+ 	.setattr	= eventfs_set_attr,
+ 	.getattr	= eventfs_get_attr,
+@@ -316,7 +311,7 @@ static struct eventfs_inode *eventfs_fin
+ 		// Walk upwards until you find the events inode
+ 	} while (!ei->is_events);
+ 
+-	update_top_events_attr(ei, dentry->d_sb);
++	update_events_attr(ei, dentry->d_sb);
+ 
+ 	return ei;
+ }
+@@ -420,7 +415,7 @@ static struct dentry *lookup_dir_entry(s
+ 	update_inode_attr(dentry, inode, &ei->attr,
+ 			  S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
+ 
+-	inode->i_op = &eventfs_root_dir_inode_operations;
++	inode->i_op = &eventfs_dir_inode_operations;
+ 	inode->i_fop = &eventfs_file_operations;
+ 
+ 	/* All directories will have the same inode number */
+@@ -769,14 +764,6 @@ struct eventfs_inode *eventfs_create_eve
+ 	uid = d_inode(dentry->d_parent)->i_uid;
+ 	gid = d_inode(dentry->d_parent)->i_gid;
+ 
+-	/*
+-	 * If the events directory is of the top instance, then parent
+-	 * is NULL. Set the attr.mode to reflect this and its permissions will
+-	 * default to the tracefs root dentry.
+-	 */
+-	if (!parent)
+-		ei->attr.mode = EVENTFS_TOPLEVEL;
+-
+ 	/* This is used as the default ownership of the files and directories */
+ 	ei->attr.uid = uid;
+ 	ei->attr.gid = gid;
+@@ -785,13 +772,13 @@ struct eventfs_inode *eventfs_create_eve
+ 	INIT_LIST_HEAD(&ei->list);
+ 
+ 	ti = get_tracefs(inode);
+-	ti->flags |= TRACEFS_EVENT_INODE | TRACEFS_EVENT_TOP_INODE;
++	ti->flags |= TRACEFS_EVENT_INODE;
+ 	ti->private = ei;
+ 
+ 	inode->i_mode = S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
+ 	inode->i_uid = uid;
+ 	inode->i_gid = gid;
+-	inode->i_op = &eventfs_root_dir_inode_operations;
++	inode->i_op = &eventfs_dir_inode_operations;
+ 	inode->i_fop = &eventfs_file_operations;
+ 
+ 	dentry->d_fsdata = get_ei(ei);
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -4,10 +4,9 @@
+ 
+ enum {
+ 	TRACEFS_EVENT_INODE		= BIT(1),
+-	TRACEFS_EVENT_TOP_INODE		= BIT(2),
+-	TRACEFS_GID_PERM_SET		= BIT(3),
+-	TRACEFS_UID_PERM_SET		= BIT(4),
+-	TRACEFS_INSTANCE_INODE		= BIT(5),
++	TRACEFS_GID_PERM_SET		= BIT(2),
++	TRACEFS_UID_PERM_SET		= BIT(3),
++	TRACEFS_INSTANCE_INODE		= BIT(4),
+ };
+ 
+ struct tracefs_inode {
 
 
 
