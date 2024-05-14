@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453C18C514C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719F18C4FDB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A380DB21537
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857371F214F6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F0712FF8B;
-	Tue, 14 May 2024 10:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69380130496;
+	Tue, 14 May 2024 10:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ju3iP7wu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM5c6iw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62887320F;
-	Tue, 14 May 2024 10:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A8657CA1;
+	Tue, 14 May 2024 10:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684287; cv=none; b=jS2MzyBnNufeFUaNM5n42zH7zFj12xU9OdVxcojaHcTryVIV3HToi9bckIhZq2wXv/yWRLon4iDO9UHghFlmqUw656IXDouJ0oPwD+OxLIGn5DVVKoLdTIW685GrNjIrie1LV+70E2pZioXi/Rk/skujTpj6aQcTKIZpXyv5zys=
+	t=1715682584; cv=none; b=J+znr/iHAd9p0n/lQVNebk74SgMoi81WaDIgtce/EwnsmEaphT+LhfmKHy1lnal/FtRaZaN9RhDsvXMicFHY/2Ln0MMxjGG1R28il942Y5QiJk3oldvV9TtiVm23rLYJgkCT5En4qJsMcM/VHj3MA8Jgvh5LJjZcQv8bzBFIB50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684287; c=relaxed/simple;
-	bh=VME6MHIhZBTI6q1AV2sw7xPvWbZGx5Hnax3UY+jmfL4=;
+	s=arc-20240116; t=1715682584; c=relaxed/simple;
+	bh=ctDR2JlXjd93Gy5wH6AZvKzRK12xQbeDPoiaB6SRTbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PV0znzJ7C3pgnXmENvQ/zHEZPOxt2fwA/bBdWl/BDB15/p5VB+69mNNGsBXhhtL5z0MgqpOSoFqjqWwkRvqojpnw/FKJetvuc0GKw71zm0yvq/XwYDDMClTqzy8F4ntTw789BjZFDP15b0CMuCXd2+GxDNGoNeB6iSIrBBF1kSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ju3iP7wu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89BAC2BD10;
-	Tue, 14 May 2024 10:58:06 +0000 (UTC)
+	 MIME-Version; b=oUM8tOtVrGyfqKrgPwjYkhvAtza/bF8HNpxLp8AUYmsWYHJWYzuhXBRk55aAsAOk/Zeecx3sBOHjRYdjPE2h3t2SfAEA6sE3PClfjUKior98JJyn8c8rHdx9f580mLqgwDm5EexefwGyvqKav1dyt3c/oeRe5LQe6YwFgFfd7ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM5c6iw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029E0C2BD10;
+	Tue, 14 May 2024 10:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684287;
-	bh=VME6MHIhZBTI6q1AV2sw7xPvWbZGx5Hnax3UY+jmfL4=;
+	s=korg; t=1715682584;
+	bh=ctDR2JlXjd93Gy5wH6AZvKzRK12xQbeDPoiaB6SRTbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ju3iP7wuRAr/r3SDCR26QMTlXdGXF3l/pHz1iHoNaqFzIgUH4mwstpuYyY9+L9TJj
-	 6MTgWd38BiFC1KDn36E8O+OsUPCbEUkzMrDOGvb5zbl9SzNh7eSoamuiUYqn9QxsXA
-	 tGee4nbvp01JUSXJmp8YMJ/lRRxv56aWdWoif2M0=
+	b=MM5c6iw6tFnMnwDxu8yV1op6MyeDJ9GLKlzazDdDFVyLyMOVKrraHAyvUyb1owU6w
+	 D1ajgsE7YgVvDg5Osu7z4t0wf4CxfSNhYwoqfZy00t7nA87NM5ZGqYpEwNk/2ihLH2
+	 oKWI8RCKTkirey4k5Ijmx7l6DtwyF9rudUi968o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/301] nfs: make the rpc_stat per net namespace
+Subject: [PATCH 6.8 086/336] drm/xe/display: Fix ADL-N detection
 Date: Tue, 14 May 2024 12:14:50 +0200
-Message-ID: <20240514101032.969735102@linuxfoundation.org>
+Message-ID: <20240514101041.854251215@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 1548036ef1204df65ca5a16e8b199c858cb80075 ]
+[ Upstream commit df04b152fca2d46e75fbb74ed79299bc420bc9e6 ]
 
-Now that we're exposing the rpc stats on a per-network namespace basis,
-move this struct into struct nfs_net and use that to make sure only the
-per-network namespace stats are exposed.
+Contrary to i915, in xe ADL-N is kept as a different platform, not a
+subplatform of ADL-P. Since the display side doesn't need to
+differentiate between P and N, i.e. IS_ALDERLAKE_P_N() is never called,
+just fixup the compat header to check for both P and N.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
+Moving ADL-N to be a subplatform would be more complex as the firmware
+loading in xe only handles platforms, not subplatforms, as going forward
+the direction is to check on IP version rather than
+platforms/subplatforms.
+
+Fix warning when initializing display:
+
+	xe 0000:00:02.0: [drm:intel_pch_type [xe]] Found Alder Lake PCH
+	------------[ cut here ]------------
+	xe 0000:00:02.0: drm_WARN_ON(!((dev_priv)->info.platform == XE_ALDERLAKE_S) && !((dev_priv)->info.platform == XE_ALDERLAKE_P))
+
+And wrong paths being taken on the display side.
+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425181610.2704633-1-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 6a2a90cba12b42eb96c2af3426b77ceb4be31df2)
+Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c   | 5 ++++-
- fs/nfs/inode.c    | 4 +++-
- fs/nfs/internal.h | 2 --
- fs/nfs/netns.h    | 2 ++
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 44eca51b28085..4d9249c99989f 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -73,7 +73,6 @@ const struct rpc_program nfs_program = {
- 	.number			= NFS_PROGRAM,
- 	.nrvers			= ARRAY_SIZE(nfs_version),
- 	.version		= nfs_version,
--	.stats			= &nfs_rpcstat,
- 	.pipe_dir_name		= NFS_PIPE_DIRNAME,
- };
- 
-@@ -502,6 +501,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 			  const struct nfs_client_initdata *cl_init,
- 			  rpc_authflavor_t flavor)
- {
-+	struct nfs_net		*nn = net_generic(clp->cl_net, nfs_net_id);
- 	struct rpc_clnt		*clnt = NULL;
- 	struct rpc_create_args args = {
- 		.net		= clp->cl_net,
-@@ -513,6 +513,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 		.servername	= clp->cl_hostname,
- 		.nodename	= cl_init->nodename,
- 		.program	= &nfs_program,
-+		.stats		= &nn->rpcstats,
- 		.version	= clp->rpc_ops->version,
- 		.authflavor	= flavor,
- 		.cred		= cl_init->cred,
-@@ -1175,6 +1176,8 @@ void nfs_clients_init(struct net *net)
- #endif
- 	spin_lock_init(&nn->nfs_client_lock);
- 	nn->boot_time = ktime_get_real();
-+	memset(&nn->rpcstats, 0, sizeof(nn->rpcstats));
-+	nn->rpcstats.program = &nfs_program;
- 
- 	nfs_netns_sysfs_setup(nn, net);
- }
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index d7d937597001d..e26d892ff4f2d 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2426,8 +2426,10 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
- 
- static int nfs_net_init(struct net *net)
- {
-+	struct nfs_net *nn = net_generic(net, nfs_net_id);
-+
- 	nfs_clients_init(net);
--	rpc_proc_register(net, &nfs_rpcstat);
-+	rpc_proc_register(net, &nn->rpcstats);
- 	return nfs_fs_proc_net_init(net);
- }
- 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index b1fa81c9dff6f..c91bce41931fb 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -449,8 +449,6 @@ int nfs_try_get_tree(struct fs_context *);
- int nfs_get_tree_common(struct fs_context *);
- void nfs_kill_super(struct super_block *);
- 
--extern struct rpc_stat nfs_rpcstat;
--
- extern int __init register_nfs_fs(void);
- extern void __exit unregister_nfs_fs(void);
- extern bool nfs_sb_active(struct super_block *sb);
-diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
-index c8374f74dce11..a68b21603ea9a 100644
---- a/fs/nfs/netns.h
-+++ b/fs/nfs/netns.h
-@@ -9,6 +9,7 @@
- #include <linux/nfs4.h>
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
-+#include <linux/sunrpc/stats.h>
- 
- struct bl_dev_msg {
- 	int32_t status;
-@@ -34,6 +35,7 @@ struct nfs_net {
- 	struct nfs_netns_client *nfs_client;
- 	spinlock_t nfs_client_lock;
- 	ktime_t boot_time;
-+	struct rpc_stat rpcstats;
- #ifdef CONFIG_PROC_FS
- 	struct proc_dir_entry *proc_nfsfs;
- #endif
+diff --git a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
+index 5d2a77b52db41..d9a81e6a4b85a 100644
+--- a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
++++ b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
+@@ -84,7 +84,8 @@ static inline struct drm_i915_private *kdev_to_i915(struct device *kdev)
+ #define IS_ROCKETLAKE(dev_priv)	IS_PLATFORM(dev_priv, XE_ROCKETLAKE)
+ #define IS_DG1(dev_priv)        IS_PLATFORM(dev_priv, XE_DG1)
+ #define IS_ALDERLAKE_S(dev_priv) IS_PLATFORM(dev_priv, XE_ALDERLAKE_S)
+-#define IS_ALDERLAKE_P(dev_priv) IS_PLATFORM(dev_priv, XE_ALDERLAKE_P)
++#define IS_ALDERLAKE_P(dev_priv) (IS_PLATFORM(dev_priv, XE_ALDERLAKE_P) || \
++				  IS_PLATFORM(dev_priv, XE_ALDERLAKE_N))
+ #define IS_XEHPSDV(dev_priv) (dev_priv && 0)
+ #define IS_DG2(dev_priv)	IS_PLATFORM(dev_priv, XE_DG2)
+ #define IS_PONTEVECCHIO(dev_priv) IS_PLATFORM(dev_priv, XE_PVC)
 -- 
 2.43.0
 
