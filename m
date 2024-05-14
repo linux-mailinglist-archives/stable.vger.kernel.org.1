@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453CC8C5530
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9348C546C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 766651C23046
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9071F215BD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EA347A79;
-	Tue, 14 May 2024 11:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B004486258;
+	Tue, 14 May 2024 11:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY8RY7V9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUbK+uAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872D22B9AD;
-	Tue, 14 May 2024 11:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0EA85C65;
+	Tue, 14 May 2024 11:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687719; cv=none; b=slCnB8A0vFCtxlnAqTZTEy3qptIcZkQ8gIfuypmKf6gDkaTncxv6hgl2YlGDhaHSa0v2kmgTpi5QGyYsLeMmC/BB6a9CATctr7YE5M5GJ41aApCsNaapI41Zj7gJKIqlhhMhbQPNqbaDqpSaPgJQxshzbZUrmCUnjWg718w92iM=
+	t=1715687184; cv=none; b=Oo1NzvkIHIfhy/L72w4uL0OZycVeJXpJjH0iNlj+UERnVSjCbEV8qMpyFNFfdIAoW62UtahScwHBMhR3eT68iGMs98NQMoWlV8xl2WtHTf8ZN2ptOFOL3KNEU06i5HjJjTm7emf2eXlWX8l8PRAQDWVOxJFluekQzkE5zucv4Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687719; c=relaxed/simple;
-	bh=/w90sZYYV6jP5QbXfUU/PXFgvDklHQFeG92Wu/Js8RM=;
+	s=arc-20240116; t=1715687184; c=relaxed/simple;
+	bh=6RuABS4oIpkm/gIyyLXEkwzypYFPJUDUr2IWcNcqkQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IStKQ7Nb3DTIWtpm0QmsiHOty8PKG3rqvXWFLxX43+PM1q6kdIdj+HAhFLbHSaVukfYqLl9/eoyBP6oNyw9b5YwcRCc7CoQB/En/Ly2lHWpbP/Ct4D9rRFAdV7iOBULB1VEaUTNqkY+nsS0KMQrGuCsjfDRpbKGbukOQJCRCnTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY8RY7V9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1080AC2BD10;
-	Tue, 14 May 2024 11:55:18 +0000 (UTC)
+	 MIME-Version; b=E9FiyCxtg9MbPSLM2x6ouezG+kfhUGDWnuerkpkpk6yiKWMHAAQtonW0068K77HUI1CzkWaUs3/SmVWaNohlDdk49shR1YTK2RffjNRqYh5JrkYaBokSS2W597+c/0ULGh1+WqRD6UJ67QJ+y3dbRi7Xt1S1U2Kvuw/EwA3mg5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUbK+uAn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E078BC2BD10;
+	Tue, 14 May 2024 11:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687719;
-	bh=/w90sZYYV6jP5QbXfUU/PXFgvDklHQFeG92Wu/Js8RM=;
+	s=korg; t=1715687184;
+	bh=6RuABS4oIpkm/gIyyLXEkwzypYFPJUDUr2IWcNcqkQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zY8RY7V9ePiHMYdVafVz5o5e2q0uW4kEl1KcEVc5XShjs9ahIIzVRLEIEcsG+R6/d
-	 vxfASt1faCwfQ9a+Ay1399aJYo5PgTVE+S08zVq0aLc3hJQcGrDzoqL5BXdQqod6bn
-	 KivtmM2bhr6V7oEWprBf51sh0L5AmnBFKgl2I5Yw=
+	b=VUbK+uAn1iQpdgdqZZOeg5WtYRWrcRlMO3L90QMy6n9Z/yP2y8kwuxAkaajdA0llX
+	 1gBVsqfUtDr9+OkQIvHAqbJg4keDsRfZWecP3ODpx2K4w5t8t5gB8yoBmU1VsLRDUq
+	 Jl9S8uLMsPGgGP+PaN+yHlgMiPNTn+zirCh/kFCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Bumyong Lee <bumyong.lee@samsung.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/168] net: qede: use return from qede_parse_flow_attr() for flow_spec
-Date: Tue, 14 May 2024 12:18:58 +0200
-Message-ID: <20240514101008.204474267@linuxfoundation.org>
+Subject: [PATCH 5.10 001/111] dmaengine: pl330: issue_pending waits until WFP state
+Date: Tue, 14 May 2024 12:18:59 +0200
+Message-ID: <20240514100957.174837993@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: Bumyong Lee <bumyong.lee@samsung.com>
 
-[ Upstream commit 27b44414a34b108c5a37cd5b4894f606061d86e7 ]
+[ Upstream commit 22a9d9585812440211b0b34a6bc02ade62314be4 ]
 
-In qede_flow_spec_to_rule(), when calling
-qede_parse_flow_attr() then the return code
-was only used for a non-zero check, and then
--EINVAL was returned.
+According to DMA-330 errata notice[1] 71930, DMAKILL
+cannot clear internal signal, named pipeline_req_active.
+it makes that pl330 would wait forever in WFP state
+although dma already send dma request if pl330 gets
+dma request before entering WFP state.
 
-qede_parse_flow_attr() can currently fail with:
-* -EINVAL
-* -EOPNOTSUPP
-* -EPROTONOSUPPORT
+The errata suggests that polling until entering WFP state
+as workaround and then peripherals allows to issue dma request.
 
-This patch changes the code to use the actual
-return code, not just return -EINVAL.
+[1]: https://developer.arm.com/documentation/genc008428/latest
 
-The blaimed commit introduced qede_flow_spec_to_rule(),
-and this call to qede_parse_flow_attr(), it looks
-like it just duplicated how it was already used.
-
-Only compile tested.
-
-Fixes: 37c5d3efd7f8 ("qede: use ethtool_rx_flow_rule() to remove duplicated parser code")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Bumyong Lee <bumyong.lee@samsung.com>
+Link: https://lore.kernel.org/r/20231219055026.118695-1-bumyong.lee@samsung.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: afc89870ea67 ("dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_filter.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/dma/pl330.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-index aedb98713bbf2..aeff091cdfaee 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-@@ -2002,10 +2002,9 @@ static int qede_flow_spec_to_rule(struct qede_dev *edev,
- 	if (IS_ERR(flow))
- 		return PTR_ERR(flow);
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 627aa9e9bc12a..c71b5c8255217 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -1053,6 +1053,9 @@ static bool _trigger(struct pl330_thread *thrd)
  
--	if (qede_parse_flow_attr(edev, proto, flow->rule, t)) {
--		err = -EINVAL;
-+	err = qede_parse_flow_attr(edev, proto, flow->rule, t);
-+	if (err)
- 		goto err_out;
--	}
+ 	thrd->req_running = idx;
  
- 	/* Make sure location is valid and filter isn't already set */
- 	err = qede_flow_spec_validate(edev, &flow->rule->action, t,
++	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
++		UNTIL(thrd, PL330_STATE_WFP);
++
+ 	return true;
+ }
+ 
 -- 
 2.43.0
 
