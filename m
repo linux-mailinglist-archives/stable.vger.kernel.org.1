@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2FD8C4FEE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4538C5162
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 327621F21AC0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3CF1C21059
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4819745014;
-	Tue, 14 May 2024 10:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7F113666F;
+	Tue, 14 May 2024 10:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiQurkGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkRJGAIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048AE22EF3;
-	Tue, 14 May 2024 10:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471F3134CDC;
+	Tue, 14 May 2024 10:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682709; cv=none; b=ZfLuhOatSXDraaqAcwp/3Oce61P/5lNHQo9AWFuD9/otb06xvvFFVI9zqT+ANmVYSjE9pk5374gSwRYiqRczC2FeR6vi6GEIGBpuAtKZHEHzfGJkcJQ4aJBY/EQs1xlNXbn8afpNUjm7lXQmBopulwl5s2YSXxJ63pjP3CgxNLw=
+	t=1715684390; cv=none; b=RyV6el3LXXaFLPeIgtqEZpzxj5IYGbisXsloWQ3K16frB6YvN/lUdkkWXKHDOogFCfyTqNBaQ4ixA8Ci140Iuu0rWcy+Stk0u4w29dTbwArxBlhWfTL3cvkJMHqWymNWBCUZH+ca++J50Pi/9DPdaoOf7i+yDG/suuBnJeWPExE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682709; c=relaxed/simple;
-	bh=48atUdwAU2O1CiIlVS41X3/PbPiApiJ5Ou3eZZNBAyE=;
+	s=arc-20240116; t=1715684390; c=relaxed/simple;
+	bh=B2StPBzfm1m5MflrdBucE8x3TnMA5bsNbucPBE1KTAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+14xozS9mJZLDWwJdug7o2X/daKSyz5FFUUex7mlgSoC59NF92xH1BAIy44bfcxwDasm/u+d+710XVtxTxRlrH76eNITxmhCVsmrWbY4OZq3/D4dcAdIp/eoyrzWdVKGyUInYI8VZ+HccM5Z9zCfrkyClMjNHrfqj/T+KVJNDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiQurkGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1920C2BD10;
-	Tue, 14 May 2024 10:31:47 +0000 (UTC)
+	 MIME-Version; b=Z8FPU30Pdd4Faz/unPvRTZq2hWbyLDJge/UG8WoOc5RD2yPWPNZzmfmZBem9/PaDNis87+XfzkACo4RMkFSJ8nhT1PUfJYMo5jvFsEkh6GDJq6ohRgsRL+s4vWRbw/PpBkghAjuHrFhTNKISYPTmTqPV57D7hMsU1s0IBjgfIp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkRJGAIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409C4C2BD10;
+	Tue, 14 May 2024 10:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682708;
-	bh=48atUdwAU2O1CiIlVS41X3/PbPiApiJ5Ou3eZZNBAyE=;
+	s=korg; t=1715684389;
+	bh=B2StPBzfm1m5MflrdBucE8x3TnMA5bsNbucPBE1KTAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iiQurkGv+7j/7ez/dw2IwYfnn+FaPchFHeANDw4HyOM1MjyChYz5i7/clAj7wDNuu
-	 yXMvIUwC/AEIwk6xtEwcsxNIpkYcKrgSHbFaeurqLUElqrcwLqtfiXrT9pShm6aUE7
-	 d9Y2HFYJ8paKq7rdWNPUzOQqcAmStFkLR1S5E0I0=
+	b=TkRJGAIT/JbRA40I03O0cvuf9J2YG8bPizy2AaG892JaH/VPQTU2NoNTuzAvMQ/s1
+	 E+Gf76In7xTiz8uodhTRCEeczKJxEheJBgGKXb1KR5ratJn3k+29KzP2/IP5nRCeW4
+	 LAJn9CELPAK3uw2izDGcEEatn3GNCG5nMwn37EKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Li Zetao <lizetao1@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 102/336] scsi: lpfc: Use a dedicated lock for ras_fwlog state
+Subject: [PATCH 6.6 035/301] spi: spi-axi-spi-engine: Use helper function devm_clk_get_enabled()
 Date: Tue, 14 May 2024 12:15:06 +0200
-Message-ID: <20240514101042.457268073@linuxfoundation.org>
+Message-ID: <20240514101033.571965146@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,239 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Li Zetao <lizetao1@huawei.com>
 
-[ Upstream commit f733a76ea0a9a84aee4ac41b81fad4d610ecbd8e ]
+[ Upstream commit a08199b309f833fd4221ab5ee2391c791fe26385 ]
 
-To reduce usage of and contention for hbalock, a separate dedicated lock is
-used to protect ras_fwlog state.
+Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
+and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
+replaced by devm_clk_get_enabled() when driver enables (and possibly
+prepares) the clocks for the whole lifetime of the device. Moreover, it is
+no longer necessary to unprepare and disable the clocks explicitly.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240305200503.57317-8-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+Link: https://lore.kernel.org/r/20230823133938.1359106-6-lizetao1@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc.h         |  1 +
- drivers/scsi/lpfc/lpfc_attr.c    |  4 ++--
- drivers/scsi/lpfc/lpfc_bsg.c     | 20 ++++++++++----------
- drivers/scsi/lpfc/lpfc_debugfs.c | 12 ++++++------
- drivers/scsi/lpfc/lpfc_init.c    |  3 +++
- drivers/scsi/lpfc/lpfc_sli.c     | 20 ++++++++++----------
- 6 files changed, 32 insertions(+), 28 deletions(-)
+ drivers/spi/spi-axi-spi-engine.c | 25 +++++--------------------
+ 1 file changed, 5 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index be016732ab2ea..9670cb2bf198e 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -1429,6 +1429,7 @@ struct lpfc_hba {
- 	struct timer_list inactive_vmid_poll;
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 0258c9a72fdcc..b96e55f59d1a9 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -485,30 +485,22 @@ static int spi_engine_probe(struct platform_device *pdev)
  
- 	/* RAS Support */
-+	spinlock_t ras_fwlog_lock; /* do not take while holding another lock */
- 	struct lpfc_ras_fwlog ras_fwlog;
+ 	spin_lock_init(&spi_engine->lock);
  
- 	uint32_t iocb_cnt;
-diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_attr.c
-index d3a5d6ecdf7d2..6f97a04171c44 100644
---- a/drivers/scsi/lpfc/lpfc_attr.c
-+++ b/drivers/scsi/lpfc/lpfc_attr.c
-@@ -5864,9 +5864,9 @@ lpfc_ras_fwlog_buffsize_set(struct lpfc_hba  *phba, uint val)
- 	if (phba->cfg_ras_fwlog_func != PCI_FUNC(phba->pcidev->devfn))
- 		return -EINVAL;
- 
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	state = phba->ras_fwlog.state;
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 	if (state == REG_INPROGRESS) {
- 		lpfc_printf_log(phba, KERN_ERR, LOG_SLI, "6147 RAS Logging "
-diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
-index 2919579fa0846..c305d16cfae9a 100644
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -5070,12 +5070,12 @@ lpfc_bsg_get_ras_config(struct bsg_job *job)
- 		bsg_reply->reply_data.vendor_reply.vendor_rsp;
- 
- 	/* Current logging state */
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	if (ras_fwlog->state == ACTIVE)
- 		ras_reply->state = LPFC_RASLOG_STATE_RUNNING;
- 	else
- 		ras_reply->state = LPFC_RASLOG_STATE_STOPPED;
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 	ras_reply->log_level = phba->ras_fwlog.fw_loglevel;
- 	ras_reply->log_buff_sz = phba->cfg_ras_fwlog_buffsize;
-@@ -5132,13 +5132,13 @@ lpfc_bsg_set_ras_config(struct bsg_job *job)
- 
- 	if (action == LPFC_RASACTION_STOP_LOGGING) {
- 		/* Check if already disabled */
--		spin_lock_irq(&phba->hbalock);
-+		spin_lock_irq(&phba->ras_fwlog_lock);
- 		if (ras_fwlog->state != ACTIVE) {
--			spin_unlock_irq(&phba->hbalock);
-+			spin_unlock_irq(&phba->ras_fwlog_lock);
- 			rc = -ESRCH;
- 			goto ras_job_error;
- 		}
--		spin_unlock_irq(&phba->hbalock);
-+		spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 		/* Disable logging */
- 		lpfc_ras_stop_fwlog(phba);
-@@ -5149,10 +5149,10 @@ lpfc_bsg_set_ras_config(struct bsg_job *job)
- 		 * FW-logging with new log-level. Return status
- 		 * "Logging already Running" to caller.
- 		 **/
--		spin_lock_irq(&phba->hbalock);
-+		spin_lock_irq(&phba->ras_fwlog_lock);
- 		if (ras_fwlog->state != INACTIVE)
- 			action_status = -EINPROGRESS;
--		spin_unlock_irq(&phba->hbalock);
-+		spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 		/* Enable logging */
- 		rc = lpfc_sli4_ras_fwlog_init(phba, log_level,
-@@ -5268,13 +5268,13 @@ lpfc_bsg_get_ras_fwlog(struct bsg_job *job)
- 		goto ras_job_error;
- 
- 	/* Logging to be stopped before reading */
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	if (ras_fwlog->state == ACTIVE) {
--		spin_unlock_irq(&phba->hbalock);
-+		spin_unlock_irq(&phba->ras_fwlog_lock);
- 		rc = -EINPROGRESS;
- 		goto ras_job_error;
- 	}
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 	if (job->request_len <
- 	    sizeof(struct fc_bsg_request) +
-diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
-index ea9b42225e629..20662b4f339eb 100644
---- a/drivers/scsi/lpfc/lpfc_debugfs.c
-+++ b/drivers/scsi/lpfc/lpfc_debugfs.c
-@@ -2196,12 +2196,12 @@ static int lpfc_debugfs_ras_log_data(struct lpfc_hba *phba,
- 
- 	memset(buffer, 0, size);
- 
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	if (phba->ras_fwlog.state != ACTIVE) {
--		spin_unlock_irq(&phba->hbalock);
-+		spin_unlock_irq(&phba->ras_fwlog_lock);
- 		return -EINVAL;
- 	}
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 	list_for_each_entry_safe(dmabuf, next,
- 				 &phba->ras_fwlog.fwlog_buff_list, list) {
-@@ -2252,13 +2252,13 @@ lpfc_debugfs_ras_log_open(struct inode *inode, struct file *file)
- 	int size;
- 	int rc = -ENOMEM;
- 
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	if (phba->ras_fwlog.state != ACTIVE) {
--		spin_unlock_irq(&phba->hbalock);
-+		spin_unlock_irq(&phba->ras_fwlog_lock);
- 		rc = -EINVAL;
- 		goto out;
- 	}
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 	if (check_mul_overflow(LPFC_RAS_MIN_BUFF_POST_SIZE,
- 			       phba->cfg_ras_fwlog_buffsize, &size))
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 7820a1a7aa6d1..858ca395c0bf0 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -7698,6 +7698,9 @@ lpfc_setup_driver_resource_phase1(struct lpfc_hba *phba)
- 				"NVME" : " "),
- 			(phba->nvmet_support ? "NVMET" : " "));
- 
-+	/* ras_fwlog state */
-+	spin_lock_init(&phba->ras_fwlog_lock);
-+
- 	/* Initialize the IO buffer list used by driver for SLI3 SCSI */
- 	spin_lock_init(&phba->scsi_buf_list_get_lock);
- 	INIT_LIST_HEAD(&phba->lpfc_scsi_buf_list_get);
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index c00b945947b1d..e1821072552a5 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -6849,9 +6849,9 @@ lpfc_ras_stop_fwlog(struct lpfc_hba *phba)
- {
- 	struct lpfc_ras_fwlog *ras_fwlog = &phba->ras_fwlog;
- 
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	ras_fwlog->state = INACTIVE;
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 	/* Disable FW logging to host memory */
- 	writel(LPFC_CTL_PDEV_CTL_DDL_RAS,
-@@ -6894,9 +6894,9 @@ lpfc_sli4_ras_dma_free(struct lpfc_hba *phba)
- 		ras_fwlog->lwpd.virt = NULL;
+-	spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
++	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
+ 	if (IS_ERR(spi_engine->clk)) {
+ 		ret = PTR_ERR(spi_engine->clk);
+ 		goto err_put_host;
  	}
  
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	ras_fwlog->state = INACTIVE;
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
+-	spi_engine->ref_clk = devm_clk_get(&pdev->dev, "spi_clk");
++	spi_engine->ref_clk = devm_clk_get_enabled(&pdev->dev, "spi_clk");
+ 	if (IS_ERR(spi_engine->ref_clk)) {
+ 		ret = PTR_ERR(spi_engine->ref_clk);
+ 		goto err_put_host;
+ 	}
+ 
+-	ret = clk_prepare_enable(spi_engine->clk);
+-	if (ret)
+-		goto err_put_host;
+-
+-	ret = clk_prepare_enable(spi_engine->ref_clk);
+-	if (ret)
+-		goto err_clk_disable;
+-
+ 	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spi_engine->base)) {
+ 		ret = PTR_ERR(spi_engine->base);
+-		goto err_ref_clk_disable;
++		goto err_put_host;
+ 	}
+ 
+ 	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
+@@ -518,7 +510,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 			SPI_ENGINE_VERSION_MINOR(version),
+ 			SPI_ENGINE_VERSION_PATCH(version));
+ 		ret = -ENODEV;
+-		goto err_ref_clk_disable;
++		goto err_put_host;
+ 	}
+ 
+ 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
+@@ -527,7 +519,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 
+ 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
+ 	if (ret)
+-		goto err_ref_clk_disable;
++		goto err_put_host;
+ 
+ 	host->dev.of_node = pdev->dev.of_node;
+ 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
+@@ -545,10 +537,6 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 	return 0;
+ err_free_irq:
+ 	free_irq(irq, host);
+-err_ref_clk_disable:
+-	clk_disable_unprepare(spi_engine->ref_clk);
+-err_clk_disable:
+-	clk_disable_unprepare(spi_engine->clk);
+ err_put_host:
+ 	spi_controller_put(host);
+ 	return ret;
+@@ -569,9 +557,6 @@ static void spi_engine_remove(struct platform_device *pdev)
+ 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+ 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
+ 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
+-
+-	clk_disable_unprepare(spi_engine->ref_clk);
+-	clk_disable_unprepare(spi_engine->clk);
  }
  
- /**
-@@ -6998,9 +6998,9 @@ lpfc_sli4_ras_mbox_cmpl(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 		goto disable_ras;
- 	}
- 
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	ras_fwlog->state = ACTIVE;
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 	mempool_free(pmb, phba->mbox_mem_pool);
- 
- 	return;
-@@ -7032,9 +7032,9 @@ lpfc_sli4_ras_fwlog_init(struct lpfc_hba *phba,
- 	uint32_t len = 0, fwlog_buffsize, fwlog_entry_count;
- 	int rc = 0;
- 
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	ras_fwlog->state = INACTIVE;
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 
- 	fwlog_buffsize = (LPFC_RAS_MIN_BUFF_POST_SIZE *
- 			  phba->cfg_ras_fwlog_buffsize);
-@@ -7095,9 +7095,9 @@ lpfc_sli4_ras_fwlog_init(struct lpfc_hba *phba,
- 	mbx_fwlog->u.request.lwpd.addr_lo = putPaddrLow(ras_fwlog->lwpd.phys);
- 	mbx_fwlog->u.request.lwpd.addr_hi = putPaddrHigh(ras_fwlog->lwpd.phys);
- 
--	spin_lock_irq(&phba->hbalock);
-+	spin_lock_irq(&phba->ras_fwlog_lock);
- 	ras_fwlog->state = REG_INPROGRESS;
--	spin_unlock_irq(&phba->hbalock);
-+	spin_unlock_irq(&phba->ras_fwlog_lock);
- 	mbox->vport = phba->pport;
- 	mbox->mbox_cmpl = lpfc_sli4_ras_mbox_cmpl;
- 
+ static const struct of_device_id spi_engine_match_table[] = {
 -- 
 2.43.0
 
