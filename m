@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3031C8C53A0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57938C541A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EB56287FB0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B39F528718C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DC612DD85;
-	Tue, 14 May 2024 11:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E2913666D;
+	Tue, 14 May 2024 11:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7MeL7RK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axiYHqwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FBD12D77F;
-	Tue, 14 May 2024 11:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FB213665B;
+	Tue, 14 May 2024 11:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686659; cv=none; b=qliZhI6b6fjVlBvfqoU31tstTF1z4F8TlwuskUB1yc76NZJxSXD0Xwlc9fzlhfYdbz1dZ4tqEuJ1C21r7EVA4QZGPfRvsEqjm8W3ywhmpxIQDKjCpdZ74pzebCRAI3ny7Bgmz6uiaAdCbb5MlJzGv/7XGGeN4Vtk1yO67VrBEf8=
+	t=1715686981; cv=none; b=giMkgjg3wl8Cr3C5ucDZCl92mjkCQjiglbwXQ6ekdK9z41N5zo6vMGL2OIi+rQcnEvji9w5Mtx9iS4Gys4gSSG5JLLYvXiQZ/8NAVh4BcSenWAL9k9OuhLXd5xzEZynvT93SyGWu434c/2Bat5LHwhrjBgjYgf3nCZOK/00P610=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686659; c=relaxed/simple;
-	bh=pvj2TIUmvUXZTuf/ur/s2FdWZ9PFC2xy2ID2TEnymMc=;
+	s=arc-20240116; t=1715686981; c=relaxed/simple;
+	bh=rFYjyFhmS8CvPDaiu6+cn0WKEO4hnItjSBzaMLb86xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDXfLINYpAclbeu1hmxaaO1bGcdJpHw4dMhjCc5EkBW1MRIIft9nz9+yF5HRXLxAlo/eh6uVAh03K8C84tSQr93cL68FvRFyuptgw6hH+0uYgmB27STKPzHKVzNDdfr7VjmFAO0jORPiKdHeviMPqlccyhHKsx1TqXHurxUr5Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7MeL7RK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D45FC2BD10;
-	Tue, 14 May 2024 11:37:38 +0000 (UTC)
+	 MIME-Version; b=nsM9/fFm6mKd0RDliFkJFDQ8cSNnqL1NlIPwg6GjmbwpUft9CBFkwgR86SU7dT47Yl7fR4whtlc3rdXwfcMsTynU2yCFUVcL8nHDxbpP/HUXTcIf0lRSw3MU5dpGkul6+XrVQumKUIY7tPa1TYRCMTWp4gjFOhku7xL6Zlj0YsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axiYHqwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C4BC2BD10;
+	Tue, 14 May 2024 11:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686659;
-	bh=pvj2TIUmvUXZTuf/ur/s2FdWZ9PFC2xy2ID2TEnymMc=;
+	s=korg; t=1715686981;
+	bh=rFYjyFhmS8CvPDaiu6+cn0WKEO4hnItjSBzaMLb86xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7MeL7RKW5bOgub9Ndg1TXQnedurlG4IEL+NvPapv8wvdgRLNRgUI6B0oHbw9aH+i
-	 +3zcsvvD8A0OEwV+q9zCn3qrKAbdfAnwXtu1V22XblajayZkU5wcrhooDoHIP0oQjl
-	 mxAWZZD+u3HlpXz2ExWdKtWZ/12nxEYLmdpp/RJs=
+	b=axiYHqwcjwqCFAHw8MuEVVvYU9r04RIeNSYw241OcpiP3QlGvswa+h195JCFn2ZLk
+	 7Qy8NqfTFSApwS2SOGZIZRoVg+zIRGYPWLxoGW2skrYeN1PmEl9+jv/XupehfYAJsm
+	 oXnqRr5R3V+FsJHyzNKKammJeXIMBzS7KtpIzSVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 213/236] net: bcmgenet: synchronize use of bcmgenet_set_rx_mode()
+	James Chapman <jchapman@katalix.com>,
+	David Bauer <mail@david-bauer.net>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 24/84] net l2tp: drop flow hash on forward
 Date: Tue, 14 May 2024 12:19:35 +0200
-Message-ID: <20240514101028.446079670@linuxfoundation.org>
+Message-ID: <20240514100952.604946344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: David Bauer <mail@david-bauer.net>
 
-commit 2dbe5f19368caae63b1f59f5bc2af78c7d522b3a upstream.
+[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
 
-The ndo_set_rx_mode function is synchronized with the
-netif_addr_lock spinlock and BHs disabled. Since this
-function is also invoked directly from the driver the
-same synchronization should be applied.
+Drop the flow-hash of the skb when forwarding to the L2TP netdev.
 
-Fixes: 72f96347628e ("net: bcmgenet: set Rx mode before starting netif")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This avoids the L2TP qdisc from using the flow-hash from the outer
+packet, which is identical for every flow within the tunnel.
+
+This does not affect every platform but is specific for the ethernet
+driver. It depends on the platform including L4 information in the
+flow-hash.
+
+One such example is the Mediatek Filogic MT798x family of networking
+processors.
+
+Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
+Acked-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/l2tp/l2tp_eth.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET (Gigabit Ethernet) controller driver
-  *
-- * Copyright (c) 2014-2020 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
+diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
+index d3b520b9b2c9d..2c5853597aa90 100644
+--- a/net/l2tp/l2tp_eth.c
++++ b/net/l2tp/l2tp_eth.c
+@@ -149,6 +149,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
+ 	/* checksums verified by L2TP */
+ 	skb->ip_summed = CHECKSUM_NONE;
  
- #define pr_fmt(fmt)				"bcmgenet: " fmt
-@@ -3352,7 +3352,9 @@ static void bcmgenet_netif_start(struct
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
++	/* drop outer flow-hash */
++	skb_clear_hash(skb);
++
+ 	skb_dst_drop(skb);
+ 	nf_reset_ct(skb);
  
- 	/* Start the network engine */
-+	netif_addr_lock_bh(dev);
- 	bcmgenet_set_rx_mode(dev);
-+	netif_addr_unlock_bh(dev);
- 	bcmgenet_enable_rx_napi(priv);
- 
- 	umac_enable_set(priv, CMD_TX_EN | CMD_RX_EN, true);
+-- 
+2.43.0
+
 
 
 
