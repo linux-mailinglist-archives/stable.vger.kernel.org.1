@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E988C5332
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0228C8C523B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4534D2859F9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AED21F22590
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F97413C669;
-	Tue, 14 May 2024 11:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23FF46430;
+	Tue, 14 May 2024 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS7N//Hu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6UKDfiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4529D13C3CA;
-	Tue, 14 May 2024 11:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13AA43AD7;
+	Tue, 14 May 2024 11:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686347; cv=none; b=C2XhMzOthqDwUu/F6jeF5u61RbM+yZEHLo0u3i10dMGNCty4YsUxSBCUuApgoUnwjHYUMYIMJTM0V7Ah0XoDrVZHnK0IId6AY4/mCur08z6xDghGp3NLYvDn32q3Fb2N+M9xcu5OSneIOXReADwWmr839UPwLWRWQlzRseQwfJo=
+	t=1715685672; cv=none; b=uWQ8lV59TSr/Lic130/6MWld7KD8+r7JF5Z8CYv3P73PUHCj3n0ZoqCKEhwtZXeGxjP8aPzCuyOdkFWTBLDgvHuWRbbX3EWW2t+du2Z2DH2ZEdvlUFINrQFeDElPkJkJlpE1WOTRqju95BmEOK1YDxpZJysElMMbeoDfnkH4UdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686347; c=relaxed/simple;
-	bh=lX3a6QUs8vuIundfGs39xASM30AmBRnyJtjWd1MzHdY=;
+	s=arc-20240116; t=1715685672; c=relaxed/simple;
+	bh=z6jNuJgSFGOKPjv/ZkHgRPhDkvEHLn4LosCHuirIEL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMyccrpkOVmmUaSW20EMzDaWfesy22OcG3qs/7l7cB8nnJckEHqtzVuSEES/DTdlsJ59KZHlNo8O5TXkU5QC0GXR+jQlIss00Uz2yOP2pF0GX1ft+cXs/tsVl1P6duCzYItrxcQ5vmYPemRdfYYEEwvNKBs+6lsARnxDoQJqI+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS7N//Hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00EAC2BD10;
-	Tue, 14 May 2024 11:32:26 +0000 (UTC)
+	 MIME-Version; b=E1Zqr++h/53UATDxbpUFK07cKzdgDvWNjtNvGPMj8nOJJTHwPksobaJBT3/h9jZb4pwFYfMMIKGq6KRVrmqLefUIsVsD604qcm+6L4RENkdKql1Poifqw8qIKHpLJvgaavMyoUD7kXy+xS2AbCjJnZu9lwPdI0BeXxVcUwpiWXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6UKDfiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19718C2BD10;
+	Tue, 14 May 2024 11:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686347;
-	bh=lX3a6QUs8vuIundfGs39xASM30AmBRnyJtjWd1MzHdY=;
+	s=korg; t=1715685672;
+	bh=z6jNuJgSFGOKPjv/ZkHgRPhDkvEHLn4LosCHuirIEL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pS7N//HuRi2JW27s2vpwFwWxU2zVvcV5T2IxqYFmwcIzNvuNdpVy31C9Hx7sht8J8
-	 j/4J21mDAPiTf2zrR2Q3nZx+KVJ9jLyBljPWCUpZNsm//vkBmyCw1nt4nlH+3OzJQE
-	 /V3oXw96TtR1u22+TcAAiBxVOxpxQRPWkJhHQaFU=
+	b=z6UKDfiUUa74D98TKPjiOXo+MQD1g5FK9h4u96AwGQoP2DfGff8PVirU5jIk33IHJ
+	 wlVdPHpt++I1DY8qKK/acMrONGpxVXWu7cBUriggp0JsTVQVhjGdMqVcYINuyG0fFI
+	 0qgFy8xrBB/97I2vXqYrA0PbA5CJljBObldLLD9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/236] scsi: ufs: core: WLUN suspend dev/link state error recovery
+Subject: [PATCH 6.6 197/301] dt-bindings: net: mediatek: remove wrongly added clocks and SerDes
 Date: Tue, 14 May 2024 12:17:48 +0200
-Message-ID: <20240514101024.394991825@linuxfoundation.org>
+Message-ID: <20240514101039.698099767@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 6bc5e70b1c792b31b497e48b4668a9a2909aca0d ]
+[ Upstream commit cc349b0771dccebf0fa9f5e1822ac444aef11448 ]
 
-When wl suspend error occurs, for example BKOP or SSU timeout, the host
-triggers an error handler and returns -EBUSY to break the wl suspend
-process.  However, it is possible for the runtime PM to enter wl suspend
-again before the error handler has finished, and return -EINVAL because the
-device is in an error state. To address this, ensure that the rumtime PM
-waits for the error handler to finish, or trigger the error handler in such
-cases, because returning -EINVAL can cause the I/O to hang.
+Several clocks as well as both sgmiisys phandles were added by mistake
+to the Ethernet bindings for MT7988. Also, the total number of clocks
+didn't match with the actual number of items listed.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20240329015036.15707-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This happened because the vendor driver which served as a reference uses
+a high number of syscon phandles to access various parts of the SoC
+which wasn't acceptable upstream. Hence several parts which have never
+previously been supported (such SerDes PHY and USXGMII PCS) are going to
+be implemented by separate drivers. As a result the device tree will
+look much more sane.
+
+Quickly align the bindings with the upcoming reality of the drivers
+actually adding support for the remaining Ethernet-related features of
+the MT7988 SoC.
+
+Fixes: c94a9aabec36 ("dt-bindings: net: mediatek,net: add mt7988-eth binding")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/1569290b21cc787a424469ed74456a7e976b102d.1715084326.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/net/mediatek,net.yaml | 22 ++-----------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index f3c25467e571f..948449a13247c 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -9044,7 +9044,10 @@ static int __ufshcd_wl_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op)
+diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+index e74502a0afe86..3202dc7967c5b 100644
+--- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+@@ -337,8 +337,8 @@ allOf:
+           minItems: 4
  
- 	/* UFS device & link must be active before we enter in this function */
- 	if (!ufshcd_is_ufs_dev_active(hba) || !ufshcd_is_link_active(hba)) {
--		ret = -EINVAL;
-+		/*  Wait err handler finish or trigger err recovery */
-+		if (!ufshcd_eh_in_progress(hba))
-+			ufshcd_force_error_recovery(hba);
-+		ret = -EBUSY;
- 		goto enable_scaling;
- 	}
+         clocks:
+-          minItems: 34
+-          maxItems: 34
++          minItems: 24
++          maxItems: 24
  
+         clock-names:
+           items:
+@@ -351,18 +351,6 @@ allOf:
+             - const: ethwarp_wocpu1
+             - const: ethwarp_wocpu0
+             - const: esw
+-            - const: netsys0
+-            - const: netsys1
+-            - const: sgmii_tx250m
+-            - const: sgmii_rx250m
+-            - const: sgmii2_tx250m
+-            - const: sgmii2_rx250m
+-            - const: top_usxgmii0_sel
+-            - const: top_usxgmii1_sel
+-            - const: top_sgm0_sel
+-            - const: top_sgm1_sel
+-            - const: top_xfi_phy0_xtal_sel
+-            - const: top_xfi_phy1_xtal_sel
+             - const: top_eth_gmii_sel
+             - const: top_eth_refck_50m_sel
+             - const: top_eth_sys_200m_sel
+@@ -375,16 +363,10 @@ allOf:
+             - const: top_netsys_sync_250m_sel
+             - const: top_netsys_ppefb_250m_sel
+             - const: top_netsys_warp_sel
+-            - const: wocpu1
+-            - const: wocpu0
+             - const: xgp1
+             - const: xgp2
+             - const: xgp3
+ 
+-        mediatek,sgmiisys:
+-          minItems: 2
+-          maxItems: 2
+-
+ patternProperties:
+   "^mac@[0-1]$":
+     type: object
 -- 
 2.43.0
 
