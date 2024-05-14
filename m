@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78828C548F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADA38C53DF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72DF61F23212
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79EA51C218C1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F185A12C490;
-	Tue, 14 May 2024 11:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E80813D288;
+	Tue, 14 May 2024 11:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXy4RNMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpWIX93W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DC943AD7;
-	Tue, 14 May 2024 11:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2817E13D277;
+	Tue, 14 May 2024 11:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687276; cv=none; b=lQf/V1Pt4y+3R6Opc7tug7K8jr/LKFgrtWKSqzla57fOQ1ISbeb9iHTuaWRd51KPOH8QwJFyXTHw+fNZeH5pqm0+PyM4YF4/sSKWYOWUiCMTEjN3VR38IJcbPaFJ5MKbSe0YYpshdfcUFDq1rLznzuk1tVNnQXAiZ28uxSilIro=
+	t=1715686824; cv=none; b=NIAosUC6pRWCquMyMgTeO+aeEVhCbecjsPVN8amtMncbHIm1MBe2zpSMerSlANC9PnEmcrDxZhiiji629hRl7/ofaz4wV/PONysRysNCNJevFC4em2NaYKfVGO07Nx2lwnZsGcUFgqQLyS/39pTQDyo+Ba7gpWFKUhCsZfApgow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687276; c=relaxed/simple;
-	bh=JS3DDoVs6r48aYDIaeEXUanZ4u7YPeL+IwAjXeTWSZ4=;
+	s=arc-20240116; t=1715686824; c=relaxed/simple;
+	bh=Sb8nnKnpB+BlFpDUNGQHWxFnVAitboSnMPts2G1hcKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=soORwkf9V4eScpXEH/jAKZvtvoZmGhNosbBtz+3xKPA+hpIE0ZQNINn34RkTp3xmPgidEoqhVrPWEfmwM8LrJLPz0MfUT3y0Sw54AgfoB4YeR41EaepGfcn6R9qcl5jqM8XnfGFrFjM2PYH0O5A249grJNwDkdhzD85F6a/vHrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXy4RNMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39131C2BD10;
-	Tue, 14 May 2024 11:47:56 +0000 (UTC)
+	 MIME-Version; b=liwUlvVymwGZbm81IpL6+R44Nn0ebUy60hU03+8X+dJhi0g74aD/Q5ZysQPoI8rkfQBDKN7CvYWaq59bPIhMHR94zXMNowqoaN3mlcy2j3b8Zn4dg6CSqdikethQBKwUC6Ovqdo6jglZKg8kub7b1hTiVx2kH2Ex0yWg3OubIf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpWIX93W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B59C2BD10;
+	Tue, 14 May 2024 11:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687276;
-	bh=JS3DDoVs6r48aYDIaeEXUanZ4u7YPeL+IwAjXeTWSZ4=;
+	s=korg; t=1715686824;
+	bh=Sb8nnKnpB+BlFpDUNGQHWxFnVAitboSnMPts2G1hcKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXy4RNMhOYK135ecgoc4Z+dRtAWFTQ6FdVxVhtPH3xFwVZ9QkdU7L+g4PIl/SEKlh
-	 pJMdhrYOUM9Iu664LEX4CqmMzjZGxHuUWQSNpYM/2U2cX3g6jzXFllY0930rAYd6XX
-	 2U/PhAOWDmaU5vWWY4YhNW9SlrhmYiF4LBd3yeoo=
+	b=CpWIX93W5RAD9vxPP/0kugpsO/RE6AF0y4worJ3qi1WXjqmYL7nhqVaa8q0XDKV6F
+	 wshyZaOEdvX8p6MKJbp2IsKWPFYElvDlFNEf3DQFuUn5jXeBn3GT/IAMlnRgNhoRm/
+	 6HNBk7OqQOiwoS0277JWmT5ZBP4MD8681HxsMUEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Gobert <richardbgobert@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/111] net: gro: add flush check in udp_gro_receive_segment
+Subject: [PATCH 4.19 17/63] ASoC: meson: axg-tdm-interface: manage formatters in trigger
 Date: Tue, 14 May 2024 12:19:38 +0200
-Message-ID: <20240514100958.657915968@linuxfoundation.org>
+Message-ID: <20240514100948.665603800@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Gobert <richardbgobert@gmail.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 5babae777c61aa8a8679d59d3cdc54165ad96d42 ]
+[ Upstream commit bf5e4887eeddb48480568466536aa08ec7f179a5 ]
 
-GRO-GSO path is supposed to be transparent and as such L3 flush checks are
-relevant to all UDP flows merging in GRO. This patch uses the same logic
-and code from tcp_gro_receive, terminating merge if flush is non zero.
+So far, the formatters have been reset/enabled using the .prepare()
+callback. This was done in this callback because walking the formatters use
+a mutex so it could not be done in .trigger(), which is atomic by default.
 
-Fixes: e20cf8d3f1f7 ("udp: implement GRO for plain UDP sockets.")
-Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+It turns out there is a problem on capture path of the AXG series.
+The FIFO may get out of sync with the TDM decoder if the IP are not enabled
+in a specific order. The FIFO must be enabled before the formatter starts
+producing data. IOW, we must deal with FE before the BE. The .prepare()
+callback is called on the BEs before the FE so it is not OK for the AXG.
+
+The .trigger() callback order can be configured, and it deals with the FE
+before the BEs by default. To solve our problem, we just need to start and
+stop the formatters from the .trigger() callback. It is OK do so now that
+the links have been made 'nonatomic' in the card driver.
+
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20211020114217.133153-3-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/soc/meson/axg-tdm-interface.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 445d8bc30fdd1..a0b569d0085bc 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -431,6 +431,7 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
- 	struct sk_buff *p;
- 	unsigned int ulen;
- 	int ret = 0;
-+	int flush;
+diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
+index 2a7ea41fc49e5..05d63cd7ac8ba 100644
+--- a/sound/soc/meson/axg-tdm-interface.c
++++ b/sound/soc/meson/axg-tdm-interface.c
+@@ -343,13 +343,29 @@ static int axg_tdm_iface_hw_free(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
  
- 	/* requires non zero csum, for symmetry with GSO */
- 	if (!uh->check) {
-@@ -464,13 +465,22 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
- 			return p;
- 		}
+-static int axg_tdm_iface_prepare(struct snd_pcm_substream *substream,
++static int axg_tdm_iface_trigger(struct snd_pcm_substream *substream,
++				 int cmd,
+ 				 struct snd_soc_dai *dai)
+ {
+-	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
++	struct axg_tdm_stream *ts =
++		snd_soc_dai_get_dma_data(dai, substream);
++
++	switch (cmd) {
++	case SNDRV_PCM_TRIGGER_START:
++	case SNDRV_PCM_TRIGGER_RESUME:
++	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++		axg_tdm_stream_start(ts);
++		break;
++	case SNDRV_PCM_TRIGGER_SUSPEND:
++	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
++	case SNDRV_PCM_TRIGGER_STOP:
++		axg_tdm_stream_stop(ts);
++		break;
++	default:
++		return -EINVAL;
++	}
  
-+		flush = NAPI_GRO_CB(p)->flush;
-+
-+		if (NAPI_GRO_CB(p)->flush_id != 1 ||
-+		    NAPI_GRO_CB(p)->count != 1 ||
-+		    !NAPI_GRO_CB(p)->is_atomic)
-+			flush |= NAPI_GRO_CB(p)->flush_id;
-+		else
-+			NAPI_GRO_CB(p)->is_atomic = false;
-+
- 		/* Terminate the flow on len mismatch or if it grow "too much".
- 		 * Under small packet flood GRO count could elsewhere grow a lot
- 		 * leading to excessive truesize values.
- 		 * On len mismatch merge the first packet shorter than gso_size,
- 		 * otherwise complete the GRO packet.
- 		 */
--		if (ulen > ntohs(uh2->len)) {
-+		if (ulen > ntohs(uh2->len) || flush) {
- 			pp = p;
- 		} else {
- 			if (NAPI_GRO_CB(skb)->is_flist) {
+-	/* Force all attached formatters to update */
+-	return axg_tdm_stream_reset(ts);
++	return 0;
+ }
+ 
+ static int axg_tdm_iface_remove_dai(struct snd_soc_dai *dai)
+@@ -389,8 +405,8 @@ static const struct snd_soc_dai_ops axg_tdm_iface_ops = {
+ 	.set_fmt	= axg_tdm_iface_set_fmt,
+ 	.startup	= axg_tdm_iface_startup,
+ 	.hw_params	= axg_tdm_iface_hw_params,
+-	.prepare	= axg_tdm_iface_prepare,
+ 	.hw_free	= axg_tdm_iface_hw_free,
++	.trigger	= axg_tdm_iface_trigger,
+ };
+ 
+ /* TDM Backend DAIs */
 -- 
 2.43.0
 
