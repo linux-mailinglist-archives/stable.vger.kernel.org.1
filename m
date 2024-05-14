@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72218C52F8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A108C508F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E09E28276F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C33CA281759
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589FA136663;
-	Tue, 14 May 2024 11:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B264913DB8A;
+	Tue, 14 May 2024 10:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+sXg+BB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPkVN2EQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D555A4C0;
-	Tue, 14 May 2024 11:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FB56BFBB;
+	Tue, 14 May 2024 10:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686226; cv=none; b=N3MH+wLf/4oDde8Y+s3+ff0H0cEbWgIBdayVuQUpJWbSHyE5zVDm3Blw1pb2OA1kfiAvdm5ESd3Yra4SBvpjeMjhpkgvx2ogYUqnBDs89Gn0EKm2MwFrufOreUklFeN6WUs2KhEbK72J4RGGvTpqWF9UnNndS8oxvm6ZZFsfse8=
+	t=1715683467; cv=none; b=o2GSxSGtHnWCZ7x82Ysk7pH7n8ysl5tZLj/wmYzrbCKkMGEFFX5t5sB92F1cevcQAE83JhkYBdSBq27H9guCYrR/fDVl8sKLlGLFQ/3zQbejeP8fM7SfCVbw2fH6ldZkE5Dbv5f8oxEXZLekPd5qf2rS/mq83lRkt5JJS8N+iDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686226; c=relaxed/simple;
-	bh=ScnW5RSxpAkr5a/i1FUAjBR5GnNWrOPr7e7VZbSTd3w=;
+	s=arc-20240116; t=1715683467; c=relaxed/simple;
+	bh=+dfb71cBrElcnunDduxpHuLMwJ9BInceTavh/eHbqMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YqA7aH7uUfRBhlHfrv9f2mgusK2x3uYv8hE31QX4iL31bVQbDX5vHuVp8WhsAI64Qxd89nEBWs+lnE4T7sSHxrxE0wA+Z06NKAOsBbPOxt1uCj5gSK1fpAu9xNcrbMCO1qZGu2gCUzdRd9ZUJD6Xf2mJS+rkPkcWglr4XbWt3L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+sXg+BB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F75C2BD10;
-	Tue, 14 May 2024 11:30:25 +0000 (UTC)
+	 MIME-Version; b=Z10K7K0LKfL4za7jPB/08TAb1hRwWs1TYxK2c0cQF5NWpNxu6uTTPD8ilJOwN/pinam8lJtuSb6h/w3uZS7Tk1xJ2HyLNOUfaIuTHOVS5An5LrQByMiNSPFhn0/+tznRaiqI/I27ga9oIQ77cPcDM7/bKBUsvo4rk/ZFdsTzx2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPkVN2EQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AE3C2BD10;
+	Tue, 14 May 2024 10:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686226;
-	bh=ScnW5RSxpAkr5a/i1FUAjBR5GnNWrOPr7e7VZbSTd3w=;
+	s=korg; t=1715683467;
+	bh=+dfb71cBrElcnunDduxpHuLMwJ9BInceTavh/eHbqMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+sXg+BB0lz/Gd5RVhruqW5n6+0uFVJwDGODEbewDqViEwP87qFSIB6CpYZHS///m
-	 yBU7CYizKki3nSjzbyUqfCyAQSRlErL4/51fIIHrAuqsLXVeKnfq/4hNH7dzJSx7Hj
-	 7lTTrIlGOwY5uKli9mTzT7INWw8uHgaf58SvH0LM=
+	b=IPkVN2EQVW3pW61RWCbgnU+KJ5jQ84gCBnYbCie4Naq3N6cgwBVpytEYEaxVeayeK
+	 ud/vP2HVFLj0sp9hkCU+R44Al3rA2QKT5u3b/FyH4EwEiGKpz+FqLV2wX2edT26DSL
+	 R7siA+AKw2lVISIZJRStXs+sbrN4PNyRYB6Y3SY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Lukasz Majewski <lukma@denx.de>,
 	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/236] net: qede: use return from qede_parse_flow_attr() for flower
+Subject: [PATCH 6.8 222/336] hsr: Simplify code for announcing HSR nodes timer setup
 Date: Tue, 14 May 2024 12:17:06 +0200
-Message-ID: <20240514101022.789397792@linuxfoundation.org>
+Message-ID: <20240514101046.996886922@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: Lukasz Majewski <lukma@denx.de>
 
-[ Upstream commit fcee2065a178f78be6fd516302830378b17dba3d ]
+[ Upstream commit 4893b8b3ef8db2b182d1a1bebf6c7acf91405000 ]
 
-In qede_add_tc_flower_fltr(), when calling
-qede_parse_flow_attr() then the return code
-was only used for a non-zero check, and then
--EINVAL was returned.
+Up till now the code to start HSR announce timer, which triggers sending
+supervisory frames, was assuming that hsr_netdev_notify() would be called
+at least twice for hsrX interface. This was required to have different
+values for old and current values of network device's operstate.
 
-qede_parse_flow_attr() can currently fail with:
-* -EINVAL
-* -EOPNOTSUPP
-* -EPROTONOSUPPORT
+This is problematic for a case where hsrX interface is already in the
+operational state when hsr_netdev_notify() is called, so timer is not
+configured to trigger and as a result the hsrX is not sending supervisory
+frames to HSR ring.
 
-This patch changes the code to use the actual
-return code, not just return -EINVAL.
+This error has been discovered when hsr_ping.sh script was run. To be
+more specific - for the hsr1 and hsr2 the hsr_netdev_notify() was
+called at least twice with different IF_OPER_{LOWERDOWN|DOWN|UP} states
+assigned in hsr_check_carrier_and_operstate(hsr). As a result there was
+no issue with sending supervisory frames.
+However, with hsr3, the notify function was called only once with
+operstate set to IF_OPER_UP and timer responsible for triggering
+supervisory frames was not fired.
 
-The blaimed commit introduced these functions.
+The solution is to use netif_oper_up() and netif_running() helper
+functions to assess if network hsrX device is up.
+Only then, when the timer is not already pending, it is started.
+Otherwise it is deactivated.
 
-Only compile tested.
-
-Fixes: 2ce9c93eaca6 ("qede: Ingress tc flower offload (drop action) support.")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Fixes: f421436a591d ("net/hsr: Add support for the High-availability Seamless Redundancy protocol (HSRv0)")
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20240507111214.3519800-1-lukma@denx.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_filter.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/hsr/hsr_device.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-index 76aa5934e985b..aedb98713bbf2 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-@@ -1879,10 +1879,9 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index be0e43f46556e..03a42de7511e8 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -71,39 +71,36 @@ static bool hsr_check_carrier(struct hsr_port *master)
+ 	return false;
+ }
+ 
+-static void hsr_check_announce(struct net_device *hsr_dev,
+-			       unsigned char old_operstate)
++static void hsr_check_announce(struct net_device *hsr_dev)
+ {
+ 	struct hsr_priv *hsr;
+ 
+ 	hsr = netdev_priv(hsr_dev);
+-
+-	if (READ_ONCE(hsr_dev->operstate) == IF_OPER_UP && old_operstate != IF_OPER_UP) {
+-		/* Went up */
+-		hsr->announce_count = 0;
+-		mod_timer(&hsr->announce_timer,
+-			  jiffies + msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
++	if (netif_running(hsr_dev) && netif_oper_up(hsr_dev)) {
++		/* Enable announce timer and start sending supervisory frames */
++		if (!timer_pending(&hsr->announce_timer)) {
++			hsr->announce_count = 0;
++			mod_timer(&hsr->announce_timer, jiffies +
++				  msecs_to_jiffies(HSR_ANNOUNCE_INTERVAL));
++		}
++	} else {
++		/* Deactivate the announce timer  */
++		timer_delete(&hsr->announce_timer);
  	}
+-
+-	if (READ_ONCE(hsr_dev->operstate) != IF_OPER_UP && old_operstate == IF_OPER_UP)
+-		/* Went down */
+-		del_timer(&hsr->announce_timer);
+ }
  
- 	/* parse flower attribute and prepare filter */
--	if (qede_parse_flow_attr(edev, proto, f->rule, &t)) {
--		rc = -EINVAL;
-+	rc = qede_parse_flow_attr(edev, proto, f->rule, &t);
-+	if (rc)
- 		goto unlock;
--	}
+ void hsr_check_carrier_and_operstate(struct hsr_priv *hsr)
+ {
+ 	struct hsr_port *master;
+-	unsigned char old_operstate;
+ 	bool has_carrier;
  
- 	/* Validate profile mode and number of filters */
- 	if ((edev->arfs->filter_count && edev->arfs->mode != t.mode) ||
+ 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+ 	/* netif_stacked_transfer_operstate() cannot be used here since
+ 	 * it doesn't set IF_OPER_LOWERLAYERDOWN (?)
+ 	 */
+-	old_operstate = READ_ONCE(master->dev->operstate);
+ 	has_carrier = hsr_check_carrier(master);
+ 	hsr_set_operstate(master, has_carrier);
+-	hsr_check_announce(master->dev, old_operstate);
++	hsr_check_announce(master->dev);
+ }
+ 
+ int hsr_get_max_mtu(struct hsr_priv *hsr)
 -- 
 2.43.0
 
