@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2A58C5127
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 274FB8C5262
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AFA1F21F3A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF44F1F228E6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174C34F1F8;
-	Tue, 14 May 2024 10:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5A112F5AD;
+	Tue, 14 May 2024 11:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sH832HI1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdqHjWYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D9042A9C;
-	Tue, 14 May 2024 10:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C073E6311D;
+	Tue, 14 May 2024 11:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684109; cv=none; b=hQ3Cw4DDz9p3Bx2m2QhusBIO8d4HDzch0mNzr7+yVFxqHqFg9KQIL34FNiJTD8nWZhfNDkIATMjPrA+1921ut/4KQXv7fFNExtjppHTg+caP2icjZAnAaMotZH2DHBdr9vRtqPS1jC6vE9CfQGnNC7ydl9nSRi9rZXmXSMPcSPs=
+	t=1715685852; cv=none; b=FTef3ZkAnFXa9Y6yznr7fS9VCZDWfNxgRKyx919rh7JqQjJi5e44sWsCMVfCVXXHIbrGXJlADAsmJmf6I0kKdDhXY8FWgelnBaFAz+oJdy4t3b9b7Nt4U0nRS0royXxRuT4fh9EvN+SEvS/Jle0qiA83SbK++XeEHCAKI9O3feE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684109; c=relaxed/simple;
-	bh=6phRdbtZSwo4nc/BKN5+xKUurvSPCaig7Bn1e7dYPVA=;
+	s=arc-20240116; t=1715685852; c=relaxed/simple;
+	bh=ra9qOuhCmp7HBv/8DKi8Uz96o5JIDIb8QfKjkkLSzA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjGgZu6DExHZ6QsE2moyCDNy8DBQ/CuC9Hvl1JpXqszYG0WqZHZgEEKWr+laMNs23qJ7IcQO9trD6g2D8D+cySml2t/F10Xqwn1fHzNzVhppnekS8+InWkcsZxy3/qgQtFTG0SiKG+n0LYwxPe7o9Hhq+CvemZF0OHTIN5V/SMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sH832HI1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A878CC2BD10;
-	Tue, 14 May 2024 10:55:08 +0000 (UTC)
+	 MIME-Version; b=Z0h4pZ0Xsgk5nMJQ45F83+OFNPFwRqNASWJ29JJwEL2pLGpDovbkKqz9lGYfK+onRVilKd0LBH3hqlZT49JrPuaH2H8JVG+VdmynqgNFsGTYSqzVByYNjFLNVnMJZ5ynAPzWcDRAG2nhFMcdZuspEjFPHzYJxHgClXWPJrEzyd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdqHjWYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA6FC2BD10;
+	Tue, 14 May 2024 11:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684109;
-	bh=6phRdbtZSwo4nc/BKN5+xKUurvSPCaig7Bn1e7dYPVA=;
+	s=korg; t=1715685852;
+	bh=ra9qOuhCmp7HBv/8DKi8Uz96o5JIDIb8QfKjkkLSzA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sH832HI1X4+YxvRF+xoWa/zQAb9U1UK1RXliRhmMeV9jjku9zrVpUQPY89Ckfyv0I
-	 Dp3ImDh0tMTERdO3gEIVV1GBoKMfnUvZlITeW0Ww4+2caY8vLFYdwVUN1E27vHu6td
-	 qvZW2V5eh2BI2jPDqPXeMHgF3ST0Eidtuv5QbHRQ=
+	b=wdqHjWYDAM1XHMioPfZVlGg96MF6MS4uyx2fBf3SpZx4HxIhWXqafC81elM8+lpOE
+	 mXRPaymepInmp8ZWNdkRi0ghXeqKTYPLxr20+GtVKKcuNWI9Q0Qg09AAYAjoi2ywpH
+	 V+Xi44FleJ2aflc/VXSC7ROMcymx4PHebzkKmV28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.8 326/336] tracefs: Still use mount point as default permissions for instances
+	Sameer Pujar <spujar@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 259/301] ASoC: tegra: Fix DSPK 16-bit playback
 Date: Tue, 14 May 2024 12:18:50 +0200
-Message-ID: <20240514101050.930675580@linuxfoundation.org>
+Message-ID: <20240514101042.035265138@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Sameer Pujar <spujar@nvidia.com>
 
-commit 6599bd5517be66c8344f869f3ca3a91bc10f2b9e upstream.
+commit 2e93a29b48a017c777d4fcbfcc51aba4e6a90d38 upstream.
 
-If the instances directory's permissions were never change, then have it
-and its children use the mount point permissions as the default.
+DSPK configuration is wrong for 16-bit playback and this happens because
+the client config is always fixed at 24-bit in hw_params(). Fix this by
+updating the client config to 16-bit for the respective playback.
 
-Currently, the permissions of instance directories are determined by the
-instance directory's permissions itself. But if the tracefs file system is
-remounted and changes the permissions, the instance directory and its
-children should use the new permission.
-
-But because both the instance directory and its children use the instance
-directory's inode for permissions, it misses the update.
-
-To demonstrate this:
-
-  # cd /sys/kernel/tracing/
-  # mkdir instances/foo
-  # ls -ld instances/foo
- drwxr-x--- 5 root root 0 May  1 19:07 instances/foo
-  # ls -ld instances
- drwxr-x--- 3 root root 0 May  1 18:57 instances
-  # ls -ld current_tracer
- -rw-r----- 1 root root 0 May  1 18:57 current_tracer
-
-  # mount -o remount,gid=1002 .
-  # ls -ld instances
- drwxr-x--- 3 root root 0 May  1 18:57 instances
-  # ls -ld instances/foo/
- drwxr-x--- 5 root root 0 May  1 19:07 instances/foo/
-  # ls -ld current_tracer
- -rw-r----- 1 root lkp 0 May  1 18:57 current_tracer
-
-Notice that changing the group id to that of "lkp" did not affect the
-instances directory nor its children. It should have been:
-
-  # ls -ld current_tracer
- -rw-r----- 1 root root 0 May  1 19:19 current_tracer
-  # ls -ld instances/foo/
- drwxr-x--- 5 root root 0 May  1 19:25 instances/foo/
-  # ls -ld instances
- drwxr-x--- 3 root root 0 May  1 19:19 instances
-
-  # mount -o remount,gid=1002 .
-  # ls -ld current_tracer
- -rw-r----- 1 root lkp 0 May  1 19:19 current_tracer
-  # ls -ld instances
- drwxr-x--- 3 root lkp 0 May  1 19:19 instances
-  # ls -ld instances/foo/
- drwxr-x--- 5 root lkp 0 May  1 19:25 instances/foo/
-
-Where all files were updated by the remount gid update.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.686838327@goodmis.org
-
+Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://msgid.link/r/20240405104306.551036-1-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ sound/soc/tegra/tegra186_dspk.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -180,16 +180,39 @@ static void set_tracefs_inode_owner(stru
- {
- 	struct tracefs_inode *ti = get_tracefs(inode);
- 	struct inode *root_inode = ti->private;
-+	kuid_t uid;
-+	kgid_t gid;
-+
-+	uid = root_inode->i_uid;
-+	gid = root_inode->i_gid;
-+
-+	/*
-+	 * If the root is not the mount point, then check the root's
-+	 * permissions. If it was never set, then default to the
-+	 * mount point.
-+	 */
-+	if (root_inode != d_inode(root_inode->i_sb->s_root)) {
-+		struct tracefs_inode *rti;
-+
-+		rti = get_tracefs(root_inode);
-+		root_inode = d_inode(root_inode->i_sb->s_root);
-+
-+		if (!(rti->flags & TRACEFS_UID_PERM_SET))
-+			uid = root_inode->i_uid;
-+
-+		if (!(rti->flags & TRACEFS_GID_PERM_SET))
-+			gid = root_inode->i_gid;
-+	}
+--- a/sound/soc/tegra/tegra186_dspk.c
++++ b/sound/soc/tegra/tegra186_dspk.c
+@@ -1,8 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: Copyright (c) 2020-2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ //
+ // tegra186_dspk.c - Tegra186 DSPK driver
+-//
+-// Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
  
- 	/*
- 	 * If this inode has never been referenced, then update
- 	 * the permissions to the superblock.
- 	 */
- 	if (!(ti->flags & TRACEFS_UID_PERM_SET))
--		inode->i_uid = root_inode->i_uid;
-+		inode->i_uid = uid;
+ #include <linux/clk.h>
+ #include <linux/device.h>
+@@ -241,14 +240,14 @@ static int tegra186_dspk_hw_params(struc
+ 		return -EINVAL;
+ 	}
  
- 	if (!(ti->flags & TRACEFS_GID_PERM_SET))
--		inode->i_gid = root_inode->i_gid;
-+		inode->i_gid = gid;
- }
- 
- static int tracefs_permission(struct mnt_idmap *idmap,
+-	cif_conf.client_bits = TEGRA_ACIF_BITS_24;
+-
+ 	switch (params_format(params)) {
+ 	case SNDRV_PCM_FORMAT_S16_LE:
+ 		cif_conf.audio_bits = TEGRA_ACIF_BITS_16;
++		cif_conf.client_bits = TEGRA_ACIF_BITS_16;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_S32_LE:
+ 		cif_conf.audio_bits = TEGRA_ACIF_BITS_32;
++		cif_conf.client_bits = TEGRA_ACIF_BITS_24;
+ 		break;
+ 	default:
+ 		dev_err(dev, "unsupported format!\n");
 
 
 
