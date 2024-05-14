@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A088C516C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDDE8C501F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20011F22031
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCCC8B20924
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C441386DD;
-	Tue, 14 May 2024 11:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B60139CE5;
+	Tue, 14 May 2024 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kgx23xZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVhs4eT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5020136672;
-	Tue, 14 May 2024 11:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB4C139593;
+	Tue, 14 May 2024 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684469; cv=none; b=gyocf/7OTLx8zLFVxBIVKi/zFOHzCx0Zy/6Nro70F6apuC2tCmwhNL05PzIxpN0863ybd6Biu/500P/1b4L0y8JgcWoE8Tts1ydLrfSlsuo0J5s/Tt4KuCBLwuXefpi34hQG1QjJKVJZowlHyXdfoExJtr0miNldPGxah728rLw=
+	t=1715682970; cv=none; b=gCnxQ8eyggtypovsSdkYPf373ibjmy3hmUor+Qvwp3R2g6m85MULPsN5co8hQncXK25ZwSot1XNXuJqunQdplvlmB/0NdxX8mfwpcT6hFujmnFMwPSBK3IUP1m3RiykFaX1lOfNDpOS7S5sbISGM9DGHg4ZqpI2N/MdYZ+HXQjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684469; c=relaxed/simple;
-	bh=yTtWZcbRRPkLN/Vv/8RgrZgEf13HK2U/83UcFHmXmFc=;
+	s=arc-20240116; t=1715682970; c=relaxed/simple;
+	bh=sJG/ypozmohnmk4GADWGKh3zZO6U48E87rD6BthPeYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1bqzWRN1A4JjqyA/iOJXCM11fzz1bm0qkVn638xGIHYPCczyloE/dA+jA++wcnYrhICx4J0VWuDhduaiXX9UApKrN/nOnPG5/0F/Rqh3ECuXCMdFe0hZwvJsRYZDUB4zE/ybkpby7+ghLLwN23LHZmyG62DaH5mni3/j+D/tuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kgx23xZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85913C2BD10;
-	Tue, 14 May 2024 11:01:06 +0000 (UTC)
+	 MIME-Version; b=eSJxS/AuTrM86WeKurxVqDKCzKjoCZV/nZLuBe9ak94Z9u/vMkGM1k6KjQNgE6sDIOHDGNT8o4rXm8EMfN8FTefBb5R9ueIawITTEA1QLuunW/3z2xfaRiMczCuevrDM+/d1TtMM8jn3DJfplCO2s99uFiG6H+Z9wBzzL8S9dN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVhs4eT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693EDC2BD10;
+	Tue, 14 May 2024 10:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684469;
-	bh=yTtWZcbRRPkLN/Vv/8RgrZgEf13HK2U/83UcFHmXmFc=;
+	s=korg; t=1715682970;
+	bh=sJG/ypozmohnmk4GADWGKh3zZO6U48E87rD6BthPeYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kgx23xZbdya0YJ72V7yRwEE25deb9EavfZdmEM/3Puzg+9oEG0RtHjV7kcfW3fzkA
-	 iztsLpCSui+bgOFIsTSYQIxO7NIfOe08XL4AHeU5xL0zjsniJpJHCswhs/tepVs2e7
-	 oIF9aKGY9P81rgTOWu+tDscht/sC39IlmjhsedzA=
+	b=gVhs4eT+9Uv5w2fpgu71/xXQU9H/qAGe4fIR3SpARQwGVjrCAoRU+UwOABXlsXWWV
+	 Kw5QE6JhSZmdggQHzEA+qPc0ttLgbkbw6useGSVaJaGMDhbH/Bw43XTD5TuGwR55K1
+	 7ywOgmTJettYCjluWZ91OS2vCzDmDPS8sFv0WCG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/301] ASoC: codecs: wsa881x: set clk_stop_mode1 flag
+Subject: [PATCH 6.8 112/336] scsi: mpi3mr: Avoid memcpy field-spanning write WARNING
 Date: Tue, 14 May 2024 12:15:16 +0200
-Message-ID: <20240514101033.946601347@linuxfoundation.org>
+Message-ID: <20240514101042.832650019@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 32ac501957e5f68fe0e4bf88fb4db75cfb8f6566 ]
+[ Upstream commit 429846b4b6ce9853e0d803a2357bb2e55083adf0 ]
 
-WSA881x codecs do not retain the state while clock is stopped, so mark
-this with clk_stop_mode1 flag.
+When the "storcli2 show" command is executed for eHBA-9600, mpi3mr driver
+prints this WARNING message:
 
-Fixes: a0aab9e1404a ("ASoC: codecs: add wsa881x amplifier support")
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240419140012.91384-1-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  memcpy: detected field-spanning write (size 128) of single field "bsg_reply_buf->reply_buf" at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 (size 1)
+  WARNING: CPU: 0 PID: 12760 at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 mpi3mr_bsg_request+0x6b12/0x7f10 [mpi3mr]
+
+The cause of the WARN is 128 bytes memcpy to the 1 byte size array "__u8
+replay_buf[1]" in the struct mpi3mr_bsg_in_reply_buf. The array is intended
+to be a flexible length array, so the WARN is a false positive.
+
+To suppress the WARN, remove the constant number '1' from the array
+declaration and clarify that it has flexible length. Also, adjust the
+memory allocation size to match the change.
+
+Suggested-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20240323084155.166835-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa881x.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/mpi3mr/mpi3mr_app.c    | 2 +-
+ include/uapi/scsi/scsi_bsg_mpi3mr.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wsa881x.c b/sound/soc/codecs/wsa881x.c
-index 3c025dabaf7a4..1253695bebd86 100644
---- a/sound/soc/codecs/wsa881x.c
-+++ b/sound/soc/codecs/wsa881x.c
-@@ -1155,6 +1155,7 @@ static int wsa881x_probe(struct sdw_slave *pdev,
- 	pdev->prop.sink_ports = GENMASK(WSA881X_MAX_SWR_PORTS, 0);
- 	pdev->prop.sink_dpn_prop = wsa_sink_dpn_prop;
- 	pdev->prop.scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY;
-+	pdev->prop.clk_stop_mode1 = true;
- 	gpiod_direction_output(wsa881x->sd_n, !wsa881x->sd_n_val);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
+index 0380996b5ad27..55d590b919476 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -1644,7 +1644,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 	if ((mpirep_offset != 0xFF) &&
+ 	    drv_bufs[mpirep_offset].bsg_buf_len) {
+ 		drv_buf_iter = &drv_bufs[mpirep_offset];
+-		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) - 1 +
++		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) +
+ 					   mrioc->reply_sz);
+ 		bsg_reply_buf = kzalloc(drv_buf_iter->kern_buf_len, GFP_KERNEL);
  
- 	wsa881x->regmap = devm_regmap_init_sdw(pdev, &wsa881x_regmap_config);
+diff --git a/include/uapi/scsi/scsi_bsg_mpi3mr.h b/include/uapi/scsi/scsi_bsg_mpi3mr.h
+index c72ce387286ad..30a5c1a593764 100644
+--- a/include/uapi/scsi/scsi_bsg_mpi3mr.h
++++ b/include/uapi/scsi/scsi_bsg_mpi3mr.h
+@@ -382,7 +382,7 @@ struct mpi3mr_bsg_in_reply_buf {
+ 	__u8	mpi_reply_type;
+ 	__u8	rsvd1;
+ 	__u16	rsvd2;
+-	__u8	reply_buf[1];
++	__u8	reply_buf[];
+ };
+ 
+ /**
 -- 
 2.43.0
 
