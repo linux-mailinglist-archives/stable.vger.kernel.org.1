@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22878C5308
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B65E8C5075
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB0C1C20AA3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDCC51F21CD9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE114139572;
-	Tue, 14 May 2024 11:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832C13D618;
+	Tue, 14 May 2024 10:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0JKObBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMBldPNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E37C58AC4;
-	Tue, 14 May 2024 11:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0778969D2F;
+	Tue, 14 May 2024 10:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686275; cv=none; b=oxnY7i2k1NWoUi0zS0SH42ltzxYDeRj+eLie/RYSqHLohHFTNgEycmF1dEEAVBAZ0C+QLOxY6Mk7kmu6qc7+WU9XW1+cBBC9z3D35lCMtkt4hJ4B8uPefpPiDJ3+AGLapZuhMwg9pv9ALeuIBndZvOlrogr8aUtvUpuxvhBzF44=
+	t=1715683383; cv=none; b=qgDcWKdbMpo+JDl0NWdhu2IU/7fF74NH+3ckrsd+HvIhc991Mj8PvZI6On139gEdKSt5Dr/Jld9l3wxGPR0n2ok0wehn+Pd5m0tABv8vpbh6ORaEFkGm57Yohqg86/T0NmR5XRq8ZfEDYiVKd88LVO5rw69c+tMox/nmNfzj04Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686275; c=relaxed/simple;
-	bh=wKVNulgnpH2fVJt+y81Fs094StNO0qwJdVYPvyKp3Fo=;
+	s=arc-20240116; t=1715683383; c=relaxed/simple;
+	bh=YG4X9v1pXkxrJTsM9Ffv9az7asZf5T7P220SMM72SlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZzBCdFgfUqH+blYFEcZG55OSUSCKhrLN19HTnF8u3TxKfoh7wLyuc40I8HJk7+LkJc7r9DKHC0BwCv5HftRvzRuYyWfMVYtm/vGa7NnXRcUxtxrBW/hxLH788MIyrFNeLQsDzW9jBqJc6xqyD1g9GxyGnNGS+YYD/GrLAGkx+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0JKObBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0EEC2BD10;
-	Tue, 14 May 2024 11:31:14 +0000 (UTC)
+	 MIME-Version; b=IhS3YMl3PDM13Rnl9wd263Vo8MVZ11JppN9Cr0W9tZZznzl7OcSZKtRBAQaL3OQZRhE8mlE/kl09x0CpotvFlsW7IIQa4l0DvjhR0gXruVbEscmd46Ib8jTTHS9+u1EygCvv5pX3i+I04Z0QwWKkycetolFKJ1VKjCivkuDF/4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMBldPNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0988C2BD10;
+	Tue, 14 May 2024 10:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686275;
-	bh=wKVNulgnpH2fVJt+y81Fs094StNO0qwJdVYPvyKp3Fo=;
+	s=korg; t=1715683382;
+	bh=YG4X9v1pXkxrJTsM9Ffv9az7asZf5T7P220SMM72SlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0JKObBt7N01qFY8Oh2TqOsJ5ZeIwdtbF93PxWV0u2GEPDYAH7CImpPZUAN9dBeP3
-	 m0u9jHpdivIHOA9xzJcN7nt1Zpi2/5+SWaLLXD216Qfneb8nkwrQtoNyFTcWRt3r7J
-	 /IzK9TQkcKR4AfgBvcnOcj1a342BKZNUqquuuXUU=
+	b=VMBldPNCdX7UQCcubgOAkHoxekhz1lR/7XAk3iG/yIfLngb1USI3TTQZm5i4d1k4w
+	 ZXuLNQXdOUQkujW59Mnk8xJXllEhW0nHd/ZR0i8uh126QguQJVtXQwnOvcOyktPZlH
+	 NnLlG/nOS2p3BICBJ/z6NVC708oeiNzXMN4XHHkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/236] spi: axi-spi-engine: use devm_spi_alloc_host()
+Subject: [PATCH 6.8 207/336] hwmon: (corsair-cpro) Use a separate buffer for sending commands
 Date: Tue, 14 May 2024 12:16:51 +0200
-Message-ID: <20240514101022.206362719@linuxfoundation.org>
+Message-ID: <20240514101046.419965530@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-[ Upstream commit e12cd96e8e93044646fdf4b2c9a1de62cfa01e7c ]
+[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
 
-This modifies the AXI SPI Engine driver to use devm_spi_alloc_host()
-instead of spi_alloc_host() to simplify the code a bit.
+Introduce cmd_buffer, a separate buffer for storing only
+the command that is sent to the device. Before this separation,
+the existing buffer was shared for both the command and the
+report received in ccp_raw_event(), which was copied into it.
 
-In addition to simplifying the error paths in the probe function, we
-can also remove spi_controller_get/put() calls in the remove function
-since devm_spi_alloc_host() sets a flag to no longer decrement the
-controller reference count in the spi_unregister_controller() function.
+However, because of hidraw, the raw event parsing may be triggered
+in the middle of sending a command, resulting in outputting gibberish
+to the device. Using a separate buffer resolves this.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20231117-axi-spi-engine-series-1-v1-4-cc59db999b87@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
+ drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 492882213bb2f..69c4ff142baae 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -473,7 +473,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	if (irq <= 0)
- 		return -ENXIO;
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index a284a02839fbb..8d85f66f81435 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -79,6 +79,7 @@ struct ccp_device {
+ 	struct device *hwmon_dev;
+ 	struct completion wait_input_report;
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
++	u8 *cmd_buffer;
+ 	u8 *buffer;
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	unsigned long t;
+ 	int ret;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*spi_engine));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi_engine));
- 	if (!host)
+-	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
+-	ccp->buffer[0] = command;
+-	ccp->buffer[1] = byte1;
+-	ccp->buffer[2] = byte2;
+-	ccp->buffer[3] = byte3;
++	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
++	ccp->cmd_buffer[0] = command;
++	ccp->cmd_buffer[1] = byte1;
++	ccp->cmd_buffer[2] = byte2;
++	ccp->cmd_buffer[3] = byte3;
+ 
+ 	reinit_completion(&ccp->wait_input_report);
+ 
+-	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
++	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	if (!ccp)
  		return -ENOMEM;
  
-@@ -482,22 +482,16 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	spin_lock_init(&spi_engine->lock);
+-	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	if (!ccp->cmd_buffer)
++		return -ENOMEM;
++
++	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
+ 	if (!ccp->buffer)
+ 		return -ENOMEM;
  
- 	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
--	if (IS_ERR(spi_engine->clk)) {
--		ret = PTR_ERR(spi_engine->clk);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->clk))
-+		return PTR_ERR(spi_engine->clk);
- 
- 	spi_engine->ref_clk = devm_clk_get_enabled(&pdev->dev, "spi_clk");
--	if (IS_ERR(spi_engine->ref_clk)) {
--		ret = PTR_ERR(spi_engine->ref_clk);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->ref_clk))
-+		return PTR_ERR(spi_engine->ref_clk);
- 
- 	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(spi_engine->base)) {
--		ret = PTR_ERR(spi_engine->base);
--		goto err_put_host;
--	}
-+	if (IS_ERR(spi_engine->base))
-+		return PTR_ERR(spi_engine->base);
- 
- 	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
- 	if (SPI_ENGINE_VERSION_MAJOR(version) != 1) {
-@@ -505,8 +499,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 			SPI_ENGINE_VERSION_MAJOR(version),
- 			SPI_ENGINE_VERSION_MINOR(version),
- 			SPI_ENGINE_VERSION_PATCH(version));
--		ret = -ENODEV;
--		goto err_put_host;
-+		return -ENODEV;
- 	}
- 
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
-@@ -515,7 +508,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
- 	if (ret)
--		goto err_put_host;
-+		return ret;
- 
- 	host->dev.of_node = pdev->dev.of_node;
- 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
-@@ -533,14 +526,12 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	return 0;
- err_free_irq:
- 	free_irq(irq, host);
--err_put_host:
--	spi_controller_put(host);
- 	return ret;
- }
- 
- static void spi_engine_remove(struct platform_device *pdev)
- {
--	struct spi_controller *host = spi_controller_get(platform_get_drvdata(pdev));
-+	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
- 	int irq = platform_get_irq(pdev, 0);
- 
-@@ -548,8 +539,6 @@ static void spi_engine_remove(struct platform_device *pdev)
- 
- 	free_irq(irq, host);
- 
--	spi_controller_put(host);
--
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
 -- 
 2.43.0
 
