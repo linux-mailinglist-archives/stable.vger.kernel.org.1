@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-44174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDCD8C5197
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073058C5053
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2FFD28281D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FB3D1F2107C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96FE13A3F0;
-	Tue, 14 May 2024 11:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDC613C692;
+	Tue, 14 May 2024 10:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YV7DmIQK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYtaZAP3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7545D54903;
-	Tue, 14 May 2024 11:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA7C13B59A;
+	Tue, 14 May 2024 10:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684717; cv=none; b=D0D3umHdkMcjeLo2HpV4MCEdzfwcusnWpL/WEuBEFwX/fZCoFuZlC0WDrwyl7EIbVR2MxUyMsNnnp3Ht29gG1uww0ivi1iiBoE3ZvcP3zVbI+1PliTp6FfrXTiITLfdtOErUyMDQYYHoEFQzRBE5khm2C+V8z9N7eyVCtGQrjKE=
+	t=1715683181; cv=none; b=SGH8ehClKkI+JhMR3llYUVzuTIZwH6gcW5ApZhGnuWrz3KAwA7JVkwwF3B5h3aePgzmwfab8Uc7MWqD5DbmVLNcx6VsjCOUAYUHyZ1vF/bGJyXpRCsZR864VGr7g6C5IwEe1MYXIN6yAHcxQj/mhDT7OWDgv9u+p5LP++XKMrWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684717; c=relaxed/simple;
-	bh=GdoPmmuz/AIDNS9sa+CX6VDmSBOutGjyV4MiVkUUFUU=;
+	s=arc-20240116; t=1715683181; c=relaxed/simple;
+	bh=mFG6ood5AqhaAWjZwJweb864OUF00cmo1E7YyqXSOkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ppap3cg7vapBgWf47bFYka3+lVIqBXaRWs9QbdwqRjMhLHaBuly9DB8kzO9eS1uouCJUy6YJTYk0TXKSAQg6PgCEUFls1F5GDCYzjDA0nFJoI1qVbyWbMaUMscK8PwCNF10KD3w32gnxnmJqQ9R8NrOHN+BOci1+Z/+VR2/kLaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YV7DmIQK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1735DC2BD10;
-	Tue, 14 May 2024 11:05:15 +0000 (UTC)
+	 MIME-Version; b=SwtPIhKMPYhCRuy7um+WwEauiothV4UI/i9qMx4CIhHXYaXGjFvG4Hb+Kl2pBjS6bauYn2RoPlOINKJnrgMDrkeH1kkaLh7H9FilBb8VoERuzNc0V9Jzew5Hfvgga90FPSkDEehgG7XerX5dUDRqAywQZYBbtg1875GDfhcoHqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYtaZAP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB80BC2BD10;
+	Tue, 14 May 2024 10:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684717;
-	bh=GdoPmmuz/AIDNS9sa+CX6VDmSBOutGjyV4MiVkUUFUU=;
+	s=korg; t=1715683181;
+	bh=mFG6ood5AqhaAWjZwJweb864OUF00cmo1E7YyqXSOkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YV7DmIQKkc/ZoKjImZ/AGawRK1jkV9InXnkSqqgmuJQRCKj3WyOA7Uf0b1K+njuWl
-	 dh2LH2D54xXgz1v91YWuC2yEvt3c79CynDPjXCw3jsZ2NgxMBnJTDkGf2nZMJeTIDk
-	 Vfp/mLytZi15po7ScAO0bGSNZoVhxHAzleuC2wBk=
+	b=bYtaZAP3CtFf9eGdnsipJEUF0i+6oHPQgMVDz6cIwk+nr1GD+ljkXkqYw22VbDhmO
+	 ztdeEy1nvq+Ttm7JQ4YcLa4nJa2aFTwvAYqJNAMCSU6m+A+JuXSDg4Fr6Jj41fejFy
+	 o4iKiR/KeE8IiyjwkMXtmkQZWED18xC1DV8KCwNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xingui Yang <yangxingui@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/301] vxlan: Pull inner IP header in vxlan_rcv().
-Date: Tue, 14 May 2024 12:15:51 +0200
-Message-ID: <20240514101035.268937527@linuxfoundation.org>
+Subject: [PATCH 6.8 148/336] scsi: hisi_sas: Handle the NCQ error returned by D2H frame
+Date: Tue, 14 May 2024 12:15:52 +0200
+Message-ID: <20240514101044.189640128@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Xiang Chen <chenxiang66@hisilicon.com>
 
-[ Upstream commit f7789419137b18e3847d0cc41afd788c3c00663d ]
+[ Upstream commit 358e919a351f2ea4b412e7dac6b1c23ec10bd4f5 ]
 
-Ensure the inner IP header is part of skb's linear data before reading
-its ECN bits. Otherwise we might read garbage.
-One symptom is the system erroneously logging errors like
-"vxlan: non-ECT from xxx.xxx.xxx.xxx with TOS=xxxx".
+We find that some disks use D2H frame instead of SDB frame to return NCQ
+error. Currently, only the I/O corresponding to the D2H frame is processed
+in this scenario, which does not meet the processing requirements of the
+NCQ error scenario.  So we set dev_status to HISI_SAS_DEV_NCQ_ERR and abort
+all I/Os of the disk in this scenario.
 
-Similar bugs have been fixed in geneve, ip_tunnel and ip6_tunnel (see
-commit 1ca1ba465e55 ("geneve: make sure to pull inner header in
-geneve_rx()") for example). So let's reuse the same code structure for
-consistency. Maybe we'll can add a common helper in the future.
-
-Fixes: d342894c5d2f ("vxlan: virtual extensible lan")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/1239c8db54efec341dd6455c77e0380f58923a3c.1714495737.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Co-developed-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/20240402035513.2024241-2-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 7e5e60318045a..f98069920e27f 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1674,6 +1674,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	bool raw_proto = false;
- 	void *oiph;
- 	__be32 vni = 0;
-+	int nh;
- 
- 	/* Need UDP and VXLAN header to be present */
- 	if (!pskb_may_pull(skb, VXLAN_HLEN))
-@@ -1762,9 +1763,25 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		skb->pkt_type = PACKET_HOST;
- 	}
- 
--	oiph = skb_network_header(skb);
-+	/* Save offset of outer header relative to skb->head,
-+	 * because we are going to reset the network header to the inner header
-+	 * and might change skb->head.
-+	 */
-+	nh = skb_network_header(skb) - skb->head;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index b56fbc61a15ae..86112f234740d 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -2244,7 +2244,15 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
+ 		if ((dw0 & CMPLT_HDR_RSPNS_XFRD_MSK) &&
+ 		    (sipc_rx_err_type & RX_FIS_STATUS_ERR_MSK)) {
+-			ts->stat = SAS_PROTO_RESPONSE;
++			if (task->ata_task.use_ncq) {
++				struct domain_device *device = task->dev;
++				struct hisi_sas_device *sas_dev = device->lldd_dev;
 +
- 	skb_reset_network_header(skb);
- 
-+	if (!pskb_inet_may_pull(skb)) {
-+		DEV_STATS_INC(vxlan->dev, rx_length_errors);
-+		DEV_STATS_INC(vxlan->dev, rx_errors);
-+		vxlan_vnifilter_count(vxlan, vni, vninode,
-+				      VXLAN_VNI_STATS_RX_ERRORS, 0);
-+		goto drop;
-+	}
-+
-+	/* Get the outer header. */
-+	oiph = skb->head + nh;
-+
- 	if (!vxlan_ecn_decapsulate(vs, oiph, skb)) {
- 		DEV_STATS_INC(vxlan->dev, rx_frame_errors);
- 		DEV_STATS_INC(vxlan->dev, rx_errors);
++				sas_dev->dev_status = HISI_SAS_DEV_NCQ_ERR;
++				slot->abort = 1;
++			} else {
++				ts->stat = SAS_PROTO_RESPONSE;
++			}
+ 		} else if (dma_rx_err_type & RX_DATA_LEN_UNDERFLOW_MSK) {
+ 			ts->residual = trans_tx_fail_type;
+ 			ts->stat = SAS_DATA_UNDERRUN;
 -- 
 2.43.0
 
