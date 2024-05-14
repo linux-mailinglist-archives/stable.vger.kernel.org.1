@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EE38C50FC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:16:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72FCC8C54E9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6B041C21474
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A45001C23F5C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8AF12D755;
-	Tue, 14 May 2024 10:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C6A84E1D;
+	Tue, 14 May 2024 11:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvFMlt8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzxbWTGC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29FD6CDC9;
-	Tue, 14 May 2024 10:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C7E84DFD;
+	Tue, 14 May 2024 11:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683949; cv=none; b=hNTBFpbTRWeDu/D4v4uThG5qeL7/wTLusCyMGXiQDnM7RndWWOF/31qCVBOs/oeDt0XzyQcWjaVZjRZ6oyThYDE5LbYehAIeKd50YcvBYvFd5tXt7fF5oX4GQZkRFGNFXrAtIthgRoIXAb7Sv+r1ayYDAetmaTVyT6F829Pw1oc=
+	t=1715687520; cv=none; b=csZJydkOy2pfcpsGz9/Xn9x63ojRCb2xNCzZ1LcemI2mHks8en30CaEVpC8utuJkANI1pBNJf9epp9/0S+CYBSVSQo9k3fB7GvTsCUXxqvcNvkatL815B/+d+/xhaNOmUbea8AHKSQAkhMmqqQUC1fKr7ixXsj85tDWsG41Ghj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683949; c=relaxed/simple;
-	bh=Vhu9frgZTtzjqKefU4M0DJEKlUADe+xuppHv2RYgawc=;
+	s=arc-20240116; t=1715687520; c=relaxed/simple;
+	bh=We8pZBDTPugK5JLanYkYIunRp2j/vmg7z2hCeU7I8mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMd5pts1ZiMkKWrC98tZ5dHvlsGkWdipM0CvlhcCZPrx7ElR7DTpNrR0Ype4qt87RIL2dpy4GihaqA7llimBZimj5ZOm6FVK8qinDKZkL8rB7DhNadWNUDHbqOyf+/d6mH4y90frvj2Ke6gNoP2lA7j88Rs5zWcHMMu95fqIP3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvFMlt8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E812C2BD10;
-	Tue, 14 May 2024 10:52:28 +0000 (UTC)
+	 MIME-Version; b=p3+r/55F1wxaYgHhABwrqlcjIbbzIOpF396Y7xVOQQoOZaJe0wiHOetu3jtaImEHCjTxeAx2Gn+d1M+QmnnyHi+utQzgMULy9gBKo0y8x4xAXKlmf6L2ckozyqb7A2KFcZO9IHO36+2jNBNpVJb+RZlyXksPt7ybtb4m5dBS68U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzxbWTGC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD26C2BD10;
+	Tue, 14 May 2024 11:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683948;
-	bh=Vhu9frgZTtzjqKefU4M0DJEKlUADe+xuppHv2RYgawc=;
+	s=korg; t=1715687520;
+	bh=We8pZBDTPugK5JLanYkYIunRp2j/vmg7z2hCeU7I8mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvFMlt8TqKsETWFtf4zmNj6pBanpDACaFfC9CjbtmihB3Fh5CpStPb4nKJJlUJrKJ
-	 GUZRku6pijK2TNN4bioQqciA7If7gj3j+DUu/wIMqnREdMOgu7MXtn+Ns8nGuzngE9
-	 QMmzmmLBFSKp5PPcr5nQbnbu956SSA4Fe1wN9Sjs=
+	b=IzxbWTGC3fVm6wHQ/s3K/PflxzzgxuTin5uzZsOhC5CBvLatGn7TH4sWVj2HsA+q1
+	 uH50HYCmKg/x/z0QZjVGdp4Lexnq9dZo+PXneUgb/7SMgnRm4LbNtwKWU+sA0U8t+2
+	 YDoIl3r40iiQiEQNggAa+GosREg4UraBjL37Z2xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	20240228012313.5934-1-yaolu@kylinos.cn,
-	Matt Coster <matt.coster@imgtec.com>,
-	Frank Binns <frank.binns@imgtec.com>
-Subject: [PATCH 6.8 299/336] drm/imagination: Ensure PVR_MIPS_PT_PAGE_COUNT is never zero
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 005/168] ksmbd: validate request buffer size in smb2_allocate_rsp_buf()
 Date: Tue, 14 May 2024 12:18:23 +0200
-Message-ID: <20240514101049.906771061@linuxfoundation.org>
+Message-ID: <20240514101006.887460208@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Coster <matt.coster@imgtec.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit e4236b14fe32a8d92686ec656c870a6bb1d6f50a upstream.
+[ Upstream commit 17cf0c2794bdb6f39671265aa18aea5c22ee8c4a ]
 
-When the host page size was more than 4 times larger than the FW page
-size, this macro evaluated to zero resulting in zero-sized arrays.
+The response buffer should be allocated in smb2_allocate_rsp_buf
+before validating request. But the fields in payload as well as smb2 header
+is used in smb2_allocate_rsp_buf(). This patch add simple buffer size
+validation to avoid potencial out-of-bounds in request buffer.
 
-Use DIV_ROUND_UP() to ensure the correct behavior.
-
-Reported-by: 20240228012313.5934-1-yaolu@kylinos.cn
-Closes: https://lore.kernel.org/dri-devel/20240228012313.5934-1-yaolu@kylinos.cn
-Link: https://lore.kernel.org/dri-devel/20240228012313.5934-1-yaolu@kylinos.cn
-Fixes: 927f3e0253c1 ("drm/imagination: Implement MIPS firmware processor and MMU support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
-Reviewed-by: Frank Binns <frank.binns@imgtec.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_fw_mips.h |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ksmbd/smb2pdu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/imagination/pvr_fw_mips.h
-+++ b/drivers/gpu/drm/imagination/pvr_fw_mips.h
-@@ -7,13 +7,14 @@
- #include "pvr_rogue_mips.h"
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 86b1fb43104e9..57f59172d8212 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -536,6 +536,10 @@ int smb2_allocate_rsp_buf(struct ksmbd_work *work)
+ 	if (cmd == SMB2_QUERY_INFO_HE) {
+ 		struct smb2_query_info_req *req;
  
- #include <asm/page.h>
-+#include <linux/math.h>
- #include <linux/types.h>
- 
- /* Forward declaration from pvr_gem.h. */
- struct pvr_gem_object;
- 
--#define PVR_MIPS_PT_PAGE_COUNT ((ROGUE_MIPSFW_MAX_NUM_PAGETABLE_PAGES * ROGUE_MIPSFW_PAGE_SIZE_4K) \
--				>> PAGE_SHIFT)
-+#define PVR_MIPS_PT_PAGE_COUNT DIV_ROUND_UP(ROGUE_MIPSFW_MAX_NUM_PAGETABLE_PAGES * ROGUE_MIPSFW_PAGE_SIZE_4K, PAGE_SIZE)
++		if (get_rfc1002_len(work->request_buf) <
++		    offsetof(struct smb2_query_info_req, OutputBufferLength))
++			return -EINVAL;
 +
- /**
-  * struct pvr_fw_mips_data - MIPS-specific data
-  */
+ 		req = smb2_get_msg(work->request_buf);
+ 		if ((req->InfoType == SMB2_O_INFO_FILE &&
+ 		     (req->FileInfoClass == FILE_FULL_EA_INFORMATION ||
+-- 
+2.43.0
+
 
 
 
