@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23B18C52CE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07138C51C7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774D21F22BB1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF991C20B67
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381FD1304A2;
-	Tue, 14 May 2024 11:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D84013C688;
+	Tue, 14 May 2024 11:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7cc/Bl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhuwHGDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78FBD531;
-	Tue, 14 May 2024 11:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7AE13AD16;
+	Tue, 14 May 2024 11:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686131; cv=none; b=jq1z1gZZI6TyISk+ahkCGqc7vvrv97tiuGIw8QJo7qO/H7BS6v6WXHD1KCBu4sZTszeo80wzkSgmJxu8d37PNwaQVesxxdfG8NH1WlecnDnGy7VLEVlHNotC07wudT4u5wrmLBKn2vzTk0eKaIF9+AigpmrjRN6opnO++0AHb4I=
+	t=1715685018; cv=none; b=Hbi74S14OxFCNupeq2WbibJQYZ8QbQaRTXnE17bH1mx7ro0+SBtd0/SBbVU0sXT4eDR7nMfAPLcITi1CrWtNgD3m2d5GRaQcI22Wk+G3Xbi9w26QP3ErJ6nPGadWrEHwZTsfwZKJIqQpFXRuXOkxw9ZB4ZvaFH6HaCCneMqna+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686131; c=relaxed/simple;
-	bh=sUNFUjrJ+OmqpRohsmloIfW4CzyLCBThH2w+pQTqHM8=;
+	s=arc-20240116; t=1715685018; c=relaxed/simple;
+	bh=HvzTGwpkIsPYSUamkNtNMFpn7w+dLvK9BavdEgAN7rM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDTlxbLRub8WAZfgJKaqQjHEAabnITO9Xc+6VVbefaBFHRaNJf5JC4AWWsnQRNxwt7YYyVtxp2VVnhGP//AY/BUzNPESrAqOG/SD9qdDj3va2dWG440YgZgdFgvW0He9k/GLktUj0xd5WQSitwaTgI67990dK9oSgov9htxARgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7cc/Bl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD99C2BD10;
-	Tue, 14 May 2024 11:28:50 +0000 (UTC)
+	 MIME-Version; b=F3QaXjv6N0/AQbmlTwJvY7GtjbqL6HC1gugjlXOF7LDo+bvFtglzdKAwajsiL016DQFPYb1uWjIY60glFcgE2O+Rp5ZkchSbtGTR7+UPy1h4ACwp4jqLN9cxIjKEV1oWTNZU60X+GOs1NfbqAF3XvcjxWekJekxi6hvMhQmM0Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhuwHGDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1820C2BD10;
+	Tue, 14 May 2024 11:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686130;
-	bh=sUNFUjrJ+OmqpRohsmloIfW4CzyLCBThH2w+pQTqHM8=;
+	s=korg; t=1715685018;
+	bh=HvzTGwpkIsPYSUamkNtNMFpn7w+dLvK9BavdEgAN7rM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L7cc/Bl7IEL+UCZX19B4fzqkTFTH8kJIMVm2cf8wrfdvq9LgqIXNbCZ5KRMs0VTo9
-	 kRMuo6w6JGKdwZzxTAtmp/L/3777xbxUQv7lYicthSlM5S3BpG5oNX0LkeQnTxq4i2
-	 jwHi6wdlKnEH3ZxWMq9lxohdma4ExIndERCdnpkA=
+	b=RhuwHGDnIIyaSyibuVpf/jSo3l/F9TpI9OkQQ3r0vXKXsT1tP2+74uJrZ4LT/fQ8A
+	 kwKAwejMAXYxWZuA7vALVUw33G3wnTvvHQC+eEgcJbGCsoLvuEmlRZbXbudSbV4FQU
+	 6Rfc4YfC2IJOwEpW17prX14vBdq0hi77bqRZXdtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/236] pinctrl: Introduce struct pinfunction and PINCTRL_PINFUNCTION() macro
+Subject: [PATCH 6.6 122/301] scsi: ufs: core: Fix MCQ mode dev command timeout
 Date: Tue, 14 May 2024 12:16:33 +0200
-Message-ID: <20240514101021.522992816@linuxfoundation.org>
+Message-ID: <20240514101036.856288081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 443a0a0f0cf4f432c7af6654b7f2f920d411d379 ]
+[ Upstream commit 2a26a11e9c258b14be6fd98f8a85f20ac1fff66e ]
 
-There are many pin control drivers define their own data type for
-pin function representation which is the same or embed the same data
-as newly introduced one. Provide the data type and convenient macro
-for all pin control drivers.
+When a dev command times out in MCQ mode, a successfully cleared command
+should cause a retry. However, because we currently return 0, the caller
+considers the command a success which causes the following error to be
+logged: "Invalid offset 0x0 in descriptor IDN 0x9, length 0x0".
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Stable-dep-of: fed6d9a8e6a6 ("pinctrl: baytrail: Fix selecting gpio pinctrl state")
+Retry if clearing the command was successful.
+
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240328111244.3599-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pinctrl/pinctrl.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/ufs/core/ufshcd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/pinctrl/pinctrl.h b/include/linux/pinctrl/pinctrl.h
-index 487117ccb1bc2..fb25085d09224 100644
---- a/include/linux/pinctrl/pinctrl.h
-+++ b/include/linux/pinctrl/pinctrl.h
-@@ -206,6 +206,26 @@ extern int pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
- 				const char *pin_group, const unsigned **pins,
- 				unsigned *num_pins);
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 8005373e20bae..344806330be16 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -3064,7 +3064,9 @@ static int ufshcd_wait_for_dev_cmd(struct ufs_hba *hba,
  
-+/**
-+ * struct pinfunction - Description about a function
-+ * @name: Name of the function
-+ * @groups: An array of groups for this function
-+ * @ngroups: Number of groups in @groups
-+ */
-+struct pinfunction {
-+	const char *name;
-+	const char * const *groups;
-+	size_t ngroups;
-+};
-+
-+/* Convenience macro to define a single named pinfunction */
-+#define PINCTRL_PINFUNCTION(_name, _groups, _ngroups)	\
-+(struct pinfunction) {					\
-+		.name = (_name),			\
-+		.groups = (_groups),			\
-+		.ngroups = (_ngroups),			\
-+	}
-+
- #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_PINCTRL)
- extern struct pinctrl_dev *of_pinctrl_get(struct device_node *np);
- #else
+ 		/* MCQ mode */
+ 		if (is_mcq_enabled(hba)) {
+-			err = ufshcd_clear_cmd(hba, lrbp->task_tag);
++			/* successfully cleared the command, retry if needed */
++			if (ufshcd_clear_cmd(hba, lrbp->task_tag) == 0)
++				err = -EAGAIN;
+ 			hba->dev_cmd.complete = NULL;
+ 			return err;
+ 		}
 -- 
 2.43.0
 
