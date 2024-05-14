@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EF28C4FE0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611768C5154
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ABDA1C20B78
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A34281EFF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7BC5FDB5;
-	Tue, 14 May 2024 10:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F56130495;
+	Tue, 14 May 2024 10:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFU34o5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2m3tOG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D0A5FB8A;
-	Tue, 14 May 2024 10:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37D17B3E5;
+	Tue, 14 May 2024 10:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682613; cv=none; b=RgGqq7800Oy/OJ1lCf9gSdPAB34di6DGlfXzCl4YX06glb7YYf6ahZnL1eh7KC4SngnTXkFbw7JxkkX4BaZmL8I49Vn5ARjsDqrovLVsWFg1c9i5tQZzr6UxzdUo2hWXZvN6ZU7DXZyfgnAY3ynTQiTvRMaZGZF9kYTHYNCGPoc=
+	t=1715684320; cv=none; b=X/ZIP31P/M8UEBf20EKBfw3XaAzSFCOeFt5Ak82lY3F6sSwkqd+RQKsTb+K924rEFcwjS7szZtFhqeEqAdBY9399zxVLI0MteyCaUUcuB6V02gSzVcNJyt0AcvfEw7nB/Rh+JlhUGzFjuvkwGFU98VQnGESXlQ0wDR2gOzkRzxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682613; c=relaxed/simple;
-	bh=MA7FEHc6g44kMyClAdl83LBwomDESeR9V7A/F9kYq7M=;
+	s=arc-20240116; t=1715684320; c=relaxed/simple;
+	bh=PO3kM1xeeqlL8jrxv22/Xyn6bZc29w85Xmsu/V7kTP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+Uc64/9cEyoPxBqZPHtOUOSbzvPLBfiM7KITiCs2EOW2FBsc+SRVPoTkNqyqGq3K/b9hqA8csiJ4bpbvQH0zOXq1Rq9UlDO4CXtJnPUBmPS/QQ2AKKg5Gdc+UCgQ9gpnkGavqBI/Z3sNj9u0sbAAStJjGlzaIrAzG3pJs/2Q18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFU34o5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4CCC2BD10;
-	Tue, 14 May 2024 10:30:12 +0000 (UTC)
+	 MIME-Version; b=ACdExYKjRBGytQoUCbsLC7pPv65wDSgxNR80ymvLNUkSoPYQSN+B4lDAuMeGCX44j/TM8I5pj39ZqchbDt/jD5vS08o63dadKylJ52hEDlWsrUNpKhpxS2cWCzj3tnjIflaPgWvXZXXK+qMXgJvAHZq+99ol/HTMFVWXW4i83hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2m3tOG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D921BC2BD10;
+	Tue, 14 May 2024 10:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682613;
-	bh=MA7FEHc6g44kMyClAdl83LBwomDESeR9V7A/F9kYq7M=;
+	s=korg; t=1715684319;
+	bh=PO3kM1xeeqlL8jrxv22/Xyn6bZc29w85Xmsu/V7kTP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFU34o5F3IpumP0tY+Yo8qv1yeJoZTQoJMjE2GIDVCA5xBcH7DLGLDONNXSOINyF8
-	 H5sgNCN7k+vtCIfNSQW6K5g7qtCVyO5r4XCNNcWyZCRBy8l/jIByDofLH86WdwOJQT
-	 ExH5znD9mjp4UGuar2gu5hUOPfCj11O/m77etEmo=
+	b=S2m3tOG7miBfb2Hcl0yDtAh+g4OKzQrc4xBVZEKiARnCyHwaDXM/izqO60eEfC61d
+	 wY9FcJvid6xw7DVqliH1xfc4nr71DskXofty7zxtN5MEHD5InqJV7ZdwxcDv0m/mMn
+	 tp5mI7JsGtm/6syh4NQQULBF9NlVgKzmYvq6zmYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaurav Batra <gbatra@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 090/336] powerpc/pseries/iommu: LPAR panics during boot up with a frozen PE
+Subject: [PATCH 6.6 023/301] power: supply: mt6360_charger: Fix of_match for usb-otg-vbus regulator
 Date: Tue, 14 May 2024 12:14:54 +0200
-Message-ID: <20240514101042.004710692@linuxfoundation.org>
+Message-ID: <20240514101033.120955883@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaurav Batra <gbatra@linux.ibm.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 49a940dbdc3107fecd5e6d3063dc07128177e058 ]
+[ Upstream commit 1e0fb113646182e073539db96016b00cfeb18ecc ]
 
-At the time of LPAR boot up, partition firmware provides Open Firmware
-property ibm,dma-window for the PE. This property is provided on the PCI
-bus the PE is attached to.
+The of_match shall correspond to the name of the regulator subnode,
+or the deprecated `regulator-compatible` property must be used:
+failing to do so, the regulator won't probe (and the driver will
+as well not probe).
 
-There are execptions where the partition firmware might not provide this
-property for the PE at the time of LPAR boot up. One of the scenario is
-where the firmware has frozen the PE due to some error condition. This
-PE is frozen for 24 hours or unless the whole system is reinitialized.
+Since the devicetree binding for this driver is actually correct
+and wants DTs to use the "usb-otg-vbus-regulator" subnode name,
+fix this driver by aligning the `of_match` string to what the DT
+binding wants.
 
-Within this time frame, if the LPAR is booted, the frozen PE will be
-presented to the LPAR but ibm,dma-window property could be missing.
-
-Today, under these circumstances, the LPAR oopses with NULL pointer
-dereference, when configuring the PCI bus the PE is attached to.
-
-  BUG: Kernel NULL pointer dereference on read at 0x000000c8
-  Faulting instruction address: 0xc0000000001024c0
-  Oops: Kernel access of bad area, sig: 7 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in:
-  Supported: Yes
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.4.0-150600.9-default #1
-  Hardware name: IBM,9043-MRX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NM1060_023) hv:phyp pSeries
-  NIP:  c0000000001024c0 LR: c0000000001024b0 CTR: c000000000102450
-  REGS: c0000000037db5c0 TRAP: 0300   Not tainted  (6.4.0-150600.9-default)
-  MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 28000822  XER: 00000000
-  CFAR: c00000000010254c DAR: 00000000000000c8 DSISR: 00080000 IRQMASK: 0
-  ...
-  NIP [c0000000001024c0] pci_dma_bus_setup_pSeriesLP+0x70/0x2a0
-  LR [c0000000001024b0] pci_dma_bus_setup_pSeriesLP+0x60/0x2a0
-  Call Trace:
-    pci_dma_bus_setup_pSeriesLP+0x60/0x2a0 (unreliable)
-    pcibios_setup_bus_self+0x1c0/0x370
-    __of_scan_bus+0x2f8/0x330
-    pcibios_scan_phb+0x280/0x3d0
-    pcibios_init+0x88/0x12c
-    do_one_initcall+0x60/0x320
-    kernel_init_freeable+0x344/0x3e4
-    kernel_init+0x34/0x1d0
-    ret_from_kernel_user_thread+0x14/0x1c
-
-Fixes: b1fc44eaa9ba ("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window")
-Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240422205141.10662-1-gbatra@linux.ibm.com
+Fixes: 0402e8ebb8b8 ("power: supply: mt6360_charger: add MT6360 charger support")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240410084405.1389378-1-angelogioacchino.delregno@collabora.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/power/supply/mt6360_charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e8c4129697b14..b1e6d275cda9e 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -786,8 +786,16 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
- 	 * parent bus. During reboot, there will be ibm,dma-window property to
- 	 * define DMA window. For kdump, there will at least be default window or DDW
- 	 * or both.
-+	 * There is an exception to the above. In case the PE goes into frozen
-+	 * state, firmware may not provide ibm,dma-window property at the time
-+	 * of LPAR boot up.
- 	 */
+diff --git a/drivers/power/supply/mt6360_charger.c b/drivers/power/supply/mt6360_charger.c
+index 1305cba61edd4..aca123783efcc 100644
+--- a/drivers/power/supply/mt6360_charger.c
++++ b/drivers/power/supply/mt6360_charger.c
+@@ -588,7 +588,7 @@ static const struct regulator_ops mt6360_chg_otg_ops = {
+ };
  
-+	if (!pdn) {
-+		pr_debug("  no ibm,dma-window property !\n");
-+		return;
-+	}
-+
- 	ppci = PCI_DN(pdn);
- 
- 	pr_debug("  parent is %pOF, iommu_table: 0x%p\n",
+ static const struct regulator_desc mt6360_otg_rdesc = {
+-	.of_match = "usb-otg-vbus",
++	.of_match = "usb-otg-vbus-regulator",
+ 	.name = "usb-otg-vbus",
+ 	.ops = &mt6360_chg_otg_ops,
+ 	.owner = THIS_MODULE,
 -- 
 2.43.0
 
