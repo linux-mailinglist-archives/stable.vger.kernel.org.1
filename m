@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC45E8C51E7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094748C50BF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 655AD1F227DB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 723A0B20B2B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF5B76036;
-	Tue, 14 May 2024 11:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BFE6D1AF;
+	Tue, 14 May 2024 10:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MX+kQKll"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWOUwlMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD776D1A1;
-	Tue, 14 May 2024 11:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0135476026;
+	Tue, 14 May 2024 10:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685192; cv=none; b=MSy+CYo4ffbg+PwVGXS4JBL0qt/LNauiIphUARW3cefVaHbd0tO5YxhCdU5vxStnVFTnY4RTdEttqGTVEpvb1jTHXkRS74Iv4kbn7Y7NAXJlCtYAFuCoQM9XQ+tI/c2AlQ4Uz4Qd+GpWPcnUo+O5VDxJQ1eseoq6ICCIB2Haixk=
+	t=1715683639; cv=none; b=snNYbM8fi0P7XDRSUneZCowOGURAFTJ1x+SsjmUDV+ABP+fsAkTvjvn98RfqSTxbJkDa1ZsH/D47Gxjz/0ZgzYcpvpWxLz8fUKeUNF+c6GY7oZPfXtpiQ1nxTb5bnkCI50imk6ldTzSeYtPUffFSq4/Rn3CQGfdWs5J3y56qLhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685192; c=relaxed/simple;
-	bh=z4n4L417RAsombjttlhBVVHZhX7i2r1VL80gD6ApZRs=;
+	s=arc-20240116; t=1715683639; c=relaxed/simple;
+	bh=QmcQ5ApsL+i9u6LsFJtq1I00FTJh3bZ5nN8YfB19oaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNqKYIs7z5OPVu0KVnhAQvnpZVNLyO1tTVSVCk0/dQiFlTv1CNa0+ETuX2hGD0ogHA4DIqzhfkgtjJkD0Qi0wOUFqQJ+ApqZP0KT/VtPNamlYimYgUxFzLyJggJxzpO21Cp8gvJ4ZQuCfmD8OgUxEdfOLGBhIjJvXMsNC4B3ovY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MX+kQKll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8689BC2BD10;
-	Tue, 14 May 2024 11:13:11 +0000 (UTC)
+	 MIME-Version; b=rZyWndLFqPGCDX/NEaSzPy7x/TAsCj+jP7jlPxjW/+intpkQP5+72t4bCf2/1jE3akwo/AUL+98rkvXw22wYAy0RKnTYDicIL2w5a2DiGYvjn6LPqZwv8pozPUhofI2qUAN1WlYUHtLgxg0yh11BwCoHB8VfZHSLJWcJdV1nRSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWOUwlMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB03C2BD10;
+	Tue, 14 May 2024 10:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685192;
-	bh=z4n4L417RAsombjttlhBVVHZhX7i2r1VL80gD6ApZRs=;
+	s=korg; t=1715683638;
+	bh=QmcQ5ApsL+i9u6LsFJtq1I00FTJh3bZ5nN8YfB19oaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MX+kQKll9h2kIUw9CpEv+vp14L04IECdlyE6oZuVhibf9NpIDpfMuomEYrK14yaWT
-	 HthjCkXSBgxsQp3WI5rN++Nh31L/kE79DfxSmtv9qtGNKXaBMiuJYEDO1g1ywDY5vt
-	 /RS9ZT7NKo3MF5mIoFVwFSTYKtn99KRbzxizJdHc=
+	b=sWOUwlMOGYZYfRW9fiVZiXdu4dS6O5w81WipwzDF4+vRIoOpQS9JvrpN8BqGCjXcx
+	 iCx90ZgAlJ3Yad9Ff59GTCSVYl8IzCyNwHYxMdHbQKBdDjMthwyKOIA7C4mdFB3pJ6
+	 SssJRL1/07rl3FPPlRhRiNXizQke7rhfq0jxPht4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Lee Jones <joneslee@google.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	John Stultz <jstultz@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/301] selftests: timers: Fix valid-adjtimex signed left-shift undefined behavior
+	patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+	Simon Wilkinson <sxw@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeffrey Altman <"jaltman@auristor.commailto:jaltman"@auristor.com>
+Subject: [PATCH 6.8 217/336] rxrpc: Fix congestion control algorithm
 Date: Tue, 14 May 2024 12:17:01 +0200
-Message-ID: <20240514101037.919374350@linuxfoundation.org>
+Message-ID: <20240514101046.805714948@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 076361362122a6d8a4c45f172ced5576b2d4a50d ]
+[ Upstream commit ba4e103848d3a2a28a0445e39f4a9564187efe54 ]
 
-The struct adjtimex freq field takes a signed value who's units are in
-shifted (<<16) parts-per-million.
+Make the following fixes to the congestion control algorithm:
 
-Unfortunately for negative adjustments, the straightforward use of:
+ (1) Don't vary the cwnd starting value by the size of RXRPC_TX_SMSS since
+     that's currently held constant - set to the size of a jumbo subpacket
+     payload so that we can create jumbo packets on the fly.  The current
+     code invariably picks 3 as the starting value.
 
-  freq = ppm << 16 trips undefined behavior warnings with clang:
+     Further, the starting cwnd needs to be an even number because we ack
+     every other packet, so set it to 4.
 
-valid-adjtimex.c:66:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -499<<16,
-        ~~~~^
-valid-adjtimex.c:67:6: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
-        -450<<16,
-        ~~~~^
-..
+ (2) Don't cut ssthresh when we see an ACK come from the peer with a
+     receive window (rwind) less than ssthresh.  ssthresh keeps track of
+     characteristics of the connection whereas rwind may be reduced by the
+     peer for any reason - and may be reduced to 0.
 
-Fix it by using a multiply by (1 << 16) instead of shifting negative values
-in the valid-adjtimex test case. Align the values for better readability.
-
-Reported-by: Lee Jones <joneslee@google.com>
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240409202222.2830476-1-jstultz@google.com
-Link: https://lore.kernel.org/lkml/0c6d4f0d-2064-4444-986b-1d1ed782135f@collabora.com/
+Fixes: 1fc4fa2ac93d ("rxrpc: Fix congestion management")
+Fixes: 0851115090a3 ("rxrpc: Reduce ssthresh to peer's receive window")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Suggested-by: Simon Wilkinson <sxw@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com <mailto:jaltman@auristor.com>>
+Link: https://lore.kernel.org/r/20240503150749.1001323-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/timers/valid-adjtimex.c | 73 +++++++++----------
- 1 file changed, 36 insertions(+), 37 deletions(-)
+ net/rxrpc/ar-internal.h | 2 +-
+ net/rxrpc/call_object.c | 7 +------
+ net/rxrpc/input.c       | 3 ---
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/timers/valid-adjtimex.c b/tools/testing/selftests/timers/valid-adjtimex.c
-index 48b9a803235a8..d13ebde203221 100644
---- a/tools/testing/selftests/timers/valid-adjtimex.c
-+++ b/tools/testing/selftests/timers/valid-adjtimex.c
-@@ -21,9 +21,6 @@
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  *   GNU General Public License for more details.
-  */
--
--
--
- #include <stdio.h>
- #include <stdlib.h>
- #include <time.h>
-@@ -62,45 +59,47 @@ int clear_time_state(void)
- #define NUM_FREQ_OUTOFRANGE 4
- #define NUM_FREQ_INVALID 2
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 7818aae1be8e0..4301dd20b4eaa 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -692,7 +692,7 @@ struct rxrpc_call {
+ 	 * packets) rather than bytes.
+ 	 */
+ #define RXRPC_TX_SMSS		RXRPC_JUMBO_DATALEN
+-#define RXRPC_MIN_CWND		(RXRPC_TX_SMSS > 2190 ? 2 : RXRPC_TX_SMSS > 1095 ? 3 : 4)
++#define RXRPC_MIN_CWND		4
+ 	u8			cong_cwnd;	/* Congestion window size */
+ 	u8			cong_extra;	/* Extra to send for congestion management */
+ 	u8			cong_ssthresh;	/* Slow-start threshold */
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index 9fc9a6c3f6858..3847b14af7f3c 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -175,12 +175,7 @@ struct rxrpc_call *rxrpc_alloc_call(struct rxrpc_sock *rx, gfp_t gfp,
+ 	call->rx_winsize = rxrpc_rx_window_size;
+ 	call->tx_winsize = 16;
  
-+#define SHIFTED_PPM (1 << 16)
-+
- long valid_freq[NUM_FREQ_VALID] = {
--	-499<<16,
--	-450<<16,
--	-400<<16,
--	-350<<16,
--	-300<<16,
--	-250<<16,
--	-200<<16,
--	-150<<16,
--	-100<<16,
--	-75<<16,
--	-50<<16,
--	-25<<16,
--	-10<<16,
--	-5<<16,
--	-1<<16,
-+	 -499 * SHIFTED_PPM,
-+	 -450 * SHIFTED_PPM,
-+	 -400 * SHIFTED_PPM,
-+	 -350 * SHIFTED_PPM,
-+	 -300 * SHIFTED_PPM,
-+	 -250 * SHIFTED_PPM,
-+	 -200 * SHIFTED_PPM,
-+	 -150 * SHIFTED_PPM,
-+	 -100 * SHIFTED_PPM,
-+	  -75 * SHIFTED_PPM,
-+	  -50 * SHIFTED_PPM,
-+	  -25 * SHIFTED_PPM,
-+	  -10 * SHIFTED_PPM,
-+	   -5 * SHIFTED_PPM,
-+	   -1 * SHIFTED_PPM,
- 	-1000,
--	1<<16,
--	5<<16,
--	10<<16,
--	25<<16,
--	50<<16,
--	75<<16,
--	100<<16,
--	150<<16,
--	200<<16,
--	250<<16,
--	300<<16,
--	350<<16,
--	400<<16,
--	450<<16,
--	499<<16,
-+	    1 * SHIFTED_PPM,
-+	    5 * SHIFTED_PPM,
-+	   10 * SHIFTED_PPM,
-+	   25 * SHIFTED_PPM,
-+	   50 * SHIFTED_PPM,
-+	   75 * SHIFTED_PPM,
-+	  100 * SHIFTED_PPM,
-+	  150 * SHIFTED_PPM,
-+	  200 * SHIFTED_PPM,
-+	  250 * SHIFTED_PPM,
-+	  300 * SHIFTED_PPM,
-+	  350 * SHIFTED_PPM,
-+	  400 * SHIFTED_PPM,
-+	  450 * SHIFTED_PPM,
-+	  499 * SHIFTED_PPM,
- };
+-	if (RXRPC_TX_SMSS > 2190)
+-		call->cong_cwnd = 2;
+-	else if (RXRPC_TX_SMSS > 1095)
+-		call->cong_cwnd = 3;
+-	else
+-		call->cong_cwnd = 4;
++	call->cong_cwnd = RXRPC_MIN_CWND;
+ 	call->cong_ssthresh = RXRPC_TX_MAX_WINDOW;
  
- long outofrange_freq[NUM_FREQ_OUTOFRANGE] = {
--	-1000<<16,
--	-550<<16,
--	550<<16,
--	1000<<16,
-+	-1000 * SHIFTED_PPM,
-+	 -550 * SHIFTED_PPM,
-+	  550 * SHIFTED_PPM,
-+	 1000 * SHIFTED_PPM,
- };
+ 	call->rxnet = rxnet;
+diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
+index 718ffd184ddb6..f7304e06aadca 100644
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -688,9 +688,6 @@ static void rxrpc_input_ack_trailer(struct rxrpc_call *call, struct sk_buff *skb
+ 		call->tx_winsize = rwind;
+ 	}
  
- #define LONG_MAX (~0UL>>1)
+-	if (call->cong_ssthresh > rwind)
+-		call->cong_ssthresh = rwind;
+-
+ 	mtu = min(ntohl(trailer->maxMTU), ntohl(trailer->ifMTU));
+ 
+ 	peer = call->peer;
 -- 
 2.43.0
 
