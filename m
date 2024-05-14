@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593148C5185
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809348C4FE2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A731F2271A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1C861C20EA5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869E1139D1B;
-	Tue, 14 May 2024 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6306D12F5AE;
+	Tue, 14 May 2024 10:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9j4RLtM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nefyon8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F19139D15;
-	Tue, 14 May 2024 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7E0130A47;
+	Tue, 14 May 2024 10:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684623; cv=none; b=i7zajfW5F904BAF8u6XxaqsYjp8Z0Prd6JQDwHBEd0DnFcY+NMwF9OmWpTplEqL232Gw5SzBKgUGObJfVf3h3T6gWGOzDvzSKxLN4YJX7DiZQfVGuKbXpkOGQDrHSwB7XbQMcnwnrgJs3h3q3QX6ElI+LOdLNLCXrQcIUXp3/OU=
+	t=1715682626; cv=none; b=a8rvipIrrYCaYK+peYmDH0qG48acY4TlvRkvmgPyi/3Nl2MXwAaVme4NX9lTegciXDo6vnlL/xVoFzZC/qGqAML7+zwp0g/f/3qYkfpZ+S2sYjDFTAYKvbPTX22k8F0qentZ2RZ9JCmHaa6tDJJiCVZUKU+WsFpQMf/LqVOkjYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684623; c=relaxed/simple;
-	bh=B2xlL3tkl4l7QJ8YW8gY4cyT4PDFo0hnsUo1BUWr+Y0=;
+	s=arc-20240116; t=1715682626; c=relaxed/simple;
+	bh=3/s2i8o6Jw2YTyrBPW2yH8a4HI6r8ZuJlB/m437R1iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSMwKWDFmEtu0zFc1+aIGTV6uHez42k5RvVRnz4nWv+06p3kmeqzHmKb+ahioox0uJlYFBofqcIs74gve5Q5jYQS3t7erOEPyRFaJJAF8SzULBv5H32Oh7YMH0VBy+uJzRs9Gvc+XhyxJQyNnuyMUjZzpYGSvMHTJcZRCWsrPRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9j4RLtM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D45C2BD10;
-	Tue, 14 May 2024 11:03:42 +0000 (UTC)
+	 MIME-Version; b=dWHlztwxMmO2H5ej9RHm066xt7/cWLRu+faDJxPnFT65KBK2C3TiRwjk4DxaBbcw0LPzsiZMq5hWzHkxVZiu6uVGmbx+INiog0x2bk/Va0+RqY3QStAKOJLAVA6hbIjAhfqKTX8jCEoPhP1l/mvkykuo2PxrZnGrSocbBPUmcYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nefyon8e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F95FC2BD10;
+	Tue, 14 May 2024 10:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684623;
-	bh=B2xlL3tkl4l7QJ8YW8gY4cyT4PDFo0hnsUo1BUWr+Y0=;
+	s=korg; t=1715682625;
+	bh=3/s2i8o6Jw2YTyrBPW2yH8a4HI6r8ZuJlB/m437R1iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9j4RLtMKGhqe6nvUeE4IewuAgr39g1k92YXY7Aet/BD71gSRVC4cMna/OzDS2wMV
-	 d+1cfaghhJ3o9VJlIqYK61p7AalaGQmPUrXN7NdQKNAoR9T7gzIGkmIFog2V+U/xhC
-	 rb3dS68SxnNciBCEpWvQiEUb6q2ZoZtXgXOVSX8U=
+	b=nefyon8exRfhmJWGc6OXdBL7lpHJWGG4YQN6xpcdiEi2SCCH9KC55BJ+CGs/yY2R0
+	 btJQbzxAf+L23lfMSiDN4oBt5O0SCCuDYiGjimTlojascP/YcLVkNAuCeoAuCaOfxz
+	 SUQ752CSPkQZ8JH5byXAdGQF7JGCkIPkBvk5Y6C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zeng Heng <zengheng4@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/301] pinctrl: devicetree: fix refcount leak in pinctrl_dt_to_map()
+Subject: [PATCH 6.8 091/336] EDAC/versal: Do not log total error counts
 Date: Tue, 14 May 2024 12:14:55 +0200
-Message-ID: <20240514101033.158214285@linuxfoundation.org>
+Message-ID: <20240514101042.041815204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 
-[ Upstream commit a0cedbcc8852d6c77b00634b81e41f17f29d9404 ]
+[ Upstream commit 1a24733e80771d8eef656e515306a560519856a9 ]
 
-If we fail to allocate propname buffer, we need to drop the reference
-count we just took. Because the pinctrl_dt_free_maps() includes the
-droping operation, here we call it directly.
+When logging errors, the driver currently logs the total error count.
+However, it should log the current error only. Fix it.
 
-Fixes: 91d5c5060ee2 ("pinctrl: devicetree: fix null pointer dereferencing in pinctrl_dt_to_map")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <20240415105328.3651441-1-zengheng4@huawei.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  [ bp: Rewrite text. ]
+
+Fixes: 6f15b178cd63 ("EDAC/versal: Add a Xilinx Versal memory controller driver")
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240425121942.26378-4-shubhrajyoti.datta@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/edac/versal_edac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 6e0a40962f384..5ee746cb81f59 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -220,14 +220,16 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 	for (state = 0; ; state++) {
- 		/* Retrieve the pinctrl-* property */
- 		propname = kasprintf(GFP_KERNEL, "pinctrl-%d", state);
--		if (!propname)
--			return -ENOMEM;
-+		if (!propname) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
- 		prop = of_find_property(np, propname, &size);
- 		kfree(propname);
- 		if (!prop) {
- 			if (state == 0) {
--				of_node_put(np);
--				return -ENODEV;
-+				ret = -ENODEV;
-+				goto err;
- 			}
- 			break;
- 		}
+diff --git a/drivers/edac/versal_edac.c b/drivers/edac/versal_edac.c
+index 62caf454b5670..a840c6922e5b9 100644
+--- a/drivers/edac/versal_edac.c
++++ b/drivers/edac/versal_edac.c
+@@ -423,7 +423,7 @@ static void handle_error(struct mem_ctl_info *mci, struct ecc_status *stat)
+ 			 convert_to_physical(priv, pinf), pinf.burstpos);
+ 
+ 		edac_mc_handle_error(HW_EVENT_ERR_CORRECTED, mci,
+-				     priv->ce_cnt, 0, 0, 0, 0, 0, -1,
++				     1, 0, 0, 0, 0, 0, -1,
+ 				     priv->message, "");
+ 	}
+ 
+@@ -436,7 +436,7 @@ static void handle_error(struct mem_ctl_info *mci, struct ecc_status *stat)
+ 			 convert_to_physical(priv, pinf), pinf.burstpos);
+ 
+ 		edac_mc_handle_error(HW_EVENT_ERR_UNCORRECTED, mci,
+-				     priv->ue_cnt, 0, 0, 0, 0, 0, -1,
++				     1, 0, 0, 0, 0, 0, -1,
+ 				     priv->message, "");
+ 	}
+ 
 -- 
 2.43.0
 
