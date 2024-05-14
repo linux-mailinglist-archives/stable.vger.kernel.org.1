@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161668C5329
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7399B8C5213
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C09D1C227A9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177381F2284F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4AE13BAD4;
-	Tue, 14 May 2024 11:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD4F6BFAC;
+	Tue, 14 May 2024 11:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYnRM1Cj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JobI99wB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4C213B284;
-	Tue, 14 May 2024 11:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8956F12AAF7;
+	Tue, 14 May 2024 11:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686330; cv=none; b=eMlUBVcjTqmS6MC7mttWu51MTDyLunoVVQJvpiYfUfwu9Prtjd5dfHB09ykxTxcTt1yGUJN8Km7tRH6Gv9NhvNxBKCXbXec9aEASNSRmqAzWKjNnjaYs0NOxJ95DWtIlirXZrfz3oVCm5j+KrJFit4K7LyCYZrDZ3UulhZ57G7k=
+	t=1715685457; cv=none; b=lcZVUcZf4qeQ0U4uQGhVONMVeK4PkeFK6G5Gn8hbihHI/dijr/5eRBVipVvzC919xD2Y0Hap3tIoTIPjk/pHlvL2+uTE72gv3h2fzHgyGgWDaOzmy4n8LX7zSrV1CckSwnPU0/yOSGAzksxTTESu/CO4mHr6cHkAIm6VuYMCVIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686330; c=relaxed/simple;
-	bh=bBVVUMqPuq9VasLlhOvV0FAejTBB0pCbYvkLcDxiwEc=;
+	s=arc-20240116; t=1715685457; c=relaxed/simple;
+	bh=hhR/I1LSI41mmktZ8ilIi/+suh/J1xC1b51U5gyJAuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7AUNkz1s+LGuwdn91cP24eVOZKjvr6Di44q0F7uxBnlDmALoYGvsdPsT/qHxVouVbP6iX1e+WBPt125c2wFhNknVhV6vpzYHewmwoqttE2K9R4EXA5qangSXv2EIihZ4xXwwdIE66AIvzBz/0u/GBX/B9f6YQOJsq6eMNOhUiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYnRM1Cj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857F2C2BD10;
-	Tue, 14 May 2024 11:32:09 +0000 (UTC)
+	 MIME-Version; b=JyLJYf909TQMLWPjwGzozi0H3C1exEoRLMAXg41wBrwZedeQYsB41udPmhroT4HIR1M0jjuMeTqr8hLT7UgHzI5giw/qX2O4ChyGT+GWX+pSQE26yc/wjmnrWI2iivDVA3V+QhQqILOczkorzFwEK1vbX9KS7dDrVpAcQIm6BLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JobI99wB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BB6C2BD10;
+	Tue, 14 May 2024 11:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686329;
-	bh=bBVVUMqPuq9VasLlhOvV0FAejTBB0pCbYvkLcDxiwEc=;
+	s=korg; t=1715685457;
+	bh=hhR/I1LSI41mmktZ8ilIi/+suh/J1xC1b51U5gyJAuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYnRM1CjY2IukHSn0yUkjVzMjB+Bi9dOiVAmVKJadiJOqaJnHWeo4e0fibmNuLnJ+
-	 /Lo5ZzrnqQ3UFFd09UcnTgx9W59hx0+DGSPlRrnf5D0wUTSWZbPcZ6S0GKSUiAdVNJ
-	 hExhgW1qkw1VD0GUbn+DJLw/zsKCLqHCFZ9MzKr8=
+	b=JobI99wBmXGuC+7LlMcSWFwzdNlWhoLiB5bsvuCPRyC9OWBOz9/43qm8STn64OgRw
+	 kl7VCqty1ctgH3MxtWRqyUVuQJ12Z2/YWCr8+OVP179ASYnDjvd0HRFtKlj9ekW9ix
+	 2ov0n3pN96+N1QhYV01pQjGpC9HLB+yhxHtV0ALc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/236] net: mark racy access on sk->sk_rcvbuf
+Subject: [PATCH 6.6 191/301] ipv6: Fix potential uninit-value access in __ip6_make_skb()
 Date: Tue, 14 May 2024 12:17:42 +0200
-Message-ID: <20240514101024.166817366@linuxfoundation.org>
+Message-ID: <20240514101039.465185510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit c2deb2e971f5d9aca941ef13ee05566979e337a4 ]
+[ Upstream commit 4e13d3a9c25b7080f8a619f961e943fe08c2672c ]
 
-sk->sk_rcvbuf in __sock_queue_rcv_skb() and __sk_receive_skb() can be
-changed by other threads. Mark this as benign using READ_ONCE().
+As it was done in commit fc1092f51567 ("ipv4: Fix uninit-value access in
+__ip_make_skb()") for IPv4, check FLOWI_FLAG_KNOWN_NH on fl6->flowi6_flags
+instead of testing HDRINCL on the socket to avoid a race condition which
+causes uninit-value access.
 
-This patch is aimed at reducing the number of benign races reported by
-KCSAN in order to focus future debugging effort on harmful races.
-
-Signed-off-by: linke li <lilinke99@qq.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Fixes: ea30388baebc ("ipv6: Fix an uninit variable access bug in __ip6_make_skb()")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/ip6_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 550af616f5359..48199e6e8f161 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -482,7 +482,7 @@ int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
- 	unsigned long flags;
- 	struct sk_buff_head *list = &sk->sk_receive_queue;
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 53fe1375b147c..fba789cbd215c 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -2003,7 +2003,7 @@ struct sk_buff *__ip6_make_skb(struct sock *sk,
+ 		u8 icmp6_type;
  
--	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf) {
-+	if (atomic_read(&sk->sk_rmem_alloc) >= READ_ONCE(sk->sk_rcvbuf)) {
- 		atomic_inc(&sk->sk_drops);
- 		trace_sock_rcvqueue_full(sk, skb);
- 		return -ENOMEM;
-@@ -552,7 +552,7 @@ int __sk_receive_skb(struct sock *sk, struct sk_buff *skb,
- 
- 	skb->dev = NULL;
- 
--	if (sk_rcvqueues_full(sk, sk->sk_rcvbuf)) {
-+	if (sk_rcvqueues_full(sk, READ_ONCE(sk->sk_rcvbuf))) {
- 		atomic_inc(&sk->sk_drops);
- 		goto discard_and_relse;
- 	}
+ 		if (sk->sk_socket->type == SOCK_RAW &&
+-		   !inet_test_bit(HDRINCL, sk))
++		   !(fl6->flowi6_flags & FLOWI_FLAG_KNOWN_NH))
+ 			icmp6_type = fl6->fl6_icmp_type;
+ 		else
+ 			icmp6_type = icmp6_hdr(skb)->icmp6_type;
 -- 
 2.43.0
 
