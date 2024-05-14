@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858648C5457
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 003648C5565
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1BF11C22A17
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9721EB21E01
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5161A6DCE3;
-	Tue, 14 May 2024 11:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD6926AC5;
+	Tue, 14 May 2024 11:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iKnZRXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcWQ7A94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F12D2D60A;
-	Tue, 14 May 2024 11:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1A6F9D4;
+	Tue, 14 May 2024 11:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687135; cv=none; b=IyGnq2/ObfvCW+ieShMB5GMTZDIcqg1g8CXqkp3mtSVi3OfgZs41u+pVp8iIc59lUUfPwy7QCNIvZdwsxoyg+FJ+FB76WG2eh3YHiRpbmilR0bdBXa8NAyFsIu1hcrFQy+WGO1fYLHcyuWmYFlmxx4ieOf4f7cl51efQEfM/a5g=
+	t=1715687862; cv=none; b=V0zNzg3RrMsdK8m3wM9nvKF5/CWKGlF0pbhK/MzGSu4dDge5Z03Mtama0ZUDw0DEWD1s8jUNLEuz2NWJM3L/ELTxErnTnVcIWteGOg2WJr+G3tnp+Oema7GV4f7afPXgSAUt1o/Wk7Gx6E9kOLS3tMzy8xVfl313u8BbDWZEkqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687135; c=relaxed/simple;
-	bh=MJQ1x0LHfHJx6gdox1ywThqcujcwhjJS19GSS/nDzvw=;
+	s=arc-20240116; t=1715687862; c=relaxed/simple;
+	bh=15YwYgFhq2uoiQOLrSw9MQTStDw+6vQw3aIySwR1b98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUd9Y3uJ/u3sVH+ZotSquCAWykGjSCmtMe10x3Jch0hwMUyOhggb44PAQMFAJjqKqHHswOLrG63SKURk+Pwi5jx7/XKJnFcOXUXv4Mc+ZOPpc6SjI2JsJ3oqu5whrIXdqr4/M/IdcAF0sIZ6Ue/VzFG/B1VbcRd/YO7Hb+p6PVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iKnZRXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802ECC2BD10;
-	Tue, 14 May 2024 11:45:34 +0000 (UTC)
+	 MIME-Version; b=jc/CqhyZ+4eA5H+hK3m4BfZP7UE0lG7HTe8JdURX4r7olsXaqfIEuNwtX8QEb+FdQ9y3y+OIn/SUjEQydkcmQrmTObt8iYxFuhnCOM/W5VmA/s4pJ50ibYmEhg9GGrmU+6qiNAcDhXuSJk399/dEkVF3T26ab9PNz22RD0MdtVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcWQ7A94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF60C2BD10;
+	Tue, 14 May 2024 11:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687134;
-	bh=MJQ1x0LHfHJx6gdox1ywThqcujcwhjJS19GSS/nDzvw=;
+	s=korg; t=1715687861;
+	bh=15YwYgFhq2uoiQOLrSw9MQTStDw+6vQw3aIySwR1b98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1iKnZRXmHEyzONEDzjIDDeO8LAdULvY31JnQ/Kxo0HcUV0lXCtEYdEBXmvUPE2WWX
-	 SoKDRGC+qMejSvPY4QDDwq8HM3k3Jpc2q3WhgQkDzdvZpMBlwd2nI7+UM357gGLjo+
-	 4XZZYFiZWj6j2hZGgyxqWqZskxzBDHVqNxBj5hlo=
+	b=LcWQ7A94+Tgt4/bd78q4HT4RsHL8eEIdkqyVgwkY8hkhd+S+U/EdItUAxQsNGVVM7
+	 ER+n8FxaiUSu8JYu1178BoZfgIZ5uK1I043SnQufCtPSB0TqwL46/gnKjEL4GjtgOh
+	 woKgu7hBMXFwdKOpBsHxzwl0jhf02GLF86MXozeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jim Cromie <jim.cromie@gmail.com>
-Subject: [PATCH 5.4 77/84] dyndbg: fix old BUG_ON in >control parser
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 130/168] drm/meson: dw-hdmi: power up phy on device init
 Date: Tue, 14 May 2024 12:20:28 +0200
-Message-ID: <20240514100954.578318931@linuxfoundation.org>
+Message-ID: <20240514101011.590581522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Cromie <jim.cromie@gmail.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit 00e7d3bea2ce7dac7bee1cf501fb071fd0ea8f6c upstream.
+[ Upstream commit 04703bfd7f99c016a823c74712b97f8b5590ce87 ]
 
-Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
-really look), lets make sure by removing it, doing pr_err and return
--EINVAL instead.
+The phy is not in a useful state right after init. It will become useful,
+including for auxiliary function such as CEC or ARC, after the first mode
+is set. This is a problem on systems where the display is using another
+interface like DSI or CVBS.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
-Link: https://lore.kernel.org/r/20240429193145.66543-2-jim.cromie@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change refactor the init and mode change callback to power up the PHY
+on init and leave only what is necessary for mode changes in the related
+function. This is enough to fix CEC operation when HDMI display is not
+enabled.
+
+Fixes: 3f68be7d8e96 ("drm/meson: Add support for HDMI encoder and DW-HDMI bridge + PHY")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240426160256.3089978-2-jbrunet@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240426160256.3089978-2-jbrunet@baylibre.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/dynamic_debug.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/meson/meson_dw_hdmi.c | 51 +++++++++------------------
+ 1 file changed, 17 insertions(+), 34 deletions(-)
 
---- a/lib/dynamic_debug.c
-+++ b/lib/dynamic_debug.c
-@@ -244,7 +244,11 @@ static int ddebug_tokenize(char *buf, ch
- 		} else {
- 			for (end = buf; *end && !isspace(*end); end++)
- 				;
--			BUG_ON(end == buf);
-+			if (end == buf) {
-+				pr_err("parse err after word:%d=%s\n", nwords,
-+				       nwords ? words[nwords - 1] : "<none>");
-+				return -EINVAL;
-+			}
- 		}
+diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson/meson_dw_hdmi.c
+index 5cd2b2ebbbd33..f8dd22d6e6c62 100644
+--- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
+@@ -384,26 +384,6 @@ static int dw_hdmi_phy_init(struct dw_hdmi *hdmi, void *data,
+ 	     drm_mode_is_420_also(display, mode)))
+ 		mode_is_420 = true;
  
- 		/* `buf' is start of word, `end' is one past its end */
+-	/* Enable clocks */
+-	regmap_update_bits(priv->hhi, HHI_HDMI_CLK_CNTL, 0xffff, 0x100);
+-
+-	/* Bring HDMITX MEM output of power down */
+-	regmap_update_bits(priv->hhi, HHI_MEM_PD_REG0, 0xff << 8, 0);
+-
+-	/* Bring out of reset */
+-	dw_hdmi->data->top_write(dw_hdmi, HDMITX_TOP_SW_RESET,  0);
+-
+-	/* Enable internal pixclk, tmds_clk, spdif_clk, i2s_clk, cecclk */
+-	dw_hdmi_top_write_bits(dw_hdmi, HDMITX_TOP_CLK_CNTL,
+-			       0x3, 0x3);
+-
+-	/* Enable cec_clk and hdcp22_tmdsclk_en */
+-	dw_hdmi_top_write_bits(dw_hdmi, HDMITX_TOP_CLK_CNTL,
+-			       0x3 << 4, 0x3 << 4);
+-
+-	/* Enable normal output to PHY */
+-	dw_hdmi->data->top_write(dw_hdmi, HDMITX_TOP_BIST_CNTL, BIT(12));
+-
+ 	/* TMDS pattern setup */
+ 	if (mode->clock > 340000 && !mode_is_420) {
+ 		dw_hdmi->data->top_write(dw_hdmi, HDMITX_TOP_TMDS_CLK_PTTN_01,
+@@ -425,20 +405,6 @@ static int dw_hdmi_phy_init(struct dw_hdmi *hdmi, void *data,
+ 	/* Setup PHY parameters */
+ 	meson_hdmi_phy_setup_mode(dw_hdmi, mode, mode_is_420);
+ 
+-	/* Setup PHY */
+-	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
+-			   0xffff << 16, 0x0390 << 16);
+-
+-	/* BIT_INVERT */
+-	if (dw_hdmi_is_compatible(dw_hdmi, "amlogic,meson-gxl-dw-hdmi") ||
+-	    dw_hdmi_is_compatible(dw_hdmi, "amlogic,meson-gxm-dw-hdmi") ||
+-	    dw_hdmi_is_compatible(dw_hdmi, "amlogic,meson-g12a-dw-hdmi"))
+-		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
+-				   BIT(17), 0);
+-	else
+-		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
+-				   BIT(17), BIT(17));
+-
+ 	/* Disable clock, fifo, fifo_wr */
+ 	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1, 0xf, 0);
+ 
+@@ -656,6 +622,23 @@ static void meson_dw_hdmi_init(struct meson_dw_hdmi *meson_dw_hdmi)
+ 	meson_dw_hdmi->data->top_write(meson_dw_hdmi,
+ 				       HDMITX_TOP_CLK_CNTL, 0xff);
+ 
++	/* Enable normal output to PHY */
++	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_BIST_CNTL, BIT(12));
++
++	/* Setup PHY */
++	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
++			   0xffff << 16, 0x0390 << 16);
++
++	/* BIT_INVERT */
++	if (dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxl-dw-hdmi") ||
++	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxm-dw-hdmi") ||
++	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-g12a-dw-hdmi"))
++		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
++				   BIT(17), 0);
++	else
++		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
++				   BIT(17), BIT(17));
++
+ 	/* Enable HDMI-TX Interrupt */
+ 	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_INTR_STAT_CLR,
+ 				       HDMITX_TOP_INTR_CORE);
+-- 
+2.43.0
+
 
 
 
