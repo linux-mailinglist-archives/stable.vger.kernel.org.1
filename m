@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253E38C5170
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE948C5021
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EA0DB2187B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 392E91F21C46
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2CA5A109;
-	Tue, 14 May 2024 11:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF368139CE9;
+	Tue, 14 May 2024 10:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oN624vnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loAC7HZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEA554903;
-	Tue, 14 May 2024 11:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A95A40862;
+	Tue, 14 May 2024 10:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684490; cv=none; b=UWcH5TAP1qjWczKU5cs+u9EQJsgcNrcw5HxUpTHyctGCsrnm7kmS/BUmXc7hDFt0XGPUvtvdSes83J+8rKUB2k3GQN0AvUSwuXqRNKLW9GVd3dvODkcrEGqyqKedp+zb99dJfe6yuRos39Y+DZ05sMY/SCINJURtAeE43+wZipE=
+	t=1715682984; cv=none; b=Auu4baaKj5GMFwL4UhfP9CEmAtG2MXjHPPcH0b/jleYjSQwzup47BWB7T/QzJfEm0x/p11QAEhG5cn0ZLPF+6Cwu0ELNXB1qfoyQgBN6dT19NFzMZ2fczrxXeTqaC63LUdfBDXfbr0rHwDZAP8aQgio/sopeR1XO4r0uB29eKVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684490; c=relaxed/simple;
-	bh=ztLUksvn+onk6WL8bet3L/UlTOdnKPpMWys9DnzR2Fg=;
+	s=arc-20240116; t=1715682984; c=relaxed/simple;
+	bh=QsCA5Jg3PKIOl0K3D7jlE2tbEf9lrONGJS9Kofv6J4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHxn8hbjY5Jwld2ZRn3Du6YRxxirUa9VaOUAwJoxEjLQAe05xqC+thsdf8uJCtYEfdzna6PX85+n2L3AGwcBx7rtVrumrfXpCotKbLPD09rKwqEbnS3UWqGsrhiKWRLUVhmWtC4YRlD7Ll8sLodM/3czn3KYFXVGAD8jxba8g30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oN624vnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7949CC2BD10;
-	Tue, 14 May 2024 11:01:27 +0000 (UTC)
+	 MIME-Version; b=jukibyvmf/K/8EP9SHC1W5nGTWgYgEtq/U5o7xqGYSQY/ZoiN2CfKAQmM6tlq/txgcusZiUd8STWm0jcrhEIr6vVaJbky4Qo9HFi54AwOUMD9Ij4TsTShR58lGhZDaeAin/q7Lgxqhlg7ZupZdkcl3LUCQvFsjyLwGA87+mbDFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loAC7HZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54E7C2BD10;
+	Tue, 14 May 2024 10:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684490;
-	bh=ztLUksvn+onk6WL8bet3L/UlTOdnKPpMWys9DnzR2Fg=;
+	s=korg; t=1715682984;
+	bh=QsCA5Jg3PKIOl0K3D7jlE2tbEf9lrONGJS9Kofv6J4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oN624vnNuVHjcWTAmaHS/RQ2fNV7Ru1OgTkmXeTlFho4yrFXFVMRM/uRAblznVMA4
-	 aIpM/Vkm5f4+OYFNOyMDcO3aGvHyfL4LTapbhUzuIkIUpBQoYeDjVq/Ln7m9NRiHiH
-	 wHbRY5TAyl3gg22qjC26EcuQBngwu5zE7qvIzYFM=
+	b=loAC7HZdwmSoeziQWFx9EqUfoOF8CODWLseeBouDLjBwOEBAn3S7i+tu5RfcDpRpU
+	 WO+raJpDi2NlCl12FZIJwp83DpUnvMVQ4LsCAi8DEdne6sdkGcm6+qd4GuK+z9UfjD
+	 KEVtLmKvyA7AiJhhunV3kKk6uGWrkVvX3gt1i7TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Boris Burkov <boris@bur.io>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/301] s390/mm: Fix clearing storage keys for huge pages
+Subject: [PATCH 6.8 114/336] btrfs: return accurate error code on open failure in open_fs_devices()
 Date: Tue, 14 May 2024 12:15:18 +0200
-Message-ID: <20240514101034.021395988@linuxfoundation.org>
+Message-ID: <20240514101042.907680969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-[ Upstream commit 412050af2ea39407fe43324b0be4ab641530ce88 ]
+[ Upstream commit 2f1aeab9fca1a5f583be1add175d1ee95c213cfa ]
 
-The function __storage_key_init_range() expects the end address to be
-the first byte outside the range to be initialized. I.e. end - start
-should be the size of the area to be initialized.
+When attempting to exclusive open a device which has no exclusive open
+permission, such as a physical device associated with the flakey dm
+device, the open operation will fail, resulting in a mount failure.
 
-The current code works because __storage_key_init_range() will still loop
-over every page in the range, but it is slower than using sske_frame().
+In this particular scenario, we erroneously return -EINVAL instead of the
+correct error code provided by the bdev_open_by_path() function, which is
+-EBUSY.
 
-Fixes: 3afdfca69870 ("s390/mm: Clear skeys for newly mapped huge guest pmds")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240416114220.28489-3-imbrenda@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fix this, by returning error code from the bdev_open_by_path() function.
+With this correction, the mount error message will align with that of
+ext4 and xfs.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/hugetlbpage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/volumes.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
-index 5f64f3d0fafbb..763469e518eec 100644
---- a/arch/s390/mm/hugetlbpage.c
-+++ b/arch/s390/mm/hugetlbpage.c
-@@ -139,7 +139,7 @@ static void clear_huge_pte_skeys(struct mm_struct *mm, unsigned long rste)
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index f3890f7c78076..cc3142d130be2 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -1182,23 +1182,30 @@ static int open_fs_devices(struct btrfs_fs_devices *fs_devices,
+ 	struct btrfs_device *device;
+ 	struct btrfs_device *latest_dev = NULL;
+ 	struct btrfs_device *tmp_device;
++	int ret = 0;
+ 
+ 	list_for_each_entry_safe(device, tmp_device, &fs_devices->devices,
+ 				 dev_list) {
+-		int ret;
++		int ret2;
+ 
+-		ret = btrfs_open_one_device(fs_devices, device, flags, holder);
+-		if (ret == 0 &&
++		ret2 = btrfs_open_one_device(fs_devices, device, flags, holder);
++		if (ret2 == 0 &&
+ 		    (!latest_dev || device->generation > latest_dev->generation)) {
+ 			latest_dev = device;
+-		} else if (ret == -ENODATA) {
++		} else if (ret2 == -ENODATA) {
+ 			fs_devices->num_devices--;
+ 			list_del(&device->dev_list);
+ 			btrfs_free_device(device);
+ 		}
++		if (ret == 0 && ret2 != 0)
++			ret = ret2;
  	}
+-	if (fs_devices->open_devices == 0)
++
++	if (fs_devices->open_devices == 0) {
++		if (ret)
++			return ret;
+ 		return -EINVAL;
++	}
  
- 	if (!test_and_set_bit(PG_arch_1, &page->flags))
--		__storage_key_init_range(paddr, paddr + size - 1);
-+		__storage_key_init_range(paddr, paddr + size);
- }
- 
- void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	fs_devices->opened = 1;
+ 	fs_devices->latest_dev = latest_dev;
 -- 
 2.43.0
 
