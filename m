@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-44652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E018C53D1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E688C52AB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05251C2161A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72D7FB221F7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D084E13C692;
-	Tue, 14 May 2024 11:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B4314291E;
+	Tue, 14 May 2024 11:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/E9lBSK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXemtOU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6DB12F591;
-	Tue, 14 May 2024 11:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB56B142911;
+	Tue, 14 May 2024 11:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686780; cv=none; b=abocaiE7x4V+FFJkC7lbCFGpq9CODms0MvlR8Wq63/9U4/rsZWxFvn3qHCycn8SZnh/a5HEsed2WxusfAbg9SLXiQszckpXZ+J0/NocHk56zj2ORB2JDxu5qF3PpvsaFPo8JFKoa0KNnLM4dfey1tvT7XKZfyc2h5kb6L9Vr74k=
+	t=1715686046; cv=none; b=mCF7P4TmpjryFM0KLq8X3Vj6pVZfEWiiFq+pvEZPlxvzQHISlBKD3HqkR2SwAoh/XAxMPMwWP1p1L18puDbGmwuJwYrWFGkpzN5bfNkUlxGEdwTNdX8e1Mca6ExHO65lEoJRs4mKUihVVZemuQ++Vslj9piwJVNcdyIYecZAjLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686780; c=relaxed/simple;
-	bh=NL8x7VmPX/MLjUGbAf8M09tKmppInV5TgTJgTnDwlms=;
+	s=arc-20240116; t=1715686046; c=relaxed/simple;
+	bh=ZEJPPJAX9o6OM9swFXAOmGJyewk3g6WRSbYVn/CzpZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvH80X8v4NwhCXSujyDqFVQYFk+PfKhlodxZwfR0TkkXQ0SWlWbyolMhYDVuHSozF5x5N2CiWP4DGumiUZndQel/1wodzUwdKXUJbHWnCijiNK56fZ3n5X+jh1khv6G9A0+Aysj1TeW4RdUnj8X2klZB7DpIYAL035v5bEADwvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/E9lBSK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151AFC2BD10;
-	Tue, 14 May 2024 11:39:39 +0000 (UTC)
+	 MIME-Version; b=hp5iqm1ozju+1P29r0w0eqt9auQzVijutYRxKpRgZt/J87J/K6XfDAalOmgV8wMirmEe9/tgDkZ3enPRyXfPUFExrm7afolJ/I5c+G0zO1gZIa+MEXtcFlcw3k9G62i3fdPOKrP89j00ipXcAypFGXpYKxO4Vmw5nWpk5BqFoXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXemtOU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C18C2BD10;
+	Tue, 14 May 2024 11:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686780;
-	bh=NL8x7VmPX/MLjUGbAf8M09tKmppInV5TgTJgTnDwlms=;
+	s=korg; t=1715686045;
+	bh=ZEJPPJAX9o6OM9swFXAOmGJyewk3g6WRSbYVn/CzpZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/E9lBSKkoYEHaY8QFGXhM2m+aJqGWlW2QLUrCd+4IAEZMj4lB9GY0seF4iz8b35g
-	 c8Wy2z+h6arg5FWBVLNZ2Giy/YRpNO0KjgaQHyHpFVdAx8St3ES7R0cBAkdffFGLJY
-	 tWvG0qYOU1zrhQzXCUvaV/wDqh3F3v4OFViQdkTA=
+	b=XXemtOU3VYvlykN1DM2c+SxDQIg59smP9NKVgGXHQD1TciAGqRHWv2MxH4nOy3Lfp
+	 SaTfxSqCRwPWqhQKNjuU7/++WfOOU3Vb8buY+n7QL2+FEuLKQHAYsKPiU/2N5Y82E4
+	 NKiLpDlrpcPbtFi6W4ellnu4yImFGLw172fjaRsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Shannon Nelson <snelson@pensando.io>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 07/63] ethernet: add a helper for assigning port addresses
+	Matthias Kaehlcke <mka@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 297/301] Bluetooth: qca: fix NVM configuration parsing
 Date: Tue, 14 May 2024 12:19:28 +0200
-Message-ID: <20240514100948.292158679@linuxfoundation.org>
+Message-ID: <20240514101043.476171987@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit e80094a473eefad9d856ce3ab0d7afdbb64800c4 ]
+commit a112d3c72a227f2edbb6d8094472cc6e503e52af upstream.
 
-We have 5 drivers which offset base MAC addr by port id.
-Create a helper for them.
+The NVM configuration files used by WCN3988 and WCN3990/1/8 have two
+sets of configuration tags that are enclosed by a type-length header of
+type four which the current parser fails to account for.
 
-This helper takes care of overflows, which some drivers
-did not do, please complain if that's going to break
-anything!
+Instead the driver happily parses random data as if it were valid tags,
+something which can lead to the configuration data being corrupted if it
+ever encounters the words 0x0011 or 0x001b.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Shannon Nelson <snelson@pensando.io>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6e159fd653d7 ("ethernet: Add helper for assigning packet type when dest address does not match device address")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As is clear from commit b63882549b2b ("Bluetooth: btqca: Fix the NVM
+baudrate tag offcet for wcn3991") the intention has always been to
+process the configuration data also for WCN3991 and WCN3998 which
+encodes the baud rate at a different offset.
+
+Fix the parser so that it can handle the WCN3xxx configuration files,
+which has an enclosing type-length header of type four and two sets of
+TLV tags enclosed by a type-length header of type two and three,
+respectively.
+
+Note that only the first set, which contains the tags the driver is
+currently looking for, will be parsed for now.
+
+With the parser fixed, the software in-band sleep bit will now be set
+for WCN3991 and WCN3998 (as it is for later controllers) and the default
+baud rate 3200000 may be updated by the driver also for WCN3xxx
+controllers.
+
+Notably the deep-sleep feature bit is already set by default in all
+configuration files in linux-firmware.
+
+Fixes: 4219d4686875 ("Bluetooth: btqca: Add wcn3990 firmware download support.")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/etherdevice.h | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/bluetooth/btqca.c |   24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
-index 2932a40060c1d..fef4bb77f7590 100644
---- a/include/linux/etherdevice.h
-+++ b/include/linux/etherdevice.h
-@@ -522,6 +522,27 @@ static inline unsigned long compare_ether_header(const void *a, const void *b)
- #endif
- }
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -281,6 +281,7 @@ static int qca_tlv_check_data(struct hci
+ 	struct tlv_type_patch *tlv_patch;
+ 	struct tlv_type_nvm *tlv_nvm;
+ 	uint8_t nvm_baud_rate = config->user_baud_rate;
++	u8 type;
  
-+/**
-+ * eth_hw_addr_gen - Generate and assign Ethernet address to a port
-+ * @dev: pointer to port's net_device structure
-+ * @base_addr: base Ethernet address
-+ * @id: offset to add to the base address
-+ *
-+ * Generate a MAC address using a base address and an offset and assign it
-+ * to a net_device. Commonly used by switch drivers which need to compute
-+ * addresses for all their ports. addr_assign_type is not changed.
-+ */
-+static inline void eth_hw_addr_gen(struct net_device *dev, const u8 *base_addr,
-+				   unsigned int id)
-+{
-+	u64 u = ether_addr_to_u64(base_addr);
-+	u8 addr[ETH_ALEN];
+ 	config->dnld_mode = QCA_SKIP_EVT_NONE;
+ 	config->dnld_type = QCA_SKIP_EVT_NONE;
+@@ -346,11 +347,30 @@ static int qca_tlv_check_data(struct hci
+ 		tlv = (struct tlv_type_hdr *)fw_data;
+ 
+ 		type_len = le32_to_cpu(tlv->type_len);
+-		length = (type_len >> 8) & 0x00ffffff;
++		length = type_len >> 8;
++		type = type_len & 0xff;
+ 
+-		BT_DBG("TLV Type\t\t : 0x%x", type_len & 0x000000ff);
++		/* Some NVM files have more than one set of tags, only parse
++		 * the first set when it has type 2 for now. When there is
++		 * more than one set there is an enclosing header of type 4.
++		 */
++		if (type == 4) {
++			if (fw_size < 2 * sizeof(struct tlv_type_hdr))
++				return -EINVAL;
 +
-+	u += id;
-+	u64_to_ether_addr(u, addr);
-+	eth_hw_addr_set(dev, addr);
-+}
++			tlv++;
 +
- /**
-  * eth_skb_pad - Pad buffer to mininum number of octets for Ethernet frame
-  * @skb: Buffer to pad
--- 
-2.43.0
-
++			type_len = le32_to_cpu(tlv->type_len);
++			length = type_len >> 8;
++			type = type_len & 0xff;
++		}
++
++		BT_DBG("TLV Type\t\t : 0x%x", type);
+ 		BT_DBG("Length\t\t : %d bytes", length);
+ 
++		if (type != 2)
++			break;
++
+ 		if (fw_size < length + (tlv->data - fw_data))
+ 			return -EINVAL;
+ 
 
 
 
