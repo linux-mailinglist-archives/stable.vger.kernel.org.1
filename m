@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7E68C517E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B301B8C4FFC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 484F3280EBC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DD6B2812E2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397C91386D1;
-	Tue, 14 May 2024 11:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441707E574;
+	Tue, 14 May 2024 10:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/IiICJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYORrd31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE5C1386CC;
-	Tue, 14 May 2024 11:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1650288;
+	Tue, 14 May 2024 10:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684432; cv=none; b=Gv7uI3SKYBa914ImYx3foPy3He/FOm5P+C99xZ2HAom80dQIPG4uq5lgM/Y4wFvB8IScAA80/YXQ+383XRA04/07MCpDDgE9hi1FyxSxTGohKbVz7aSjtdVSlr8WNNrEoCWBI+s+CEeZmFc+RbIH3epoNzpBYkmhtK6DGV+x1tE=
+	t=1715682805; cv=none; b=nCdlJpsqLw9CNEKRjlvqyNGXgJZLQb3t9yvT49Yrq9ZcNP20yfNjdqxxlBQYard8pP6rhYZpcdYJWkxGbb6xUTFh9CKCwl3SJhNsLkl986iKD2rTgllTW3NFGN+ibzQttl2dpzKbEyDFRSE3fo86+LFzvByB0/81bwUoQI2txZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684432; c=relaxed/simple;
-	bh=kxuuqiXnQtthnaXhYlElOm2RbUIpf3+Zx6d+nP590Ao=;
+	s=arc-20240116; t=1715682805; c=relaxed/simple;
+	bh=0zuZg89sKUIhVTC0ov2iVHk620pnHf+bxF9kgNp0dhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQUYHA8sB5U0IEXElTufMpW2Tl5UwqlguOntDLFSHM2VDFeC0AaWTgJeTG25R1zQHEt3d28M5sC/pkZMT+IWlQGl/fVpogRPYiUd9m6z/CA8mRMFHd7OFtx53JCCCc5dgfaXqh+l3qOTbb6nihdMfoDJEN/a1tOh84r0YpKr1xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/IiICJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A170AC2BD10;
-	Tue, 14 May 2024 11:00:30 +0000 (UTC)
+	 MIME-Version; b=AJOBAjyGlcB7UsL6jYR1WLyclj1ZImCAkUv277hK3dYkkHhavhy7F4YxTO3335HoHabNi+0DhX7X7mbgfsdB1DGts1RRbkD0zssa/0lOKcABZK3VrMcwz7otfZnfwKpeFbQaFmg0AaWMkjP4DjVfAfV83+DA58i8iBTN86hIp8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYORrd31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007D7C2BD10;
+	Tue, 14 May 2024 10:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684431;
-	bh=kxuuqiXnQtthnaXhYlElOm2RbUIpf3+Zx6d+nP590Ao=;
+	s=korg; t=1715682804;
+	bh=0zuZg89sKUIhVTC0ov2iVHk620pnHf+bxF9kgNp0dhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/IiICJVnEXLNwsTB7x03xlT2FV0SZswzNchBigzF76ZrwMRDd5XrjKbvpJ8vp3vW
-	 7+ZdbCEE9gtlM/7c0lgtWxGvifijpI9H49yQt0JLgEkGvWCR7uBNHGX3QRuga6qHtF
-	 LYFSt6mWnxAfDkghEaf4ueY32J63L4lYNK3I2cSM=
+	b=gYORrd311cHdd8KCjtnwVeBZEbcSijm3nxMcnqOXcy/UXcC6WmxD/h8ea/oWlWceE
+	 IZqKDZUpiW3kUgsqtcFLngYhJLMuNW9ZU8gkP5PdRsgdAwaVgdgjNt4WtMWDIIgd1u
+	 HdcFW7paPOjqfd2g55J1pEs2ssqnWUbi/oj6LwtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Jay Fang <f.fangjian@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/301] spi: hisi-kunpeng: Delete the dump interface of data registers in debugfs
+Subject: [PATCH 6.8 108/336] wifi: iwlwifi: read txq->read_ptr under lock
 Date: Tue, 14 May 2024 12:15:12 +0200
-Message-ID: <20240514101033.797449811@linuxfoundation.org>
+Message-ID: <20240514101042.682608950@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7430764f5a85d30314aeef2d5438dff1fb0b1d68 ]
+[ Upstream commit c2ace6300600c634553657785dfe5ea0ed688ac2 ]
 
-Due to the reading of FIFO during the dump of data registers in
-debugfs, if SPI transmission is in progress, it will be affected
-and may result in transmission failure. Therefore, the dump
-interface of data registers in debugfs is removed.
+If we read txq->read_ptr without lock, we can read the same
+value twice, then obtain the lock, and reclaim from there
+to two different places, but crucially reclaim the same
+entry twice, resulting in the WARN_ONCE() a little later.
+Fix that by reading txq->read_ptr under lock.
 
-Fixes: 2b2142f247eb ("spi: hisi-kunpeng: Add debugfs support")
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Reviewed-by: Jay Fang <f.fangjian@huawei.com>
-Link: https://lore.kernel.org/r/20240416015839.3323398-1-liudingyuan@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.bf4c62196504.I978a7ca56c6bd6f1bf42c15aa923ba03366a840b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-hisi-kunpeng.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index 35ef5e8e2ffd2..77e9738e42f60 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -151,8 +151,6 @@ static const struct debugfs_reg32 hisi_spi_regs[] = {
- 	HISI_SPI_DBGFS_REG("ENR", HISI_SPI_ENR),
- 	HISI_SPI_DBGFS_REG("FIFOC", HISI_SPI_FIFOC),
- 	HISI_SPI_DBGFS_REG("IMR", HISI_SPI_IMR),
--	HISI_SPI_DBGFS_REG("DIN", HISI_SPI_DIN),
--	HISI_SPI_DBGFS_REG("DOUT", HISI_SPI_DOUT),
- 	HISI_SPI_DBGFS_REG("SR", HISI_SPI_SR),
- 	HISI_SPI_DBGFS_REG("RISR", HISI_SPI_RISR),
- 	HISI_SPI_DBGFS_REG("ISR", HISI_SPI_ISR),
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index ca74b1b63cac1..0efa304904bd3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -1588,9 +1588,9 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
+ 		return;
+ 
+ 	tfd_num = iwl_txq_get_cmd_index(txq, ssn);
+-	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
+ 
+ 	spin_lock_bh(&txq->lock);
++	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
+ 
+ 	if (!test_bit(txq_id, trans->txqs.queue_used)) {
+ 		IWL_DEBUG_TX_QUEUES(trans, "Q %d inactive - ignoring idx %d\n",
 -- 
 2.43.0
 
