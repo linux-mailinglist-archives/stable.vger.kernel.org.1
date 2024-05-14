@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F178C54D6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50D48C558B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B4C1C23B0D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1D5328D963
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5EB3D0D1;
-	Tue, 14 May 2024 11:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C952943F;
+	Tue, 14 May 2024 11:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txfQRVgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPmQTzQW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B59145014;
-	Tue, 14 May 2024 11:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42479F9D4;
+	Tue, 14 May 2024 11:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687483; cv=none; b=TrHxNuw6YajQXI0mHRPJwg4fdZrg1qMy3UpLrCS3EvVaMN+jHX1R9WGPPQSfA7x2OaBWGIUqLpi161uuMeIt1K4p88kj+Y6I/Hh0iYaN9agaXrOqzxAuVwPqUDve/2vCVeELc8oW6Lo5868QgXAy1LlaKVTLqojnm+4GODmYh70=
+	t=1715687922; cv=none; b=Y6bjUDMWEiuOlMOTwPWtItE7lf1Y7egP/17vfpTtw3nf3/4EYseCf7rl4Lm2jdZOvg+wdBrUrXu2/eWnwbp3xlO6cmJMMP6uNfp3NJJ2lRwr7Viuen5X741KXzGJkVrBQ6oWGuaW9qWc1Dg50DlJ+RUs9MS8M4fOGkXxcycD6tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687483; c=relaxed/simple;
-	bh=sQfNZvOIkVLKbuGkkOx+R1IbVr6YQnXfj7BafsJoupo=;
+	s=arc-20240116; t=1715687922; c=relaxed/simple;
+	bh=T57ZUUwVieO+cW0PnZlpe0MtS40jH5klGzmHWSWOn78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBt5p8tPAp9i/xdg15gzNk3OF0K0RD4xqQYcgVJWqoEa++C7dM0pJGxIBddx7gbDL34EwLdltXe09xo+7VTpwe72ROqBpRjUQJq4rLCJfDB2/KqfbdlBpo6nzWGxnHBdwa6z01EZh5Eo9/5fR+eP7j6MEa1fkyKA2bAdWgkox18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txfQRVgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A5AC2BD10;
-	Tue, 14 May 2024 11:51:22 +0000 (UTC)
+	 MIME-Version; b=hAaPKpy7vYhYcWj+FOUrhVnekqGUvAcY2FxgwKK3yQM0i66aFZYzS21t7mdrfD9x/bL+o+I07j0HFcMjg6zLojBPFbNRKqc6rOGst+ALx54rpOAGbqGe4EVNYE+2Hq4aJnQ8WiNa3KJmciYp8siqaYUgQKCeOkfPp9/iIKq0G7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPmQTzQW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4999C2BD10;
+	Tue, 14 May 2024 11:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687482;
-	bh=sQfNZvOIkVLKbuGkkOx+R1IbVr6YQnXfj7BafsJoupo=;
+	s=korg; t=1715687922;
+	bh=T57ZUUwVieO+cW0PnZlpe0MtS40jH5klGzmHWSWOn78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=txfQRVgwr3SBxl45YFlF4hta4O7Ux/SfKflV0vpWWiNJ6X1uxTmFycGVcrEbASu04
-	 eyCcgXGJJ5JiTZpVj/VYzNIlSeJL8tnY8gTfdDBidFX3k0EFif3Nyj4WHd3eegkijZ
-	 EVqXI/21GZv7Vr1NVOH8C6EV97BTm21gzv0v+A4s=
+	b=RPmQTzQWAlZS8JuqgfYDSv8YchXmXWuTRbzWUGdJUZQf5m5qc8CW1Dp+fnuSrR1w0
+	 bv/kq2NPcQz/IkdLWFMwpih8BrbhzrC+T1MvXScY/Fm04pZs81tQaVnFYzlVlhfWwu
+	 0fHRhFVFtmdaurz8e0/hGGvxegW/O/uCgAA7Z0rM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 111/111] regulator: core: fix debugfs creation regression
-Date: Tue, 14 May 2024 12:20:49 +0200
-Message-ID: <20240514101001.350903486@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 152/168] dt-bindings: iio: health: maxim,max30102: fix compatible check
+Date: Tue, 14 May 2024 12:20:50 +0200
+Message-ID: <20240514101012.498371800@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 2a4b49bb58123bad6ec0e07b02845f74c23d5e04 upstream.
+commit 89384a2b656b9dace4c965432a209d5c9c3a2a6f upstream.
 
-regulator_get() may sometimes be called more than once for the same
-consumer device, something which before commit dbe954d8f163 ("regulator:
-core: Avoid debugfs: Directory ...  already present! error") resulted in
-errors being logged.
+The "maxim,green-led-current-microamp" property is only available for
+the max30105 part (it provides an extra green LED), and must be set to
+false for the max30102 part.
 
-A couple of recent commits broke the handling of such cases so that
-attributes are now erroneously created in the debugfs root directory the
-second time a regulator is requested and the log is filled with errors
-like:
+Instead, the max30100 part has been used for that, which is not
+supported by this binding (it has its own binding).
 
-	debugfs: File 'uA_load' in directory '/' already present!
-	debugfs: File 'min_uV' in directory '/' already present!
-	debugfs: File 'max_uV' in directory '/' already present!
-	debugfs: File 'constraint_flags' in directory '/' already present!
+This error was introduced during the txt to yaml conversion.
 
-on any further calls.
-
-Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugfs_create_dir()")
-Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
-Cc: stable@vger.kernel.org
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240509133304.8883-1-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5a6a65b11e3a ("dt-bindings:iio:health:maxim,max30102: txt to yaml conversion")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c |   27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1749,19 +1749,24 @@ static struct regulator *create_regulato
- 		}
- 	}
- 
--	if (err != -EEXIST)
-+	if (err != -EEXIST) {
- 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
--	if (IS_ERR(regulator->debugfs))
--		rdev_dbg(rdev, "Failed to create debugfs directory\n");
-+		if (IS_ERR(regulator->debugfs)) {
-+			rdev_dbg(rdev, "Failed to create debugfs directory\n");
-+			regulator->debugfs = NULL;
-+		}
-+	}
- 
--	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
--			   &regulator->uA_load);
--	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
--			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
--	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
--			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
--	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
--			    regulator, &constraint_flags_fops);
-+	if (regulator->debugfs) {
-+		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
-+				   &regulator->uA_load);
-+		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
-+				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
-+		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
-+				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
-+		debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
-+				    regulator, &constraint_flags_fops);
-+	}
- 
- 	/*
- 	 * Check now if the regulator is an always on regulator - if
+--- a/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
++++ b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
+@@ -42,7 +42,7 @@ allOf:
+       properties:
+         compatible:
+           contains:
+-            const: maxim,max30100
++            const: maxim,max30102
+     then:
+       properties:
+         maxim,green-led-current-microamp: false
 
 
 
