@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566C08C5573
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 072968C54CC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E261128D745
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B35331F2168F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7D633985;
-	Tue, 14 May 2024 11:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7247D6CDC8;
+	Tue, 14 May 2024 11:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXSTKWKF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAAcU8H5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBE31CAA4;
-	Tue, 14 May 2024 11:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDC555C36;
+	Tue, 14 May 2024 11:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687896; cv=none; b=RPLgxEeO4EMW45E444S+ywgg9oyiTexd0Hz0Nw6+rU2n/be5dW6Td2Xzu324tAYSlvDQVAfKqCv8aAulUbXwM2candsqdza2hZDmUx78DQpDs/nh3k7xTjAcLDG2FB3n44YizniLKKWDxgC/0HB1bFeMZKNa2hgKSm+YOkma1ic=
+	t=1715687451; cv=none; b=NjXu05rsV9KKKlE5s/P8cOvRnHu7zW9SQB0yjA6B5sdmN3+6+2dHuZs5Rfg7fVttFK8mZPZEdKJ+xCwrR1ruGABQkbEYR1mpPEPyvIisly6XxyEArJCiBrz12LylhlgMQSjFaiZpDXI7peWtY9RhXKmEICcOts9gR02PpDpJ+AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687896; c=relaxed/simple;
-	bh=adlvr5bhZWFycIcIRIAGOqi3rMRa4+GCKfGwBlYTnAE=;
+	s=arc-20240116; t=1715687451; c=relaxed/simple;
+	bh=1G6SxY+EPyMWxYHHmR73ewugtN+wXYTISG2TpPyWCwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qn44XtCKBxaTF4poo5hgqgfpaoVp4oRFJ6fybQOZzSTzwYsCbSbUdyHANYN1ILkJq2Kviw/L1b60vWkDR+QmgcjkkEz7BCiIwLNxoqzhyhMFAUfVqUCTm28bUgZg8wusn9BSIP1UW6qXO8tcLK6xQMQzztmlzWdxps+h4aTcrvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXSTKWKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFF4C2BD10;
-	Tue, 14 May 2024 11:58:15 +0000 (UTC)
+	 MIME-Version; b=K/OPS4JfQOmDEKmLyP+HLR0h0lQ195AsyvjZr2FB1mweZ8kSOqNHa4nj7RjAn3f6ChmGd/6pAXn/W/coWL1KaHPv0oD4OwD2NVTOhU08ZhewAte55NzDKgb+DKdk4dQu8VVLKEnAtl+95G2IZkBo0x9iPnakHR3CHPyWlIM+BsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAAcU8H5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60F5C2BD10;
+	Tue, 14 May 2024 11:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687896;
-	bh=adlvr5bhZWFycIcIRIAGOqi3rMRa4+GCKfGwBlYTnAE=;
+	s=korg; t=1715687451;
+	bh=1G6SxY+EPyMWxYHHmR73ewugtN+wXYTISG2TpPyWCwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXSTKWKFsEmpXDU1M/zaqSigd2saAxepy1xeN2bMBCdQy8TUh7bYyHFVFOYxKuKyQ
-	 9+EFxAr/y2HKAPw4FLzVojA3BWizsvSrfTs5x17X6BHyBABMBwGmYn3RK4E6JJpqWY
-	 3ta2sMtlUEjRL1jonvC7aW3xyrt5bx0OJAt+QP8o=
+	b=nAAcU8H5Xbsqa+9oLcP4r8z2jhcmmZB4IB61/Fw4dUssZowW77xrDsYMLOGkjSBW0
+	 8y+aATp91HcC0Lb0FtMXl0+WN2LhDnbdG9BEW1Sv8z+jrEqXjZA2cw/3puUZId9Kdd
+	 08ATRZ1/bYfMGru3fAZfkBS8DxRsWVjY6UesX158=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.15 141/168] usb: typec: ucsi: Check for notifications after init
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 101/111] iio:imu: adis16475: Fix sync mode setting
 Date: Tue, 14 May 2024 12:20:39 +0200
-Message-ID: <20240514101012.010057306@linuxfoundation.org>
+Message-ID: <20240514101000.969428319@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 
-commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
+commit 74a72baf204fd509bbe8b53eec35e39869d94341 upstream.
 
-The completion notification for the final SET_NOTIFICATION_ENABLE
-command during initialization can include a connector change
-notification.  However, at the time this completion notification is
-processed, the ucsi struct is not ready to handle this notification.
-As a result the notification is ignored and the controller
-never sends an interrupt again.
+Fix sync mode setting by applying the necessary shift bits.
 
-Re-check CCI for a pending connector state change after
-initialization is complete. Adjust the corresponding debug
-message accordingly.
-
-Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
+Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240405045309.816328-2-ramona.bolboaca13@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/iio/imu/adis16475.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -854,7 +854,7 @@ void ucsi_connector_change(struct ucsi *
- 	struct ucsi_connector *con = &ucsi->connector[num - 1];
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -1070,6 +1070,7 @@ static int adis16475_config_sync_mode(st
+ 	struct device *dev = &st->adis.spi->dev;
+ 	const struct adis16475_sync *sync;
+ 	u32 sync_mode;
++	u16 val;
  
- 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
--		dev_dbg(ucsi->dev, "Bogus connector change event\n");
-+		dev_dbg(ucsi->dev, "Early connector change event\n");
- 		return;
- 	}
+ 	/* default to internal clk */
+ 	st->clk_freq = st->info->int_clk * 1000;
+@@ -1155,8 +1156,9 @@ static int adis16475_config_sync_mode(st
+ 	 * I'm keeping this for simplicity and avoiding extra variables
+ 	 * in chip_info.
+ 	 */
++	val = ADIS16475_SYNC_MODE(sync->sync_mode);
+ 	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
+-				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
++				 ADIS16475_SYNC_MODE_MASK, val);
+ 	if (ret)
+ 		return ret;
  
-@@ -1241,6 +1241,7 @@ static int ucsi_init(struct ucsi *ucsi)
- {
- 	struct ucsi_connector *con;
- 	u64 command, ntfy;
-+	u32 cci;
- 	int ret;
- 	int i;
- 
-@@ -1292,6 +1293,13 @@ static int ucsi_init(struct ucsi *ucsi)
- 		goto err_unregister;
- 
- 	ucsi->ntfy = ntfy;
-+
-+	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
-+	if (ret)
-+		return ret;
-+	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
-+		ucsi_connector_change(ucsi, cci);
-+
- 	return 0;
- 
- err_unregister:
 
 
 
