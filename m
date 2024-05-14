@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892788C5491
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5235E8C53BB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59741C22ED5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E61441F21859
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02D312C7E8;
-	Tue, 14 May 2024 11:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E804712EBDC;
+	Tue, 14 May 2024 11:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZyYSM6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeZesl5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E22412C49C;
-	Tue, 14 May 2024 11:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E6B12E1E2;
+	Tue, 14 May 2024 11:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687282; cv=none; b=GGFuGEQYK3+1a3zPXBWxagVp/qI67OOQuMTF7F3lc4lulWuXB+v07s+hZOCXhOBeW9kjwYuIS8USd9o5/PzOY0NUWmi1pncB5qMckQfeKuoZCZHqdSciDTKIYffY2tIUzOTo7dmrSlwotbRUt8XZe8T8LMMljgZkEoMeIUuqyzk=
+	t=1715686728; cv=none; b=QYnZczPOBDZHdzDRwgoiB3M0A4Pev1PjlCONr+M3rTzC7eJWUaaDFE3zdpYMAqb4ai2i1gFYdAaCtZuS/Vchzb7M+SC2Ot1WoAYk8GcYa0iqn9vBDM9QceJ/a7ANTSb1sKMA0LllFP9I0xNoZoJ6Kn2xkAk2/sK0tsJVX434qDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687282; c=relaxed/simple;
-	bh=MurD1qCJLNAJtV0+5LZhu+7OYHohX3gHiSjAvIKklLM=;
+	s=arc-20240116; t=1715686728; c=relaxed/simple;
+	bh=xljTn7UfEC4jy8Aa/E4M/F8lA0M5IEwGwC8AFZaC1Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIkGvv8VVxrDHfxwzpMUHIeclCw8w2irL0K8WtONdAXjy+btGXFapq4TeG4ndCFETksbjgzd2bxENsb3Q/AsoQnX728g4bsIUpOp4VEDbHCFPSEDZh5WYu9zBtLFvsFAh8UqUp/sXv+QH6IjcibSYDjh8z6jX2kF2Y3k6U3UaeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZyYSM6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA397C2BD10;
-	Tue, 14 May 2024 11:48:01 +0000 (UTC)
+	 MIME-Version; b=PcYhcQCV81kxmwgDI7W/iWQ7QFGIgWr1747LP+iR9/YaRahvR7r3swzkW9Rpdq3/fp+Uira88tw2ggZW7Okr/W3sFRlCbxJeKAE0qezUYXSmRMjSXj4hzNh/HzkTUJCJCMP8y4RcZbMqjeKS/iWs6QUpn7kFEk7N/gR/UuVL/1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeZesl5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1D7C2BD10;
+	Tue, 14 May 2024 11:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687282;
-	bh=MurD1qCJLNAJtV0+5LZhu+7OYHohX3gHiSjAvIKklLM=;
+	s=korg; t=1715686728;
+	bh=xljTn7UfEC4jy8Aa/E4M/F8lA0M5IEwGwC8AFZaC1Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZyYSM6SrDlrmQg2nVdIyKDGAu4rHnbVT+NcVAtZQT149cfYUs6a4JGHd/JJsVrZn
-	 dlSN1whTE8Zy7Vhjlx1QdhT71oty9+7tLlUFwJlcyYRFCjr8D3Yck1mB3eJGcKbr/I
-	 u9AqjImDwA1zq8IFbj6iBhS7snBR5DTCuBbVXD3E=
+	b=NeZesl5Oqs4QecUNr28IgaK6y74DefUteiRBrgo2AiFtKnQ346ubA4ZHjNrdkCuNs
+	 5Ya9D0idN0X3fI1TCXXJYX2COJC0y8wKuL3nQJZUKhNfozoW+XoLphSsHj5LXi0Bd3
+	 zZv8DCqILP2KyXJ46HKqqzLJs49qrAyHGPNQEOrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/111] KVM: arm64: vgic-v2: Use cpuid from userspace as vcpu_id
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.1 218/236] slimbus: qcom-ngd-ctrl: Add timeout for wait operation
 Date: Tue, 14 May 2024 12:19:40 +0200
-Message-ID: <20240514100958.732560490@linuxfoundation.org>
+Message-ID: <20240514101028.633502330@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Viken Dadhaniya <quic_vdadhani@quicinc.com>
 
-[ Upstream commit 4e7728c81a54b17bd33be402ac140bc11bb0c4f4 ]
+commit 98241a774db49988f25b7b3657026ce51ccec293 upstream.
 
-When parsing a GICv2 attribute that contains a cpuid, handle this
-as the vcpu_id, not a vcpu_idx, as userspace cannot really know
-the mapping between the two. For this, use kvm_get_vcpu_by_id()
-instead of kvm_get_vcpu().
+In current driver qcom_slim_ngd_up_worker() indefinitely
+waiting for ctrl->qmi_up completion object. This is
+resulting in workqueue lockup on Kthread.
 
-Take this opportunity to get rid of the pointless check against
-online_vcpus, which doesn't make much sense either, and switch
-to FIELD_GET as a way to extract the vcpu_id.
+Added wait_for_completion_interruptible_timeout to
+allow the thread to wait for specific timeout period and
+bail out instead waiting infinitely.
 
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230927090911.3355209-5-maz@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Stable-dep-of: 6ddb4f372fc6 ("KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Viken Dadhaniya <quic_vdadhani@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240430091238.35209-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-index 7740995de982e..640cfa0c0f4cc 100644
---- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-+++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-@@ -286,13 +286,9 @@ int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
- {
- 	int cpuid;
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1376,7 +1376,11 @@ static void qcom_slim_ngd_up_worker(stru
+ 	ctrl = container_of(work, struct qcom_slim_ngd_ctrl, ngd_up_work);
  
--	cpuid = (attr->attr & KVM_DEV_ARM_VGIC_CPUID_MASK) >>
--		 KVM_DEV_ARM_VGIC_CPUID_SHIFT;
-+	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+ 	/* Make sure qmi service is up before continuing */
+-	wait_for_completion_interruptible(&ctrl->qmi_up);
++	if (!wait_for_completion_interruptible_timeout(&ctrl->qmi_up,
++						       msecs_to_jiffies(MSEC_PER_SEC))) {
++		dev_err(ctrl->dev, "QMI wait timeout\n");
++		return;
++	}
  
--	if (cpuid >= atomic_read(&dev->kvm->online_vcpus))
--		return -EINVAL;
--
--	reg_attr->vcpu = kvm_get_vcpu(dev->kvm, cpuid);
-+	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
- 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
- 
- 	return 0;
--- 
-2.43.0
-
+ 	mutex_lock(&ctrl->ssr_lock);
+ 	qcom_slim_ngd_enable(ctrl, true);
 
 
 
