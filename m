@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-44197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806368C51AD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D64CF8C5049
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AD8DB220E1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADA2F282DA5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A5F13AD20;
-	Tue, 14 May 2024 11:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A2713B28A;
+	Tue, 14 May 2024 10:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BuVAxJE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLUFB8pf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6260C13AD15;
-	Tue, 14 May 2024 11:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C64754903;
+	Tue, 14 May 2024 10:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684890; cv=none; b=ImkzYpG7OfPUWI7kWkGVldKDnuh8CUAsG54HnrgBnQz4XeyJbEd3fKJoRcYaC6i8bYWeeX5gEjfm5OY0i9LLjbFYyycsRGhaX+LzoHIl33WIww8ZLXdOAyMjGaFhkoaCsKukT19JB8WIeWlZZotwgritkiiX4+KPVUSWrg0KPcg=
+	t=1715683133; cv=none; b=lWS3xX/rCdXDLuhqh61Xpbz3sh6II9Tv+faKXwUkgZ8Y9PHVztqzBCrLLlZNR+Yy52Yg6pR5b5nilWVWM+pi3pAE6H8p/6RiGa9OEciRt383a9FWxWbkG/KeLGcxl1sHSyekbyI+qqwTtWbvXa1YexpGD+3frekJqE2sHf8mgzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684890; c=relaxed/simple;
-	bh=M6XZKqnxmbzuZn3kxfM2tWz/DTzdrxn9f20RCVktonM=;
+	s=arc-20240116; t=1715683133; c=relaxed/simple;
+	bh=mVlLpRDyR9p/953mgVFGVsjmYZ96HpUu+vG34tGSbnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8eNQ9xSuNj9DbIs89djOZ5lqN+oVWUY2l+O4tLl+nFju5rHhLB7IiFP2d7zrT9KaBXlVASODwk5HCUYDi7mvqN5poNPoawBXQiIEzXnTpBpxk7gdlNuSebtWZKJenVpQ2Q7gA24oNrLi8TOxAd1pTW76WFSk3mbxK65FEjJPr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BuVAxJE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733E2C2BD10;
-	Tue, 14 May 2024 11:08:09 +0000 (UTC)
+	 MIME-Version; b=j/PhjErSY6c7MwXWTn+GrKQ+zWgBJpIjjkJ+qD0AVvSFUwFo+CrzPyA99uR7EsjrGcL8fR8Qf9gFzRA2m32izT4Xq1JMxPv/mqMJbhMcHa0soUQTYA8pVx5JJ0mTORa28IlnUQ601CrbSmw1RqJkCKJRvJ8y+d1BG9H6ShDMQo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLUFB8pf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C50C2BD10;
+	Tue, 14 May 2024 10:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684890;
-	bh=M6XZKqnxmbzuZn3kxfM2tWz/DTzdrxn9f20RCVktonM=;
+	s=korg; t=1715683133;
+	bh=mVlLpRDyR9p/953mgVFGVsjmYZ96HpUu+vG34tGSbnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BuVAxJE+cbjztv+JH1tgpH1szv4pB0dFASzKvuRNbEwgYRnBgsESkN+eklY47QqMi
-	 NP1FOivuqHDUQHVAk2mTn/WqX6ctbr9w4C9oRl9xv0UJjsw96mWKJMf749iSRgM51y
-	 FTzPhzbTUjZXSFDqc+OOz9HWnKAgMydVn/l+UPJ0=
+	b=OLUFB8pfdoi10qgllOke8NKNEKixegCip+BeTeklI7q8Joy2HR3IVSY+wMLdb1qjM
+	 z1Nxrs4kDC+ewwzoVmkj+bIpJdBuaxPBOoh83Lcyy8zCGABiUWwhy+LBDMuHGyU4E3
+	 ecq4g1wd/8vVQn+rHSKmhY+VhTu71rXHolYFY0HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/301] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
+Subject: [PATCH 6.8 171/336] uio_hv_generic: Dont free decrypted memory
 Date: Tue, 14 May 2024 12:16:15 +0200
-Message-ID: <20240514101036.176908662@linuxfoundation.org>
+Message-ID: <20240514101045.059399686@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
+[ Upstream commit 3d788b2fbe6a1a1a9e3db09742b90809d51638b7 ]
 
-Running kernel-doc on ieee80211_i.h flagged the following:
-net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
-net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_encrypted() or set_memory_decrypted() to fail such that an
+error is returned and the resulting memory is shared. Callers need to
+take care to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional or security
+issues.
 
-Fix these warnings.
+The VMBus device UIO driver could free decrypted/shared pages if
+set_memory_decrypted() fails. Check the decrypted field in the gpadl
+to decide whether to free the memory.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20240311161558.1310-5-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240311161558.1310-5-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ieee80211_i.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/uio/uio_hv_generic.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 07beb72ddd25a..fefaa9e902a2f 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -122,7 +122,7 @@ struct ieee80211_bss {
- };
+diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+index 20d9762331bd7..6be3462b109ff 100644
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -181,12 +181,14 @@ hv_uio_cleanup(struct hv_device *dev, struct hv_uio_private_data *pdata)
+ {
+ 	if (pdata->send_gpadl.gpadl_handle) {
+ 		vmbus_teardown_gpadl(dev->channel, &pdata->send_gpadl);
+-		vfree(pdata->send_buf);
++		if (!pdata->send_gpadl.decrypted)
++			vfree(pdata->send_buf);
+ 	}
  
- /**
-- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
-+ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
-  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
-  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
-  *
-@@ -135,7 +135,7 @@ enum ieee80211_bss_corrupt_data_flags {
- };
+ 	if (pdata->recv_gpadl.gpadl_handle) {
+ 		vmbus_teardown_gpadl(dev->channel, &pdata->recv_gpadl);
+-		vfree(pdata->recv_buf);
++		if (!pdata->recv_gpadl.decrypted)
++			vfree(pdata->recv_buf);
+ 	}
+ }
  
- /**
-- * enum ieee80211_valid_data_flags - BSS valid data flags
-+ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
-  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
-  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
+@@ -295,7 +297,8 @@ hv_uio_probe(struct hv_device *dev,
+ 	ret = vmbus_establish_gpadl(channel, pdata->recv_buf,
+ 				    RECV_BUFFER_SIZE, &pdata->recv_gpadl);
+ 	if (ret) {
+-		vfree(pdata->recv_buf);
++		if (!pdata->recv_gpadl.decrypted)
++			vfree(pdata->recv_buf);
+ 		goto fail_close;
+ 	}
+ 
+@@ -317,7 +320,8 @@ hv_uio_probe(struct hv_device *dev,
+ 	ret = vmbus_establish_gpadl(channel, pdata->send_buf,
+ 				    SEND_BUFFER_SIZE, &pdata->send_gpadl);
+ 	if (ret) {
+-		vfree(pdata->send_buf);
++		if (!pdata->send_gpadl.decrypted)
++			vfree(pdata->send_buf);
+ 		goto fail_close;
+ 	}
+ 
 -- 
 2.43.0
 
