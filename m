@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-44643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590ED8C53BF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 038BC8C53AE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B8FD288B63
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D500C287D59
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5399376028;
-	Tue, 14 May 2024 11:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F9812D76E;
+	Tue, 14 May 2024 11:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5nhCujv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUyTaP43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C5B12F590;
-	Tue, 14 May 2024 11:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E652F12C554;
+	Tue, 14 May 2024 11:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686755; cv=none; b=AacWWcOtKPXBLSE+uAG2PRONu30F7P78WyPfCj07NhtWlcXWXHFaI80QptjMyO6a6sqwB+qMT6fPdk0M7Uaz6oKunSEunSA4m8/Dea4T5AQTb70NyTOUbjqrCeqGftfox1fkOKjZ07sAcAsfP/SrwsZgu/UxJp6c7Mc/F/pHt3A=
+	t=1715686651; cv=none; b=uFusSjLr84GEk4osEVCLbFST0BXurD53h5eOmsHCpxQXrcs8+93sZO8tPO9fmqBdZpVkdKPF6s4hwQ0cbfC0oGY7tbYnx7N2/yVoQf1L8fpRuKpKdXM7pCIB28vg43ZdgqZE1Uvg7b39ZKs6PWgdR4peg6gVVAsBHG1YOnpG6Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686755; c=relaxed/simple;
-	bh=9se9Y0e03JSnuQwQcaPxA46R7BW4Vui1C58kMzMiSTk=;
+	s=arc-20240116; t=1715686651; c=relaxed/simple;
+	bh=Tlr+8oj6hm8aYYX0KCYqWV8EcDI+shbJJHjggsjnqy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfSkPJoaKMxJud+EaQ1nBs2yAETovJ3HGsg8hues4OymavjCK10bm7wsEhXA6jNDHxmXnRiJUoC75vBp1+FLgPJk2TRonmFYc9Z0flgO4STa06KfXPGyUOktmA9YHp1/0OqVPxT0vj3i8SDGHp2N7ZvEIoWmidoDbREi8jnUdc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5nhCujv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB76C2BD10;
-	Tue, 14 May 2024 11:39:14 +0000 (UTC)
+	 MIME-Version; b=ETyjU0+zlXwNkGynSR+T29VWTY1ELbbPcong/oGsGnFqMgpIOGw+3ZOqgzEfRz1Xy6v7jgMqY+olpG/zsD2Vg+5pjmiMFJEL046qcVIRorkywzOVawFgxTe3V7A4gXu5iz1udSssTpNIl5pqEM6k5Yj/42ZOvXiCLLjaWXk5urU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUyTaP43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D20EC2BD10;
+	Tue, 14 May 2024 11:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686754;
-	bh=9se9Y0e03JSnuQwQcaPxA46R7BW4Vui1C58kMzMiSTk=;
+	s=korg; t=1715686650;
+	bh=Tlr+8oj6hm8aYYX0KCYqWV8EcDI+shbJJHjggsjnqy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5nhCujvzEvuoU2CDzCrXQc1cEXVHTY5Ze8Zhooqgye6mwta8N1M5DzqoHBGJDia6
-	 GkscUIbp2T/4d8n5rUuPppHeciv5KJeq/ZCN9UYl4+DTaisA7PfTUFfa1gyXPlbCzy
-	 rPKNPUvdPuuRKxBiRo/ySOa9J1Ze51Bbm9n9TWoo=
+	b=oUyTaP438WYSg/g5zpU2a5A7Z+4qR3Hy8ZgwQU39en8X6gWUUBNSxqhe6g21N0yj/
+	 kT3psV9lQuJRmE0VKFMuMBVUe7POyX3Lcvci3HL95cgy+XSYDZeBjlv59EOTD1XKin
+	 VdL35iDX9175mviiYmXGTSxqz5joxZdsR4tkq2NM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zeng Heng <zengheng4@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 11/63] pinctrl: devicetree: fix refcount leak in pinctrl_dt_to_map()
+	Alexander Potapenko <glider@google.com>,
+	syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 210/236] kmsan: compiler_types: declare __no_sanitize_or_inline
 Date: Tue, 14 May 2024 12:19:32 +0200
-Message-ID: <20240514100948.441162535@linuxfoundation.org>
+Message-ID: <20240514101028.333130213@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Alexander Potapenko <glider@google.com>
 
-[ Upstream commit a0cedbcc8852d6c77b00634b81e41f17f29d9404 ]
+commit 90d1f14cbb9ddbfc532e2da13bf6e0ed8320e792 upstream.
 
-If we fail to allocate propname buffer, we need to drop the reference
-count we just took. Because the pinctrl_dt_free_maps() includes the
-droping operation, here we call it directly.
+It turned out that KMSAN instruments READ_ONCE_NOCHECK(), resulting in
+false positive reports, because __no_sanitize_or_inline enforced inlining.
 
-Fixes: 91d5c5060ee2 ("pinctrl: devicetree: fix null pointer dereferencing in pinctrl_dt_to_map")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <20240415105328.3651441-1-zengheng4@huawei.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Properly declare __no_sanitize_or_inline under __SANITIZE_MEMORY__, so
+that it does not __always_inline the annotated function.
+
+Link: https://lkml.kernel.org/r/20240426091622.3846771-1-glider@google.com
+Fixes: 5de0ce85f5a4 ("kmsan: mark noinstr as __no_sanitize_memory")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reported-by: syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com
+Link: https://lkml.kernel.org/r/000000000000826ac1061675b0e3@google.com
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/linux/compiler_types.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 6f5acfcba57ce..01cc09e2bccbe 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -235,14 +235,16 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 	for (state = 0; ; state++) {
- 		/* Retrieve the pinctrl-* property */
- 		propname = kasprintf(GFP_KERNEL, "pinctrl-%d", state);
--		if (!propname)
--			return -ENOMEM;
-+		if (!propname) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
- 		prop = of_find_property(np, propname, &size);
- 		kfree(propname);
- 		if (!prop) {
- 			if (state == 0) {
--				of_node_put(np);
--				return -ENODEV;
-+				ret = -ENODEV;
-+				goto err;
- 			}
- 			break;
- 		}
--- 
-2.43.0
-
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -226,6 +226,17 @@ struct ftrace_likely_data {
+ # define __no_kcsan
+ #endif
+ 
++#ifdef __SANITIZE_MEMORY__
++/*
++ * Similarly to KASAN and KCSAN, KMSAN loses function attributes of inlined
++ * functions, therefore disabling KMSAN checks also requires disabling inlining.
++ *
++ * __no_sanitize_or_inline effectively prevents KMSAN from reporting errors
++ * within the function and marks all its outputs as initialized.
++ */
++# define __no_sanitize_or_inline __no_kmsan_checks notrace __maybe_unused
++#endif
++
+ #ifndef __no_sanitize_or_inline
+ #define __no_sanitize_or_inline __always_inline
+ #endif
 
 
 
