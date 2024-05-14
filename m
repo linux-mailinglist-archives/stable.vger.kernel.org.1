@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8B98C5135
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:22:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C2B8C5258
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B130B20514
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B96D11F22B21
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093F984A46;
-	Tue, 14 May 2024 10:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A42712F395;
+	Tue, 14 May 2024 11:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHsLfg4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9lci6FU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD51D531;
-	Tue, 14 May 2024 10:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4899A1E4B0;
+	Tue, 14 May 2024 11:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684194; cv=none; b=f7VUm7dcVDweFOsw598qkoqvgtFe3JPTnQyxSnnPXNkkHiYUZLIOyOwCAbwQDuIvuWwz2N+kd7rJ9eVMvm67YWjAkrcinK8Fa1WjGj1yx2yDMJo9DMRrDwYa9IH2LqCYKmYwyhAX9oE5Z4yuMV9qF6+OafTd06AOxr276BljuC0=
+	t=1715685800; cv=none; b=nQoX1re/KwB7sYhkHXop93BLGjUfaKYxUc5RumRKdytfuhE4o+5h7MTdi2l/ZQFqlipJJS8O84IYqxXz6+9/RCI4BFToF1ROOXMd2JAaQ9rPMXJLRE4E4p4NpCnQURWickaHT6P8WTOs3znM4uVYnmwzx7WJNi9hxQpvlqF1uTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684194; c=relaxed/simple;
-	bh=gM3ktK+I0EAnQYB5lYtF+C46JhyTnBXznwgjuPJcx3I=;
+	s=arc-20240116; t=1715685800; c=relaxed/simple;
+	bh=oKOdWckBLNl+IGwj8lDgtLLlkH4YQeL+trcFHWC0vy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paShUQK5WdSD4Th6jpBgu2tttsmY8OlxS4m6qXKUropFcgcm/8c0S7v93llz1+baibobeKP0R4zO9hoXwTLLepef+s1Hum80jZIBqBU0zJ21HA5oOAzfP9oSzQ3yIdo/zQ0X0hT2pefAUDRB8fsm8QO7tHQfJJYFwFuQAtixJN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHsLfg4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C1DC2BD10;
-	Tue, 14 May 2024 10:56:33 +0000 (UTC)
+	 MIME-Version; b=udmfFLAn3sGjmJq2Ux4C04H5cRwmCXrIhUNW0A7QRCMw3Euhl1nhPCdjdezCqj5vpyY7dypSMko00Ldj7tyAejshNt9fjJgMKRvtpWFOlmuiKbn6GvLiFHxC4Q96mcNBPNrsdUQ1U0nRYaryzx7uEYtlBgVz7KDQKHlJNaXev10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9lci6FU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53FAC2BD10;
+	Tue, 14 May 2024 11:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684194;
-	bh=gM3ktK+I0EAnQYB5lYtF+C46JhyTnBXznwgjuPJcx3I=;
+	s=korg; t=1715685800;
+	bh=oKOdWckBLNl+IGwj8lDgtLLlkH4YQeL+trcFHWC0vy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHsLfg4YuMpdHHOkbdjoxDYwuN6CTf1mNPVJwfUEM1mvg6XLxmaVsKiKwcilKcWK1
-	 75Rh+08E5hirHZNdsQauWsbs7k/YfzC+h6KhVVgiQuwE61mPYXrxr2XBS9tVjklbXy
-	 KPuMqTMwLtV53UYd8oS9/EdbUxS5mh91FdJAFpiM=
+	b=D9lci6FUZ6AKKTUZsepIm2cyk/7cbMQlNmPA5WkInnnxoOx0rszFPk5VIeTjixgbe
+	 IwkXCLPNyObUMvzisEaqIwNdloyIiynQr53Nn3NLfmxXhjpLqSw6z38qu0otUA49tD
+	 8hye20nyO/XOKnR0dy2ppyk08l4CsfeXR0eLeia8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Wagner <ewagner12@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	stable@kernel.org
-Subject: [PATCH 6.8 316/336] iommu/amd: Enhance def_domain_type to handle untrusted device
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 249/301] iio:imu: adis16475: Fix sync mode setting
 Date: Tue, 14 May 2024 12:18:40 +0200
-Message-ID: <20240514101050.548672869@linuxfoundation.org>
+Message-ID: <20240514101041.658607090@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 
-commit 0f91d0795741c12cee200667648669a91b568735 upstream.
+commit 74a72baf204fd509bbe8b53eec35e39869d94341 upstream.
 
-Previously, IOMMU core layer was forcing IOMMU_DOMAIN_DMA domain for
-untrusted device. This always took precedence over driver's
-def_domain_type(). Commit 59ddce4418da ("iommu: Reorganize
-iommu_get_default_domain_type() to respect def_domain_type()") changed
-the behaviour. Current code calls def_domain_type() but if it doesn't
-return IOMMU_DOMAIN_DMA for untrusted device it throws error. This
-results in IOMMU group (and potentially IOMMU itself) in undetermined
-state.
+Fix sync mode setting by applying the necessary shift bits.
 
-This patch adds untrusted check in AMD IOMMU driver code. So that it
-allows eGPUs behind Thunderbolt work again.
-
-Fine tuning amd_iommu_def_domain_type() will be done later.
-
-Reported-by: Eric Wagner <ewagner12@gmail.com>
-Link: https://lore.kernel.org/linux-iommu/CAHudX3zLH6CsRmLE-yb+gRjhh-v4bU5_1jW_xCcxOo_oUUZKYg@mail.gmail.com
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3182
-Fixes: 59ddce4418da ("iommu: Reorganize iommu_get_default_domain_type() to respect def_domain_type()")
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: stable@kernel.org # v6.7+
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20240423111725.5813-1-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
+Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240405045309.816328-2-ramona.bolboaca13@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/iommu.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/imu/adis16475.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2593,6 +2593,10 @@ static int amd_iommu_def_domain_type(str
- 	if (!dev_data)
- 		return 0;
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -1127,6 +1127,7 @@ static int adis16475_config_sync_mode(st
+ 	struct device *dev = &st->adis.spi->dev;
+ 	const struct adis16475_sync *sync;
+ 	u32 sync_mode;
++	u16 val;
  
-+	/* Always use DMA domain for untrusted device */
-+	if (dev_is_pci(dev) && to_pci_dev(dev)->untrusted)
-+		return IOMMU_DOMAIN_DMA;
-+
- 	/*
- 	 * Do not identity map IOMMUv2 capable devices when:
- 	 *  - memory encryption is active, because some of those devices
+ 	/* default to internal clk */
+ 	st->clk_freq = st->info->int_clk * 1000;
+@@ -1188,8 +1189,9 @@ static int adis16475_config_sync_mode(st
+ 	 * I'm keeping this for simplicity and avoiding extra variables
+ 	 * in chip_info.
+ 	 */
++	val = ADIS16475_SYNC_MODE(sync->sync_mode);
+ 	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
+-				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
++				 ADIS16475_SYNC_MODE_MASK, val);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
