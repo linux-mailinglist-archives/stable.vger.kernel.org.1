@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-43948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718198C505D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:03:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AF28C51FC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E905EB20AC5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3C61F22728
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FE713D249;
-	Tue, 14 May 2024 10:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AAC86634;
+	Tue, 14 May 2024 11:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjkuPRc/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgijDRYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8C460BB6;
-	Tue, 14 May 2024 10:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4259518026;
+	Tue, 14 May 2024 11:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683267; cv=none; b=OO/d6E2mF8q/jsQfhkrt9qinuUfb4jGT1f8KQMD7TKrsEmvdNMvyEeXS/rzYFP3bVig/4CEPVkJpGKraKN/MSXqvkisAJ8u4ZsPyqWRN/jVl8YhixuuxXST1G+uRbU+CDbzsZSjmkEOr5toefRY+E5pIttFGay39lRkC7cs+vDg=
+	t=1715685315; cv=none; b=qE/E51OZ/BOk1b4gNLXaqpSHpz95JBN9eTEM9hup3oTFdnYozZz2onYD1hEjE/xcydNvu+IgogEPsuC/aOAwL53w4SlsWe43Xj/J2fPwDbiWV11xp/0hHohXPYe2X6PGN+wfLJa3q1/ce+8bJGEhaynzepO8YTs4JFBOJSqBcK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683267; c=relaxed/simple;
-	bh=OUL0YRqY9sTAEa7zcLh5r54FR+QEoYDYWR3WUiQzQJI=;
+	s=arc-20240116; t=1715685315; c=relaxed/simple;
+	bh=98EhZK/YkPw8fyonihg13fIt12BVzEDsQOsTBgwmKSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjyRNUDM6gsaHVfoA4+hndIp9ArhnmB79z5+ogsiX6huqWGIIGlX1CFipmLfk0Yk3R32ScQZMCeycchmK7o+IEUOQKsjQjb5+Hgvmtogt5E6Xy1jpPWfoW6RyOhYJaf9vauxyhnbKoUrzPneyOEVCqk5gagVFj9f3XxW0y9oacQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjkuPRc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85681C2BD10;
-	Tue, 14 May 2024 10:41:06 +0000 (UTC)
+	 MIME-Version; b=IAyCyojYIzYY1p8hlKK2WLfkKKbkIgpcasaDPMtYx+JmM8W9BbtDqUcja1UWjCiVyT3ztu0wY5NtggSOPJLsFqx15B8RplI0Gy0jt/ud/AcvakVIhN8LlqfmmrShno6n++I22hy0px9Gji4iE+TX2TIV7jAcJObMq4HNDWp1FgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgijDRYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62626C2BD10;
+	Tue, 14 May 2024 11:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683267;
-	bh=OUL0YRqY9sTAEa7zcLh5r54FR+QEoYDYWR3WUiQzQJI=;
+	s=korg; t=1715685315;
+	bh=98EhZK/YkPw8fyonihg13fIt12BVzEDsQOsTBgwmKSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjkuPRc/qhe5GTcaYKZRik9VglCBifnXJdp/dluVcGvLLODcxPPrW0g3PEw+BpQaI
-	 DiQZuaS4RQEW7dF3lBL+ESSLoSsBcWAz+3LwNCG+wXmKyZyBXTois0+F2Ff0zRVfg6
-	 Ft+1YCSSMlfPfBQwljfEMxwFLVRUF8YmSvKdN9dE=
+	b=BgijDRYmz44+lFYWU/aPdvRA2lXDxX8TqMk/lKznWYyFPN6Mdo4rdWPsspBcMpIHp
+	 NtOR06vBpEDSQR3u20iMJrXG1lKGKYlzJy7jwGEKQRsadTE6rp4CsXX/zfrMAIezPT
+	 olmiZn7EaPC9UHV1JB3WUtBIAOe2r5kMZGO17K9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jeff Layton <jlayton@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 193/336] blk-iocost: do not WARN if iocg was already offlined
+Subject: [PATCH 6.6 126/301] vboxsf: explicitly deny setlease attempts
 Date: Tue, 14 May 2024 12:16:37 +0200
-Message-ID: <20240514101045.893816140@linuxfoundation.org>
+Message-ID: <20240514101037.006851566@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 ]
+[ Upstream commit 1ece2c43b88660ddbdf8ecb772e9c41ed9cda3dd ]
 
-In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
-is intended to confirm iocg is active when it has debt. However, warn
-can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
-is run at that time:
+vboxsf does not break leases on its own, so it can't properly handle the
+case where the hypervisor changes the data. Don't allow file leases on
+vboxsf.
 
-  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
-  Call trace:
-  iocg_pay_debt+0x14c/0x190
-  iocg_kick_waitq+0x438/0x4c0
-  iocg_waitq_timer_fn+0xd8/0x130
-  __run_hrtimer+0x144/0x45c
-  __hrtimer_run_queues+0x16c/0x244
-  hrtimer_interrupt+0x2cc/0x7b0
-
-The warn in this situation is meaningless. Since this iocg is being
-removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
-is canceled after removing 'active_list' in ioc_pd_free(), which ensures
-iocg is freed after iocg_waitq_timer_fn() returns.
-
-Therefore, add the check if iocg was already offlined to avoid warn
-when removing a blkcg or disk.
-
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20240319-setlease-v1-1-5997d67e04b3@kernel.org
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/vboxsf/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index b1c4c874d4201..f3b68b7994391 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1439,8 +1439,11 @@ static void iocg_pay_debt(struct ioc_gq *iocg, u64 abs_vpay,
- 	lockdep_assert_held(&iocg->ioc->lock);
- 	lockdep_assert_held(&iocg->waitq.lock);
+diff --git a/fs/vboxsf/file.c b/fs/vboxsf/file.c
+index 2307f8037efc3..118dedef8ebe8 100644
+--- a/fs/vboxsf/file.c
++++ b/fs/vboxsf/file.c
+@@ -218,6 +218,7 @@ const struct file_operations vboxsf_reg_fops = {
+ 	.release = vboxsf_file_release,
+ 	.fsync = noop_fsync,
+ 	.splice_read = filemap_splice_read,
++	.setlease = simple_nosetlease,
+ };
  
--	/* make sure that nobody messed with @iocg */
--	WARN_ON_ONCE(list_empty(&iocg->active_list));
-+	/*
-+	 * make sure that nobody messed with @iocg. Check iocg->pd.online
-+	 * to avoid warn when removing blkcg or disk.
-+	 */
-+	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
- 	WARN_ON_ONCE(iocg->inuse > 1);
- 
- 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
+ const struct inode_operations vboxsf_reg_iops = {
 -- 
 2.43.0
 
