@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B33C8C5409
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D764B8C5469
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C66E1C22AF7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1520D1C22C7D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6526134CDC;
-	Tue, 14 May 2024 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191C285959;
+	Tue, 14 May 2024 11:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiOP5asm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAY8P/I+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E1E57CBC;
-	Tue, 14 May 2024 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0E87E792;
+	Tue, 14 May 2024 11:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686929; cv=none; b=qg5opiji5eIIJsjzLiLkEiQiK3Uj6fSrBp180AJIR1ZdG5nR9IoFvkHcQ7ksJhaIeXbuJCQePlRWiWm1fHFz7Krv+hlODORB+LEgka2DiWRyaaAlrdrml9cF9PiL+zTwFIQgNcSS2/6AKrd3OHVeZuxWYwzSU+VDxVU3oS+6o2I=
+	t=1715687169; cv=none; b=hKSvtZ9at1w4N0QrckKTM+g2BXZTOD3FuOwsJ6jRlQW2L1cEty9SzpjUzEepkH6aKNa56+2OLQNn0AlmlXpnNpAMZHmwapvbONzKn01Co0tQbH8QTSa/aRQRM4eBmHrFBlmR8rAOZV9Y5E+z71jzt6iL1Onm/xmE8R8p2QN59u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686929; c=relaxed/simple;
-	bh=TE+61QEM7dOjg3NwArmrbgmQIeZ/xjB7qGdt1f5Gyg8=;
+	s=arc-20240116; t=1715687169; c=relaxed/simple;
+	bh=evX67iECvlu9B0gEduj8GsJ2B0PiAA3rObwAfos4XEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSIkH1wO/M+cHoX2KFE0TcjAOIKefdcfn/yep69WUZMitKpRMJhhL2ybT+1Ikw8j4imOFbtUH4/JjlU8vThK9DyfyBkwIQ1Mu/+FgWgQU/t2lIxgYJmo56Zedc2f/MTEhAQY7TycQMsHNS5vm+pykes22x6OcL1UQlNHD7y1PVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiOP5asm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF76BC2BD10;
-	Tue, 14 May 2024 11:42:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BZxjFulPw3F8wCrcooxWNYsWMLOMiJFnf21lfOhgm+gtRq+US48njoJtyoEPMflv82eRZh4dbrbtSbshRKdqTHQYAfDhWwQHHHkTRgCQfFjIjHaZy4APbRCa2Au+FOyuypBooi+GTTLLyeg/Xiyw5ZLrODeTmhSFAMJOXtibGNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAY8P/I+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530BDC2BD10;
+	Tue, 14 May 2024 11:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686929;
-	bh=TE+61QEM7dOjg3NwArmrbgmQIeZ/xjB7qGdt1f5Gyg8=;
+	s=korg; t=1715687169;
+	bh=evX67iECvlu9B0gEduj8GsJ2B0PiAA3rObwAfos4XEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GiOP5asm0IAiNDizP5QvwBD0VVali3a/C5Ml09j7wITu2aQHJr/2t4N45jxDcdbka
-	 6UXBizmMtSsby4VMWkN0DKZP/juWoqZ8f2z6uOs5qw5OPgShqKLMNgArYOK77QZW7/
-	 hmf55/PxJuOwzh5ymcFx/2exa1SZ2ck/UmFPd8+4=
+	b=iAY8P/I+HlB8H8D+35grWcW79B2gkgGEJO19tdd0q01DuXczAtfSGZW37R42EH2ZX
+	 Ic7bfXdhGbZL8rx45YGmKInAeOP9gAvFybCHtKyYPGLws2Mc3gAw/PK3rcWugkSz2+
+	 6AVJ7nEsV6sUYx7ZC3wv3aPPVB6Y+n4FpDABoDPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Chris Wulff <chris.wulff@biamp.com>
-Subject: [PATCH 4.19 58/63] usb: gadget: f_fs: Fix a race condition when processing setup packets.
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 68/84] phonet: fix rtm_phonet_notify() skb allocation
 Date: Tue, 14 May 2024 12:20:19 +0200
-Message-ID: <20240514100950.200509560@linuxfoundation.org>
+Message-ID: <20240514100954.243249544@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <Chris.Wulff@biamp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 0aea736ddb877b93f6d2dd8cf439840d6b4970a9 upstream.
+[ Upstream commit d8cac8568618dcb8a51af3db1103e8d4cc4aeea7 ]
 
-If the USB driver passes a pointer into the TRB buffer for creq, this
-buffer can be overwritten with the status response as soon as the event
-is queued. This can make the final check return USB_GADGET_DELAYED_STATUS
-when it shouldn't. Instead use the stored wLength.
+fill_route() stores three components in the skb:
 
-Fixes: 4d644abf2569 ("usb: gadget: f_fs: Only return delayed status when len is 0")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
-Link: https://lore.kernel.org/r/CO1PR17MB5419BD664264A558B2395E28E1112@CO1PR17MB5419.namprd17.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- struct rtmsg
+- RTA_DST (u8)
+- RTA_OIF (u32)
+
+Therefore, rtm_phonet_notify() should use
+
+NLMSG_ALIGN(sizeof(struct rtmsg)) +
+nla_total_size(1) +
+nla_total_size(4)
+
+Fixes: f062f41d0657 ("Phonet: routing table Netlink interface")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
+Link: https://lore.kernel.org/r/20240502161700.1804476-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
+ net/phonet/pn_netlink.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -3304,7 +3304,7 @@ static int ffs_func_setup(struct usb_fun
- 	__ffs_event_add(ffs, FUNCTIONFS_SETUP);
- 	spin_unlock_irqrestore(&ffs->ev.waitq.lock, flags);
+diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
+index 59aebe2968907..dd4c7e9a634fb 100644
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -193,7 +193,7 @@ void rtm_phonet_notify(int event, struct net_device *dev, u8 dst)
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
  
--	return creq->wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
-+	return ffs->ev.setup.wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
- }
- 
- static bool ffs_func_req_match(struct usb_function *f,
+-	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
++	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct rtmsg)) +
+ 			nla_total_size(1) + nla_total_size(4), GFP_KERNEL);
+ 	if (skb == NULL)
+ 		goto errout;
+-- 
+2.43.0
+
 
 
 
