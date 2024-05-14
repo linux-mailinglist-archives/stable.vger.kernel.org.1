@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E0D8C54F0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7C8C5383
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55E4F281A9F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB6D1C2279E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3699C127B45;
-	Tue, 14 May 2024 11:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1255FDB5;
+	Tue, 14 May 2024 11:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEdKXOVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3W2I4rs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62C11272AE;
-	Tue, 14 May 2024 11:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDCA4E1C9;
+	Tue, 14 May 2024 11:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687535; cv=none; b=jGitWDT6xy8oHG33fJCABV/5b1X6MzrID1qPOrAkM0WAUrpsIRbJEQKEKOT77nSDUW12H1XYM7jWvycq7XCY9zRSoR2qWgeRw0GbRuPrzdwRfi5jKHjGFk3dUrkQeQ7FngFWdih372wPQujlksMwuxGg4t34u4rSPG9Cmu/idM8=
+	t=1715686576; cv=none; b=igFh0FKEfOWZL85J6nsoNLswCBtcpFVzE+1PYiVt8zCP9PaFiPmqcoboIGUQYVsE6WocAamvyOpMTVzP7s7Ha7jmEqrYIJ3bViSsEVPms30D9QLj62T7vYEhAtMPd7hn5I/XQS7dM4brsSDNWc8NDEYxQlQ6AP4DGF23CMcmXms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687535; c=relaxed/simple;
-	bh=PKxgsr6op1kFHGor/lD0HLYz1DeRRiJLvLvfu6L18yg=;
+	s=arc-20240116; t=1715686576; c=relaxed/simple;
+	bh=TO/JOY8vMVSip6msMzutHXkXIYWtMdZ2BcVa4WFpFpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QjIMBfCQj/KygTO5GH+z9pzUcYGP9r0lIo1+3usGVcMaQGH7JCKHwcLMFltN9sW91HrRP96aOu6uAMZvZHzjVkuVkgKlif/gTUKDPaUZE7VXh760mNRoob70hkT9ZaVXw/dDaGQG4AXX/YcLfJqo6NxIyJpDm4xVau+l5Y56rng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEdKXOVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEC2C2BD10;
-	Tue, 14 May 2024 11:52:14 +0000 (UTC)
+	 MIME-Version; b=i/nxsvC1J3oHjFyBPQ+fMfGvy0Qy0d/FbbcHLbkr2OUkdJgtzzO9BNt4Bn+d0wVqGU3s75BKqL40YWw+1HpvZmCKZsARAMxAheprj5/0b14+za6wnKT63ud58onAq93ESzEOGeIX0IEAU3w7YGldCYQ/D9HdlJzliFxZJ9yIako=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3W2I4rs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768ECC2BD10;
+	Tue, 14 May 2024 11:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687534;
-	bh=PKxgsr6op1kFHGor/lD0HLYz1DeRRiJLvLvfu6L18yg=;
+	s=korg; t=1715686575;
+	bh=TO/JOY8vMVSip6msMzutHXkXIYWtMdZ2BcVa4WFpFpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEdKXOVD8L5i51bREOdP3JO4keHb89KTJ3ezV3cb/5PmT0AC5xXdo7vdDZHHqyz1+
-	 FFlOlgfQ28HfwPu2JivTxKxGzoSQzXdS6d/eMO58ImnItmnXInu1hfKE3GdO33g4hu
-	 HkPVOfG+t0js88g1uuhC95Y0NCdDnVESHAiRNKy8=
+	b=G3W2I4rs4rt2m+3pDJpj30Thjpy1sjtDnMwHqrrTXejJspU6cLos5+bAF4McbBOQr
+	 EcMu4HzbnhDKQnlHOorhezrf9RVV00zjauZF7mz+5Gpwt/5wDvJvhfUvXtH6ylMPKW
+	 KYIP2aN2jL10jW62ADW44F5z4KCtI9K6LGkUDIec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/168] nfs: make the rpc_stat per net namespace
+Subject: [PATCH 6.1 154/236] hwmon: (corsair-cpro) Use a separate buffer for sending commands
 Date: Tue, 14 May 2024 12:18:36 +0200
-Message-ID: <20240514101007.374699759@linuxfoundation.org>
+Message-ID: <20240514101026.211653001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-[ Upstream commit 1548036ef1204df65ca5a16e8b199c858cb80075 ]
+[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
 
-Now that we're exposing the rpc stats on a per-network namespace basis,
-move this struct into struct nfs_net and use that to make sure only the
-per-network namespace stats are exposed.
+Introduce cmd_buffer, a separate buffer for storing only
+the command that is sent to the device. Before this separation,
+the existing buffer was shared for both the command and the
+report received in ccp_raw_event(), which was copied into it.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
+However, because of hidraw, the raw event parsing may be triggered
+in the middle of sending a command, resulting in outputting gibberish
+to the device. Using a separate buffer resolves this.
+
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c   | 5 ++++-
- fs/nfs/inode.c    | 4 +++-
- fs/nfs/internal.h | 2 --
- fs/nfs/netns.h    | 2 ++
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 090b16890e3d6..9e3a3570efc0f 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -73,7 +73,6 @@ const struct rpc_program nfs_program = {
- 	.number			= NFS_PROGRAM,
- 	.nrvers			= ARRAY_SIZE(nfs_version),
- 	.version		= nfs_version,
--	.stats			= &nfs_rpcstat,
- 	.pipe_dir_name		= NFS_PIPE_DIRNAME,
- };
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index fa6aa4fc8b521..0a9cbb556188f 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -79,6 +79,7 @@ struct ccp_device {
+ 	struct device *hwmon_dev;
+ 	struct completion wait_input_report;
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
++	u8 *cmd_buffer;
+ 	u8 *buffer;
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	unsigned long t;
+ 	int ret;
  
-@@ -500,6 +499,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 			  const struct nfs_client_initdata *cl_init,
- 			  rpc_authflavor_t flavor)
- {
-+	struct nfs_net		*nn = net_generic(clp->cl_net, nfs_net_id);
- 	struct rpc_clnt		*clnt = NULL;
- 	struct rpc_create_args args = {
- 		.net		= clp->cl_net,
-@@ -511,6 +511,7 @@ int nfs_create_rpc_client(struct nfs_client *clp,
- 		.servername	= clp->cl_hostname,
- 		.nodename	= cl_init->nodename,
- 		.program	= &nfs_program,
-+		.stats		= &nn->rpcstats,
- 		.version	= clp->rpc_ops->version,
- 		.authflavor	= flavor,
- 		.cred		= cl_init->cred,
-@@ -1129,6 +1130,8 @@ void nfs_clients_init(struct net *net)
- #endif
- 	spin_lock_init(&nn->nfs_client_lock);
- 	nn->boot_time = ktime_get_real();
-+	memset(&nn->rpcstats, 0, sizeof(nn->rpcstats));
-+	nn->rpcstats.program = &nfs_program;
+-	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
+-	ccp->buffer[0] = command;
+-	ccp->buffer[1] = byte1;
+-	ccp->buffer[2] = byte2;
+-	ccp->buffer[3] = byte3;
++	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
++	ccp->cmd_buffer[0] = command;
++	ccp->cmd_buffer[1] = byte1;
++	ccp->cmd_buffer[2] = byte2;
++	ccp->cmd_buffer[3] = byte3;
  
- 	nfs_netns_sysfs_setup(nn, net);
- }
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index f5942b81213d6..c3d961f9b4e15 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2360,8 +2360,10 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ 	reinit_completion(&ccp->wait_input_report);
  
- static int nfs_net_init(struct net *net)
- {
-+	struct nfs_net *nn = net_generic(net, nfs_net_id);
+-	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
++	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	if (!ccp)
+ 		return -ENOMEM;
+ 
+-	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	if (!ccp->cmd_buffer)
++		return -ENOMEM;
 +
- 	nfs_clients_init(net);
--	rpc_proc_register(net, &nfs_rpcstat);
-+	rpc_proc_register(net, &nn->rpcstats);
- 	return nfs_fs_proc_net_init(net);
- }
++	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
+ 	if (!ccp->buffer)
+ 		return -ENOMEM;
  
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 2ceb4b98ec15f..d0965b4676a5b 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -428,8 +428,6 @@ int nfs_try_get_tree(struct fs_context *);
- int nfs_get_tree_common(struct fs_context *);
- void nfs_kill_super(struct super_block *);
- 
--extern struct rpc_stat nfs_rpcstat;
--
- extern int __init register_nfs_fs(void);
- extern void __exit unregister_nfs_fs(void);
- extern bool nfs_sb_active(struct super_block *sb);
-diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
-index c8374f74dce11..a68b21603ea9a 100644
---- a/fs/nfs/netns.h
-+++ b/fs/nfs/netns.h
-@@ -9,6 +9,7 @@
- #include <linux/nfs4.h>
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
-+#include <linux/sunrpc/stats.h>
- 
- struct bl_dev_msg {
- 	int32_t status;
-@@ -34,6 +35,7 @@ struct nfs_net {
- 	struct nfs_netns_client *nfs_client;
- 	spinlock_t nfs_client_lock;
- 	ktime_t boot_time;
-+	struct rpc_stat rpcstats;
- #ifdef CONFIG_PROC_FS
- 	struct proc_dir_entry *proc_nfsfs;
- #endif
 -- 
 2.43.0
 
