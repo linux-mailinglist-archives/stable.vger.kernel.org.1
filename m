@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-43920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28168C5036
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:59:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A032E8C52C3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C405B1C209D9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:59:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EB3E282FF8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C02113A41F;
-	Tue, 14 May 2024 10:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A49012FF77;
+	Tue, 14 May 2024 11:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vghhDEfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFYK6pcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB13713A415;
-	Tue, 14 May 2024 10:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC37212FF67;
+	Tue, 14 May 2024 11:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683088; cv=none; b=RRkW26uO5kwcyGcnvcctjQP88pph1x/1c2UDd9kFz0wICtNl/GFM+QkaLKyetyyUUEZ4vqNJb5iXTIQR1kJ7MI7/ivXome/h3H/B6KMt+HutoOzMaRXl7ri6Lvc7KeMbgja1mlZT8L2801rccQLqoI+zoXafbQVJl54ufm/C9J8=
+	t=1715686082; cv=none; b=iE76eXMc3yQRjE/ThO7w+l/FAUfNJm9DwQXKEQEaY7XV6srX/qyl7J41zDNtrpY3qVEvv3zhNOQl9PWkGb1Gp+7bRDcFdwia/mZ4D0751cArX3UjEH06FLsV8dXcPXqooZc7rvvao+Wy1s17NvpysjKTbgEBjV608JoaBnZ4teM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683088; c=relaxed/simple;
-	bh=5ZPgI5fowkorkbaREYjbn7398A+xZ62nxZ2nLfYo3ds=;
+	s=arc-20240116; t=1715686082; c=relaxed/simple;
+	bh=m/Whxq+ILTbtqt9sH716iTWR9UmW5+1+qldQslUGmAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLW4y/EW4y9q0qfLtYzz1qy9O4ezka9zXNej4KT5db7ZU/7+8y2gRIGe9EoKmPO2hB3vVNQ50w4CplUjdB8/VT4eIxSL0GY9aW+MxjrU0p4eXNwxBYjJWsmjB3oXKBE1UEjiSM0DDvH8DVHsO61pTljME7n8IWYiJxJXLgGMFpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vghhDEfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C0FC2BD10;
-	Tue, 14 May 2024 10:38:07 +0000 (UTC)
+	 MIME-Version; b=b73xmzttcp4/lh4EnHmCFY6m11rAxUZ2kIbeNba8Z5Dv8olw7R5Og8wa252d8TieNuwm5CFQP5P2gwInZ8OKhFXQxOHqT7bxpE0koFuoTj02SeIe9TSB2UgBN3GoXSpiuTT2SRc03BaP5xHWSn3t8Dzg/lf2V3lBzrEtE+XewsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFYK6pcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C47C2BD10;
+	Tue, 14 May 2024 11:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683088;
-	bh=5ZPgI5fowkorkbaREYjbn7398A+xZ62nxZ2nLfYo3ds=;
+	s=korg; t=1715686081;
+	bh=m/Whxq+ILTbtqt9sH716iTWR9UmW5+1+qldQslUGmAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vghhDEfdiHMy4TCpY6leh9DUKgYo4GJ9yWT43Jw6g4+u74ZKJS1+ggPKUKIsX3E6O
-	 ERGxXz0A7scl3thICqbbLTwMN0Cg9nxOIejkbL3JxgobxNhXoauvC15uKnZk/R5TCL
-	 quQECRCVExG5Ntqy754xRe7vfa8DgiLw2WhObQ30=
+	b=RFYK6pcwTU75ECPYkGjN0f/RYj77lVvjJtrAH45RqEn7Glu3ksZRf7KC/A0/Hc3Rf
+	 Oo5RbbbeGEAcehc4R9y0UEwMPqSszTxFirG+FzKbpiuXfm3WXAWx3EvVMgao2BmNmw
+	 HTxZW5aaxSXJ/TOTyiyRRf12Lqdc3xv0SkokuGTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 164/336] drm/amd/pm: fix the high voltage issue after unload
+Subject: [PATCH 6.1 006/236] eeprom: at24: Probe for DDR3 thermal sensor in the SPD case
 Date: Tue, 14 May 2024 12:16:08 +0200
-Message-ID: <20240514101044.796665538@linuxfoundation.org>
+Message-ID: <20240514101020.570416419@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kenneth Feng <kenneth.feng@amd.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 3818708e9c9712e2ba4006bc23502ee7b031bd3f ]
+[ Upstream commit caba40ec3531b0849f44502a03117796e8c9f4a1 ]
 
-fix the high voltage issue after unload on smu 13.0.10
+The DDR3 SPD data structure advertises the presence of a thermal
+sensor on a DDR3 module in byte 32, bit 7. Let's use this information
+to explicitly instantiate the thermal sensor I2C client instead of
+having to rely on class-based I2C probing.
 
-Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The temp sensor i2c address can be derived from the SPD i2c address,
+so we can directly instantiate the device and don't have to probe
+for it. If the temp sensor has been instantiated already by other
+means (e.g. class-based auto-detection), then the busy-check in
+i2c_new_client_device will detect this.
+
+Note: Thermal sensors on DDR4 DIMM's are instantiated from the
+      ee1004 driver.
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/68113672-3724-44d5-9ff8-313dd6628f8c@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f42c97027fb7 ("eeprom: at24: fix memory corruption race condition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    | 26 ++++++++++--------
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 27 +++++++++++++++++--
- drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  1 +
- .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  |  8 +++++-
- 4 files changed, 48 insertions(+), 14 deletions(-)
+ drivers/misc/eeprom/at24.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index d0afb9ba3789c..14d878675586a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4120,18 +4120,22 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 					adev->ip_blocks[i].status.hw = true;
- 				}
- 			}
-+		} else if (amdgpu_ip_version(adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 10) &&
-+				   !amdgpu_device_has_display_hardware(adev)) {
-+					r = psp_gpu_reset(adev);
- 		} else {
--			tmp = amdgpu_reset_method;
--			/* It should do a default reset when loading or reloading the driver,
--			 * regardless of the module parameter reset_method.
--			 */
--			amdgpu_reset_method = AMD_RESET_METHOD_NONE;
--			r = amdgpu_asic_reset(adev);
--			amdgpu_reset_method = tmp;
--			if (r) {
--				dev_err(adev->dev, "asic reset on init failed\n");
--				goto failed;
--			}
-+				tmp = amdgpu_reset_method;
-+				/* It should do a default reset when loading or reloading the driver,
-+				 * regardless of the module parameter reset_method.
-+				 */
-+				amdgpu_reset_method = AMD_RESET_METHOD_NONE;
-+				r = amdgpu_asic_reset(adev);
-+				amdgpu_reset_method = tmp;
-+		}
+diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+index 5aae2f9bdd51c..dc30fe137b40f 100644
+--- a/drivers/misc/eeprom/at24.c
++++ b/drivers/misc/eeprom/at24.c
+@@ -581,6 +581,31 @@ static unsigned int at24_get_offset_adj(u8 flags, unsigned int byte_len)
+ 	}
+ }
+ 
++static void at24_probe_temp_sensor(struct i2c_client *client)
++{
++	struct at24_data *at24 = i2c_get_clientdata(client);
++	struct i2c_board_info info = { .type = "jc42" };
++	int ret;
++	u8 val;
 +
-+		if (r) {
-+		  dev_err(adev->dev, "asic reset on init failed\n");
-+		  goto failed;
++	/*
++	 * Byte 2 has value 11 for DDR3, earlier versions don't
++	 * support the thermal sensor present flag
++	 */
++	ret = at24_read(at24, 2, &val, 1);
++	if (ret || val != 11)
++		return;
++
++	/* Byte 32, bit 7 is set if temp sensor is present */
++	ret = at24_read(at24, 32, &val, 1);
++	if (ret || !(val & BIT(7)))
++		return;
++
++	info.addr = 0x18 | (client->addr & 7);
++
++	i2c_new_client_device(client->adapter, &info);
++}
++
+ static int at24_probe(struct i2c_client *client)
+ {
+ 	struct regmap_config regmap_config = { };
+@@ -780,6 +805,10 @@ static int at24_probe(struct i2c_client *client)
  		}
  	}
  
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-index 0ad947df777ab..ba1597b01a970 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -734,7 +734,7 @@ static int smu_early_init(void *handle)
- 	smu->adev = adev;
- 	smu->pm_enabled = !!amdgpu_dpm;
- 	smu->is_apu = false;
--	smu->smu_baco.state = SMU_BACO_STATE_EXIT;
-+	smu->smu_baco.state = SMU_BACO_STATE_NONE;
- 	smu->smu_baco.platform_support = false;
- 	smu->user_dpm_profile.fan_mode = -1;
- 
-@@ -1954,10 +1954,25 @@ static int smu_smc_hw_cleanup(struct smu_context *smu)
- 	return 0;
- }
- 
-+static int smu_reset_mp1_state(struct smu_context *smu)
-+{
-+	struct amdgpu_device *adev = smu->adev;
-+	int ret = 0;
++	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
++	if (cdata == &at24_data_spd)
++		at24_probe_temp_sensor(client);
 +
-+	if ((!adev->in_runpm) && (!adev->in_suspend) &&
-+		(!amdgpu_in_reset(adev)) && amdgpu_ip_version(adev, MP1_HWIP, 0) ==
-+									IP_VERSION(13, 0, 10) &&
-+		!amdgpu_device_has_display_hardware(adev))
-+		ret = smu_set_mp1_state(smu, PP_MP1_STATE_UNLOAD);
-+
-+	return ret;
-+}
-+
- static int smu_hw_fini(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 	struct smu_context *smu = adev->powerplay.pp_handle;
-+	int ret;
+ 	pm_runtime_idle(dev);
  
- 	if (amdgpu_sriov_vf(adev) && !amdgpu_sriov_is_pp_one_vf(adev))
- 		return 0;
-@@ -1975,7 +1990,15 @@ static int smu_hw_fini(void *handle)
- 
- 	adev->pm.dpm_enabled = false;
- 
--	return smu_smc_hw_cleanup(smu);
-+	ret = smu_smc_hw_cleanup(smu);
-+	if (ret)
-+		return ret;
-+
-+	ret = smu_reset_mp1_state(smu);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- 
- static void smu_late_fini(void *handle)
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
-index 66e84defd0b6e..2aa4fea873147 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
-+++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
-@@ -424,6 +424,7 @@ enum smu_reset_mode {
- enum smu_baco_state {
- 	SMU_BACO_STATE_ENTER = 0,
- 	SMU_BACO_STATE_EXIT,
-+	SMU_BACO_STATE_NONE,
- };
- 
- struct smu_baco_context {
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index 9c03296f92cdd..67117ced7c6ae 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2751,7 +2751,13 @@ static int smu_v13_0_0_set_mp1_state(struct smu_context *smu,
- 
- 	switch (mp1_state) {
- 	case PP_MP1_STATE_UNLOAD:
--		ret = smu_cmn_set_mp1_state(smu, mp1_state);
-+		ret = smu_cmn_send_smc_msg_with_param(smu,
-+											  SMU_MSG_PrepareMp1ForUnload,
-+											  0x55, NULL);
-+
-+		if (!ret && smu->smu_baco.state == SMU_BACO_STATE_EXIT)
-+			ret = smu_v13_0_disable_pmfw_state(smu);
-+
- 		break;
- 	default:
- 		/* Ignore others */
+ 	if (writable)
 -- 
 2.43.0
 
