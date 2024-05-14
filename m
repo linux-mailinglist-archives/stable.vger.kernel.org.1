@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-44441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402198C52DE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456E18C51B4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B5B1C21957
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 000DA2828BF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B1713540C;
-	Tue, 14 May 2024 11:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3D213AD27;
+	Tue, 14 May 2024 11:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LR7Rx461"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsyjdqlC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358FF1CAA4;
-	Tue, 14 May 2024 11:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D7913AD1F;
+	Tue, 14 May 2024 11:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686171; cv=none; b=IiWg0mjMQrt27vz0WqM9fExsQmGo2gJ7toxSfjZeMuw4JQ+n7mpsiFEHjIRMwhP9xRlS/cEG3ZeZX0US7Vu4nrsnqyHDAcFriEI0IpDQVj+mnJX6YsP3DRSFVmW31CSdxQajRyQmyXDzupnVTLbrVga7CCg9Z9AkvRINZoI4b2g=
+	t=1715684899; cv=none; b=kuEKQ9TaWVLylvVqanVEWJSSOHTWAZimzEwQDyK12DAT/gwDUj+Etp1fc1E6Z2/SqrWF16TrcQATSqB9VhYKR0KO2W8RtwurdoWrcxW5nZX17pOXB3m5g5XoKELGBovFYEOFQkq3yw0Yu+jC+DJWu+IO0pMTRmYIiWcVMKCST3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686171; c=relaxed/simple;
-	bh=PYKozqe3VENtOpnGK0xyZShfQRkZj5iZfU9K3/H8LYU=;
+	s=arc-20240116; t=1715684899; c=relaxed/simple;
+	bh=CMZfMhiE6S/H2o+b9RR7SAnTqhXZty5YWR1OGf4e+/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFeAlCeD4Qx7dewmmDWJzn5X5M+BxC/3TKRAsLedmJtMHCukF5+BGbnWUP244YkPEx1YOMuQ/D6nrkMjSTLhbZM+wpxXDczhsfW2ZWuyaNspK2OSLIOuqvIqDLPqHP73P0GlQ9tztfnC4pSPXPAw5EwmeOqOSPqivnr9PYWIPz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LR7Rx461; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850C9C2BD10;
-	Tue, 14 May 2024 11:29:30 +0000 (UTC)
+	 MIME-Version; b=Y/EZStJChvkHGYcvgXlIefsFxtL8COeWQgfWr57omhFFFmD1tN23vWx/AU0U+qc7h7ZNVyFNZxu4DEj4f7oyTIYOggoYdF80Vs4oHwaQ+3xywltSoMVm8oqc3JPed0zghFm38RFQpyZdl30xIJnBAmEpx0N7wq+HT38Po6Iu6aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsyjdqlC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F46CC2BD10;
+	Tue, 14 May 2024 11:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686171;
-	bh=PYKozqe3VENtOpnGK0xyZShfQRkZj5iZfU9K3/H8LYU=;
+	s=korg; t=1715684898;
+	bh=CMZfMhiE6S/H2o+b9RR7SAnTqhXZty5YWR1OGf4e+/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LR7Rx461nET2h7Mwyg3pewwyITginZn9vcz3QRcO61H/dALyZL5D3CPheViQDlPzV
-	 IBpb65fwsCtImEWfszBecUBf6TuM1lnBECUCWrDqs7JeYJJN5g+xhxbx34umNAlQm2
-	 KPVj9YaqrHmRWhnWsWj1ee2ieBGFQVmU17Ln2p0o=
+	b=nsyjdqlCAix5W4Zha8JDbrkg7SmwZnaf1E45d1YtLA7Fj69BW00nHIKZ11uaYESIj
+	 wINBnAnE7TBJQMu8i5A8AcGwG26EixmkRndOECQClzGUzaJ2zWdxBImncbdcOVZLrt
+	 AJIDR3oZA4dflrUcSqAfTUpOM+rAHbtxabZXEiT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/236] mm/hugetlb: convert free_huge_page to folios
+Subject: [PATCH 6.6 106/301] wifi: mac80211: fix prep_connection error path
 Date: Tue, 14 May 2024 12:16:17 +0200
-Message-ID: <20240514101020.910661659@linuxfoundation.org>
+Message-ID: <20240514101036.252303329@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0356c4b96f6890dd61af4c902f681764f4bdba09 ]
+[ Upstream commit 2e6bd24339a6ff04413b2e49c0f2672d6f0edfa5 ]
 
-Use folios inside free_huge_page(), this is in preparation for converting
-hugetlb_cgroup_uncharge_page() to take in a folio.
+If prep_channel fails in prep_connection, the code releases
+the deflink's chanctx, which is wrong since we may be using
+a different link. It's already wrong to even do that always
+though, since we might still have the station. Remove it
+only if prep_channel succeeded and later updates fail.
 
-Link: https://lkml.kernel.org/r/20221101223059.460937-7-sidhartha.kumar@oracle.com
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240318184907.2780c1f08c3d.I033c9b15483933088f32a2c0789612a33dd33d82@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ net/mac80211/mlme.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 9c1a30eb6c564..6cdbb06902df1 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1918,21 +1918,22 @@ void free_huge_page(struct page *page)
- 	 * Can't pass hstate in here because it is called from the
- 	 * compound page destructor.
- 	 */
--	struct hstate *h = page_hstate(page);
--	int nid = page_to_nid(page);
--	struct hugepage_subpool *spool = hugetlb_page_subpool(page);
-+	struct folio *folio = page_folio(page);
-+	struct hstate *h = folio_hstate(folio);
-+	int nid = folio_nid(folio);
-+	struct hugepage_subpool *spool = hugetlb_folio_subpool(folio);
- 	bool restore_reserve;
- 	unsigned long flags;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 6e574e2adc22e..cf01f1f298a3b 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7080,7 +7080,7 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
+ 			sdata_info(sdata,
+ 				   "failed to insert STA entry for the AP (error %d)\n",
+ 				   err);
+-			goto out_err;
++			goto out_release_chan;
+ 		}
+ 	} else
+ 		WARN_ON_ONCE(!ether_addr_equal(link->u.mgd.bssid, cbss->bssid));
+@@ -7091,8 +7091,9 @@ static int ieee80211_prep_connection(struct ieee80211_sub_if_data *sdata,
  
--	VM_BUG_ON_PAGE(page_count(page), page);
--	VM_BUG_ON_PAGE(page_mapcount(page), page);
-+	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
-+	VM_BUG_ON_FOLIO(folio_mapcount(folio), folio);
+ 	return 0;
  
--	hugetlb_set_page_subpool(page, NULL);
--	if (PageAnon(page))
--		__ClearPageAnonExclusive(page);
--	page->mapping = NULL;
--	restore_reserve = HPageRestoreReserve(page);
--	ClearHPageRestoreReserve(page);
-+	hugetlb_set_folio_subpool(folio, NULL);
-+	if (folio_test_anon(folio))
-+		__ClearPageAnonExclusive(&folio->page);
-+	folio->mapping = NULL;
-+	restore_reserve = folio_test_hugetlb_restore_reserve(folio);
-+	folio_clear_hugetlb_restore_reserve(folio);
- 
- 	/*
- 	 * If HPageRestoreReserve was set on page, page allocation consumed a
-@@ -1954,7 +1955,7 @@ void free_huge_page(struct page *page)
- 	}
- 
- 	spin_lock_irqsave(&hugetlb_lock, flags);
--	ClearHPageMigratable(page);
-+	folio_clear_hugetlb_migratable(folio);
- 	hugetlb_cgroup_uncharge_page(hstate_index(h),
- 				     pages_per_huge_page(h), page);
- 	hugetlb_cgroup_uncharge_page_rsvd(hstate_index(h),
-@@ -1962,7 +1963,7 @@ void free_huge_page(struct page *page)
- 	if (restore_reserve)
- 		h->resv_huge_pages++;
- 
--	if (HPageTemporary(page)) {
-+	if (folio_test_hugetlb_temporary(folio)) {
- 		remove_hugetlb_page(h, page, false);
- 		spin_unlock_irqrestore(&hugetlb_lock, flags);
- 		update_and_free_page(h, page, true);
++out_release_chan:
++	ieee80211_link_release_channel(link);
+ out_err:
+-	ieee80211_link_release_channel(&sdata->deflink);
+ 	ieee80211_vif_set_links(sdata, 0, 0);
+ 	return err;
+ }
 -- 
 2.43.0
 
