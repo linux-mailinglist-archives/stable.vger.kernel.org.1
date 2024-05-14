@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CA18C5231
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3118A8C5366
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23B0D282A65
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 263C72865F4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD6A12D1F1;
-	Tue, 14 May 2024 11:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0249B85956;
+	Tue, 14 May 2024 11:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvDmCvoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4VpIzkN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9EA55C0A;
-	Tue, 14 May 2024 11:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31EC18026;
+	Tue, 14 May 2024 11:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685588; cv=none; b=huCi9U/RHxh6GFe/Ch6GeHcIsTI0Lv5UZcVSFwHcuYT8K5NMSQ7/h6FkQ8py8hahgtJXBjov/tOdAQIDrYDIbpRmIhuSeXKnmgl2sillLWpGzF+OPe1HBYqiJrTk2WbjrUzpm/PSpD8kQqRx+/J1jXT6EQqwqaUW86BwuCAawOk=
+	t=1715686476; cv=none; b=Tl29ZGT9P8aWrOaBmizTY/fFIRtrnVfpor5K+sMtDSAXH+1xyCesN9HdmktBbcRVidXC0NVBjQnaKXeoIL2BUzHQY/JehpTVEfBOQ3K/SxE29UeMVPuZfiaVOzp1fdaMjRWMHPf1zL2FCaGfKi4BEoTCF1rpZ5DfPmA7Ts7pO4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685588; c=relaxed/simple;
-	bh=snlwj6n1CB0XkZW30sRB/fpwzcOVWnZCVg6A/UU4IrI=;
+	s=arc-20240116; t=1715686476; c=relaxed/simple;
+	bh=YHZk+rcAT4I+eMIL7reindilEa8NS8fBcRv81qN9QPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UhwvZ/XSN90kN1F+RzpmF00k/tKpuh39V1MqXrq4wpjWcWptJh0b+nSN3O13pEFF+7Ia0C2a7XQPOwQ9QghkXAC/+cLdQjva51I+LNWUnrg62bJiXaFy4zwzIBv5vMp5sdUFgbGYr5xvchOJR8ihHDPNla+FpJ2N9aeeXza/tj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvDmCvoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8575CC2BD10;
-	Tue, 14 May 2024 11:19:47 +0000 (UTC)
+	 MIME-Version; b=nLZKfBkF+Yy7B8fgzsuoxqkNpMlhMQHbjzu8e2kzC/nS5s/nQdNomDzu3d9VE7X5EnP1r+D0T152buHUznffMO2n5DAVC/MABUX7iDuzysbyAEgBAVPkxjow4i3Ohi82LkZOAyyWgElIhywEO0xTmxeNHqnRrVXOLuz1nFfTgEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4VpIzkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E731C2BD10;
+	Tue, 14 May 2024 11:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685588;
-	bh=snlwj6n1CB0XkZW30sRB/fpwzcOVWnZCVg6A/UU4IrI=;
+	s=korg; t=1715686476;
+	bh=YHZk+rcAT4I+eMIL7reindilEa8NS8fBcRv81qN9QPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvDmCvoenPUVpNr3YTq0UP3GklyrhG5/5hIF06XLB/yhTw8g/+nHBIfbcfN2wHlWx
-	 rXk0cu7Tzsr7eOGjQD3DKghIMCfoSs94eaFopOpEpPOLmpPnuTXzIa7d3ruHvydGyQ
-	 jvh39+wC8dKd/nb81jcIitndlnpM5ih3UYZHKI9g=
+	b=K4VpIzkNeEK/GTfTpcqvgc5mqvkNNPThg5cH4L/blb7XfZsMtU6I9nyFNBNEhti0F
+	 NeCfZP0NrDlX8dcSB4v7uXJsot07/2ynQlNnbrf/l6ADi9j23JNf+rKTCBdKo+OwHT
+	 aMIjCdghUNbYd2D14KT8dVquBbg9OKEsNk/VU99Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Fabio Estevam <festevam@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/301] net: dsa: mv88e6xxx: add phylink_get_caps for the mv88e6320/21 family
+Subject: [PATCH 6.1 120/236] scsi: target: Fix SELinux error when systemd-modules loads the target module
 Date: Tue, 14 May 2024 12:18:02 +0200
-Message-ID: <20240514101040.227627584@linuxfoundation.org>
+Message-ID: <20240514101024.926251762@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steffen Bätz <steffen@innosonix.de>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit f39bf3cf08a49e7d20c44bc8bc8e390fea69959a ]
+[ Upstream commit 97a54ef596c3fd24ec2b227ba8aaf2cf5415e779 ]
 
-As of commit de5c9bf40c45 ("net: phylink: require supported_interfaces to
-be filled")
-Marvell 88e6320/21 switches fail to be probed:
+If the systemd-modules service loads the target module, the credentials of
+that userspace process will be used to validate the access to the target db
+directory.  SELinux will prevent it, reporting an error like the following:
 
-...
-mv88e6085 30be0000.ethernet-1:00: phylink: error: empty supported_interfaces
-error creating PHYLINK: -22
-...
+kernel: audit: type=1400 audit(1676301082.205:4): avc: denied  { read }
+for  pid=1020 comm="systemd-modules" name="target" dev="dm-3"
+ino=4657583 scontext=system_u:system_r:systemd_modules_load_t:s0
+tcontext=system_u:object_r:targetd_etc_rw_t:s0 tclass=dir permissive=0
 
-The problem stems from the use of mv88e6185_phylink_get_caps() to get
-the device capabilities.
-Since there are serdes only ports 0/1 included, create a new dedicated
-phylink_get_caps for the 6320 and 6321 to properly support their
-set of capabilities.
+Fix the error by using the kernel credentials to access the db directory
 
-Fixes: de5c9bf40c45 ("net: phylink: require supported_interfaces to be filled")
-Signed-off-by: Steffen Bätz <steffen@innosonix.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/r/20240508072944.54880-2-steffen@innosonix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Link: https://lore.kernel.org/r/20240215143944.847184-2-mlombard@redhat.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/target/target_core_configfs.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index db1d9df7d47fe..e5bac87941f61 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -697,6 +697,18 @@ static void mv88e6352_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
- 	}
- }
- 
-+static void mv88e632x_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
-+				       struct phylink_config *config)
-+{
-+	unsigned long *supported = config->supported_interfaces;
-+
-+	/* Translate the default cmode */
-+	mv88e6xxx_translate_cmode(chip->ports[port].cmode, supported);
-+
-+	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100 |
-+				   MAC_1000FD;
-+}
-+
- static void mv88e6341_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
- 				       struct phylink_config *config)
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index 416514c5c7acd..1a26dd0d56662 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -3587,6 +3587,8 @@ static int __init target_core_init_configfs(void)
  {
-@@ -4976,7 +4988,7 @@ static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
--	.phylink_get_caps = mv88e6185_phylink_get_caps,
-+	.phylink_get_caps = mv88e632x_phylink_get_caps,
- };
+ 	struct configfs_subsystem *subsys = &target_core_fabrics;
+ 	struct t10_alua_lu_gp *lu_gp;
++	struct cred *kern_cred;
++	const struct cred *old_cred;
+ 	int ret;
  
- static const struct mv88e6xxx_ops mv88e6321_ops = {
-@@ -5022,7 +5034,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
--	.phylink_get_caps = mv88e6185_phylink_get_caps,
-+	.phylink_get_caps = mv88e632x_phylink_get_caps,
- };
+ 	pr_debug("TARGET_CORE[0]: Loading Generic Kernel Storage"
+@@ -3663,11 +3665,21 @@ static int __init target_core_init_configfs(void)
+ 	if (ret < 0)
+ 		goto out;
  
- static const struct mv88e6xxx_ops mv88e6341_ops = {
++	/* We use the kernel credentials to access the target directory */
++	kern_cred = prepare_kernel_cred(&init_task);
++	if (!kern_cred) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	old_cred = override_creds(kern_cred);
+ 	target_init_dbroot();
++	revert_creds(old_cred);
++	put_cred(kern_cred);
+ 
+ 	return 0;
+ 
+ out:
++	target_xcopy_release_pt();
+ 	configfs_unregister_subsystem(subsys);
+ 	core_dev_release_virtual_lun0();
+ 	rd_module_exit();
 -- 
 2.43.0
 
