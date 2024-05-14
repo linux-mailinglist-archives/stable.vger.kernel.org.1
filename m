@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B678C52F7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5322A8C521D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B982833CE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E31ED282517
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46C41386C0;
-	Tue, 14 May 2024 11:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242AA12B16A;
+	Tue, 14 May 2024 11:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQTBuNrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po7bsJZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C371386B5;
-	Tue, 14 May 2024 11:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A0754F87;
+	Tue, 14 May 2024 11:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686240; cv=none; b=nuTFVzcHU6zxPsE8XPAi1ScIdwpmmSgs06qGVajjUk8oIS4l/i9qGxaMLTpSrVlc3AuTdfdJE3oYRkVlqpaDnFmbYA7PTTrDfeIDiLKGbOQg2BMaNjrmLUROtdCRrumcsqu0rVMQDLAHYdsDl59qae0nXCTb5TAjZ7gDZmDOYO8=
+	t=1715685513; cv=none; b=Fofqosku4RQcaenfnBwUanPno8BAh2/ZffduW1yA+AX6VjPZ0EM7xtbF/59qVVIuR+IazCgceGSBbfPxLrMvapG0C6b8YD2ewVZ7+eUAKv+M3f2aa6Ny81zJDIwi1nIT+E/gf5BAfxplIEbnnBirqg00J1x5EaB0ogpHcRP51Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686240; c=relaxed/simple;
-	bh=PAhm3VSGhXWmt0QaSA/wT1w1kgnN5/wIwJB6GJQwkug=;
+	s=arc-20240116; t=1715685513; c=relaxed/simple;
+	bh=XrLxzDyI/EJljwO7/9Y2/+XWkG7zmQxJuxYa7UXrpR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBXmHrUSsp32p9uZGc6fHsd8NrYhd5PnUT+wG073+CckufNtteyVwF+GcNqbnClI3M76po8BVg/CKUibPFp/8iLBgkyONBlKSmP0cO/SI3p12Kn1LXPkSV57sMpPMFzW1iPRam3WxW36A6jpbCyunoXc4q/so1ya9Mn7tQCG3WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQTBuNrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D40C32781;
-	Tue, 14 May 2024 11:30:39 +0000 (UTC)
+	 MIME-Version; b=X8cXiFKY9cuWoAfDqKMazchlI1FbkmQwqVzyh4DPjPu/Hd1JrYdsMO+KEmbCoW7LOyWpuoOVrja3QnDmrZip7mwbVQPDqyyufeIu2PFmLUfYvOvZVofcpaf/hwC25llexDUoC0Lp1eTx3rGOTwfuBAKknNZn0/b4iLrqhLfLHLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po7bsJZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35322C2BD10;
+	Tue, 14 May 2024 11:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686240;
-	bh=PAhm3VSGhXWmt0QaSA/wT1w1kgnN5/wIwJB6GJQwkug=;
+	s=korg; t=1715685513;
+	bh=XrLxzDyI/EJljwO7/9Y2/+XWkG7zmQxJuxYa7UXrpR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQTBuNrmTI92EzWtj7UeEaQjTkQ/OkoSeyDQClGke2yJtqSX+7EwcV779VrIpgJ/K
-	 T5E9Yasfmv4K5iYbgw3ozL5oFQDUr3ro586AcoWw6RHTow/Wi55ocJR1HcoaG6VFBB
-	 EgsuhzpPXTx0BRu9isegzF297rv/a9KFrehHQu8k=
+	b=Po7bsJZQePpMfMG0Hejyvs9Yqs+/ArO1N+Y+2ZgNiFKtXSjkGtE9X9cApJFVrJgiy
+	 V2YQ4wIc2EeJ0X0e8rmon+mAMoQ1aVor40QMrDmd424aAtpA34VJFsrDJo+uNUre/Y
+	 VXH4MFtb8nGlJS690xdfhE6VWpMyAQ2HsZ9/Em4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/236] ASoC: meson: axg-card: make links nonatomic
+Subject: [PATCH 6.6 160/301] fs/9p: fix the cache always being enabled on files with qid flags
 Date: Tue, 14 May 2024 12:17:11 +0200
-Message-ID: <20240514101022.992040030@linuxfoundation.org>
+Message-ID: <20240514101038.298813310@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit dcba52ace7d4c12e2c8c273eff55ea03a84c8baf ]
+[ Upstream commit 4e5d208cc9bd5fbc95d536fa223b4b14c37b8ca8 ]
 
-Non atomic operations need to be performed in the trigger callback
-of the TDM interfaces. Those are BEs but what matters is the nonatomic
-flag of the FE in the DPCM context. Just set nonatomic for everything so,
-at least, what is done is clear.
+I'm not sure why this check was ever here. After updating to 6.6 I
+suddenly found caching had been turned on by default and neither
+cache=none nor the new directio would turn it off. After walking through
+the new code very manually I realized that it's because the caching has
+to be, in effect, turned off explicitly by setting P9L_DIRECT and
+whenever a file has a flag, in my case QTAPPEND, it doesn't get set.
 
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240426152946.3078805-3-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Setting aside QTDIR which seems to ignore the new fid->mode entirely,
+the rest of these either should be subject to the same cache rules as
+every other QTFILE or perhaps very explicitly not cached in the case of
+QTAUTH.
+
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-card.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/9p/fid.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-index 2b77010c2c5ce..cbbaa55d92a66 100644
---- a/sound/soc/meson/axg-card.c
-+++ b/sound/soc/meson/axg-card.c
-@@ -320,6 +320,7 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
- 
- 	dai_link->cpus = cpu;
- 	dai_link->num_cpus = 1;
-+	dai_link->nonatomic = true;
- 
- 	ret = meson_card_parse_dai(card, np, &dai_link->cpus->of_node,
- 				   &dai_link->cpus->dai_name);
+diff --git a/fs/9p/fid.h b/fs/9p/fid.h
+index 29281b7c38870..0d6138bee2a3d 100644
+--- a/fs/9p/fid.h
++++ b/fs/9p/fid.h
+@@ -49,9 +49,6 @@ static inline struct p9_fid *v9fs_fid_clone(struct dentry *dentry)
+ static inline void v9fs_fid_add_modes(struct p9_fid *fid, unsigned int s_flags,
+ 	unsigned int s_cache, unsigned int f_flags)
+ {
+-	if (fid->qid.type != P9_QTFILE)
+-		return;
+-
+ 	if ((!s_cache) ||
+ 	   ((fid->qid.version == 0) && !(s_flags & V9FS_IGNORE_QV)) ||
+ 	   (s_flags & V9FS_DIRECT_IO) || (f_flags & O_DIRECT)) {
 -- 
 2.43.0
 
