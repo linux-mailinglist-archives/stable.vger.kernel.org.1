@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14328C5471
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50868C54B3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 964D8285AD5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33F9D1F226F9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BCB86134;
-	Tue, 14 May 2024 11:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E0E12E1D1;
+	Tue, 14 May 2024 11:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15KmNf6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fg3gk7ZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3B66E60F;
-	Tue, 14 May 2024 11:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943B733CC2;
+	Tue, 14 May 2024 11:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687181; cv=none; b=L2qcMO+jRyoCYsIPqV7fF4SlVI3yKe5EhgaSuFpicgHgCd+RjCzdGVzVxfchH0UIO3Xo6Y1XuwQ1XmB9rexUYIaPAP8trvdV9esJUi0T9PY/L95Fsp8I1ykwZI77MJryUKvVvy24EWR5AEBwN80pgHttKad5h9crwR7f/pENULk=
+	t=1715687377; cv=none; b=OiNLWqZwBaoPJLeQVKy9jTeDoM/ieAf4vpGmc2t4N10PBrLg++oLz9v6ZDGlvU53R2Zv8P9z4HVp0SfphobczGb6z95WZT1gHT98GGoAFWtmaaTTMkSbZxhc3rc57YW2aj2R4wNa/e7rnO8vuNeKR4j74kEuEL+50wGLQq5MUQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687181; c=relaxed/simple;
-	bh=4vPsQY/jHL0rigD46wBsRgmrMkYIaJobo/d/8q4Qs+Y=;
+	s=arc-20240116; t=1715687377; c=relaxed/simple;
+	bh=VYOeq1dSIxmhDB4ffipucmtRM2d3GGNrD9w5/Sjnj0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T17g50YA27TzDo0TjUXbY46LmiP/oe2gu7aUz/x/HQXxVewvggIg02HXEzfrmS/q4b11OtJ+Z6UmPuI5KJynuVw9vFDG6oZsmz0V4nYpF2ldD+nc19JYD0AE6MpPBkJk0bNw8JONVF3kJxDOW2+wLehtikI22mGdurPG8LIbpvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15KmNf6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE5FC2BD10;
-	Tue, 14 May 2024 11:46:20 +0000 (UTC)
+	 MIME-Version; b=BhrmPXNMd4mV9BPaOLbNKF1P2NR9+o8gSQNygXgILZ0phBT+oAYnDHxbt+cq4Vzd/MDIjciFfag0T1+L9l1LKdOaKgztF1+yQG9S3lJLrb7LKySUTeFcViBFwaHB7vDCocbKNumfwt8bGclUdljxoZ9Juks96LKtDhlu+cbWbfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fg3gk7ZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD03C2BD10;
+	Tue, 14 May 2024 11:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687181;
-	bh=4vPsQY/jHL0rigD46wBsRgmrMkYIaJobo/d/8q4Qs+Y=;
+	s=korg; t=1715687377;
+	bh=VYOeq1dSIxmhDB4ffipucmtRM2d3GGNrD9w5/Sjnj0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15KmNf6fHffvTYi5x0ejQNYZrqV3EjhKJPDCv6xbQshNubBDtNDjgPoqHkPrvjDnX
-	 JHoshmQXdXF+ppmILaFRsfmgYcBBsr9R1baBpYuCcUzKF2YSi6RW/5hLOXJT06JcT0
-	 IOwkQ3qxuopL4r2oWFIQoQDPhkmLgeov5TN0ckNA=
+	b=Fg3gk7ZCY014GV7wUGazsr680engZ0k+l21qqF6pw791EgTn+DZEdw84Fdh3993PX
+	 IDK9pLN7Xiwc7x8HRocIjMXLdedCaUtJt+XKj6Fb5/LIZliwIbhPSIna+m/HZnfuZr
+	 I6Abqi2/XQbX1uaX+lVuft42Yu6UmdK/332tynG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Paul Davey <paul.davey@alliedtelesis.co.nz>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 62/84] xfrm: Preserve vlan tags for transport mode software GRO
+Subject: [PATCH 5.10 075/111] xfrm: Preserve vlan tags for transport mode software GRO
 Date: Tue, 14 May 2024 12:20:13 +0200
-Message-ID: <20240514100954.018240454@linuxfoundation.org>
+Message-ID: <20240514100959.982914295@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -102,10 +102,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  5 files changed, 36 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 302a2ad679809..29ccc33a1c627 100644
+index a210f19958621..31755d496b01d 100644
 --- a/include/linux/skbuff.h
 +++ b/include/linux/skbuff.h
-@@ -2576,6 +2576,21 @@ static inline void skb_mac_header_rebuild(struct sk_buff *skb)
+@@ -2607,6 +2607,21 @@ static inline void skb_mac_header_rebuild(struct sk_buff *skb)
  	}
  }
  
@@ -128,10 +128,10 @@ index 302a2ad679809..29ccc33a1c627 100644
  {
  	return skb->csum_start - skb_headroom(skb);
 diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 96faf09186945..4368dcb709f4e 100644
+index 7865db2f827e6..6fbaf304648f6 100644
 --- a/include/net/xfrm.h
 +++ b/include/net/xfrm.h
-@@ -1024,6 +1024,9 @@ struct xfrm_offload {
+@@ -1028,6 +1028,9 @@ struct xfrm_offload {
  #define CRYPTO_INVALID_PACKET_SYNTAX		64
  #define CRYPTO_INVALID_PROTOCOL			128
  
@@ -142,10 +142,10 @@ index 96faf09186945..4368dcb709f4e 100644
  };
  
 diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index f8de2482a5292..9b062f2e45695 100644
+index eac206a290d05..1f50517289fd9 100644
 --- a/net/ipv4/xfrm4_input.c
 +++ b/net/ipv4/xfrm4_input.c
-@@ -66,7 +66,11 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+@@ -61,7 +61,11 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
  	ip_send_check(iph);
  
  	if (xo && (xo->flags & XFRM_GRO)) {
@@ -159,10 +159,10 @@ index f8de2482a5292..9b062f2e45695 100644
  		return 0;
  	}
 diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index a52cb3fc6df5a..c12d51f5b5893 100644
+index 4907ab241d6be..7dbefbb338ca5 100644
 --- a/net/ipv6/xfrm6_input.c
 +++ b/net/ipv6/xfrm6_input.c
-@@ -58,7 +58,11 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+@@ -56,7 +56,11 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
  	skb_postpush_rcsum(skb, skb_network_header(skb), nhlen);
  
  	if (xo && (xo->flags & XFRM_GRO)) {
@@ -173,13 +173,13 @@ index a52cb3fc6df5a..c12d51f5b5893 100644
 +		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
 +		skb_reset_network_header(skb);
  		skb_reset_transport_header(skb);
- 		return -1;
+ 		return 0;
  	}
 diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 4d8d7cf3d1994..2e7fd0aa5f373 100644
+index f3bccab983f05..0c3fa01ec67a7 100644
 --- a/net/xfrm/xfrm_input.c
 +++ b/net/xfrm/xfrm_input.c
-@@ -394,11 +394,15 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
+@@ -399,11 +399,15 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
   */
  static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
  {
@@ -195,7 +195,7 @@ index 4d8d7cf3d1994..2e7fd0aa5f373 100644
  		skb->network_header = skb->transport_header;
  	}
  	ip_hdr(skb)->tot_len = htons(skb->len + ihl);
-@@ -409,11 +413,15 @@ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
+@@ -414,11 +418,15 @@ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
  static int xfrm6_transport_input(struct xfrm_state *x, struct sk_buff *skb)
  {
  #if IS_ENABLED(CONFIG_IPV6)
