@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E388C50DC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9CF8C5361
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCC8DB21030
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3F20286693
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159AD7603F;
-	Tue, 14 May 2024 10:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20E785C41;
+	Tue, 14 May 2024 11:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mhlq2UXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXwpb97C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C810769950;
-	Tue, 14 May 2024 10:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D38418026;
+	Tue, 14 May 2024 11:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683765; cv=none; b=kzost9HS18U+APjuDdbTNZt6GfG22HUHVWau/sjWmftbDpooTcaDTxS30Lo7zM1JiO6dUMr1+HorlPb6xBQi62r8q64Qsap3WIlEB99KjSL13i+2kAc4YQof+r/FR4mBDBGFuEkKdO2fpEOhR+hrMTPTK2jcJ5PsfEW5mleWXoI=
+	t=1715686482; cv=none; b=Oa0guWLtUVXfZgy7pU/zXR023FjiQWLhkNNJWNSjTZKyiLsIPQfLn2E40JEAXXF5jVMHE+sQWfKt70j83ygQaiO0f9P0RVBOKLIQS+IfsybQu8iOkrEZsfonwe3+GRoiA5nVI3HZydwtVPM6z82YSFNFeebGrX09hxN2hPmlZ3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683765; c=relaxed/simple;
-	bh=Cpi58TQ3Eo5GQ4tFKSocLdGmFP+y9O0tkmR1tVDNG88=;
+	s=arc-20240116; t=1715686482; c=relaxed/simple;
+	bh=wubmRb/QT9XC5myQMTCHBSbXZE5xntcuvclhrbU6Xrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPvah4XjXLOy0akHu3kwXczGi/WMGB1y93zoRMW3/JGFQNaFwPkCvUHs0Gmf5tOZfwGtoOzPoCHoxq9f+LJslkaWo013WGl59F5NvpSRKHZYNF/PvFqenLs/yIyaJrFeGTRMTvColoVkzd7BSaJYFBv5vHOs6ozNsps6NfkNgBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mhlq2UXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319C4C2BD10;
-	Tue, 14 May 2024 10:49:23 +0000 (UTC)
+	 MIME-Version; b=bnV6e4Xg/fYnWo2XABN7uKt4Z3V1AbuLoUyxOvX/fNuLGtaS/RoEDcg6a8pmcxpI1OxxCPoOeXnQ/xwog/H0DaCmQ05WAFfGu+SsfdDBefDSSgI0AA8Q0Z6S4ow4XMOpXlsNxJ2Dw2xA9HBCiRaFATHVa7Ybfl+Fhhiz6fWSRGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXwpb97C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E961FC2BD10;
+	Tue, 14 May 2024 11:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683765;
-	bh=Cpi58TQ3Eo5GQ4tFKSocLdGmFP+y9O0tkmR1tVDNG88=;
+	s=korg; t=1715686482;
+	bh=wubmRb/QT9XC5myQMTCHBSbXZE5xntcuvclhrbU6Xrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mhlq2UXMMXUfsz5TJo/h0oCzHmwBVC7t95aQjtKh/SGgFlRTA8JygkaPB+jon9QUP
-	 VxZu2D/1AzSoTP/L5Wxfru+YRqxYsVSqmInXOBbBMQEFRaK8Xk94WvbJOfnFbGXi0u
-	 EA2ayLjxIFJ6SEjt8eeMhYp3jhOvUYfonYywrspw=
+	b=gXwpb97CJy/OdGRM/mWi/rMhQWmJ2eCH+G651fwhjlXO2TRLwUdHMFzCkbwFdmPSQ
+	 9u5RGf/rc0geuvI6Jp/GAdjZEljwAz5v4Hkj4hCwLgOns2YTb85YyJTjuIU/RBJtpX
+	 YQCXZQ8Rs5e46wLgaYmbCygu2Tvr15WTgcjU8Ap4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Detal <gregory.detal@gmail.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 270/336] mptcp: only allow set existing scheduler for net.mptcp.scheduler
+	Doug Smythies <dsmythies@telus.net>,
+	Len Brown <len.brown@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/236] tools/power turbostat: Fix added raw MSR output
 Date: Tue, 14 May 2024 12:17:54 +0200
-Message-ID: <20240514101048.814591647@linuxfoundation.org>
+Message-ID: <20240514101024.624117947@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Detal <gregory.detal@gmail.com>
+From: Doug Smythies <dsmythies@telus.net>
 
-commit 6963c508fd7ab66ae0b7ae3db9a62ca6267f1ae8 upstream.
+[ Upstream commit e5f4e68eed85fa8495d78cd966eecc2b27bb9e53 ]
 
-The current behavior is to accept any strings as inputs, this results in
-an inconsistent result where an unexisting scheduler can be set:
+When using --Summary mode, added MSRs in raw mode always
+print zeros. Print the actual register contents.
 
-  # sysctl -w net.mptcp.scheduler=notdefault
-  net.mptcp.scheduler = notdefault
+Example, with patch:
 
-This patch changes this behavior by checking for existing scheduler
-before accepting the input.
+note the added column:
+--add msr0x64f,u32,package,raw,REASON
 
-Fixes: e3b2870b6d22 ("mptcp: add a new sysctl scheduler")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gregory Detal <gregory.detal@gmail.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Tested-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240506-upstream-net-20240506-mptcp-sched-exist-v1-1-2ed1529e521e@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Where:
+
+0x64F is MSR_CORE_PERF_LIMIT_REASONS
+
+Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
+0.00    4800    35      1.42    0.76    0x00000000
+0.00    4801    34      1.42    0.76    0x00000000
+80.08   4531    66      108.17  107.52  0x08000000
+98.69   4530    66      133.21  132.54  0x08000000
+99.28   4505    66      128.26  127.60  0x0c000400
+99.65   4486    68      124.91  124.25  0x0c000400
+99.63   4483    68      124.90  124.25  0x0c000400
+79.34   4481    41      99.80   99.13   0x0c000000
+0.00    4801    41      1.40    0.73    0x0c000000
+
+Where, for the test processor (i5-10600K):
+
+PKG Limit #1: 125.000 Watts, 8.000000 sec
+MSR bit 26 = log; bit 10 = status
+
+PKG Limit #2: 136.000 Watts, 0.002441 sec
+MSR bit 27 = log; bit 11 = status
+
+Example, without patch:
+
+Busy%   Bzy_MHz PkgTmp  PkgWatt CorWatt     REASON
+0.01    4800    35      1.43    0.77    0x00000000
+0.00    4801    35      1.39    0.73    0x00000000
+83.49   4531    66      112.71  112.06  0x00000000
+98.69   4530    68      133.35  132.69  0x00000000
+99.31   4500    67      127.96  127.30  0x00000000
+99.63   4483    69      124.91  124.25  0x00000000
+99.61   4481    69      124.90  124.25  0x00000000
+99.61   4481    71      124.92  124.25  0x00000000
+59.35   4479    42      75.03   74.37   0x00000000
+0.00    4800    42      1.39    0.73    0x00000000
+0.00    4801    42      1.42    0.76    0x00000000
+
+c000000
+
+[lenb: simplified patch to apply only to package scope]
+
+Signed-off-by: Doug Smythies <dsmythies@telus.net>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/ctrl.c |   39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ tools/power/x86/turbostat/turbostat.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -96,6 +96,43 @@ static void mptcp_pernet_set_defaults(st
- }
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index b113900d94879..9018e47e0bc26 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -1811,9 +1811,10 @@ int sum_counters(struct thread_data *t, struct core_data *c, struct pkg_data *p)
+ 	average.packages.rapl_dram_perf_status += p->rapl_dram_perf_status;
  
- #ifdef CONFIG_SYSCTL
-+static int mptcp_set_scheduler(const struct net *net, const char *name)
-+{
-+	struct mptcp_pernet *pernet = mptcp_get_pernet(net);
-+	struct mptcp_sched_ops *sched;
-+	int ret = 0;
-+
-+	rcu_read_lock();
-+	sched = mptcp_sched_find(name);
-+	if (sched)
-+		strscpy(pernet->scheduler, name, MPTCP_SCHED_NAME_MAX);
-+	else
-+		ret = -ENOENT;
-+	rcu_read_unlock();
-+
-+	return ret;
-+}
-+
-+static int proc_scheduler(struct ctl_table *ctl, int write,
-+			  void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	const struct net *net = current->nsproxy->net_ns;
-+	char val[MPTCP_SCHED_NAME_MAX];
-+	struct ctl_table tbl = {
-+		.data = val,
-+		.maxlen = MPTCP_SCHED_NAME_MAX,
-+	};
-+	int ret;
-+
-+	strscpy(val, mptcp_get_scheduler(net), MPTCP_SCHED_NAME_MAX);
-+
-+	ret = proc_dostring(&tbl, write, buffer, lenp, ppos);
-+	if (write && ret == 0)
-+		ret = mptcp_set_scheduler(net, val);
-+
-+	return ret;
-+}
-+
- static struct ctl_table mptcp_sysctl_table[] = {
- 	{
- 		.procname = "enabled",
-@@ -148,7 +185,7 @@ static struct ctl_table mptcp_sysctl_tab
- 		.procname = "scheduler",
- 		.maxlen	= MPTCP_SCHED_NAME_MAX,
- 		.mode = 0644,
--		.proc_handler = proc_dostring,
-+		.proc_handler = proc_scheduler,
- 	},
- 	{
- 		.procname = "close_timeout",
+ 	for (i = 0, mp = sys.pp; mp; i++, mp = mp->next) {
+-		if (mp->format == FORMAT_RAW)
+-			continue;
+-		average.packages.counter[i] += p->counter[i];
++		if ((mp->format == FORMAT_RAW) && (topo.num_packages == 0))
++			average.packages.counter[i] = p->counter[i];
++		else
++			average.packages.counter[i] += p->counter[i];
+ 	}
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
