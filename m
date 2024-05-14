@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-43973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573658C5087
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:06:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A34548C530D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFEEF1F2179F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:06:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11B60281EBF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3040013D8B8;
-	Tue, 14 May 2024 10:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516E5139597;
+	Tue, 14 May 2024 11:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETDwvid+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in1bt71s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E152513D8B1;
-	Tue, 14 May 2024 10:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F87D139590;
+	Tue, 14 May 2024 11:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683445; cv=none; b=Fq6iPYzUXsee0XuI8EFaYJ7G3mI9NFSPVLTDeerWwakSgcitRtXD89vWy26+ZvJM8pln7zFZBhvBKklM3SHZzrxPQWTHpaoWkXaJN+pfSCd2cpiquCw91Pen7B69sFQDgzX1Q+Yj6T8IH7SM5aOpCRX45tXj23OyedRy/Jz3GMw=
+	t=1715686284; cv=none; b=L6eqlIpY0WrTsOSVOcF0DPfqSTRLCCKX9X8Gw7hoL+aTLIJDUvSyw5cDUL1AC6kowqD0MGd4jmDNwoTtfxk2J3l3VHd7Yl1qk2G9v7Fx3eW42yflzrPd3o0PD3h3YAKeA1biUogQCVXWpyZi03kYH4PTaDfcTZCcG2/Qnn7fL9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683445; c=relaxed/simple;
-	bh=7x+Cry38gbkih7x0a84ewaYxnfsOYgMGc5VVYQ5W3+o=;
+	s=arc-20240116; t=1715686284; c=relaxed/simple;
+	bh=SbYdU1tNfsc1EttR4DzXoKEwNOdPif34K1tOeCvjtyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U8lu7hTobJDFo//3dnmhKSqqrhBDohjUBYVqOWl9Cjm+8T+0Akbz/w10l+OAr+O2JIJqwvlvzsIMQobVlvvLNkRX9esiLQD4PMcFFiPKq/7KJAU37qIzukQVFTasbVqjdDbd2rcKA49tTtWYlg8Gg22F+Kqedl3gw2C8Y04QEyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETDwvid+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE18C2BD10;
-	Tue, 14 May 2024 10:44:04 +0000 (UTC)
+	 MIME-Version; b=ltsMu6ATFnhjcI5nYe+9TbEeFGgSU/f+mHFuLMozUlVnoQ9kUBnIapeujzO6eF6+CBaL58fMJmSBu+tmroQIjOSfkvEbtAQjs9i+Z7ve+y7Tdt3+X2nzR0FQOPCt28+s+58k1apbM+sAKv6yf9Ff/SMuTPMYD8cd04PyY/M1dO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in1bt71s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D6DC4AF09;
+	Tue, 14 May 2024 11:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683444;
-	bh=7x+Cry38gbkih7x0a84ewaYxnfsOYgMGc5VVYQ5W3+o=;
+	s=korg; t=1715686283;
+	bh=SbYdU1tNfsc1EttR4DzXoKEwNOdPif34K1tOeCvjtyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETDwvid+uCtT54qP4bTsOeVpq9Z9W7obiEhjMWOJd3zp8BYNbCC1dzvtbGL8RgAGl
-	 Dg7aN/6DijVSfReY0D3T9aZozYFPjBHEDrVg2deVa5Z1R3EWB73WpXnNO5U/ZMEcQd
-	 UVUzzOMzovPwr9CkSI1Fm7qjjw3k563GxVYWyYVY=
+	b=in1bt71sTqN+hvwKYNmOmc5Kj2na3vGRgGhJmlZDFruqi0SYhTo59SL05YfZp857e
+	 SDS3MP3GFVAE/Uosbd8PGQmmN0NZJi62JCe9vLkA8FGLo16L9xzIYVq7yFqdbF3zRu
+	 E6Zn7t5A5aWqg4eEcYShdWhPWCNGwY3RZTHhEU6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 210/336] phonet: fix rtm_phonet_notify() skb allocation
+Subject: [PATCH 6.1 052/236] spi: axi-spi-engine: fix version format string
 Date: Tue, 14 May 2024 12:16:54 +0200
-Message-ID: <20240514101046.541457651@linuxfoundation.org>
+Message-ID: <20240514101022.320956265@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit d8cac8568618dcb8a51af3db1103e8d4cc4aeea7 ]
+[ Upstream commit 0064db9ce4aa7cc794e6f4aed60dee0f94fc9bcf ]
 
-fill_route() stores three components in the skb:
+The version format string in the AXI SPI Engine driver was probably
+intended to print the version number in the same format as the DT
+compatible string (e.g. 1.00.a). However, the version just uses
+semantic versioning so formatting the patch number as a character
+is not correct and would result in printing control characters for
+patch numbers less than 32.
 
-- struct rtmsg
-- RTA_DST (u8)
-- RTA_OIF (u32)
-
-Therefore, rtm_phonet_notify() should use
-
-NLMSG_ALIGN(sizeof(struct rtmsg)) +
-nla_total_size(1) +
-nla_total_size(4)
-
-Fixes: f062f41d0657 ("Phonet: routing table Netlink interface")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Link: https://lore.kernel.org/r/20240502161700.1804476-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b1353d1c1d45 ("spi: Add Analog Devices AXI SPI Engine controller support")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20240412-axi-spi-engine-version-printf-v1-1-95e1e842c1a6@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/phonet/pn_netlink.c | 2 +-
+ drivers/spi/spi-axi-spi-engine.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
-index 59aebe2968907..dd4c7e9a634fb 100644
---- a/net/phonet/pn_netlink.c
-+++ b/net/phonet/pn_netlink.c
-@@ -193,7 +193,7 @@ void rtm_phonet_notify(int event, struct net_device *dev, u8 dst)
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 719e4f7445361..a5f0a61b266f1 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -532,7 +532,7 @@ static int spi_engine_probe(struct platform_device *pdev)
  
--	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
-+	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct rtmsg)) +
- 			nla_total_size(1) + nla_total_size(4), GFP_KERNEL);
- 	if (skb == NULL)
- 		goto errout;
+ 	version = readl(spi_engine->base + ADI_AXI_REG_VERSION);
+ 	if (ADI_AXI_PCORE_VER_MAJOR(version) != 1) {
+-		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%c\n",
++		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%u\n",
+ 			ADI_AXI_PCORE_VER_MAJOR(version),
+ 			ADI_AXI_PCORE_VER_MINOR(version),
+ 			ADI_AXI_PCORE_VER_PATCH(version));
 -- 
 2.43.0
 
