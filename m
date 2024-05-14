@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAA58C518B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF278C501B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09994B21818
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3161C20C2A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB78813A24E;
-	Tue, 14 May 2024 11:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DB113959F;
+	Tue, 14 May 2024 10:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPUF/A70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6dr4QMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2DE54903;
-	Tue, 14 May 2024 11:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E521139597;
+	Tue, 14 May 2024 10:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684657; cv=none; b=Gh76awOctwxTD0SPAoNciCvWHnlsIGdV2LewNdIxA2VDfqaS49WBUT+/9xWEHEGjNyzNgkIbwmP2818ML7uGK0I2KX9LRj9He0c1TlKii4SAmEY194zXph4tuYxTkdv5hvENuoZowwUkPo0Ot2weC22lfLMKcuGfBuy57+80dfI=
+	t=1715682955; cv=none; b=AKbLdEt82NHhZm6WhE7mlxuTVAl6Jkdalb4oAXv18oAQ8crujEYl+yKm/36+t2Lp7KWOpe4ofnWj/ITZq3cMvYni9nfk7HTjdpsF3D8zee3mQJdOjXvAJxcoFyu2FciS2IUr8A3HVq47LuqMGV4OzD4H0fUej0OZonGXFhNX2RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684657; c=relaxed/simple;
-	bh=CsWhPbSgERQ8ub+nESerwsAO36MmPj3AgRsiJmMEPcg=;
+	s=arc-20240116; t=1715682955; c=relaxed/simple;
+	bh=f4jR3AoJjUDPjw7y5HgcLQWEe+nebUY2sky8GFMNXCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AG3DMA7FzJXkgHU+pVf3NVXwpPEpOPkhYuGkM4qxyh3Dt9TXZKM2d2CumezTfP3bwavj7qR8HxZ9YTd3hWHT2fpUWKXs9NY/UByn0XJRPngs8x40co53sDASnEJfcY9MKESASOQrESEkFcmTP/OpnyUzvs94mjXQkjZFCdPX+ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPUF/A70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA51C2BD10;
-	Tue, 14 May 2024 11:04:16 +0000 (UTC)
+	 MIME-Version; b=G8wxa403lbm6NCjwDyWi4BvbphViKoeMc574K3mulQHW8CVzOH+elDxEJOHhjLOnLdjsHHuE0szTcvLQ+kmPsU3rx0LG0FbzBy0kRNqI03vXQDCLH6OCQtIZiYlXL4XPVzVxiJJQ2u3exKovPl7ScZTh9RByruQEpW9xEbHZpPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6dr4QMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B82C2BD10;
+	Tue, 14 May 2024 10:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684657;
-	bh=CsWhPbSgERQ8ub+nESerwsAO36MmPj3AgRsiJmMEPcg=;
+	s=korg; t=1715682955;
+	bh=f4jR3AoJjUDPjw7y5HgcLQWEe+nebUY2sky8GFMNXCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPUF/A70KH6WJNpG4AyUxfeJcDF4tz3O2d+awiqwNG74r5Z+Uf9DuyTTwW14heJkY
-	 DxM9RAfftUUsDBkfvxyWswIVV74kPigd/Ahnk2KwzNvx7b6wQNNx2dZjb2IxxT5Hd9
-	 li2ujYik5gY/YlwOyG361t0o+dzJ2fn+xkEebXZ0=
+	b=B6dr4QMFOVVN4ftPWB9F79wu7cY9hawgo2vI64WncP/KISDa9AG7mZKZ541u2IKNY
+	 ohy65oKvaJUmVpyMoEbImdfQ+ocBzwpFigQ6l5UQcL4dS+qAehr9d4ir6xlSiul0c3
+	 15tjYNLMHS/MHDt6omNWv9TX6diOddPCh33RDHSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/301] s390/cio: Ensure the copied buf is NUL terminated
-Date: Tue, 14 May 2024 12:15:42 +0200
-Message-ID: <20240514101034.931517688@linuxfoundation.org>
+Subject: [PATCH 6.8 139/336] tools/power turbostat: Print ucode revision only if valid
+Date: Tue, 14 May 2024 12:15:43 +0200
+Message-ID: <20240514101043.848427993@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
 
-[ Upstream commit da7c622cddd4fe36be69ca61e8c42e43cde94784 ]
+[ Upstream commit fb5ceca046efc84f69fcf9779a013f8a0e63bbff ]
 
-Currently, we allocate a lbuf-sized kernel buffer and copy lbuf from
-userspace to that buffer. Later, we use scanf on this buffer but we don't
-ensure that the string is terminated inside the buffer, this can lead to
-OOB read when using scanf. Fix this issue by using memdup_user_nul instead.
+If the MSR read were to fail, turbostat would print "microcode 0x0"
 
-Fixes: a4f17cc72671 ("s390/cio: add CRW inject functionality")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-5-f1f1b53a10f4@gmail.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
+Reviewed-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/cio_inject.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/power/x86/turbostat/turbostat.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/s390/cio/cio_inject.c b/drivers/s390/cio/cio_inject.c
-index 8613fa937237b..a2e771ebae8eb 100644
---- a/drivers/s390/cio/cio_inject.c
-+++ b/drivers/s390/cio/cio_inject.c
-@@ -95,7 +95,7 @@ static ssize_t crw_inject_write(struct file *file, const char __user *buf,
- 		return -EINVAL;
- 	}
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index bbd2e0edadfae..a4a40a6e1b957 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -5679,6 +5679,7 @@ void process_cpuid()
+ 	unsigned int eax, ebx, ecx, edx;
+ 	unsigned int fms, family, model, stepping, ecx_flags, edx_flags;
+ 	unsigned long long ucode_patch = 0;
++	bool ucode_patch_valid = false;
  
--	buffer = vmemdup_user(buf, lbuf);
-+	buffer = memdup_user_nul(buf, lbuf);
- 	if (IS_ERR(buffer))
- 		return -ENOMEM;
+ 	eax = ebx = ecx = edx = 0;
  
+@@ -5708,6 +5709,8 @@ void process_cpuid()
+ 
+ 	if (get_msr(sched_getcpu(), MSR_IA32_UCODE_REV, &ucode_patch))
+ 		warnx("get_msr(UCODE)");
++	else
++		ucode_patch_valid = true;
+ 
+ 	/*
+ 	 * check max extended function levels of CPUID.
+@@ -5718,9 +5721,12 @@ void process_cpuid()
+ 	__cpuid(0x80000000, max_extended_level, ebx, ecx, edx);
+ 
+ 	if (!quiet) {
+-		fprintf(outf, "CPUID(1): family:model:stepping 0x%x:%x:%x (%d:%d:%d) microcode 0x%x\n",
+-			family, model, stepping, family, model, stepping,
+-			(unsigned int)((ucode_patch >> 32) & 0xFFFFFFFF));
++		fprintf(outf, "CPUID(1): family:model:stepping 0x%x:%x:%x (%d:%d:%d)",
++			family, model, stepping, family, model, stepping);
++		if (ucode_patch_valid)
++			fprintf(outf, " microcode 0x%x", (unsigned int)((ucode_patch >> 32) & 0xFFFFFFFF));
++		fputc('\n', outf);
++
+ 		fprintf(outf, "CPUID(0x80000000): max_extended_levels: 0x%x\n", max_extended_level);
+ 		fprintf(outf, "CPUID(1): %s %s %s %s %s %s %s %s %s %s\n",
+ 			ecx_flags & (1 << 0) ? "SSE3" : "-",
 -- 
 2.43.0
 
