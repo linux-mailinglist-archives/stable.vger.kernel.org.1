@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9132D8C5224
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E05C8C50E1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2D981C21666
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC556B21019
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D026E12CD99;
-	Tue, 14 May 2024 11:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03ED129E72;
+	Tue, 14 May 2024 10:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQegzwBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzm89Ufc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D90512CD89;
-	Tue, 14 May 2024 11:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1F36BFAC;
+	Tue, 14 May 2024 10:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685564; cv=none; b=ad2Cb+uWYmIWp/P8w5EteJr77ifVE1qOpP7cow5wUc+H6upmZNpoI6rGZT/RBNmbzJL+QMsicEjwQ5B0532xUmg3mqmdZgUUJXSWijiAd4156TpqAw7mqU28w8E0YZ5QEpwvev/ZK8YJMS0nN6H5Ixhrfv/yU1QiBcb+rUq0cYE=
+	t=1715683789; cv=none; b=acyBFxA+YoySUMvE7NMTffq+oC0LEohKY2Cp06jQthTiYALHMcQMxdDLkZXI0Oh7kldHaJzTZSBBqv8g8VBLSmKLzyWgnC1QJzjcH+CmDg/byC98QWWSQ9dp7vsEvpxbVsMOvRCk7YsSDa0W2yssTWUwctegS+NPJK9E3YJ4xyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685564; c=relaxed/simple;
-	bh=DaFLVzgZD0u32201jXckyDxsYiKAgOl9HMHw05MkJJ8=;
+	s=arc-20240116; t=1715683789; c=relaxed/simple;
+	bh=FOvOwitziqFIUowY8Sd26d0Y87URNKgU4JVfORak0Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=na5mtL+ZHekkX4+sDF8HTDzRL40t7nxDiwhi+ZrfcSarrZ/26TrndyrMSQ8Pu6OIUIckqUGxfWfP1QGor20Zu6+XMOuKdzRjqQ4GnjXuwD/kNtkCI3AuCSkXkJE74Sos4OADE1cF4obQQEdj+m/o5G3uMTyJQX4Vel9gSqnQ0MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQegzwBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43C0C2BD10;
-	Tue, 14 May 2024 11:19:19 +0000 (UTC)
+	 MIME-Version; b=Q427uOh7Gk+Wu087v+dfjs3FSXRGVp850fh/seWiYWd4TLMcN1j3Bdy6SnZpCisdXv6uNenjKEa6KWB67iRGpP6VgEDnlI6qjElZKH7thoRBZs7PzsW3vFRyKzc2sOkD4Gc4Y2Kdf9AOBDyStQ9fKQzryUlxlkJ4RNf+iNVNVw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzm89Ufc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF28C2BD10;
+	Tue, 14 May 2024 10:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685564;
-	bh=DaFLVzgZD0u32201jXckyDxsYiKAgOl9HMHw05MkJJ8=;
+	s=korg; t=1715683789;
+	bh=FOvOwitziqFIUowY8Sd26d0Y87URNKgU4JVfORak0Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQegzwBP/pOjZNfcS4O/neO6hlDUXB9YlgxFkw9ZoHdQnG1C+m8FhZBo8MuWdy/OH
-	 5BxEpfM077e/m0kM6W7Fj92uPsOfdNJmfYgao4J5fQpFkJVS8b37SHQIRpGIfkI19d
-	 LayjhriGJTapDKriJU0LXeneeK+4vZiITwRte9qI=
+	b=lzm89Ufcxlis5AZelGeBZqbi1aTyXCuhavKo458ovnGfHuN+6hmZ8uAzQBbQncCZP
+	 DtclQM7tXXJfu6uU60zvtLSfAlQ4A+Ir+c2vsI4fHlqrz2f1hZYhayNeyTXydMms/s
+	 IWKl5F2Md75HjYGKG+ujj1DxIqNVXi0zTfI95NkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/301] net: hns3: release PTP resources if pf initialization failed
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.8 274/336] iio: pressure: Fixes BME280 SPI driver data
 Date: Tue, 14 May 2024 12:17:58 +0200
-Message-ID: <20240514101040.075216621@linuxfoundation.org>
+Message-ID: <20240514101048.966870902@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-[ Upstream commit 950aa42399893a170d9b57eda0e4a3ff91fd8b70 ]
+commit 546a4f4b5f4d930ea57f5510e109acf08eca5e87 upstream.
 
-During the PF initialization process, hclge_update_port_info may return an
-error code for some reason. At this point,  the ptp initialization has been
-completed. To void memory leaks, the resources that are applied by ptp
-should be released. Therefore, when hclge_update_port_info returns an error
-code, hclge_ptp_uninit is called to release the corresponding resources.
+Use bme280_chip_info structure instead of bmp280_chip_info
+in SPI support for the BME280 sensor.
 
-Fixes: eaf83ae59e18 ("net: hns3: add querying fec ability from firmware")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b0b772637cd ("iio: pressure: bmp280: Use chip_info pointers for each chip as driver data")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240316110743.1998400-2-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/pressure/bmp280-spi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index b02b96bd93b7a..7f2bb0e708896 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11752,7 +11752,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 
- 	ret = hclge_update_port_info(hdev);
- 	if (ret)
--		goto err_mdiobus_unreg;
-+		goto err_ptp_uninit;
- 
- 	INIT_KFIFO(hdev->mac_tnl_log);
- 
-@@ -11803,6 +11803,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 	devl_unlock(hdev->devlink);
- 	return 0;
- 
-+err_ptp_uninit:
-+	hclge_ptp_uninit(hdev);
- err_mdiobus_unreg:
- 	if (hdev->hw.mac.phydev)
- 		mdiobus_unregister(hdev->hw.mac.mdio_bus);
--- 
-2.43.0
-
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -127,7 +127,7 @@ static const struct of_device_id bmp280_
+ 	{ .compatible = "bosch,bmp180", .data = &bmp180_chip_info },
+ 	{ .compatible = "bosch,bmp181", .data = &bmp180_chip_info },
+ 	{ .compatible = "bosch,bmp280", .data = &bmp280_chip_info },
+-	{ .compatible = "bosch,bme280", .data = &bmp280_chip_info },
++	{ .compatible = "bosch,bme280", .data = &bme280_chip_info },
+ 	{ .compatible = "bosch,bmp380", .data = &bmp380_chip_info },
+ 	{ .compatible = "bosch,bmp580", .data = &bmp580_chip_info },
+ 	{ },
+@@ -139,7 +139,7 @@ static const struct spi_device_id bmp280
+ 	{ "bmp180", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp181", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp280", (kernel_ulong_t)&bmp280_chip_info },
+-	{ "bme280", (kernel_ulong_t)&bmp280_chip_info },
++	{ "bme280", (kernel_ulong_t)&bme280_chip_info },
+ 	{ "bmp380", (kernel_ulong_t)&bmp380_chip_info },
+ 	{ "bmp580", (kernel_ulong_t)&bmp580_chip_info },
+ 	{ }
 
 
 
