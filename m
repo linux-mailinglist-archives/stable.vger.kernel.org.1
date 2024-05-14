@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-45005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29F68C5551
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C708C53B5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2003B1C21A83
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83AD31C22B1C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7148E1E4B1;
-	Tue, 14 May 2024 11:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A850012EBC7;
+	Tue, 14 May 2024 11:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5Y3MKup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3ofiap1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DADF9D4;
-	Tue, 14 May 2024 11:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF0012E1FE;
+	Tue, 14 May 2024 11:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687807; cv=none; b=DgZ8iV/EQT2+7K0riJ0CvJG5Z7Gpy3LrVpy8EGU5Oc3wOFJMpsfpLnHucyXF8fzXBLE3V7BfUuXLGO8NEYwmFLAowPLXCSI5k1EXYMioR+resuP9kX2Ys1ZlunpqtZoQY3htS2JqbkACP6ZEXrp34R+eo6gParjAZOBpvjkMNks=
+	t=1715686714; cv=none; b=qIFVuXKiSoZ7JWRzHRJJAT+ztbcFKyYo/csBC0NtLd05H3BSlao1TvzMjh+vyHSgIRQ1ees97bRAihrSDVNu7STIVP5QkyMZizewFWHV8GYJdOyGVm0+TK25L525NatYCJLQU0xruA9HztCrNvvOsZZHqsdumIoD7uKZq7SoT6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687807; c=relaxed/simple;
-	bh=Cd86CMD44CO2FUulRfUWpy86nMZsG0DiORjU6CoBpog=;
+	s=arc-20240116; t=1715686714; c=relaxed/simple;
+	bh=hW1QH/dWmrW3DHsYkVTQyKd/t3snSIL/vI7nKhIrTvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oO7v2f2A0/gjlpxVf3a6WJZx2/0NUBtyvMCBsOYl4diByHoOIXKxtXWIQcg5gazInBCZ/3SK1eijqqTPmmR0k95vMN4VNVvzF6mvzf44TFBKW063Z/Zg0iB3WPCe9a5dcIMsJ0q5UxKAfJqcPymib06Jueeid84QRiQqjG9SdGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5Y3MKup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9755C2BD10;
-	Tue, 14 May 2024 11:56:46 +0000 (UTC)
+	 MIME-Version; b=oOWBE/XHS3ktkrqDhlleNtsCCQ/+OVC3kQZZ4YYao1VjjuXSRDg5kU4lXhp60mQjbIdwGUHRAJ0DHdt2LpJghCbaBmzVHeaaQF5/jFmWUC+LcTbtKIF5rRZuvm9w0AhVYPXLuK1zDubgIU3Ev4hdlxZOCP9qU6b4uMeeWA8aAww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3ofiap1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA539C2BD10;
+	Tue, 14 May 2024 11:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687807;
-	bh=Cd86CMD44CO2FUulRfUWpy86nMZsG0DiORjU6CoBpog=;
+	s=korg; t=1715686714;
+	bh=hW1QH/dWmrW3DHsYkVTQyKd/t3snSIL/vI7nKhIrTvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5Y3MKuphIpAva6/YXYp8WjaSgnbY706BWX5SW5IU3Lds+rEjsESLPaWZGSGDMo9w
-	 5OUdVlqKHFhkfqBQNmcMOQ2uhyQ55B1YYoeNKNbJEOHA/NTo2xsHzJe8p2nGBuptv5
-	 K3juLt9WEpp4OafDWFiJx2mAGX6CghJDrFIpXZHs=
+	b=R3ofiap1/KwEytzT1QpOwMo/n8Vd1MoL1aZ1CdNRmRQDSmK1GQbt90WW0EAqSqtc7
+	 ks0NWj1rucnJRHjcFlO33VF7yHEJ/sCFFPDu8/Q40ya0STWZMLTjMDSMkRZ70sxjgO
+	 KOymvcNJUejgO4hWNpoVKBFQFfH2KzX13LTkPXUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/168] scsi: target: Fix SELinux error when systemd-modules loads the target module
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Jai Luthra <j-luthra@ti.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 216/236] ASoC: ti: davinci-mcasp: Fix race condition during probe
 Date: Tue, 14 May 2024 12:19:38 +0200
-Message-ID: <20240514101009.713984423@linuxfoundation.org>
+Message-ID: <20240514101028.558790949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
 
-[ Upstream commit 97a54ef596c3fd24ec2b227ba8aaf2cf5415e779 ]
+commit d18ca8635db2f88c17acbdf6412f26d4f6aff414 upstream.
 
-If the systemd-modules service loads the target module, the credentials of
-that userspace process will be used to validate the access to the target db
-directory.  SELinux will prevent it, reporting an error like the following:
+When using davinci-mcasp as CPU DAI with simple-card, there are some
+conditions that cause simple-card to finish registering a sound card before
+davinci-mcasp finishes registering all sound components. This creates a
+non-working sound card from userspace with no problem indication apart
+from not being able to play/record audio on a PCM stream. The issue
+arises during simultaneous probe execution of both drivers. Specifically,
+the simple-card driver, awaiting a CPU DAI, proceeds as soon as
+davinci-mcasp registers its DAI. However, this process can lead to the
+client mutex lock (client_mutex in soc-core.c) being held or davinci-mcasp
+being preempted before PCM DMA registration on davinci-mcasp finishes.
+This situation occurs when the probes of both drivers run concurrently.
+Below is the code path for this condition. To solve the issue, defer
+davinci-mcasp CPU DAI registration to the last step in the audio part of
+it. This way, simple-card CPU DAI parsing will be deferred until all
+audio components are registered.
 
-kernel: audit: type=1400 audit(1676301082.205:4): avc: denied  { read }
-for  pid=1020 comm="systemd-modules" name="target" dev="dm-3"
-ino=4657583 scontext=system_u:system_r:systemd_modules_load_t:s0
-tcontext=system_u:object_r:targetd_etc_rw_t:s0 tclass=dir permissive=0
+Fail Code Path:
 
-Fix the error by using the kernel credentials to access the db directory
+simple-card.c: probe starts
+simple-card.c: simple_dai_link_of: simple_parse_node(..,cpu,..) returns EPROBE_DEFER, no CPU DAI yet
+davinci-mcasp.c: probe starts
+davinci-mcasp.c: devm_snd_soc_register_component() register CPU DAI
+simple-card.c: probes again, finish CPU DAI parsing and call devm_snd_soc_register_card()
+simple-card.c: finish probe
+davinci-mcasp.c: *dma_pcm_platform_register() register PCM  DMA
+davinci-mcasp.c: probe finish
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Link: https://lore.kernel.org/r/20240215143944.847184-2-mlombard@redhat.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9fbd58cf4ab0 ("ASoC: davinci-mcasp: Choose PCM driver based on configured DMA controller")
+Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Reviewed-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240417184138.1104774-1-jpaulo.silvagoncalves@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_configfs.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ sound/soc/ti/davinci-mcasp.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index 023bd4516a681..30ce3451bc6b0 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -3566,6 +3566,8 @@ static int __init target_core_init_configfs(void)
- {
- 	struct configfs_subsystem *subsys = &target_core_fabrics;
- 	struct t10_alua_lu_gp *lu_gp;
-+	struct cred *kern_cred;
-+	const struct cred *old_cred;
- 	int ret;
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -2416,12 +2416,6 @@ static int davinci_mcasp_probe(struct pl
  
- 	pr_debug("TARGET_CORE[0]: Loading Generic Kernel Storage"
-@@ -3642,11 +3644,21 @@ static int __init target_core_init_configfs(void)
- 	if (ret < 0)
- 		goto out;
+ 	mcasp_reparent_fck(pdev);
  
-+	/* We use the kernel credentials to access the target directory */
-+	kern_cred = prepare_kernel_cred(&init_task);
-+	if (!kern_cred) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+	old_cred = override_creds(kern_cred);
- 	target_init_dbroot();
-+	revert_creds(old_cred);
-+	put_cred(kern_cred);
+-	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
+-					      &davinci_mcasp_dai[mcasp->op_mode], 1);
+-
+-	if (ret != 0)
+-		goto err;
+-
+ 	ret = davinci_mcasp_get_dma_type(mcasp);
+ 	switch (ret) {
+ 	case PCM_EDMA:
+@@ -2448,6 +2442,12 @@ static int davinci_mcasp_probe(struct pl
+ 		goto err;
+ 	}
  
- 	return 0;
- 
- out:
-+	target_xcopy_release_pt();
- 	configfs_unregister_subsystem(subsys);
- 	core_dev_release_virtual_lun0();
- 	rd_module_exit();
--- 
-2.43.0
-
++	ret = devm_snd_soc_register_component(&pdev->dev, &davinci_mcasp_component,
++					      &davinci_mcasp_dai[mcasp->op_mode], 1);
++
++	if (ret != 0)
++		goto err;
++
+ no_audio:
+ 	ret = davinci_mcasp_init_gpiochip(mcasp);
+ 	if (ret) {
 
 
 
