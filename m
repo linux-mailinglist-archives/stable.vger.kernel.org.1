@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-43867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC608C4FF7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB808C5146
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5921F217A2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64DF6B214B7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC964DA13;
-	Tue, 14 May 2024 10:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEC712FF75;
+	Tue, 14 May 2024 10:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELPyxF4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQjgNKeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A3153392;
-	Tue, 14 May 2024 10:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B9B26AC5;
+	Tue, 14 May 2024 10:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682769; cv=none; b=otnQCXd9Ks9YOBT1Cra+U/pKIjuiCfTSBYvI2TWJmpzLf/YMR9XliM1FYDG5DAGISqrYtEsBMj7Blpt8E82f7w9ZLXFdGatJA1j7bV7Mv8tVt77y2mwdcsQanQFpfvzRhmOItvM/RiJnz/DoraEmquZoOFSM5uihTqlT3cJdn+w=
+	t=1715684249; cv=none; b=tG/ejqUM/FbFONFqE2GyKyT/qq562AexYzg+pq4lggdx4q70OcD1wCwTsJGeVLV1dNvjSsqOIz0HejuBCT68Hxmr+M83RTDX00DBLtiQqx0ovS0ftkwEJK1R3W5UmMnzd5F8hjSLb+dW8SGNo22s4vKNEaFH3CjghgQKxMhCemk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682769; c=relaxed/simple;
-	bh=yOOrWfZoADmG90uvO0tE4bv1Po20yQhjWpl8Qlf1bzM=;
+	s=arc-20240116; t=1715684249; c=relaxed/simple;
+	bh=KDMR2Mgc5XU+Mf6r4nI0krjwgvBYWvgC0OmtnW3RCo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ybl7Q3rzSBDWnySxDCUPIr7OEEE8k/BdjBSriw7uG7CAguEIMxE37O1fRZam59OG/PHo8J1PnyKvUmjGnjovBQuWGVy6qAAW3icrqcG8NuaMsMaOpoYCfalNm2TZWvJfy/8weob3s9MKgJsYEkC+eQSErkdffYy6yKRIabUrTCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELPyxF4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7CEC32782;
-	Tue, 14 May 2024 10:32:48 +0000 (UTC)
+	 MIME-Version; b=o5AhVc/VZO14Jc/k9+dI5OXFWWDhKQcE1xPy7uCqr3GLe5ZgXV4yKvL2Xfl4a+aa4PBmNQskfYs0xzd+vgtbU6jtljNjs9k+1BvX9iWO9b+dCq0kTz+4OU6R/+U+UmVmzCJxU8kLZxx3dZRm1ZjowySo+5qdGyhhFwCimU13FYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQjgNKeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901BAC2BD10;
+	Tue, 14 May 2024 10:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682769;
-	bh=yOOrWfZoADmG90uvO0tE4bv1Po20yQhjWpl8Qlf1bzM=;
+	s=korg; t=1715684249;
+	bh=KDMR2Mgc5XU+Mf6r4nI0krjwgvBYWvgC0OmtnW3RCo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELPyxF4+3HttCWPKQSuTAmIAhM9M43okrAQNL/PpFd8tCxQVnQGcfz3Kzm2m5WBSy
-	 5L2676u+l+hUYxLb8DUpDUyvr5ua/FGK/ZPJ2Y2htET1yJELHwDhKvTTFC3JOJ1QRj
-	 zrbX+r/0oGhVMRom1oRVjXa+lYfAhHMmQI2hs6ts=
+	b=CQjgNKeJN8JPoIOKINlHUEUZ8dmur/W7if8V5hywuk8WXlGT1GzlAy0qq18rNrM19
+	 YyV0DCHwsImvvhmIGKE6/Y+6b8BKhVsfLYCXCXrzEUOW4GBtjtnsccz2ZRxHrKO0Vb
+	 atbhmnW+e/Cfo6Qq4vMQgMnnzpm8XkzKZlqSONZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jan Dakinevich <jan.dakinevich@salutedevices.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 080/336] drm/panel: ili9341: Correct use of device property APIs
+Subject: [PATCH 6.6 013/301] pinctrl/meson: fix typo in PDMs pin name
 Date: Tue, 14 May 2024 12:14:44 +0200
-Message-ID: <20240514101041.626180327@linuxfoundation.org>
+Message-ID: <20240514101032.736066490@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jan Dakinevich <jan.dakinevich@salutedevices.com>
 
-[ Upstream commit d43cd48ef1791801c61a54fade4a88d294dedf77 ]
+[ Upstream commit 368a90e651faeeb7049a876599cf2b0d74954796 ]
 
-It seems driver missed the point of proper use of device property APIs.
-Correct this by updating headers and calls respectively.
+Other pins have _a or _x suffix, but this one doesn't have any. Most
+likely this is a typo.
 
-Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: dabad1ff8561 ("pinctrl: meson: add pinctrl driver support for Meson-A1 SoC")
+Signed-off-by: Jan Dakinevich <jan.dakinevich@salutedevices.com>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240425142706.2440113-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-2-andriy.shevchenko@linux.intel.com
+Message-ID: <20240325113058.248022-1-jan.dakinevich@salutedevices.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/Kconfig                | 2 +-
- drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/pinctrl/meson/pinctrl-meson-a1.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 8f3783742208b..888297d0d3955 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -184,7 +184,7 @@ config DRM_PANEL_ILITEK_IL9322
+diff --git a/drivers/pinctrl/meson/pinctrl-meson-a1.c b/drivers/pinctrl/meson/pinctrl-meson-a1.c
+index 79f5d753d7e1a..50a87d9618a8e 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson-a1.c
++++ b/drivers/pinctrl/meson/pinctrl-meson-a1.c
+@@ -250,7 +250,7 @@ static const unsigned int pdm_dclk_x_pins[]		= { GPIOX_10 };
+ static const unsigned int pdm_din2_a_pins[]		= { GPIOA_6 };
+ static const unsigned int pdm_din1_a_pins[]		= { GPIOA_7 };
+ static const unsigned int pdm_din0_a_pins[]		= { GPIOA_8 };
+-static const unsigned int pdm_dclk_pins[]		= { GPIOA_9 };
++static const unsigned int pdm_dclk_a_pins[]		= { GPIOA_9 };
  
- config DRM_PANEL_ILITEK_ILI9341
- 	tristate "Ilitek ILI9341 240x320 QVGA panels"
--	depends on OF && SPI
-+	depends on SPI
- 	select DRM_KMS_HELPER
- 	select DRM_GEM_DMA_HELPER
- 	depends on BACKLIGHT_CLASS_DEVICE
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-index 3574681891e81..7584ddb0e4416 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
-@@ -22,8 +22,9 @@
- #include <linux/bitops.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
-+#include <linux/property.h>
- #include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
+ /* gen_clk */
+ static const unsigned int gen_clk_x_pins[]		= { GPIOX_7 };
+@@ -591,7 +591,7 @@ static struct meson_pmx_group meson_a1_periphs_groups[] = {
+ 	GROUP(pdm_din2_a,		3),
+ 	GROUP(pdm_din1_a,		3),
+ 	GROUP(pdm_din0_a,		3),
+-	GROUP(pdm_dclk,			3),
++	GROUP(pdm_dclk_a,		3),
+ 	GROUP(pwm_c_a,			3),
+ 	GROUP(pwm_b_a,			3),
  
-@@ -691,7 +692,7 @@ static int ili9341_dpi_probe(struct spi_device *spi, struct gpio_desc *dc,
- 	 * Every new incarnation of this display must have a unique
- 	 * data entry for the system in this driver.
- 	 */
--	ili->conf = of_device_get_match_data(dev);
-+	ili->conf = device_get_match_data(dev);
- 	if (!ili->conf) {
- 		dev_err(dev, "missing device configuration\n");
- 		return -ENODEV;
+@@ -755,7 +755,7 @@ static const char * const spi_a_groups[] = {
+ 
+ static const char * const pdm_groups[] = {
+ 	"pdm_din0_x", "pdm_din1_x", "pdm_din2_x", "pdm_dclk_x", "pdm_din2_a",
+-	"pdm_din1_a", "pdm_din0_a", "pdm_dclk",
++	"pdm_din1_a", "pdm_din0_a", "pdm_dclk_a",
+ };
+ 
+ static const char * const gen_clk_groups[] = {
 -- 
 2.43.0
 
