@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4098C53FA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392218C53C1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D09691C22ABF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33231F229AB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F2F13D518;
-	Tue, 14 May 2024 11:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E605F12EBEF;
+	Tue, 14 May 2024 11:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmfMaeoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxqluZ/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1639013D516;
-	Tue, 14 May 2024 11:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41F312F373;
+	Tue, 14 May 2024 11:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686883; cv=none; b=A+cOMYE3o0fW7S1vVAdK31n5+aUPuVVfrYuqinh5Xvz35jdLr3c3Hofs4Oz8yo2VCGfUqEnrK4LD0SiYupk/UNuFVRi1kQEFkC09LQcneTsGfHFG2BHWzYOwKgU6f/0YmVv2P2MxOEnAzTz22666CxHUE0Srec3GLNv54vaNk7M=
+	t=1715686740; cv=none; b=BnjIYAubXdxzdERTH01N/scqr1fm52V5X9z6eErdXnEjQzVHOgctCBDnyTVI0XNgNXftqhuq9iADy8OhdNGqtLMioKaYLZd11fkFkXiAGGJsn+oG6pO0Sxv0Qg3hD7fc2BXideqn8hw6UPtgnsaDwwkvg8vnkacMiCu0cK/FAe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686883; c=relaxed/simple;
-	bh=HxIUsJFO4us/CbkHhbsCVmSmMz6PyVf7Pqetxa2gc6E=;
+	s=arc-20240116; t=1715686740; c=relaxed/simple;
+	bh=YSeUGYp8msNR4WDzjqNhwWSM/DOCHwqeAEVraNLvvQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reGyuY7m+vPIeC8Ot2bXubEfnzKbUXZbEDY6dr90DqzCMisU0KFjFk14rJ7Elctvpo9NouRdiFXsRO2apZgSFTpVSGd2i3jA1j/ICgWqHqFbWD2rVfl8l93Nl/s9QtfK6scUJiI1sjEbDoHmqt79DS/hRs74U5ITukgjwmWCtAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmfMaeoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909D1C2BD10;
-	Tue, 14 May 2024 11:41:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LYLCklX++6Do7yL3DyhonaBHbSon1KpB1iPqIxtJbZfTiXaQ6eMS/9zwcOpYLgm7uWeFV7QSFd1HDNXZ4inQkn/CvzNOETUsPOcn49NHxhg6HAZ4FBKf8R/zbM5elxfFlR5GGyQr35/23zBZdbF/FVdhrexk8tpNJ3vnqJ+2/Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxqluZ/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B7BC32781;
+	Tue, 14 May 2024 11:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686883;
-	bh=HxIUsJFO4us/CbkHhbsCVmSmMz6PyVf7Pqetxa2gc6E=;
+	s=korg; t=1715686740;
+	bh=YSeUGYp8msNR4WDzjqNhwWSM/DOCHwqeAEVraNLvvQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmfMaeojgM3elJHSWfiKy09JWjtTW47fsh7yhK8hpkbET37xUW4k+Nu7OJ2xb3xLm
-	 7QIbtO3s2CgKCfZW7WWckcbHWQTInHUoFr0qZICRmVfVm/r6Z7JtZN4CJpdZ1x7ZN9
-	 oDx82iW1LlV5fGqkZvkZsQNiSn5+CaQVFecDhFdc=
+	b=RxqluZ/b73W7euu5UqleyMYXIdunsV3cy1nzlU7zEJH903rHHcHj7Rgxz02x0LYiF
+	 Bnq7yTELn6C7hjTfH/rUMXOHN9JWmEuMbjbkO+M8Zr1tA7Tp7p3XWgPGUtSoqW9c2m
+	 pJthDT/cXL1338nzGookh9tWwXZ2x5JlaRkVgiZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 23/63] gfs2: Fix invalid metadata access in punch_hole
+	Jani Nikula <jani.nikula@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Karthikeyan Ramasubramanian <kramasub@chromium.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.1 222/236] drm/i915/bios: Fix parsing backlight BDB data
 Date: Tue, 14 May 2024 12:19:44 +0200
-Message-ID: <20240514100948.891878002@linuxfoundation.org>
+Message-ID: <20240514101028.785147819@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Karthikeyan Ramasubramanian <kramasub@chromium.org>
 
-[ Upstream commit c95346ac918c5badf51b9a7ac58a26d3bd5bb224 ]
+commit 43b26bdd2ee5cfca80939be910d5b23a50cd7f9d upstream.
 
-In punch_hole(), when the offset lies in the final block for a given
-height, there is no hole to punch, but the maximum size check fails to
-detect that.  Consequently, punch_hole() will try to punch a hole beyond
-the end of the metadata and fail.  Fix the maximum size check.
+Starting BDB version 239, hdr_dpcd_refresh_timeout is introduced to
+backlight BDB data. Commit 700034566d68 ("drm/i915/bios: Define more BDB
+contents") updated the backlight BDB data accordingly. This broke the
+parsing of backlight BDB data in VBT for versions 236 - 238 (both
+inclusive) and hence the backlight controls are not responding on units
+with the concerned BDB version.
 
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+backlight_control information has been present in backlight BDB data
+from at least BDB version 191 onwards, if not before. Hence this patch
+extracts the backlight_control information for BDB version 191 or newer.
+Tested on Chromebooks using Jasperlake SoC (reports bdb->version = 236).
+Tested on Chromebooks using Raptorlake SoC (reports bdb->version = 251).
+
+v2: removed checking the block size of the backlight BDB data
+    [vsyrjala: this is completely safe thanks to commit e163cfb4c96d
+     ("drm/i915/bios: Make copies of VBT data blocks")]
+
+Fixes: 700034566d68 ("drm/i915/bios: Define more BDB contents")
+Cc: stable@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240221180622.v2.1.I0690aa3e96a83a43b3fc33f50395d334b2981826@changeid
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+(cherry picked from commit c286f6a973c66c0d993ecab9f7162c790e7064c8)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/bmap.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_bios.c     |   19 ++++---------------
+ drivers/gpu/drm/i915/display/intel_vbt_defs.h |    5 -----
+ 2 files changed, 4 insertions(+), 20 deletions(-)
 
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index 729f36fdced1f..b365828328df0 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -1751,7 +1751,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	struct buffer_head *dibh, *bh;
- 	struct gfs2_holder rd_gh;
- 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
--	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
-+	unsigned int bsize = 1 << bsize_shift;
-+	u64 lblock = (offset + bsize - 1) >> bsize_shift;
- 	__u16 start_list[GFS2_MAX_META_HEIGHT];
- 	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
- 	unsigned int start_aligned, end_aligned;
-@@ -1762,7 +1763,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
- 	u64 prev_bnr = 0;
- 	__be64 *start, *end;
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -1034,22 +1034,11 @@ parse_lfp_backlight(struct drm_i915_priv
  
--	if (offset >= maxsize) {
-+	if (offset + bsize - 1 >= maxsize) {
- 		/*
- 		 * The starting point lies beyond the allocated meta-data;
- 		 * there are no blocks do deallocate.
--- 
-2.43.0
-
+ 	panel->vbt.backlight.type = INTEL_BACKLIGHT_DISPLAY_DDI;
+ 	if (i915->display.vbt.version >= 191) {
+-		size_t exp_size;
++		const struct lfp_backlight_control_method *method;
+ 
+-		if (i915->display.vbt.version >= 236)
+-			exp_size = sizeof(struct bdb_lfp_backlight_data);
+-		else if (i915->display.vbt.version >= 234)
+-			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_234;
+-		else
+-			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_191;
+-
+-		if (get_blocksize(backlight_data) >= exp_size) {
+-			const struct lfp_backlight_control_method *method;
+-
+-			method = &backlight_data->backlight_control[panel_type];
+-			panel->vbt.backlight.type = method->type;
+-			panel->vbt.backlight.controller = method->controller;
+-		}
++		method = &backlight_data->backlight_control[panel_type];
++		panel->vbt.backlight.type = method->type;
++		panel->vbt.backlight.controller = method->controller;
+ 	}
+ 
+ 	panel->vbt.backlight.pwm_freq_hz = entry->pwm_freq_hz;
+--- a/drivers/gpu/drm/i915/display/intel_vbt_defs.h
++++ b/drivers/gpu/drm/i915/display/intel_vbt_defs.h
+@@ -897,11 +897,6 @@ struct lfp_brightness_level {
+ 	u16 reserved;
+ } __packed;
+ 
+-#define EXP_BDB_LFP_BL_DATA_SIZE_REV_191 \
+-	offsetof(struct bdb_lfp_backlight_data, brightness_level)
+-#define EXP_BDB_LFP_BL_DATA_SIZE_REV_234 \
+-	offsetof(struct bdb_lfp_backlight_data, brightness_precision_bits)
+-
+ struct bdb_lfp_backlight_data {
+ 	u8 entry_size;
+ 	struct lfp_backlight_data_entry data[16];
 
 
 
