@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCB78C542F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7C68C53B1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97C3C283D65
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDA621C219C6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA841139CE7;
-	Tue, 14 May 2024 11:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F3312E1DF;
+	Tue, 14 May 2024 11:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkAa3rzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFBe/7m9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99341139596;
-	Tue, 14 May 2024 11:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E1580C04;
+	Tue, 14 May 2024 11:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687027; cv=none; b=mPLgUOArNw1ixHt5TwOg0xiavb8csXtcb/cIohTSF13R8IvE5nSvZiB4D8OUBbtNbCLs+h4HiBytlERH8GObvqwMtAmmV5UhsgxhJeysXBce4VWagAsI6xVVqlGuen1IXZsIEZSP/11pCe1R3o7+ouMzu74Z1e2yUnuS55qcCkM=
+	t=1715686700; cv=none; b=HDFjIF4PBTOuN5rXoBf29IYoWJuuXaoQdF55eJuqYyrBfz7pqif+ZZ4Ney9YR9HBKqHhlJGRfYxrVX3wUkFURpJGaNRolml21bU4Ww0cdpfUz9rNMr6+4v/xFJeA0EYDAOEUzwOznmHZ5b+fsljlPtQdGVOInRTG3etkd2ptgu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687027; c=relaxed/simple;
-	bh=6cvB46tfKP0BHEVaUdKsh90eBD9vU5Oc0T5lh9H7054=;
+	s=arc-20240116; t=1715686700; c=relaxed/simple;
+	bh=CEnJ7eeSNjnKCmBlMtUIB+kGXmoQ8v+lruG9CLePIhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDweppNRuAZ4motFUA0I8yukXPAZmtJq/JSPMWjEVxL+Wc2b7vc/+tfVEgurdFBvUGqRMGiMqF08kI7GdTzAU5m/Z0PImsxM00TPQU+cZiMLfoDEqK4HSRTwyACEzku0IwBtQ6nZu2E3Ockw63a+gXGhF2HCRx5P7DzizsqWZTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkAa3rzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E50CC2BD10;
-	Tue, 14 May 2024 11:43:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V2bS5FynG0dLXBuCf3uTJEvxrrvFVDRy+cRc/iVM1gsded13X1HEXIjrWzx+YdjNGNIy13cxMC8UGBxXUcgHAGRZOOanFgNeO3FAr5NEfZNmTb73v0agqC18Roefs7CS4SX5WyJEY8kfQTf+3+7ybqbqxa7IhEJM+3I6Cf0Zh4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFBe/7m9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9932FC2BD10;
+	Tue, 14 May 2024 11:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687027;
-	bh=6cvB46tfKP0BHEVaUdKsh90eBD9vU5Oc0T5lh9H7054=;
+	s=korg; t=1715686700;
+	bh=CEnJ7eeSNjnKCmBlMtUIB+kGXmoQ8v+lruG9CLePIhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QkAa3rzRaA8n+ApeABXPNNFS/NmQiG141ugVr0bpG2jxw9kXB6B8z/6IsK92HdbVF
-	 Rpj2EfrCEFpYgss+CPVtgh6DsA4sUSvmufgwJ+yM+qdJ2ST7a2lVUYKotaHSAG1L+x
-	 ngidvEDLxFanmHfYfVy/IiLSn9DDQAbdmF9sDf8A=
+	b=cFBe/7m90PWNo/vjLnQFWhWhh+RVzic9DAeRxEIE4AtOBffTolKyb5x9nHTOQUljk
+	 ytWEDDBdvZLXsUGo08ar3gZSQ66yeKZDA1EvwUGfT2kl9LxG7b2hafl7/KyaZARLlF
+	 u46SSD7k5tfbG+mszIG/2sk/f+4N+v5mQ2U6MVfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Maarten Vanraes <maarten@rmail.be>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 40/84] net: bcmgenet: Reset RBUF on first open
+	=?UTF-8?q?=CE=95=CE=9B=CE=95=CE=9D=CE=97=20=CE=A4=CE=96=CE=91=CE=92=CE=95=CE=9B=CE=9B=CE=91?= <helentzavellas@yahoo.gr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 229/236] ksmbd: off ipv6only for both ipv4/ipv6 binding
 Date: Tue, 14 May 2024 12:19:51 +0200
-Message-ID: <20240514100953.199742400@linuxfoundation.org>
+Message-ID: <20240514101029.051433553@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 0a6380cb4c6b5c1d6dad226ba3130f9090f0ccea ]
+commit cc00bc83f26eb8f2d8d9f56b949b62fd774d8432 upstream.
 
-If the RBUF logic is not reset when the kernel starts then there
-may be some data left over from any network boot loader. If the
-64-byte packet headers are enabled then this can be fatal.
+ΕΛΕΝΗ reported that ksmbd binds to the IPV6 wildcard (::) by default for
+ipv4 and ipv6 binding. So IPV4 connections are successful only when
+the Linux system parameter bindv6only is set to 0 [default value].
+If this parameter is set to 1, then the ipv6 wildcard only represents
+any IPV6 address. Samba creates different sockets for ipv4 and ipv6
+by default. This patch off sk_ipv6only to support IPV4/IPV6 connections
+without creating two sockets.
 
-Extend bcmgenet_dma_disable to do perform the reset, but not when
-called from bcmgenet_resume in order to preserve a wake packet.
-
-N.B. This different handling of resume is just based on a hunch -
-why else wouldn't one reset the RBUF as well as the TBUF? If this
-isn't the case then it's easy to change the patch to make the RBUF
-reset unconditional.
-
-See: https://github.com/raspberrypi/linux/issues/3850
-See: https://github.com/raspberrypi/firmware/issues/1882
-
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Maarten Vanraes <maarten@rmail.be>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: ΕΛΕΝΗ ΤΖΑΒΕΛΛΑ <helentzavellas@yahoo.gr>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ fs/smb/server/transport_tcp.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 380bf7a328ba3..469cfc74617a6 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2796,7 +2796,7 @@ static void bcmgenet_set_hw_addr(struct bcmgenet_priv *priv,
- }
- 
- /* Returns a reusable dma control register value */
--static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
-+static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv, bool flush_rx)
- {
- 	unsigned int i;
- 	u32 reg;
-@@ -2821,6 +2821,14 @@ static u32 bcmgenet_dma_disable(struct bcmgenet_priv *priv)
- 	udelay(10);
- 	bcmgenet_umac_writel(priv, 0, UMAC_TX_FLUSH);
- 
-+	if (flush_rx) {
-+		reg = bcmgenet_rbuf_ctrl_get(priv);
-+		bcmgenet_rbuf_ctrl_set(priv, reg | BIT(0));
-+		udelay(10);
-+		bcmgenet_rbuf_ctrl_set(priv, reg);
-+		udelay(10);
-+	}
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -446,6 +446,10 @@ static int create_socket(struct interfac
+ 		sin6.sin6_family = PF_INET6;
+ 		sin6.sin6_addr = in6addr_any;
+ 		sin6.sin6_port = htons(server_conf.tcp_port);
 +
- 	return dma_ctrl;
- }
++		lock_sock(ksmbd_socket->sk);
++		ksmbd_socket->sk->sk_ipv6only = false;
++		release_sock(ksmbd_socket->sk);
+ 	}
  
-@@ -2916,8 +2924,8 @@ static int bcmgenet_open(struct net_device *dev)
- 
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
- 
--	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	/* Disable RX/TX DMA and flush TX and RX queues */
-+	dma_ctrl = bcmgenet_dma_disable(priv, true);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
-@@ -3670,7 +3678,7 @@ static int bcmgenet_resume(struct device *d)
- 		bcmgenet_power_up(priv, GENET_POWER_WOL_MAGIC);
- 
- 	/* Disable RX/TX DMA and flush TX queues */
--	dma_ctrl = bcmgenet_dma_disable(priv);
-+	dma_ctrl = bcmgenet_dma_disable(priv, false);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv);
--- 
-2.43.0
-
+ 	ksmbd_tcp_nodelay(ksmbd_socket);
 
 
 
