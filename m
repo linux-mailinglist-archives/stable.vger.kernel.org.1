@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686C08C5539
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373B18C53D7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2154F1F22C48
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 068591C22A66
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8F4F9D4;
-	Tue, 14 May 2024 11:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58E013D260;
+	Tue, 14 May 2024 11:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mw3CvUKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dr2GJRAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5A73D0D1;
-	Tue, 14 May 2024 11:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641FF7F48C;
+	Tue, 14 May 2024 11:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687750; cv=none; b=WeuG3ssjA5pdiSgR8BfwzDlJzG+C4qi25Xiex5op+rWVhPYtZToK/8iVxfC+GubTQLnAOWfWMBBHE7kzP3bYYTq28yBdxSXiO3o9v91gONJlRWADN8b6aEUuen1KI3wJyQWKVtr2Qy1HE9T351+hYHBPsD5MFRdYpa1XZlNgBL0=
+	t=1715686806; cv=none; b=l4wjcu7g5lvXLtxpb+fklAc5gSs1kXLXDxZfGH9zD3DJZGJuxQXdzoTtINIY4Ld+sg4DlMxLZTzdrbjkZdzfFPsUD6DOgUGj2AOc7IbTrzfWON+9HL5yrpRzsywy5iUdcINEuzK2kxtBb9Im7St7zttvh7OWXx1kOeFbwctXYf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687750; c=relaxed/simple;
-	bh=uvZBZRA9ixNaUBSr+HItJUyHht7vRBmRBHAVzRMFZyY=;
+	s=arc-20240116; t=1715686806; c=relaxed/simple;
+	bh=5cbaMsLTpt6hyacAK0up/S/hRlYWBaKzIW6KKTL/ru0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slR3H728hhJeu/8JvQQa1nemUvfCrAy0146PMqQUhay+UED9yY+tpPiRtVXRjJaD+alL1W5yWqEvzYCgR0VWLG4Ux2CJKvijBJ3qHuhtIBAAIpqSNwDlItEQg0+RhIpuoodeyjQVbvcTMcfPOTqIJ0LrKX/6VKKAxojobnzFrdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mw3CvUKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38568C2BD10;
-	Tue, 14 May 2024 11:55:49 +0000 (UTC)
+	 MIME-Version; b=HYhq1nS/H61jmakFrbvO77of5N6qk1VmVuDvemUcqDNsk7QWYf1457AaUWaeu6nJLHKdZALc2dn21AnmlVyS+YwlqsSqQTiDnJ1by5aJCXEBw8krXt3qXmdFHMLv386co4cF4lsvWV/mTjOkYek4dhko4gKPEEA8SaL+EeFtNyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dr2GJRAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FC3C2BD10;
+	Tue, 14 May 2024 11:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687749;
-	bh=uvZBZRA9ixNaUBSr+HItJUyHht7vRBmRBHAVzRMFZyY=;
+	s=korg; t=1715686806;
+	bh=5cbaMsLTpt6hyacAK0up/S/hRlYWBaKzIW6KKTL/ru0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mw3CvUKRmjRltHI3fcc/s+h7hLlMhPMiuiF5ux+Lg8PTam5nsd460T0gTQ4cqR9uP
-	 1HBMgbrh5nOIc9gR2QbWR3I7uw/saA9/LUIf1A9h0sFZdgxs5LkN30L7wo764OAd/S
-	 EeY/qIb15VQQcjy/tz7IvyyRk+e+fa0VPeaubLO4=
+	b=Dr2GJRAHkcNAF2JW6ul2wFU3a1ZTULzzre+wOLxR2efPXBzfc0nYQudmKvOtBxi2p
+	 6bopPsJ7MODiPLZmYMCeX8Z8zCM9rw6yqfwLs0/NJYRs6JiQN6EC8guYfDT4uxKLt6
+	 mjSx6kMZx2hbmvGvF2LwesvvWwaHY3rXbbQsTPkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/168] fs/9p: drop inodes immediately on non-.L too
+Subject: [PATCH 4.19 29/63] ata: sata_gemini: Check clk_enable() result
 Date: Tue, 14 May 2024 12:19:50 +0200
-Message-ID: <20240514101010.163232778@linuxfoundation.org>
+Message-ID: <20240514100949.117048580@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,33 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Sindholt <opensource@zhasha.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 7fd524b9bd1be210fe79035800f4bd78a41b349f ]
+[ Upstream commit e85006ae7430aef780cc4f0849692e266a102ec0 ]
 
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+The call to clk_enable() in gemini_sata_start_bridge() can fail.
+Add a check to detect such failure.
+
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_super.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/sata_gemini.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index 7449f7fd47d22..51ac2653984a7 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -340,6 +340,7 @@ static const struct super_operations v9fs_super_ops = {
- 	.alloc_inode = v9fs_alloc_inode,
- 	.free_inode = v9fs_free_inode,
- 	.statfs = simple_statfs,
-+	.drop_inode = v9fs_drop_inode,
- 	.evict_inode = v9fs_evict_inode,
- 	.show_options = v9fs_show_options,
- 	.umount_begin = v9fs_umount_begin,
+diff --git a/drivers/ata/sata_gemini.c b/drivers/ata/sata_gemini.c
+index 64b43943f6502..f7b4ed572ce02 100644
+--- a/drivers/ata/sata_gemini.c
++++ b/drivers/ata/sata_gemini.c
+@@ -200,7 +200,10 @@ int gemini_sata_start_bridge(struct sata_gemini *sg, unsigned int bridge)
+ 		pclk = sg->sata0_pclk;
+ 	else
+ 		pclk = sg->sata1_pclk;
+-	clk_enable(pclk);
++	ret = clk_enable(pclk);
++	if (ret)
++		return ret;
++
+ 	msleep(10);
+ 
+ 	/* Do not keep clocking a bridge that is not online */
 -- 
 2.43.0
 
