@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-44173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC1E8C5194
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098648C504E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71D90282880
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1AE1C20A3B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E032213A27E;
-	Tue, 14 May 2024 11:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A3713C679;
+	Tue, 14 May 2024 10:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sq+NLo53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McWxSjXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D14813A272;
-	Tue, 14 May 2024 11:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA7C13C66F;
+	Tue, 14 May 2024 10:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684711; cv=none; b=XmxXzdBgxqlzJer6m4le+H39uu20oeJlB0uN8RFlNlM1xL0pnTI17Y20m2tI8fpKKl73Ey6HbUyE0oMMprHmkWa2VA8h/UwjKRDLqvWRpb89IC91hqkEr9Dli8MSPUQ8yVisi2zqZW6EFvH0dBQ3b/5PFBtUDhZ1P2hStzcy72A=
+	t=1715683170; cv=none; b=b2Ufy9UPgVljsckw0c92dPInTMkjupiv28aoB0TSR48tWvcvT0QNTC33vSaSQeOpnHRK0atbRmrdB1gQNqDoA0JTLRZ5DscoygixQANItAbYvvx/+wlX4QPKT/Ve3LDEaoXtSug4aULM1wI9WHxxrMGKkSXN3cBRF0sTCUs3WLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684711; c=relaxed/simple;
-	bh=7YHYwzmdaAU7fUPLXhIU3IVdbl9iTJP3VyZwFL5CD0c=;
+	s=arc-20240116; t=1715683170; c=relaxed/simple;
+	bh=XFELwXrOds7ENaf0OsnW4RXGEfpI9QX3IgI83CdQyIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQLtYIfJGcVHxVOo8xj7TqaCDL4yyIwEVIApT9F8+e0mVBwgsC1xXpcALiNG6FC0cH4EB3bezG2bqMvkWh6Z/c8ofsET37yl8ug8p31790MUrew4kS6emcKnA8DFCeHbN5cp1+FtRTRCy8SDRFZtrrLIwnNc5cPYVB+XGRwdM1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sq+NLo53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64183C32782;
-	Tue, 14 May 2024 11:05:10 +0000 (UTC)
+	 MIME-Version; b=lMLDdM/1xizjlfHV/whdejuh2YkoUyKgdTPyPb9WfUU5w9MFkeVgq3pnh0FU2vaUHcHRqUML9OcmPru1ls23BYuhwdWnFr1weg+uxCPvuMX0D/lxVrKaaVd+O142AiGNl49yvDc5e/opcYWOwUbZfXN+RFdIKVi27NO/URXGCrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McWxSjXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A75C2BD10;
+	Tue, 14 May 2024 10:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684711;
-	bh=7YHYwzmdaAU7fUPLXhIU3IVdbl9iTJP3VyZwFL5CD0c=;
+	s=korg; t=1715683170;
+	bh=XFELwXrOds7ENaf0OsnW4RXGEfpI9QX3IgI83CdQyIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sq+NLo531ZoIOIS/20HK4znZFUXnaY5cZohKX9xqHKkhJdTfBibEQmxRDatiJCDyy
-	 Y/jKu/ulroPs+7DXLu2geOUzw2EvBVZpDOKzONZ+LIZYna2Zyph8dgm8LKFaXY9HMf
-	 YkbFv5uWD6WYdRBsPT4AjEWfRKviI3c3leI3mQdw=
+	b=McWxSjXF9Nnq+VHcV2dfAhbhF8Hdl8+KqsryruUEJCS+SdeIhrvra1rXMVzwiUJOs
+	 PNg1dqHDKa6ZHiLgV1GB2vIm3emQGn9SWUr5gxM8PibWohwhxmQafVZIbnGmjkSCaZ
+	 Pm6k46MB89Tj9l/TOTEhOYSdml345Oax8C58n81A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Tung Nguyen <tung.q.nguyen@dektech.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/301] tipc: fix a possible memleak in tipc_buf_append
+Subject: [PATCH 6.8 146/336] nouveau/gsp: Avoid addressing beyond end of rpc->entries
 Date: Tue, 14 May 2024 12:15:50 +0200
-Message-ID: <20240514101035.231664187@linuxfoundation.org>
+Message-ID: <20240514101044.112807840@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 97bf6f81b29a8efaf5d0983251a7450e5794370d ]
+[ Upstream commit 838ae9f45c4e43b4633d8b0ad1fbedff9ecf177d ]
 
-__skb_linearize() doesn't free the skb when it fails, so move
-'*buf = NULL' after __skb_linearize(), so that the skb can be
-freed on the err path.
+Using the end of rpc->entries[] for addressing runs into both compile-time
+and run-time detection of accessing beyond the end of the array. Use the
+base pointer instead, since was allocated with the additional bytes for
+storing the strings. Avoids the following warning in future GCC releases
+with support for __counted_by:
 
-Fixes: b7df21cf1b79 ("tipc: skb_linearize the head skb when reassembling msgs")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
-Link: https://lore.kernel.org/r/90710748c29a1521efac4f75ea01b3b7e61414cf.1714485818.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In function 'fortify_memcpy_chk',
+    inlined from 'r535_gsp_rpc_set_registry' at ../drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c:1123:3:
+../include/linux/fortify-string.h:553:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  553 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+for this code:
+
+	strings = (char *)&rpc->entries[NV_GSP_REG_NUM_ENTRIES];
+	...
+                memcpy(strings, r535_registry_entries[i].name, name_len);
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240330141159.work.063-kees@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/msg.c | 2 +-
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tipc/msg.c b/net/tipc/msg.c
-index 5c9fd4791c4ba..c52ab423082cd 100644
---- a/net/tipc/msg.c
-+++ b/net/tipc/msg.c
-@@ -142,9 +142,9 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
- 	if (fragid == FIRST_FRAGMENT) {
- 		if (unlikely(head))
- 			goto err;
--		*buf = NULL;
- 		if (skb_has_frag_list(frag) && __skb_linearize(frag))
- 			goto err;
-+		*buf = NULL;
- 		frag = skb_unshare(frag, GFP_ATOMIC);
- 		if (unlikely(!frag))
- 			goto err;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+index a73a5b5897904..dcafbb2004ca2 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -1112,7 +1112,7 @@ r535_gsp_rpc_set_registry(struct nvkm_gsp *gsp)
+ 	rpc->numEntries = NV_GSP_REG_NUM_ENTRIES;
+ 
+ 	str_offset = offsetof(typeof(*rpc), entries[NV_GSP_REG_NUM_ENTRIES]);
+-	strings = (char *)&rpc->entries[NV_GSP_REG_NUM_ENTRIES];
++	strings = (char *)rpc + str_offset;
+ 	for (i = 0; i < NV_GSP_REG_NUM_ENTRIES; i++) {
+ 		int name_len = strlen(r535_registry_entries[i].name) + 1;
+ 
 -- 
 2.43.0
 
