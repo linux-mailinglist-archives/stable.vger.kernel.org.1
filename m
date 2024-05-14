@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C388C535C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF6A8C5226
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58EB11F232D7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FDB41C21564
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EE88594E;
-	Tue, 14 May 2024 11:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE2D56B79;
+	Tue, 14 May 2024 11:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1YMKlvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mrql7vWo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B3018026;
-	Tue, 14 May 2024 11:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B1B55C0A;
+	Tue, 14 May 2024 11:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686471; cv=none; b=lSe/jQqrmpkd5i+u8FMBR7D1p3ayKc55kHW8UkCNOw8z0fhe8paAWv1xqrJBgEriBOjeBhw3SmcBeuKxVa0A+9dagmH6D2UiVs75x7+ZZ4w8jNpmFJ64X9WGpum6BXLmRG1Ct+XHObKrKL4zYjRklQM/SySXtGtc5iNiEoyk9Ek=
+	t=1715685584; cv=none; b=AaRmNF1bZAI27aV/JqnqNouEDhf3UzDECYQUq43ZWPSQZUXjVHrva5AhT0Bt7M3XtVD+uq1vZfY33sJqmfHtusNB5Bsom/tABk70rkiW7889vwUPGgtO7Y0fihtHjNggirrCrcZvDsnV8N5CN8nzGpe6HWTQ7nDonP7DcnRjydY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686471; c=relaxed/simple;
-	bh=fp9Dgj7caFJ9kPFSxkAQvpQXfskk3DM6hvRcoH2T9Dw=;
+	s=arc-20240116; t=1715685584; c=relaxed/simple;
+	bh=ZXMDahpTkgkRj6/TeghsIsFll3rRYbx+/BYybUR4keU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5Q5R4HY5XaR4tBL6n48Z9nHx4DsbGsbKd1jgVPJKH8Vxg7m4P8baAVvm0FLkvzWGWeE/jyoWdb1vmWhD7KCp036syjXde61PrfF0yeOQYrHFKX/FOLMdP6Czn2cz0tQDjPPL7Syc7YZJ4B+NH2XYBgvF/dpisuzrHJ6p0YS4xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1YMKlvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F25C2BD10;
-	Tue, 14 May 2024 11:34:30 +0000 (UTC)
+	 MIME-Version; b=lrlZ9sNblO5KZ4UoNDHgJqA37BJXQI/m9tuhmyg238vFjyG3CqP9NrcjYoMbUxjKspoDvTDE1s6XlACgQCG/nCsSUddDuRuP6TBBZ+awB2FXjixVg65kRWiDALwJU/FN/tbQApM0aNITMPEWlpaSDDseaAT+xDNIAp1sccThdww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mrql7vWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12D6C32781;
+	Tue, 14 May 2024 11:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686470;
-	bh=fp9Dgj7caFJ9kPFSxkAQvpQXfskk3DM6hvRcoH2T9Dw=;
+	s=korg; t=1715685584;
+	bh=ZXMDahpTkgkRj6/TeghsIsFll3rRYbx+/BYybUR4keU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1YMKlvUfXWzE4LG+jp3ghELoGsXHeflM0Eol2weGTddu6169btcVjxy6g5XTTLSX
-	 pVjHg8YLhLMVsJxdY7g40cHCwaaYWoElTqE+2RQoJqaHItpcv/dNq09YBpsirVysvl
-	 LBKFdFN8DjUfhGcQX0Ag5dpHg6yBGNZWgEgpeFEs=
+	b=Mrql7vWo6ZFRq1nSVKjHEt9vNVE5cncYapZV6j6X7GEEM1HGxfwCAp3CH3GLGVS2z
+	 8njX9mhEyegY7N8n/FeSHuR3JX4o/C60+UyhBP9NZsGWPVZ4xhZ3S63AZC2oxPjhRc
+	 oISf7aSP5FAOEEUxY9C0Kh1usXX2FKZjaCIaoH7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Song Shuai <songshuaishuai@tinylab.org>,
-	Mike Rapoport <rppt@kernel.org>,
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/236] memblock tests: fix undefined reference to `panic
-Date: Tue, 14 May 2024 12:18:00 +0200
-Message-ID: <20240514101024.851479311@linuxfoundation.org>
+Subject: [PATCH 6.6 210/301] net: hns3: fix kernel crash when devlink reload during initialization
+Date: Tue, 14 May 2024 12:18:01 +0200
+Message-ID: <20240514101040.189685268@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-[ Upstream commit e0f5a8e74be88f2476e58b25d3b49a9521bdc4ec ]
+[ Upstream commit 35d92abfbad88cf947c010baf34b075e40566095 ]
 
-commit e96c6b8f212a ("memblock: report failures when memblock_can_resize
-is not set") introduced the usage of panic, which is not defined in
-memblock test.
+The devlink reload process will access the hardware resources,
+but the register operation is done before the hardware is initialized.
+So, processing the devlink reload during initialization may lead to kernel
+crash.
 
-Let's define it directly in panic.h to fix it.
+This patch fixes this by registering the devlink after
+hardware initialization.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-CC: Song Shuai <songshuaishuai@tinylab.org>
-CC: Mike Rapoport <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20240402132701.29744-3-richard.weiyang@gmail.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Fixes: cd6242991d2e ("net: hns3: add support for registering devlink for VF")
+Fixes: 93305b77ffcb ("net: hns3: fix kernel crash when devlink reload during pf initialization")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/kernel.h |  1 +
- tools/include/linux/panic.h  | 19 +++++++++++++++++++
- 2 files changed, 20 insertions(+)
- create mode 100644 tools/include/linux/panic.h
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 17 +++++------------
+ .../hisilicon/hns3/hns3vf/hclgevf_main.c        | 10 ++++------
+ 2 files changed, 9 insertions(+), 18 deletions(-)
 
-diff --git a/tools/include/linux/kernel.h b/tools/include/linux/kernel.h
-index 4b0673bf52c2e..07cfad817d539 100644
---- a/tools/include/linux/kernel.h
-+++ b/tools/include/linux/kernel.h
-@@ -8,6 +8,7 @@
- #include <linux/build_bug.h>
- #include <linux/compiler.h>
- #include <linux/math.h>
-+#include <linux/panic.h>
- #include <endian.h>
- #include <byteswap.h>
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 3b74cce46ac65..14713454e0d82 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -11619,16 +11619,10 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 	if (ret)
+ 		goto out;
  
-diff --git a/tools/include/linux/panic.h b/tools/include/linux/panic.h
-new file mode 100644
-index 0000000000000..9c8f17a41ce8e
---- /dev/null
-+++ b/tools/include/linux/panic.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _TOOLS_LINUX_PANIC_H
-+#define _TOOLS_LINUX_PANIC_H
+-	ret = hclge_devlink_init(hdev);
+-	if (ret)
+-		goto err_pci_uninit;
+-
+-	devl_lock(hdev->devlink);
+-
+ 	/* Firmware command queue initialize */
+ 	ret = hclge_comm_cmd_queue_init(hdev->pdev, &hdev->hw.hw);
+ 	if (ret)
+-		goto err_devlink_uninit;
++		goto err_pci_uninit;
+ 
+ 	/* Firmware command initialize */
+ 	ret = hclge_comm_cmd_init(hdev->ae_dev, &hdev->hw.hw, &hdev->fw_version,
+@@ -11796,6 +11790,10 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 		dev_warn(&pdev->dev,
+ 			 "failed to wake on lan init, ret = %d\n", ret);
+ 
++	ret = hclge_devlink_init(hdev);
++	if (ret)
++		goto err_ptp_uninit;
 +
-+#include <stdarg.h>
-+#include <stdio.h>
-+#include <stdlib.h>
+ 	hclge_state_init(hdev);
+ 	hdev->last_reset_time = jiffies;
+ 
+@@ -11803,8 +11801,6 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 		 HCLGE_DRIVER_NAME);
+ 
+ 	hclge_task_schedule(hdev, round_jiffies_relative(HZ));
+-
+-	devl_unlock(hdev->devlink);
+ 	return 0;
+ 
+ err_ptp_uninit:
+@@ -11818,9 +11814,6 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 	pci_free_irq_vectors(pdev);
+ err_cmd_uninit:
+ 	hclge_comm_cmd_uninit(hdev->ae_dev, &hdev->hw.hw);
+-err_devlink_uninit:
+-	devl_unlock(hdev->devlink);
+-	hclge_devlink_uninit(hdev);
+ err_pci_uninit:
+ 	pcim_iounmap(pdev, hdev->hw.hw.io_base);
+ 	pci_release_regions(pdev);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 08db8e84be4ed..43ee20eb03d1f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2845,10 +2845,6 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = hclgevf_devlink_init(hdev);
+-	if (ret)
+-		goto err_devlink_init;
+-
+ 	ret = hclge_comm_cmd_queue_init(hdev->pdev, &hdev->hw.hw);
+ 	if (ret)
+ 		goto err_cmd_queue_init;
+@@ -2941,6 +2937,10 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ 
+ 	hclgevf_init_rxd_adv_layout(hdev);
+ 
++	ret = hclgevf_devlink_init(hdev);
++	if (ret)
++		goto err_config;
 +
-+static inline void panic(const char *fmt, ...)
-+{
-+	va_list argp;
-+
-+	va_start(argp, fmt);
-+	vfprintf(stderr, fmt, argp);
-+	va_end(argp);
-+	exit(-1);
-+}
-+
-+#endif
+ 	set_bit(HCLGEVF_STATE_SERVICE_INITED, &hdev->state);
+ 
+ 	hdev->last_reset_time = jiffies;
+@@ -2960,8 +2960,6 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ err_cmd_init:
+ 	hclge_comm_cmd_uninit(hdev->ae_dev, &hdev->hw.hw);
+ err_cmd_queue_init:
+-	hclgevf_devlink_uninit(hdev);
+-err_devlink_init:
+ 	hclgevf_pci_uninit(hdev);
+ 	clear_bit(HCLGEVF_STATE_IRQ_INITED, &hdev->state);
+ 	return ret;
 -- 
 2.43.0
 
