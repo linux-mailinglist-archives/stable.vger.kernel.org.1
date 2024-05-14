@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4C08C539F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DCF8C53C9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C9B91C22757
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F9931F2288C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E959112D77C;
-	Tue, 14 May 2024 11:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF11E12F59E;
+	Tue, 14 May 2024 11:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrdR2Svf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJgrr696"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A695712C554;
-	Tue, 14 May 2024 11:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA3612F39B;
+	Tue, 14 May 2024 11:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686656; cv=none; b=cqUt6n60Od/ZqxEwov6s9lsYXmMsMEMT9yIWhfXJm+KtBl3msTjCXTe4k8uRERxGH/tbyUo4ZY0P1/ht1uCINAm4ywcv6uKd/M4E240PV4PPtU2Tz8GEmkvyIHqh1D2xmlcaeb2PHuA+hrUM8Z+evaE5vm3zgwR//aSg/0BadN8=
+	t=1715686760; cv=none; b=WPoiB5pa5Gh+LUqCLaOTikeWxK/t9rC5duamsAoysYPudBJj0HXYIbj8RN9s5UCATslIHd0rk1n+rhA/8TdRzG2jVv8YrrASea8boDAx7G9KMXfPpdKCqEphwHp9SROnGAOeaCnIX6CYy/hl5W/beGTtBZI9bSQIwunUOaJN3go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686656; c=relaxed/simple;
-	bh=1DT2pRd5jKYqGYZBIcBAkH3/et59EGFXLCdficKLm00=;
+	s=arc-20240116; t=1715686760; c=relaxed/simple;
+	bh=Oez+cHUfymA/iX5+51K6buopXIhP69WxQjqE/5yBa5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnrlVmPj1EdTqD/UNoBhMJfQOUa39GaVbUWUI0PDtwctgs2rPIZbUD7ePnpf1YKddUo3Z02LQ2Z5wuURbI8fiu3m1r+IkYIw/EC7DVfp+iSYkOzaqEeHkMJfYlAq7n/V9nGNQVboVDXPxVwwBOvkWwXukO2U+Tra/2IBOcKsfiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrdR2Svf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA2AC2BD10;
-	Tue, 14 May 2024 11:37:36 +0000 (UTC)
+	 MIME-Version; b=LbFO8zBdypyIFrraiuZ+dBgplHXf7LhzbKK050QMv8PFCPoz3u1yf5SLntNvD2p+fmMczPNaEejUGoUZptZFzJTyv6bcCh26nKtbt5diq33qo3eznOUxiSX9W8VeLHoRPVhJ04o3pOpkb/Efoo4sfFQNK+4VBeQK4mMqZoFJIuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJgrr696; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82FCC2BD10;
+	Tue, 14 May 2024 11:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686656;
-	bh=1DT2pRd5jKYqGYZBIcBAkH3/et59EGFXLCdficKLm00=;
+	s=korg; t=1715686760;
+	bh=Oez+cHUfymA/iX5+51K6buopXIhP69WxQjqE/5yBa5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qrdR2SvfsGbPmgJTArE2NmBeSd6ajQ3I74F1gETduMuIs+Jba+himdlhrX3xKmuhQ
-	 +P3TuECE7L1gIQDrcj8VMrLPhTODXI3MtxEzfRxns11M4TVsyWAed8AVPG2YNIhtuJ
-	 HXEQCg4RZilXu0lmYZfqk9dBWbSVGpXneiFq8Ku0=
+	b=UJgrr696/uiiTX+CQtVZRo1dWE3ZcrUfz2RC7ZC8rab7lFb6xB7S1HYM681iEOalk
+	 MLjJ6VdncUQeBQWF0hnD3WZunOx1Oaq7QXSHbHCPBtkn0B+PCSI5DY6KHoo6q4FACi
+	 oqUbBIs7zvpqJOZMV+dTumYgafe02xZW3YU+VcmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 212/236] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
+	Heiko Carstens <hca@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 13/63] s390/mm: Fix clearing storage keys for huge pages
 Date: Tue, 14 May 2024 12:19:34 +0200
-Message-ID: <20240514101028.408258022@linuxfoundation.org>
+Message-ID: <20240514100948.516058307@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-commit d85cf67a339685beae1d0aee27b7f61da95455be upstream.
+[ Upstream commit 412050af2ea39407fe43324b0be4ab641530ce88 ]
 
-The EXT_RGMII_OOB_CTRL register can be written from different
-contexts. It is predominantly written from the adjust_link
-handler which is synchronized by the phydev->lock, but can
-also be written from a different context when configuring the
-mii in bcmgenet_mii_config().
+The function __storage_key_init_range() expects the end address to be
+the first byte outside the range to be initialized. I.e. end - start
+should be the size of the area to be initialized.
 
-The chances of contention are quite low, but it is conceivable
-that adjust_link could occur during resume when WoL is enabled
-so use the phydev->lock synchronizer in bcmgenet_mii_config()
-to be sure.
+The current code works because __storage_key_init_range() will still loop
+over every page in the range, but it is slower than using sske_frame().
 
-Fixes: afe3f907d20f ("net: bcmgenet: power on MII block for all MII modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3afdfca69870 ("s390/mm: Clear skeys for newly mapped huge guest pmds")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240416114220.28489-3-imbrenda@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmmii.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/s390/mm/hugetlbpage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET MDIO routines
-  *
-- * Copyright (c) 2014-2017 Broadcom
-+ * Copyright (c) 2014-2024 Broadcom
-  */
+diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
+index ff8234bca56cd..6b688e3498c01 100644
+--- a/arch/s390/mm/hugetlbpage.c
++++ b/arch/s390/mm/hugetlbpage.c
+@@ -146,7 +146,7 @@ static void clear_huge_pte_skeys(struct mm_struct *mm, unsigned long rste)
+ 	}
  
- #include <linux/acpi.h>
-@@ -71,10 +71,12 @@ static void bcmgenet_mac_config(struct n
- 	 * transmit -- 25MHz(100Mbps) or 125MHz(1Gbps).
- 	 * Receive clock is provided by the PHY.
- 	 */
-+	mutex_lock(&phydev->lock);
- 	reg = bcmgenet_ext_readl(priv, EXT_RGMII_OOB_CTRL);
- 	reg &= ~OOB_DISABLE;
- 	reg |= RGMII_LINK;
- 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
-+	mutex_unlock(&phydev->lock);
+ 	if (!test_and_set_bit(PG_arch_1, &page->flags))
+-		__storage_key_init_range(paddr, paddr + size - 1);
++		__storage_key_init_range(paddr, paddr + size);
+ }
  
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-- 
+2.43.0
+
 
 
 
