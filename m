@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA3E8C52E8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF3D8C51D9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 176361C218B5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C390B21B1C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C45135A72;
-	Tue, 14 May 2024 11:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C4413C821;
+	Tue, 14 May 2024 11:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As4dOmcA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrzmuU37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64558135415;
-	Tue, 14 May 2024 11:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D926EB4E;
+	Tue, 14 May 2024 11:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686191; cv=none; b=GGtm59LNSg+pIhNlo5Q13AU6Ktp1RaaCitqS6uxZmiCMt/IXguPlHNnqTrl7oW6RDsD5lQN4b1pYuTQud20IpocZ2EzXix+iGKy1Pz0LzJVnhAG9uTyADvkBTLRJaMh4I9FOP9XHlbAcExfQYM/yxZWoV1ofQT0aCPIdGTJSKh0=
+	t=1715685098; cv=none; b=ZMEPES/KUTkWBzVdc0TMJM3gUfrcLQOa2iA3jW6w3X/mC11nj/eC6ZDeyD7bPMhTYO0Mmt74x1KbLTofQRF1dbq/PHlWguUhPyFQi6StgfKuDaUu3dQFXvmyB+lAmPx4XZUInyAVrjvyoRJm2MP4QK8JR6SyKzaa7DU1WK96WF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686191; c=relaxed/simple;
-	bh=ICYHCMADpUKrAzUw4HTB14OjqvUq7rcYtwoxD605mP8=;
+	s=arc-20240116; t=1715685098; c=relaxed/simple;
+	bh=kmzKppDw83iLOABxIaeiYWuCjjC9Tex4uaJkHdzC99E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KRIPUCzn0AejqCVNyYl+zqfcsv+KuwWzgaAl743ym7YKlmOpr0pSpDZUR5hKk6rpPGbd/97JvUpwQ5OyyG4ZvoLpVtVsHtBe5pjzBCWGwmD424vmGv6SWZmUvuLznexHu2N4DY0wa51Zl4MwG0Qc7k2k7Jm36a0xdeKAkfmpKEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=As4dOmcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6CBC2BD10;
-	Tue, 14 May 2024 11:29:50 +0000 (UTC)
+	 MIME-Version; b=Ysj6t+FUrto1YwTdJ/dBaLe2ZqmUpFjSVpKfW0BP6ztju+EcLb0bhO5W575BX5y7xx5Nz7tGgzvwdvXBJfZO8D2Cpr2S2UxNcbvS5OxI4Vnc9Is6kPXVvKmYP74NInwWCBsiJhM3oEjmdgoyweewdAgSzFMHkrUrwbQQ7HQqbJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrzmuU37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44680C32781;
+	Tue, 14 May 2024 11:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686191;
-	bh=ICYHCMADpUKrAzUw4HTB14OjqvUq7rcYtwoxD605mP8=;
+	s=korg; t=1715685097;
+	bh=kmzKppDw83iLOABxIaeiYWuCjjC9Tex4uaJkHdzC99E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=As4dOmcA+Jp/WV3DszZwc2cb1yLanUA7sjkDmZ7ksAhFSpMMceCVsS/jRlfoOVu9m
-	 9sTCMC0YiwiSFYlcGWdVGyxsMysAdjezvMv1Z2imlwbbOAe6wnx60z9zwLumBe67B/
-	 aY3lY5x4X15TX5V1BMMhPVwrO9xYww0bUg7AEdeQ=
+	b=zrzmuU37P+Fg7rdJTp9JYY4jMq5GIBNJrnfSg9XGvQz5QCzgApMqte4kOl/8DzD37
+	 EPaOVG4MRAWxAx/mZ8u3PfRNe3F5Vj7je+UUYatP53UirMM/pHPdwkNLIAhQx5s7Y1
+	 MwHz5NT8W3uEqJqk6HfYO6MroLTmx0QoAXVzCFlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Song Shuai <songshuaishuai@tinylab.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/236] spi: axi-spi-engine: Convert to platform remove callback returning void
-Date: Tue, 14 May 2024 12:16:47 +0200
-Message-ID: <20240514101022.055196428@linuxfoundation.org>
+Subject: [PATCH 6.6 137/301] memblock tests: fix undefined reference to `panic
+Date: Tue, 14 May 2024 12:16:48 +0200
+Message-ID: <20240514101037.427415471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit fc87abbef23413943457459e2c473ce607b4dd24 ]
+[ Upstream commit e0f5a8e74be88f2476e58b25d3b49a9521bdc4ec ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+commit e96c6b8f212a ("memblock: report failures when memblock_can_resize
+is not set") introduced the usage of panic, which is not defined in
+memblock test.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Let's define it directly in panic.h to fix it.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230303172041.2103336-9-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+CC: Song Shuai <songshuaishuai@tinylab.org>
+CC: Mike Rapoport <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20240402132701.29744-3-richard.weiyang@gmail.com
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/include/linux/kernel.h |  1 +
+ tools/include/linux/panic.h  | 19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 tools/include/linux/panic.h
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 80c3e38f5c1b5..c5a3a31891642 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -554,7 +554,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/tools/include/linux/kernel.h b/tools/include/linux/kernel.h
+index 4b0673bf52c2e..07cfad817d539 100644
+--- a/tools/include/linux/kernel.h
++++ b/tools/include/linux/kernel.h
+@@ -8,6 +8,7 @@
+ #include <linux/build_bug.h>
+ #include <linux/compiler.h>
+ #include <linux/math.h>
++#include <linux/panic.h>
+ #include <endian.h>
+ #include <byteswap.h>
  
--static int spi_engine_remove(struct platform_device *pdev)
-+static void spi_engine_remove(struct platform_device *pdev)
- {
- 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
- 	struct spi_engine *spi_engine = spi_master_get_devdata(master);
-@@ -572,8 +572,6 @@ static int spi_engine_remove(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(spi_engine->ref_clk);
- 	clk_disable_unprepare(spi_engine->clk);
--
--	return 0;
- }
- 
- static const struct of_device_id spi_engine_match_table[] = {
-@@ -584,7 +582,7 @@ MODULE_DEVICE_TABLE(of, spi_engine_match_table);
- 
- static struct platform_driver spi_engine_driver = {
- 	.probe = spi_engine_probe,
--	.remove = spi_engine_remove,
-+	.remove_new = spi_engine_remove,
- 	.driver = {
- 		.name = "spi-engine",
- 		.of_match_table = spi_engine_match_table,
+diff --git a/tools/include/linux/panic.h b/tools/include/linux/panic.h
+new file mode 100644
+index 0000000000000..9c8f17a41ce8e
+--- /dev/null
++++ b/tools/include/linux/panic.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _TOOLS_LINUX_PANIC_H
++#define _TOOLS_LINUX_PANIC_H
++
++#include <stdarg.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++static inline void panic(const char *fmt, ...)
++{
++	va_list argp;
++
++	va_start(argp, fmt);
++	vfprintf(stderr, fmt, argp);
++	va_end(argp);
++	exit(-1);
++}
++
++#endif
 -- 
 2.43.0
 
