@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1848C5012
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8D48C51A5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DB131C20AAB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 748F0B21EF5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9C7139569;
-	Tue, 14 May 2024 10:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2253C13AA41;
+	Tue, 14 May 2024 11:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibv9qm6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iB8/02v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09607320F;
-	Tue, 14 May 2024 10:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CC3168C7;
+	Tue, 14 May 2024 11:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682906; cv=none; b=FUadf7Pq1mGiP1ME9H8m0Me8wWwU762af+HktXa797v5m5oJnZ7FWq9qv9XpuEaEG3qs5IASXvm8wjwwkA0mplmwQP4fv5sUVoAiCZd+xZubRdUJHcYLCeKUY2QcZfLdinU7WC9oCeeRVIegPp7WMHo+DeUG4chvx6XtinAGk+c=
+	t=1715684827; cv=none; b=bWWRKEGEj+KkBaOB//5P3RTFVYGBOSaSJkeBBfARE9dhVQ2UTfvtRu0MWAZCPhb8TO4orgYPEZSoBDQjos6dIpkM7tj22rHjTLkD5QFGXcQRkBw9CbIdIUtD/YQOTZDhT/JhS8C8QB+E24ie7sAcvylBAIJ7wMf6fGwQOZ2ytxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682906; c=relaxed/simple;
-	bh=dCO1+fnqbs6SJCrfV/XdJRB7IG5ojEz3ffm8ehJkn24=;
+	s=arc-20240116; t=1715684827; c=relaxed/simple;
+	bh=TGIXemcBBxcVDhaud6NsFTTaI4zxOD99V+hdA4M+luM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tI+cxp3GiQCM11S2FuxZWFfsUbiD/fbF9bQPyoNAIt2YaY3xD3atX03/t1I7ec+d3F0ghdp9bRH/UYRe/jfe7nxcACMR+9xC3k5Wa9DZZ9gSYX2TZPFplNRRWECpHUu7IUCoe6pQAysvHZoc2ZF6qHfUhjLoPv1ySWgYURfxO6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibv9qm6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C68C2BD10;
-	Tue, 14 May 2024 10:35:04 +0000 (UTC)
+	 MIME-Version; b=cI9JsJWo2/vLzIBIbAdZpO8J52BInlh3FUL/bV0lzR5e3JGMOSfdOz3MB906xpqLAFWqJ4zET1zlV2rIfxfseypq1vizT2Ke3TMch0aRyrBruJALdc3vrGAC6vvfFaihl5I5+SwqOwuCGrz69MzN7zjppviLtaGUDPBsaprLpn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iB8/02v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9DEC2BD10;
+	Tue, 14 May 2024 11:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682905;
-	bh=dCO1+fnqbs6SJCrfV/XdJRB7IG5ojEz3ffm8ehJkn24=;
+	s=korg; t=1715684827;
+	bh=TGIXemcBBxcVDhaud6NsFTTaI4zxOD99V+hdA4M+luM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibv9qm6icxWURAzoaB0QRN3WQw5KpT+vRsKQ7JcNQsXZFhK1gy7cOU3sdx0Pl+ZuE
-	 h0uG8mWBAuH59EXAjcaeHSPGANOQNeRmyJg3dWeWQ63TmEEzA2/CjA4gkKeqbAjc3R
-	 PLxFnOK7PXStph4GDv45BUBxk9XFvb6ofifFEzBY=
+	b=0iB8/02vFHdIqHUJG10irTYoWC1GsW0F6jjMpudCr7u6X97Kbnk8UVRFuFrDG8yr9
+	 1uk9ug0/T+yZ8tHFtRz1D/77VoeVH6i8vHV6hFSdMRDDsNRI5SQBTdFublBjPlhHky
+	 nNoXFJOVo5gHAOY8O4BQGZ6ewGdNva/CbZ4pPIXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 131/336] vboxsf: explicitly deny setlease attempts
+Subject: [PATCH 6.6 064/301] vxlan: Add missing VNI filter counter update in arp_reduce().
 Date: Tue, 14 May 2024 12:15:35 +0200
-Message-ID: <20240514101043.547328961@linuxfoundation.org>
+Message-ID: <20240514101034.659785440@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 1ece2c43b88660ddbdf8ecb772e9c41ed9cda3dd ]
+[ Upstream commit b22ea4ef4c3438817fcb604255b55b0058ed8c64 ]
 
-vboxsf does not break leases on its own, so it can't properly handle the
-case where the hypervisor changes the data. Don't allow file leases on
-vboxsf.
+VXLAN stores per-VNI statistics using vxlan_vnifilter_count().
+These statistics were not updated when arp_reduce() failed its
+pskb_may_pull() call.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/20240319-setlease-v1-1-5997d67e04b3@kernel.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Use vxlan_vnifilter_count() to update the VNI counter when that
+happens.
+
+Fixes: 4095e0e1328a ("drivers: vxlan: vnifilter: per vni stats")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/vboxsf/file.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/vxlan/vxlan_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/vboxsf/file.c b/fs/vboxsf/file.c
-index 2307f8037efc3..118dedef8ebe8 100644
---- a/fs/vboxsf/file.c
-+++ b/fs/vboxsf/file.c
-@@ -218,6 +218,7 @@ const struct file_operations vboxsf_reg_fops = {
- 	.release = vboxsf_file_release,
- 	.fsync = noop_fsync,
- 	.splice_read = filemap_splice_read,
-+	.setlease = simple_nosetlease,
- };
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 3d3c11e61f9de..7e5e60318045a 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1838,6 +1838,8 @@ static int arp_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
  
- const struct inode_operations vboxsf_reg_iops = {
+ 	if (!pskb_may_pull(skb, arp_hdr_len(dev))) {
+ 		dev_core_stats_tx_dropped_inc(dev);
++		vxlan_vnifilter_count(vxlan, vni, NULL,
++				      VXLAN_VNI_STATS_TX_DROPS, 0);
+ 		goto out;
+ 	}
+ 	parp = arp_hdr(skb);
 -- 
 2.43.0
 
