@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020EC8C51D3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DB08C52BB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876F928286D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1B671C217BB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF23A13C695;
-	Tue, 14 May 2024 11:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7C7143733;
+	Tue, 14 May 2024 11:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DBRXcQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iktzg5Ru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD662B9AD;
-	Tue, 14 May 2024 11:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B44A12FF67;
+	Tue, 14 May 2024 11:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685060; cv=none; b=NRQjDmOzrRHQ7190L1m2mJ29RmkYJ10Shu7Gz7jMR+yJO6LystcrOQub1zXgl6D1+o3cT5xdMQhMUHe2u5s9Q8Pus1u0SzsV4H1q1tJZY2Vjw0LkNM6kJtAorTYpRJqAh410NdcKU6AJXfIwku2nHYS8JsnmJz+IuXvnnD5z8/4=
+	t=1715686085; cv=none; b=Gc66qSjAtA6uJQzU3KbqSte9UvQL2jT5+F3iljyqWf88zrw8R/jeRUhToHZGCJYfYh6IRA/DwpMjB/P4nCV1ymAFTKB1jYxUJe0sO9mSBkPAiua797Pvpw/Id6CScei6LOIp2NMWBULggemDkcgWkeTo1Gt3CJJhqrhLztFsxtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685060; c=relaxed/simple;
-	bh=IkfWI9RZEa2NkDQW/0WTkcmBoudmct5ge15HCdrYQM4=;
+	s=arc-20240116; t=1715686085; c=relaxed/simple;
+	bh=c/q1V1kWYt4pOo1lWqkl/iRcWsDlnYfovCZm0DIpxu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igS4c/ro50BaCGsk8Rh6qxHyYEjZv/ko96JoPhFJiqnXrVZ9k1M9LMkJDkW5fL8oU6/WD0am9fuuuEzd10RCbG2qsCiHB4KQET9oppfPfFDnNmpXnGXLthdPkLRiRcLNKv4ZFTn2cF+FCT6/p9/LePLWswRhFeYG0Fe6A4rOEJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DBRXcQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA11FC2BD10;
-	Tue, 14 May 2024 11:10:59 +0000 (UTC)
+	 MIME-Version; b=lhQ52s8tqdd28omHaGz6JdrKIQtMabayWK4tnhMCBMmJXofMeXZwdlz9KUZxWBqHQqCYapyRDEhFr7pbquycqIq7wtIUOtSH9syCbfLflnzybVFUAcTaPI+DKfYu+9qWCIq1tEtO0spceU3DZPC2qevZB3tRyKKq5hgrtyOvSxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iktzg5Ru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58025C2BD10;
+	Tue, 14 May 2024 11:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685060;
-	bh=IkfWI9RZEa2NkDQW/0WTkcmBoudmct5ge15HCdrYQM4=;
+	s=korg; t=1715686084;
+	bh=c/q1V1kWYt4pOo1lWqkl/iRcWsDlnYfovCZm0DIpxu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0DBRXcQHH7OaSOKDNreE3FML3NqBWpLPtmq48Nw8LivOWbLdAaOeFYLPXlSUp979F
-	 SYOwnQO9/URrlEaCvhiWDuWbRX9gXX21osFlZjoCzlN7L91wPG4jUsEJvulaIqtsSR
-	 mmeuGAxLzPTMKIh7tFY90QP11BSRmNMBCQC/Pr2w=
+	b=iktzg5RuLYlTSWAWXIR73xn1S/f1BQOzhyvD1uxENrBGQ4roNGi0drHkufWls4+dx
+	 +c2jWeYuQfeQ9xqKFcQcUdD9nZbel/lTJIjMXzonToPgipBvrj0ilva70UOO+7eYir
+	 vpvah8eKFBKjgsf6zKW8w6zL5iWSxMRctqbPelYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Daniel Okazaki <dtokazaki@google.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/301] scsi: lpfc: Remove IRQF_ONESHOT flag from threaded IRQ handling
+Subject: [PATCH 6.1 007/236] eeprom: at24: fix memory corruption race condition
 Date: Tue, 14 May 2024 12:16:09 +0200
-Message-ID: <20240514101035.951986782@linuxfoundation.org>
+Message-ID: <20240514101020.607753209@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Daniel Okazaki <dtokazaki@google.com>
 
-[ Upstream commit 4623713e7ade46bfc63a3eade836f566ccbcd771 ]
+[ Upstream commit f42c97027fb75776e2e9358d16bf4a99aeb04cf2 ]
 
-IRQF_ONESHOT is found to mask HBA generated interrupts when thread_fn is
-running.  As a result, some EQEs/CQEs miss timely processing resulting in
-SCSI layer attempts to abort commands due to io_timeout.  Abort CQEs are
-also not processed leading to the observations of hangs and spam of "0748
-abort handler timed out waiting for aborting I/O" log messages.
+If the eeprom is not accessible, an nvmem device will be registered, the
+read will fail, and the device will be torn down. If another driver
+accesses the nvmem device after the teardown, it will reference
+invalid memory.
 
-Remove the IRQF_ONESHOT flag.  The cmpxchg and xchg atomic operations on
-lpfc_queue->queue_claimed already protect potential parallel access to an
-EQ/CQ should the thread_fn get interrupted by the primary irq handler.
+Move the failure point before registering the nvmem device.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240305200503.57317-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Daniel Okazaki <dtokazaki@google.com>
+Fixes: b20eb4c1f026 ("eeprom: at24: drop unnecessary label")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240422174337.2487142-1-dtokazaki@google.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/eeprom/at24.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 2c336953e56ca..76c883cc66ed6 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -13051,7 +13051,7 @@ lpfc_sli4_enable_msix(struct lpfc_hba *phba)
- 		rc = request_threaded_irq(eqhdl->irq,
- 					  &lpfc_sli4_hba_intr_handler,
- 					  &lpfc_sli4_hba_intr_handler_th,
--					  IRQF_ONESHOT, name, eqhdl);
-+					  0, name, eqhdl);
- 		if (rc) {
- 			lpfc_printf_log(phba, KERN_WARNING, LOG_INIT,
- 					"0486 MSI-X fast-path (%d) "
+diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+index dc30fe137b40f..e664c1c852503 100644
+--- a/drivers/misc/eeprom/at24.c
++++ b/drivers/misc/eeprom/at24.c
+@@ -781,15 +781,6 @@ static int at24_probe(struct i2c_client *client)
+ 	}
+ 	pm_runtime_enable(dev);
+ 
+-	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
+-	if (IS_ERR(at24->nvmem)) {
+-		pm_runtime_disable(dev);
+-		if (!pm_runtime_status_suspended(dev))
+-			regulator_disable(at24->vcc_reg);
+-		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
+-				     "failed to register nvmem\n");
+-	}
+-
+ 	/*
+ 	 * Perform a one-byte test read to verify that the chip is functional,
+ 	 * unless powering on the device is to be avoided during probe (i.e.
+@@ -805,6 +796,15 @@ static int at24_probe(struct i2c_client *client)
+ 		}
+ 	}
+ 
++	at24->nvmem = devm_nvmem_register(dev, &nvmem_config);
++	if (IS_ERR(at24->nvmem)) {
++		pm_runtime_disable(dev);
++		if (!pm_runtime_status_suspended(dev))
++			regulator_disable(at24->vcc_reg);
++		return dev_err_probe(dev, PTR_ERR(at24->nvmem),
++				     "failed to register nvmem\n");
++	}
++
+ 	/* If this a SPD EEPROM, probe for DDR3 thermal sensor */
+ 	if (cdata == &at24_data_spd)
+ 		at24_probe_temp_sensor(client);
 -- 
 2.43.0
 
