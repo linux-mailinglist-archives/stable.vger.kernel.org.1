@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7108C5352
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E48D8C5246
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17D431C22A9F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23F3B1C20829
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D127F7C7;
-	Tue, 14 May 2024 11:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B404412E1D7;
+	Tue, 14 May 2024 11:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdTbh0M2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8OFHlBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4582518026;
-	Tue, 14 May 2024 11:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B9012E1D2;
+	Tue, 14 May 2024 11:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686439; cv=none; b=KxFLUdn8nCbQn0isD6jKnTuX0pURQ501KYewRAuSYoNOqJvX+Tr7XPZUtbSlAdbBxmmFitlxEDNakGHZCWWvmv/QFQ++FDDKLb2aiy5teR0BOKBWvV5I4L5S7BRWuG3BWktYG61oTTDlKg0qMBJ9++EJoNY9LcxrSzC658VJx/A=
+	t=1715685735; cv=none; b=hVCYSoEtOk+nOUMhs7SfBlQrXLtnkmhB5dn64Q9pgTNCDMNOUKbEgRM5EtpbS649cZGWDYtSi/YiOuvzpCMGXiHpnEa9I5TgTSb2XliHVkgfOC2XLjL5BUQVRcIKIHo7RK6duwPvuCuWVvAVTr6iGDYQbYhQv9RAwAwE4M3hsMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686439; c=relaxed/simple;
-	bh=c3ZOtx6HoiUFArs1gqxJ6B+MAokAofm3mMcYE9A9bL8=;
+	s=arc-20240116; t=1715685735; c=relaxed/simple;
+	bh=YrgQmlalt9Ji2asL6dfClg38tb2EngzP/qGzPn8Nqgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pV7qHx0vlvy25yJoqHFyxZDjSXJTv5u5jy+RiahGBfFc4d7S0IurssnC0g54JQlzvYQD8ZZQ70ABKh+cHrME1HdRivhKSnGZAFN8iQhDcJNjK38R7gu1Vf7simm/p7wByy64V5UIk5xytMmWEZfpWHmma+5uqJfEnP6WTiarjDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdTbh0M2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8D3C2BD10;
-	Tue, 14 May 2024 11:33:58 +0000 (UTC)
+	 MIME-Version; b=aUjzfTtYDQtoBN2DDePW3BGFllVi+J8GPwOqSCn2LJci2QH1uid9dkRRhojUb4GLVOH03LaQYVJBpSzfCpbjO4oLNSAbvHB9JfNwSFKvJdyxfix70fMy8ipluO41zxzRxJ4uxqOHghz/VObGdbqmbNL4wMzKeD6Pir58w928m0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8OFHlBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9B7C32781;
+	Tue, 14 May 2024 11:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686439;
-	bh=c3ZOtx6HoiUFArs1gqxJ6B+MAokAofm3mMcYE9A9bL8=;
+	s=korg; t=1715685735;
+	bh=YrgQmlalt9Ji2asL6dfClg38tb2EngzP/qGzPn8Nqgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdTbh0M2FuVixga3eU19tOKCcqiqhRcP30u9xjk4Taq0dAols1jexXdl3DmTTB1Eu
-	 iuCC3798xNXSJutI5BLxlRdoz5CMUnI8Fh8hsG6bwc2sFOlxXVOlYs4TmYO8dMxyVm
-	 XrvtLChrqVTgSuef1lddYhGo2SgJIvwWKPJBcyzg=
+	b=O8OFHlBhaiocX7xhqp1kVWPJqGEkmR8ilVkn7+FIxkBOcdnNsaZqLCq/sixF64qf9
+	 mMMPSxyFvEGbyZ0kASnTQPfQBiN8kZzPrSmiscRmdji0oMfowANrZ7fXU/Jth5nMQx
+	 WQvD8bRoINwVtvVXT+pMjSAW9VVXpoz4+r01kDvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/236] drm/nouveau/dp: Dont probe eDP ports twice harder
+	Alan Stern <stern@rowland.harvard.edu>,
+	xingwei lee <xrivendell7@gmail.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Yue Sun <samsun1006219@gmail.com>
+Subject: [PATCH 6.6 229/301] USB: core: Fix access violation during port device removal
 Date: Tue, 14 May 2024 12:18:20 +0200
-Message-ID: <20240514101025.608380594@linuxfoundation.org>
+Message-ID: <20240514101040.902686262@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit bf52d7f9b2067f02efe7e32697479097aba4a055 ]
+commit a4b46d450c49f32e9d4247b421e58083fde304ce upstream.
 
-I didn't pay close enough attention the last time I tried to fix this
-problem - while we currently do correctly take care to make sure we don't
-probe a connected eDP port more then once, we don't do the same thing for
-eDP ports we found to be disconnected.
+Testing with KASAN and syzkaller revealed a bug in port.c:disable_store():
+usb_hub_to_struct_hub() can return NULL if the hub that the port belongs to
+is concurrently removed, but the function does not check for this
+possibility before dereferencing the returned value.
 
-So, fix this and make sure we only ever probe eDP ports once and then leave
-them at that connector state forever (since without HPD, it's not going to
-change on its own anyway). This should get rid of the last few GSP errors
-getting spit out during runtime suspend and resume on some machines, as we
-tried to reprobe eDP ports in response to ACPI hotplug probe events.
+It turns out that the first dereference is unnecessary, since hub->intfdev
+is the parent of the port device, so it can be changed easily.  Adding a
+check for hub == NULL prevents further problems.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404233736.7946-3-lyude@redhat.com
-(cherry picked from commit fe6660b661c3397af0867d5d098f5b26581f1290)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The same bug exists in the disable_show() routine, and it can be fixed the
+same way.
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: Yue Sun <samsun1006219@gmail.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Link: https://lore.kernel.org/linux-usb/CAEkJfYON+ry7xPx=AiLR9jzUNT+i_Va68ACajOC3HoacOfL1ig@mail.gmail.com/
+Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
+CC: Michael Grzeschik <m.grzeschik@pengutronix.de>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/393aa580-15a5-44ca-ad3b-6462461cd313@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_dp.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/usb/core/port.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_dp.c b/drivers/gpu/drm/nouveau/nouveau_dp.c
-index 53185746fb3d1..17e1e23a780e0 100644
---- a/drivers/gpu/drm/nouveau/nouveau_dp.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dp.c
-@@ -109,12 +109,15 @@ nouveau_dp_detect(struct nouveau_connector *nv_connector,
- 	u8 *dpcd = nv_encoder->dp.dpcd;
- 	int ret = NOUVEAU_DP_NONE, hpd;
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -50,13 +50,15 @@ static ssize_t disable_show(struct devic
+ 	struct usb_port *port_dev = to_usb_port(dev);
+ 	struct usb_device *hdev = to_usb_device(dev->parent->parent);
+ 	struct usb_hub *hub = usb_hub_to_struct_hub(hdev);
+-	struct usb_interface *intf = to_usb_interface(hub->intfdev);
++	struct usb_interface *intf = to_usb_interface(dev->parent);
+ 	int port1 = port_dev->portnum;
+ 	u16 portstatus, unused;
+ 	bool disabled;
+ 	int rc;
+ 	struct kernfs_node *kn;
  
--	/* If we've already read the DPCD on an eDP device, we don't need to
--	 * reread it as it won't change
-+	/* eDP ports don't support hotplugging - so there's no point in probing eDP ports unless we
-+	 * haven't probed them once before.
- 	 */
--	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
--	    dpcd[DP_DPCD_REV] != 0)
--		return NOUVEAU_DP_SST;
-+	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
-+		if (connector->status == connector_status_connected)
-+			return NOUVEAU_DP_SST;
-+		else if (connector->status == connector_status_disconnected)
-+			return NOUVEAU_DP_NONE;
-+	}
++	if (!hub)
++		return -ENODEV;
+ 	hub_get(hub);
+ 	rc = usb_autopm_get_interface(intf);
+ 	if (rc < 0)
+@@ -100,12 +102,14 @@ static ssize_t disable_store(struct devi
+ 	struct usb_port *port_dev = to_usb_port(dev);
+ 	struct usb_device *hdev = to_usb_device(dev->parent->parent);
+ 	struct usb_hub *hub = usb_hub_to_struct_hub(hdev);
+-	struct usb_interface *intf = to_usb_interface(hub->intfdev);
++	struct usb_interface *intf = to_usb_interface(dev->parent);
+ 	int port1 = port_dev->portnum;
+ 	bool disabled;
+ 	int rc;
+ 	struct kernfs_node *kn;
  
- 	mutex_lock(&nv_encoder->dp.hpd_irq_lock);
- 	if (mstm) {
--- 
-2.43.0
-
++	if (!hub)
++		return -ENODEV;
+ 	rc = kstrtobool(buf, &disabled);
+ 	if (rc)
+ 		return rc;
 
 
 
