@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-45040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A67E8C5576
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F14328C5471
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9DB71C21CED
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 964D8285AD5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD8B1E4B1;
-	Tue, 14 May 2024 11:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BCB86134;
+	Tue, 14 May 2024 11:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2XKVhRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15KmNf6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD7DF9D4;
-	Tue, 14 May 2024 11:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3B66E60F;
+	Tue, 14 May 2024 11:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687908; cv=none; b=Rtl83QcuB/13WPq4lgeWNZ2q9oqUsyY2n9RXXQ43/Fd5DxQtkMP/njyYFDm0BIYY+kR+BXOa0a8piNsXboO0EaILQcBPD0zyzRsdDqiiTHU1wMMUHhd7qF4YElUPHoNIjAKlUlSRUVBpJyx1+i3S9PweGlTw+X1RHltwr96nfLk=
+	t=1715687181; cv=none; b=L2qcMO+jRyoCYsIPqV7fF4SlVI3yKe5EhgaSuFpicgHgCd+RjCzdGVzVxfchH0UIO3Xo6Y1XuwQ1XmB9rexUYIaPAP8trvdV9esJUi0T9PY/L95Fsp8I1ykwZI77MJryUKvVvy24EWR5AEBwN80pgHttKad5h9crwR7f/pENULk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687908; c=relaxed/simple;
-	bh=fUlROYXYiYneleIk3DBxTMZVO+ADzTHC8fU2oluRZHM=;
+	s=arc-20240116; t=1715687181; c=relaxed/simple;
+	bh=4vPsQY/jHL0rigD46wBsRgmrMkYIaJobo/d/8q4Qs+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dht97IE1W55cm2fSi69GtxsiRD2bhxez56wIFkvnVb/BiENBgaIx9FbryDWCW1HOccL6g1veTjGiN1e/iI2qGvGFdGV1wvuxe+c/lGwXnDULbDx+wcGeDpkFjEPI/PqQZL28Nrq+bSjVqjBWbatFtHMTalFHhjen1S6u/3rmzWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2XKVhRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7BFC2BD10;
-	Tue, 14 May 2024 11:58:27 +0000 (UTC)
+	 MIME-Version; b=T17g50YA27TzDo0TjUXbY46LmiP/oe2gu7aUz/x/HQXxVewvggIg02HXEzfrmS/q4b11OtJ+Z6UmPuI5KJynuVw9vFDG6oZsmz0V4nYpF2ldD+nc19JYD0AE6MpPBkJk0bNw8JONVF3kJxDOW2+wLehtikI22mGdurPG8LIbpvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15KmNf6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE5FC2BD10;
+	Tue, 14 May 2024 11:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687907;
-	bh=fUlROYXYiYneleIk3DBxTMZVO+ADzTHC8fU2oluRZHM=;
+	s=korg; t=1715687181;
+	bh=4vPsQY/jHL0rigD46wBsRgmrMkYIaJobo/d/8q4Qs+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2XKVhRqwITp5cdSaxsNGafNpRN+3EwQlDvF0u+3o/sy+xpm/ikspmf6HyWykeX46
-	 NuxRX87a7o6HKU4J5aGl8D0BLMA0q7G1Yg9vhbyg7sayzkdxW/JktulJ50tyNue6qi
-	 ggbs+CwaZwJtU3ghqMFEkMGPxXJHlvXpz3HC6WYk=
+	b=15KmNf6fHffvTYi5x0ejQNYZrqV3EjhKJPDCv6xbQshNubBDtNDjgPoqHkPrvjDnX
+	 JHoshmQXdXF+ppmILaFRsfmgYcBBsr9R1baBpYuCcUzKF2YSi6RW/5hLOXJT06JcT0
+	 IOwkQ3qxuopL4r2oWFIQoQDPhkmLgeov5TN0ckNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paul Davey <paul.davey@alliedtelesis.co.nz>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/168] ipv6: fib6_rules: avoid possible NULL dereference in fib6_rule_action()
+Subject: [PATCH 5.4 62/84] xfrm: Preserve vlan tags for transport mode software GRO
 Date: Tue, 14 May 2024 12:20:13 +0200
-Message-ID: <20240514101011.026483243@linuxfoundation.org>
+Message-ID: <20240514100954.018240454@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +62,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paul Davey <paul.davey@alliedtelesis.co.nz>
 
-[ Upstream commit d101291b2681e5ab938554e3e323f7a7ee33e3aa ]
+[ Upstream commit 58fbfecab965014b6e3cc956a76b4a96265a1add ]
 
-syzbot is able to trigger the following crash [1],
-caused by unsafe ip6_dst_idev() use.
+The software GRO path for esp transport mode uses skb_mac_header_rebuild
+prior to re-injecting the packet via the xfrm_napi_dev.  This only
+copies skb->mac_len bytes of header which may not be sufficient if the
+packet contains 802.1Q tags or other VLAN tags.  Worse copying only the
+initial header will leave a packet marked as being VLAN tagged but
+without the corresponding tag leading to mangling when it is later
+untagged.
 
-Indeed ip6_dst_idev() can return NULL, and must always be checked.
+The VLAN tags are important when receiving the decrypted esp transport
+mode packet after GRO processing to ensure it is received on the correct
+interface.
 
-[1]
+Therefore record the full mac header length in xfrm*_transport_input for
+later use in corresponding xfrm*_transport_finish to copy the entire mac
+header when rebuilding the mac header for GRO.  The skb->data pointer is
+left pointing skb->mac_header bytes after the start of the mac header as
+is expected by the network stack and network and transport header
+offsets reset to this location.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 PID: 31648 Comm: syz-executor.0 Not tainted 6.9.0-rc4-next-20240417-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:__fib6_rule_action net/ipv6/fib6_rules.c:237 [inline]
- RIP: 0010:fib6_rule_action+0x241/0x7b0 net/ipv6/fib6_rules.c:267
-Code: 02 00 00 49 8d 9f d8 00 00 00 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 f9 32 bf f7 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 e0 32 bf f7 4c 8b 03 48 89 ef 4c
-RSP: 0018:ffffc9000fc1f2f0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1a772f98c8186700
-RDX: 0000000000000003 RSI: ffffffff8bcac4e0 RDI: ffffffff8c1f9760
-RBP: ffff8880673fb980 R08: ffffffff8fac15ef R09: 1ffffffff1f582bd
-R10: dffffc0000000000 R11: fffffbfff1f582be R12: dffffc0000000000
-R13: 0000000000000080 R14: ffff888076509000 R15: ffff88807a029a00
-FS:  00007f55e82ca6c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b31d23000 CR3: 0000000022b66000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  fib_rules_lookup+0x62c/0xdb0 net/core/fib_rules.c:317
-  fib6_rule_lookup+0x1fd/0x790 net/ipv6/fib6_rules.c:108
-  ip6_route_output_flags_noref net/ipv6/route.c:2637 [inline]
-  ip6_route_output_flags+0x38e/0x610 net/ipv6/route.c:2649
-  ip6_route_output include/net/ip6_route.h:93 [inline]
-  ip6_dst_lookup_tail+0x189/0x11a0 net/ipv6/ip6_output.c:1120
-  ip6_dst_lookup_flow+0xb9/0x180 net/ipv6/ip6_output.c:1250
-  sctp_v6_get_dst+0x792/0x1e20 net/sctp/ipv6.c:326
-  sctp_transport_route+0x12c/0x2e0 net/sctp/transport.c:455
-  sctp_assoc_add_peer+0x614/0x15c0 net/sctp/associola.c:662
-  sctp_connect_new_asoc+0x31d/0x6c0 net/sctp/socket.c:1099
-  __sctp_connect+0x66d/0xe30 net/sctp/socket.c:1197
-  sctp_connect net/sctp/socket.c:4819 [inline]
-  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
-  __sys_connect_file net/socket.c:2048 [inline]
-  __sys_connect+0x2df/0x310 net/socket.c:2065
-  __do_sys_connect net/socket.c:2075 [inline]
-  __se_sys_connect net/socket.c:2072 [inline]
-  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 5e5f3f0f8013 ("[IPV6] ADDRCONF: Convert ipv6_get_saddr() to ipv6_dev_get_saddr().")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240507163145.835254-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7785bba299a8 ("esp: Add a software GRO codepath")
+Signed-off-by: Paul Davey <paul.davey@alliedtelesis.co.nz>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/fib6_rules.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/linux/skbuff.h | 15 +++++++++++++++
+ include/net/xfrm.h     |  3 +++
+ net/ipv4/xfrm4_input.c |  6 +++++-
+ net/ipv6/xfrm6_input.c |  6 +++++-
+ net/xfrm/xfrm_input.c  |  8 ++++++++
+ 5 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index 8e9e80eb0f329..a4caaead74c1d 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -232,8 +232,12 @@ static int __fib6_rule_action(struct fib_rule *rule, struct flowi *flp,
- 	rt = pol_lookup_func(lookup,
- 			     net, table, flp6, arg->lookup_data, flags);
- 	if (rt != net->ipv6.ip6_null_entry) {
-+		struct inet6_dev *idev = ip6_dst_idev(&rt->dst);
-+
-+		if (!idev)
-+			goto again;
- 		err = fib6_rule_saddr(net, rule, flags, flp6,
--				      ip6_dst_idev(&rt->dst)->dev);
-+				      idev->dev);
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 302a2ad679809..29ccc33a1c627 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2576,6 +2576,21 @@ static inline void skb_mac_header_rebuild(struct sk_buff *skb)
+ 	}
+ }
  
- 		if (err == -EAGAIN)
- 			goto again;
++/* Move the full mac header up to current network_header.
++ * Leaves skb->data pointing at offset skb->mac_len into the mac_header.
++ * Must be provided the complete mac header length.
++ */
++static inline void skb_mac_header_rebuild_full(struct sk_buff *skb, u32 full_mac_len)
++{
++	if (skb_mac_header_was_set(skb)) {
++		const unsigned char *old_mac = skb_mac_header(skb);
++
++		skb_set_mac_header(skb, -full_mac_len);
++		memmove(skb_mac_header(skb), old_mac, full_mac_len);
++		__skb_push(skb, full_mac_len - skb->mac_len);
++	}
++}
++
+ static inline int skb_checksum_start_offset(const struct sk_buff *skb)
+ {
+ 	return skb->csum_start - skb_headroom(skb);
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 96faf09186945..4368dcb709f4e 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -1024,6 +1024,9 @@ struct xfrm_offload {
+ #define CRYPTO_INVALID_PACKET_SYNTAX		64
+ #define CRYPTO_INVALID_PROTOCOL			128
+ 
++	/* Used to keep whole l2 header for transport mode GRO */
++	__u32			orig_mac_len;
++
+ 	__u8			proto;
+ };
+ 
+diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+index f8de2482a5292..9b062f2e45695 100644
+--- a/net/ipv4/xfrm4_input.c
++++ b/net/ipv4/xfrm4_input.c
+@@ -66,7 +66,11 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
+ 	ip_send_check(iph);
+ 
+ 	if (xo && (xo->flags & XFRM_GRO)) {
+-		skb_mac_header_rebuild(skb);
++		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
++		 * works correctly in the presence of vlan tags.
++		 */
++		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
++		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
+ 		return 0;
+ 	}
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index a52cb3fc6df5a..c12d51f5b5893 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -58,7 +58,11 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
+ 	skb_postpush_rcsum(skb, skb_network_header(skb), nhlen);
+ 
+ 	if (xo && (xo->flags & XFRM_GRO)) {
+-		skb_mac_header_rebuild(skb);
++		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
++		 * works correctly in the presence of vlan tags.
++		 */
++		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
++		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
+ 		return -1;
+ 	}
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 4d8d7cf3d1994..2e7fd0aa5f373 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -394,11 +394,15 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
+  */
+ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
+ {
++	struct xfrm_offload *xo = xfrm_offload(skb);
+ 	int ihl = skb->data - skb_transport_header(skb);
+ 
+ 	if (skb->transport_header != skb->network_header) {
+ 		memmove(skb_transport_header(skb),
+ 			skb_network_header(skb), ihl);
++		if (xo)
++			xo->orig_mac_len =
++				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
+ 		skb->network_header = skb->transport_header;
+ 	}
+ 	ip_hdr(skb)->tot_len = htons(skb->len + ihl);
+@@ -409,11 +413,15 @@ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
+ static int xfrm6_transport_input(struct xfrm_state *x, struct sk_buff *skb)
+ {
+ #if IS_ENABLED(CONFIG_IPV6)
++	struct xfrm_offload *xo = xfrm_offload(skb);
+ 	int ihl = skb->data - skb_transport_header(skb);
+ 
+ 	if (skb->transport_header != skb->network_header) {
+ 		memmove(skb_transport_header(skb),
+ 			skb_network_header(skb), ihl);
++		if (xo)
++			xo->orig_mac_len =
++				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
+ 		skb->network_header = skb->transport_header;
+ 	}
+ 	ipv6_hdr(skb)->payload_len = htons(skb->len + ihl -
 -- 
 2.43.0
 
