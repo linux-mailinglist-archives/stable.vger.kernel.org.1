@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB06F8C5493
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370F48C5434
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796F81F234EE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E452D1F21595
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3A712C816;
-	Tue, 14 May 2024 11:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA503139D0A;
+	Tue, 14 May 2024 11:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s14aTNX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+YNgp4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0DC12BF3D;
-	Tue, 14 May 2024 11:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D2B139CF3;
+	Tue, 14 May 2024 11:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687285; cv=none; b=M+0w2MMHGMkkMOvG7ABsFFeBq6nY77qfGKWfWxUAMn/mq4joRI2JRbMiSDVlsdoUXnmVJV6guJOlkGg4ptxk7nBb+aKHypgem5ebJy7i0rYK7MHz5OK6DI4Lw9B3yT6A9o1Y0YqZ45sQGp8pwe2CRTK9Dcb2tu1KUJBryPJQYus=
+	t=1715687050; cv=none; b=SpN8XFayjgEw6O6yEgzZCANy2JoK9Rc9X7yapZyepe6ne+w4OCZfp1Kacy4Hclj6/wG6pOxZThGJ97pp/jjXKGI+6R0fols/V6VsrXk3Z+fPr6r5VbcO+RkC8NrEpSqxdu0PSR5OhHo6HtOJI0V5zgI+ndSb92nFs4VGoZW6dDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687285; c=relaxed/simple;
-	bh=0f9wb24qg5UXHIvtfOnNfZMEz5DIuLTD1qquCJ7dJo8=;
+	s=arc-20240116; t=1715687050; c=relaxed/simple;
+	bh=wHNRsxsHzdDz2zt2rP+mIwqrTxnFGYSY99XMK0hr4uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h33nhFKJad8Nl+IcRJ5R8guYAophNOhcwf+HPHoHU1G3oWZWI4v/02sQr3dt3Zix9ZzwpWec3dpHTd3Lumt7Q40OTXrPU/0GCfcOTqZZQcfdVma0dOneOBK86QKDbN6AO23nUFyROsKIXF6CJvg76u+Q8a4VyJG1ENrhYhYUckk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s14aTNX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE67FC2BD10;
-	Tue, 14 May 2024 11:48:04 +0000 (UTC)
+	 MIME-Version; b=G30QU5+pFmguxq9vyBy4OTJEPXoWf2g5HzXZ6mee5yVGqVZPOVLXmNBNnu/NgYlc3wuBlLXQSgKQL+ZpDWlCdP+UgKoA7ViAMqdQmzG22EngdVzJgeItiY2s3jcUSZ/2V5WCQpV2ln+7keyPlb0Ew8FBZUS3tWujcmIjEjRpFEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+YNgp4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30216C2BD10;
+	Tue, 14 May 2024 11:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687285;
-	bh=0f9wb24qg5UXHIvtfOnNfZMEz5DIuLTD1qquCJ7dJo8=;
+	s=korg; t=1715687050;
+	bh=wHNRsxsHzdDz2zt2rP+mIwqrTxnFGYSY99XMK0hr4uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s14aTNX6LHiofy2i3M7S1ywTN9iHItyyQd9RemIIpEtJFmSctE9QoKI+NEaYlQxvV
-	 Yw/Avv4PhVmJshlYNAw+z+GpSJ47fLlnPeZTOFGe15zafkgq1p3oZOj73e95UNtr8q
-	 XeUa/vqEJmrughrlS7NYhbG4aADHfZRfQrwRYZUc=
+	b=y+YNgp4zXs4ubpG8Lh2LMu9BIktNeBBzDUNIBOlXvmiOyQ1hwgWmBNjvOWsNx07cv
+	 vmbf8PsARrJMad0wc8RkH+R+0UsgtiDHEvIXM7g9r2TaxfnQDt9jNkG5VsWUmmjp1K
+	 l8ITI71+lhVyH4747kxV4IX845BjlW9pv+WAisuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
+	Felix Fietkau <nbd@nbd.name>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/111] KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()
+Subject: [PATCH 5.4 30/84] net: bridge: fix multicast-to-unicast with fraglist GSO
 Date: Tue, 14 May 2024 12:19:41 +0200
-Message-ID: <20240514100958.771075134@linuxfoundation.org>
+Message-ID: <20240514100952.830004994@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 6ddb4f372fc63210034b903d96ebbeb3c7195adb ]
+[ Upstream commit 59c878cbcdd80ed39315573b3511d0acfd3501b5 ]
 
-vgic_v2_parse_attr() is responsible for finding the vCPU that matches
-the user-provided CPUID, which (of course) may not be valid. If the ID
-is invalid, kvm_get_vcpu_by_id() returns NULL, which isn't handled
-gracefully.
+Calling skb_copy on a SKB_GSO_FRAGLIST skb is not valid, since it returns
+an invalid linearized skb. This code only needs to change the ethernet
+header, so pskb_copy is the right function to call here.
 
-Similar to the GICv3 uaccess flow, check that kvm_get_vcpu_by_id()
-actually returns something and fail the ioctl if not.
-
-Cc: stable@vger.kernel.org
-Fixes: 7d450e282171 ("KVM: arm/arm64: vgic-new: Add userland access to VGIC dist registers")
-Reported-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240424173959.3776798-2-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Fixes: 6db6f0eae605 ("bridge: multicast to unicast")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bridge/br_forward.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-index 640cfa0c0f4cc..e80b638b78271 100644
---- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-+++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-@@ -284,12 +284,12 @@ int kvm_register_vgic_device(unsigned long type)
- int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
- 		       struct vgic_reg_attr *reg_attr)
- {
--	int cpuid;
-+	int cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index 4f8eb83976f10..0a1ca20f719da 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -253,7 +253,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
+ 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
+ 		return;
  
--	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
--
--	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
- 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
-+	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
-+	if (!reg_attr->vcpu)
-+		return -EINVAL;
- 
- 	return 0;
- }
+-	skb = skb_copy(skb, GFP_ATOMIC);
++	skb = pskb_copy(skb, GFP_ATOMIC);
+ 	if (!skb) {
+ 		DEV_STATS_INC(dev, tx_dropped);
+ 		return;
 -- 
 2.43.0
 
