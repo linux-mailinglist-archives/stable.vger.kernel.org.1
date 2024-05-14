@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD378C50BC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:11:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582028C52EB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA7E1F20C3D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFBF51F229BA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4DB6DCE8;
-	Tue, 14 May 2024 10:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5245C136647;
+	Tue, 14 May 2024 11:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3/ckcpy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XL5/uAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786F86D1AF;
-	Tue, 14 May 2024 10:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8B1134CDC;
+	Tue, 14 May 2024 11:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683621; cv=none; b=fdHHs8Ahd31zvP31WBTTdL8SToq7qCv0zFI+90/p2TRfOmCx/D6TH7dgHMnQG/bEIHTg15bxG4aKLb8FfyuepUXXyTIMlur0XBgwPsLS3x/jO2CHWSLrvVrmHLDPRsI/Uvj0M/poOjzXtjPossJTn1lfHIdmhVmC1fG2xK4efeA=
+	t=1715686200; cv=none; b=jn3KiRgO7MgXUt1dkNMQCrdNd7f4cN1KS13WgB8ms8TeMSWDawe6/Z7GxkgIQ5oFgXdhjKMgL2pAg2XXUO/oMDbtxroweAE6rwnw4z2NWuDrOt4u65ex5bfW4cZSRmJlnGRf0kFxLKnFG2kq6YeGS/47jtogFcOWcoRo2VF3wzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683621; c=relaxed/simple;
-	bh=3o7T35DWSFV0jtEyRE7oZvSegAlllO8014/AQAsfXuk=;
+	s=arc-20240116; t=1715686200; c=relaxed/simple;
+	bh=FMjwouewzDutFMlMKTq7RvjVRENFCtR2429yMJUUA4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJDdtCpfMCuA4CKxk/bmIVrVIQdwzQgHd6ymt5Qp04rzC5aYvcIFIPwIOHcryT9i4Q3q34pGZGJyXTtw0o7vdY9/7tvyRF2IgsvHFsFByTyIk4Gu+gInKGDZyVjSjwsQrLBmRHIjsv7DvCWtxOkCMjkY/+VeiaS0prQFpWmyt60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3/ckcpy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A650C32782;
-	Tue, 14 May 2024 10:46:58 +0000 (UTC)
+	 MIME-Version; b=lcC1aMpLj95Zl3jE51cBxXSK2gZfyi1K5n8TZ0uPK76p5jtgYm7djrD2cVJOwTtPIPDzQSzt60cRBAC2TtN4SBNQzQi+7vj3kgBQR3PZJ6fGIjIQJiBT7EcuNAjGgPMefKC37D9zImg+HLnRLOGB44m2ioG3tvaEu1gNm70sEBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XL5/uAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D428C2BD10;
+	Tue, 14 May 2024 11:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683621;
-	bh=3o7T35DWSFV0jtEyRE7oZvSegAlllO8014/AQAsfXuk=;
+	s=korg; t=1715686199;
+	bh=FMjwouewzDutFMlMKTq7RvjVRENFCtR2429yMJUUA4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t3/ckcpyA3PLV1Tut4Hd6vpHVyHFslSIjR0Gv0BZwy7VEjLg1bBX2Tp2jUNprqqY8
-	 Ubekysu+e+on8l6mPk1CHwp5+NcKdDvW/roK1MU5ODET/QBQliTQXq2mgsda/tK9OC
-	 Sll8pndfAe/clNw8aEZWrSeIlzH6VqCCokDPfxzE=
+	b=2XL5/uAs7Szeb2/buM96jZ3kQGrHHN5RQx+dC4gHJpsbk32Kj7/+K5emNVeMrBWNP
+	 vNY+sei7q8KxZMue+dZ04QTiaHQ53Tpw1z7lRtUeDpT+IOj2wle2JFuZxOyo+A+DlS
+	 UQAmkAnfILLPrfASbrqOlCF4BVjUBvOtsCmtSyN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 214/336] ipv6: Fix potential uninit-value access in __ip6_make_skb()
+Subject: [PATCH 6.1 056/236] s390/mm: Fix clearing storage keys for huge pages
 Date: Tue, 14 May 2024 12:16:58 +0200
-Message-ID: <20240514101046.691534069@linuxfoundation.org>
+Message-ID: <20240514101022.475090888@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 4e13d3a9c25b7080f8a619f961e943fe08c2672c ]
+[ Upstream commit 412050af2ea39407fe43324b0be4ab641530ce88 ]
 
-As it was done in commit fc1092f51567 ("ipv4: Fix uninit-value access in
-__ip_make_skb()") for IPv4, check FLOWI_FLAG_KNOWN_NH on fl6->flowi6_flags
-instead of testing HDRINCL on the socket to avoid a race condition which
-causes uninit-value access.
+The function __storage_key_init_range() expects the end address to be
+the first byte outside the range to be initialized. I.e. end - start
+should be the size of the area to be initialized.
 
-Fixes: ea30388baebc ("ipv6: Fix an uninit variable access bug in __ip6_make_skb()")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The current code works because __storage_key_init_range() will still loop
+over every page in the range, but it is slower than using sske_frame().
+
+Fixes: 3afdfca69870 ("s390/mm: Clear skeys for newly mapped huge guest pmds")
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240416114220.28489-3-imbrenda@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 2 +-
+ arch/s390/mm/hugetlbpage.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 31b86fe661aa6..568065a015c41 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1933,7 +1933,7 @@ struct sk_buff *__ip6_make_skb(struct sock *sk,
- 		u8 icmp6_type;
+diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
+index c299a18273ffe..33ef6790114ab 100644
+--- a/arch/s390/mm/hugetlbpage.c
++++ b/arch/s390/mm/hugetlbpage.c
+@@ -139,7 +139,7 @@ static void clear_huge_pte_skeys(struct mm_struct *mm, unsigned long rste)
+ 	}
  
- 		if (sk->sk_socket->type == SOCK_RAW &&
--		   !inet_test_bit(HDRINCL, sk))
-+		   !(fl6->flowi6_flags & FLOWI_FLAG_KNOWN_NH))
- 			icmp6_type = fl6->fl6_icmp_type;
- 		else
- 			icmp6_type = icmp6_hdr(skb)->icmp6_type;
+ 	if (!test_and_set_bit(PG_arch_1, &page->flags))
+-		__storage_key_init_range(paddr, paddr + size - 1);
++		__storage_key_init_range(paddr, paddr + size);
+ }
+ 
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
 -- 
 2.43.0
 
