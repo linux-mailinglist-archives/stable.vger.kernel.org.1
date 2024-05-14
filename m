@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1318C529B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D42E8C540E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 071FCB21F9C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF66D2883BF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3612113FD7A;
-	Tue, 14 May 2024 11:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE8712BEAA;
+	Tue, 14 May 2024 11:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXA095WS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVb5z0Nk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F9D6311D;
-	Tue, 14 May 2024 11:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B857CBC;
+	Tue, 14 May 2024 11:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685984; cv=none; b=XaAS5KL7da5mUueyhMOkBgeZlKy66tvtzDNtlz0wLsP1/jdM7/m367HvJFE8ZZ9B/rJ78j3EqezgV0kPn+TpUXj49Zh2URhE0gvaEcPBYb4IYF0EOumN3NvJ+KDis6g+ufrY0xWDCjtSPWwLTtb21shB03B71YXYHjvW+dm3Yr4=
+	t=1715686938; cv=none; b=WFbs+kgO7gj/VGlgH5ht6kheW+qF1AEqASUF+pRCb/ODUQTLIpjCovEzHAk0PeBH7PyxTG9e3hl02UYY8cuImpaxONKCvUrLIfYII+FDBnPm/pm0LlXOLjSyRD+iGNdhH3RaRI4pLdNkuwoqVhMjcwDhCzHmm7XzCzEsr45ukKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685984; c=relaxed/simple;
-	bh=m2SYZmHyzsuKbk5/JeJBXbg7rVehdzOCcik8fR9J1lk=;
+	s=arc-20240116; t=1715686938; c=relaxed/simple;
+	bh=YEtA1KUjuFYgW7D1LMPzUiTIl2fmb8vw+lqj0eVMTrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAdQmXtwRxUKrw8UNrE2GuJhDK744HOSe7dvGktIhVvweXIaswY1AociaCbHZuztnZWJX5qyETxAEnK17dGKSBAGZCzOGXIFoVIrS9wMI+paC0wiVQ8+M9ZR6nOD46fSZ0KTirp8BPPaKvdRv8siE/YS2Msm6OvjId4KnW64158=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXA095WS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52926C2BD10;
-	Tue, 14 May 2024 11:26:23 +0000 (UTC)
+	 MIME-Version; b=SUO7an5cTgO4HDnRUGF9URvR8Ppy/YRw5X00zu7s6gD/eamt6SKnrTevIo94m2J5PYHjpabN2sSaZ55VV+TL7jqAtz6LFgMA/0Dn/tMjIRFqeMxnT6lLqKRNYr7lo3r58/RP6ntXYy43Qhndw17ibkrOK+dwXfhJMLvT8Ak0SKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVb5z0Nk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AE7C2BD10;
+	Tue, 14 May 2024 11:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685983;
-	bh=m2SYZmHyzsuKbk5/JeJBXbg7rVehdzOCcik8fR9J1lk=;
+	s=korg; t=1715686937;
+	bh=YEtA1KUjuFYgW7D1LMPzUiTIl2fmb8vw+lqj0eVMTrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXA095WSnEwhMR+Ao0XbePYtwhkihzVAnTShTnk0Jc1QeU5Zeo+fmc1NX+I7hVuMf
-	 T/kEPOZSS138B0lnalr9lhGAbn4aBQcbpqxwiogcGnnLd0OwYvgLYQWbom1tsVqG8I
-	 VT9Cyf+8SQ9IpPOt6M3lDx/XzO2CQMvqcF9ce3Co=
+	b=tVb5z0NkLsCYKLu3wxh98nf/41eSAAvUmvc9dAT53uz5x9HEsXADnx4AdzBFAjghh
+	 17wNRfgl3GWOKuKDCUukZvagyo3gDs26NDiKPzeRL3yXHEKfEBlKT1u10Pw58B9RrN
+	 CxMokp9EmP8fp/ds6dqmzVFtcxh/WGdp2FSfapuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 290/301] tracefs: Reset permissions on remount if permissions are options
+	Light Hsieh <light.hsieh@mediatek.com>,
+	Stanley Chu <stanley.chu@mediatek.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 10/84] pinctrl: mediatek: remove shadow variable declaration
 Date: Tue, 14 May 2024 12:19:21 +0200
-Message-ID: <20240514101043.210851216@linuxfoundation.org>
+Message-ID: <20240514100952.080614688@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,251 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Light Hsieh <light.hsieh@mediatek.com>
 
-commit baa23a8d4360d981a49913841a726edede5cdd54 upstream.
+[ Upstream commit d1f7af4b4a11bcd85a18b383cb6fae1915916a83 ]
 
-There's an inconsistency with the way permissions are handled in tracefs.
-Because the permissions are generated when accessed, they default to the
-root inode's permission if they were never set by the user. If the user
-sets the permissions, then a flag is set and the permissions are saved via
-the inode (for tracefs files) or an internal attribute field (for
-eventfs).
+Remove shadow declaration of variable 'pullup' in mtk_pinconf_get()
 
-But if a remount happens that specify the permissions, all the files that
-were not changed by the user gets updated, but the ones that were are not.
-If the user were to remount the file system with a given permission, then
-all files and directories within that file system should be updated.
-
-This can cause security issues if a file's permission was updated but the
-admin forgot about it. They could incorrectly think that remounting with
-permissions set would update all files, but miss some.
-
-For example:
-
- # cd /sys/kernel/tracing
- # chgrp 1002 current_tracer
- # ls -l
-[..]
- -rw-r-----  1 root root 0 May  1 21:25 buffer_size_kb
- -rw-r-----  1 root root 0 May  1 21:25 buffer_subbuf_size_kb
- -r--r-----  1 root root 0 May  1 21:25 buffer_total_size_kb
- -rw-r-----  1 root lkp  0 May  1 21:25 current_tracer
- -rw-r-----  1 root root 0 May  1 21:25 dynamic_events
- -r--r-----  1 root root 0 May  1 21:25 dyn_ftrace_total_info
- -r--r-----  1 root root 0 May  1 21:25 enabled_functions
-
-Where current_tracer now has group "lkp".
-
- # mount -o remount,gid=1001 .
- # ls -l
- -rw-r-----  1 root tracing 0 May  1 21:25 buffer_size_kb
- -rw-r-----  1 root tracing 0 May  1 21:25 buffer_subbuf_size_kb
- -r--r-----  1 root tracing 0 May  1 21:25 buffer_total_size_kb
- -rw-r-----  1 root lkp     0 May  1 21:25 current_tracer
- -rw-r-----  1 root tracing 0 May  1 21:25 dynamic_events
- -r--r-----  1 root tracing 0 May  1 21:25 dyn_ftrace_total_info
- -r--r-----  1 root tracing 0 May  1 21:25 enabled_functions
-
-Everything changed but the "current_tracer".
-
-Add a new link list that keeps track of all the tracefs_inodes which has
-the permission flags that tell if the file/dir should use the root inode's
-permission or not. Then on remount, clear all the flags so that the
-default behavior of using the root inode's permission is done for all
-files and directories.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.529542160@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Light Hsieh <light.hsieh@mediatek.com>
+Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
+Link: https://lore.kernel.org/r/1586255632-27528-1-git-send-email-light.hsieh@mediatek.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: c5d3b64c568a ("pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c |   29 ++++++++++++++++++++
- fs/tracefs/inode.c       |   65 ++++++++++++++++++++++++++++++++++++++++++++++-
- fs/tracefs/internal.h    |    7 ++++-
- 3 files changed, 99 insertions(+), 2 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-paris.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -265,6 +265,35 @@ static const struct file_operations even
- 	.llseek		= generic_file_llseek,
- };
- 
-+/*
-+ * On a remount of tracefs, if UID or GID options are set, then
-+ * the mount point inode permissions should be used.
-+ * Reset the saved permission flags appropriately.
-+ */
-+void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid)
-+{
-+	struct eventfs_inode *ei = ti->private;
-+
-+	if (!ei)
-+		return;
-+
-+	if (update_uid)
-+		ei->attr.mode &= ~EVENTFS_SAVE_UID;
-+
-+	if (update_gid)
-+		ei->attr.mode &= ~EVENTFS_SAVE_GID;
-+
-+	if (!ei->entry_attrs)
-+		return;
-+
-+	for (int i = 0; i < ei->nr_entries; i++) {
-+		if (update_uid)
-+			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_UID;
-+		if (update_gid)
-+			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_GID;
-+	}
-+}
-+
- /* Return the evenfs_inode of the "events" directory */
- static struct eventfs_inode *eventfs_find_events(struct dentry *dentry)
- {
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -30,20 +30,47 @@ static struct vfsmount *tracefs_mount;
- static int tracefs_mount_count;
- static bool tracefs_registered;
- 
-+/*
-+ * Keep track of all tracefs_inodes in order to update their
-+ * flags if necessary on a remount.
-+ */
-+static DEFINE_SPINLOCK(tracefs_inode_lock);
-+static LIST_HEAD(tracefs_inodes);
-+
- static struct inode *tracefs_alloc_inode(struct super_block *sb)
- {
- 	struct tracefs_inode *ti;
-+	unsigned long flags;
- 
- 	ti = kmem_cache_alloc(tracefs_inode_cachep, GFP_KERNEL);
- 	if (!ti)
- 		return NULL;
- 
-+	spin_lock_irqsave(&tracefs_inode_lock, flags);
-+	list_add_rcu(&ti->list, &tracefs_inodes);
-+	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
-+
- 	return &ti->vfs_inode;
- }
- 
-+static void tracefs_free_inode_rcu(struct rcu_head *rcu)
-+{
-+	struct tracefs_inode *ti;
-+
-+	ti = container_of(rcu, struct tracefs_inode, rcu);
-+	kmem_cache_free(tracefs_inode_cachep, ti);
-+}
-+
- static void tracefs_free_inode(struct inode *inode)
- {
--	kmem_cache_free(tracefs_inode_cachep, get_tracefs(inode));
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&tracefs_inode_lock, flags);
-+	list_del_rcu(&ti->list);
-+	spin_unlock_irqrestore(&tracefs_inode_lock, flags);
-+
-+	call_rcu(&ti->rcu, tracefs_free_inode_rcu);
- }
- 
- static ssize_t default_read_file(struct file *file, char __user *buf,
-@@ -313,6 +340,8 @@ static int tracefs_apply_options(struct
- 	struct tracefs_fs_info *fsi = sb->s_fs_info;
- 	struct inode *inode = d_inode(sb->s_root);
- 	struct tracefs_mount_opts *opts = &fsi->mount_opts;
-+	struct tracefs_inode *ti;
-+	bool update_uid, update_gid;
- 	umode_t tmp_mode;
- 
- 	/*
-@@ -332,6 +361,25 @@ static int tracefs_apply_options(struct
- 	if (!remount || opts->opts & BIT(Opt_gid))
- 		inode->i_gid = opts->gid;
- 
-+	if (remount && (opts->opts & BIT(Opt_uid) || opts->opts & BIT(Opt_gid))) {
-+
-+		update_uid = opts->opts & BIT(Opt_uid);
-+		update_gid = opts->opts & BIT(Opt_gid);
-+
-+		rcu_read_lock();
-+		list_for_each_entry_rcu(ti, &tracefs_inodes, list) {
-+			if (update_uid)
-+				ti->flags &= ~TRACEFS_UID_PERM_SET;
-+
-+			if (update_gid)
-+				ti->flags &= ~TRACEFS_GID_PERM_SET;
-+
-+			if (ti->flags & TRACEFS_EVENT_INODE)
-+				eventfs_remount(ti, update_uid, update_gid);
-+		}
-+		rcu_read_unlock();
-+	}
-+
- 	return 0;
- }
- 
-@@ -398,7 +446,22 @@ static int tracefs_d_revalidate(struct d
- 	return !(ei && ei->is_freed);
- }
- 
-+static void tracefs_d_iput(struct dentry *dentry, struct inode *inode)
-+{
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+
-+	/*
-+	 * This inode is being freed and cannot be used for
-+	 * eventfs. Clear the flag so that it doesn't call into
-+	 * eventfs during the remount flag updates. The eventfs_inode
-+	 * gets freed after an RCU cycle, so the content will still
-+	 * be safe if the iteration is going on now.
-+	 */
-+	ti->flags &= ~TRACEFS_EVENT_INODE;
-+}
-+
- static const struct dentry_operations tracefs_dentry_operations = {
-+	.d_iput = tracefs_d_iput,
- 	.d_revalidate = tracefs_d_revalidate,
- 	.d_release = tracefs_d_release,
- };
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -11,8 +11,12 @@ enum {
- };
- 
- struct tracefs_inode {
--	struct inode            vfs_inode;
-+	union {
-+		struct inode            vfs_inode;
-+		struct rcu_head		rcu;
-+	};
- 	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
-+	struct list_head	list;
- 	unsigned long           flags;
- 	void                    *private;
- };
-@@ -75,6 +79,7 @@ struct dentry *tracefs_end_creating(stru
- struct dentry *tracefs_failed_creating(struct dentry *dentry);
- struct inode *tracefs_get_inode(struct super_block *sb);
- 
-+void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid);
- void eventfs_d_release(struct dentry *dentry);
- 
- #endif /* _TRACEFS_INTERNAL_H */
+diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
+index 18706c46d46ba..b613dda50151b 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-paris.c
++++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
+@@ -164,8 +164,6 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
+ 	case MTK_PIN_CONFIG_PU_ADV:
+ 	case MTK_PIN_CONFIG_PD_ADV:
+ 		if (hw->soc->adv_pull_get) {
+-			bool pullup;
+-
+ 			pullup = param == MTK_PIN_CONFIG_PU_ADV;
+ 			err = hw->soc->adv_pull_get(hw, desc, pullup, &ret);
+ 		} else
+-- 
+2.43.0
+
 
 
 
