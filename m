@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358448C5014
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 663538C51A8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 674661C20C2A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E24B21EE2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869DE139583;
-	Tue, 14 May 2024 10:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77B713AD05;
+	Tue, 14 May 2024 11:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVYgzKIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxcPXnZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419E4139579;
-	Tue, 14 May 2024 10:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B431E495;
+	Tue, 14 May 2024 11:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682918; cv=none; b=EKZhFg+mILyg7IHbk0riMwaYgLi5Y9LwCkottabAuKrYJrsrCG5PpkhJ3QkRnD2yTngiTObnESfs51i1NenThi1neRJXdxZHqYuLqdMqyfv1mHI/WQecaYOogip6EJ5y8FgznpCzEYlHGDTavalHlTxwBq7/39ZLLijEgcM4hZA=
+	t=1715684843; cv=none; b=Xb+IrrTu14D4iKzyGT4XWpENio2vWcGVWkqdUlrxJSmWB785POzYJTERqW8cL0PEDwm03hkddDJGjMDW/IXmg/dYWNjrt4JPyoy7I4j8plKJeLcAlLubCG9+3DU87cHMpxLQU39u7FCJBA4Hws9HOmTKO14NLQUgYSi36J/I+ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682918; c=relaxed/simple;
-	bh=83RX5/o6XLat+fJqx2y5QVNxn85cmwyVmQ4B9qMxtrU=;
+	s=arc-20240116; t=1715684843; c=relaxed/simple;
+	bh=n+NNzJmwXybEGAFwtlezNDgoZwFRlHTIJuH6bxAyVOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUDusojbEId++21156Kc5EmBobqSHK85c0VRzzNFVBE3zIjerJ/GgoGwlEpk41u1XuAXHgXjGyh6QNmIAr9frbtMJb2BfraY8c01Kw6G3ei7SUu39XLhVrCXDAk6Noea9W+AdjYyx7R8D8jOP1PFUEGbaOSg/p/ydIj4CCXJbmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVYgzKIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3C3C2BD10;
-	Tue, 14 May 2024 10:35:15 +0000 (UTC)
+	 MIME-Version; b=bgCRffvbG5B/RZEuPtHy+6gNnnfbHN75g3GXwCk3wj96LsZPb0XU/7mKGxRyFPj4D/gXt5gM9cdXoTCkuxADvn4k9oSZFAHCDBMm+fVMaGYhFf23RerBOGZYypa0iRQc0hquUVU+EAS+DuOoSVv5AvlBZFQoaHaZPBTUVf2LWQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxcPXnZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0566C2BD10;
+	Tue, 14 May 2024 11:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682918;
-	bh=83RX5/o6XLat+fJqx2y5QVNxn85cmwyVmQ4B9qMxtrU=;
+	s=korg; t=1715684843;
+	bh=n+NNzJmwXybEGAFwtlezNDgoZwFRlHTIJuH6bxAyVOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVYgzKIt6oL9Pn0uOkH7SlLE4qqXcm/Bl0wZSEDNsnqK1J9x2lAHC/MJi5vEzB9KL
-	 3YKVX2pfCPR7I1rpeJgsUOm3DmjpBIo710l4ulVJou9yyszQIvI5hSOJx4EIxmc3OL
-	 Yu8Tcz2pbUlY1g1L/1cnWC+R2lErd8ZF9WLGhkJY=
+	b=OxcPXnZTb7PUlv8gyl62TAyxJEX6HhVkFpkfwHzD9Dvo+668GNlNd3QbgEE5Tq11x
+	 NBsKXGw6Z2DXT1hObNaVmdxbMJrR7eBdJYnvMbi2pLrWqhfmHTFW2yotq7HvGkrY4w
+	 i22nxkQRrpZHYZtIbfGcaYNE/0zdVlTeLDqQJ2+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Goldman <adamg@pobox.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 133/336] firewire: ohci: mask bus reset interrupts between ISR and bottom half
+Subject: [PATCH 6.6 066/301] ASoC: meson: axg-fifo: use threaded irq to check periods
 Date: Tue, 14 May 2024 12:15:37 +0200
-Message-ID: <20240514101043.621480968@linuxfoundation.org>
+Message-ID: <20240514101034.734622891@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Goldman <adamg@pobox.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 752e3c53de0fa3b7d817a83050b6699b8e9c6ec9 ]
+[ Upstream commit b11d26660dff8d7430892008616452dc8e5fb0f3 ]
 
-In the FireWire OHCI interrupt handler, if a bus reset interrupt has
-occurred, mask bus reset interrupts until bus_reset_work has serviced and
-cleared the interrupt.
+With the AXG audio subsystem, there is a possible random channel shift on
+TDM capture, when the slot number per lane is more than 2, and there is
+more than one lane used.
 
-Normally, we always leave bus reset interrupts masked. We infer the bus
-reset from the self-ID interrupt that happens shortly thereafter. A
-scenario where we unmask bus reset interrupts was introduced in 2008 in
-a007bb857e0b26f5d8b73c2ff90782d9c0972620: If
-OHCI_PARAM_DEBUG_BUSRESETS (8) is set in the debug parameter bitmask, we
-will unmask bus reset interrupts so we can log them.
+The problem has been there since the introduction of the axg audio support
+but such scenario is pretty uncommon. This is why there is no loud
+complains about the problem.
 
-irq_handler logs the bus reset interrupt. However, we can't clear the bus
-reset event flag in irq_handler, because we won't service the event until
-later. irq_handler exits with the event flag still set. If the
-corresponding interrupt is still unmasked, the first bus reset will
-usually freeze the system due to irq_handler being called again each
-time it exits. This freeze can be reproduced by loading firewire_ohci
-with "modprobe firewire_ohci debug=-1" (to enable all debugging output).
-Apparently there are also some cases where bus_reset_work will get called
-soon enough to clear the event, and operation will continue normally.
+Solving the problem require to make the links non-atomic and use the
+trigger() callback to start FEs and BEs in the appropriate order.
 
-This freeze was first reported a few months after a007bb85 was committed,
-but until now it was never fixed. The debug level could safely be set
-to -1 through sysfs after the module was loaded, but this would be
-ineffectual in logging bus reset interrupts since they were only
-unmasked during initialization.
+This was tried in the past and reverted because it caused the block irq to
+sleep while atomic. However, instead of reverting, the solution is to call
+snd_pcm_period_elapsed() in a non atomic context.
 
-irq_handler will now leave the event flag set but mask bus reset
-interrupts, so irq_handler won't be called again and there will be no
-freeze. If OHCI_PARAM_DEBUG_BUSRESETS is enabled, bus_reset_work will
-unmask the interrupt after servicing the event, so future interrupts
-will be caught as desired.
+Use the bottom half of a threaded IRQ to do so.
 
-As a side effect to this change, OHCI_PARAM_DEBUG_BUSRESETS can now be
-enabled through sysfs in addition to during initial module loading.
-However, when enabled through sysfs, logging of bus reset interrupts will
-be effective only starting with the second bus reset, after
-bus_reset_work has executed.
-
-Signed-off-by: Adam Goldman <adamg@pobox.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Fixes: 6dc4fa179fb8 ("ASoC: meson: add axg fifo base driver")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240426152946.3078805-2-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/ohci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/meson/axg-fifo.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
-index 7bc71f4be64a0..38d19410a2be6 100644
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -2060,6 +2060,8 @@ static void bus_reset_work(struct work_struct *work)
+diff --git a/sound/soc/meson/axg-fifo.c b/sound/soc/meson/axg-fifo.c
+index bde7598750064..94b169a5493b5 100644
+--- a/sound/soc/meson/axg-fifo.c
++++ b/sound/soc/meson/axg-fifo.c
+@@ -204,18 +204,26 @@ static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
+ 	unsigned int status;
  
- 	ohci->generation = generation;
- 	reg_write(ohci, OHCI1394_IntEventClear, OHCI1394_busReset);
-+	if (param_debug & OHCI_PARAM_DEBUG_BUSRESETS)
-+		reg_write(ohci, OHCI1394_IntMaskSet, OHCI1394_busReset);
+ 	regmap_read(fifo->map, FIFO_STATUS1, &status);
+-
+ 	status = FIELD_GET(STATUS1_INT_STS, status);
++	axg_fifo_ack_irq(fifo, status);
++
++	/* Use the thread to call period elapsed on nonatomic links */
+ 	if (status & FIFO_INT_COUNT_REPEAT)
+-		snd_pcm_period_elapsed(ss);
+-	else
+-		dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
+-			status);
++		return IRQ_WAKE_THREAD;
  
- 	if (ohci->quirks & QUIRK_RESET_PACKET)
- 		ohci->request_generation = generation;
-@@ -2125,12 +2127,14 @@ static irqreturn_t irq_handler(int irq, void *data)
- 		return IRQ_NONE;
+-	/* Ack irqs */
+-	axg_fifo_ack_irq(fifo, status);
++	dev_dbg(axg_fifo_dev(ss), "unexpected irq - STS 0x%02x\n",
++		status);
++
++	return IRQ_NONE;
++}
++
++static irqreturn_t axg_fifo_pcm_irq_block_thread(int irq, void *dev_id)
++{
++	struct snd_pcm_substream *ss = dev_id;
++
++	snd_pcm_period_elapsed(ss);
  
- 	/*
--	 * busReset and postedWriteErr must not be cleared yet
-+	 * busReset and postedWriteErr events must not be cleared yet
- 	 * (OHCI 1.1 clauses 7.2.3.2 and 13.2.8.1)
- 	 */
- 	reg_write(ohci, OHCI1394_IntEventClear,
- 		  event & ~(OHCI1394_busReset | OHCI1394_postedWriteErr));
- 	log_irqs(ohci, event);
-+	if (event & OHCI1394_busReset)
-+		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
+-	return IRQ_RETVAL(status);
++	return IRQ_HANDLED;
+ }
  
- 	if (event & OHCI1394_selfIDComplete)
- 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
+ int axg_fifo_pcm_open(struct snd_soc_component *component,
+@@ -243,8 +251,9 @@ int axg_fifo_pcm_open(struct snd_soc_component *component,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = request_irq(fifo->irq, axg_fifo_pcm_irq_block, 0,
+-			  dev_name(dev), ss);
++	ret = request_threaded_irq(fifo->irq, axg_fifo_pcm_irq_block,
++				   axg_fifo_pcm_irq_block_thread,
++				   IRQF_ONESHOT, dev_name(dev), ss);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.43.0
 
