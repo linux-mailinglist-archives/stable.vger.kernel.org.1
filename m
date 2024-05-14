@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4288C538A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372838C5421
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDC261C22AFB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0B61F232EF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372501292F3;
-	Tue, 14 May 2024 11:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC571386D7;
+	Tue, 14 May 2024 11:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKhjleFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQbog4XI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F9947A6C;
-	Tue, 14 May 2024 11:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AEF84D26;
+	Tue, 14 May 2024 11:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686602; cv=none; b=PuonhqmNo2vzJi+dnoC/BAFqWOpJEuiUqbvKtuoDnOtfefSEIjFm0pmh1PdJ3aIc/NzcFTGdQsnR7WD38YitofZ6MuRqIz10dpoduRwWg3XwWDBagq2c06yldY/DEbtDhE6epCsJek8Hva0YGQ2LD7/azvFAMWwU/kA15DshjEs=
+	t=1715687006; cv=none; b=ggp8pAF9VEWgys6Cfg2lHisulPfDx/c+MaOjuW4kPexubYgD6lKL3H50Tw8brCovWDUP8rG7X41jAydhIHzsM0GexKULkvwBoZNe8FOw7EpdaNPAPrujE68ivBHkRJ9vL6XUAgp8FI7BYMLjGrcFWPEZL1V5+sO78F/xfz/Yb6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686602; c=relaxed/simple;
-	bh=ggQhrOxZoVZMuScWlFvigtLcT6FjG8Thli5Q9o6QoQI=;
+	s=arc-20240116; t=1715687006; c=relaxed/simple;
+	bh=rZzfxhUfnHR1HBDA1Qrez1qXuqjF/XtVImZP21yhqng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvrwLIESSnlZ4P4zFd4moV+qApzNLiMj8hMB2L3Gxf5b2u8MbvArPVzFY+dOGij6r9PzAUbijVlA5ZvJshN6v55PGNPgCt2I/D6P5RAPe5PBVa73Xy4SwHLl8K2WHyp50rFBj2PkoHJrUbq1bPt9J1I8RkNFej7k02pLcZVsYqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKhjleFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE25C2BD10;
-	Tue, 14 May 2024 11:36:41 +0000 (UTC)
+	 MIME-Version; b=hXepQzX8F21ND1oEPhTBm1NL29X8ogy7NZDGP6/KoG5Lx3NbQ2WQR0eFwgPiBHCIVvdrvi1d3XCMOrYY0TW27VvAqOfZKF0LJYbckUftNWdfUM1hERtupST8HiD78nV2ZaWypjRs0v/CJLsToRBmsIxvDpKvh+m4lex4JOPtE9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQbog4XI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC5FC2BD10;
+	Tue, 14 May 2024 11:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686601;
-	bh=ggQhrOxZoVZMuScWlFvigtLcT6FjG8Thli5Q9o6QoQI=;
+	s=korg; t=1715687004;
+	bh=rZzfxhUfnHR1HBDA1Qrez1qXuqjF/XtVImZP21yhqng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cKhjleFOxUO+vsKwB8P4NYCiyCyZ04dq4KtpWDynBsD45+Igkyk+FJ9gE6yJeavkQ
-	 NJnsE0MfRtCGxQ2QQVCOFd3q/1Bmt9EV8tqQ6ICCOtEp2urqO2DmXTqVkSOiqKo3ZI
-	 7llK8zMslrGKpwJVdBTMs+ehFJ0upo9joxVHT/MM=
+	b=lQbog4XISnKSdRzcGBgOF1Wgz96Xi+cnMHT4hgpeLLtqJuVXDUAng7IWGfA8s5Dx3
+	 bdAcQelYq27tp709dH5NgaOrAx/s1L7MnF4xehh0/gIcHELcGlPxFRBbQ32ZAvtJsu
+	 6PVQPvD4cMLY4UGvDsdhEi5kWj2qhqJflHZf2fZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	David Laight <David.Laight@aculab.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 195/236] usb: ohci: Prevent missed ohci interrupts
+	Light Hsieh <light.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 06/84] pinctrl: mediatek: Supporting driving setting without mapping current to register value
 Date: Tue, 14 May 2024 12:19:17 +0200
-Message-ID: <20240514101027.770694934@linuxfoundation.org>
+Message-ID: <20240514100951.931230944@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Light Hsieh <light.hsieh@mediatek.com>
 
-commit fe81f354841641c7f71163b84912b25c169ed8ec upstream.
+[ Upstream commit 5f755e1f1efe5ca3b475b14169e6e85bf1411bb5 ]
 
-Testing ohci functionality with qemu's pci-ohci emulation often results
-in ohci interface stalls, resulting in hung task timeouts.
+MediaTek's smartphone project actual usage does need to know current value
+(in mA) in procedure of finding the best driving setting.
+The steps in the procedure is like as follow:
 
-The problem is caused by lost interrupts between the emulation and the
-Linux kernel code. Additional interrupts raised while the ohci interrupt
-handler in Linux is running and before the handler clears the interrupt
-status are not handled. The fix for a similar problem in ehci suggests
-that the problem is likely caused by edge-triggered MSI interrupts. See
-commit 0b60557230ad ("usb: ehci: Prevent missed ehci interrupts with
-edge-triggered MSI") for details.
+1. set driving setting field in setting register as 0, measure waveform,
+   perform test, and etc.
+2. set driving setting field in setting register as 1, measure waveform,
+   perform test, and etc.
+...
+n. set driving setting field in setting register as n-1, measure
+   waveform, perform test, and etc.
+Check the results of steps 1~n and adopt the setting that get best result.
 
-Ensure that the ohci interrupt code handles all pending interrupts before
-returning to solve the problem.
+This procedure does need to know the mapping between current to register
+value.
+Therefore, setting driving without mapping current is more practical for
+MediaTek's smartphone usage.
 
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: David Laight <David.Laight@aculab.com>
-Cc: stable@vger.kernel.org
-Fixes: 306c54d0edb6 ("usb: hcd: Try MSI interrupts on PCI devices")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
-Link: https://lore.kernel.org/r/20240429154010.1507366-1-linux@roeck-us.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Light Hsieh <light.hsieh@mediatek.com>
+Link: https://lore.kernel.org/r/1579675994-7001-2-git-send-email-light.hsieh@mediatek.com
+Acked-by: Sean Wang <sean.wang@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: c5d3b64c568a ("pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ohci-hcd.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pinctrl/mediatek/pinctrl-mt6765.c        |  4 ++--
+ drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c | 12 ++++++++++++
+ drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h |  5 +++++
+ 3 files changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -888,6 +888,7 @@ static irqreturn_t ohci_irq (struct usb_
- 	/* Check for an all 1's result which is a typical consequence
- 	 * of dead, unclocked, or unplugged (CardBus...) devices
- 	 */
-+again:
- 	if (ints == ~(u32)0) {
- 		ohci->rh_state = OHCI_RH_HALTED;
- 		ohci_dbg (ohci, "device removed!\n");
-@@ -982,6 +983,13 @@ static irqreturn_t ohci_irq (struct usb_
- 	}
- 	spin_unlock(&ohci->lock);
- 
-+	/* repeat until all enabled interrupts are handled */
-+	if (ohci->rh_state != OHCI_RH_HALTED) {
-+		ints = ohci_readl(ohci, &regs->intrstatus);
-+		if (ints && (ints & ohci_readl(ohci, &regs->intrenable)))
-+			goto again;
-+	}
-+
- 	return IRQ_HANDLED;
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mt6765.c b/drivers/pinctrl/mediatek/pinctrl-mt6765.c
+index 32451e8693be7..12122646bbc28 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mt6765.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mt6765.c
+@@ -1077,8 +1077,8 @@ static const struct mtk_pin_soc mt6765_data = {
+ 	.bias_disable_get = mtk_pinconf_bias_disable_get,
+ 	.bias_set = mtk_pinconf_bias_set,
+ 	.bias_get = mtk_pinconf_bias_get,
+-	.drive_set = mtk_pinconf_drive_set_rev1,
+-	.drive_get = mtk_pinconf_drive_get_rev1,
++	.drive_set = mtk_pinconf_drive_set_raw,
++	.drive_get = mtk_pinconf_drive_get_raw,
+ 	.adv_pull_get = mtk_pinconf_adv_pull_get,
+ 	.adv_pull_set = mtk_pinconf_adv_pull_set,
+ };
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
+index 2795d0fd0f5bd..fb87feec7bd3f 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
+@@ -612,6 +612,18 @@ int mtk_pinconf_drive_get_rev1(struct mtk_pinctrl *hw,
+ 	return 0;
  }
  
++int mtk_pinconf_drive_set_raw(struct mtk_pinctrl *hw,
++			       const struct mtk_pin_desc *desc, u32 arg)
++{
++	return mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DRV, arg);
++}
++
++int mtk_pinconf_drive_get_raw(struct mtk_pinctrl *hw,
++			       const struct mtk_pin_desc *desc, int *val)
++{
++	return mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DRV, val);
++}
++
+ int mtk_pinconf_adv_pull_set(struct mtk_pinctrl *hw,
+ 			     const struct mtk_pin_desc *desc, bool pullup,
+ 			     u32 arg)
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h
+index 1b7da42aa1d53..75d0e0712c03f 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h
+@@ -288,6 +288,11 @@ int mtk_pinconf_drive_set_rev1(struct mtk_pinctrl *hw,
+ int mtk_pinconf_drive_get_rev1(struct mtk_pinctrl *hw,
+ 			       const struct mtk_pin_desc *desc, int *val);
+ 
++int mtk_pinconf_drive_set_raw(struct mtk_pinctrl *hw,
++			       const struct mtk_pin_desc *desc, u32 arg);
++int mtk_pinconf_drive_get_raw(struct mtk_pinctrl *hw,
++			       const struct mtk_pin_desc *desc, int *val);
++
+ int mtk_pinconf_adv_pull_set(struct mtk_pinctrl *hw,
+ 			     const struct mtk_pin_desc *desc, bool pullup,
+ 			     u32 arg);
+-- 
+2.43.0
+
 
 
 
