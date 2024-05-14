@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470FF8C5002
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE208C5179
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 787A11C21210
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:55:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B07EBB2189F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9B11350EF;
-	Tue, 14 May 2024 10:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C408E13958B;
+	Tue, 14 May 2024 11:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHIdAgBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8eXYfyp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BD9134CFE;
-	Tue, 14 May 2024 10:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AD254903;
+	Tue, 14 May 2024 11:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682843; cv=none; b=gW6XnKYuONE5dIRcAeh1xX/WAoQc5+gfRCU78FNxBEKdqTXS/PV9+4YAoa6GCLsjoUQNuPXzjF7A85MxknT1GY/JtuMKH1kVCMyCuDwzSibzolBws0i+JsYitL4lP+Oryhq15n/lD23DliOwqfsyOIaZj+t0h8XhAxVWs7Ze2aY=
+	t=1715684564; cv=none; b=BqCBdFDuPVWMUmxNefjiDfmEIR2p3LMZUQeDW6xEsVa4HpSkPcbChVdB3cDDIiEDgA0B5ArIYUM49W+Ant4azbn1tzL1KWQQaeo17QWM+dO1EWQ/30NFWAs25YC+FUxMCHdV2Uy7iVPLG8rx8HhszjoI0dlV9ZSS62kFeqlAMKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682843; c=relaxed/simple;
-	bh=GUvPvIkehTaR0y10DDzxJe6VoI0B/3gbsAEMaLkan5o=;
+	s=arc-20240116; t=1715684564; c=relaxed/simple;
+	bh=V2PlYoShAGbBnJSyQVTBFpXX1fehc1mByFUdRUGOrbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Prhi0ilfYg6xwtF3mpinZG6oTW+W5BHRLji6LyaO8o45hmhgGMu5pgToJVrA5gXAdVOf/mOUmz26tS1FDyCBb2zq88DgZW8EmkMDkMAaUZ5A1rOlZL7fese4xCeyPMAe5y2Uxv9FTB9D0kAF4u/EiYZ9s2AXWdkrIN/2wDI92SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHIdAgBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5497C2BD10;
-	Tue, 14 May 2024 10:34:02 +0000 (UTC)
+	 MIME-Version; b=ToXHJFPO+kbZwYZkPQWfqHN0O/MTVq33Om5cvYMxdRqWP9RpoPOGaSJx6XqGswnKZnVzvzH4viCH1OemaR2RsDefVN6BnOIERK63Dq91DQJqeR/nSQ3tfsXVkb/h/gDCj7upNOMceljN43+8U+TS2LzQ6PaI00sEI4ZqNyJMLJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8eXYfyp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68632C32782;
+	Tue, 14 May 2024 11:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682843;
-	bh=GUvPvIkehTaR0y10DDzxJe6VoI0B/3gbsAEMaLkan5o=;
+	s=korg; t=1715684564;
+	bh=V2PlYoShAGbBnJSyQVTBFpXX1fehc1mByFUdRUGOrbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHIdAgBwfPrFzMcHBSZ2GWSwpljtvfHL9G9S/Fm2XcJ/mKu7SL/VsY70XyPTCoZxJ
-	 hyUA2a8ZofWgWLuZ/LeQalRnzQ5o7fxwFca/pD3EC9IEhTrjUQWZWYAecru6dAleJa
-	 FqXpwIkGf21qEkP8MQC4mhO6hN2nStvzPdcxlzUg=
+	b=Q8eXYfypi9MQbO3lWiNLMVbTkX+uM22dIdOh9vXGvxHgr98W3kCNoPUfeKlqVAVPn
+	 9CKKLjjq8chJFRFJk7kbPaQ5d/hkEpK7a3TRgBsJYUwAq2M5rc1IvovhKSEx72uhqR
+	 w0mGZdLS62aITRkPc+ba+AIZ6DQ/S9wFMa0Z0uwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 122/336] OSS: dmasound/paula: Mark driver struct with __refdata to prevent section mismatch
+Subject: [PATCH 6.6 055/301] ALSA: emu10k1: fix E-MU card dock presence monitoring
 Date: Tue, 14 May 2024 12:15:26 +0200
-Message-ID: <20240514101043.209573344@linuxfoundation.org>
+Message-ID: <20240514101034.321848315@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-[ Upstream commit 755795cd3da053b0565085d9950c44d7b6cba5c4 ]
+[ Upstream commit 398321d7531963b95841865eb371fe65c44c6921 ]
 
-As described in the added code comment, a reference to .exit.text is ok
-for drivers registered via module_platform_driver_probe(). Make this
-explicit to prevent the following section mismatch warning
+While there are two separate IRQ status bits for dock attach and detach,
+the hardware appears to mix them up more or less randomly, making them
+useless for tracking what actually happened. It is much safer to check
+the dock status separately and proceed based on that, as the old polling
+code did.
 
-	WARNING: modpost: sound/oss/dmasound/dmasound_paula: section mismatch in reference: amiga_audio_driver+0x8 (section: .data) -> amiga_audio_remove (section: .exit.text)
+Note that the code assumes that only the dock can be hot-plugged - if
+other option card bits changed, the logic would break.
 
-that triggers on an allmodconfig W=1 build.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Message-ID: <c216a129aa88f3af5c56fe6612a472f7a882f048.1711748999.git.u.kleine-koenig@pengutronix.de>
+Fixes: fbb64eedf5a3 ("ALSA: emu10k1: make E-MU dock monitoring interrupt-driven")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218584
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Message-ID: <20240428093716.3198666-2-oswald.buddenhagen@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/oss/dmasound/dmasound_paula.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/pci/emu10k1/emu10k1_main.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/sound/oss/dmasound/dmasound_paula.c b/sound/oss/dmasound/dmasound_paula.c
-index 0ba8f0c4cd99a..3a593da09280d 100644
---- a/sound/oss/dmasound/dmasound_paula.c
-+++ b/sound/oss/dmasound/dmasound_paula.c
-@@ -725,7 +725,13 @@ static void __exit amiga_audio_remove(struct platform_device *pdev)
- 	dmasound_deinit();
+diff --git a/sound/pci/emu10k1/emu10k1_main.c b/sound/pci/emu10k1/emu10k1_main.c
+index de5c41e578e1f..85f70368a27db 100644
+--- a/sound/pci/emu10k1/emu10k1_main.c
++++ b/sound/pci/emu10k1/emu10k1_main.c
+@@ -778,6 +778,11 @@ static void emu1010_firmware_work(struct work_struct *work)
+ 		msleep(10);
+ 		/* Unmute all. Default is muted after a firmware load */
+ 		snd_emu1010_fpga_write(emu, EMU_HANA_UNMUTE, EMU_UNMUTE);
++	} else if (!(reg & EMU_HANA_OPTION_DOCK_ONLINE)) {
++		/* Audio Dock removed */
++		dev_info(emu->card->dev, "emu1010: Audio Dock detached\n");
++		/* The hardware auto-mutes all, so we unmute again */
++		snd_emu1010_fpga_write(emu, EMU_HANA_UNMUTE, EMU_UNMUTE);
+ 	}
  }
  
--static struct platform_driver amiga_audio_driver = {
-+/*
-+ * amiga_audio_remove() lives in .exit.text. For drivers registered via
-+ * module_platform_driver_probe() this is ok because they cannot get unbound at
-+ * runtime. So mark the driver struct with __refdata to prevent modpost
-+ * triggering a section mismatch warning.
-+ */
-+static struct platform_driver amiga_audio_driver __refdata = {
- 	.remove_new = __exit_p(amiga_audio_remove),
- 	.driver = {
- 		.name	= "amiga-audio",
+@@ -810,14 +815,12 @@ static void emu1010_interrupt(struct snd_emu10k1 *emu)
+ 	u32 sts;
+ 
+ 	snd_emu1010_fpga_read(emu, EMU_HANA_IRQ_STATUS, &sts);
+-	if (sts & EMU_HANA_IRQ_DOCK_LOST) {
+-		/* Audio Dock removed */
+-		dev_info(emu->card->dev, "emu1010: Audio Dock detached\n");
+-		/* The hardware auto-mutes all, so we unmute again */
+-		snd_emu1010_fpga_write(emu, EMU_HANA_UNMUTE, EMU_UNMUTE);
+-	} else if (sts & EMU_HANA_IRQ_DOCK) {
++
++	// The distinction of the IRQ status bits is unreliable,
++	// so we dispatch later based on option card status.
++	if (sts & (EMU_HANA_IRQ_DOCK | EMU_HANA_IRQ_DOCK_LOST))
+ 		schedule_work(&emu->emu1010.firmware_work);
+-	}
++
+ 	if (sts & EMU_HANA_IRQ_WCLK_CHANGED)
+ 		schedule_work(&emu->emu1010.clock_work);
+ }
 -- 
 2.43.0
 
