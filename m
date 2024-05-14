@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF93D8C518F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2098C5044
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:01:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93BDD1F21020
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C89282D61
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00A813A26F;
-	Tue, 14 May 2024 11:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562D113B28F;
+	Tue, 14 May 2024 10:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Teac0xiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYESTPl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856E712BEA5;
-	Tue, 14 May 2024 11:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133E85A0FC;
+	Tue, 14 May 2024 10:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684693; cv=none; b=EVYtT7CMVlrJlMMOjl9P76/l9t2Ob3XRRa1YHmIqE3sGM3D1uLm3FDOsQssHjteDwrhXtYF55D3HNIHgKYB1htdf0mbiA+6LCXly+qU00QfzU4LiMl9TYIyWMXjFOvhdi72GsqNWvxnJjMjaJsr6HNJO4sk9yAABWL0S8Uk1Unc=
+	t=1715683130; cv=none; b=u45LCYjVMeU94zSVfUcqrIYGMcCSWGFOEB5LU+LTtQXp+/iEpOo8Eijotd6vDbKHeH4TMq/ZRGBWj7p30T6JE3nu6xBuxhULUwb9BqvRvVhVGnSazbL+IInmo1mpbfPwwmtRYChacb9+FhEcL5dtN4LGX0cn6nu2coof5D6mgMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684693; c=relaxed/simple;
-	bh=noacSckRY1a96ZMhGBT54mfmE5kJY/vlD4gXD+MbZiY=;
+	s=arc-20240116; t=1715683130; c=relaxed/simple;
+	bh=0BSCaJsiNwRj4NSMoU1Zpr+cn7ySSSPolT+ZWCtWiGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FphgnCqT0CTCgx+nXFDo9sJVo4Z4mQO5ttrpkT5Oqv0ufdc8WcOUeAJ29klq2V3D1KpRLx1JRdu6x8NI5Q/4GpqQiCrThfyu5ZJq2DNeIxBrzMktZwNyiiGfVNQlvEjYdJnj2F8XQqhS5W8kVp0iIQx36seVtiEZ4BsgbWebOBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Teac0xiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C1BC2BD10;
-	Tue, 14 May 2024 11:04:52 +0000 (UTC)
+	 MIME-Version; b=O6Sfrgh0GXq1JA5fiBEM3XB0BEb/lZTv/7vD8ZR3k8hehnAp/OteJbyCXOqMNX/Or7awLqXdUNzv5eYGzdPZMxDmaqasAQK6W56GVA57RVNHzdecw4J1ZBLc2a6ads0PjlRA4UWyWHmoprgT9lrHrpNGtjshXOeR06ZRCgClSy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYESTPl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB7DC2BD10;
+	Tue, 14 May 2024 10:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684693;
-	bh=noacSckRY1a96ZMhGBT54mfmE5kJY/vlD4gXD+MbZiY=;
+	s=korg; t=1715683129;
+	bh=0BSCaJsiNwRj4NSMoU1Zpr+cn7ySSSPolT+ZWCtWiGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Teac0xiJWxtP5zCG6MnHyvF6LYATVJ92hjR3aw+zXjWOHcRgrqalX7Z7erbxBkcFl
-	 sY7va0FWJzX7/ch21HVYT7Y7yZA/oElcFBrcLjvVG7VwFB7q+7QPdYILEUCryOe18d
-	 ofVMFzgvaZtr15Y54Vb/7PgAR+OOEpKUW2FULHCo=
+	b=dYESTPl1iXUBT+bBhzc2x7lQQseiKUz+QUvT+N1GHYaTsi7R1AFW8T0EeLDfYq/IV
+	 cEvZXkv5HJX7/lQcc8poKB48oG0ICnt470tW6uIQH52LzOqmF9wls+c4yMI9/WtLeN
+	 2/6vBheDm7OGFTIJUGDKUECqa9DlcrhvgdZFkueA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	"David S. Miller" <davem@davemloft.net>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Song Shuai <songshuaishuai@tinylab.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/301] net: core: reject skb_copy(_expand) for fraglist GSO skbs
+Subject: [PATCH 6.8 144/336] memblock tests: fix undefined reference to `panic
 Date: Tue, 14 May 2024 12:15:48 +0200
-Message-ID: <20240514101035.156871034@linuxfoundation.org>
+Message-ID: <20240514101044.036356430@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit d091e579b864fa790dd6a0cd537a22c383126681 ]
+[ Upstream commit e0f5a8e74be88f2476e58b25d3b49a9521bdc4ec ]
 
-SKB_GSO_FRAGLIST skbs must not be linearized, otherwise they become
-invalid. Return NULL if such an skb is passed to skb_copy or
-skb_copy_expand, in order to prevent a crash on a potential later
-call to skb_gso_segment.
+commit e96c6b8f212a ("memblock: report failures when memblock_can_resize
+is not set") introduced the usage of panic, which is not defined in
+memblock test.
 
-Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Let's define it directly in panic.h to fix it.
+
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+CC: Song Shuai <songshuaishuai@tinylab.org>
+CC: Mike Rapoport <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20240402132701.29744-3-richard.weiyang@gmail.com
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ tools/include/linux/kernel.h |  1 +
+ tools/include/linux/panic.h  | 19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 tools/include/linux/panic.h
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 60876262b3fb3..f0a9ef1aeaa29 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1971,11 +1971,17 @@ static inline int skb_alloc_rx_flag(const struct sk_buff *skb)
+diff --git a/tools/include/linux/kernel.h b/tools/include/linux/kernel.h
+index 4b0673bf52c2e..07cfad817d539 100644
+--- a/tools/include/linux/kernel.h
++++ b/tools/include/linux/kernel.h
+@@ -8,6 +8,7 @@
+ #include <linux/build_bug.h>
+ #include <linux/compiler.h>
+ #include <linux/math.h>
++#include <linux/panic.h>
+ #include <endian.h>
+ #include <byteswap.h>
  
- struct sk_buff *skb_copy(const struct sk_buff *skb, gfp_t gfp_mask)
- {
--	int headerlen = skb_headroom(skb);
--	unsigned int size = skb_end_offset(skb) + skb->data_len;
--	struct sk_buff *n = __alloc_skb(size, gfp_mask,
--					skb_alloc_rx_flag(skb), NUMA_NO_NODE);
-+	struct sk_buff *n;
-+	unsigned int size;
-+	int headerlen;
+diff --git a/tools/include/linux/panic.h b/tools/include/linux/panic.h
+new file mode 100644
+index 0000000000000..9c8f17a41ce8e
+--- /dev/null
++++ b/tools/include/linux/panic.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _TOOLS_LINUX_PANIC_H
++#define _TOOLS_LINUX_PANIC_H
 +
-+	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
-+		return NULL;
- 
-+	headerlen = skb_headroom(skb);
-+	size = skb_end_offset(skb) + skb->data_len;
-+	n = __alloc_skb(size, gfp_mask,
-+			skb_alloc_rx_flag(skb), NUMA_NO_NODE);
- 	if (!n)
- 		return NULL;
- 
-@@ -2303,12 +2309,17 @@ struct sk_buff *skb_copy_expand(const struct sk_buff *skb,
- 	/*
- 	 *	Allocate the copy buffer
- 	 */
--	struct sk_buff *n = __alloc_skb(newheadroom + skb->len + newtailroom,
--					gfp_mask, skb_alloc_rx_flag(skb),
--					NUMA_NO_NODE);
--	int oldheadroom = skb_headroom(skb);
- 	int head_copy_len, head_copy_off;
-+	struct sk_buff *n;
-+	int oldheadroom;
++#include <stdarg.h>
++#include <stdio.h>
++#include <stdlib.h>
 +
-+	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
-+		return NULL;
- 
-+	oldheadroom = skb_headroom(skb);
-+	n = __alloc_skb(newheadroom + skb->len + newtailroom,
-+			gfp_mask, skb_alloc_rx_flag(skb),
-+			NUMA_NO_NODE);
- 	if (!n)
- 		return NULL;
- 
++static inline void panic(const char *fmt, ...)
++{
++	va_list argp;
++
++	va_start(argp, fmt);
++	vfprintf(stderr, fmt, argp);
++	va_end(argp);
++	exit(-1);
++}
++
++#endif
 -- 
 2.43.0
 
