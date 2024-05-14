@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F228C521C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6AA8C50E4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD2D282A21
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D8E21F2103C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272DB12A151;
-	Tue, 14 May 2024 11:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0FC129E6E;
+	Tue, 14 May 2024 10:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rADazS/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axHzfcwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B8B129E9F;
-	Tue, 14 May 2024 11:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F534F88C;
+	Tue, 14 May 2024 10:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685390; cv=none; b=HNsTRM5anTLPei3Zgqlz4C/QYCsjtdOzNv9E5viR+PQNzcnOH6lDZqsNTYo/0D5BqkML2vBMJX2gCMb5OZrNYFw7iPpOqNRWZyGZXAUfw+1gcdA7xijc9fTdgJ8hLlhBvBGj0PcsteM5X9kt+APwigfLhUi430cNdOGeG1Rz560=
+	t=1715683811; cv=none; b=o18759JSQAzzQ+FZJ5LMG2Og+mdXgvRxhIzVvAp/Lr+mflIXt7ZV6zV0KYVpGRXCju2yJbVr1RjGfppnYpR4nnWe9TaCCVrH5GRjo17R7iB/FXrnDw+gj/2ZlCvmK2NaoM8dbxTOMiXZxQ2n6iZeG4wepDsOgbtngcPdTwlvoqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685390; c=relaxed/simple;
-	bh=0ciAh9vr3i38Yv+7pH/145+l7lojST7PIyi3XKSgeHU=;
+	s=arc-20240116; t=1715683811; c=relaxed/simple;
+	bh=GOOQVsmdUbIfbutoF83WCD6EG3n81dYJ8zDCBCOoqtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3gvq4Spo++pULBmPg2iMtZpJ1NK39mV9ru/sT/441iw0SuEoDax8/FRQWz4wN4+XlpvAzyel8gDoUcyNvAg3nMbcDbFT/0+BSdpUUTZW99srS+tjaOdw4bTeGXoDmCB0gKDPS75gdLFWDE6uWBOVuyid0bAKja3QXy1pxwOnJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rADazS/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE89C2BD10;
-	Tue, 14 May 2024 11:16:29 +0000 (UTC)
+	 MIME-Version; b=bkE642DcTjEb8yDyOZUeG4yOQaI11otN/L+ziyDpFPC6AcrqSzWjvMdd9zTOvmfkinG7SjdCywu6V6KJKgjUXR0wp5um+N6MBkM70aoItMP6qP2x+vw7GeMOPP3xpK0ixmiMNFLIl+a+OjcSi3NFWz95fokrtJaE4JiUmgIxj84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axHzfcwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD41C32781;
+	Tue, 14 May 2024 10:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685390;
-	bh=0ciAh9vr3i38Yv+7pH/145+l7lojST7PIyi3XKSgeHU=;
+	s=korg; t=1715683810;
+	bh=GOOQVsmdUbIfbutoF83WCD6EG3n81dYJ8zDCBCOoqtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rADazS/TG0C5AkMf0NX4pJYSPgsM50aYoZg1mJzQoLOXMIJ4ngna4NFE7+f72/DiO
-	 d94oQum8HRG2MV99n8vR8TiqwJT+yPyK4136+H5RJRhk84wGC9sSEkjmTtRSK4cbVn
-	 V3S0mjYdGdPEupmpppbOnfrO1vR7TrvgR06s3YMs=
+	b=axHzfcwFfCGDCfMSeFzer2aARgcOZyF4Qrn9Y/kLPJxiC0zTTqK6fBXFkpqD86gNc
+	 /QpENp1slQOlLg5L/FTMbWl/MmHSYetYg9bc4BgIeoxoaSq4WPz6h4plBlPjRu5YEf
+	 cEQP9dDcwkGDDPguuPPp2fQfsROvoVPJ7bAwzzH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/301] Bluetooth: msft: fix slab-use-after-free in msft_do_close()
+	Alan Stern <stern@rowland.harvard.edu>,
+	Roger Whittaker <roger.whittaker@suse.com>
+Subject: [PATCH 6.8 247/336] usb: Fix regression caused by invalid ep0 maxpacket in virtual SuperSpeed device
 Date: Tue, 14 May 2024 12:17:31 +0200
-Message-ID: <20240514101039.052751830@linuxfoundation.org>
+Message-ID: <20240514101047.945083168@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 10f9f426ac6e752c8d87bf4346930ba347aaabac ]
+commit c78c3644b772e356ca452ae733a3c4de0fb11dc8 upstream.
 
-Tying the msft->data lifetime to hdev by freeing it in
-hci_release_dev() to fix the following case:
+A virtual SuperSpeed device in the FreeBSD BVCP package
+(https://bhyve.npulse.net/) presents an invalid ep0 maxpacket size of 256.
+It stopped working with Linux following a recent commit because now we
+check these sizes more carefully than before.
 
-[use]
-msft_do_close()
-  msft = hdev->msft_data;
-  if (!msft)                      ...(1) <- passed.
-    return;
-  mutex_lock(&msft->filter_lock); ...(4) <- used after freed.
+Fix this regression by using the bMaxpacketSize0 value in the device
+descriptor for SuperSpeed or faster devices, even if it is invalid.  This
+is a very simple-minded change; we might want to check more carefully for
+values that actually make some sense (for instance, no smaller than 64).
 
-[free]
-msft_unregister()
-  msft = hdev->msft_data;
-  hdev->msft_data = NULL;         ...(2)
-  kfree(msft);                    ...(3) <- msft is freed.
-
-==================================================================
-BUG: KASAN: slab-use-after-free in __mutex_lock_common
-kernel/locking/mutex.c:587 [inline]
-BUG: KASAN: slab-use-after-free in __mutex_lock+0x8f/0xc30
-kernel/locking/mutex.c:752
-Read of size 8 at addr ffff888106cbbca8 by task kworker/u5:2/309
-
-Fixes: bf6a4e30ffbd ("Bluetooth: disable advertisement filters during suspend")
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-and-tested-by: Roger Whittaker <roger.whittaker@suse.com>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1220569
+Link: https://lore.kernel.org/linux-usb/9efbd569-7059-4575-983f-0ea30df41871@suse.com/
+Fixes: 59cf44575456 ("USB: core: Fix oversight in SuperSpeed initialization")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/4058ac05-237c-4db4-9ecc-5af42bdb4501@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c | 3 +--
- net/bluetooth/msft.c     | 2 +-
- net/bluetooth/msft.h     | 4 ++--
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/usb/core/hub.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 0592369579ab2..befe645d3f9bf 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2736,8 +2736,6 @@ void hci_unregister_dev(struct hci_dev *hdev)
- 
- 	hci_unregister_suspend_notifier(hdev);
- 
--	msft_unregister(hdev);
--
- 	hci_dev_do_close(hdev);
- 
- 	if (!test_bit(HCI_INIT, &hdev->flags) &&
-@@ -2791,6 +2789,7 @@ void hci_release_dev(struct hci_dev *hdev)
- 	hci_discovery_filter_clear(hdev);
- 	hci_blocked_keys_clear(hdev);
- 	hci_codec_list_clear(&hdev->local_codecs);
-+	msft_release(hdev);
- 	hci_dev_unlock(hdev);
- 
- 	ida_destroy(&hdev->unset_handle_ida);
-diff --git a/net/bluetooth/msft.c b/net/bluetooth/msft.c
-index 9612c5d1b13f6..d039683d3bdd4 100644
---- a/net/bluetooth/msft.c
-+++ b/net/bluetooth/msft.c
-@@ -769,7 +769,7 @@ void msft_register(struct hci_dev *hdev)
- 	mutex_init(&msft->filter_lock);
- }
- 
--void msft_unregister(struct hci_dev *hdev)
-+void msft_release(struct hci_dev *hdev)
- {
- 	struct msft_data *msft = hdev->msft_data;
- 
-diff --git a/net/bluetooth/msft.h b/net/bluetooth/msft.h
-index 2a63205b377b7..fe538e9c91c01 100644
---- a/net/bluetooth/msft.h
-+++ b/net/bluetooth/msft.h
-@@ -14,7 +14,7 @@
- 
- bool msft_monitor_supported(struct hci_dev *hdev);
- void msft_register(struct hci_dev *hdev);
--void msft_unregister(struct hci_dev *hdev);
-+void msft_release(struct hci_dev *hdev);
- void msft_do_open(struct hci_dev *hdev);
- void msft_do_close(struct hci_dev *hdev);
- void msft_vendor_evt(struct hci_dev *hdev, void *data, struct sk_buff *skb);
-@@ -35,7 +35,7 @@ static inline bool msft_monitor_supported(struct hci_dev *hdev)
- }
- 
- static inline void msft_register(struct hci_dev *hdev) {}
--static inline void msft_unregister(struct hci_dev *hdev) {}
-+static inline void msft_release(struct hci_dev *hdev) {}
- static inline void msft_do_open(struct hci_dev *hdev) {}
- static inline void msft_do_close(struct hci_dev *hdev) {}
- static inline void msft_vendor_evt(struct hci_dev *hdev, void *data,
--- 
-2.43.0
-
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -5081,9 +5081,10 @@ hub_port_init(struct usb_hub *hub, struc
+ 	}
+ 	if (usb_endpoint_maxp(&udev->ep0.desc) == i) {
+ 		;	/* Initial ep0 maxpacket guess is right */
+-	} else if ((udev->speed == USB_SPEED_FULL ||
++	} else if (((udev->speed == USB_SPEED_FULL ||
+ 				udev->speed == USB_SPEED_HIGH) &&
+-			(i == 8 || i == 16 || i == 32 || i == 64)) {
++			(i == 8 || i == 16 || i == 32 || i == 64)) ||
++			(udev->speed >= USB_SPEED_SUPER && i > 0)) {
+ 		/* Initial guess is wrong; use the descriptor's value */
+ 		if (udev->speed == USB_SPEED_FULL)
+ 			dev_dbg(&udev->dev, "ep0 maxpacket = %d\n", i);
 
 
 
