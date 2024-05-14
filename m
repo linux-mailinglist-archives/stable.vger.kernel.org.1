@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416AF8C5559
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB88C54B9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D49C8B215FE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD34528A44A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB0E26AC5;
-	Tue, 14 May 2024 11:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E3912E1F9;
+	Tue, 14 May 2024 11:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWB3bcTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAsr1iM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA3EF9D4;
-	Tue, 14 May 2024 11:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E5512E1E2;
+	Tue, 14 May 2024 11:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687827; cv=none; b=nCpuJPJjeewTEz+jjdFL2QkU3wcdrqSdqXVnVW5vB0bbnedYLgBm7ROTgN6qESoYQUs9ng/K2sEfdj2Kd8Qpy3wwI1IowxI9aFj8QaO071DVDsPOIpp0Ch7zkXSWamQBVuOM6Syq4BahK0I6Zk0i5ZP2GFdKNT2jQO6daGY7t90=
+	t=1715687392; cv=none; b=r02DFu2/XUeHD3HBh7F3Y3XJEUac+/80BVfC6QXW8fXZqLBq9MmcsOOi1XpZNVM+MLlHERHu07HrxmRjinTxduVezofxHPbFVm2nCq9p+sicp8+4f2VHqS9sZM6pVEXsX345zrpjvFm8RQLRQismzmfzRjNDdj1uSMS5hKV1yhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687827; c=relaxed/simple;
-	bh=cXA699AnF75g0Pb+CNMxZqYu/jN8qsL2M5mXfGc6bJY=;
+	s=arc-20240116; t=1715687392; c=relaxed/simple;
+	bh=iy8T05sE1KVG7kH1qLEI+AZjfgb2Xg7tcFYaE2AsJJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0hfJE47//1/s7/LipJMCtoUzjm37YHKw8d7Y5xwCZE/xzigFGWz+0l+Aadn3FG2sSioT7ShLRNj3SQqvNIgcoRwWIaGgHhJ7gLRm0l5M+J0SNyOHgWhtd9ozdU6xkHUy/O8bx1E9wwxUAtSm26wsYAJ4ssu40jcn+4sHzHLi8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWB3bcTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CD8C2BD10;
-	Tue, 14 May 2024 11:57:06 +0000 (UTC)
+	 MIME-Version; b=kzU1WlA3Lr9YfYC/CB7hoOZ7q1wQIl6i7WXGitjNTFWAodOG2o9sZNdVCzIgTGyMDtHzez59m4odhqshXPaJS4DJwNXnhZ6/nLtVEm+sBBKEXHL1853UnlQi6cBS/bVfQiCSs7QpMo+FGbaGJC4JTrMDFn5ViaeYcMSRC0VREmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAsr1iM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9631CC2BD10;
+	Tue, 14 May 2024 11:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687827;
-	bh=cXA699AnF75g0Pb+CNMxZqYu/jN8qsL2M5mXfGc6bJY=;
+	s=korg; t=1715687392;
+	bh=iy8T05sE1KVG7kH1qLEI+AZjfgb2Xg7tcFYaE2AsJJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWB3bcTMLnej8JmKfMfw7J5FJgYaoNBFYMKpizcrACaaoeuh3TqZ0zIAJkDVG9tkf
-	 GUac7KB7b81pnRbUZ7VRSWRF5EKSpGztFNvleUbKXK2aB7CKGaNwLsbqjXLr44Y3fC
-	 TYuUTrIZr4vU6K6f9HZJGwk3qdlCesDoDGwQ/vD0=
+	b=fAsr1iM6FJhM34PbklU70EHqHPYeWKEnNgeLcMTqRZEKybdGrN490dTAjzI6F0P/o
+	 2USyfSj4jnK/nL42g6PcyceRainv7u3WFvx+AtWqU2Fs6Ag437NehPxnDH4DT+i/8A
+	 u2Y3iqQWWyU6fzqdLWRo8EMCpt6VU2+Zq1MeVgnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangbin Huang <huangguangbin2@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Roded Zats <rzats@paloaltonetworks.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/168] net: hns3: add query vf ring and vector map relation
-Date: Tue, 14 May 2024 12:20:17 +0200
-Message-ID: <20240514101011.176259525@linuxfoundation.org>
+Subject: [PATCH 5.10 080/111] rtnetlink: Correct nested IFLA_VF_VLAN_LIST attribute validation
+Date: Tue, 14 May 2024 12:20:18 +0200
+Message-ID: <20240514101000.174531098@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,139 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangbin Huang <huangguangbin2@huawei.com>
+From: Roded Zats <rzats@paloaltonetworks.com>
 
-[ Upstream commit a1aed456e3261c0096e36618db9aa61d5974ad16 ]
+[ Upstream commit 1aec77b2bb2ed1db0f5efc61c4c1ca3813307489 ]
 
-This patch adds a new mailbox opcode to query map relation between
-vf ring and vector.
+Each attribute inside a nested IFLA_VF_VLAN_LIST is assumed to be a
+struct ifla_vf_vlan_info so the size of such attribute needs to be at least
+of sizeof(struct ifla_vf_vlan_info) which is 14 bytes.
+The current size validation in do_setvfinfo is against NLA_HDRLEN (4 bytes)
+which is less than sizeof(struct ifla_vf_vlan_info) so this validation
+is not enough and a too small attribute might be cast to a
+struct ifla_vf_vlan_info, this might result in an out of bands
+read access when accessing the saved (casted) entry in ivvl.
 
-Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 669554c512d2 ("net: hns3: direct return when receive a unknown mailbox message")
+Fixes: 79aab093a0b5 ("net: Update API for VF vlan protocol 802.1ad support")
+Signed-off-by: Roded Zats <rzats@paloaltonetworks.com>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Link: https://lore.kernel.org/r/20240502155751.75705-1-rzats@paloaltonetworks.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/hisilicon/hns3/hclge_mbx.h   |  1 +
- .../hisilicon/hns3/hns3pf/hclge_mbx.c         | 83 +++++++++++++++++++
- 2 files changed, 84 insertions(+)
+ net/core/rtnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h b/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h
-index e1ba0ae055b02..09a2a7c9fca43 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hclge_mbx.h
-@@ -46,6 +46,7 @@ enum HCLGE_MBX_OPCODE {
- 	HCLGE_MBX_PUSH_PROMISC_INFO,	/* (PF -> VF) push vf promisc info */
- 	HCLGE_MBX_VF_UNINIT,            /* (VF -> PF) vf is unintializing */
- 	HCLGE_MBX_HANDLE_VF_TBL,	/* (VF -> PF) store/clear hw table */
-+	HCLGE_MBX_GET_RING_VECTOR_MAP,	/* (VF -> PF) get ring-to-vector map */
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 8938320f7ba3b..2806b9ed63879 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2379,7 +2379,7 @@ static int do_setvfinfo(struct net_device *dev, struct nlattr **tb)
  
- 	HCLGE_MBX_GET_VF_FLR_STATUS = 200, /* (M7 -> PF) get vf flr status */
- 	HCLGE_MBX_PUSH_LINK_STATUS,	/* (M7 -> PF) get port link status */
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-index ab6df4c1ea0f6..839555bf4bc49 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-@@ -250,6 +250,81 @@ static int hclge_map_unmap_ring_to_vf_vector(struct hclge_vport *vport, bool en,
- 	return ret;
- }
- 
-+static int hclge_query_ring_vector_map(struct hclge_vport *vport,
-+				       struct hnae3_ring_chain_node *ring_chain,
-+				       struct hclge_desc *desc)
-+{
-+	struct hclge_ctrl_vector_chain_cmd *req =
-+		(struct hclge_ctrl_vector_chain_cmd *)desc->data;
-+	struct hclge_dev *hdev = vport->back;
-+	u16 tqp_type_and_id;
-+	int status;
-+
-+	hclge_cmd_setup_basic_desc(desc, HCLGE_OPC_ADD_RING_TO_VECTOR, true);
-+
-+	tqp_type_and_id = le16_to_cpu(req->tqp_type_and_id[0]);
-+	hnae3_set_field(tqp_type_and_id, HCLGE_INT_TYPE_M, HCLGE_INT_TYPE_S,
-+			hnae3_get_bit(ring_chain->flag, HNAE3_RING_TYPE_B));
-+	hnae3_set_field(tqp_type_and_id, HCLGE_TQP_ID_M, HCLGE_TQP_ID_S,
-+			ring_chain->tqp_index);
-+	req->tqp_type_and_id[0] = cpu_to_le16(tqp_type_and_id);
-+	req->vfid = vport->vport_id;
-+
-+	status = hclge_cmd_send(&hdev->hw, desc, 1);
-+	if (status)
-+		dev_err(&hdev->pdev->dev,
-+			"Get VF ring vector map info fail, status is %d.\n",
-+			status);
-+
-+	return status;
-+}
-+
-+static int hclge_get_vf_ring_vector_map(struct hclge_vport *vport,
-+					struct hclge_mbx_vf_to_pf_cmd *req,
-+					struct hclge_respond_to_vf_msg *resp)
-+{
-+#define HCLGE_LIMIT_RING_NUM			1
-+#define HCLGE_RING_TYPE_OFFSET			0
-+#define HCLGE_TQP_INDEX_OFFSET			1
-+#define HCLGE_INT_GL_INDEX_OFFSET		2
-+#define HCLGE_VECTOR_ID_OFFSET			3
-+#define HCLGE_RING_VECTOR_MAP_INFO_LEN		4
-+	struct hnae3_ring_chain_node ring_chain;
-+	struct hclge_desc desc;
-+	struct hclge_ctrl_vector_chain_cmd *data =
-+		(struct hclge_ctrl_vector_chain_cmd *)desc.data;
-+	u16 tqp_type_and_id;
-+	u8 int_gl_index;
-+	int ret;
-+
-+	req->msg.ring_num = HCLGE_LIMIT_RING_NUM;
-+
-+	memset(&ring_chain, 0, sizeof(ring_chain));
-+	ret = hclge_get_ring_chain_from_mbx(req, &ring_chain, vport);
-+	if (ret)
-+		return ret;
-+
-+	ret = hclge_query_ring_vector_map(vport, &ring_chain, &desc);
-+	if (ret) {
-+		hclge_free_vector_ring_chain(&ring_chain);
-+		return ret;
-+	}
-+
-+	tqp_type_and_id = le16_to_cpu(data->tqp_type_and_id[0]);
-+	int_gl_index = hnae3_get_field(tqp_type_and_id,
-+				       HCLGE_INT_GL_IDX_M, HCLGE_INT_GL_IDX_S);
-+
-+	resp->data[HCLGE_RING_TYPE_OFFSET] = req->msg.param[0].ring_type;
-+	resp->data[HCLGE_TQP_INDEX_OFFSET] = req->msg.param[0].tqp_index;
-+	resp->data[HCLGE_INT_GL_INDEX_OFFSET] = int_gl_index;
-+	resp->data[HCLGE_VECTOR_ID_OFFSET] = data->int_vector_id_l;
-+	resp->len = HCLGE_RING_VECTOR_MAP_INFO_LEN;
-+
-+	hclge_free_vector_ring_chain(&ring_chain);
-+
-+	return ret;
-+}
-+
- static void hclge_set_vf_promisc_mode(struct hclge_vport *vport,
- 				      struct hclge_mbx_vf_to_pf_cmd *req)
- {
-@@ -749,6 +824,14 @@ void hclge_mbx_handler(struct hclge_dev *hdev)
- 			ret = hclge_map_unmap_ring_to_vf_vector(vport, false,
- 								req);
- 			break;
-+		case HCLGE_MBX_GET_RING_VECTOR_MAP:
-+			ret = hclge_get_vf_ring_vector_map(vport, req,
-+							   &resp_msg);
-+			if (ret)
-+				dev_err(&hdev->pdev->dev,
-+					"PF fail(%d) to get VF ring vector map\n",
-+					ret);
-+			break;
- 		case HCLGE_MBX_SET_PROMISC_MODE:
- 			hclge_set_vf_promisc_mode(vport, req);
- 			break;
+ 		nla_for_each_nested(attr, tb[IFLA_VF_VLAN_LIST], rem) {
+ 			if (nla_type(attr) != IFLA_VF_VLAN_INFO ||
+-			    nla_len(attr) < NLA_HDRLEN) {
++			    nla_len(attr) < sizeof(struct ifla_vf_vlan_info)) {
+ 				return -EINVAL;
+ 			}
+ 			if (len >= MAX_VLAN_LIST_LEN)
 -- 
 2.43.0
 
