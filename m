@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-45014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2769C8C555B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC168C54B7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC4821F22632
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E345E1F214C2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EC42943F;
-	Tue, 14 May 2024 11:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3A012E1F8;
+	Tue, 14 May 2024 11:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vV2onAsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIEYFDca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042A4F9D4;
-	Tue, 14 May 2024 11:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19B212E1E2;
+	Tue, 14 May 2024 11:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687833; cv=none; b=G0wSMQHCf3o0YnlgdWbqo+T+IEyOPlKgg3y8Op8wHs/6w0oD2MbOLsySYlNGbVeUAbVDbsn7PavWWBIngVtw+gmOhwZj2j33LyjvQOIIi2MpCdDIAmGfCO8ZW7Mf1ccTkyXhrmYRHKJ9mztp00kTX/R6ZjZ7i5gSNCPOazyxA0o=
+	t=1715687395; cv=none; b=Hr1fKFtv2EdiJ985WRivBpbdZ4e975fsqvkriWVD1/Wb9/sPGqIP7ZY9h7Mttr0ORLFgpleSvp6wavXMx3fMbD1AceXBDEiQLBqDmSetDTqhJDkDdoKF6bbdWYZTlSr9XBERvm8v8E8b7rHyRPMDigOZnLGG7+UqKmRVSRWnNY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687833; c=relaxed/simple;
-	bh=mUifP0VmbJSDyIy/TngXR7fdJqBHdJxO7YsLqRmEEfc=;
+	s=arc-20240116; t=1715687395; c=relaxed/simple;
+	bh=B4NbhM2wQFImUAqWZPh/OUdddVsGmE8BndL+V5gcY4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4P1R4r4tEk0e79ga6tCHGBa2rDRJoaZCS4FNUnLZA5beYbOgORb+PdsBOf1qlej4IwK880BTOyuSHrk3SjsL6iFc8cz1PINDrg+5hhT8LtGsSEEDPIYivWrabkWv4Rqw2ymuilNw3PG1t1xK7sg4RoZCJOqFqckBtG3R4qHueE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vV2onAsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E55CC2BD10;
-	Tue, 14 May 2024 11:57:12 +0000 (UTC)
+	 MIME-Version; b=A4RQhBiqrQpBdzsDe5w5snXDYNrMVMlhcnzwP6a1AV85W2hplewNCKFbCs3CtDDskZ+EG60n36TuMmxMZbN5ZNFFUYiUbXvC8SSnPwqi/H981NhbPyZn1FUGPtHCOw1XC4AYs+M0dkQgR/g3KgUmre4ShsNUC4z+4ewsylu0zPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIEYFDca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CD6C2BD10;
+	Tue, 14 May 2024 11:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687832;
-	bh=mUifP0VmbJSDyIy/TngXR7fdJqBHdJxO7YsLqRmEEfc=;
+	s=korg; t=1715687394;
+	bh=B4NbhM2wQFImUAqWZPh/OUdddVsGmE8BndL+V5gcY4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vV2onAsR8ORjg/WDm4t3j8Sli1cHAf967JiOq0wLDySlWczSA5xJ1+1xiD4vgheo6
-	 NmOh1LbJEVG/RpOXCHVTDfV3OopSpVJpKrnY8Nzd6RbKxLAzfcnCPAVXjRvDW1VBzN
-	 +tbiWyrI7QlCDUH/g62hFMNnxqszHYR94L0+WRlM=
+	b=VIEYFDcaJ+RvWkG5DJOvFsS8C8QrsBk9L+Zmx/gSHbG2EqsxLlbLgSBTBDBN/W78J
+	 Hkksst6TMz3tl763ul6y8rz+7s27E9v/8qLHGkHt7sLHYw+9bJhrr3jBZTntR0BjXx
+	 0eqZb/j7Dg0SouX78t5fG+/mezj54Z975RtiX884=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Marius Zachmann <mail@mariuszachmann.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/168] net: hns3: direct return when receive a unknown mailbox message
+Subject: [PATCH 5.10 081/111] hwmon: (corsair-cpro) Use a separate buffer for sending commands
 Date: Tue, 14 May 2024 12:20:19 +0200
-Message-ID: <20240514101011.251865580@linuxfoundation.org>
+Message-ID: <20240514101000.210873826@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Aleksa Savic <savicaleksa83@gmail.com>
 
-[ Upstream commit 669554c512d2107e2f21616f38e050d40655101f ]
+[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
 
-Currently, the driver didn't return when receive a unknown
-mailbox message, and continue checking whether need to
-generate a response. It's unnecessary and may be incorrect.
+Introduce cmd_buffer, a separate buffer for storing only
+the command that is sent to the device. Before this separation,
+the existing buffer was shared for both the command and the
+report received in ccp_raw_event(), which was copied into it.
 
-Fixes: bb5790b71bad ("net: hns3: refactor mailbox response scheme between PF and VF")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+However, because of hidraw, the raw event parsing may be triggered
+in the middle of sending a command, resulting in outputting gibberish
+to the device. Using a separate buffer resolves this.
+
+Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Acked-by: Marius Zachmann <mail@mariuszachmann.de>
+Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-index 39848bcd77c75..1bd3d6056163b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-@@ -1019,12 +1019,13 @@ static void hclge_mbx_request_handling(struct hclge_mbx_ops_param *param)
+diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
+index 591929ec217a6..78c93c142fecf 100644
+--- a/drivers/hwmon/corsair-cpro.c
++++ b/drivers/hwmon/corsair-cpro.c
+@@ -79,6 +79,7 @@ struct ccp_device {
+ 	struct device *hwmon_dev;
+ 	struct completion wait_input_report;
+ 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
++	u8 *cmd_buffer;
+ 	u8 *buffer;
+ 	int target[6];
+ 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
+@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
+ 	unsigned long t;
+ 	int ret;
  
- 	hdev = param->vport->back;
- 	cmd_func = hclge_mbx_ops_list[param->req->msg.code];
--	if (cmd_func)
--		ret = cmd_func(param);
--	else
-+	if (!cmd_func) {
- 		dev_err(&hdev->pdev->dev,
- 			"un-supported mailbox message, code = %u\n",
- 			param->req->msg.code);
-+		return;
-+	}
-+	ret = cmd_func(param);
+-	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
+-	ccp->buffer[0] = command;
+-	ccp->buffer[1] = byte1;
+-	ccp->buffer[2] = byte2;
+-	ccp->buffer[3] = byte3;
++	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
++	ccp->cmd_buffer[0] = command;
++	ccp->cmd_buffer[1] = byte1;
++	ccp->cmd_buffer[2] = byte2;
++	ccp->cmd_buffer[3] = byte3;
  
- 	/* PF driver should not reply IMP */
- 	if (hnae3_get_bit(param->req->mbx_need_resp, HCLGE_MBX_NEED_RESP_B) &&
+ 	reinit_completion(&ccp->wait_input_report);
+ 
+-	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
++	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -491,7 +492,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	if (!ccp)
+ 		return -ENOMEM;
+ 
+-	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
++	if (!ccp->cmd_buffer)
++		return -ENOMEM;
++
++	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
+ 	if (!ccp->buffer)
+ 		return -ENOMEM;
+ 
 -- 
 2.43.0
 
