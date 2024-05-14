@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E20D8C537B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D548C550E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50591F230A6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33871F213C5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666174DA13;
-	Tue, 14 May 2024 11:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DA86BFA8;
+	Tue, 14 May 2024 11:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijgu3E/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGat9nx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2374D47A57;
-	Tue, 14 May 2024 11:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E8C320F;
+	Tue, 14 May 2024 11:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686556; cv=none; b=cdmZQ+ah7Zu0L4PyBRND26mOMHOxQQ5BSurnK7gk9hluoTBFwgrwVil4VfXd6ZQkuEvHbCXFynpxd03ZJlNKMz+hUOmN7aL6sHIIHU25FgaD/ArB+SPxxPatKLUUBUJuaQlPpVmb3SLIRGB1/GZxXhk0yyMaPju202GK7/P387A=
+	t=1715687624; cv=none; b=t9u5XpM8qKUS5NqzGqVVCojPebH40oQgGB/4QC2FVt9ZBuHtUBOtykO70Nl4DQUKzMp9uScr4UgUv/MI2EZWZM028gGwLK4UXVWxlyjNgv6Ksg3uAMsMwZjvCJbajL0+Y2RfLKcBKrwAH/mKq+OC7mvZ0OCjKM/S9n7V0OeJ9OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686556; c=relaxed/simple;
-	bh=xEuGX6Al4W1VpG1Z5SKJ+VJ2SOjM3SKNilw4CaYcI6g=;
+	s=arc-20240116; t=1715687624; c=relaxed/simple;
+	bh=7NDyl5JpbURZJ4YasUOrHg564JDu3HfkPc5847MtOWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQ7f9HMyyGNmT7NldSWQjp3FBi5lKhQtdaBfMKqGOZuZM5EaeWArt1uMNmYRYvfry20K8Bs0CBEVTcNGhBfRxuRmxluv0UXC990JZr9xww510l9x9quFcTFzqz0vI8zwHv6c2D5q6OU9hBoiER89L9ct2Utuk8enfIR8ARLDL5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijgu3E/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BBDC2BD10;
-	Tue, 14 May 2024 11:35:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RgV+eAI9C7MKpZvHJcBLOWImahYgBlHXIPFzpfdr/wijr/OO42VYvend7LS68f11SHvzzagCfq33mTiVFFaybj8aMVliCqJ7BigXQTHoSxEJZ0R7jT2Ptmuqh9pi+G2zVoZdWo9eBx7MA4Wd1JVz+JJqv/hGwqdPpgaF/JlqbqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGat9nx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01381C2BD10;
+	Tue, 14 May 2024 11:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686555;
-	bh=xEuGX6Al4W1VpG1Z5SKJ+VJ2SOjM3SKNilw4CaYcI6g=;
+	s=korg; t=1715687624;
+	bh=7NDyl5JpbURZJ4YasUOrHg564JDu3HfkPc5847MtOWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijgu3E/PiAez8W+EwEawWp8Rdnye9SDvSJpXXR6QpANyETXnVbby8efqDP367DgIF
-	 5BLu9jglbAJMLLeSucywYQhmSBYesRwXJJ4Siw9tYZqgXDcpx9a21i1tQdfgGfaBeS
-	 yoOw15fFPv44+nE4AOHuQZ+9+X+5CM+E+SkCZZxs=
+	b=eGat9nx0Urq2D4ucWZpC+YBy/Rr75BToqcFuJiutmcZWcFoEws2Fq2KJBmg3Fi+1P
+	 HB2RCo4KPjqEhie2cEmZtIiLO/zM03Jevz0KEJeqaczcSOZNkqh93yAYysvMGsAtYu
+	 VMHNSjjJWpKNfbhR61ddhKirQdfok9rp4SPLFQMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/236] dm/amd/pm: Fix problems with reboot/shutdown for some SMU 13.0.4/13.0.11 users
+Subject: [PATCH 5.15 041/168] net: qede: use return from qede_parse_actions()
 Date: Tue, 14 May 2024 12:18:59 +0200
-Message-ID: <20240514101027.081418731@linuxfoundation.org>
+Message-ID: <20240514101008.242840071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-[ Upstream commit cd94d1b182d2986378550c9087571991bfee01d4 ]
+[ Upstream commit f26f719a36e56381a1f4230e5364e7ad4d485888 ]
 
-Limit the workaround introduced by commit 31729e8c21ec ("drm/amd/pm: fixes
-a random hang in S4 for SMU v13.0.4/11") to only run in the s4 path.
+When calling qede_parse_actions() then the
+return code was only used for a non-zero check,
+and then -EINVAL was returned.
 
-Cc: Tim Huang <Tim.Huang@amd.com>
-Fixes: 31729e8c21ec ("drm/amd/pm: fixes a random hang in S4 for SMU v13.0.4/11")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3351
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+qede_parse_actions() can currently fail with:
+* -EINVAL
+* -EOPNOTSUPP
+
+This patch changes the code to use the actual
+return code, not just return -EINVAL.
+
+The blaimed commit broke the implicit assumption
+that only -EINVAL would ever be returned.
+
+Only compile tested.
+
+Fixes: 319a1d19471e ("flow_offload: check for basic action hw stats type")
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qede/qede_filter.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-index 21b374d121819..5de31961319a2 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_4_ppt.c
-@@ -222,7 +222,7 @@ static int smu_v13_0_4_system_features_control(struct smu_context *smu, bool en)
- 	struct amdgpu_device *adev = smu->adev;
- 	int ret = 0;
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+index aeff091cdfaee..8871099b99d8a 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+@@ -1894,10 +1894,9 @@ int qede_add_tc_flower_fltr(struct qede_dev *edev, __be16 proto,
+ 	}
  
--	if (!en && !adev->in_s0ix) {
-+	if (!en && adev->in_s4) {
- 		/* Adds a GFX reset as workaround just before sending the
- 		 * MP1_UNLOAD message to prevent GC/RLC/PMFW from entering
- 		 * an invalid state.
+ 	/* parse tc actions and get the vf_id */
+-	if (qede_parse_actions(edev, &f->rule->action, f->common.extack)) {
+-		rc = -EINVAL;
++	rc = qede_parse_actions(edev, &f->rule->action, f->common.extack);
++	if (rc)
+ 		goto unlock;
+-	}
+ 
+ 	if (qede_flow_find_fltr(edev, &t)) {
+ 		rc = -EEXIST;
 -- 
 2.43.0
 
