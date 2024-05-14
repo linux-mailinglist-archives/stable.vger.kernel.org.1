@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB3E8C51A7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D115A8C5186
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CF661C21504
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC0F1C215FF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAD013AD09;
-	Tue, 14 May 2024 11:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC07139D1F;
+	Tue, 14 May 2024 11:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXrzbft0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erCkFVAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3B81E495;
-	Tue, 14 May 2024 11:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887A154903;
+	Tue, 14 May 2024 11:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684848; cv=none; b=fksYHHZbebep9IOrGY0I0FDrEjco+xBbBPjz9NXZkRT7GB+6/BLeR85dPT9b3gFiUq5E8nmU56cG34OJ7LJ1q6C6xRbiFhgeI19hBMZNiX7k8eQNwmSUAL/jUfCQ2O5lIvdgsIpCmjSeHm1AiB9X9loXeavy0RSTjFmAKxg6Rdo=
+	t=1715684638; cv=none; b=E4HwFEhu2sJkWD0/zyWagaIfJsHqzQQH6+NMZ4ifT6sXsjStzuWn8XoJ1ZcaZtYdNzVbYG+7lb6tTzqjM6PFGZBISuiU8G0E7e0WY+1ofCb5SwKOQLGg1qUmeSILugdBjgDr5SFb1Q+JdJC3EGSdmgdZJBfANjqfoEtih2UM+BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684848; c=relaxed/simple;
-	bh=w3GVX0rfRKc4kyFTjiT8xFevfP295Hcb9eeNiuOeVzA=;
+	s=arc-20240116; t=1715684638; c=relaxed/simple;
+	bh=w943OfC6go48wRb8h+A9Vlq7fnB3tAAVXKCATcMe7Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bejd4HKmEM4amdUnc+KrELvfzoFCwuyRtPFY4hLdf22RAih3PNxcpl0acMCP7twF4/R1ZhZmUWrPi9f510VOl6bo9IMGy1pFs7a35n8etpP3vi6er3sKcaA9TD1shI0vx3qyZH70U+LgNSO/INcG3nHRzoCOSU/642j2uMa94ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXrzbft0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4F3C2BD10;
-	Tue, 14 May 2024 11:07:27 +0000 (UTC)
+	 MIME-Version; b=JphRBlZqVxrdt5jF6S+lALLRa+KN/WqZrMKkYggzqrTwEwClerbkXIVXAvISqsHxx1FY/cxJW3ZU+tdn2wkNE43Qn+1BUPS8h+xFzFtknO5/NEJCQrVdN44Iy+Og7eMusezBnQ9MEdjsdtK2QqiUgdBrwzmcsje+/AjF9JE6Dz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erCkFVAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91602C2BD10;
+	Tue, 14 May 2024 11:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684847;
-	bh=w3GVX0rfRKc4kyFTjiT8xFevfP295Hcb9eeNiuOeVzA=;
+	s=korg; t=1715684638;
+	bh=w943OfC6go48wRb8h+A9Vlq7fnB3tAAVXKCATcMe7Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXrzbft021emYWw2YS6BT2jrUkq5b4MSKXaz/PUUdccYbL8w1sQSSxAkdihtrqxih
-	 DRVNdbnE64Df92NwLIZDp8K+29qAfAN1fSxxvWXBV/JLm7050gmSkwh5hyvyLZd8kn
-	 bpA0N1hkCxi0b6lHHxRK69ndxaTA1HOo5BWC2iBY=
+	b=erCkFVAVvReG+olFVO7a6ZzNz/Jyy8JCtQk9Aa8le5EQ2o7CTCwJqf+GsVXIDaLJ7
+	 TGZvil1laBJTShSgrN6/MGxUVedGRZD9qxg9mNNK4Ui3tNMOrNycF31yl4c1kyirje
+	 lz7phrdfJO2/cTR6/jsuYILa0ovncZOVvDu1/u/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jerome Brunet <jbrunet@baylibre.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/301] ASoC: meson: axg-card: make links nonatomic
-Date: Tue, 14 May 2024 12:15:38 +0200
-Message-ID: <20240514101034.772445449@linuxfoundation.org>
+Subject: [PATCH 6.6 068/301] ASoC: meson: axg-tdm-interface: manage formatters in trigger
+Date: Tue, 14 May 2024 12:15:39 +0200
+Message-ID: <20240514101034.810204516@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
 References: <20240514101032.219857983@linuxfoundation.org>
@@ -68,34 +68,87 @@ Content-Transfer-Encoding: 8bit
 
 From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit dcba52ace7d4c12e2c8c273eff55ea03a84c8baf ]
+[ Upstream commit f949ed458ad15a00d41b37c745ebadaef171aaae ]
 
-Non atomic operations need to be performed in the trigger callback
-of the TDM interfaces. Those are BEs but what matters is the nonatomic
-flag of the FE in the DPCM context. Just set nonatomic for everything so,
-at least, what is done is clear.
+So far, the formatters have been reset/enabled using the .prepare()
+callback. This was done in this callback because walking the formatters use
+a mutex. A mutex is used because formatter handling require dealing
+possibly slow clock operation.
 
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+With the support of non-atomic, .trigger() callback may be used which also
+allows to properly enable and disable formatters on start but also
+pause/resume.
+
+This solve a random shift on TDMIN as well repeated samples on for TDMOUT.
+
+Fixes: d60e4f1e4be5 ("ASoC: meson: add tdm interface driver")
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240426152946.3078805-3-jbrunet@baylibre.com
+Link: https://lore.kernel.org/r/20240426152946.3078805-4-jbrunet@baylibre.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-card.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/meson/axg-tdm-interface.c | 34 ++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
-index f10c0c17863eb..b6f5b4572012d 100644
---- a/sound/soc/meson/axg-card.c
-+++ b/sound/soc/meson/axg-card.c
-@@ -318,6 +318,7 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
+diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
+index 2cedbce738373..a71790908e178 100644
+--- a/sound/soc/meson/axg-tdm-interface.c
++++ b/sound/soc/meson/axg-tdm-interface.c
+@@ -349,26 +349,31 @@ static int axg_tdm_iface_hw_params(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
  
- 	dai_link->cpus = cpu;
- 	dai_link->num_cpus = 1;
-+	dai_link->nonatomic = true;
+-static int axg_tdm_iface_hw_free(struct snd_pcm_substream *substream,
++static int axg_tdm_iface_trigger(struct snd_pcm_substream *substream,
++				 int cmd,
+ 				 struct snd_soc_dai *dai)
+ {
+-	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
++	struct axg_tdm_stream *ts =
++		snd_soc_dai_get_dma_data(dai, substream);
  
- 	ret = meson_card_parse_dai(card, np, dai_link->cpus);
- 	if (ret)
+-	/* Stop all attached formatters */
+-	axg_tdm_stream_stop(ts);
++	switch (cmd) {
++	case SNDRV_PCM_TRIGGER_START:
++	case SNDRV_PCM_TRIGGER_RESUME:
++	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++		axg_tdm_stream_start(ts);
++		break;
++	case SNDRV_PCM_TRIGGER_SUSPEND:
++	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
++	case SNDRV_PCM_TRIGGER_STOP:
++		axg_tdm_stream_stop(ts);
++		break;
++	default:
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+ 
+-static int axg_tdm_iface_prepare(struct snd_pcm_substream *substream,
+-				 struct snd_soc_dai *dai)
+-{
+-	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
+-
+-	/* Force all attached formatters to update */
+-	return axg_tdm_stream_reset(ts);
+-}
+-
+ static int axg_tdm_iface_remove_dai(struct snd_soc_dai *dai)
+ {
+ 	int stream;
+@@ -412,8 +417,7 @@ static const struct snd_soc_dai_ops axg_tdm_iface_ops = {
+ 	.set_fmt	= axg_tdm_iface_set_fmt,
+ 	.startup	= axg_tdm_iface_startup,
+ 	.hw_params	= axg_tdm_iface_hw_params,
+-	.prepare	= axg_tdm_iface_prepare,
+-	.hw_free	= axg_tdm_iface_hw_free,
++	.trigger	= axg_tdm_iface_trigger,
+ };
+ 
+ /* TDM Backend DAIs */
 -- 
 2.43.0
 
