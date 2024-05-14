@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4BC8C530F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA958C51DE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41F0D2831C1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29A511F213EA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30065139CEC;
-	Tue, 14 May 2024 11:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E173745E7;
+	Tue, 14 May 2024 11:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H14a9s3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUxnbE3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EBC58AC4;
-	Tue, 14 May 2024 11:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9D21D54D;
+	Tue, 14 May 2024 11:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686287; cv=none; b=L7xBoE1mCPZw2H9V+VnXTgw5Nu28tDqcNRgvHjopmTbGb2VmLpSfm38H22V0gFI51gOvmdNLsFqN4I0dH1I6H38wAxFKeAP+qSrnzVW5SHzVkA/ISDqRa16gTb6xZEwF4Hh6IJl1WDYUyKXI2tdlJFOTL2iEWr+l3JwejyWUlMA=
+	t=1715685145; cv=none; b=LAF/nPYoBPCnvU0STNdDnjcGK4tQjazwj8mbXmJ0okdRy8yRsx931PMUWgId3V7j0h8v1lQxEEceVQKSTQg+ynwJB7UReKWsGOdgHGNI+C8vJ6dr6O01jlCR1qtl+/W4riiFDsKANio3cjPGizDpPfV0DWj6WL/Jd7QuMtKZZEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686287; c=relaxed/simple;
-	bh=TPtO9X3FaYYFKXqnsXGx67TuGQluJ3Le2CBd5xh/RwU=;
+	s=arc-20240116; t=1715685145; c=relaxed/simple;
+	bh=y8umImRYyETy0H8PXuq/f8r8IS7NGApUF4DTfJ5+N0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=se6MDAnTNU4iWFd6XbahWL3KzGZMQZ6jno+kGgE/VW9r21SdZ9UKWw4g154eszd41dYHqT4NTGFSc43ob1PvTN+DE5Sy0f8IY83z1tWRAI0YBdPgnxKQWnTrvuFMVW63nwrwtrA2vV/IuBqMw00yJPCC0QzjiMZ8LndgvaL2Yhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H14a9s3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D12C2BD10;
-	Tue, 14 May 2024 11:31:26 +0000 (UTC)
+	 MIME-Version; b=CpJ2zfOP/gIhfOJM98iJf8OjWlyTXSISZQSCZ0nkpbxTUmLXMRc7/bdveEB/A560Y6cvREpD3ueIbPPIa5GHuisqigti8ZE3QNqkMXUDnJ4UvIdDqT4pgy+g2RWWCIlT2d2kRiieqj4pA650KaMIbK4Rs/E53nJ9jzOjpHspAw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUxnbE3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3581CC2BD10;
+	Tue, 14 May 2024 11:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686286;
-	bh=TPtO9X3FaYYFKXqnsXGx67TuGQluJ3Le2CBd5xh/RwU=;
+	s=korg; t=1715685145;
+	bh=y8umImRYyETy0H8PXuq/f8r8IS7NGApUF4DTfJ5+N0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H14a9s3p21esqJqnHgvz3bxqjZbFx5VlkKDph29ZJqEM8Cf0s4qBiiZhq6lWalewk
-	 ahKXX3OkaCFaPz0oYQaeSobqtCqHBDE4z4gomGmUUJcMtyWQRmAS4+f/VY3hKBMxOG
-	 J1jc2eZydwBXkDYcLgWrl037Imd69zakAFURGroQ=
+	b=iUxnbE3hwgGIpUM+Wc1U/HZg8QKaKUErJm47aMlQPgHRyASlcjvn3RXY74shXSCms
+	 xxydYDWrALhwE7NmrHYg0hMN6fttwGb8UbeLp0hXIYS2B5grbqeKvU430jxqOXIKJa
+	 vxT4PQ0hht6z4O2Dw5Idi1PxHCI/JHFMzaJdF/dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Jay Fang <f.fangjian@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Justin Ernst <justin.ernst@hpe.com>,
+	Thomas Renninger <trenn@suse.de>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/236] spi: hisi-kunpeng: Delete the dump interface of data registers in debugfs
+Subject: [PATCH 6.6 144/301] tools/power/turbostat: Fix uncore frequency file string
 Date: Tue, 14 May 2024 12:16:55 +0200
-Message-ID: <20240514101022.360101384@linuxfoundation.org>
+Message-ID: <20240514101037.690121429@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Justin Ernst <justin.ernst@hpe.com>
 
-[ Upstream commit 7430764f5a85d30314aeef2d5438dff1fb0b1d68 ]
+[ Upstream commit 60add818ab2543b7e4f2bfeaacf2504743c1eb50 ]
 
-Due to the reading of FIFO during the dump of data registers in
-debugfs, if SPI transmission is in progress, it will be affected
-and may result in transmission failure. Therefore, the dump
-interface of data registers in debugfs is removed.
+Running turbostat on a 16 socket HPE Scale-up Compute 3200 (SapphireRapids) fails with:
+turbostat: /sys/devices/system/cpu/intel_uncore_frequency/package_010_die_00/current_freq_khz: open failed: No such file or directory
 
-Fixes: 2b2142f247eb ("spi: hisi-kunpeng: Add debugfs support")
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Reviewed-by: Jay Fang <f.fangjian@huawei.com>
-Link: https://lore.kernel.org/r/20240416015839.3323398-1-liudingyuan@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+We observe the sysfs uncore frequency directories named:
+...
+package_09_die_00/
+package_10_die_00/
+package_11_die_00/
+...
+package_15_die_00/
+
+The culprit is an incorrect sprintf format string "package_0%d_die_0%d" used
+with each instance of reading uncore frequency files. uncore-frequency-common.c
+creates the sysfs directory with the format "package_%02d_die_%02d". Once the
+package value reaches double digits, the formats diverge.
+
+Change each instance of "package_0%d_die_0%d" to "package_%02d_die_%02d".
+
+[lenb: deleted the probe part of this patch, as it was already fixed]
+
+Signed-off-by: Justin Ernst <justin.ernst@hpe.com>
+Reviewed-by: Thomas Renninger <trenn@suse.de>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-hisi-kunpeng.c | 2 --
- 1 file changed, 2 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index 525cc0143a305..54730e93fba45 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -151,8 +151,6 @@ static const struct debugfs_reg32 hisi_spi_regs[] = {
- 	HISI_SPI_DBGFS_REG("ENR", HISI_SPI_ENR),
- 	HISI_SPI_DBGFS_REG("FIFOC", HISI_SPI_FIFOC),
- 	HISI_SPI_DBGFS_REG("IMR", HISI_SPI_IMR),
--	HISI_SPI_DBGFS_REG("DIN", HISI_SPI_DIN),
--	HISI_SPI_DBGFS_REG("DOUT", HISI_SPI_DOUT),
- 	HISI_SPI_DBGFS_REG("SR", HISI_SPI_SR),
- 	HISI_SPI_DBGFS_REG("RISR", HISI_SPI_RISR),
- 	HISI_SPI_DBGFS_REG("ISR", HISI_SPI_ISR),
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 0561362301c53..ffa964ddbacef 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -1969,7 +1969,7 @@ unsigned long long get_uncore_mhz(int package, int die)
+ {
+ 	char path[128];
+ 
+-	sprintf(path, "/sys/devices/system/cpu/intel_uncore_frequency/package_0%d_die_0%d/current_freq_khz", package,
++	sprintf(path, "/sys/devices/system/cpu/intel_uncore_frequency/package_%02d_die_%02d/current_freq_khz", package,
+ 		die);
+ 
+ 	return (snapshot_sysfs_counter(path) / 1000);
 -- 
 2.43.0
 
