@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73CD8C536E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429918C5259
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE5DB2864A1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2051F216F9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46928625C;
-	Tue, 14 May 2024 11:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66C512F39E;
+	Tue, 14 May 2024 11:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyp+sVkC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOhzuNLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B8518026;
-	Tue, 14 May 2024 11:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832BC6311D;
+	Tue, 14 May 2024 11:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686499; cv=none; b=BBUKBbA/plQLLQ1APA49kWfHsBOMjvTES8Uk2QNh8UPk8c17RmKQeH2pY3DD4oBJeg+3QA/K599evRTvSj8bdwN/whs2YS2XLYClc3XmQFHqzayaOM+0Dm4CsrIYyDaP+vRFgvU8NdVXneyv3uz7jim7fC4jvFepqsVhUvDAmoc=
+	t=1715685809; cv=none; b=juuKIx0uJQGngakhrEafGrvwjb9jq8nO+8qxoCYaRHMB3vWdFQbjA42NtPM7LIMajb/dsTu3qklbivP79et8/ixoExn7NB1qWBXnW1+iIgzVQJZdsvSZ/bLWqhFfMw2sQXAoOMNRbGt9LWXXFXsxzUPJ8+9bZ0JIBx9wYlFvtXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686499; c=relaxed/simple;
-	bh=U+yG7XTlwu3R+eq6s1VPa+zbyxE2q748dRj1MxMc26Q=;
+	s=arc-20240116; t=1715685809; c=relaxed/simple;
+	bh=7HlWov6TmsN81XALdpCoHZj+y2Q2bhdYyax8hobOAhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mu1B1zDb7h3AUoS5fQTNDSBQkrCwQ3vhLLgZU7jBdxOxtD8RCInKidCJiIPqUej0mwmH5qRcIDWlbU4JjlSME399M80nVKX9JBhuI0K71tK3vhuhaqQrAKJPUCeNEoIv0Gro0bp0qZNcq0rjzA/DMWUeKKzZqCusmZuH5EkYmG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyp+sVkC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292D0C32781;
-	Tue, 14 May 2024 11:34:58 +0000 (UTC)
+	 MIME-Version; b=eC3wWl318v/k7tioOuOD07yVOq8x+6tM/4Lp+C+BadRx2iinc7aY6rwj54IkPNhvNVrY7urm5mxR+7vsZL7r04VHcx664sngJNmx6hNTsKCyXYPZAr5/RluIRHb8XNXN/boZ8GdgtmNB6ntyD0cw6uMktP1PEcY2y5lW3d64KXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOhzuNLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE82C2BD10;
+	Tue, 14 May 2024 11:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686499;
-	bh=U+yG7XTlwu3R+eq6s1VPa+zbyxE2q748dRj1MxMc26Q=;
+	s=korg; t=1715685809;
+	bh=7HlWov6TmsN81XALdpCoHZj+y2Q2bhdYyax8hobOAhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jyp+sVkCp5ROb20weWG5GOHpQ0aeG2hfJR4YVm0/r/gJwtfOAgoz6aHneyorYNDN2
-	 XW85ZWJfC6jy8HevQ/36WiXevRtgb0Gv1+fclrEbWMlSfQD/LhaSDOMQQJRGLonaca
-	 FW/KZjTd3gh0Sh6IXUOKrMFDNw88SbpivzMbo3Rw=
+	b=uOhzuNLqFVLgT47/lB5puNYmcjTNYCOyV4wTSDpGgzlD8eT2vsydYBhhUhkZXYXCj
+	 ViFlLpY/WTr5LhQ+kGs5ux+zLUIU79hbsW9Ae33kty1EYEk/BIPYHkUDWbf6N5PAzE
+	 XOjUnbmox/EdgInolnjKVzgCPdUArPc/uEZYnhbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/236] timers: Get rid of del_singleshot_timer_sync()
+	Hans de Goede <hdegoede@redhat.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 251/301] iio: accel: mxc4005: Interrupt handling fixes
 Date: Tue, 14 May 2024 12:18:42 +0200
-Message-ID: <20240514101026.435894556@linuxfoundation.org>
+Message-ID: <20240514101041.733094583@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9a5a305686971f4be10c6d7251c8348d74b3e014 ]
+commit 57a1592784d622ecee0b71940c65429173996b33 upstream.
 
-del_singleshot_timer_sync() used to be an optimization for deleting timers
-which are not rearmed from the timer callback function.
+There are 2 issues with interrupt handling in the mxc4005 driver:
 
-This optimization turned out to be broken and got mapped to
-del_timer_sync() about 17 years ago.
+1. mxc4005_set_trigger_state() writes MXC4005_REG_INT_MASK1_BIT_DRDYE
+(0x01) to INT_MASK1 to enable the interrupt, but to disable the interrupt
+it writes ~MXC4005_REG_INT_MASK1_BIT_DRDYE which is 0xfe, so it enables
+all other interrupt sources in the INT_SRC1 register. On the MXC4005 this
+is not an issue because only bit 0 of the register is used. On the MXC6655
+OTOH this is a problem since bit7 is used as TC (Temperature Compensation)
+disable bit and writing 1 to this disables Temperature Compensation which
+should only be done when running self-tests on the chip.
 
-Get rid of the undocumented indirection and use del_timer_sync() directly.
+Write 0 instead of ~MXC4005_REG_INT_MASK1_BIT_DRDYE to disable
+the interrupts to fix this.
 
-No functional change.
+2. The datasheets for the MXC4005 / MXC6655 do not state what the reset
+value for the INT_MASK0 and INT_MASK1 registers is and since these are
+write only we also cannot learn this from the hw. Presumably the reset
+value for both is all 0, which means all interrupts disabled.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Link: https://lore.kernel.org/r/20221123201624.706987932@linutronix.de
-Stable-dep-of: 4893b8b3ef8d ("hsr: Simplify code for announcing HSR nodes timer setup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Explicitly set both registers to 0 from mxc4005_chip_init() to ensure
+both masks are actually set to 0.
+
+Fixes: 79846e33aac1 ("iio: accel: mxc4005: add support for mxc6655")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240326113700.56725-2-hdegoede@redhat.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-dev-common.c     | 4 ++--
- drivers/staging/wlan-ng/hfa384x_usb.c | 4 ++--
- drivers/staging/wlan-ng/prism2usb.c   | 6 +++---
- include/linux/timer.h                 | 2 --
- kernel/time/timer.c                   | 2 +-
- net/sunrpc/xprt.c                     | 2 +-
- 6 files changed, 9 insertions(+), 11 deletions(-)
+ drivers/iio/accel/mxc4005.c |   24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
-index dc4c0a0a51290..30b4c288c1bbc 100644
---- a/drivers/char/tpm/tpm-dev-common.c
-+++ b/drivers/char/tpm/tpm-dev-common.c
-@@ -155,7 +155,7 @@ ssize_t tpm_common_read(struct file *file, char __user *buf,
- out:
- 	if (!priv->response_length) {
- 		*off = 0;
--		del_singleshot_timer_sync(&priv->user_read_timer);
-+		del_timer_sync(&priv->user_read_timer);
- 		flush_work(&priv->timeout_work);
- 	}
- 	mutex_unlock(&priv->buffer_mutex);
-@@ -262,7 +262,7 @@ __poll_t tpm_common_poll(struct file *file, poll_table *wait)
- void tpm_common_release(struct file *file, struct file_priv *priv)
+--- a/drivers/iio/accel/mxc4005.c
++++ b/drivers/iio/accel/mxc4005.c
+@@ -27,9 +27,13 @@
+ #define MXC4005_REG_ZOUT_UPPER		0x07
+ #define MXC4005_REG_ZOUT_LOWER		0x08
+ 
++#define MXC4005_REG_INT_MASK0		0x0A
++
+ #define MXC4005_REG_INT_MASK1		0x0B
+ #define MXC4005_REG_INT_MASK1_BIT_DRDYE	0x01
+ 
++#define MXC4005_REG_INT_CLR0		0x00
++
+ #define MXC4005_REG_INT_CLR1		0x01
+ #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
+ 
+@@ -113,7 +117,9 @@ static bool mxc4005_is_readable_reg(stru
+ static bool mxc4005_is_writeable_reg(struct device *dev, unsigned int reg)
  {
- 	flush_work(&priv->async_work);
--	del_singleshot_timer_sync(&priv->user_read_timer);
-+	del_timer_sync(&priv->user_read_timer);
- 	flush_work(&priv->timeout_work);
- 	file->private_data = NULL;
- 	priv->response_length = 0;
-diff --git a/drivers/staging/wlan-ng/hfa384x_usb.c b/drivers/staging/wlan-ng/hfa384x_usb.c
-index 02fdef7a16c87..c7cd54171d994 100644
---- a/drivers/staging/wlan-ng/hfa384x_usb.c
-+++ b/drivers/staging/wlan-ng/hfa384x_usb.c
-@@ -1116,8 +1116,8 @@ static int hfa384x_usbctlx_complete_sync(struct hfa384x *hw,
- 		if (ctlx == get_active_ctlx(hw)) {
- 			spin_unlock_irqrestore(&hw->ctlxq.lock, flags);
+ 	switch (reg) {
++	case MXC4005_REG_INT_CLR0:
+ 	case MXC4005_REG_INT_CLR1:
++	case MXC4005_REG_INT_MASK0:
+ 	case MXC4005_REG_INT_MASK1:
+ 	case MXC4005_REG_CONTROL:
+ 		return true;
+@@ -330,17 +336,13 @@ static int mxc4005_set_trigger_state(str
+ {
+ 	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
+ 	struct mxc4005_data *data = iio_priv(indio_dev);
++	unsigned int val;
+ 	int ret;
  
--			del_singleshot_timer_sync(&hw->reqtimer);
--			del_singleshot_timer_sync(&hw->resptimer);
-+			del_timer_sync(&hw->reqtimer);
-+			del_timer_sync(&hw->resptimer);
- 			hw->req_timer_done = 1;
- 			hw->resp_timer_done = 1;
- 			usb_kill_urb(&hw->ctlx_urb);
-diff --git a/drivers/staging/wlan-ng/prism2usb.c b/drivers/staging/wlan-ng/prism2usb.c
-index e13da7fadffff..c13f1699e5a2f 100644
---- a/drivers/staging/wlan-ng/prism2usb.c
-+++ b/drivers/staging/wlan-ng/prism2usb.c
-@@ -170,9 +170,9 @@ static void prism2sta_disconnect_usb(struct usb_interface *interface)
- 		 */
- 		prism2sta_ifstate(wlandev, P80211ENUM_ifstate_disable);
+ 	mutex_lock(&data->mutex);
+-	if (state) {
+-		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
+-				   MXC4005_REG_INT_MASK1_BIT_DRDYE);
+-	} else {
+-		ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1,
+-				   ~MXC4005_REG_INT_MASK1_BIT_DRDYE);
+-	}
  
--		del_singleshot_timer_sync(&hw->throttle);
--		del_singleshot_timer_sync(&hw->reqtimer);
--		del_singleshot_timer_sync(&hw->resptimer);
-+		del_timer_sync(&hw->throttle);
-+		del_timer_sync(&hw->reqtimer);
-+		del_timer_sync(&hw->resptimer);
++	val = state ? MXC4005_REG_INT_MASK1_BIT_DRDYE : 0;
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, val);
+ 	if (ret < 0) {
+ 		mutex_unlock(&data->mutex);
+ 		dev_err(data->dev, "failed to update reg_int_mask1");
+@@ -382,6 +384,14 @@ static int mxc4005_chip_init(struct mxc4
  
- 		/* Unlink all the URBs. This "removes the wheels"
- 		 * from the entire CTLX handling mechanism.
-diff --git a/include/linux/timer.h b/include/linux/timer.h
-index 6d18f04ad7039..551fa467726f0 100644
---- a/include/linux/timer.h
-+++ b/include/linux/timer.h
-@@ -198,8 +198,6 @@ static inline int del_timer_sync(struct timer_list *timer)
- 	return timer_delete_sync(timer);
- }
+ 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
  
--#define del_singleshot_timer_sync(t) del_timer_sync(t)
--
- extern void init_timers(void);
- struct hrtimer;
- extern enum hrtimer_restart it_real_fn(struct hrtimer *);
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 59469897432bc..f5f938140ceaf 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1963,7 +1963,7 @@ signed long __sched schedule_timeout(signed long timeout)
- 	timer_setup_on_stack(&timer.timer, process_timeout, 0);
- 	__mod_timer(&timer.timer, expire, MOD_TIMER_NOTPENDING);
- 	schedule();
--	del_singleshot_timer_sync(&timer.timer);
-+	del_timer_sync(&timer.timer);
- 
- 	/* Remove the timer from the object tracker */
- 	destroy_timer_on_stack(&timer.timer);
-diff --git a/net/sunrpc/xprt.c b/net/sunrpc/xprt.c
-index 656cec2083718..ab453ede54f0c 100644
---- a/net/sunrpc/xprt.c
-+++ b/net/sunrpc/xprt.c
-@@ -1164,7 +1164,7 @@ xprt_request_enqueue_receive(struct rpc_task *task)
- 	spin_unlock(&xprt->queue_lock);
- 
- 	/* Turn off autodisconnect */
--	del_singleshot_timer_sync(&xprt->timer);
-+	del_timer_sync(&xprt->timer);
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, 0);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "writing INT_MASK1\n");
++
  	return 0;
  }
  
--- 
-2.43.0
-
 
 
 
