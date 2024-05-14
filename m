@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91308C542C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3B38C53B2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6655428324D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7548128832C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4E55B5D3;
-	Tue, 14 May 2024 11:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5A712E1E4;
+	Tue, 14 May 2024 11:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5xXiMRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViEL6M5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AA3139599;
-	Tue, 14 May 2024 11:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACC880C04;
+	Tue, 14 May 2024 11:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687030; cv=none; b=lVUw4Bk2opmuVnpddJfklMAVb0HIbp7EoN4wnW4JVP7ZTA9EMPgwhjydpLOdXwKWhUYDPcOqaMwQWr9OI8EHzqpxkXA1auY+dGj7ZoMyX7VC9a4fuyJKF9wPvXGDWMcH6tjha0veBx8Iuw4lZUqmG61cslYXrILpNL4aNrwDMps=
+	t=1715686703; cv=none; b=ppVM4Lxklj27ByH0l0QT+wwsFEtqRcjlLb41+FMkfwotbxwvGofG2yviFt6qIUb16eExZMjdpIp4x+6HsGJuBVd3JnqDgaqA6nJIVUg8BVHnbL7GjSv3QrqOqvu6tshZD4IyynXQGY2YnrMXF04cdR+a8S95j8qu8/wxKY3o20U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687030; c=relaxed/simple;
-	bh=iXOj0Zary+hfmKxC7UTpZNrmquIS7nPVDoxDzvQZeeo=;
+	s=arc-20240116; t=1715686703; c=relaxed/simple;
+	bh=BhE2x5MKeKr1zaxWvO3PGWOSvMEiCsLnOcWadMOz9IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEvf4hChp+Yd96GItC/6SQkKiadMtUnLYZyS67+V33XUFBKFB0CStwpnvTNqD9IcQR/y7eHW0zUIu9COsdUzfIfChcZ3YiOly76FCu85PXVCxyiXtYTUGQ1Ec7lnT+nS0lcWkL6BRrh46L2dkqzKkxvoANTAI0qPsCUeoGCnCk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5xXiMRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F218CC2BD10;
-	Tue, 14 May 2024 11:43:49 +0000 (UTC)
+	 MIME-Version; b=jbiWqqrmRdISlGAjPL82/PAGZvs0dNmBmErpdgyviNcoTLjPoDVwekcc8aUP0YaJIAEXj9pOGPzh6a5+d1NU5NaEWwb/K9HgOErvpXLtk54HZQ+sguuLoxWTijh74roBgbmKnU6Pni4Ajo+HygkMEIvM6IIz8546PAba1bvcQVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViEL6M5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F64C2BD10;
+	Tue, 14 May 2024 11:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687030;
-	bh=iXOj0Zary+hfmKxC7UTpZNrmquIS7nPVDoxDzvQZeeo=;
+	s=korg; t=1715686702;
+	bh=BhE2x5MKeKr1zaxWvO3PGWOSvMEiCsLnOcWadMOz9IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5xXiMRBdam2Y8k7xC/wbCvx+FT3iKQaUnto0m0MlIWWVZyXG7Jo2Kd0/sefp6Bx0
-	 QNgsL1oAC7kGFnKZ4GCSfvLPOany5Vt/JSAVo3uC33Z3y0v3MwM5Hn/vU1VpNSmMb8
-	 usMHxEp8TqnfGuqnzKnVQy8Hw2xZtYYy/oysqlYI=
+	b=ViEL6M5GWc+B+zVnpnZSJef7Ek+6/OpK1D4OjAMtc1Ktwz41BDIzB/k4pPMGkamXF
+	 IyD69kgC23iyfeWPQr+VPFaGiKoqDuHafUJWQ3lpdNDWty5RsxxcDHp44MobnvqzIG
+	 9pbYtpzTHxoskcBTlrNf6EFf8icoqfpGytK3Rb3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 41/84] ata: sata_gemini: Check clk_enable() result
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 230/236] ksmbd: avoid to send duplicate lease break notifications
 Date: Tue, 14 May 2024 12:19:52 +0200
-Message-ID: <20240514100953.237047001@linuxfoundation.org>
+Message-ID: <20240514101029.088712334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit e85006ae7430aef780cc4f0849692e266a102ec0 ]
+commit 97c2ec64667bacc49881d2b2dd9afd4d1c3fbaeb upstream.
 
-The call to clk_enable() in gemini_sata_start_bridge() can fail.
-Add a check to detect such failure.
+This patch fixes generic/011 when enable smb2 leases.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+if ksmbd sends multiple notifications for a file, cifs increments
+the reference count of the file but it does not decrement the count by
+the failure of queue_work.
+So even if the file is closed, cifs does not send a SMB2_CLOSE request.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/sata_gemini.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/smb/server/oplock.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/sata_gemini.c b/drivers/ata/sata_gemini.c
-index 6fd54e968d10a..1564472fd5d50 100644
---- a/drivers/ata/sata_gemini.c
-+++ b/drivers/ata/sata_gemini.c
-@@ -201,7 +201,10 @@ int gemini_sata_start_bridge(struct sata_gemini *sg, unsigned int bridge)
- 		pclk = sg->sata0_pclk;
- 	else
- 		pclk = sg->sata1_pclk;
--	clk_enable(pclk);
-+	ret = clk_enable(pclk);
-+	if (ret)
-+		return ret;
-+
- 	msleep(10);
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -612,13 +612,23 @@ static int oplock_break_pending(struct o
  
- 	/* Do not keep clocking a bridge that is not online */
--- 
-2.43.0
-
+ 		if (opinfo->op_state == OPLOCK_CLOSING)
+ 			return -ENOENT;
+-		else if (!opinfo->is_lease && opinfo->level <= req_op_level)
+-			return 1;
++		else if (opinfo->level <= req_op_level) {
++			if (opinfo->is_lease &&
++			    opinfo->o_lease->state !=
++			     (SMB2_LEASE_HANDLE_CACHING_LE |
++			      SMB2_LEASE_READ_CACHING_LE))
++				return 1;
++		}
+ 	}
+ 
+-	if (!opinfo->is_lease && opinfo->level <= req_op_level) {
+-		wake_up_oplock_break(opinfo);
+-		return 1;
++	if (opinfo->level <= req_op_level) {
++		if (opinfo->is_lease &&
++		    opinfo->o_lease->state !=
++		     (SMB2_LEASE_HANDLE_CACHING_LE |
++		      SMB2_LEASE_READ_CACHING_LE)) {
++			wake_up_oplock_break(opinfo);
++			return 1;
++		}
+ 	}
+ 	return 0;
+ }
+@@ -886,7 +896,6 @@ static int oplock_break(struct oplock_in
+ 		struct lease *lease = brk_opinfo->o_lease;
+ 
+ 		atomic_inc(&brk_opinfo->breaking_cnt);
+-
+ 		err = oplock_break_pending(brk_opinfo, req_op_level);
+ 		if (err)
+ 			return err < 0 ? err : 0;
 
 
 
