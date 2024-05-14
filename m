@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E044C8C5196
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB918C5051
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F6FDB21C30
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD674B20B3F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364A813A400;
-	Tue, 14 May 2024 11:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFCE13C699;
+	Tue, 14 May 2024 10:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTmgcvCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwb4TKFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FF113A3F4;
-	Tue, 14 May 2024 11:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489E013C695;
+	Tue, 14 May 2024 10:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684724; cv=none; b=facuuXLQqDkHQdU3cCfurxVwak0DY7ZzZkpH4JBxGfauOtTEH+wS7vV4oSc4N1nCU/OMEEpg7aqyOKGURLuRhhdnySj9rxEzMyKlkPsVGtzTCwj2Vj51tiKcBBiWG3tyzqDc7WGZaOK1jOK2uKE8zDqkDhBzyRl9rtOCbQdaJV4=
+	t=1715683186; cv=none; b=NqagCH4i7+rCPhWYwraZGUJcK7FHdXaZcqYTtSw70/w37KnqS5WJRQpKh7OLi+TwlD1aFIcjk/iUeC2NjpeWckd+JpLJEcO11ngAfp/3TYf5ejw6RMHdQjrlJPcIOSKPmda2nFigJcf/nShCKkLMMLjfaN2eVK6Ypnoj0Xqffgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684724; c=relaxed/simple;
-	bh=IM4ev+PBHIgZ7KOrNBqiuoogtG9PcURraCSCUWqYydc=;
+	s=arc-20240116; t=1715683186; c=relaxed/simple;
+	bh=NeByYpr7ubwCs84Y5OXp2NeYhmn6S6chcPUb7Bu4rOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ByUsEm//Y+iuyW5ltXyKOAB8DHJtRKjWhsWnv0WLZ1PSIf3fJtuF13h5PdZYquxvQRmQL+yhsc94ZQUCsopelKqEZhukIM1zxUmGzJuAxNgzU2EnaBE1DGwfIptnM3cVOXMsWy4eA1pW7z0qGBKRyuYKbd744pTYqw6kk08i8TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTmgcvCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99D8C32782;
-	Tue, 14 May 2024 11:05:22 +0000 (UTC)
+	 MIME-Version; b=LQjYRkTpjQC95qXia6G9+M4RUksq50uWzbvhDalwQXVFUWcpTdKWDRnNLAEBddk3BO93ukID4cHU2XSJLMi2ma10v7rweRvOZRcTXymKVVySSZne3vmda+9S/1aqSpCTVCaBF1l65DxEFv6taUl2uHwVh4RZAGust4pCXEyNrik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwb4TKFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A776AC2BD10;
+	Tue, 14 May 2024 10:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684723;
-	bh=IM4ev+PBHIgZ7KOrNBqiuoogtG9PcURraCSCUWqYydc=;
+	s=korg; t=1715683186;
+	bh=NeByYpr7ubwCs84Y5OXp2NeYhmn6S6chcPUb7Bu4rOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZTmgcvCNkNHFTZ+scla7/p0p7vMomuw0Ck1gPwCBQ85+0thyrEOnG0JCSBIzbm74O
-	 5VEfgK4gfP4LoWkowKmpjxd2t8pAYAp2MuNoOyhRAOrUrJpFmJ+ugT1PHauduIfrZ2
-	 cAIuid+HhXQcsAh3jsu82vHTiFMkQ2p2MjKhOZOg=
+	b=hwb4TKFe+OwvFFmffk5Aj06zE+//3Egx9ZWWCUdHsAy2QrxKNbydEkT0jfLKxkD7l
+	 R6uHWh07YpztG/TJQbigw2510EKf2pdu/2u8bwgasoxxFRqhqarsn+QdsMbXnu5ACZ
+	 IN8c+yzFcC9l9VyQM7Vgxo/T13hxaskxNX3eSIa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/301] s390/qeth: Fix kernel panic after setting hsuid
-Date: Tue, 14 May 2024 12:15:52 +0200
-Message-ID: <20240514101035.306627057@linuxfoundation.org>
+Subject: [PATCH 6.8 149/336] blk-iocost: avoid out of bounds shift
+Date: Tue, 14 May 2024 12:15:53 +0200
+Message-ID: <20240514101044.227785073@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,231 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 8a2e4d37afb8500b276e5ee903dee06f50ab0494 ]
+[ Upstream commit beaa51b36012fad5a4d3c18b88a617aea7a9b96d ]
 
-Symptom:
-When the hsuid attribute is set for the first time on an IQD Layer3
-device while the corresponding network interface is already UP,
-the kernel will try to execute a napi function pointer that is NULL.
+UBSAN catches undefined behavior in blk-iocost, where sometimes
+iocg->delay is shifted right by a number that is too large,
+resulting in undefined behavior on some architectures.
 
-Example:
----------------------------------------------------------------------------
-[ 2057.572696] illegal operation: 0001 ilc:1 [#1] SMP
-[ 2057.572702] Modules linked in: af_iucv qeth_l3 zfcp scsi_transport_fc sunrpc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6
-nft_reject nft_ct nf_tables_set nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables libcrc32c nfnetlink ghash_s390 prng xts aes_s390 des_s390 de
-s_generic sha3_512_s390 sha3_256_s390 sha512_s390 vfio_ccw vfio_mdev mdev vfio_iommu_type1 eadm_sch vfio ext4 mbcache jbd2 qeth_l2 bridge stp llc dasd_eckd_mod qeth dasd_mod
- qdio ccwgroup pkey zcrypt
-[ 2057.572739] CPU: 6 PID: 60182 Comm: stress_client Kdump: loaded Not tainted 4.18.0-541.el8.s390x #1
-[ 2057.572742] Hardware name: IBM 3931 A01 704 (LPAR)
-[ 2057.572744] Krnl PSW : 0704f00180000000 0000000000000002 (0x2)
-[ 2057.572748]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[ 2057.572751] Krnl GPRS: 0000000000000004 0000000000000000 00000000a3b008d8 0000000000000000
-[ 2057.572754]            00000000a3b008d8 cb923a29c779abc5 0000000000000000 00000000814cfd80
-[ 2057.572756]            000000000000012c 0000000000000000 00000000a3b008d8 00000000a3b008d8
-[ 2057.572758]            00000000bab6d500 00000000814cfd80 0000000091317e46 00000000814cfc68
-[ 2057.572762] Krnl Code:#0000000000000000: 0000                illegal
-                         >0000000000000002: 0000                illegal
-                          0000000000000004: 0000                illegal
-                          0000000000000006: 0000                illegal
-                          0000000000000008: 0000                illegal
-                          000000000000000a: 0000                illegal
-                          000000000000000c: 0000                illegal
-                          000000000000000e: 0000                illegal
-[ 2057.572800] Call Trace:
-[ 2057.572801] ([<00000000ec639700>] 0xec639700)
-[ 2057.572803]  [<00000000913183e2>] net_rx_action+0x2ba/0x398
-[ 2057.572809]  [<0000000091515f76>] __do_softirq+0x11e/0x3a0
-[ 2057.572813]  [<0000000090ce160c>] do_softirq_own_stack+0x3c/0x58
-[ 2057.572817] ([<0000000090d2cbd6>] do_softirq.part.1+0x56/0x60)
-[ 2057.572822]  [<0000000090d2cc60>] __local_bh_enable_ip+0x80/0x98
-[ 2057.572825]  [<0000000091314706>] __dev_queue_xmit+0x2be/0xd70
-[ 2057.572827]  [<000003ff803dd6d6>] afiucv_hs_send+0x24e/0x300 [af_iucv]
-[ 2057.572830]  [<000003ff803dd88a>] iucv_send_ctrl+0x102/0x138 [af_iucv]
-[ 2057.572833]  [<000003ff803de72a>] iucv_sock_connect+0x37a/0x468 [af_iucv]
-[ 2057.572835]  [<00000000912e7e90>] __sys_connect+0xa0/0xd8
-[ 2057.572839]  [<00000000912e9580>] sys_socketcall+0x228/0x348
-[ 2057.572841]  [<0000000091514e1a>] system_call+0x2a6/0x2c8
-[ 2057.572843] Last Breaking-Event-Address:
-[ 2057.572844]  [<0000000091317e44>] __napi_poll+0x4c/0x1d8
-[ 2057.572846]
-[ 2057.572847] Kernel panic - not syncing: Fatal exception in interrupt
--------------------------------------------------------------------------------------------
+[  186.556576] ------------[ cut here ]------------
+UBSAN: shift-out-of-bounds in block/blk-iocost.c:1366:23
+shift exponent 64 is too large for 64-bit type 'u64' (aka 'unsigned long long')
+CPU: 16 PID: 0 Comm: swapper/16 Tainted: G S          E    N 6.9.0-0_fbk700_debug_rc2_kbuilder_0_gc85af715cac0 #1
+Hardware name: Quanta Twin Lakes MP/Twin Lakes Passive MP, BIOS F09_3A23 12/08/2020
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x8f/0xe0
+ __ubsan_handle_shift_out_of_bounds+0x22c/0x280
+ iocg_kick_delay+0x30b/0x310
+ ioc_timer_fn+0x2fb/0x1f80
+ __run_timer_base+0x1b6/0x250
+...
 
-Analysis:
-There is one napi structure per out_q: card->qdio.out_qs[i].napi
-The napi.poll functions are set during qeth_open().
+Avoid that undefined behavior by simply taking the
+"delay = 0" branch if the shift is too large.
 
-Since
-commit 1cfef80d4c2b ("s390/qeth: Don't call dev_close/dev_open (DOWN/UP)")
-qeth_set_offline()/qeth_set_online() no longer call dev_close()/
-dev_open(). So if qeth_free_qdio_queues() cleared
-card->qdio.out_qs[i].napi.poll while the network interface was UP and the
-card was offline, they are not set again.
+I am not sure what the symptoms of an undefined value
+delay will be, but I suspect it could be more than a
+little annoying to debug.
 
-Reproduction:
-chzdev -e $devno layer2=0
-ip link set dev $network_interface up
-echo 0 > /sys/bus/ccwgroup/devices/0.0.$devno/online
-echo foo > /sys/bus/ccwgroup/devices/0.0.$devno/hsuid
-echo 1 > /sys/bus/ccwgroup/devices/0.0.$devno/online
--> Crash (can be enforced e.g. by af_iucv connect(), ip link down/up, ...)
-
-Note that a Completion Queue (CQ) is only enabled or disabled, when hsuid
-is set for the first time or when it is removed.
-
-Workarounds:
-- Set hsuid before setting the device online for the first time
-or
-- Use chzdev -d $devno; chzdev $devno hsuid=xxx; chzdev -e $devno;
-to set hsuid on an existing device. (this will remove and recreate the
-network interface)
-
-Fix:
-There is no need to free the output queues when a completion queue is
-added or removed.
-card->qdio.state now indicates whether the inbound buffer pool and the
-outbound queues are allocated.
-card->qdio.c_q indicates whether a CQ is allocated.
-
-Fixes: 1cfef80d4c2b ("s390/qeth: Don't call dev_close/dev_open (DOWN/UP)")
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240430091004.2265683-1-wintera@linux.ibm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240404123253.0f58010f@imladris.surriel.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/net/qeth_core_main.c | 61 ++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 34 deletions(-)
+ block/blk-iocost.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
-index 1148b4ecabdde..f0f3b6272d5b8 100644
---- a/drivers/s390/net/qeth_core_main.c
-+++ b/drivers/s390/net/qeth_core_main.c
-@@ -364,30 +364,33 @@ static int qeth_cq_init(struct qeth_card *card)
- 	return rc;
- }
- 
-+static void qeth_free_cq(struct qeth_card *card)
-+{
-+	if (card->qdio.c_q) {
-+		qeth_free_qdio_queue(card->qdio.c_q);
-+		card->qdio.c_q = NULL;
-+	}
-+}
-+
- static int qeth_alloc_cq(struct qeth_card *card)
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 04d44f0bcbc85..b1c4c874d4201 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1347,7 +1347,7 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  {
- 	if (card->options.cq == QETH_CQ_ENABLED) {
- 		QETH_CARD_TEXT(card, 2, "cqon");
--		card->qdio.c_q = qeth_alloc_qdio_queue();
- 		if (!card->qdio.c_q) {
--			dev_err(&card->gdev->dev, "Failed to create completion queue\n");
--			return -ENOMEM;
-+			card->qdio.c_q = qeth_alloc_qdio_queue();
-+			if (!card->qdio.c_q) {
-+				dev_err(&card->gdev->dev,
-+					"Failed to create completion queue\n");
-+				return -ENOMEM;
-+			}
- 		}
- 	} else {
- 		QETH_CARD_TEXT(card, 2, "nocq");
--		card->qdio.c_q = NULL;
-+		qeth_free_cq(card);
- 	}
- 	return 0;
- }
+ 	struct ioc *ioc = iocg->ioc;
+ 	struct blkcg_gq *blkg = iocg_to_blkg(iocg);
+-	u64 tdelta, delay, new_delay;
++	u64 tdelta, delay, new_delay, shift;
+ 	s64 vover, vover_pct;
+ 	u32 hwa;
  
--static void qeth_free_cq(struct qeth_card *card)
--{
--	if (card->qdio.c_q) {
--		qeth_free_qdio_queue(card->qdio.c_q);
--		card->qdio.c_q = NULL;
--	}
--}
--
- static enum iucv_tx_notify qeth_compute_cq_notification(int sbalf15,
- 							int delayed)
- {
-@@ -2628,6 +2631,10 @@ static int qeth_alloc_qdio_queues(struct qeth_card *card)
+@@ -1362,8 +1362,9 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  
- 	QETH_CARD_TEXT(card, 2, "allcqdbf");
- 
-+	/* completion */
-+	if (qeth_alloc_cq(card))
-+		goto out_err;
-+
- 	if (atomic_cmpxchg(&card->qdio.state, QETH_QDIO_UNINITIALIZED,
- 		QETH_QDIO_ALLOCATED) != QETH_QDIO_UNINITIALIZED)
- 		return 0;
-@@ -2663,10 +2670,6 @@ static int qeth_alloc_qdio_queues(struct qeth_card *card)
- 		queue->priority = QETH_QIB_PQUE_PRIO_DEFAULT;
- 	}
- 
--	/* completion */
--	if (qeth_alloc_cq(card))
--		goto out_freeoutq;
--
- 	return 0;
- 
- out_freeoutq:
-@@ -2677,6 +2680,8 @@ static int qeth_alloc_qdio_queues(struct qeth_card *card)
- 	qeth_free_buffer_pool(card);
- out_buffer_pool:
- 	atomic_set(&card->qdio.state, QETH_QDIO_UNINITIALIZED);
-+	qeth_free_cq(card);
-+out_err:
- 	return -ENOMEM;
- }
- 
-@@ -2684,11 +2689,12 @@ static void qeth_free_qdio_queues(struct qeth_card *card)
- {
- 	int i, j;
- 
-+	qeth_free_cq(card);
-+
- 	if (atomic_xchg(&card->qdio.state, QETH_QDIO_UNINITIALIZED) ==
- 		QETH_QDIO_UNINITIALIZED)
- 		return;
- 
--	qeth_free_cq(card);
- 	for (j = 0; j < QDIO_MAX_BUFFERS_PER_Q; ++j) {
- 		if (card->qdio.in_q->bufs[j].rx_skb) {
- 			consume_skb(card->qdio.in_q->bufs[j].rx_skb);
-@@ -3742,24 +3748,11 @@ static void qeth_qdio_poll(struct ccw_device *cdev, unsigned long card_ptr)
- 
- int qeth_configure_cq(struct qeth_card *card, enum qeth_cq cq)
- {
--	int rc;
--
--	if (card->options.cq ==  QETH_CQ_NOTAVAILABLE) {
--		rc = -1;
--		goto out;
--	} else {
--		if (card->options.cq == cq) {
--			rc = 0;
--			goto out;
--		}
--
--		qeth_free_qdio_queues(card);
--		card->options.cq = cq;
--		rc = 0;
--	}
--out:
--	return rc;
-+	if (card->options.cq == QETH_CQ_NOTAVAILABLE)
-+		return -1;
- 
-+	card->options.cq = cq;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(qeth_configure_cq);
+ 	/* calculate the current delay in effect - 1/2 every second */
+ 	tdelta = now->now - iocg->delay_at;
+-	if (iocg->delay)
+-		delay = iocg->delay >> div64_u64(tdelta, USEC_PER_SEC);
++	shift = div64_u64(tdelta, USEC_PER_SEC);
++	if (iocg->delay && shift < BITS_PER_LONG)
++		delay = iocg->delay >> shift;
+ 	else
+ 		delay = 0;
  
 -- 
 2.43.0
