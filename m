@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C758F8C519C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EB68C502B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A2128288F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93431F214B5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E3D13A40F;
-	Tue, 14 May 2024 11:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14949139D12;
+	Tue, 14 May 2024 10:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eK2+6EXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THXadCzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2336254903;
-	Tue, 14 May 2024 11:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BDB1386D5;
+	Tue, 14 May 2024 10:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684768; cv=none; b=bBUqyBE3K6YvLW8Qum/9OG3CD69Cr48oed7STOw8GwZPUKGodIbbEVMwQmmsb0SpeOcvsUAZPCFNFNmseKQjEavIQ9FSk2Xh2oVG6UxIjnMGZux43G7AoPUetvbJMqSq+owXoh4zSeiC45dUbsErjob4OU/fmiNGCBUio8lLZ7o=
+	t=1715683035; cv=none; b=Jaga8SyPv0wMhFRR79Mx7XNSLKaF+K9wbr9lLOGZPY2Hl1llOaQrqFmHUjc6dCZ697Hk6J6qzfHGJJePhfTAQIzzdWup5kmYUED1RrMTqk1ImGTcLEReavuO4jZj2FKFSRJPBalxbId4BAHMkVkCn51HbJPoKoKnLM+0vpUxYYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684768; c=relaxed/simple;
-	bh=634NSwYcZv/hy4jgVvs0Y+4tNFZB1//cd3jZ8AXhIPs=;
+	s=arc-20240116; t=1715683035; c=relaxed/simple;
+	bh=mI2smwod3xylhqjmqZ0Xjkbv6nZjfOsXkIJbbck8sR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brld4IfwGaXiZzlGGJ7mTHvZ/sJDju46KdrEzODGzYicqPNrMqbBnE3md6Zr3QI3f4ZaIIXkOICpj6r6X5KLm6AVt20FAEOBxBQAiOUqRO4KtOEoBNpkZr+P6PItpLHIXF/F1OtwkFl4yLPLGvUN+vuLZ+7BK7/pF7O1t0+Vgrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eK2+6EXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78807C32781;
-	Tue, 14 May 2024 11:06:07 +0000 (UTC)
+	 MIME-Version; b=mMaxMyg89Q3fn8sk49R1fwDjuhyPmSE4JI3Jclh8xv42IIy0fLZPbGSyh0hhf989MZjg+PmPV+g8Hjza62cSJtrZ0F3v25nyHBH8E7SncXXdCSXtBp23zPwU4YN7TU0VqlBQKqQvrOqSsAzlW4iTRqC45Kc03/tffrKuyllrKW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THXadCzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C4DC2BD10;
+	Tue, 14 May 2024 10:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684768;
-	bh=634NSwYcZv/hy4jgVvs0Y+4tNFZB1//cd3jZ8AXhIPs=;
+	s=korg; t=1715683035;
+	bh=mI2smwod3xylhqjmqZ0Xjkbv6nZjfOsXkIJbbck8sR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eK2+6EXKtF/7tyYtGXKEFpCcFlxycb6MxKQNhwjHs0k2WqiONl7ah744WnHs7Ilqj
-	 rlOf2wbk24jB6rZ6KwD25pwb4iCN07ALphS5Wm9WpStxWn1vkAF7QqOt8I9m+0wTus
-	 3urfxWzFDpVxrFrV2aeLvFJvxLTecWTxfDKw8Pk8=
+	b=THXadCzTh8Q+C46QRsSu9i2KoBrcO9E5MeJi7zydZDcIgW5UQaq6GgZrCO5yIcT6G
+	 3pxMaF9N6L6rKjNiLrldjlRzniFhLVZZNS07QnRFUHKZKPgh5uLO9/CdH2gRrcbNTO
+	 OpDwTihHmf/QG5SWNbwHXyRVow4Yln4b/wI7IBm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Gobert <richardbgobert@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/301] net: gro: fix udp bad offset in socket lookup by adding {inner_}network_offset to napi_gro_cb
-Date: Tue, 14 May 2024 12:15:58 +0200
-Message-ID: <20240514101035.532319191@linuxfoundation.org>
+Subject: [PATCH 6.8 155/336] MIPS: scall: Save thread_info.syscall unconditionally on entry
+Date: Tue, 14 May 2024 12:15:59 +0200
+Message-ID: <20240514101044.455795233@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,216 +63,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Gobert <richardbgobert@gmail.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 5ef31ea5d053a8f493a772ebad3f3ce82c35d845 ]
+[ Upstream commit 4370b673ccf240bf7587b0cb8e6726a5ccaf1f17 ]
 
-Commits a602456 ("udp: Add GRO functions to UDP socket") and 57c67ff ("udp:
-additional GRO support") introduce incorrect usage of {ip,ipv6}_hdr in the
-complete phase of gro. The functions always return skb->network_header,
-which in the case of encapsulated packets at the gro complete phase, is
-always set to the innermost L3 of the packet. That means that calling
-{ip,ipv6}_hdr for skbs which completed the GRO receive phase (both in
-gro_list and *_gro_complete) when parsing an encapsulated packet's _outer_
-L3/L4 may return an unexpected value.
+thread_info.syscall is used by syscall_get_nr to supply syscall nr
+over a thread stack frame.
 
-This incorrect usage leads to a bug in GRO's UDP socket lookup.
-udp{4,6}_lib_lookup_skb functions use ip_hdr/ipv6_hdr respectively. These
-*_hdr functions return network_header which will point to the innermost L3,
-resulting in the wrong offset being used in __udp{4,6}_lib_lookup with
-encapsulated packets.
+Previously, thread_info.syscall is only saved at syscall_trace_enter
+when syscall tracing is enabled. However rest of the kernel code do
+expect syscall_get_nr to be available without syscall tracing. The
+previous design breaks collect_syscall.
 
-This patch adds network_offset and inner_network_offset to napi_gro_cb, and
-makes sure both are set correctly.
+Move saving process to syscall entry to fix it.
 
-To fix the issue, network_offsets union is used inside napi_gro_cb, in
-which both the outer and the inner network offsets are saved.
-
-Reproduction example:
-
-Endpoint configuration example (fou + local address bind)
-
-    # ip fou add port 6666 ipproto 4
-    # ip link add name tun1 type ipip remote 2.2.2.1 local 2.2.2.2 encap fou encap-dport 5555 encap-sport 6666 mode ipip
-    # ip link set tun1 up
-    # ip a add 1.1.1.2/24 dev tun1
-
-Netperf TCP_STREAM result on net-next before patch is applied:
-
-net-next main, GRO enabled:
-    $ netperf -H 1.1.1.2 -t TCP_STREAM -l 5
-    Recv   Send    Send
-    Socket Socket  Message  Elapsed
-    Size   Size    Size     Time     Throughput
-    bytes  bytes   bytes    secs.    10^6bits/sec
-
-    131072  16384  16384    5.28        2.37
-
-net-next main, GRO disabled:
-    $ netperf -H 1.1.1.2 -t TCP_STREAM -l 5
-    Recv   Send    Send
-    Socket Socket  Message  Elapsed
-    Size   Size    Size     Time     Throughput
-    bytes  bytes   bytes    secs.    10^6bits/sec
-
-    131072  16384  16384    5.01     2745.06
-
-patch applied, GRO enabled:
-    $ netperf -H 1.1.1.2 -t TCP_STREAM -l 5
-    Recv   Send    Send
-    Socket Socket  Message  Elapsed
-    Size   Size    Size     Time     Throughput
-    bytes  bytes   bytes    secs.    10^6bits/sec
-
-    131072  16384  16384    5.01     2877.38
-
-Fixes: a6024562ffd7 ("udp: Add GRO functions to UDP socket")
-Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Link: https://github.com/util-linux/util-linux/issues/2867
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/gro.h      | 9 +++++++++
- net/8021q/vlan_core.c  | 2 ++
- net/core/gro.c         | 1 +
- net/ipv4/af_inet.c     | 1 +
- net/ipv4/udp.c         | 3 ++-
- net/ipv4/udp_offload.c | 3 ++-
- net/ipv6/ip6_offload.c | 1 +
- net/ipv6/udp.c         | 3 ++-
- net/ipv6/udp_offload.c | 3 ++-
- 9 files changed, 22 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/ptrace.h |  2 +-
+ arch/mips/kernel/asm-offsets.c |  1 +
+ arch/mips/kernel/ptrace.c      | 15 ++++++---------
+ arch/mips/kernel/scall32-o32.S | 23 +++++++++++++----------
+ arch/mips/kernel/scall64-n32.S |  3 ++-
+ arch/mips/kernel/scall64-n64.S |  3 ++-
+ arch/mips/kernel/scall64-o32.S | 33 +++++++++++++++++----------------
+ 7 files changed, 42 insertions(+), 38 deletions(-)
 
-diff --git a/include/net/gro.h b/include/net/gro.h
-index 88644b3ca6600..018343254c90a 100644
---- a/include/net/gro.h
-+++ b/include/net/gro.h
-@@ -86,6 +86,15 @@ struct napi_gro_cb {
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index d14d0e37ad02d..4a2b40ce39e09 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -159,7 +159,7 @@ extern unsigned long exception_ip(struct pt_regs *regs);
+ #define exception_ip(regs) exception_ip(regs)
+ #define profile_pc(regs) instruction_pointer(regs)
  
- 	/* used to support CHECKSUM_COMPLETE for tunneling protocols */
- 	__wsum	csum;
-+
-+	/* L3 offsets */
-+	union {
-+		struct {
-+			u16 network_offset;
-+			u16 inner_network_offset;
-+		};
-+		u16 network_offsets[2];
-+	};
- };
+-extern asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall);
++extern asmlinkage long syscall_trace_enter(struct pt_regs *regs);
+ extern asmlinkage void syscall_trace_leave(struct pt_regs *regs);
  
- #define NAPI_GRO_CB(skb) ((struct napi_gro_cb *)(skb)->cb)
-diff --git a/net/8021q/vlan_core.c b/net/8021q/vlan_core.c
-index f001582345052..9404dd551dfd2 100644
---- a/net/8021q/vlan_core.c
-+++ b/net/8021q/vlan_core.c
-@@ -478,6 +478,8 @@ static struct sk_buff *vlan_gro_receive(struct list_head *head,
- 	if (unlikely(!vhdr))
- 		goto out;
+ extern void die(const char *, struct pt_regs *) __noreturn;
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index d1b11f66f748f..cb1045ebab062 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -101,6 +101,7 @@ void output_thread_info_defines(void)
+ 	OFFSET(TI_CPU, thread_info, cpu);
+ 	OFFSET(TI_PRE_COUNT, thread_info, preempt_count);
+ 	OFFSET(TI_REGS, thread_info, regs);
++	OFFSET(TI_SYSCALL, thread_info, syscall);
+ 	DEFINE(_THREAD_SIZE, THREAD_SIZE);
+ 	DEFINE(_THREAD_MASK, THREAD_MASK);
+ 	DEFINE(_IRQ_STACK_SIZE, IRQ_STACK_SIZE);
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index 59288c13b581b..61503a36067e9 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -1317,16 +1317,13 @@ long arch_ptrace(struct task_struct *child, long request,
+  * Notification of system call entry/exit
+  * - triggered by current->work.syscall_trace
+  */
+-asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
++asmlinkage long syscall_trace_enter(struct pt_regs *regs)
+ {
+ 	user_exit();
  
-+	NAPI_GRO_CB(skb)->network_offsets[NAPI_GRO_CB(skb)->encap_mark] = hlen;
-+
- 	type = vhdr->h_vlan_encapsulated_proto;
+-	current_thread_info()->syscall = syscall;
+-
+ 	if (test_thread_flag(TIF_SYSCALL_TRACE)) {
+ 		if (ptrace_report_syscall_entry(regs))
+ 			return -1;
+-		syscall = current_thread_info()->syscall;
+ 	}
  
- 	ptype = gro_find_receive_by_type(type);
-diff --git a/net/core/gro.c b/net/core/gro.c
-index cefddf65f7db0..31e40f25fdf10 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -373,6 +373,7 @@ static inline void skb_gro_reset_offset(struct sk_buff *skb, u32 nhoff)
- 	const struct skb_shared_info *pinfo = skb_shinfo(skb);
- 	const skb_frag_t *frag0 = &pinfo->frags[0];
+ #ifdef CONFIG_SECCOMP
+@@ -1335,7 +1332,7 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
+ 		struct seccomp_data sd;
+ 		unsigned long args[6];
  
-+	NAPI_GRO_CB(skb)->network_offset = 0;
- 	NAPI_GRO_CB(skb)->data_offset = 0;
- 	NAPI_GRO_CB(skb)->frag0 = NULL;
- 	NAPI_GRO_CB(skb)->frag0_len = 0;
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index e59962f34caa6..b50308105551f 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1571,6 +1571,7 @@ struct sk_buff *inet_gro_receive(struct list_head *head, struct sk_buff *skb)
- 	/* The above will be needed by the transport layer if there is one
- 	 * immediately following this IP hdr.
+-		sd.nr = syscall;
++		sd.nr = current_thread_info()->syscall;
+ 		sd.arch = syscall_get_arch(current);
+ 		syscall_get_arguments(current, regs, args);
+ 		for (i = 0; i < 6; i++)
+@@ -1345,23 +1342,23 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs, long syscall)
+ 		ret = __secure_computing(&sd);
+ 		if (ret == -1)
+ 			return ret;
+-		syscall = current_thread_info()->syscall;
+ 	}
+ #endif
+ 
+ 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+ 		trace_sys_enter(regs, regs->regs[2]);
+ 
+-	audit_syscall_entry(syscall, regs->regs[4], regs->regs[5],
++	audit_syscall_entry(current_thread_info()->syscall,
++			    regs->regs[4], regs->regs[5],
+ 			    regs->regs[6], regs->regs[7]);
+ 
+ 	/*
+ 	 * Negative syscall numbers are mistaken for rejected syscalls, but
+ 	 * won't have had the return value set appropriately, so we do so now.
  	 */
-+	NAPI_GRO_CB(skb)->inner_network_offset = off;
+-	if (syscall < 0)
++	if (current_thread_info()->syscall < 0)
+ 		syscall_set_return_value(current, regs, -ENOSYS, 0);
+-	return syscall;
++	return current_thread_info()->syscall;
+ }
  
- 	/* Note : No need to call skb_gro_postpull_rcsum() here,
- 	 * as we already checked checksum over ipv4 header was 0
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 5e9219623c0a6..ca576587f6d21 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -534,7 +534,8 @@ static inline struct sock *__udp4_lib_lookup_skb(struct sk_buff *skb,
- struct sock *udp4_lib_lookup_skb(const struct sk_buff *skb,
- 				 __be16 sport, __be16 dport)
- {
--	const struct iphdr *iph = ip_hdr(skb);
-+	const u16 offset = NAPI_GRO_CB(skb)->network_offsets[skb->encapsulation];
-+	const struct iphdr *iph = (struct iphdr *)(skb->data + offset);
- 	struct net *net = dev_net(skb->dev);
- 	int iif, sdif;
+ /*
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index 18dc9b3450561..2c604717e6308 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -77,6 +77,18 @@ loads_done:
+ 	PTR_WD	load_a7, bad_stack_a7
+ 	.previous
  
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index c3d67423ae189..889d4926fc0c1 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -718,7 +718,8 @@ EXPORT_SYMBOL(udp_gro_complete);
++	/*
++	 * syscall number is in v0 unless we called syscall(__NR_###)
++	 * where the real syscall number is in a0
++	 */
++	subu	t2, v0,  __NR_O32_Linux
++	bnez	t2, 1f /* __NR_syscall at offset 0 */
++	LONG_S	a0, TI_SYSCALL($28)	# Save a0 as syscall number
++	b	2f
++1:
++	LONG_S	v0, TI_SYSCALL($28)	# Save v0 as syscall number
++2:
++
+ 	lw	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	and	t0, t1
+@@ -114,16 +126,7 @@ syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	a0, sp
  
- INDIRECT_CALLABLE_SCOPE int udp4_gro_complete(struct sk_buff *skb, int nhoff)
- {
--	const struct iphdr *iph = ip_hdr(skb);
-+	const u16 offset = NAPI_GRO_CB(skb)->network_offsets[skb->encapsulation];
-+	const struct iphdr *iph = (struct iphdr *)(skb->data + offset);
- 	struct udphdr *uh = (struct udphdr *)(skb->data + nhoff);
+-	/*
+-	 * syscall number is in v0 unless we called syscall(__NR_###)
+-	 * where the real syscall number is in a0
+-	 */
+-	move	a1, v0
+-	subu	t2, v0,  __NR_O32_Linux
+-	bnez	t2, 1f /* __NR_syscall at offset 0 */
+-	lw	a1, PT_R4(sp)
+-
+-1:	jal	syscall_trace_enter
++	jal	syscall_trace_enter
  
- 	/* do fraglist only if there is no outer UDP encap (or we already processed it) */
-diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
-index f6e5fcdf041d1..7f014a8969fb2 100644
---- a/net/ipv6/ip6_offload.c
-+++ b/net/ipv6/ip6_offload.c
-@@ -240,6 +240,7 @@ INDIRECT_CALLABLE_SCOPE struct sk_buff *ipv6_gro_receive(struct list_head *head,
- 		goto out;
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
  
- 	skb_set_network_header(skb, off);
-+	NAPI_GRO_CB(skb)->inner_network_offset = off;
+diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
+index 97456b2ca7dc3..97788859238c3 100644
+--- a/arch/mips/kernel/scall64-n32.S
++++ b/arch/mips/kernel/scall64-n32.S
+@@ -44,6 +44,8 @@ NESTED(handle_sysn32, PT_SIZE, sp)
  
- 	flush += ntohs(iph->payload_len) != skb->len - hlen;
+ 	sd	a3, PT_R26(sp)		# save a3 for syscall restarting
  
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index a05c83cfdde97..124cf2bb2a6d7 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -275,7 +275,8 @@ static struct sock *__udp6_lib_lookup_skb(struct sk_buff *skb,
- struct sock *udp6_lib_lookup_skb(const struct sk_buff *skb,
- 				 __be16 sport, __be16 dport)
- {
--	const struct ipv6hdr *iph = ipv6_hdr(skb);
-+	const u16 offset = NAPI_GRO_CB(skb)->network_offsets[skb->encapsulation];
-+	const struct ipv6hdr *iph = (struct ipv6hdr *)(skb->data + offset);
- 	struct net *net = dev_net(skb->dev);
- 	int iif, sdif;
++	LONG_S	v0, TI_SYSCALL($28)     # Store syscall number
++
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	LONG_L	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	and	t0, t1, t0
+@@ -72,7 +74,6 @@ syscall_common:
+ n32_syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	a0, sp
+-	move	a1, v0
+ 	jal	syscall_trace_enter
  
-diff --git a/net/ipv6/udp_offload.c b/net/ipv6/udp_offload.c
-index 626d7b362dc7b..639a4b506f9b5 100644
---- a/net/ipv6/udp_offload.c
-+++ b/net/ipv6/udp_offload.c
-@@ -164,7 +164,8 @@ struct sk_buff *udp6_gro_receive(struct list_head *head, struct sk_buff *skb)
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
+diff --git a/arch/mips/kernel/scall64-n64.S b/arch/mips/kernel/scall64-n64.S
+index e6264aa62e457..be11ea5cc67e0 100644
+--- a/arch/mips/kernel/scall64-n64.S
++++ b/arch/mips/kernel/scall64-n64.S
+@@ -46,6 +46,8 @@ NESTED(handle_sys64, PT_SIZE, sp)
  
- INDIRECT_CALLABLE_SCOPE int udp6_gro_complete(struct sk_buff *skb, int nhoff)
- {
--	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
-+	const u16 offset = NAPI_GRO_CB(skb)->network_offsets[skb->encapsulation];
-+	const struct ipv6hdr *ipv6h = (struct ipv6hdr *)(skb->data + offset);
- 	struct udphdr *uh = (struct udphdr *)(skb->data + nhoff);
+ 	sd	a3, PT_R26(sp)		# save a3 for syscall restarting
  
- 	/* do fraglist only if there is no outer UDP encap (or we already processed it) */
++	LONG_S	v0, TI_SYSCALL($28)     # Store syscall number
++
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	LONG_L	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	and	t0, t1, t0
+@@ -82,7 +84,6 @@ n64_syscall_exit:
+ syscall_trace_entry:
+ 	SAVE_STATIC
+ 	move	a0, sp
+-	move	a1, v0
+ 	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index d3c2616cba226..7a5abb73e5312 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -79,6 +79,22 @@ loads_done:
+ 	PTR_WD	load_a7, bad_stack_a7
+ 	.previous
+ 
++	/*
++	 * absolute syscall number is in v0 unless we called syscall(__NR_###)
++	 * where the real syscall number is in a0
++	 * note: NR_syscall is the first O32 syscall but the macro is
++	 * only defined when compiling with -mabi=32 (CONFIG_32BIT)
++	 * therefore __NR_O32_Linux is used (4000)
++	 */
++
++	subu	t2, v0,  __NR_O32_Linux
++	bnez	t2, 1f /* __NR_syscall at offset 0 */
++	LONG_S	a0, TI_SYSCALL($28)	# Save a0 as syscall number
++	b	2f
++1:
++	LONG_S	v0, TI_SYSCALL($28)	# Save v0 as syscall number
++2:
++
+ 	li	t1, _TIF_WORK_SYSCALL_ENTRY
+ 	LONG_L	t0, TI_FLAGS($28)	# syscall tracing enabled?
+ 	and	t0, t1, t0
+@@ -113,22 +129,7 @@ trace_a_syscall:
+ 	sd	a7, PT_R11(sp)		# For indirect syscalls
+ 
+ 	move	a0, sp
+-	/*
+-	 * absolute syscall number is in v0 unless we called syscall(__NR_###)
+-	 * where the real syscall number is in a0
+-	 * note: NR_syscall is the first O32 syscall but the macro is
+-	 * only defined when compiling with -mabi=32 (CONFIG_32BIT)
+-	 * therefore __NR_O32_Linux is used (4000)
+-	 */
+-	.set	push
+-	.set	reorder
+-	subu	t1, v0,  __NR_O32_Linux
+-	move	a1, v0
+-	bnez	t1, 1f /* __NR_syscall at offset 0 */
+-	ld	a1, PT_R4(sp) /* Arg1 for __NR_syscall case */
+-	.set	pop
+-
+-1:	jal	syscall_trace_enter
++	jal	syscall_trace_enter
+ 
+ 	bltz	v0, 1f			# seccomp failed? Skip syscall
+ 
 -- 
 2.43.0
 
