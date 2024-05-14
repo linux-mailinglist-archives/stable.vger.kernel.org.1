@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F0A8C551C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4288C538A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BBEE283D85
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDC261C22AFB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1F76BB4B;
-	Tue, 14 May 2024 11:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372501292F3;
+	Tue, 14 May 2024 11:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOxe5mY6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKhjleFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F8A43AD6;
-	Tue, 14 May 2024 11:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F9947A6C;
+	Tue, 14 May 2024 11:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687653; cv=none; b=RtbqXIok9XFViJbNMZgWzEuZQtGjWSLEqPaPvoZJxu7sDz9eTrvGLhwukinwhVMslYrpYZzD2/pA437he/xAn9z995OZoAxIjKqDkSYBYesrYZWW37UT6iMod68MwUCDPJYw6dXsrBRQ3xDnc8zDPgA61jyk8S0dlcCssBKWnmk=
+	t=1715686602; cv=none; b=PuonhqmNo2vzJi+dnoC/BAFqWOpJEuiUqbvKtuoDnOtfefSEIjFm0pmh1PdJ3aIc/NzcFTGdQsnR7WD38YitofZ6MuRqIz10dpoduRwWg3XwWDBagq2c06yldY/DEbtDhE6epCsJek8Hva0YGQ2LD7/azvFAMWwU/kA15DshjEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687653; c=relaxed/simple;
-	bh=+4nt8INO6YnyxJ+yEJId9b4lkhjW1eml1gzCp64ztyA=;
+	s=arc-20240116; t=1715686602; c=relaxed/simple;
+	bh=ggQhrOxZoVZMuScWlFvigtLcT6FjG8Thli5Q9o6QoQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nx5BjeGyWx69bjxclwge2UQ4MUVafh5Iygq1R4r2y/pQHkbcAWnMxJw7O6vTm8Ns2vQSQc5IK+yfkDPmxJ9jSvY3FNPPkxsM/dMqrAJRm4GVbMBea/okUirZrRyWAVdM7pwsg41k+R5woU0oPSjQdvNvUq3O97XqJ/utYqBFK/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOxe5mY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDAEC2BD10;
-	Tue, 14 May 2024 11:54:12 +0000 (UTC)
+	 MIME-Version; b=TvrwLIESSnlZ4P4zFd4moV+qApzNLiMj8hMB2L3Gxf5b2u8MbvArPVzFY+dOGij6r9PzAUbijVlA5ZvJshN6v55PGNPgCt2I/D6P5RAPe5PBVa73Xy4SwHLl8K2WHyp50rFBj2PkoHJrUbq1bPt9J1I8RkNFej7k02pLcZVsYqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKhjleFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE25C2BD10;
+	Tue, 14 May 2024 11:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687653;
-	bh=+4nt8INO6YnyxJ+yEJId9b4lkhjW1eml1gzCp64ztyA=;
+	s=korg; t=1715686601;
+	bh=ggQhrOxZoVZMuScWlFvigtLcT6FjG8Thli5Q9o6QoQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOxe5mY6QcupJlUEeqzKBuZO96UzwQcC/71+orVsVHrPk5gjI5N1gmQ1yX1OQMtlY
-	 X8kThF8h5vQBfraea3sfbqGsUXIAAVkQc3ttijpXlNrhpBFCNE8f+PpbzwjIR4ptTh
-	 N3W44e+AYVXJmQSCCF7D5o1Iu/R6Z8EOlEPgUYkg=
+	b=cKhjleFOxUO+vsKwB8P4NYCiyCyZ04dq4KtpWDynBsD45+Igkyk+FJ9gE6yJeavkQ
+	 NJnsE0MfRtCGxQ2QQVCOFd3q/1Bmt9EV8tqQ6ICCOtEp2urqO2DmXTqVkSOiqKo3ZI
+	 7llK8zMslrGKpwJVdBTMs+ehFJ0upo9joxVHT/MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Wagner <wagnerch42@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 059/168] clk: sunxi-ng: h6: Reparent CPUX during PLL CPUX rate change
+	Gerd Hoffmann <kraxel@redhat.com>,
+	David Laight <David.Laight@aculab.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.1 195/236] usb: ohci: Prevent missed ohci interrupts
 Date: Tue, 14 May 2024 12:19:17 +0200
-Message-ID: <20240514101008.919594630@linuxfoundation.org>
+Message-ID: <20240514101027.770694934@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 7e91ed763dc07437777bd012af7a2bd4493731ff ]
+commit fe81f354841641c7f71163b84912b25c169ed8ec upstream.
 
-While PLL CPUX clock rate change when CPU is running from it works in
-vast majority of cases, now and then it causes instability. This leads
-to system crashes and other undefined behaviour. After a lot of testing
-(30+ hours) while also doing a lot of frequency switches, we can't
-observe any instability issues anymore when doing reparenting to stable
-clock like 24 MHz oscillator.
+Testing ohci functionality with qemu's pci-ohci emulation often results
+in ohci interface stalls, resulting in hung task timeouts.
 
-Fixes: 524353ea480b ("clk: sunxi-ng: add support for the Allwinner H6 CCU")
-Reported-by: Chad Wagner <wagnerch42@gmail.com>
-Link: https://forum.libreelec.tv/thread/27295-orange-pi-3-lts-freezes/
-Tested-by: Chad Wagner <wagnerch42@gmail.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20231013181712.2128037-1-jernej.skrabec@gmail.com
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is caused by lost interrupts between the emulation and the
+Linux kernel code. Additional interrupts raised while the ohci interrupt
+handler in Linux is running and before the handler clears the interrupt
+status are not handled. The fix for a similar problem in ehci suggests
+that the problem is likely caused by edge-triggered MSI interrupts. See
+commit 0b60557230ad ("usb: ehci: Prevent missed ehci interrupts with
+edge-triggered MSI") for details.
+
+Ensure that the ohci interrupt code handles all pending interrupts before
+returning to solve the problem.
+
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: David Laight <David.Laight@aculab.com>
+Cc: stable@vger.kernel.org
+Fixes: 306c54d0edb6 ("usb: hcd: Try MSI interrupts on PCI devices")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+Link: https://lore.kernel.org/r/20240429154010.1507366-1-linux@roeck-us.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-h6.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/usb/host/ohci-hcd.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-index c0800da2fa3d7..736a781e4007a 100644
---- a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-@@ -1181,12 +1181,19 @@ static const u32 usb2_clk_regs[] = {
- 	SUN50I_H6_USB3_CLK_REG,
- };
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -888,6 +888,7 @@ static irqreturn_t ohci_irq (struct usb_
+ 	/* Check for an all 1's result which is a typical consequence
+ 	 * of dead, unclocked, or unplugged (CardBus...) devices
+ 	 */
++again:
+ 	if (ints == ~(u32)0) {
+ 		ohci->rh_state = OHCI_RH_HALTED;
+ 		ohci_dbg (ohci, "device removed!\n");
+@@ -982,6 +983,13 @@ static irqreturn_t ohci_irq (struct usb_
+ 	}
+ 	spin_unlock(&ohci->lock);
  
-+static struct ccu_mux_nb sun50i_h6_cpu_nb = {
-+	.common		= &cpux_clk.common,
-+	.cm		= &cpux_clk.mux,
-+	.delay_us       = 1,
-+	.bypass_index   = 0, /* index of 24 MHz oscillator */
-+};
++	/* repeat until all enabled interrupts are handled */
++	if (ohci->rh_state != OHCI_RH_HALTED) {
++		ints = ohci_readl(ohci, &regs->intrstatus);
++		if (ints && (ints & ohci_readl(ohci, &regs->intrenable)))
++			goto again;
++	}
 +
- static int sun50i_h6_ccu_probe(struct platform_device *pdev)
- {
- 	struct resource *res;
- 	void __iomem *reg;
-+	int i, ret;
- 	u32 val;
--	int i;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	reg = devm_ioremap_resource(&pdev->dev, res);
-@@ -1240,7 +1247,15 @@ static int sun50i_h6_ccu_probe(struct platform_device *pdev)
- 	val |= BIT(24);
- 	writel(val, reg + SUN50I_H6_HDMI_CEC_CLK_REG);
- 
--	return devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_h6_ccu_desc);
-+	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_h6_ccu_desc);
-+	if (ret)
-+		return ret;
-+
-+	/* Reparent CPU during PLL CPUX rate changes */
-+	ccu_mux_notifier_register(pll_cpux_clk.common.hw.clk,
-+				  &sun50i_h6_cpu_nb);
-+
-+	return 0;
+ 	return IRQ_HANDLED;
  }
  
- static const struct of_device_id sun50i_h6_ccu_ids[] = {
--- 
-2.43.0
-
 
 
 
