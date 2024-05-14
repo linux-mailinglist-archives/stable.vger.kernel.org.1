@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBAE8C547D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D738C5595
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B54B71F23389
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A581282D92
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5DA129E86;
-	Tue, 14 May 2024 11:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E901F4594C;
+	Tue, 14 May 2024 11:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qz2LVohL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4B0XlYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6D01E4B0;
-	Tue, 14 May 2024 11:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58732B9AD;
+	Tue, 14 May 2024 11:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687233; cv=none; b=JmGH+kEV1yS7/0JuL4SyHkTa/qWpYpDAwtaV59rjArOCBbEEGxKsMu5wRXMqCRWKaYxbaW1nHR6lSZlFQs2PJwjmUPdNd9l+63QgTn7lnSpShEmyTRjCgHrH3Uihe6Bw+OddYITi9RQX7XoeNvN5XkjUt6rH1bKErH+ESZYjxmE=
+	t=1715687716; cv=none; b=mtLUC7afoqIapMOR+BGmIYhVAzPdhXgn3bic88oUfy1hz5yGkipJwrqlR92xpg9ziJlAtAIQ7KCO6hvtIL05U6wLFXSa6YrpTFi17Nk4YOBRcDVGR+nIqpiZ8F4sgCVrxheaqmLnX6lwhIBBuVGd1IlKO6iqKadaP7ZA/HRmZME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687233; c=relaxed/simple;
-	bh=9lpovHupKhxK6AF5DtqWJJYg/+QO7IuhzsKarrQybIY=;
+	s=arc-20240116; t=1715687716; c=relaxed/simple;
+	bh=xvOvpOdDpsdLPgfXd9oxOODId01mAYqWWmTLfx8Gui4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reNfJN3Sun0SIl/xOgjsqeFVFvbPqD2YqcbFHCHzyppmDIkl5qTolx1yC/RFJBFueyEuDIrlvQBP9OEXGbpfr0H+yCMawD6vuvqBNzw5Z+6SH3g/4lU549EnG/d8nkqf3wtrtrKfa7SnCO0Td2fQV3bK5EYUkPCYI8KaACJgQN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qz2LVohL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EB4C2BD10;
-	Tue, 14 May 2024 11:47:12 +0000 (UTC)
+	 MIME-Version; b=fFfuIlWZOfo0pio9RzT+phnD9PvbX+nQXw7UrS11eOqUVx3G07UdxrTigkwyigk3p58g78ISL7NMipqaK0Wf2rcChKFMDgriA2Ny9iqr/eEw9RdKcsTfIZTkVAeRcGpOjUwNnJHjFROInb53DevLBy0qCoL4eFTh9k7f2xY0XFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4B0XlYS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B740C32781;
+	Tue, 14 May 2024 11:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687233;
-	bh=9lpovHupKhxK6AF5DtqWJJYg/+QO7IuhzsKarrQybIY=;
+	s=korg; t=1715687716;
+	bh=xvOvpOdDpsdLPgfXd9oxOODId01mAYqWWmTLfx8Gui4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qz2LVohL1V32WVDL1Q1kVOvxSWT7XVTxVf/tjNU8anSE2rfsj0guia5VHKaoes/bM
-	 C/0H0UsLZewBC+krXWcmnzxHVVtJwL60E5UtwK7eaAmO1bKjD71ij+nLig1XSSE56L
-	 afuGwwt/VrzaXun2N+k9l2vmfmtAyIMOHkscdWk4=
+	b=r4B0XlYS5AwGFEJ5KYuuz2fnBv/OXNvICz+Q41TYAijwYTk43QJo/tWCPv2ZIloj1
+	 p+f5sp9C8PSK0dUx0LJY2wS5M7Y2iUkM+2XVjvpKb/uC1KMi1oExsI9vdYJm+BrxJo
+	 oi9udGWe2qnhQ7MpPfFexKbH8NR/HWcPQc0LTs7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Dakinevich <jan.dakinevich@salutedevices.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	"John B. Wyatt IV" <jwyatt@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/111] pinctrl/meson: fix typo in PDMs pin name
-Date: Tue, 14 May 2024 12:19:06 +0200
-Message-ID: <20240514100957.440765642@linuxfoundation.org>
+Subject: [PATCH 5.15 049/168] cxgb4: Properly lock TX queue for the selftest.
+Date: Tue, 14 May 2024 12:19:07 +0200
+Message-ID: <20240514101008.542561453@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Dakinevich <jan.dakinevich@salutedevices.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 368a90e651faeeb7049a876599cf2b0d74954796 ]
+[ Upstream commit 9067eccdd7849dd120d5495dbd5a686fa6ed2c1a ]
 
-Other pins have _a or _x suffix, but this one doesn't have any. Most
-likely this is a typo.
+The selftest for the driver sends a dummy packet and checks if the
+packet will be received properly as it should be. The regular TX path
+and the selftest can use the same network queue so locking is required
+and was missing in the selftest path. This was addressed in the commit
+cited below.
+Unfortunately locking the TX queue requires BH to be disabled which is
+not the case in selftest path which is invoked in process context.
+Lockdep should be complaining about this.
 
-Fixes: dabad1ff8561 ("pinctrl: meson: add pinctrl driver support for Meson-A1 SoC")
-Signed-off-by: Jan Dakinevich <jan.dakinevich@salutedevices.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Message-ID: <20240325113058.248022-1-jan.dakinevich@salutedevices.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Use __netif_tx_lock_bh() for TX queue locking.
+
+Fixes: c650e04898072 ("cxgb4: Fix race between loopback and normal Tx path")
+Reported-by: "John B. Wyatt IV" <jwyatt@redhat.com>
+Closes: https://lore.kernel.org/all/Zic0ot5aGgR-V4Ks@thinkpad2021/
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20240429091147.YWAaal4v@linutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson-a1.c | 6 +++---
+ drivers/net/ethernet/chelsio/cxgb4/sge.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson-a1.c b/drivers/pinctrl/meson/pinctrl-meson-a1.c
-index 8abf750eac7ee..5be02a4fbe775 100644
---- a/drivers/pinctrl/meson/pinctrl-meson-a1.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson-a1.c
-@@ -250,7 +250,7 @@ static const unsigned int pdm_dclk_x_pins[]		= { GPIOX_10 };
- static const unsigned int pdm_din2_a_pins[]		= { GPIOA_6 };
- static const unsigned int pdm_din1_a_pins[]		= { GPIOA_7 };
- static const unsigned int pdm_din0_a_pins[]		= { GPIOA_8 };
--static const unsigned int pdm_dclk_pins[]		= { GPIOA_9 };
-+static const unsigned int pdm_dclk_a_pins[]		= { GPIOA_9 };
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c b/drivers/net/ethernet/chelsio/cxgb4/sge.c
+index fa5b596ff23a1..a074e9d44277f 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
+@@ -2682,12 +2682,12 @@ int cxgb4_selftest_lb_pkt(struct net_device *netdev)
+ 	lb->loopback = 1;
  
- /* gen_clk */
- static const unsigned int gen_clk_x_pins[]		= { GPIOX_7 };
-@@ -591,7 +591,7 @@ static struct meson_pmx_group meson_a1_periphs_groups[] = {
- 	GROUP(pdm_din2_a,		3),
- 	GROUP(pdm_din1_a,		3),
- 	GROUP(pdm_din0_a,		3),
--	GROUP(pdm_dclk,			3),
-+	GROUP(pdm_dclk_a,		3),
- 	GROUP(pwm_c_a,			3),
- 	GROUP(pwm_b_a,			3),
+ 	q = &adap->sge.ethtxq[pi->first_qset];
+-	__netif_tx_lock(q->txq, smp_processor_id());
++	__netif_tx_lock_bh(q->txq);
  
-@@ -755,7 +755,7 @@ static const char * const spi_a_groups[] = {
+ 	reclaim_completed_tx(adap, &q->q, -1, true);
+ 	credits = txq_avail(&q->q) - ndesc;
+ 	if (unlikely(credits < 0)) {
+-		__netif_tx_unlock(q->txq);
++		__netif_tx_unlock_bh(q->txq);
+ 		return -ENOMEM;
+ 	}
  
- static const char * const pdm_groups[] = {
- 	"pdm_din0_x", "pdm_din1_x", "pdm_din2_x", "pdm_dclk_x", "pdm_din2_a",
--	"pdm_din1_a", "pdm_din0_a", "pdm_dclk",
-+	"pdm_din1_a", "pdm_din0_a", "pdm_dclk_a",
- };
+@@ -2722,7 +2722,7 @@ int cxgb4_selftest_lb_pkt(struct net_device *netdev)
+ 	init_completion(&lb->completion);
+ 	txq_advance(&q->q, ndesc);
+ 	cxgb4_ring_tx_db(adap, &q->q, ndesc);
+-	__netif_tx_unlock(q->txq);
++	__netif_tx_unlock_bh(q->txq);
  
- static const char * const gen_clk_groups[] = {
+ 	/* wait for the pkt to return */
+ 	ret = wait_for_completion_timeout(&lb->completion, 10 * HZ);
 -- 
 2.43.0
 
