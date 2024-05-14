@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-44003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95F08C50BE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:11:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9B38C51EA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 411C41F21078
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F78D2828BC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7137A74427;
-	Tue, 14 May 2024 10:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76577602B;
+	Tue, 14 May 2024 11:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o9+PPhI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM0D9jON"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3166D1B2;
-	Tue, 14 May 2024 10:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864E06D1A1;
+	Tue, 14 May 2024 11:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683634; cv=none; b=DH7BVsxHR9AYi2ZuvXXzVO/sPk8XFvC9zJKWfDWvntI/O/XjGLFzvYcF9HroKlYviqGNnjtL8rxxlFwRrssykJgzOH/jVdYup0uJF3aURrjVL6htmFNUnPuGvaqQ8E9DrfcR4ZCGsSu0DGJbLYOIn79tK+w7O6uZllTihHpZNrE=
+	t=1715685186; cv=none; b=KBA4Okol2uJ10U5IRgpyK+gywsFhRxwAIgtDvWk3IAEJaevGC8vDCJP6LY4zhvgNyCA8vAmNoMseqq/8880racqvHiEJ4VTq593+Vd8Y8AK++lNS0U3FsZqXDU7jJi9f4jEoYjivjNYSxWAbuCBgcCzRZGyYIgjgSkKu7vmUkZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683634; c=relaxed/simple;
-	bh=1SdUOKjD0c5njCQBVoCU+hfClD9oyLBIqpmRLfyxKkM=;
+	s=arc-20240116; t=1715685186; c=relaxed/simple;
+	bh=+KX3YGPU27YC0XnPCrwNLtUJWFIS4w5JYCrA2+1nGl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=av3KHxHK0KjWQ7qRYrTecaz3HuPYSNk45u4o/XIMGIzKKBE1icxybUYs0z2qpLnYVzxTGTpqSwMroBQucAgV6UvWKV+kextB+hvRJyo1EqvuCFAG1kljy5WVwjebxmLg2enIPYSR+3lFjwsKUVEhdYrM/KXzVv3QdI3QE5kuF+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o9+PPhI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A05C2BD10;
-	Tue, 14 May 2024 10:47:12 +0000 (UTC)
+	 MIME-Version; b=Vh6Fe6WR3ZKSs2lHuxw+f+EoCWFBUZe7V7Ce5I3uuuWOdICFQmJcs9Ro7uc9wp5wF2kxQuZ1MHetuFsRBDHOZ4P79mZeUbYHD+79B6Va16cF3J5sBr/tdKNfqqSk7sL+dXC2Sjpi22NLZC1j5w6OFXOpOgQnq3GTJBtaC9Tbauo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM0D9jON; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF6BC2BD10;
+	Tue, 14 May 2024 11:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683633;
-	bh=1SdUOKjD0c5njCQBVoCU+hfClD9oyLBIqpmRLfyxKkM=;
+	s=korg; t=1715685186;
+	bh=+KX3YGPU27YC0XnPCrwNLtUJWFIS4w5JYCrA2+1nGl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1o9+PPhI3qlDC8URViKYDv5mn0/32yHGY8cjHWrSFEGgD/ANabYTK7lZUp54SzB5b
-	 dbj6HSLTfOr+0chKD3t1ohPdiTMZI5Qyh1D2KH+AuCIu4FP79NwBcWBQcKNfUXiELI
-	 H5y4LIQp5mEFIMI1DAsCc8TNBY64l5A+iTxjPzo4=
+	b=MM0D9jON1PC3F+yjjFNkZPtF05oSy+lcYYFM8xwSupI4fRq5AhvpWtizzDv6G+pZS
+	 c5PIh+OBVdnf4JgCtlGY/BQC2RPpKxULB4f6YEJ11gBCSif/MwxD67egB0mCi3tx9f
+	 hFIasfX92h/xLtW4SKNAsn9fw/y3XZThLFOlSN3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	Zhigang Luo <Zhigang.Luo@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 216/336] rxrpc: Fix the names of the fields in the ACK trailer struct
+Subject: [PATCH 6.6 149/301] amd/amdkfd: sync all devices to wait all processes being evicted
 Date: Tue, 14 May 2024 12:17:00 +0200
-Message-ID: <20240514101046.767087625@linuxfoundation.org>
+Message-ID: <20240514101037.882270318@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,215 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Zhigang Luo <Zhigang.Luo@amd.com>
 
-[ Upstream commit 17469ae0582aaacad36e8e858f58b86c369f21ef ]
+[ Upstream commit d06af584be5a769d124b7302b32a033e9559761d ]
 
->From AFS-3.3 a trailer containing extra info was added to the ACK packet
-format - but AF_RXRPC has the names of some of the fields mixed up compared
-to other AFS implementations.
+If there are more than one device doing reset in parallel, the first
+device will call kfd_suspend_all_processes() to evict all processes
+on all devices, this call takes time to finish. other device will
+start reset and recover without waiting. if the process has not been
+evicted before doing recover, it will be restored, then caused page
+fault.
 
-Rename the struct and the fields to make them match.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Stable-dep-of: ba4e103848d3 ("rxrpc: Fix congestion control algorithm")
+Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rxrpc.h |  2 +-
- net/rxrpc/conn_event.c       | 16 ++++++++--------
- net/rxrpc/input.c            | 22 +++++++++++-----------
- net/rxrpc/output.c           | 14 +++++++-------
- net/rxrpc/protocol.h         |  6 +++---
- 5 files changed, 30 insertions(+), 30 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index 87b8de9b6c1c4..ecf9da5462359 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -83,7 +83,7 @@
- 	EM(rxrpc_badmsg_bad_abort,		"bad-abort")		\
- 	EM(rxrpc_badmsg_bad_jumbo,		"bad-jumbo")		\
- 	EM(rxrpc_badmsg_short_ack,		"short-ack")		\
--	EM(rxrpc_badmsg_short_ack_info,		"short-ack-info")	\
-+	EM(rxrpc_badmsg_short_ack_trailer,	"short-ack-trailer")	\
- 	EM(rxrpc_badmsg_short_hdr,		"short-hdr")		\
- 	EM(rxrpc_badmsg_unsupported_packet,	"unsup-pkt")		\
- 	EM(rxrpc_badmsg_zero_call,		"zero-call")		\
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 1f251d758cb9d..598b4ee389fc1 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -88,7 +88,7 @@ void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
- 			struct rxrpc_ackpacket ack;
- 		};
- 	} __attribute__((packed)) pkt;
--	struct rxrpc_ackinfo ack_info;
-+	struct rxrpc_acktrailer trailer;
- 	size_t len;
- 	int ret, ioc;
- 	u32 serial, mtu, call_id, padding;
-@@ -122,8 +122,8 @@ void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
- 	iov[0].iov_len	= sizeof(pkt.whdr);
- 	iov[1].iov_base	= &padding;
- 	iov[1].iov_len	= 3;
--	iov[2].iov_base	= &ack_info;
--	iov[2].iov_len	= sizeof(ack_info);
-+	iov[2].iov_base	= &trailer;
-+	iov[2].iov_len	= sizeof(trailer);
- 
- 	serial = rxrpc_get_next_serial(conn);
- 
-@@ -158,14 +158,14 @@ void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
- 		pkt.ack.serial		= htonl(skb ? sp->hdr.serial : 0);
- 		pkt.ack.reason		= skb ? RXRPC_ACK_DUPLICATE : RXRPC_ACK_IDLE;
- 		pkt.ack.nAcks		= 0;
--		ack_info.rxMTU		= htonl(rxrpc_rx_mtu);
--		ack_info.maxMTU		= htonl(mtu);
--		ack_info.rwind		= htonl(rxrpc_rx_window_size);
--		ack_info.jumbo_max	= htonl(rxrpc_rx_jumbo_max);
-+		trailer.maxMTU		= htonl(rxrpc_rx_mtu);
-+		trailer.ifMTU		= htonl(mtu);
-+		trailer.rwind		= htonl(rxrpc_rx_window_size);
-+		trailer.jumbo_max	= htonl(rxrpc_rx_jumbo_max);
- 		pkt.whdr.flags		|= RXRPC_SLOW_START_OK;
- 		padding			= 0;
- 		iov[0].iov_len += sizeof(pkt.ack);
--		len += sizeof(pkt.ack) + 3 + sizeof(ack_info);
-+		len += sizeof(pkt.ack) + 3 + sizeof(trailer);
- 		ioc = 3;
- 
- 		trace_rxrpc_tx_ack(chan->call_debug_id, serial,
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index 9691de00ade75..718ffd184ddb6 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -670,14 +670,14 @@ static void rxrpc_complete_rtt_probe(struct rxrpc_call *call,
- /*
-  * Process the extra information that may be appended to an ACK packet
-  */
--static void rxrpc_input_ackinfo(struct rxrpc_call *call, struct sk_buff *skb,
--				struct rxrpc_ackinfo *ackinfo)
-+static void rxrpc_input_ack_trailer(struct rxrpc_call *call, struct sk_buff *skb,
-+				    struct rxrpc_acktrailer *trailer)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index 93ce181eb3baa..913c70a0ef44f 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -935,7 +935,6 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
  {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_peer *peer;
- 	unsigned int mtu;
- 	bool wake = false;
--	u32 rwind = ntohl(ackinfo->rwind);
-+	u32 rwind = ntohl(trailer->rwind);
+ 	struct kfd_node *node;
+ 	int i;
+-	int count;
  
- 	if (rwind > RXRPC_TX_MAX_WINDOW)
- 		rwind = RXRPC_TX_MAX_WINDOW;
-@@ -691,7 +691,7 @@ static void rxrpc_input_ackinfo(struct rxrpc_call *call, struct sk_buff *skb,
- 	if (call->cong_ssthresh > rwind)
- 		call->cong_ssthresh = rwind;
- 
--	mtu = min(ntohl(ackinfo->rxMTU), ntohl(ackinfo->maxMTU));
-+	mtu = min(ntohl(trailer->maxMTU), ntohl(trailer->ifMTU));
- 
- 	peer = call->peer;
- 	if (mtu < peer->maxdata) {
-@@ -837,7 +837,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	struct rxrpc_ack_summary summary = { 0 };
- 	struct rxrpc_ackpacket ack;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
--	struct rxrpc_ackinfo info;
-+	struct rxrpc_acktrailer trailer;
- 	rxrpc_serial_t ack_serial, acked_serial;
- 	rxrpc_seq_t first_soft_ack, hard_ack, prev_pkt, since;
- 	int nr_acks, offset, ioffset;
-@@ -917,11 +917,11 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 		goto send_response;
+ 	if (!kfd->init_complete)
+ 		return;
+@@ -943,12 +942,10 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
+ 	/* for runtime suspend, skip locking kfd */
+ 	if (!run_pm) {
+ 		mutex_lock(&kfd_processes_mutex);
+-		count = ++kfd_locked;
+-		mutex_unlock(&kfd_processes_mutex);
+-
+ 		/* For first KFD device suspend all the KFD processes */
+-		if (count == 1)
++		if (++kfd_locked == 1)
+ 			kfd_suspend_all_processes();
++		mutex_unlock(&kfd_processes_mutex);
  	}
  
--	info.rxMTU = 0;
-+	trailer.maxMTU = 0;
- 	ioffset = offset + nr_acks + 3;
--	if (skb->len >= ioffset + sizeof(info) &&
--	    skb_copy_bits(skb, ioffset, &info, sizeof(info)) < 0)
--		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_info);
-+	if (skb->len >= ioffset + sizeof(trailer) &&
-+	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
-+		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
+ 	for (i = 0; i < kfd->num_nodes; i++) {
+@@ -959,7 +956,7 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
  
- 	if (nr_acks > 0)
- 		skb_condense(skb);
-@@ -950,8 +950,8 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
+ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
+ {
+-	int ret, count, i;
++	int ret, i;
+ 
+ 	if (!kfd->init_complete)
+ 		return 0;
+@@ -973,12 +970,10 @@ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
+ 	/* for runtime resume, skip unlocking kfd */
+ 	if (!run_pm) {
+ 		mutex_lock(&kfd_processes_mutex);
+-		count = --kfd_locked;
+-		mutex_unlock(&kfd_processes_mutex);
+-
+-		WARN_ONCE(count < 0, "KFD suspend / resume ref. error");
+-		if (count == 0)
++		if (--kfd_locked == 0)
+ 			ret = kfd_resume_all_processes();
++		WARN_ONCE(kfd_locked < 0, "KFD suspend / resume ref. error");
++		mutex_unlock(&kfd_processes_mutex);
  	}
  
- 	/* Parse rwind and mtu sizes if provided. */
--	if (info.rxMTU)
--		rxrpc_input_ackinfo(call, skb, &info);
-+	if (trailer.maxMTU)
-+		rxrpc_input_ack_trailer(call, skb, &trailer);
- 
- 	if (first_soft_ack == 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_eproto_ackr_zero);
-diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
-index 4a292f860ae37..cad6a7d18e040 100644
---- a/net/rxrpc/output.c
-+++ b/net/rxrpc/output.c
-@@ -83,7 +83,7 @@ static size_t rxrpc_fill_out_ack(struct rxrpc_connection *conn,
- 				 struct rxrpc_txbuf *txb,
- 				 u16 *_rwind)
- {
--	struct rxrpc_ackinfo ackinfo;
-+	struct rxrpc_acktrailer trailer;
- 	unsigned int qsize, sack, wrap, to;
- 	rxrpc_seq_t window, wtop;
- 	int rsize;
-@@ -126,16 +126,16 @@ static size_t rxrpc_fill_out_ack(struct rxrpc_connection *conn,
- 	qsize = (window - 1) - call->rx_consumed;
- 	rsize = max_t(int, call->rx_winsize - qsize, 0);
- 	*_rwind = rsize;
--	ackinfo.rxMTU		= htonl(rxrpc_rx_mtu);
--	ackinfo.maxMTU		= htonl(mtu);
--	ackinfo.rwind		= htonl(rsize);
--	ackinfo.jumbo_max	= htonl(jmax);
-+	trailer.maxMTU		= htonl(rxrpc_rx_mtu);
-+	trailer.ifMTU		= htonl(mtu);
-+	trailer.rwind		= htonl(rsize);
-+	trailer.jumbo_max	= htonl(jmax);
- 
- 	*ackp++ = 0;
- 	*ackp++ = 0;
- 	*ackp++ = 0;
--	memcpy(ackp, &ackinfo, sizeof(ackinfo));
--	return txb->ack.nAcks + 3 + sizeof(ackinfo);
-+	memcpy(ackp, &trailer, sizeof(trailer));
-+	return txb->ack.nAcks + 3 + sizeof(trailer);
- }
- 
- /*
-diff --git a/net/rxrpc/protocol.h b/net/rxrpc/protocol.h
-index e8ee4af43ca89..4fe6b4d20ada9 100644
---- a/net/rxrpc/protocol.h
-+++ b/net/rxrpc/protocol.h
-@@ -135,9 +135,9 @@ struct rxrpc_ackpacket {
- /*
-  * ACK packets can have a further piece of information tagged on the end
-  */
--struct rxrpc_ackinfo {
--	__be32		rxMTU;		/* maximum Rx MTU size (bytes) [AFS 3.3] */
--	__be32		maxMTU;		/* maximum interface MTU size (bytes) [AFS 3.3] */
-+struct rxrpc_acktrailer {
-+	__be32		maxMTU;		/* maximum Rx MTU size (bytes) [AFS 3.3] */
-+	__be32		ifMTU;		/* maximum interface MTU size (bytes) [AFS 3.3] */
- 	__be32		rwind;		/* Rx window size (packets) [AFS 3.4] */
- 	__be32		jumbo_max;	/* max packets to stick into a jumbo packet [AFS 3.5] */
- };
+ 	return ret;
 -- 
 2.43.0
 
