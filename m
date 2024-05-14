@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B298C4FEB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046A98C5182
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3CF1F211BB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14861F226D1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7D14315B;
-	Tue, 14 May 2024 10:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250D7139D16;
+	Tue, 14 May 2024 11:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zO/dS/CB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kk52BLY1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8B42943F;
-	Tue, 14 May 2024 10:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7132139597;
+	Tue, 14 May 2024 11:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682691; cv=none; b=hg2hqvBPNb3w+ZpEUSOaMykYRHbmajXE5qsdCayz8CPfAh7FRBGMxfFZRg273vRM7wj/Gnn4n0pfJY12BrZ9r1Hm++VF8Wj9lgISrGWnfwliOTmlmR4dziwSKt3DdJOoW9Inqf9sQlo2UmqsmYtgC4csNV96DLDOYf0b6sYCSLY=
+	t=1715684616; cv=none; b=MuLz5lsfETf1b3s57M4+RJpTGlB4E+KDy0BUYmmqceA4VbyL0HZmgjAQAB1PpUoZrVjuMm99pPySU4RjuLi10WN30MXOjQkHiWWQmnvIQephYK73QI6CtDXreg688G1CGdKdhBSR6sygb81iQIuBQKlrIXQ/P3yzLSFJrlzU6Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682691; c=relaxed/simple;
-	bh=IRTigfuDVxKfVf2lKm2dx8HwlNv6xENmPbPegHxhRRM=;
+	s=arc-20240116; t=1715684616; c=relaxed/simple;
+	bh=PLQSrFk0NxAnxAt6XsxMWIPgNid/frUoXKGuYNkjfxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=judRHo24JHLcGssua4SxdnXAR7fs4twBy0yFk78dv/ivToyPM8jtShvnTaFniOZMfvdAGIx8+Rprk31PMlOQYMHGPIo1HcclHULGOtHrwHhMrxD83W0GloLTTa1g4tBofZxDJPJLjeY8WbeliVsJRbnVjpvZjODfAih/gWOqT9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zO/dS/CB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F6DC2BD10;
-	Tue, 14 May 2024 10:31:30 +0000 (UTC)
+	 MIME-Version; b=LQyfJUF9nn43lPi3zOEAnjIm6f5mKW6me9GLycr6CFe8/z0EOeLnwAQMm2TQ8DD+MvPwWHfRie6PZoZIBlUPIscEjhV9smpT1Ws9QGfihBnIPwwi/8AB3MKj4YqR7YAImULFtFy7qDg57Q51hr8rXE6Tyh/W16zMUPj/srnE6OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kk52BLY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1866C2BD10;
+	Tue, 14 May 2024 11:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682691;
-	bh=IRTigfuDVxKfVf2lKm2dx8HwlNv6xENmPbPegHxhRRM=;
+	s=korg; t=1715684616;
+	bh=PLQSrFk0NxAnxAt6XsxMWIPgNid/frUoXKGuYNkjfxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zO/dS/CBt7Xn1JZcZ1Dyt4X2CBsT8z8IEkR2X7gLlfbl132Ct+8xXuEqNgtYGGpjn
-	 kHU+CApwkZRbwcEginaTAiR1eUhYatEJle0PgsqFaJidpjTKP7J9+MMkUje7EDHLBV
-	 WPCMVB5JOGiI1XNreJnAnqYfaZygHB3ZWwW5/dMA=
+	b=Kk52BLY1uzc4p8mlprKTuI5LYKqglpcrKE/615zFx3XAZPhd6G+sGDUdM+IoVb+Qg
+	 wOuxDf9KqU2kAElgGkit2V7QlRn4mL4RU7YUft4n2r+3lZtnPSAjuVdTjPzW+3Kir/
+	 L3OQ0HV1loLuuLXAg+wbEhgjTXE06LpI+SEKOrR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 099/336] scsi: lpfc: Update lpfc_ramp_down_queue_handler() logic
-Date: Tue, 14 May 2024 12:15:03 +0200
-Message-ID: <20240514101042.345379669@linuxfoundation.org>
+Subject: [PATCH 6.6 033/301] nvme: fix warn output about shared namespaces without CONFIG_NVME_MULTIPATH
+Date: Tue, 14 May 2024 12:15:04 +0200
+Message-ID: <20240514101033.497440663@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Yi Zhang <yi.zhang@redhat.com>
 
-[ Upstream commit bb011631435c705cdeddca68d5c85fd40a4320f9 ]
+[ Upstream commit 0bc2e80b9be51712b19e919db5abc97a418f8292 ]
 
-Typically when an out of resource CQE status is detected, the
-lpfc_ramp_down_queue_handler() logic is called to help reduce I/O load by
-reducing an sdev's queue_depth.
+Move the stray '.' that is currently at the end of the line after
+newline '\n' to before newline character which is the right position.
 
-However, the current lpfc_rampdown_queue_depth() logic does not help reduce
-queue_depth.  num_cmd_success is never updated and is always zero, which
-means new_queue_depth will always be set to sdev->queue_depth.  So,
-new_queue_depth = sdev->queue_depth - new_queue_depth always sets
-new_queue_depth to zero.  And, scsi_change_queue_depth(sdev, 0) is
-essentially a no-op.
-
-Change the lpfc_ramp_down_queue_handler() logic to set new_queue_depth
-equal to sdev->queue_depth subtracted from number of times num_rsrc_err was
-incremented.  If num_rsrc_err is >= sdev->queue_depth, then set
-new_queue_depth equal to 1.  Eventually, the frequency of Good_Status
-frames will signal SCSI upper layer to auto increase the queue_depth back
-to the driver default of 64 via scsi_handle_queue_ramp_up().
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240305200503.57317-5-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ce8d78616a6b ("nvme: warn about shared namespaces without CONFIG_NVME_MULTIPATH")
+Signed-off-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc.h      |  1 -
- drivers/scsi/lpfc/lpfc_scsi.c | 13 ++++---------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ drivers/nvme/host/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index 04d608ea91060..be016732ab2ea 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -1325,7 +1325,6 @@ struct lpfc_hba {
- 	struct timer_list fabric_block_timer;
- 	unsigned long bit_flags;
- 	atomic_t num_rsrc_err;
--	atomic_t num_cmd_success;
- 	unsigned long last_rsrc_error_time;
- 	unsigned long last_ramp_down_time;
- #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index bf879d81846b6..cf506556f3b0b 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -167,11 +167,10 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
- 	struct Scsi_Host  *shost;
- 	struct scsi_device *sdev;
- 	unsigned long new_queue_depth;
--	unsigned long num_rsrc_err, num_cmd_success;
-+	unsigned long num_rsrc_err;
- 	int i;
- 
- 	num_rsrc_err = atomic_read(&phba->num_rsrc_err);
--	num_cmd_success = atomic_read(&phba->num_cmd_success);
- 
- 	/*
- 	 * The error and success command counters are global per
-@@ -186,20 +185,16 @@ lpfc_ramp_down_queue_handler(struct lpfc_hba *phba)
- 		for (i = 0; i <= phba->max_vports && vports[i] != NULL; i++) {
- 			shost = lpfc_shost_from_vport(vports[i]);
- 			shost_for_each_device(sdev, shost) {
--				new_queue_depth =
--					sdev->queue_depth * num_rsrc_err /
--					(num_rsrc_err + num_cmd_success);
--				if (!new_queue_depth)
--					new_queue_depth = sdev->queue_depth - 1;
-+				if (num_rsrc_err >= sdev->queue_depth)
-+					new_queue_depth = 1;
- 				else
- 					new_queue_depth = sdev->queue_depth -
--								new_queue_depth;
-+						num_rsrc_err;
- 				scsi_change_queue_depth(sdev, new_queue_depth);
- 			}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 012c8b3f5f9c9..2db71e222fa7d 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3540,7 +3540,7 @@ static int nvme_init_ns_head(struct nvme_ns *ns, struct nvme_ns_info *info)
+ 				"Found shared namespace %d, but multipathing not supported.\n",
+ 				info->nsid);
+ 			dev_warn_once(ctrl->device,
+-				"Support for shared namespaces without CONFIG_NVME_MULTIPATH is deprecated and will be removed in Linux 6.0\n.");
++				"Support for shared namespaces without CONFIG_NVME_MULTIPATH is deprecated and will be removed in Linux 6.0.\n");
  		}
- 	lpfc_destroy_vport_work_array(phba, vports);
- 	atomic_set(&phba->num_rsrc_err, 0);
--	atomic_set(&phba->num_cmd_success, 0);
- }
+ 	}
  
- /**
 -- 
 2.43.0
 
