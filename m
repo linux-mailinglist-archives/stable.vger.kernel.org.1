@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AC88C5220
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24068C5303
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30AC7282A59
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87BE41F22862
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C19312B170;
-	Tue, 14 May 2024 11:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664551386DD;
+	Tue, 14 May 2024 11:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKzqgmMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKBUMHFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF57C126F33;
-	Tue, 14 May 2024 11:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244F984D26;
+	Tue, 14 May 2024 11:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685489; cv=none; b=TVZYY59yzMC9lb4Lr3VbdTjU5CdvzvGeNYIxSimFLqsJuG5ypMDswy5SP4a326TZX91dKVxwn10Cpe6UhEArrDUbJHT4CIzQV9L+zooEDhO7cU4TOxcizN7UU6+rikN0+bG6VqqwSqPXmGEcWnnuE21jlXB7lKAFXYGIVCM1lUY=
+	t=1715686261; cv=none; b=airTBwt5ToI+VraR0zbam2sk790AZI0tE8dQHuMlZ5a6BPPtBoztDGji/hDKUVSAlZU2RhGxdqvTulZdaslhJ2M8KCzDdd6szh8ZpjBfkfsXVJtFIAz7o+5y08888ntpdASr9sPVPQ8R+9jAan/TZwY2udBKzsJNvpMI6ypq2Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685489; c=relaxed/simple;
-	bh=+MeuTgadmIvwwhqewNKSvXWBMfqlSKdXiH+FsQthy04=;
+	s=arc-20240116; t=1715686261; c=relaxed/simple;
+	bh=gpSQqpvcitq/fM619TmwN80S4aE4H68JYcGUii6DnaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuYJzpbdolUY3OJnPfJZ6zTDG9rISuY6ou+2wznWdzLyZCO2zTT9sjtXVh9zkbFS3Pxubb42X8/xojb+XJoNMBbqSRbQOpd5c3lIjUQe0xpWO5ELyjkhD9ry/kde4xQ8HH6dXEK5YY47LlEKtuSD5zpbiuDU0FOtWKRpNqvOBkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKzqgmMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD80C2BD10;
-	Tue, 14 May 2024 11:18:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SFnPvbIqKnAT6+BY/7iMcMWdOAmORSsbb9KW5o6viBHue6fi1XLvOAjSZRQjRcQA0GjiGLnhOXTQsv+7XyQzdKsSw6FEb3hP09e0HFNEjnMDWoCbcX0cygI9M7aOhi0ftzVn8YRk/k7YeLrj9DInY4GYSYlYSkXByS9/vUnCQ6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKBUMHFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1F2C2BD10;
+	Tue, 14 May 2024 11:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685489;
-	bh=+MeuTgadmIvwwhqewNKSvXWBMfqlSKdXiH+FsQthy04=;
+	s=korg; t=1715686261;
+	bh=gpSQqpvcitq/fM619TmwN80S4aE4H68JYcGUii6DnaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKzqgmMJPRtWDisSl2RqmrEQImi7RZnt/5VD2QrS9qhJNzYCrp1zzTwy2ncHsANuU
-	 BRaAtSwqAEuxbvb9qsiSqpggm6vDY6yLjYoQ9/tyg03MM15OxOZMloTsB20VKO4iQQ
-	 5m3vk2vJ0Sk5LJ401alQaE30dWPjNffKCdUfum0E=
+	b=tKBUMHFHyXi6UG4WpTHeE5kSBW51BTGmRM2iK9RrQ7ggaLhOCSECajQYvix0++WUh
+	 nex5yNXzcU5ayiaUkNQHYbPOYIIo3+uxmm8XhyejwtJOkaXF5j+9CcPOSVntrpDyWy
+	 9qh2aVTw3g1xFXOaU3lMa+DOU2jPmrEoqnGgQ3kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/301] fs/9p: drop inodes immediately on non-.L too
+Subject: [PATCH 6.1 075/236] net: dsa: mv88e6xxx: Fix number of databases for 88E6141 / 88E6341
 Date: Tue, 14 May 2024 12:17:17 +0200
-Message-ID: <20240514101038.524163927@linuxfoundation.org>
+Message-ID: <20240514101023.218400261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,35 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Sindholt <opensource@zhasha.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 7fd524b9bd1be210fe79035800f4bd78a41b349f ]
+[ Upstream commit b9a61c20179fda7bdfe2c1210aa72451991ab81a ]
 
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+The Topaz family (88E6141 and 88E6341) only support 256 Forwarding
+Information Tables.
+
+Fixes: a75961d0ebfd ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6341")
+Fixes: 1558727a1c1b ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6141")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20240429133832.9547-1-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_super.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/9p/vfs_super.c b/fs/9p/vfs_super.c
-index 73db55c050bf1..958efc8423334 100644
---- a/fs/9p/vfs_super.c
-+++ b/fs/9p/vfs_super.c
-@@ -320,6 +320,7 @@ static const struct super_operations v9fs_super_ops = {
- 	.alloc_inode = v9fs_alloc_inode,
- 	.free_inode = v9fs_free_inode,
- 	.statfs = simple_statfs,
-+	.drop_inode = v9fs_drop_inode,
- 	.evict_inode = v9fs_evict_inode,
- 	.show_options = v9fs_show_options,
- 	.umount_begin = v9fs_umount_begin,
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index ba906dfab055c..517c50d11fbce 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5677,7 +5677,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6141,
+ 		.family = MV88E6XXX_FAMILY_6341,
+ 		.name = "Marvell 88E6141",
+-		.num_databases = 4096,
++		.num_databases = 256,
+ 		.num_macs = 2048,
+ 		.num_ports = 6,
+ 		.num_internal_phys = 5,
+@@ -6134,7 +6134,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6341,
+ 		.family = MV88E6XXX_FAMILY_6341,
+ 		.name = "Marvell 88E6341",
+-		.num_databases = 4096,
++		.num_databases = 256,
+ 		.num_macs = 2048,
+ 		.num_internal_phys = 5,
+ 		.num_ports = 6,
 -- 
 2.43.0
 
