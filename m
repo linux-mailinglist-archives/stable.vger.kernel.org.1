@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-44442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EBE8C52E2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1538C51B2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E54A283136
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8331B2827DA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A03135414;
-	Tue, 14 May 2024 11:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AC613AD3F;
+	Tue, 14 May 2024 11:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amekGro5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IseEooSN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FAE1CAA4;
-	Tue, 14 May 2024 11:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A8813AD2A;
+	Tue, 14 May 2024 11:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686174; cv=none; b=JNUr2lk1+MLUNkVezGTVyfK/I5u5sbyQPZJMlEa9SoozSNn6YPyb54HB+cjU6ifl1k2bbuxOLwQ8+/tRaVi7etA8oGRanCz28zNlTIQB+OFm+opK8QkkS+0aZCAO7FJ03is2QayM1P5erDcn2edGiyW/CqMAPRt4pemMTgEK8QQ=
+	t=1715684910; cv=none; b=HUtp/A08R0rFlYKhL5ikxURHkBBptTUQMgZspKFUWmLOT1Rqj04ZOTDs0vgenhhSMehcjIaDnDPzXWhvrJcF/Vd7p2UbjDxmffMZfiDJ+E4X9ob4SxCNAQ7q4I6hkIrrgy4060bU17JkEvDx6tG7PkDctNPrUg2wRKRvf23q4aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686174; c=relaxed/simple;
-	bh=QwulqOZG6Tnr4IR6KPvH/It09CDuC2MJvbR3l9+pXdo=;
+	s=arc-20240116; t=1715684910; c=relaxed/simple;
+	bh=/D/DiiyMPHkDJ8Jqk0H6MoYxWrFueBIRfIf+BZM71jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fllFI6LqXJ7J1H9awml8oQBNyTZD3fYcv1G66X1NbDCX26vg0jkcI2M7MfqdR3cQG2kCPLOF+zsLIMd+ldfl5QJU85GhXkuUQxsq/XZY4WoJt4JM9A7wEO4KwkHlM9bAYm5hT84nhkR0r4PrxXLTxzKyG/EKwX3ee5wU73GAYIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amekGro5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661C4C2BD10;
-	Tue, 14 May 2024 11:29:33 +0000 (UTC)
+	 MIME-Version; b=WUsyB7+gKRiZRHoBuiR9obrs6qerTcwTO4YPkbQG/+ayDBE5S48BFFcu7OIQCEKtPEsH38jRbcaqr7gYXf0PBM8Xl37qcbs5znW9ZzbggFMpcPUdEPDN76vXk9FkerstVsYae//K6r+32pWuur3DsAat7tEqHMxKd72s+7ZE7zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IseEooSN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB37C2BD10;
+	Tue, 14 May 2024 11:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686174;
-	bh=QwulqOZG6Tnr4IR6KPvH/It09CDuC2MJvbR3l9+pXdo=;
+	s=korg; t=1715684910;
+	bh=/D/DiiyMPHkDJ8Jqk0H6MoYxWrFueBIRfIf+BZM71jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amekGro5Ym++IXyQS7sVFkj6a5SJ89VVnfRKWqq1iqUqKDZsoD+ZswFZVdQWWmqRT
-	 FxZGJswnWO2awFfsExlpanIgy1SC5fK4LWD6C99pf6vscO6woAKZMB5hRVPoAT/y7s
-	 Xc6TRQl0WEpy/hAPLP8E9cerIXVSLsjPKETQGvyU=
+	b=IseEooSNaL7Ln87d+X06oREmdVPcOJXggyOoB1PPNu4/nQYivx8SR3dg6GlMn+MZS
+	 fagu1tjvTrsaos5RDqDwDws/zwBwPPsl5Nz97X3ucM68vdaXKtbaHIDoz8Hqc0g0b4
+	 CPwFdgGbBFumyz2m2aZ0hQVEExTuy/xD+1DhMeF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/236] mm/hugetlb_cgroup: convert hugetlb_cgroup_uncharge_page() to folios
+Subject: [PATCH 6.6 107/301] wifi: iwlwifi: read txq->read_ptr under lock
 Date: Tue, 14 May 2024 12:16:18 +0200
-Message-ID: <20240514101020.948073420@linuxfoundation.org>
+Message-ID: <20240514101036.291893385@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,181 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d4ab0316cc33aeedf6dcb1c2c25e097a25766132 ]
+[ Upstream commit c2ace6300600c634553657785dfe5ea0ed688ac2 ]
 
-Continue to use a folio inside free_huge_page() by converting
-hugetlb_cgroup_uncharge_page*() to folios.
+If we read txq->read_ptr without lock, we can read the same
+value twice, then obtain the lock, and reclaim from there
+to two different places, but crucially reclaim the same
+entry twice, resulting in the WARN_ONCE() a little later.
+Fix that by reading txq->read_ptr under lock.
 
-Link: https://lkml.kernel.org/r/20221101223059.460937-8-sidhartha.kumar@oracle.com
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.bf4c62196504.I978a7ca56c6bd6f1bf42c15aa923ba03366a840b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hugetlb_cgroup.h | 16 ++++++++--------
- mm/hugetlb.c                   | 15 +++++++++------
- mm/hugetlb_cgroup.c            | 21 ++++++++++-----------
- 3 files changed, 27 insertions(+), 25 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/hugetlb_cgroup.h b/include/linux/hugetlb_cgroup.h
-index feb2edafc8b68..241bf4fe701ae 100644
---- a/include/linux/hugetlb_cgroup.h
-+++ b/include/linux/hugetlb_cgroup.h
-@@ -158,10 +158,10 @@ extern void hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
- extern void hugetlb_cgroup_commit_charge_rsvd(int idx, unsigned long nr_pages,
- 					      struct hugetlb_cgroup *h_cg,
- 					      struct page *page);
--extern void hugetlb_cgroup_uncharge_page(int idx, unsigned long nr_pages,
--					 struct page *page);
--extern void hugetlb_cgroup_uncharge_page_rsvd(int idx, unsigned long nr_pages,
--					      struct page *page);
-+extern void hugetlb_cgroup_uncharge_folio(int idx, unsigned long nr_pages,
-+					 struct folio *folio);
-+extern void hugetlb_cgroup_uncharge_folio_rsvd(int idx, unsigned long nr_pages,
-+					      struct folio *folio);
- 
- extern void hugetlb_cgroup_uncharge_cgroup(int idx, unsigned long nr_pages,
- 					   struct hugetlb_cgroup *h_cg);
-@@ -254,14 +254,14 @@ hugetlb_cgroup_commit_charge_rsvd(int idx, unsigned long nr_pages,
- {
- }
- 
--static inline void hugetlb_cgroup_uncharge_page(int idx, unsigned long nr_pages,
--						struct page *page)
-+static inline void hugetlb_cgroup_uncharge_folio(int idx, unsigned long nr_pages,
-+						struct folio *folio)
- {
- }
- 
--static inline void hugetlb_cgroup_uncharge_page_rsvd(int idx,
-+static inline void hugetlb_cgroup_uncharge_folio_rsvd(int idx,
- 						     unsigned long nr_pages,
--						     struct page *page)
-+						     struct folio *folio)
- {
- }
- static inline void hugetlb_cgroup_uncharge_cgroup(int idx,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 6cdbb06902df1..e720b9ac28337 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1956,10 +1956,10 @@ void free_huge_page(struct page *page)
- 
- 	spin_lock_irqsave(&hugetlb_lock, flags);
- 	folio_clear_hugetlb_migratable(folio);
--	hugetlb_cgroup_uncharge_page(hstate_index(h),
--				     pages_per_huge_page(h), page);
--	hugetlb_cgroup_uncharge_page_rsvd(hstate_index(h),
--					  pages_per_huge_page(h), page);
-+	hugetlb_cgroup_uncharge_folio(hstate_index(h),
-+				     pages_per_huge_page(h), folio);
-+	hugetlb_cgroup_uncharge_folio_rsvd(hstate_index(h),
-+					  pages_per_huge_page(h), folio);
- 	if (restore_reserve)
- 		h->resv_huge_pages++;
- 
-@@ -3082,6 +3082,7 @@ struct page *alloc_huge_page(struct vm_area_struct *vma,
- 	struct hugepage_subpool *spool = subpool_vma(vma);
- 	struct hstate *h = hstate_vma(vma);
- 	struct page *page;
-+	struct folio *folio;
- 	long map_chg, map_commit;
- 	long gbl_chg;
- 	int ret, idx;
-@@ -3145,6 +3146,7 @@ struct page *alloc_huge_page(struct vm_area_struct *vma,
- 	 * a reservation exists for the allocation.
- 	 */
- 	page = dequeue_huge_page_vma(h, vma, addr, avoid_reserve, gbl_chg);
-+
- 	if (!page) {
- 		spin_unlock_irq(&hugetlb_lock);
- 		page = alloc_buddy_huge_page_with_mpol(h, vma, addr);
-@@ -3159,6 +3161,7 @@ struct page *alloc_huge_page(struct vm_area_struct *vma,
- 		set_page_refcounted(page);
- 		/* Fall through */
- 	}
-+	folio = page_folio(page);
- 	hugetlb_cgroup_commit_charge(idx, pages_per_huge_page(h), h_cg, page);
- 	/* If allocation is not consuming a reservation, also store the
- 	 * hugetlb_cgroup pointer on the page.
-@@ -3188,8 +3191,8 @@ struct page *alloc_huge_page(struct vm_area_struct *vma,
- 		rsv_adjust = hugepage_subpool_put_pages(spool, 1);
- 		hugetlb_acct_memory(h, -rsv_adjust);
- 		if (deferred_reserve)
--			hugetlb_cgroup_uncharge_page_rsvd(hstate_index(h),
--					pages_per_huge_page(h), page);
-+			hugetlb_cgroup_uncharge_folio_rsvd(hstate_index(h),
-+					pages_per_huge_page(h), folio);
- 	}
- 	return page;
- 
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index 8b95c1560f9c3..32f4408eda240 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -346,11 +346,10 @@ void hugetlb_cgroup_commit_charge_rsvd(int idx, unsigned long nr_pages,
- /*
-  * Should be called with hugetlb_lock held
-  */
--static void __hugetlb_cgroup_uncharge_page(int idx, unsigned long nr_pages,
--					   struct page *page, bool rsvd)
-+static void __hugetlb_cgroup_uncharge_folio(int idx, unsigned long nr_pages,
-+					   struct folio *folio, bool rsvd)
- {
- 	struct hugetlb_cgroup *h_cg;
--	struct folio *folio = page_folio(page);
- 
- 	if (hugetlb_cgroup_disabled())
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index ca74b1b63cac1..0efa304904bd3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -1588,9 +1588,9 @@ void iwl_txq_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
  		return;
-@@ -368,27 +367,27 @@ static void __hugetlb_cgroup_uncharge_page(int idx, unsigned long nr_pages,
- 		css_put(&h_cg->css);
- 	else {
- 		unsigned long usage =
--			h_cg->nodeinfo[page_to_nid(page)]->usage[idx];
-+			h_cg->nodeinfo[folio_nid(folio)]->usage[idx];
- 		/*
- 		 * This write is not atomic due to fetching usage and writing
- 		 * to it, but that's fine because we call this with
- 		 * hugetlb_lock held anyway.
- 		 */
--		WRITE_ONCE(h_cg->nodeinfo[page_to_nid(page)]->usage[idx],
-+		WRITE_ONCE(h_cg->nodeinfo[folio_nid(folio)]->usage[idx],
- 			   usage - nr_pages);
- 	}
- }
  
--void hugetlb_cgroup_uncharge_page(int idx, unsigned long nr_pages,
--				  struct page *page)
-+void hugetlb_cgroup_uncharge_folio(int idx, unsigned long nr_pages,
-+				  struct folio *folio)
- {
--	__hugetlb_cgroup_uncharge_page(idx, nr_pages, page, false);
-+	__hugetlb_cgroup_uncharge_folio(idx, nr_pages, folio, false);
- }
+ 	tfd_num = iwl_txq_get_cmd_index(txq, ssn);
+-	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
  
--void hugetlb_cgroup_uncharge_page_rsvd(int idx, unsigned long nr_pages,
--				       struct page *page)
-+void hugetlb_cgroup_uncharge_folio_rsvd(int idx, unsigned long nr_pages,
-+				       struct folio *folio)
- {
--	__hugetlb_cgroup_uncharge_page(idx, nr_pages, page, true);
-+	__hugetlb_cgroup_uncharge_folio(idx, nr_pages, folio, true);
- }
+ 	spin_lock_bh(&txq->lock);
++	read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr);
  
- static void __hugetlb_cgroup_uncharge_cgroup(int idx, unsigned long nr_pages,
+ 	if (!test_bit(txq_id, trans->txqs.queue_used)) {
+ 		IWL_DEBUG_TX_QUEUES(trans, "Q %d inactive - ignoring idx %d\n",
 -- 
 2.43.0
 
