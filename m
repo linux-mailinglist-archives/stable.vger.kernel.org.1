@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-43980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF30F8C5093
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:07:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEFA8C51EF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BB19B212E5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:07:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FF9B1C216D8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8B413DB9C;
-	Tue, 14 May 2024 10:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6CD83CD7;
+	Tue, 14 May 2024 11:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq46UJbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPj7ZM1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC38B13CA9B;
-	Tue, 14 May 2024 10:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0473B79C;
+	Tue, 14 May 2024 11:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683480; cv=none; b=RJwj5l7omEHipSjla9+Ak4rrHXgM1M16ByfeKcjZTFUoM1ZCgl3WlZoOFytasBzfJ3N6+oFskmW2ce1wVlYJ9M+lYE7UyHbb3a09uznsyqi7GFhi2xWLIuiuET0eXy71MzCY0cLPWRCHkXHcjKWudgDw2Hoypd+bd9qonDUkrKM=
+	t=1715685257; cv=none; b=tFIa2mu3f1BpKsIZje51+VUOMw4wXk0GYdxall7PEMIhqad/4Red9alZEcnKlMm3gWgpQAE9u7jEZY7jr9VHFefxv9HUJSA8ccqF+JXXeHTUFXf+KSvMqnKg0Bd1280MnWz6EbyX4JH4+877rZsNBEbL6nVzo5pH0Fv2fGb2Ajo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683480; c=relaxed/simple;
-	bh=VXr4QK+nnyYwgETL7fgdEFm9SIUzrPgRZgMfosCVa6E=;
+	s=arc-20240116; t=1715685257; c=relaxed/simple;
+	bh=b5plEFXkoefEnUj2rSpbS9jux63jdF3bkSBaQM2AWx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEbUn9C9wO1NVf40LPCesDtY4ZTNNfj5V4O19+KQDI7KyFmgenfgggYqToKC0cEKDrBs0KGc4+TCIZNgJLkv/1fj5m0bUYeo7KKNmnf5s5PdT1FmRMlgUVRbBp6PkyimuD/gnl7V8+UCZUkC0vQugQk5SFk8MT1iORWV+vDUza0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq46UJbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076FCC2BD10;
-	Tue, 14 May 2024 10:44:39 +0000 (UTC)
+	 MIME-Version; b=rKZxnObsNsFqMDH8AI8Snh1+AujNCTnq62TOvAYkd0NF3SPVgKB6MnpouuCAv2e3IJSAgrZ83C4Jv/hm7MyXls2nfNHJWaSKOUPtgq/lA9VpYf95endXX8MFhtjduFjXroI7olxX2rH0aqFl9sVFX4N4EnSvJUSPoFHbiSk5rsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPj7ZM1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A60CC2BD10;
+	Tue, 14 May 2024 11:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683480;
-	bh=VXr4QK+nnyYwgETL7fgdEFm9SIUzrPgRZgMfosCVa6E=;
+	s=korg; t=1715685256;
+	bh=b5plEFXkoefEnUj2rSpbS9jux63jdF3bkSBaQM2AWx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rq46UJbW/8DwpyhXGtvkFOUPWQHraCCr3TGvOjcsMjPDsoWyHqrX4xWLow+P9lMkc
-	 C7FmnQCU67VJJhZzBkRUqMiAuT1Edk8ViT3tnokKxYlLGHeazXYS3riC0mEZKgybri
-	 YlMjcOaaC1IiMQ1dDdL8Fxfx3CCnbkUrTksnhlo0=
+	b=mPj7ZM1h9LOacqDgH5HiCPEzB/lSkL2Ln4gi7+3O/Z40o4LOu6lC2WpuDQjetT18a
+	 JpJWw6hEMWx4gcmQ5Gx/HYNfApuuDCTawSb3h00zSSa3w0kPcXZTb9FyfhOqoMdKBj
+	 oWnBJhv6ysObrL0j7knjJT8yde7ReZmowXW7vg1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Joakim Sindholt <opensource@zhasha.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 225/336] net/smc: fix neighbour and rtable leak in smc_ib_find_route()
+Subject: [PATCH 6.6 158/301] fs/9p: only translate RWX permissions for plain 9P2000
 Date: Tue, 14 May 2024 12:17:09 +0200
-Message-ID: <20240514101047.110483065@linuxfoundation.org>
+Message-ID: <20240514101038.224323296@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Joakim Sindholt <opensource@zhasha.com>
 
-[ Upstream commit 2ddc0dd7fec86ee53b8928a5cca5fbddd4fc7c06 ]
+[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
 
-In smc_ib_find_route(), the neighbour found by neigh_lookup() and rtable
-resolved by ip_route_output_flow() are not released or put before return.
-It may cause the refcount leak, so fix it.
+Garbage in plain 9P2000's perm bits is allowed through, which causes it
+to be able to set (among others) the suid bit. This was presumably not
+the intent since the unix extended bits are handled explicitly and
+conditionally on .u.
 
-Link: https://lore.kernel.org/r/20240506015439.108739-1-guwen@linux.alibaba.com
-Fixes: e5c4744cfb59 ("net/smc: add SMC-Rv2 connection establishment")
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240507125331.2808-1-guwen@linux.alibaba.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_ib.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ fs/9p/vfs_inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index 97704a9e84c70..9297dc20bfe23 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -209,13 +209,18 @@ int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
- 	if (IS_ERR(rt))
- 		goto out;
- 	if (rt->rt_uses_gateway && rt->rt_gw_family != AF_INET)
--		goto out;
--	neigh = rt->dst.ops->neigh_lookup(&rt->dst, NULL, &fl4.daddr);
--	if (neigh) {
--		memcpy(nexthop_mac, neigh->ha, ETH_ALEN);
--		*uses_gateway = rt->rt_uses_gateway;
--		return 0;
--	}
-+		goto out_rt;
-+	neigh = dst_neigh_lookup(&rt->dst, &fl4.daddr);
-+	if (!neigh)
-+		goto out_rt;
-+	memcpy(nexthop_mac, neigh->ha, ETH_ALEN);
-+	*uses_gateway = rt->rt_uses_gateway;
-+	neigh_release(neigh);
-+	ip_rt_put(rt);
-+	return 0;
-+
-+out_rt:
-+	ip_rt_put(rt);
- out:
- 	return -ENOENT;
- }
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index ea695c4a7a3fb..3bdf6df4b553e 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -83,7 +83,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
+ 	int res;
+ 	int mode = stat->mode;
+ 
+-	res = mode & S_IALLUGO;
++	res = mode & 0777; /* S_IRWXUGO */
+ 	if (v9fs_proto_dotu(v9ses)) {
+ 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
+ 			res |= S_ISUID;
 -- 
 2.43.0
 
