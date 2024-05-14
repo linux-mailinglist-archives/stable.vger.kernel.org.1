@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-45029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837FF8C5569
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F74C8C545E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22C20B213FB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E1F1F233C6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9043526AC5;
-	Tue, 14 May 2024 11:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F9241C6C;
+	Tue, 14 May 2024 11:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZ7MUfWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1sddIk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFC7F9D4;
-	Tue, 14 May 2024 11:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747FC2943F;
+	Tue, 14 May 2024 11:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687876; cv=none; b=kE1W3zPbvv4k8/0hAflc+m26kYYLMpcRm6SdCjGfM/k9MtBNW70TfiIPmBCMKkY4Nn17E5xCZbf08YDZSJ5Nxpw0Pdic+02RV3N55z3sIg9meK3EwjlA2IYfeOPe+dzlcygZCNZmSeudrb8bhpRu9TtsdejT0bhoIdNL/l8K1Qg=
+	t=1715687155; cv=none; b=oiP8hJu6AXAWFv0I0gw/QtK0KtEFbYqfvWIKy7sSvX+D/7K8LaRN3VZjcHZ9TE8VBMqJRFjrnfhQ8JJOdikrJn7Csz47y9x8/Kbj261Ci48tN16w4DfYAcony/3lwnNfwrIk3w6INpBPzgFgx2gJcfJDR9XEZD7d5ilpihjr9Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687876; c=relaxed/simple;
-	bh=YMK85uLbYSq8Lzh2q1w7L6aqUdzVIeYLXLMfDAl8T9E=;
+	s=arc-20240116; t=1715687155; c=relaxed/simple;
+	bh=TjGh8KjOJZ1tQQm4WTLNbpZkB1dnNl/xpULIU5ShoHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kA9uktxp56t3PXIl5OjU9L2+gVcgMrJtgII4wsBuv9j0kiRPz+RL3I/5B8mIpvcmAEZvAb/Xid+r+gPTnDHBb7MQwftN7/l8pXN91sV4R+BNhskrH+vGY1iByMVTPAjear7GkTmVGJtrwKL2psMf4rokhcPtXLa1l4hh8aC/sAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZ7MUfWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6E6C2BD10;
-	Tue, 14 May 2024 11:57:55 +0000 (UTC)
+	 MIME-Version; b=dzl3ZaA863EkI9eexpUXJy0X07xB58/vOuJDd4E/cxeWbKnDzjhzF0x+Ty+4XVwJHempp7HKXUeeFuN95OBBSzeqcod4Ba0M32G6aJKkWnj8ror4dXcyspQKRKHLLfKYYA1uxl868XwW/nblQPwoYY6O2SeuY8kizKh94Isx9ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1sddIk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C5FC2BD10;
+	Tue, 14 May 2024 11:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687876;
-	bh=YMK85uLbYSq8Lzh2q1w7L6aqUdzVIeYLXLMfDAl8T9E=;
+	s=korg; t=1715687155;
+	bh=TjGh8KjOJZ1tQQm4WTLNbpZkB1dnNl/xpULIU5ShoHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZ7MUfWyQwGGxJ4JGHd84mofOrR4HFpJli8Gbb2TdUTwQsvnviRaKPj65Z7xzIIah
-	 9l04qzOtDM9hpupC2fwAghuUyqN4+1Diag4l/aZrOOodtt0rNzK2CcD6Tt3jVVxpv6
-	 UpOOjovDH12OF13z1zSErhLskCdSIvDg16i4k9r0=
+	b=Z1sddIk318jAawyOO9CCfHGLrOGLAsMvRANU1Z5a+OANsfpZOXgUBC+M5y+9GTB+R
+	 VYkdZ37voLxv5sDD8Y5QSDHtGaj683YuQIgrVuE/THUKKX2sVOgfnGXHEkKQpukNFk
+	 A2QpB38yIXjnGUZSs9bTO6OzwkgEH77GeZCFl7Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 135/168] ACPI: CPPC: Fix bit_offset shift in MASK_VAL() macro
-Date: Tue, 14 May 2024 12:20:33 +0200
-Message-ID: <20240514101011.779700691@linuxfoundation.org>
+	Hulk Robot <hulkci@huawei.com>,
+	YueHaibing <yuehaibing@huawei.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.4 83/84] pinctrl: mediatek: remove set but not used variable e
+Date: Tue, 14 May 2024 12:20:34 +0200
+Message-ID: <20240514100954.804790361@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarred White <jarredwhite@linux.microsoft.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-commit 05d92ee782eeb7b939bdd0189e6efcab9195bf95 upstream
+commit 86ecb7d6853c77711c14cb6600179196f179ee2d upstream.
 
-Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-system memory accesses") neglected to properly wrap the bit_offset shift
-when it comes to applying the mask. This may cause incorrect values to be
-read and may cause the cpufreq module not be loaded.
+drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c: In function mtk_hw_pin_field_lookup:
+drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c:70:39: warning:
+ variable e set but not used [-Wunused-but-set-variable]
 
-[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-[   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
+Since commit 3de7deefce69 ("pinctrl: mediatek: Check gpio pin
+number and use binary search in mtk_hw_pin_field_lookup()"),
+it is not used any more, so remove it, also remove redundant
+assignment to variable c, it will be assigned a new value later
+before used.
 
-Also, corrected the bitmask generation in GENMASK (extra bit being added).
-
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20200218023625.14324-1-yuehaibing@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 408b1fda5702d..6aa456cda0ed9 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -165,8 +165,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
- #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
+@@ -67,7 +67,7 @@ static int mtk_hw_pin_field_lookup(struc
+ 				   const struct mtk_pin_desc *desc,
+ 				   int field, struct mtk_pin_field *pfd)
+ {
+-	const struct mtk_pin_field_calc *c, *e;
++	const struct mtk_pin_field_calc *c;
+ 	const struct mtk_pin_reg_calc *rc;
+ 	int start = 0, end, check;
+ 	bool found = false;
+@@ -82,8 +82,6 @@ static int mtk_hw_pin_field_lookup(struc
+ 	}
  
- /* Shift and apply the mask for CPC reads/writes */
--#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
--					GENMASK(((reg)->bit_width), 0)))
-+#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-+					GENMASK(((reg)->bit_width) - 1, 0))
+ 	end = rc->nranges - 1;
+-	c = rc->range;
+-	e = c + rc->nranges;
  
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
--- 
-2.43.0
-
+ 	while (start <= end) {
+ 		check = (start + end) >> 1;
 
 
 
