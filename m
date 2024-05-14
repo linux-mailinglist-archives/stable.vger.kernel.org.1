@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-43964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B65E8C5075
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:05:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB15D8C51DA
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDCC51F21CD9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED86D1C20B67
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832C13D618;
-	Tue, 14 May 2024 10:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C466DCE8;
+	Tue, 14 May 2024 11:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMBldPNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTXWapZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0778969D2F;
-	Tue, 14 May 2024 10:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8788C22094;
+	Tue, 14 May 2024 11:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683383; cv=none; b=qgDcWKdbMpo+JDl0NWdhu2IU/7fF74NH+3ckrsd+HvIhc991Mj8PvZI6On139gEdKSt5Dr/Jld9l3wxGPR0n2ok0wehn+Pd5m0tABv8vpbh6ORaEFkGm57Yohqg86/T0NmR5XRq8ZfEDYiVKd88LVO5rw69c+tMox/nmNfzj04Q=
+	t=1715685123; cv=none; b=WnCU3aPSbHL2/yaKyYmNIDmxpu0d+s4dW5f6Rp6LqzcMLpRBSpy9R3xrSiD0uCXfZNJm4i2Tcy8mh7EXUoykenhK4zd8ywp6D11ZIwXZe5ZoaFHi7t45cfzFaLmUIjZGSmGikBfKC5UvGrgk7HptITC+vzzImuWwQ/cGLAlJBwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683383; c=relaxed/simple;
-	bh=YG4X9v1pXkxrJTsM9Ffv9az7asZf5T7P220SMM72SlM=;
+	s=arc-20240116; t=1715685123; c=relaxed/simple;
+	bh=JMUcAzcIhcmP/nJi8SFL2sFF1z6WVucKL5CHY5V55pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhS3YMl3PDM13Rnl9wd263Vo8MVZ11JppN9Cr0W9tZZznzl7OcSZKtRBAQaL3OQZRhE8mlE/kl09x0CpotvFlsW7IIQa4l0DvjhR0gXruVbEscmd46Ib8jTTHS9+u1EygCvv5pX3i+I04Z0QwWKkycetolFKJ1VKjCivkuDF/4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMBldPNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0988C2BD10;
-	Tue, 14 May 2024 10:43:01 +0000 (UTC)
+	 MIME-Version; b=WCPHLoKoewE/d4tGBYbXNhIUAUUbdqrqjuNK2bilXz/ZlHcSpq8GlWaxY7y+OKjl40C2/oC3BnpShwRXbzODgV+M+ZJbWdYm3L5GbdYHSBa21ApbDR5Bd2nWJVtshbyGgKVBfmoYaxGRvHZqsooJ6bbESKUKjPC1gGutJETr+3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTXWapZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626FAC2BD10;
+	Tue, 14 May 2024 11:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683382;
-	bh=YG4X9v1pXkxrJTsM9Ffv9az7asZf5T7P220SMM72SlM=;
+	s=korg; t=1715685123;
+	bh=JMUcAzcIhcmP/nJi8SFL2sFF1z6WVucKL5CHY5V55pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMBldPNCdX7UQCcubgOAkHoxekhz1lR/7XAk3iG/yIfLngb1USI3TTQZm5i4d1k4w
-	 ZXuLNQXdOUQkujW59Mnk8xJXllEhW0nHd/ZR0i8uh126QguQJVtXQwnOvcOyktPZlH
-	 NnLlG/nOS2p3BICBJ/z6NVC708oeiNzXMN4XHHkY=
+	b=bTXWapZIdvF6FwPbQpuaN9kb1q0yX7skaMYM45AnQaWK0QfAb73iDxbkSTdIczOD+
+	 Y40eEo0XwAYH+alTPAbYjolWGWa19uwrea2yW4CX1hypccU07gf+GYSks1Z6p+BSLO
+	 kXoy873I9EngQYuj6GTnOVBGyuNr/qAiKSnU/AiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Rik van Riel <riel@surriel.com>,
+	Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 207/336] hwmon: (corsair-cpro) Use a separate buffer for sending commands
-Date: Tue, 14 May 2024 12:16:51 +0200
-Message-ID: <20240514101046.419965530@linuxfoundation.org>
+Subject: [PATCH 6.6 141/301] blk-iocost: avoid out of bounds shift
+Date: Tue, 14 May 2024 12:16:52 +0200
+Message-ID: <20240514101037.577625990@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
+[ Upstream commit beaa51b36012fad5a4d3c18b88a617aea7a9b96d ]
 
-Introduce cmd_buffer, a separate buffer for storing only
-the command that is sent to the device. Before this separation,
-the existing buffer was shared for both the command and the
-report received in ccp_raw_event(), which was copied into it.
+UBSAN catches undefined behavior in blk-iocost, where sometimes
+iocg->delay is shifted right by a number that is too large,
+resulting in undefined behavior on some architectures.
 
-However, because of hidraw, the raw event parsing may be triggered
-in the middle of sending a command, resulting in outputting gibberish
-to the device. Using a separate buffer resolves this.
+[  186.556576] ------------[ cut here ]------------
+UBSAN: shift-out-of-bounds in block/blk-iocost.c:1366:23
+shift exponent 64 is too large for 64-bit type 'u64' (aka 'unsigned long long')
+CPU: 16 PID: 0 Comm: swapper/16 Tainted: G S          E    N 6.9.0-0_fbk700_debug_rc2_kbuilder_0_gc85af715cac0 #1
+Hardware name: Quanta Twin Lakes MP/Twin Lakes Passive MP, BIOS F09_3A23 12/08/2020
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x8f/0xe0
+ __ubsan_handle_shift_out_of_bounds+0x22c/0x280
+ iocg_kick_delay+0x30b/0x310
+ ioc_timer_fn+0x2fb/0x1f80
+ __run_timer_base+0x1b6/0x250
+...
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Avoid that undefined behavior by simply taking the
+"delay = 0" branch if the shift is too large.
+
+I am not sure what the symptoms of an undefined value
+delay will be, but I suspect it could be more than a
+little annoying to debug.
+
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240404123253.0f58010f@imladris.surriel.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ block/blk-iocost.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index a284a02839fbb..8d85f66f81435 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -79,6 +79,7 @@ struct ccp_device {
- 	struct device *hwmon_dev;
- 	struct completion wait_input_report;
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
-+	u8 *cmd_buffer;
- 	u8 *buffer;
- 	int target[6];
- 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
-@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	unsigned long t;
- 	int ret;
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 7ee8d85c2c68d..a382b3a39820a 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1347,7 +1347,7 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
+ {
+ 	struct ioc *ioc = iocg->ioc;
+ 	struct blkcg_gq *blkg = iocg_to_blkg(iocg);
+-	u64 tdelta, delay, new_delay;
++	u64 tdelta, delay, new_delay, shift;
+ 	s64 vover, vover_pct;
+ 	u32 hwa;
  
--	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
--	ccp->buffer[0] = command;
--	ccp->buffer[1] = byte1;
--	ccp->buffer[2] = byte2;
--	ccp->buffer[3] = byte3;
-+	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
-+	ccp->cmd_buffer[0] = command;
-+	ccp->cmd_buffer[1] = byte1;
-+	ccp->cmd_buffer[2] = byte2;
-+	ccp->cmd_buffer[3] = byte3;
+@@ -1362,8 +1362,9 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  
- 	reinit_completion(&ccp->wait_input_report);
- 
--	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
-+	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	if (!ccp)
- 		return -ENOMEM;
- 
--	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
-+	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
-+	if (!ccp->cmd_buffer)
-+		return -ENOMEM;
-+
-+	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
- 	if (!ccp->buffer)
- 		return -ENOMEM;
+ 	/* calculate the current delay in effect - 1/2 every second */
+ 	tdelta = now->now - iocg->delay_at;
+-	if (iocg->delay)
+-		delay = iocg->delay >> div64_u64(tdelta, USEC_PER_SEC);
++	shift = div64_u64(tdelta, USEC_PER_SEC);
++	if (iocg->delay && shift < BITS_PER_LONG)
++		delay = iocg->delay >> shift;
+ 	else
+ 		delay = 0;
  
 -- 
 2.43.0
