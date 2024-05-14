@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-43863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D108C4FF1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3F68C5167
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E3DC1F21390
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97507282512
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0719C4E1D5;
-	Tue, 14 May 2024 10:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85801386BF;
+	Tue, 14 May 2024 11:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOx/ECOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UQZvM+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0B04CB55;
-	Tue, 14 May 2024 10:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8F12FF64;
+	Tue, 14 May 2024 11:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682745; cv=none; b=MELFZSktqg2x2DKsfCjROpBQTu8ZnzvcbqMAtZJ5AriZQE19a/tqcitPn4v2E+tOr69pjBhPFAc7CVkt95yBWfs5ni+87xp4ODn9pH9seqnrDlSzdzFDsxw4DFAITbNV1L8QkufyjDC0ilReeg2X6kHJDY77fSuJG+lFGWWxDLI=
+	t=1715684420; cv=none; b=Fhq8/EgA6M5pMN/vcg1lkZfKipTQQ33Dh0zFhtsL+f0JOHNt9xa6048v3UbRPPNlpzIh10y9ivXKevhcz91v5uZUYACb3wr4I3T9mpaK2jsFhF3faHttAMUkudPZZRwJ0iG5Hv/A2iNZgVW9b+znHOhGs5hMK09BgNjTivn47XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682745; c=relaxed/simple;
-	bh=h59eZkDsPZYKN/TqPrmu3pc9PzoVoF6YIRJm8tO7p3I=;
+	s=arc-20240116; t=1715684420; c=relaxed/simple;
+	bh=ZC2lTe3F/AGgFRqeOmghbSmgGoCNJbMhAPI2N7RRFRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RI9BiccBXXWT4SI80miO1ScZibtdA/e0VFpKP1WLWyhUdmEKrd27+oEONH79e+XZErpOzWNq60bpCa+nLeGvdxRRB/tqLWvPTTfBNmYopCc+9uML/psnnn8NE6pJAbg69GJH3A2pec/9t3F62Qvr+L0ZSn/zIcFSTDlJmd4bd6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOx/ECOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11588C2BD10;
-	Tue, 14 May 2024 10:32:24 +0000 (UTC)
+	 MIME-Version; b=WitSamQX4sqJW+8b44/RcMsFYfUE+q/ZGElb9c8RV2g6iIq+UFgdh1x66pCa/M0ToaJvLIJyV03/E0+6pcZK8Vj441fEWX349JSpBxUqVMoW6eXHyN0XLJnYEfGELcukBTeuZosCAx+k74sTQ6Zkc/i0AC2nCbsU2ZwsA71QkYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UQZvM+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A98C2BD10;
+	Tue, 14 May 2024 11:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682745;
-	bh=h59eZkDsPZYKN/TqPrmu3pc9PzoVoF6YIRJm8tO7p3I=;
+	s=korg; t=1715684420;
+	bh=ZC2lTe3F/AGgFRqeOmghbSmgGoCNJbMhAPI2N7RRFRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOx/ECOxeY/zSC1AW8oXgmxxSn8/s+1h7MQmTZTi2MnGeaFpw37O9/ZkShJhBC58O
-	 VpGXotE/H0Y0vEBjaFaGi5o2Jg8YwVemgGEgDFkD6kXhvLY3N0TszbkAvv42hwBnBj
-	 fzCE+sj6LTXWWcyCqAMqYnQowRGYfTKJF3C9cIhk=
+	b=2UQZvM+RXQIQtnb0LmMTl5beamldGNPyCFa2i2t0SbPJnzOXb5hbkT62WpkKFgRe7
+	 If1GfIhDDVwWAXC3s3NRnzd3RPPSLd6JB4whB0Nfc7ginKGtn9pqo5rLgQR+chaxIK
+	 Azv2sFkhRGpHH0vj6/NwydAkt26E3VO4UqMZRjUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 106/336] wifi: cfg80211: fix rdev_dump_mpp() arguments order
+Subject: [PATCH 6.6 039/301] spi: axi-spi-engine: use common AXI macros
 Date: Tue, 14 May 2024 12:15:10 +0200
-Message-ID: <20240514101042.608085257@linuxfoundation.org>
+Message-ID: <20240514101033.721535778@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit ec50f3114e55406a1aad24b7dfaa1c3f4336d8eb ]
+[ Upstream commit 88c2b56c2690061121cad03f0f551db465287575 ]
 
-Fix the order of arguments in the TP_ARGS macro
-for the rdev_dump_mpp tracepoint event.
+This avoid duplicating the same macros in multiple drivers by reusing
+the common AXI macros for the version register.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240311164519.118398-1-Igor.A.Artemiev@mcst.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240202213132.3863124-2-dlechner@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-axi-spi-engine.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 1f374c8a17a50..cc3fd4177bcee 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1013,7 +1013,7 @@ TRACE_EVENT(rdev_get_mpp,
- TRACE_EVENT(rdev_dump_mpp,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
- 		 u8 *dst, u8 *mpp),
--	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
-+	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		NETDEV_ENTRY
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 9ca5b45c4b4cc..9c7b6a92417ce 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/clk.h>
++#include <linux/fpga/adi-axi-common.h>
+ #include <linux/idr.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+@@ -14,12 +15,6 @@
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
+ 
+-#define SPI_ENGINE_VERSION_MAJOR(x)	((x >> 16) & 0xff)
+-#define SPI_ENGINE_VERSION_MINOR(x)	((x >> 8) & 0xff)
+-#define SPI_ENGINE_VERSION_PATCH(x)	(x & 0xff)
+-
+-#define SPI_ENGINE_REG_VERSION			0x00
+-
+ #define SPI_ENGINE_REG_RESET			0x40
+ 
+ #define SPI_ENGINE_REG_INT_ENABLE		0x80
+@@ -535,12 +530,12 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 	if (IS_ERR(spi_engine->base))
+ 		return PTR_ERR(spi_engine->base);
+ 
+-	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
+-	if (SPI_ENGINE_VERSION_MAJOR(version) != 1) {
++	version = readl(spi_engine->base + ADI_AXI_REG_VERSION);
++	if (ADI_AXI_PCORE_VER_MAJOR(version) != 1) {
+ 		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%c\n",
+-			SPI_ENGINE_VERSION_MAJOR(version),
+-			SPI_ENGINE_VERSION_MINOR(version),
+-			SPI_ENGINE_VERSION_PATCH(version));
++			ADI_AXI_PCORE_VER_MAJOR(version),
++			ADI_AXI_PCORE_VER_MINOR(version),
++			ADI_AXI_PCORE_VER_PATCH(version));
+ 		return -ENODEV;
+ 	}
+ 
 -- 
 2.43.0
 
