@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-44943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CF68C5513
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019EC8C53A3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34725B225ED
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25A5B1C229F0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D9346B9F;
-	Tue, 14 May 2024 11:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9552D1E4B0;
+	Tue, 14 May 2024 11:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHDZ3D30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYDi0eBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA4A320F;
-	Tue, 14 May 2024 11:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5230912DD83;
+	Tue, 14 May 2024 11:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687627; cv=none; b=o2RElVVql4RfsA1GKQVc476p0B6ZD+uaupPCZb5aaUVfViEMQqAKW3QrW+VrloppMOiEAKe4tDYWb2gxgrtrHNbL5Xb6Ui2jTLgR8s62Qm/hlCae5yO8xF2MDFZx7BXEhhC9YJed+3ZJAUJcT7/JqlkxzDHfFdBRBOFmRDjxBPU=
+	t=1715686668; cv=none; b=eAyn21IYss1claZfwVfCo9Kes2npjYCFcUR1ZdFl/La/U9OmH/OAqT2aWalaVPM0J9ZbGWndJm0DHQSsbzniPd8Fp5asq8YdD33LVDHRdqOx+25jfSMjT6pDhRAfUCepbX8BECPbF+52HSpwIOa+jtsws2zAJP4mhm4NXgT9TZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687627; c=relaxed/simple;
-	bh=mqO2UjToBk1kuD4YxF7+9HDihjiLQ1e4mGEZqM6L0Ec=;
+	s=arc-20240116; t=1715686668; c=relaxed/simple;
+	bh=22JlxtcNVKlSkaQtE2SWZmeko6lUYtReh9sc1oOMfvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sQ/mtrkJh8mSOE7vmSIicpChKgCzPOqCacPDuvMn3y5EnMOVGJpLHw9FBA0UkfugQS14Y2gCSbssaEcBZNQteL+lKgE5a0eWns3Gzk07fv7y6GG4a8WD2NIWM8hOIqudGwiysV2YktnWAZcVKDn6x1m7/IUVfGwvhi8tQ4F4KEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHDZ3D30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54A8C2BD10;
-	Tue, 14 May 2024 11:53:46 +0000 (UTC)
+	 MIME-Version; b=VEcwYXVH83WRZGGq+ssg2CC3Jtu9MLGgeT4LlU92UghYJRNPJquUgqpIrL9oG1Rc3PB+Pv03nwYc8sNmiO0Z2djYxQ47Qz/+XH/yDNeBrt8DnJRI128fpvUn/TebSeC6ufKJ8/xpLhKQ77Hduv2kM3+Zu07rdZLQSSgV6MooJz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYDi0eBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C15C2BD10;
+	Tue, 14 May 2024 11:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687627;
-	bh=mqO2UjToBk1kuD4YxF7+9HDihjiLQ1e4mGEZqM6L0Ec=;
+	s=korg; t=1715686668;
+	bh=22JlxtcNVKlSkaQtE2SWZmeko6lUYtReh9sc1oOMfvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHDZ3D30+uD1Pf7ay3mAQgyZyByH9+3i+gRws3rmQdXgbFkKuY4jG6dsLvmKoqNHx
-	 13r64JykBIsk9zTdXM3KKsA33hoVFxX08RPkSdxJHH7MJ8usExllwztxiSoVOkfPm2
-	 6p2zNOzTdla1Oq6bt0T1dWd2DMRrRl6o8Q3PTrh4=
+	b=WYDi0eBRaMzJ3Kxkl8fRKjH9k4Zui6PGn25rBmGD5AKW796h3EB/XVtws45LHR5Kp
+	 WxZtjb0pBKtv4ZDYiYbejw2CMLnPqoNfSKJS0Xy55s0az4Sdw2ZANH7oTV6EuT/+X3
+	 +lR4BfzHiEhOBaiFbq5thq1Qf4eSLfi8E/tvFVY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/168] net: dsa: mv88e6xxx: Fix number of databases for 88E6141 / 88E6341
+	Maxime Ripard <mripard@kernel.org>,
+	Alex Constantino <dreaming.about.electric.sheep@gmail.com>,
+	Timo Lindfors <timo.lindfors@iki.fi>,
+	Dave Airlie <airlied@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.1 186/236] Reapply "drm/qxl: simplify qxl_fence_wait"
 Date: Tue, 14 May 2024 12:19:08 +0200
-Message-ID: <20240514101008.579956434@linuxfoundation.org>
+Message-ID: <20240514101027.425823814@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +67,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit b9a61c20179fda7bdfe2c1210aa72451991ab81a ]
+commit 3628e0383dd349f02f882e612ab6184e4bb3dc10 upstream.
 
-The Topaz family (88E6141 and 88E6341) only support 256 Forwarding
-Information Tables.
+This reverts commit 07ed11afb68d94eadd4ffc082b97c2331307c5ea.
 
-Fixes: a75961d0ebfd ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6341")
-Fixes: 1558727a1c1b ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6141")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240429133832.9547-1-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Stephen Rostedt reports:
+ "I went to run my tests on my VMs and the tests hung on boot up.
+  Unfortunately, the most I ever got out was:
+
+  [   93.607888] Testing event system initcall: OK
+  [   93.667730] Running tests on all trace events:
+  [   93.669757] Testing all events: OK
+  [   95.631064] ------------[ cut here ]------------
+  Timed out after 60 seconds"
+
+and further debugging points to a possible circular locking dependency
+between the console_owner locking and the worker pool locking.
+
+Reverting the commit allows Steve's VM to boot to completion again.
+
+[ This may obviously result in the "[TTM] Buffer eviction failed"
+  messages again, which was the reason for that original revert. But at
+  this point this seems preferable to a non-booting system... ]
+
+Reported-and-bisected-by: Steven Rostedt <rostedt@goodmis.org>
+Link: https://lore.kernel.org/all/20240502081641.457aa25f@gandalf.local.home/
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Cc: Alex Constantino <dreaming.about.electric.sheep@gmail.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Timo Lindfors <timo.lindfors@iki.fi>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/qxl/qxl_release.c |   50 +++-----------------------------------
+ include/linux/dma-fence.h         |    7 -----
+ 2 files changed, 5 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 30fba1ea933e3..3fc120802883a 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5116,7 +5116,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6141,
- 		.family = MV88E6XXX_FAMILY_6341,
- 		.name = "Marvell 88E6141",
--		.num_databases = 4096,
-+		.num_databases = 256,
- 		.num_macs = 2048,
- 		.num_ports = 6,
- 		.num_internal_phys = 5,
-@@ -5559,7 +5559,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6341,
- 		.family = MV88E6XXX_FAMILY_6341,
- 		.name = "Marvell 88E6341",
--		.num_databases = 4096,
-+		.num_databases = 256,
- 		.num_macs = 2048,
- 		.num_internal_phys = 5,
- 		.num_ports = 6,
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/qxl/qxl_release.c
++++ b/drivers/gpu/drm/qxl/qxl_release.c
+@@ -58,56 +58,16 @@ static long qxl_fence_wait(struct dma_fe
+ 			   signed long timeout)
+ {
+ 	struct qxl_device *qdev;
+-	struct qxl_release *release;
+-	int count = 0, sc = 0;
+-	bool have_drawable_releases;
+ 	unsigned long cur, end = jiffies + timeout;
+ 
+ 	qdev = container_of(fence->lock, struct qxl_device, release_lock);
+-	release = container_of(fence, struct qxl_release, base);
+-	have_drawable_releases = release->type == QXL_RELEASE_DRAWABLE;
+ 
+-retry:
+-	sc++;
+-
+-	if (dma_fence_is_signaled(fence))
+-		goto signaled;
+-
+-	qxl_io_notify_oom(qdev);
+-
+-	for (count = 0; count < 11; count++) {
+-		if (!qxl_queue_garbage_collect(qdev, true))
+-			break;
+-
+-		if (dma_fence_is_signaled(fence))
+-			goto signaled;
+-	}
+-
+-	if (dma_fence_is_signaled(fence))
+-		goto signaled;
+-
+-	if (have_drawable_releases || sc < 4) {
+-		if (sc > 2)
+-			/* back off */
+-			usleep_range(500, 1000);
+-
+-		if (time_after(jiffies, end))
+-			return 0;
+-
+-		if (have_drawable_releases && sc > 300) {
+-			DMA_FENCE_WARN(fence,
+-				       "failed to wait on release %llu after spincount %d\n",
+-				       fence->context & ~0xf0000000, sc);
+-			goto signaled;
+-		}
+-		goto retry;
+-	}
+-	/*
+-	 * yeah, original sync_obj_wait gave up after 3 spins when
+-	 * have_drawable_releases is not set.
+-	 */
++	if (!wait_event_timeout(qdev->release_event,
++				(dma_fence_is_signaled(fence) ||
++				 (qxl_io_notify_oom(qdev), 0)),
++				timeout))
++		return 0;
+ 
+-signaled:
+ 	cur = jiffies;
+ 	if (time_after(cur, end))
+ 		return 0;
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -659,11 +659,4 @@ static inline bool dma_fence_is_containe
+ 	return dma_fence_is_array(fence) || dma_fence_is_chain(fence);
+ }
+ 
+-#define DMA_FENCE_WARN(f, fmt, args...) \
+-	do {								\
+-		struct dma_fence *__ff = (f);				\
+-		pr_warn("f %llu#%llu: " fmt, __ff->context, __ff->seqno,\
+-			 ##args);					\
+-	} while (0)
+-
+ #endif /* __LINUX_DMA_FENCE_H */
 
 
 
