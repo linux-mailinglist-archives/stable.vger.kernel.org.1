@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E80F8C554E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587A68C520B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBB3C28CF34
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107821F224AE
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D5413A24A;
-	Tue, 14 May 2024 11:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681F212A14F;
+	Tue, 14 May 2024 11:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwajEyjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx5ZbzuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C910E139D1E;
-	Tue, 14 May 2024 11:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2748B54BFE;
+	Tue, 14 May 2024 11:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686295; cv=none; b=j88Iq0guuoaZ0rEbVVKjwec5tvXLYyGKslv+z8LTGaWu/RejZkZXbLq3NLYA+GwoswvLqxdxf7mh1qSMuY6XQq1fqAERyOgsT0Ipva17eNOD0j4/hsAWgtaAiiRYv/UjepLbI4fqJKKIoeWvih/rEKEpMaQonShSt2kuvcIoM+M=
+	t=1715685395; cv=none; b=fePxc9Qv2ns5R2EM0tsASq2FN4NEpdZDab5FPZAKzMSswWyZ0v7xmT1gMFCZsIq/Dp1CWMwMC2NnP6FhPdfOSwrtXrj2ZKImKAHt0I1Hreg1U2IWfzo901mJAukQqF5S24tqkENDtpDxbJWjsAYgX4SzLotlEMqWHzGv+WNjo/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686295; c=relaxed/simple;
-	bh=EMdXdT7sRAkDGkv2UFjuwiz4NzQYa7FYq3f5PbXYB5Y=;
+	s=arc-20240116; t=1715685395; c=relaxed/simple;
+	bh=bqLo8Elj7qSXvxJNo9CIh1IA7z5ecVSH+Fw792Rg5Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TShAAqKbzKgHiAvWufZ2ovqgQo5tueXKoO0j4i4lefzUYlyMkLF5+Q9w9bYKqtUPxF17XE4/PKTJ3kReT2+zqrEgn8xiqVANOQ7fM1PZn9cOpmYtgRY13EYzsA1p3Q2a+Us4kTIY/QhCWpuWvD2XUwgnt462f+k0SDoZR4q+Ucs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwajEyjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1096FC32781;
-	Tue, 14 May 2024 11:31:34 +0000 (UTC)
+	 MIME-Version; b=Jj8ClxNqfcomo59mTdSHcMjU3/EjNbSHFiDomcW/x+8m5DtfigFIo/PvOQBcLGjQ5hXKfloTK3HjpN3Rqvc3yFSolKTxbqE4GqsTH5IorAnBD79XXmpstU1tKGyL0wcyY7wGppNLueCFpLbPtVJDjMTMhr4zqJEfI2SJYOTooiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx5ZbzuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D03C2BD10;
+	Tue, 14 May 2024 11:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686295;
-	bh=EMdXdT7sRAkDGkv2UFjuwiz4NzQYa7FYq3f5PbXYB5Y=;
+	s=korg; t=1715685395;
+	bh=bqLo8Elj7qSXvxJNo9CIh1IA7z5ecVSH+Fw792Rg5Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwajEyjfyhPyyRec/AWSLPGQ/FweArsWZWDfvwWuokB8b83EekTgBRr2bfBuYZD36
-	 TnBz0FLQPv3GSC3nQZ0zNdIKW2pJ+z7Idy15yHXnfIiQaTEbShfQnxzeJvQZbGrQXQ
-	 D0qOGsqNYAM3i11QBXrzoBGmTW/VSvyF6tkBCm08=
+	b=kx5ZbzuQvhoMJ1XUKxYfNwTxAAb7EE0mqV9BoqQnJ585++J5QlBlqVMTOy5gEKby8
+	 CxlGouVBwoFRcNbLm5brDRz7q02wbU0cEdMY7ABMFPHOyyJ2cu19v3TBRd8kY70WYh
+	 NypaakaPW4PwjwvOmiy7/fkciSFbEUgTZER1SrFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nageswara R Sastry <rnsastry@linux.ibm.com>,
-	Nayna Jain <nayna@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/236] powerpc/pseries: make max polling consistent for longer H_CALLs
-Date: Tue, 14 May 2024 12:17:31 +0200
-Message-ID: <20240514101023.748734284@linuxfoundation.org>
+Subject: [PATCH 6.6 181/301] Bluetooth: HCI: Fix potential null-ptr-deref
+Date: Tue, 14 May 2024 12:17:32 +0200
+Message-ID: <20240514101039.090383400@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nayna Jain <nayna@linux.ibm.com>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-[ Upstream commit 784354349d2c988590c63a5a001ca37b2a6d4da1 ]
+[ Upstream commit d2706004a1b8b526592e823d7e52551b518a7941 ]
 
-Currently, plpks_confirm_object_flushed() function polls for 5msec in
-total instead of 5sec.
+Fix potential null-ptr-deref in hci_le_big_sync_established_evt().
 
-Keep max polling time consistent for all the H_CALLs, which take longer
-than expected, to be 5sec. Also, make use of fsleep() everywhere to
-insert delay.
-
-Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform KeyStore")
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240418031230.170954-1-nayna@linux.ibm.com
+Fixes: f777d8827817 (Bluetooth: ISO: Notify user space about failed bis connections)
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/plpks.c | 10 +++++-----
- arch/powerpc/platforms/pseries/plpks.h |  5 ++---
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_event.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 3efbfd25d35d0..453c3cdd81fb8 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -263,8 +263,7 @@ static int plpks_confirm_object_flushed(struct label *label,
- 		if (!rc && status == 1)
- 			break;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 1b4abf8e90f6b..9274d32550493 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -7200,6 +7200,8 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
+ 			u16 handle = le16_to_cpu(ev->bis[i]);
  
--		usleep_range(PLPKS_FLUSH_SLEEP,
--			     PLPKS_FLUSH_SLEEP + PLPKS_FLUSH_SLEEP_RANGE);
-+		fsleep(PLPKS_FLUSH_SLEEP);
- 		timeout = timeout + PLPKS_FLUSH_SLEEP;
- 	} while (timeout < PLPKS_MAX_TIMEOUT);
+ 			bis = hci_conn_hash_lookup_handle(hdev, handle);
++			if (!bis)
++				continue;
  
-@@ -311,9 +310,10 @@ int plpks_signed_update_var(struct plpks_var *var, u64 flags)
- 
- 		continuetoken = retbuf[0];
- 		if (pseries_status_to_err(rc) == -EBUSY) {
--			int delay_ms = get_longbusy_msecs(rc);
--			mdelay(delay_ms);
--			timeout += delay_ms;
-+			int delay_us = get_longbusy_msecs(rc) * 1000;
-+
-+			fsleep(delay_us);
-+			timeout += delay_us;
- 		}
- 		rc = pseries_status_to_err(rc);
- 	} while (rc == -EBUSY && timeout < PLPKS_MAX_TIMEOUT);
-diff --git a/arch/powerpc/platforms/pseries/plpks.h b/arch/powerpc/platforms/pseries/plpks.h
-index ccbec26fcbd8b..b3c3538b229c6 100644
---- a/arch/powerpc/platforms/pseries/plpks.h
-+++ b/arch/powerpc/platforms/pseries/plpks.h
-@@ -42,9 +42,8 @@
- #define PLPKS_MAX_DATA_SIZE		4000
- 
- // Timeouts for PLPKS operations
--#define PLPKS_MAX_TIMEOUT		5000 // msec
--#define PLPKS_FLUSH_SLEEP		10 // msec
--#define PLPKS_FLUSH_SLEEP_RANGE		400
-+#define PLPKS_MAX_TIMEOUT		(5 * USEC_PER_SEC)
-+#define PLPKS_FLUSH_SLEEP		10000 // usec
- 
- struct plpks_var {
- 	char *component;
+ 			set_bit(HCI_CONN_BIG_SYNC_FAILED, &bis->flags);
+ 			hci_connect_cfm(bis, ev->status);
 -- 
 2.43.0
 
