@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C59C8C52CA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CEA8C50E9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 434B5B221CD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98733B21019
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8247A12A170;
-	Tue, 14 May 2024 11:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0118812A14C;
+	Tue, 14 May 2024 10:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vdgs34SM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RccCgmcm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3A954BFE;
-	Tue, 14 May 2024 11:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25334F88C;
+	Tue, 14 May 2024 10:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685418; cv=none; b=r/c8RAYz5LM08BFkFMCyf6FwXHqcEY4n6ZASQlXRy9wCSxwF18dqv/Sg589Tp89C6qi+mn2J21ZN13fI923ESA4XTWQsxzkFPqSmQ1z/Q+IwaCKr8mh5na8nfVrTDDC5eNoZHr96f6TYZ93SC03Z9ZfjBs0KDZO/p4pvi4Y8lQY=
+	t=1715683840; cv=none; b=KkdJWvmJe+NJDGuthrYwRAuBCuwH7m9tWFb5qO7hujwsjavhErQDXlwljDVZ4URcchUn/YsDnY0HvG8d9O7ha+SvNyEx7tY+w1VT+7q2tbKYCiBY7rmfWAvqs/KuGc21BrIMM2xklthEi2rYF/58nkIqMA7AhXOnxrS9MunLbtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685418; c=relaxed/simple;
-	bh=+UkcPrOZGdm4ql0ALZ7DX472BVBpsOpSkmTAjGprL3Y=;
+	s=arc-20240116; t=1715683840; c=relaxed/simple;
+	bh=n4dptO+IOxl/glE+OwmG3ICSPYyWDPKnOsuav6T0sqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3s+8QuQ62+8KbROs5dDfIN/6jIzYEQgCopza1N5sPF05t4n1pLicqYxW0WU6KMzqsfdx50ZIDdYjhbGoCY380RMHHDAmxsQ8yPCsRwFpdK5Npyoo0a6ltP1zLCmW8mkcfhHDPqIWc/SsAiSQ6GYiZJHKmxwpG0g6oTzgkbakbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vdgs34SM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE9EC2BD10;
-	Tue, 14 May 2024 11:16:57 +0000 (UTC)
+	 MIME-Version; b=fnCHjQmGP2q/Ghi4Gr11ZPJbZLgrbExhu4585df8ATQtOP9ou5F1+EfX7ZxNFsQTBk5RESTVggS8FszQDswEJuTk1H4yrwIoocPhX4XCvVKb0CPxvoAJKQQrV+DJc+PXiR3bVlGK9jbptP1i/0pfPBU+28QoPXdF/MmoMvpATLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RccCgmcm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27511C2BD10;
+	Tue, 14 May 2024 10:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685418;
-	bh=+UkcPrOZGdm4ql0ALZ7DX472BVBpsOpSkmTAjGprL3Y=;
+	s=korg; t=1715683840;
+	bh=n4dptO+IOxl/glE+OwmG3ICSPYyWDPKnOsuav6T0sqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vdgs34SM0pwGnu1bFn0b3+F94H82p4xhDwG3Zpwc3+tSrL8UVJEyz8C0QY3FEP4EK
-	 Ac0eNBlwORTmeDSVDmwce31o4qDhYbo8S8HfEDxAviQvRq9oXa+lHPXCo+whFHJVps
-	 77IiIhGPVe6GzCbmgWXeyFBLE+M0MFbWl2Y8iZzM=
+	b=RccCgmcmmxbRalRCwOUboCi2uXHzl21kmH+Ya3e8kaRqJ4o1oEqXRLR7/1UNjm16J
+	 DT7vKEJwcFoAhsex2oQyk/v26NUcnW5A/GPRyS1XeCQSVGhYLKk/9/h6U7Sethu3KD
+	 dQ1hnzf1pElOJsz/xXa/zJVTdfAha507fvJTf+Bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/301] hwmon: (corsair-cpro) Use a separate buffer for sending commands
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.8 252/336] usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete
 Date: Tue, 14 May 2024 12:17:36 +0200
-Message-ID: <20240514101039.240848966@linuxfoundation.org>
+Message-ID: <20240514101048.131904981@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
+commit 24729b307eefcd7c476065cd7351c1a018082c19 upstream.
 
-Introduce cmd_buffer, a separate buffer for storing only
-the command that is sent to the device. Before this separation,
-the existing buffer was shared for both the command and the
-report received in ccp_raw_event(), which was copied into it.
+FFS based applications can utilize the aio_cancel() callback to dequeue
+pending USB requests submitted to the UDC.  There is a scenario where the
+FFS application issues an AIO cancel call, while the UDC is handling a
+soft disconnect.  For a DWC3 based implementation, the callstack looks
+like the following:
 
-However, because of hidraw, the raw event parsing may be triggered
-in the middle of sending a command, resulting in outputting gibberish
-to the device. Using a separate buffer resolves this.
+    DWC3 Gadget                               FFS Application
+dwc3_gadget_soft_disconnect()              ...
+  --> dwc3_stop_active_transfers()
+    --> dwc3_gadget_giveback(-ESHUTDOWN)
+      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
+        --> usb_ep_free_request()            --> usb_ep_dequeue()
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There is currently no locking implemented between the AIO completion
+handler and AIO cancel, so the issue occurs if the completion routine is
+running in parallel to an AIO cancel call coming from the FFS application.
+As the completion call frees the USB request (io_data->req) the FFS
+application is also referencing it for the usb_ep_dequeue() call.  This can
+lead to accessing a stale/hanging pointer.
+
+commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
+However, in order to properly implement locking to mitigate this issue, the
+spinlock can't be added to ffs_epfile_async_io_complete(), as
+usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
+function driver's completion handler in the same context.  Hence, leading
+into a deadlock.
+
+Fix this issue by moving the usb_ep_free_request() back to
+ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
+to NULL after freeing it within the ffs->eps_lock.  This resolves the race
+condition above, as the ffs_aio_cancel() routine will not continue
+attempting to dequeue a request that has already been freed, or the
+ffs_user_copy_work() not freeing the USB request until the AIO cancel is
+done referencing it.
+
+This fix depends on
+  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
+  consistently")
+
+Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
+Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index 463ab4296ede5..34136d1b04764 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -79,6 +79,7 @@ struct ccp_device {
- 	struct device *hwmon_dev;
- 	struct completion wait_input_report;
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
-+	u8 *cmd_buffer;
- 	u8 *buffer;
- 	int target[6];
- 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
-@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	unsigned long t;
- 	int ret;
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -821,6 +821,7 @@ static void ffs_user_copy_worker(struct
+ 						   work);
+ 	int ret = io_data->status;
+ 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
++	unsigned long flags;
  
--	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
--	ccp->buffer[0] = command;
--	ccp->buffer[1] = byte1;
--	ccp->buffer[2] = byte2;
--	ccp->buffer[3] = byte3;
-+	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
-+	ccp->cmd_buffer[0] = command;
-+	ccp->cmd_buffer[1] = byte1;
-+	ccp->cmd_buffer[2] = byte2;
-+	ccp->cmd_buffer[3] = byte3;
+ 	if (io_data->read && ret > 0) {
+ 		kthread_use_mm(io_data->mm);
+@@ -833,6 +834,11 @@ static void ffs_user_copy_worker(struct
+ 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
+ 		eventfd_signal(io_data->ffs->ffs_eventfd);
  
- 	reinit_completion(&ccp->wait_input_report);
- 
--	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
-+	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	if (!ccp)
- 		return -ENOMEM;
- 
--	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
-+	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
-+	if (!ccp->cmd_buffer)
-+		return -ENOMEM;
++	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
++	usb_ep_free_request(io_data->ep, io_data->req);
++	io_data->req = NULL;
++	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
 +
-+	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
- 	if (!ccp->buffer)
- 		return -ENOMEM;
+ 	if (io_data->read)
+ 		kfree(io_data->to_free);
+ 	ffs_free_buffer(io_data);
+@@ -846,7 +852,6 @@ static void ffs_epfile_async_io_complete
+ 	struct ffs_data *ffs = io_data->ffs;
  
--- 
-2.43.0
-
+ 	io_data->status = req->status ? req->status : req->actual;
+-	usb_ep_free_request(_ep, req);
+ 
+ 	INIT_WORK(&io_data->work, ffs_user_copy_worker);
+ 	queue_work(ffs->io_completion_wq, &io_data->work);
 
 
 
