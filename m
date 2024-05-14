@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78DA8C5390
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCDB8C5492
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8D451C22AA0
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C273289DFD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C685A12A157;
-	Tue, 14 May 2024 11:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C19912C47A;
+	Tue, 14 May 2024 11:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xf4YvdkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdHetJCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858E8129E81;
-	Tue, 14 May 2024 11:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65943AD7;
+	Tue, 14 May 2024 11:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686610; cv=none; b=T3rWc73pJYNvvJcfTJU4oh9egyK+sbeoE/Iqw3gph4Yjz/w84x8UMYsTmaLKzT9lsIH5ccFWmxYOrn3+HokFL6ajCGYFubxoB8G4orI3PTlxl6QvLkTei6AUlNmf+tdrarg1B+e6RSkCOJMftVzVv2EOwnFRkMtYtcXd3o0YF78=
+	t=1715687273; cv=none; b=ZizaZz7Ixf0hHGVGslWJir2GKiGeUxA/KpDW8zQ06Ex6C7+nXrdTiTYhQb7+3SC7LcpjtmAPLZp1T0Cum8TwHQmKbHyCdEc+xAZFxmrzXtnL6cpxEJrE9Vz1vm8YpSUVy8ahpRnwRkuQ9whEU+VvsxvAct46HwOrdK3yabYV4Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686610; c=relaxed/simple;
-	bh=WbctGedRsQiZeAJ3O9i5Mwg3rioxcFXeVrY9UXu3sUI=;
+	s=arc-20240116; t=1715687273; c=relaxed/simple;
+	bh=wx7DjBKHy9bjflbFUjSvLSkCKkF6UswSsBu3hcg1tow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/OVBTJ4yFYOBJNDGnmPBb7ULc+rUVcW2ctyDsEDp5XkeGTBJcsQ63Be1f4jthwGJlOZMz12Y8gEsUsZ/zYuLt3KyCfTpeGHFqoKWqaE8jBvW4WmUn2t3Dmtyj8XLYSCTpmv7YXTxcL7skf8XZCixNHmeIirmzerFlEXvxZd708=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xf4YvdkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E27DC32782;
-	Tue, 14 May 2024 11:36:49 +0000 (UTC)
+	 MIME-Version; b=rPbzYF33eL4frGaTbKmHRzlq+bJ96YyRrFpEcl+qA6zYmPnvo4aI+YichUdidhgU02iesKuyomS4j+o0BRJIl5e72fmpGMV23x3lyszyEeNN7zlWuVMR4Lnuxt/7H73FQ4H/i+j4JVeW53k62GTS34PPuDItrb6QOlohaB0wsQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdHetJCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54585C2BD10;
+	Tue, 14 May 2024 11:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686610;
-	bh=WbctGedRsQiZeAJ3O9i5Mwg3rioxcFXeVrY9UXu3sUI=;
+	s=korg; t=1715687273;
+	bh=wx7DjBKHy9bjflbFUjSvLSkCKkF6UswSsBu3hcg1tow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xf4YvdkZJoO807lG014Llmq6QdE1jGAEAjJxhVE7sAwXOnR9SOGa37EKRlWa2b7pp
-	 uVgC4mhzvrfxwDw6eI6MX8KwopAOtFH+e2xDeFvEucttN6y6h/cA5KTSWspIFA+5oL
-	 1WdVrevBX4/a22jhq7jLFt9iSZCzEoK5DcGLXeks=
+	b=mdHetJCQVZ80F+mcaVAmRcjheWKygaEVhvcDVWjrByLPNfQa7Vb18deTlcZO34G9X
+	 X8MNrFgSyICXJDLu28Qu/K4/W2j6B/AMvkWRQ6V3tascdfE4pG8E0Mbf2e3GZTmU2a
+	 yalilKYB05RxYfz9SjRu2fXDOEGWQfSFawbIbr2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Chris Wulff <chris.wulff@biamp.com>
-Subject: [PATCH 6.1 198/236] usb: gadget: f_fs: Fix a race condition when processing setup packets.
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 022/111] bna: ensure the copied buf is NUL terminated
 Date: Tue, 14 May 2024 12:19:20 +0200
-Message-ID: <20240514101027.883510592@linuxfoundation.org>
+Message-ID: <20240514100957.969067500@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wulff <Chris.Wulff@biamp.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-commit 0aea736ddb877b93f6d2dd8cf439840d6b4970a9 upstream.
+[ Upstream commit 8c34096c7fdf272fd4c0c37fe411cd2e3ed0ee9f ]
 
-If the USB driver passes a pointer into the TRB buffer for creq, this
-buffer can be overwritten with the status response as soon as the event
-is queued. This can make the final check return USB_GADGET_DELAYED_STATUS
-when it shouldn't. Instead use the stored wLength.
+Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
+userspace to that buffer. Later, we use sscanf on this buffer but we don't
+ensure that the string is terminated inside the buffer, this can lead to
+OOB read when using sscanf. Fix this issue by using memdup_user_nul
+instead of memdup_user.
 
-Fixes: 4d644abf2569 ("usb: gadget: f_fs: Only return delayed status when len is 0")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
-Link: https://lore.kernel.org/r/CO1PR17MB5419BD664264A558B2395E28E1112@CO1PR17MB5419.namprd17.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-2-f1f1b53a10f4@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -3414,7 +3414,7 @@ static int ffs_func_setup(struct usb_fun
- 	__ffs_event_add(ffs, FUNCTIONFS_SETUP);
- 	spin_unlock_irqrestore(&ffs->ev.waitq.lock, flags);
+diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+index 04ad0f2b9677e..777f0d7e48192 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
++++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
+@@ -312,7 +312,7 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
+ 	void *kern_buf;
  
--	return creq->wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
-+	return ffs->ev.setup.wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
- }
+ 	/* Copy the user space buf */
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
  
- static bool ffs_func_req_match(struct usb_function *f,
+@@ -372,7 +372,7 @@ bnad_debugfs_write_regwr(struct file *file, const char __user *buf,
+ 	void *kern_buf;
+ 
+ 	/* Copy the user space buf */
+-	kern_buf = memdup_user(buf, nbytes);
++	kern_buf = memdup_user_nul(buf, nbytes);
+ 	if (IS_ERR(kern_buf))
+ 		return PTR_ERR(kern_buf);
+ 
+-- 
+2.43.0
+
 
 
 
