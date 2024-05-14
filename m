@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-43780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6CC8C4F97
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:51:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2148C4FA3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87C60B20AF8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:51:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7953B28163F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D65312D76A;
-	Tue, 14 May 2024 10:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B0712E1CA;
+	Tue, 14 May 2024 10:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfs1Nimx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zf1kM1Gh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC8C433BE;
-	Tue, 14 May 2024 10:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB2812DDBC;
+	Tue, 14 May 2024 10:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682180; cv=none; b=DuSNXhvzNdnWH4iMsQumTy0DIT5ihDKbE3LLptci2JgYBei5mV6g7DUPyGLEFfsJUU8hiN19AYFVm3AKyf/4zhEaca6TfQiGNpcYFF7BxuufcOXGUpn8ssvd0E4AtmzvKeuDLjo74EB2Jd0RYvdDrX8V4FxFCwlq+N9FmLi52bM=
+	t=1715682250; cv=none; b=dnhrnUiQVZLdmmt/2VkmbfaNwDjUVSJGTN+aqV8ySuXFKy5SVuf5IdcEaOEOVM4AkxUCAUdkqltJ14+2J7nFmWVkSTCRJSWzeI8EhLgs03aVkNhx7Kwk07YSVDAVd/dPJFQ3OU6eDHuA1txBAmjVb/1GcVu+I9V97Awg45wkEBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682180; c=relaxed/simple;
-	bh=UAlxiUnTzZqgSjG5m5r220QE1Jen6eM6NSyTkz5jr/w=;
+	s=arc-20240116; t=1715682250; c=relaxed/simple;
+	bh=MeZJxAmv+GxEMrb3/T3BG6ERYqlmXdQhhRtXmPbvwjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExM1ACrp8QUsrCPVVNDhvH80MWkyMbKm4cWmyQBy4Q43W5XUIIxOrKBU/suyNn1LVaDwpkdFHxpjJuuVvO6BfDHBg45QdNLY/u0ewkQlq+sp+JR5sV61BbFh4fLt/Gwf6izJmd8nY0hCsvMGGq5Nlndn6v613M9IdMhvQfy6a8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfs1Nimx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EDEC2BD10;
-	Tue, 14 May 2024 10:22:58 +0000 (UTC)
+	 MIME-Version; b=VJKUkOWKbPIatP00Q90iwq3XVh0GP3VEtZPFpglUkFBLHs5p78h72M0zEhSCKaeO3t3yX9eASod/KdQpmRK4a7F6K2VTpmjshiXbKG/Mq4DX3QdLqZXdLzKIV12m6qMwqjCcceh9rjaZlyGWVOLD2mhN6wxJuGGvChLzRHCKDOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zf1kM1Gh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B0DC2BD10;
+	Tue, 14 May 2024 10:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682180;
-	bh=UAlxiUnTzZqgSjG5m5r220QE1Jen6eM6NSyTkz5jr/w=;
+	s=korg; t=1715682250;
+	bh=MeZJxAmv+GxEMrb3/T3BG6ERYqlmXdQhhRtXmPbvwjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfs1Nimx5z8rw26KMZZu8JNya/p1UHrnuGFGmmNrEiK10iXjvKN/JA0epp8WP8E45
-	 4w6wI927czspbGtrMcxHC/osNOe+FEyvxtCARsz7Aa56ASs6+VVlN0dCnEWXABQXkX
-	 YTIElOWOfPCadeOzVxlxpSBRjGIHkR6R1eh9bglI=
+	b=zf1kM1Ghb++Vj2Jir0o0bVJY2RAthR1A7SCSGZIyVCkMXQe4QioDx4/0+5j5goXnA
+	 OfXNjhuqKzao5aNeSUIhb6O98Hzfbc5ptbnH2cL/S1taHsmWhaUFAuD/JeBHdXkQDf
+	 2mlB0s4SgVPhRT6vGOUJTZORHx8OL7edfxUBoZxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 007/336] pinctrl: mediatek: paris: Fix PIN_CONFIG_INPUT_SCHMITT_ENABLE readback
-Date: Tue, 14 May 2024 12:13:31 +0200
-Message-ID: <20240514101038.882085880@linuxfoundation.org>
+Subject: [PATCH 6.8 008/336] pinctrl: mediatek: paris: Rework support for PIN_CONFIG_{INPUT,OUTPUT}_ENABLE
+Date: Tue, 14 May 2024 12:13:32 +0200
+Message-ID: <20240514101038.919422820@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
 References: <20240514101038.595152603@linuxfoundation.org>
@@ -69,41 +69,102 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 08f66a8edd08f6f7cfa769c81634b29a2b123908 ]
+[ Upstream commit c5d3b64c568a344e998830e0e94a7c04e372f89b ]
 
-In the generic pin config library, readback of some options are handled
-differently compared to the setting of those options: the argument value
-is used to convey enable/disable of an option in the set path, but
-success or -EINVAL is used to convey if an option is enabled or disabled
-in the debugfs readback path.
+There is a misinterpretation of some of the PIN_CONFIG_* options in this
+driver library. PIN_CONFIG_OUTPUT_ENABLE should refer to a buffer or
+switch in the output direction of the electrical path. The MediaTek
+hardware does not have such a thing. The driver incorrectly maps this
+option to the GPIO function's direction.
 
-PIN_CONFIG_INPUT_SCHMITT_ENABLE is one such option. Fix the readback of
-the option in the mediatek-paris library, so that the debugfs dump is
-not showing "input schmitt enabled" for pins that don't have it enabled.
+Likewise, PIN_CONFIG_INPUT_ENABLE should refer to a buffer or switch in
+the input direction. The hardware does have such a mechanism, and is
+mapped to the IES bit. The driver however sets the direction in addition
+to the IES bit, which is incorrect. On readback, the IES bit isn't even
+considered.
 
-Fixes: 1bea6afbc842 ("pinctrl: mediatek: Refine mtk_pinconf_get()")
+Ironically, the driver does not support readback for PIN_CONFIG_OUTPUT,
+while its readback of PIN_CONFIG_{INPUT,OUTPUT}_ENABLE is what it should
+be doing for PIN_CONFIG_OUTPUT.
+
+Rework support for these three options, so that PIN_CONFIG_OUTPUT_ENABLE
+is completely removed, PIN_CONFIG_INPUT_ENABLE is only linked to the IES
+bit, and PIN_CONFIG_OUTPUT is linked to the GPIO function's direction
+and output level.
+
+Fixes: 805250982bb5 ("pinctrl: mediatek: add pinctrl-paris that implements the vendor dt-bindings")
 Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Message-ID: <20240327091336.3434141-2-wenst@chromium.org>
+Message-ID: <20240327091336.3434141-3-wenst@chromium.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/mediatek/pinctrl-paris.c | 38 +++++++-----------------
+ 1 file changed, 11 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/pinctrl/mediatek/pinctrl-paris.c b/drivers/pinctrl/mediatek/pinctrl-paris.c
-index b6bc31abd2b06..9353f78a52f05 100644
+index 9353f78a52f05..b19bc391705ee 100644
 --- a/drivers/pinctrl/mediatek/pinctrl-paris.c
 +++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -193,6 +193,8 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
- 		}
- 
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SMT, &ret);
+@@ -165,20 +165,21 @@ static int mtk_pinconf_get(struct pinctrl_dev *pctldev,
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SR, &ret);
+ 		break;
+ 	case PIN_CONFIG_INPUT_ENABLE:
+-	case PIN_CONFIG_OUTPUT_ENABLE:
++		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_IES, &ret);
 +		if (!ret)
 +			err = -EINVAL;
++		break;
++	case PIN_CONFIG_OUTPUT:
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
+ 		if (err)
+ 			break;
+-		/*     CONFIG     Current direction return value
+-		 * -------------  ----------------- ----------------------
+-		 * OUTPUT_ENABLE       output       1 (= HW value)
+-		 *                     input        0 (= HW value)
+-		 * INPUT_ENABLE        output       0 (= reverse HW value)
+-		 *                     input        1 (= reverse HW value)
+-		 */
+-		if (param == PIN_CONFIG_INPUT_ENABLE)
+-			ret = !ret;
+ 
++		if (!ret) {
++			err = -EINVAL;
++			break;
++		}
++
++		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DO, &ret);
  		break;
- 	case PIN_CONFIG_DRIVE_STRENGTH:
- 		if (!hw->soc->drive_get)
+ 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+ 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_DIR, &ret);
+@@ -283,26 +284,9 @@ static int mtk_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+ 			break;
+ 		err = hw->soc->bias_set_combo(hw, desc, 0, arg);
+ 		break;
+-	case PIN_CONFIG_OUTPUT_ENABLE:
+-		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_SMT,
+-				       MTK_DISABLE);
+-		/* Keep set direction to consider the case that a GPIO pin
+-		 *  does not have SMT control
+-		 */
+-		if (err != -ENOTSUPP)
+-			break;
+-
+-		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
+-				       MTK_OUTPUT);
+-		break;
+ 	case PIN_CONFIG_INPUT_ENABLE:
+ 		/* regard all non-zero value as enable */
+ 		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_IES, !!arg);
+-		if (err)
+-			break;
+-
+-		err = mtk_hw_set_value(hw, desc, PINCTRL_PIN_REG_DIR,
+-				       MTK_INPUT);
+ 		break;
+ 	case PIN_CONFIG_SLEW_RATE:
+ 		/* regard all non-zero value as enable */
 -- 
 2.43.0
 
