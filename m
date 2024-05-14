@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-44052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC3C8C50F8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:16:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547078C522F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2651C20399
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D862282994
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DE512BF38;
-	Tue, 14 May 2024 10:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B98712D219;
+	Tue, 14 May 2024 11:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfYMAXLa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJyw+xrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10437D07E;
-	Tue, 14 May 2024 10:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B38253E30;
+	Tue, 14 May 2024 11:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683936; cv=none; b=OkPT/ZkwPzjnWlWbFJX6qldg3ut++HxcZGGqiqrqbAUqeERBIDf5K8NI6n0Vqjfn/TcDinY90ljuKcgzXRrgGEiow0E6+UolnZYnTqPMZJL30IzMrBF+PR4zYiWR3+/tknx509+ZDd6TD0Q+RISBrFsPslfqx/H8Mwr2zmCxEZY=
+	t=1715685592; cv=none; b=TbrFBpzZAUs82trgdyvc64trta3b6lm55NF/YFwBCYCSRjynRFWmHDW4NBwTSQMO4s7hV1Ra5EZRVFkLphEk84KTbzgtGx6h6GWMEPhpdH4WgRvwj5MKgkShMcZrCKqW0o2TAHW/hvSIesSaBAzq5ZKcivcge1tWn9C3MLK/sG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683936; c=relaxed/simple;
-	bh=IB3twSMxas3EVIaZtn+2oMBENUvliFBAn0iQ9c7AOYI=;
+	s=arc-20240116; t=1715685592; c=relaxed/simple;
+	bh=VkmoKgjZ3wezep/iFP1HwmMQWaDPTHGg8w2KePb6ekg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V6j7XSj9C2WY+GI6pJx42/Yq0ZqHuDhpHYmayaPlKxX+PY7kUoH6/lTLlacooL/9DAVqSQpRnBNOb1wX0sT9JYhbwAVsv31wdsKh1K3xJxB+QMRyYLsAg2BkcBVw8yMoDo/rOtyTA1PLVKoOchgch8oG9KndNb/ib+zLslPVCrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfYMAXLa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8497DC2BD10;
-	Tue, 14 May 2024 10:52:15 +0000 (UTC)
+	 MIME-Version; b=DH0Bydgcmhll9Z5NXZfTjzp+zni4QhEmkH1WhfLRLQNbymFn5tJJZJkLXq4ToOKMBJ6jOrdO20Lv7OeiefA3Ny8R+ebBbB+OMeGd0rLtChxqhLGuesM3AuBGheGpJFJ4H2HyU8Bqt/C/2Rexa3AjRhL6ycq7Hou8W4Sy8VNqqFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJyw+xrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9558C2BD10;
+	Tue, 14 May 2024 11:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683936;
-	bh=IB3twSMxas3EVIaZtn+2oMBENUvliFBAn0iQ9c7AOYI=;
+	s=korg; t=1715685592;
+	bh=VkmoKgjZ3wezep/iFP1HwmMQWaDPTHGg8w2KePb6ekg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfYMAXLaofptQE7ZkYEiSYoqBrtY21/dbnp7/KBHF5eunLhk9/BI3i8GsOz9wwjJQ
-	 7Y8eX07mKuqHTveyVTjLZ2Z0gVKf3lFotW2TeBQ+Msmvk5C51kGslY0TmpSYHrsv6i
-	 NXdkVJsicmOQOUq4y6LX526z0MQEEvxsc9kuiC6o=
+	b=vJyw+xrTM3P+u2oLY/k0nRdyrUmfC5OM/aPhjL+MMovi3APsZ99auDbmt0zEcACao
+	 5rUtp3tuwCvPMzePh5G5PmoefcQd459O9F1Ml3IL8q6yyGEgGwjE0l+CUOsp2aUiBs
+	 5dpZQge2/JIRuk5sLwGqx8k442T5tkIkuvfvl/rI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Carretero?= <cJ@zougloub.eu>,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.8 279/336] e1000e: change usleep_range to udelay in PHY mdic access
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 212/301] drm/meson: dw-hdmi: power up phy on device init
 Date: Tue, 14 May 2024 12:18:03 +0200
-Message-ID: <20240514101049.153462276@linuxfoundation.org>
+Message-ID: <20240514101040.265902929@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit 387f295cb2150ed164905b648d76dfcbd3621778 upstream.
+[ Upstream commit 04703bfd7f99c016a823c74712b97f8b5590ce87 ]
 
-This is a partial revert of commit 6dbdd4de0362 ("e1000e: Workaround
-for sporadic MDI error on Meteor Lake systems"). The referenced commit
-used usleep_range inside the PHY access routines, which are sometimes
-called from an atomic context. This can lead to a kernel panic in some
-scenarios, such as cable disconnection and reconnection on vPro systems.
+The phy is not in a useful state right after init. It will become useful,
+including for auxiliary function such as CEC or ARC, after the first mode
+is set. This is a problem on systems where the display is using another
+interface like DSI or CVBS.
 
-Solve this by changing the usleep_range calls back to udelay.
+This change refactor the init and mode change callback to power up the PHY
+on init and leave only what is necessary for mode changes in the related
+function. This is enough to fix CEC operation when HDMI display is not
+enabled.
 
-Fixes: 6dbdd4de0362 ("e1000e: Workaround for sporadic MDI error on Meteor Lake systems")
-Cc: stable@vger.kernel.org
-Reported-by: Jérôme Carretero <cJ@zougloub.eu>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218740
-Closes: https://lore.kernel.org/lkml/a7eb665c74b5efb5140e6979759ed243072cb24a.camel@zougloub.eu/
-Co-developed-by: Sasha Neftin <sasha.neftin@intel.com>
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240429171040.1152516-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f68be7d8e96 ("drm/meson: Add support for HDMI encoder and DW-HDMI bridge + PHY")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240426160256.3089978-2-jbrunet@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240426160256.3089978-2-jbrunet@baylibre.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/phy.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/meson/meson_dw_hdmi.c | 51 +++++++++------------------
+ 1 file changed, 17 insertions(+), 34 deletions(-)
 
---- a/drivers/net/ethernet/intel/e1000e/phy.c
-+++ b/drivers/net/ethernet/intel/e1000e/phy.c
-@@ -157,7 +157,7 @@ s32 e1000e_read_phy_reg_mdic(struct e100
- 		 * the lower time out
- 		 */
- 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--			usleep_range(50, 60);
-+			udelay(50);
- 			mdic = er32(MDIC);
- 			if (mdic & E1000_MDIC_READY)
- 				break;
-@@ -181,7 +181,7 @@ s32 e1000e_read_phy_reg_mdic(struct e100
- 		 * reading duplicate data in the next MDIC transaction.
- 		 */
- 		if (hw->mac.type == e1000_pch2lan)
--			usleep_range(100, 150);
-+			udelay(100);
+diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson/meson_dw_hdmi.c
+index 5a9538bc0e26f..a83d93078537d 100644
+--- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
+@@ -384,26 +384,6 @@ static int dw_hdmi_phy_init(struct dw_hdmi *hdmi, void *data,
+ 	    dw_hdmi_bus_fmt_is_420(hdmi))
+ 		mode_is_420 = true;
  
- 		if (success) {
- 			*data = (u16)mdic;
-@@ -237,7 +237,7 @@ s32 e1000e_write_phy_reg_mdic(struct e10
- 		 * the lower time out
- 		 */
- 		for (i = 0; i < (E1000_GEN_POLL_TIMEOUT * 3); i++) {
--			usleep_range(50, 60);
-+			udelay(50);
- 			mdic = er32(MDIC);
- 			if (mdic & E1000_MDIC_READY)
- 				break;
-@@ -261,7 +261,7 @@ s32 e1000e_write_phy_reg_mdic(struct e10
- 		 * reading duplicate data in the next MDIC transaction.
- 		 */
- 		if (hw->mac.type == e1000_pch2lan)
--			usleep_range(100, 150);
-+			udelay(100);
+-	/* Enable clocks */
+-	regmap_update_bits(priv->hhi, HHI_HDMI_CLK_CNTL, 0xffff, 0x100);
+-
+-	/* Bring HDMITX MEM output of power down */
+-	regmap_update_bits(priv->hhi, HHI_MEM_PD_REG0, 0xff << 8, 0);
+-
+-	/* Bring out of reset */
+-	dw_hdmi->data->top_write(dw_hdmi, HDMITX_TOP_SW_RESET,  0);
+-
+-	/* Enable internal pixclk, tmds_clk, spdif_clk, i2s_clk, cecclk */
+-	dw_hdmi_top_write_bits(dw_hdmi, HDMITX_TOP_CLK_CNTL,
+-			       0x3, 0x3);
+-
+-	/* Enable cec_clk and hdcp22_tmdsclk_en */
+-	dw_hdmi_top_write_bits(dw_hdmi, HDMITX_TOP_CLK_CNTL,
+-			       0x3 << 4, 0x3 << 4);
+-
+-	/* Enable normal output to PHY */
+-	dw_hdmi->data->top_write(dw_hdmi, HDMITX_TOP_BIST_CNTL, BIT(12));
+-
+ 	/* TMDS pattern setup */
+ 	if (mode->clock > 340000 && !mode_is_420) {
+ 		dw_hdmi->data->top_write(dw_hdmi, HDMITX_TOP_TMDS_CLK_PTTN_01,
+@@ -425,20 +405,6 @@ static int dw_hdmi_phy_init(struct dw_hdmi *hdmi, void *data,
+ 	/* Setup PHY parameters */
+ 	meson_hdmi_phy_setup_mode(dw_hdmi, mode, mode_is_420);
  
- 		if (success)
- 			return 0;
+-	/* Setup PHY */
+-	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
+-			   0xffff << 16, 0x0390 << 16);
+-
+-	/* BIT_INVERT */
+-	if (dw_hdmi_is_compatible(dw_hdmi, "amlogic,meson-gxl-dw-hdmi") ||
+-	    dw_hdmi_is_compatible(dw_hdmi, "amlogic,meson-gxm-dw-hdmi") ||
+-	    dw_hdmi_is_compatible(dw_hdmi, "amlogic,meson-g12a-dw-hdmi"))
+-		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
+-				   BIT(17), 0);
+-	else
+-		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
+-				   BIT(17), BIT(17));
+-
+ 	/* Disable clock, fifo, fifo_wr */
+ 	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1, 0xf, 0);
+ 
+@@ -656,6 +622,23 @@ static void meson_dw_hdmi_init(struct meson_dw_hdmi *meson_dw_hdmi)
+ 	meson_dw_hdmi->data->top_write(meson_dw_hdmi,
+ 				       HDMITX_TOP_CLK_CNTL, 0xff);
+ 
++	/* Enable normal output to PHY */
++	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_BIST_CNTL, BIT(12));
++
++	/* Setup PHY */
++	regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
++			   0xffff << 16, 0x0390 << 16);
++
++	/* BIT_INVERT */
++	if (dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxl-dw-hdmi") ||
++	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-gxm-dw-hdmi") ||
++	    dw_hdmi_is_compatible(meson_dw_hdmi, "amlogic,meson-g12a-dw-hdmi"))
++		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
++				   BIT(17), 0);
++	else
++		regmap_update_bits(priv->hhi, HHI_HDMI_PHY_CNTL1,
++				   BIT(17), BIT(17));
++
+ 	/* Enable HDMI-TX Interrupt */
+ 	meson_dw_hdmi->data->top_write(meson_dw_hdmi, HDMITX_TOP_INTR_STAT_CLR,
+ 				       HDMITX_TOP_INTR_CORE);
+-- 
+2.43.0
+
 
 
 
