@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C599C8C5358
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E18328C5269
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52ABA1F22DA1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E540B22093
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4B47D07E;
-	Tue, 14 May 2024 11:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52FA13D275;
+	Tue, 14 May 2024 11:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dz/OX+U/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A12suBtl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489ED18026;
-	Tue, 14 May 2024 11:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE476311D;
+	Tue, 14 May 2024 11:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686462; cv=none; b=W/j+sXO+ZufGauTXLbx3IOgAGweFu/KpybZmIrOYAO5CysPnGHqphWRvi0zdVFg6NxdLuO5Vrq/sr8FCsrPuu/M1JiqRofxTqvQf1tXqnCKHFLJuqlz7hwnu6ngdaddk9A/NG+PIQtaZyI+7tDBXxeN/seX54YRixaGdDHJ9rxI=
+	t=1715685887; cv=none; b=Kg5mrSPcsVmIL5IFnWo/7kMivs55IsHaZ0nEJjGeN1/6mcEyP7UMxreWIyhB+dOWLHkn8w9nW5dl6oDhm7I4srKy/aKSD1v5TLgUmLGGE1613KnJU/MMYf0uSm+r1pLw0mmdVlfqyTzyqaVtixv1TDpT/LIG/k8BMdi618H4+E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686462; c=relaxed/simple;
-	bh=W3kVWYo3Sg6xrK7sdX04FGlkN1lr1b1uVzH+1DIIXx0=;
+	s=arc-20240116; t=1715685887; c=relaxed/simple;
+	bh=LXV+ZjnuDjyDDleo0LoYyUv1WccqMEPwcst/tiipykM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvvL/WsZeJJfhhU1s997iteyXT5mc2dzjP/yNifSKxu7EFtt6pWrrqocIMnXk2UcU8frPWJX9S0Wf41Ecptx4w7K/E3roiSOQTk6vG+0A+PtmdUa/51sQetpWQNEeutEQqMKFUCuhi/iwtNcJVwtneKuK/Edi/rqMwI1OtD8vA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dz/OX+U/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32DFC2BD10;
-	Tue, 14 May 2024 11:34:21 +0000 (UTC)
+	 MIME-Version; b=sxRcOq7skZLep//GTP1VXR7Mt8oePyxA0IWsB88u7BkSiY1caCAIf9QcS03x6Rjk+LLl1QW5gV4gsoF/NNABj18mTFjb8kcS1iBK2VIh0WU6UG/pz2IbaaIt/Tzhn+9XYjVvdWqa8qByZmkvPrfyAO4+PcfitKwioAwFOkHVCMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A12suBtl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BDEC2BD10;
+	Tue, 14 May 2024 11:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686462;
-	bh=W3kVWYo3Sg6xrK7sdX04FGlkN1lr1b1uVzH+1DIIXx0=;
+	s=korg; t=1715685887;
+	bh=LXV+ZjnuDjyDDleo0LoYyUv1WccqMEPwcst/tiipykM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dz/OX+U/QvFQY9d24EIPttYXGdoHGxOaDXrb9MkdxIvbmmcGBXhojS6GQSInqQDNB
-	 PG6ACn4lgO8lEqiIwxnTu5lOfNPXMjKLIN0NQg+N9mWgGHgB7v6hE8tzBESm6xFMId
-	 r1ysaamOqTuYqUPzbHleWt8XCYk3/C3lf3c4nvAU=
+	b=A12suBtlmZTpHrD5Azhe/DLDCkKtPsgttPoXSRecc/ZB5xfAEnZL2NCO/eXdddrXz
+	 iWTdBvQA6ulwZ07uIT01j5FkOSypdzbB8l5ZdT9Lo8FBvPATfVFXG+aYdIlxXFR8vL
+	 bZtWRnS9XqmE31pl9FX++BB2SSupZv6j4kjWF+po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Davey <paul.davey@alliedtelesis.co.nz>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/236] xfrm: Preserve vlan tags for transport mode software GRO
-Date: Tue, 14 May 2024 12:18:27 +0200
-Message-ID: <20240514101025.873281448@linuxfoundation.org>
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 237/301] usb: typec: tcpm: unregister existing source caps before re-registration
+Date: Tue, 14 May 2024 12:18:28 +0200
+Message-ID: <20240514101041.202661931@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Davey <paul.davey@alliedtelesis.co.nz>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 58fbfecab965014b6e3cc956a76b4a96265a1add ]
+commit 230ecdf71a644c9c73e0e6735b33173074ae3f94 upstream.
 
-The software GRO path for esp transport mode uses skb_mac_header_rebuild
-prior to re-injecting the packet via the xfrm_napi_dev.  This only
-copies skb->mac_len bytes of header which may not be sufficient if the
-packet contains 802.1Q tags or other VLAN tags.  Worse copying only the
-initial header will leave a packet marked as being VLAN tagged but
-without the corresponding tag leading to mangling when it is later
-untagged.
+Check and unregister existing source caps in tcpm_register_source_caps
+function before registering new ones. This change fixes following
+warning when port partner resends source caps after negotiating PD contract
+for the purpose of re-negotiation.
 
-The VLAN tags are important when receiving the decrypted esp transport
-mode packet after GRO processing to ensure it is received on the correct
-interface.
+[  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
+[  343.135071][  T151] Call trace:
+[  343.135076][  T151]  dump_backtrace+0xe8/0x108
+[  343.135099][  T151]  show_stack+0x18/0x24
+[  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
+[  343.135119][  T151]  dump_stack+0x18/0x24
+[  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
+[  343.135137][  T151]  kobject_add_internal+0x228/0x424
+[  343.135146][  T151]  kobject_add+0x94/0x10c
+[  343.135152][  T151]  device_add+0x1b0/0x4c0
+[  343.135187][  T151]  device_register+0x20/0x34
+[  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
+[  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
+[  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
+[  343.135227][  T151]  kthread+0x114/0x1bc
+[  343.135235][  T151]  ret_from_fork+0x10/0x20
+[  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
 
-Therefore record the full mac header length in xfrm*_transport_input for
-later use in corresponding xfrm*_transport_finish to copy the entire mac
-header when rebuilding the mac header for GRO.  The skb->data pointer is
-left pointing skb->mac_header bytes after the start of the mac header as
-is expected by the network stack and network and transport header
-offsets reset to this location.
-
-Fixes: 7785bba299a8 ("esp: Add a software GRO codepath")
-Signed-off-by: Paul Davey <paul.davey@alliedtelesis.co.nz>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
+Cc: linux-usb@vger.kernel.org
+Cc: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240424223227.1807844-1-amitsd@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skbuff.h | 15 +++++++++++++++
- include/net/xfrm.h     |  3 +++
- net/ipv4/xfrm4_input.c |  6 +++++-
- net/ipv6/xfrm6_input.c |  6 +++++-
- net/xfrm/xfrm_input.c  |  8 ++++++++
- 5 files changed, 36 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index d5f888fe0e331..cecd3b6bebb8b 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -2927,6 +2927,21 @@ static inline void skb_mac_header_rebuild(struct sk_buff *skb)
- 	}
- }
- 
-+/* Move the full mac header up to current network_header.
-+ * Leaves skb->data pointing at offset skb->mac_len into the mac_header.
-+ * Must be provided the complete mac header length.
-+ */
-+static inline void skb_mac_header_rebuild_full(struct sk_buff *skb, u32 full_mac_len)
-+{
-+	if (skb_mac_header_was_set(skb)) {
-+		const unsigned char *old_mac = skb_mac_header(skb);
-+
-+		skb_set_mac_header(skb, -full_mac_len);
-+		memmove(skb_mac_header(skb), old_mac, full_mac_len);
-+		__skb_push(skb, full_mac_len - skb->mac_len);
-+	}
-+}
-+
- static inline int skb_checksum_start_offset(const struct sk_buff *skb)
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2422,7 +2422,7 @@ static int tcpm_register_sink_caps(struc
  {
- 	return skb->csum_start - skb_headroom(skb);
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 9ec6f2e92ad3a..5b9c2c535702c 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1032,6 +1032,9 @@ struct xfrm_offload {
- #define CRYPTO_INVALID_PACKET_SYNTAX		64
- #define CRYPTO_INVALID_PROTOCOL			128
+ 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
+ 	struct usb_power_delivery_capabilities_desc caps = { };
+-	struct usb_power_delivery_capabilities *cap;
++	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
  
-+	/* Used to keep whole l2 header for transport mode GRO */
-+	__u32			orig_mac_len;
+ 	if (!port->partner_pd)
+ 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
+@@ -2432,6 +2432,9 @@ static int tcpm_register_sink_caps(struc
+ 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
+ 	caps.role = TYPEC_SINK;
+ 
++	if (cap)
++		usb_power_delivery_unregister_capabilities(cap);
 +
- 	__u8			proto;
- 	__u8			inner_ipproto;
- };
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index 183f6dc372429..f6e90ba50b639 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -61,7 +61,11 @@ int xfrm4_transport_finish(struct sk_buff *skb, int async)
- 	ip_send_check(iph);
- 
- 	if (xo && (xo->flags & XFRM_GRO)) {
--		skb_mac_header_rebuild(skb);
-+		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
-+		 * works correctly in the presence of vlan tags.
-+		 */
-+		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
-+		skb_reset_network_header(skb);
- 		skb_reset_transport_header(skb);
- 		return 0;
- 	}
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 4156387248e40..8432b50d9ce4c 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -56,7 +56,11 @@ int xfrm6_transport_finish(struct sk_buff *skb, int async)
- 	skb_postpush_rcsum(skb, skb_network_header(skb), nhlen);
- 
- 	if (xo && (xo->flags & XFRM_GRO)) {
--		skb_mac_header_rebuild(skb);
-+		/* The full l2 header needs to be preserved so that re-injecting the packet at l2
-+		 * works correctly in the presence of vlan tags.
-+		 */
-+		skb_mac_header_rebuild_full(skb, xo->orig_mac_len);
-+		skb_reset_network_header(skb);
- 		skb_reset_transport_header(skb);
- 		return 0;
- 	}
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index d0320e35accbf..4bba890ff3bc0 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -388,11 +388,15 @@ static int xfrm_prepare_input(struct xfrm_state *x, struct sk_buff *skb)
-  */
- static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- {
-+	struct xfrm_offload *xo = xfrm_offload(skb);
- 	int ihl = skb->data - skb_transport_header(skb);
- 
- 	if (skb->transport_header != skb->network_header) {
- 		memmove(skb_transport_header(skb),
- 			skb_network_header(skb), ihl);
-+		if (xo)
-+			xo->orig_mac_len =
-+				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
- 		skb->network_header = skb->transport_header;
- 	}
- 	ip_hdr(skb)->tot_len = htons(skb->len + ihl);
-@@ -403,11 +407,15 @@ static int xfrm4_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- static int xfrm6_transport_input(struct xfrm_state *x, struct sk_buff *skb)
- {
- #if IS_ENABLED(CONFIG_IPV6)
-+	struct xfrm_offload *xo = xfrm_offload(skb);
- 	int ihl = skb->data - skb_transport_header(skb);
- 
- 	if (skb->transport_header != skb->network_header) {
- 		memmove(skb_transport_header(skb),
- 			skb_network_header(skb), ihl);
-+		if (xo)
-+			xo->orig_mac_len =
-+				skb_mac_header_was_set(skb) ? skb_mac_header_len(skb) : 0;
- 		skb->network_header = skb->transport_header;
- 	}
- 	ipv6_hdr(skb)->payload_len = htons(skb->len + ihl -
--- 
-2.43.0
-
+ 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+ 	if (IS_ERR(cap))
+ 		return PTR_ERR(cap);
 
 
 
