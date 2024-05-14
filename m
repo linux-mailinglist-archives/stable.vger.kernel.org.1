@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8E38C5341
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FF68C5233
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0B51C22E2B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 796681C2175F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3F16F085;
-	Tue, 14 May 2024 11:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774FA55C08;
+	Tue, 14 May 2024 11:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTmLK3PE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnikjTyA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CF022094;
-	Tue, 14 May 2024 11:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363C3200BF;
+	Tue, 14 May 2024 11:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686399; cv=none; b=TnF0V57iITiXww/nXLlwlt3WzkwPBEDr1RhjOvJMYTDbVWicbuBqwgxSjtE9wcIT42d/lcuC/IWLAF3iU+OOua30Z3U+WE/MM7w228yUetqwSlD4BHTh2MRqoDpZnHMZ76b+ThmwpVmNXMbzKGw4Y6PVWmXYkGogzhqUzCt/neA=
+	t=1715685622; cv=none; b=CtvhAvRn+ji/Y+rmHb32O5+SlMPgKaHsV+iyfaMeDvCeLlDT30EzR+CYMWEiiBCAUJRywQOAtL5Z425+as50YQdESsFtps+mVAHAWWf/2/yAVICxowwffRfAK/DAUx7FCGCz+DzILT62rj3cBv04LfRfVrdC5BixeADsWaAtv0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686399; c=relaxed/simple;
-	bh=6Q8NINPQYgjnqceIgXFkdIlVVqozOiRYDlbYePg3mAk=;
+	s=arc-20240116; t=1715685622; c=relaxed/simple;
+	bh=Aera5R3XySLQQuWdWA4Hji31/txw+nulivJ8wrX0nWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s3LnedpKC2Y3IgY9V1QaWSvrPZDMY5awKnmeN4xkPWhBB+IV0juBKUmkwHW0HSpYPZp49n4LHcJk8oSHpHFEZnpvu5bAFdSdrzUJVWJeNejdkmHp1IXwXZH7xKbxWkMAErAJG2tBGcvPWAjAKtEstZJGMFjrNuGSvdZ6HEeP9u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTmLK3PE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66373C2BD10;
-	Tue, 14 May 2024 11:33:18 +0000 (UTC)
+	 MIME-Version; b=KMt4hzozfDl31bM2PwMaxqG5amvJxEyzHC2rHVoGkcuDB2zLopBDlcMRFsnDK7b3Bym8qFBjh+OFT+w5PtTX015pjd0A2Yy77nXLV1csfqxt1Dux5VDR11z2u/9b4U+1a3bR4dp8yS8EBV/lsyoC8TbAC1qTRdWpjtXzICAokfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnikjTyA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50582C2BD10;
+	Tue, 14 May 2024 11:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686398;
-	bh=6Q8NINPQYgjnqceIgXFkdIlVVqozOiRYDlbYePg3mAk=;
+	s=korg; t=1715685621;
+	bh=Aera5R3XySLQQuWdWA4Hji31/txw+nulivJ8wrX0nWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTmLK3PEj6FRLi49/WOSO8qgsYbSjDB5KW5Jx6ZTab63+CJ0xwf3GpG84NvlfnTPp
-	 uU6XhTNOoYICEUC/KnBeuzW4znNzgKpf2cdbAi1igmUFvqSR5AH6+k4AZVAELFE/vB
-	 I3fHmgZ3hOe/2C+pP6IqVTyHFPdWkzvhTWUaw54g=
+	b=dnikjTyA+a7Vogs9RvZMI+yaiGY8mtmMS2Vw3v99rDIFSg7/+ZT5ysKqyGgX7z9um
+	 ONam/Yt4O1zeP2fV+GsjxFOxlPL/sH2LsU3ltGODWiYTi4BgNEkUSQ5ZyrQkrZNvmo
+	 3g51EwkKr9/lSCC5YcnoRwcHTbdutTLmoXPXKOEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/236] drm/amdgpu: Refine IB schedule error logging
+Subject: [PATCH 6.6 216/301] gpiolib: cdev: Fix use after free in lineinfo_changed_notify
 Date: Tue, 14 May 2024 12:18:07 +0200
-Message-ID: <20240514101025.118026434@linuxfoundation.org>
+Message-ID: <20240514101040.414818396@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 4b18a91faf1752f9bd69a4ed3aed2c8f6e5b0528 ]
+[ Upstream commit 02f6b0e1ec7e0e7d059dddc893645816552039da ]
 
-Downgrade to debug information when IBs are skipped. Also, use dev_* to
-identify the device.
+The use-after-free issue occurs as follows: when the GPIO chip device file
+is being closed by invoking gpio_chrdev_release(), watched_lines is freed
+by bitmap_free(), but the unregistration of lineinfo_changed_nb notifier
+chain failed due to waiting write rwsem. Additionally, one of the GPIO
+chip's lines is also in the release process and holds the notifier chain's
+read rwsem. Consequently, a race condition leads to the use-after-free of
+watched_lines.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Here is the typical stack when issue happened:
+
+[free]
+gpio_chrdev_release()
+  --> bitmap_free(cdev->watched_lines)                  <-- freed
+  --> blocking_notifier_chain_unregister()
+    --> down_write(&nh->rwsem)                          <-- waiting rwsem
+          --> __down_write_common()
+            --> rwsem_down_write_slowpath()
+                  --> schedule_preempt_disabled()
+                    --> schedule()
+
+[use]
+st54spi_gpio_dev_release()
+  --> gpio_free()
+    --> gpiod_free()
+      --> gpiod_free_commit()
+        --> gpiod_line_state_notify()
+          --> blocking_notifier_call_chain()
+            --> down_read(&nh->rwsem);                  <-- held rwsem
+            --> notifier_call_chain()
+              --> lineinfo_changed_notify()
+                --> test_bit(xxxx, cdev->watched_lines) <-- use after free
+
+The side effect of the use-after-free issue is that a GPIO line event is
+being generated for userspace where it shouldn't. However, since the chrdev
+is being closed, userspace won't have the chance to read that event anyway.
+
+To fix the issue, call the bitmap_free() function after the unregistration
+of lineinfo_changed_nb notifier chain.
+
+Fixes: 51c1064e82e7 ("gpiolib: add new ioctl() for monitoring changes in line info")
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Link: https://lore.kernel.org/r/20240505141156.2944912-1-quic_zhonhan@quicinc.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib-cdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-index 3bf0e893c07df..f34bc9bb7045a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-@@ -301,12 +301,15 @@ static struct dma_fence *amdgpu_job_run(struct drm_sched_job *sched_job)
- 		dma_fence_set_error(finished, -ECANCELED);
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index 84125e55de101..ebf5b8ef3b5dc 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2816,11 +2816,11 @@ static int gpio_chrdev_release(struct inode *inode, struct file *file)
+ 	struct gpio_chardev_data *cdev = file->private_data;
+ 	struct gpio_device *gdev = cdev->gdev;
  
- 	if (finished->error < 0) {
--		DRM_INFO("Skip scheduling IBs!\n");
-+		dev_dbg(adev->dev, "Skip scheduling IBs in ring(%s)",
-+			ring->name);
- 	} else {
- 		r = amdgpu_ib_schedule(ring, job->num_ibs, job->ibs, job,
- 				       &fence);
- 		if (r)
--			DRM_ERROR("Error scheduling IBs (%d)\n", r);
-+			dev_err(adev->dev,
-+				"Error scheduling IBs (%d) in ring(%s)", r,
-+				ring->name);
- 	}
+-	bitmap_free(cdev->watched_lines);
+ 	blocking_notifier_chain_unregister(&gdev->device_notifier,
+ 					   &cdev->device_unregistered_nb);
+ 	blocking_notifier_chain_unregister(&gdev->line_state_notifier,
+ 					   &cdev->lineinfo_changed_nb);
++	bitmap_free(cdev->watched_lines);
+ 	gpio_device_put(gdev);
+ 	kfree(cdev);
  
- 	job->job_run_counter++;
 -- 
 2.43.0
 
