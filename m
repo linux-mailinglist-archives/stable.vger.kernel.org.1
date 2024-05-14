@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2014B8C50DF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635788C5354
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 510131C2145F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A661C22A99
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F36D129A93;
-	Tue, 14 May 2024 10:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEA36CDD2;
+	Tue, 14 May 2024 11:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qT/XjZq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9yzl6qq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C109129A66;
-	Tue, 14 May 2024 10:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE36618026;
+	Tue, 14 May 2024 11:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683785; cv=none; b=IipnFuQ0ZqwhBE5CxePOnlNuEScZL2ydNUDkba/3smkkYK4KFl+C4dBLHX3L/LQec2V/VPW1geqQJxDHoiHutgqCYqTaJob915KWSGenLuTeBKjFPLy7eVpwhuiNrrKGM2OusZdh4UIX3youPAvaA/0a7qkjUNAOUBF/8r/BYeg=
+	t=1715686450; cv=none; b=K4eveaF34ScdK4GGJQc/Lvzhev/FgTmN5wyK6ucgb8c01k9liogmPrTHZjAEd/nCIa1I2p7gBcx0JY7M5jGJVy565GeRsJ+j75CdTSZtBwZ+cBZAIRLdMDVhUNMvi3qBuVltIDKBGxI/BYtm2DczidD9NWd6qbTIeNBxJrNr0iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683785; c=relaxed/simple;
-	bh=CwInm5geF4LAm3wm7C4RlcYE+gn/EYB2fjxvGoLWLfw=;
+	s=arc-20240116; t=1715686450; c=relaxed/simple;
+	bh=BG1OYkqKDKLdljQ/OO6Pc/Ad/2iWgptTN4e+YlXCEBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeRdL137dPRPsO+xjGHYammP8MGFL3qk9135ldLBkGjzETjqOxEDqvCecrGqA+QfLJBCzlsJDXjXKymQtdZg8fAYgBj3PzMg3QGttF5AXB0ggC6kidxfIRL3vVf2+/nG5//KZrJafka0qDzQLz/88XvtEajGChTkzwYqZ4RT7uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qT/XjZq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D698C2BD10;
-	Tue, 14 May 2024 10:49:44 +0000 (UTC)
+	 MIME-Version; b=fSzH3V0+BUk2rnFeJHQI3WmQ3WSuJ83s1mQsx0GZsKN3OLkFI6FuweD1UwhBsQ5k1xUfaEtPsxbWgD4WGEZwifHL7ICpSJKd2BMN/6bimyQVqwBoQIaPvM7kNy5iGzfoj7qq0+LnOpLRzP9yR4onRDYWIfAP4xsW3yjvkOHYFss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9yzl6qq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43999C2BD10;
+	Tue, 14 May 2024 11:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683785;
-	bh=CwInm5geF4LAm3wm7C4RlcYE+gn/EYB2fjxvGoLWLfw=;
+	s=korg; t=1715686450;
+	bh=BG1OYkqKDKLdljQ/OO6Pc/Ad/2iWgptTN4e+YlXCEBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qT/XjZq7B6AcEJaW3ieqjuU9GR/WNkEEvjnx2lDtnnm3OlBjyY8XBwGea7oBe2VpB
-	 7PA6dHJ1wnVVvPMWJv+6nI23WRYoUy5bfXUYqmXG47mwW4vySYJUMXQdrN6nQXYe3R
-	 70lPBofL/d7BvdSziXv7Uc7gUEoUFgQtIiw+65GU=
+	b=n9yzl6qq/JQuiJo+kXn6YQ95vYhRJKuubvHn7lqs4rqL6p+C4yqebVP3Up8dJnItJ
+	 15zN45G1W8MyVTWau5rYlGPjH3fMsCLa/+pF/roeohAxUXskhR+YW4mSkF0ZpJ7GL5
+	 zhM45nblub/Nby9Smmr6vLK9opuB1vIvYBnqMXcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.8 273/336] iio:imu: adis16475: Fix sync mode setting
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 115/236] btrfs: make btrfs_clear_delalloc_extent() free delalloc reserve
 Date: Tue, 14 May 2024 12:17:57 +0200
-Message-ID: <20240514101048.928377618@linuxfoundation.org>
+Message-ID: <20240514101024.738987071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+From: Boris Burkov <boris@bur.io>
 
-commit 74a72baf204fd509bbe8b53eec35e39869d94341 upstream.
+[ Upstream commit 3c6f0c5ecc8910d4ffb0dfe85609ebc0c91c8f34 ]
 
-Fix sync mode setting by applying the necessary shift bits.
+Currently, this call site in btrfs_clear_delalloc_extent() only converts
+the reservation. We are marking it not delalloc, so I don't think it
+makes sense to keep the rsv around.  This is a path where we are not
+sure to join a transaction, so it leads to incorrect free-ing during
+umount.
 
-Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
-Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240405045309.816328-2-ramona.bolboaca13@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Helps with the pass rate of generic/269 and generic/475.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/adis16475.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -1289,6 +1289,7 @@ static int adis16475_config_sync_mode(st
- 	struct device *dev = &st->adis.spi->dev;
- 	const struct adis16475_sync *sync;
- 	u32 sync_mode;
-+	u16 val;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index f7f4bcc094642..10ded9c2be03b 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2472,7 +2472,7 @@ void btrfs_clear_delalloc_extent(struct inode *vfs_inode,
+ 		 */
+ 		if (bits & EXTENT_CLEAR_META_RESV &&
+ 		    root != fs_info->tree_root)
+-			btrfs_delalloc_release_metadata(inode, len, false);
++			btrfs_delalloc_release_metadata(inode, len, true);
  
- 	/* default to internal clk */
- 	st->clk_freq = st->info->int_clk * 1000;
-@@ -1350,8 +1351,9 @@ static int adis16475_config_sync_mode(st
- 	 * I'm keeping this for simplicity and avoiding extra variables
- 	 * in chip_info.
- 	 */
-+	val = ADIS16475_SYNC_MODE(sync->sync_mode);
- 	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
--				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
-+				 ADIS16475_SYNC_MODE_MASK, val);
- 	if (ret)
- 		return ret;
- 
+ 		/* For sanity tests. */
+ 		if (btrfs_is_testing(fs_info))
+-- 
+2.43.0
+
 
 
 
