@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8608C53B4
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863108C5430
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4BE91C22A2E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27B041F218AD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C276112EBC0;
-	Tue, 14 May 2024 11:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6745A139CFB;
+	Tue, 14 May 2024 11:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyrZBhar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yesmkauj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC1F12E1F7;
-	Tue, 14 May 2024 11:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC3139CE4;
+	Tue, 14 May 2024 11:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686711; cv=none; b=RFl4Jpw5CBv1/MCl9lskW5ul8UbAbaEmR4m6jegFSPWqC9piQpkUVIXNoZaaxHU340J5j5FxF+3RTlUyH+B3aQYj4MNI+lNChCR5qpR42JvSGzV538ZtGKG5P5NVma845LMJOQ3+E3TGwC60OSjJGYYjwl/3SVh+pQ4gnnqAAn8=
+	t=1715687039; cv=none; b=sncDXd/isT00lsmNMHCtV3IOWhu+/8z4WGWxanYSvFbFV3uDgzlScoCOdIhEGPZCdWKMlwJnTCKj8fh2NvMVGEX2MWZD3CGhjJUAaN4KgbgwXdgR3YFllCUrcqGcxV0crEpd3BdR/cjVNsB020uQb340WQ4a57yzTY6khj1/lfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686711; c=relaxed/simple;
-	bh=f1+9I12bUpKHpuj2dp+t2hGbsgvlVLyVhGEGHU6tqZc=;
+	s=arc-20240116; t=1715687039; c=relaxed/simple;
+	bh=/wAh/74Dyg2OGUIGg3htN1sZ/SK9X6GlRrmarqRdme8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGCrSmNP8IMhS4qTZ0IFB+Sfaxd8zAPAnWMq6qdA/73ZJJYL0WrJjV/cZrRcoB1YH5TiZCiSxrDm4XFpMqZj9FJL6/EAAfjS8bq+6hOet8bMezIzAiERO6FyfB0Pw5Qsdmv93IDreLty2Ga331wYc+FJgSDRT2Z5RbrDH+C0WDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyrZBhar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087D0C2BD10;
-	Tue, 14 May 2024 11:38:30 +0000 (UTC)
+	 MIME-Version; b=sQzLqA0LhqJF2Xw2iPoBQKtxRFYDbrKY02c7f51upFxjrDex1VNr6JdCqNatzZJLmbtz7w3Cc2Oit1pXF3DgBBkZ5Ns8PrcJeUB25WnQ9HJNCIUIspGtonTUZ2FVdrOkfHaewrJaPNTjrcjYTMb94WXKZE05LJ5J/GTdgewZXVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yesmkauj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A538EC2BD10;
+	Tue, 14 May 2024 11:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686711;
-	bh=f1+9I12bUpKHpuj2dp+t2hGbsgvlVLyVhGEGHU6tqZc=;
+	s=korg; t=1715687039;
+	bh=/wAh/74Dyg2OGUIGg3htN1sZ/SK9X6GlRrmarqRdme8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wyrZBharpqGKQxlSFmcb5jYxEO+GhDvCdxgBT+HGqvJjjV+9UF4HvhC/0V7f5gAx/
-	 okNA9xuXmocxlzzEVYPWOuBmfInD7FIabpAtV46A/ZkcRHVIdQWdlSxqgTeSIF1SiB
-	 F5OPzSmT/ABAEfZzsn8VmkSNklpgoziVwhSv5wOI=
+	b=yesmkaujeUP4xeff/henBmcp4gw8nYMmF2DtsOpkq6pT6b12In/04MyZvBbu2eBTn
+	 t/mrIxCwr3xJ5DyzN5iKQTdTtvZXPbbDfKxPon2jAI15Xlh+k9q3DHOJY73cy7yFaP
+	 RmvEI0p/jcuC36aQm0U074z0RftR/wTVss4JWpcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 233/236] Bluetooth: qca: fix NVM configuration parsing
+	Peng Liu <liupeng17@lenovo.com>,
+	Len Brown <len.brown@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 44/84] tools/power turbostat: Fix Bzy_MHz documentation typo
 Date: Tue, 14 May 2024 12:19:55 +0200
-Message-ID: <20240514101029.203378400@linuxfoundation.org>
+Message-ID: <20240514100953.347026677@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Peng Liu <liupeng17@lenovo.com>
 
-commit a112d3c72a227f2edbb6d8094472cc6e503e52af upstream.
+[ Upstream commit 0b13410b52c4636aacb6964a4253a797c0fa0d16 ]
 
-The NVM configuration files used by WCN3988 and WCN3990/1/8 have two
-sets of configuration tags that are enclosed by a type-length header of
-type four which the current parser fails to account for.
+The code calculates Bzy_MHz by multiplying TSC_delta * APERF_delta/MPERF_delta
+The man page erroneously showed that TSC_delta was divided.
 
-Instead the driver happily parses random data as if it were valid tags,
-something which can lead to the configuration data being corrupted if it
-ever encounters the words 0x0011 or 0x001b.
-
-As is clear from commit b63882549b2b ("Bluetooth: btqca: Fix the NVM
-baudrate tag offcet for wcn3991") the intention has always been to
-process the configuration data also for WCN3991 and WCN3998 which
-encodes the baud rate at a different offset.
-
-Fix the parser so that it can handle the WCN3xxx configuration files,
-which has an enclosing type-length header of type four and two sets of
-TLV tags enclosed by a type-length header of type two and three,
-respectively.
-
-Note that only the first set, which contains the tags the driver is
-currently looking for, will be parsed for now.
-
-With the parser fixed, the software in-band sleep bit will now be set
-for WCN3991 and WCN3998 (as it is for later controllers) and the default
-baud rate 3200000 may be updated by the driver also for WCN3xxx
-controllers.
-
-Notably the deep-sleep feature bit is already set by default in all
-configuration files in linux-firmware.
-
-Fixes: 4219d4686875 ("Bluetooth: btqca: Add wcn3990 firmware download support.")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Liu <liupeng17@lenovo.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |   24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ tools/power/x86/turbostat/turbostat.8 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -278,6 +278,7 @@ static int qca_tlv_check_data(struct hci
- 	struct tlv_type_patch *tlv_patch;
- 	struct tlv_type_nvm *tlv_nvm;
- 	uint8_t nvm_baud_rate = config->user_baud_rate;
-+	u8 type;
+diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
+index a6db83a88e852..25a560c41321d 100644
+--- a/tools/power/x86/turbostat/turbostat.8
++++ b/tools/power/x86/turbostat/turbostat.8
+@@ -318,7 +318,7 @@ below the processor's base frequency.
  
- 	config->dnld_mode = QCA_SKIP_EVT_NONE;
- 	config->dnld_type = QCA_SKIP_EVT_NONE;
-@@ -343,11 +344,30 @@ static int qca_tlv_check_data(struct hci
- 		tlv = (struct tlv_type_hdr *)fw_data;
+ Busy% = MPERF_delta/TSC_delta
  
- 		type_len = le32_to_cpu(tlv->type_len);
--		length = (type_len >> 8) & 0x00ffffff;
-+		length = type_len >> 8;
-+		type = type_len & 0xff;
+-Bzy_MHz = TSC_delta/APERF_delta/MPERF_delta/measurement_interval
++Bzy_MHz = TSC_delta*APERF_delta/MPERF_delta/measurement_interval
  
--		BT_DBG("TLV Type\t\t : 0x%x", type_len & 0x000000ff);
-+		/* Some NVM files have more than one set of tags, only parse
-+		 * the first set when it has type 2 for now. When there is
-+		 * more than one set there is an enclosing header of type 4.
-+		 */
-+		if (type == 4) {
-+			if (fw_size < 2 * sizeof(struct tlv_type_hdr))
-+				return -EINVAL;
-+
-+			tlv++;
-+
-+			type_len = le32_to_cpu(tlv->type_len);
-+			length = type_len >> 8;
-+			type = type_len & 0xff;
-+		}
-+
-+		BT_DBG("TLV Type\t\t : 0x%x", type);
- 		BT_DBG("Length\t\t : %d bytes", length);
- 
-+		if (type != 2)
-+			break;
-+
- 		if (fw_size < length + (tlv->data - fw_data))
- 			return -EINVAL;
- 
+ Note that these calculations depend on TSC_delta, so they
+ are not reliable during intervals when TSC_MHz is not running at the base frequency.
+-- 
+2.43.0
+
 
 
 
