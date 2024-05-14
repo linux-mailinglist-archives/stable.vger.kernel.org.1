@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420158C54C1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3BAF8C5432
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7368D1C235F5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E21D283EB9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E83C12EBE6;
-	Tue, 14 May 2024 11:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6A5139CF8;
+	Tue, 14 May 2024 11:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsZAFHcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3wuKGrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B13A12EBD4;
-	Tue, 14 May 2024 11:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F5C139CE4;
+	Tue, 14 May 2024 11:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687418; cv=none; b=I9I/OAO78rrKhAysIK+duDQYUSOIsL2T1Rn1Ck6MEEzgZ7Wwae+KeZrPa64AsU0X1fCj8ckTyUEDOz94aqKlSzDheTQjfZ4DVYSHFZ/wkuiwv1kERTvapw9lJy0PPDsASPSbua1cgXjbkhMewyGosbr9JPJUF+G8J1yKrzkJxS8=
+	t=1715687042; cv=none; b=r/8rRAcf1os7C69gLKs+2Rq606W24GjtSM+5B1hx2yZYFTUTIQk8lGX3DHtYzTW4NlNATYa3RQfsndod6lzhnxcqL9vD4CGRT8iRfA8xoHAXTq6rINrE8Bl6f0S65FoSvL3KqVIWC5zssTUZVW0ol80O0xIJZccKcx6lu5OUcVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687418; c=relaxed/simple;
-	bh=q/1cHAlpIuG27qe1RzhTVIiXD2pjUFIZXcmq3fLeknM=;
+	s=arc-20240116; t=1715687042; c=relaxed/simple;
+	bh=jo/g9zlHrEEQGo0eUSmON5FjBZohppBmlpYzn9kmrlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lT15qM3Pc2QGztv24m44FlTQOP3cUZYN9g+yElE02qyObveE+pkeXtbdzDPwlO0HaBGr2SLxQWWuyCeGU8rLI5yVQNPS8/dwNKue2yWZyDwsBeRNWlZeEj/hqFZvCZtTWwNrvISnxsxAMcS/Oy/5VJoE6M5dHv2bQl99c2iPYe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsZAFHcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85700C2BD10;
-	Tue, 14 May 2024 11:50:17 +0000 (UTC)
+	 MIME-Version; b=HMRGl79u7wxGyekZ0sLky1GGUQyD4MJUbSVsgrC02svi1NvNO74cmRgtMCwksrSJ84hh7XAMg70Vi5kGtSD0Cxczo6v9NA0sN266AZjLJ4zX7lTqmpZpTw2OYKi7dzgA1C4rmx7CGLohXtyDqqScKV9VWKSvonTthQ5DN4XppW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3wuKGrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAF6C32781;
+	Tue, 14 May 2024 11:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687417;
-	bh=q/1cHAlpIuG27qe1RzhTVIiXD2pjUFIZXcmq3fLeknM=;
+	s=korg; t=1715687041;
+	bh=jo/g9zlHrEEQGo0eUSmON5FjBZohppBmlpYzn9kmrlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsZAFHcblZmOLJmLA1riCIInTA8jrJdn7aMXhxYL2M6LcTIxFk2RsYR7CNlelhHm+
-	 KCPjfERaR48OcKzLZgrP4FBdZ7z5n6n6mjExSE9ITP7JVYSqO6yc9Tv+yPIEDGywZr
-	 Oj7/Id3WxpsHXTX0r3+O3/0Sya5NCObbDHjgEB2s=
+	b=g3wuKGrw2I/4cymDgXAtj48Ynu4mXJ7x1Cd4jEFD7Nsfv9WfhSHYyy5eHJLTOoZ9y
+	 ekMxT9QvCGcabAQeAb9EHGtMwZpEhYYmTfd553YYukna/NA0gPKu4g9fKFVLDrnPBg
+	 wDI+rE3RZe2IlMstKkEzmsMI9/9qLD6iwtzuaHho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Boris Burkov <boris@bur.io>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/111] btrfs: always clear PERTRANS metadata during commit
+Subject: [PATCH 5.4 45/84] btrfs: make btrfs_clear_delalloc_extent() free delalloc reserve
 Date: Tue, 14 May 2024 12:19:56 +0200
-Message-ID: <20240514100959.337718046@linuxfoundation.org>
+Message-ID: <20240514100953.384353579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 6e68de0bb0ed59e0554a0c15ede7308c47351e2d ]
+[ Upstream commit 3c6f0c5ecc8910d4ffb0dfe85609ebc0c91c8f34 ]
 
-It is possible to clear a root's IN_TRANS tag from the radix tree, but
-not clear its PERTRANS, if there is some error in between. Eliminate
-that possibility by moving the free up to where we clear the tag.
+Currently, this call site in btrfs_clear_delalloc_extent() only converts
+the reservation. We are marking it not delalloc, so I don't think it
+makes sense to keep the rsv around.  This is a path where we are not
+sure to join a transaction, so it leads to incorrect free-ing during
+umount.
+
+Helps with the pass rate of generic/269 and generic/475.
 
 Reviewed-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: Boris Burkov <boris@bur.io>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c | 2 +-
+ fs/btrfs/inode.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index d23047b23005c..8cefe11c57dbc 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1343,6 +1343,7 @@ static noinline int commit_fs_roots(struct btrfs_trans_handle *trans)
- 			radix_tree_tag_clear(&fs_info->fs_roots_radix,
- 					(unsigned long)root->root_key.objectid,
- 					BTRFS_ROOT_TRANS_TAG);
-+			btrfs_qgroup_free_meta_all_pertrans(root);
- 			spin_unlock(&fs_info->fs_roots_radix_lock);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index c89e85a7da7d4..2c86be3fc25cd 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2051,7 +2051,7 @@ void btrfs_clear_delalloc_extent(struct inode *vfs_inode,
+ 		 */
+ 		if (*bits & EXTENT_CLEAR_META_RESV &&
+ 		    root != fs_info->tree_root)
+-			btrfs_delalloc_release_metadata(inode, len, false);
++			btrfs_delalloc_release_metadata(inode, len, true);
  
- 			btrfs_free_log(trans, root);
-@@ -1367,7 +1368,6 @@ static noinline int commit_fs_roots(struct btrfs_trans_handle *trans)
- 			if (ret2)
- 				return ret2;
- 			spin_lock(&fs_info->fs_roots_radix_lock);
--			btrfs_qgroup_free_meta_all_pertrans(root);
- 		}
- 	}
- 	spin_unlock(&fs_info->fs_roots_radix_lock);
+ 		/* For sanity tests. */
+ 		if (btrfs_is_testing(fs_info))
 -- 
 2.43.0
 
