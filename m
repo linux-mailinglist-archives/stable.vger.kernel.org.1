@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF6A8C5226
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B54B8C511A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FDB41C21564
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4781C21523
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE2D56B79;
-	Tue, 14 May 2024 11:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B617710A;
+	Tue, 14 May 2024 10:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mrql7vWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wk/OStMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B1B55C0A;
-	Tue, 14 May 2024 11:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D689A57CA1;
+	Tue, 14 May 2024 10:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685584; cv=none; b=AaRmNF1bZAI27aV/JqnqNouEDhf3UzDECYQUq43ZWPSQZUXjVHrva5AhT0Bt7M3XtVD+uq1vZfY33sJqmfHtusNB5Bsom/tABk70rkiW7889vwUPGgtO7Y0fihtHjNggirrCrcZvDsnV8N5CN8nzGpe6HWTQ7nDonP7DcnRjydY=
+	t=1715684066; cv=none; b=cZXvcC3E4W9uxGugJQ7nnpxx/KgqDYAHNmJkEhz1bGkqoXsRaWG/NspBMaLbDuVv1b0l7/P6/cqDwVTZnPcBssKTDRgLWspFw5bGVOhU7iOibySeSswykBgnMnYwdZfybuZd0ihJebxDMHg+cX0VEDiZtbTqxDgOOhmJvveNXMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685584; c=relaxed/simple;
-	bh=ZXMDahpTkgkRj6/TeghsIsFll3rRYbx+/BYybUR4keU=;
+	s=arc-20240116; t=1715684066; c=relaxed/simple;
+	bh=eGYcu/2AycG1BrWSa9+i5nk99+ZAdAWkBbhUnV1ghks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrlZ9sNblO5KZ4UoNDHgJqA37BJXQI/m9tuhmyg238vFjyG3CqP9NrcjYoMbUxjKspoDvTDE1s6XlACgQCG/nCsSUddDuRuP6TBBZ+awB2FXjixVg65kRWiDALwJU/FN/tbQApM0aNITMPEWlpaSDDseaAT+xDNIAp1sccThdww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mrql7vWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12D6C32781;
-	Tue, 14 May 2024 11:19:43 +0000 (UTC)
+	 MIME-Version; b=sCYYm484Xh7/xJIFrfL8Nqh3TSaYx8ZIt/icJhFlSVqIVeca+qwOpk7nwRUHi8CkrMMtNnrYDz7xn3GNgJYw+TfrQU2laEAD/LaMs/lSilkStfzjO+BN53Noi87qmbzPff4MirKVm6adNkbD6CSNBNtXyKj1+CH3rc0WMAOUC+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wk/OStMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9C2C32782;
+	Tue, 14 May 2024 10:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685584;
-	bh=ZXMDahpTkgkRj6/TeghsIsFll3rRYbx+/BYybUR4keU=;
+	s=korg; t=1715684066;
+	bh=eGYcu/2AycG1BrWSa9+i5nk99+ZAdAWkBbhUnV1ghks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mrql7vWo6ZFRq1nSVKjHEt9vNVE5cncYapZV6j6X7GEEM1HGxfwCAp3CH3GLGVS2z
-	 8njX9mhEyegY7N8n/FeSHuR3JX4o/C60+UyhBP9NZsGWPVZ4xhZ3S63AZC2oxPjhRc
-	 oISf7aSP5FAOEEUxY9C0Kh1usXX2FKZjaCIaoH7g=
+	b=wk/OStMkNN94caxJIHPwZrmV8PY7TiQdF2On1Cy084mz8ZQ6mcYOd3UpZX/+LGWRR
+	 ME9GRPwQzlzxiv6stzHaFUgF/yetD3bL2vQIgwX76AwFDNIvvwLqRp+0ePzp0XntwL
+	 gEuCGMy92+VQx/1Sk4+bYCEpay2qI6j+jbBIjBz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 210/301] net: hns3: fix kernel crash when devlink reload during initialization
+	Hans de Goede <hdegoede@redhat.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.8 277/336] iio: accel: mxc4005: Reset chip on probe() and resume()
 Date: Tue, 14 May 2024 12:18:01 +0200
-Message-ID: <20240514101040.189685268@linuxfoundation.org>
+Message-ID: <20240514101049.079404130@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 35d92abfbad88cf947c010baf34b075e40566095 ]
+commit 6b8cffdc4a31e4a72f75ecd1bc13fbf0dafee390 upstream.
 
-The devlink reload process will access the hardware resources,
-but the register operation is done before the hardware is initialized.
-So, processing the devlink reload during initialization may lead to kernel
-crash.
+On some designs the chip is not properly reset when powered up at boot or
+after a suspend/resume cycle.
 
-This patch fixes this by registering the devlink after
-hardware initialization.
+Use the sw-reset feature to ensure that the chip is in a clean state
+after probe() / resume() and in the case of resume() restore the settings
+(scale, trigger-enabled).
 
-Fixes: cd6242991d2e ("net: hns3: add support for registering devlink for VF")
-Fixes: 93305b77ffcb ("net: hns3: fix kernel crash when devlink reload during pf initialization")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218578
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240326113700.56725-3-hdegoede@redhat.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 17 +++++------------
- .../hisilicon/hns3/hns3vf/hclgevf_main.c        | 10 ++++------
- 2 files changed, 9 insertions(+), 18 deletions(-)
+ drivers/iio/accel/mxc4005.c |   68 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 3b74cce46ac65..14713454e0d82 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11619,16 +11619,10 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 	if (ret)
- 		goto out;
+--- a/drivers/iio/accel/mxc4005.c
++++ b/drivers/iio/accel/mxc4005.c
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2014, Intel Corporation.
+  */
  
--	ret = hclge_devlink_init(hdev);
--	if (ret)
--		goto err_pci_uninit;
--
--	devl_lock(hdev->devlink);
--
- 	/* Firmware command queue initialize */
- 	ret = hclge_comm_cmd_queue_init(hdev->pdev, &hdev->hw.hw);
- 	if (ret)
--		goto err_devlink_uninit;
-+		goto err_pci_uninit;
++#include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/i2c.h>
+ #include <linux/iio/iio.h>
+@@ -36,6 +37,7 @@
  
- 	/* Firmware command initialize */
- 	ret = hclge_comm_cmd_init(hdev->ae_dev, &hdev->hw.hw, &hdev->fw_version,
-@@ -11796,6 +11790,10 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 		dev_warn(&pdev->dev,
- 			 "failed to wake on lan init, ret = %d\n", ret);
+ #define MXC4005_REG_INT_CLR1		0x01
+ #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
++#define MXC4005_REG_INT_CLR1_SW_RST	0x10
  
-+	ret = hclge_devlink_init(hdev);
-+	if (ret)
-+		goto err_ptp_uninit;
+ #define MXC4005_REG_CONTROL		0x0D
+ #define MXC4005_REG_CONTROL_MASK_FSR	GENMASK(6, 5)
+@@ -43,6 +45,9 @@
+ 
+ #define MXC4005_REG_DEVICE_ID		0x0E
+ 
++/* Datasheet does not specify a reset time, this is a conservative guess */
++#define MXC4005_RESET_TIME_US		2000
 +
- 	hclge_state_init(hdev);
- 	hdev->last_reset_time = jiffies;
+ enum mxc4005_axis {
+ 	AXIS_X,
+ 	AXIS_Y,
+@@ -66,6 +71,8 @@ struct mxc4005_data {
+ 		s64 timestamp __aligned(8);
+ 	} scan;
+ 	bool trigger_enabled;
++	unsigned int control;
++	unsigned int int_mask1;
+ };
  
-@@ -11803,8 +11801,6 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 		 HCLGE_DRIVER_NAME);
- 
- 	hclge_task_schedule(hdev, round_jiffies_relative(HZ));
--
--	devl_unlock(hdev->devlink);
- 	return 0;
- 
- err_ptp_uninit:
-@@ -11818,9 +11814,6 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 	pci_free_irq_vectors(pdev);
- err_cmd_uninit:
- 	hclge_comm_cmd_uninit(hdev->ae_dev, &hdev->hw.hw);
--err_devlink_uninit:
--	devl_unlock(hdev->devlink);
--	hclge_devlink_uninit(hdev);
- err_pci_uninit:
- 	pcim_iounmap(pdev, hdev->hw.hw.io_base);
- 	pci_release_regions(pdev);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 08db8e84be4ed..43ee20eb03d1f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -2845,10 +2845,6 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
- 	if (ret)
+ /*
+@@ -349,6 +356,7 @@ static int mxc4005_set_trigger_state(str
  		return ret;
+ 	}
  
--	ret = hclgevf_devlink_init(hdev);
--	if (ret)
--		goto err_devlink_init;
--
- 	ret = hclge_comm_cmd_queue_init(hdev->pdev, &hdev->hw.hw);
- 	if (ret)
- 		goto err_cmd_queue_init;
-@@ -2941,6 +2937,10 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
++	data->int_mask1 = val;
+ 	data->trigger_enabled = state;
+ 	mutex_unlock(&data->mutex);
  
- 	hclgevf_init_rxd_adv_layout(hdev);
+@@ -384,6 +392,13 @@ static int mxc4005_chip_init(struct mxc4
  
-+	ret = hclgevf_devlink_init(hdev);
-+	if (ret)
-+		goto err_config;
+ 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
+ 
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
++			   MXC4005_REG_INT_CLR1_SW_RST);
++	if (ret < 0)
++		return dev_err_probe(data->dev, ret, "resetting chip\n");
 +
- 	set_bit(HCLGEVF_STATE_SERVICE_INITED, &hdev->state);
++	fsleep(MXC4005_RESET_TIME_US);
++
+ 	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
+ 	if (ret < 0)
+ 		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
+@@ -479,6 +494,58 @@ static int mxc4005_probe(struct i2c_clie
+ 	return devm_iio_device_register(&client->dev, indio_dev);
+ }
  
- 	hdev->last_reset_time = jiffies;
-@@ -2960,8 +2960,6 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
- err_cmd_init:
- 	hclge_comm_cmd_uninit(hdev->ae_dev, &hdev->hw.hw);
- err_cmd_queue_init:
--	hclgevf_devlink_uninit(hdev);
--err_devlink_init:
- 	hclgevf_pci_uninit(hdev);
- 	clear_bit(HCLGEVF_STATE_IRQ_INITED, &hdev->state);
- 	return ret;
--- 
-2.43.0
-
++static int mxc4005_suspend(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct mxc4005_data *data = iio_priv(indio_dev);
++	int ret;
++
++	/* Save control to restore it on resume */
++	ret = regmap_read(data->regmap, MXC4005_REG_CONTROL, &data->control);
++	if (ret < 0)
++		dev_err(data->dev, "failed to read reg_control\n");
++
++	return ret;
++}
++
++static int mxc4005_resume(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct mxc4005_data *data = iio_priv(indio_dev);
++	int ret;
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
++			   MXC4005_REG_INT_CLR1_SW_RST);
++	if (ret) {
++		dev_err(data->dev, "failed to reset chip: %d\n", ret);
++		return ret;
++	}
++
++	fsleep(MXC4005_RESET_TIME_US);
++
++	ret = regmap_write(data->regmap, MXC4005_REG_CONTROL, data->control);
++	if (ret) {
++		dev_err(data->dev, "failed to restore control register\n");
++		return ret;
++	}
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
++	if (ret) {
++		dev_err(data->dev, "failed to restore interrupt 0 mask\n");
++		return ret;
++	}
++
++	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK1, data->int_mask1);
++	if (ret) {
++		dev_err(data->dev, "failed to restore interrupt 1 mask\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(mxc4005_pm_ops, mxc4005_suspend, mxc4005_resume);
++
+ static const struct acpi_device_id mxc4005_acpi_match[] = {
+ 	{"MXC4005",	0},
+ 	{"MXC6655",	0},
+@@ -505,6 +572,7 @@ static struct i2c_driver mxc4005_driver
+ 		.name = MXC4005_DRV_NAME,
+ 		.acpi_match_table = ACPI_PTR(mxc4005_acpi_match),
+ 		.of_match_table = mxc4005_of_match,
++		.pm = pm_sleep_ptr(&mxc4005_pm_ops),
+ 	},
+ 	.probe		= mxc4005_probe,
+ 	.id_table	= mxc4005_id,
 
 
 
