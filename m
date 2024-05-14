@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03C88C5490
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671FA8C5553
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 739501F23469
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0564CB21B99
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A64B5028C;
-	Tue, 14 May 2024 11:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5708626AC5;
+	Tue, 14 May 2024 11:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgt/j3dq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XL1+3f+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6BF12BF3D;
-	Tue, 14 May 2024 11:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D9BF9D4;
+	Tue, 14 May 2024 11:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687280; cv=none; b=hfC1xXB748+wLM2DU+PkBpNbz+49bXS6MTtmOBEZMZVpPSDPSmD5+1xt9/ZPsLpRIUN010gz/o9YrNmJWh5CThGDXrzLSkCqbNLpMriXhEdd9A7+jcLIaVGOuNcTW021ApaEFAQIbfBMdCreLBIpO8bdgSKlrx8DmlvcfymRIu4=
+	t=1715687810; cv=none; b=K6YDBMLUweZ0dT5Ohy7qhcmE0dMgX+wMMQuxOexhIL4CeMJxOUfFD025r4rj2jtNRxz7qkNQBxifJMC47HFCDAN6htAZ3XBhbsoyZ+BKnktutQ1lz+gyJtkkTVWLUdHjsgBkF+Wfk8YVz4elG8eILb0I0h+1o2kRCA9dvCYCBUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687280; c=relaxed/simple;
-	bh=95KUdqferHDA9puE8uaJ3JBME7rvHXEOd5ujeltmnfc=;
+	s=arc-20240116; t=1715687810; c=relaxed/simple;
+	bh=r9SyaQVSdbdZEJXeauY49WLHJZaXQFBjZMnExHpj13c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sa11dHSuKLrzuXpXUyAXti4OGxUAQ6JkntrlSKUC6jLvduB3ANWsHVHgmIVmXZC9XzBbSrnz3GdKV5q8o182rhyEK+dr9ZKkMjzOdMpo8hQ+tplXjVRWgSD8BRMnWJrwGXEAqq6k1n+YbVahUdsFkcQ1Bf1azRxiVckuv3DB3rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgt/j3dq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08367C2BD10;
-	Tue, 14 May 2024 11:47:58 +0000 (UTC)
+	 MIME-Version; b=biv326vAGORwTGEBCAgjxwAMN+wNPD7TqNLAkC/2xUE4JiPISs+jhKHBB1e0z7Wgo5id+RsOEgHStfKZQFmjtkUIFUjQFpFhogXt9UTo2zedLFsCOCen2YAaw7OYmTeTBnLlFy+r0dcJKu/zTA4+6pDiVGnliEXr/p1x4I+3N/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XL1+3f+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881EEC2BD10;
+	Tue, 14 May 2024 11:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687279;
-	bh=95KUdqferHDA9puE8uaJ3JBME7rvHXEOd5ujeltmnfc=;
+	s=korg; t=1715687809;
+	bh=r9SyaQVSdbdZEJXeauY49WLHJZaXQFBjZMnExHpj13c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgt/j3dqf3aNFM2EbzW9sLDpf+tSJdUOat26YX5aYFFp6SGD+4JRvC2Lia9bugqZb
-	 CexVJB/jsGbJrr0xsORZBJ17eT2Zn+zEBNYN1bB0jsnldavbBGCsmyn9s1VTyV0VRd
-	 sKNihdcjz1O5KplaaE4chkGkyKHUBDYK1sKDFQb8=
+	b=XL1+3f+KdxvsqLv9+nTxY02Js2b+TLwxN9ukLILwshSbriBZWFtA5yKP3V8YUzZuQ
+	 xcQRIDFlnYzXRnFa37JGdBwtJ2Yn/4mrBd1efZSsSkGQK5WN0W/DivlxEvXTiUEpNT
+	 g2oc0OcmrO5ZRNC/yljdViJtMzIOUbVVi+FjZz3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Wagner <wagnerch42@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Rik van Riel <riel@surriel.com>,
+	Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/111] clk: sunxi-ng: h6: Reparent CPUX during PLL CPUX rate change
+Subject: [PATCH 5.15 081/168] blk-iocost: avoid out of bounds shift
 Date: Tue, 14 May 2024 12:19:39 +0200
-Message-ID: <20240514100958.695786025@linuxfoundation.org>
+Message-ID: <20240514101009.751671782@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 7e91ed763dc07437777bd012af7a2bd4493731ff ]
+[ Upstream commit beaa51b36012fad5a4d3c18b88a617aea7a9b96d ]
 
-While PLL CPUX clock rate change when CPU is running from it works in
-vast majority of cases, now and then it causes instability. This leads
-to system crashes and other undefined behaviour. After a lot of testing
-(30+ hours) while also doing a lot of frequency switches, we can't
-observe any instability issues anymore when doing reparenting to stable
-clock like 24 MHz oscillator.
+UBSAN catches undefined behavior in blk-iocost, where sometimes
+iocg->delay is shifted right by a number that is too large,
+resulting in undefined behavior on some architectures.
 
-Fixes: 524353ea480b ("clk: sunxi-ng: add support for the Allwinner H6 CCU")
-Reported-by: Chad Wagner <wagnerch42@gmail.com>
-Link: https://forum.libreelec.tv/thread/27295-orange-pi-3-lts-freezes/
-Tested-by: Chad Wagner <wagnerch42@gmail.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20231013181712.2128037-1-jernej.skrabec@gmail.com
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+[  186.556576] ------------[ cut here ]------------
+UBSAN: shift-out-of-bounds in block/blk-iocost.c:1366:23
+shift exponent 64 is too large for 64-bit type 'u64' (aka 'unsigned long long')
+CPU: 16 PID: 0 Comm: swapper/16 Tainted: G S          E    N 6.9.0-0_fbk700_debug_rc2_kbuilder_0_gc85af715cac0 #1
+Hardware name: Quanta Twin Lakes MP/Twin Lakes Passive MP, BIOS F09_3A23 12/08/2020
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x8f/0xe0
+ __ubsan_handle_shift_out_of_bounds+0x22c/0x280
+ iocg_kick_delay+0x30b/0x310
+ ioc_timer_fn+0x2fb/0x1f80
+ __run_timer_base+0x1b6/0x250
+...
+
+Avoid that undefined behavior by simply taking the
+"delay = 0" branch if the shift is too large.
+
+I am not sure what the symptoms of an undefined value
+delay will be, but I suspect it could be more than a
+little annoying to debug.
+
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240404123253.0f58010f@imladris.surriel.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-h6.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ block/blk-iocost.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-h6.c
-@@ -1181,12 +1181,19 @@ static const u32 usb2_clk_regs[] = {
- 	SUN50I_H6_USB3_CLK_REG,
- };
- 
-+static struct ccu_mux_nb sun50i_h6_cpu_nb = {
-+	.common		= &cpux_clk.common,
-+	.cm		= &cpux_clk.mux,
-+	.delay_us       = 1,
-+	.bypass_index   = 0, /* index of 24 MHz oscillator */
-+};
-+
- static int sun50i_h6_ccu_probe(struct platform_device *pdev)
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 645a589edda82..bfdb7b0cf49de 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1336,7 +1336,7 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  {
- 	struct resource *res;
- 	void __iomem *reg;
-+	int i, ret;
- 	u32 val;
--	int i;
+ 	struct ioc *ioc = iocg->ioc;
+ 	struct blkcg_gq *blkg = iocg_to_blkg(iocg);
+-	u64 tdelta, delay, new_delay;
++	u64 tdelta, delay, new_delay, shift;
+ 	s64 vover, vover_pct;
+ 	u32 hwa;
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	reg = devm_ioremap_resource(&pdev->dev, res);
-@@ -1240,7 +1247,15 @@ static int sun50i_h6_ccu_probe(struct pl
- 	val |= BIT(24);
- 	writel(val, reg + SUN50I_H6_HDMI_CEC_CLK_REG);
+@@ -1351,8 +1351,9 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  
--	return sunxi_ccu_probe(pdev->dev.of_node, reg, &sun50i_h6_ccu_desc);
-+	ret = sunxi_ccu_probe(pdev->dev.of_node, reg, &sun50i_h6_ccu_desc);
-+	if (ret)
-+		return ret;
-+
-+	/* Reparent CPU during PLL CPUX rate changes */
-+	ccu_mux_notifier_register(pll_cpux_clk.common.hw.clk,
-+				  &sun50i_h6_cpu_nb);
-+
-+	return 0;
- }
+ 	/* calculate the current delay in effect - 1/2 every second */
+ 	tdelta = now->now - iocg->delay_at;
+-	if (iocg->delay)
+-		delay = iocg->delay >> div64_u64(tdelta, USEC_PER_SEC);
++	shift = div64_u64(tdelta, USEC_PER_SEC);
++	if (iocg->delay && shift < BITS_PER_LONG)
++		delay = iocg->delay >> shift;
+ 	else
+ 		delay = 0;
  
- static const struct of_device_id sun50i_h6_ccu_ids[] = {
+-- 
+2.43.0
+
 
 
 
