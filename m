@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94F98C53E9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:48:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A6B8C5433
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED15728982E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:48:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CF501F23384
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AA213D290;
-	Tue, 14 May 2024 11:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12623139D0B;
+	Tue, 14 May 2024 11:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSQvrX2E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObkbbBEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418937F48C;
-	Tue, 14 May 2024 11:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5553139D09;
+	Tue, 14 May 2024 11:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686833; cv=none; b=Mcx7SX/TcDbjXx2WvW0N+jkw2p7nzltWKhv5srIhbqYUYNjCm19shsFww4SOHEoLt3LkDnnFqFjlnEnFjQ6eXlR7nzL9zUQf8YwSmgbrhhWkpKEwanRq1XALuxbKY/QPU9Pz9A16QPyeWnRzdj1nxVl1I28iqxVcCoTzdOMbJZU=
+	t=1715687047; cv=none; b=h+qtQS8Zgnsh1VExob1yl3ZxkRlCr3GoHkGKUvv4qSr9ln/UJLazYBp/drnvn3SM/MHUPKgg9AZD6j3g6iYlbJNwziQH5PCDCcyprOMrpu/wjHNCqierHU5n8LtwceeNPzefbKJxYa5qSALHDN46j36UF5MYNalkyni976MuNIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686833; c=relaxed/simple;
-	bh=/r+3WtJTy6MbVhdO6Swo+TJmrfK90+5WtAHDfuhihlA=;
+	s=arc-20240116; t=1715687047; c=relaxed/simple;
+	bh=VhLQb1yKZbywh2jiIMQ/kr7k4O/7XIJHhExzCl55GNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qhk0gzXExcVqpkaaBHycfTtO3ipxMlIWnJE4Mb5FuQIkzrHWN4VIUfNoaCubgbWehpcArtRUJyIEHfxQSn12V7YamcfB29JC2oDqtl0YepNLT4ge4QJchkzATpDbLY10eoJG1yzGS25w/kIfbze+7Lolp3R3kJ3wu6i7ti5fI3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSQvrX2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1935C2BD10;
-	Tue, 14 May 2024 11:40:32 +0000 (UTC)
+	 MIME-Version; b=gfPt/xKxErEPAPFjPwDh42v9tWTq50bQcHHj/wziNEuoIwMwWyJxd0RoL3k71ADKXUuxrdGcLQEWO2X36BNZe0sRTP19t76F2PxkZr6O52VYl2J8Sv/7KVKara9UDUDZwqVZr61u+k4DouM8dL38heOmkExzLekcTeXvBo2AkA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObkbbBEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D43C2BD10;
+	Tue, 14 May 2024 11:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686833;
-	bh=/r+3WtJTy6MbVhdO6Swo+TJmrfK90+5WtAHDfuhihlA=;
+	s=korg; t=1715687047;
+	bh=VhLQb1yKZbywh2jiIMQ/kr7k4O/7XIJHhExzCl55GNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSQvrX2EqKcnueQWRNfFGm1Ac/TXA8c1V3tlVDWLgrG6HfEsCFVzKi61T/0WE9x3r
-	 Krmp3ws9kxURxhHSDdefdQfJ+9ScQ26nIhybciWgJnZkj//SX3FmTDG7y2hFI23jmY
-	 ptMVryUilM/XdMuh7NcfuHQAJIohEYlos9syucBo=
+	b=ObkbbBEQudpDN6Hee/83zZP4LvGRp182k8WqanWAQkIO5E9gml0beN5XqoQuh0sOj
+	 AIO/8nmyT0DaBn5Tpg66JgzTLGp2kRsOy8pwSZuGyCClWSW+nKlG1UwtGl6xqHmx6G
+	 ZyR33SQmcccqdi3gcDWZBUmg13UpaS/rH9hf+4Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Sindholt <opensource@zhasha.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 37/63] fs/9p: only translate RWX permissions for plain 9P2000
+Subject: [PATCH 5.4 47/84] scsi: target: Fix SELinux error when systemd-modules loads the target module
 Date: Tue, 14 May 2024 12:19:58 +0200
-Message-ID: <20240514100949.415069095@linuxfoundation.org>
+Message-ID: <20240514100953.458848852@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Sindholt <opensource@zhasha.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit cd25e15e57e68a6b18dc9323047fe9c68b99290b ]
+[ Upstream commit 97a54ef596c3fd24ec2b227ba8aaf2cf5415e779 ]
 
-Garbage in plain 9P2000's perm bits is allowed through, which causes it
-to be able to set (among others) the suid bit. This was presumably not
-the intent since the unix extended bits are handled explicitly and
-conditionally on .u.
+If the systemd-modules service loads the target module, the credentials of
+that userspace process will be used to validate the access to the target db
+directory.  SELinux will prevent it, reporting an error like the following:
 
-Signed-off-by: Joakim Sindholt <opensource@zhasha.com>
-Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
+kernel: audit: type=1400 audit(1676301082.205:4): avc: denied  { read }
+for  pid=1020 comm="systemd-modules" name="target" dev="dm-3"
+ino=4657583 scontext=system_u:system_r:systemd_modules_load_t:s0
+tcontext=system_u:object_r:targetd_etc_rw_t:s0 tclass=dir permissive=0
+
+Fix the error by using the kernel credentials to access the db directory
+
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Link: https://lore.kernel.org/r/20240215143944.847184-2-mlombard@redhat.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/vfs_inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/target/target_core_configfs.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 72b779bc09422..d1a0f36dcdd43 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -101,7 +101,7 @@ static int p9mode2perm(struct v9fs_session_info *v9ses,
- 	int res;
- 	int mode = stat->mode;
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index e6e1755978602..4edabab65b879 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -3458,6 +3458,8 @@ static int __init target_core_init_configfs(void)
+ {
+ 	struct configfs_subsystem *subsys = &target_core_fabrics;
+ 	struct t10_alua_lu_gp *lu_gp;
++	struct cred *kern_cred;
++	const struct cred *old_cred;
+ 	int ret;
  
--	res = mode & S_IALLUGO;
-+	res = mode & 0777; /* S_IRWXUGO */
- 	if (v9fs_proto_dotu(v9ses)) {
- 		if ((mode & P9_DMSETUID) == P9_DMSETUID)
- 			res |= S_ISUID;
+ 	pr_debug("TARGET_CORE[0]: Loading Generic Kernel Storage"
+@@ -3534,11 +3536,21 @@ static int __init target_core_init_configfs(void)
+ 	if (ret < 0)
+ 		goto out;
+ 
++	/* We use the kernel credentials to access the target directory */
++	kern_cred = prepare_kernel_cred(&init_task);
++	if (!kern_cred) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	old_cred = override_creds(kern_cred);
+ 	target_init_dbroot();
++	revert_creds(old_cred);
++	put_cred(kern_cred);
+ 
+ 	return 0;
+ 
+ out:
++	target_xcopy_release_pt();
+ 	configfs_unregister_subsystem(subsys);
+ 	core_dev_release_virtual_lun0();
+ 	rd_module_exit();
 -- 
 2.43.0
 
