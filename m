@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C6B8C5407
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E118C54B5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D8BC2890FD
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43089285626
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AC2135416;
-	Tue, 14 May 2024 11:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C050612E1D3;
+	Tue, 14 May 2024 11:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1OeRlHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EUp2ViB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73451135410;
-	Tue, 14 May 2024 11:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A933CC2;
+	Tue, 14 May 2024 11:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686912; cv=none; b=UzGNW7kSDy87Kg7cv09RB0Q630Ra69Qt8ANoEtJVZnbbYg2POeOgn4LEFkqaU7Ow8me9fic/ofzthpQG9ZJKqcpGdWp3TbPwWfcJZq9UUi4YYGhWllJ3u8BDoY4Fv2LKkJWqN69TqKsYXnB0F5mFB6GIiUbZ5qwnrClVjSi46OI=
+	t=1715687380; cv=none; b=QLAzmguPjGOx5RZXxvR19vtOzVWMz250/eBamePrsT6wcm4Dr98v4vtrrKRrCZUMo1daJmID7pIbVrKXQxS72vRCmKWbcW+rXVovzuHtT72VOfV2kUIQI8ClB9UpVjJKfH/9gyOqz5LdtwZcQdJd95fdRMPnxYbHcWo3CG+TZmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686912; c=relaxed/simple;
-	bh=mm3BcyuHth4uzrRrVG+VPp4SfG9btx5u4cZZDh4I53M=;
+	s=arc-20240116; t=1715687380; c=relaxed/simple;
+	bh=/e4ae3MFq9AwHsrF2UwTjEhCssVmS/T6TgeKQ5cvwsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXnLO8iBBTdkkb0AWLeMTpGfQgAT3bU3AsFOj9Wa5Aw6aRMZDSk0MEpbG122zxIS/R3rUdIv6QNAnCPc6QTITtjJE1AxfR0MAiunAZwQ8WE2E1z6Qcwb2/uaAUOo2HTqEbq0hsHo+lZc6BpyMZIWF+jM0EVUQgFVv51yTFC+WEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1OeRlHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8DFC2BD10;
-	Tue, 14 May 2024 11:41:51 +0000 (UTC)
+	 MIME-Version; b=en66uTjMgLmMvr8kdhV81zXZjfyq6ougiTciBIntO3o7uhCTedtdkGW+ubrw1MH9t7O4d0DMblgKMMbMNPegZenyU66kPTg8grT1jiruaeNrRccZia8C8BvMLDbNBOD8jbpN3n4u4eU2m9uTVhU2LuLpxTq57yC1csMMWErMu7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EUp2ViB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02083C2BD10;
+	Tue, 14 May 2024 11:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686912;
-	bh=mm3BcyuHth4uzrRrVG+VPp4SfG9btx5u4cZZDh4I53M=;
+	s=korg; t=1715687380;
+	bh=/e4ae3MFq9AwHsrF2UwTjEhCssVmS/T6TgeKQ5cvwsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1OeRlHFAmh1AAf/E91lnjqYXwCV4rdBR6NB2ojKFM0w/fnd5zASDbDcBk1Ud13bw
-	 luBBw7n9wWv5FAzZt7QNnkaOJ6BMLxODgtJE9mBX9VppeBy8542Z/Qf+gcWTl/Lep2
-	 sMpflfE/ldcmdaQQnmQkD5hMV0dYMojgqyGnOg8c=
+	b=1EUp2ViBTn4L2OjF2z6J6BHPjG2Mh5IJXOJYng8cv/cCX+c6A/Cs/JhjrcLf8Uana
+	 HvYPC2Y4fIIgUEfUoMr5yHEblU9MBG4l13oeQ+axGZz76mj8/2gfhI9BS5+Ox3FwQY
+	 B0azIQ41D6+BvEH/bNktl1Y1GOMKtFoAPuSXMri0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 52/63] net: bridge: fix corrupted ethernet header on multicast-to-unicast
-Date: Tue, 14 May 2024 12:20:13 +0200
-Message-ID: <20240514100949.977369016@linuxfoundation.org>
+Subject: [PATCH 5.10 076/111] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
+Date: Tue, 14 May 2024 12:20:14 +0200
+Message-ID: <20240514101000.021349179@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
+[ Upstream commit 94062790aedb505bdda209b10bea47b294d6394f ]
 
-The change from skb_copy to pskb_copy unfortunately changed the data
-copying to omit the ethernet header, since it was pulled before reaching
-this point. Fix this by calling __skb_push/pull around pskb_copy.
+TCP_SYN_RECV state is really special, it is only used by
+cross-syn connections, mostly used by fuzzers.
 
-Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In the following crash [1], syzbot managed to trigger a divide
+by zero in tcp_rcv_space_adjust()
+
+A socket makes the following state transitions,
+without ever calling tcp_init_transfer(),
+meaning tcp_init_buffer_space() is also not called.
+
+         TCP_CLOSE
+connect()
+         TCP_SYN_SENT
+         TCP_SYN_RECV
+shutdown() -> tcp_shutdown(sk, SEND_SHUTDOWN)
+         TCP_FIN_WAIT1
+
+To fix this issue, change tcp_shutdown() to not
+perform a TCP_SYN_RECV -> TCP_FIN_WAIT1 transition,
+which makes no sense anyway.
+
+When tcp_rcv_state_process() later changes socket state
+from TCP_SYN_RECV to TCP_ESTABLISH, then look at
+sk->sk_shutdown to finally enter TCP_FIN_WAIT1 state,
+and send a FIN packet from a sane socket state.
+
+This means tcp_send_fin() can now be called from BH
+context, and must use GFP_ATOMIC allocations.
+
+[1]
+divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 1 PID: 5084 Comm: syz-executor358 Not tainted 6.9.0-rc6-syzkaller-00022-g98369dccd2f8 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+ RIP: 0010:tcp_rcv_space_adjust+0x2df/0x890 net/ipv4/tcp_input.c:767
+Code: e3 04 4c 01 eb 48 8b 44 24 38 0f b6 04 10 84 c0 49 89 d5 0f 85 a5 03 00 00 41 8b 8e c8 09 00 00 89 e8 29 c8 48 0f af c3 31 d2 <48> f7 f1 48 8d 1c 43 49 8d 96 76 08 00 00 48 89 d0 48 c1 e8 03 48
+RSP: 0018:ffffc900031ef3f0 EFLAGS: 00010246
+RAX: 0c677a10441f8f42 RBX: 000000004fb95e7e RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000027d4b11f R08: ffffffff89e535a4 R09: 1ffffffff25e6ab7
+R10: dffffc0000000000 R11: ffffffff8135e920 R12: ffff88802a9f8d30
+R13: dffffc0000000000 R14: ffff88802a9f8d00 R15: 1ffff1100553f2da
+FS:  00005555775c0380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f1155bf2304 CR3: 000000002b9f2000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+  tcp_recvmsg_locked+0x106d/0x25a0 net/ipv4/tcp.c:2513
+  tcp_recvmsg+0x25d/0x920 net/ipv4/tcp.c:2578
+  inet6_recvmsg+0x16a/0x730 net/ipv6/af_inet6.c:680
+  sock_recvmsg_nosec net/socket.c:1046 [inline]
+  sock_recvmsg+0x109/0x280 net/socket.c:1068
+  ____sys_recvmsg+0x1db/0x470 net/socket.c:2803
+  ___sys_recvmsg net/socket.c:2845 [inline]
+  do_recvmmsg+0x474/0xae0 net/socket.c:2939
+  __sys_recvmmsg net/socket.c:3018 [inline]
+  __do_sys_recvmmsg net/socket.c:3041 [inline]
+  __se_sys_recvmmsg net/socket.c:3034 [inline]
+  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3034
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7faeb6363db9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffcc1997168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007faeb6363db9
+RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000001c
+R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20240501125448.896529-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_input.c  | 2 ++
+ net/ipv4/tcp_output.c | 4 +++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index fc2ebd732098f..a300ef6fb8ffa 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -251,6 +251,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- {
- 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
- 	const unsigned char *src = eth_hdr(skb)->h_source;
-+	struct sk_buff *nskb;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index ac6cb2dc60380..4ed0d303791a1 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2493,7 +2493,7 @@ void tcp_shutdown(struct sock *sk, int how)
+ 	/* If we've already sent a FIN, or it's a closed state, skip this. */
+ 	if ((1 << sk->sk_state) &
+ 	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
+-	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {
++	     TCPF_CLOSE_WAIT)) {
+ 		/* Clear out any half completed packets.  FIN if needed. */
+ 		if (tcp_close_state(sk))
+ 			tcp_send_fin(sk);
+@@ -2604,7 +2604,7 @@ void __tcp_close(struct sock *sk, long timeout)
+ 		 * machine. State transitions:
+ 		 *
+ 		 * TCP_ESTABLISHED -> TCP_FIN_WAIT1
+-		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (forget it, it's impossible)
++		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (it is difficult)
+ 		 * TCP_CLOSE_WAIT -> TCP_LAST_ACK
+ 		 *
+ 		 * are legal only when FIN has been sent (i.e. in window),
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 0f9fe5edad142..512f8dc051c61 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6516,6 +6516,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
  
- 	if (!should_deliver(p, skb))
- 		return;
-@@ -259,12 +260,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
+ 		tcp_initialize_rcv_mss(sk);
+ 		tcp_fast_path_on(tp);
++		if (sk->sk_shutdown & SEND_SHUTDOWN)
++			tcp_shutdown(sk, SEND_SHUTDOWN);
+ 		break;
  
--	skb = pskb_copy(skb, GFP_ATOMIC);
--	if (!skb) {
-+	__skb_push(skb, ETH_HLEN);
-+	nskb = pskb_copy(skb, GFP_ATOMIC);
-+	__skb_pull(skb, ETH_HLEN);
-+	if (!nskb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
- 	}
- 
-+	skb = nskb;
-+	__skb_pull(skb, ETH_HLEN);
- 	if (!is_broadcast_ether_addr(addr))
- 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
+ 	case TCP_FIN_WAIT1: {
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index f0df14782ee01..68f1633c477ae 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3440,7 +3440,9 @@ void tcp_send_fin(struct sock *sk)
+ 			return;
+ 		}
+ 	} else {
+-		skb = alloc_skb_fclone(MAX_TCP_HEADER, sk->sk_allocation);
++		skb = alloc_skb_fclone(MAX_TCP_HEADER,
++				       sk_gfp_mask(sk, GFP_ATOMIC |
++						       __GFP_NOWARN));
+ 		if (unlikely(!skb))
+ 			return;
  
 -- 
 2.43.0
