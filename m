@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602A68C50CA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:12:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD358C5214
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9A1AB20912
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:12:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE14B281F01
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DD585955;
-	Tue, 14 May 2024 10:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5C012AAF2;
+	Tue, 14 May 2024 11:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rz3kHAwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP/e4O+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6A084D23;
-	Tue, 14 May 2024 10:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1B554BFE;
+	Tue, 14 May 2024 11:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683688; cv=none; b=jATgp7Y99BErp05o/0Qur5pQlqOTrm+T1KcaUZdLTND/z6FzZk913VW69o8Ndm7GGH7Snk1bxp7Pd8uHjZr4lbSL/8aENL+DvYsh32Lex6STsZsrYBogiKFnUZxNptgcZQ768N1aYHGo4JhksJmJhfRuDYZexgfb/KuouL4WPqc=
+	t=1715685452; cv=none; b=mgEkLXmT9MhbFPv7nblCcFxo2g0yyPu8/ITULrEl1//GMdtsGGm1SFBX5Sbo65ZliQrTPtz/bXWvzTrL4XWoQmwPKrG4Le0y2YG7OLv92qf5CWrFMwYrOg59egr/lC2uZBK8DYdt7HY1p7hRxcq53RJUI1kTD7j8eoBq8pvAFdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683688; c=relaxed/simple;
-	bh=JMWo4w7F3EPtehsG03RW5xqidd/t+WrU1yoW/MymqBY=;
+	s=arc-20240116; t=1715685452; c=relaxed/simple;
+	bh=leMHVnWJ9ijxi9EIBJL4wCTYSEcUSXyOHKnqGLSk6AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSaReuWDqN1LbXEPECn+0lIl59lLRxDXM8rYrRQGqjzVuNDrLuodX34h5bc5LOYiJEw1EBs8Y0+VDWxNfMUfHfiuaB1K1JG/VJAdTmhVmwpnDlOixuFVo7TLiXy4n0nCOpkl2btxbM/gAaOu/i6xzFTuHFi80zyV9nA01el5ARI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rz3kHAwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088D3C2BD10;
-	Tue, 14 May 2024 10:48:07 +0000 (UTC)
+	 MIME-Version; b=HL3dh9QGxLLSBs4u+MiNOvzG+yDnGWyPJnsDurFrrO0BNumoVM8aB+cYzwP+PvgYVWp5A/9Yc4zvXS7MSpvzIR71E0jYJ9YRwFValpKi3wJ5CPWhGm79c7jviJfQpjLZiO7nzZDTHIaQg7BK8qAGdn9ytQl79vjm+0FiiOiJGcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP/e4O+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25846C2BD10;
+	Tue, 14 May 2024 11:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683688;
-	bh=JMWo4w7F3EPtehsG03RW5xqidd/t+WrU1yoW/MymqBY=;
+	s=korg; t=1715685452;
+	bh=leMHVnWJ9ijxi9EIBJL4wCTYSEcUSXyOHKnqGLSk6AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rz3kHAwfhkM9UgplMJjEe9pocJBKwlRlU4wgit50v1T6BZ8e9C+SxTNaq3k4rXDno
-	 5sgAGu/HCfzjvk+ZnmnYaZARhV+44mgXz/XM0R3/IFtKZ8vTwaKmltBEEYSfkLZTcr
-	 XeXmGnsUGqHPjiJt/ZSFxoxXWtq8R05LeaqITjbk=
+	b=BP/e4O+oZv50FQyDDVPQ0M+ZeOwdEqUWrb7hUwY7RkSFinqQUtVEoFObpHP0SXvMf
+	 7oNthHYBSExqwYYPNd1CIJmeesrFxv8Y3M8KlhDmPq7LpcVnk3IU0sGkBW5JSm0Tqq
+	 Z/flyT40z7K0vSC5d6LsBls7PTRqrCnHbbPmenZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.8 257/336] usb: typec: tcpm: unregister existing source caps before re-registration
+	Felix Fietkau <nbd@nbd.name>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 190/301] net: bridge: fix corrupted ethernet header on multicast-to-unicast
 Date: Tue, 14 May 2024 12:17:41 +0200
-Message-ID: <20240514101048.319410880@linuxfoundation.org>
+Message-ID: <20240514101039.427606140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 230ecdf71a644c9c73e0e6735b33173074ae3f94 upstream.
+[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
 
-Check and unregister existing source caps in tcpm_register_source_caps
-function before registering new ones. This change fixes following
-warning when port partner resends source caps after negotiating PD contract
-for the purpose of re-negotiation.
+The change from skb_copy to pskb_copy unfortunately changed the data
+copying to omit the ethernet header, since it was pulled before reaching
+this point. Fix this by calling __skb_push/pull around pskb_copy.
 
-[  343.135030][  T151] sysfs: cannot create duplicate filename '/devices/virtual/usb_power_delivery/pd1/source-capabilities'
-[  343.135071][  T151] Call trace:
-[  343.135076][  T151]  dump_backtrace+0xe8/0x108
-[  343.135099][  T151]  show_stack+0x18/0x24
-[  343.135106][  T151]  dump_stack_lvl+0x50/0x6c
-[  343.135119][  T151]  dump_stack+0x18/0x24
-[  343.135126][  T151]  sysfs_create_dir_ns+0xe0/0x140
-[  343.135137][  T151]  kobject_add_internal+0x228/0x424
-[  343.135146][  T151]  kobject_add+0x94/0x10c
-[  343.135152][  T151]  device_add+0x1b0/0x4c0
-[  343.135187][  T151]  device_register+0x20/0x34
-[  343.135195][  T151]  usb_power_delivery_register_capabilities+0x90/0x20c
-[  343.135209][  T151]  tcpm_pd_rx_handler+0x9f0/0x15b8
-[  343.135216][  T151]  kthread_worker_fn+0x11c/0x260
-[  343.135227][  T151]  kthread+0x114/0x1bc
-[  343.135235][  T151]  ret_from_fork+0x10/0x20
-[  343.135265][  T151] kobject: kobject_add_internal failed for source-capabilities with -EEXIST, don't try to register things with the same name in the same directory.
-
-Fixes: 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery Capabilities")
-Cc: linux-usb@vger.kernel.org
-Cc: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240424223227.1807844-1-amitsd@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bridge/br_forward.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2435,7 +2435,7 @@ static int tcpm_register_sink_caps(struc
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index d7c35f55bd69f..d97064d460dc7 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -258,6 +258,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
  {
- 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
- 	struct usb_power_delivery_capabilities_desc caps = { };
--	struct usb_power_delivery_capabilities *cap;
-+	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
+ 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
+ 	const unsigned char *src = eth_hdr(skb)->h_source;
++	struct sk_buff *nskb;
  
- 	if (!port->partner_pd)
- 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
-@@ -2445,6 +2445,9 @@ static int tcpm_register_sink_caps(struc
- 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
- 	caps.role = TYPEC_SINK;
+ 	if (!should_deliver(p, skb))
+ 		return;
+@@ -266,12 +267,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
+ 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
+ 		return;
  
-+	if (cap)
-+		usb_power_delivery_unregister_capabilities(cap);
-+
- 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
- 	if (IS_ERR(cap))
- 		return PTR_ERR(cap);
+-	skb = pskb_copy(skb, GFP_ATOMIC);
+-	if (!skb) {
++	__skb_push(skb, ETH_HLEN);
++	nskb = pskb_copy(skb, GFP_ATOMIC);
++	__skb_pull(skb, ETH_HLEN);
++	if (!nskb) {
+ 		DEV_STATS_INC(dev, tx_dropped);
+ 		return;
+ 	}
+ 
++	skb = nskb;
++	__skb_pull(skb, ETH_HLEN);
+ 	if (!is_broadcast_ether_addr(addr))
+ 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
+ 
+-- 
+2.43.0
+
 
 
 
