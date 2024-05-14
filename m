@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07138C51C7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 124B28C5058
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:03:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF991C20B67
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 439CA1C209E6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D84013C688;
-	Tue, 14 May 2024 11:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6826313CA99;
+	Tue, 14 May 2024 10:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhuwHGDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5upJp1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7AE13AD16;
-	Tue, 14 May 2024 11:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232DA13C684;
+	Tue, 14 May 2024 10:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685018; cv=none; b=Hbi74S14OxFCNupeq2WbibJQYZ8QbQaRTXnE17bH1mx7ro0+SBtd0/SBbVU0sXT4eDR7nMfAPLcITi1CrWtNgD3m2d5GRaQcI22Wk+G3Xbi9w26QP3ErJ6nPGadWrEHwZTsfwZKJIqQpFXRuXOkxw9ZB4ZvaFH6HaCCneMqna+U=
+	t=1715683239; cv=none; b=kgkthCjcLv2I2U5Da6It/dhLOO2MGj9Fmzy9xrIKJSzuBv1oxo6MRN4XY+TZTH2oXKHsYk1weWAHRkitUHXU1cxZ/T6YH4KAtSaYCeVOgPYwenlnF1NJWeCslIHfzljy/sn4N8g9kGEk6pR8z0SzEno3hPYBlwnUURraYwHu6xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685018; c=relaxed/simple;
-	bh=HvzTGwpkIsPYSUamkNtNMFpn7w+dLvK9BavdEgAN7rM=;
+	s=arc-20240116; t=1715683239; c=relaxed/simple;
+	bh=RO3ZvG7g02Xbnae9VYS5GKHdhB437RJLogV/Vs2yxTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3QaXjv6N0/AQbmlTwJvY7GtjbqL6HC1gugjlXOF7LDo+bvFtglzdKAwajsiL016DQFPYb1uWjIY60glFcgE2O+Rp5ZkchSbtGTR7+UPy1h4ACwp4jqLN9cxIjKEV1oWTNZU60X+GOs1NfbqAF3XvcjxWekJekxi6hvMhQmM0Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhuwHGDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1820C2BD10;
-	Tue, 14 May 2024 11:10:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HYVys2ZF5Vc6Gka9Tz1lloRp2BGLQh36tsh8dAfIPvd0BqT7VqDOYHwwWPa5IxBGurP2FU8SBzGalFCXA86ir5DofTT7f8ScOkGLBeqWxNwQHFWN2Xr823CChhLkAulRyJAHbBU93ZjBigXVYY1LA5tvo2bbz3cX0Gg/Lxvd8gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5upJp1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844FBC2BD10;
+	Tue, 14 May 2024 10:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685018;
-	bh=HvzTGwpkIsPYSUamkNtNMFpn7w+dLvK9BavdEgAN7rM=;
+	s=korg; t=1715683239;
+	bh=RO3ZvG7g02Xbnae9VYS5GKHdhB437RJLogV/Vs2yxTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhuwHGDnIIyaSyibuVpf/jSo3l/F9TpI9OkQQ3r0vXKXsT1tP2+74uJrZ4LT/fQ8A
-	 kwKAwejMAXYxWZuA7vALVUw33G3wnTvvHQC+eEgcJbGCsoLvuEmlRZbXbudSbV4FQU
-	 6Rfc4YfC2IJOwEpW17prX14vBdq0hi77bqRZXdtA=
+	b=r5upJp1c99cnKWTJQ6h7f3UtoJTDS7QpaiydXJ1cchIZIjI5TQTcmUxi3KZYh2Dx3
+	 mmk9D7MglhXjc0HPdCjdhZklfeWYuUX4YtSm0Lalz0N5NIZ/Wv+VZI6ITYvtT/BBdi
+	 gQeBuGp/xJpzVcDh6mvdgTFwmFDTrfL6gUcF6slU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/301] scsi: ufs: core: Fix MCQ mode dev command timeout
+Subject: [PATCH 6.8 189/336] platform/x86/amd: pmf: Decrease error message to debug
 Date: Tue, 14 May 2024 12:16:33 +0200
-Message-ID: <20240514101036.856288081@linuxfoundation.org>
+Message-ID: <20240514101045.736404980@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 2a26a11e9c258b14be6fd98f8a85f20ac1fff66e ]
+[ Upstream commit 03cea821b82cbf0ee4a285f9dca6cc1d660dbef3 ]
 
-When a dev command times out in MCQ mode, a successfully cleared command
-should cause a retry. However, because we currently return 0, the caller
-considers the command a success which causes the following error to be
-logged: "Invalid offset 0x0 in descriptor IDN 0x9, length 0x0".
+ASUS ROG Zephyrus G14 doesn't have _CRS in AMDI0102 device and so
+there are no resources to walk.  This is expected behavior because
+it doesn't support Smart PC.  Decrease error message to debug.
 
-Retry if clearing the command was successful.
-
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20240328111244.3599-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218685
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240410140956.385-1-mario.limonciello@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmf/acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 8005373e20bae..344806330be16 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -3064,7 +3064,9 @@ static int ufshcd_wait_for_dev_cmd(struct ufs_hba *hba,
+diff --git a/drivers/platform/x86/amd/pmf/acpi.c b/drivers/platform/x86/amd/pmf/acpi.c
+index f2eb07ef855af..1c0d2bbc1f974 100644
+--- a/drivers/platform/x86/amd/pmf/acpi.c
++++ b/drivers/platform/x86/amd/pmf/acpi.c
+@@ -309,7 +309,7 @@ int apmf_check_smart_pc(struct amd_pmf_dev *pmf_dev)
  
- 		/* MCQ mode */
- 		if (is_mcq_enabled(hba)) {
--			err = ufshcd_clear_cmd(hba, lrbp->task_tag);
-+			/* successfully cleared the command, retry if needed */
-+			if (ufshcd_clear_cmd(hba, lrbp->task_tag) == 0)
-+				err = -EAGAIN;
- 			hba->dev_cmd.complete = NULL;
- 			return err;
- 		}
+ 	status = acpi_walk_resources(ahandle, METHOD_NAME__CRS, apmf_walk_resources, pmf_dev);
+ 	if (ACPI_FAILURE(status)) {
+-		dev_err(pmf_dev->dev, "acpi_walk_resources failed :%d\n", status);
++		dev_dbg(pmf_dev->dev, "acpi_walk_resources failed :%d\n", status);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.43.0
 
