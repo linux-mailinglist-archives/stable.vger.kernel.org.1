@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742F78C5507
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3863F8C512B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B29B281019
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E56A1F2156B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7614129E9C;
-	Tue, 14 May 2024 11:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B3C53368;
+	Tue, 14 May 2024 10:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATqfNNLZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbfCM440"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952AE320F;
-	Tue, 14 May 2024 11:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEF642A9C;
+	Tue, 14 May 2024 10:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687592; cv=none; b=py+KqU+VWY2ih7x50NXgqxBg/fgBUJ7u8qU0+dV1LRqbYUjH9DaVG/tCkOQ7oy+dQc9su3MV3XLU3wVJinABmtN/qlpJXMHDu8b/vAiHD85iNXBXdU5ojTyPu4fqL4Mru6fH2ACU9+PdIDVeszlhHMZB8JZbx9LCJArkqT/xquQ=
+	t=1715684135; cv=none; b=fkREGTqzduvoIV2xGTZfFhAJ3x/1g2e4qCV0mp1XRS1thQ4imvI9Igp1s77XO71BgM09t6zgB0ctThPBBlxB/g3W99Qswhn/NuTqLP9VxbgsxPGkL0SikiJ9uHQeq8z2bgxd0iuAYs1nTgrhpRY27yEDjqlw+6gsOr1CqmSdxqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687592; c=relaxed/simple;
-	bh=wsgP71Unx9/4fmZtE9bIhXwRn4aWNMUZAigi5xD2woQ=;
+	s=arc-20240116; t=1715684135; c=relaxed/simple;
+	bh=67J8LL0YcD5lh++KMtikNUWtNQRO3kWIvgX14NilzF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWPqd4ffMIahP1ozUI4xKQNvzUg49Ju0LVeNbGf+c+38T76vn87re/WrVj7iIQEiqFDyHjImrCycfaLT6XldHfDvVBzwa0nYSw6+du9W+tRxCyrvTff5YBd0nVzKZz7/DPRGB076IzWzTjGcLSQ2XPcESnKxxAYrzt8CXvzrZ9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATqfNNLZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4EAC2BD10;
-	Tue, 14 May 2024 11:53:11 +0000 (UTC)
+	 MIME-Version; b=DwpUJ8q2mPWKRCleycSXlNfY7LwfcZYb8akHmmNICzIGnAY4JrpbBa19b1pM7YehpwkIcNyK51LmMaEUWI18JJ2tAtiKwk7Ms/fEG4ohEFvh9UWRlINeLw/n7cFuZr4YGtJTNlj1MaES0RhT+rTEhp4OzALtvR7sMSzL9Ch293Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbfCM440; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EE7C2BD10;
+	Tue, 14 May 2024 10:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687592;
-	bh=wsgP71Unx9/4fmZtE9bIhXwRn4aWNMUZAigi5xD2woQ=;
+	s=korg; t=1715684135;
+	bh=67J8LL0YcD5lh++KMtikNUWtNQRO3kWIvgX14NilzF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATqfNNLZg/JO6lMwfvK88Fm0uqQCGb9jmN2Gd0REeqc21RTLB0so1En3pdjMRZTEO
-	 649UKSiQ2nhLip5ZqnuZoG7zI7eceX1MRyp9hHKUWIOl5a+QhRkit2rdFZUA/JDxrl
-	 N53gpicvzPVHuaeV6Fj1ouZUiVCUY1S83Tmouv+Q=
+	b=fbfCM440hEgWyghAlH+qXHO1iyLxXQreUCoaVQJYj7+xdVd4utfZILdihKSDt5f+G
+	 JWSX1A/5WuXOLgVGUMpl/2xhKn1pZ5k+m8brouKW2XjKjz9GqiiucjwSNXNzrZP4Qx
+	 XLse1Rei6pmyIyj7X/Kty3icFNbOc3JvsYUkU1Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Chapman <jchapman@katalix.com>,
-	David Bauer <mail@david-bauer.net>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/168] net l2tp: drop flow hash on forward
+	Doug Anderson <dianders@chromium.org>,
+	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.8 330/336] Bluetooth: qca: fix wcn3991 device address check
 Date: Tue, 14 May 2024 12:18:54 +0200
-Message-ID: <20240514101008.054304989@linuxfoundation.org>
+Message-ID: <20240514101051.083350843@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
+commit 66c39332d02d65e311ec89b0051130bfcd00c9ac upstream.
 
-Drop the flow-hash of the skb when forwarding to the L2TP netdev.
+Qualcomm Bluetooth controllers may not have been provisioned with a
+valid device address and instead end up using the default address
+00:00:00:00:5a:ad.
 
-This avoids the L2TP qdisc from using the flow-hash from the outer
-packet, which is identical for every flow within the tunnel.
+This address is now used to determine if a controller has a valid
+address or if one needs to be provided through devicetree or by user
+space before the controller can be used.
 
-This does not affect every platform but is specific for the ethernet
-driver. It depends on the platform including L4 information in the
-flow-hash.
+It turns out that the WCN3991 controllers used in Chromium Trogdor
+machines use a different default address, 39:98:00:00:5a:ad, which also
+needs to be marked as invalid so that the correct address is fetched
+from the devicetree.
 
-One such example is the Mediatek Filogic MT798x family of networking
-processors.
+Qualcomm has unfortunately not yet provided any answers as to whether
+the 39:98 encodes a hardware id and if there are other variants of the
+default address that needs to be handled by the driver.
 
-Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
-Acked-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For now, add the Trogdor WCN3991 default address to the device address
+check to avoid having these controllers start with the default address
+instead of their assigned addresses.
+
+Fixes: 32868e126c78 ("Bluetooth: qca: fix invalid device address check")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_eth.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bluetooth/btqca.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
-index 6cd97c75445c8..9a36e174984cf 100644
---- a/net/l2tp/l2tp_eth.c
-+++ b/net/l2tp/l2tp_eth.c
-@@ -136,6 +136,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
- 	/* checksums verified by L2TP */
- 	skb->ip_summed = CHECKSUM_NONE;
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -16,6 +16,7 @@
+ #define VERSION "0.1"
  
-+	/* drop outer flow-hash */
-+	skb_clear_hash(skb);
-+
- 	skb_dst_drop(skb);
- 	nf_reset_ct(skb);
+ #define QCA_BDADDR_DEFAULT (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x00, 0x00 }})
++#define QCA_BDADDR_WCN3991 (&(bdaddr_t) {{ 0xad, 0x5a, 0x00, 0x00, 0x98, 0x39 }})
  
--- 
-2.43.0
-
+ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
+ 			 enum qca_btsoc_type soc_type)
+@@ -638,8 +639,10 @@ static int qca_check_bdaddr(struct hci_d
+ 	}
+ 
+ 	bda = (struct hci_rp_read_bd_addr *)skb->data;
+-	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT))
++	if (!bacmp(&bda->bdaddr, QCA_BDADDR_DEFAULT) ||
++	    !bacmp(&bda->bdaddr, QCA_BDADDR_WCN3991)) {
+ 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
++	}
+ 
+ 	kfree_skb(skb);
+ 
 
 
 
