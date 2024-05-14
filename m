@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E549D8C529C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341CB8C53C4
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF308282FD3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2F5E1F213D2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0520613FD79;
-	Tue, 14 May 2024 11:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434A012F58E;
+	Tue, 14 May 2024 11:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrm93ABz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3hHK2Ug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B890C5028C;
-	Tue, 14 May 2024 11:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0128512F588;
+	Tue, 14 May 2024 11:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685987; cv=none; b=u4XzAQbZ6n3SXx5Qv8b7Bu8VtRzOSFLR5wTWI1mVMb+0ROh/KczBt2K7juyNiuFSuv4LsoEG5bRfj7uAvqGlPBxVPVW0jfz8UmSOpTxD//MaUShLhRAcFqZSpeRlue42HVJ6Mslnn31y1AOH5l8TFVuDeS3XyyR04ZoBYgtFsko=
+	t=1715686749; cv=none; b=rFa0KqxbMNnP8WcgPyfsLobUqIvzO8V8fNk/WMgzxnnUC7QQKPqMedDlHvvtDJJT36RmZ7V/4Ys5ptsWaUwBLgC5ogHnMZVVTtfqqr81d6B1AZ36k4a2HvhCnz5gfs4KGkFvnARzLaT+3FUFP5O3fPzBB6fy24d+pimyIRRn4TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685987; c=relaxed/simple;
-	bh=p9M40+J11mnJVl15l31K02Bkpz95UfLG2c7Wpt+h+Pw=;
+	s=arc-20240116; t=1715686749; c=relaxed/simple;
+	bh=KgELx+xEgpWZJKNuq9bfuvp0EdKfEPzt4F66r4ow/1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uy1UYvjkTb9jLLUo+nbLwSUYqjaVAHkZU0Fc5aNmd4xYShgUy+XfS/s7P2F7F/wyPWsG90e82P4QWYamk5jCzeBXLG3nD/tUklCDzO+88/RM8UjZJnJCvJhlfN+J6a6m/xuGjAbTlJnqgiGAymUYwfB49cnLxNi8zf9aUoSKHNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrm93ABz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D7DC2BD10;
-	Tue, 14 May 2024 11:26:26 +0000 (UTC)
+	 MIME-Version; b=sL6wsLubQFavUEzjnUSJeUEHw/Tz+l02hPtHiGG4NB+h9ZuJqWyylcSx4m0Vl80IcNB7XybUFP0EsX+XB/MXkjjbEcYlAXTMNU4/xAjWq0kuRaXbUHcapRIQDexA7+cCFBS9nSso2kYizQae9f3AXlL0iRb9pUsRzX0lB2CjUm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3hHK2Ug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5A0C2BD10;
+	Tue, 14 May 2024 11:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685987;
-	bh=p9M40+J11mnJVl15l31K02Bkpz95UfLG2c7Wpt+h+Pw=;
+	s=korg; t=1715686748;
+	bh=KgELx+xEgpWZJKNuq9bfuvp0EdKfEPzt4F66r4ow/1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrm93ABzRc962GRMTgN9As9j+r1U3kWC+/LX4dSqlWhMe3lcxYPzAqDaH9qZcsa9C
-	 IqKOiXCUg4O1Nv2IwuUotIfS8UdefSTLVVXjBWOWiQzKM0ZEHEkSMhF2WaDIVdkvFJ
-	 H1avdRRBrAdPAIZAD1aq89QEDgWiO9rnQP9lWe4g=
+	b=x3hHK2Ugf95q6AN3TpzSUJ2rMYbv3d7/gI9SSjv2aTO5haWgq1P8EeosglBK0ylX1
+	 LBo8yn/h4YCLb7vaBh0Re+1eqECJHR1fNTnURXK9TgJsVaL/HLeykMUAzBV9AitCG0
+	 RMYzgbmhvZ466OPZ+XTUsMSWGCWL3B8sWjh8BQ8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 291/301] tracefs: Still use mount point as default permissions for instances
+	Bumyong Lee <bumyong.lee@samsung.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 01/63] dmaengine: pl330: issue_pending waits until WFP state
 Date: Tue, 14 May 2024 12:19:22 +0200
-Message-ID: <20240514101043.248323776@linuxfoundation.org>
+Message-ID: <20240514100948.067403036@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Bumyong Lee <bumyong.lee@samsung.com>
 
-commit 6599bd5517be66c8344f869f3ca3a91bc10f2b9e upstream.
+[ Upstream commit 22a9d9585812440211b0b34a6bc02ade62314be4 ]
 
-If the instances directory's permissions were never change, then have it
-and its children use the mount point permissions as the default.
+According to DMA-330 errata notice[1] 71930, DMAKILL
+cannot clear internal signal, named pipeline_req_active.
+it makes that pl330 would wait forever in WFP state
+although dma already send dma request if pl330 gets
+dma request before entering WFP state.
 
-Currently, the permissions of instance directories are determined by the
-instance directory's permissions itself. But if the tracefs file system is
-remounted and changes the permissions, the instance directory and its
-children should use the new permission.
+The errata suggests that polling until entering WFP state
+as workaround and then peripherals allows to issue dma request.
 
-But because both the instance directory and its children use the instance
-directory's inode for permissions, it misses the update.
+[1]: https://developer.arm.com/documentation/genc008428/latest
 
-To demonstrate this:
-
-  # cd /sys/kernel/tracing/
-  # mkdir instances/foo
-  # ls -ld instances/foo
- drwxr-x--- 5 root root 0 May  1 19:07 instances/foo
-  # ls -ld instances
- drwxr-x--- 3 root root 0 May  1 18:57 instances
-  # ls -ld current_tracer
- -rw-r----- 1 root root 0 May  1 18:57 current_tracer
-
-  # mount -o remount,gid=1002 .
-  # ls -ld instances
- drwxr-x--- 3 root root 0 May  1 18:57 instances
-  # ls -ld instances/foo/
- drwxr-x--- 5 root root 0 May  1 19:07 instances/foo/
-  # ls -ld current_tracer
- -rw-r----- 1 root lkp 0 May  1 18:57 current_tracer
-
-Notice that changing the group id to that of "lkp" did not affect the
-instances directory nor its children. It should have been:
-
-  # ls -ld current_tracer
- -rw-r----- 1 root root 0 May  1 19:19 current_tracer
-  # ls -ld instances/foo/
- drwxr-x--- 5 root root 0 May  1 19:25 instances/foo/
-  # ls -ld instances
- drwxr-x--- 3 root root 0 May  1 19:19 instances
-
-  # mount -o remount,gid=1002 .
-  # ls -ld current_tracer
- -rw-r----- 1 root lkp 0 May  1 19:19 current_tracer
-  # ls -ld instances
- drwxr-x--- 3 root lkp 0 May  1 19:19 instances
-  # ls -ld instances/foo/
- drwxr-x--- 5 root lkp 0 May  1 19:25 instances/foo/
-
-Where all files were updated by the remount gid update.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.686838327@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bumyong Lee <bumyong.lee@samsung.com>
+Link: https://lore.kernel.org/r/20231219055026.118695-1-bumyong.lee@samsung.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: afc89870ea67 ("dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/inode.c |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ drivers/dma/pl330.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -180,16 +180,39 @@ static void set_tracefs_inode_owner(stru
- {
- 	struct tracefs_inode *ti = get_tracefs(inode);
- 	struct inode *root_inode = ti->private;
-+	kuid_t uid;
-+	kgid_t gid;
-+
-+	uid = root_inode->i_uid;
-+	gid = root_inode->i_gid;
-+
-+	/*
-+	 * If the root is not the mount point, then check the root's
-+	 * permissions. If it was never set, then default to the
-+	 * mount point.
-+	 */
-+	if (root_inode != d_inode(root_inode->i_sb->s_root)) {
-+		struct tracefs_inode *rti;
-+
-+		rti = get_tracefs(root_inode);
-+		root_inode = d_inode(root_inode->i_sb->s_root);
-+
-+		if (!(rti->flags & TRACEFS_UID_PERM_SET))
-+			uid = root_inode->i_uid;
-+
-+		if (!(rti->flags & TRACEFS_GID_PERM_SET))
-+			gid = root_inode->i_gid;
-+	}
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 1bba1fa3a8096..54bb6e46c1803 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -1045,6 +1045,9 @@ static bool _trigger(struct pl330_thread *thrd)
  
- 	/*
- 	 * If this inode has never been referenced, then update
- 	 * the permissions to the superblock.
- 	 */
- 	if (!(ti->flags & TRACEFS_UID_PERM_SET))
--		inode->i_uid = root_inode->i_uid;
-+		inode->i_uid = uid;
+ 	thrd->req_running = idx;
  
- 	if (!(ti->flags & TRACEFS_GID_PERM_SET))
--		inode->i_gid = root_inode->i_gid;
-+		inode->i_gid = gid;
++	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
++		UNTIL(thrd, PL330_STATE_WFP);
++
+ 	return true;
  }
  
- static int tracefs_permission(struct mnt_idmap *idmap,
+-- 
+2.43.0
+
 
 
 
