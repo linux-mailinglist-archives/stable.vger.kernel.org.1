@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-44241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E868C51E2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD378C50BC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE1DF1F224B8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA7E1F20C3D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E80C6EB68;
-	Tue, 14 May 2024 11:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4DB6DCE8;
+	Tue, 14 May 2024 10:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxCCpVXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3/ckcpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07A61D54D;
-	Tue, 14 May 2024 11:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786F86D1AF;
+	Tue, 14 May 2024 10:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685176; cv=none; b=cYs8SGEwMWewgxEo/9e5ePMKVZVr1qceUsL6Yxa5q+sCHOEVwkPz4vGvFg2aBB0Y1JPqISm0MFrpU6y0h/Q5069cwAt+eZJbSNNA2nf3hrGsB9Q/9xk+u34TQcmB0xJTcldOOPcFt8gVMxEMtEpxblWM7JQs569CjAyXtdR6/x4=
+	t=1715683621; cv=none; b=fdHHs8Ahd31zvP31WBTTdL8SToq7qCv0zFI+90/p2TRfOmCx/D6TH7dgHMnQG/bEIHTg15bxG4aKLb8FfyuepUXXyTIMlur0XBgwPsLS3x/jO2CHWSLrvVrmHLDPRsI/Uvj0M/poOjzXtjPossJTn1lfHIdmhVmC1fG2xK4efeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685176; c=relaxed/simple;
-	bh=dKSky5piraQyAMdF2CGw6Hug7QyVYt96LnGHeRxjU5k=;
+	s=arc-20240116; t=1715683621; c=relaxed/simple;
+	bh=3o7T35DWSFV0jtEyRE7oZvSegAlllO8014/AQAsfXuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9XCbsRuVQr4EgA613dnpG129PxX6sC2cY6jsHFRDX3mbTFnijvPMgPjEt9KBju8/NqeWfK9fqfzScqcBFKNTF0Url5g+ucVTM81l+Rbu3zZY1uE0mG3bcCUFy8R/oBVXrAAnxu4vwiLJUGAMlnYvapXN13GlvJHzvmF2SGKpmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxCCpVXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A80C32786;
-	Tue, 14 May 2024 11:12:47 +0000 (UTC)
+	 MIME-Version; b=lJDdtCpfMCuA4CKxk/bmIVrVIQdwzQgHd6ymt5Qp04rzC5aYvcIFIPwIOHcryT9i4Q3q34pGZGJyXTtw0o7vdY9/7tvyRF2IgsvHFsFByTyIk4Gu+gInKGDZyVjSjwsQrLBmRHIjsv7DvCWtxOkCMjkY/+VeiaS0prQFpWmyt60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3/ckcpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A650C32782;
+	Tue, 14 May 2024 10:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685176;
-	bh=dKSky5piraQyAMdF2CGw6Hug7QyVYt96LnGHeRxjU5k=;
+	s=korg; t=1715683621;
+	bh=3o7T35DWSFV0jtEyRE7oZvSegAlllO8014/AQAsfXuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxCCpVXRQcq2ded9XJLnYh5ORdExhAzton+c/JSQhpwHwg0iM6ehQsha33tPYvFB3
-	 OtXziLS5bakTYP/i/FUfVsy9SSNaO59AomtN4ZrHalPalzipr3SuWEEUXotCOpFDUL
-	 yWw5VRvvv++GGPTiwsNQVWHRbnA8RhUWL68htuDM=
+	b=t3/ckcpyA3PLV1Tut4Hd6vpHVyHFslSIjR0Gv0BZwy7VEjLg1bBX2Tp2jUNprqqY8
+	 Ubekysu+e+on8l6mPk1CHwp5+NcKdDvW/roK1MU5ODET/QBQliTQXq2mgsda/tK9OC
+	 Sll8pndfAe/clNw8aEZWrSeIlzH6VqCCokDPfxzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/301] drm/amd/display: Skip on writeback when its not applicable
+Subject: [PATCH 6.8 214/336] ipv6: Fix potential uninit-value access in __ip6_make_skb()
 Date: Tue, 14 May 2024 12:16:58 +0200
-Message-ID: <20240514101037.806054946@linuxfoundation.org>
+Message-ID: <20240514101046.691534069@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit ecedd99a9369fb5cde601ae9abd58bca2739f1ae ]
+[ Upstream commit 4e13d3a9c25b7080f8a619f961e943fe08c2672c ]
 
-[WHY]
-dynamic memory safety error detector (KASAN) catches and generates error
-messages "BUG: KASAN: slab-out-of-bounds" as writeback connector does not
-support certain features which are not initialized.
+As it was done in commit fc1092f51567 ("ipv4: Fix uninit-value access in
+__ip_make_skb()") for IPv4, check FLOWI_FLAG_KNOWN_NH on fl6->flowi6_flags
+instead of testing HDRINCL on the socket to avoid a race condition which
+causes uninit-value access.
 
-[HOW]
-Skip them when connector type is DRM_MODE_CONNECTOR_WRITEBACK.
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3199
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Acked-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ea30388baebc ("ipv6: Fix an uninit variable access bug in __ip6_make_skb()")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/ipv6/ip6_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 3442e08f47876..98dd07e3726af 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2974,6 +2974,10 @@ static int dm_resume(void *handle)
- 	/* Do mst topology probing after resuming cached state*/
- 	drm_connector_list_iter_begin(ddev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-+
-+		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
-+			continue;
-+
- 		aconnector = to_amdgpu_dm_connector(connector);
- 		if (aconnector->dc_link->type != dc_connection_mst_branch ||
- 		    aconnector->mst_root)
-@@ -5756,6 +5760,9 @@ get_highest_refresh_rate_mode(struct amdgpu_dm_connector *aconnector,
- 		&aconnector->base.probed_modes :
- 		&aconnector->base.modes;
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 31b86fe661aa6..568065a015c41 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1933,7 +1933,7 @@ struct sk_buff *__ip6_make_skb(struct sock *sk,
+ 		u8 icmp6_type;
  
-+	if (aconnector->base.connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
-+		return NULL;
-+
- 	if (aconnector->freesync_vid_base.clock != 0)
- 		return &aconnector->freesync_vid_base;
- 
-@@ -8445,6 +8452,9 @@ static void amdgpu_dm_commit_audio(struct drm_device *dev,
- 			continue;
- 
- notify:
-+		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
-+			continue;
-+
- 		aconnector = to_amdgpu_dm_connector(connector);
- 
- 		mutex_lock(&adev->dm.audio_lock);
+ 		if (sk->sk_socket->type == SOCK_RAW &&
+-		   !inet_test_bit(HDRINCL, sk))
++		   !(fl6->flowi6_flags & FLOWI_FLAG_KNOWN_NH))
+ 			icmp6_type = fl6->fl6_icmp_type;
+ 		else
+ 			icmp6_type = icmp6_hdr(skb)->icmp6_type;
 -- 
 2.43.0
 
