@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F74C8C545E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D158C556A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E1F1F233C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAC731F22BA7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F9241C6C;
-	Tue, 14 May 2024 11:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7779A1D54D;
+	Tue, 14 May 2024 11:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1sddIk3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAn67PLf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747FC2943F;
-	Tue, 14 May 2024 11:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D53F9D4;
+	Tue, 14 May 2024 11:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687155; cv=none; b=oiP8hJu6AXAWFv0I0gw/QtK0KtEFbYqfvWIKy7sSvX+D/7K8LaRN3VZjcHZ9TE8VBMqJRFjrnfhQ8JJOdikrJn7Csz47y9x8/Kbj261Ci48tN16w4DfYAcony/3lwnNfwrIk3w6INpBPzgFgx2gJcfJDR9XEZD7d5ilpihjr9Tk=
+	t=1715687879; cv=none; b=cdpvRQkveSKbru4gDdUIgqYeggsmuX4rTEncn/DZQBDpDUbRA/6ryrSCRDN54R8Wzbf71JCX5B2y/oai5IZ7gLEkmdq/cFZHCLaCN+pejhV4nSgkyhG1tKPmkbvUUwIAeA1jUCoqkFtqLGnJntjAX1wssvbkq9zH/yaD+UwBALw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687155; c=relaxed/simple;
-	bh=TjGh8KjOJZ1tQQm4WTLNbpZkB1dnNl/xpULIU5ShoHg=;
+	s=arc-20240116; t=1715687879; c=relaxed/simple;
+	bh=cjb9eMcWfNXnqZ/Khotr4BZ2nD08J0J3qD64xQ5+zAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzl3ZaA863EkI9eexpUXJy0X07xB58/vOuJDd4E/cxeWbKnDzjhzF0x+Ty+4XVwJHempp7HKXUeeFuN95OBBSzeqcod4Ba0M32G6aJKkWnj8ror4dXcyspQKRKHLLfKYYA1uxl868XwW/nblQPwoYY6O2SeuY8kizKh94Isx9ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1sddIk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C5FC2BD10;
-	Tue, 14 May 2024 11:45:54 +0000 (UTC)
+	 MIME-Version; b=lvpXklrxl4LR2FUJnw2KHBEkhY7ApIod73OZmHU+03zvol0C4fY1r/CD59QL91ZSozffVoFRamcLa67Sfg9DK/WkNzouQ3fIBVSVchnyr8pkjVKWHI9Fl8F2r7zelL91toFq7mHLiQN/bBX2Uu1GqpTpqh9/9MzMVdtbPKAEBtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAn67PLf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B5AC2BD10;
+	Tue, 14 May 2024 11:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687155;
-	bh=TjGh8KjOJZ1tQQm4WTLNbpZkB1dnNl/xpULIU5ShoHg=;
+	s=korg; t=1715687879;
+	bh=cjb9eMcWfNXnqZ/Khotr4BZ2nD08J0J3qD64xQ5+zAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1sddIk318jAawyOO9CCfHGLrOGLAsMvRANU1Z5a+OANsfpZOXgUBC+M5y+9GTB+R
-	 VYkdZ37voLxv5sDD8Y5QSDHtGaj683YuQIgrVuE/THUKKX2sVOgfnGXHEkKQpukNFk
-	 A2QpB38yIXjnGUZSs9bTO6OzwkgEH77GeZCFl7Jc=
+	b=lAn67PLf9CW1BMJ23nom8UXoSc+e+akmfbYDWdNnsSRd59Kmq0YRpWciIF1ZeTtPC
+	 DexYsvPuKPbraYUUxLE0LAVJb9S+kH6KO3jnrMfHDPWmPRqqxwU41ByVf+XUOrH6EL
+	 0sYoMhGJQ7TEklCczrf5ecDtoO70/BUFz7hFSR8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	YueHaibing <yuehaibing@huawei.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 83/84] pinctrl: mediatek: remove set but not used variable e
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	Jarred White <jarredwhite@linux.microsoft.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 136/168] ACPI: CPPC: Fix access width used for PCC registers
 Date: Tue, 14 May 2024 12:20:34 +0200
-Message-ID: <20240514100954.804790361@linuxfoundation.org>
+Message-ID: <20240514101011.818347703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
 
-commit 86ecb7d6853c77711c14cb6600179196f179ee2d upstream.
+commit f489c948028b69cea235d9c0de1cc10eeb26a172 upstream
 
-drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c: In function mtk_hw_pin_field_lookup:
-drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c:70:39: warning:
- variable e set but not used [-Wunused-but-set-variable]
+commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system
+memory accesses") modified cpc_read()/cpc_write() to use access_width to
+read CPC registers.
 
-Since commit 3de7deefce69 ("pinctrl: mediatek: Check gpio pin
-number and use binary search in mtk_hw_pin_field_lookup()"),
-it is not used any more, so remove it, also remove redundant
-assignment to variable c, it will be assigned a new value later
-before used.
+However, for PCC registers the access width field in the ACPI register
+macro specifies the PCC subspace ID.  For non-zero PCC subspace ID it is
+incorrectly treated as access width. This causes errors when reading
+from PCC registers in the CPPC driver.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20200218023625.14324-1-yuehaibing@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For PCC registers, base the size of read/write on the bit width field.
+The debug message in cpc_read()/cpc_write() is updated to print relevant
+information for the address space type used to read the register.
+
+Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
+Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
+Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ eahariha: Backport to v5.15 by dropping SystemIO bits as commit
+  a2c8f92bea5f is not present ]
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/acpi/cppc_acpi.c | 48 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 12 deletions(-)
 
---- a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
-@@ -67,7 +67,7 @@ static int mtk_hw_pin_field_lookup(struc
- 				   const struct mtk_pin_desc *desc,
- 				   int field, struct mtk_pin_field *pfd)
- {
--	const struct mtk_pin_field_calc *c, *e;
-+	const struct mtk_pin_field_calc *c;
- 	const struct mtk_pin_reg_calc *rc;
- 	int start = 0, end, check;
- 	bool found = false;
-@@ -82,8 +82,6 @@ static int mtk_hw_pin_field_lookup(struc
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 6aa456cda0ed9..6dcce036adb9c 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -955,17 +955,24 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
  	}
  
- 	end = rc->nranges - 1;
--	c = rc->range;
--	e = c + rc->nranges;
+ 	*val = 0;
+-	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
++	size = GET_BIT_WIDTH(reg);
++
++	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
++		/*
++		 * For registers in PCC space, the register size is determined
++		 * by the bit width field; the access size is used to indicate
++		 * the PCC subspace id.
++		 */
++		size = reg->bit_width;
+ 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
++	}
+ 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		vaddr = reg_res->sys_mem_vaddr;
+ 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+ 		return cpc_read_ffh(cpu, reg, val);
+ 	else
+ 		return acpi_os_read_memory((acpi_physical_address)reg->address,
+-				val, reg->bit_width);
+-
+-	size = GET_BIT_WIDTH(reg);
++				val, size);
  
- 	while (start <= end) {
- 		check = (start + end) >> 1;
+ 	switch (size) {
+ 	case 8:
+@@ -981,8 +988,13 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 		*val = readq_relaxed(vaddr);
+ 		break;
+ 	default:
+-		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
+-			 reg->bit_width, pcc_ss_id);
++		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++			pr_debug("Error: Cannot read %u bit width from system memory: 0x%llx\n",
++				size, reg->address);
++		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
++			pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
++				size, pcc_ss_id);
++		}
+ 		ret_val = -EFAULT;
+ 	}
+ 
+@@ -1000,17 +1012,24 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+ 
+-	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
++	size = GET_BIT_WIDTH(reg);
++
++	if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
++		/*
++		 * For registers in PCC space, the register size is determined
++		 * by the bit width field; the access size is used to indicate
++		 * the PCC subspace id.
++		 */
++		size = reg->bit_width;
+ 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
++	}
+ 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		vaddr = reg_res->sys_mem_vaddr;
+ 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+ 		return cpc_write_ffh(cpu, reg, val);
+ 	else
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+-				val, reg->bit_width);
+-
+-	size = GET_BIT_WIDTH(reg);
++				val, size);
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		val = MASK_VAL(reg, val);
+@@ -1029,8 +1048,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 		writeq_relaxed(val, vaddr);
+ 		break;
+ 	default:
+-		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
+-			 reg->bit_width, pcc_ss_id);
++		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++			pr_debug("Error: Cannot write %u bit width to system memory: 0x%llx\n",
++				size, reg->address);
++		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
++			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
++				size, pcc_ss_id);
++		}
+ 		ret_val = -EFAULT;
+ 		break;
+ 	}
+-- 
+2.43.0
+
 
 
 
