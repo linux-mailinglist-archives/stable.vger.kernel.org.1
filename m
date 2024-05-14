@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5536D8C54A2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C308B8C5521
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95671F2205F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 007501C2369C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F266812D773;
-	Tue, 14 May 2024 11:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CDC6F513;
+	Tue, 14 May 2024 11:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GV1aIIDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1ijYMgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D655FDD2;
-	Tue, 14 May 2024 11:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9926EB67;
+	Tue, 14 May 2024 11:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687325; cv=none; b=OUhK2jyEqeEIYrBfSVSWtToZXgkjs2l6FwfLb/VWoovzfn4cq+OUrevjn5La7hNZB95hNGCKwiOU3jjj8I8+jeI0fBXqZHFpbRQyMFE+wBMp/lVWy9BT1MPZywRDH7LU8bO9sTC0kfJrPVAtSXnXnA3mdM3hbA21lfVfXqJA6IE=
+	t=1715687676; cv=none; b=OdUWmfqBMnCwLoqPng4unbM9b8amNTWe7YkfZvD+75IWgdJt+Syc7XMo1q0RQxgusZn9R3tkHdeS53hjsZ3AoMu2pfoh9GNu2F3Dyo0Gp3qLeNU9ekwhznGsMl0mZJP2/wkr7q9YWB5skzN9lxPhgKTZdCApGVfdWa9anjFmpXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687325; c=relaxed/simple;
-	bh=YnMwKSdPV0XsGrYpWnUsM6oEfKImjGjP8RoNpAwQKwE=;
+	s=arc-20240116; t=1715687676; c=relaxed/simple;
+	bh=kxqBQWSYiRh0RrTioR5swHtOSAK4AdpyyDsRTtfTXjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmQVcVnN87TjmwwfajFH2JZhYQPY98+gChzBKFL+XkMCZFv73iomdrvAZl9qPd5dPRPjl7fa+yqI4Us0QCe9ZqhadFTgxgZSvV/9AqKROBY3Pj+egx2X2w1RhA3tpdKUbb7JNeCUS0GtypnGkuMS/SxpNijqVrALX1t/wHYlxGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GV1aIIDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387CAC2BD10;
-	Tue, 14 May 2024 11:48:45 +0000 (UTC)
+	 MIME-Version; b=pXotbCb5ObQFYYZlJIkJ8csr2bE61yeAzQx6qrJsgB0/LJuWmbyrk9pR0IHzt2zTBazucHVZYjeizo8tGqNAz2J+cDdSBDW2sckJ7Y3OYukeoJKdKFUnVL95Bfa8MMpSZHXhXSUusAexl/3gn9H1iR3sb5XahqxmEOHgHpOV0b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1ijYMgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C1CC2BD10;
+	Tue, 14 May 2024 11:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687325;
-	bh=YnMwKSdPV0XsGrYpWnUsM6oEfKImjGjP8RoNpAwQKwE=;
+	s=korg; t=1715687676;
+	bh=kxqBQWSYiRh0RrTioR5swHtOSAK4AdpyyDsRTtfTXjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GV1aIIDgeSGQqLy44bk/0sQyIAgIYJQIUpzyh6uB2cA2eKZKWmJpqJD63zjAyd9pY
-	 ir/iiVrv7/5wO9wXmFJc5LWGAOvTU45yMiih7dZduqSQHpBT/s6DXsY28ruQasgakd
-	 RULKv1+vORsc7kJ1SYvuAdTWzltpE2qH8UuhisAE=
+	b=f1ijYMgp8EXDO3FJ7qwGuVCpCBrtrMESPHfK8VV6ZtaZfbI+IqZk1j90cLbR92jki
+	 04GXroe5Vth+OpcIw1qUB1pXGJsMRiUaLn5TBQKL447SEMTW3JaclIGSbomp3uJwbu
+	 MiKc5D/BcDVCC9+l2A7T9LtbvoqjxIlvBZ8BYSUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Remus <jremus@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/111] s390/vdso: Add CFI for RA register to asm macro vdso_func
+Subject: [PATCH 5.15 066/168] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
 Date: Tue, 14 May 2024 12:19:24 +0200
-Message-ID: <20240514100958.120959007@linuxfoundation.org>
+Message-ID: <20240514101009.189872587@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Remus <jremus@linux.ibm.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit b961ec10b9f9719987470236feb50c967db5a652 ]
+[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
 
-The return-address (RA) register r14 is specified as volatile in the
-s390x ELF ABI [1]. Nevertheless proper CFI directives must be provided
-for an unwinder to restore the return address, if the RA register
-value is changed from its value at function entry, as it is the case.
+Running kernel-doc on ieee80211_i.h flagged the following:
+net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
+net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
 
-[1]: s390x ELF ABI, https://github.com/IBM/s390x-abi/releases
+Fix these warnings.
 
-Fixes: 4bff8cb54502 ("s390: convert to GENERIC_VDSO")
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/dwarf.h               | 1 +
- arch/s390/kernel/vdso64/vdso_user_wrapper.S | 2 ++
- 2 files changed, 3 insertions(+)
+ net/mac80211/ieee80211_i.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/include/asm/dwarf.h b/arch/s390/include/asm/dwarf.h
-index 4f21ae561e4dd..390906b8e386e 100644
---- a/arch/s390/include/asm/dwarf.h
-+++ b/arch/s390/include/asm/dwarf.h
-@@ -9,6 +9,7 @@
- #define CFI_DEF_CFA_OFFSET	.cfi_def_cfa_offset
- #define CFI_ADJUST_CFA_OFFSET	.cfi_adjust_cfa_offset
- #define CFI_RESTORE		.cfi_restore
-+#define CFI_REL_OFFSET		.cfi_rel_offset
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 21549a440b38c..03f8c8bdab765 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -113,7 +113,7 @@ struct ieee80211_bss {
+ };
  
- #ifdef CONFIG_AS_CFI_VAL_OFFSET
- #define CFI_VAL_OFFSET		.cfi_val_offset
-diff --git a/arch/s390/kernel/vdso64/vdso_user_wrapper.S b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
-index a775d7e528728..2183b8f64d574 100644
---- a/arch/s390/kernel/vdso64/vdso_user_wrapper.S
-+++ b/arch/s390/kernel/vdso64/vdso_user_wrapper.S
-@@ -23,8 +23,10 @@ __kernel_\func:
- 	CFI_DEF_CFA_OFFSET (STACK_FRAME_OVERHEAD + WRAPPER_FRAME_SIZE)
- 	CFI_VAL_OFFSET 15, -STACK_FRAME_OVERHEAD
- 	stg	%r14,STACK_FRAME_OVERHEAD(%r15)
-+	CFI_REL_OFFSET 14, STACK_FRAME_OVERHEAD
- 	brasl	%r14,__s390_vdso_\func
- 	lg	%r14,STACK_FRAME_OVERHEAD(%r15)
-+	CFI_RESTORE 14
- 	aghi	%r15,WRAPPER_FRAME_SIZE
- 	CFI_DEF_CFA_OFFSET STACK_FRAME_OVERHEAD
- 	CFI_RESTORE 15
+ /**
+- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
++ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
+  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
+  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
+  *
+@@ -126,7 +126,7 @@ enum ieee80211_bss_corrupt_data_flags {
+ };
+ 
+ /**
+- * enum ieee80211_valid_data_flags - BSS valid data flags
++ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
+  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
 -- 
 2.43.0
 
