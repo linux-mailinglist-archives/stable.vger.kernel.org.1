@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAE28C5451
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C908C5405
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43967B20D7C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E881C22B12
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD0D6CDC5;
-	Tue, 14 May 2024 11:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9F2135414;
+	Tue, 14 May 2024 11:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0psgrqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqq9OgkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A722D60A;
-	Tue, 14 May 2024 11:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F041F1CAA4;
+	Tue, 14 May 2024 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687117; cv=none; b=YuGzVQzRvuAXAV/gredU8onmbK7K84JtCoj79rLhgSeBC8Dm3zgCJNKpfm218h6xJL1RYISiIlFZrmBJ0KfkIB7Zb3w2YhQrdcTxqXvDBDlYz1CtbXDt6sHE2RQrTUAXg9+EVR1PMkxsZ74fdgkBTXfaCZWFxV/b/+ENBXD9nn4=
+	t=1715686915; cv=none; b=dl+hf54T1Ly46v3uUtCwSCI/9k8LVriASN06EPCB5NSSMd3LOsfBEKUO/zXrxVOopcnBSUTHU9XJREXsMzSkDf8/6WXx3E908GmIZfsyIdWCIACXvyXikCuEnqX5rdd7M8PRBSHpQMllZ2jnvY0CVHOPKoePfb/+cRGFss0uIfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687117; c=relaxed/simple;
-	bh=SZVY995J2m6DiN+Q2W31nr7aIebDukiWOMnyy2rlofU=;
+	s=arc-20240116; t=1715686915; c=relaxed/simple;
+	bh=02oUofGfB14akk1tfcTiGcnX2cjumKxf/OSHbohT8/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3ZXu6fYQQKNEGlnvy7D9C2w+YpC2tjdrjNMHErtdt6ubo7TDHO6FXs6QxkFEt1m+beZRoAeBO5srYDdjOTRplSvY6y2Aabpv0wgd8PCnin8XnII7enaa91WKoEuTGfx1cWry0MLbo7c6p4dTartNES0LrjhIt26CWGWpVk0L5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0psgrqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ACBC32781;
-	Tue, 14 May 2024 11:45:16 +0000 (UTC)
+	 MIME-Version; b=XYW9WWpqsFn1wiDCRAj22+c90xr0w05iRc/lDu9eHo+H+uUi7rkUy94jH3mIzIj0zHcgET71jewR6j+om1DegILoAb6GgEfN6YsHOA+aT/KEGtoQ43Ahk6HMATLsxctY2ZkI5C+noI8Rtt/TB7r8u2l7mX9Ej4wOKZhZ03eJEZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqq9OgkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706A4C2BD10;
+	Tue, 14 May 2024 11:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687117;
-	bh=SZVY995J2m6DiN+Q2W31nr7aIebDukiWOMnyy2rlofU=;
+	s=korg; t=1715686914;
+	bh=02oUofGfB14akk1tfcTiGcnX2cjumKxf/OSHbohT8/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0psgrqiSUbGNnLvRQDfm07G/q21YABkukRtKeBl/vfXNn28URLdetT/+PaE134UM
-	 5D3d1WVZEC9AXUzH7QiYAt0diP3THRbYvic+3e9f+OxogHkJwDjyB1ljYDmEz/ESFb
-	 aGcopzXKtoIes0WozCx6ziQzpyJaEvxgXmPmNA5Y=
+	b=gqq9OgkHkuh3qcnkmR3Qw/ah4kxJx9lU4vYysGUCSzlaSKOgTfpeH6RuYsRyoAJL9
+	 xsNQpzw3dwBbB6aeWhKSa91wwjIi+r6IIdvkLJGqxu4ZgwBtX9iZDutRcBuwt7V8oC
+	 JFYkEZqYNEOIHCRN6KO6zf0I3f4j3oY80vh0iAkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 63/84] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
+Subject: [PATCH 4.19 53/63] ipv6: fib6_rules: avoid possible NULL dereference in fib6_rule_action()
 Date: Tue, 14 May 2024 12:20:14 +0200
-Message-ID: <20240514100954.055684314@linuxfoundation.org>
+Message-ID: <20240514100950.015499472@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 94062790aedb505bdda209b10bea47b294d6394f ]
+[ Upstream commit d101291b2681e5ab938554e3e323f7a7ee33e3aa ]
 
-TCP_SYN_RECV state is really special, it is only used by
-cross-syn connections, mostly used by fuzzers.
+syzbot is able to trigger the following crash [1],
+caused by unsafe ip6_dst_idev() use.
 
-In the following crash [1], syzbot managed to trigger a divide
-by zero in tcp_rcv_space_adjust()
-
-A socket makes the following state transitions,
-without ever calling tcp_init_transfer(),
-meaning tcp_init_buffer_space() is also not called.
-
-         TCP_CLOSE
-connect()
-         TCP_SYN_SENT
-         TCP_SYN_RECV
-shutdown() -> tcp_shutdown(sk, SEND_SHUTDOWN)
-         TCP_FIN_WAIT1
-
-To fix this issue, change tcp_shutdown() to not
-perform a TCP_SYN_RECV -> TCP_FIN_WAIT1 transition,
-which makes no sense anyway.
-
-When tcp_rcv_state_process() later changes socket state
-from TCP_SYN_RECV to TCP_ESTABLISH, then look at
-sk->sk_shutdown to finally enter TCP_FIN_WAIT1 state,
-and send a FIN packet from a sane socket state.
-
-This means tcp_send_fin() can now be called from BH
-context, and must use GFP_ATOMIC allocations.
+Indeed ip6_dst_idev() can return NULL, and must always be checked.
 
 [1]
-divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 1 PID: 5084 Comm: syz-executor358 Not tainted 6.9.0-rc6-syzkaller-00022-g98369dccd2f8 #0
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 PID: 31648 Comm: syz-executor.0 Not tainted 6.9.0-rc4-next-20240417-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
- RIP: 0010:tcp_rcv_space_adjust+0x2df/0x890 net/ipv4/tcp_input.c:767
-Code: e3 04 4c 01 eb 48 8b 44 24 38 0f b6 04 10 84 c0 49 89 d5 0f 85 a5 03 00 00 41 8b 8e c8 09 00 00 89 e8 29 c8 48 0f af c3 31 d2 <48> f7 f1 48 8d 1c 43 49 8d 96 76 08 00 00 48 89 d0 48 c1 e8 03 48
-RSP: 0018:ffffc900031ef3f0 EFLAGS: 00010246
-RAX: 0c677a10441f8f42 RBX: 000000004fb95e7e RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000027d4b11f R08: ffffffff89e535a4 R09: 1ffffffff25e6ab7
-R10: dffffc0000000000 R11: ffffffff8135e920 R12: ffff88802a9f8d30
-R13: dffffc0000000000 R14: ffff88802a9f8d00 R15: 1ffff1100553f2da
-FS:  00005555775c0380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+ RIP: 0010:__fib6_rule_action net/ipv6/fib6_rules.c:237 [inline]
+ RIP: 0010:fib6_rule_action+0x241/0x7b0 net/ipv6/fib6_rules.c:267
+Code: 02 00 00 49 8d 9f d8 00 00 00 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 f9 32 bf f7 48 8b 1b 48 89 d8 48 c1 e8 03 <42> 80 3c 20 00 74 08 48 89 df e8 e0 32 bf f7 4c 8b 03 48 89 ef 4c
+RSP: 0018:ffffc9000fc1f2f0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1a772f98c8186700
+RDX: 0000000000000003 RSI: ffffffff8bcac4e0 RDI: ffffffff8c1f9760
+RBP: ffff8880673fb980 R08: ffffffff8fac15ef R09: 1ffffffff1f582bd
+R10: dffffc0000000000 R11: fffffbfff1f582be R12: dffffc0000000000
+R13: 0000000000000080 R14: ffff888076509000 R15: ffff88807a029a00
+FS:  00007f55e82ca6c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1155bf2304 CR3: 000000002b9f2000 CR4: 0000000000350ef0
+CR2: 0000001b31d23000 CR3: 0000000022b66000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
-  tcp_recvmsg_locked+0x106d/0x25a0 net/ipv4/tcp.c:2513
-  tcp_recvmsg+0x25d/0x920 net/ipv4/tcp.c:2578
-  inet6_recvmsg+0x16a/0x730 net/ipv6/af_inet6.c:680
-  sock_recvmsg_nosec net/socket.c:1046 [inline]
-  sock_recvmsg+0x109/0x280 net/socket.c:1068
-  ____sys_recvmsg+0x1db/0x470 net/socket.c:2803
-  ___sys_recvmsg net/socket.c:2845 [inline]
-  do_recvmmsg+0x474/0xae0 net/socket.c:2939
-  __sys_recvmmsg net/socket.c:3018 [inline]
-  __do_sys_recvmmsg net/socket.c:3041 [inline]
-  __se_sys_recvmmsg net/socket.c:3034 [inline]
-  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3034
+  fib_rules_lookup+0x62c/0xdb0 net/core/fib_rules.c:317
+  fib6_rule_lookup+0x1fd/0x790 net/ipv6/fib6_rules.c:108
+  ip6_route_output_flags_noref net/ipv6/route.c:2637 [inline]
+  ip6_route_output_flags+0x38e/0x610 net/ipv6/route.c:2649
+  ip6_route_output include/net/ip6_route.h:93 [inline]
+  ip6_dst_lookup_tail+0x189/0x11a0 net/ipv6/ip6_output.c:1120
+  ip6_dst_lookup_flow+0xb9/0x180 net/ipv6/ip6_output.c:1250
+  sctp_v6_get_dst+0x792/0x1e20 net/sctp/ipv6.c:326
+  sctp_transport_route+0x12c/0x2e0 net/sctp/transport.c:455
+  sctp_assoc_add_peer+0x614/0x15c0 net/sctp/associola.c:662
+  sctp_connect_new_asoc+0x31d/0x6c0 net/sctp/socket.c:1099
+  __sctp_connect+0x66d/0xe30 net/sctp/socket.c:1197
+  sctp_connect net/sctp/socket.c:4819 [inline]
+  sctp_inet_connect+0x149/0x1f0 net/sctp/socket.c:4834
+  __sys_connect_file net/socket.c:2048 [inline]
+  __sys_connect+0x2df/0x310 net/socket.c:2065
+  __do_sys_connect net/socket.c:2075 [inline]
+  __se_sys_connect net/socket.c:2072 [inline]
+  __x64_sys_connect+0x7a/0x90 net/socket.c:2072
   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
   do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7faeb6363db9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcc1997168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007faeb6363db9
-RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000001c
-R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 5e5f3f0f8013 ("[IPV6] ADDRCONF: Convert ipv6_get_saddr() to ipv6_dev_get_saddr().")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240501125448.896529-1-edumazet@google.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240507163145.835254-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c        | 4 ++--
- net/ipv4/tcp_input.c  | 2 ++
- net/ipv4/tcp_output.c | 4 +++-
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ net/ipv6/fib6_rules.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index ca7863f722187..9a4a3f6d9cb06 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2331,7 +2331,7 @@ void tcp_shutdown(struct sock *sk, int how)
- 	/* If we've already sent a FIN, or it's a closed state, skip this. */
- 	if ((1 << sk->sk_state) &
- 	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
--	     TCPF_SYN_RECV | TCPF_CLOSE_WAIT)) {
-+	     TCPF_CLOSE_WAIT)) {
- 		/* Clear out any half completed packets.  FIN if needed. */
- 		if (tcp_close_state(sk))
- 			tcp_send_fin(sk);
-@@ -2416,7 +2416,7 @@ void __tcp_close(struct sock *sk, long timeout)
- 		 * machine. State transitions:
- 		 *
- 		 * TCP_ESTABLISHED -> TCP_FIN_WAIT1
--		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (forget it, it's impossible)
-+		 * TCP_SYN_RECV	-> TCP_FIN_WAIT1 (it is difficult)
- 		 * TCP_CLOSE_WAIT -> TCP_LAST_ACK
- 		 *
- 		 * are legal only when FIN has been sent (i.e. in window),
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 61243531a7f4c..87a10bb11eb0b 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6342,6 +6342,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index 1913801f4273c..4171ebaeb6088 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -232,8 +232,12 @@ static int __fib6_rule_action(struct fib_rule *rule, struct flowi *flp,
  
- 		tcp_initialize_rcv_mss(sk);
- 		tcp_fast_path_on(tp);
-+		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+			tcp_shutdown(sk, SEND_SHUTDOWN);
- 		break;
+ 	rt = lookup(net, table, flp6, arg->lookup_data, flags);
+ 	if (rt != net->ipv6.ip6_null_entry) {
++		struct inet6_dev *idev = ip6_dst_idev(&rt->dst);
++
++		if (!idev)
++			goto again;
+ 		err = fib6_rule_saddr(net, rule, flags, flp6,
+-				      ip6_dst_idev(&rt->dst)->dev);
++				      idev->dev);
  
- 	case TCP_FIN_WAIT1: {
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 6d7f441c7dd76..4f203cbbc99b5 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -3210,7 +3210,9 @@ void tcp_send_fin(struct sock *sk)
- 			return;
- 		}
- 	} else {
--		skb = alloc_skb_fclone(MAX_TCP_HEADER, sk->sk_allocation);
-+		skb = alloc_skb_fclone(MAX_TCP_HEADER,
-+				       sk_gfp_mask(sk, GFP_ATOMIC |
-+						       __GFP_NOWARN));
- 		if (unlikely(!skb))
- 			return;
- 
+ 		if (err == -EAGAIN)
+ 			goto again;
 -- 
 2.43.0
 
