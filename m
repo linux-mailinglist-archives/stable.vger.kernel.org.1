@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD638C54A8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489488C5293
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF3CE289A31
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8611F21EC6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E743128366;
-	Tue, 14 May 2024 11:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05313FD63;
+	Tue, 14 May 2024 11:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xF7t4tXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phN/NNzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5B41272AE;
-	Tue, 14 May 2024 11:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8949E6311D;
+	Tue, 14 May 2024 11:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687208; cv=none; b=c4L4xGwwRes6iDCm8nhd9+Ei5E8YRn1P3Kcs/jLDXwU16EZcBK/AcIcsL9d6wbSTGOFFGNEY1uq08I3gBIdAIKO/hT0X1VvRyPG3O2C9mh9OkINcomXl5GqXStDJhD4ArnRktiEOpdc4E5sb9+0gHu5b99EuNN6U8oMC3gHYVLA=
+	t=1715685959; cv=none; b=TqacExw8ijhUDGbBJaoAia4BkBpcTQmNX9JLceRMohJqTTjp89033OnNUmDshNW48wJVPTtG7/Jgzgxl+3AtvedACc7Se8INfimcgpCenvjteGNejwDflVya70KD5PVMuDvsBVsM6yu36f0AUKqtONcnAoHQaln+yKV3U1RAFi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687208; c=relaxed/simple;
-	bh=4fAPRVUhIEvJT5DQnM2ciObMepP7b+xnWIgmCxtroc8=;
+	s=arc-20240116; t=1715685959; c=relaxed/simple;
+	bh=wjK4kWxHpkZEfjx9Fm12atado57H8Cn8ALvJyJBNk7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYcubQDuITEPOUinE9sFwwKhpoW/ewxOiW4+ZOLGVGSOrl2YGrIIJuk1axwjsjhETTvpGStHwoSZ9H6IYCTfpz36sRp34AA4VgcEn2pskqGerIv/DOTz8ZCgzQ1uON9VAbVmk6/H94VbwsbL3UvSA6O4FuI1s+Kh5YTUMlh9TkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xF7t4tXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AB3C2BD10;
-	Tue, 14 May 2024 11:46:46 +0000 (UTC)
+	 MIME-Version; b=sFI+7uQQVruUS+xU23P4nobvdDx/Nqg6Cw09oUZL7AnVHBm178Y3O3JRY4gsGVlXEW9YS8WSJcMuOe5wv46/C06mLI8as9XYznXT/6mT5o/6TLwxIabZMHQJoLOAsgZgGeu4kWIOO8t/+WGGwSRMs97BaAcI1rr48uzCpI+O4bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phN/NNzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13FFC2BD10;
+	Tue, 14 May 2024 11:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687207;
-	bh=4fAPRVUhIEvJT5DQnM2ciObMepP7b+xnWIgmCxtroc8=;
+	s=korg; t=1715685959;
+	bh=wjK4kWxHpkZEfjx9Fm12atado57H8Cn8ALvJyJBNk7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xF7t4tXR9kRKLhof9VxpxduqZspYIuy/sxwIKPI5pb8/UeGKZioQznhxWX3VAMGNm
-	 /tNnjU3rK1/6BB0LXqDTtlqS6e9K+PYHj1ZKbuBjDxSjP2LERHaea3pd+s3V5ZZ5Kq
-	 MNPBGFp8czFODhykZ2JHixoCgYCIJDmOtuD8YWRw=
+	b=phN/NNzFy447VCZgLoRrlKf1F2Brnzc9fRbmOie1ZX45MyVmfozeZilFCkYqM2U2p
+	 ta8rKiqMOertSLBqMeS418fDlzMhnpX6eYDJFPT+W71ldDa1/pouBPv+rMY6hp4fFv
+	 jJWdAsumYrx7xtIzAzH10DL1PPIltPG+NNrt/FdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/111] power: rt9455: hide unused rt9455_boost_voltage_values
-Date: Tue, 14 May 2024 12:19:15 +0200
-Message-ID: <20240514100957.780261698@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 285/301] regulator: core: fix debugfs creation regression
+Date: Tue, 14 May 2024 12:19:16 +0200
+Message-ID: <20240514101043.024072273@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 452d8950db3e839aba1bb13bc5378f4bac11fa04 ]
+commit 2a4b49bb58123bad6ec0e07b02845f74c23d5e04 upstream.
 
-The rt9455_boost_voltage_values[] array is only used when USB PHY
-support is enabled, causing a W=1 warning otherwise:
+regulator_get() may sometimes be called more than once for the same
+consumer device, something which before commit dbe954d8f163 ("regulator:
+core: Avoid debugfs: Directory ...  already present! error") resulted in
+errors being logged.
 
-drivers/power/supply/rt9455_charger.c:200:18: error: 'rt9455_boost_voltage_values' defined but not used [-Werror=unused-const-variable=]
+A couple of recent commits broke the handling of such cases so that
+attributes are now erroneously created in the debugfs root directory the
+second time a regulator is requested and the log is filled with errors
+like:
 
-Enclose the definition in the same #ifdef as the references to it.
+	debugfs: File 'uA_load' in directory '/' already present!
+	debugfs: File 'min_uV' in directory '/' already present!
+	debugfs: File 'max_uV' in directory '/' already present!
+	debugfs: File 'constraint_flags' in directory '/' already present!
 
-Fixes: e86d69dd786e ("power_supply: Add support for Richtek RT9455 battery charger")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240403080702.3509288-10-arnd@kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+on any further calls.
+
+Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugfs_create_dir()")
+Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
+Cc: stable@vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240509133304.8883-1-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/rt9455_charger.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/regulator/core.c |   27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/power/supply/rt9455_charger.c b/drivers/power/supply/rt9455_charger.c
-index 594bb3b8a4d1e..a84afccd509f1 100644
---- a/drivers/power/supply/rt9455_charger.c
-+++ b/drivers/power/supply/rt9455_charger.c
-@@ -193,6 +193,7 @@ static const int rt9455_voreg_values[] = {
- 	4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000, 4450000
- };
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1909,19 +1909,24 @@ static struct regulator *create_regulato
+ 		}
+ 	}
  
-+#if IS_ENABLED(CONFIG_USB_PHY)
- /*
-  * When the charger is in boost mode, REG02[7:2] represent boost output
-  * voltage.
-@@ -208,6 +209,7 @@ static const int rt9455_boost_voltage_values[] = {
- 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
- 	5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000, 5600000,
- };
-+#endif
+-	if (err != -EEXIST)
++	if (err != -EEXIST) {
+ 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
+-	if (IS_ERR(regulator->debugfs))
+-		rdev_dbg(rdev, "Failed to create debugfs directory\n");
++		if (IS_ERR(regulator->debugfs)) {
++			rdev_dbg(rdev, "Failed to create debugfs directory\n");
++			regulator->debugfs = NULL;
++		}
++	}
  
- /* REG07[3:0] (VMREG) in uV */
- static const int rt9455_vmreg_values[] = {
--- 
-2.43.0
-
+-	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
+-			   &regulator->uA_load);
+-	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
+-	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
+-	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
+-			    regulator, &constraint_flags_fops);
++	if (regulator->debugfs) {
++		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
++				   &regulator->uA_load);
++		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
++		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
++		debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
++				    regulator, &constraint_flags_fops);
++	}
+ 
+ 	/*
+ 	 * Check now if the regulator is an always on regulator - if
 
 
 
