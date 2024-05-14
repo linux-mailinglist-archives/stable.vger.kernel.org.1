@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9FF8C5500
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027AD8C5128
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57E521F22BA5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37F511F220FC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6079E7E77B;
-	Tue, 14 May 2024 11:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D375025A;
+	Tue, 14 May 2024 10:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ip2ZYs+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5Y1rUGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB5A320F;
-	Tue, 14 May 2024 11:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695341CFB2;
+	Tue, 14 May 2024 10:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687581; cv=none; b=U2E4twLzmRxbj0na8ZVrDpYnFQteUhrqf9sl2UABw7pv6AOZ/Kgv8zZjqnP3jzZFV34h93GiEDgFH9u4dVAMQ/PDpD/T6iGVkTX8LLBKKJUHjT1AwFrlg7IGVezTfjZdOVTLKq/lF3O3z2m5HvwzTwLEMfsC/h7Q/978i2UaZG8=
+	t=1715684115; cv=none; b=SgwYgKBulP6TQAF+LW1wikj/mePQLkbu4shkZzlOQ7UdkvArkcBmxr/lqT64n79yx5c5pdGI2ZDCDIMK3yFyhHVyMumE5RXdA3CgIi3PHCSAsOqiLpgZa1d3xwnvHTYHyUzUxXqz+ehHFBuwpr7raNwKDRy36FuMpoEQRVnocFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687581; c=relaxed/simple;
-	bh=LN8dk1+L9d4Z8zL9hc6OfWGTJ6zGd1U+DtCFX2+TdjA=;
+	s=arc-20240116; t=1715684115; c=relaxed/simple;
+	bh=d6iGUXNZsqrnioyCYGY6ZpjhzbhJeoKlvd7YSapL+f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpYVSQV+sLckmaJpiUSdch1j9+zzskLttlLqag4dtOegz68g/HLu+pA32tCNy8HRTALidHDAnoLKrFg9ni3mEiaul12QX7j3A+wGzfG0BNBf3jzzUQVkon8tkgPj5KzdRw5tIsJIZGNk7oKCjVZ9wolUFv+J2WStXONJ+juB8lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ip2ZYs+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF96C32782;
-	Tue, 14 May 2024 11:53:00 +0000 (UTC)
+	 MIME-Version; b=r4ublpnKPsGi08VnoslZ/m3Dtg0vkoBxLoMm+QJIjJHhj79elmZCUpG5CShQkRkww64Cj8cis4puQ/02nFyUEj1KvPNI9XPhZzyqBrRjOPgXu5yjZ4606uXHJHpzuzu4aAzfSptb49Rm+xBB3B1bK9wa78Xnojlbxvk6h43dNFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5Y1rUGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E336C2BD10;
+	Tue, 14 May 2024 10:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687581;
-	bh=LN8dk1+L9d4Z8zL9hc6OfWGTJ6zGd1U+DtCFX2+TdjA=;
+	s=korg; t=1715684115;
+	bh=d6iGUXNZsqrnioyCYGY6ZpjhzbhJeoKlvd7YSapL+f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ip2ZYs+DN5ABJhqX916EZmyIy2FQea+/ufnjvNnxrW9AZRK304aZ+GKmuRhQlmePe
-	 xVCe8qwjONaZcsvQkVEnv18ZGXYk2HSsHl2umDj9AjbA929/Mzb4KhI1Dj5klt0hJA
-	 doDb1fc4StrIZpRt2wFmWiX/tBk6ugQ22rq0sS2k=
+	b=K5Y1rUGsE+Oj2SxjRq+6VNEUW8IdgJuBvONlnkZYzv5qVIl653sf+s+hCsis6ezEs
+	 6k8XdeZCKbtGivF43CC0TXmFPJz5r+jxrekuff4dvmGjfCvsC58dUH/CptjoBzh2DT
+	 q+07BbqUVLsNvHR0UotKcPE6DbD1HWe4NW8nbME8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/168] bna: ensure the copied buf is NUL terminated
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.8 327/336] eventfs: Do not differentiate the toplevel events directory
 Date: Tue, 14 May 2024 12:18:51 +0200
-Message-ID: <20240514101007.941691610@linuxfoundation.org>
+Message-ID: <20240514101050.968074751@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 8c34096c7fdf272fd4c0c37fe411cd2e3ed0ee9f ]
+commit d53891d348ac3eceaf48f4732a1f4f5c0e0a55ce upstream.
 
-Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
-userspace to that buffer. Later, we use sscanf on this buffer but we don't
-ensure that the string is terminated inside the buffer, this can lead to
-OOB read when using sscanf. Fix this issue by using memdup_user_nul
-instead of memdup_user.
+The toplevel events directory is really no different than the events
+directory of instances. Having the two be different caused
+inconsistencies and made it harder to fix the permissions bugs.
 
-Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-2-f1f1b53a10f4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make all events directories act the same.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240502200905.846448710@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/tracefs/event_inode.c |   29 ++++++++---------------------
+ fs/tracefs/internal.h    |    7 +++----
+ 2 files changed, 11 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-index 04ad0f2b9677e..777f0d7e48192 100644
---- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-@@ -312,7 +312,7 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
- 	void *kern_buf;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -57,7 +57,6 @@ enum {
+ 	EVENTFS_SAVE_MODE	= BIT(16),
+ 	EVENTFS_SAVE_UID	= BIT(17),
+ 	EVENTFS_SAVE_GID	= BIT(18),
+-	EVENTFS_TOPLEVEL	= BIT(19),
+ };
  
- 	/* Copy the user space buf */
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+ #define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
+@@ -196,14 +195,10 @@ static int eventfs_set_attr(struct mnt_i
+ 	return ret;
+ }
  
-@@ -372,7 +372,7 @@ bnad_debugfs_write_regwr(struct file *file, const char __user *buf,
- 	void *kern_buf;
+-static void update_top_events_attr(struct eventfs_inode *ei, struct super_block *sb)
++static void update_events_attr(struct eventfs_inode *ei, struct super_block *sb)
+ {
+ 	struct inode *root;
  
- 	/* Copy the user space buf */
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+-	/* Only update if the "events" was on the top level */
+-	if (!ei || !(ei->attr.mode & EVENTFS_TOPLEVEL))
+-		return;
+-
+ 	/* Get the tracefs root inode. */
+ 	root = d_inode(sb->s_root);
+ 	ei->attr.uid = root->i_uid;
+@@ -216,10 +211,10 @@ static void set_top_events_ownership(str
+ 	struct eventfs_inode *ei = ti->private;
  
--- 
-2.43.0
-
+ 	/* The top events directory doesn't get automatically updated */
+-	if (!ei || !ei->is_events || !(ei->attr.mode & EVENTFS_TOPLEVEL))
++	if (!ei || !ei->is_events)
+ 		return;
+ 
+-	update_top_events_attr(ei, inode->i_sb);
++	update_events_attr(ei, inode->i_sb);
+ 
+ 	if (!(ei->attr.mode & EVENTFS_SAVE_UID))
+ 		inode->i_uid = ei->attr.uid;
+@@ -248,7 +243,7 @@ static int eventfs_permission(struct mnt
+ 	return generic_permission(idmap, inode, mask);
+ }
+ 
+-static const struct inode_operations eventfs_root_dir_inode_operations = {
++static const struct inode_operations eventfs_dir_inode_operations = {
+ 	.lookup		= eventfs_root_lookup,
+ 	.setattr	= eventfs_set_attr,
+ 	.getattr	= eventfs_get_attr,
+@@ -316,7 +311,7 @@ static struct eventfs_inode *eventfs_fin
+ 		// Walk upwards until you find the events inode
+ 	} while (!ei->is_events);
+ 
+-	update_top_events_attr(ei, dentry->d_sb);
++	update_events_attr(ei, dentry->d_sb);
+ 
+ 	return ei;
+ }
+@@ -420,7 +415,7 @@ static struct dentry *lookup_dir_entry(s
+ 	update_inode_attr(dentry, inode, &ei->attr,
+ 			  S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
+ 
+-	inode->i_op = &eventfs_root_dir_inode_operations;
++	inode->i_op = &eventfs_dir_inode_operations;
+ 	inode->i_fop = &eventfs_file_operations;
+ 
+ 	/* All directories will have the same inode number */
+@@ -769,14 +764,6 @@ struct eventfs_inode *eventfs_create_eve
+ 	uid = d_inode(dentry->d_parent)->i_uid;
+ 	gid = d_inode(dentry->d_parent)->i_gid;
+ 
+-	/*
+-	 * If the events directory is of the top instance, then parent
+-	 * is NULL. Set the attr.mode to reflect this and its permissions will
+-	 * default to the tracefs root dentry.
+-	 */
+-	if (!parent)
+-		ei->attr.mode = EVENTFS_TOPLEVEL;
+-
+ 	/* This is used as the default ownership of the files and directories */
+ 	ei->attr.uid = uid;
+ 	ei->attr.gid = gid;
+@@ -785,13 +772,13 @@ struct eventfs_inode *eventfs_create_eve
+ 	INIT_LIST_HEAD(&ei->list);
+ 
+ 	ti = get_tracefs(inode);
+-	ti->flags |= TRACEFS_EVENT_INODE | TRACEFS_EVENT_TOP_INODE;
++	ti->flags |= TRACEFS_EVENT_INODE;
+ 	ti->private = ei;
+ 
+ 	inode->i_mode = S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
+ 	inode->i_uid = uid;
+ 	inode->i_gid = gid;
+-	inode->i_op = &eventfs_root_dir_inode_operations;
++	inode->i_op = &eventfs_dir_inode_operations;
+ 	inode->i_fop = &eventfs_file_operations;
+ 
+ 	dentry->d_fsdata = get_ei(ei);
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -4,10 +4,9 @@
+ 
+ enum {
+ 	TRACEFS_EVENT_INODE		= BIT(1),
+-	TRACEFS_EVENT_TOP_INODE		= BIT(2),
+-	TRACEFS_GID_PERM_SET		= BIT(3),
+-	TRACEFS_UID_PERM_SET		= BIT(4),
+-	TRACEFS_INSTANCE_INODE		= BIT(5),
++	TRACEFS_GID_PERM_SET		= BIT(2),
++	TRACEFS_UID_PERM_SET		= BIT(3),
++	TRACEFS_INSTANCE_INODE		= BIT(4),
+ };
+ 
+ struct tracefs_inode {
 
 
 
