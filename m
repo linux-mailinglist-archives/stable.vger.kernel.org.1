@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFB48C52A9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742F78C5507
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AEE6B216DE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B29B281019
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E441422B2;
-	Tue, 14 May 2024 11:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7614129E9C;
+	Tue, 14 May 2024 11:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrLYikn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATqfNNLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DEB1420D7;
-	Tue, 14 May 2024 11:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952AE320F;
+	Tue, 14 May 2024 11:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686041; cv=none; b=V2qnyWWStwms+oIgjmqd5/YUFqbm6bBMnSj+uYCn+g4fLjBuwQN4Njmg5YfE6fgofJaESW1ANMw/D59MhsNEmcGv/GdHAQ02AaunfdoCduNUdfOJ3tdWxYRPSvuNz8qiPIvdIiHOSDLc7wUy7H4FAEMJwPX7YpUHnfhzELd8rfk=
+	t=1715687592; cv=none; b=py+KqU+VWY2ih7x50NXgqxBg/fgBUJ7u8qU0+dV1LRqbYUjH9DaVG/tCkOQ7oy+dQc9su3MV3XLU3wVJinABmtN/qlpJXMHDu8b/vAiHD85iNXBXdU5ojTyPu4fqL4Mru6fH2ACU9+PdIDVeszlhHMZB8JZbx9LCJArkqT/xquQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686041; c=relaxed/simple;
-	bh=8DY8qudAWLsFddiKmKLgFJDlgtYloitTdnGQSepdwr4=;
+	s=arc-20240116; t=1715687592; c=relaxed/simple;
+	bh=wsgP71Unx9/4fmZtE9bIhXwRn4aWNMUZAigi5xD2woQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u06pE1mtqfjZCtcBr43xciErQkSyKN6RS38JxbUiES7a+up1XcTAfv1f2ZFvzS0TBaETiCjxSRZLIOizBvqkrTa3ttZiGOsRzRS/26HPZt7ys9fGfqD4FBdHd1H07u7hV4sNyj2KgMag/9UEFLoMIypo8XRxMAOiieIrpRykj7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrLYikn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA68BC2BD10;
-	Tue, 14 May 2024 11:27:19 +0000 (UTC)
+	 MIME-Version; b=fWPqd4ffMIahP1ozUI4xKQNvzUg49Ju0LVeNbGf+c+38T76vn87re/WrVj7iIQEiqFDyHjImrCycfaLT6XldHfDvVBzwa0nYSw6+du9W+tRxCyrvTff5YBd0nVzKZz7/DPRGB076IzWzTjGcLSQ2XPcESnKxxAYrzt8CXvzrZ9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATqfNNLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4EAC2BD10;
+	Tue, 14 May 2024 11:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686041;
-	bh=8DY8qudAWLsFddiKmKLgFJDlgtYloitTdnGQSepdwr4=;
+	s=korg; t=1715687592;
+	bh=wsgP71Unx9/4fmZtE9bIhXwRn4aWNMUZAigi5xD2woQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrLYikn+plZvK1DWE9oPT0qSUOMNLzsEBdiMz2rJqPa+va4UTdflzIET0PeB/Ab3G
-	 Tq/p8WCzbM3S2ojiu5s4cKw23/C7Sd/Nd7OgOciCQuSns6Rib5KfLndiEu4YWKP+Wl
-	 kxTms3bf2f4iwSRnmbSsVAvP/25BXZJPl4PSwdec=
+	b=ATqfNNLZg/JO6lMwfvK88Fm0uqQCGb9jmN2Gd0REeqc21RTLB0so1En3pdjMRZTEO
+	 649UKSiQ2nhLip5ZqnuZoG7zI7eceX1MRyp9hHKUWIOl5a+QhRkit2rdFZUA/JDxrl
+	 N53gpicvzPVHuaeV6Fj1ouZUiVCUY1S83Tmouv+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.6 262/301] slimbus: qcom-ngd-ctrl: Add timeout for wait operation
-Date: Tue, 14 May 2024 12:18:53 +0200
-Message-ID: <20240514101042.148473832@linuxfoundation.org>
+	James Chapman <jchapman@katalix.com>,
+	David Bauer <mail@david-bauer.net>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 036/168] net l2tp: drop flow hash on forward
+Date: Tue, 14 May 2024 12:18:54 +0200
+Message-ID: <20240514101008.054304989@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viken Dadhaniya <quic_vdadhani@quicinc.com>
+From: David Bauer <mail@david-bauer.net>
 
-commit 98241a774db49988f25b7b3657026ce51ccec293 upstream.
+[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
 
-In current driver qcom_slim_ngd_up_worker() indefinitely
-waiting for ctrl->qmi_up completion object. This is
-resulting in workqueue lockup on Kthread.
+Drop the flow-hash of the skb when forwarding to the L2TP netdev.
 
-Added wait_for_completion_interruptible_timeout to
-allow the thread to wait for specific timeout period and
-bail out instead waiting infinitely.
+This avoids the L2TP qdisc from using the flow-hash from the outer
+packet, which is identical for every flow within the tunnel.
 
-Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Viken Dadhaniya <quic_vdadhani@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240430091238.35209-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This does not affect every platform but is specific for the ethernet
+driver. It depends on the platform including L4 information in the
+flow-hash.
+
+One such example is the Mediatek Filogic MT798x family of networking
+processors.
+
+Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
+Acked-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/l2tp/l2tp_eth.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1451,7 +1451,11 @@ static void qcom_slim_ngd_up_worker(stru
- 	ctrl = container_of(work, struct qcom_slim_ngd_ctrl, ngd_up_work);
+diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
+index 6cd97c75445c8..9a36e174984cf 100644
+--- a/net/l2tp/l2tp_eth.c
++++ b/net/l2tp/l2tp_eth.c
+@@ -136,6 +136,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
+ 	/* checksums verified by L2TP */
+ 	skb->ip_summed = CHECKSUM_NONE;
  
- 	/* Make sure qmi service is up before continuing */
--	wait_for_completion_interruptible(&ctrl->qmi_up);
-+	if (!wait_for_completion_interruptible_timeout(&ctrl->qmi_up,
-+						       msecs_to_jiffies(MSEC_PER_SEC))) {
-+		dev_err(ctrl->dev, "QMI wait timeout\n");
-+		return;
-+	}
++	/* drop outer flow-hash */
++	skb_clear_hash(skb);
++
+ 	skb_dst_drop(skb);
+ 	nf_reset_ct(skb);
  
- 	mutex_lock(&ctrl->ssr_lock);
- 	qcom_slim_ngd_enable(ctrl, true);
+-- 
+2.43.0
+
 
 
 
