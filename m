@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7831E8C5290
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BBD8C5472
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1585AB2179B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5749D1C22BB3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B713F446;
-	Tue, 14 May 2024 11:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363FE1272C0;
+	Tue, 14 May 2024 11:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNbSG8Zs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zebJzKcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC3513D51C;
-	Tue, 14 May 2024 11:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F871272D5;
+	Tue, 14 May 2024 11:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685934; cv=none; b=d6QtJ8hJjPVaIIo8fTD1lf7BPbdib22q/8hdCp7PDZ5SH0eoBJy/msssjypkDA/CB6Ta5PAB9VPfgr9FbvxP/nBJp7CPzykmUxX5c7SIDr9fT57OVJoXI2LX3XkrDf6p/xEfpUUwCnFoYqMP5wU648RkfpidVa5sjDn8nPv7O3k=
+	t=1715687199; cv=none; b=h7CHMxoIu1Hl8E95jKbfA3FIMdn97MO6Dc828S1rLw3znPSsunmC1/tjtibhIZmgsG1ryMDGvSUAImuIn2K4pRBRkp+2/exRT5FMqwovUX4/6TSY1Ni6sM1gwe1JLUSnimjNwwUqFcwLHC/JqDrL+0jnowl1N7asEVigo3NYTZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685934; c=relaxed/simple;
-	bh=IMtdshwa/wBKusNLHDHSfBYL2BbGBvdqIahMWX1Wt0k=;
+	s=arc-20240116; t=1715687199; c=relaxed/simple;
+	bh=VKi5aaCeTmRO/2aMt9yXAkgO01LQzE7LBs20zG8Rgrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8okpeGUtOwemH4rQUI42xI4J9ydi8rPlfSon4EqYyvqk+qgaihMdfymLklCCmhRgSxjnrqoi2OBEvBDK7zLsZXM2kUT74/fjOwH+gBKhrapTxoa/3fnpLNQUDjdm//luTBUHNq4PvQLPJvwjIl6HETxlqWEbY6OdTM3VZ+qVsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNbSG8Zs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E2FC2BD10;
-	Tue, 14 May 2024 11:25:32 +0000 (UTC)
+	 MIME-Version; b=djB1V0QBfg7cKD14Ib6NPPRFT3RSKqH06B6LeYyVl5Hqd7+kVKIdccNztdcwMyaW8dd7rcLoWIOtV3a/S1k9h78M8GiVcn3Ys4Y20tP8axmgFZVILfSqqVuNBvC6bv39tjj2bVeTBiVofYBncsEXUogsNEFtImodvFEuLtCztM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zebJzKcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4FDC2BD10;
+	Tue, 14 May 2024 11:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685933;
-	bh=IMtdshwa/wBKusNLHDHSfBYL2BbGBvdqIahMWX1Wt0k=;
+	s=korg; t=1715687198;
+	bh=VKi5aaCeTmRO/2aMt9yXAkgO01LQzE7LBs20zG8Rgrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNbSG8ZsYD4w+2sS/Q2mh5ATnakKE1X8YXC3ZEecedC20j7hs/gS5QpcrbYvMuTgc
-	 YQCjjIQTSlmE1Q3J/9DXM31TRqD6ACmjDcWYuHFoO7h+8tccSecu0XoVlbb02Q207t
-	 2CTaqs9U/VlRulBsmN/DcVwAVbvD+OmTvrQyTa7c=
+	b=zebJzKcwJkySlLqA7JdxIF8JWkkMjqoqKQMs54Inu5yfP/EU+WdvVcD/mlHIGU860
+	 yi9Mn2/jsbRzUy2Zx6tg5WzNrauMGzpLQTnvbIdZogPXWcRMAHRh54ChuUbfZauuBw
+	 /u8pGjd4nZY5EFZaWahkmunQzBkVRonjnElUwiBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Huang <ahuang12@lenovo.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6 280/301] x86/apic: Dont access the APIC when disabling x2APIC
-Date: Tue, 14 May 2024 12:19:11 +0200
-Message-ID: <20240514101042.836557063@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 014/111] nfs: expose /proc/net/sunrpc/nfs in net namespaces
+Date: Tue, 14 May 2024 12:19:12 +0200
+Message-ID: <20240514100957.668256975@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 720a22fd6c1cdadf691281909950c0cbc5cdf17e upstream.
+[ Upstream commit d47151b79e3220e72ae323b8b8e9d6da20dc884e ]
 
-With 'iommu=off' on the kernel command line and x2APIC enabled by the BIOS
-the code which disables the x2APIC triggers an unchecked MSR access error:
+We're using nfs mounts inside of containers in production and noticed
+that the nfs stats are not exposed in /proc.  This is a problem for us
+as we use these stats for monitoring, and have to do this awkward bind
+mount from the main host into the container in order to get to these
+states.
 
-  RDMSR from 0x802 at rIP: 0xffffffff94079992 (native_apic_msr_read+0x12/0x50)
+Add the rpc_proc_register call to the pernet operations entry and exit
+points so these stats can be exposed inside of network namespaces.
 
-This is happens because default_acpi_madt_oem_check() selects an x2APIC
-driver before the x2APIC is disabled.
-
-When the x2APIC is disabled because interrupt remapping cannot be enabled
-due to 'iommu=off' on the command line, x2apic_disable() invokes
-apic_set_fixmap() which in turn tries to read the APIC ID. This triggers
-the MSR warning because x2APIC is disabled, but the APIC driver is still
-x2APIC based.
-
-Prevent that by adding an argument to apic_set_fixmap() which makes the
-APIC ID read out conditional and set it to false from the x2APIC disable
-path. That's correct as the APIC ID has already been read out during early
-discovery.
-
-Fixes: d10a904435fa ("x86/apic: Consolidate boot_cpu_physical_apicid initialization sites")
-Reported-by: Adrian Huang <ahuang12@lenovo.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Adrian Huang <ahuang12@lenovo.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/875xw5t6r7.ffs@tglx
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 24457f1be29f ("nfs: Handle error of rpc_proc_register() in nfs_net_init().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/apic.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/nfs/inode.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1808,7 +1808,7 @@ void x2apic_setup(void)
- 	__x2apic_enable();
- }
- 
--static __init void apic_set_fixmap(void);
-+static __init void apic_set_fixmap(bool read_apic);
- 
- static __init void x2apic_disable(void)
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 36f415278c042..51c721e2f5555 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2226,11 +2226,13 @@ EXPORT_SYMBOL_GPL(nfs_net_id);
+ static int nfs_net_init(struct net *net)
  {
-@@ -1830,7 +1830,12 @@ static __init void x2apic_disable(void)
- 	}
- 
- 	__x2apic_disable();
--	apic_set_fixmap();
-+	/*
-+	 * Don't reread the APIC ID as it was already done from
-+	 * check_x2apic() and the APIC driver still is a x2APIC variant,
-+	 * which fails to do the read after x2APIC was disabled.
-+	 */
-+	apic_set_fixmap(false);
+ 	nfs_clients_init(net);
++	rpc_proc_register(net, &nfs_rpcstat);
+ 	return nfs_fs_proc_net_init(net);
  }
  
- static __init void x2apic_enable(void)
-@@ -2095,13 +2100,14 @@ void __init init_apic_mappings(void)
- 	}
- }
- 
--static __init void apic_set_fixmap(void)
-+static __init void apic_set_fixmap(bool read_apic)
+ static void nfs_net_exit(struct net *net)
  {
- 	set_fixmap_nocache(FIX_APIC_BASE, mp_lapic_addr);
- 	apic_mmio_base = APIC_BASE;
- 	apic_printk(APIC_VERBOSE, "mapped APIC to %16lx (%16lx)\n",
- 		    apic_mmio_base, mp_lapic_addr);
--	apic_read_boot_cpu_id(false);
-+	if (read_apic)
-+		apic_read_boot_cpu_id(false);
++	rpc_proc_unregister(net, "nfs");
+ 	nfs_fs_proc_net_exit(net);
+ 	nfs_clients_exit(net);
  }
+@@ -2289,15 +2291,12 @@ static int __init init_nfs_fs(void)
+ 	if (err)
+ 		goto out1;
  
- void __init register_lapic_address(unsigned long address)
-@@ -2111,7 +2117,7 @@ void __init register_lapic_address(unsig
- 	mp_lapic_addr = address;
+-	rpc_proc_register(&init_net, &nfs_rpcstat);
+-
+ 	err = register_nfs_fs();
+ 	if (err)
+ 		goto out0;
  
- 	if (!x2apic_mode)
--		apic_set_fixmap();
-+		apic_set_fixmap(true);
- }
- 
- /*
+ 	return 0;
+ out0:
+-	rpc_proc_unregister(&init_net, "nfs");
+ 	nfs_destroy_directcache();
+ out1:
+ 	nfs_destroy_writepagecache();
+@@ -2330,7 +2329,6 @@ static void __exit exit_nfs_fs(void)
+ 	nfs_destroy_nfspagecache();
+ 	nfs_fscache_unregister();
+ 	unregister_pernet_subsys(&nfs_net_ops);
+-	rpc_proc_unregister(&init_net, "nfs");
+ 	unregister_nfs_fs();
+ 	nfs_fs_proc_exit();
+ 	nfsiod_stop();
+-- 
+2.43.0
+
 
 
 
