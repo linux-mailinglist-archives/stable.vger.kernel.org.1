@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-44000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AF48C50BA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:11:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074E58C51E1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5B261C21379
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:11:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1E8F1F2139B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D766EB4D;
-	Tue, 14 May 2024 10:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0E87581B;
+	Tue, 14 May 2024 11:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCNN2s0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2G6Ajea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A3B6DCE8;
-	Tue, 14 May 2024 10:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC88C6D1D7;
+	Tue, 14 May 2024 11:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683616; cv=none; b=TdqnivNlIW4vN/fZUqlvhUMfnRO0pRFLVKplLnKdKgnTekUulW3k2Hn5uZVkgO3Wa7ATY+OEgHlkUwSYScndw2/OdhyJAiBdSVVOkq1/MR3T8r9dKL4hGAbSueGotx+i1qnQqWhd5ne6o/kBo6B0ye6dsEr4rS9gpDefu5yiFlc=
+	t=1715685162; cv=none; b=YFEQUYF0jMjKLRS2h7wITBUIljHPBvUrj0m36zBkhfW6uWridcwycNsLPcgqe+4w5J25XuQhOr90qm9AusCYgwBxUWH5OCGln66HnqFLvQXtHeBUQKykNu6bXvnjIvW6br5s+OihRSTcyLwPALrKBlSkN2BKxYal4DRxzaN3vT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683616; c=relaxed/simple;
-	bh=OVscp2Indq47Q8ZpIlQMT8c8Ju2P4qP+c/3xC8FRm1g=;
+	s=arc-20240116; t=1715685162; c=relaxed/simple;
+	bh=TreBqxrjcYiHA/N+i2Jy1gw0IL31XtLh5idxao63Cq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5ami5Jmb61BqiRpK3tsIe8Y+wWrY9r7dFVMpRCgj6y6N7ayKDh52+0ZWnIo60Xzg4r6SamklAyAps0TIDC5nhPBJRzkxfextweFkWUsoE2aB6/2WwcJbY5JeeuoJFwDt+HgAs+d7wztb476YvBqpLf43ghKw0/aH4qdo9khO6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCNN2s0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040ACC2BD10;
-	Tue, 14 May 2024 10:46:54 +0000 (UTC)
+	 MIME-Version; b=s9eicpRkBMOwv9YaoQtKpmYLv7agvcyxxACGaSri1OzLtuSRNgPB72iqNMk3s1CHowiVZMIirSPCUBKnAnrG7Yxu6ULY0luyobDrYNLOhtPa/s3fOZJI3W+0nIRNZIZUMd2uChabctDJmSHEnxAcP/8SFoPVQ2PrrsOWMCIyRTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2G6Ajea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BEFC2BD10;
+	Tue, 14 May 2024 11:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683615;
-	bh=OVscp2Indq47Q8ZpIlQMT8c8Ju2P4qP+c/3xC8FRm1g=;
+	s=korg; t=1715685161;
+	bh=TreBqxrjcYiHA/N+i2Jy1gw0IL31XtLh5idxao63Cq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCNN2s0PJjnnjUxSp9m+yAzIhIkHngioiMDWUeKcZIK6+LA/bvvXSx4Cxu1aCb6oq
-	 4hP3v3LDKlMqt+47Ia67Wk5I2mTuvhw0qjOcuGnhVZCYJTgwqkmRmh08ylCI9+OIoC
-	 bii3fgytuBLguEsQ5sLWafgI5CP+L/daQGkje/ZA=
+	b=l2G6Ajea6N1cNDXHHn03PjwLIyp4orlz4SNLcTSoy4vR1BeiDOVJa2Cw9IhaVPQX4
+	 EVLQoOCDTkLIhegcHmvoWl2lH15BbjwKTOtUeChYfjBzl/AzSgaPt9kARAGMM4Cpr2
+	 Ft4mGn0+bzk+yxlhH3TAQ0jFtOaf38XPdTqWHeE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 213/336] net: bridge: fix corrupted ethernet header on multicast-to-unicast
+Subject: [PATCH 6.6 146/301] drm/amdgpu: implement IRQ_STATE_ENABLE for SDMA v4.4.2
 Date: Tue, 14 May 2024 12:16:57 +0200
-Message-ID: <20240514101046.654286977@linuxfoundation.org>
+Message-ID: <20240514101037.766919418@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Tao Zhou <tao.zhou1@amd.com>
 
-[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
+[ Upstream commit f886b49feaae30acd599e37d4284836024b0f3ed ]
 
-The change from skb_copy to pskb_copy unfortunately changed the data
-copying to omit the ethernet header, since it was pulled before reaching
-this point. Fix this by calling __skb_push/pull around pskb_copy.
+SDMA_CNTL is not set in some cases, driver configures it by itself.
 
-Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+v2: simplify code
+
+Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index d7c35f55bd69f..d97064d460dc7 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -258,6 +258,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- {
- 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
- 	const unsigned char *src = eth_hdr(skb)->h_source;
-+	struct sk_buff *nskb;
+diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
+index e76e7e7cb554e..4e8d5e6a65e41 100644
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
+@@ -1613,19 +1613,9 @@ static int sdma_v4_4_2_set_ecc_irq_state(struct amdgpu_device *adev,
+ 	u32 sdma_cntl;
  
- 	if (!should_deliver(p, skb))
- 		return;
-@@ -266,12 +267,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
+ 	sdma_cntl = RREG32_SDMA(type, regSDMA_CNTL);
+-	switch (state) {
+-	case AMDGPU_IRQ_STATE_DISABLE:
+-		sdma_cntl = REG_SET_FIELD(sdma_cntl, SDMA_CNTL,
+-					  DRAM_ECC_INT_ENABLE, 0);
+-		WREG32_SDMA(type, regSDMA_CNTL, sdma_cntl);
+-		break;
+-	/* sdma ecc interrupt is enabled by default
+-	 * driver doesn't need to do anything to
+-	 * enable the interrupt */
+-	case AMDGPU_IRQ_STATE_ENABLE:
+-	default:
+-		break;
+-	}
++	sdma_cntl = REG_SET_FIELD(sdma_cntl, SDMA_CNTL, DRAM_ECC_INT_ENABLE,
++					state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
++	WREG32_SDMA(type, regSDMA_CNTL, sdma_cntl);
  
--	skb = pskb_copy(skb, GFP_ATOMIC);
--	if (!skb) {
-+	__skb_push(skb, ETH_HLEN);
-+	nskb = pskb_copy(skb, GFP_ATOMIC);
-+	__skb_pull(skb, ETH_HLEN);
-+	if (!nskb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
- 	}
- 
-+	skb = nskb;
-+	__skb_pull(skb, ETH_HLEN);
- 	if (!is_broadcast_ether_addr(addr))
- 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
- 
+ 	return 0;
+ }
 -- 
 2.43.0
 
