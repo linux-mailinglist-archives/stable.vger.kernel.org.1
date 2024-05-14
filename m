@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38458C5498
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 931588C53AC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28571F235A6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17F4D28824A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB7212D1F1;
-	Tue, 14 May 2024 11:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9252712E1C2;
+	Tue, 14 May 2024 11:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCprg5rY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAkTJkta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBF483CD9;
-	Tue, 14 May 2024 11:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509CF12DDB8;
+	Tue, 14 May 2024 11:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687299; cv=none; b=RD9uxBmFil0lOrFStfjFlZlNDlEwDKO5qlKD2T38uO6of1jl1ql5a/Y2kbbEUXMcgQBZ/yd0mVsACwwbdBAANshMW2CGR/Yv0AyQJHVciy1oWpw2EirIHxk2nGVmMFVoEHZ3qWw3ge+zocuiFLB8WoY9X6CU4Y6MQYCqFuxkm0c=
+	t=1715686688; cv=none; b=QEnjgjVkNAvo2V/F+cfV5L5bqrZt9FDz6vbTud13IwkD4jplG18s7uPsU1yrqbfj2+mAYDrd637hOyffgNdwnJhefB4HjPqlXX9Y8h831RKsYjLPiUy3j/PaLechDXK6+SUoK93rcQN0nuy4+bYHXUPbQyKpWXQIQuV0EMPpk9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687299; c=relaxed/simple;
-	bh=FhaD9m55F5MKEUDatC10O7fRu5QT+bKzJwRjDcZyxYE=;
+	s=arc-20240116; t=1715686688; c=relaxed/simple;
+	bh=Oz/5n6+rIJKqyMHQJ0Jop2Lyh89A8W8acVreE1bjOn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cr2W8TeTjHL5JYynJNNd+n0s1O3Kt0orySXNteT4kP+bMhVxFogwL//aSxlI3Ioxh0r6awLuSllZhN6pDmBFxiVSeUFTCfxybvMr2Di4COcUx+8iXzQD0b28QBz2s0iW1Pf1mEOFteBEYNmO3nbYf7zlfJZSrvz/+0nHyPiILwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCprg5rY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455F1C2BD10;
-	Tue, 14 May 2024 11:48:19 +0000 (UTC)
+	 MIME-Version; b=izHQMehSSmy5/y5sUZv60qN6+CAId2yVxMf2NfknOoVAyGGwYha0SPUFo9SfSsgk9xR1yjjfRtb6OmhxPw4KtnZpJn62/K4ArTYpvf3PkOvaqO2qZSxLF7CTfDbcrGvJCdHOuah3bk9H42vN4ptjbe1aE+r02EEfBNjpurXPqdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAkTJkta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC8BC2BD10;
+	Tue, 14 May 2024 11:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687299;
-	bh=FhaD9m55F5MKEUDatC10O7fRu5QT+bKzJwRjDcZyxYE=;
+	s=korg; t=1715686688;
+	bh=Oz/5n6+rIJKqyMHQJ0Jop2Lyh89A8W8acVreE1bjOn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vCprg5rYTLhFkshXF3uxI7nGTIsWNWyd6QTditvV+xWW2SoUKcdokulB7oHrU8MXc
-	 8Uu0+0zQL+HqNLYePWc3vIVnqKrelg5T8ChVhCxvR46+oiL+hFICSxyHjLcFeTov36
-	 VFTvbgIYuwlS6eQaL+tX/jjQus9Ma3UxxPTSYEe4=
+	b=xAkTJktanSEwA5idVCKLS58ioTo1fo8WpyVVmQF7c9UgoSxH20YVEPx/TbwLvws7S
+	 Qv827W9Tpqs71Gu46vHvZtKQNxigWKG/U0tH19+Zmm7gHIhM3G7ADuyl+DYMwSoGmv
+	 327HYZichJRd0hMGGCkC0NIe74QN3RlfkXUX5Ehs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 048/111] net: mark racy access on sk->sk_rcvbuf
-Date: Tue, 14 May 2024 12:19:46 +0200
-Message-ID: <20240514100958.959108029@linuxfoundation.org>
+	Lakshmi Yadlapati <lakshmiy@us.ibm.com>,
+	Eddie James <eajames@linux.ibm.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 225/236] hwmon: (pmbus/ucd9000) Increase delay from 250 to 500us
+Date: Tue, 14 May 2024 12:19:47 +0200
+Message-ID: <20240514101028.900092602@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
 
-[ Upstream commit c2deb2e971f5d9aca941ef13ee05566979e337a4 ]
+commit 26e8383b116d0dbe74e28f86646563ab46d66d83 upstream.
 
-sk->sk_rcvbuf in __sock_queue_rcv_skb() and __sk_receive_skb() can be
-changed by other threads. Mark this as benign using READ_ONCE().
+Following the failure observed with a delay of 250us, experiments were
+conducted with various delays. It was found that a delay of 350us
+effectively mitigated the issue.
 
-This patch is aimed at reducing the number of benign races reported by
-KCSAN in order to focus future debugging effort on harmful races.
+To provide a more optimal solution while still allowing a margin for
+stability, the delay is being adjusted to 500us.
 
-Signed-off-by: linke li <lilinke99@qq.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+Link: https://lore.kernel.org/r/20240507194603.1305750-1-lakshmiy@us.ibm.com
+Fixes: 8d655e6523764 ("hwmon: (ucd90320) Add minimum delay between bus accesses")
+Reviewed-by: Eddie James <eajames@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/pmbus/ucd9000.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 016c0b9e01b70..b4ecd0071e220 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -440,7 +440,7 @@ int __sock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb)
- 	unsigned long flags;
- 	struct sk_buff_head *list = &sk->sk_receive_queue;
+--- a/drivers/hwmon/pmbus/ucd9000.c
++++ b/drivers/hwmon/pmbus/ucd9000.c
+@@ -80,11 +80,11 @@ struct ucd9000_debugfs_entry {
+  * It has been observed that the UCD90320 randomly fails register access when
+  * doing another access right on the back of a register write. To mitigate this
+  * make sure that there is a minimum delay between a write access and the
+- * following access. The 250us is based on experimental data. At a delay of
+- * 200us the issue seems to go away. Add a bit of extra margin to allow for
++ * following access. The 500 is based on experimental data. At a delay of
++ * 350us the issue seems to go away. Add a bit of extra margin to allow for
+  * system to system differences.
+  */
+-#define UCD90320_WAIT_DELAY_US 250
++#define UCD90320_WAIT_DELAY_US 500
  
--	if (atomic_read(&sk->sk_rmem_alloc) >= sk->sk_rcvbuf) {
-+	if (atomic_read(&sk->sk_rmem_alloc) >= READ_ONCE(sk->sk_rcvbuf)) {
- 		atomic_inc(&sk->sk_drops);
- 		trace_sock_rcvqueue_full(sk, skb);
- 		return -ENOMEM;
-@@ -492,7 +492,7 @@ int __sk_receive_skb(struct sock *sk, struct sk_buff *skb,
- 
- 	skb->dev = NULL;
- 
--	if (sk_rcvqueues_full(sk, sk->sk_rcvbuf)) {
-+	if (sk_rcvqueues_full(sk, READ_ONCE(sk->sk_rcvbuf))) {
- 		atomic_inc(&sk->sk_drops);
- 		goto discard_and_relse;
- 	}
--- 
-2.43.0
-
+ static inline void ucd90320_wait(const struct ucd9000_data *data)
+ {
 
 
 
