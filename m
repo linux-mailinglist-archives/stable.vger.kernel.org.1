@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571498C50EF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:15:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61ACC8C523A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04A331F20B65
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFE6D282959
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4147B12A16D;
-	Tue, 14 May 2024 10:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF3441A87;
+	Tue, 14 May 2024 11:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Shruv1Sd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sK8AedM2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F306612A151;
-	Tue, 14 May 2024 10:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A020D2943F;
+	Tue, 14 May 2024 11:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683866; cv=none; b=NnXvdXhMg3fGTpsEX45laKxY5J+IfPT1mNH53jMdiJnbdRJ0RrR1YASS2m1tx0vcRKXESR83CgqhAcNnJI1wIUNjKqsw5V4VGDqxaxNwAHZJkXTHAq9MHG60L6T5UqwI1vd17zDwj67u4gHVIBAdfsPNrpiKAyiI0ihAjLn0450=
+	t=1715685646; cv=none; b=Yc0YidOu9iX72wz6hsdo1qoWzq1FLMXJPv3++S/Jr0uoNb8ByjJQGZfo5O6oHswuZ30KrHLynX9IJL/niYSPAf5Eu7fyUM+5xb0fksGdMF6MGsUZhuWNmX93rtAGzGplltxu7r2z5XrTNjwJ7XqhNDwUuGQA1djmM4k1AGzAgk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683866; c=relaxed/simple;
-	bh=7nrJid9sDlV52BOPv1UEuXPhl4tUK9XbgkzInPiMvIs=;
+	s=arc-20240116; t=1715685646; c=relaxed/simple;
+	bh=Kgoa7cgIiGMYDmYEgibk/RdVEHw3PaXeRxZCOJc3ZDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EujcDEZhsHZp1L6L+1JHTBHNIkl6uZhkn4qQ36UuRG+udSUPQex0CuCl0SqdFOFA8i+mDIbfge/lQJFsl97BGDoqQI9GKEpGAoypYIfZALrFCtRlMt5VP1il4B/cfZgp6ypyb30TbQzF+PT6y6ypTgpR12OATj12p1P9adWuKBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Shruv1Sd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5A3C2BD10;
-	Tue, 14 May 2024 10:51:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Adxw4ZKPR9Yw9gMvH9yoqy6xjhLGZx036yscE+WDgl7WyMhU8jkarhgLs7czwrzwsuY9Hud1hCyZk63shqaDMeRWm58YhJS7GftLnootyl1x8jvcIaKLyi6eJGg4edcxJHu3JOpORIBCHTAhGIwfBAxz0nDwm901JxQRD30kkdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sK8AedM2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09491C2BD10;
+	Tue, 14 May 2024 11:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683865;
-	bh=7nrJid9sDlV52BOPv1UEuXPhl4tUK9XbgkzInPiMvIs=;
+	s=korg; t=1715685646;
+	bh=Kgoa7cgIiGMYDmYEgibk/RdVEHw3PaXeRxZCOJc3ZDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Shruv1SdIEUj3ATOoItGejYdovl30CKn3SHQijPN/DzaUN95WgA4gq9OzYjGPdPUa
-	 XvzEXw6o5eEUn8qEoGz5FuM6H/Mst46VhEhyRkNMvKkJF/ioFOJMlh0rBiWnI3CV23
-	 w7wbJ6XOcTDUG5JeNFH4uLQ7KnYdDfyWutia6T5Q=
+	b=sK8AedM2nginA/fToYKLQrO2xPRAbrTCiQtX6gDsTRCIcI3cpRrx5ktCNofNLaFdx
+	 QhiwwsEOXIWtmaoEkayvx3ugteweyj+IRQct42IrpLnORpi/ECUhbou7uSv4Y2s0hY
+	 G4zpBssDOT5pXswoiJLSKlDcwn/ry0IhENan6Cig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jim Cromie <jim.cromie@gmail.com>
-Subject: [PATCH 6.8 287/336] dyndbg: fix old BUG_ON in >control parser
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
+	Jeremy Day <jsday@noreason.ca>
+Subject: [PATCH 6.6 220/301] drm/amdgpu: Fix comparison in amdgpu_res_cpu_visible
 Date: Tue, 14 May 2024 12:18:11 +0200
-Message-ID: <20240514101049.453413726@linuxfoundation.org>
+Message-ID: <20240514101040.563778372@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Cromie <jim.cromie@gmail.com>
+From: Michel Dänzer <mdaenzer@redhat.com>
 
-commit 00e7d3bea2ce7dac7bee1cf501fb071fd0ea8f6c upstream.
+commit 8d2c930735f850e5be6860aeb39b27ac73ca192f upstream.
 
-Fix a BUG_ON from 2009.  Even if it looks "unreachable" (I didn't
-really look), lets make sure by removing it, doing pr_err and return
--EINVAL instead.
+It incorrectly claimed a resource isn't CPU visible if it's located at
+the very end of CPU visible VRAM.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
-Link: https://lore.kernel.org/r/20240429193145.66543-2-jim.cromie@gmail.com
+Fixes: a6ff969fe9cb ("drm/amdgpu: fix visible VRAM handling during faults")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3343
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-and-Tested-by: Jeremy Day <jsday@noreason.ca>
+Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/dynamic_debug.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/dynamic_debug.c
-+++ b/lib/dynamic_debug.c
-@@ -302,7 +302,11 @@ static int ddebug_tokenize(char *buf, ch
- 		} else {
- 			for (end = buf; *end && !isspace(*end); end++)
- 				;
--			BUG_ON(end == buf);
-+			if (end == buf) {
-+				pr_err("parse err after word:%d=%s\n", nwords,
-+				       nwords ? words[nwords - 1] : "<none>");
-+				return -EINVAL;
-+			}
- 		}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -432,7 +432,7 @@ bool amdgpu_res_cpu_visible(struct amdgp
  
- 		/* `buf' is start of word, `end' is one past its end */
+ 	amdgpu_res_first(res, 0, res->size, &cursor);
+ 	while (cursor.remaining) {
+-		if ((cursor.start + cursor.size) >= adev->gmc.visible_vram_size)
++		if ((cursor.start + cursor.size) > adev->gmc.visible_vram_size)
+ 			return false;
+ 		amdgpu_res_next(&cursor, cursor.size);
+ 	}
 
 
 
