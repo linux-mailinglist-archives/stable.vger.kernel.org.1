@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-43974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7978C5091
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:06:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BAE8C51EC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3F91F20F44
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:06:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12E15B21CAF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A07013D8B7;
-	Tue, 14 May 2024 10:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA718762C1;
+	Tue, 14 May 2024 11:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmfJZbuP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYmZYOHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172536BFBB;
-	Tue, 14 May 2024 10:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6732476028;
+	Tue, 14 May 2024 11:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683452; cv=none; b=MMqZss+ulW2qf8Cjx5JGGoWqinqZF5M24rpFT2R7BJb2mthXRoPkmsvIa2dsHlQCWMJFTNVNpEz3RiAyNicggKve08NPHjNVWs3RDFX4JWYXLXJj5J6E8oYPVR1VnS5Ef4lVN1LIa8QJyfP1wV8gOOKSyleBpdVvklnLL+JMtGo=
+	t=1715685214; cv=none; b=g0tiK0zdqt+yTv7i8JW0vxG+fR5vZpO9EeJIZIdJWUV+kzIWdmHC/AEVkE/AmdhkI3vn+sXx+OwDxcszCvcS5SUyTjLpRPemj1kjE2NvqU+YuIV8XY4Dat9a/BikgQxSNF6cMxqyNJy7qgoxxsIFKOCKSdqvRdTFXdQTBbMd230=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683452; c=relaxed/simple;
-	bh=312FFyGUHSCTnybX8ftzEW0F2gN3iSzsOifGkJoB7zo=;
+	s=arc-20240116; t=1715685214; c=relaxed/simple;
+	bh=Q5Uyn4KfVnV64kxcBYyCjs3gQD7dnIwjjcZ44Tow/x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8d+Jb6BgIDpqN40vDeeU7LjtkYle/KNDjpqptnwMApDuXdQSy85XRz5y3fPHVpK/BizEuBMI6c8WhOcIAPFUuh5IamqOsUA6XxwZ7VIPxjcmfcfPyu5T4by41BY6DYm1EIgmCFXamVCsFZ7RtDO8Xh25YIZG7qlQaHT7iRtZhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmfJZbuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C859C2BD10;
-	Tue, 14 May 2024 10:44:10 +0000 (UTC)
+	 MIME-Version; b=sM1EiW+/dqptYzpqqWgw0Y79G/zWawUZCL3xgJ+McjIKww/eqx+rMEFCNkrX7g3++BXuwmmQNnvgX6znJ/wjTDaWyiVuaCWIA6b9MTl3EJ9Oo1mcJl2pYQ8cu9XvB9+Oicekq1jaxD9b23wQZ8NMo4ylaqyNNLXYvrbFL1lBc/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYmZYOHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE935C2BD10;
+	Tue, 14 May 2024 11:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683451;
-	bh=312FFyGUHSCTnybX8ftzEW0F2gN3iSzsOifGkJoB7zo=;
+	s=korg; t=1715685214;
+	bh=Q5Uyn4KfVnV64kxcBYyCjs3gQD7dnIwjjcZ44Tow/x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmfJZbuPmI7NkULi7fcPeC/QdSzmgEVEzy62n9L+tgx6d95rIJ7r/CiOLMy28fdhh
-	 JzAhqmEpMylT4mKxsApEKaeYEqlznDfaepLvurYYK2+ZkBu2GEHIZBzuxQhgCG0G+5
-	 OAU1kMlIsmn7+MtWW4rOquzTaK2WI39PkAOcoJJE=
+	b=CYmZYOHt+JCVlzdf0KnHIVZM7YTlH+1hc2d/26A9ak2+05u2jFOIiwjtw++RrbVFk
+	 D6Ow5HscDScehJhTZK6vtww+jzwj4YJk572yV3ghZzCcJ2W/vufuYgVhRnxv8jDhmm
+	 6EIqkW+7FAgjshoOXLFatiX74P1PsQ7161hknd6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 219/336] dt-bindings: net: mediatek: remove wrongly added clocks and SerDes
-Date: Tue, 14 May 2024 12:17:03 +0200
-Message-ID: <20240514101046.883724137@linuxfoundation.org>
+Subject: [PATCH 6.6 153/301] hv_netvsc: Dont free decrypted memory
+Date: Tue, 14 May 2024 12:17:04 +0200
+Message-ID: <20240514101038.033266200@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-[ Upstream commit cc349b0771dccebf0fa9f5e1822ac444aef11448 ]
+[ Upstream commit bbf9ac34677b57506a13682b31a2a718934c0e31 ]
 
-Several clocks as well as both sgmiisys phandles were added by mistake
-to the Ethernet bindings for MT7988. Also, the total number of clocks
-didn't match with the actual number of items listed.
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_encrypted() or set_memory_decrypted() to fail such that an
+error is returned and the resulting memory is shared. Callers need to
+take care to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional or security
+issues.
 
-This happened because the vendor driver which served as a reference uses
-a high number of syscon phandles to access various parts of the SoC
-which wasn't acceptable upstream. Hence several parts which have never
-previously been supported (such SerDes PHY and USXGMII PCS) are going to
-be implemented by separate drivers. As a result the device tree will
-look much more sane.
+The netvsc driver could free decrypted/shared pages if
+set_memory_decrypted() fails. Check the decrypted field in the gpadl
+to decide whether to free the memory.
 
-Quickly align the bindings with the upcoming reality of the drivers
-actually adding support for the remaining Ethernet-related features of
-the MT7988 SoC.
-
-Fixes: c94a9aabec36 ("dt-bindings: net: mediatek,net: add mt7988-eth binding")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/1569290b21cc787a424469ed74456a7e976b102d.1715084326.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Link: https://lore.kernel.org/r/20240311161558.1310-4-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240311161558.1310-4-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/net/mediatek,net.yaml | 22 ++-----------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ drivers/net/hyperv/netvsc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b/Documentation/devicetree/bindings/net/mediatek,net.yaml
-index e74502a0afe86..3202dc7967c5b 100644
---- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
-+++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
-@@ -337,8 +337,8 @@ allOf:
-           minItems: 4
+diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+index 4f9658a741024..b2f27e505f76c 100644
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -154,8 +154,11 @@ static void free_netvsc_device(struct rcu_head *head)
+ 	int i;
  
-         clocks:
--          minItems: 34
--          maxItems: 34
-+          minItems: 24
-+          maxItems: 24
+ 	kfree(nvdev->extension);
+-	vfree(nvdev->recv_buf);
+-	vfree(nvdev->send_buf);
++
++	if (!nvdev->recv_buf_gpadl_handle.decrypted)
++		vfree(nvdev->recv_buf);
++	if (!nvdev->send_buf_gpadl_handle.decrypted)
++		vfree(nvdev->send_buf);
+ 	bitmap_free(nvdev->send_section_map);
  
-         clock-names:
-           items:
-@@ -351,18 +351,6 @@ allOf:
-             - const: ethwarp_wocpu1
-             - const: ethwarp_wocpu0
-             - const: esw
--            - const: netsys0
--            - const: netsys1
--            - const: sgmii_tx250m
--            - const: sgmii_rx250m
--            - const: sgmii2_tx250m
--            - const: sgmii2_rx250m
--            - const: top_usxgmii0_sel
--            - const: top_usxgmii1_sel
--            - const: top_sgm0_sel
--            - const: top_sgm1_sel
--            - const: top_xfi_phy0_xtal_sel
--            - const: top_xfi_phy1_xtal_sel
-             - const: top_eth_gmii_sel
-             - const: top_eth_refck_50m_sel
-             - const: top_eth_sys_200m_sel
-@@ -375,16 +363,10 @@ allOf:
-             - const: top_netsys_sync_250m_sel
-             - const: top_netsys_ppefb_250m_sel
-             - const: top_netsys_warp_sel
--            - const: wocpu1
--            - const: wocpu0
-             - const: xgp1
-             - const: xgp2
-             - const: xgp3
- 
--        mediatek,sgmiisys:
--          minItems: 2
--          maxItems: 2
--
- patternProperties:
-   "^mac@[0-1]$":
-     type: object
+ 	for (i = 0; i < VRSS_CHANNEL_MAX; i++) {
 -- 
 2.43.0
 
