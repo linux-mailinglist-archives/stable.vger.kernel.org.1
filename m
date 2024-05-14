@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB118C545F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191E28C556B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B2501C22B47
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A4B01C218A3
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D6B43AB4;
-	Tue, 14 May 2024 11:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA8F2943F;
+	Tue, 14 May 2024 11:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImdA4U3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS+m729T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B792B9B3;
-	Tue, 14 May 2024 11:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB69F9D4;
+	Tue, 14 May 2024 11:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687158; cv=none; b=hGMOqd2ZbUTvvTctn77yn/uwrbI0w9wYBihfcXFSQxWprVPSxDf3Hdc0VcvtdyhpxPIN4ZcdDBimaZacFQKKqhGVFX5dfLbIe1cw+k+LrHcHQL05or5OA7IL+Z+r4gyCCgLXQdmD+laxdJ58M6efytW1dMdSNeWzFZLOIlaBYMs=
+	t=1715687882; cv=none; b=itqg8fBcn2ZYKoTINkbMkSUh/f8heIxXJehOdoaZvmV+K9S1dzKVOe8lHTESQgFcbdi73H1gNGRBO8Yhjjnh93bAg4+wpkQ5nh3izobr9poG1mps+XaTVqHhDcVLRnBO9WWVWyHnQskDriYy94w1sS7ImEwWV/PZBZxDagSevrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687158; c=relaxed/simple;
-	bh=P0Ozd7aubesMZZCoF1W7sp3YWwPWCErlp6qtzxB71sw=;
+	s=arc-20240116; t=1715687882; c=relaxed/simple;
+	bh=9ToNT/SmeeIQajBW1g7pOnWk5HoQdk5qVLEfhVNWcC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZUqquFu+bcXwE/VmrEDBY1Cwtm2dysy8Cd5eFavfUn4JrvDdmwVSlaO9t4Lh14feUZKDrXWexuit7v8YkojG5B3sDiigAUL4iZ2LAYZUeH3/Ty3zGCsBRWPW+sBKvI9iVlykrmRCbw/X1z5D3euzPQS5fk5sejm0EHHFSjpo/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImdA4U3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48A1C2BD10;
-	Tue, 14 May 2024 11:45:57 +0000 (UTC)
+	 MIME-Version; b=OffRzS97++jjREMKe4ZFOHl8O17Me93Hom6eSpOhiZZA71yOklYM9djS9D2sSEi+GEMgStHYEgBGzEbXyaJQLhJBfrlFOaOD7VgqOe9vonaqpSWjEiSYfo3ld7dnYAQozXBB8N8TAGKYveCv4lNnqAFUUM5Clde2ASgvgFu2YeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS+m729T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87546C2BD10;
+	Tue, 14 May 2024 11:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687158;
-	bh=P0Ozd7aubesMZZCoF1W7sp3YWwPWCErlp6qtzxB71sw=;
+	s=korg; t=1715687881;
+	bh=9ToNT/SmeeIQajBW1g7pOnWk5HoQdk5qVLEfhVNWcC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImdA4U3x8loL8ihwvvXG/pjyn8knBtWyOY/bxyr6VGPLPXe/IuPprHFCfVUK+uccN
-	 2j4jNI9Jp+poFXS/XvaBH9+tgMhF9QfcJcniAMIXcbfpOag3KN1kkyAq/ul9mIOIhi
-	 Rksv7OEEhB9yemxkAtucBA7SvhXJTWkblytIYOas=
+	b=HS+m729Tcb9LtFhcqpcSTtYwdoOUcbqwOgssQ29esfLVIqNMjg5YkwO4JeNpmkP0k
+	 aRfrJ7pWuDiR5MOzSCFFSMg8IabO/E6OS4fWumhIZpV3REAuaSwICg1fM+Pl9/GOs6
+	 1B9pPbKQslGR0Smjee1spMpjlcb/1VOrBvzUlzEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 84/84] pinctrl: mediatek: paris: Fix PIN_CONFIG_INPUT_SCHMITT_ENABLE readback
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 137/168] btrfs: fix kvcalloc() arguments order in btrfs_ioctl_send()
 Date: Tue, 14 May 2024 12:20:35 +0200
-Message-ID: <20240514100954.841860394@linuxfoundation.org>
+Message-ID: <20240514101011.857810000@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 08f66a8edd08f6f7cfa769c81634b29a2b123908 upstream.
+commit 6ff09b6b8c2fb6b3edda4ffaa173153a40653067 upstream.
 
-In the generic pin config library, readback of some options are handled
-differently compared to the setting of those options: the argument value
-is used to convey enable/disable of an option in the set path, but
-success or -EINVAL is used to convey if an option is enabled or disabled
-in the debugfs readback path.
+When compiling with gcc version 14.0.0 20231220 (experimental)
+and W=1, I've noticed the following warning:
 
-PIN_CONFIG_INPUT_SCHMITT_ENABLE is one such option. Fix the readback of
-the option in the mediatek-paris library, so that the debugfs dump is
-not showing "input schmitt enabled" for pins that don't have it enabled.
+fs/btrfs/send.c: In function 'btrfs_ioctl_send':
+fs/btrfs/send.c:8208:44: warning: 'kvcalloc' sizes specified with 'sizeof'
+in the earlier argument and not in the later argument [-Wcalloc-transposed-args]
+ 8208 |         sctx->clone_roots = kvcalloc(sizeof(*sctx->clone_roots),
+      |                                            ^
 
-Fixes: 1bea6afbc842 ("pinctrl: mediatek: Refine mtk_pinconf_get()")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Message-ID: <20240327091336.3434141-2-wenst@chromium.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Since 'n' and 'size' arguments of 'kvcalloc()' are multiplied to
+calculate the final size, their actual order doesn't affect the result
+and so this is not a bug. But it's still worth to fix it.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-paris.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/send.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/mediatek/pinctrl-paris.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-paris.c
-@@ -141,6 +141,8 @@ static int mtk_pinconf_get(struct pinctr
- 		}
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -7612,8 +7612,8 @@ long btrfs_ioctl_send(struct file *mnt_f
+ 	sctx->waiting_dir_moves = RB_ROOT;
+ 	sctx->orphan_dirs = RB_ROOT;
  
- 		err = mtk_hw_get_value(hw, desc, PINCTRL_PIN_REG_SMT, &ret);
-+		if (!ret)
-+			err = -EINVAL;
- 		break;
- 	case PIN_CONFIG_DRIVE_STRENGTH:
- 		if (!hw->soc->drive_get)
+-	sctx->clone_roots = kvcalloc(sizeof(*sctx->clone_roots),
+-				     arg->clone_sources_count + 1,
++	sctx->clone_roots = kvcalloc(arg->clone_sources_count + 1,
++				     sizeof(*sctx->clone_roots),
+ 				     GFP_KERNEL);
+ 	if (!sctx->clone_roots) {
+ 		ret = -ENOMEM;
 
 
 
