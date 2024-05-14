@@ -1,196 +1,165 @@
-Return-Path: <stable+bounces-45090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD0A8C5A2F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 19:19:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F168C5A7F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 19:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFA3D1C2176E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 17:19:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32D3CB222C2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 17:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F9F17F39A;
-	Tue, 14 May 2024 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8CA1802AA;
+	Tue, 14 May 2024 17:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="GAEM8fm0";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="GAEM8fm0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKImCysY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A275E17F37C
-	for <stable@vger.kernel.org>; Tue, 14 May 2024 17:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D67D5A0F9;
+	Tue, 14 May 2024 17:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715707190; cv=none; b=mxjUY7YwMluNYYAYSgEg9RGLwHsRF7TajfytQzmZ1OMT7/f0onVq1PXEjWhzNPPa04Bu1QgJx1I8O9fbLD2NNdr7Ns28rbzJSV5RvwWXFzEI31hS0YqtIFkGBEcuEATQ5mncU/BJ6Ki4lOTpUG1Xd1sgM/zrBLS+xFp2qI0jIgU=
+	t=1715708748; cv=none; b=PHj437TJ03Z0kWdWcsuDv8sWdicLFaEDWWTvXWwXu4ZaHu7vKulqdmpflrFNHfgSWNm9TDgGfdDLgKqtq1qkR2FDuQD7Kpce4UEYzmy/fuA2tQLwL3uGAe3Sjo0oOE5fneyAyqIq9zLO0ZVpmIYtp50XcH4f0YdnDLVSA4nD7/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715707190; c=relaxed/simple;
-	bh=g8mgOwyzCQrU47HQClxUQIIeAwwHOQQSYZh9S7+djNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CqDco2GuglwU1+xKmh4eI18zQJSnoln673uUm/bpGPPsRQ35x0Olg4MVefOcDjPkFe4ZvTUVCT8jkK3kXAzfZ96QjiU1f4hY90VapGhZ+NUOJ75n24HiiXFzanZV3PIKHsZiIIDfVkocsruc3/tHJJjtvYqL6XDsDGGvxQZvqbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=GAEM8fm0; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=GAEM8fm0; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A865D1F388;
-	Tue, 14 May 2024 17:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1715707186; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=YW8m8NDlQN8464B1EXHkQfcXAPSmBV4p4qlM2FzgNGs=;
-	b=GAEM8fm0xxqkzY8CYGGJEUwctyPIhnLbhj6B147eWQyKh3rzoErDIT03+UQ+7aQG/JwlBO
-	ukQ7aiv67BHYWv/zAwojR187sVsRYJidv7YSyMtPTHLsuxw1EGvN/M8mBzp/7AOO3IVvYo
-	6x314sElt8BsTjUANHOvVm8a5wRQrgs=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1715707186; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=YW8m8NDlQN8464B1EXHkQfcXAPSmBV4p4qlM2FzgNGs=;
-	b=GAEM8fm0xxqkzY8CYGGJEUwctyPIhnLbhj6B147eWQyKh3rzoErDIT03+UQ+7aQG/JwlBO
-	ukQ7aiv67BHYWv/zAwojR187sVsRYJidv7YSyMtPTHLsuxw1EGvN/M8mBzp/7AOO3IVvYo
-	6x314sElt8BsTjUANHOvVm8a5wRQrgs=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 976F2137C3;
-	Tue, 14 May 2024 17:19:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id R5H2JDKdQ2YNbwAAD6G6ig
-	(envelope-from <dsterba@suse.com>); Tue, 14 May 2024 17:19:46 +0000
-From: David Sterba <dsterba@suse.com>
-To: stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	Julian Taylor <julian.taylor@1und1.de>,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6.x] btrfs: do not wait for short bulk allocation
-Date: Tue, 14 May 2024 19:12:24 +0200
-Message-ID: <20240514171225.11774-1-dsterba@suse.com>
-X-Mailer: git-send-email 2.45.0
+	s=arc-20240116; t=1715708748; c=relaxed/simple;
+	bh=FOjLC9GTIUd1WGRSxLT8Kv9gyt6FdbEbbp3ZmLp/5Pw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a0JLYv3//AGLVFq+PR2RHGbsw4khfILjB/7YuSDT9S/MZUcQseqcThIgaDUUZU159SchypuYkDgRVXfH0GH3xaLiwyjRDAU4Xul0Br5ttVzYMdI12UeJ05U4ve+GBI0FE3qUngXIqTYmrSfYRMj88GWKdHsWGAdxRvCQIxMbQdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKImCysY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99583C4AF0B;
+	Tue, 14 May 2024 17:45:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715708747;
+	bh=FOjLC9GTIUd1WGRSxLT8Kv9gyt6FdbEbbp3ZmLp/5Pw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VKImCysY3bcey58jwKO+qoQW0bnHVN/etyfwMudeR25DbYzK3YhTvWmr+708I78H5
+	 D+awgxvAly3K1xsLtDkDRg63v4rcI0H6IsJD5h45j8oGdQwqlDINPektsflqTDqMwe
+	 ECiDPAgaAkZgANH/wGE68CXphZKkSwNH6rjkwMQCeuKa9J1eoYRzu0bWrProSMYzrL
+	 d3U1BghkuKONFSdgXJpIBALNCuhKOBXlAendOTCxizkioLVt7hv7tFgHrf6u05wvY8
+	 6P70X6yHq3fs19WW6xZDGI4g8LAgCiKineGFS9Nql2tCuIequp45hrqIUz32/yGau7
+	 dd5V/fRiJ9FEA==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-51f12ccff5eso8138918e87.1;
+        Tue, 14 May 2024 10:45:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVz4iirYGHdGthKxNWTgMmc8yYskotFiN2d/SsMDqL2qgeP8+MTylczpxR3z1yAd9ZKMNi/nFrfIgREKGhtWA7kaIYuXiPcDItMTDgRNsdlXXeX4Ane+ufLj7ThegIsMoA3vXIUbBbli+ZwzCB+xHWyJPNnnpYO5AzqjAdw5G1YEvGEoAMhF3pqcvHZP0yZzjA2VPTRsBBUrgaKSX5IX5ZFdCU=
+X-Gm-Message-State: AOJu0YzFYFBJiGGQ8A34d7mU3V7uSDiNgZeFqgIQBc8y8AOlXiSFZwZ0
+	a7b+6/iaHyqiaBseUzBB9aqrVci6pL65UIClQUCqzyYDdkFLVNdRuDT7DiXClUZOSu7ITe85Lf4
+	+tr00S3Y/0q+U0fg6GKZ4GVlng90=
+X-Google-Smtp-Source: AGHT+IFNbI6Bd5BRsGSVHMrS8noqYrRTepjcaaqy5bW0mLMfJcq2tUemTq2/g8JEYAe2AL1nwXz7wo3BaTt9cfiD81I=
+X-Received: by 2002:a05:6512:b15:b0:51a:ca75:9ffe with SMTP id
+ 2adb3069b0e04-5221057b50bmr12345399e87.42.1715708746044; Tue, 14 May 2024
+ 10:45:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.981];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[1und1.de:email,suse.com:email,dorminy.me:email,imap1.dmz-prg2.suse.org:helo];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+References: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org> <12a208d7-f36b-4953-abff-323a15452b3c@quicinc.com>
+In-Reply-To: <12a208d7-f36b-4953-abff-323a15452b3c@quicinc.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 15 May 2024 02:45:09 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASyBNbxm-e+iZ=7pOJg-a-Zm84O6RNcqiUjZQH7f9r3Lw@mail.gmail.com>
+Message-ID: <CAK7LNASyBNbxm-e+iZ=7pOJg-a-Zm84O6RNcqiUjZQH7f9r3Lw@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Kalle Valo <kvalo@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, Stephen Boyd <swboyd@chromium.org>, 
+	Rakesh Pillai <quic_pillair@quicinc.com>, linux-wireless@vger.kernel.org, 
+	ath10k@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Qu Wenruo <wqu@suse.com>
+On Tue, May 14, 2024 at 11:43=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicin=
+c.com> wrote:
+>
+> On 5/11/2024 3:49 AM, Dmitry Baryshkov wrote:
+> > If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
+> > modules, compilation fails with:
+> >
+> > /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: =
+in function `ath10k_modem_init':
+> > drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qc=
+om_register_ssr_notifier'
+> > /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: =
+in function `ath10k_modem_deinit':
+> > drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qc=
+om_unregister_ssr_notifier'
+> >
+> > Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
+> > built as module if QCOM_RPROC_COMMON is built as module too.
+> >
+> > Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as c=
+rashes")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > ---
+> >  drivers/net/wireless/ath/ath10k/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath10k/Kconfig b/drivers/net/wire=
+less/ath/ath10k/Kconfig
+> > index e6ea884cafc1..4f385f4a8cef 100644
+> > --- a/drivers/net/wireless/ath/ath10k/Kconfig
+> > +++ b/drivers/net/wireless/ath/ath10k/Kconfig
+> > @@ -45,6 +45,7 @@ config ATH10K_SNOC
+> >       depends on ATH10K
+> >       depends on ARCH_QCOM || COMPILE_TEST
+> >       depends on QCOM_SMEM
+> > +     depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=3Dn
+> >       select QCOM_SCM
+> >       select QCOM_QMI_HELPERS
+> >       help
+> >
+> > ---
+> > base-commit: 75fa778d74b786a1608d55d655d42b480a6fa8bd
+> > change-id: 20240511-ath10k-snoc-dep-862a9da2e6bb
+>
+> I see how this fixes the problem, but this doesn't seem like an ideal
+> solution. The fact that the *_ssr_notifier() functions are correctly prot=
+ected
+> by conditional compilation ideally should mean that clients don't need to=
+ call
+> call out this as a dependency. Otherwise, it would mean we'd need to do t=
+his
+> for all feature flags.
 
-commit 1db7959aacd905e6487d0478ac01d89f86eb1e51 upstream.
 
-[BUG]
-There is a recent report that when memory pressure is high (including
-cached pages), btrfs can spend most of its time on memory allocation in
-btrfs_alloc_page_array() for compressed read/write.
+It depends on if qcom_common.c is optional for ath10k_snoc.
 
-[CAUSE]
-For btrfs_alloc_page_array() we always go alloc_pages_bulk_array(), and
-even if the bulk allocation failed (fell back to single page
-allocation) we still retry but with extra memalloc_retry_wait().
+If it is optional, this patch is correct.
 
-If the bulk alloc only returned one page a time, we would spend a lot of
-time on the retry wait.
 
-The behavior was introduced in commit 395cb57e8560 ("btrfs: wait between
-incomplete batch memory allocations").
+If it is mandatory
+depends on QCOM_RPROC_COMMON
 
-[FIX]
-Although the commit mentioned that other filesystems do the wait, it's
-not the case at least nowadays.
 
-All the mainlined filesystems only call memalloc_retry_wait() if they
-failed to allocate any page (not only for bulk allocation).
-If there is any progress, they won't call memalloc_retry_wait() at all.
+>
+> +linux-kbuild just to make sure there isn't a better approach.
 
-For example, xfs_buf_alloc_pages() would only call memalloc_retry_wait()
-if there is no allocation progress at all, and the call is not for
-metadata readahead.
 
-So I don't believe we should call memalloc_retry_wait() unconditionally
-for short allocation.
+Commit 28d49e171676afb7df7f47798391364af9abed7f suggested
 
-Call memalloc_retry_wait() if it fails to allocate any page for tree
-block allocation (which goes with __GFP_NOFAIL and may not need the
-special handling anyway), and reduce the latency for
-btrfs_alloc_page_array().
+  depends on BAR || !BAR
 
-Reported-by: Julian Taylor <julian.taylor@1und1.de>
-Tested-by: Julian Taylor <julian.taylor@1und1.de>
-Link: https://lore.kernel.org/all/8966c095-cbe7-4d22-9784-a647d1bf27c3@1und1.de/
-Fixes: 395cb57e8560 ("btrfs: wait between incomplete batch memory allocations")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
----
- fs/btrfs/extent_io.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+but
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 5acb2cb79d4b..9fbffd84b16c 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -686,24 +686,14 @@ int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array)
- 		unsigned int last = allocated;
- 
- 		allocated = alloc_pages_bulk_array(GFP_NOFS, nr_pages, page_array);
--
--		if (allocated == nr_pages)
--			return 0;
--
--		/*
--		 * During this iteration, no page could be allocated, even
--		 * though alloc_pages_bulk_array() falls back to alloc_page()
--		 * if  it could not bulk-allocate. So we must be out of memory.
--		 */
--		if (allocated == last) {
-+		if (unlikely(allocated == last)) {
-+			/* No progress, fail and do cleanup. */
- 			for (int i = 0; i < allocated; i++) {
- 				__free_page(page_array[i]);
- 				page_array[i] = NULL;
- 			}
- 			return -ENOMEM;
- 		}
--
--		memalloc_retry_wait(GFP_NOFS);
- 	}
- 	return 0;
- }
--- 
-2.45.0
+  depends on BAR || BAR=3Dn
 
+works equivalently.
+
+
+
+>
+> /jeff
+>
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
