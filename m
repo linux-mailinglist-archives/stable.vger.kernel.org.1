@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40BEB8C53C3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427BE8C549E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D080D288D82
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F251F213B1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7133112FB06;
-	Tue, 14 May 2024 11:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2529D12D77C;
+	Tue, 14 May 2024 11:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClGuqfl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmBohZPl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E61C12FB00;
-	Tue, 14 May 2024 11:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EF284DEA;
+	Tue, 14 May 2024 11:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686766; cv=none; b=iOvWrz6bzGFYBPySm9rszf9jvl+g1sLvfD4LdVYMA46yBSuaWTwY8GFaFuunNnT6psiKPD7NG+TlW8QzvtJnpMAM20wLNWJvCHgEmXHPI7E4q8XI/NpJyb27xZ/juy7j96OUlO7EOce6SSo6o9up2HpVnOlhE8cZKZEcGO/6jh4=
+	t=1715687322; cv=none; b=o4VbH4OgREuq7esvLxUFuu8HcmlSyU3Ksinoczvkf0fqHwspUBJhjcgV2gkVTlNgYU4CgEUEksJVc6KdGdwYULBpWVAfdJpYiZ04v9a6Yqwif8IMbcmNXbTO01+dJRBKYgLc2melaXHY3wD0De+mASOXFQRuz0CKNqs4MDRwIQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686766; c=relaxed/simple;
-	bh=vk/CyTbKmxdlm6O6eLgrTXtLApGY/DkDoDKYBZn+fxY=;
+	s=arc-20240116; t=1715687322; c=relaxed/simple;
+	bh=B0VYggLqGWOdvBYIIXH0iASgNPfaGNjvQD80X74bVEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaXYamgmOViylZ0RVZsbIOyOkA8NwQGhWWO0VP5UoW0p8bi4DfK/hTsE8ut8ZkAenFEtp24YMBMwvK7KCu9QR69suQsYExvJZw1qyms419U40E3UgcyKSFxXG/iFA4xt9HO/83ZkniazJiebnM6FTQ3A1NYDh9QG0AmzWky8i48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClGuqfl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA14C2BD10;
-	Tue, 14 May 2024 11:39:25 +0000 (UTC)
+	 MIME-Version; b=T0is0RLyVjIxGFH0FbUPCUY4dbnIEgI2dt9eucIxz8Rtupd/WJ8FzkmjqLA2LyQqzAAMUpCXzXxw7fCOSYoiaN2YIIe+8MXBCx4uROL/NnA6p3RtYIjF87fjgwzhqpB4+/UQKX4AaRl52/2L6nzwMEXf+QgmmetXvrzfO7899jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmBohZPl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D2AC2BD10;
+	Tue, 14 May 2024 11:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686766;
-	bh=vk/CyTbKmxdlm6O6eLgrTXtLApGY/DkDoDKYBZn+fxY=;
+	s=korg; t=1715687322;
+	bh=B0VYggLqGWOdvBYIIXH0iASgNPfaGNjvQD80X74bVEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClGuqfl720YKV8EymbKMXnDy4FyPTNz8kMZzAZoE+3N5g1ptoG4Pgzx/oe7wi0m6G
-	 iCh+mEXaUvMPFzN9mUkv5AIULoPiPrR5oqHI2tK/q9fTe/zIKBXUrd5W1G+8UyAo/l
-	 0kTM9wP/CBVq7R2PfqKnPbocObt/5zZJnS18F6ZQ=
+	b=AmBohZPlxitXThMGMHGzgTIL6g6Q5MgyDpc1fLEZD3smsS5zQNpMQWXi5uUu5x531
+	 rXGtGKnj5G2JWNUR3TfttOgNQBu3CUkneK+r/CQSJ1teZtUHF2nXVufI6jrvNUlV5s
+	 JKDBvrzgJg3fg6iRrexzvlhtzJN7AB3tzoM5Ea2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	karthikeyan <karthikeyan@linumiz.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	James Chapman <jchapman@katalix.com>,
+	David Bauer <mail@david-bauer.net>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/63] dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"
+Subject: [PATCH 5.10 025/111] net l2tp: drop flow hash on forward
 Date: Tue, 14 May 2024 12:19:23 +0200
-Message-ID: <20240514100948.105013586@linuxfoundation.org>
+Message-ID: <20240514100958.083095530@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinod Koul <vkoul@kernel.org>
+From: David Bauer <mail@david-bauer.net>
 
-[ Upstream commit afc89870ea677bd5a44516eb981f7a259b74280c ]
+[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
 
-This reverts commit 22a9d9585812 ("dmaengine: pl330: issue_pending waits
-until WFP state") as it seems to cause regression in pl330 driver.
-Note the issue now exists in mainline so a fix to be done.
+Drop the flow-hash of the skb when forwarding to the L2TP netdev.
 
-Cc: stable@vger.kernel.org
-Reported-by: karthikeyan <karthikeyan@linumiz.com>
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This avoids the L2TP qdisc from using the flow-hash from the outer
+packet, which is identical for every flow within the tunnel.
+
+This does not affect every platform but is specific for the ethernet
+driver. It depends on the platform including L4 information in the
+flow-hash.
+
+One such example is the Mediatek Filogic MT798x family of networking
+processors.
+
+Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
+Acked-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pl330.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/l2tp/l2tp_eth.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index 54bb6e46c1803..1bba1fa3a8096 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1045,9 +1045,6 @@ static bool _trigger(struct pl330_thread *thrd)
+diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
+index 6cd97c75445c8..9a36e174984cf 100644
+--- a/net/l2tp/l2tp_eth.c
++++ b/net/l2tp/l2tp_eth.c
+@@ -136,6 +136,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
+ 	/* checksums verified by L2TP */
+ 	skb->ip_summed = CHECKSUM_NONE;
  
- 	thrd->req_running = idx;
- 
--	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
--		UNTIL(thrd, PL330_STATE_WFP);
--
- 	return true;
- }
++	/* drop outer flow-hash */
++	skb_clear_hash(skb);
++
+ 	skb_dst_drop(skb);
+ 	nf_reset_ct(skb);
  
 -- 
 2.43.0
