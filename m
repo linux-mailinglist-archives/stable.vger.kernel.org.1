@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBD48C5429
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892788C5491
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCADD1F2337E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59741C22ED5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B39A66B5E;
-	Tue, 14 May 2024 11:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02D312C7E8;
+	Tue, 14 May 2024 11:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdYw4ucE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZyYSM6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2E4139584;
-	Tue, 14 May 2024 11:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E22412C49C;
+	Tue, 14 May 2024 11:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687019; cv=none; b=GcYiuG/SqYHwVQjeyOPiT8uPBJ2xkfBemfOk6gr/qkcrW4RYjx5FHgITrF+ZiCW/4I6Mcn1L+cEB12oJVwDZ2MT/kbDnKnuJfx35F3C1BAKEMRJPbeOE4Nb3c6qVfNxnq7E8Bs8TjC1R/P8Y98+A4R+tTIlb/qrQ+SAE2fUYl+8=
+	t=1715687282; cv=none; b=GGFuGEQYK3+1a3zPXBWxagVp/qI67OOQuMTF7F3lc4lulWuXB+v07s+hZOCXhOBeW9kjwYuIS8USd9o5/PzOY0NUWmi1pncB5qMckQfeKuoZCZHqdSciDTKIYffY2tIUzOTo7dmrSlwotbRUt8XZe8T8LMMljgZkEoMeIUuqyzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687019; c=relaxed/simple;
-	bh=YB/qCZtd0F397uBtWs1Yhms8fZwSYOYKBHSgMmz7Qlk=;
+	s=arc-20240116; t=1715687282; c=relaxed/simple;
+	bh=MurD1qCJLNAJtV0+5LZhu+7OYHohX3gHiSjAvIKklLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uw01isHYELNjUyhFLfbDzOp3FwayP6wI7PasgcfDUlRXRcYiojVcfZYUe8ihdCcEvK06aaCMmtXIYF34PpcOmoIaseRMtBupvcwktgpxrdRLRJBv1E7pdHdULHv3tOWj+WTcVRcwsqRvPlFBEm91/pcKUkDHwFQJqo2WHr7B1uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdYw4ucE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724E7C2BD10;
-	Tue, 14 May 2024 11:43:38 +0000 (UTC)
+	 MIME-Version; b=QIkGvv8VVxrDHfxwzpMUHIeclCw8w2irL0K8WtONdAXjy+btGXFapq4TeG4ndCFETksbjgzd2bxENsb3Q/AsoQnX728g4bsIUpOp4VEDbHCFPSEDZh5WYu9zBtLFvsFAh8UqUp/sXv+QH6IjcibSYDjh8z6jX2kF2Y3k6U3UaeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZyYSM6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA397C2BD10;
+	Tue, 14 May 2024 11:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687018;
-	bh=YB/qCZtd0F397uBtWs1Yhms8fZwSYOYKBHSgMmz7Qlk=;
+	s=korg; t=1715687282;
+	bh=MurD1qCJLNAJtV0+5LZhu+7OYHohX3gHiSjAvIKklLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdYw4ucESyC5Qg5rQmwADITk2Bf1ai5vvAgEq7LzwPrq3WUNYxdLK4aU8ronMu8OU
-	 wQC7gxzl7gOg6hpm8oSLDeoUdherAOmrh+j7tleHO2xGRStLuzGpdJJ0uWjabWpxj3
-	 azGfXOpffBg4Jmpt3NPvozidj1PWaQ5F5/5+aQ7k=
+	b=dZyYSM6SrDlrmQg2nVdIyKDGAu4rHnbVT+NcVAtZQT149cfYUs6a4JGHd/JJsVrZn
+	 dlSN1whTE8Zy7Vhjlx1QdhT71oty9+7tLlUFwJlcyYRFCjr8D3Yck1mB3eJGcKbr/I
+	 u9AqjImDwA1zq8IFbj6iBhS7snBR5DTCuBbVXD3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 29/84] net: dsa: mv88e6xxx: Fix number of databases for 88E6141 / 88E6341
+Subject: [PATCH 5.10 042/111] KVM: arm64: vgic-v2: Use cpuid from userspace as vcpu_id
 Date: Tue, 14 May 2024 12:19:40 +0200
-Message-ID: <20240514100952.792660943@linuxfoundation.org>
+Message-ID: <20240514100958.732560490@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit b9a61c20179fda7bdfe2c1210aa72451991ab81a ]
+[ Upstream commit 4e7728c81a54b17bd33be402ac140bc11bb0c4f4 ]
 
-The Topaz family (88E6141 and 88E6341) only support 256 Forwarding
-Information Tables.
+When parsing a GICv2 attribute that contains a cpuid, handle this
+as the vcpu_id, not a vcpu_idx, as userspace cannot really know
+the mapping between the two. For this, use kvm_get_vcpu_by_id()
+instead of kvm_get_vcpu().
 
-Fixes: a75961d0ebfd ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6341")
-Fixes: 1558727a1c1b ("net: dsa: mv88e6xxx: Add support for ethernet switch 88E6141")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240429133832.9547-1-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Take this opportunity to get rid of the pointless check against
+online_vcpus, which doesn't make much sense either, and switch
+to FIELD_GET as a way to extract the vcpu_id.
+
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230927090911.3355209-5-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Stable-dep-of: 6ddb4f372fc6 ("KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 9ee144c117267..81e6227cc8758 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -4310,7 +4310,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6141,
- 		.family = MV88E6XXX_FAMILY_6341,
- 		.name = "Marvell 88E6141",
--		.num_databases = 4096,
-+		.num_databases = 256,
- 		.num_macs = 2048,
- 		.num_ports = 6,
- 		.num_internal_phys = 5,
-@@ -4716,7 +4716,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
- 		.prod_num = MV88E6XXX_PORT_SWITCH_ID_PROD_6341,
- 		.family = MV88E6XXX_FAMILY_6341,
- 		.name = "Marvell 88E6341",
--		.num_databases = 4096,
-+		.num_databases = 256,
- 		.num_macs = 2048,
- 		.num_internal_phys = 5,
- 		.num_ports = 6,
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+index 7740995de982e..640cfa0c0f4cc 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -286,13 +286,9 @@ int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
+ {
+ 	int cpuid;
+ 
+-	cpuid = (attr->attr & KVM_DEV_ARM_VGIC_CPUID_MASK) >>
+-		 KVM_DEV_ARM_VGIC_CPUID_SHIFT;
++	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+ 
+-	if (cpuid >= atomic_read(&dev->kvm->online_vcpus))
+-		return -EINVAL;
+-
+-	reg_attr->vcpu = kvm_get_vcpu(dev->kvm, cpuid);
++	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
+ 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
+ 
+ 	return 0;
 -- 
 2.43.0
 
