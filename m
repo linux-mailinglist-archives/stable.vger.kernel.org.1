@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-44136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0848C516B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADB88C516D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26D98B2173D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3782B216D1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3C11386CC;
-	Tue, 14 May 2024 11:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935A2139563;
+	Tue, 14 May 2024 11:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3JwKeMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaNv9krT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECDD12FF64;
-	Tue, 14 May 2024 11:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECB71386DD;
+	Tue, 14 May 2024 11:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684447; cv=none; b=gFz7XuwAlOZQa4KUObaC0A9aByx9/4D+FV27ovNwvUB/4VUwntLGJgNNeOPLyrIpTgui4/1K1NZHKQsEhbGVKK8DtskJ9PvTO0D0QkTW04daZbvIZS+4tYhBNfmRl7ElQbrHEDGrrry1gZTKdx/jrn3WKj9OD+yMU5h2py3ZHsk=
+	t=1715684462; cv=none; b=JNep78aGzsppI1kMueChnm2rYkHbPIVJJgxEZbmC29YB0wMaNv2P8ZPXxzs+lCzBCaGIIrAX+E3M7UOVQve5nrBjH7P5WanI4IW2Sm5oPfDDPR985gtRadu3RUtGbIJwfZIDazpO5Z6+hjl9H5wdBOdMC2A0LDMtAPCJga+g2B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684447; c=relaxed/simple;
-	bh=rFP4LPyA9aX4LekMg/kBQwWZ+AVmqWT4LgfUjg2iJU0=;
+	s=arc-20240116; t=1715684462; c=relaxed/simple;
+	bh=sKb6tflGbRz2F2tPnG//koHusfParXdAIxI5oD6gPtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tsw+p5e/nsf4zLdMlLzsWv95xBCxj9gaBH/KOiR9Xdttm508pEmE3arjhsReiR2Rj6mYiWwMu8W0iReNGhRMeRoT4I7MXPPpEDUEHPh9vLWFVEm/G3VNaxcwINziu2l8G2rUPZwUx+y1tvmM3+QF9U6VtZnGwrtErXfg0IDHSXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3JwKeMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3DBC2BD10;
-	Tue, 14 May 2024 11:00:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WRchj/LVP9Ub28w+fF8JSW0CMpZH0QApZOwORSCGQ6GKumt92VZDQMK+Aqe8Wct92W5i/fZEiX2dJz0YaLztWikS2wtQcJ/EiOM5/YvDRoPEiQyH2laJAh0C0uSM8/MGYsBpUzoQblPWUPgbFof0mJn72dlPkpB8+kcE2B4tmtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaNv9krT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEA3C2BD10;
+	Tue, 14 May 2024 11:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684447;
-	bh=rFP4LPyA9aX4LekMg/kBQwWZ+AVmqWT4LgfUjg2iJU0=;
+	s=korg; t=1715684462;
+	bh=sKb6tflGbRz2F2tPnG//koHusfParXdAIxI5oD6gPtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3JwKeMYuCWMfQOZHZAQWolpSWaM8TRNveisHFqbssQzY7mp+a0++WUuRU5oghlUZ
-	 7l5XyY3SIykFjJSVDjlJZ6qyUMb/B3kFI9TVZqbJ+Iw4HgdVY6WdtSZ/It156cXgtF
-	 Rp4YYXSqLdW+7AfgSKI3slC+NkliB704LHsTBV7I=
+	b=kaNv9krTOih8Hij6kXAUOl4LQqTaZD0Tt945WmLgq2V/nenmWWdlod6civ6LIibpo
+	 DleZtwc3mH7y6EcqR0wmsAsRzUctXDiJF3HaOJRb7XCPYS7eU6ahKODadbsQ9bvvi0
+	 v6kjEgcLH+ajXPelQDEMJKsk9H5sw8NmgUXYMqH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Pu Lehui <pulehui@huawei.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/301] riscv, bpf: Fix incorrect runtime stats
-Date: Tue, 14 May 2024 12:15:14 +0200
-Message-ID: <20240514101033.871835415@linuxfoundation.org>
+Subject: [PATCH 6.6 044/301] ASoC: Intel: avs: Set name of control as in topology
+Date: Tue, 14 May 2024 12:15:15 +0200
+Message-ID: <20240514101033.909750312@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
 References: <20240514101032.219857983@linuxfoundation.org>
@@ -69,49 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 10541b374aa05c8118cc6a529a615882e53f261b ]
+[ Upstream commit 4cbb5050bffc49c716381ea2ecb07306dd46f83a ]
 
-When __bpf_prog_enter() returns zero, the s1 register is not set to zero,
-resulting in incorrect runtime stats. Fix it by setting s1 immediately upon
-the return of __bpf_prog_enter().
+When creating controls attached to widgets, there are a lot of rules if
+they get their name prefixed with widget name or not. Due to that
+controls ended up with weirdly looking names like "ssp0_fe DSP Volume",
+while topology set it to "DSP Volume".
 
-Fixes: 49b5e77ae3e2 ("riscv, bpf: Add bpf trampoline support for RV64")
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Pu Lehui <pulehui@huawei.com>
-Acked-by: Björn Töpel <bjorn@kernel.org>
-Link: https://lore.kernel.org/bpf/20240416064208.2919073-3-xukuohai@huaweicloud.com
+Fix this by setting no_wname_in_kcontrol_name to true in avs topology
+widgets which disables unwanted behaviour.
+
+Fixes: be2b81b519d7 ("ASoC: Intel: avs: Parse control tuples")
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240418142621.2487478-1-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/intel/avs/topology.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index 8581693e62d39..b3990874e4818 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -740,6 +740,9 @@ static int invoke_bpf_prog(struct bpf_tramp_link *l, int args_off, int retval_of
- 	if (ret)
- 		return ret;
+diff --git a/sound/soc/intel/avs/topology.c b/sound/soc/intel/avs/topology.c
+index 45d0eb2a8e710..141255420c12b 100644
+--- a/sound/soc/intel/avs/topology.c
++++ b/sound/soc/intel/avs/topology.c
+@@ -1412,6 +1412,8 @@ static int avs_widget_load(struct snd_soc_component *comp, int index,
+ 	if (!le32_to_cpu(dw->priv.size))
+ 		return 0;
  
-+	/* store prog start time */
-+	emit_mv(RV_REG_S1, RV_REG_A0, ctx);
++	w->no_wname_in_kcontrol_name = true;
 +
- 	/* if (__bpf_prog_enter(prog) == 0)
- 	 *	goto skip_exec_of_prog;
- 	 */
-@@ -747,9 +750,6 @@ static int invoke_bpf_prog(struct bpf_tramp_link *l, int args_off, int retval_of
- 	/* nop reserved for conditional jump */
- 	emit(rv_nop(), ctx);
- 
--	/* store prog start time */
--	emit_mv(RV_REG_S1, RV_REG_A0, ctx);
--
- 	/* arg1: &args_off */
- 	emit_addi(RV_REG_A0, RV_REG_FP, -args_off, ctx);
- 	if (!p->jited)
+ 	if (w->ignore_suspend && !AVS_S0IX_SUPPORTED) {
+ 		dev_info_once(comp->dev, "Device does not support S0IX, check BIOS settings\n");
+ 		w->ignore_suspend = false;
 -- 
 2.43.0
 
