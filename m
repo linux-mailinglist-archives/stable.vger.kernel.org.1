@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4538C5162
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:29:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E4D8C4FEF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3CF1C21059
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:29:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8907B20924
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7F113666F;
-	Tue, 14 May 2024 10:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C286547A57;
+	Tue, 14 May 2024 10:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkRJGAIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdFWgBXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471F3134CDC;
-	Tue, 14 May 2024 10:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC2C22EF3;
+	Tue, 14 May 2024 10:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684390; cv=none; b=RyV6el3LXXaFLPeIgtqEZpzxj5IYGbisXsloWQ3K16frB6YvN/lUdkkWXKHDOogFCfyTqNBaQ4ixA8Ci140Iuu0rWcy+Stk0u4w29dTbwArxBlhWfTL3cvkJMHqWymNWBCUZH+ca++J50Pi/9DPdaoOf7i+yDG/suuBnJeWPExE=
+	t=1715682725; cv=none; b=JGd/RrPUJzjvpI+VfCFj3VzKFkEsykoew11Ub6u9Tflwr+y5JHjzhVL+7u8aKhX0j107kGEZX3G2z036OuUXkxLQt23AVYM+onYtP74s9421NDYRuu9MAO6DdC902idVKfTOUajK30j936MoEvkTtE75zqux+rMWER9aJUK6HP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684390; c=relaxed/simple;
-	bh=B2StPBzfm1m5MflrdBucE8x3TnMA5bsNbucPBE1KTAI=;
+	s=arc-20240116; t=1715682725; c=relaxed/simple;
+	bh=3WFhLHWJBMYC5rm7YDQq/eVB1GCv/GztDDMsZBIQl+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8FPU30Pdd4Faz/unPvRTZq2hWbyLDJge/UG8WoOc5RD2yPWPNZzmfmZBem9/PaDNis87+XfzkACo4RMkFSJ8nhT1PUfJYMo5jvFsEkh6GDJq6ohRgsRL+s4vWRbw/PpBkghAjuHrFhTNKISYPTmTqPV57D7hMsU1s0IBjgfIp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkRJGAIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409C4C2BD10;
-	Tue, 14 May 2024 10:59:49 +0000 (UTC)
+	 MIME-Version; b=Ia0zU9+v5HhAmCSKk96XsJTYZ2fKcHcFo91RGWCGvT2nzlCkyfmhf87RLVvPAWsVUHvEMM9DqooC/Vr/xxS9wvGDJzBr2wOm5Z6v9ilO8cu9635cQc9cVmq8YbWoqS4Rku9NANCcG+u1NDx6DHMXcekxAkd718Vmn6K2srKWfLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdFWgBXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93B6C2BD10;
+	Tue, 14 May 2024 10:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684389;
-	bh=B2StPBzfm1m5MflrdBucE8x3TnMA5bsNbucPBE1KTAI=;
+	s=korg; t=1715682725;
+	bh=3WFhLHWJBMYC5rm7YDQq/eVB1GCv/GztDDMsZBIQl+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TkRJGAIT/JbRA40I03O0cvuf9J2YG8bPizy2AaG892JaH/VPQTU2NoNTuzAvMQ/s1
-	 E+Gf76In7xTiz8uodhTRCEeczKJxEheJBgGKXb1KR5ratJn3k+29KzP2/IP5nRCeW4
-	 LAJn9CELPAK3uw2izDGcEEatn3GNCG5nMwn37EKI=
+	b=hdFWgBXYOrEOxx5U8OC/rnlp7hXViWdpfed+E4XLCE75AJueYbW/A9VigVhJYV9R6
+	 oswNZf+L1bj21euPtd5okl2IYn1Iju2EgFtrsN4T/MHM62ARt54clQxuwSoMcqD3wF
+	 YIuDmu8kSRaaGKOXI/QhFwHWsoP45wWh2CTah6sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/301] spi: spi-axi-spi-engine: Use helper function devm_clk_get_enabled()
-Date: Tue, 14 May 2024 12:15:06 +0200
-Message-ID: <20240514101033.571965146@linuxfoundation.org>
+Subject: [PATCH 6.8 103/336] gfs2: Fix invalid metadata access in punch_hole
+Date: Tue, 14 May 2024 12:15:07 +0200
+Message-ID: <20240514101042.495643707@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Andrew Price <anprice@redhat.com>
 
-[ Upstream commit a08199b309f833fd4221ab5ee2391c791fe26385 ]
+[ Upstream commit c95346ac918c5badf51b9a7ac58a26d3bd5bb224 ]
 
-Since commit 7ef9651e9792 ("clk: Provide new devm_clk helpers for prepared
-and enabled clocks"), devm_clk_get() and clk_prepare_enable() can now be
-replaced by devm_clk_get_enabled() when driver enables (and possibly
-prepares) the clocks for the whole lifetime of the device. Moreover, it is
-no longer necessary to unprepare and disable the clocks explicitly.
+In punch_hole(), when the offset lies in the final block for a given
+height, there is no hole to punch, but the maximum size check fails to
+detect that.  Consequently, punch_hole() will try to punch a hole beyond
+the end of the metadata and fail.  Fix the maximum size check.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Link: https://lore.kernel.org/r/20230823133938.1359106-6-lizetao1@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0064db9ce4aa ("spi: axi-spi-engine: fix version format string")
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 25 +++++--------------------
- 1 file changed, 5 insertions(+), 20 deletions(-)
+ fs/gfs2/bmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 0258c9a72fdcc..b96e55f59d1a9 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -485,30 +485,22 @@ static int spi_engine_probe(struct platform_device *pdev)
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index d9ccfd27e4f11..643175498d1c3 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -1718,7 +1718,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	struct buffer_head *dibh, *bh;
+ 	struct gfs2_holder rd_gh;
+ 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
+-	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
++	unsigned int bsize = 1 << bsize_shift;
++	u64 lblock = (offset + bsize - 1) >> bsize_shift;
+ 	__u16 start_list[GFS2_MAX_META_HEIGHT];
+ 	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
+ 	unsigned int start_aligned, end_aligned;
+@@ -1729,7 +1730,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	u64 prev_bnr = 0;
+ 	__be64 *start, *end;
  
- 	spin_lock_init(&spi_engine->lock);
- 
--	spi_engine->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
-+	spi_engine->clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
- 	if (IS_ERR(spi_engine->clk)) {
- 		ret = PTR_ERR(spi_engine->clk);
- 		goto err_put_host;
- 	}
- 
--	spi_engine->ref_clk = devm_clk_get(&pdev->dev, "spi_clk");
-+	spi_engine->ref_clk = devm_clk_get_enabled(&pdev->dev, "spi_clk");
- 	if (IS_ERR(spi_engine->ref_clk)) {
- 		ret = PTR_ERR(spi_engine->ref_clk);
- 		goto err_put_host;
- 	}
- 
--	ret = clk_prepare_enable(spi_engine->clk);
--	if (ret)
--		goto err_put_host;
--
--	ret = clk_prepare_enable(spi_engine->ref_clk);
--	if (ret)
--		goto err_clk_disable;
--
- 	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi_engine->base)) {
- 		ret = PTR_ERR(spi_engine->base);
--		goto err_ref_clk_disable;
-+		goto err_put_host;
- 	}
- 
- 	version = readl(spi_engine->base + SPI_ENGINE_REG_VERSION);
-@@ -518,7 +510,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 			SPI_ENGINE_VERSION_MINOR(version),
- 			SPI_ENGINE_VERSION_PATCH(version));
- 		ret = -ENODEV;
--		goto err_ref_clk_disable;
-+		goto err_put_host;
- 	}
- 
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_RESET);
-@@ -527,7 +519,7 @@ static int spi_engine_probe(struct platform_device *pdev)
- 
- 	ret = request_irq(irq, spi_engine_irq, 0, pdev->name, host);
- 	if (ret)
--		goto err_ref_clk_disable;
-+		goto err_put_host;
- 
- 	host->dev.of_node = pdev->dev.of_node;
- 	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
-@@ -545,10 +537,6 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	return 0;
- err_free_irq:
- 	free_irq(irq, host);
--err_ref_clk_disable:
--	clk_disable_unprepare(spi_engine->ref_clk);
--err_clk_disable:
--	clk_disable_unprepare(spi_engine->clk);
- err_put_host:
- 	spi_controller_put(host);
- 	return ret;
-@@ -569,9 +557,6 @@ static void spi_engine_remove(struct platform_device *pdev)
- 	writel_relaxed(0xff, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
- 	writel_relaxed(0x00, spi_engine->base + SPI_ENGINE_REG_INT_ENABLE);
- 	writel_relaxed(0x01, spi_engine->base + SPI_ENGINE_REG_RESET);
--
--	clk_disable_unprepare(spi_engine->ref_clk);
--	clk_disable_unprepare(spi_engine->clk);
- }
- 
- static const struct of_device_id spi_engine_match_table[] = {
+-	if (offset >= maxsize) {
++	if (offset + bsize - 1 >= maxsize) {
+ 		/*
+ 		 * The starting point lies beyond the allocated metadata;
+ 		 * there are no blocks to deallocate.
 -- 
 2.43.0
 
