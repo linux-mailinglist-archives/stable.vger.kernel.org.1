@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C8C8C52CB
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:41:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3085C8C5316
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE22B21C71
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6218C1C21ED0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F70D12A157;
-	Tue, 14 May 2024 11:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1F413A403;
+	Tue, 14 May 2024 11:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/d+tzE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1G7uBISJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E005254BFE;
-	Tue, 14 May 2024 11:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC5E13A3F0;
+	Tue, 14 May 2024 11:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685400; cv=none; b=ejMZ9Xy+QttdA5CQoRaGid7UxmHQRZC1C8RJuqTynb6k46HtIz4mwMyaRinp1x6oBgsqBJSGXJz29qWOvLrHxC9gM3OchEYF6GKWDOaFATyAJoU2WK0iuW898sM6jHNuZ8epeyVjonEL3p3MYcpQc0klYJ8UCo2PdquKy9FNsXc=
+	t=1715686301; cv=none; b=jfohWTQoAtNpNBChDF5pBqUi30Q0uAOxO+2OyqAMa8y3bvSX+/2lpYSq2fYh90ASDwppI6pmg0+zX9bfWGLHclQLyMn5Bsw2saQpdyojE0ptI45FHlpHMFZUNsbovpSOa2X/5dR8P3H2QLzMhBJC0lM7TT1QkuxoGuaSy5VmIL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685400; c=relaxed/simple;
-	bh=iKjJ7I1nuu0OQEsEBs5N4JoxsCI/QcPAQVzgtog188I=;
+	s=arc-20240116; t=1715686301; c=relaxed/simple;
+	bh=Ijk0gnb722/vY0hCfq+GQ7Z8PuovbQ479OoV+pkStZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvMD9MgqvO0oBjJqg7BgiixsitBiTcmUTGVgNj5a2iZkxnGIsswTRajLdqHReaXYRfPnnkCOB+eCGpXYoMt+3Xl3uMBano/6WPYRsXbm9wtXY1aG2BiOaJlMzgOARcIhc3idXXE+xAh+aT/+Prgy5oS7EtwvsTmX7BrN3X6OANg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/d+tzE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A33C2BD10;
-	Tue, 14 May 2024 11:16:39 +0000 (UTC)
+	 MIME-Version; b=MpMEyGVLxNocgMyvvBC5yzMk/Sp3UvxnaM5OsH/53j6oEXvQemAdj1FAarMofc6JO8YSbhJEJIWNxnUik1v5Yk3nEMDc8tPkDIH2Efbj/NHJq1gXfvaVjQreERwIfI29CG+Bc322NY9wkGgchNOF+54oEJ6g9xDp+J+TdEOihjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1G7uBISJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBD2C2BD10;
+	Tue, 14 May 2024 11:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685399;
-	bh=iKjJ7I1nuu0OQEsEBs5N4JoxsCI/QcPAQVzgtog188I=;
+	s=korg; t=1715686301;
+	bh=Ijk0gnb722/vY0hCfq+GQ7Z8PuovbQ479OoV+pkStZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/d+tzE7FbtjwTgOnGpVMTDJYzt0lA+EfmM+RSwQ5iIUwhSfUrmBqpKfja00uCDuz
-	 UP0nUwHI4TASLLF1e7NvZrUH4e+POs5tPfO2ocj0a57PkJXU/gfegJD49tC46EuqAu
-	 OoI4hHUsLzpbXSCuRKdJ+wEkcu51oqZ6jtDg7v8E=
+	b=1G7uBISJ7vsMd8jfmK4AYXj8AaRg+GRyNcSUzZQOKWyFERdjrTtqUG3rYRfjBqhlm
+	 omp4MZMxhRik1kAaZrFBpId+EM6JyrTnTHAwj0PVIVLO9DXhN1pvMccbYeahzVsUIf
+	 W3HhYeMWnQiiOCm1jB6jd8k3rTXXrUbDX3Mh5m2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/301] Bluetooth: l2cap: fix null-ptr-deref in l2cap_chan_timeout
+Subject: [PATCH 6.1 091/236] KVM: arm64: vgic-v2: Use cpuid from userspace as vcpu_id
 Date: Tue, 14 May 2024 12:17:33 +0200
-Message-ID: <20240514101039.127619492@linuxfoundation.org>
+Message-ID: <20240514101023.824366060@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit adf0398cee86643b8eacde95f17d073d022f782c ]
+[ Upstream commit 4e7728c81a54b17bd33be402ac140bc11bb0c4f4 ]
 
-There is a race condition between l2cap_chan_timeout() and
-l2cap_chan_del(). When we use l2cap_chan_del() to delete the
-channel, the chan->conn will be set to null. But the conn could
-be dereferenced again in the mutex_lock() of l2cap_chan_timeout().
-As a result the null pointer dereference bug will happen. The
-KASAN report triggered by POC is shown below:
+When parsing a GICv2 attribute that contains a cpuid, handle this
+as the vcpu_id, not a vcpu_idx, as userspace cannot really know
+the mapping between the two. For this, use kvm_get_vcpu_by_id()
+instead of kvm_get_vcpu().
 
-[  472.074580] ==================================================================
-[  472.075284] BUG: KASAN: null-ptr-deref in mutex_lock+0x68/0xc0
-[  472.075308] Write of size 8 at addr 0000000000000158 by task kworker/0:0/7
-[  472.075308]
-[  472.075308] CPU: 0 PID: 7 Comm: kworker/0:0 Not tainted 6.9.0-rc5-00356-g78c0094a146b #36
-[  472.075308] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu4
-[  472.075308] Workqueue: events l2cap_chan_timeout
-[  472.075308] Call Trace:
-[  472.075308]  <TASK>
-[  472.075308]  dump_stack_lvl+0x137/0x1a0
-[  472.075308]  print_report+0x101/0x250
-[  472.075308]  ? __virt_addr_valid+0x77/0x160
-[  472.075308]  ? mutex_lock+0x68/0xc0
-[  472.075308]  kasan_report+0x139/0x170
-[  472.075308]  ? mutex_lock+0x68/0xc0
-[  472.075308]  kasan_check_range+0x2c3/0x2e0
-[  472.075308]  mutex_lock+0x68/0xc0
-[  472.075308]  l2cap_chan_timeout+0x181/0x300
-[  472.075308]  process_one_work+0x5d2/0xe00
-[  472.075308]  worker_thread+0xe1d/0x1660
-[  472.075308]  ? pr_cont_work+0x5e0/0x5e0
-[  472.075308]  kthread+0x2b7/0x350
-[  472.075308]  ? pr_cont_work+0x5e0/0x5e0
-[  472.075308]  ? kthread_blkcg+0xd0/0xd0
-[  472.075308]  ret_from_fork+0x4d/0x80
-[  472.075308]  ? kthread_blkcg+0xd0/0xd0
-[  472.075308]  ret_from_fork_asm+0x11/0x20
-[  472.075308]  </TASK>
-[  472.075308] ==================================================================
-[  472.094860] Disabling lock debugging due to kernel taint
-[  472.096136] BUG: kernel NULL pointer dereference, address: 0000000000000158
-[  472.096136] #PF: supervisor write access in kernel mode
-[  472.096136] #PF: error_code(0x0002) - not-present page
-[  472.096136] PGD 0 P4D 0
-[  472.096136] Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
-[  472.096136] CPU: 0 PID: 7 Comm: kworker/0:0 Tainted: G    B              6.9.0-rc5-00356-g78c0094a146b #36
-[  472.096136] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu4
-[  472.096136] Workqueue: events l2cap_chan_timeout
-[  472.096136] RIP: 0010:mutex_lock+0x88/0xc0
-[  472.096136] Code: be 08 00 00 00 e8 f8 23 1f fd 4c 89 f7 be 08 00 00 00 e8 eb 23 1f fd 42 80 3c 23 00 74 08 48 88
-[  472.096136] RSP: 0018:ffff88800744fc78 EFLAGS: 00000246
-[  472.096136] RAX: 0000000000000000 RBX: 1ffff11000e89f8f RCX: ffffffff8457c865
-[  472.096136] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffff88800744fc78
-[  472.096136] RBP: 0000000000000158 R08: ffff88800744fc7f R09: 1ffff11000e89f8f
-[  472.096136] R10: dffffc0000000000 R11: ffffed1000e89f90 R12: dffffc0000000000
-[  472.096136] R13: 0000000000000158 R14: ffff88800744fc78 R15: ffff888007405a00
-[  472.096136] FS:  0000000000000000(0000) GS:ffff88806d200000(0000) knlGS:0000000000000000
-[  472.096136] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  472.096136] CR2: 0000000000000158 CR3: 000000000da32000 CR4: 00000000000006f0
-[  472.096136] Call Trace:
-[  472.096136]  <TASK>
-[  472.096136]  ? __die_body+0x8d/0xe0
-[  472.096136]  ? page_fault_oops+0x6b8/0x9a0
-[  472.096136]  ? kernelmode_fixup_or_oops+0x20c/0x2a0
-[  472.096136]  ? do_user_addr_fault+0x1027/0x1340
-[  472.096136]  ? _printk+0x7a/0xa0
-[  472.096136]  ? mutex_lock+0x68/0xc0
-[  472.096136]  ? add_taint+0x42/0xd0
-[  472.096136]  ? exc_page_fault+0x6a/0x1b0
-[  472.096136]  ? asm_exc_page_fault+0x26/0x30
-[  472.096136]  ? mutex_lock+0x75/0xc0
-[  472.096136]  ? mutex_lock+0x88/0xc0
-[  472.096136]  ? mutex_lock+0x75/0xc0
-[  472.096136]  l2cap_chan_timeout+0x181/0x300
-[  472.096136]  process_one_work+0x5d2/0xe00
-[  472.096136]  worker_thread+0xe1d/0x1660
-[  472.096136]  ? pr_cont_work+0x5e0/0x5e0
-[  472.096136]  kthread+0x2b7/0x350
-[  472.096136]  ? pr_cont_work+0x5e0/0x5e0
-[  472.096136]  ? kthread_blkcg+0xd0/0xd0
-[  472.096136]  ret_from_fork+0x4d/0x80
-[  472.096136]  ? kthread_blkcg+0xd0/0xd0
-[  472.096136]  ret_from_fork_asm+0x11/0x20
-[  472.096136]  </TASK>
-[  472.096136] Modules linked in:
-[  472.096136] CR2: 0000000000000158
-[  472.096136] ---[ end trace 0000000000000000 ]---
-[  472.096136] RIP: 0010:mutex_lock+0x88/0xc0
-[  472.096136] Code: be 08 00 00 00 e8 f8 23 1f fd 4c 89 f7 be 08 00 00 00 e8 eb 23 1f fd 42 80 3c 23 00 74 08 48 88
-[  472.096136] RSP: 0018:ffff88800744fc78 EFLAGS: 00000246
-[  472.096136] RAX: 0000000000000000 RBX: 1ffff11000e89f8f RCX: ffffffff8457c865
-[  472.096136] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffff88800744fc78
-[  472.096136] RBP: 0000000000000158 R08: ffff88800744fc7f R09: 1ffff11000e89f8f
-[  472.132932] R10: dffffc0000000000 R11: ffffed1000e89f90 R12: dffffc0000000000
-[  472.132932] R13: 0000000000000158 R14: ffff88800744fc78 R15: ffff888007405a00
-[  472.132932] FS:  0000000000000000(0000) GS:ffff88806d200000(0000) knlGS:0000000000000000
-[  472.132932] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  472.132932] CR2: 0000000000000158 CR3: 000000000da32000 CR4: 00000000000006f0
-[  472.132932] Kernel panic - not syncing: Fatal exception
-[  472.132932] Kernel Offset: disabled
-[  472.132932] ---[ end Kernel panic - not syncing: Fatal exception ]---
+Take this opportunity to get rid of the pointless check against
+online_vcpus, which doesn't make much sense either, and switch
+to FIELD_GET as a way to extract the vcpu_id.
 
-Add a check to judge whether the conn is null in l2cap_chan_timeout()
-in order to mitigate the bug.
-
-Fixes: 3df91ea20e74 ("Bluetooth: Revert to mutexes from RCU list")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230927090911.3355209-5-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Stable-dep-of: 6ddb4f372fc6 ("KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 706d2478ddb33..1e961cfaa07b3 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -415,6 +415,9 @@ static void l2cap_chan_timeout(struct work_struct *work)
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+index bf4b3d9631ce1..97ead28f81425 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -339,13 +339,9 @@ int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
+ {
+ 	int cpuid;
  
- 	BT_DBG("chan %p state %s", chan, state_to_string(chan->state));
+-	cpuid = (attr->attr & KVM_DEV_ARM_VGIC_CPUID_MASK) >>
+-		 KVM_DEV_ARM_VGIC_CPUID_SHIFT;
++	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
  
-+	if (!conn)
-+		return;
-+
- 	mutex_lock(&conn->chan_lock);
- 	/* __set_chan_timer() calls l2cap_chan_hold(chan) while scheduling
- 	 * this work. No need to call l2cap_chan_hold(chan) here again.
+-	if (cpuid >= atomic_read(&dev->kvm->online_vcpus))
+-		return -EINVAL;
+-
+-	reg_attr->vcpu = kvm_get_vcpu(dev->kvm, cpuid);
++	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
+ 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
+ 
+ 	return 0;
 -- 
 2.43.0
 
