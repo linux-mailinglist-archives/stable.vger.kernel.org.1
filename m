@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122578C5138
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:22:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7434E8C54F6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 434DA1C208A7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:22:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 360CE1F21517
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4122F12FB03;
-	Tue, 14 May 2024 10:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AA47F7EB;
+	Tue, 14 May 2024 11:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTIUbqn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd+u/6Bf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C0A84A3F;
-	Tue, 14 May 2024 10:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1738E1CFB2;
+	Tue, 14 May 2024 11:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684204; cv=none; b=cFrCud0BekvXmB8I7aEC/kIEbexRNbGlZxFwFdseTMJSp9vGBmI3gJ6eqcuF4apstdGeAgfvzwmUWrvlUOv+X1N8rJxo7Ct1KQGHNB6p7aPw/dwRuCm6vzv6bKkEfbZStGkf/KJIS+Xr/nDQv9PhCZxsBiD3xxOH9MIr5dM32zM=
+	t=1715687555; cv=none; b=PMSc+DouFEE5yTL1S2jy1yS0JAn55xgHx1uaWVaSHjFJIamdjkYPsx6T7hzBQf6w33g3KXWqCesWVbR6PZ5+XxqfWavychoqQp1T6ZOpFiNyaA/S4uzwtDqfoYJoD6KxjmgyC7ot1TYRMuTwEDrnnWOP2+taU0PZROZtAUt5m2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684204; c=relaxed/simple;
-	bh=wRdhn/dQid05s7zg3Z1p/b5D6muU2EV/7M7xs3VXkLc=;
+	s=arc-20240116; t=1715687555; c=relaxed/simple;
+	bh=ZwdRiVi6wI+D9sHbFk3C6J4HUzP8qp4pXTz8+eITLbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtfD2OciAGDGrz9y7+JGSNk34issLyKifFw4bGWh1EQmOri2UwnDYl7duc5lOvr+ttWPqVfkJW/JhLitCnpe0+hVtDbyPgriEL5NhooM/EO5Isv5pB81Y2LhCZeBsWKrKYnJxK2XeNgXoQmf/wEn81B6zTQYp3lKsGTg4bY+NBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTIUbqn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBA3C2BD10;
-	Tue, 14 May 2024 10:56:43 +0000 (UTC)
+	 MIME-Version; b=fDXJ+feH5iyoHkHFdoxfovJRTboHaWGkCGLRZQr8yMTx+UVtJcCdLMMloBcYUQiiXpFbh/Vwbr0OEYt8Y+jOYTmW47UIcdW3oeLC7yoSYKB8TEUVrgTt2EOhnoL9lmadSKbTsvXzCzrphHN1fhfv4WwrZOnTaAAuGY0W6lavGMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd+u/6Bf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FC9C2BD10;
+	Tue, 14 May 2024 11:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684203;
-	bh=wRdhn/dQid05s7zg3Z1p/b5D6muU2EV/7M7xs3VXkLc=;
+	s=korg; t=1715687555;
+	bh=ZwdRiVi6wI+D9sHbFk3C6J4HUzP8qp4pXTz8+eITLbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTIUbqn9o0Eq9jLriLi8TA++Wr6Yn2mid1Sy5vhDSH8JSKrW8O0FdUr/lTdy9OE73
-	 qtmM9rN6HPk0GE8TxddAw55sB7iPf1EzMYkn9jCQRL8MoSyaoY9k0ipjJDWJKvOtcM
-	 478PZGYmpFRRe4NcrJp+VrX5geKMmQYZUI0GsET0=
+	b=Qd+u/6BfsFAWTo7m0tybVMlJ/RUvO87+npJuiH4vMNkli0fvD13s9n8MyZjyPqMGO
+	 Xj/Olf2AFceO7cqGSOuEwQ6oG8+ca+qNEyx+KU1AjfJHo7PpPUn5b8hvh+NVExKIxs
+	 bcZB5EuXLS8VHMVI6TANEsShCdazQwlOGSTGrANY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.8 318/336] fs/proc/task_mmu: fix uffd-wp confusion in pagemap_scan_pmd_entry()
-Date: Tue, 14 May 2024 12:18:42 +0200
-Message-ID: <20240514101050.628271078@linuxfoundation.org>
+	syzbot+aa8c8ec2538929f18f2d@syzkaller.appspotmail.com,
+	Jason Xing <kernelxing@tencent.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 025/168] bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue
+Date: Tue, 14 May 2024 12:18:43 +0200
+Message-ID: <20240514101007.639238135@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit 2c7ad9a590d1a99ec59c7d90cef41e2b296944c4 upstream.
+[ Upstream commit 6648e613226e18897231ab5e42ffc29e63fa3365 ]
 
-pagemap_scan_pmd_entry() checks if uffd-wp is set on each pte to avoid
-unnecessary if set.  However it was previously checking with
-`pte_uffd_wp(ptep_get(pte))` without first confirming that the pte was
-present.  It is only valid to call pte_uffd_wp() for present ptes.  For
-swap ptes, pte_swp_uffd_wp() must be called because the uffd-wp bit may be
-kept in a different position, depending on the arch.
+Fix NULL pointer data-races in sk_psock_skb_ingress_enqueue() which
+syzbot reported [1].
 
-This was leading to test failures in the pagemap_ioctl mm selftest, when
-bringing up uffd-wp support on arm64 due to incorrectly interpretting the
-uffd-wp status of migration entries.
+[1]
+BUG: KCSAN: data-race in sk_psock_drop / sk_psock_skb_ingress_enqueue
 
-Let's fix this by using the correct check based on pte_present().  While
-we are at it, let's pass the pte to make_uffd_wp_pte() to avoid the
-pointless extra ptep_get() which can't be optimized out due to READ_ONCE()
-on many arches.
+write to 0xffff88814b3278b8 of 8 bytes by task 10724 on cpu 1:
+ sk_psock_stop_verdict net/core/skmsg.c:1257 [inline]
+ sk_psock_drop+0x13e/0x1f0 net/core/skmsg.c:843
+ sk_psock_put include/linux/skmsg.h:459 [inline]
+ sock_map_close+0x1a7/0x260 net/core/sock_map.c:1648
+ unix_release+0x4b/0x80 net/unix/af_unix.c:1048
+ __sock_release net/socket.c:659 [inline]
+ sock_close+0x68/0x150 net/socket.c:1421
+ __fput+0x2c1/0x660 fs/file_table.c:422
+ __fput_sync+0x44/0x60 fs/file_table.c:507
+ __do_sys_close fs/open.c:1556 [inline]
+ __se_sys_close+0x101/0x1b0 fs/open.c:1541
+ __x64_sys_close+0x1f/0x30 fs/open.c:1541
+ do_syscall_64+0xd3/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
 
-Link: https://lkml.kernel.org/r/20240429114104.182890-1-ryan.roberts@arm.com
-Fixes: 12f6b01a0bcb ("fs/proc/task_mmu: add fast paths to get/clear PAGE_IS_WRITTEN flag")
-Closes: https://lore.kernel.org/linux-arm-kernel/ZiuyGXt0XWwRgFh9@x1n/
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+read to 0xffff88814b3278b8 of 8 bytes by task 10713 on cpu 0:
+ sk_psock_data_ready include/linux/skmsg.h:464 [inline]
+ sk_psock_skb_ingress_enqueue+0x32d/0x390 net/core/skmsg.c:555
+ sk_psock_skb_ingress_self+0x185/0x1e0 net/core/skmsg.c:606
+ sk_psock_verdict_apply net/core/skmsg.c:1008 [inline]
+ sk_psock_verdict_recv+0x3e4/0x4a0 net/core/skmsg.c:1202
+ unix_read_skb net/unix/af_unix.c:2546 [inline]
+ unix_stream_read_skb+0x9e/0xf0 net/unix/af_unix.c:2682
+ sk_psock_verdict_data_ready+0x77/0x220 net/core/skmsg.c:1223
+ unix_stream_sendmsg+0x527/0x860 net/unix/af_unix.c:2339
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0x140/0x180 net/socket.c:745
+ ____sys_sendmsg+0x312/0x410 net/socket.c:2584
+ ___sys_sendmsg net/socket.c:2638 [inline]
+ __sys_sendmsg+0x1e9/0x280 net/socket.c:2667
+ __do_sys_sendmsg net/socket.c:2676 [inline]
+ __se_sys_sendmsg net/socket.c:2674 [inline]
+ __x64_sys_sendmsg+0x46/0x50 net/socket.c:2674
+ do_syscall_64+0xd3/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+
+value changed: 0xffffffff83d7feb0 -> 0x0000000000000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 10713 Comm: syz-executor.4 Tainted: G        W          6.8.0-syzkaller-08951-gfe46a7dd189e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
+
+Prior to this, commit 4cd12c6065df ("bpf, sockmap: Fix NULL pointer
+dereference in sk_psock_verdict_data_ready()") fixed one NULL pointer
+similarly due to no protection of saved_data_ready. Here is another
+different caller causing the same issue because of the same reason. So
+we should protect it with sk_callback_lock read lock because the writer
+side in the sk_psock_drop() uses "write_lock_bh(&sk->sk_callback_lock);".
+
+To avoid errors that could happen in future, I move those two pairs of
+lock into the sk_psock_data_ready(), which is suggested by John Fastabend.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: syzbot+aa8c8ec2538929f18f2d@syzkaller.appspotmail.com
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=aa8c8ec2538929f18f2d
+Link: https://lore.kernel.org/all/20240329134037.92124-1-kerneljasonxing@gmail.com
+Link: https://lore.kernel.org/bpf/20240404021001.94815-1-kerneljasonxing@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ include/linux/skmsg.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1818,10 +1818,8 @@ static unsigned long pagemap_page_catego
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -462,10 +462,12 @@ static inline void sk_psock_put(struct s
+ 
+ static inline void sk_psock_data_ready(struct sock *sk, struct sk_psock *psock)
+ {
++	read_lock_bh(&sk->sk_callback_lock);
+ 	if (psock->saved_data_ready)
+ 		psock->saved_data_ready(sk);
+ 	else
+ 		sk->sk_data_ready(sk);
++	read_unlock_bh(&sk->sk_callback_lock);
  }
  
- static void make_uffd_wp_pte(struct vm_area_struct *vma,
--			     unsigned long addr, pte_t *pte)
-+			     unsigned long addr, pte_t *pte, pte_t ptent)
- {
--	pte_t ptent = ptep_get(pte);
--
- 	if (pte_present(ptent)) {
- 		pte_t old_pte;
- 
-@@ -2176,9 +2174,12 @@ static int pagemap_scan_pmd_entry(pmd_t
- 	if ((p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out) {
- 		/* Fast path for performing exclusive WP */
- 		for (addr = start; addr != end; pte++, addr += PAGE_SIZE) {
--			if (pte_uffd_wp(ptep_get(pte)))
-+			pte_t ptent = ptep_get(pte);
-+
-+			if ((pte_present(ptent) && pte_uffd_wp(ptent)) ||
-+			    pte_swp_uffd_wp_any(ptent))
- 				continue;
--			make_uffd_wp_pte(vma, addr, pte);
-+			make_uffd_wp_pte(vma, addr, pte, ptent);
- 			if (!flush_end)
- 				start = addr;
- 			flush_end = addr + PAGE_SIZE;
-@@ -2191,8 +2192,10 @@ static int pagemap_scan_pmd_entry(pmd_t
- 	    p->arg.return_mask == PAGE_IS_WRITTEN) {
- 		for (addr = start; addr < end; pte++, addr += PAGE_SIZE) {
- 			unsigned long next = addr + PAGE_SIZE;
-+			pte_t ptent = ptep_get(pte);
- 
--			if (pte_uffd_wp(ptep_get(pte)))
-+			if ((pte_present(ptent) && pte_uffd_wp(ptent)) ||
-+			    pte_swp_uffd_wp_any(ptent))
- 				continue;
- 			ret = pagemap_scan_output(p->cur_vma_category | PAGE_IS_WRITTEN,
- 						  p, addr, &next);
-@@ -2200,7 +2203,7 @@ static int pagemap_scan_pmd_entry(pmd_t
- 				break;
- 			if (~p->arg.flags & PM_SCAN_WP_MATCHING)
- 				continue;
--			make_uffd_wp_pte(vma, addr, pte);
-+			make_uffd_wp_pte(vma, addr, pte, ptent);
- 			if (!flush_end)
- 				start = addr;
- 			flush_end = next;
-@@ -2209,8 +2212,9 @@ static int pagemap_scan_pmd_entry(pmd_t
- 	}
- 
- 	for (addr = start; addr != end; pte++, addr += PAGE_SIZE) {
-+		pte_t ptent = ptep_get(pte);
- 		unsigned long categories = p->cur_vma_category |
--					   pagemap_page_category(p, vma, addr, ptep_get(pte));
-+					   pagemap_page_category(p, vma, addr, ptent);
- 		unsigned long next = addr + PAGE_SIZE;
- 
- 		if (!pagemap_scan_is_interesting_page(categories, p))
-@@ -2225,7 +2229,7 @@ static int pagemap_scan_pmd_entry(pmd_t
- 		if (~categories & PAGE_IS_WRITTEN)
- 			continue;
- 
--		make_uffd_wp_pte(vma, addr, pte);
-+		make_uffd_wp_pte(vma, addr, pte, ptent);
- 		if (!flush_end)
- 			start = addr;
- 		flush_end = next;
+ static inline void psock_set_prog(struct bpf_prog **pprog,
 
 
 
