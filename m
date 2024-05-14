@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-44858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E118C54B5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAE28C5451
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43089285626
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:52:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43967B20D7C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C050612E1D3;
-	Tue, 14 May 2024 11:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD0D6CDC5;
+	Tue, 14 May 2024 11:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EUp2ViB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0psgrqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A933CC2;
-	Tue, 14 May 2024 11:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A722D60A;
+	Tue, 14 May 2024 11:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687380; cv=none; b=QLAzmguPjGOx5RZXxvR19vtOzVWMz250/eBamePrsT6wcm4Dr98v4vtrrKRrCZUMo1daJmID7pIbVrKXQxS72vRCmKWbcW+rXVovzuHtT72VOfV2kUIQI8ClB9UpVjJKfH/9gyOqz5LdtwZcQdJd95fdRMPnxYbHcWo3CG+TZmg=
+	t=1715687117; cv=none; b=YuGzVQzRvuAXAV/gredU8onmbK7K84JtCoj79rLhgSeBC8Dm3zgCJNKpfm218h6xJL1RYISiIlFZrmBJ0KfkIB7Zb3w2YhQrdcTxqXvDBDlYz1CtbXDt6sHE2RQrTUAXg9+EVR1PMkxsZ74fdgkBTXfaCZWFxV/b/+ENBXD9nn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687380; c=relaxed/simple;
-	bh=/e4ae3MFq9AwHsrF2UwTjEhCssVmS/T6TgeKQ5cvwsw=;
+	s=arc-20240116; t=1715687117; c=relaxed/simple;
+	bh=SZVY995J2m6DiN+Q2W31nr7aIebDukiWOMnyy2rlofU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=en66uTjMgLmMvr8kdhV81zXZjfyq6ougiTciBIntO3o7uhCTedtdkGW+ubrw1MH9t7O4d0DMblgKMMbMNPegZenyU66kPTg8grT1jiruaeNrRccZia8C8BvMLDbNBOD8jbpN3n4u4eU2m9uTVhU2LuLpxTq57yC1csMMWErMu7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EUp2ViB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02083C2BD10;
-	Tue, 14 May 2024 11:49:39 +0000 (UTC)
+	 MIME-Version; b=Z3ZXu6fYQQKNEGlnvy7D9C2w+YpC2tjdrjNMHErtdt6ubo7TDHO6FXs6QxkFEt1m+beZRoAeBO5srYDdjOTRplSvY6y2Aabpv0wgd8PCnin8XnII7enaa91WKoEuTGfx1cWry0MLbo7c6p4dTartNES0LrjhIt26CWGWpVk0L5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0psgrqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00ACBC32781;
+	Tue, 14 May 2024 11:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687380;
-	bh=/e4ae3MFq9AwHsrF2UwTjEhCssVmS/T6TgeKQ5cvwsw=;
+	s=korg; t=1715687117;
+	bh=SZVY995J2m6DiN+Q2W31nr7aIebDukiWOMnyy2rlofU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EUp2ViBTn4L2OjF2z6J6BHPjG2Mh5IJXOJYng8cv/cCX+c6A/Cs/JhjrcLf8Uana
-	 HvYPC2Y4fIIgUEfUoMr5yHEblU9MBG4l13oeQ+axGZz76mj8/2gfhI9BS5+Ox3FwQY
-	 B0azIQ41D6+BvEH/bNktl1Y1GOMKtFoAPuSXMri0=
+	b=u0psgrqiSUbGNnLvRQDfm07G/q21YABkukRtKeBl/vfXNn28URLdetT/+PaE134UM
+	 5D3d1WVZEC9AXUzH7QiYAt0diP3THRbYvic+3e9f+OxogHkJwDjyB1ljYDmEz/ESFb
+	 aGcopzXKtoIes0WozCx6ziQzpyJaEvxgXmPmNA5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Neal Cardwell <ncardwell@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 076/111] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
+Subject: [PATCH 5.4 63/84] tcp: defer shutdown(SEND_SHUTDOWN) for TCP_SYN_RECV sockets
 Date: Tue, 14 May 2024 12:20:14 +0200
-Message-ID: <20240514101000.021349179@linuxfoundation.org>
+Message-ID: <20240514100954.055684314@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
-References: <20240514100957.114746054@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -156,10 +156,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index ac6cb2dc60380..4ed0d303791a1 100644
+index ca7863f722187..9a4a3f6d9cb06 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
-@@ -2493,7 +2493,7 @@ void tcp_shutdown(struct sock *sk, int how)
+@@ -2331,7 +2331,7 @@ void tcp_shutdown(struct sock *sk, int how)
  	/* If we've already sent a FIN, or it's a closed state, skip this. */
  	if ((1 << sk->sk_state) &
  	    (TCPF_ESTABLISHED | TCPF_SYN_SENT |
@@ -168,7 +168,7 @@ index ac6cb2dc60380..4ed0d303791a1 100644
  		/* Clear out any half completed packets.  FIN if needed. */
  		if (tcp_close_state(sk))
  			tcp_send_fin(sk);
-@@ -2604,7 +2604,7 @@ void __tcp_close(struct sock *sk, long timeout)
+@@ -2416,7 +2416,7 @@ void __tcp_close(struct sock *sk, long timeout)
  		 * machine. State transitions:
  		 *
  		 * TCP_ESTABLISHED -> TCP_FIN_WAIT1
@@ -178,10 +178,10 @@ index ac6cb2dc60380..4ed0d303791a1 100644
  		 *
  		 * are legal only when FIN has been sent (i.e. in window),
 diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0f9fe5edad142..512f8dc051c61 100644
+index 61243531a7f4c..87a10bb11eb0b 100644
 --- a/net/ipv4/tcp_input.c
 +++ b/net/ipv4/tcp_input.c
-@@ -6516,6 +6516,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+@@ -6342,6 +6342,8 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
  
  		tcp_initialize_rcv_mss(sk);
  		tcp_fast_path_on(tp);
@@ -191,10 +191,10 @@ index 0f9fe5edad142..512f8dc051c61 100644
  
  	case TCP_FIN_WAIT1: {
 diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index f0df14782ee01..68f1633c477ae 100644
+index 6d7f441c7dd76..4f203cbbc99b5 100644
 --- a/net/ipv4/tcp_output.c
 +++ b/net/ipv4/tcp_output.c
-@@ -3440,7 +3440,9 @@ void tcp_send_fin(struct sock *sk)
+@@ -3210,7 +3210,9 @@ void tcp_send_fin(struct sock *sk)
  			return;
  		}
  	} else {
