@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63DA8C5210
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEC58C5323
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2391F22776
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA75284D92
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4CB12AAC6;
-	Tue, 14 May 2024 11:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFFA143861;
+	Tue, 14 May 2024 11:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO4mtuIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSzi17kF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686FF12A14B;
-	Tue, 14 May 2024 11:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A99143759;
+	Tue, 14 May 2024 11:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685429; cv=none; b=kr+e4j8Cou8j0cDhZVoBYYReIdIpe5aoSaLL4Tc5XXC8WGj/60wjXaPBzl6v5fTCb5b3XfIUiemgmz2LINWElpUCxFuCoPHeqeTss/7nG0QUjAZYrR2ng/FXQzYVU9+xuafv0R95EAJ2WDKgFMkMCAnps3/HosfuyjjtNn+7gPc=
+	t=1715686318; cv=none; b=BHVolOoUaOh1ZzejoOl/VBMRF4GqznHE5VqbnaZKLALoXzjnEjVTKvz1+8MZKe8T2F0bOmcPRFuVwUR6W5Hcp59ZIaAHSVZ1uCPhPX+tJqvc66TPNQzdp3XdaiZMKmu43orcczj8hE7wdkManvsBJ+0d1n4vndPCM9Gp2LZXFk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685429; c=relaxed/simple;
-	bh=t7To3Kh/QnzfUsk4093oUd3bXJFUyuOhon2F5Ts7L6g=;
+	s=arc-20240116; t=1715686318; c=relaxed/simple;
+	bh=c4XKEWmD7sOXZdE8qxJNZhzEMuKDHk+fUV0DEX67uPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwD70eGieZ8Qr9wtmUSTJ6ASX0ZN5xdX8NZdN1+vTVIDUDEKrEhyS7oq2FFQfIbnAdEeHRDb1BQ2nyteDu8cNtwttdXlb3pYKc4lhizhWWKviQIvagHUGvWLJLHwzT7YLXuFuvYBwg+xjfERVRFSu5rZyyIgKO4FOD005Zwtd8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO4mtuIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EC4C2BD10;
-	Tue, 14 May 2024 11:17:08 +0000 (UTC)
+	 MIME-Version; b=MnvBuutxzdiaanvqdz/uuE66vyAbS1sU11zyGieok04QE3ArX22Wmd9OYZn6Db2vrcss9BUCqQsf4G7KEdhgOnZ2uGEbsZprwGrvTMPUcXZMoU4j933j5fd9dChHSxWapQAXWR9vrILiMHl5jwL5tBjpxRPBBHLKHp0dnk3pExs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSzi17kF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F384C2BD10;
+	Tue, 14 May 2024 11:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685429;
-	bh=t7To3Kh/QnzfUsk4093oUd3bXJFUyuOhon2F5Ts7L6g=;
+	s=korg; t=1715686318;
+	bh=c4XKEWmD7sOXZdE8qxJNZhzEMuKDHk+fUV0DEX67uPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tO4mtuIiGetFa6EZoVTLf0wDzNjHD2kFQr+C+PVtnRRUsB32d/g6yYB2ln18cinn8
-	 y+j4EgblY+qjbeZmiwDnl0+QV31xDJ1I1kehOKbaQHEhxJWtb4oF5qQDkB4bBi+KDp
-	 6u+4bjTY6ZV1gORoD3+TH9q6MmMnl515WPWjU6sQ=
+	b=xSzi17kFxLC14RKk2SsDcgbc24l4HqRwft6edNa+x/47QIve6AVbfbwqUjW9WqlQ0
+	 8sbYDd+liV1cZL+6QRxAyrp4ZQvUVZSBtOu1ebffEjdnXQAmZUHaC85jUv1VT52QDy
+	 Mo3z52H9Qk5fo36zXP4526oXfmBtu33RBEs6OiFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/301] hwmon: (corsair-cpro) Protect ccp->wait_input_report with a spinlock
-Date: Tue, 14 May 2024 12:17:38 +0200
-Message-ID: <20240514101039.316078865@linuxfoundation.org>
+Subject: [PATCH 6.1 097/236] gfs2: Fix invalid metadata access in punch_hole
+Date: Tue, 14 May 2024 12:17:39 +0200
+Message-ID: <20240514101024.054277627@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Andrew Price <anprice@redhat.com>
 
-[ Upstream commit d02abd57e79469a026213f7f5827a98d909f236a ]
+[ Upstream commit c95346ac918c5badf51b9a7ac58a26d3bd5bb224 ]
 
-Through hidraw, userspace can cause a status report to be sent
-from the device. The parsing in ccp_raw_event() may happen in
-parallel to a send_usb_cmd() call (which resets the completion
-for tracking the report) if it's running on a different CPU where
-bottom half interrupts are not disabled.
+In punch_hole(), when the offset lies in the final block for a given
+height, there is no hole to punch, but the maximum size check fails to
+detect that.  Consequently, punch_hole() will try to punch a hole beyond
+the end of the metadata and fail.  Fix the maximum size check.
 
-Add a spinlock around the complete_all() in ccp_raw_event() and
-reinit_completion() in send_usb_cmd() to prevent race issues.
-
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-4-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-cpro.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ fs/gfs2/bmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index e65e3825af974..280b90646a873 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/slab.h>
-+#include <linux/spinlock.h>
- #include <linux/types.h>
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index e7537fd305dd2..9ad11e5bf14c3 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -1702,7 +1702,8 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	struct buffer_head *dibh, *bh;
+ 	struct gfs2_holder rd_gh;
+ 	unsigned int bsize_shift = sdp->sd_sb.sb_bsize_shift;
+-	u64 lblock = (offset + (1 << bsize_shift) - 1) >> bsize_shift;
++	unsigned int bsize = 1 << bsize_shift;
++	u64 lblock = (offset + bsize - 1) >> bsize_shift;
+ 	__u16 start_list[GFS2_MAX_META_HEIGHT];
+ 	__u16 __end_list[GFS2_MAX_META_HEIGHT], *end_list = NULL;
+ 	unsigned int start_aligned, end_aligned;
+@@ -1713,7 +1714,7 @@ static int punch_hole(struct gfs2_inode *ip, u64 offset, u64 length)
+ 	u64 prev_bnr = 0;
+ 	__be64 *start, *end;
  
- #define USB_VENDOR_ID_CORSAIR			0x1b1c
-@@ -77,6 +78,8 @@
- struct ccp_device {
- 	struct hid_device *hdev;
- 	struct device *hwmon_dev;
-+	/* For reinitializing the completion below */
-+	spinlock_t wait_input_report_lock;
- 	struct completion wait_input_report;
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
- 	u8 *cmd_buffer;
-@@ -118,7 +121,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	ccp->cmd_buffer[2] = byte2;
- 	ccp->cmd_buffer[3] = byte3;
- 
-+	/*
-+	 * Disable raw event parsing for a moment to safely reinitialize the
-+	 * completion. Reinit is done because hidraw could have triggered
-+	 * the raw event parsing and marked the ccp->wait_input_report
-+	 * completion as done.
-+	 */
-+	spin_lock_bh(&ccp->wait_input_report_lock);
- 	reinit_completion(&ccp->wait_input_report);
-+	spin_unlock_bh(&ccp->wait_input_report_lock);
- 
- 	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
- 	if (ret < 0)
-@@ -136,11 +147,12 @@ static int ccp_raw_event(struct hid_device *hdev, struct hid_report *report, u8
- 	struct ccp_device *ccp = hid_get_drvdata(hdev);
- 
- 	/* only copy buffer when requested */
--	if (completion_done(&ccp->wait_input_report))
--		return 0;
--
--	memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
--	complete_all(&ccp->wait_input_report);
-+	spin_lock(&ccp->wait_input_report_lock);
-+	if (!completion_done(&ccp->wait_input_report)) {
-+		memcpy(ccp->buffer, data, min(IN_BUFFER_SIZE, size));
-+		complete_all(&ccp->wait_input_report);
-+	}
-+	spin_unlock(&ccp->wait_input_report_lock);
- 
- 	return 0;
- }
-@@ -515,7 +527,9 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 
- 	ccp->hdev = hdev;
- 	hid_set_drvdata(hdev, ccp);
-+
- 	mutex_init(&ccp->mutex);
-+	spin_lock_init(&ccp->wait_input_report_lock);
- 	init_completion(&ccp->wait_input_report);
- 
- 	hid_device_io_start(hdev);
+-	if (offset >= maxsize) {
++	if (offset + bsize - 1 >= maxsize) {
+ 		/*
+ 		 * The starting point lies beyond the allocated meta-data;
+ 		 * there are no blocks do deallocate.
 -- 
 2.43.0
 
