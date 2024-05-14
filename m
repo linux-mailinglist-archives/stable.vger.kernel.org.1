@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-43835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD65E8C4FD7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:53:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4DB8C4FB1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14C64283A52
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:53:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 474FCB20CF7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C5112FF86;
-	Tue, 14 May 2024 10:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0ADA12EBEE;
+	Tue, 14 May 2024 10:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYQHFAfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI1Fu8ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0174412F599;
-	Tue, 14 May 2024 10:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5B112EBE7;
+	Tue, 14 May 2024 10:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715682548; cv=none; b=ByYHXkEFu9MUYooOfUZJTojSvwsa5lZQDB5PjSDh25wdrjBRiETL5wDrkca21bpmTzj8tOicIoqWNFvzyRCZgja/rO/ibb8kKM7MYczH3hCrxC1oZ2ugQDbqtDTPaJA6cv7NYJzPdd6dHGkgQQzTeTSq6JEX91bL4NY0x+VHKZY=
+	t=1715682347; cv=none; b=L32VYhbiuUTbbX3FUJPSuAZbOkCiWrB/VOpHLnVXnWWQNYeaGYSFjD2onRBuny+qxwWjwHCmtK+/wekopIa5hDAWsLRoepwdVIoh12Gep+CWNd/s8utZgMpo521AQpks3JjJNqIAGnc0hzi/1STVHRxkT6CRkNViHGgX4UO0oQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715682548; c=relaxed/simple;
-	bh=JKU/wwzWTVxyMLUFD1GDW8nqVO3/Uh8W4gRWmlZIqNU=;
+	s=arc-20240116; t=1715682347; c=relaxed/simple;
+	bh=zNgxGxkJqBNtOy6HCh3vqu7e07T7gH2E+Om2ntnVuHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTuIq5DmesSNOnMtDOrckLW5YYiVVBBreAdw1SdxaQjW4LiKOvuCsJDnpgop7TA4mTrrwj67M19CmRiu+eYKzeKSgrwNSGNx76AdgnyNzWeJvW4JzvFoJsUFisZZDBLaSPYc9HPxVRs9X15BCYurrA3IGhrOq6iTW8bJueJ4a/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYQHFAfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F95FC2BD10;
-	Tue, 14 May 2024 10:29:07 +0000 (UTC)
+	 MIME-Version; b=dAKuEHf41p08GgBOiSiJsTdos2Wv8CezHY+f/MmKq3RUEbqoc0ZqhywqIx7/qdHdlCTaEpdWhxN2uuRWY/QkMP53Ypy13gY5dp0PTGe8ro3biOrhcEdcjdAvvyn5zPpG8Zb/WFk5BhpnwlxpSfK1zxNQN6P0COiNiWG6GVx47so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI1Fu8ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAADC2BD10;
+	Tue, 14 May 2024 10:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715682547;
-	bh=JKU/wwzWTVxyMLUFD1GDW8nqVO3/Uh8W4gRWmlZIqNU=;
+	s=korg; t=1715682347;
+	bh=zNgxGxkJqBNtOy6HCh3vqu7e07T7gH2E+Om2ntnVuHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYQHFAfjhnpaPpiF3Da5hWkiq7ZK7N5l04ATAHa0Kraj3kOpTyKOVJvAtSQokA8pC
-	 WLsiccgFzBDTPmhN/NmsTEwhm2gdodrH5Mn0dCncEI4buaX7R6/v29e79gqp57AswC
-	 G2KyrPHDGINcRaaX7NhL2n1GmemdgElSRkl0ZlSc=
+	b=fI1Fu8ldUT06NdNI8vBARrDqZ+Tg+OEeKBPkuDVcvd4NQIEVnaLWK+fERQm7ALHzN
+	 XzEorEUkYjNxqvM130Z9RbIfxwgOX+ueygfr+XEfZyzc5fFUw+hzTa6MC9UAdUP+iP
+	 927V3+0Jyw1zpfSGgprgjAo01LMY5oS0TYmNf1Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	James Chapman <jchapman@katalix.com>,
+	David Bauer <mail@david-bauer.net>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+42a0dc856239de4de60e@syzkaller.appspotmail.com,
-	syzbot+c298c9f0e46a3c86332b@syzkaller.appspotmail.com
-Subject: [PATCH 6.8 048/336] nsh: Restore skb->{protocol,data,mac_header} for outer header in nsh_gso_segment().
-Date: Tue, 14 May 2024 12:14:12 +0200
-Message-ID: <20240514101040.421059895@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.8 049/336] net l2tp: drop flow hash on forward
+Date: Tue, 14 May 2024 12:14:13 +0200
+Message-ID: <20240514101040.458450995@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
 References: <20240514101038.595152603@linuxfoundation.org>
@@ -68,177 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: David Bauer <mail@david-bauer.net>
 
-[ Upstream commit 4b911a9690d72641879ea6d13cce1de31d346d79 ]
+[ Upstream commit 42f853b42899d9b445763b55c3c8adc72be0f0e1 ]
 
-syzbot triggered various splats (see [0] and links) by a crafted GSO
-packet of VIRTIO_NET_HDR_GSO_UDP layering the following protocols:
+Drop the flow-hash of the skb when forwarding to the L2TP netdev.
 
-  ETH_P_8021AD + ETH_P_NSH + ETH_P_IPV6 + IPPROTO_UDP
+This avoids the L2TP qdisc from using the flow-hash from the outer
+packet, which is identical for every flow within the tunnel.
 
-NSH can encapsulate IPv4, IPv6, Ethernet, NSH, and MPLS.  As the inner
-protocol can be Ethernet, NSH GSO handler, nsh_gso_segment(), calls
-skb_mac_gso_segment() to invoke inner protocol GSO handlers.
+This does not affect every platform but is specific for the ethernet
+driver. It depends on the platform including L4 information in the
+flow-hash.
 
-nsh_gso_segment() does the following for the original skb before
-calling skb_mac_gso_segment()
+One such example is the Mediatek Filogic MT798x family of networking
+processors.
 
-  1. reset skb->network_header
-  2. save the original skb->{mac_heaeder,mac_len} in a local variable
-  3. pull the NSH header
-  4. resets skb->mac_header
-  5. set up skb->mac_len and skb->protocol for the inner protocol.
-
-and does the following for the segmented skb
-
-  6. set ntohs(ETH_P_NSH) to skb->protocol
-  7. push the NSH header
-  8. restore skb->mac_header
-  9. set skb->mac_header + mac_len to skb->network_header
- 10. restore skb->mac_len
-
-There are two problems in 6-7 and 8-9.
-
-  (a)
-  After 6 & 7, skb->data points to the NSH header, so the outer header
-  (ETH_P_8021AD in this case) is stripped when skb is sent out of netdev.
-
-  Also, if NSH is encapsulated by NSH + Ethernet (so NSH-Ethernet-NSH),
-  skb_pull() in the first nsh_gso_segment() will make skb->data point
-  to the middle of the outer NSH or Ethernet header because the Ethernet
-  header is not pulled by the second nsh_gso_segment().
-
-  (b)
-  While restoring skb->{mac_header,network_header} in 8 & 9,
-  nsh_gso_segment() does not assume that the data in the linear
-  buffer is shifted.
-
-  However, udp6_ufo_fragment() could shift the data and change
-  skb->mac_header accordingly as demonstrated by syzbot.
-
-  If this happens, even the restored skb->mac_header points to
-  the middle of the outer header.
-
-It seems nsh_gso_segment() has never worked with outer headers so far.
-
-At the end of nsh_gso_segment(), the outer header must be restored for
-the segmented skb, instead of the NSH header.
-
-To do that, let's calculate the outer header position relatively from
-the inner header and set skb->{data,mac_header,protocol} properly.
-
-[0]:
-BUG: KMSAN: uninit-value in ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:524 [inline]
-BUG: KMSAN: uninit-value in ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
-BUG: KMSAN: uninit-value in ipvlan_queue_xmit+0xf44/0x16b0 drivers/net/ipvlan/ipvlan_core.c:668
- ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:524 [inline]
- ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
- ipvlan_queue_xmit+0xf44/0x16b0 drivers/net/ipvlan/ipvlan_core.c:668
- ipvlan_start_xmit+0x5c/0x1a0 drivers/net/ipvlan/ipvlan_main.c:222
- __netdev_start_xmit include/linux/netdevice.h:4989 [inline]
- netdev_start_xmit include/linux/netdevice.h:5003 [inline]
- xmit_one net/core/dev.c:3547 [inline]
- dev_hard_start_xmit+0x244/0xa10 net/core/dev.c:3563
- __dev_queue_xmit+0x33ed/0x51c0 net/core/dev.c:4351
- dev_queue_xmit include/linux/netdevice.h:3171 [inline]
- packet_xmit+0x9c/0x6b0 net/packet/af_packet.c:276
- packet_snd net/packet/af_packet.c:3081 [inline]
- packet_sendmsg+0x8aef/0x9f10 net/packet/af_packet.c:3113
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- __sys_sendto+0x735/0xa10 net/socket.c:2191
- __do_sys_sendto net/socket.c:2203 [inline]
- __se_sys_sendto net/socket.c:2199 [inline]
- __x64_sys_sendto+0x125/0x1c0 net/socket.c:2199
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3819 [inline]
- slab_alloc_node mm/slub.c:3860 [inline]
- __do_kmalloc_node mm/slub.c:3980 [inline]
- __kmalloc_node_track_caller+0x705/0x1000 mm/slub.c:4001
- kmalloc_reserve+0x249/0x4a0 net/core/skbuff.c:582
- __alloc_skb+0x352/0x790 net/core/skbuff.c:651
- skb_segment+0x20aa/0x7080 net/core/skbuff.c:4647
- udp6_ufo_fragment+0xcab/0x1150 net/ipv6/udp_offload.c:109
- ipv6_gso_segment+0x14be/0x2ca0 net/ipv6/ip6_offload.c:152
- skb_mac_gso_segment+0x3e8/0x760 net/core/gso.c:53
- nsh_gso_segment+0x6f4/0xf70 net/nsh/nsh.c:108
- skb_mac_gso_segment+0x3e8/0x760 net/core/gso.c:53
- __skb_gso_segment+0x4b0/0x730 net/core/gso.c:124
- skb_gso_segment include/net/gso.h:83 [inline]
- validate_xmit_skb+0x107f/0x1930 net/core/dev.c:3628
- __dev_queue_xmit+0x1f28/0x51c0 net/core/dev.c:4343
- dev_queue_xmit include/linux/netdevice.h:3171 [inline]
- packet_xmit+0x9c/0x6b0 net/packet/af_packet.c:276
- packet_snd net/packet/af_packet.c:3081 [inline]
- packet_sendmsg+0x8aef/0x9f10 net/packet/af_packet.c:3113
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- __sys_sendto+0x735/0xa10 net/socket.c:2191
- __do_sys_sendto net/socket.c:2203 [inline]
- __se_sys_sendto net/socket.c:2199 [inline]
- __x64_sys_sendto+0x125/0x1c0 net/socket.c:2199
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-CPU: 1 PID: 5101 Comm: syz-executor421 Not tainted 6.8.0-rc5-syzkaller-00297-gf2e367d6ad3b #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-
-Fixes: c411ed854584 ("nsh: add GSO support")
-Reported-and-tested-by: syzbot+42a0dc856239de4de60e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=42a0dc856239de4de60e
-Reported-and-tested-by: syzbot+c298c9f0e46a3c86332b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c298c9f0e46a3c86332b
-Link: https://lore.kernel.org/netdev/20240415222041.18537-1-kuniyu@amazon.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240424023549.21862-1-kuniyu@amazon.com
+Fixes: d9e31d17ceba ("l2tp: Add L2TP ethernet pseudowire support")
+Acked-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240424171110.13701-1-mail@david-bauer.net
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nsh/nsh.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ net/l2tp/l2tp_eth.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/nsh/nsh.c b/net/nsh/nsh.c
-index f4a38bd6a7e04..bfb7758063f31 100644
---- a/net/nsh/nsh.c
-+++ b/net/nsh/nsh.c
-@@ -77,13 +77,15 @@ EXPORT_SYMBOL_GPL(nsh_pop);
- static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
- 				       netdev_features_t features)
- {
-+	unsigned int outer_hlen, mac_len, nsh_len;
- 	struct sk_buff *segs = ERR_PTR(-EINVAL);
- 	u16 mac_offset = skb->mac_header;
--	unsigned int nsh_len, mac_len;
--	__be16 proto;
-+	__be16 outer_proto, proto;
+diff --git a/net/l2tp/l2tp_eth.c b/net/l2tp/l2tp_eth.c
+index 25ca89f804145..9dacfa91acc78 100644
+--- a/net/l2tp/l2tp_eth.c
++++ b/net/l2tp/l2tp_eth.c
+@@ -127,6 +127,9 @@ static void l2tp_eth_dev_recv(struct l2tp_session *session, struct sk_buff *skb,
+ 	/* checksums verified by L2TP */
+ 	skb->ip_summed = CHECKSUM_NONE;
  
- 	skb_reset_network_header(skb);
- 
-+	outer_proto = skb->protocol;
-+	outer_hlen = skb_mac_header_len(skb);
- 	mac_len = skb->mac_len;
- 
- 	if (unlikely(!pskb_may_pull(skb, NSH_BASE_HDR_LEN)))
-@@ -113,10 +115,10 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
- 	}
- 
- 	for (skb = segs; skb; skb = skb->next) {
--		skb->protocol = htons(ETH_P_NSH);
--		__skb_push(skb, nsh_len);
--		skb->mac_header = mac_offset;
--		skb->network_header = skb->mac_header + mac_len;
-+		skb->protocol = outer_proto;
-+		__skb_push(skb, nsh_len + outer_hlen);
-+		skb_reset_mac_header(skb);
-+		skb_set_network_header(skb, outer_hlen);
- 		skb->mac_len = mac_len;
- 	}
++	/* drop outer flow-hash */
++	skb_clear_hash(skb);
++
+ 	skb_dst_drop(skb);
+ 	nf_reset_ct(skb);
  
 -- 
 2.43.0
