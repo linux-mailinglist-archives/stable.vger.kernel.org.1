@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-44405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CB08C52B5
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C748C51CF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0EF1F22A98
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 323511C215FC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66A0143737;
-	Tue, 14 May 2024 11:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EF913C69E;
+	Tue, 14 May 2024 11:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9WZ23Ko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LA1cR4b+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCB45FDD2;
-	Tue, 14 May 2024 11:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326702B9AD;
+	Tue, 14 May 2024 11:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686067; cv=none; b=g2wZX0cT20JzQr2dIbS2VEPx1mR2w6PSAqdYJMHtX7o5cq4Babyy7fn0B7kfFN2MTm7GsJrF09bMgeLdj13xhoBoZtpgTRhBTxXjRznRpO8uWwlfLcFDf9JfM8Cp1P+fnf3QweeDqMLMs0QJMnCiQHodecgNvADjwni99T2Qizk=
+	t=1715685076; cv=none; b=XI5UyPwWjRSaRd20kTswm8j/B1KIgBM2Juy6O5wxb0GIpjp4HpefzeSwJlBFZqHlNYjzxWDz4qDZae+jbb0pdncnZn4j5mCa5l9vOdK2G+h1vDK+sPVpLeKp5RKK0ZTZnOCiiAHDSpja1iJvGK8GemHLGkeK5Ir+HH4zD2SlrJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686067; c=relaxed/simple;
-	bh=lEzs8hNTEm3I3jovpZzbZg2vzA5Dz178l5eX+yosyRo=;
+	s=arc-20240116; t=1715685076; c=relaxed/simple;
+	bh=hmyY3/7vmP497m/Ilg498ni/TksZrnrkTDyniW41NEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcsJS1rcq/mqDDV0LYwfAG/ADN352LSfNJEQPnrcW1QUzzVPw9ZmkcgPIvST45zgV9Osnk07/Z+zjaNqRHxQqUIEx2DQP1QuuT+JaF2gIS/ro+E4z7/RvkInZGlJhBN67OYENAvAFkXpS1psI1s50f/vMsiqu16Iqdswmkc0IiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9WZ23Ko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF574C2BD10;
-	Tue, 14 May 2024 11:27:46 +0000 (UTC)
+	 MIME-Version; b=fBSta97pk18cR8Q+08qSLVrEXjmIL4mDfnL44gp5HKZU67RSaLje4ry33Lf7Z25JiGIoEE/lh+6ljP2Ss4bEtDFBCsP1UsUYGOPcYD0mXq9tLrL0l75e684/EVioIMSyGJ/1Y6/mF5IdTkRWcCkTUm7MTm0J4rgUJ1Qo+h9qayI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LA1cR4b+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8767BC2BD10;
+	Tue, 14 May 2024 11:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686067;
-	bh=lEzs8hNTEm3I3jovpZzbZg2vzA5Dz178l5eX+yosyRo=;
+	s=korg; t=1715685076;
+	bh=hmyY3/7vmP497m/Ilg498ni/TksZrnrkTDyniW41NEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9WZ23Ko4PrAAwvPpwjWTsye0Qtmz0xIJH2IurGEDcmgcInpltQ3HpQvJeYgthluo
-	 eyeVaZG7rsfgKrkoctFYd6DJbCbo+2ViNy8KNyO6U+FOEw6OJel1CcBzjXxF+tlErj
-	 QAjcwSNmigRk0UpPNguU580Dnz7znE/yvP6qH/oE=
+	b=LA1cR4b+X5xvYXs25hMgwAkFXTZ5RyG9/Rk15yB/2TIsgYFwrqkU6pEE5gg0OgJy3
+	 t26sOwSq2PTkPkl1WDoCOFBYy3ZFw+r1l3C+4K/m1aJKG5MJ8XPl8A8KiyTwp4MG33
+	 7XgYlYc13j8k3H+cOLgQLGD66Bg8EBbPsRT/JcaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Colin Cross <ccross@google.com>,
-	David Howells <dhowells@redhat.com>,
-	"Eric W . Biederman" <ebiederm@xmission.com>,
-	Hugh Dickins <hughd@google.com>,
-	kernel test robot <lkp@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Peter Xu <peterx@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	William Kucharski <william.kucharski@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/236] mm: add private field of first tail to struct page and struct folio
+Subject: [PATCH 6.6 101/301] scsi: lpfc: Release hbalock before calling lpfc_worker_wake_up()
 Date: Tue, 14 May 2024 12:16:12 +0200
-Message-ID: <20240514101020.720859275@linuxfoundation.org>
+Message-ID: <20240514101036.064458432@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,92 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit d340625f4849ab5dbfebbc7d84709fbfcd39e52f ]
+[ Upstream commit ded20192dff31c91cef2a04f7e20e60e9bb887d3 ]
 
-Allow struct folio to store hugetlb metadata that is contained in the
-private field of the first tail page.  On 32-bit, _private_1 aligns with
-page[1].private.
+lpfc_worker_wake_up() calls the lpfc_work_done() routine, which takes the
+hbalock.  Thus, lpfc_worker_wake_up() should not be called while holding the
+hbalock to avoid potential deadlock.
 
-Link: https://lkml.kernel.org/r/20220922154207.1575343-3-sidhartha.kumar@oracle.com
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Colin Cross <ccross@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: "Eric W . Biederman" <ebiederm@xmission.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: kernel test robot <lkp@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: William Kucharski <william.kucharski@oracle.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: b76b46902c2d ("mm/hugetlb: fix missing hugetlb_lock for resv uncharge")
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240305200503.57317-7-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm_types.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/scsi/lpfc/lpfc_els.c     | 20 ++++++++++----------
+ drivers/scsi/lpfc/lpfc_hbadisc.c |  5 ++---
+ drivers/scsi/lpfc/lpfc_sli.c     | 14 +++++++-------
+ 3 files changed, 19 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 247aedb18d5c3..a9c1d611029d1 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -144,6 +144,7 @@ struct page {
- 			atomic_t compound_pincount;
- #ifdef CONFIG_64BIT
- 			unsigned int compound_nr; /* 1 << compound_order */
-+			unsigned long _private_1;
- #endif
- 		};
- 		struct {	/* Second tail page of compound page */
-@@ -264,6 +265,7 @@ struct page {
-  * @_total_mapcount: Do not use directly, call folio_entire_mapcount().
-  * @_pincount: Do not use directly, call folio_maybe_dma_pinned().
-  * @_folio_nr_pages: Do not use directly, call folio_nr_pages().
-+ * @_private_1: Do not use directly, call folio_get_private_1().
-  *
-  * A folio is a physically, virtually and logically contiguous set
-  * of bytes.  It is a power-of-two in size, and it is aligned to that
-@@ -311,6 +313,7 @@ struct folio {
- #ifdef CONFIG_64BIT
- 	unsigned int _folio_nr_pages;
- #endif
-+	unsigned long _private_1;
- };
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 18b8325fd419e..44d3ada9fbbcb 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -4432,23 +4432,23 @@ lpfc_els_retry_delay(struct timer_list *t)
+ 	unsigned long flags;
+ 	struct lpfc_work_evt  *evtp = &ndlp->els_retry_evt;
  
- #define FOLIO_MATCH(pg, fl)						\
-@@ -338,6 +341,7 @@ FOLIO_MATCH(compound_mapcount, _total_mapcount);
- FOLIO_MATCH(compound_pincount, _pincount);
- #ifdef CONFIG_64BIT
- FOLIO_MATCH(compound_nr, _folio_nr_pages);
-+FOLIO_MATCH(_private_1, _private_1);
- #endif
- #undef FOLIO_MATCH
++	/* Hold a node reference for outstanding queued work */
++	if (!lpfc_nlp_get(ndlp))
++		return;
++
+ 	spin_lock_irqsave(&phba->hbalock, flags);
+ 	if (!list_empty(&evtp->evt_listp)) {
+ 		spin_unlock_irqrestore(&phba->hbalock, flags);
++		lpfc_nlp_put(ndlp);
+ 		return;
+ 	}
  
-@@ -383,6 +387,16 @@ static inline void *folio_get_private(struct folio *folio)
- 	return folio->private;
+-	/* We need to hold the node by incrementing the reference
+-	 * count until the queued work is done
+-	 */
+-	evtp->evt_arg1  = lpfc_nlp_get(ndlp);
+-	if (evtp->evt_arg1) {
+-		evtp->evt = LPFC_EVT_ELS_RETRY;
+-		list_add_tail(&evtp->evt_listp, &phba->work_list);
+-		lpfc_worker_wake_up(phba);
+-	}
++	evtp->evt_arg1 = ndlp;
++	evtp->evt = LPFC_EVT_ELS_RETRY;
++	list_add_tail(&evtp->evt_listp, &phba->work_list);
+ 	spin_unlock_irqrestore(&phba->hbalock, flags);
+-	return;
++
++	lpfc_worker_wake_up(phba);
  }
  
-+static inline void folio_set_private_1(struct folio *folio, unsigned long private)
-+{
-+	folio->_private_1 = private;
-+}
+ /**
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 5154eeaee0ec3..93703ab6ce037 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -257,7 +257,9 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+ 		if (evtp->evt_arg1) {
+ 			evtp->evt = LPFC_EVT_DEV_LOSS;
+ 			list_add_tail(&evtp->evt_listp, &phba->work_list);
++			spin_unlock_irqrestore(&phba->hbalock, iflags);
+ 			lpfc_worker_wake_up(phba);
++			return;
+ 		}
+ 		spin_unlock_irqrestore(&phba->hbalock, iflags);
+ 	} else {
+@@ -275,10 +277,7 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+ 			lpfc_disc_state_machine(vport, ndlp, NULL,
+ 						NLP_EVT_DEVICE_RM);
+ 		}
+-
+ 	}
+-
+-	return;
+ }
+ 
+ /**
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index 4dfadf254a727..9dab33686a931 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -1217,9 +1217,9 @@ lpfc_set_rrq_active(struct lpfc_hba *phba, struct lpfc_nodelist *ndlp,
+ 	empty = list_empty(&phba->active_rrq_list);
+ 	list_add_tail(&rrq->list, &phba->active_rrq_list);
+ 	phba->hba_flag |= HBA_RRQ_ACTIVE;
++	spin_unlock_irqrestore(&phba->hbalock, iflags);
+ 	if (empty)
+ 		lpfc_worker_wake_up(phba);
+-	spin_unlock_irqrestore(&phba->hbalock, iflags);
+ 	return 0;
+ out:
+ 	spin_unlock_irqrestore(&phba->hbalock, iflags);
+@@ -11369,18 +11369,18 @@ lpfc_sli_post_recovery_event(struct lpfc_hba *phba,
+ 	unsigned long iflags;
+ 	struct lpfc_work_evt  *evtp = &ndlp->recovery_evt;
+ 
++	/* Hold a node reference for outstanding queued work */
++	if (!lpfc_nlp_get(ndlp))
++		return;
 +
-+static inline unsigned long folio_get_private_1(struct folio *folio)
-+{
-+	return folio->_private_1;
-+}
-+
- struct page_frag_cache {
- 	void * va;
- #if (PAGE_SIZE < PAGE_FRAG_CACHE_MAX_SIZE)
+ 	spin_lock_irqsave(&phba->hbalock, iflags);
+ 	if (!list_empty(&evtp->evt_listp)) {
+ 		spin_unlock_irqrestore(&phba->hbalock, iflags);
++		lpfc_nlp_put(ndlp);
+ 		return;
+ 	}
+ 
+-	/* Incrementing the reference count until the queued work is done. */
+-	evtp->evt_arg1  = lpfc_nlp_get(ndlp);
+-	if (!evtp->evt_arg1) {
+-		spin_unlock_irqrestore(&phba->hbalock, iflags);
+-		return;
+-	}
++	evtp->evt_arg1 = ndlp;
+ 	evtp->evt = LPFC_EVT_RECOVER_PORT;
+ 	list_add_tail(&evtp->evt_listp, &phba->work_list);
+ 	spin_unlock_irqrestore(&phba->hbalock, iflags);
 -- 
 2.43.0
 
