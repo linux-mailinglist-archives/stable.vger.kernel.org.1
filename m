@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-44631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B1D8C53B7
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1838C5431
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56D4B1C22A2E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:47:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704FE1C22B8A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9924C43AD6;
-	Tue, 14 May 2024 11:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6B9139D03;
+	Tue, 14 May 2024 11:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOcjBcOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vre9wnNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574B612E1E2;
-	Tue, 14 May 2024 11:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E17C139CE4;
+	Tue, 14 May 2024 11:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686720; cv=none; b=VmuQv9jE/2DJwZ0110gFpyyt9jxg4icx3XaX/PjD1nFQMnJH1LwcdqRO4XLub26nHjekERHEH6beelCX3Da4CJZFYuDhx0gTJkEnfGA/ZnDvZysYj+ncnlDPc4EcNG4abUAF5bve2Y6gQ3kMA9s8/kO4WZtx4CWts2+9qqoTAUk=
+	t=1715687045; cv=none; b=iGYc7Sw1SVwLT8LBs+Yk8TzEvJKSUo95xXSlyOvbpk0kGKGnS3Yrb3sheLiGxbwDiGPNjOmcSQZ+ZdwmKbT/NQrcN4IIJfBo/Kcf1SAOEBe/BpNwSY1cRolnD9ejR7aOE1C+tQ+c06W8/Cwavs4n996uuhMux9/jwSbY8MnD5gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686720; c=relaxed/simple;
-	bh=beJhPZwHZ5WIlLY+GtS9B9eQhQcEjoFlN4CwDMgDnYg=;
+	s=arc-20240116; t=1715687045; c=relaxed/simple;
+	bh=8Kfr/SLzsIQ/s097LwKvJ0FWsUVd/BFkc21q7/gYomQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSQKi2noB1Ym1+INxW53f1uJt9C5EK2/um75+D6Hl0EVVoGRIW0XJZ7VyK1rWDe6YwWsT2CpvbAb7+VOd18r2tkTAk7bKx9D0C9Zo9UA7figuX7YcCJJjI5YcLW7jna0hTSkinak6Vrjh3G0BAIlNLXwGuYWp5yGzlSU6Ry2BLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOcjBcOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9299AC2BD10;
-	Tue, 14 May 2024 11:38:39 +0000 (UTC)
+	 MIME-Version; b=RUc0vtiFQaQ2ssi7upakN2F/3hG7seBaB5Q6Y5wYvY8XYyGMIXBDtlgfLwenAfGS6iPhgiYJzTheF+FkJ0x/r8sdnoCImvIjTsHAr34fhTVDS1OyUskmJwhA5UFNCWIRqwnGphPrTZ8DokBTVF3gNfGN6KSjvk9SvoqVxIHQHOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vre9wnNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD55C2BD10;
+	Tue, 14 May 2024 11:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686720;
-	bh=beJhPZwHZ5WIlLY+GtS9B9eQhQcEjoFlN4CwDMgDnYg=;
+	s=korg; t=1715687044;
+	bh=8Kfr/SLzsIQ/s097LwKvJ0FWsUVd/BFkc21q7/gYomQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOcjBcOS5nKnrzwPs7uUI2zs8H1zdGWE/KKhHfoetQNvS8mo6aPupIU637woJKnP0
-	 JUF3RjznsKssIUM71eWz864LRcp30D+ebbvEYhvT1j7LtwTuPB/sAWuNB1B4aYuiRV
-	 fYYU6GDS9Bco9cNcJ1mhcndtY0DXJRuauzT2gDf0=
+	b=vre9wnNFc29rFewFrS0mXHJiIL9D6MO+KD2w7YEI6vn8Gyl9nWKnl51qfbuQzQ46F
+	 1TVm2uSS5Umr7tz8WPUMKZeubbTuqxoCyG09qDf90Kpc7OEDtUgcMob/PfUzELxo0W
+	 yUs9C3cPgR+FgndUqv3YL6It9UWsJGkmsJkP5scI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 235/236] Bluetooth: qca: fix info leak when fetching fw build id
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 46/84] btrfs: always clear PERTRANS metadata during commit
 Date: Tue, 14 May 2024 12:19:57 +0200
-Message-ID: <20240514101029.280210928@linuxfoundation.org>
+Message-ID: <20240514100953.421113314@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Boris Burkov <boris@bur.io>
 
-commit cda0d6a198e2a7ec6f176c36173a57bdd8af7af2 upstream.
+[ Upstream commit 6e68de0bb0ed59e0554a0c15ede7308c47351e2d ]
 
-Add the missing sanity checks and move the 255-byte build-id buffer off
-the stack to avoid leaking stack data through debugfs in case the
-build-info reply is malformed.
+It is possible to clear a root's IN_TRANS tag from the radix tree, but
+not clear its PERTRANS, if there is some error in between. Eliminate
+that possibility by moving the free up to where we clear the tag.
 
-Fixes: c0187b0bd3e9 ("Bluetooth: btqca: Add support to read FW build version for WCN3991 BTSoC")
-Cc: stable@vger.kernel.org	# 5.12
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c |   25 +++++++++++++++++++++----
- drivers/bluetooth/btqca.h |    1 -
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ fs/btrfs/transaction.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -99,7 +99,8 @@ static int qca_read_fw_build_info(struct
- {
- 	struct sk_buff *skb;
- 	struct edl_event_hdr *edl;
--	char cmd, build_label[QCA_FW_BUILD_VER_LEN];
-+	char *build_label;
-+	char cmd;
- 	int build_lbl_len, err = 0;
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 89ffc02554069..1d25bf0c55ccf 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1226,6 +1226,7 @@ static noinline int commit_fs_roots(struct btrfs_trans_handle *trans)
+ 			radix_tree_tag_clear(&fs_info->fs_roots_radix,
+ 					(unsigned long)root->root_key.objectid,
+ 					BTRFS_ROOT_TRANS_TAG);
++			btrfs_qgroup_free_meta_all_pertrans(root);
+ 			spin_unlock(&fs_info->fs_roots_radix_lock);
  
- 	bt_dev_dbg(hdev, "QCA read fw build info");
-@@ -114,6 +115,11 @@ static int qca_read_fw_build_info(struct
- 		return err;
+ 			btrfs_free_log(trans, root);
+@@ -1250,7 +1251,6 @@ static noinline int commit_fs_roots(struct btrfs_trans_handle *trans)
+ 			if (ret2)
+ 				return ret2;
+ 			spin_lock(&fs_info->fs_roots_radix_lock);
+-			btrfs_qgroup_free_meta_all_pertrans(root);
+ 		}
  	}
- 
-+	if (skb->len < sizeof(*edl)) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
-+
- 	edl = (struct edl_event_hdr *)(skb->data);
- 	if (!edl) {
- 		bt_dev_err(hdev, "QCA read fw build info with no header");
-@@ -129,14 +135,25 @@ static int qca_read_fw_build_info(struct
- 		goto out;
- 	}
- 
-+	if (skb->len < sizeof(*edl) + 1) {
-+		err = -EILSEQ;
-+		goto out;
-+	}
-+
- 	build_lbl_len = edl->data[0];
--	if (build_lbl_len <= QCA_FW_BUILD_VER_LEN - 1) {
--		memcpy(build_label, edl->data + 1, build_lbl_len);
--		*(build_label + build_lbl_len) = '\0';
-+
-+	if (skb->len < sizeof(*edl) + 1 + build_lbl_len) {
-+		err = -EILSEQ;
-+		goto out;
- 	}
- 
-+	build_label = kstrndup(&edl->data[1], build_lbl_len, GFP_KERNEL);
-+	if (!build_label)
-+		goto out;
-+
- 	hci_set_fw_info(hdev, "%s", build_label);
- 
-+	kfree(build_label);
- out:
- 	kfree_skb(skb);
- 	return err;
---- a/drivers/bluetooth/btqca.h
-+++ b/drivers/bluetooth/btqca.h
-@@ -47,7 +47,6 @@
- #define get_soc_ver(soc_id, rom_ver)	\
- 	((le32_to_cpu(soc_id) << 16) | (le16_to_cpu(rom_ver)))
- 
--#define QCA_FW_BUILD_VER_LEN		255
- #define QCA_HSP_GF_SOC_ID			0x1200
- #define QCA_HSP_GF_SOC_MASK			0x0000ff00
- 
+ 	spin_unlock(&fs_info->fs_roots_radix_lock);
+-- 
+2.43.0
+
 
 
 
