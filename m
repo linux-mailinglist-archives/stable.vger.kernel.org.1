@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-44944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD498C5510
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A888C528D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4921C234DE
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A97801F21AB7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8B04594C;
-	Tue, 14 May 2024 11:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50C613D524;
+	Tue, 14 May 2024 11:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9E51umB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NY1nLb7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4FC3D0D1;
-	Tue, 14 May 2024 11:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A252A13F442;
+	Tue, 14 May 2024 11:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687630; cv=none; b=pmK8YWiOQgGc5khxUmW+CXczkM3DY3h1VCihNSSyjM0zvkN6p7Dkt/JxuoaJ0vqd7C5oilu+Mng83G3Db0P2csXOHH/uXr/yamqO/+zB4BwGCWNHS2RVnfPjHN70exejgzbV6RwT8mHEaQ3FrlIlN8Rg15+AzyzyfWcbl+0BgGo=
+	t=1715685924; cv=none; b=T7zBTsJ66S1TMnqVYQUbkcS53qkZNzWmTQf0xt67hf5KMpAtG+WxInfdbMZx+EqG9frxVIKlFkl4x3S31ZkIb/m3VPutKAv+Me2g5S4K8srZY3mBtb2Mz9bfK+vNuQT/zDA/CgTkb7sVhH0ChsZJe633zCbNR71ibwHeniMkZmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687630; c=relaxed/simple;
-	bh=ZMIh/OewVmsji4M2ZiKPjebkPKob2W/pMEnkbU6Wttw=;
+	s=arc-20240116; t=1715685924; c=relaxed/simple;
+	bh=Ly9t1H2AFWsfe9nESvq6ON8JgfmY57Gh/ptXV1Rmtho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJlekzpyKaM6z8Av/oeE2DHcegSB0HmiNg7JappOXjQoGLzGIBU21bUQdqLss66Xq090U9AXSZ6TzL7y1mIEwAO1MVNLxwAYjMRgHUKlfZMOeCKZRsvJhBlLbgPVmFtMWiYQuFKhKg4xBMM497uGapgcxWulmdPC39j+eHpqTZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9E51umB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02ACC2BD10;
-	Tue, 14 May 2024 11:53:49 +0000 (UTC)
+	 MIME-Version; b=H0phdOvqf3cPHF0V6xPpp9I24mPpJ/9J1zukJ5Hl88SzbknPfYaNvJlJjx3stFL4ek8GBP8wGWKAzksRv3oLTqsXe7t1uyW/GlrTo4taI1jzeW+CfpOw4N0e8TFPKqSbZd4KnSZzpky61ybh1JGK3+jgrTp4qSEZY+3a1WNjXTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NY1nLb7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0A4C2BD10;
+	Tue, 14 May 2024 11:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687630;
-	bh=ZMIh/OewVmsji4M2ZiKPjebkPKob2W/pMEnkbU6Wttw=;
+	s=korg; t=1715685924;
+	bh=Ly9t1H2AFWsfe9nESvq6ON8JgfmY57Gh/ptXV1Rmtho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9E51umB1ZlQXxuyRomDLQyUZm7oYjmAxMmQjOp6kzzah2TshL+SxwUMEFbTP+ZBC
-	 1/7z9MeWcFTjDHLcsR9hQLH29e8x0XkgwH0EVEd8guW1Ver0XtN8U+KO1zQj+BiS8S
-	 hIkQBwz/UDNp6U3pcUJWEkdia1KhpUcA4pJyrl1c=
+	b=NY1nLb7+qnOzjG5vQO6di+amvfoKDUfzyF0qsb20cwfIVT42DeQ50tWb4WURFpO46
+	 XzcMuaL+hGghPIOdaHNzzf50hmmdeivYUBTt58sC5pJKdbs9qpcEOBCjOAlyPtMv1M
+	 SmWCOMJzwadys8rsmPnjvsigk3W/r8or5VwoA5MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/168] net: bridge: fix multicast-to-unicast with fraglist GSO
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 278/301] net: fix out-of-bounds access in ops_init
 Date: Tue, 14 May 2024 12:19:09 +0200
-Message-ID: <20240514101008.617080147@linuxfoundation.org>
+Message-ID: <20240514101042.761577143@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 59c878cbcdd80ed39315573b3511d0acfd3501b5 ]
+commit a26ff37e624d12e28077e5b24d2b264f62764ad6 upstream.
 
-Calling skb_copy on a SKB_GSO_FRAGLIST skb is not valid, since it returns
-an invalid linearized skb. This code only needs to change the ethernet
-header, so pskb_copy is the right function to call here.
+net_alloc_generic is called by net_alloc, which is called without any
+locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
+is read twice, first to allocate an array, then to set s.len, which is
+later used to limit the bounds of the array access.
 
-Fixes: 6db6f0eae605 ("bridge: multicast to unicast")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is possible that the array is allocated and another thread is
+registering a new pernet ops, increments max_gen_ptrs, which is then used
+to set s.len with a larger than allocated length for the variable array.
+
+Fix it by reading max_gen_ptrs only once in net_alloc_generic. If
+max_gen_ptrs is later incremented, it will be caught in net_assign_generic.
+
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 073862ba5d24 ("netns: fix net_alloc_generic()")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240502132006.3430840-1-cascardo@igalia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_forward.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/net_namespace.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 011bd3c59da19..0bdd2892646db 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -261,7 +261,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -69,12 +69,15 @@ DEFINE_COOKIE(net_cookie);
  
--	skb = skb_copy(skb, GFP_ATOMIC);
-+	skb = pskb_copy(skb, GFP_ATOMIC);
- 	if (!skb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
--- 
-2.43.0
-
+ static struct net_generic *net_alloc_generic(void)
+ {
++	unsigned int gen_ptrs = READ_ONCE(max_gen_ptrs);
++	unsigned int generic_size;
+ 	struct net_generic *ng;
+-	unsigned int generic_size = offsetof(struct net_generic, ptr[max_gen_ptrs]);
++
++	generic_size = offsetof(struct net_generic, ptr[gen_ptrs]);
+ 
+ 	ng = kzalloc(generic_size, GFP_KERNEL);
+ 	if (ng)
+-		ng->s.len = max_gen_ptrs;
++		ng->s.len = gen_ptrs;
+ 
+ 	return ng;
+ }
+@@ -1229,7 +1232,11 @@ static int register_pernet_operations(st
+ 		if (error < 0)
+ 			return error;
+ 		*ops->id = error;
+-		max_gen_ptrs = max(max_gen_ptrs, *ops->id + 1);
++		/* This does not require READ_ONCE as writers already hold
++		 * pernet_ops_rwsem. But WRITE_ONCE is needed to protect
++		 * net_alloc_generic.
++		 */
++		WRITE_ONCE(max_gen_ptrs, max(max_gen_ptrs, *ops->id + 1));
+ 	}
+ 	error = __register_pernet_operations(list, ops);
+ 	if (error) {
 
 
 
