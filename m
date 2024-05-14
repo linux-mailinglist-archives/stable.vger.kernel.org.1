@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-44693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFC18C53FF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4778C54BC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EDF01F22EED
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C5221C22EFD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D315D131E2A;
-	Tue, 14 May 2024 11:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD6612EBD2;
+	Tue, 14 May 2024 11:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwlENW0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGGBIq75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4BA320F;
-	Tue, 14 May 2024 11:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB45766B5E;
+	Tue, 14 May 2024 11:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686900; cv=none; b=g5FnceZn9xZ7vfqmOLhCVpAAkfm3y5eNWtFxpXE2RmY6aI8MQAPHak3JsOBLIBcy+uIffX89iLouhKOFaEkza5hQsZPPlTT6MBfXL47tiCU/4JjGX9ud8eeewlvfG75FpIca5bQq2VnTwOrLO06Hg3qfMl/FWc71NQJYTNvfrxU=
+	t=1715687406; cv=none; b=Ek6b2f4EP8Nl07W9KKqV43iYPc1gs2iH/dr0x5bjFoBllPa7hi/4xe+RGv+fnVNSua+Bmj7KDU/3acpSJ62JgMv0sCzLorYzFlr3egep4kJlrue9fJiB2rqOTgQV0YDOfQyz498RnUI3X+NXTyMAQ59fZmNxbsZNvwwS61VkuHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686900; c=relaxed/simple;
-	bh=Np97OD7t8dwwyjh4ggOlwIA1o9feDlUGEyD0ru9+0hI=;
+	s=arc-20240116; t=1715687406; c=relaxed/simple;
+	bh=OFYqIHXnZFPSfPkiupzXQTAyIYHJBkbIZajHE42CIJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/KdpXdmxGpTg3hzzhu5P9Qn7+olFtQrTZC/rDT+6AUyN76JIQ34VBvhY30He2rL01QS+JlF6sPhOjYJvrkJVwwHsH5pcSQC/+tfDL8hK0DYr+dIUgO583QSQIxUBtkF3EcKetiKVpw79r30Y9lchVy2NRu+bfL10z4eoMD7ETA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwlENW0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1B7C2BD10;
-	Tue, 14 May 2024 11:41:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NxHxLOTi9ITJXTrIteLQ8bxN2zGjN8qew+BUtO+Ih9at/sGW0pFf2+RG86qninokyUblSIHYq7YrakvxEgmuiKCtOwfQrbYfgqLtjV/jWNl+2pjscdHB9ulVsv1BtPIr2LEmzD8jsgHgiAYaL54hrwm7ANt6RwvdB9cKcI2T874=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGGBIq75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D803C2BD10;
+	Tue, 14 May 2024 11:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686900;
-	bh=Np97OD7t8dwwyjh4ggOlwIA1o9feDlUGEyD0ru9+0hI=;
+	s=korg; t=1715687406;
+	bh=OFYqIHXnZFPSfPkiupzXQTAyIYHJBkbIZajHE42CIJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwlENW0q7O9HBsoUUEMiF/ha+lh9synxdorDPRvdcHfK02NyjVmAroegBCEOmgjeC
-	 bqdBJ00h+Qm68RV/pYxUkPYBzdFuiVa3OT2ETjpS9iSimfn3yU0XIPj2zAI4rocJfB
-	 IyPoPoh3wmscGCD1vtSHhPS/lbLVJg9VJ3PV8RGU=
+	b=XGGBIq75FUee4Bc3/ZszE0ntGvHrv6EvydXjSc/cRefyLPELsF8R1jq2Qe4BObhRo
+	 H/TSmkPal68iK0g7KD6f/01Ogwqg7YNKxKXs0atAGTWCVRl0NwqE/Ij/AB1wp0GS4y
+	 lhzEyZwymziPS7avaiiRRKnxGJgdDuk89ki5+9Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 4.19 61/63] drm/vmwgfx: Fix invalid reads in fence signaled events
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 084/111] phonet: fix rtm_phonet_notify() skb allocation
 Date: Tue, 14 May 2024 12:20:22 +0200
-Message-ID: <20240514100950.312271935@linuxfoundation.org>
+Message-ID: <20240514101000.323977372@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
-References: <20240514100948.010148088@linuxfoundation.org>
+In-Reply-To: <20240514100957.114746054@linuxfoundation.org>
+References: <20240514100957.114746054@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,53 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit a37ef7613c00f2d72c8fc08bd83fb6cc76926c8c upstream.
+[ Upstream commit d8cac8568618dcb8a51af3db1103e8d4cc4aeea7 ]
 
-Correctly set the length of the drm_event to the size of the structure
-that's actually used.
+fill_route() stores three components in the skb:
 
-The length of the drm_event was set to the parent structure instead of
-to the drm_vmw_event_fence which is supposed to be read. drm_read
-uses the length parameter to copy the event to the user space thus
-resuling in oob reads.
+- struct rtmsg
+- RTA_DST (u8)
+- RTA_OIF (u32)
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
-Cc: David Airlie <airlied@gmail.com>
-CC: Daniel Vetter <daniel@ffwll.ch>
-Cc: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v3.4+
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425192748.1761522-1-zack.rusin@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Therefore, rtm_phonet_notify() should use
+
+NLMSG_ALIGN(sizeof(struct rtmsg)) +
+nla_total_size(1) +
+nla_total_size(4)
+
+Fixes: f062f41d0657 ("Phonet: routing table Netlink interface")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Rémi Denis-Courmont <courmisch@gmail.com>
+Link: https://lore.kernel.org/r/20240502161700.1804476-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |    2 +-
+ net/phonet/pn_netlink.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-@@ -1064,7 +1064,7 @@ static int vmw_event_fence_action_create
- 	}
+diff --git a/net/phonet/pn_netlink.c b/net/phonet/pn_netlink.c
+index 59aebe2968907..dd4c7e9a634fb 100644
+--- a/net/phonet/pn_netlink.c
++++ b/net/phonet/pn_netlink.c
+@@ -193,7 +193,7 @@ void rtm_phonet_notify(int event, struct net_device *dev, u8 dst)
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
  
- 	event->event.base.type = DRM_VMW_EVENT_FENCE_SIGNALED;
--	event->event.base.length = sizeof(*event);
-+	event->event.base.length = sizeof(event->event);
- 	event->event.user_data = user_data;
- 
- 	ret = drm_event_reserve_init(dev, file_priv, &event->base, &event->event.base);
+-	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct ifaddrmsg)) +
++	skb = nlmsg_new(NLMSG_ALIGN(sizeof(struct rtmsg)) +
+ 			nla_total_size(1) + nla_total_size(4), GFP_KERNEL);
+ 	if (skb == NULL)
+ 		goto errout;
+-- 
+2.43.0
+
 
 
 
