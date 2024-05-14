@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585198C5511
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A448C526E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E681B283088
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05ABC282E44
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEE943AD1;
-	Tue, 14 May 2024 11:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35C4131757;
+	Tue, 14 May 2024 11:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTOs7cFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PyI78hr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2FC33985;
-	Tue, 14 May 2024 11:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C9F6311D;
+	Tue, 14 May 2024 11:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687622; cv=none; b=N8IGAgcDiib9Lm360mGMLKYGD1SR0PuSTsjI6jegvi83hCaKs20XHMLNeVjmouHApu5sMAtkY8ZwAWkCRkis68mAHd4dHcPLGCQO5dLdWh5gQgdaalaOWguh3u0GMaQd+atZEOzdZB08VyWQKA9BA0w+b7762UNi0kNQIzrIggA=
+	t=1715685869; cv=none; b=ScDhmN713U8fGNhf1GzHoPImi1tNm8z4lm8wgHdcU5//rGB9+1vh9rvgU7HDLdz3tpas5TXPr1Snb7zo2ULxP5J0TWh9Iuy8fCfkpV0kjpidzzNvnren9d9aopLFKWrX9MHRFPcR0BKSROAsCI1bkVhqvfLas8TG9iXWqbqgCHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687622; c=relaxed/simple;
-	bh=wcXQjd9zSzcWnRTRWxyNSfl92WZNOa88yRyyujJOgts=;
+	s=arc-20240116; t=1715685869; c=relaxed/simple;
+	bh=o1tEhV7l8uq1BhM5CcpLytxeIpWd5WlOfoq/CLhWZ94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRXGaxSWDZR435X0XnKbq3NDLJadmQODLSg45zAy01zuu58KNgHpNTDuOhQwwde++IkB2cn8ldGCL4IaooqHt9XqLug0PmhtKPnnTGCFmmaAg1+VJ1hRnlwGLiBvNSathJaz1w7lczv4mvmREG6wmOJvjJN7Xn5DToPosIgFH68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTOs7cFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2E0C2BD10;
-	Tue, 14 May 2024 11:53:40 +0000 (UTC)
+	 MIME-Version; b=gQkpWEAj+3W5yTsExqMpRCPybsTpO906KRwRdwiz4ez3Km6YshvVfPYoC4/Z/SEvVevmcilYwDrBCRwN1q6TVu3kr2A6fo66Mfs6RSAtjXASDd0+v+AkboARCs9bnRjR0DiNebVDJNcBXAQQVRfZCwkO6+91Yv+AUO5aL0pDpQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PyI78hr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6FFC2BD10;
+	Tue, 14 May 2024 11:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687621;
-	bh=wcXQjd9zSzcWnRTRWxyNSfl92WZNOa88yRyyujJOgts=;
+	s=korg; t=1715685869;
+	bh=o1tEhV7l8uq1BhM5CcpLytxeIpWd5WlOfoq/CLhWZ94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTOs7cFsZWnX4zQR6ocl8q/+hA4KM+P2rUPZiYlRA3kokoBWFhmKap99GLTuKLKMF
-	 /kOtCaHiH4tLAK7QhDPJh2tC8auphghX6riuPv55r+FJeOEGQNLpzxbuHg2eeirzWZ
-	 La0US+ATDkBEM5B/KUvNnMoRoIbIVgPqOtatgqWI=
+	b=0PyI78hrVARRL16BnEsj59gPkd4qt/8i0U6Szg5QWKUeWowC6TaoQRCSU10833SHp
+	 l/Y4ZFop6ddCM2NWyFcOxZFqhsNzaclAeN05Eq1+hV9POb/6l+hxWCMDjAszu/xrqQ
+	 aeJx6fV5Q6y3nNTBdAp3Mn8mMFCj6gZD81wWY63c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/168] ksmbd: clear RENAME_NOREPLACE before calling vfs_rename
+	stable <stable@kernel.org>,
+	Chris Wulff <chris.wulff@biamp.com>
+Subject: [PATCH 6.6 233/301] usb: gadget: f_fs: Fix a race condition when processing setup packets.
 Date: Tue, 14 May 2024 12:18:24 +0200
-Message-ID: <20240514101006.925339935@linuxfoundation.org>
+Message-ID: <20240514101041.052740821@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Chris Wulff <Chris.Wulff@biamp.com>
 
-[ Upstream commit 4973b04d3ea577db80c501c5f14e68ec69fe1794 ]
+commit 0aea736ddb877b93f6d2dd8cf439840d6b4970a9 upstream.
 
-File overwrite case is explicitly handled, so it is not necessary to
-pass RENAME_NOREPLACE to vfs_rename.
+If the USB driver passes a pointer into the TRB buffer for creq, this
+buffer can be overwritten with the status response as soon as the event
+is queued. This can make the final check return USB_GADGET_DELAYED_STATUS
+when it shouldn't. Instead use the stored wLength.
 
-Clearing the flag fixes rename operations when the share is a ntfs-3g
-mount. The latter uses an older version of fuse with no support for
-flags in the ->rename op.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4d644abf2569 ("usb: gadget: f_fs: Only return delayed status when len is 0")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Chris Wulff <chris.wulff@biamp.com>
+Link: https://lore.kernel.org/r/CO1PR17MB5419BD664264A558B2395E28E1112@CO1PR17MB5419.namprd17.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/vfs.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/vfs.c b/fs/ksmbd/vfs.c
-index 173a488bfeee4..7afb2412c4d43 100644
---- a/fs/ksmbd/vfs.c
-+++ b/fs/ksmbd/vfs.c
-@@ -745,10 +745,15 @@ int ksmbd_vfs_rename(struct ksmbd_work *work, const struct path *old_path,
- 		goto out4;
- 	}
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -3336,7 +3336,7 @@ static int ffs_func_setup(struct usb_fun
+ 	__ffs_event_add(ffs, FUNCTIONFS_SETUP);
+ 	spin_unlock_irqrestore(&ffs->ev.waitq.lock, flags);
  
-+	/*
-+	 * explicitly handle file overwrite case, for compatibility with
-+	 * filesystems that may not support rename flags (e.g: fuse)
-+	 */
- 	if ((flags & RENAME_NOREPLACE) && d_is_positive(new_dentry)) {
- 		err = -EEXIST;
- 		goto out4;
- 	}
-+	flags &= ~(RENAME_NOREPLACE);
+-	return creq->wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
++	return ffs->ev.setup.wLength == 0 ? USB_GADGET_DELAYED_STATUS : 0;
+ }
  
- 	if (old_child == trap) {
- 		err = -EINVAL;
--- 
-2.43.0
-
+ static bool ffs_func_req_match(struct usb_function *f,
 
 
 
