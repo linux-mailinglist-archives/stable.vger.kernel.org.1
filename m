@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D115A8C5186
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:30:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1B48C5016
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC0F1C215FF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:30:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0A571C20B47
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC07139D1F;
-	Tue, 14 May 2024 11:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8D213956C;
+	Tue, 14 May 2024 10:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erCkFVAV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoIPQtdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887A154903;
-	Tue, 14 May 2024 11:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176BA139568;
+	Tue, 14 May 2024 10:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684638; cv=none; b=E4HwFEhu2sJkWD0/zyWagaIfJsHqzQQH6+NMZ4ifT6sXsjStzuWn8XoJ1ZcaZtYdNzVbYG+7lb6tTzqjM6PFGZBISuiU8G0E7e0WY+1ofCb5SwKOQLGg1qUmeSILugdBjgDr5SFb1Q+JdJC3EGSdmgdZJBfANjqfoEtih2UM+BI=
+	t=1715682929; cv=none; b=QHNLUDQ5CfuWh2vkha32RT4aZ3rotU703K2+dnv0ZAI2sbWLskKzTXEw5U+6l974ZC65AEJ9HPRnmyoKJhmfek0zKvyxeygxKCMoeRwZf5r/PVFECB0ltZLGQX3o0QvcwLE+M2eElW/rBHGYJlXsihfUFAE0ZtZwQKdtMp5zcrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684638; c=relaxed/simple;
-	bh=w943OfC6go48wRb8h+A9Vlq7fnB3tAAVXKCATcMe7Gs=;
+	s=arc-20240116; t=1715682929; c=relaxed/simple;
+	bh=YuCHf38unYe1U5vtLfep1MemvRLnVcUhkidqeHMQNOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JphRBlZqVxrdt5jF6S+lALLRa+KN/WqZrMKkYggzqrTwEwClerbkXIVXAvISqsHxx1FY/cxJW3ZU+tdn2wkNE43Qn+1BUPS8h+xFzFtknO5/NEJCQrVdN44Iy+Og7eMusezBnQ9MEdjsdtK2QqiUgdBrwzmcsje+/AjF9JE6Dz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erCkFVAV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91602C2BD10;
-	Tue, 14 May 2024 11:03:57 +0000 (UTC)
+	 MIME-Version; b=cTOqJkgqJqbK5PQ4Dl53SEr3/sMubnE2R4wrMZ0B8Buzk74E1z10t7t/VzqoKun83W4RnI1DY/wRd+BzK18H5dcXucvJVYjnpY3k0a1HrapO9I6WnPLw4msLtGWQy0HAzz3ud6ht42E5m7kQ1sOUacpcOWpgK7NAUH4tcDjbmKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoIPQtdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFBBC2BD10;
+	Tue, 14 May 2024 10:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684638;
-	bh=w943OfC6go48wRb8h+A9Vlq7fnB3tAAVXKCATcMe7Gs=;
+	s=korg; t=1715682929;
+	bh=YuCHf38unYe1U5vtLfep1MemvRLnVcUhkidqeHMQNOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erCkFVAVvReG+olFVO7a6ZzNz/Jyy8JCtQk9Aa8le5EQ2o7CTCwJqf+GsVXIDaLJ7
-	 TGZvil1laBJTShSgrN6/MGxUVedGRZD9qxg9mNNK4Ui3tNMOrNycF31yl4c1kyirje
-	 lz7phrdfJO2/cTR6/jsuYILa0ovncZOVvDu1/u/c=
+	b=CoIPQtdH34JbJRI7vl7buWUHJcX+gsc9otL0vXLJ4esnhcJiPWXb5LpCCwZ3+yk3o
+	 hjhjpMqPb4yrawjNyRxySmmtycI1T60vWDlUDdTujDMlTv4KKgVVHRYTkiDv2WwQDT
+	 q7pI3m5mQ5uDG3w2fkVOFB93RNXlp23DvD85plfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Doug Smythies <dsmythies@telus.net>,
+	Wyes Karny <wyes.karny@amd.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/301] ASoC: meson: axg-tdm-interface: manage formatters in trigger
+Subject: [PATCH 6.8 135/336] tools/power turbostat: Increase the limit for fd opened
 Date: Tue, 14 May 2024 12:15:39 +0200
-Message-ID: <20240514101034.810204516@linuxfoundation.org>
+Message-ID: <20240514101043.697037624@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Wyes Karny <wyes.karny@amd.com>
 
-[ Upstream commit f949ed458ad15a00d41b37c745ebadaef171aaae ]
+[ Upstream commit 3ac1d14d0583a2de75d49a5234d767e2590384dd ]
 
-So far, the formatters have been reset/enabled using the .prepare()
-callback. This was done in this callback because walking the formatters use
-a mutex. A mutex is used because formatter handling require dealing
-possibly slow clock operation.
+When running turbostat, a system with 512 cpus reaches the limit for
+maximum number of file descriptors that can be opened. To solve this
+problem, the limit is raised to 2^15, which is a large enough number.
 
-With the support of non-atomic, .trigger() callback may be used which also
-allows to properly enable and disable formatters on start but also
-pause/resume.
+Below data is collected from AMD server systems while running turbostat:
 
-This solve a random shift on TDMIN as well repeated samples on for TDMOUT.
+|-----------+-------------------------------|
+| # of cpus | # of opened fds for turbostat |
+|-----------+-------------------------------|
+| 128       | 260                           |
+|-----------+-------------------------------|
+| 192       | 388                           |
+|-----------+-------------------------------|
+| 512       | 1028                          |
+|-----------+-------------------------------|
 
-Fixes: d60e4f1e4be5 ("ASoC: meson: add tdm interface driver")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240426152946.3078805-4-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+So, the new max limit would be sufficient up to 2^14 cpus (but this
+also depends on how many counters are enabled).
+
+Reviewed-by: Doug Smythies <dsmythies@telus.net>
+Tested-by: Doug Smythies <dsmythies@telus.net>
+Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-tdm-interface.c | 34 ++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/sound/soc/meson/axg-tdm-interface.c b/sound/soc/meson/axg-tdm-interface.c
-index 2cedbce738373..a71790908e178 100644
---- a/sound/soc/meson/axg-tdm-interface.c
-+++ b/sound/soc/meson/axg-tdm-interface.c
-@@ -349,26 +349,31 @@ static int axg_tdm_iface_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index fca7913f6c84d..2550a0e35914f 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -53,6 +53,8 @@
+ #define	NAME_BYTES 20
+ #define PATH_BYTES 128
+ 
++#define MAX_NOFILE 0x8000
++
+ enum counter_scope { SCOPE_CPU, SCOPE_CORE, SCOPE_PACKAGE };
+ enum counter_type { COUNTER_ITEMS, COUNTER_CYCLES, COUNTER_SECONDS, COUNTER_USEC };
+ enum counter_format { FORMAT_RAW, FORMAT_DELTA, FORMAT_PERCENT };
+@@ -6705,6 +6707,22 @@ void cmdline(int argc, char **argv)
+ 	}
  }
  
--static int axg_tdm_iface_hw_free(struct snd_pcm_substream *substream,
-+static int axg_tdm_iface_trigger(struct snd_pcm_substream *substream,
-+				 int cmd,
- 				 struct snd_soc_dai *dai)
++void set_rlimit(void)
++{
++	struct rlimit limit;
++
++	if (getrlimit(RLIMIT_NOFILE, &limit) < 0)
++		err(1, "Failed to get rlimit");
++
++	if (limit.rlim_max < MAX_NOFILE)
++		limit.rlim_max = MAX_NOFILE;
++	if (limit.rlim_cur < MAX_NOFILE)
++		limit.rlim_cur = MAX_NOFILE;
++
++	if (setrlimit(RLIMIT_NOFILE, &limit) < 0)
++		err(1, "Failed to set rlimit");
++}
++
+ int main(int argc, char **argv)
  {
--	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
-+	struct axg_tdm_stream *ts =
-+		snd_soc_dai_get_dma_data(dai, substream);
+ 	int fd, ret;
+@@ -6730,6 +6748,9 @@ int main(int argc, char **argv)
  
--	/* Stop all attached formatters */
--	axg_tdm_stream_stop(ts);
-+	switch (cmd) {
-+	case SNDRV_PCM_TRIGGER_START:
-+	case SNDRV_PCM_TRIGGER_RESUME:
-+	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
-+		axg_tdm_stream_start(ts);
-+		break;
-+	case SNDRV_PCM_TRIGGER_SUSPEND:
-+	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
-+	case SNDRV_PCM_TRIGGER_STOP:
-+		axg_tdm_stream_stop(ts);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
+ 	probe_sysfs();
  
- 	return 0;
- }
++	if (!getuid())
++		set_rlimit();
++
+ 	turbostat_init();
  
--static int axg_tdm_iface_prepare(struct snd_pcm_substream *substream,
--				 struct snd_soc_dai *dai)
--{
--	struct axg_tdm_stream *ts = snd_soc_dai_get_dma_data(dai, substream);
--
--	/* Force all attached formatters to update */
--	return axg_tdm_stream_reset(ts);
--}
--
- static int axg_tdm_iface_remove_dai(struct snd_soc_dai *dai)
- {
- 	int stream;
-@@ -412,8 +417,7 @@ static const struct snd_soc_dai_ops axg_tdm_iface_ops = {
- 	.set_fmt	= axg_tdm_iface_set_fmt,
- 	.startup	= axg_tdm_iface_startup,
- 	.hw_params	= axg_tdm_iface_hw_params,
--	.prepare	= axg_tdm_iface_prepare,
--	.hw_free	= axg_tdm_iface_hw_free,
-+	.trigger	= axg_tdm_iface_trigger,
- };
- 
- /* TDM Backend DAIs */
+ 	msr_sum_record();
 -- 
 2.43.0
 
