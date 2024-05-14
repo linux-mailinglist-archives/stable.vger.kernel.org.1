@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-44581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7C8C5383
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A6B8C5254
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB6D1C2279E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 137B81F22AC2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1255FDB5;
-	Tue, 14 May 2024 11:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093FE12F376;
+	Tue, 14 May 2024 11:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3W2I4rs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0hPnjxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDCA4E1C9;
-	Tue, 14 May 2024 11:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD81E1E4B0;
+	Tue, 14 May 2024 11:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686576; cv=none; b=igFh0FKEfOWZL85J6nsoNLswCBtcpFVzE+1PYiVt8zCP9PaFiPmqcoboIGUQYVsE6WocAamvyOpMTVzP7s7Ha7jmEqrYIJ3bViSsEVPms30D9QLj62T7vYEhAtMPd7hn5I/XQS7dM4brsSDNWc8NDEYxQlQ6AP4DGF23CMcmXms=
+	t=1715685782; cv=none; b=GttqWanSdS7AsFIZJYi8/BvyscM5hUUu6rwNF4UOrx6VKoN8pkNhvVeW42THVzkj51HsCPT6z8jlTGNiLhgVUfXnQrsGLQt8kvUugrT5WLRYkyfjGaWGkmPq7yxuSi0kpiJ9BXgf2gz46lDDyrGp/fPvsx6LmV0F/QR4oCrvh0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686576; c=relaxed/simple;
-	bh=TO/JOY8vMVSip6msMzutHXkXIYWtMdZ2BcVa4WFpFpk=;
+	s=arc-20240116; t=1715685782; c=relaxed/simple;
+	bh=b2V42LHfTuhH81wsryyW1ks/WLDrd8KJcGMSmgCrKoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/nxsvC1J3oHjFyBPQ+fMfGvy0Qy0d/FbbcHLbkr2OUkdJgtzzO9BNt4Bn+d0wVqGU3s75BKqL40YWw+1HpvZmCKZsARAMxAheprj5/0b14+za6wnKT63ud58onAq93ESzEOGeIX0IEAU3w7YGldCYQ/D9HdlJzliFxZJ9yIako=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3W2I4rs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768ECC2BD10;
-	Tue, 14 May 2024 11:36:15 +0000 (UTC)
+	 MIME-Version; b=hu3HYtSoPaM5Nx6oB2Y9/ErcOVWvVK+mg+ol6kb1f5DtZm77hfXEBdwo7Z/9zy+uOjrLAV0ISW+uQpXQINzxEB1tGdQYwn3wCp7WQLjbXI6knUAzpEgbKu8itD9N0ePKZal92L16olkfCSz8zMEgs158nx6gZXDaAClnKa8LQxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0hPnjxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E867C2BD10;
+	Tue, 14 May 2024 11:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686575;
-	bh=TO/JOY8vMVSip6msMzutHXkXIYWtMdZ2BcVa4WFpFpk=;
+	s=korg; t=1715685782;
+	bh=b2V42LHfTuhH81wsryyW1ks/WLDrd8KJcGMSmgCrKoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3W2I4rs4rt2m+3pDJpj30Thjpy1sjtDnMwHqrrTXejJspU6cLos5+bAF4McbBOQr
-	 EcMu4HzbnhDKQnlHOorhezrf9RVV00zjauZF7mz+5Gpwt/5wDvJvhfUvXtH6ylMPKW
-	 KYIP2aN2jL10jW62ADW44F5z4KCtI9K6LGkUDIec=
+	b=c0hPnjxdlerZJBZuoQfQHqdkNP1QPDV96Bpn8Rjo+I52VegkpDrYyiUiLOMuvRIim
+	 ayG5AdKh0AXTV8IriAZW9DGNNPZptS0/q9VQ5eWRZFPMvifNwbNBSwCUG6GINzvY92
+	 NQAXfBPTO9ISETF8sKED9ydqksTX5q7JpeXLsYx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Marius Zachmann <mail@mariuszachmann.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/236] hwmon: (corsair-cpro) Use a separate buffer for sending commands
-Date: Tue, 14 May 2024 12:18:36 +0200
-Message-ID: <20240514101026.211653001@linuxfoundation.org>
+	Gregory Detal <gregory.detal@gmail.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 246/301] mptcp: only allow set existing scheduler for net.mptcp.scheduler
+Date: Tue, 14 May 2024 12:18:37 +0200
+Message-ID: <20240514101041.543718007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Gregory Detal <gregory.detal@gmail.com>
 
-[ Upstream commit e0cd85dc666cb08e1bd313d560cb4eff4d04219e ]
+commit 6963c508fd7ab66ae0b7ae3db9a62ca6267f1ae8 upstream.
 
-Introduce cmd_buffer, a separate buffer for storing only
-the command that is sent to the device. Before this separation,
-the existing buffer was shared for both the command and the
-report received in ccp_raw_event(), which was copied into it.
+The current behavior is to accept any strings as inputs, this results in
+an inconsistent result where an unexisting scheduler can be set:
 
-However, because of hidraw, the raw event parsing may be triggered
-in the middle of sending a command, resulting in outputting gibberish
-to the device. Using a separate buffer resolves this.
+  # sysctl -w net.mptcp.scheduler=notdefault
+  net.mptcp.scheduler = notdefault
 
-Fixes: 40c3a4454225 ("hwmon: add Corsair Commander Pro driver")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Acked-by: Marius Zachmann <mail@mariuszachmann.de>
-Link: https://lore.kernel.org/r/20240504092504.24158-2-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch changes this behavior by checking for existing scheduler
+before accepting the input.
+
+Fixes: e3b2870b6d22 ("mptcp: add a new sysctl scheduler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gregory Detal <gregory.detal@gmail.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Tested-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240506-upstream-net-20240506-mptcp-sched-exist-v1-1-2ed1529e521e@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/corsair-cpro.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ net/mptcp/ctrl.c |   39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/corsair-cpro.c b/drivers/hwmon/corsair-cpro.c
-index fa6aa4fc8b521..0a9cbb556188f 100644
---- a/drivers/hwmon/corsair-cpro.c
-+++ b/drivers/hwmon/corsair-cpro.c
-@@ -79,6 +79,7 @@ struct ccp_device {
- 	struct device *hwmon_dev;
- 	struct completion wait_input_report;
- 	struct mutex mutex; /* whenever buffer is used, lock before send_usb_cmd */
-+	u8 *cmd_buffer;
- 	u8 *buffer;
- 	int target[6];
- 	DECLARE_BITMAP(temp_cnct, NUM_TEMP_SENSORS);
-@@ -111,15 +112,15 @@ static int send_usb_cmd(struct ccp_device *ccp, u8 command, u8 byte1, u8 byte2,
- 	unsigned long t;
- 	int ret;
+--- a/net/mptcp/ctrl.c
++++ b/net/mptcp/ctrl.c
+@@ -87,6 +87,43 @@ static void mptcp_pernet_set_defaults(st
+ }
  
--	memset(ccp->buffer, 0x00, OUT_BUFFER_SIZE);
--	ccp->buffer[0] = command;
--	ccp->buffer[1] = byte1;
--	ccp->buffer[2] = byte2;
--	ccp->buffer[3] = byte3;
-+	memset(ccp->cmd_buffer, 0x00, OUT_BUFFER_SIZE);
-+	ccp->cmd_buffer[0] = command;
-+	ccp->cmd_buffer[1] = byte1;
-+	ccp->cmd_buffer[2] = byte2;
-+	ccp->cmd_buffer[3] = byte3;
- 
- 	reinit_completion(&ccp->wait_input_report);
- 
--	ret = hid_hw_output_report(ccp->hdev, ccp->buffer, OUT_BUFFER_SIZE);
-+	ret = hid_hw_output_report(ccp->hdev, ccp->cmd_buffer, OUT_BUFFER_SIZE);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -492,7 +493,11 @@ static int ccp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	if (!ccp)
- 		return -ENOMEM;
- 
--	ccp->buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
-+	ccp->cmd_buffer = devm_kmalloc(&hdev->dev, OUT_BUFFER_SIZE, GFP_KERNEL);
-+	if (!ccp->cmd_buffer)
-+		return -ENOMEM;
+ #ifdef CONFIG_SYSCTL
++static int mptcp_set_scheduler(const struct net *net, const char *name)
++{
++	struct mptcp_pernet *pernet = mptcp_get_pernet(net);
++	struct mptcp_sched_ops *sched;
++	int ret = 0;
 +
-+	ccp->buffer = devm_kmalloc(&hdev->dev, IN_BUFFER_SIZE, GFP_KERNEL);
- 	if (!ccp->buffer)
- 		return -ENOMEM;
- 
--- 
-2.43.0
-
++	rcu_read_lock();
++	sched = mptcp_sched_find(name);
++	if (sched)
++		strscpy(pernet->scheduler, name, MPTCP_SCHED_NAME_MAX);
++	else
++		ret = -ENOENT;
++	rcu_read_unlock();
++
++	return ret;
++}
++
++static int proc_scheduler(struct ctl_table *ctl, int write,
++			  void *buffer, size_t *lenp, loff_t *ppos)
++{
++	const struct net *net = current->nsproxy->net_ns;
++	char val[MPTCP_SCHED_NAME_MAX];
++	struct ctl_table tbl = {
++		.data = val,
++		.maxlen = MPTCP_SCHED_NAME_MAX,
++	};
++	int ret;
++
++	strscpy(val, mptcp_get_scheduler(net), MPTCP_SCHED_NAME_MAX);
++
++	ret = proc_dostring(&tbl, write, buffer, lenp, ppos);
++	if (write && ret == 0)
++		ret = mptcp_set_scheduler(net, val);
++
++	return ret;
++}
++
+ static struct ctl_table mptcp_sysctl_table[] = {
+ 	{
+ 		.procname = "enabled",
+@@ -139,7 +176,7 @@ static struct ctl_table mptcp_sysctl_tab
+ 		.procname = "scheduler",
+ 		.maxlen	= MPTCP_SCHED_NAME_MAX,
+ 		.mode = 0644,
+-		.proc_handler = proc_dostring,
++		.proc_handler = proc_scheduler,
+ 	},
+ 	{}
+ };
 
 
 
