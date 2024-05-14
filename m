@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081C28C551D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA228C538C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA081F228A1
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 785EDB21B90
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E0B6EB46;
-	Tue, 14 May 2024 11:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53391129A99;
+	Tue, 14 May 2024 11:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/N08ByG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJtO+Re1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94A843AD6;
-	Tue, 14 May 2024 11:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AD3129A93;
+	Tue, 14 May 2024 11:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687661; cv=none; b=fPG51/e6QXV2y35DVxUKquNGh5yTMHrb4W36p0ZJpcPaSCIwOmqM9p9W9ursBsOYbwzvE8Mqj2Z3AMYLO0ILcJEGEAsbbQ18Imb0bxmxoAHBkRqLZBm8L9qA28TkbOpjq2r6qA/lTgmGDcdEOwh0ICv0PW7Eq1iUQEnRI6yuMJc=
+	t=1715686608; cv=none; b=tZA6DstZCg2hbTnqgAwuZ6E+M2is9HMlqW9fkKWiL5tBre7jzWs+wCyLBSQm5sbcRDJRaV/i2azYSGweSmMIjUSbY9NhbyDzH3Yb0RpjV8FCLlBYwDJo3O8mG9g2llmGKff+iqko+ZXdKBXG2kZ9tJyQnOWnIS3toby7Li6zq4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687661; c=relaxed/simple;
-	bh=KFduah+rbYrk8dPXwXpA1sD1OjRvkAF/1fvT/4jSR6k=;
+	s=arc-20240116; t=1715686608; c=relaxed/simple;
+	bh=fsEKQpixybe/L3/d8nQp79IthX5CWQOpRun4hQ53sYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIh20oL31ihZzNjm3YW+yeilclhPCozvqKv2kxS/Q1QYsdVSHmQvgNHTFan53FTQEsp4VzGEhsTqPkDo47df+Kose/YjGtrfr268dauBkAmJIKrs919HEOwGoANAaf7l6cgJHlmSyUDRq8FhsK2O2zjNOZp7WcFqGfO3XEDKFCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/N08ByG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCC8C2BD10;
-	Tue, 14 May 2024 11:54:21 +0000 (UTC)
+	 MIME-Version; b=OZX3X4WUqFF0aIrE+UqBLTJi7xlX42xuSuifE0fjb26n2RoqMC0dawL7BG+BoAiJolHJU0lray0pi82rVN8fyNxjq7Dh4EgBJA0WWTrZIz/KlRGnWlRIS54SN8Ezn830SfM7z9WzIqjLB0XhdhE9cgTn60Kp8H/fR6of+BC2jf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJtO+Re1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C2CC2BD10;
+	Tue, 14 May 2024 11:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687661;
-	bh=KFduah+rbYrk8dPXwXpA1sD1OjRvkAF/1fvT/4jSR6k=;
+	s=korg; t=1715686607;
+	bh=fsEKQpixybe/L3/d8nQp79IthX5CWQOpRun4hQ53sYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/N08ByGyK6DxtfTi7Mxyb3NimYIMAZmNmRtVCTG8wpWlFPwbd2w4HvvsafGiaFHu
-	 KxPpEt/5hIFvse4ZVlo/foMuFATn1U1WQtcrvfQ21ApF6TZ9L6ZwktlHdYYucVuseB
-	 fYhyqoDuDjQvlKxBE6iYXbDzCxVdhHU/qWx/ctJw=
+	b=xJtO+Re1B3MTjg2LBzx18+JtkwTyqBvNe7k1fhqyRV+QLlVkGoJFYwQPK/hh3xf7U
+	 7rOuoUNfrCmWVu4nu4Ks0DpK3qnDSLrmjxXz7EEty1ShYpcoyJj5xL7YyP1Y7OUebR
+	 hazRjTLZJpkScfejqAuZOpT5NwKwErNwxFCpef7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/168] KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()
+	stable <stable@kernel.org>,
+	Peter Korsgaard <peter@korsgaard.com>
+Subject: [PATCH 6.1 197/236] usb: gadget: composite: fix OS descriptors w_value logic
 Date: Tue, 14 May 2024 12:19:19 +0200
-Message-ID: <20240514101009.002217459@linuxfoundation.org>
+Message-ID: <20240514101027.846196450@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Peter Korsgaard <peter@korsgaard.com>
 
-[ Upstream commit 6ddb4f372fc63210034b903d96ebbeb3c7195adb ]
+commit ec6ce7075ef879b91a8710829016005dc8170f17 upstream.
 
-vgic_v2_parse_attr() is responsible for finding the vCPU that matches
-the user-provided CPUID, which (of course) may not be valid. If the ID
-is invalid, kvm_get_vcpu_by_id() returns NULL, which isn't handled
-gracefully.
+The OS descriptors logic had the high/low byte of w_value inverted, causing
+the extended properties to not be accessible for interface != 0.
 
-Similar to the GICv3 uaccess flow, check that kvm_get_vcpu_by_id()
-actually returns something and fail the ioctl if not.
+>From the Microsoft documentation:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/usbcon/microsoft-os-1-0-descriptors-specification
 
-Cc: stable@vger.kernel.org
-Fixes: 7d450e282171 ("KVM: arm/arm64: vgic-new: Add userland access to VGIC dist registers")
-Reported-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240424173959.3776798-2-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+OS_Desc_CompatID.doc (w_index = 0x4):
+
+- wValue:
+
+  High Byte = InterfaceNumber.  InterfaceNumber is set to the number of the
+  interface or function that is associated with the descriptor, typically
+  0x00.  Because a device can have only one extended compat ID descriptor,
+  it should ignore InterfaceNumber, regardless of the value, and simply
+  return the descriptor.
+
+  Low Byte = 0.  PageNumber is used to retrieve descriptors that are larger
+  than 64 KB.  The header section is 16 bytes, so PageNumber is set to 0 for
+  this request.
+
+We currently do not support >64KB compat ID descriptors, so verify that the
+low byte is 0.
+
+OS_Desc_Ext_Prop.doc (w_index = 0x5):
+
+- wValue:
+
+  High byte = InterfaceNumber.  The high byte of wValue is set to the number
+  of the interface or function that is associated with the descriptor.
+
+  Low byte = PageNumber.  The low byte of wValue is used to retrieve
+  descriptors that are larger than 64 KB.  The header section is 10 bytes, so
+  PageNumber is set to 0 for this request.
+
+We also don't support >64KB extended properties, so verify that the low byte
+is 0 and use the high byte for the interface number.
+
+Fixes: 37a3a533429e ("usb: gadget: OS Feature Descriptors support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20240404100635.3215340-1-peter@korsgaard.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/composite.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-index 640cfa0c0f4cc..e80b638b78271 100644
---- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-+++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-@@ -284,12 +284,12 @@ int kvm_register_vgic_device(unsigned long type)
- int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
- 		       struct vgic_reg_attr *reg_attr)
- {
--	int cpuid;
-+	int cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
- 
--	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
--
--	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
- 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
-+	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
-+	if (!reg_attr->vcpu)
-+		return -EINVAL;
- 
- 	return 0;
- }
--- 
-2.43.0
-
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1993,7 +1993,7 @@ unknown:
+ 			buf[5] = 0x01;
+ 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
+ 			case USB_RECIP_DEVICE:
+-				if (w_index != 0x4 || (w_value >> 8))
++				if (w_index != 0x4 || (w_value & 0xff))
+ 					break;
+ 				buf[6] = w_index;
+ 				/* Number of ext compat interfaces */
+@@ -2009,9 +2009,9 @@ unknown:
+ 				}
+ 				break;
+ 			case USB_RECIP_INTERFACE:
+-				if (w_index != 0x5 || (w_value >> 8))
++				if (w_index != 0x5 || (w_value & 0xff))
+ 					break;
+-				interface = w_value & 0xFF;
++				interface = w_value >> 8;
+ 				if (interface >= MAX_CONFIG_INTERFACES ||
+ 				    !os_desc_cfg->interface[interface])
+ 					break;
 
 
 
