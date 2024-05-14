@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9B38C51EA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:33:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E471D8C52EC
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F78D2828BC
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:33:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DDC91C218FF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76577602B;
-	Tue, 14 May 2024 11:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADCE133402;
+	Tue, 14 May 2024 11:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM0D9jON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Znua4nlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864E06D1A1;
-	Tue, 14 May 2024 11:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA85457CBC;
+	Tue, 14 May 2024 11:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685186; cv=none; b=KBA4Okol2uJ10U5IRgpyK+gywsFhRxwAIgtDvWk3IAEJaevGC8vDCJP6LY4zhvgNyCA8vAmNoMseqq/8880racqvHiEJ4VTq593+Vd8Y8AK++lNS0U3FsZqXDU7jJi9f4jEoYjivjNYSxWAbuCBgcCzRZGyYIgjgSkKu7vmUkZg=
+	t=1715686208; cv=none; b=lkXK56F84gqfM3cSJmw1ssaZZ6OLMwCTWYywaVXWfzuH0MhlgbjkWWiUoDDpn4z2vgiH4TXwJOrSdxE7ctnkNyc1UhM0pMPWt6DDbQAJkLwlOLO/OvCnHuvvZ3sN9njdbIWB4b9H4/N6GVGCM//YKCZ+Z2aDMba8pnF6ejJlklA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685186; c=relaxed/simple;
-	bh=+KX3YGPU27YC0XnPCrwNLtUJWFIS4w5JYCrA2+1nGl4=;
+	s=arc-20240116; t=1715686208; c=relaxed/simple;
+	bh=Mofh6irf3Nb8fXS4VFx48ggHNSti9LRzlXRzaprrXK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vh6Fe6WR3ZKSs2lHuxw+f+EoCWFBUZe7V7Ce5I3uuuWOdICFQmJcs9Ro7uc9wp5wF2kxQuZ1MHetuFsRBDHOZ4P79mZeUbYHD+79B6Va16cF3J5sBr/tdKNfqqSk7sL+dXC2Sjpi22NLZC1j5w6OFXOpOgQnq3GTJBtaC9Tbauo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM0D9jON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF6BC2BD10;
-	Tue, 14 May 2024 11:13:05 +0000 (UTC)
+	 MIME-Version; b=O4iEQTrJsnpx3IloQ71qkB98nJxpGnTVqEEHuEP/eGd/1OE0VdVyi0z4IiEwFIdFzdUwjuhMuOjt0HHC5RbhHM7MBwyq1cWbLu+dfEkynAWO46fpmfXLo28D6vHQYCUhOcEK/EXHx9DPz7uPs25MUq1f99THZQW6mCssgo7juJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Znua4nlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31274C2BD10;
+	Tue, 14 May 2024 11:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685186;
-	bh=+KX3YGPU27YC0XnPCrwNLtUJWFIS4w5JYCrA2+1nGl4=;
+	s=korg; t=1715686208;
+	bh=Mofh6irf3Nb8fXS4VFx48ggHNSti9LRzlXRzaprrXK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MM0D9jON1PC3F+yjjFNkZPtF05oSy+lcYYFM8xwSupI4fRq5AhvpWtizzDv6G+pZS
-	 c5PIh+OBVdnf4JgCtlGY/BQC2RPpKxULB4f6YEJ11gBCSif/MwxD67egB0mCi3tx9f
-	 hFIasfX92h/xLtW4SKNAsn9fw/y3XZThLFOlSN3c=
+	b=Znua4nlWeoxVTt6WcAlYTwkrGlrCcD24O4i9r5gQ3UStNpDl8c6HtlfAjoYb716uI
+	 WLHw10h/DYOA09M47ITR1bmeXm6lvremh2KK0QgLcSP8kEuZMCos/X7if5w5TreET9
+	 vUxFdJg/n6wyA+XIybmpk7bsGsdEMmDuf2oW/Qf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhigang Luo <Zhigang.Luo@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/301] amd/amdkfd: sync all devices to wait all processes being evicted
-Date: Tue, 14 May 2024 12:17:00 +0200
-Message-ID: <20240514101037.882270318@linuxfoundation.org>
+Subject: [PATCH 6.1 059/236] octeontx2-af: avoid off-by-one read from userspace
+Date: Tue, 14 May 2024 12:17:01 +0200
+Message-ID: <20240514101022.597457272@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhigang Luo <Zhigang.Luo@amd.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit d06af584be5a769d124b7302b32a033e9559761d ]
+[ Upstream commit f299ee709fb45036454ca11e90cb2810fe771878 ]
 
-If there are more than one device doing reset in parallel, the first
-device will call kfd_suspend_all_processes() to evict all processes
-on all devices, this call takes time to finish. other device will
-start reset and recover without waiting. if the process has not been
-evicted before doing recover, it will be restored, then caused page
-fault.
+We try to access count + 1 byte from userspace with memdup_user(buffer,
+count + 1). However, the userspace only provides buffer of count bytes and
+only these count bytes are verified to be okay to access. To ensure the
+copied buffer is NUL terminated, we use memdup_user_nul instead.
 
-Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 3a2eb515d136 ("octeontx2-af: Fix an off by one in rvu_dbg_qsize_write()")
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-6-f1f1b53a10f4@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-index 93ce181eb3baa..913c70a0ef44f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
-@@ -935,7 +935,6 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
- {
- 	struct kfd_node *node;
- 	int i;
--	int count;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+index cc5d342e026c7..a3c1d82032f55 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+@@ -999,12 +999,10 @@ static ssize_t rvu_dbg_qsize_write(struct file *filp,
+ 	u16 pcifunc;
+ 	int ret, lf;
  
- 	if (!kfd->init_complete)
- 		return;
-@@ -943,12 +942,10 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
- 	/* for runtime suspend, skip locking kfd */
- 	if (!run_pm) {
- 		mutex_lock(&kfd_processes_mutex);
--		count = ++kfd_locked;
--		mutex_unlock(&kfd_processes_mutex);
+-	cmd_buf = memdup_user(buffer, count + 1);
++	cmd_buf = memdup_user_nul(buffer, count);
+ 	if (IS_ERR(cmd_buf))
+ 		return -ENOMEM;
+ 
+-	cmd_buf[count] = '\0';
 -
- 		/* For first KFD device suspend all the KFD processes */
--		if (count == 1)
-+		if (++kfd_locked == 1)
- 			kfd_suspend_all_processes();
-+		mutex_unlock(&kfd_processes_mutex);
- 	}
- 
- 	for (i = 0; i < kfd->num_nodes; i++) {
-@@ -959,7 +956,7 @@ void kgd2kfd_suspend(struct kfd_dev *kfd, bool run_pm)
- 
- int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
- {
--	int ret, count, i;
-+	int ret, i;
- 
- 	if (!kfd->init_complete)
- 		return 0;
-@@ -973,12 +970,10 @@ int kgd2kfd_resume(struct kfd_dev *kfd, bool run_pm)
- 	/* for runtime resume, skip unlocking kfd */
- 	if (!run_pm) {
- 		mutex_lock(&kfd_processes_mutex);
--		count = --kfd_locked;
--		mutex_unlock(&kfd_processes_mutex);
--
--		WARN_ONCE(count < 0, "KFD suspend / resume ref. error");
--		if (count == 0)
-+		if (--kfd_locked == 0)
- 			ret = kfd_resume_all_processes();
-+		WARN_ONCE(kfd_locked < 0, "KFD suspend / resume ref. error");
-+		mutex_unlock(&kfd_processes_mutex);
- 	}
- 
- 	return ret;
+ 	cmd_buf_tmp = strchr(cmd_buf, '\n');
+ 	if (cmd_buf_tmp) {
+ 		*cmd_buf_tmp = '\0';
 -- 
 2.43.0
 
