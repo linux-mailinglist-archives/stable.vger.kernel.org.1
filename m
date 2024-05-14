@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-44537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E74B68C5356
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E40C78C5266
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49636286312
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F01D5282B6F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7B06CDBD;
-	Tue, 14 May 2024 11:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4561A12F5BB;
+	Tue, 14 May 2024 11:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1B4ZJmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1BIpvxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA19118026;
-	Tue, 14 May 2024 11:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E0A6311D;
+	Tue, 14 May 2024 11:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686447; cv=none; b=bCdE3di/JP87ljyFTjP6T3X3vUM6ly1G34d5xsETThEObSb+fK1/xvVY+qD7Fcv+uMP0oMozmN96crW8dszE3JK6ybr0weJBZAtM+Y6uNFgXuTBvbVxG4dYFejPCyF79456Gt9HXo2i3dMiV1+h+q2qcvgVn52yMkvO8NqksONo=
+	t=1715685866; cv=none; b=JpNldIm0R/bcsRJLIfAY2IMPQgtAlynlVAd0FwDkcwlhJ8sr81RPd5h3j7BoqgX3KK1LKILomT4FBUznMuJTWwSgRl8YjJ9YQnHPUcN01Fnh/8uvz3WMa0AsOus8R+wimDVmEljQEo/NGEFDuuk+DyDNMSbm7nTG5nSnMGLaLg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686447; c=relaxed/simple;
-	bh=4PM8PaQ6eKe0ij/wX76kE/8sfffO5CDI3ruBixeyBx4=;
+	s=arc-20240116; t=1715685866; c=relaxed/simple;
+	bh=4xHsynxJMmRCUJbBnN4zL/1J8GToqiBmC+8c0Y+vtrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAXJWVr5aBbEoT+c4qMlAU+P5sfQPNxo9U6CkGLupGNbTNCdcm6BFZRSw4QggrO6SHamO85gRgvj7maIo5SzFAsNWV2YPUtH5/3gypo2HY6Oj5gQGW7iEAIsSECY9PwTfD2ZZMfpu7s5kTS3gvLACqxXd31Jw+1mjQ6rNSQuBo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1B4ZJmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A07C2BD10;
-	Tue, 14 May 2024 11:34:07 +0000 (UTC)
+	 MIME-Version; b=b9YPdku9vC/NOTiKYFM/GYvHb/hRyIxr8OajvuLzKrdYbPVQyqSAM7pMxI9FZqK85kmsop7m/r096oALzu8M+4zlWJpnaZy2cUIwi93x5AJ3d+HgfJXec3zDrHnADRMfpuurU7EzgKncVaaM01hiNMMvML0Su6XPr3m0b4B/kaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1BIpvxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A86C2BD10;
+	Tue, 14 May 2024 11:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686447;
-	bh=4PM8PaQ6eKe0ij/wX76kE/8sfffO5CDI3ruBixeyBx4=;
+	s=korg; t=1715685865;
+	bh=4xHsynxJMmRCUJbBnN4zL/1J8GToqiBmC+8c0Y+vtrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1B4ZJmRlMhHvbOlvzkGi884PsgOU90kk+bj5A2eIlsWw54owqzTOUZHUr0xAfj+C
-	 DL9RG9OiUYCYt/x3ZOglDNB4Qd5aJW29QbTLH2dd4rQLMsbujxW6fQhlFJguSlyRBc
-	 CKufTSSq2XkJdHKForhXf1wM9GvX2s2AuRYTxdCk=
+	b=b1BIpvxIca0cgYx8vJbKSj0gnQ1/q9nyY4aN36ST0P/cY4mIixh4sjby2eaDRRZID
+	 1DYV2uMj9zL3Jp5tWoWc/9tu3c8FBmJs6j2k/cgQ2M6nNn2Vx2z7VHTulV2y3emXmM
+	 xdKgQfHj1WbE5NqkRv3cb43/vd9DHGKx22flPiB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/236] spi: Merge spi_controller.{slave,target}_abort()
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 232/301] usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete
 Date: Tue, 14 May 2024 12:18:23 +0200
-Message-ID: <20240514101025.722108465@linuxfoundation.org>
+Message-ID: <20240514101041.014835764@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 6c6871cdaef96361f6b79a3e45d451a6475df4d6 ]
+commit 24729b307eefcd7c476065cd7351c1a018082c19 upstream.
 
-Mixing SPI slave/target handlers and SPI slave/target controllers using
-legacy and modern naming does not work well: there are now two different
-callbacks for aborting a slave/target operation, of which only one is
-populated, while spi_{slave,target}_abort() check and use only one,
-which may be the unpopulated one.
+FFS based applications can utilize the aio_cancel() callback to dequeue
+pending USB requests submitted to the UDC.  There is a scenario where the
+FFS application issues an AIO cancel call, while the UDC is handling a
+soft disconnect.  For a DWC3 based implementation, the callstack looks
+like the following:
 
-Fix this by merging the slave/target abort callbacks into a single
-callback using a union, like is already done for the slave/target flags.
+    DWC3 Gadget                               FFS Application
+dwc3_gadget_soft_disconnect()              ...
+  --> dwc3_stop_active_transfers()
+    --> dwc3_gadget_giveback(-ESHUTDOWN)
+      --> ffs_epfile_async_io_complete()   ffs_aio_cancel()
+        --> usb_ep_free_request()            --> usb_ep_dequeue()
 
-Fixes: b8d3b056a78dcc94 ("spi: introduce new helpers with using modern naming")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/809c82d54b85dd87ef7ee69fc93016085be85cec.1667555967.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There is currently no locking implemented between the AIO completion
+handler and AIO cancel, so the issue occurs if the completion routine is
+running in parallel to an AIO cancel call coming from the FFS application.
+As the completion call frees the USB request (io_data->req) the FFS
+application is also referencing it for the usb_ep_dequeue() call.  This can
+lead to accessing a stale/hanging pointer.
+
+commit b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+relocated the usb_ep_free_request() into ffs_epfile_async_io_complete().
+However, in order to properly implement locking to mitigate this issue, the
+spinlock can't be added to ffs_epfile_async_io_complete(), as
+usb_ep_dequeue() (if successfully dequeuing a USB request) will call the
+function driver's completion handler in the same context.  Hence, leading
+into a deadlock.
+
+Fix this issue by moving the usb_ep_free_request() back to
+ffs_user_copy_worker(), and ensuring that it explicitly sets io_data->req
+to NULL after freeing it within the ffs->eps_lock.  This resolves the race
+condition above, as the ffs_aio_cancel() routine will not continue
+attempting to dequeue a request that has already been freed, or the
+ffs_user_copy_work() not freeing the USB request until the AIO cancel is
+done referencing it.
+
+This fix depends on
+  commit b566d38857fc ("usb: gadget: f_fs: use io_data->status
+  consistently")
+
+Fixes: 2e4c7553cd6f ("usb: gadget: f_fs: add aio support")
+Cc: stable <stable@kernel.org>	# b566d38857fc ("usb: gadget: f_fs: use io_data->status consistently")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240409014059.6740-1-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/spi/spi.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 6edf8a2962d4a..0ce659d6fcb75 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -676,8 +676,10 @@ struct spi_controller {
- 			       struct spi_message *message);
- 	int (*unprepare_message)(struct spi_controller *ctlr,
- 				 struct spi_message *message);
--	int (*slave_abort)(struct spi_controller *ctlr);
--	int (*target_abort)(struct spi_controller *ctlr);
-+	union {
-+		int (*slave_abort)(struct spi_controller *ctlr);
-+		int (*target_abort)(struct spi_controller *ctlr);
-+	};
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -821,6 +821,7 @@ static void ffs_user_copy_worker(struct
+ 						   work);
+ 	int ret = io_data->status;
+ 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
++	unsigned long flags;
  
- 	/*
- 	 * These hooks are for drivers that use a generic implementation
--- 
-2.43.0
-
+ 	if (io_data->read && ret > 0) {
+ 		kthread_use_mm(io_data->mm);
+@@ -833,6 +834,11 @@ static void ffs_user_copy_worker(struct
+ 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
+ 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
+ 
++	spin_lock_irqsave(&io_data->ffs->eps_lock, flags);
++	usb_ep_free_request(io_data->ep, io_data->req);
++	io_data->req = NULL;
++	spin_unlock_irqrestore(&io_data->ffs->eps_lock, flags);
++
+ 	if (io_data->read)
+ 		kfree(io_data->to_free);
+ 	ffs_free_buffer(io_data);
+@@ -846,7 +852,6 @@ static void ffs_epfile_async_io_complete
+ 	struct ffs_data *ffs = io_data->ffs;
+ 
+ 	io_data->status = req->status ? req->status : req->actual;
+-	usb_ep_free_request(_ep, req);
+ 
+ 	INIT_WORK(&io_data->work, ffs_user_copy_worker);
+ 	queue_work(ffs->io_completion_wq, &io_data->work);
 
 
 
