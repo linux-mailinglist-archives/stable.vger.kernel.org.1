@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1692B8C51A6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 358448C5014
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A84C28286C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 674661C20C2A
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F319613AA48;
-	Tue, 14 May 2024 11:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869DE139583;
+	Tue, 14 May 2024 10:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSS0oqzE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVYgzKIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0599168C7;
-	Tue, 14 May 2024 11:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419E4139579;
+	Tue, 14 May 2024 10:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684833; cv=none; b=ZCjwwHVNaw5hWP0KFHFhSsbLuCPyeiuiLL/tfynWoiYKC6lUuRO3IdQimDeq4cMNwoLst1kRl5w8wGP6smEW2xHdAAHylaIFg1Fzwu0J3TXnfi0k+nGNDGKSJ2yh2y2q3iSYSc2c2Cek8SFftAk9KNSSxPZ5VWBNljgYPSu5qeA=
+	t=1715682918; cv=none; b=EKZhFg+mILyg7IHbk0riMwaYgLi5Y9LwCkottabAuKrYJrsrCG5PpkhJ3QkRnD2yTngiTObnESfs51i1NenThi1neRJXdxZHqYuLqdMqyfv1mHI/WQecaYOogip6EJ5y8FgznpCzEYlHGDTavalHlTxwBq7/39ZLLijEgcM4hZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684833; c=relaxed/simple;
-	bh=tXUi/oSCQY3EtdBcHxC1m44ATWDcQPbG9znJiAEkcTc=;
+	s=arc-20240116; t=1715682918; c=relaxed/simple;
+	bh=83RX5/o6XLat+fJqx2y5QVNxn85cmwyVmQ4B9qMxtrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsn/1zSX78IrM8VQ+09LJ4oWaSaWiJYxCVQG+KQOoHdXvRcqpcayskxr7qeSTdXvGVstmwzni9UecR7CFo+XaYFZrevnd7MXslWb9066y7Am9L7Fk5kgvpaaSOsulzH11H5KFYmKU5lzB8bKFBR6ORz96mc5zP5X5Jdo1ELU8hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSS0oqzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D219CC2BD10;
-	Tue, 14 May 2024 11:07:11 +0000 (UTC)
+	 MIME-Version; b=MUDusojbEId++21156Kc5EmBobqSHK85c0VRzzNFVBE3zIjerJ/GgoGwlEpk41u1XuAXHgXjGyh6QNmIAr9frbtMJb2BfraY8c01Kw6G3ei7SUu39XLhVrCXDAk6Noea9W+AdjYyx7R8D8jOP1PFUEGbaOSg/p/ydIj4CCXJbmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVYgzKIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3C3C2BD10;
+	Tue, 14 May 2024 10:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684833;
-	bh=tXUi/oSCQY3EtdBcHxC1m44ATWDcQPbG9znJiAEkcTc=;
+	s=korg; t=1715682918;
+	bh=83RX5/o6XLat+fJqx2y5QVNxn85cmwyVmQ4B9qMxtrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSS0oqzEB2L5TW3zrlh45HyXcAcvdRw1zP0Gx7SswmCi9+rKQEY4ChAHr9zFrs5Tf
-	 k1foYOHpgOVFcHk0SMCrpyxBb68IDqPqCwrVwp+Nnc0Q+hRcJoIlVlN5GSl9eVPa0K
-	 dQBgkRNkj8IRjGmMaipfvLpk5wHxJqV6qr6UYpy8=
+	b=SVYgzKIt6oL9Pn0uOkH7SlLE4qqXcm/Bl0wZSEDNsnqK1J9x2lAHC/MJi5vEzB9KL
+	 3YKVX2pfCPR7I1rpeJgsUOm3DmjpBIo710l4ulVJou9yyszQIvI5hSOJx4EIxmc3OL
+	 Yu8Tcz2pbUlY1g1L/1cnWC+R2lErd8ZF9WLGhkJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Adam Goldman <adamg@pobox.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/301] ASoC: meson: axg-fifo: use FIELD helpers
-Date: Tue, 14 May 2024 12:15:36 +0200
-Message-ID: <20240514101034.697220151@linuxfoundation.org>
+Subject: [PATCH 6.8 133/336] firewire: ohci: mask bus reset interrupts between ISR and bottom half
+Date: Tue, 14 May 2024 12:15:37 +0200
+Message-ID: <20240514101043.621480968@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,210 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Adam Goldman <adamg@pobox.com>
 
-[ Upstream commit 9e6f39535c794adea6ba802a52c722d193c28124 ]
+[ Upstream commit 752e3c53de0fa3b7d817a83050b6699b8e9c6ec9 ]
 
-Use FIELD_GET() and FIELD_PREP() helpers instead of doing it manually.
+In the FireWire OHCI interrupt handler, if a bus reset interrupt has
+occurred, mask bus reset interrupts until bus_reset_work has serviced and
+cleared the interrupt.
 
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://msgid.link/r/20240227150826.573581-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: b11d26660dff ("ASoC: meson: axg-fifo: use threaded irq to check periods")
+Normally, we always leave bus reset interrupts masked. We infer the bus
+reset from the self-ID interrupt that happens shortly thereafter. A
+scenario where we unmask bus reset interrupts was introduced in 2008 in
+a007bb857e0b26f5d8b73c2ff90782d9c0972620: If
+OHCI_PARAM_DEBUG_BUSRESETS (8) is set in the debug parameter bitmask, we
+will unmask bus reset interrupts so we can log them.
+
+irq_handler logs the bus reset interrupt. However, we can't clear the bus
+reset event flag in irq_handler, because we won't service the event until
+later. irq_handler exits with the event flag still set. If the
+corresponding interrupt is still unmasked, the first bus reset will
+usually freeze the system due to irq_handler being called again each
+time it exits. This freeze can be reproduced by loading firewire_ohci
+with "modprobe firewire_ohci debug=-1" (to enable all debugging output).
+Apparently there are also some cases where bus_reset_work will get called
+soon enough to clear the event, and operation will continue normally.
+
+This freeze was first reported a few months after a007bb85 was committed,
+but until now it was never fixed. The debug level could safely be set
+to -1 through sysfs after the module was loaded, but this would be
+ineffectual in logging bus reset interrupts since they were only
+unmasked during initialization.
+
+irq_handler will now leave the event flag set but mask bus reset
+interrupts, so irq_handler won't be called again and there will be no
+freeze. If OHCI_PARAM_DEBUG_BUSRESETS is enabled, bus_reset_work will
+unmask the interrupt after servicing the event, so future interrupts
+will be caught as desired.
+
+As a side effect to this change, OHCI_PARAM_DEBUG_BUSRESETS can now be
+enabled through sysfs in addition to during initial module loading.
+However, when enabled through sysfs, logging of bus reset interrupts will
+be effective only starting with the second bus reset, after
+bus_reset_work has executed.
+
+Signed-off-by: Adam Goldman <adamg@pobox.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-fifo.c  | 25 +++++++++++++------------
- sound/soc/meson/axg-fifo.h  | 12 +++++-------
- sound/soc/meson/axg-frddr.c |  5 +++--
- sound/soc/meson/axg-toddr.c | 22 ++++++++++------------
- 4 files changed, 31 insertions(+), 33 deletions(-)
+ drivers/firewire/ohci.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/axg-fifo.c b/sound/soc/meson/axg-fifo.c
-index bccfb770b3391..bde7598750064 100644
---- a/sound/soc/meson/axg-fifo.c
-+++ b/sound/soc/meson/axg-fifo.c
-@@ -3,6 +3,7 @@
- // Copyright (c) 2018 BayLibre, SAS.
- // Author: Jerome Brunet <jbrunet@baylibre.com>
+diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
+index 7bc71f4be64a0..38d19410a2be6 100644
+--- a/drivers/firewire/ohci.c
++++ b/drivers/firewire/ohci.c
+@@ -2060,6 +2060,8 @@ static void bus_reset_work(struct work_struct *work)
  
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/of_irq.h>
- #include <linux/of_platform.h>
-@@ -145,8 +146,8 @@ int axg_fifo_pcm_hw_params(struct snd_soc_component *component,
- 	/* Enable irq if necessary  */
- 	irq_en = runtime->no_period_wakeup ? 0 : FIFO_INT_COUNT_REPEAT;
- 	regmap_update_bits(fifo->map, FIFO_CTRL0,
--			   CTRL0_INT_EN(FIFO_INT_COUNT_REPEAT),
--			   CTRL0_INT_EN(irq_en));
-+			   CTRL0_INT_EN,
-+			   FIELD_PREP(CTRL0_INT_EN, irq_en));
+ 	ohci->generation = generation;
+ 	reg_write(ohci, OHCI1394_IntEventClear, OHCI1394_busReset);
++	if (param_debug & OHCI_PARAM_DEBUG_BUSRESETS)
++		reg_write(ohci, OHCI1394_IntMaskSet, OHCI1394_busReset);
  
- 	return 0;
- }
-@@ -176,9 +177,9 @@ int axg_fifo_pcm_hw_free(struct snd_soc_component *component,
- {
- 	struct axg_fifo *fifo = axg_fifo_data(ss);
+ 	if (ohci->quirks & QUIRK_RESET_PACKET)
+ 		ohci->request_generation = generation;
+@@ -2125,12 +2127,14 @@ static irqreturn_t irq_handler(int irq, void *data)
+ 		return IRQ_NONE;
  
--	/* Disable the block count irq */
-+	/* Disable irqs */
- 	regmap_update_bits(fifo->map, FIFO_CTRL0,
--			   CTRL0_INT_EN(FIFO_INT_COUNT_REPEAT), 0);
-+			   CTRL0_INT_EN, 0);
+ 	/*
+-	 * busReset and postedWriteErr must not be cleared yet
++	 * busReset and postedWriteErr events must not be cleared yet
+ 	 * (OHCI 1.1 clauses 7.2.3.2 and 13.2.8.1)
+ 	 */
+ 	reg_write(ohci, OHCI1394_IntEventClear,
+ 		  event & ~(OHCI1394_busReset | OHCI1394_postedWriteErr));
+ 	log_irqs(ohci, event);
++	if (event & OHCI1394_busReset)
++		reg_write(ohci, OHCI1394_IntMaskClear, OHCI1394_busReset);
  
- 	return 0;
- }
-@@ -187,13 +188,13 @@ EXPORT_SYMBOL_GPL(axg_fifo_pcm_hw_free);
- static void axg_fifo_ack_irq(struct axg_fifo *fifo, u8 mask)
- {
- 	regmap_update_bits(fifo->map, FIFO_CTRL1,
--			   CTRL1_INT_CLR(FIFO_INT_MASK),
--			   CTRL1_INT_CLR(mask));
-+			   CTRL1_INT_CLR,
-+			   FIELD_PREP(CTRL1_INT_CLR, mask));
- 
- 	/* Clear must also be cleared */
- 	regmap_update_bits(fifo->map, FIFO_CTRL1,
--			   CTRL1_INT_CLR(FIFO_INT_MASK),
--			   0);
-+			   CTRL1_INT_CLR,
-+			   FIELD_PREP(CTRL1_INT_CLR, 0));
- }
- 
- static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
-@@ -204,7 +205,7 @@ static irqreturn_t axg_fifo_pcm_irq_block(int irq, void *dev_id)
- 
- 	regmap_read(fifo->map, FIFO_STATUS1, &status);
- 
--	status = STATUS1_INT_STS(status) & FIFO_INT_MASK;
-+	status = FIELD_GET(STATUS1_INT_STS, status);
- 	if (status & FIFO_INT_COUNT_REPEAT)
- 		snd_pcm_period_elapsed(ss);
- 	else
-@@ -254,15 +255,15 @@ int axg_fifo_pcm_open(struct snd_soc_component *component,
- 
- 	/* Setup status2 so it reports the memory pointer */
- 	regmap_update_bits(fifo->map, FIFO_CTRL1,
--			   CTRL1_STATUS2_SEL_MASK,
--			   CTRL1_STATUS2_SEL(STATUS2_SEL_DDR_READ));
-+			   CTRL1_STATUS2_SEL,
-+			   FIELD_PREP(CTRL1_STATUS2_SEL, STATUS2_SEL_DDR_READ));
- 
- 	/* Make sure the dma is initially disabled */
- 	__dma_enable(fifo, false);
- 
- 	/* Disable irqs until params are ready */
- 	regmap_update_bits(fifo->map, FIFO_CTRL0,
--			   CTRL0_INT_EN(FIFO_INT_MASK), 0);
-+			   CTRL0_INT_EN, 0);
- 
- 	/* Clear any pending interrupt */
- 	axg_fifo_ack_irq(fifo, FIFO_INT_MASK);
-diff --git a/sound/soc/meson/axg-fifo.h b/sound/soc/meson/axg-fifo.h
-index b63acd723c870..5b7d32c37991b 100644
---- a/sound/soc/meson/axg-fifo.h
-+++ b/sound/soc/meson/axg-fifo.h
-@@ -42,21 +42,19 @@ struct snd_soc_pcm_runtime;
- 
- #define FIFO_CTRL0			0x00
- #define  CTRL0_DMA_EN			BIT(31)
--#define  CTRL0_INT_EN(x)		((x) << 16)
-+#define  CTRL0_INT_EN			GENMASK(23, 16)
- #define  CTRL0_SEL_MASK			GENMASK(2, 0)
- #define  CTRL0_SEL_SHIFT		0
- #define FIFO_CTRL1			0x04
--#define  CTRL1_INT_CLR(x)		((x) << 0)
--#define  CTRL1_STATUS2_SEL_MASK		GENMASK(11, 8)
--#define  CTRL1_STATUS2_SEL(x)		((x) << 8)
-+#define  CTRL1_INT_CLR			GENMASK(7, 0)
-+#define  CTRL1_STATUS2_SEL		GENMASK(11, 8)
- #define   STATUS2_SEL_DDR_READ		0
--#define  CTRL1_FRDDR_DEPTH_MASK		GENMASK(31, 24)
--#define  CTRL1_FRDDR_DEPTH(x)		((x) << 24)
-+#define  CTRL1_FRDDR_DEPTH		GENMASK(31, 24)
- #define FIFO_START_ADDR			0x08
- #define FIFO_FINISH_ADDR		0x0c
- #define FIFO_INT_ADDR			0x10
- #define FIFO_STATUS1			0x14
--#define  STATUS1_INT_STS(x)		((x) << 0)
-+#define  STATUS1_INT_STS		GENMASK(7, 0)
- #define FIFO_STATUS2			0x18
- #define FIFO_INIT_ADDR			0x24
- #define FIFO_CTRL2			0x28
-diff --git a/sound/soc/meson/axg-frddr.c b/sound/soc/meson/axg-frddr.c
-index 8c166a5f338ce..747a900c0bb22 100644
---- a/sound/soc/meson/axg-frddr.c
-+++ b/sound/soc/meson/axg-frddr.c
-@@ -7,6 +7,7 @@
-  * This driver implements the frontend playback DAI of AXG and G12A based SoCs
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/regmap.h>
- #include <linux/module.h>
-@@ -59,8 +60,8 @@ static int axg_frddr_dai_hw_params(struct snd_pcm_substream *substream,
- 	/* Trim the FIFO depth if the period is small to improve latency */
- 	depth = min(period, fifo->depth);
- 	val = (depth / AXG_FIFO_BURST) - 1;
--	regmap_update_bits(fifo->map, FIFO_CTRL1, CTRL1_FRDDR_DEPTH_MASK,
--			   CTRL1_FRDDR_DEPTH(val));
-+	regmap_update_bits(fifo->map, FIFO_CTRL1, CTRL1_FRDDR_DEPTH,
-+			   FIELD_PREP(CTRL1_FRDDR_DEPTH, val));
- 
- 	return 0;
- }
-diff --git a/sound/soc/meson/axg-toddr.c b/sound/soc/meson/axg-toddr.c
-index 1a0be177b8fe7..972ad99f31be2 100644
---- a/sound/soc/meson/axg-toddr.c
-+++ b/sound/soc/meson/axg-toddr.c
-@@ -5,6 +5,7 @@
- 
- /* This driver implements the frontend capture DAI of AXG based SoCs */
- 
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/regmap.h>
- #include <linux/module.h>
-@@ -19,12 +20,9 @@
- #define CTRL0_TODDR_EXT_SIGNED		BIT(29)
- #define CTRL0_TODDR_PP_MODE		BIT(28)
- #define CTRL0_TODDR_SYNC_CH		BIT(27)
--#define CTRL0_TODDR_TYPE_MASK		GENMASK(15, 13)
--#define CTRL0_TODDR_TYPE(x)		((x) << 13)
--#define CTRL0_TODDR_MSB_POS_MASK	GENMASK(12, 8)
--#define CTRL0_TODDR_MSB_POS(x)		((x) << 8)
--#define CTRL0_TODDR_LSB_POS_MASK	GENMASK(7, 3)
--#define CTRL0_TODDR_LSB_POS(x)		((x) << 3)
-+#define CTRL0_TODDR_TYPE		GENMASK(15, 13)
-+#define CTRL0_TODDR_MSB_POS		GENMASK(12, 8)
-+#define CTRL0_TODDR_LSB_POS		GENMASK(7, 3)
- #define CTRL1_TODDR_FORCE_FINISH	BIT(25)
- #define CTRL1_SEL_SHIFT			28
- 
-@@ -76,12 +74,12 @@ static int axg_toddr_dai_hw_params(struct snd_pcm_substream *substream,
- 	width = params_width(params);
- 
- 	regmap_update_bits(fifo->map, FIFO_CTRL0,
--			   CTRL0_TODDR_TYPE_MASK |
--			   CTRL0_TODDR_MSB_POS_MASK |
--			   CTRL0_TODDR_LSB_POS_MASK,
--			   CTRL0_TODDR_TYPE(type) |
--			   CTRL0_TODDR_MSB_POS(TODDR_MSB_POS) |
--			   CTRL0_TODDR_LSB_POS(TODDR_MSB_POS - (width - 1)));
-+			   CTRL0_TODDR_TYPE |
-+			   CTRL0_TODDR_MSB_POS |
-+			   CTRL0_TODDR_LSB_POS,
-+			   FIELD_PREP(CTRL0_TODDR_TYPE, type) |
-+			   FIELD_PREP(CTRL0_TODDR_MSB_POS, TODDR_MSB_POS) |
-+			   FIELD_PREP(CTRL0_TODDR_LSB_POS, TODDR_MSB_POS - (width - 1)));
- 
- 	return 0;
- }
+ 	if (event & OHCI1394_selfIDComplete)
+ 		queue_work(selfid_workqueue, &ohci->bus_reset_work);
 -- 
 2.43.0
 
