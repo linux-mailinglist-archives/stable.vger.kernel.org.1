@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-45026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4518B8C5566
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A066C8C545C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7700D1C21179
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4459E1F233C5
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2DB26AC5;
-	Tue, 14 May 2024 11:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E45129D06;
+	Tue, 14 May 2024 11:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moMe4wL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0J0119xr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3EFF9D4;
-	Tue, 14 May 2024 11:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11562D60A;
+	Tue, 14 May 2024 11:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687867; cv=none; b=itDA8h1VvC2ieGWghas9rEKO0JjFo7reGSi8Ks/xnYem6VCSqMD1/N4gJVJ9eoAkdNdWxpnbAQqLXcsCxaLj6hlWBq1VcBlxMS6mmCBysf87bHn/bMhkUczBcMn4VBBleM/7DcPyi+lwKB+RduWkdabzD/1N42/SjA7JqrooJPk=
+	t=1715687144; cv=none; b=F1KATmeFdE2iMofOknE4HSKDT6rKM/mcmJ03NbeJeskLE4vPzKomHiRvPLqkTi4j2ONJJuQww3/TXGE7ny4B47cUXHfJqxh1cORemBWnio6sFF0x3vDdzdt5mHV1V3zuGpnQ3RkbnVMksCf4IDRyAEJ7j+65sz6a0640QncnRis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687867; c=relaxed/simple;
-	bh=I/UFu5bG6wW616Xkvu3q/McnHOx8p4znNIJVWczuwKE=;
+	s=arc-20240116; t=1715687144; c=relaxed/simple;
+	bh=6WTL/wXB8wSOz7pXa9SwQ1PhrSR4/McqxR6UVNYYK+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Og8AJTJCwIG+OQGBTKq5O73BUAMY4KxP2GckbTDl8Gh23VBLrxFst4GVJuONbiov/aAUhhqx50z9qEXJyf+AUAlV/HEDVojbEFhlJ3hgA03cH9aA0TRIFTBTFGrN16JmHLuglH/rVlYOPC4jXk0S10Oe3yfVf2kiWOdep3e2O9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moMe4wL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263B8C2BD10;
-	Tue, 14 May 2024 11:57:46 +0000 (UTC)
+	 MIME-Version; b=k1uWbevVejXHsp69gTcWSBAIwyOXf1ytS89U2c86WB5gIBClnd9dSs9QRVMBhVJppCXkH8gZIXBpVmOcEVDvMjDm5JLlijfNpohiSiXXTWyyotB8rbNfWMCdWFP+Hbyl6r3wLldKqZElRu6XeNXQh9EMSbCRGxVqsmHr5G8chMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0J0119xr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A7BC32786;
+	Tue, 14 May 2024 11:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687867;
-	bh=I/UFu5bG6wW616Xkvu3q/McnHOx8p4znNIJVWczuwKE=;
+	s=korg; t=1715687143;
+	bh=6WTL/wXB8wSOz7pXa9SwQ1PhrSR4/McqxR6UVNYYK+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moMe4wL8vJLgmjueHP542RGlnzyAZ5LPZrDHDUqaLAJgoE+1plSNqesfOixC1k2vS
-	 YajsAU9BxgTWp3pPjGgqdekFVPejJLUYI4ZblOQvgBXWNghDa2f7Q1jvpeYgBJgkNw
-	 9S6kPZvH8cLgRtiaQ1PJBBmzf3Cq7UHGTXx0fG08=
+	b=0J0119xrzO1Otxe77b3zeexBRK3CBGJdmisNnmCqFPKdWwdbuZN39sm85L7AU1wOd
+	 swTZryU+YOgNj+7PecA05c+AH06dKcX0c2Ip+37kvfmnuz/WQXZZfPSJcu/ZCwjhc2
+	 0c52zhIfPTF6BuqA+DwYUvGQCBIkSrIW7eqdqdnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Simon Ser <contact@emersion.fr>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/168] drm/connector: Add \n to message about demoting connector force-probes
-Date: Tue, 14 May 2024 12:20:30 +0200
-Message-ID: <20240514101011.665874600@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.4 80/84] regulator: core: fix debugfs creation regression
+Date: Tue, 14 May 2024 12:20:31 +0200
+Message-ID: <20240514100954.692503109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
+References: <20240514100951.686412426@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 6897204ea3df808d342c8e4613135728bc538bcd ]
+commit 2a4b49bb58123bad6ec0e07b02845f74c23d5e04 upstream.
 
-The debug print clearly lacks a \n at the end. Add it.
+regulator_get() may sometimes be called more than once for the same
+consumer device, something which before commit dbe954d8f163 ("regulator:
+core: Avoid debugfs: Directory ...  already present! error") resulted in
+errors being logged.
 
-Fixes: 8f86c82aba8b ("drm/connector: demote connector force-probes for non-master clients")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240502153234.1.I2052f01c8d209d9ae9c300b87c6e4f60bd3cc99e@changeid
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A couple of recent commits broke the handling of such cases so that
+attributes are now erroneously created in the debugfs root directory the
+second time a regulator is requested and the log is filled with errors
+like:
+
+	debugfs: File 'uA_load' in directory '/' already present!
+	debugfs: File 'min_uV' in directory '/' already present!
+	debugfs: File 'max_uV' in directory '/' already present!
+	debugfs: File 'constraint_flags' in directory '/' already present!
+
+on any further calls.
+
+Fixes: 2715bb11cfff ("regulator: core: Fix more error checking for debugfs_create_dir()")
+Fixes: 08880713ceec ("regulator: core: Streamline debugfs operations")
+Cc: stable@vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240509133304.8883-1-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_connector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/core.c |   27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index cfe163103cfd7..1140292820bb1 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -2460,7 +2460,7 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
- 						     dev->mode_config.max_width,
- 						     dev->mode_config.max_height);
- 		else
--			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe",
-+			drm_dbg_kms(dev, "User-space requested a forced probe on [CONNECTOR:%d:%s] but is not the DRM master, demoting to read-only probe\n",
- 				    connector->base.id, connector->name);
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1708,19 +1708,24 @@ static struct regulator *create_regulato
+ 		}
  	}
  
--- 
-2.43.0
-
+-	if (err != -EEXIST)
++	if (err != -EEXIST) {
+ 		regulator->debugfs = debugfs_create_dir(supply_name, rdev->debugfs);
+-	if (IS_ERR(regulator->debugfs))
+-		rdev_dbg(rdev, "Failed to create debugfs directory\n");
++		if (IS_ERR(regulator->debugfs)) {
++			rdev_dbg(rdev, "Failed to create debugfs directory\n");
++			regulator->debugfs = NULL;
++		}
++	}
+ 
+-	debugfs_create_u32("uA_load", 0444, regulator->debugfs,
+-			   &regulator->uA_load);
+-	debugfs_create_u32("min_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].min_uV);
+-	debugfs_create_u32("max_uV", 0444, regulator->debugfs,
+-			   &regulator->voltage[PM_SUSPEND_ON].max_uV);
+-	debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
+-			    regulator, &constraint_flags_fops);
++	if (regulator->debugfs) {
++		debugfs_create_u32("uA_load", 0444, regulator->debugfs,
++				   &regulator->uA_load);
++		debugfs_create_u32("min_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].min_uV);
++		debugfs_create_u32("max_uV", 0444, regulator->debugfs,
++				   &regulator->voltage[PM_SUSPEND_ON].max_uV);
++		debugfs_create_file("constraint_flags", 0444, regulator->debugfs,
++				    regulator, &constraint_flags_fops);
++	}
+ 
+ 	/*
+ 	 * Check now if the regulator is an always on regulator - if
 
 
 
