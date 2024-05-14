@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924E58C53A9
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:47:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAEB8C5286
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E26FB28804A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 684A5B226D7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8755212DD8F;
-	Tue, 14 May 2024 11:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B62A13E04B;
+	Tue, 14 May 2024 11:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNX+HkLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdTuil8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4640512D77B;
-	Tue, 14 May 2024 11:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B2313E022;
+	Tue, 14 May 2024 11:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686665; cv=none; b=ONL6ssju2woXVzOC0Fyx7ur9eAlqu2JUjTCCEsBz3h48l7wYIWHDFzVC0qaz5tNLw12WRgp4gnm28u8yiq0T1nD+hujvrHxLMG4Eifzic1N4tvqWrcHPP5VBYn2x061ITUFfnTtrQqgeYWMAlVb4mnKR7NfjkquPfqrUaak17vw=
+	t=1715685921; cv=none; b=r6L80xbLaAdeag+laFEBsKDwC2RtZdVeXWMo7yu9qhdxE5YNUP2uvIzkJYiUVYwFLKIJ1U4EIrKWAyMPQyqDQiWmorWpJ+LKhTbnJHTK0qE4zIFRK/5V6z5nFOm8GpWZxi9VShr0ClOtvg/CH0BWZEboNruzReuGNS74g1K/qiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686665; c=relaxed/simple;
-	bh=iCSPZZI7HOA9Srf5GiHCkgRag9VyjcJ/Fel2OdlJYAo=;
+	s=arc-20240116; t=1715685921; c=relaxed/simple;
+	bh=SuEkyu6ImIh3EZeVfNXKTp+eNV+zGQkhMTOcots/pAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZ39MXfO3sGNQaaKlOfCBnbIy2jaocM9YZlEoyKIhTnIDBSabIg00nU3FE1IrRpavb6eh5GeVq3X8H4Kt+0xJ90JmaXlHGRmMTVyPUERU1gWZ1Vy97cssf0pawFSp4CEypOKnkU7gvWDMWyzYjs1nY0nNyEBTN2gWFgYdQvbWQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNX+HkLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AFDC2BD10;
-	Tue, 14 May 2024 11:37:44 +0000 (UTC)
+	 MIME-Version; b=f3Z5CzCrLJ2CK07/CXYsfsiMtwJ0Wz7Dem4GKCl5JpPH0FXVtyjsUOM+9zWq2lmAIIsinEZAllEPALivBYQ9YVuDwYArBwV/5qENlwVxyD1kEcq5RaTkkx7S/wkNFqZBAWwEZqosUybWrQems9MeiRTBH96PJPZc0kkAfmu8H2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdTuil8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E655C2BD10;
+	Tue, 14 May 2024 11:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686665;
-	bh=iCSPZZI7HOA9Srf5GiHCkgRag9VyjcJ/Fel2OdlJYAo=;
+	s=korg; t=1715685920;
+	bh=SuEkyu6ImIh3EZeVfNXKTp+eNV+zGQkhMTOcots/pAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNX+HkLeXky38PEaGYZPOESWdp7tCASq1vrBLyuTF58rl4OTTJPg6NCGW8EBmFpvM
-	 F6RklqnDTOVj+7NAqgACyzTi6rAviPn1XsU2r6d7DMMFQOUIxVGutUeGxz/v8GxkaS
-	 mMA6eqcluuUlHS8zoaQfDfmlrMQabZDfXqh+qm9Q=
+	b=CdTuil8K3RKUqUfDKjr1fok3bvD23y988IkWC+cc3wkGb/7QczqbIBP2rbSDQphX0
+	 /5udvO5xDB71XhS9irVZKjIBjPvi8dxoHD7njGATR1JJRN5mBtrqqi4pyNzHzmatBC
+	 qsEgJ9R4kL9F1loQlIwgXwoY5zjCBsK9Lf4h7bEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thanassis Avgerinos <thanassis.avgerinos@gmail.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 6.1 185/236] firewire: nosy: ensure user_length is taken into account when fetching packet contents
-Date: Tue, 14 May 2024 12:19:07 +0200
-Message-ID: <20240514101027.388173215@linuxfoundation.org>
+	Volodymyr Babchuk <volodymyr_babchuk@epam.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 277/301] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin configuration
+Date: Tue, 14 May 2024 12:19:08 +0200
+Message-ID: <20240514101042.724749149@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
+From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
 
-commit 38762a0763c10c24a4915feee722d7aa6e73eb98 upstream.
+commit 819fe8c96a5172dfd960e5945e8f00f8fed32953 upstream.
 
-Ensure that packet_buffer_get respects the user_length provided. If
-the length of the head packet exceeds the user_length, packet_buffer_get
-will now return 0 to signify to the user that no data were read
-and a larger buffer size is required. Helps prevent user space overflows.
+There are two issues with SDHC2 configuration for SA8155P-ADP,
+which prevent use of SDHC2 and causes issues with ethernet:
 
-Signed-off-by: Thanassis Avgerinos <thanassis.avgerinos@gmail.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+- Card Detect pin for SHDC2 on SA8155P-ADP is connected to gpio4 of
+  PMM8155AU_1, not to SoC itself. SoC's gpio4 is used for DWMAC
+  TX. If sdhc driver probes after dwmac driver, it reconfigures
+  gpio4 and this breaks Ethernet MAC.
+
+- pinctrl configuration mentions gpio96 as CD pin. It seems it was
+  copied from some SM8150 example, because as mentioned above,
+  correct CD pin is gpio4 on PMM8155AU_1.
+
+This patch fixes both mentioned issues by providing correct pin handle
+and pinctrl configuration.
+
+Fixes: 0deb2624e2d0 ("arm64: dts: qcom: sa8155p-adp: Add support for uSD card")
+Cc: stable@vger.kernel.org
+Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+Link: https://lore.kernel.org/r/20240412190310.1647893-1-volodymyr_babchuk@epam.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/nosy.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8155p-adp.dts |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -148,10 +148,12 @@ packet_buffer_get(struct client *client,
- 	if (atomic_read(&buffer->size) == 0)
- 		return -ENODEV;
+--- a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
++++ b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
+@@ -367,6 +367,16 @@
+ 	};
+ };
  
--	/* FIXME: Check length <= user_length. */
-+	length = buffer->head->length;
++&pmm8155au_1_gpios {
++	pmm8155au_1_sdc2_cd: sdc2-cd-default-state {
++		pins = "gpio4";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		power-source = <0>;
++	};
++};
 +
-+	if (length > user_length)
-+		return 0;
+ &qupv3_id_1 {
+ 	status = "okay";
+ };
+@@ -384,10 +394,10 @@
+ &sdhc_2 {
+ 	status = "okay";
  
- 	end = buffer->data + buffer->capacity;
--	length = buffer->head->length;
+-	cd-gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
++	cd-gpios = <&pmm8155au_1_gpios 4 GPIO_ACTIVE_LOW>;
+ 	pinctrl-names = "default", "sleep";
+-	pinctrl-0 = <&sdc2_on>;
+-	pinctrl-1 = <&sdc2_off>;
++	pinctrl-0 = <&sdc2_on &pmm8155au_1_sdc2_cd>;
++	pinctrl-1 = <&sdc2_off &pmm8155au_1_sdc2_cd>;
+ 	vqmmc-supply = <&vreg_l13c_2p96>; /* IO line power */
+ 	vmmc-supply = <&vreg_l17a_2p96>;  /* Card power line */
+ 	bus-width = <4>;
+@@ -505,13 +515,6 @@
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength = <16>;	/* 16 MA */
+ 		};
+-
+-		sd-cd-pins {
+-			pins = "gpio96";
+-			function = "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength = <2>;	/* 2 MA */
+-		};
+ 	};
  
- 	if (&buffer->head->data[length] < end) {
- 		if (copy_to_user(data, buffer->head->data, length))
+ 	sdc2_off: sdc2-off-state {
+@@ -532,13 +535,6 @@
+ 			bias-pull-up;		/* pull up */
+ 			drive-strength = <2>;	/* 2 MA */
+ 		};
+-
+-		sd-cd-pins {
+-			pins = "gpio96";
+-			function = "gpio";
+-			bias-pull-up;		/* pull up */
+-			drive-strength = <2>;	/* 2 MA */
+-		};
+ 	};
+ 
+ 	usb2phy_ac_en1_default: usb2phy-ac-en1-default-state {
 
 
 
