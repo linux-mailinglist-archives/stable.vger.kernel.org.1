@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 274FB8C5262
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422968C5371
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF44F1F228E6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D5A31C22B76
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5A112F5AD;
-	Tue, 14 May 2024 11:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FB6127B69;
+	Tue, 14 May 2024 11:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdqHjWYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doKVufjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C073E6311D;
-	Tue, 14 May 2024 11:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF3F3C467;
+	Tue, 14 May 2024 11:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685852; cv=none; b=FTef3ZkAnFXa9Y6yznr7fS9VCZDWfNxgRKyx919rh7JqQjJi5e44sWsCMVfCVXXHIbrGXJlADAsmJmf6I0kKdDhXY8FWgelnBaFAz+oJdy4t3b9b7Nt4U0nRS0royXxRuT4fh9EvN+SEvS/Jle0qiA83SbK++XeEHCAKI9O3feE=
+	t=1715686526; cv=none; b=buJOv9S88Q8YSpVUB4XVFKUrGvRcHM9lqHYnI+PtzpradsPjjfQd26avcLQnMZg+WWbD7Fe8UTARcLqYohusolPsBCbxAOG/HCO1nQEz0gWgBeAvTaxEUJBvmwVzmwsQZJJbNMl6fK5H158Cq5wGBcA9NOoYmurnJjSban/bMqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685852; c=relaxed/simple;
-	bh=ra9qOuhCmp7HBv/8DKi8Uz96o5JIDIb8QfKjkkLSzA0=;
+	s=arc-20240116; t=1715686526; c=relaxed/simple;
+	bh=G0LJjG2S5LKK8u73f0xJBJPpX4J4dCHjKHQs2YB8hDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0h4pZ0Xsgk5nMJQ45F83+OFNPFwRqNASWJ29JJwEL2pLGpDovbkKqz9lGYfK+onRVilKd0LBH3hqlZT49JrPuaH2H8JVG+VdmynqgNFsGTYSqzVByYNjFLNVnMJZ5ynAPzWcDRAG2nhFMcdZuspEjFPHzYJxHgClXWPJrEzyd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdqHjWYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA6FC2BD10;
-	Tue, 14 May 2024 11:24:11 +0000 (UTC)
+	 MIME-Version; b=F0jEW1YAPBvmIpw7mW/YVS5VXFNGDrgBszvBsA4PfdQN2Lg65UkF53ASnvPgzaLms+RScpU/Zz8OtZ+sm83FNsyCjexG5myvrlhbYOGFclSZW5c9wM++C1EskDaY6wF9vFes8nEBRdxVqG3pwphtyx0NIigLKXvQq0KKm+YbqCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doKVufjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145E4C2BD10;
+	Tue, 14 May 2024 11:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685852;
-	bh=ra9qOuhCmp7HBv/8DKi8Uz96o5JIDIb8QfKjkkLSzA0=;
+	s=korg; t=1715686526;
+	bh=G0LJjG2S5LKK8u73f0xJBJPpX4J4dCHjKHQs2YB8hDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wdqHjWYDAM1XHMioPfZVlGg96MF6MS4uyx2fBf3SpZx4HxIhWXqafC81elM8+lpOE
-	 mXRPaymepInmp8ZWNdkRi0ghXeqKTYPLxr20+GtVKKcuNWI9Q0Qg09AAYAjoi2ywpH
-	 V+Xi44FleJ2aflc/VXSC7ROMcymx4PHebzkKmV28=
+	b=doKVufjMYE5det3Ha0nFRTUz0OIRvNmnFdgZ+iT6Kc4g/5B/1APvGe4yaqlD9VwTb
+	 jz2Lwd2rZV9U75lFWE3q1K0UpvnTzvwUclq1EsGr2t/PLLrmIQWIPPHiNmtOh3hP5j
+	 hirrmnLi0DFwt0XymB2JykBgY+nANaMvPJJ1XSX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sameer Pujar <spujar@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 259/301] ASoC: tegra: Fix DSPK 16-bit playback
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 168/236] net: hns3: direct return when receive a unknown mailbox message
 Date: Tue, 14 May 2024 12:18:50 +0200
-Message-ID: <20240514101042.035265138@linuxfoundation.org>
+Message-ID: <20240514101026.738022481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sameer Pujar <spujar@nvidia.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit 2e93a29b48a017c777d4fcbfcc51aba4e6a90d38 upstream.
+[ Upstream commit 669554c512d2107e2f21616f38e050d40655101f ]
 
-DSPK configuration is wrong for 16-bit playback and this happens because
-the client config is always fixed at 24-bit in hw_params(). Fix this by
-updating the client config to 16-bit for the respective playback.
+Currently, the driver didn't return when receive a unknown
+mailbox message, and continue checking whether need to
+generate a response. It's unnecessary and may be incorrect.
 
-Fixes: 327ef6470266 ("ASoC: tegra: Add Tegra186 based DSPK driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sameer Pujar <spujar@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://msgid.link/r/20240405104306.551036-1-spujar@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bb5790b71bad ("net: hns3: refactor mailbox response scheme between PF and VF")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/tegra/tegra186_dspk.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/soc/tegra/tegra186_dspk.c
-+++ b/sound/soc/tegra/tegra186_dspk.c
-@@ -1,8 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: Copyright (c) 2020-2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
- //
- // tegra186_dspk.c - Tegra186 DSPK driver
--//
--// Copyright (c) 2020 NVIDIA CORPORATION. All rights reserved.
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+index 04ff9bf121853..877feee53804f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+@@ -1077,12 +1077,13 @@ static void hclge_mbx_request_handling(struct hclge_mbx_ops_param *param)
  
- #include <linux/clk.h>
- #include <linux/device.h>
-@@ -241,14 +240,14 @@ static int tegra186_dspk_hw_params(struc
- 		return -EINVAL;
- 	}
+ 	hdev = param->vport->back;
+ 	cmd_func = hclge_mbx_ops_list[param->req->msg.code];
+-	if (cmd_func)
+-		ret = cmd_func(param);
+-	else
++	if (!cmd_func) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"un-supported mailbox message, code = %u\n",
+ 			param->req->msg.code);
++		return;
++	}
++	ret = cmd_func(param);
  
--	cif_conf.client_bits = TEGRA_ACIF_BITS_24;
--
- 	switch (params_format(params)) {
- 	case SNDRV_PCM_FORMAT_S16_LE:
- 		cif_conf.audio_bits = TEGRA_ACIF_BITS_16;
-+		cif_conf.client_bits = TEGRA_ACIF_BITS_16;
- 		break;
- 	case SNDRV_PCM_FORMAT_S32_LE:
- 		cif_conf.audio_bits = TEGRA_ACIF_BITS_32;
-+		cif_conf.client_bits = TEGRA_ACIF_BITS_24;
- 		break;
- 	default:
- 		dev_err(dev, "unsupported format!\n");
+ 	/* PF driver should not reply IMP */
+ 	if (hnae3_get_bit(param->req->mbx_need_resp, HCLGE_MBX_NEED_RESP_B) &&
+-- 
+2.43.0
+
 
 
 
