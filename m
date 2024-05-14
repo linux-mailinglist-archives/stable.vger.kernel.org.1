@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-44568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587EE8C5376
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2838C5270
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3291C22C19
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 086201C21964
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761FC4122C;
-	Tue, 14 May 2024 11:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD79713D2B8;
+	Tue, 14 May 2024 11:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3ZtdVZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEwEpmCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3503B2B9B3;
-	Tue, 14 May 2024 11:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC26311D;
+	Tue, 14 May 2024 11:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686538; cv=none; b=dKPxru8AlLzYA9zFlWOOz+sS+CEip6nTeWNCmDckSSa3HzyvCUr0/P+g0iHHeiSK3VAOMQkI24gE40gnbaF/kMKGtQ+OFKoVG5lW+HJou6fRcECxRdai/whH2CrSwI+V3vp6/D3u5GNMeGZd3FifHotN0ttEUAnbvkHgdsbiuLg=
+	t=1715685895; cv=none; b=PNOdCGJHuBV15V2RBwH2ugJUuJZHoL31qKyXVi0iGWGocbM308xP0DtIBo9sJ4nWfPmUyH6/hPkCT10GX6/544S12jYRb9hqy0r7GAkfbDuVOtqyh1YohZJeJ66dQx269TCuCVKCrmrVMxJQ32lpRczhJl7YostTjIU63rfJH6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686538; c=relaxed/simple;
-	bh=deVYBv2dFy3+MQ/XvgLbm0LTgipo2FW/REc1fjo85nk=;
+	s=arc-20240116; t=1715685895; c=relaxed/simple;
+	bh=UM04sP3xl+C1IpKiG7CAajNMuHBbqUFoXoINYRQP/ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJ3ntwSI3lejzW5sYHU9+7NU6pdmfAX/rW/aPc77VPMN+HxXYGYympXUlavVHq0KQA+/dA53oYmWiNPLNJ7BepMUqZmyiDTZ47WUDWAFS8qUx41/2f9qcnl4uB2Wz8XRDMBv21jbr8cArlTD05a/+ENImP3722Gt4bcsRP27tBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3ZtdVZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10F1C2BD10;
-	Tue, 14 May 2024 11:35:37 +0000 (UTC)
+	 MIME-Version; b=bGhBgmjuUlEjOA4mXX6xrFxDgs2DJjlDjKTUESP+sLZXYsJ8VmL2aABD7SJcJxkljfpfqn2zR7bhkYEnfI5XRuJnIlTCj5FLqAWIIbOxeVYbjGdmC/jMfhrkJ4KQZwyOGBbU+kD2R6VnPINs+aLiK04QQ5jevGVLX76stA7dCrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEwEpmCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB97C2BD10;
+	Tue, 14 May 2024 11:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686538;
-	bh=deVYBv2dFy3+MQ/XvgLbm0LTgipo2FW/REc1fjo85nk=;
+	s=korg; t=1715685895;
+	bh=UM04sP3xl+C1IpKiG7CAajNMuHBbqUFoXoINYRQP/ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3ZtdVZve/sdkekfbV8LqJ3QsyOPAY0Pj2zfTB8ZpbPnVi+vqG2c3FDR3IFP42xaJ
-	 LSJEObViBsM90/SQYM4L307keO8kWMKSee2ZueZrBc6adKS2QLiCG1djyBOjsV8ofl
-	 sBcXecgZIP41VmLsNQJmGUGi0PFTxiVU1OYlylJg=
+	b=YEwEpmCK6ob6eUq7k7qCDztZ8dQL7FM4y738MU+XEcFbP7/LdWbhtLoRjty8J1RMw
+	 1muSlTT7ZItXxvrWJpEg5Jd51kCTevYifERnhY46XnEI/hKMjXKzzHy1gh+gvFFTvi
+	 GtiKkucGG1GqkBy/6PnhuVC0SCRXOWRMTHL4orZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/236] net: hns3: fix port vlan filter not disabled issue
+	Maxime Ripard <mripard@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>
+Subject: [PATCH 6.6 263/301] clk: sunxi-ng: common: Support minimum and maximum rate
 Date: Tue, 14 May 2024 12:18:54 +0200
-Message-ID: <20240514101026.894245499@linuxfoundation.org>
+Message-ID: <20240514101042.186288130@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Frank Oltmanns <frank@oltmanns.dev>
 
-[ Upstream commit f5db7a3b65c84d723ca5e2bb6e83115180ab6336 ]
+commit b914ec33b391ec766545a41f0cfc0de3e0b388d7 upstream.
 
-According to hardware limitation, for device support modify
-VLAN filter state but not support bypass port VLAN filter,
-it should always disable the port VLAN filter. but the driver
-enables port VLAN filter when initializing, if there is no
-VLAN(except VLAN 0) id added, the driver will disable it
-in service task. In most time, it works fine. But there is
-a time window before the service task shceduled and net device
-being registered. So if user adds VLAN at this time, the driver
-will not update the VLAN filter state,  and the port VLAN filter
-remains enabled.
+The Allwinner SoC's typically have an upper and lower limit for their
+clocks' rates. Up until now, support for that has been implemented
+separately for each clock type.
 
-To fix the problem, if support modify VLAN filter state but not
-support bypass port VLAN filter, set the port vlan filter to "off".
+Implement that functionality in the sunxi-ng's common part making use of
+the CCF rate liming capabilities, so that it is available for all clock
+types.
 
-Fixes: 184cd221a863 ("net: hns3: disable port VLAN filter when support function level VLAN filter control")
-Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu_common.c |   19 +++++++++++++++++++
+ drivers/clk/sunxi-ng/ccu_common.h |    3 +++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 646546cf25264..a18dc73c69894 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -10004,6 +10004,7 @@ static int hclge_set_vlan_protocol_type(struct hclge_dev *hdev)
- static int hclge_init_vlan_filter(struct hclge_dev *hdev)
+--- a/drivers/clk/sunxi-ng/ccu_common.c
++++ b/drivers/clk/sunxi-ng/ccu_common.c
+@@ -44,6 +44,16 @@ bool ccu_is_better_rate(struct ccu_commo
+ 			unsigned long current_rate,
+ 			unsigned long best_rate)
  {
- 	struct hclge_vport *vport;
-+	bool enable = true;
- 	int ret;
- 	int i;
++	unsigned long min_rate, max_rate;
++
++	clk_hw_get_rate_range(&common->hw, &min_rate, &max_rate);
++
++	if (current_rate > max_rate)
++		return false;
++
++	if (current_rate < min_rate)
++		return false;
++
+ 	if (common->features & CCU_FEATURE_CLOSEST_RATE)
+ 		return abs(current_rate - target_rate) < abs(best_rate - target_rate);
  
-@@ -10023,8 +10024,12 @@ static int hclge_init_vlan_filter(struct hclge_dev *hdev)
- 		vport->cur_vlan_fltr_en = true;
+@@ -122,6 +132,7 @@ static int sunxi_ccu_probe(struct sunxi_
+ 
+ 	for (i = 0; i < desc->hw_clks->num ; i++) {
+ 		struct clk_hw *hw = desc->hw_clks->hws[i];
++		struct ccu_common *common = hw_to_ccu_common(hw);
+ 		const char *name;
+ 
+ 		if (!hw)
+@@ -136,6 +147,14 @@ static int sunxi_ccu_probe(struct sunxi_
+ 			pr_err("Couldn't register clock %d - %s\n", i, name);
+ 			goto err_clk_unreg;
+ 		}
++
++		if (common->max_rate)
++			clk_hw_set_rate_range(hw, common->min_rate,
++					      common->max_rate);
++		else
++			WARN(common->min_rate,
++			     "No max_rate, ignoring min_rate of clock %d - %s\n",
++			     i, name);
  	}
  
-+	if (test_bit(HNAE3_DEV_SUPPORT_VLAN_FLTR_MDF_B, hdev->ae_dev->caps) &&
-+	    !test_bit(HNAE3_DEV_SUPPORT_PORT_VLAN_BYPASS_B, hdev->ae_dev->caps))
-+		enable = false;
-+
- 	return hclge_set_vlan_filter_ctrl(hdev, HCLGE_FILTER_TYPE_PORT,
--					  HCLGE_FILTER_FE_INGRESS, true, 0);
-+					  HCLGE_FILTER_FE_INGRESS, enable, 0);
- }
+ 	ret = of_clk_add_hw_provider(node, of_clk_hw_onecell_get,
+--- a/drivers/clk/sunxi-ng/ccu_common.h
++++ b/drivers/clk/sunxi-ng/ccu_common.h
+@@ -31,6 +31,9 @@ struct ccu_common {
+ 	u16		lock_reg;
+ 	u32		prediv;
  
- static int hclge_init_vlan_type(struct hclge_dev *hdev)
--- 
-2.43.0
-
++	unsigned long	min_rate;
++	unsigned long	max_rate;
++
+ 	unsigned long	features;
+ 	spinlock_t	*lock;
+ 	struct clk_hw	hw;
 
 
 
