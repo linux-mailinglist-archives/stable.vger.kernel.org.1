@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2958C535F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC418C50EB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BC6EB222AF
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09341F21F15
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D93B85953;
-	Tue, 14 May 2024 11:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E868412A158;
+	Tue, 14 May 2024 10:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXDhoTpv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+KhArla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11B718026;
-	Tue, 14 May 2024 11:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A554E6CDC5;
+	Tue, 14 May 2024 10:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686473; cv=none; b=kPSXnB43iREHK+kr/qM2WuBiK4m61/xgtsU+sa+CCEKFRsA5Xmtap1KFWkCO51j+iDxy4Dje+iQnyyVlpDwTy6hQaYh47RPVUTz7I3MyfarDIVZeLnTAA6XBnDjj7H0iFdTCqvGgbmdFxLKzMazN8uU5/IRzE8rjEyU1AdcuHOM=
+	t=1715683861; cv=none; b=Lrv0WtyqZqN22VnqZfEdz3LKMbPACByM5jpKl8dMP3M77lUgpMsIKc9PVX3UbXLv0BaFJEPapKYXx/A/5mMCJROoiS9qrNJQK+gEy8Z7CBxta2yUuXXgXM/6StYuo5au9nQmXSHOxwwBBj6uN6gyKzW/kPkBiiREix+bLO1DQTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686473; c=relaxed/simple;
-	bh=PyiPfWXpd2ARZ7fp1rfB4a74bN7OW4c5T1GtDKwwfOw=;
+	s=arc-20240116; t=1715683861; c=relaxed/simple;
+	bh=+YlKxxzC6G5tuVmwPPsHiTpUe7UvrWzU+Bw2rSeXZ9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeBmsQFuNHAKh4FeOZYd1rA9dNR6VPQ3+CM6UDe2H9V6SLbEqbPX2QdIWDzNSLaYs0IFMcGE+3jetxgV6xqbdPLR4cOWbBprdn1emNMJ9BGwdFp0UEyU8jnZTpTHi4GEDjxo1leNf4VTYDEZjklEHVxBfwgF5Ym2QcoWL4l1KVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXDhoTpv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598D7C4AF09;
-	Tue, 14 May 2024 11:34:33 +0000 (UTC)
+	 MIME-Version; b=oLLaChXLLBnNwfVRj3XGa9j67YCSocfgSKGMk4+5i77Cqb2nIpVvY74fGovNoS5baqY01cSZmVsb1IuPK4BtPEm4yPcmWPQ7hC/aBC4z2WC5GzUbuEtn9hVWg/r49dTIdbb4OY4xIFnU5hNpsnnANhTQqVeOYs8VMi/nPbpLsz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+KhArla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DC3C2BD10;
+	Tue, 14 May 2024 10:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686473;
-	bh=PyiPfWXpd2ARZ7fp1rfB4a74bN7OW4c5T1GtDKwwfOw=;
+	s=korg; t=1715683861;
+	bh=+YlKxxzC6G5tuVmwPPsHiTpUe7UvrWzU+Bw2rSeXZ9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXDhoTpvVXCflPASJo6JRUJPy4Th1sHN72O0EDurAvpotu8GMaaelPbmYolrqGAIK
-	 t00y7Bg8TlRVjTUkEIiqL454ERCmx8Hrw7ipUSJU60fjOigbgJDeGlnnHevdfXQSxv
-	 +0FKwyJ12gYS4cYrwKo7vdD7wWZ6bOSLbx55ZHGE=
+	b=a+KhArla4DGgWVIs9Ihu8VFhcI+iZKp41tNb5/7Y5lePVJYFYxM9eQ+uaF0TMFQgz
+	 1XwNWPrirx0oTh/oHUZqzguHDq6mJuGlxwf6OxxH5hbMKHGlr5W/zPLWW82J8Cpsd3
+	 qQ/KLeH21JyQL+otuCIxewbZnhxRX8AhEYrihNt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/236] memblock tests: fix undefined reference to `BIT
-Date: Tue, 14 May 2024 12:18:01 +0200
-Message-ID: <20240514101024.888996851@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.8 278/336] kmsan: compiler_types: declare __no_sanitize_or_inline
+Date: Tue, 14 May 2024 12:18:02 +0200
+Message-ID: <20240514101049.116398764@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Alexander Potapenko <glider@google.com>
 
-[ Upstream commit 592447f6cb3c20d606d6c5d8e6af68e99707b786 ]
+commit 90d1f14cbb9ddbfc532e2da13bf6e0ed8320e792 upstream.
 
-commit 772dd0342727 ("mm: enumerate all gfp flags") define gfp flags
-with the help of BIT, while gfp_types.h doesn't include header file for
-the definition. This through an error on building memblock tests.
+It turned out that KMSAN instruments READ_ONCE_NOCHECK(), resulting in
+false positive reports, because __no_sanitize_or_inline enforced inlining.
 
-Let's include linux/bits.h to fix it.
+Properly declare __no_sanitize_or_inline under __SANITIZE_MEMORY__, so
+that it does not __always_inline the annotated function.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-CC: Suren Baghdasaryan <surenb@google.com>
-CC: Michal Hocko <mhocko@suse.com>
-Link: https://lore.kernel.org/r/20240402132701.29744-4-richard.weiyang@gmail.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240426091622.3846771-1-glider@google.com
+Fixes: 5de0ce85f5a4 ("kmsan: mark noinstr as __no_sanitize_memory")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Reported-by: syzbot+355c5bb8c1445c871ee8@syzkaller.appspotmail.com
+Link: https://lkml.kernel.org/r/000000000000826ac1061675b0e3@google.com
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/gfp_types.h | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/compiler_types.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index d88c46ca82e17..6811ab702e8dc 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -2,6 +2,8 @@
- #ifndef __LINUX_GFP_TYPES_H
- #define __LINUX_GFP_TYPES_H
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -278,6 +278,17 @@ struct ftrace_likely_data {
+ # define __no_kcsan
+ #endif
  
-+#include <linux/bits.h>
++#ifdef __SANITIZE_MEMORY__
++/*
++ * Similarly to KASAN and KCSAN, KMSAN loses function attributes of inlined
++ * functions, therefore disabling KMSAN checks also requires disabling inlining.
++ *
++ * __no_sanitize_or_inline effectively prevents KMSAN from reporting errors
++ * within the function and marks all its outputs as initialized.
++ */
++# define __no_sanitize_or_inline __no_kmsan_checks notrace __maybe_unused
++#endif
 +
- /* The typedef is in types.h but we want the documentation here */
- #if 0
- /**
--- 
-2.43.0
-
+ #ifndef __no_sanitize_or_inline
+ #define __no_sanitize_or_inline __always_inline
+ #endif
 
 
 
