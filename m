@@ -1,62 +1,54 @@
-Return-Path: <stable+bounces-44054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6B08C50FA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:16:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189F88C5264
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774DB1F21E4D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:16:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CF9B282D93
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF0312C48A;
-	Tue, 14 May 2024 10:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FFA12F5A5;
+	Tue, 14 May 2024 11:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dG7X0fjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukvp20/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578B16CDC9;
-	Tue, 14 May 2024 10:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826EE6311D;
+	Tue, 14 May 2024 11:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683945; cv=none; b=kb4vmKVPHFVAUkV0PSoQORzWzK3BLXlfprfTp4n+RO3ue/S8d5y/sy3m5HHO6A9f/aVq16jo9CTllX0F0buHmO2lVIWz/kvrl/I+MezAU9NyCCmXx3JSbew3C6LPltkmlsNftLlbf/xUOzzBfCsIbT/WK7NfpG1W76YKBw1tOEg=
+	t=1715685844; cv=none; b=VCnv1gaz8miDaUNBxDvRYYmlMl31StmZ5bEnrmoJpkiAYAZ/wPtg5g+Fh9fnJ7N7Txta2VYqg6xvwy6jB4/NHgvIoRXqUzzf2F9IYaeqxklWM9VLvbQtGnVMQJWZ/mFD29Q5Ug61n63e/i7EDT82gzu6/uGHdENlqRVuKdrOGtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683945; c=relaxed/simple;
-	bh=HzymojR6eANGvMHbiOBc1AW1r5RLyDAKnqpjyv7pRuY=;
+	s=arc-20240116; t=1715685844; c=relaxed/simple;
+	bh=iNDRcOmXBH4elN4vCkfwbuKZb47GIMcaG4p27c00+bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEoIabHc5ipf4BXmgaUxQ0zqw3xCrmaipHJNXCfWAqPngAy600wDxTG0BkpSrWEkfq2vS6NW9elYBzXHYk9Fg/mJ8EZXy19J0ZSJtsSAB8vV3wz1oPkhaunxntCeirEoQ/hMPPFy9/n5UCWgongvFSXeZpDxfQByWJYkDRQErmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dG7X0fjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF74CC2BD10;
-	Tue, 14 May 2024 10:52:23 +0000 (UTC)
+	 MIME-Version; b=dbUCCKdM1rNvSMQ1JvsdPnZtQssH9pyfUaYffSS6btl90gk9kcjKYbvthmpIGNkqndV7nHkY4wyc+iuiZI825wAY+A4rRxAZ8GRVBjoR/IeokPmDvZru+/WMqEaXu45bVHoYJ7MbyZKxTJ/I74/+HY0upEEksEBdyD3jE2bQlfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukvp20/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD095C2BD10;
+	Tue, 14 May 2024 11:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683945;
-	bh=HzymojR6eANGvMHbiOBc1AW1r5RLyDAKnqpjyv7pRuY=;
+	s=korg; t=1715685844;
+	bh=iNDRcOmXBH4elN4vCkfwbuKZb47GIMcaG4p27c00+bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dG7X0fjWLIhkKP47Q7YVpSi0iPxjnDGHPo/swQyKWkZVbB11/p03gw0KxOIBR0pYx
-	 6iawGyxnaviV5V1ok6U7F4i6T17TJw5h1WuLjVV79kYGGe/LtJzNR0EXceBigD4AGv
-	 5AF9MzCatfHEgz7Ps7vxME6QyO1YOKDu+EYpyhME=
+	b=ukvp20/jHyPizXzl/wqnmws1TOiHsxPtj/DFvKrzZMNfqPlIyXJ/0lW+wxHoQ1mVh
+	 JATDznVAoRCMjAH1g4usBP+KIWKSgRzuMPRUU1dt5M/hx9hlG/VhVuvUSk0ULIeZrP
+	 Cor+N+PFURXbiAnOEMnsUuNZER/Q6GSvZ94g/pTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.8 298/336] drm/vmwgfx: Fix invalid reads in fence signaled events
+	Ivan Avdeev <me@provod.works>
+Subject: [PATCH 6.6 231/301] usb: gadget: uvc: use correct buffer size when parsing configfs lists
 Date: Tue, 14 May 2024 12:18:22 +0200
-Message-ID: <20240514101049.868407347@linuxfoundation.org>
+Message-ID: <20240514101040.977039726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,51 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Ivan Avdeev <me@provod.works>
 
-commit a37ef7613c00f2d72c8fc08bd83fb6cc76926c8c upstream.
+commit 650ae71c80749fc7cb8858c8049f532eaec64410 upstream.
 
-Correctly set the length of the drm_event to the size of the structure
-that's actually used.
+This commit fixes uvc gadget support on 32-bit platforms.
 
-The length of the drm_event was set to the parent structure instead of
-to the drm_vmw_event_fence which is supposed to be read. drm_read
-uses the length parameter to copy the event to the user space thus
-resuling in oob reads.
+Commit 0df28607c5cb ("usb: gadget: uvc: Generalise helper functions for
+reuse") introduced a helper function __uvcg_iter_item_entries() to aid
+with parsing lists of items on configfs attributes stores. This function
+is a generalization of another very similar function, which used a
+stack-allocated temporary buffer of fixed size for each item in the list
+and used the sizeof() operator to check for potential buffer overruns.
+The new function was changed to allocate the now variably sized temp
+buffer on heap, but wasn't properly updated to also check for max buffer
+size using the computed size instead of sizeof() operator.
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
-Cc: David Airlie <airlied@gmail.com>
-CC: Daniel Vetter <daniel@ffwll.ch>
-Cc: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v3.4+
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240425192748.1761522-1-zack.rusin@broadcom.com
+As a result, the maximum item size was 7 (plus null terminator) on
+64-bit platforms, and 3 on 32-bit ones. While 7 is accidentally just
+barely enough, 3 is definitely too small for some of UVC configfs
+attributes. For example, dwFrameInteval, specified in 100ns units,
+usually has 6-digit item values, e.g. 166666 for 60fps.
+
+Cc: stable@vger.kernel.org
+Fixes: 0df28607c5cb ("usb: gadget: uvc: Generalise helper functions for reuse")
+Signed-off-by: Ivan Avdeev <me@provod.works>
+Link: https://lore.kernel.org/r/20240413150124.1062026-1-me@provod.works
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/uvc_configfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
-@@ -991,7 +991,7 @@ static int vmw_event_fence_action_create
- 	}
+--- a/drivers/usb/gadget/function/uvc_configfs.c
++++ b/drivers/usb/gadget/function/uvc_configfs.c
+@@ -92,10 +92,10 @@ static int __uvcg_iter_item_entries(cons
  
- 	event->event.base.type = DRM_VMW_EVENT_FENCE_SIGNALED;
--	event->event.base.length = sizeof(*event);
-+	event->event.base.length = sizeof(event->event);
- 	event->event.user_data = user_data;
- 
- 	ret = drm_event_reserve_init(dev, file_priv, &event->base, &event->event.base);
+ 	while (pg - page < len) {
+ 		i = 0;
+-		while (i < sizeof(buf) && (pg - page < len) &&
++		while (i < bufsize && (pg - page < len) &&
+ 		       *pg != '\0' && *pg != '\n')
+ 			buf[i++] = *pg++;
+-		if (i == sizeof(buf)) {
++		if (i == bufsize) {
+ 			ret = -EINVAL;
+ 			goto out_free_buf;
+ 		}
 
 
 
