@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-44566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE1D8C5374
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D828C5129
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8108B1C22B0C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1E0CB212AB
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44F33D971;
-	Tue, 14 May 2024 11:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C485F502A1;
+	Tue, 14 May 2024 10:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBs3xrxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHBvOktp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A065F2B9D7;
-	Tue, 14 May 2024 11:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B5A1CFB2;
+	Tue, 14 May 2024 10:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686532; cv=none; b=KOk8U+xi9kQ5NRwN1qztRmrXaraZMJVNH7L/k+U9TIMGIsDVWHOZqmG/hebVi+glfwAewBl0O1r2NrCERciyyviB3oTSKviw3iwLDHAUl1EBq/Wgz6z468wzWb2OwBv8TBAAvL709zw4i6D45y+3ioVm4E0nFN+bRP2Jz6gyADs=
+	t=1715684122; cv=none; b=Gk9vGvKkgi21fhD3+7buDPPHXMtfuRwF9Atdf8msAbpQYdIhIaaZCjcxnJc3k4c3x6qMZM05LoDrY26DMDORx7edLiG33e0UnJoENVI9N+KyaYOJ2vsEOl8GV4VtMUsszlP6e8oZY6QP5mNCKT11u+ceNNiEuzT9bPLC4fesWlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686532; c=relaxed/simple;
-	bh=Z2M8NZwur7KzDKN4k5nXUYqXA8V5GpiWYXLt0dQ8iy0=;
+	s=arc-20240116; t=1715684122; c=relaxed/simple;
+	bh=1hPihjOctIh47vkOgn8fXAWWm7t9zucR4J9BIuPK9K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6+gYaYbI0a91PxP/bXaA1YNhe8KKldiFZnmZALRbJwJ7SpimDM6WRRdARrr7Nap8WWaujd+LikXxGVrU7eBdFruS8PD0UFqhNuR+5hvM7xE+Ar9i3vndLEA5D8ERXt3X/TocbsbwtnMZDeAH0uOB6wPKZc2CTIHfRm/v0IzYeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBs3xrxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEA6C2BD10;
-	Tue, 14 May 2024 11:35:31 +0000 (UTC)
+	 MIME-Version; b=lHHEmM3AueWapMpO4w8aUoW59WvrCz6n5wnz0Al/lUjOlNi6Fy0fyK9yqzPlFu/nvQtuq+WWPVHxHkHpWQ0Gy9tkhIOGrFf0F1vbSHdx/rL1ufkcuF2fTorlLd860QTlFYH6xazPzDJGFm8Q9z2hsFG4r4aIBefQsZSNPikqvp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHBvOktp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FA7C2BD10;
+	Tue, 14 May 2024 10:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686532;
-	bh=Z2M8NZwur7KzDKN4k5nXUYqXA8V5GpiWYXLt0dQ8iy0=;
+	s=korg; t=1715684122;
+	bh=1hPihjOctIh47vkOgn8fXAWWm7t9zucR4J9BIuPK9K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBs3xrxlov7DhgpbWFrIjhzXQPmX/OvMHUv77yxzq0eDpyAw/f0rS82YVJ5Hzp66c
-	 Xkzy8rCzAFOlamHymIEqZKGHhCWwF3AjaFOn5NKMoPI6pKIYx+xdh8mvnwjxGjNXEZ
-	 5qXZ3XY+p4LtZ4m3BDERWAOufWgxUpI6W0hASIGU=
+	b=PHBvOktp2AX5rUYEa519TUJtiIKgXAXJEUmmN2sRHwkO+rMAQaj5lPWAQNJoOahWz
+	 XyZ6fPYuQM25NkiGYeFrP1AJvoGRWsa7RqkV24fri8uJOuAbGVVuOQ2QxuhM/h9qd3
+	 FJzl/ppvUHn6CxJmNakfS78pgFX87mdiFPui5uPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 170/236] net: hns3: release PTP resources if pf initialization failed
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.8 328/336] eventfs: Do not treat events directory different than other directories
 Date: Tue, 14 May 2024 12:18:52 +0200
-Message-ID: <20240514101026.813320948@linuxfoundation.org>
+Message-ID: <20240514101051.006481645@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 950aa42399893a170d9b57eda0e4a3ff91fd8b70 ]
+commit 22e61e15af731dbe46704c775d2335e56fcef4e9 upstream.
 
-During the PF initialization process, hclge_update_port_info may return an
-error code for some reason. At this point,  the ptp initialization has been
-completed. To void memory leaks, the resources that are applied by ptp
-should be released. Therefore, when hclge_update_port_info returns an error
-code, hclge_ptp_uninit is called to release the corresponding resources.
+Treat the events directory the same as other directories when it comes to
+permissions. The events directory was considered different because it's
+dentry is persistent, whereas the other directory dentries are created
+when accessed. But the way tracefs now does its ownership by using the
+root dentry's permissions as the default permissions, the events directory
+can get out of sync when a remount is performed setting the group and user
+permissions.
 
-Fixes: eaf83ae59e18 ("net: hns3: add querying fec ability from firmware")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the special case for the events directory on setting the
+attributes. This allows the updates caused by remount to work properly as
+well as simplifies the code.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240502200906.002923579@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8186fff7ab649 ("tracefs/eventfs: Use root and instance inodes as default ownership")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 19a0b6c37c909..75472fde78f17 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11742,7 +11742,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -163,21 +163,7 @@ static int eventfs_set_attr(struct mnt_i
+ 	 * determined by the parent directory.
+ 	 */
+ 	if (dentry->d_inode->i_mode & S_IFDIR) {
+-		/*
+-		 * The events directory dentry is never freed, unless its
+-		 * part of an instance that is deleted. It's attr is the
+-		 * default for its child files and directories.
+-		 * Do not update it. It's not used for its own mode or ownership.
+-		 */
+-		if (ei->is_events) {
+-			/* But it still needs to know if it was modified */
+-			if (iattr->ia_valid & ATTR_UID)
+-				ei->attr.mode |= EVENTFS_SAVE_UID;
+-			if (iattr->ia_valid & ATTR_GID)
+-				ei->attr.mode |= EVENTFS_SAVE_GID;
+-		} else {
+-			update_attr(&ei->attr, iattr);
+-		}
++		update_attr(&ei->attr, iattr);
  
- 	ret = hclge_update_port_info(hdev);
- 	if (ret)
--		goto err_mdiobus_unreg;
-+		goto err_ptp_uninit;
- 
- 	INIT_KFIFO(hdev->mac_tnl_log);
- 
-@@ -11788,6 +11788,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 	devl_unlock(hdev->devlink);
- 	return 0;
- 
-+err_ptp_uninit:
-+	hclge_ptp_uninit(hdev);
- err_mdiobus_unreg:
- 	if (hdev->hw.mac.phydev)
- 		mdiobus_unregister(hdev->hw.mac.mdio_bus);
--- 
-2.43.0
-
+ 	} else {
+ 		name = dentry->d_name.name;
 
 
 
