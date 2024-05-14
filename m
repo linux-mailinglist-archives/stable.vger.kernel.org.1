@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-45016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A1A8C555D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:57:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFC18C53FF
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0AF1F223AA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:57:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EDF01F22EED
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048321E4B0;
-	Tue, 14 May 2024 11:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D315D131E2A;
+	Tue, 14 May 2024 11:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGVyNzGX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwlENW0q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E58F9D4;
-	Tue, 14 May 2024 11:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4BA320F;
+	Tue, 14 May 2024 11:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687838; cv=none; b=RKUbWlcjj0FvOKHw4Z6wpZMYAR0YZ1vG4IQ3HiMYhs7xL94eHsATvJKF9JMr107zVzW2Mb/MhfD4Oljf/mwuJKY1PLBtC0JuUkM76FFsseFXXiTJ42LMJxm406RJWO9W6RPA1pAbgkKUTdAyD0nTS0hKL/YesojVtnsFoy7VybM=
+	t=1715686900; cv=none; b=g5FnceZn9xZ7vfqmOLhCVpAAkfm3y5eNWtFxpXE2RmY6aI8MQAPHak3JsOBLIBcy+uIffX89iLouhKOFaEkza5hQsZPPlTT6MBfXL47tiCU/4JjGX9ud8eeewlvfG75FpIca5bQq2VnTwOrLO06Hg3qfMl/FWc71NQJYTNvfrxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687838; c=relaxed/simple;
-	bh=8vX5JLfIdpdcUPJoL1SA10ptrQvIccUHeRNUsv+SX6s=;
+	s=arc-20240116; t=1715686900; c=relaxed/simple;
+	bh=Np97OD7t8dwwyjh4ggOlwIA1o9feDlUGEyD0ru9+0hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z16djIVyVOBwDjUPYFMzZRg3qCJw8huNGhAtZV/J/1H4j5pKiqY+IxzjoFN1kHB28xrf/GAhNMVMyKusqxHfTc6Urldt9ywFDkMfO324qlieJHrGMy8RmG9RvlTnXT0iif0wiV4A1vGSfXM9hWgzfHAnMDOfnBUaV52pyeGm6Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGVyNzGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4A3C32781;
-	Tue, 14 May 2024 11:57:18 +0000 (UTC)
+	 MIME-Version; b=q/KdpXdmxGpTg3hzzhu5P9Qn7+olFtQrTZC/rDT+6AUyN76JIQ34VBvhY30He2rL01QS+JlF6sPhOjYJvrkJVwwHsH5pcSQC/+tfDL8hK0DYr+dIUgO583QSQIxUBtkF3EcKetiKVpw79r30Y9lchVy2NRu+bfL10z4eoMD7ETA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwlENW0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1B7C2BD10;
+	Tue, 14 May 2024 11:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687838;
-	bh=8vX5JLfIdpdcUPJoL1SA10ptrQvIccUHeRNUsv+SX6s=;
+	s=korg; t=1715686900;
+	bh=Np97OD7t8dwwyjh4ggOlwIA1o9feDlUGEyD0ru9+0hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGVyNzGXkfaSw/R5W65/Iqkt1CU2vTXnjDIQaNQCqrzZUyIFGBwJ7tdJKWbxpjeUW
-	 ERzYwXATwDl+JqinFcvnheZo8O7vK5t2tQGhHBgAdl5nbTZxbLb/Ev6Czyud4T/ZyS
-	 U3z4B6H/Qr/1/+XFPxlt+3wWKYNTOBNDYdfEWnP0=
+	b=PwlENW0q7O9HBsoUUEMiF/ha+lh9synxdorDPRvdcHfK02NyjVmAroegBCEOmgjeC
+	 bqdBJ00h+Qm68RV/pYxUkPYBzdFuiVa3OT2ETjpS9iSimfn3yU0XIPj2zAI4rocJfB
+	 IyPoPoh3wmscGCD1vtSHhPS/lbLVJg9VJ3PV8RGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Guangbin Huang <huangguangbin2@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/168] net: hns3: create new cmdq hardware description structure hclge_comm_hw
-Date: Tue, 14 May 2024 12:20:21 +0200
-Message-ID: <20240514101011.327603146@linuxfoundation.org>
+	Zack Rusin <zack.rusin@broadcom.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 4.19 61/63] drm/vmwgfx: Fix invalid reads in fence signaled events
+Date: Tue, 14 May 2024 12:20:22 +0200
+Message-ID: <20240514100950.312271935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514100948.010148088@linuxfoundation.org>
+References: <20240514100948.010148088@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +68,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit 0a7b6d221868be6aa3249c70ffab707a265b89d6 ]
+commit a37ef7613c00f2d72c8fc08bd83fb6cc76926c8c upstream.
 
-Currently PF and VF cmdq APIs use struct hclge(vf)_hw to describe cmdq
-hardware information needed by hclge(vf)_cmd_send. There are a little
-differences between its child struct hclge_cmq_ring and hclgevf_cmq_ring.
-It is redundent to use two sets of structures to support same functions.
+Correctly set the length of the drm_event to the size of the structure
+that's actually used.
 
-So this patch creates new set of common cmdq hardware description
-structures(hclge_comm_hw) to unify PF and VF cmdq functions. The struct
-hclge_desc is still kept to avoid too many meaningless replacement.
+The length of the drm_event was set to the parent structure instead of
+to the drm_vmw_event_fence which is supposed to be read. drm_read
+uses the length parameter to copy the event to the user space thus
+resuling in oob reads.
 
-These new structures will be used to unify hclge(vf)_hw structures in PF
-and VF cmdq APIs in next patches.
-
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6639a7b95321 ("net: hns3: change type of numa_node_mask as nodemask_t")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 8b7de6aa8468 ("vmwgfx: Rework fence event action")
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-23566
+Cc: David Airlie <airlied@gmail.com>
+CC: Daniel Vetter <daniel@ffwll.ch>
+Cc: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v3.4+
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425192748.1761522-1-zack.rusin@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/Makefile  |  1 +
- .../hns3/hns3_common/hclge_comm_cmd.h         | 55 +++++++++++++++++++
- .../hisilicon/hns3/hns3pf/hclge_cmd.h         |  9 +--
- 3 files changed, 57 insertions(+), 8 deletions(-)
- create mode 100644 drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
+ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/Makefile b/drivers/net/ethernet/hisilicon/hns3/Makefile
-index 32e24e0945f5e..33e546cef2881 100644
---- a/drivers/net/ethernet/hisilicon/hns3/Makefile
-+++ b/drivers/net/ethernet/hisilicon/hns3/Makefile
-@@ -6,6 +6,7 @@
- ccflags-y += -I$(srctree)/$(src)
- ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3pf
- ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3vf
-+ccflags-y += -I$(srctree)/drivers/net/ethernet/hisilicon/hns3/hns3_common
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+@@ -1064,7 +1064,7 @@ static int vmw_event_fence_action_create
+ 	}
  
- obj-$(CONFIG_HNS3) += hnae3.o
+ 	event->event.base.type = DRM_VMW_EVENT_FENCE_SIGNALED;
+-	event->event.base.length = sizeof(*event);
++	event->event.base.length = sizeof(event->event);
+ 	event->event.user_data = user_data;
  
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
-new file mode 100644
-index 0000000000000..f1e39003ceebe
---- /dev/null
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+// Copyright (c) 2021-2021 Hisilicon Limited.
-+
-+#ifndef __HCLGE_COMM_CMD_H
-+#define __HCLGE_COMM_CMD_H
-+#include <linux/types.h>
-+
-+#include "hnae3.h"
-+
-+#define HCLGE_DESC_DATA_LEN		6
-+struct hclge_desc {
-+	__le16 opcode;
-+	__le16 flag;
-+	__le16 retval;
-+	__le16 rsv;
-+	__le32 data[HCLGE_DESC_DATA_LEN];
-+};
-+
-+struct hclge_comm_cmq_ring {
-+	dma_addr_t desc_dma_addr;
-+	struct hclge_desc *desc;
-+	struct pci_dev *pdev;
-+	u32 head;
-+	u32 tail;
-+
-+	u16 buf_size;
-+	u16 desc_num;
-+	int next_to_use;
-+	int next_to_clean;
-+	u8 ring_type; /* cmq ring type */
-+	spinlock_t lock; /* Command queue lock */
-+};
-+
-+enum hclge_comm_cmd_status {
-+	HCLGE_COMM_STATUS_SUCCESS	= 0,
-+	HCLGE_COMM_ERR_CSQ_FULL		= -1,
-+	HCLGE_COMM_ERR_CSQ_TIMEOUT	= -2,
-+	HCLGE_COMM_ERR_CSQ_ERROR	= -3,
-+};
-+
-+struct hclge_comm_cmq {
-+	struct hclge_comm_cmq_ring csq;
-+	struct hclge_comm_cmq_ring crq;
-+	u16 tx_timeout;
-+	enum hclge_comm_cmd_status last_status;
-+};
-+
-+struct hclge_comm_hw {
-+	void __iomem *io_base;
-+	void __iomem *mem_base;
-+	struct hclge_comm_cmq cmq;
-+	unsigned long comm_state;
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-index cfbb7c51b0cb3..e07709ef239df 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-@@ -7,24 +7,17 @@
- #include <linux/io.h>
- #include <linux/etherdevice.h>
- #include "hnae3.h"
-+#include "hclge_comm_cmd.h"
- 
- #define HCLGE_CMDQ_TX_TIMEOUT		30000
- #define HCLGE_CMDQ_CLEAR_WAIT_TIME	200
- #define HCLGE_DESC_DATA_LEN		6
- 
- struct hclge_dev;
--struct hclge_desc {
--	__le16 opcode;
- 
- #define HCLGE_CMDQ_RX_INVLD_B		0
- #define HCLGE_CMDQ_RX_OUTVLD_B		1
- 
--	__le16 flag;
--	__le16 retval;
--	__le16 rsv;
--	__le32 data[HCLGE_DESC_DATA_LEN];
--};
--
- struct hclge_cmq_ring {
- 	dma_addr_t desc_dma_addr;
- 	struct hclge_desc *desc;
--- 
-2.43.0
-
+ 	ret = drm_event_reserve_init(dev, file_priv, &event->base, &event->event.base);
 
 
 
