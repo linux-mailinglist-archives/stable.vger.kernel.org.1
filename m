@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7FA8C5503
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:54:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE1D8C5374
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A11F9B22522
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:54:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8108B1C22B0C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47856129E81;
-	Tue, 14 May 2024 11:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44F33D971;
+	Tue, 14 May 2024 11:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xm/EHRVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBs3xrxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03614320F;
-	Tue, 14 May 2024 11:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A065F2B9D7;
+	Tue, 14 May 2024 11:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687584; cv=none; b=a68vDkrpSxKkdUtYrYAVNtLYWsL/d/ZkCgCtjwJjK4evd/26IrYNAYjVJXoLNlU+FKnlyKO/mAsk/f3Hc5UtYj1OmkuorrKE/CrotqlBBz6VdpAIvhfJthZdPW7qptoKLvoL0MaqGGK+seYDxwFipDE8EgigtH3IhKpQrzsIN0M=
+	t=1715686532; cv=none; b=KOk8U+xi9kQ5NRwN1qztRmrXaraZMJVNH7L/k+U9TIMGIsDVWHOZqmG/hebVi+glfwAewBl0O1r2NrCERciyyviB3oTSKviw3iwLDHAUl1EBq/Wgz6z468wzWb2OwBv8TBAAvL709zw4i6D45y+3ioVm4E0nFN+bRP2Jz6gyADs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687584; c=relaxed/simple;
-	bh=HpCtNEbriqAaoQysOmo37Trx272tFoynS1wAZocr6PE=;
+	s=arc-20240116; t=1715686532; c=relaxed/simple;
+	bh=Z2M8NZwur7KzDKN4k5nXUYqXA8V5GpiWYXLt0dQ8iy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naFvkFgywAf5aAqBpcnxYFuc6d+KqTMOkJ4OoYaE4BtrT4m3P946jixJfA6ATSQsD8xKR8cjpB0QCn8z8T8wDJmPO4EReTzo2g4VMDUx/Hy1lgX0QyMzvIoUtqgWXyj/BLwqdJZn+IDRnYC+RrVU+F7e4QfUcuDt3fdG5CsIqJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xm/EHRVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C48BC2BD10;
-	Tue, 14 May 2024 11:53:03 +0000 (UTC)
+	 MIME-Version; b=K6+gYaYbI0a91PxP/bXaA1YNhe8KKldiFZnmZALRbJwJ7SpimDM6WRRdARrr7Nap8WWaujd+LikXxGVrU7eBdFruS8PD0UFqhNuR+5hvM7xE+Ar9i3vndLEA5D8ERXt3X/TocbsbwtnMZDeAH0uOB6wPKZc2CTIHfRm/v0IzYeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBs3xrxl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEA6C2BD10;
+	Tue, 14 May 2024 11:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687583;
-	bh=HpCtNEbriqAaoQysOmo37Trx272tFoynS1wAZocr6PE=;
+	s=korg; t=1715686532;
+	bh=Z2M8NZwur7KzDKN4k5nXUYqXA8V5GpiWYXLt0dQ8iy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xm/EHRVGUvLa3ArHc97HrWvqo3miRpr3mdvYNLbK2lMf8jkznTGvi0IKTGDFvDclA
-	 HifMZE8ISHjs7V5aqiQfC8qvTY/sEgzJ9GyhfxHdqdNEIiErt+U/Qzhin9MRbMqo0H
-	 lLPojMFR7Ni6o8uz6yhf+B+Y0dYhdIBzfirkqToE=
+	b=FBs3xrxlov7DhgpbWFrIjhzXQPmX/OvMHUv77yxzq0eDpyAw/f0rS82YVJ5Hzp66c
+	 Xkzy8rCzAFOlamHymIEqZKGHhCWwF3AjaFOn5NKMoPI6pKIYx+xdh8mvnwjxGjNXEZ
+	 5qXZ3XY+p4LtZ4m3BDERWAOufWgxUpI6W0hASIGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/168] octeontx2-af: avoid off-by-one read from userspace
+Subject: [PATCH 6.1 170/236] net: hns3: release PTP resources if pf initialization failed
 Date: Tue, 14 May 2024 12:18:52 +0200
-Message-ID: <20240514101007.979523756@linuxfoundation.org>
+Message-ID: <20240514101026.813320948@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
-References: <20240514101006.678521560@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit f299ee709fb45036454ca11e90cb2810fe771878 ]
+[ Upstream commit 950aa42399893a170d9b57eda0e4a3ff91fd8b70 ]
 
-We try to access count + 1 byte from userspace with memdup_user(buffer,
-count + 1). However, the userspace only provides buffer of count bytes and
-only these count bytes are verified to be okay to access. To ensure the
-copied buffer is NUL terminated, we use memdup_user_nul instead.
+During the PF initialization process, hclge_update_port_info may return an
+error code for some reason. At this point,  the ptp initialization has been
+completed. To void memory leaks, the resources that are applied by ptp
+should be released. Therefore, when hclge_update_port_info returns an error
+code, hclge_ptp_uninit is called to release the corresponding resources.
 
-Fixes: 3a2eb515d136 ("octeontx2-af: Fix an off by one in rvu_dbg_qsize_write()")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-6-f1f1b53a10f4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: eaf83ae59e18 ("net: hns3: add querying fec ability from firmware")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index 4dddf6ec3be87..e201827529513 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -559,12 +559,10 @@ static ssize_t rvu_dbg_qsize_write(struct file *filp,
- 	u16 pcifunc;
- 	int ret, lf;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 19a0b6c37c909..75472fde78f17 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -11742,7 +11742,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
  
--	cmd_buf = memdup_user(buffer, count + 1);
-+	cmd_buf = memdup_user_nul(buffer, count);
- 	if (IS_ERR(cmd_buf))
- 		return -ENOMEM;
+ 	ret = hclge_update_port_info(hdev);
+ 	if (ret)
+-		goto err_mdiobus_unreg;
++		goto err_ptp_uninit;
  
--	cmd_buf[count] = '\0';
--
- 	cmd_buf_tmp = strchr(cmd_buf, '\n');
- 	if (cmd_buf_tmp) {
- 		*cmd_buf_tmp = '\0';
+ 	INIT_KFIFO(hdev->mac_tnl_log);
+ 
+@@ -11788,6 +11788,8 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 	devl_unlock(hdev->devlink);
+ 	return 0;
+ 
++err_ptp_uninit:
++	hclge_ptp_uninit(hdev);
+ err_mdiobus_unreg:
+ 	if (hdev->hw.mac.phydev)
+ 		mdiobus_unregister(hdev->hw.mac.mdio_bus);
 -- 
 2.43.0
 
