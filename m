@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150698C534C
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C148C5240
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAC1F1F23295
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13E12282965
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F293478691;
-	Tue, 14 May 2024 11:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD0B47F5D;
+	Tue, 14 May 2024 11:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bt6zGJ1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4u1yk7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEAF76033;
-	Tue, 14 May 2024 11:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2652943F;
+	Tue, 14 May 2024 11:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686427; cv=none; b=i8jLYxeJcuG7lY9FoxBScVDLS2/7bmb0+kJf+LXBV5qNZpAjuSIQmnTbWSd9SxOWdX8NDHHh/VSflTDu800u44t/u7SQPhicSppa9RpbE/62fjl9OAM9Ay4Vz7gyAgRFj3JsrareGHhhlHrBlHBy5MX5aSv8r9/vKW0ucmiTzJ8=
+	t=1715685685; cv=none; b=as3XXGpAwelGnAFMBcDRPec3atm+2WxZ4qvrd0us3feu1ewdLsq5PONXvZTrX6qfgyxAGqZ50B/wcugIcEzjlBtvDG1Ii40jEOPsuLP/t9699DV6ZvvGKLfUy693ELIZA/lrrh8fbL1dFZNAHW10T39mrOwwjDJdZEXnYupcUoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686427; c=relaxed/simple;
-	bh=Jv9E4ybrUBDAKFjxDqWUlK8HmJzPpzIYDoMk6VMnZCo=;
+	s=arc-20240116; t=1715685685; c=relaxed/simple;
+	bh=ym+yFJSusg1VMBmuKseC0k/HFEzACUwhdwm6xmZw43U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shAMjOMGdeQn8wZt6xPqNOWob09TDOT14dFtDYk7jY2h6WRebck2mouHAkyAWsdYg0bG9EGyrIQ9P4UX602TUXjo+dN9x5fhjy+MkMUEJapBs818pWDkJbbCW8QIMzO10I52i8Qjw3FmcSw57UsayWN1OXXEV6zhCh0TNpiLpKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bt6zGJ1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365CBC2BD10;
-	Tue, 14 May 2024 11:33:47 +0000 (UTC)
+	 MIME-Version; b=KVTvb+jZmEf2sJNsq9r1BlnK/sKxA+p94R3+NI4kvvWZ8ILQROoG5rIsI8UnP042140Bwfhj7P7zzWRb3HlreVI5ccqE3Ihwpm3/ZZks1kjVB85TM/wARe48FuDVQ/oGYczJvrxD6+idfOP2DL0SGQxFeE0zgxJmBOxF0ndMF0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4u1yk7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167E3C2BD10;
+	Tue, 14 May 2024 11:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686427;
-	bh=Jv9E4ybrUBDAKFjxDqWUlK8HmJzPpzIYDoMk6VMnZCo=;
+	s=korg; t=1715685685;
+	bh=ym+yFJSusg1VMBmuKseC0k/HFEzACUwhdwm6xmZw43U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bt6zGJ1/GdzeLg1F1ILn9IieJhyicqpiU3h49bZgkv0yv47YFPLR2s2kEs7AtCJfZ
-	 L8A+3uqux2u2Wh1tME17Lx57DIrjPyoc4SXeYXnP6fZP/zO3sY8L5NYSM/c4wIWI5G
-	 iD5gMji0c+2LrQMAtOuEwwh0quXSSXG3Kxks44Wg=
+	b=c4u1yk7SQ/l1J8CKelWY2KwMC/bLXDWnjw9vyS4M2zFtig6o1kr/LIh6ep9/P9+F0
+	 rCqVTmdrZFzc+43iFZZN7tJE7DTRHNGOBLMcJyhUFQ1UuCxDNwEvLkM8EEE7OlJOnB
+	 RUka9aZ9v0VArDWWyVbScLBAUhdm4d5mqg4c7MeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/236] gpio: wcove: Use -ENOTSUPP consistently
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.6 225/301] usb: typec: ucsi: Check for notifications after init
 Date: Tue, 14 May 2024 12:18:16 +0200
-Message-ID: <20240514101025.456945213@linuxfoundation.org>
+Message-ID: <20240514101040.751537440@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 0c3b532ad3fbf82884a2e7e83e37c7dcdd4d1d99 ]
+commit 808a8b9e0b87bbc72bcc1f7ddfe5d04746e7ce56 upstream.
 
-The GPIO library expects the drivers to return -ENOTSUPP in some
-cases and not using analogue POSIX code. Make the driver to follow
-this.
+The completion notification for the final SET_NOTIFICATION_ENABLE
+command during initialization can include a connector change
+notification.  However, at the time this completion notification is
+processed, the ucsi struct is not ready to handle this notification.
+As a result the notification is ignored and the controller
+never sends an interrupt again.
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Re-check CCI for a pending connector state change after
+initialization is complete. Adjust the corresponding debug
+message accordingly.
+
+Fixes: 71a1fa0df2a3 ("usb: typec: ucsi: Store the notification mask")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Link: https://lore.kernel.org/r/20240320073927.1641788-3-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-wcove.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-wcove.c b/drivers/gpio/gpio-wcove.c
-index c18b6b47384f1..94ca9d03c0949 100644
---- a/drivers/gpio/gpio-wcove.c
-+++ b/drivers/gpio/gpio-wcove.c
-@@ -104,7 +104,7 @@ static inline int to_reg(int gpio, enum ctrl_register type)
- 	unsigned int reg = type == CTRL_IN ? GPIO_IN_CTRL_BASE : GPIO_OUT_CTRL_BASE;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -972,7 +972,7 @@ void ucsi_connector_change(struct ucsi *
+ 	struct ucsi_connector *con = &ucsi->connector[num - 1];
  
- 	if (gpio >= WCOVE_GPIO_NUM)
--		return -EOPNOTSUPP;
-+		return -ENOTSUPP;
+ 	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
+-		dev_dbg(ucsi->dev, "Bogus connector change event\n");
++		dev_dbg(ucsi->dev, "Early connector change event\n");
+ 		return;
+ 	}
  
- 	return reg + gpio;
- }
--- 
-2.43.0
-
+@@ -1403,6 +1403,7 @@ static int ucsi_init(struct ucsi *ucsi)
+ {
+ 	struct ucsi_connector *con, *connector;
+ 	u64 command, ntfy;
++	u32 cci;
+ 	int ret;
+ 	int i;
+ 
+@@ -1455,6 +1456,13 @@ static int ucsi_init(struct ucsi *ucsi)
+ 
+ 	ucsi->connector = connector;
+ 	ucsi->ntfy = ntfy;
++
++	ret = ucsi->ops->read(ucsi, UCSI_CCI, &cci, sizeof(cci));
++	if (ret)
++		return ret;
++	if (UCSI_CCI_CONNECTOR(READ_ONCE(cci)))
++		ucsi_connector_change(ucsi, cci);
++
+ 	return 0;
+ 
+ err_unregister:
 
 
 
