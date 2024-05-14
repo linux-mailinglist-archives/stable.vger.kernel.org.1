@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-44285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD358C5214
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F008C5328
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE14B281F01
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6AB528534D
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5C012AAF2;
-	Tue, 14 May 2024 11:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D859143C4F;
+	Tue, 14 May 2024 11:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP/e4O+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cU3FpFNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1B554BFE;
-	Tue, 14 May 2024 11:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281F8143C47;
+	Tue, 14 May 2024 11:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685452; cv=none; b=mgEkLXmT9MhbFPv7nblCcFxo2g0yyPu8/ITULrEl1//GMdtsGGm1SFBX5Sbo65ZliQrTPtz/bXWvzTrL4XWoQmwPKrG4Le0y2YG7OLv92qf5CWrFMwYrOg59egr/lC2uZBK8DYdt7HY1p7hRxcq53RJUI1kTD7j8eoBq8pvAFdo=
+	t=1715686327; cv=none; b=A+wbaMhIh+VB6xuWWV0wLkSHllIR8uo9YEKMLOBjQmuOHOYM0MmB97YIch3YKpBbm6rVYyCjDQascxM+8FIWlTM5cOFA2fJel/HzCrYkYEDBDN+j5Q3C5k2yU5TfKcCScsZjig2dMjkv9yyxzv2yPx7bN0x6PF5UuxZawnDPW9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685452; c=relaxed/simple;
-	bh=leMHVnWJ9ijxi9EIBJL4wCTYSEcUSXyOHKnqGLSk6AM=;
+	s=arc-20240116; t=1715686327; c=relaxed/simple;
+	bh=3o8cTqVljCbEToLLLcHx+A5pQauRZCYV7cpaBBHcSGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HL3dh9QGxLLSBs4u+MiNOvzG+yDnGWyPJnsDurFrrO0BNumoVM8aB+cYzwP+PvgYVWp5A/9Yc4zvXS7MSpvzIR71E0jYJ9YRwFValpKi3wJ5CPWhGm79c7jviJfQpjLZiO7nzZDTHIaQg7BK8qAGdn9ytQl79vjm+0FiiOiJGcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP/e4O+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25846C2BD10;
-	Tue, 14 May 2024 11:17:31 +0000 (UTC)
+	 MIME-Version; b=UYMdYKCE+oS5kh9q4JJdihNl1Kc9xKDFYv/z3y5v8Ukjv5y06yFLm61p70/m72LUvNwT/hI7u6kXKBwpEAdOFtAIyr0doZXbJpzzezk0XOwLQaWPl0CqTsOEya3mvgrG5z3HgSxvvuodFFf0gEhEqmyAUfw9Dl7jivhb61F0kl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cU3FpFNL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF75C2BD10;
+	Tue, 14 May 2024 11:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685452;
-	bh=leMHVnWJ9ijxi9EIBJL4wCTYSEcUSXyOHKnqGLSk6AM=;
+	s=korg; t=1715686327;
+	bh=3o8cTqVljCbEToLLLcHx+A5pQauRZCYV7cpaBBHcSGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BP/e4O+oZv50FQyDDVPQ0M+ZeOwdEqUWrb7hUwY7RkSFinqQUtVEoFObpHP0SXvMf
-	 7oNthHYBSExqwYYPNd1CIJmeesrFxv8Y3M8KlhDmPq7LpcVnk3IU0sGkBW5JSm0Tqq
-	 Z/flyT40z7K0vSC5d6LsBls7PTRqrCnHbbPmenZU=
+	b=cU3FpFNLtgE/MoZAkckei7Oo3sLdg/Rq49FEj+mdc6QPXWDl29WAGJm73ZGhasMR/
+	 0lh2OMGmc4OZdMaoUm1hWRieVtefYwIEbgbc3pKOE6zxT16lYXHvCB2V1zVK6pWtaC
+	 vP0dz3OOC1FrErzHMh/0DQE8d27iqy4D0WeNV7wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/301] net: bridge: fix corrupted ethernet header on multicast-to-unicast
+Subject: [PATCH 6.1 099/236] wifi: cfg80211: fix rdev_dump_mpp() arguments order
 Date: Tue, 14 May 2024 12:17:41 +0200
-Message-ID: <20240514101039.427606140@linuxfoundation.org>
+Message-ID: <20240514101024.129838304@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit 86b29d830ad69eecff25b22dc96c14c6573718e6 ]
+[ Upstream commit ec50f3114e55406a1aad24b7dfaa1c3f4336d8eb ]
 
-The change from skb_copy to pskb_copy unfortunately changed the data
-copying to omit the ethernet header, since it was pulled before reaching
-this point. Fix this by calling __skb_push/pull around pskb_copy.
+Fix the order of arguments in the TP_ARGS macro
+for the rdev_dump_mpp tracepoint event.
 
-Fixes: 59c878cbcdd8 ("net: bridge: fix multicast-to-unicast with fraglist GSO")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Found by Linux Verification Center (linuxtesting.org).
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Link: https://msgid.link/20240311164519.118398-1-Igor.A.Artemiev@mcst.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/wireless/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index d7c35f55bd69f..d97064d460dc7 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -258,6 +258,7 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- {
- 	struct net_device *dev = BR_INPUT_SKB_CB(skb)->brdev;
- 	const unsigned char *src = eth_hdr(skb)->h_source;
-+	struct sk_buff *nskb;
- 
- 	if (!should_deliver(p, skb))
- 		return;
-@@ -266,12 +267,16 @@ static void maybe_deliver_addr(struct net_bridge_port *p, struct sk_buff *skb,
- 	if (skb->dev == p->dev && ether_addr_equal(src, addr))
- 		return;
- 
--	skb = pskb_copy(skb, GFP_ATOMIC);
--	if (!skb) {
-+	__skb_push(skb, ETH_HLEN);
-+	nskb = pskb_copy(skb, GFP_ATOMIC);
-+	__skb_pull(skb, ETH_HLEN);
-+	if (!nskb) {
- 		DEV_STATS_INC(dev, tx_dropped);
- 		return;
- 	}
- 
-+	skb = nskb;
-+	__skb_pull(skb, ETH_HLEN);
- 	if (!is_broadcast_ether_addr(addr))
- 		memcpy(eth_hdr(skb)->h_dest, addr, ETH_ALEN);
- 
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index a405c3edbc47e..cb5c3224e038a 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -1018,7 +1018,7 @@ TRACE_EVENT(rdev_get_mpp,
+ TRACE_EVENT(rdev_dump_mpp,
+ 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, int _idx,
+ 		 u8 *dst, u8 *mpp),
+-	TP_ARGS(wiphy, netdev, _idx, mpp, dst),
++	TP_ARGS(wiphy, netdev, _idx, dst, mpp),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		NETDEV_ENTRY
 -- 
 2.43.0
 
