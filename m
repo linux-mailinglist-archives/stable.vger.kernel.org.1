@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC5B8C5418
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:49:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028688C5291
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 247B91F2333D
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 344D31C218F8
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B67454903;
-	Tue, 14 May 2024 11:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A979513F455;
+	Tue, 14 May 2024 11:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHFmuPNY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7oSrW/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE83958AC4;
-	Tue, 14 May 2024 11:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685986311D;
+	Tue, 14 May 2024 11:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686967; cv=none; b=DiatG3LTbbtz5zdhj4kBQN8nDsTHPaR+WGm6JnHLrbJCwQwCscn3BMWkTo+x+SG084IsrOs7Ps2xXcj4UFQiblBVhkm+YnopV6S8p60bmgdvv4YOfiS1p8g7qScLkB0rDUx9MvlzfC6ybsTcsB1Ty8lFySM4LJClTo2/H47+ED4=
+	t=1715685947; cv=none; b=UkRDi4t7ASAWSA6s/CJz7oShhasUeP/PvY3i/GbnUhxgm7bTyjhsDDP0I546+quLdWARXEVl2dpExnTx5Q+PCzyUsLwym4rX3TjGllslRhRr2cbcn3zYQLIsIMkjBWS8/9oyAkvVo4g9+1Cdizw/03JwLYAuKC6SmfIGxilKAxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686967; c=relaxed/simple;
-	bh=byHs1/VNlKrIUvzAvp0j5YOBTcUQ/s3ei8Qm0U/a2Kg=;
+	s=arc-20240116; t=1715685947; c=relaxed/simple;
+	bh=0O3NexeRfshJOxebj5zdc+pMQW0ZvLsmHEVNvb4rpCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C13HA9gfpbChkinK09B6Czjb8ttTW3qbdN/VWFUx19t7seX/90I7ca4UTFECB35aTfkJptHjgRr2XO1L8awOuvNpXFU564+fPPA/7EOq4pqE5NYKHWffZtvp7/nRqXDSyOsclg3QqsAf6u3+69BqJrZxP0Hadc4Z/th/WhBOulU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHFmuPNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3B3C2BD10;
-	Tue, 14 May 2024 11:42:46 +0000 (UTC)
+	 MIME-Version; b=aFrss9e3/2jLbKKKMfnYgKOun7nolqBGtik8ZqEvjM/6XhyioS6F1GtlplT9Q3pjKkVeoRcsrqQkysbtR2R7e1yE9hvJeW3mB4f1ojQimwOQMWxaTFt23MXscU5sRz2B1aNNUk4H1CvzBHe86IwjfD50fw+94y2/Oh6i+qQdS+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7oSrW/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BECDC2BD10;
+	Tue, 14 May 2024 11:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686966;
-	bh=byHs1/VNlKrIUvzAvp0j5YOBTcUQ/s3ei8Qm0U/a2Kg=;
+	s=korg; t=1715685946;
+	bh=0O3NexeRfshJOxebj5zdc+pMQW0ZvLsmHEVNvb4rpCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHFmuPNYq9I6LKGTmR8u+KiRCM2ccPzqCF/wpeNno7n+q5NaHn6VzjtCR+ILjFza/
-	 vSw1expnFHcGb2kJFh3eDUCx5DKkwetrPl5n1tPe2swsPT4/JqGewex1N9BqI0pAz/
-	 FK9t0XzeAR9KMu+/fbn6CaDhV3ot/DIwNgYMlZ5g=
+	b=o7oSrW/+1sEHc3XBRD1XYxaICmyjzwUb+0LxtdsOr0lMY/nxOrEYDaAckYSoMdJci
+	 k6uzXa4CeI2bcFbnSor/YtSu/i2ryBtgswPUzyzZns/6clI+3DQugrKufR8HHh5ndA
+	 HWRhqtEt40gbiTRqGpC/0/C6RLImlHO3jSa36UlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	karthikeyan <karthikeyan@linumiz.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 02/84] dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 282/301] mm: use memalloc_nofs_save() in page_cache_ra_order()
 Date: Tue, 14 May 2024 12:19:13 +0200
-Message-ID: <20240514100951.781540083@linuxfoundation.org>
+Message-ID: <20240514101042.912895464@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinod Koul <vkoul@kernel.org>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-[ Upstream commit afc89870ea677bd5a44516eb981f7a259b74280c ]
+commit 30153e4466647a17eebfced13eede5cbe4290e69 upstream.
 
-This reverts commit 22a9d9585812 ("dmaengine: pl330: issue_pending waits
-until WFP state") as it seems to cause regression in pl330 driver.
-Note the issue now exists in mainline so a fix to be done.
+See commit f2c817bed58d ("mm: use memalloc_nofs_save in readahead path"),
+ensure that page_cache_ra_order() do not attempt to reclaim file-backed
+pages too, or it leads to a deadlock, found issue when test ext4 large
+folio.
 
-Cc: stable@vger.kernel.org
-Reported-by: karthikeyan <karthikeyan@linumiz.com>
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ INFO: task DataXceiver for:7494 blocked for more than 120 seconds.
+ "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+ task:DataXceiver for state:D stack:0     pid:7494  ppid:1      flags:0x00000200
+ Call trace:
+  __switch_to+0x14c/0x240
+  __schedule+0x82c/0xdd0
+  schedule+0x58/0xf0
+  io_schedule+0x24/0xa0
+  __folio_lock+0x130/0x300
+  migrate_pages_batch+0x378/0x918
+  migrate_pages+0x350/0x700
+  compact_zone+0x63c/0xb38
+  compact_zone_order+0xc0/0x118
+  try_to_compact_pages+0xb0/0x280
+  __alloc_pages_direct_compact+0x98/0x248
+  __alloc_pages+0x510/0x1110
+  alloc_pages+0x9c/0x130
+  folio_alloc+0x20/0x78
+  filemap_alloc_folio+0x8c/0x1b0
+  page_cache_ra_order+0x174/0x308
+  ondemand_readahead+0x1c8/0x2b8
+  page_cache_async_ra+0x68/0xb8
+  filemap_readahead.isra.0+0x64/0xa8
+  filemap_get_pages+0x3fc/0x5b0
+  filemap_splice_read+0xf4/0x280
+  ext4_file_splice_read+0x2c/0x48 [ext4]
+  vfs_splice_read.part.0+0xa8/0x118
+  splice_direct_to_actor+0xbc/0x288
+  do_splice_direct+0x9c/0x108
+  do_sendfile+0x328/0x468
+  __arm64_sys_sendfile64+0x8c/0x148
+  invoke_syscall+0x4c/0x118
+  el0_svc_common.constprop.0+0xc8/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x4c/0x1f8
+  el0t_64_sync_handler+0xc0/0xc8
+  el0t_64_sync+0x188/0x190
+
+Link: https://lkml.kernel.org/r/20240426112938.124740-1-wangkefeng.wang@huawei.com
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Zhang Yi <yi.zhang@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/pl330.c | 3 ---
- 1 file changed, 3 deletions(-)
+ mm/readahead.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index d12939c25a618..1d7d4b8d810a5 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1051,9 +1051,6 @@ static bool _trigger(struct pl330_thread *thrd)
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -490,6 +490,7 @@ void page_cache_ra_order(struct readahea
+ 	pgoff_t index = readahead_index(ractl);
+ 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+ 	pgoff_t mark = index + ra->size - ra->async_size;
++	unsigned int nofs;
+ 	int err = 0;
+ 	gfp_t gfp = readahead_gfp_mask(mapping);
  
- 	thrd->req_running = idx;
+@@ -506,6 +507,8 @@ void page_cache_ra_order(struct readahea
+ 			new_order--;
+ 	}
  
--	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
--		UNTIL(thrd, PL330_STATE_WFP);
--
- 	return true;
- }
++	/* See comment in page_cache_ra_unbounded() */
++	nofs = memalloc_nofs_save();
+ 	filemap_invalidate_lock_shared(mapping);
+ 	while (index <= limit) {
+ 		unsigned int order = new_order;
+@@ -534,6 +537,7 @@ void page_cache_ra_order(struct readahea
  
--- 
-2.43.0
-
+ 	read_pages(ractl);
+ 	filemap_invalidate_unlock_shared(mapping);
++	memalloc_nofs_restore(nofs);
+ 
+ 	/*
+ 	 * If there were already pages in the page cache, then we may have
 
 
 
