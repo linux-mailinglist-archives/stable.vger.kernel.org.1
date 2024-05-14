@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-44497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D418C532B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:44:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2838C50CD
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22B5D285611
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:44:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F317AB21013
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D262143C6D;
-	Tue, 14 May 2024 11:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3158615E;
+	Tue, 14 May 2024 10:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKQoUho/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RagUqntG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF3C143C59;
-	Tue, 14 May 2024 11:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C26184D39;
+	Tue, 14 May 2024 10:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686333; cv=none; b=MIcYKdTRItaABvh4VdtaAXOjwKIAsWJ0JQSz/Kqx9WtUls3CV3DcH7RiF3f7XLxuEXanmMlo0wJnDFyZ6txXyUhMs2zFoImMoXE+d7M2G+GKwc9tKgrkHi7qjdt3LWDNQp+I5lr4AQLIUFZETaoiAjyBxeyEJcVxr2lmdVTZ+dU=
+	t=1715683700; cv=none; b=NhbN+2/1WwLAvOuZFUNO/odohepPBs/b8Mw2N8iAefhgtd5BWo7l8d/LHbJeGF204XsnTbPw9WQJse3nBEFUwwAjOsGjWhuQd7AmrmHduTPkNKfr2NQ21ycMdvbtQ0ETTG5QcPowY07ISU7UYjvkRAwtY1jlAwlkopLzlvxs3ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686333; c=relaxed/simple;
-	bh=kWC/dmKd5o70egMQb8wSMmmjDYEP+exfQjhK/IzYg4k=;
+	s=arc-20240116; t=1715683700; c=relaxed/simple;
+	bh=K/MYq9neioHiQf2Sjw/2B2Q6uTicAq1SiDz9BO1KL5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrFNdNNCOkEz5d4QKEhYRygf1r9B1p92D/I2pmqjSD7AlODDsYFhA/litSsROW2UKuaoS01H7MeGVpXQm3g1J0TTvRbEP/SHNUndPohr/b327FlkT1fCtFbf4YEc9RFUs/g5puJ+T+5ZYqtO5JymuZwzKUyhTKW5KmPEnx/ec6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKQoUho/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B9CC2BD10;
-	Tue, 14 May 2024 11:32:12 +0000 (UTC)
+	 MIME-Version; b=Ljv8lXB0IK2aEDpAlclWN5NGRcFpSP4R7NkAnIT4P3+NR6vax5XEcyNHs/uWNsDLSpEgJm6IIRyYc0ceQmzFylrYT+eaUc/BJw7hWl7ePuODCBoFbFJTwtB5LWe3FrJ2X70cgnq6uFzM10DTeymup8uZnNs0b2p9XEjK/0VuIgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RagUqntG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17DBC2BD10;
+	Tue, 14 May 2024 10:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686332;
-	bh=kWC/dmKd5o70egMQb8wSMmmjDYEP+exfQjhK/IzYg4k=;
+	s=korg; t=1715683700;
+	bh=K/MYq9neioHiQf2Sjw/2B2Q6uTicAq1SiDz9BO1KL5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKQoUho/2jXVysWy6cCbOlE0VZEhI3yyPqaP4eEsCTlelsP/k4J4j2SPlxGTQ8uBd
-	 CVvLOXzS3gmsO1YQvmk68rh8ut46MuLBJsmMPyRfqdUIOAvPr5lZr2u/pegJMGzv4I
-	 dY0V4aW+3NgaxW42oBJt69yAsV1OXSpOVh1FsnIg=
+	b=RagUqntGDVlwBEm2ftPoefNVqaJqjIcVEpsSwxv+tCyww7154U+urcofWE8mDOBWD
+	 HGOLTYZULFanQCDGgxr1PeUI7oKOWFugkFF+cNBaFMWiqP3gfMpJzMYSFKB5dhfDHP
+	 JMEAYnZZJNiSL3hFT9EwCgRKX2Lum2WEh/r1ppQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/236] scsi: mpi3mr: Avoid memcpy field-spanning write WARNING
+	Aman Dhoot <amandhoot12@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.8 259/336] ALSA: hda/realtek: Fix mute led of HP Laptop 15-da3001TU
 Date: Tue, 14 May 2024 12:17:43 +0200
-Message-ID: <20240514101024.205349920@linuxfoundation.org>
+Message-ID: <20240514101048.394469119@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Aman Dhoot <amandhoot12@gmail.com>
 
-[ Upstream commit 429846b4b6ce9853e0d803a2357bb2e55083adf0 ]
+commit 2d5af3ab9e6f1cf1468b2a5221b5c1f7f46c3333 upstream.
 
-When the "storcli2 show" command is executed for eHBA-9600, mpi3mr driver
-prints this WARNING message:
+This patch simply add SND_PCI_QUIRK for HP Laptop 15-da3001TU to fixed
+mute led of laptop.
 
-  memcpy: detected field-spanning write (size 128) of single field "bsg_reply_buf->reply_buf" at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 (size 1)
-  WARNING: CPU: 0 PID: 12760 at drivers/scsi/mpi3mr/mpi3mr_app.c:1658 mpi3mr_bsg_request+0x6b12/0x7f10 [mpi3mr]
-
-The cause of the WARN is 128 bytes memcpy to the 1 byte size array "__u8
-replay_buf[1]" in the struct mpi3mr_bsg_in_reply_buf. The array is intended
-to be a flexible length array, so the WARN is a false positive.
-
-To suppress the WARN, remove the constant number '1' from the array
-declaration and clarify that it has flexible length. Also, adjust the
-memory allocation size to match the change.
-
-Suggested-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://lore.kernel.org/r/20240323084155.166835-1-shinichiro.kawasaki@wdc.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Aman Dhoot <amandhoot12@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/CAMTp=B+3NG65Z684xMwHqdXDJhY+DJK-kuSw4adn6xwnG+b5JA@mail.gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_app.c    | 2 +-
- include/uapi/scsi/scsi_bsg_mpi3mr.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
-index 8c662d08706f1..42600e5c457a1 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_app.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
-@@ -1344,7 +1344,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job, unsigned int *reply
- 	if ((mpirep_offset != 0xFF) &&
- 	    drv_bufs[mpirep_offset].bsg_buf_len) {
- 		drv_buf_iter = &drv_bufs[mpirep_offset];
--		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) - 1 +
-+		drv_buf_iter->kern_buf_len = (sizeof(*bsg_reply_buf) +
- 					   mrioc->reply_sz);
- 		bsg_reply_buf = kzalloc(drv_buf_iter->kern_buf_len, GFP_KERNEL);
- 
-diff --git a/include/uapi/scsi/scsi_bsg_mpi3mr.h b/include/uapi/scsi/scsi_bsg_mpi3mr.h
-index fdc3517f9e199..c48c5d08c0fa0 100644
---- a/include/uapi/scsi/scsi_bsg_mpi3mr.h
-+++ b/include/uapi/scsi/scsi_bsg_mpi3mr.h
-@@ -382,7 +382,7 @@ struct mpi3mr_bsg_in_reply_buf {
- 	__u8	mpi_reply_type;
- 	__u8	rsvd1;
- 	__u16	rsvd2;
--	__u8	reply_buf[1];
-+	__u8	reply_buf[];
- };
- 
- /**
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9934,6 +9934,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x869d, "HP", ALC236_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
 
 
 
