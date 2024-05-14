@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-44104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E988C514F
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:28:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC608C4FF7
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:55:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D7712819A8
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5921F217A2
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA8212FF6A;
-	Tue, 14 May 2024 10:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC964DA13;
+	Tue, 14 May 2024 10:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMS9a3GM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELPyxF4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2862512FB21;
-	Tue, 14 May 2024 10:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A3153392;
+	Tue, 14 May 2024 10:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684245; cv=none; b=ENaxK+pV/RC6lJqUqbaxATCyl2poX1f7az0gvMt3cYLg7h5iRsn+ZNmvVSiBgUrwW4pGqTbOVsq9YVHdhGAo1LCFYKqoB0PZppj34enulfNHBMUAFJy6oxsQjC+nmxci9zlT1VuwFdXibwJKIJQD08Eisj9Tg0Wh+cdieCD5c6k=
+	t=1715682769; cv=none; b=otnQCXd9Ks9YOBT1Cra+U/pKIjuiCfTSBYvI2TWJmpzLf/YMR9XliM1FYDG5DAGISqrYtEsBMj7Blpt8E82f7w9ZLXFdGatJA1j7bV7Mv8tVt77y2mwdcsQanQFpfvzRhmOItvM/RiJnz/DoraEmquZoOFSM5uihTqlT3cJdn+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684245; c=relaxed/simple;
-	bh=LLqIEYpPf4gsgNOqQfl63N8RsBuB//dSQ+DuRztV/Sc=;
+	s=arc-20240116; t=1715682769; c=relaxed/simple;
+	bh=yOOrWfZoADmG90uvO0tE4bv1Po20yQhjWpl8Qlf1bzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGVgu+ixl1m2JZhwTXpn5N9FrM5tLZ5I3cvybv1HjpBHx55pHJgLI4nqVM1dNbGEro2IXqxkZQe+I4vgv29+I+V3y2C7U+8PyDXXHN/3fmCwikfT3+dxadIgGGGpPvJKCnC2rsaiqb2IrNXSo6kj7JtIMWKGA4xSCaxL+mIfECg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMS9a3GM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7BDC2BD10;
-	Tue, 14 May 2024 10:57:24 +0000 (UTC)
+	 MIME-Version; b=Ybl7Q3rzSBDWnySxDCUPIr7OEEE8k/BdjBSriw7uG7CAguEIMxE37O1fRZam59OG/PHo8J1PnyKvUmjGnjovBQuWGVy6qAAW3icrqcG8NuaMsMaOpoYCfalNm2TZWvJfy/8weob3s9MKgJsYEkC+eQSErkdffYy6yKRIabUrTCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELPyxF4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7CEC32782;
+	Tue, 14 May 2024 10:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715684245;
-	bh=LLqIEYpPf4gsgNOqQfl63N8RsBuB//dSQ+DuRztV/Sc=;
+	s=korg; t=1715682769;
+	bh=yOOrWfZoADmG90uvO0tE4bv1Po20yQhjWpl8Qlf1bzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cMS9a3GMXsaSE6OaZCL4ZGM/GyETrR5cXZ2fqk7U8f/BrTEpVCVL6GYVG5JN8iIMw
-	 2y0E8eEYdKbPrxAatuXOKsxGmZW3vhjUceeyH28U3zpfrba57JFb3pFiDAuZf1I0/a
-	 IuhqdbUYwa/FoetjUIINrABlPsWe6UpzOxQaTIL8=
+	b=ELPyxF4+3HttCWPKQSuTAmIAhM9M43okrAQNL/PpFd8tCxQVnQGcfz3Kzm2m5WBSy
+	 5L2676u+l+hUYxLb8DUpDUyvr5ua/FGK/ZPJ2Y2htET1yJELHwDhKvTTFC3JOJ1QRj
+	 zrbX+r/0oGhVMRom1oRVjXa+lYfAhHMmQI2hs6ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/301] pinctrl: pinctrl-aspeed-g6: Fix register offset for pinconf of GPIOR-T
-Date: Tue, 14 May 2024 12:14:43 +0200
-Message-ID: <20240514101032.697757585@linuxfoundation.org>
+Subject: [PATCH 6.8 080/336] drm/panel: ili9341: Correct use of device property APIs
+Date: Tue, 14 May 2024 12:14:44 +0200
+Message-ID: <20240514101041.626180327@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit c10cd03d69403fa0f00be8631bd4cb4690440ebd ]
+[ Upstream commit d43cd48ef1791801c61a54fade4a88d294dedf77 ]
 
-The register offset to disable the internal pull-down of GPIOR~T is 0x630
-instead of 0x620, as specified in the Ast2600 datasheet v15
-The datasheet can download from the official Aspeed website.
+It seems driver missed the point of proper use of device property APIs.
+Correct this by updating headers and calls respectively.
 
-Fixes: 15711ba6ff19 ("pinctrl: aspeed-g6: Add AST2600 pinconf support")
-Reported-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Message-ID: <20240313092809.2596644-1-billy_tsai@aspeedtech.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 5a04227326b0 ("drm/panel: Add ilitek ili9341 panel driver")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240425142706.2440113-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240425142706.2440113-2-andriy.shevchenko@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c | 34 +++++++++++-----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/panel/Kconfig                | 2 +-
+ drivers/gpu/drm/panel/panel-ilitek-ili9341.c | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
-index 80838dc54b3ab..7938741136a2c 100644
---- a/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
-+++ b/drivers/pinctrl/aspeed/pinctrl-aspeed-g6.c
-@@ -43,7 +43,7 @@
- #define SCU614		0x614 /* Disable GPIO Internal Pull-Down #1 */
- #define SCU618		0x618 /* Disable GPIO Internal Pull-Down #2 */
- #define SCU61C		0x61c /* Disable GPIO Internal Pull-Down #3 */
--#define SCU620		0x620 /* Disable GPIO Internal Pull-Down #4 */
-+#define SCU630		0x630 /* Disable GPIO Internal Pull-Down #4 */
- #define SCU634		0x634 /* Disable GPIO Internal Pull-Down #5 */
- #define SCU638		0x638 /* Disable GPIO Internal Pull-Down #6 */
- #define SCU690		0x690 /* Multi-function Pin Control #24 */
-@@ -2494,38 +2494,38 @@ static struct aspeed_pin_config aspeed_g6_configs[] = {
- 	ASPEED_PULL_DOWN_PINCONF(D14, SCU61C, 0),
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index 8f3783742208b..888297d0d3955 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -184,7 +184,7 @@ config DRM_PANEL_ILITEK_IL9322
  
- 	/* GPIOS7 */
--	ASPEED_PULL_DOWN_PINCONF(T24, SCU620, 23),
-+	ASPEED_PULL_DOWN_PINCONF(T24, SCU630, 23),
- 	/* GPIOS6 */
--	ASPEED_PULL_DOWN_PINCONF(P23, SCU620, 22),
-+	ASPEED_PULL_DOWN_PINCONF(P23, SCU630, 22),
- 	/* GPIOS5 */
--	ASPEED_PULL_DOWN_PINCONF(P24, SCU620, 21),
-+	ASPEED_PULL_DOWN_PINCONF(P24, SCU630, 21),
- 	/* GPIOS4 */
--	ASPEED_PULL_DOWN_PINCONF(R26, SCU620, 20),
-+	ASPEED_PULL_DOWN_PINCONF(R26, SCU630, 20),
- 	/* GPIOS3*/
--	ASPEED_PULL_DOWN_PINCONF(R24, SCU620, 19),
-+	ASPEED_PULL_DOWN_PINCONF(R24, SCU630, 19),
- 	/* GPIOS2 */
--	ASPEED_PULL_DOWN_PINCONF(T26, SCU620, 18),
-+	ASPEED_PULL_DOWN_PINCONF(T26, SCU630, 18),
- 	/* GPIOS1 */
--	ASPEED_PULL_DOWN_PINCONF(T25, SCU620, 17),
-+	ASPEED_PULL_DOWN_PINCONF(T25, SCU630, 17),
- 	/* GPIOS0 */
--	ASPEED_PULL_DOWN_PINCONF(R23, SCU620, 16),
-+	ASPEED_PULL_DOWN_PINCONF(R23, SCU630, 16),
+ config DRM_PANEL_ILITEK_ILI9341
+ 	tristate "Ilitek ILI9341 240x320 QVGA panels"
+-	depends on OF && SPI
++	depends on SPI
+ 	select DRM_KMS_HELPER
+ 	select DRM_GEM_DMA_HELPER
+ 	depends on BACKLIGHT_CLASS_DEVICE
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
+index 3574681891e81..7584ddb0e4416 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9341.c
+@@ -22,8 +22,9 @@
+ #include <linux/bitops.h>
+ #include <linux/delay.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
++#include <linux/property.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/spi/spi.h>
  
- 	/* GPIOR7 */
--	ASPEED_PULL_DOWN_PINCONF(U26, SCU620, 15),
-+	ASPEED_PULL_DOWN_PINCONF(U26, SCU630, 15),
- 	/* GPIOR6 */
--	ASPEED_PULL_DOWN_PINCONF(W26, SCU620, 14),
-+	ASPEED_PULL_DOWN_PINCONF(W26, SCU630, 14),
- 	/* GPIOR5 */
--	ASPEED_PULL_DOWN_PINCONF(T23, SCU620, 13),
-+	ASPEED_PULL_DOWN_PINCONF(T23, SCU630, 13),
- 	/* GPIOR4 */
--	ASPEED_PULL_DOWN_PINCONF(U25, SCU620, 12),
-+	ASPEED_PULL_DOWN_PINCONF(U25, SCU630, 12),
- 	/* GPIOR3*/
--	ASPEED_PULL_DOWN_PINCONF(V26, SCU620, 11),
-+	ASPEED_PULL_DOWN_PINCONF(V26, SCU630, 11),
- 	/* GPIOR2 */
--	ASPEED_PULL_DOWN_PINCONF(V24, SCU620, 10),
-+	ASPEED_PULL_DOWN_PINCONF(V24, SCU630, 10),
- 	/* GPIOR1 */
--	ASPEED_PULL_DOWN_PINCONF(U24, SCU620, 9),
-+	ASPEED_PULL_DOWN_PINCONF(U24, SCU630, 9),
- 	/* GPIOR0 */
--	ASPEED_PULL_DOWN_PINCONF(V25, SCU620, 8),
-+	ASPEED_PULL_DOWN_PINCONF(V25, SCU630, 8),
- 
- 	/* GPIOX7 */
- 	ASPEED_PULL_DOWN_PINCONF(AB10, SCU634, 31),
+@@ -691,7 +692,7 @@ static int ili9341_dpi_probe(struct spi_device *spi, struct gpio_desc *dc,
+ 	 * Every new incarnation of this display must have a unique
+ 	 * data entry for the system in this driver.
+ 	 */
+-	ili->conf = of_device_get_match_data(dev);
++	ili->conf = device_get_match_data(dev);
+ 	if (!ili->conf) {
+ 		dev_err(dev, "missing device configuration\n");
+ 		return -ENODEV;
 -- 
 2.43.0
 
