@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567458C5448
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:50:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4C08C539F
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0101028999E
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:49:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C9B91C22757
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BCB13665D;
-	Tue, 14 May 2024 11:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E959112D77C;
+	Tue, 14 May 2024 11:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X77A5QW1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrdR2Svf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1E0136648;
-	Tue, 14 May 2024 11:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A695712C554;
+	Tue, 14 May 2024 11:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686975; cv=none; b=AZ0HTBaqYH2s0826Qb722WLbTIX0e3oGVIE9K/1pin/H9CnJD2IkSKfHvaiQE31Kmf97+yDlApE0CW3EsVahdAjtI2plevJI8F2494siYe8ivam3IsSpL66chtXbgnYkdP5ze5CKNvVWZZsFXpK2dOgGWEig/oTacjTvrtRSHNE=
+	t=1715686656; cv=none; b=cqUt6n60Od/ZqxEwov6s9lsYXmMsMEMT9yIWhfXJm+KtBl3msTjCXTe4k8uRERxGH/tbyUo4ZY0P1/ht1uCINAm4ywcv6uKd/M4E240PV4PPtU2Tz8GEmkvyIHqh1D2xmlcaeb2PHuA+hrUM8Z+evaE5vm3zgwR//aSg/0BadN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686975; c=relaxed/simple;
-	bh=fuF0yqRFBsJPrgyiL0B2y2X1iezBjTVZ6ha6lyYIUNs=;
+	s=arc-20240116; t=1715686656; c=relaxed/simple;
+	bh=1DT2pRd5jKYqGYZBIcBAkH3/et59EGFXLCdficKLm00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sI4xDTiCPveKGuPAD+XA2aS4i6PIDjDO3rijDm3XTgHhYoGZnYOr2PPmUEC1nLHyeoXKCjxcvtve22WN5iukfU48wZgvzu29h00ktxIBMPvOPOAOqhtILqT/5VFZeD+AQsBZPGCLCIOvpHtwIexZOmUTJW0nW8/fx+B2nVnuxwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X77A5QW1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DF2C2BD10;
-	Tue, 14 May 2024 11:42:54 +0000 (UTC)
+	 MIME-Version; b=qnrlVmPj1EdTqD/UNoBhMJfQOUa39GaVbUWUI0PDtwctgs2rPIZbUD7ePnpf1YKddUo3Z02LQ2Z5wuURbI8fiu3m1r+IkYIw/EC7DVfp+iSYkOzaqEeHkMJfYlAq7n/V9nGNQVboVDXPxVwwBOvkWwXukO2U+Tra/2IBOcKsfiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrdR2Svf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA2AC2BD10;
+	Tue, 14 May 2024 11:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686975;
-	bh=fuF0yqRFBsJPrgyiL0B2y2X1iezBjTVZ6ha6lyYIUNs=;
+	s=korg; t=1715686656;
+	bh=1DT2pRd5jKYqGYZBIcBAkH3/et59EGFXLCdficKLm00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X77A5QW1RRoUQ9BVLqgRMlnCR+goZR+gbrmTpiadE+6oQNNUjgQclxRCoG5fpGGpA
-	 I5I3F06ukGJMScwE++gSWnk4lFI26ofFQzfkOG/AAqjyOQv3DpFHY2Pwuu7d8CrMcs
-	 YL9BAfGmJmjFvyAPcw6FgPBnAOuZ/JEGoFwM/OS8=
+	b=qrdR2SvfsGbPmgJTArE2NmBeSd6ajQ3I74F1gETduMuIs+Jba+himdlhrX3xKmuhQ
+	 +P3TuECE7L1gIQDrcj8VMrLPhTODXI3MtxEzfRxns11M4TVsyWAed8AVPG2YNIhtuJ
+	 HXEQCg4RZilXu0lmYZfqk9dBWbSVGpXneiFq8Ku0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 22/84] bna: ensure the copied buf is NUL terminated
-Date: Tue, 14 May 2024 12:19:33 +0200
-Message-ID: <20240514100952.529388048@linuxfoundation.org>
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 212/236] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
+Date: Tue, 14 May 2024 12:19:34 +0200
+Message-ID: <20240514101028.408258022@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit 8c34096c7fdf272fd4c0c37fe411cd2e3ed0ee9f ]
+commit d85cf67a339685beae1d0aee27b7f61da95455be upstream.
 
-Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
-userspace to that buffer. Later, we use sscanf on this buffer but we don't
-ensure that the string is terminated inside the buffer, this can lead to
-OOB read when using sscanf. Fix this issue by using memdup_user_nul
-instead of memdup_user.
+The EXT_RGMII_OOB_CTRL register can be written from different
+contexts. It is predominantly written from the adjust_link
+handler which is synchronized by the phydev->lock, but can
+also be written from a different context when configuring the
+mii in bcmgenet_mii_config().
 
-Fixes: 7afc5dbde091 ("bna: Add debugfs interface.")
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://lore.kernel.org/r/20240424-fix-oob-read-v2-2-f1f1b53a10f4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The chances of contention are quite low, but it is conceivable
+that adjust_link could occur during resume when WoL is enabled
+so use the phydev->lock synchronizer in bcmgenet_mii_config()
+to be sure.
+
+Fixes: afe3f907d20f ("net: bcmgenet: power on MII block for all MII modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/brocade/bna/bnad_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmmii.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-index 04ad0f2b9677e..777f0d7e48192 100644
---- a/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad_debugfs.c
-@@ -312,7 +312,7 @@ bnad_debugfs_write_regrd(struct file *file, const char __user *buf,
- 	void *kern_buf;
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -2,7 +2,7 @@
+ /*
+  * Broadcom GENET MDIO routines
+  *
+- * Copyright (c) 2014-2017 Broadcom
++ * Copyright (c) 2014-2024 Broadcom
+  */
  
- 	/* Copy the user space buf */
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
+ #include <linux/acpi.h>
+@@ -71,10 +71,12 @@ static void bcmgenet_mac_config(struct n
+ 	 * transmit -- 25MHz(100Mbps) or 125MHz(1Gbps).
+ 	 * Receive clock is provided by the PHY.
+ 	 */
++	mutex_lock(&phydev->lock);
+ 	reg = bcmgenet_ext_readl(priv, EXT_RGMII_OOB_CTRL);
+ 	reg &= ~OOB_DISABLE;
+ 	reg |= RGMII_LINK;
+ 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
++	mutex_unlock(&phydev->lock);
  
-@@ -372,7 +372,7 @@ bnad_debugfs_write_regwr(struct file *file, const char __user *buf,
- 	void *kern_buf;
- 
- 	/* Copy the user space buf */
--	kern_buf = memdup_user(buf, nbytes);
-+	kern_buf = memdup_user_nul(buf, nbytes);
- 	if (IS_ERR(kern_buf))
- 		return PTR_ERR(kern_buf);
- 
--- 
-2.43.0
-
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
 
 
 
