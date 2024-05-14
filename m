@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-44366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7968C5272
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:37:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803158C552E
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5D35B2187B
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:37:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 242771F21294
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C6613D508;
-	Tue, 14 May 2024 11:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D3D4122C;
+	Tue, 14 May 2024 11:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfnWfmdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDdfuOGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0636A6311D;
-	Tue, 14 May 2024 11:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAF42B9AD;
+	Tue, 14 May 2024 11:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685904; cv=none; b=sPUat6qfqlbgqRYDt7fdsj+EqUBXR4xy7QkM3dyzJz1XeBS6YT6JMTAKsYes+wdNtCE+fUTUyRtdnVMGPcxVfPRG3yoJgSUagspOoP6xaC+zmBuYOj0yRFsbH1iiwa0M0a5HxkEUhYGJi28g6Mr8oMbxlRhIwlO8H+Q7nO7LjfU=
+	t=1715687708; cv=none; b=ZkQCW6P9MWySk8gL0zaFkmJ4NCej7AWut0nFtpaTsRSc3CMUh1/t7Lcmwdit1LleMeBp+qkZJaB1grQ3kdt5zIQzTlRqvLyF7EX1lQszzjw8QYyoafNGqMjRH4Kv2tdTiB4eGm59/Ev2941kt463h/aP3JGmb6YGpL+PqGFVgyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685904; c=relaxed/simple;
-	bh=2mK4isx8QZU6RVowVkcWpfm4IfqbFFjki3Mxt1ZUUTo=;
+	s=arc-20240116; t=1715687708; c=relaxed/simple;
+	bh=ceJ0tzOvKTdWtiFfp3GeQq/eX2eX5AN93Rd95s5gHag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSU3CtRsoeUQ3yDULeHfXHrsZVvm4THVMHfzN4AVawcSBcc+7w9MbFuMHXdfilrrdygnvFdkmREfQFRNIKbArUL3im6Ox7N21rVQkQ5Dfm0UitttJRO1+OolCEh8uiRlVhM4AxfITAFinHkGgUlVQ1Nb1mF4OJG3dJy8s6YXDD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfnWfmdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65341C2BD10;
-	Tue, 14 May 2024 11:25:03 +0000 (UTC)
+	 MIME-Version; b=kyIIB/tWeGOePdSaTHLw4e3NoRdth0yUypHTWiHLxOHpRhtbNLi5afDb5Lsvoq/poGG2rjWHUt7VV6UYKq673LZhCS5R5SiooNFwRPdkOYBZ9hqBRkza6pAlI/gmpdg1vKiQpbSR0IBs0hIKQyn/hKQHYI3I1I326IPClcgHJXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDdfuOGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D27C2BD10;
+	Tue, 14 May 2024 11:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685903;
-	bh=2mK4isx8QZU6RVowVkcWpfm4IfqbFFjki3Mxt1ZUUTo=;
+	s=korg; t=1715687707;
+	bh=ceJ0tzOvKTdWtiFfp3GeQq/eX2eX5AN93Rd95s5gHag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfnWfmdlTT+Iadw1X8WrASdafAkBpOe3ge252XnuKfvcMBjAXJdwfzW+3Nh7Si2BE
-	 X0On/zO5SE89yKtb3zTg1OhRCLeurdRynvgy03hHMhX/r5I87+zvfNkXVJW2jtykQO
-	 JGv+oRfcFYfqDNZkoFj1dFAqGGEVVebKpRp/Dqzc=
+	b=mDdfuOGneaMVuNEyFBALEWjVn7ClduLeckEg9pJi5rZcrWCd1CoczQu31mNJf12l/
+	 A2JKS8PxJsaH8pBNJyO3XHc1kCYmhngOyRIuMwhpAoSMWZnT3dLpOz7ojdm9AyprHp
+	 I+G2J0sJJGLyOMWJxq+0HqLbFQ5ZOTVLypCV5OdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gnattu OC <gnattuoc@me.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Krzysztof Gibala <krzysztof.gibala@intel.com>
-Subject: [PATCH 6.6 273/301] drm/i915/gt: Automate CCS Mode setting during engine resets
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 046/168] ASoC: meson: cards: select SND_DYNAMIC_MINORS
 Date: Tue, 14 May 2024 12:19:04 +0200
-Message-ID: <20240514101042.573933855@linuxfoundation.org>
+Message-ID: <20240514101008.430729008@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit 51c1b42a232f17743cd825be6790cb64735ff98f upstream.
+[ Upstream commit 6db26f9ea4edd8a17d39ab3c20111e3ccd704aef ]
 
-We missed setting the CCS mode during resume and engine resets.
-Create a workaround to be added in the engine's workaround list.
-This workaround sets the XEHP_CCS_MODE value at every reset.
+Amlogic sound cards do create a lot of pcm interfaces, possibly more than
+8. Some pcm interfaces are internal (like DPCM backends and c2c) and not
+exposed to userspace.
 
-The issue can be reproduced by running:
+Those interfaces still increase the number passed to snd_find_free_minor(),
+which eventually exceeds 8 causing -EBUSY error on card registration if
+CONFIG_SND_DYNAMIC_MINORS=n and the interface is exposed to userspace.
 
-  $ clpeak --kernel-latency
+select CONFIG_SND_DYNAMIC_MINORS for Amlogic cards to avoid the problem.
 
-Without resetting the CCS mode, we encounter a fence timeout:
-
-  Fence expiration time out i915-0000:03:00.0:clpeak[2387]:2!
-
-Fixes: 6db31251bb26 ("drm/i915/gt: Enable only one CCS for compute workload")
-Reported-by: Gnattu OC <gnattuoc@me.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10895
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: <stable@vger.kernel.org> # v6.2+
-Tested-by: Gnattu OC <gnattuoc@me.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Tested-by: Krzysztof Gibala <krzysztof.gibala@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240426000723.229296-1-andi.shyti@linux.intel.com
-(cherry picked from commit 4cfca03f76413db115c3cc18f4370debb1b81b2b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240426134150.3053741-1-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c |    6 +++---
- drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h |    2 +-
- drivers/gpu/drm/i915/gt/intel_workarounds.c |    4 +++-
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ sound/soc/meson/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.c
-@@ -8,14 +8,14 @@
- #include "intel_gt_ccs_mode.h"
- #include "intel_gt_regs.h"
+diff --git a/sound/soc/meson/Kconfig b/sound/soc/meson/Kconfig
+index b93ea33739f29..6458d5dc4902f 100644
+--- a/sound/soc/meson/Kconfig
++++ b/sound/soc/meson/Kconfig
+@@ -99,6 +99,7 @@ config SND_MESON_AXG_PDM
  
--void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-+unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt)
- {
- 	int cslice;
- 	u32 mode = 0;
- 	int first_ccs = __ffs(CCS_MASK(gt));
+ config SND_MESON_CARD_UTILS
+ 	tristate
++	select SND_DYNAMIC_MINORS
  
- 	if (!IS_DG2(gt->i915))
--		return;
-+		return 0;
- 
- 	/* Build the value for the fixed CCS load balancing */
- 	for (cslice = 0; cslice < I915_MAX_CCS; cslice++) {
-@@ -35,5 +35,5 @@ void intel_gt_apply_ccs_mode(struct inte
- 						     XEHP_CCS_MODE_CSLICE_MASK);
- 	}
- 
--	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, mode);
-+	return mode;
- }
---- a/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_ccs_mode.h
-@@ -8,6 +8,6 @@
- 
- struct intel_gt;
- 
--void intel_gt_apply_ccs_mode(struct intel_gt *gt);
-+unsigned int intel_gt_apply_ccs_mode(struct intel_gt *gt);
- 
- #endif /* __INTEL_GT_CCS_MODE_H__ */
---- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
-+++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
-@@ -2828,6 +2828,7 @@ add_render_compute_tuning_settings(struc
- static void ccs_engine_wa_mode(struct intel_engine_cs *engine, struct i915_wa_list *wal)
- {
- 	struct intel_gt *gt = engine->gt;
-+	u32 mode;
- 
- 	if (!IS_DG2(gt->i915))
- 		return;
-@@ -2844,7 +2845,8 @@ static void ccs_engine_wa_mode(struct in
- 	 * After having disabled automatic load balancing we need to
- 	 * assign all slices to a single CCS. We will call it CCS mode 1
- 	 */
--	intel_gt_apply_ccs_mode(gt);
-+	mode = intel_gt_apply_ccs_mode(gt);
-+	wa_masked_en(wal, XEHP_CCS_MODE, mode);
- }
- 
- /*
+ config SND_MESON_CODEC_GLUE
+ 	tristate
+-- 
+2.43.0
+
 
 
 
