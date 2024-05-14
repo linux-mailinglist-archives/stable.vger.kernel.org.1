@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-44293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89098C521A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9BF8C5306
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D7F1C21743
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AF69281938
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8C65CDF0;
-	Tue, 14 May 2024 11:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1271113956A;
+	Tue, 14 May 2024 11:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SE0rKdOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyjXn8P8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093D612B16A;
-	Tue, 14 May 2024 11:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59EE84D26;
+	Tue, 14 May 2024 11:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685503; cv=none; b=k3CrkYX6CVDBKhSBqke4zJWsVfKvmPI/ZYgVYBL1jPx6DP/CqufZJ1uw3V+bxh2E3y+JY9LARoAl275fotvXdVVOK5Ofq0up0fGtlYdYv3Aa4CbBKP0EM89qNO6M0SZeNg90XWYvn+ekWYIdx48JEqEyDuz1sfnyGe/+PQ6hfsY=
+	t=1715686269; cv=none; b=oDJdHblrfvJ89kr6ZHEE7ZBb2x06ZQU4q0iU+qtpf2pOs6JyLkXIfW93Mr/rIxH3C3dsI8CKCt70S6QLnO7KE+vYrL1pcQJmHfigU9cGpCl8HAKUonNiA/kTz+zpe8Lz4/iWa9okFUuxisSc29MSfFqbwLsUPDqv3hdadKDqKBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685503; c=relaxed/simple;
-	bh=96PhfH3etZXyASop+MFshTO2EBTDQhcCAgP0rhWRF+8=;
+	s=arc-20240116; t=1715686269; c=relaxed/simple;
+	bh=aZB+F0QpHQnxbIN/ve6GQ5K3AC15BTf0LBQL9xBoBmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2s7uwxcCVphc3wXWriHaiEK33J1DhEbr8skb+mbBv65NLaIUEkiakt13pKstH0ClQJXjQAcvbd7waWya0w6oB3WmSXhoLZacVSP9ZQpA4aF9mCQirTONiyJyJFN9pBpi7k7k1PfPfCKVfdDSVXHjVXIp3MZkbzBKJxYW+WOf7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SE0rKdOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F570C2BD10;
-	Tue, 14 May 2024 11:18:22 +0000 (UTC)
+	 MIME-Version; b=YcEOKXAJE36rxnKnKGrKVF99qGw7UUBGVJqBZIL1sCb83/YUUAVcOtIQ6ABXE5E5EhJ+UVSsbHdX3OVmCPJMpGQ5QdGhJFKhAc/B4KYgovM26UuRyilpa0hwYfJNusV5x3gmt+/B9RcIn7wqfsoSY/0+4LBv5r0mKR79kVjzc8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyjXn8P8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415AEC2BD10;
+	Tue, 14 May 2024 11:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685502;
-	bh=96PhfH3etZXyASop+MFshTO2EBTDQhcCAgP0rhWRF+8=;
+	s=korg; t=1715686269;
+	bh=aZB+F0QpHQnxbIN/ve6GQ5K3AC15BTf0LBQL9xBoBmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SE0rKdOj407aXqBY6F39u/S7Gb/FTm45Jaa3lOZxTZPn+rl9lHahHEql7SQkOdy9n
-	 a4URNcBQNbwq3VWFpeOW6oqZ0qFB9l4AzDlf13apfbsrSbmAqN0+s107K67FUNw95t
-	 HEz34Ay64jDOiNIcefVnHQ2Tg3u+aORC/25PcV7o=
+	b=VyjXn8P8QCzLeWlfU7RK2yhVShBhV2xSfDy1m/Vst+H5rIrsJS6fn1Pd1GrFyDMKj
+	 g+4aGo+dfHePd9fMr1XlzN9Tm9NogGPRxibfXU4CK9MsX2NIkd53YWppNT2PlemJtC
+	 dxMzFy9XI8cLGATjNMGZR4T9rXuCEDrbBaaBIESQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/301] drm/nouveau/dp: Dont probe eDP ports twice harder
-Date: Tue, 14 May 2024 12:17:19 +0200
-Message-ID: <20240514101038.599090517@linuxfoundation.org>
+Subject: [PATCH 6.1 078/236] net: core: reject skb_copy(_expand) for fraglist GSO skbs
+Date: Tue, 14 May 2024 12:17:20 +0200
+Message-ID: <20240514101023.331927004@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit bf52d7f9b2067f02efe7e32697479097aba4a055 ]
+[ Upstream commit d091e579b864fa790dd6a0cd537a22c383126681 ]
 
-I didn't pay close enough attention the last time I tried to fix this
-problem - while we currently do correctly take care to make sure we don't
-probe a connected eDP port more then once, we don't do the same thing for
-eDP ports we found to be disconnected.
+SKB_GSO_FRAGLIST skbs must not be linearized, otherwise they become
+invalid. Return NULL if such an skb is passed to skb_copy or
+skb_copy_expand, in order to prevent a crash on a potential later
+call to skb_gso_segment.
 
-So, fix this and make sure we only ever probe eDP ports once and then leave
-them at that connector state forever (since without HPD, it's not going to
-change on its own anyway). This should get rid of the last few GSP errors
-getting spit out during runtime suspend and resume on some machines, as we
-tried to reprobe eDP ports in response to ACPI hotplug probe events.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240404233736.7946-3-lyude@redhat.com
-(cherry picked from commit fe6660b661c3397af0867d5d098f5b26581f1290)
+Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_dp.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/core/skbuff.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_dp.c b/drivers/gpu/drm/nouveau/nouveau_dp.c
-index 6a4980b2d4d4e..bf2ae67b03d94 100644
---- a/drivers/gpu/drm/nouveau/nouveau_dp.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dp.c
-@@ -108,12 +108,15 @@ nouveau_dp_detect(struct nouveau_connector *nv_connector,
- 	u8 *dpcd = nv_encoder->dp.dpcd;
- 	int ret = NOUVEAU_DP_NONE, hpd;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index e38a4c7449f62..4d46788cd493a 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1720,11 +1720,17 @@ static inline int skb_alloc_rx_flag(const struct sk_buff *skb)
  
--	/* If we've already read the DPCD on an eDP device, we don't need to
--	 * reread it as it won't change
-+	/* eDP ports don't support hotplugging - so there's no point in probing eDP ports unless we
-+	 * haven't probed them once before.
+ struct sk_buff *skb_copy(const struct sk_buff *skb, gfp_t gfp_mask)
+ {
+-	int headerlen = skb_headroom(skb);
+-	unsigned int size = skb_end_offset(skb) + skb->data_len;
+-	struct sk_buff *n = __alloc_skb(size, gfp_mask,
+-					skb_alloc_rx_flag(skb), NUMA_NO_NODE);
++	struct sk_buff *n;
++	unsigned int size;
++	int headerlen;
++
++	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
++		return NULL;
+ 
++	headerlen = skb_headroom(skb);
++	size = skb_end_offset(skb) + skb->data_len;
++	n = __alloc_skb(size, gfp_mask,
++			skb_alloc_rx_flag(skb), NUMA_NO_NODE);
+ 	if (!n)
+ 		return NULL;
+ 
+@@ -2037,12 +2043,17 @@ struct sk_buff *skb_copy_expand(const struct sk_buff *skb,
+ 	/*
+ 	 *	Allocate the copy buffer
  	 */
--	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
--	    dpcd[DP_DPCD_REV] != 0)
--		return NOUVEAU_DP_SST;
-+	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
-+		if (connector->status == connector_status_connected)
-+			return NOUVEAU_DP_SST;
-+		else if (connector->status == connector_status_disconnected)
-+			return NOUVEAU_DP_NONE;
-+	}
+-	struct sk_buff *n = __alloc_skb(newheadroom + skb->len + newtailroom,
+-					gfp_mask, skb_alloc_rx_flag(skb),
+-					NUMA_NO_NODE);
+-	int oldheadroom = skb_headroom(skb);
+ 	int head_copy_len, head_copy_off;
++	struct sk_buff *n;
++	int oldheadroom;
++
++	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
++		return NULL;
  
- 	mutex_lock(&nv_encoder->dp.hpd_irq_lock);
- 	if (mstm) {
++	oldheadroom = skb_headroom(skb);
++	n = __alloc_skb(newheadroom + skb->len + newtailroom,
++			gfp_mask, skb_alloc_rx_flag(skb),
++			NUMA_NO_NODE);
+ 	if (!n)
+ 		return NULL;
+ 
 -- 
 2.43.0
 
