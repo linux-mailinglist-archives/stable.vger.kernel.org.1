@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-44216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-43919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3568C51C6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:32:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30928C5032
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 12:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71DA11F225AA
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:32:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8168CB20AB6
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 10:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066CF13C685;
-	Tue, 14 May 2024 11:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20F513A259;
+	Tue, 14 May 2024 10:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xhzs5hCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRpMU9RO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B850113AD16;
-	Tue, 14 May 2024 11:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FF913A256;
+	Tue, 14 May 2024 10:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715685012; cv=none; b=WevKHwGFWKbsskkWDD86buaEp/+YN1mZiMV7uf3Mpvn2jgOlMsI8BHjSZ6exj4kP2fiuHReCU6Al7ml3HG7aYlni6adLIiOrCBdHnVj0B0mL+lAHDXxWAEXZUBqbrisJ8EM0OlcaiHnBXd2uoyPPibWxmSJnVrdseaQ3y/7QvjM=
+	t=1715683081; cv=none; b=KjvWkzvDfLPZhRukQOlRNY1+qfG6z0ffZ8dcA7uwa61eeKCnZEh3n8Pa/QYIUTVOiWfBw3rbUyAfOBhbxRcJBJeeA3lC7cb82nYPxry8SexKge4nBHTPt30MnQIaKY8l5Yd3SHU+H51ITyz4g6p/IMEyi+TWjc6XhgLXePuYuqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715685012; c=relaxed/simple;
-	bh=l0HYPLDk1vgqY0u5y7csCZdLjkcG9UgqWKSd9lG3R/g=;
+	s=arc-20240116; t=1715683081; c=relaxed/simple;
+	bh=XciNWBk3ZvKLczCN5rSQe2YTLBYpqnOxWW8cU3rPc9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMU6ZN/YLzwS364SF/HZbgAisT0lU7aqa/ue+ce4+TDk9OCSqUDNbhiSW/288KsouLI+dqWgBP2uc756HylX2tSjx7TEZAkzoFKreOyQiGS5kJ5uRWJJWbWJx1yzKthqbMwYhORLscoNcej4yK9F2ktxR7jU2NthPSczHXXuLiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xhzs5hCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F871C2BD10;
-	Tue, 14 May 2024 11:10:09 +0000 (UTC)
+	 MIME-Version; b=LSrRja/t+9ELLvyDN+H7Y1KRY9WfvCnjjLrkRWjT0QVUw8IdGeaq9wIXLYd2SmipQv8mQBOSxoubALsjZNJGEpN1SwZdsucqHQYVJmj7tGupVnt+E7E/Fe6L/xcakvsc3ZHUhQccv76CrFBEUj5CpwaDX7Qz/9+nqU7NfcZdkVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRpMU9RO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C6EC2BD10;
+	Tue, 14 May 2024 10:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715685012;
-	bh=l0HYPLDk1vgqY0u5y7csCZdLjkcG9UgqWKSd9lG3R/g=;
+	s=korg; t=1715683081;
+	bh=XciNWBk3ZvKLczCN5rSQe2YTLBYpqnOxWW8cU3rPc9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xhzs5hCWl+bDxqcEhEVHFhSe7JQTxXfWVhcKRHCtI0rff1+j4EuaqrPYdDrmi0Thh
-	 v65xWwp7Zgh69aCg7RXRVysfjpDnOV9ptroCtw0y/AFAajoXNdclIYf4++xJ/s+x17
-	 WQHcBoHd22mSpH5MtDIBW2XPGQcWt0AFbE1LIkQw=
+	b=cRpMU9ROjqqNpBEEjQbKNTk+Jydm3qMXL2hE7Sj3v39tjYqr2pu5TtD+PTGl4lV/I
+	 5nSuqD3ldHA1VrhKQ/AAzvVjntAd8N0ZUigc35XWhkeX5bCIQBE4KWjftik16U+IRW
+	 XJnju/6cA7F3XiRiNTubN8GxQ3q5rbP538dUR+cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/301] KVM: arm64: vgic-v2: Check for non-NULL vCPU in vgic_v2_parse_attr()
-Date: Tue, 14 May 2024 12:16:06 +0200
-Message-ID: <20240514101035.838899746@linuxfoundation.org>
+Subject: [PATCH 6.8 163/336] drm/amd/display: Skip on writeback when its not applicable
+Date: Tue, 14 May 2024 12:16:07 +0200
+Message-ID: <20240514101044.759448477@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
-References: <20240514101032.219857983@linuxfoundation.org>
+In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
+References: <20240514101038.595152603@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 6ddb4f372fc63210034b903d96ebbeb3c7195adb ]
+[ Upstream commit ecedd99a9369fb5cde601ae9abd58bca2739f1ae ]
 
-vgic_v2_parse_attr() is responsible for finding the vCPU that matches
-the user-provided CPUID, which (of course) may not be valid. If the ID
-is invalid, kvm_get_vcpu_by_id() returns NULL, which isn't handled
-gracefully.
+[WHY]
+dynamic memory safety error detector (KASAN) catches and generates error
+messages "BUG: KASAN: slab-out-of-bounds" as writeback connector does not
+support certain features which are not initialized.
 
-Similar to the GICv3 uaccess flow, check that kvm_get_vcpu_by_id()
-actually returns something and fail the ioctl if not.
+[HOW]
+Skip them when connector type is DRM_MODE_CONNECTOR_WRITEBACK.
 
-Cc: stable@vger.kernel.org
-Fixes: 7d450e282171 ("KVM: arm/arm64: vgic-new: Add userland access to VGIC dist registers")
-Reported-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240424173959.3776798-2-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3199
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Acked-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-kvm-device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-index c11962f901e0c..2f9e8c611f642 100644
---- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-+++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-@@ -337,12 +337,12 @@ int kvm_register_vgic_device(unsigned long type)
- int vgic_v2_parse_attr(struct kvm_device *dev, struct kvm_device_attr *attr,
- 		       struct vgic_reg_attr *reg_attr)
- {
--	int cpuid;
-+	int cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 0d3e553647993..9044214dfdbdf 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3028,6 +3028,10 @@ static int dm_resume(void *handle)
+ 	/* Do mst topology probing after resuming cached state*/
+ 	drm_connector_list_iter_begin(ddev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
++
++		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
++			continue;
++
+ 		aconnector = to_amdgpu_dm_connector(connector);
+ 		if (aconnector->dc_link->type != dc_connection_mst_branch ||
+ 		    aconnector->mst_root)
+@@ -5879,6 +5883,9 @@ get_highest_refresh_rate_mode(struct amdgpu_dm_connector *aconnector,
+ 		&aconnector->base.probed_modes :
+ 		&aconnector->base.modes;
  
--	cpuid = FIELD_GET(KVM_DEV_ARM_VGIC_CPUID_MASK, attr->attr);
--
--	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
- 	reg_attr->addr = attr->attr & KVM_DEV_ARM_VGIC_OFFSET_MASK;
-+	reg_attr->vcpu = kvm_get_vcpu_by_id(dev->kvm, cpuid);
-+	if (!reg_attr->vcpu)
-+		return -EINVAL;
++	if (aconnector->base.connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
++		return NULL;
++
+ 	if (aconnector->freesync_vid_base.clock != 0)
+ 		return &aconnector->freesync_vid_base;
  
- 	return 0;
- }
+@@ -8633,10 +8640,10 @@ static void amdgpu_dm_commit_audio(struct drm_device *dev,
+ 		if (!drm_atomic_crtc_needs_modeset(new_crtc_state))
+ 			continue;
+ 
++notify:
+ 		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
+ 			continue;
+ 
+-notify:
+ 		aconnector = to_amdgpu_dm_connector(connector);
+ 
+ 		mutex_lock(&adev->dm.audio_lock);
 -- 
 2.43.0
 
