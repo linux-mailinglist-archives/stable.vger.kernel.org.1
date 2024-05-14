@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-44032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF31F8C50E2
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:14:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5C98C5225
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FA5B1F21498
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:14:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2616B21B4B
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB35129E81;
-	Tue, 14 May 2024 10:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA88D12CD89;
+	Tue, 14 May 2024 11:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SI7MZmi/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtewHhfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876B4129E74;
-	Tue, 14 May 2024 10:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8504E129A99;
+	Tue, 14 May 2024 11:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683793; cv=none; b=A+BcrtqDGBI1K2cMQc2QIttfKlDihstucNDQhvQoLFU+hEfWm64cgAtNv1L3ygXemayYZcksPaQYp/aQvsbV1OOiQm8UNvObOj0l0zpvcvDX4vAEqN/sGQXkqzJ9OW0xKSIFcF79t05CFTJbPxJbgixHPHiEjJNNyqmRwAP+1yk=
+	t=1715685569; cv=none; b=fBEGMV6zF2NbfU25NPTZluxvhIKE+jcH5/rc49nS6mVa1M3pGHNDMBUwJCNbntYYOpxuS9P0WPQNOPrDvg7aCaOkZet/Ts2vMsuXrPbfRE7H+GZQgkCHoWlWRAVXbuKWlrgZkPSG6nkHJgXrvWiiLPtVmp2VmOYrNsuFC0HoIls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683793; c=relaxed/simple;
-	bh=cXRhl6dkY8kN0xoK1WR5k5fq3WM86iqcnviK4JUZHeo=;
+	s=arc-20240116; t=1715685569; c=relaxed/simple;
+	bh=kGz0XNx+y15sdfexRliJNq2HdU2TiSxe53g/8l715V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHgVlTSQzDLq/kx5DpzwunRx3EY5WAeCmaNaffwD9+CoEvrE+6KZlh7u8PI2DNpxlwjalmzLwSUkbrM9RIR1dWJgqLCrz6G+jsKsDjPSuFdi9/RkAM3lFL+JMUWHosqsf65py+ks0fRtFSYxBtJOVAcHw4DlsCNghehgOJCRxKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SI7MZmi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC780C2BD10;
-	Tue, 14 May 2024 10:49:52 +0000 (UTC)
+	 MIME-Version; b=I7SqD9ecBhM7Kc/AjupPsyyWPJzWqyz7HiEbHe52Io5BXvJ4I0erABPTD+ta8zcFl4xyE11qhmZAopInQyIIDLT288csYCn+gCk0kjnwrbjm8p5mIP775Z6ObBFqTC/nCcAv3QJaQQ+oNObdpx0gq/Zh2iAceuFD9s8khxCJdqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtewHhfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981C6C2BD10;
+	Tue, 14 May 2024 11:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683793;
-	bh=cXRhl6dkY8kN0xoK1WR5k5fq3WM86iqcnviK4JUZHeo=;
+	s=korg; t=1715685569;
+	bh=kGz0XNx+y15sdfexRliJNq2HdU2TiSxe53g/8l715V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SI7MZmi/4y+2/AXUGhoveAyG6XGPuRgWU8av+PXmP8c9at9J8PnLV0WILDoQa4NJL
-	 Pp/dJwlAZMFm+zqcVLWpV277UXRq1sLXtuBDk8I0qVAo+pR5TpKbC8RoFQ37yaU3kq
-	 ux8sKDJBkuL/Ukzq7APUBv3CVjxNPnF2zUEocBLA=
+	b=WtewHhfcA/Zd4sTfVDR4RkgE+tIjkZCGvhTfXJJjM+eeZlUn6iRc/ocqV/z+Ibdwv
+	 oJgDvWqicsP9vrJ8tBIjZAXwE6capTYDd4u1SXt0nwqAbgzEYG22qto0Y0AHZnykyP
+	 GDe1MT9yDqFozmI7gR183czshr5sNV5vyytdr+KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.8 275/336] iio: pressure: Fixes SPI support for BMP3xx devices
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 208/301] net: hns3: use appropriate barrier function after setting a bit value
 Date: Tue, 14 May 2024 12:17:59 +0200
-Message-ID: <20240514101049.005461903@linuxfoundation.org>
+Message-ID: <20240514101040.112548502@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-commit 5ca29ea4e4073b3caba750efe155b1bd4c597ca9 upstream.
+[ Upstream commit 094c281228529d333458208fd02fcac3b139d93b ]
 
-Bosch does not use unique BMPxxx_CHIP_ID for the different versions
-of the device which leads to misidentification of devices if their
-ID is used. Use a new value in the chip_info structure instead of
-the BMPxxx_CHIP_ID, in order to choose the correct regmap_bus to
-be used.
+There is a memory barrier in followed case. When set the port down,
+hclgevf_set_timmer will set DOWN in state. Meanwhile, the service task has
+different behaviour based on whether the state is DOWN. Thus, to make sure
+service task see DOWN, use smp_mb__after_atomic after calling set_bit().
 
-Fixes: a9dd9ba32311 ("iio: pressure: Fixes BMP38x and BMP390 SPI support")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240316110743.1998400-3-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+          CPU0                        CPU1
+========================== ===================================
+hclgevf_set_timer_task()    hclgevf_periodic_service_task()
+  set_bit(DOWN,state)         test_bit(DOWN,state)
+
+pf also has this issue.
+
+Fixes: ff200099d271 ("net: hns3: remove unnecessary work in hclgevf_main")
+Fixes: 1c6dfe6fc6f7 ("net: hns3: remove mailbox and reset work in hclge_main")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c | 1 +
- drivers/iio/pressure/bmp280-spi.c  | 9 ++-------
- drivers/iio/pressure/bmp280.h      | 1 +
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 3 +--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index fe8734468ed3..62e9e93d915d 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1233,6 +1233,7 @@ const struct bmp280_chip_info bmp380_chip_info = {
- 	.chip_id = bmp380_chip_ids,
- 	.num_chip_id = ARRAY_SIZE(bmp380_chip_ids),
- 	.regmap_config = &bmp380_regmap_config,
-+	.spi_read_extra_byte = true,
- 	.start_up_time = 2000,
- 	.channels = bmp380_channels,
- 	.num_channels = 2,
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index 038d36aad3eb..4e19ea0b4d39 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -96,15 +96,10 @@ static int bmp280_spi_probe(struct spi_device *spi)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 7f2bb0e708896..9858124665aa6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7945,8 +7945,7 @@ static void hclge_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 		/* Set the DOWN flag here to disable link updating */
+ 		set_bit(HCLGE_STATE_DOWN, &hdev->state);
  
- 	chip_info = spi_get_device_match_data(spi);
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclge_flush_link_update(hdev);
+ 	}
+ }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index b57111252d071..08db8e84be4ed 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2181,8 +2181,7 @@ static void hclgevf_set_timer_task(struct hnae3_handle *handle, bool enable)
+ 	} else {
+ 		set_bit(HCLGEVF_STATE_DOWN, &hdev->state);
  
--	switch (chip_info->chip_id[0]) {
--	case BMP380_CHIP_ID:
--	case BMP390_CHIP_ID:
-+	if (chip_info->spi_read_extra_byte)
- 		bmp_regmap_bus = &bmp380_regmap_bus;
--		break;
--	default:
-+	else
- 		bmp_regmap_bus = &bmp280_regmap_bus;
--		break;
--	}
- 
- 	regmap = devm_regmap_init(&spi->dev,
- 				  bmp_regmap_bus,
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index 4012387d7956..5812a344ed8e 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -423,6 +423,7 @@ struct bmp280_chip_info {
- 	int num_chip_id;
- 
- 	const struct regmap_config *regmap_config;
-+	bool spi_read_extra_byte;
- 
- 	const struct iio_chan_spec *channels;
- 	int num_channels;
+-		/* flush memory to make sure DOWN is seen by service task */
+-		smp_mb__before_atomic();
++		smp_mb__after_atomic(); /* flush memory to make sure DOWN is seen by service task */
+ 		hclgevf_flush_link_update(hdev);
+ 	}
+ }
 -- 
-2.45.0
+2.43.0
 
 
 
