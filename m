@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-44404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9521A8C52B6
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:40:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333808C51A9
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30A6428110A
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD8951F226D1
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042AA143721;
-	Tue, 14 May 2024 11:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA83D13AA37;
+	Tue, 14 May 2024 11:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8//Riiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxw3Q9ub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EB912FB3C;
-	Tue, 14 May 2024 11:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D911E495;
+	Tue, 14 May 2024 11:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715686064; cv=none; b=rR+S2v44qCHMFniTZjLmNZwgC+fgaupyoe00qu3kmKuedLfbKkMgsQ8beclzoQ6V7Q4VGvchDzzwYJsXV2nZ+ovIjRFVhEzgLFobcQdeV8XJ6hR3CIHwtiDCoaaSm48iExXRS/vOUXBOqcVPPThULS8D0UQ4AKE25mi6idatyjs=
+	t=1715684866; cv=none; b=d9HbESV3enbv79JHkRaO/+uLTyIbHn8g1T6+T3Qn/0AJYomDvErB7mfD5vqQ+9itxWYNCcNDa1UPWNFvjTU0BE8lwhTt14YB42tezqxnslCi67U46qu2Pxq2SD9Q+4lk5dzVyEw2SYVssHmkqtnuica0qk0LgUMbjJ/AO3Jz5Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715686064; c=relaxed/simple;
-	bh=hDzIIEEcQZV+SBXGX9G98zDSQep+pegnfohMyvfEK4M=;
+	s=arc-20240116; t=1715684866; c=relaxed/simple;
+	bh=rErdi7z6jtFwgoIWy9GOktR5vvqKBJA+zHeVDPYCx44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cu8PqJCVw1TUcTDfaz1Nt7BH/02z3CCQ0HD7Fi5g54i4zerIMTeluuXXHY2n1a6hW9zOeOkxftQBRDu8oMHoTv88fS9s/dBhnk/ZleZDAv2vvwmCcYuV5eypp46q3ToWN8XWoCAiV0DETJ1gqu8hI6A+QeY8VBUR4i1S3iAly9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8//Riiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E998C2BD10;
-	Tue, 14 May 2024 11:27:44 +0000 (UTC)
+	 MIME-Version; b=klTu4MkwliGvd5wEwHPs+l8A2LVt6+GJqwsozD0rWOI6yUdEPG6ncjNMCsgbQjORqXbbrdA4DuioFzjN9tAUAYV7DChWquj53eXxLA6+D1EiyHKvUFf/gwe+gxp0iy4hN56J3ekGTbFlhG2orCZZxPL0C+0mVZu/63QbKd/RIIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxw3Q9ub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD6AC2BD10;
+	Tue, 14 May 2024 11:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715686064;
-	bh=hDzIIEEcQZV+SBXGX9G98zDSQep+pegnfohMyvfEK4M=;
+	s=korg; t=1715684866;
+	bh=rErdi7z6jtFwgoIWy9GOktR5vvqKBJA+zHeVDPYCx44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8//Riiv+kwvvO6pYF7kW81Boy1mdRkle7+/1j5LzkieMlwAxj0UiyuA+mNEOCEJy
-	 3nKvBIgdYBWNtkOod9nu8fSf6xCG2q7DHBfpfjZPTU9R5N//mSTkntOaW9TqOIEcYl
-	 8BSzXmbjspU8xnwG0ZqBsBdvouft8F4M9bYeylwc=
+	b=mxw3Q9ubbk7fGg9iOChnT+Aie/Cz5D28b7RGU4dgi1yJAxdqnzSjBRKm5091hYCVm
+	 ZQrJ0T0/EPnutVbDPziet57XS2uITbjs5Arvb02Ul8r8V5qufEj8vWQp0PIYhBTJyZ
+	 QkfhVkb8yqnHmUPaFzSgT/WOr/7ZbM2E4MxQRNQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bumyong Lee <bumyong.lee@samsung.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Nikita Ioffe <ioffe@google.com>,
+	Will Deacon <will@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/236] dmaengine: pl330: issue_pending waits until WFP state
-Date: Tue, 14 May 2024 12:16:03 +0200
-Message-ID: <20240514101020.381864125@linuxfoundation.org>
+Subject: [PATCH 6.6 093/301] swiotlb: initialise restricted pool list_head when SWIOTLB_DYNAMIC=y
+Date: Tue, 14 May 2024 12:16:04 +0200
+Message-ID: <20240514101035.761996319@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
+In-Reply-To: <20240514101032.219857983@linuxfoundation.org>
+References: <20240514101032.219857983@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bumyong Lee <bumyong.lee@samsung.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 22a9d9585812440211b0b34a6bc02ade62314be4 ]
+[ Upstream commit 75961ffb5cb3e5196f19cae7683f35cc88b50800 ]
 
-According to DMA-330 errata notice[1] 71930, DMAKILL
-cannot clear internal signal, named pipeline_req_active.
-it makes that pl330 would wait forever in WFP state
-although dma already send dma request if pl330 gets
-dma request before entering WFP state.
+Using restricted DMA pools (CONFIG_DMA_RESTRICTED_POOL=y) in conjunction
+with dynamic SWIOTLB (CONFIG_SWIOTLB_DYNAMIC=y) leads to the following
+crash when initialising the restricted pools at boot-time:
 
-The errata suggests that polling until entering WFP state
-as workaround and then peripherals allows to issue dma request.
+  | Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+  | Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+  | pc : rmem_swiotlb_device_init+0xfc/0x1ec
+  | lr : rmem_swiotlb_device_init+0xf0/0x1ec
+  | Call trace:
+  |  rmem_swiotlb_device_init+0xfc/0x1ec
+  |  of_reserved_mem_device_init_by_idx+0x18c/0x238
+  |  of_dma_configure_id+0x31c/0x33c
+  |  platform_dma_configure+0x34/0x80
 
-[1]: https://developer.arm.com/documentation/genc008428/latest
+faddr2line reveals that the crash is in the list validation code:
 
-Signed-off-by: Bumyong Lee <bumyong.lee@samsung.com>
-Link: https://lore.kernel.org/r/20231219055026.118695-1-bumyong.lee@samsung.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: afc89870ea67 ("dmaengine: Revert "dmaengine: pl330: issue_pending waits until WFP state"")
+  include/linux/list.h:83
+  include/linux/rculist.h:79
+  include/linux/rculist.h:106
+  kernel/dma/swiotlb.c:306
+  kernel/dma/swiotlb.c:1695
+
+because add_mem_pool() is trying to list_add_rcu() to a NULL
+'mem->pools'.
+
+Fix the crash by initialising the 'mem->pools' list_head in
+rmem_swiotlb_device_init() before calling add_mem_pool().
+
+Reported-by: Nikita Ioffe <ioffe@google.com>
+Tested-by: Nikita Ioffe <ioffe@google.com>
+Fixes: 1aaa736815eb ("swiotlb: allocate a new memory pool when existing pools are full")
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pl330.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/dma/swiotlb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index 3cf0b38387ae5..c29744bfdf2c2 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1053,6 +1053,9 @@ static bool _trigger(struct pl330_thread *thrd)
- 
- 	thrd->req_running = idx;
- 
-+	if (desc->rqtype == DMA_MEM_TO_DEV || desc->rqtype == DMA_DEV_TO_MEM)
-+		UNTIL(thrd, PL330_STATE_WFP);
-+
- 	return true;
- }
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 675ae318f74f8..a7d5fb473b324 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -1692,6 +1692,7 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
+ 		mem->for_alloc = true;
+ #ifdef CONFIG_SWIOTLB_DYNAMIC
+ 		spin_lock_init(&mem->lock);
++		INIT_LIST_HEAD_RCU(&mem->pools);
+ #endif
+ 		add_mem_pool(mem, pool);
  
 -- 
 2.43.0
