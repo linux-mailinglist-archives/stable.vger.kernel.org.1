@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-44778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20358C5460
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:51:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9EE8C5579
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CFE285581
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:51:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 629B028D8D0
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2483F9D9;
-	Tue, 14 May 2024 11:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D042943F;
+	Tue, 14 May 2024 11:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4EENS4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxODZJus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20D02D60A;
-	Tue, 14 May 2024 11:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16E0F9D4;
+	Tue, 14 May 2024 11:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715687150; cv=none; b=uAq0KPwCxNbBQlZoiIae7RTrpm44ycfByQNVl1y79OYi0iy3kj7ZKlI3Y2sgYZUBDEgMUG0F14BIv6UdzHmke78qWfFYm6HkXyu7uY5uGEXrR8CH6QV6pR1c/xWeXM563F6CW8MlCPPlffB1GgT3saGnxw+tG1wlPlgj7ZtXvTk=
+	t=1715687913; cv=none; b=Pz64OtGDi3mw3IgCYIWeG5zoK/Ev75WybKUFVJ/mumzE6si0LwsT+5wBt/r4wzBGVSGi/eJKQZt3Kqrx0HY1Co6x2z+GB06XuOHWcMhfdvem6X7QzgAqCZHle4oJpqMr38vAqarUAW0FaYBSk7T1DFFgAV3nBakY8doyxMAooqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715687150; c=relaxed/simple;
-	bh=edxI5XU7WIYox9TZWEcRiYzisBigXiWkOIMFwWHR2Zs=;
+	s=arc-20240116; t=1715687913; c=relaxed/simple;
+	bh=fRxdtUG4HpxCMSxIJ36XgbK8vGypXmu1oOYrERiq4Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEoeRU9hSaYEfSpghEhCLFWAWdYpRJQtzik9aQqwg9nri84nW6ZkhDT+nwXRQAHFXOBEzne0wAXFX2tyIFl+cBYpq+wLIN7hkEKlvmXlb3MnsOdtsjpssg2Pgm2p2j+gi4VZ0yuBhUZ/P1zNkW0Kha83qwR6ThjbV+Z64EFjNe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4EENS4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5F3C2BD10;
-	Tue, 14 May 2024 11:45:48 +0000 (UTC)
+	 MIME-Version; b=SUZYxmh5dI0DHi1jEm0hHWZGA5XVdAuPtaayAd0OUAkU+DLcEii9xAeK5Lji/sgVEnVDvnyu47cenIsm7CIEwcU4eRh6A8ROm7cRkjCPBoTmRTcuyoB9P0EJTDe2PuJsmpJqvxwxnuRD7BlBvlNrTaWHheRQ9yQyJhsweZ1sP5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxODZJus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE45C2BD10;
+	Tue, 14 May 2024 11:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715687149;
-	bh=edxI5XU7WIYox9TZWEcRiYzisBigXiWkOIMFwWHR2Zs=;
+	s=korg; t=1715687913;
+	bh=fRxdtUG4HpxCMSxIJ36XgbK8vGypXmu1oOYrERiq4Mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4EENS4eOgI8NUFVc26ZUTkHavX3IZ208c1uamRipxRqJLLQGvYycUyrsz3vLAB2N
-	 hG2sG/fX/dhGG0YBVneZo4+JwpeDilp64Ghl71O8ObL1SrHDmd6XCc+uZ3W82Yyh26
-	 GFnCpsMHEQSrsNSjEWdtVRJcjfuWLC89xuAGU0jg=
+	b=UxODZJusi3fasN3VIRwW/xMWkRX9ORRGbRR56U+6rUmelJIh1M9vknmF2ccePc9hV
+	 Vq41F2JZL28REEXeSrOuhdPub8aq8pduKnLlFYugmTcdZciWTEW64d/A8RegK4koNe
+	 G0Ea2ObM+ugu6Kw2PpirwSQH5frD5vRTzb7uvfOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 64/84] tcp: Use refcount_inc_not_zero() in tcp_twsk_unique().
+Subject: [PATCH 5.15 117/168] net: hns3: using user configure after hardware reset
 Date: Tue, 14 May 2024 12:20:15 +0200
-Message-ID: <20240514100954.091778234@linuxfoundation.org>
+Message-ID: <20240514101011.101005927@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514100951.686412426@linuxfoundation.org>
-References: <20240514100951.686412426@linuxfoundation.org>
+In-Reply-To: <20240514101006.678521560@linuxfoundation.org>
+References: <20240514101006.678521560@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +65,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit f2db7230f73a80dbb179deab78f88a7947f0ab7e ]
+[ Upstream commit 05eb60e9648cca0beeebdbcd263b599fb58aee48 ]
 
-Anderson Nascimento reported a use-after-free splat in tcp_twsk_unique()
-with nice analysis.
+When a reset occurring, it's supposed to recover user's configuration.
+Currently, the port info(speed, duplex and autoneg) is stored in hclge_mac
+and will be scheduled updated. Consider the case that reset was happened
+consecutively. During the first reset, the port info is configured with
+a temporary value cause the PHY is reset and looking for best link config.
+Second reset start and use pervious configuration which is not the user's.
+The specific process is as follows:
 
-Since commit ec94c2696f0b ("tcp/dccp: avoid one atomic operation for
-timewait hashdance"), inet_twsk_hashdance() sets TIME-WAIT socket's
-sk_refcnt after putting it into ehash and releasing the bucket lock.
++------+               +----+                +----+
+| USER |               | PF |                | HW |
++---+--+               +-+--+                +-+--+
+    |  ethtool --reset   |                     |
+    +------------------->|    reset command    |
+    |  ethtool --reset   +-------------------->|
+    +------------------->|                     +---+
+    |                    +---+                 |   |
+    |                    |   |reset currently  |   | HW RESET
+    |                    |   |and wait to do   |   |
+    |                    |<--+                 |   |
+    |                    | send pervious cfg   |<--+
+    |                    | (1000M FULL AN_ON)  |
+    |                    +-------------------->|
+    |                    | read cfg(time task) |
+    |                    | (10M HALF AN_OFF)   +---+
+    |                    |<--------------------+   | cfg take effect
+    |                    |    reset command    |<--+
+    |                    +-------------------->|
+    |                    |                     +---+
+    |                    | send pervious cfg   |   | HW RESET
+    |                    | (10M HALF AN_OFF)   |<--+
+    |                    +-------------------->|
+    |                    | read cfg(time task) |
+    |                    |  (10M HALF AN_OFF)  +---+
+    |                    |<--------------------+   | cfg take effect
+    |                    |                     |   |
+    |                    | read cfg(time task) |<--+
+    |                    |  (10M HALF AN_OFF)  |
+    |                    |<--------------------+
+    |                    |                     |
+    v                    v                     v
 
-Thus, there is a small race window where other threads could try to
-reuse the port during connect() and call sock_hold() in tcp_twsk_unique()
-for the TIME-WAIT socket with zero refcnt.
+To avoid aboved situation, this patch introduced req_speed, req_duplex,
+req_autoneg to store user's configuration and it only be used after
+hardware reset and to recover user's configuration
 
-If that happens, the refcnt taken by tcp_twsk_unique() is overwritten
-and sock_put() will cause underflow, triggering a real use-after-free
-somewhere else.
-
-To avoid the use-after-free, we need to use refcount_inc_not_zero() in
-tcp_twsk_unique() and give up on reusing the port if it returns false.
-
-[0]:
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 0 PID: 1039313 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
-CPU: 0 PID: 1039313 Comm: trigger Not tainted 6.8.6-200.fc39.x86_64 #1
-Hardware name: VMware, Inc. VMware20,1/440BX Desktop Reference Platform, BIOS VMW201.00V.21805430.B64.2305221830 05/22/2023
-RIP: 0010:refcount_warn_saturate+0xe5/0x110
-Code: 42 8e ff 0f 0b c3 cc cc cc cc 80 3d aa 13 ea 01 00 0f 85 5e ff ff ff 48 c7 c7 f8 8e b7 82 c6 05 96 13 ea 01 01 e8 7b 42 8e ff <0f> 0b c3 cc cc cc cc 48 c7 c7 50 8f b7 82 c6 05 7a 13 ea 01 01 e8
-RSP: 0018:ffffc90006b43b60 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff888009bb3ef0 RCX: 0000000000000027
-RDX: ffff88807be218c8 RSI: 0000000000000001 RDI: ffff88807be218c0
-RBP: 0000000000069d70 R08: 0000000000000000 R09: ffffc90006b439f0
-R10: ffffc90006b439e8 R11: 0000000000000003 R12: ffff8880029ede84
-R13: 0000000000004e20 R14: ffffffff84356dc0 R15: ffff888009bb3ef0
-FS:  00007f62c10926c0(0000) GS:ffff88807be00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020ccb000 CR3: 000000004628c005 CR4: 0000000000f70ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? refcount_warn_saturate+0xe5/0x110
- ? __warn+0x81/0x130
- ? refcount_warn_saturate+0xe5/0x110
- ? report_bug+0x171/0x1a0
- ? refcount_warn_saturate+0xe5/0x110
- ? handle_bug+0x3c/0x80
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? refcount_warn_saturate+0xe5/0x110
- tcp_twsk_unique+0x186/0x190
- __inet_check_established+0x176/0x2d0
- __inet_hash_connect+0x74/0x7d0
- ? __pfx___inet_check_established+0x10/0x10
- tcp_v4_connect+0x278/0x530
- __inet_stream_connect+0x10f/0x3d0
- inet_stream_connect+0x3a/0x60
- __sys_connect+0xa8/0xd0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0x83/0x170
- entry_SYSCALL_64_after_hwframe+0x78/0x80
-RIP: 0033:0x7f62c11a885d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d a3 45 0c 00 f7 d8 64 89 01 48
-RSP: 002b:00007f62c1091e58 EFLAGS: 00000296 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000020ccb004 RCX: 00007f62c11a885d
-RDX: 0000000000000010 RSI: 0000000020ccb000 RDI: 0000000000000003
-RBP: 00007f62c1091e90 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000296 R12: 00007f62c10926c0
-R13: ffffffffffffff88 R14: 0000000000000000 R15: 00007ffe237885b0
- </TASK>
-
-Fixes: ec94c2696f0b ("tcp/dccp: avoid one atomic operation for timewait hashdance")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Closes: https://lore.kernel.org/netdev/37a477a6-d39e-486b-9577-3463f655a6b7@allelesecurity.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240501213145.62261-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f5f2b3e4dcc0 ("net: hns3: add support for imp-controlled PHYs")
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 15 +++++++++------
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_main.h   |  3 +++
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index a54505c29a5c2..0dd917c5a7da6 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -152,6 +152,12 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 	if (tcptw->tw_ts_recent_stamp &&
- 	    (!twp || (reuse && time_after32(ktime_get_seconds(),
- 					    tcptw->tw_ts_recent_stamp)))) {
-+		/* inet_twsk_hashdance() sets sk_refcnt after putting twsk
-+		 * and releasing the bucket lock.
-+		 */
-+		if (unlikely(!refcount_inc_not_zero(&sktw->sk_refcnt)))
-+			return 0;
-+
- 		/* In case of repair and re-using TIME-WAIT sockets we still
- 		 * want to be sure that it is safe as above but honor the
- 		 * sequence numbers and time stamps set as part of the repair
-@@ -172,7 +178,7 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 			tp->rx_opt.ts_recent	   = tcptw->tw_ts_recent;
- 			tp->rx_opt.ts_recent_stamp = tcptw->tw_ts_recent_stamp;
- 		}
--		sock_hold(sktw);
-+
- 		return 1;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 3423b8e278e3a..71b498aa327bb 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -1572,6 +1572,9 @@ static int hclge_configure(struct hclge_dev *hdev)
+ 			cfg.default_speed, ret);
+ 		return ret;
+ 	}
++	hdev->hw.mac.req_speed = hdev->hw.mac.speed;
++	hdev->hw.mac.req_autoneg = AUTONEG_ENABLE;
++	hdev->hw.mac.req_duplex = DUPLEX_FULL;
+ 
+ 	hclge_parse_link_mode(hdev, cfg.speed_ability);
+ 
+@@ -3163,9 +3166,9 @@ hclge_set_phy_link_ksettings(struct hnae3_handle *handle,
+ 		return ret;
  	}
  
+-	hdev->hw.mac.autoneg = cmd->base.autoneg;
+-	hdev->hw.mac.speed = cmd->base.speed;
+-	hdev->hw.mac.duplex = cmd->base.duplex;
++	hdev->hw.mac.req_autoneg = cmd->base.autoneg;
++	hdev->hw.mac.req_speed = cmd->base.speed;
++	hdev->hw.mac.req_duplex = cmd->base.duplex;
+ 	linkmode_copy(hdev->hw.mac.advertising, cmd->link_modes.advertising);
+ 
+ 	return 0;
+@@ -3198,9 +3201,9 @@ static int hclge_tp_port_init(struct hclge_dev *hdev)
+ 	if (!hnae3_dev_phy_imp_supported(hdev))
+ 		return 0;
+ 
+-	cmd.base.autoneg = hdev->hw.mac.autoneg;
+-	cmd.base.speed = hdev->hw.mac.speed;
+-	cmd.base.duplex = hdev->hw.mac.duplex;
++	cmd.base.autoneg = hdev->hw.mac.req_autoneg;
++	cmd.base.speed = hdev->hw.mac.req_speed;
++	cmd.base.duplex = hdev->hw.mac.req_duplex;
+ 	linkmode_copy(cmd.link_modes.advertising, hdev->hw.mac.advertising);
+ 
+ 	return hclge_set_phy_link_ksettings(&hdev->vport->nic, &cmd);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+index a716027df0ed1..ba0d41091b1da 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
+@@ -275,10 +275,13 @@ struct hclge_mac {
+ 	u8 media_type;	/* port media type, e.g. fibre/copper/backplane */
+ 	u8 mac_addr[ETH_ALEN];
+ 	u8 autoneg;
++	u8 req_autoneg;
+ 	u8 duplex;
++	u8 req_duplex;
+ 	u8 support_autoneg;
+ 	u8 speed_type;	/* 0: sfp speed, 1: active speed */
+ 	u32 speed;
++	u32 req_speed;
+ 	u32 max_speed;
+ 	u32 speed_ability; /* speed ability supported by current media */
+ 	u32 module_type; /* sub media type, e.g. kr/cr/sr/lr */
 -- 
 2.43.0
 
