@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-44047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-44530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689458C50F3
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:15:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150698C534C
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 13:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5564281739
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:15:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAC1F1F23295
+	for <lists+stable@lfdr.de>; Tue, 14 May 2024 11:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941067E796;
-	Tue, 14 May 2024 10:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F293478691;
+	Tue, 14 May 2024 11:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibNZq5oR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bt6zGJ1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517EB4F88C;
-	Tue, 14 May 2024 10:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEAF76033;
+	Tue, 14 May 2024 11:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715683898; cv=none; b=I+pVFgLn4NuKaVRzGQLMj+T4oNqNN2ocA3JdxfwqAHxwH6D3+1An9DNmqZmyrNtdOSBTuJAA67gtnkLloHDfMcpjVRahpZKaQ65elBMFygq7C2Nx/wKe4cDQpTolKtXowuOoniLzlfv53RgXhR5tjeZUQsjoRqrf+Aq0MgG1UWs=
+	t=1715686427; cv=none; b=i8jLYxeJcuG7lY9FoxBScVDLS2/7bmb0+kJf+LXBV5qNZpAjuSIQmnTbWSd9SxOWdX8NDHHh/VSflTDu800u44t/u7SQPhicSppa9RpbE/62fjl9OAM9Ay4Vz7gyAgRFj3JsrareGHhhlHrBlHBy5MX5aSv8r9/vKW0ucmiTzJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715683898; c=relaxed/simple;
-	bh=jKCiEHGbhmLyn9XtL9wH5BzWZauxnXMdRts07boTwC4=;
+	s=arc-20240116; t=1715686427; c=relaxed/simple;
+	bh=Jv9E4ybrUBDAKFjxDqWUlK8HmJzPpzIYDoMk6VMnZCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tf3MNk+kWwcuAW6aKKQfcDLB89WYl3eF9QWIhB4Kqc3kY1Y36n1O1Y0EIJtgWjHScuY3Mm6JjeN/pa0hTfmZTrjQXs9hmKOYJzVKpQocH24B5fdfYAc9/MVBngLzvIV2BvY8gpq9WQE5kXPygIbNtvrPeXLwFC3b101FopvTBU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibNZq5oR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231A7C2BD10;
-	Tue, 14 May 2024 10:51:36 +0000 (UTC)
+	 MIME-Version; b=shAMjOMGdeQn8wZt6xPqNOWob09TDOT14dFtDYk7jY2h6WRebck2mouHAkyAWsdYg0bG9EGyrIQ9P4UX602TUXjo+dN9x5fhjy+MkMUEJapBs818pWDkJbbCW8QIMzO10I52i8Qjw3FmcSw57UsayWN1OXXEV6zhCh0TNpiLpKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bt6zGJ1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365CBC2BD10;
+	Tue, 14 May 2024 11:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715683897;
-	bh=jKCiEHGbhmLyn9XtL9wH5BzWZauxnXMdRts07boTwC4=;
+	s=korg; t=1715686427;
+	bh=Jv9E4ybrUBDAKFjxDqWUlK8HmJzPpzIYDoMk6VMnZCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibNZq5oRI7Z3DpViMcGCVQlY2wkWTfoUsyfP9QGv9C0m5bLZEuuHU0vAGqa9ZUmof
-	 idNhT+Fmb+imF4hzND2VTtHhcAWZ3UE2DsLDnzIwBQUEbNl6LEV9flonARnDKK66zY
-	 MtBc03a0RLQa33pp4oDY1SOtbMUzdPsZSitEJZYE=
+	b=Bt6zGJ1/GdzeLg1F1ILn9IieJhyicqpiU3h49bZgkv0yv47YFPLR2s2kEs7AtCJfZ
+	 L8A+3uqux2u2Wh1tME17Lx57DIrjPyoc4SXeYXnP6fZP/zO3sY8L5NYSM/c4wIWI5G
+	 iD5gMji0c+2LrQMAtOuEwwh0quXSSXG3Kxks44Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.8 292/336] mei: me: add lunar lake point M DID
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 134/236] gpio: wcove: Use -ENOTSUPP consistently
 Date: Tue, 14 May 2024 12:18:16 +0200
-Message-ID: <20240514101049.639846151@linuxfoundation.org>
+Message-ID: <20240514101025.456945213@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240514101038.595152603@linuxfoundation.org>
-References: <20240514101038.595152603@linuxfoundation.org>
+In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 4108a30f1097eead0f6bd5d885e6bf093b4d460f upstream.
+[ Upstream commit 0c3b532ad3fbf82884a2e7e83e37c7dcdd4d1d99 ]
 
-Add Lunar (Point) Lake M device id.
+The GPIO library expects the drivers to return -ENOTSUPP in some
+cases and not using analogue POSIX code. Make the driver to follow
+this.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240421135631.223362-1-tomas.winkler@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/gpio/gpio-wcove.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -115,6 +115,8 @@
- #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
- #define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
+diff --git a/drivers/gpio/gpio-wcove.c b/drivers/gpio/gpio-wcove.c
+index c18b6b47384f1..94ca9d03c0949 100644
+--- a/drivers/gpio/gpio-wcove.c
++++ b/drivers/gpio/gpio-wcove.c
+@@ -104,7 +104,7 @@ static inline int to_reg(int gpio, enum ctrl_register type)
+ 	unsigned int reg = type == CTRL_IN ? GPIO_IN_CTRL_BASE : GPIO_OUT_CTRL_BASE;
  
-+#define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
-+
- /*
-  * MEI HW Section
-  */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -122,6 +122,8 @@ static const struct pci_device_id mei_me
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
+ 	if (gpio >= WCOVE_GPIO_NUM)
+-		return -EOPNOTSUPP;
++		return -ENOTSUPP;
  
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
-+
- 	/* required last entry */
- 	{0, }
- };
+ 	return reg + gpio;
+ }
+-- 
+2.43.0
+
 
 
 
