@@ -1,116 +1,110 @@
-Return-Path: <stable+bounces-45124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C268C60A5
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 08:15:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36908C61A0
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:24:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE2D0281ED8
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 06:15:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 303FEB243FE
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 07:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D66D3B781;
-	Wed, 15 May 2024 06:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3B94A99C;
+	Wed, 15 May 2024 07:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BWte8rQ"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="ejVIxxNy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="I5zsOdsg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D666A3A29F;
-	Wed, 15 May 2024 06:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8F84AEDD
+	for <stable@vger.kernel.org>; Wed, 15 May 2024 07:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715753736; cv=none; b=bibSqVgqoAXg7g11scenR7vEj2rFGs3RticXVaaXdwAlFEiUGOE7sYsy2xhqStsqmL00VhD1bz3iYyxhBHu0ckb0m/M+6efRTzssivxfdPMzgPzkyJFhMJCZ2iZkFMqFtYcHmC8q1Q0XDgc2+ylc2ZT/9SPxZLQ1dJIcTkY4Jlg=
+	t=1715757751; cv=none; b=KEHA9oJx0gjqpvkkhFWjFewIZ/5ro2H8tCbL9KIzsizKjdPMRhYsP0NT0pgF8zDoRZEXC/3/kJYRJOnrMyvcOifyxMFmKaBjNg0XOOzo0kKlEFK/+e7VVcoyozmZ8sL1kBVMIbIQZ9HEPgkTX5HiIJvZthqnfQfn5x1mZxOp9+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715753736; c=relaxed/simple;
-	bh=QW0ePSHkW552niEBjTaVu6MQs1tT30hlRqsaoskf3Vs=;
+	s=arc-20240116; t=1715757751; c=relaxed/simple;
+	bh=cxOQpXWzjRsOrjtDU+rkWKaGsUgkYQA/KXziwSRwGrs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fdNzNmIINBwnZ/7xTx51v+fTM6PU/eKmbi6bcNhiXfNAgFBcxwH7+D32vXlPOSnOo1BSq+K+rPjcO+CmAeQONoM61o3WVqks8mFMzC6lNjDXkzPOshvhuewTT+bLlVtH9foZLyVLdA0ujM0luOCVoHTj+hL5DEiaqwptp5C6bWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BWte8rQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAB6C2BD11;
-	Wed, 15 May 2024 06:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715753735;
-	bh=QW0ePSHkW552niEBjTaVu6MQs1tT30hlRqsaoskf3Vs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0BWte8rQZ/gV8H3Pk2iX4yEv1WsPvTennu4dSZquli4mIjgs0Uqi3q0ry2063Zkpz
-	 /YUzWPtzPbqJiwxUKgN2m0O1NeKM60tLfp7jJkh8xKOrkTDBpn92Mi+uGjjn9i/NNu
-	 KcvFt3pVBAmRI7Gbh09hKqEqeSquBMOVleHz2TFE=
-Date: Wed, 15 May 2024 08:15:32 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Nayna Jain <nayna@linux.ibm.com>,
-	Russell Currey <ruscur@russell.cc>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 088/236] powerpc/pseries: Implement signed update for
- PLPKS objects
-Message-ID: <2024051524-polyester-preoccupy-2236@gregkh>
-References: <20240514101020.320785513@linuxfoundation.org>
- <20240514101023.710898376@linuxfoundation.org>
- <9d093600382fb412381827365a5a342d632d1269.camel@linux.ibm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HYmUGGDiSvtk62jX2w0zxtSyVoEVKf4bf03qkeo/8N5ZLwUJgpz6k37c1/NVnbkdQ3xp7K2vXQOMddzlZmLtrW516inVr7GMZXZ6+gPZO87Ft03lDlrtzjpHoTDMx5ypXNdPeAtnx2pwyc0RC9dF0ET9Gf2aGkLQesc5NoTMtz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=ejVIxxNy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=I5zsOdsg; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 06F29138113A;
+	Wed, 15 May 2024 03:22:28 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Wed, 15 May 2024 03:22:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1715757748; x=1715844148; bh=46dIB/2TuB
+	p/s5tzJr3TtxnH/4JWeEo36KDBYrnRoS4=; b=ejVIxxNyKkskDh4WWnXxqnGu7S
+	YNP+R/QRS7AgiZuZcKdugVyfkUesN3cQfqu019M5B0eDnJif/1HmDeXfR8MkRn+h
+	v3NjHSA14iVbJduGi0WsJbC9qCPXagmCS1EiNomDHBAiMzVnNDkwk0sqllTjtrpS
+	usqNHKHTTLWV6HNmPjPvODtADEpebD0wigNX44ukZLtonVkMrvycVEA+Unb9lE/f
+	7zr6QIAiOTjVwH28xiGSOMkBFpz7d/A2qcZ/RNCLysucdgC+hlWiYQz0d0uG6JJO
+	VWISgdvPoi2W34HdTuq0qFfYpqKL1RvjWA4JlArDgofjVq8fpsRgj71lD3eg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1715757748; x=1715844148; bh=46dIB/2TuBp/s5tzJr3TtxnH/4JW
+	eEo36KDBYrnRoS4=; b=I5zsOdsgwdpB5st8v6JgGQoeX5y9FSTp8igUoxTSIApA
+	ThwJLl4PMNCmP5M9t0gEbAki0TipSvtY4bLsDNjmqc8oi+ySi6OsINrdJieoLo1l
+	+7Ut0+Xhu97ZNaycIoecFGjPx1bbtxxiMJfBhj5KqtUewJTyPyX8bZmIuOXnWaNz
+	Q95t1Pj3vtqcYDehWvTdjb8I2ou8+8Pcxnb0eG7J2EaSDJvjkw6G8NyfJqlKgIYv
+	pFvjr3Vzg0KSXLhacT8DbZAp0LyHQxBls4XCXmrwuSC+efdPEKbTX/YY1mhuDIN4
+	vtQhT+BTlk8IBaZXn4SZpSPeVW8P2wGzd7ls13wLxw==
+X-ME-Sender: <xms:s2JEZjzfPYha4A62xxaOt5Exw_7GII_y5nC48qIYEfNQoOuLOTyzPw>
+    <xme:s2JEZrQQLrRpfUGvB50lzt6HPdKco9h_BtoJz_xAO8ylLuF7Crq5mp3DcyiinB3zR
+    IoEUVKU9MuQ1w>
+X-ME-Received: <xmr:s2JEZtUs749Fb_3tk9AQyAsaXVA5QqRBzxPVB0xUr86IkK1eqfs6aobCrwURD6yC1nEBVrzCcVgWqO92U94Ox2uxfKybS6O-bxWsgQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegjedguddufecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
+    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
+    grhhdrtghomh
+X-ME-Proxy: <xmx:s2JEZtjgXHqZeBC52ypiIQD8S2mf3KVVwAqYABvUEsQ8njs08sVAxw>
+    <xmx:s2JEZlCQ8V6sw6KHGxC28eoh-8owaRNHZI24SMMNIgCfIYMA3M5Kcw>
+    <xmx:s2JEZmLuKF8LSfa4DfiPmAbE_O-QI4HOV_qkYyHpunCNGaE-i3i_dg>
+    <xmx:s2JEZkAdj3sJvyQO5TEat7CDjWhdtnPOMHH5aev9drXSaPGXawjFqQ>
+    <xmx:s2JEZp7tPGWEovk8ZndP6I-137dEyuUcmwYhJLZKjlf2Fo8QRKHhsC0B>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 15 May 2024 03:22:27 -0400 (EDT)
+Date: Wed, 15 May 2024 09:22:24 +0200
+From: Greg KH <greg@kroah.com>
+To: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org, Qu Wenruo <wqu@suse.com>,
+	Julian Taylor <julian.taylor@1und1.de>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Filipe Manana <fdmanana@suse.com>
+Subject: Re: [PATCH 6.6.x] btrfs: do not wait for short bulk allocation
+Message-ID: <2024051514-outline-phrase-df66@gregkh>
+References: <20240514171225.11774-1-dsterba@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9d093600382fb412381827365a5a342d632d1269.camel@linux.ibm.com>
+In-Reply-To: <20240514171225.11774-1-dsterba@suse.com>
 
-On Wed, May 15, 2024 at 10:01:06AM +1000, Andrew Donnellan wrote:
-> On Tue, 2024-05-14 at 12:17 +0200, Greg Kroah-Hartman wrote:
-> > 6.1-stable review patch.  If anyone has any objections, please let me
-> > know.
-> > 
-> > ------------------
-> > 
-> > From: Nayna Jain <nayna@linux.ibm.com>
-> > 
-> > [ Upstream commit 899d9b8fee66da820eadc60b2a70090eb83db761 ]
-> > 
-> > The Platform Keystore provides a signed update interface which can be
-> > used
-> > to create, replace or append to certain variables in the PKS in a
-> > secure
-> > fashion, with the hypervisor requiring that the update be signed
-> > using the
-> > Platform Key.
-> > 
-> > Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
-> > driver to allow signed updates to PKS objects.
-> > 
-> > (The plpks driver doesn't need to do any cryptography or otherwise
-> > handle
-> > the actual signed variable contents - that will be handled by
-> > userspace
-> > tooling.)
-> > 
-> > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> > [ajd: split patch, add timeout handling and misc cleanups]
-> > Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
-> > Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> > Signed-off-by: Russell Currey <ruscur@russell.cc>
-> > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> > Link:
-> > https://lore.kernel.org/r/20230210080401.345462-18-ajd@linux.ibm.com
-> > Stable-dep-of: 784354349d2c ("powerpc/pseries: make max polling
-> > consistent for longer H_CALLs")
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Tue, May 14, 2024 at 07:12:24PM +0200, David Sterba wrote:
+> From: Qu Wenruo <wqu@suse.com>
 > 
-> This is a new feature and I don't think it should be backported.
-> 784354349d2c can be backported by dropping the
-> plpks_signed_update_var() hunk.
-> 
+> commit 1db7959aacd905e6487d0478ac01d89f86eb1e51 upstream.
 
-Now dropped and fixed up, thanks.
+Both now quued up, thanks,
 
 greg k-h
 
