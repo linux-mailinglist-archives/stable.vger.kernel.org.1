@@ -1,128 +1,117 @@
-Return-Path: <stable+bounces-45153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3193A8C63AD
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 11:30:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D8B8C63B0
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 11:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0E59284750
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D771A1C221BA
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCC559151;
-	Wed, 15 May 2024 09:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A3358ADD;
+	Wed, 15 May 2024 09:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NNef67uq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCE85914D;
-	Wed, 15 May 2024 09:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B921558AC3;
+	Wed, 15 May 2024 09:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715765432; cv=none; b=fLBwk56va6Nxon+SsyaZQleqO6Lxs26MjFO1cCa53Z1K89kGi3T2A+XGBHPuf7844EU+T61uPBkFBPIf47S2i1K5/8i9JEpUJFHlPSCiGgIbIsWuyLAeX3dIktISGLx/SjESK3CIeUzj69KG9CNk3D7ua7woyh0INdH0q4fPtMQ=
+	t=1715765462; cv=none; b=sOPLazdOCBr3x76W+ooC/bOp+1kQeOVjdASq4PhCYnEBKtqHap00ZRj1005hTkNTzOJfK3/HF3a4RVOCEO84BXDOR1QW42DbgGbkBOXyzX1PcmR+xaczESGWQFwVK1pP2cLsps4GCHWi6sn8L6IKNS88MEexq66LjmsHr6help4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715765432; c=relaxed/simple;
-	bh=U4sqkEy7jQH3kzXAo6QyI7bYMwu7KBPvs6VnC9+VuxY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=TmGAuMyJYR+IEWXh6HIH4KEPfBO0LnV63o7ucFc1UPjACveKZdoDjiA3OR8xq0qyM5HearSO6uNQFPTZsWkja2Mj5o6GLC5x/01lJwCvjFR5gzYUupbYm7Btnorv4CbRdsIlEMiR7cYRM4ZNztcMDiL5unS35LSUmNJubOc+CsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.173])
-	by gateway (Coremail) with SMTP id _____8AxJ+mxgERmjgMNAA--.18817S3;
-	Wed, 15 May 2024 17:30:25 +0800 (CST)
-Received: from [10.20.42.173] (unknown [10.20.42.173])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8Cx3VStgERmmqYgAA--.20S3;
-	Wed, 15 May 2024 17:30:23 +0800 (CST)
-Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-To: Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@loongson.cn>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev, Linux-Arch <linux-arch@vger.kernel.org>,
- Xuefeng Li <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
- stable@vger.kernel.org
-References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
- <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <3937d6b1-119b-195e-8b9b-314a0bfbeaeb@loongson.cn>
-Date: Wed, 15 May 2024 17:30:21 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1715765462; c=relaxed/simple;
+	bh=x0WiLqGSoZ3LIOEaEn9qtWswtKOTZTI/9ZmHSmH3WiA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AMDPeN/X7JC12Wlte9wxybVxx5WgFZKhYmWEX4D1c6QgNP3q1XBR10Xg1yHscXu5uoRGyvO3ndpChapw4cLnucUIck3FSF66wyY64+HjKfKJtOum53SkOaPRqoV8fGXRg5qAoaNAuV/VrgUn+aotuB56CR0IQpI+X+tBCT9r80s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NNef67uq; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715765461; x=1747301461;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=x0WiLqGSoZ3LIOEaEn9qtWswtKOTZTI/9ZmHSmH3WiA=;
+  b=NNef67uqwRctz1IzaiLdjyzjK3pa72EbfGsoLR+JBTgSs6owD28UW4/v
+   15t3blYy0696ApdaqgnkL5V0Q8CRkIj0zN6OIwmltbeubGBdfT3vTsEiU
+   w7bAqippbw+UAhvkXO2fxNjareen0OwoAXUkXdKMtaQkRBpYoqXAoYxlC
+   UQdE0L8MzwG/APy295olbapZ71CUQuNj25sAEM/fHmhHLx+VPmqffUemH
+   Amz3qhAVHPZBZmrt12VUwWWBISL/8GGqd6V9ahyvctAd+5S1sgyTzcQBY
+   EiuCcVqPutgn2xkbj140HsEBBYe1ByJmKV2WYnYACoDAL3Hk4lj6KsrX5
+   Q==;
+X-CSE-ConnectionGUID: w5G1RsEHQmGKy7BVRFANdQ==
+X-CSE-MsgGUID: ihwy01NbS4CvNsdl5bBJVw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="22386718"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
+   d="scan'208";a="22386718"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 02:31:00 -0700
+X-CSE-ConnectionGUID: rmsMv8BmTx6TfL6MlANqLg==
+X-CSE-MsgGUID: BeMOF8duQBW8pYVgEsaE4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
+   d="scan'208";a="31078044"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa006.fm.intel.com with ESMTP; 15 May 2024 02:30:58 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 95B0F327; Wed, 15 May 2024 12:30:56 +0300 (EEST)
+Date: Wed, 15 May 2024 12:30:56 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCHv4 3/4] x86/tdx: Dynamically disable SEPT violations from
+ causing #VEs
+Message-ID: <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
+References: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
+ <20240512122154.2655269-4-kirill.shutemov@linux.intel.com>
+ <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8Cx3VStgERmmqYgAA--.20S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tFWUuF4UXFyftr4fJrW5urX_yoW8ZrW7pF
-	WSya43uF4kGry7Aw17uw1jqrs5AF18GF43XF1SgryxCay3Jr4Iyr10qrWIgasFkFyxZF4j
-	vF4jkFn8Za98Z3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcbAwUU
-	UUU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
 
-
-
-On 2024/5/11 下午8:17, Arnd Bergmann wrote:
-> On Sat, May 11, 2024, at 12:01, Huacai Chen wrote:
->> Chromium sandbox apparently wants to deny statx [1] so it could properly
->> inspect arguments after the sandboxed process later falls back to fstat.
->> Because there's currently not a "fd-only" version of statx, so that the
->> sandbox has no way to ensure the path argument is empty without being
->> able to peek into the sandboxed process's memory. For architectures able
->> to do newfstatat though, glibc falls back to newfstatat after getting
->> -ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
->> inspecting the path argument, transforming allowed newfstatat's into
->> fstat instead which is allowed and has the same type of return value.
->>
->> But, as LoongArch is the first architecture to not have fstat nor
->> newfstatat, the LoongArch glibc does not attempt falling back at all
->> when it gets -ENOSYS for statx -- and you see the problem there!
+On Tue, May 14, 2024 at 05:56:21PM +0300, Nikolay Borisov wrote:
+> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> > index 1ff571cb9177..ba37f4306f4e 100644
+> > --- a/arch/x86/coco/tdx/tdx.c
+> > +++ b/arch/x86/coco/tdx/tdx.c
+> > @@ -77,6 +77,20 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+> >   		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+> >   }
+> > +/* Read TD-scoped metadata */
+> > +static inline u64 tdg_vm_rd(u64 field, u64 *value)
+> > +{
+> > +	struct tdx_module_args args = {
+> > +		.rdx = field,
+> > +	};
+> > +	u64 ret;
+> > +
+> > +	ret = __tdcall_ret(TDG_VM_RD, &args);
+> > +	*value = args.r8;
+> > +
+> > +	return ret;
+> > +}
 > 
-> My main objection here is that this is inconsistent with 32-bit
-> architectures: we normally have newfstatat() on 64-bit
-> architectures but fstatat64() on 32-bit ones. While loongarch64
-> is the first 64-bit one that is missing newfstatat(), we have
-> riscv32 already without fstatat64().
-> 
-> Importantly, we can't just add fstatat64() on riscv32 because
-> there is no time64 version for it other than statx(), and I don't
-> want the architectures to diverge more than necessary.
-yes, I agree. Normally there is newfstatat() on 64-bit architectures but 
-fstatat64() on 32-bit ones.
+> nit: Perhaps this function can be put in the first patch and the description
+> there be made more generic, something along the lines of "introduce
+> functions for tdg_rd/tdg_wr" ?
 
-I do not understand why fstatat64() can be added for riscv32 still.
-32bit timestamp seems works well for the present, it is valid until
-(0x1UL << 32) / 365 / 24 / 3600 + 1970 == 2106 year. Year 2106 should
-be enough for 32bit system.
+A static function without an user will generate a build warning. I don't
+think it is good idea.
 
-Regards
-Bibo Mao
-
-
-> I would not mind adding a variant of statx() that works for
-> both riscv32 and loongarch64 though, if it gets added to all
-> architectures.
-> 
->        Arnd
-> 
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
