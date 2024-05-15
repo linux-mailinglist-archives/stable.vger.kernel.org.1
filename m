@@ -1,121 +1,98 @@
-Return-Path: <stable+bounces-45172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8FC8C67EC
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 15:56:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932588C684D
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1C4E1F23CED
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 13:56:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216591F2154C
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B1813EFEC;
-	Wed, 15 May 2024 13:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBC113F422;
+	Wed, 15 May 2024 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HUjyS7Qa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXUi7vH6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DBD57CA1;
-	Wed, 15 May 2024 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6423557CA1;
+	Wed, 15 May 2024 14:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715781394; cv=none; b=hdFAjlMSgo6xdpwd7/A1mig2mwhSHojM3CS3Z3fSjcU+MQdJt0O3Fg5C7LFtpHxcd96nlzfMWtIQTpvq+XdzWYr0ifo4ATvyQGjQROjPjqTTBi4WFEV4eoOL+uoBdZbqUrhHWD9BkzamqrevTvwCDiR/Aj1Ih+fEpcMkXDqVpYs=
+	t=1715782160; cv=none; b=mzG9AsTwGm7DRAG9AOWn3QlNU/DCbyR+g5ktE3yLsMlkBqM5pD4aqwIw8aBM/KQZNVKSa5PIoCca+rTm+De8BYhF1jyOXCRx0lqKiajwZB80p2aX9+HiWooVBYcOALRViP0BWu8wJhSx97mFSr6fxVmYCH2GO9fTPxPsKEDdFwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715781394; c=relaxed/simple;
-	bh=x5d5maiHYQceAd2mdSo7gyBviByo2OZ+3BbIm3Oj2T4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=di6tnSoqOvJaNnH3liGvNncoP47xxkhWcdFqgSQXD1Gy2NjWJ6l2x7FoAdm8A6sSoEXWfzcp1mKBOLdViAyGu8yMR+HR9+uq5yA6rFLlem4MBLLsgNRScPZ7wrA6UlUAkVqfdKHKfvZnPrpo4em9O9QmVJ4KFUO4d4eJYMdCATk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HUjyS7Qa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F172DC116B1;
-	Wed, 15 May 2024 13:56:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715781394;
-	bh=x5d5maiHYQceAd2mdSo7gyBviByo2OZ+3BbIm3Oj2T4=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=HUjyS7Qa8zShSh+L6xvl2u3ru30ewgN07Pi7AJnUIjJqSnbGdNs1eIIhbCzwSCBQb
-	 0pt/nEhcuTg+kfv/pVRd/BSZXseGv58KzHN9Elp+JSnnouVfX2P3zvE3qqG/SXPwz2
-	 nWfjryzIQKbMJGeFNFyx3TFk3s7hLXc5VKIoM257DF0CJxFdZqKoLGrlX0fqQTJBeh
-	 8YiuOkQEGbqQD9fZt9YjFwgm+h2IMRWublOlacp0pnpEUIMA6Xtv4/b5Xxu9HF148l
-	 jNVIwLutbCy2CD1n3/cdKywlBWfBR/+61rDRtfsyYasnrDpz+5aZlScY0gj52UxZ6m
-	 Clm1gN04v+PMw==
+	s=arc-20240116; t=1715782160; c=relaxed/simple;
+	bh=m3ubuPGkIWjaq0e2Nny5BGf1VDtiMnclz4YCAR4yDug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=my9fAy+8yiGSxIpZ9syZNyPEHpSfhqLnI+IaQkOE3rlJeDoGYYrr2GhyKmAyycJ2LYxS4tri7e7NQL8N2IbfsI7E+dKSdXpVsi6VdT13B5WJMhrpFyVsxZirWTKFXs4upmW+TFQB9S0IJF5uI4VQlvhturuCxC8edUojxKmBHpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXUi7vH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9387FC116B1;
+	Wed, 15 May 2024 14:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715782160;
+	bh=m3ubuPGkIWjaq0e2Nny5BGf1VDtiMnclz4YCAR4yDug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NXUi7vH6RB+h6Wu+wdMVJrCWs6D6IFkD4Wrs1ZIjA0byVSiHQ0Ru2qEgGmoAAHYZP
+	 Sas+ALcxa7JAXPnSgQK/ezfTrBwTADmp3oEofHqBUt33L+hg4sUJBYVedMj6hnK6No
+	 v/7U3324M+0bnhFRzRT+tUFLDPX/wqZisXcR/MEw=
+Date: Wed, 15 May 2024 16:09:17 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: three commits you might or might not want to pick up for 6.9.y
+Message-ID: <2024051501-dropkick-landmark-5db0@gregkh>
+References: <9e40badb-c4fa-4828-a4c5-3a170f624215@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 15 May 2024 16:56:30 +0300
-Message-Id: <D1A9QP6G0PW4.2HI60Q8GUT5YE@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Dmitrii Kuvaiskii"
- <dmitrii.kuvaiskii@intel.com>, <dave.hansen@linux.intel.com>,
- <kai.huang@intel.com>, <haitao.huang@linux.intel.com>,
- <reinette.chatre@intel.com>, <linux-sgx@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Cc: <mona.vij@intel.com>, <kailun.qin@intel.com>, <stable@vger.kernel.org>,
- =?utf-8?q?Marcelina_Ko=C5=9Bcielnicka?= <mwk@invisiblethingslab.com>
-Subject: Re: [PATCH v2 1/2] x86/sgx: Resolve EAUG race where losing thread
- returns SIGBUS
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240515131240.1304824-1-dmitrii.kuvaiskii@intel.com>
- <20240515131240.1304824-2-dmitrii.kuvaiskii@intel.com>
- <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
-In-Reply-To: <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9e40badb-c4fa-4828-a4c5-3a170f624215@leemhuis.info>
 
-On Wed May 15, 2024 at 4:54 PM EEST, Jarkko Sakkinen wrote:
-> On Wed May 15, 2024 at 4:12 PM EEST, Dmitrii Kuvaiskii wrote:
-> > diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/e=
-ncl.c
-> > index 279148e72459..41f14b1a3025 100644
-> > --- a/arch/x86/kernel/cpu/sgx/encl.c
-> > +++ b/arch/x86/kernel/cpu/sgx/encl.c
-> > @@ -382,8 +382,11 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_are=
-a_struct *vma,
-> >  	 * If ret =3D=3D -EBUSY then page was created in another flow while
-> >  	 * running without encl->lock
-> >  	 */
-> > -	if (ret)
-> > +	if (ret) {
-> > +		if (ret =3D=3D -EBUSY)
-> > +			vmret =3D VM_FAULT_NOPAGE;
-> >  		goto err_out_shrink;
-> > +	}
->
-> I agree that there is a bug but it does not categorize as race
-> condition.
->
-> The bug is simply that for a valid page SIGBUS might be returned.
-> The fix is correct but the claim is not.
->
-> > =20
-> >  	pginfo.secs =3D (unsigned long)sgx_get_epc_virt_addr(encl->secs.epc_p=
-age);
-> >  	pginfo.addr =3D encl_page->desc & PAGE_MASK;
-> > @@ -419,7 +422,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area=
-_struct *vma,
-> >  err_out_shrink:
-> >  	sgx_encl_shrink(encl, va_page);
-> >  err_out_epc:
-> > -	sgx_encl_free_epc_page(epc_page);
-> > +	sgx_free_epc_page(epc_page);
-> >  err_out_unlock:
-> >  	mutex_unlock(&encl->lock);
-> >  	kfree(encl_page);
->
-> Agree with code change 100% but not with the description.
->
-> I'd cut out 90% of the description out and just make the argument of
-> the wrong error code, and done. The sequence is great for showing
-> how this could happen. The prose makes my head hurt tbh.
+On Wed, May 15, 2024 at 03:49:30PM +0200, Thorsten Leemhuis wrote:
+> Hi Greg. Here are three reports for regressions introduced during the
+> 6.9 cycle that were not fixed for 6.9 for one reason or another, but are
+> fixed in mainline now. So they might be good candidates to pick up early
+> for 6.9.y -- or maybe not, not sure. You are the better judge here. I
+> just thought you might wanted to know about them.
+> 
+> 
+> * net: Bluetooth: firmware loading problems with older firmware:
+> https://lore.kernel.org/lkml/20240401144424.1714-1-mike@fireburn.co.uk/
+> 
+> Fixed by 958cd6beab693f ("Bluetooth: btusb: Fix the patch for MT7920 the
+> affected to MT7921") – which likely should have gone into 6.9, but did
+> not due to lack of fixes: an stable tags:
+> https://lore.kernel.org/all/CABBYNZK1QWNHpmXUyne1Vmqqvy7csmivL7q7N2Mu=2fmrUV4jg@mail.gmail.com/
+> 
+> 
+> * leds/iwlwifi: hangs on boot:
+> https://lore.kernel.org/lkml/30f757e3-73c5-5473-c1f8-328bab98fd7d@candelatech.com/
+> 
+> Fixed by 3d913719df14c2 ("wifi: iwlwifi: Use request_module_nowait") –
+> not sure if that one is worth it, the regression might be an exotic
+> corner case.
+> 
+> 
+> * Ryzen 7840HS CPU single core never boosts to max frequency:
+> https://bugzilla.kernel.org/show_bug.cgi?id=218759
+> 
+> Fixed by bf202e654bfa57 ("cpufreq: amd-pstate: fix the highest frequency
+> issue which limits performance") – which was broken out of a patch-set
+> by the developers to send it in for 6.9, but then was only merged for
+> 6.10 by the maintainer.
 
-Also please remember that stable maintainers need to read all of that
-if this is a bug fix (it is a bug fix!) :-) So shorted possible legit
-argument, no prose and the sequence was awesome :-)
+Nice, thanks for these!  I'll look at them after this round of -rcs is
+out.
 
-BR, Jarkko
+greg k-h
 
