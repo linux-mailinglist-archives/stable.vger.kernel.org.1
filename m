@@ -1,104 +1,113 @@
-Return-Path: <stable+bounces-45226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E0A8C6CAD
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 21:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6918C6CF9
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 21:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF2011F22463
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 19:16:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419B11F23A4A
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 19:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C25159598;
-	Wed, 15 May 2024 19:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1547E15ADA8;
+	Wed, 15 May 2024 19:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="DwXOaEWw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G76BIFjO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAAC1591EC
-	for <stable@vger.kernel.org>; Wed, 15 May 2024 19:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4F315ADA0;
+	Wed, 15 May 2024 19:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715800576; cv=none; b=H4J7b0IjQviYl5j7orGBYDwIpfb5TQtzknWTrTmUhWtkfmmIlrlY32QSEa98VtDCkeV2L/4zVqGZTsuqGCfqlvo9uHvbOBTlz3xWNGq8AtK4fTeiv/lXxyI9TewuGKr88iPHbT26ZBSX57XgRmRQ++H6ptFcL7AQTPJ2rUqJ2Rs=
+	t=1715802580; cv=none; b=qpumBLH77eTp7vazhOxsIIKHcO4lIHcezcNib1HqVYCT+xnL3jcFJdRUMfhAabuGdc4CZCX9wbi/VlPi5mjI1GQReiUp0wWHiU3XOtUVFHJ/pfOfnk/4RWDFm+qXKnSQrwORD7hfFBJegPnK9GZerMsyVqD6hH0diJP9vVKgANY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715800576; c=relaxed/simple;
-	bh=FP5LyQsEGquqKItcS87RpeQ08Gmx+s5LG2B/J1Ts8Iw=;
-	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NGccvT2+EvzvSXQdpts5NcK6l/TMz1XBctS5+1DpJzeNcwi5vTfGP/7nXVc/hhhj6EnINYsA/EOZ4dAZlaxZQCAgNI8ATKXKq4b6cshRaz1MvU1j1T2OZtHbVXdL+dbWd5L1xdn5FS267l9c9dczHerEFaTmppkJWK1SMDC2rPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=DwXOaEWw; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-61be4b986aaso81151357b3.3
-        for <stable@vger.kernel.org>; Wed, 15 May 2024 12:16:15 -0700 (PDT)
+	s=arc-20240116; t=1715802580; c=relaxed/simple;
+	bh=kZ6t4klUyIMJn16H55r0wYiMd4UJePBx6iySXQTyR1M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Skn24XmyXYeCwsM4V4b5l1OhGnnhubZBKyx02Enw93Mr4aE3lv4UMM4kJsJjRWqCiu1/hM9QXQrVY0pXg11494YNF49hqE4nXF8IDD+vSV/iag3uIJXTMHfKQcr8FewKjDM2UOTOiS6i2/zBTTwVWHI70joD3Itl3yuQGDOd5D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G76BIFjO; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-7f81be2539bso1318310241.3;
+        Wed, 15 May 2024 12:49:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1715800574; x=1716405374; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FP5LyQsEGquqKItcS87RpeQ08Gmx+s5LG2B/J1Ts8Iw=;
-        b=DwXOaEWwek0SnPySO1ARVc0A/4OgrkGiKRT5mcLRlWNxBKGu93kvckwdGoev7VXqes
-         8oP0wLbVNorcM7UTp5kFPZa+XHNMpTbKO8gCHBsFl1m9nbc0iln2Gz4tJdmEwV1i7nK/
-         1YYuF5S2eQ7VOUG9MD8cQooIgx5qll6LjsBPY=
+        d=gmail.com; s=20230601; t=1715802578; x=1716407378; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fg7/SnhYZO0IrKL7k9gXi4LAAZywPSttMr41QqUb75E=;
+        b=G76BIFjOC9I4609eaxK/hge0vv6c6pu90i3pZqNkyV1TE/tyYrMbfNKSh8xHmTBuLg
+         2BCQpysH7HtciGYwaMWUr95rnPi2bon8DnajPu7HYvD8zvym8jDp+TBZ6aXwypdf/NQ9
+         2zbkd3c0SqINeQ0WAHyuDFIXakGzZ1sG7EzUhJddD2twoE34B24rzs6I61v72jzBUND/
+         Q6OaJlROOI/ylPxnF+MBzaCjdJN+5LRyvdOiUnVcT+WS3BPTOa08PMtCYnS1Jx+ovgNf
+         qoSnu/F77gt05QQPDcjqUPTEPqjx/pMCcRe4S8lmEiHdH1fRFhUQ9zBY8JYF2n8lSm3V
+         Xeuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715800574; x=1716405374;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FP5LyQsEGquqKItcS87RpeQ08Gmx+s5LG2B/J1Ts8Iw=;
-        b=EYi+xp/SKbvQqG5HB09q+vpgnf+aA6YyG9I6KkVAJL1rby+4d5gAvHEQWQEia3mW86
-         7k4hOH8+snBYIezyH3/0sJjK/P4p3kuOLxI9Kgjom/ttug3MyLjgYBmwT+e+2RV1mPgI
-         I+5ulNoEoZZY0T7ivy51o0E/b4DqxCMfkK0iNhwczU9GLfbLUAnFBShyZF1sGjcitzuj
-         bseA3NcPEk10M05iDbtf3PscfLhProojSC4r9sOzPzFfr08fnFCoGZ0e03/Ncm8qYlzJ
-         +dM7ntBKq6uSUi2WQwzeJ0ZlCXGJ79kbsTQ+Nwe8khQ9CwLT0+MmNH7sqK3df1Qpba30
-         x7kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSbHyhMwsm3Tzy9UNmU+HzsTC4HFTu/89x50GXM3lW4p5gEVYPPxaIMlj7pVUCeGL9eMv64bWF3B+9dGv0h8odYOQpJFN4
-X-Gm-Message-State: AOJu0Yyqms3b6CBRdGYYQm403aNN89Te6RV0CXeccTfSd/xuaK1gntA2
-	CAHMs6+KUEqHGMTzHfuXxHSTlwQ/Eamd1vZeNvQ0G8toIqkjp2Vu4x5pUcRlN+0Q6rWQECoVf1g
-	+oibbu7DaHxws2djKquAPV7M+SXlgsE7jp+IN
-X-Google-Smtp-Source: AGHT+IEZFVp0/9J3vEYY3DeetifpNlyI7Reu7bida3ovANfhBvDsm0gF8xGPrJXaQaXknjiNqesUsWMhYeDWThoRIkM=
-X-Received: by 2002:a25:6b41:0:b0:de5:568a:9a9 with SMTP id
- 3f1490d57ef6-dee4f2f7f74mr14602381276.38.1715800572793; Wed, 15 May 2024
- 12:16:12 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 15 May 2024 12:16:11 -0700
+        d=1e100.net; s=20230601; t=1715802578; x=1716407378;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fg7/SnhYZO0IrKL7k9gXi4LAAZywPSttMr41QqUb75E=;
+        b=QXzxgJDwFQ2tUiirCE/kiw8Mm3uKD3xii1pk+skJTh/CWO5eVcQKEtNQ8/Wx9aB9OY
+         kvl3uQ8Xdd2pe9oQ3K0U2jOgEKdpbzqOi5p6H8uj+ES6KkzMUWxKYFKBlNDGUs1fL1nR
+         XgKLObYohmIbyCsxMWYycENwmnDIE5evNNUqfZkmbJlELblWIJAEszhA+sPKouNzkp9G
+         Mw/NW1Nl3lQGhPvk1O7ayAED/JhmjyQ6347+Fy+UgkkJjbw14esBA9gIQf0D/vt2h02e
+         h+V7cCB9+pSYKr1dsC3NBB5TpBaDHV+OfS0EfDkEuRnb5niH49zWq7zT8GI4RDv7LuQn
+         oFSw==
+X-Forwarded-Encrypted: i=1; AJvYcCWPiML30cv4FczzKfmL4X4A0XGSxB5/TU2Kjjfh8c4k/PaQWvo86Ut06rHZR1fuYXpUmM9f439cJKtcTHx2vTMXC/5HDTUym1x2C6kP
+X-Gm-Message-State: AOJu0YyK+cBwRmlFd3Eh012tX1I3hMeX0QH46nMwaGr3MDdS5HYDLw+k
+	hMEvqNiAIdsLWg62srlWeApUcfX5/YwK5a8ZthUVuEAdrkzLoLyWoeH32G6xWQsg6ynY7mB7ng1
+	V64l8dU1JmrG3uGRjwZ+nP5/TdZ44vydT
+X-Google-Smtp-Source: AGHT+IGvNTG0pQdAEJXa0r+l3xuPRP51cQc5MvnBhifGmCSoxEELMNC4gvY2X45M+c3yB2dLC39yQM2WlDMqjonStJI=
+X-Received: by 2002:a05:6102:304d:b0:47f:17e7:ead3 with SMTP id
+ ada2fe7eead31-48077de5466mr15483575137.12.1715802577005; Wed, 15 May 2024
+ 12:49:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
-References: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
-From: Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date: Wed, 15 May 2024 12:16:11 -0700
-Message-ID: <CAE-0n52ptoRRQEL1G9vTZ7ExemrUSmV2Km=uts_E7wBeoz_GcA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	Kalle Valo <kvalo@kernel.org>, Rakesh Pillai <quic_pillair@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240515082414.316080594@linuxfoundation.org>
+In-Reply-To: <20240515082414.316080594@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Wed, 15 May 2024 12:49:26 -0700
+Message-ID: <CAOMdWS+1-Yj+5uYB469K63VU_9-Pi3O2do2S753udPQm8vhOEg@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/168] 5.15.159-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Quoting Dmitry Baryshkov (2024-05-11 03:49:59)
-> If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
-> modules, compilation fails with:
+> This is the start of the stable review cycle for the 5.15.159 release.
+> There are 168 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
-> drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
-> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
-> drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
+> Responses should be made by Fri, 17 May 2024 08:23:27 +0000.
+> Anything received after that time might be too late.
 >
-> Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
-> built as module if QCOM_RPROC_COMMON is built as module too.
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.159-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 >
-> Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
+> thanks,
+>
+> greg k-h
+>
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
+
+Tested-by: Allen Pais <apais@linux.microsoft.com>
+
+Thanks.
 
