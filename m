@@ -1,106 +1,103 @@
-Return-Path: <stable+bounces-45127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C808C61AA
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:26:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809EC8C61B0
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AB7C1F21277
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 07:26:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B18B31C21D49
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 07:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DD845958;
-	Wed, 15 May 2024 07:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F1843ABC;
+	Wed, 15 May 2024 07:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zu18lLj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QoPqTuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2918D4594C;
-	Wed, 15 May 2024 07:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FA34316B
+	for <stable@vger.kernel.org>; Wed, 15 May 2024 07:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715758001; cv=none; b=rkQk/2JDXzuDBn0u3ou39duc37HLxxOfh+AZi0pRcoWZNenHJbLSJ+HpGHQDa6qjxtBPdISIL5NnA74u/IgOCXIqqq7msRw0/jAbwylYd4YDwohCpYnvY2axekvvRTMsrhZf24Wuj+bEBEg2H91P+ovzGwdCIJ++G+7AF9hwN5M=
+	t=1715758114; cv=none; b=VfN8of+s29uqr6I1J5cz3FWhGM7l2c/H7XJCjQk3/pjsEoer34W04W6y9cT791d4roJoifwdO0fff2yylEd9Esgkddgl36QhykPL3KVZ9bfSN9AvRuvJVDIU14tC8QXJv9tQJ/iIYPlqx8h+KEpYasXRGJTbzwCiL9xqlnY2rLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715758001; c=relaxed/simple;
-	bh=u8ecY2pkyep2NyTRX/R5D56dmzsHqbHlEZaU3YPXR3M=;
+	s=arc-20240116; t=1715758114; c=relaxed/simple;
+	bh=UzGsJREsrm5TsgJkDsjQE+/P0Hg32vH0deHEFYLx9jk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WxtanXmJ/tpK/ggrPrttjdTyfLw7nI2rXn/+hhAjdxCKlLNnmqh6FIzxyQNauEdwu1H2E6T+srj28+Ha1O2Sy4YrSBgiKHHZq5K1BV9cjWL47wZrLmt/TAP1UA8hewnWNcBUPn8doEjy/gogi9WOMIXYgrnsuJAnSMGXPe1paoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zu18lLj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E36FC32781;
-	Wed, 15 May 2024 07:26:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhuww/hwPs2FruRb24nfVtri2hRg9/1m04SBxuMSK7rHoaShWX/rbe8BsWRJ4xwplwpsk54vBwjGj/ybFcry1ix0dPt8Wl4DlN2iX2Rsq4D4bjOZvAuUi7WQpdAS4EFWEeKlUskwUcoT6VfmVPoXZPoE0pUJecH5eB83H3BYvWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QoPqTuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F73C116B1;
+	Wed, 15 May 2024 07:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715758000;
-	bh=u8ecY2pkyep2NyTRX/R5D56dmzsHqbHlEZaU3YPXR3M=;
+	s=korg; t=1715758114;
+	bh=UzGsJREsrm5TsgJkDsjQE+/P0Hg32vH0deHEFYLx9jk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zu18lLj6wD+SQ+PEHwPoC0umWDimHHx8OOEJvIFH0BZNjkEzdR2IYdJrBvHsv+gVa
-	 pnbh+DitHPUnTbr0LhnC/eZcJ2CVBISE1+94naPwXlVv7mWQi81tMXeG3l6bSzUWaE
-	 O6hOjtRAbvNPaHgraHzNl7essY8CpZY6rLTg1fAw=
-Date: Wed, 15 May 2024 09:26:37 +0200
+	b=1QoPqTuIMe3rK+BG+0AJFNVEYXHZbud9XMQSQFMqXF4sYCV0DaRlhz4LlNeTn6foZ
+	 ZfenlfwivzKWx8OklPNrTYQ1Qve95GY47/YfKGvGJOdZTeANjYN3WuQQgS91XmmX1L
+	 VdiRmdqlKIZGDFdeAiLZAg11y0TN7kWBHWkzX1eA=
+Date: Wed, 15 May 2024 09:28:31 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Edward Liaw <edliaw@google.com>
-Cc: stable@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	kernel-team@android.com, Mark Brown <broonie@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] kselftest: Add a ksft_perror() helper
-Message-ID: <2024051505-french-spoiled-d23c@gregkh>
-References: <20240430010628.430427-1-edliaw@google.com>
- <2024043037-debate-capsize-e44c@gregkh>
- <CAG4es9VL8CdROKVygYi3YAo3ZuugXgiyt6uhf+3yq6s8iKfQeg@mail.gmail.com>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: stable@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+	Tony Luck <tony.luck@intel.com>, Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.1.y] mm,swapops: update check in is_pfn_swap_entry for
+ hwpoison entries
+Message-ID: <2024051523-transfer-buffed-7829@gregkh>
+References: <2024042309-rural-overlying-190b@gregkh>
+ <20240507092822.3460106-1-linmiaohe@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG4es9VL8CdROKVygYi3YAo3ZuugXgiyt6uhf+3yq6s8iKfQeg@mail.gmail.com>
+In-Reply-To: <20240507092822.3460106-1-linmiaohe@huawei.com>
 
-On Tue, Apr 30, 2024 at 10:29:43AM -0700, Edward Liaw wrote:
-> On Tue, Apr 30, 2024 at 12:51 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, Apr 30, 2024 at 01:06:27AM +0000, Edward Liaw wrote:
-> > > From: Mark Brown <broonie@kernel.org>
-> > >
-> > > [ Upstream commit 907f33028871fa7c9a3db1efd467b78ef82cce20 ]
-> > >
-> > > The standard library perror() function provides a convenient way to print
-> > > an error message based on the current errno but this doesn't play nicely
-> > > with KTAP output. Provide a helper which does an equivalent thing in a KTAP
-> > > compatible format.
-> > >
-> > > nolibc doesn't have a strerror() and adding the table of strings required
-> > > doesn't seem like a good fit for what it's trying to do so when we're using
-> > > that only print the errno.
-> > >
-> > > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > > Reviewed-by: Kees Cook <keescook@chromium.org>
-> > > Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-> > > Stable-dep-of: 071af0c9e582 ("selftests: timers: Convert posix_timers test to generate KTAP output")
-> > > Signed-off-by: Edward Liaw <edliaw@google.com>
-> > > ---
-> > >  tools/testing/selftests/kselftest.h | 14 ++++++++++++++
-> > >  1 file changed, 14 insertions(+)
-> >
-> > This commit is already in 6.6.29, why submit it again?
+On Tue, May 07, 2024 at 05:28:22PM +0800, Miaohe Lin wrote:
+> From: Oscar Salvador <osalvador@suse.de>
 > 
-> Hi Greg,
-> I double checked and I don't see this commit in 6.6.29.   As far as I
-> can tell the earliest it has been merged is in 6.7.1.  Do you mind
-> rechecking?
+> Tony reported that the Machine check recovery was broken in v6.9-rc1, as
+> he was hitting a VM_BUG_ON when injecting uncorrectable memory errors to
+> DRAM.
+> 
+> After some more digging and debugging on his side, he realized that this
+> went back to v6.1, with the introduction of 'commit 0d206b5d2e0d
+> ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")'.  That
+> commit, among other things, introduced swp_offset_pfn(), replacing
+> hwpoison_entry_to_pfn() in its favour.
+> 
+> The patch also introduced a VM_BUG_ON() check for is_pfn_swap_entry(), but
+> is_pfn_swap_entry() never got updated to cover hwpoison entries, which
+> means that we would hit the VM_BUG_ON whenever we would call
+> swp_offset_pfn() for such entries on environments with CONFIG_DEBUG_VM
+> set.  Fix this by updating the check to cover hwpoison entries as well,
+> and update the comment while we are it.
+> 
+> Link: https://lkml.kernel.org/r/20240407130537.16977-1-osalvador@suse.de
+> Fixes: 0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
+> Signed-off-by: Oscar Salvador <osalvador@suse.de>
+> Reported-by: Tony Luck <tony.luck@intel.com>
+> Closes: https://lore.kernel.org/all/Zg8kLSl2yAlA3o5D@agluck-desk3/
+> Tested-by: Tony Luck <tony.luck@intel.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+> Cc: <stable@vger.kernel.org>	[6.1.x]
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit 07a57a338adb6ec9e766d6a6790f76527f45ceb5)
+> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> ---
+>  include/linux/swapops.h | 105 ++++++++++++++++++++--------------------
+>  1 file changed, 53 insertions(+), 52 deletions(-)
 
-My fault, yes, you are right, it is not in 6.6.y, I don't know what I
-was looking at.
-
-Can you resubmit it if it really is needed there?
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
 
