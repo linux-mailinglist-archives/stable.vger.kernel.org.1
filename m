@@ -1,160 +1,187 @@
-Return-Path: <stable+bounces-45114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18628C5E3C
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 02:06:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687238C5E57
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 02:37:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6691C20F03
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 00:06:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01E781F22074
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 00:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADA619B;
-	Wed, 15 May 2024 00:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E4B63C;
+	Wed, 15 May 2024 00:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lrEgG9ir"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vyyshJvY"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41F718E
-	for <stable@vger.kernel.org>; Wed, 15 May 2024 00:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78686184F
+	for <stable@vger.kernel.org>; Wed, 15 May 2024 00:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715731584; cv=none; b=lTjPZmahz5xZUsFoOIBXuUA1mU31NdZVTQNIlN+etBzLVNqQuYk2Ofg+r7Vt+x6tYMmnw1lhx+jFgHODAp1QRaxFt5IKKS2j9ajkkmIImUAtDbbVSsJ/Q2PUK2tWb9MW49wzq42czKW6+1OgE0PL6jYygzhZbfuDrhJ82RGicxk=
+	t=1715733425; cv=none; b=hAJ8ztVF8aFKMSWKRCXKJ5tR139/gdeTF5y8kcsUTX60Ur/ErIv3ZM3FnOy8RupstFXfyGMpWCNv0tFl/TIX56OHfJsG8Oaozn/BNRcq/nLcbn3f7xnvwBtz5ys/tNqae2uVkqsyAu9VRV/29kh7EGM2e2q0d4JneabaiSmvDu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715731584; c=relaxed/simple;
-	bh=V6CTpVgYXrlq/4ejWbGGBKIUn4vs+g7U6kisWyra9sc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=clkD5qrtEESfcPRw/5oQxL1WWAVCVaPMP4XNZzN3vgOoZVx481juCi8Gsd32HRMf6uP6396+njggrSnr/n/96Q1FRtjWki5rUA0gpDQKvsVc662Wm0lMXnOPLZcg96WfwdfMxt+kdNKV3EaL/hlnkJ7qV3rEAraaeQruhihD3P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lrEgG9ir; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44F066HF031304;
-	Wed, 15 May 2024 00:06:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=aVx3hmhcBtdUIGMwUj1UALl4sV/Fm3fZMc01j6MWcEo=;
- b=lrEgG9irqWNdcuzIZzFtMAqktdenBHvG6eOioK1Ls3BBAhsj23wSWd0mLseGxDMw0HFi
- MdQhDiGVE5hPW7pjSApFRlUKLn8TjX5gE6qvCTqo2R6EwW+cgv6+OmaPo6eDR5vJd3lI
- OD3eJ3g6KUOHLkV0dSZvFYQiRTsJguHlgQBjC3yM8ele2rqtJ5fXAutG9KcvsEWRHgNc
- o8k2SI5zv+26QaEm+Ym15LNymUgK4qFkXCYozs8yW78tuBgC902wyPJH9u9TH9xcj67B
- 42eFxfHD5S85WZCNPGPg1fnU0ujHaPgL83Q0jfLKRYCE0X60oCUABlb5mfOw7EMyaLuz 0Q== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y4h7c83xj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 00:06:05 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44EMHSrQ006200;
-	Wed, 15 May 2024 00:01:40 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2mgmg9sm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 00:01:39 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44F01ag755837144
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 May 2024 00:01:38 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0EE7F2005A;
-	Wed, 15 May 2024 00:01:36 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9703E20043;
-	Wed, 15 May 2024 00:01:35 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 May 2024 00:01:35 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (unknown [9.150.21.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 57DAA60426;
-	Wed, 15 May 2024 10:01:26 +1000 (AEST)
-Message-ID: <9d093600382fb412381827365a5a342d632d1269.camel@linux.ibm.com>
-Subject: Re: [PATCH 6.1 088/236] powerpc/pseries: Implement signed update
- for PLPKS objects
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Nayna Jain <nayna@linux.ibm.com>,
-        Russell
- Currey <ruscur@russell.cc>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        Michael
- Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Date: Wed, 15 May 2024 10:01:06 +1000
-In-Reply-To: <20240514101023.710898376@linuxfoundation.org>
-References: <20240514101020.320785513@linuxfoundation.org>
-	 <20240514101023.710898376@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Df7gaqDmJjGybBExg4QYx_ACJzAG4_pm
-X-Proofpoint-ORIG-GUID: Df7gaqDmJjGybBExg4QYx_ACJzAG4_pm
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1715733425; c=relaxed/simple;
+	bh=oBWUlEWluAHTiq7x5PmtdIOTVCfEATl1uVh/AdUEqHk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TNam5N7nHkK4lquR9OJvaavBtMfjtQt0n5Id9hOM578bzM5dGwAvkkEc1jEoGMlBPd19G1ZVaA9Y6HCRDiMI9Z5jQsno875Ri9gCekwdJEpavm/FP9GA+aS0wSlP5jmLgGCASrmqJE0kDG6r3Org59R25GAhCkzTjQGm9jc71Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vyyshJvY; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2b38f2e95aeso5002800a91.0
+        for <stable@vger.kernel.org>; Tue, 14 May 2024 17:37:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715733422; x=1716338222; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vk8qZUNPyTPW/A1KHzQN8z/XqvExIz1hHrnYNu4UtMQ=;
+        b=vyyshJvYs8yAkZLGu0uP89N4TA5+hDmJIQacYBc+6tRafITwWoLnHAKhRUEnfJTB2X
+         a3FyFsHxXbM0Cq2D4bb6XUizE47+fcEz9rGmakLRoiOCCI8KfR6+vOID1NW2q2UBLAN6
+         vzxklkpoaA9DCHJruxhVDmQCz80CpdiKajtwL/fwZACECgl3v4xNzVVfM2uEndErhcHk
+         IV8lFhxeoRCw+5ZBGONnJA0x+BwWHeP3VkErLhvWMzccugMWV4/BiPwCuPb6MAkEsf6f
+         a130fqrlBHBVKTKKJNRdVkLTSEFw1i+d4ROA0rEDW3peA4GMfAIDs81kQrUVz4UKTxW7
+         gu+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715733422; x=1716338222;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vk8qZUNPyTPW/A1KHzQN8z/XqvExIz1hHrnYNu4UtMQ=;
+        b=lT7COqYX8Up0cw+iGFoO0yuoGPqOanfFwSyO0aDiRe/D8dtx5oIZTdQtMm4LUockw/
+         DPO01hevIvYhRwEWLkaJyevI0bU+Kgm9fWV3qjoWECmPfz11VDe7Jh9KXnquK6j6DB3V
+         MsJ86dHp7bUCdoJSeONbwgFLalIY7pttxbaMVWHphu6gUYbIEgnA87tEkipi65oUMsmJ
+         maoq5Ze2WQ8ywBzKN2h5uoR4KNHJHvIRuaIxTYl1Z7b0WxjoaKMzFO7ITIDb4eLqnx+2
+         C9ZIOxxhrRqan2qkdB0JBJEeKK2Le9H2Dpoc04pVJm5GUsteYGtT22wOL+RCRUkZck/i
+         BD7g==
+X-Forwarded-Encrypted: i=1; AJvYcCV6GVxEKwIt5C+JR4Lw/XBV+Sf86JBOevRoVvZuAGukgGamdGB0duHoaEOeI9EZ7DK6ImMoZcfbT5mpQRW53S3L3YMhpzGI
+X-Gm-Message-State: AOJu0YwkmAm5cBZCAioTBxVI4TxPK+t9bmmhI5/hZPvMqJwZJ4vBxTV+
+	5xcYiiAmkgm9L0ci3vdSkrHkcdromY5MSCwFbA/QTGf2CCtki0hWIgsd2o7O3H+AGyNdb3g3uvU
+	gU3Exv0oLkx8a/fbn2/Ik2f5exr80LqAJUQfI
+X-Google-Smtp-Source: AGHT+IHeqrDxqHwSqE8LkP9zNnO4aoIPfWbbw91OWLX6RaFgTT+3fK4f+394LqJxYkdL3RuANgpc2LoWG62WKveVJjY=
+X-Received: by 2002:a17:90b:438d:b0:2a2:f4f4:2c4a with SMTP id
+ 98e67ed59e1d1-2b66001a442mr24360414a91.21.1715733421460; Tue, 14 May 2024
+ 17:37:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-14_14,2024-05-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=581
- impostorscore=0 suspectscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1011 mlxscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405140174
+References: <20240514101006.678521560@linuxfoundation.org> <5beea8ed-b92b-4bee-b77b-4a3d57a5c001@oracle.com>
+In-Reply-To: <5beea8ed-b92b-4bee-b77b-4a3d57a5c001@oracle.com>
+From: Martin Faltesek <mfaltesek@google.com>
+Date: Tue, 14 May 2024 19:36:24 -0500
+Message-ID: <CAOiWkA8SNRbCPZ_gHQRczZovokZbFSJXQc1vUmtD0quZV9tp0Q@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/168] 5.15.159-rc1 review
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org, 
+	Vegard Nossum <vegard.nossum@oracle.com>, Darren Kenny <darren.kenny@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2024-05-14 at 12:17 +0200, Greg Kroah-Hartman wrote:
-> 6.1-stable review patch.=C2=A0 If anyone has any objections, please let me
-> know.
->=20
-> ------------------
->=20
-> From: Nayna Jain <nayna@linux.ibm.com>
->=20
-> [ Upstream commit 899d9b8fee66da820eadc60b2a70090eb83db761 ]
->=20
-> The Platform Keystore provides a signed update interface which can be
-> used
-> to create, replace or append to certain variables in the PKS in a
-> secure
-> fashion, with the hypervisor requiring that the update be signed
-> using the
-> Platform Key.
->=20
-> Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
-> driver to allow signed updates to PKS objects.
->=20
-> (The plpks driver doesn't need to do any cryptography or otherwise
-> handle
-> the actual signed variable contents - that will be handled by
-> userspace
-> tooling.)
->=20
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> [ajd: split patch, add timeout handling and misc cleanups]
-> Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Link:
-> https://lore.kernel.org/r/20230210080401.345462-18-ajd@linux.ibm.com
-> Stable-dep-of: 784354349d2c ("powerpc/pseries: make max polling
-> consistent for longer H_CALLs")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Build failure on arm:
 
-This is a new feature and I don't think it should be backported.
-784354349d2c can be backported by dropping the
-plpks_signed_update_var() hunk.
+In file included from drivers/iommu/mtk_iommu_v1.c:22:
+drivers/iommu/mtk_iommu_v1.c:579:25: error: 'mtk_iommu_v1_of_ids'
+undeclared here (not in a function); did you mean 'mtk_iommu_of_ids'?
+  579 | MODULE_DEVICE_TABLE(of, mtk_iommu_v1_of_ids);
+      |                         ^~~~~~~~~~~~~~~~~~~
+./include/linux/module.h:244:15: note: in definition of macro
+'MODULE_DEVICE_TABLE'
+  244 | extern typeof(name) __mod_##type##__##name##_device_table
+         \
+      |               ^~~~
+./include/linux/module.h:244:21: error:
+'__mod_of__mtk_iommu_v1_of_ids_device_table' aliased to undefined
+symbol 'mtk_iommu_v1_of_ids'
+  244 | extern typeof(name) __mod_##type##__##name##_device_table
+         \
+      |                     ^~~~~~
+drivers/iommu/mtk_iommu_v1.c:579:1: note: in expansion of macro
+'MODULE_DEVICE_TABLE'
+  579 | MODULE_DEVICE_TABLE(of, mtk_iommu_v1_of_ids);
+      | ^~~~~~~~~~~~~~~~~~~
+make[2]: *** [scripts/Makefile.build:289: drivers/iommu/mtk_iommu_v1.o] Err=
+or 1
+make[1]: *** [scripts/Makefile.build:552: drivers/iommu] Error 2
 
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+This is from patch:
+
+bce893a92324  krzk@kernel.org           2024-05-14  iommu: mtk: fix
+module autoloading
+
++MODULE_DEVICE_TABLE(of, mtk_iommu_v1_of_ids);
+
+should be, I think:
+
++MODULE_DEVICE_TABLE(of, mtk_iommu_of_ids);
+
+
+On Tue, May 14, 2024 at 11:29=E2=80=AFAM Harshit Mogalapalli
+<harshit.m.mogalapalli@oracle.com> wrote:
+>
+> Hi Greg,
+>
+> On 14/05/24 15:48, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.159 release.
+> > There are 168 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 16 May 2024 10:09:32 +0000.
+> > Anything received after that time might be too late.
+> >
+>
+> No problems seen on x86_64 and aarch64 with our testing.
+>
+> Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+>
+> Note: selftests have a build problem in 5.15.y, 5.10.y, 5.4.y, 4.19.y
+>
+> 5.15.y revert:
+> https://lore.kernel.org/all/20240506084635.2942238-1-harshit.m.mogalapall=
+i@oracle.com/
+>
+> This is not a regression in this tag but from somewhere around 5.15.152 t=
+ag.
+>
+> Reverts for other stable releases:
+> 5.10.y:
+> https://lore.kernel.org/all/20240506084926.2943076-1-harshit.m.mogalapall=
+i@oracle.com/
+> 5.4.y:
+> https://lore.kernel.org/all/20240506085044.2943648-1-harshit.m.mogalapall=
+i@oracle.com/
+> 4.19.y:
+> https://lore.kernel.org/all/20240506105724.3068232-1-harshit.m.mogalapall=
+i@oracle.com/
+>
+> Could you please queue these up for future releases.
+>
+>
+> Thanks,
+> Harshit
+> > The whole patch series can be found in one patch at:
+> >       https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.159-rc1.gz
+> > or in the git tree and branch at:
+> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> >
+>
 
