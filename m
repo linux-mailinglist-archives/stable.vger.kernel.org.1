@@ -1,51 +1,65 @@
-Return-Path: <stable+bounces-45169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF308C67BE
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 15:49:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2868C67C9
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 15:53:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D22F1F2298C
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 13:49:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6033B22236
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 13:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357858615E;
-	Wed, 15 May 2024 13:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B5113F016;
+	Wed, 15 May 2024 13:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="qhG1Whfe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IKOuEdxE"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1548595C;
-	Wed, 15 May 2024 13:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBFE13F00C;
+	Wed, 15 May 2024 13:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715780981; cv=none; b=nmyBRUylMdCbgaFmzHBgv1Bl+fh+vGWjaQVwgh5v89rkRDEBb+mrRsxHebwtjr66ZIl6LqKRZymELmZ/FlXYM8GM9mm/gf2hNWehsQVXdkxWnnwUrZ0Rkx/TFSEI/B3sMxSOw4sCXlRyRmbz+fUF4mRJaCrZXDdPkhIlAtSw2Z4=
+	t=1715781200; cv=none; b=D4yQBwNGYA9inoEplpGOpdbVOV1QKLCF4kmRcnrRALhKjxt6dyThQT9Mzaz9u49LFjKX26D2yglsd6a5h9S1Av8JTRfFx5mWHMGfsPexyHup/hFz7xridYc6pWTZ9NctapaAnXzp/pS+4Mu/FKXtwgG0V13sGS/KMvjie6Zxw0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715780981; c=relaxed/simple;
-	bh=0MlvzVZzue7/R2CDCoNlouGliEq8QcFEwGfHzAdAXIM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=W/FIi7C5URVOAYGjNxG/CiiTX1MFgHQcEJTy6iifEGBsu91Ahb6N5FTHRq/xJCiy+z7/jLU0+PmlnKUC4ovGCuM5QqQrRCQmRMx1qYpj3S795bf9j4SReNJEB6VKfUnGHZpw8F8kzWGc50IQ3Is2Dx5g3bLhEC8W0yfCISYAdYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=qhG1Whfe; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To:Subject:Date:
-	Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=0MlvzVZzue7/R2CDCoNlouGliEq8QcFEwGfHzAdAXIM=; t=1715780979; x=1716212979;
-	 b=qhG1WhfeFZ21Yx9+s8EOusIxSQBzgZmbWfWyARR9rJ3THxANPtfQSWtCNH3tAxia/z/ds2vAX8
-	OsW3wi6U3jDS1V6uIj/bonluN6Hu2ojKrYypal2Sb93QLqSpcqrc0LB+P9uG1w89YUoUhHp/AZIUs
-	GUSTHspDeTOb/GeGezJJYaAZ6PqfMOA6GI/70HGPD19Y+AAmfrwbu0zckeIyh+0huC7dCneZxxor0
-	GHRVmATyuSFqF1HIRY+oRPhZ0LoPUMtaiGHJb+yz53RxJ76PEPPoAePunipRS9WbSgOe2BtstrGiC
-	0XLdm1f4tdhWImYggj5RjX4Ig7lf7C/AsjMxQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s7F0c-0003mR-L4; Wed, 15 May 2024 15:49:30 +0200
-Message-ID: <9e40badb-c4fa-4828-a4c5-3a170f624215@leemhuis.info>
-Date: Wed, 15 May 2024 15:49:30 +0200
+	s=arc-20240116; t=1715781200; c=relaxed/simple;
+	bh=OzyJYYDUTFYPJP+U2wM9vIqZdFdU1WOLTqpltJGlaG8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SdSAvHY4L4ZKoFdtwl2eXeoaCme0WLD1NmsewD08S1GHuAZyyIEsY/yYreEti7xl6agqdcAeoxNLqIvMmirkVsXmFiRRxejkicbpm3MWv1TsoeCL0JtH7ok9kZmwL/5BWJD5Ti1piCKOBUxZO+NsGrrZ/HjCxQIgaanGWSKcfg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IKOuEdxE; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715781199; x=1747317199;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OzyJYYDUTFYPJP+U2wM9vIqZdFdU1WOLTqpltJGlaG8=;
+  b=IKOuEdxEboR38Fyo4wC3s3nuSF9kVA0HMQE5+/APuIX/rNfGhddir0HS
+   4yhHyZGIM7E6kdohnm4hQPe3idOWB9Q/u1ZzVA8dB3yTKoy/VM1GQrHpJ
+   2SGJoEtetQNZ5ysClowA0n84ZRjqHzCAWZW1csLCVbovKWKil5coVnJWY
+   55X2PFFr/DXmAmQ4b95QHQpgLzx5YQVzRuPssoCjKyKuusmYhsxgk5ykc
+   K0hW7IUzsnySi5+XabvQqnuwFOF+ZvxlBGlZNZbBVoHCYDIaEmy3zCJ9r
+   4VCezRIuYGDJgPzEw7rgy8EH9/BfGMp/lK9UIuP6GYsrSXgee4OkZIhxU
+   w==;
+X-CSE-ConnectionGUID: LjDY8bznR/aKnFkaZuCeSQ==
+X-CSE-MsgGUID: r5TMSMfqSfaLO8rzM5sCwA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="11702573"
+X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
+   d="scan'208";a="11702573"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 06:53:18 -0700
+X-CSE-ConnectionGUID: HZfLupOxQPCAFxRwZ/vXIA==
+X-CSE-MsgGUID: TPBqrF1ETkiAJSWm4OmrWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
+   d="scan'208";a="31191179"
+Received: from anujpati-mobl.amr.corp.intel.com (HELO [10.212.146.62]) ([10.212.146.62])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 06:53:18 -0700
+Message-ID: <d8c924b5-d4f8-4a53-af8b-e393f64d036f@intel.com>
+Date: Wed, 15 May 2024 06:53:17 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,50 +67,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Subject: three commits you might or might not want to pick up for 6.9.y
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv4 3/4] x86/tdx: Dynamically disable SEPT violations from
+ causing #VEs
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Nikolay Borisov <nik.borisov@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
+ <20240512122154.2655269-4-kirill.shutemov@linux.intel.com>
+ <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
+ <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1715780979;b452fbda;
-X-HE-SMSGID: 1s7F0c-0003mR-L4
+Content-Transfer-Encoding: 7bit
 
-Hi Greg. Here are three reports for regressions introduced during the
-6.9 cycle that were not fixed for 6.9 for one reason or another, but are
-fixed in mainline now. So they might be good candidates to pick up early
-for 6.9.y -- or maybe not, not sure. You are the better judge here. I
-just thought you might wanted to know about them.
+On 5/15/24 02:30, Kirill A. Shutemov wrote:
+>> nit: Perhaps this function can be put in the first patch and the description
+>> there be made more generic, something along the lines of "introduce
+>> functions for tdg_rd/tdg_wr" ?
+> A static function without an user will generate a build warning. I don't
+> think it is good idea.
 
-
-* net: Bluetooth: firmware loading problems with older firmware:
-https://lore.kernel.org/lkml/20240401144424.1714-1-mike@fireburn.co.uk/
-
-Fixed by 958cd6beab693f ("Bluetooth: btusb: Fix the patch for MT7920 the
-affected to MT7921") – which likely should have gone into 6.9, but did
-not due to lack of fixes: an stable tags:
-https://lore.kernel.org/all/CABBYNZK1QWNHpmXUyne1Vmqqvy7csmivL7q7N2Mu=2fmrUV4jg@mail.gmail.com/
-
-
-* leds/iwlwifi: hangs on boot:
-https://lore.kernel.org/lkml/30f757e3-73c5-5473-c1f8-328bab98fd7d@candelatech.com/
-
-Fixed by 3d913719df14c2 ("wifi: iwlwifi: Use request_module_nowait") –
-not sure if that one is worth it, the regression might be an exotic
-corner case.
-
-
-* Ryzen 7840HS CPU single core never boosts to max frequency:
-https://bugzilla.kernel.org/show_bug.cgi?id=218759
-
-Fixed by bf202e654bfa57 ("cpufreq: amd-pstate: fix the highest frequency
-issue which limits performance") – which was broken out of a patch-set
-by the developers to send it in for 6.9, but then was only merged for
-6.10 by the maintainer.
-
-
-Ciao, Thorsten
+OK, so stick a __maybe_unused on it when you define it and remove it on
+first use.
 
