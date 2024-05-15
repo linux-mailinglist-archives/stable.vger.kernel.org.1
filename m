@@ -1,127 +1,128 @@
-Return-Path: <stable+bounces-45121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97C48C6004
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 07:04:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6B48C604A
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 07:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46F1E1F22F3E
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 05:04:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375141C20A2B
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 05:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CBE39AF4;
-	Wed, 15 May 2024 05:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8C23A29F;
+	Wed, 15 May 2024 05:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gJHvZLvK"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v/zOiICb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="l5c/HVYL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B378D38FA3;
-	Wed, 15 May 2024 05:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9585D381BE;
+	Wed, 15 May 2024 05:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715749469; cv=none; b=N9m8xCwwVtkzmQm+bCNWHIxqHPpn7uOVgDIwuudWa/lZjvnZxUHnxRKf9/XYLP0sr/MHiq3VBAuUyk2aEa+Ha5/7CFGCECyVSvbUjBZO2v8V0DeUafVInMDy7/Mk7j6akADBDBXfQJbzD4jfqeGJgmPmDlHOidCozJmDyPFh23w=
+	t=1715752252; cv=none; b=uVrmJj+58jxVDTwcUajtRhjLDVzJ9IH/xNtw8co3eNtrOsJraV3KxCOCo48In1lIYolPAgPk9Bodh107Bd6BD2deyItlSy2xJEunHu0sAQcsSYlFeff2PN8KHIW2Tznq7GTC9wDwPXIO12jYiZttwOaaO7MqgoIUn/c7XXXjpDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715749469; c=relaxed/simple;
-	bh=h8jEMkjr9a6UEUBdDnobak1Ak3GF70nbpnDd0R9vzec=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BghRGBPtI32hNr+a7LS3WJWMHYeekEtcI3Orvblt1n9BAfg5M7XNGj7uF8NZgBKADMeQKW2SA2Hlwb+Q/oPEkq77uXw0h0dec6xj+iImZCQcPkxwOTrjcvPpl2pBp5uYTnCOnSPcUp6I9GIscCD57K7qoCwhRgI/YCxG18pWvh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gJHvZLvK; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715749466; x=1747285466;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=h8jEMkjr9a6UEUBdDnobak1Ak3GF70nbpnDd0R9vzec=;
-  b=gJHvZLvKg3IYmUgQ3HwoR90SAfVyYHhXIVuKZeloJKrhLn8wJi5axXZ0
-   hfBKGg/Q36EiRTnpsdOaXCJbKFU7a5+FX7OsCWnSgKgIJhaKWxIkDXtus
-   OU4SiEHJ1cYHW78KBDWjQC6+vTelNR4YbWJxhV8hJ0it2cnYfXuJXRg+G
-   KnqT6OfYKgg22vC0IeDh47x3FDdF9Mt6gAY9FAyVId/8EMMft7z04ptxu
-   YVzm+mQLWpSPdNiVIOqozazh0+iS+BzUGW32NSelUc7NaX+XVwvo9lixK
-   vC5jVlajjCri9HnwbXmx+fxZBS5z8REG6AnomI9nVXfEPZtoH7nj1Lbfk
-   w==;
-X-CSE-ConnectionGUID: 4ef7Uwg7RKOcOey1D4/VoQ==
-X-CSE-MsgGUID: 0lrAvFUVSiW0yXgr/NwLOA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11893463"
-X-IronPort-AV: E=Sophos;i="6.08,160,1712646000"; 
-   d="scan'208";a="11893463"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2024 22:04:26 -0700
-X-CSE-ConnectionGUID: KnAIlQCySpS87twm+Dvf+A==
-X-CSE-MsgGUID: xCmFryzPRnqZx8RLc3fMCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,160,1712646000"; 
-   d="scan'208";a="35459391"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 14 May 2024 22:04:24 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s76oO-000CSR-2n;
-	Wed, 15 May 2024 05:04:20 +0000
-Date: Wed, 15 May 2024 13:04:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Carlos Llamas <cmllamas@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Kees Cook <keescook@chromium.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>, Uros Bizjak <ubizjak@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel-team@android.com, stable@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] locking/atomic: fix trivial typo in comment
-Message-ID: <202405151209.U1zWe95G-lkp@intel.com>
-References: <20240514224625.3280818-1-cmllamas@google.com>
+	s=arc-20240116; t=1715752252; c=relaxed/simple;
+	bh=aa+fecx7tcAUfdVgnQXf8QxfSZe9AASgNmV1w6cK+ek=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jPhFk9lnEOTdLhTsypyL+nR8qNghzGr3q9OJ3TZ8JQi20oOeaudIOi9NYbJfUACpOlBmhoWiNOwqW1QJURGxW/DPXIeyFoknuwcBW+GLkIPi2uzOnRH9HO3xO9M0NqJGHoRvoZVJCxHrFOGLHwRDmopFrnp6yCkMIKmZU0q64vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v/zOiICb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=l5c/HVYL; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1715752248;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ht2zV3Jwo1nvvXt+RYb/7OxyhB2TGOQ0zLq4kftAlWw=;
+	b=v/zOiICbwxFvvbkhYTb+BPdiSUlGYgkohq22S5n934KSqzEjHtDwLZcNEOG3ZIk87yScRb
+	txKNgenx67ZNeuMLTsLayjc4gQ6KqE/speyfXNjHNnV8EpX79YnhEki0eKmKIN+ipnAu/e
+	VO/c3Cg/qoQTFFo7r7U36H0ZXijN41H9AeoMDneSIwrB+FBJHmMfewSYA6iIoPQgKPi7T0
+	ANzPrE6+n0D/D09ZW5vHZzG4qISdWsrjEnJgclz8iDlJilyCR79a74IvhZIubEB+cZ0b15
+	fj4wcvw+3UQDgwrWulXLz+FwHRRJ5nH71boZztBItkHHDhKHresYrRvRot6MoQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1715752248;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ht2zV3Jwo1nvvXt+RYb/7OxyhB2TGOQ0zLq4kftAlWw=;
+	b=l5c/HVYLvLyXdUH93a45vxSwZGEUso1ZTwv2+/NzTtyLp2LFyX4HFlVW3ws+TGQ1tkeu8l
+	JMisrKDY27LCUaCQ==
+To: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] riscv: force PAGE_SIZE linear mapping if debug_pagealloc is enabled
+Date: Wed, 15 May 2024 07:50:39 +0200
+Message-Id: <2e391fa6c6f9b3fcf1b41cefbace02ee4ab4bf59.1715750938.git.namcao@linutronix.de>
+In-Reply-To: <cover.1715750938.git.namcao@linutronix.de>
+References: <cover.1715750938.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240514224625.3280818-1-cmllamas@google.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Carlos,
+debug_pagealloc is a debug feature which clears the valid bit in page table
+entry for freed pages to detect illegal accesses to freed memory.
 
-kernel test robot noticed the following build errors:
+For this feature to work, virtual mapping must have PAGE_SIZE resolution.
+(No, we cannot map with huge pages and split them only when needed; because
+pages can be allocated/freed in atomic context and page splitting cannot be
+done in atomic context)
 
-[auto build test ERROR on kees/for-next/pstore]
-[also build test ERROR on kees/for-next/kspp linus/master v6.9 next-20240514]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Force linear mapping to use small pages if debug_pagealloc is enabled.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Carlos-Llamas/locking-atomic-fix-trivial-typo-in-comment/20240515-064934
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git for-next/pstore
-patch link:    https://lore.kernel.org/r/20240514224625.3280818-1-cmllamas%40google.com
-patch subject: [PATCH] locking/atomic: fix trivial typo in comment
-config: openrisc-defconfig (https://download.01.org/0day-ci/archive/20240515/202405151209.U1zWe95G-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240515/202405151209.U1zWe95G-lkp@intel.com/reproduce)
+Note that it is not necessary to force the entire linear mapping, but only
+those that are given to memory allocator. Some parts of memory can keep
+using huge page mapping (for example, kernel's executable code). But these
+parts are minority, so keep it simple. This is just a debug feature, some
+extra overhead should be acceptable.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405151209.U1zWe95G-lkp@intel.com/
+Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+---
+Interestingly this feature somehow still worked when first introduced.
+My guess is that back then only 2MB page size is used. When a 4KB page is
+freed, the entire 2MB will be (incorrectly) invalidated by this feature.
+But 2MB is quite small, so no one else happen to use other 4KB pages in
+this 2MB area. In other words, it used to work by luck.
 
-All errors (new ones prefixed by >>):
+Now larger page sizes are used, so this feature invalidate large chunk of
+memory, and the probability that someone else access this chunk and
+trigger a page fault is much higher.
 
->> error: include/linux/atomic/atomic-instrumented.h has been modified.
-   make[3]: *** [./Kbuild:68: .checked-atomic-instrumented.h] Error 1
-   make[3]: Target 'prepare' not remade because of errors.
-   make[2]: *** [Makefile:1197: prepare0] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:240: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:240: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
+ arch/riscv/mm/init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 2574f6a3b0e7..73914afa3aba 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -682,6 +682,9 @@ void __init create_pgd_mapping(pgd_t *pgdp,
+ static uintptr_t __init best_map_size(phys_addr_t pa, uintptr_t va,
+ 				      phys_addr_t size)
+ {
++	if (debug_pagealloc_enabled())
++		return PAGE_SIZE;
++
+ 	if (pgtable_l5_enabled &&
+ 	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
+ 		return P4D_SIZE;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
 
