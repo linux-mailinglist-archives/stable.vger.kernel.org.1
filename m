@@ -1,141 +1,114 @@
-Return-Path: <stable+bounces-45170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2868C67C9
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 15:53:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E18B08C67E6
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 15:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6033B22236
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 13:53:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7026128239C
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 13:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B5113F016;
-	Wed, 15 May 2024 13:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871811411FC;
+	Wed, 15 May 2024 13:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IKOuEdxE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qg7R0Khw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBFE13F00C;
-	Wed, 15 May 2024 13:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4B113F427;
+	Wed, 15 May 2024 13:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715781200; cv=none; b=D4yQBwNGYA9inoEplpGOpdbVOV1QKLCF4kmRcnrRALhKjxt6dyThQT9Mzaz9u49LFjKX26D2yglsd6a5h9S1Av8JTRfFx5mWHMGfsPexyHup/hFz7xridYc6pWTZ9NctapaAnXzp/pS+4Mu/FKXtwgG0V13sGS/KMvjie6Zxw0w=
+	t=1715781288; cv=none; b=NmGZlvCf+aHz5pZTW/Yxoch5W/EeG+120Wespd7n2UW54Y3bA9WuLitxiTpjpjmJE1juzCR5rUm0KgeTEs+4uXorTOyzKc01eODLK4ZzxktxWd0+ug7UAvzkiDxa7CcYeoH25hKoudwzudLePn02uh1eEqST71UVxz7MZeS0RVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715781200; c=relaxed/simple;
-	bh=OzyJYYDUTFYPJP+U2wM9vIqZdFdU1WOLTqpltJGlaG8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SdSAvHY4L4ZKoFdtwl2eXeoaCme0WLD1NmsewD08S1GHuAZyyIEsY/yYreEti7xl6agqdcAeoxNLqIvMmirkVsXmFiRRxejkicbpm3MWv1TsoeCL0JtH7ok9kZmwL/5BWJD5Ti1piCKOBUxZO+NsGrrZ/HjCxQIgaanGWSKcfg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IKOuEdxE; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715781199; x=1747317199;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OzyJYYDUTFYPJP+U2wM9vIqZdFdU1WOLTqpltJGlaG8=;
-  b=IKOuEdxEboR38Fyo4wC3s3nuSF9kVA0HMQE5+/APuIX/rNfGhddir0HS
-   4yhHyZGIM7E6kdohnm4hQPe3idOWB9Q/u1ZzVA8dB3yTKoy/VM1GQrHpJ
-   2SGJoEtetQNZ5ysClowA0n84ZRjqHzCAWZW1csLCVbovKWKil5coVnJWY
-   55X2PFFr/DXmAmQ4b95QHQpgLzx5YQVzRuPssoCjKyKuusmYhsxgk5ykc
-   K0hW7IUzsnySi5+XabvQqnuwFOF+ZvxlBGlZNZbBVoHCYDIaEmy3zCJ9r
-   4VCezRIuYGDJgPzEw7rgy8EH9/BfGMp/lK9UIuP6GYsrSXgee4OkZIhxU
-   w==;
-X-CSE-ConnectionGUID: LjDY8bznR/aKnFkaZuCeSQ==
-X-CSE-MsgGUID: r5TMSMfqSfaLO8rzM5sCwA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="11702573"
-X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
-   d="scan'208";a="11702573"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 06:53:18 -0700
-X-CSE-ConnectionGUID: HZfLupOxQPCAFxRwZ/vXIA==
-X-CSE-MsgGUID: TPBqrF1ETkiAJSWm4OmrWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
-   d="scan'208";a="31191179"
-Received: from anujpati-mobl.amr.corp.intel.com (HELO [10.212.146.62]) ([10.212.146.62])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 06:53:18 -0700
-Message-ID: <d8c924b5-d4f8-4a53-af8b-e393f64d036f@intel.com>
-Date: Wed, 15 May 2024 06:53:17 -0700
+	s=arc-20240116; t=1715781288; c=relaxed/simple;
+	bh=aNGBFfluPLrID2GK0RnkRS1qTZInjc6Ydx13s+5hfbY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=NZ1GOI/0Y3qa4GKbMb5Eu+MmmaN7ITI+PD6EdpP3TsBP0X4X89LCA42RETaYckd9eMJ5AUoMqwSnj6y8lCQQh6KKM61s1G3RJOouV4RzI2G866OF/FTfzbTPEMNJnvwITgG4oMlMLy31Q6b7C/obcwLijiCE/GaBfo9waX7Z+8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qg7R0Khw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844BFC4AF08;
+	Wed, 15 May 2024 13:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715781287;
+	bh=aNGBFfluPLrID2GK0RnkRS1qTZInjc6Ydx13s+5hfbY=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=qg7R0KhwJOI0A/AvL36SPK+Qh66Ef8ejT5DyfwwtQ6eH1jTDB/WUrwpYBBYbbGbII
+	 OtNgRWbiYV6Vjssp5wX5QJ0OLYDIspefBu9FLFy8YfmOCBsSMxD+6Xcofh0sU6lr9m
+	 BdRqP1P+gSnKdFxLMTdK85oRIWjVwZdU10FA0JWruh56cmrnrf60SMXXp7l2blGW9B
+	 MR+HXRL+/wwmS5BOcjly54WEI6Lf88d6I84HzQuLKDwy29lr4Ks17ze0e2tGOJekSk
+	 YJvWgqSD0J59TVIGrqip2zb6fs9CaPMQ3b3bbNz6PEeHd3ZBF0oOtpF3B1ZbTJQIJO
+	 h61WTfPBrKFOw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv4 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Nikolay Borisov <nik.borisov@suse.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
- <20240512122154.2655269-4-kirill.shutemov@linux.intel.com>
- <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
- <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Wed, 15 May 2024 16:54:43 +0300
+Message-Id: <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
+To: "Dmitrii Kuvaiskii" <dmitrii.kuvaiskii@intel.com>,
+ <dave.hansen@linux.intel.com>, <kai.huang@intel.com>,
+ <haitao.huang@linux.intel.com>, <reinette.chatre@intel.com>,
+ <linux-sgx@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <mona.vij@intel.com>, <kailun.qin@intel.com>, <stable@vger.kernel.org>,
+ =?utf-8?q?Marcelina_Ko=C5=9Bcielnicka?= <mwk@invisiblethingslab.com>
+Subject: Re: [PATCH v2 1/2] x86/sgx: Resolve EAUG race where losing thread
+ returns SIGBUS
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240515131240.1304824-1-dmitrii.kuvaiskii@intel.com>
+ <20240515131240.1304824-2-dmitrii.kuvaiskii@intel.com>
+In-Reply-To: <20240515131240.1304824-2-dmitrii.kuvaiskii@intel.com>
 
-On 5/15/24 02:30, Kirill A. Shutemov wrote:
->> nit: Perhaps this function can be put in the first patch and the description
->> there be made more generic, something along the lines of "introduce
->> functions for tdg_rd/tdg_wr" ?
-> A static function without an user will generate a build warning. I don't
-> think it is good idea.
+On Wed May 15, 2024 at 4:12 PM EEST, Dmitrii Kuvaiskii wrote:
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/enc=
+l.c
+> index 279148e72459..41f14b1a3025 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.c
+> +++ b/arch/x86/kernel/cpu/sgx/encl.c
+> @@ -382,8 +382,11 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_=
+struct *vma,
+>  	 * If ret =3D=3D -EBUSY then page was created in another flow while
+>  	 * running without encl->lock
+>  	 */
+> -	if (ret)
+> +	if (ret) {
+> +		if (ret =3D=3D -EBUSY)
+> +			vmret =3D VM_FAULT_NOPAGE;
+>  		goto err_out_shrink;
+> +	}
 
-OK, so stick a __maybe_unused on it when you define it and remove it on
-first use.
+I agree that there is a bug but it does not categorize as race
+condition.
+
+The bug is simply that for a valid page SIGBUS might be returned.
+The fix is correct but the claim is not.
+
+> =20
+>  	pginfo.secs =3D (unsigned long)sgx_get_epc_virt_addr(encl->secs.epc_pag=
+e);
+>  	pginfo.addr =3D encl_page->desc & PAGE_MASK;
+> @@ -419,7 +422,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_s=
+truct *vma,
+>  err_out_shrink:
+>  	sgx_encl_shrink(encl, va_page);
+>  err_out_epc:
+> -	sgx_encl_free_epc_page(epc_page);
+> +	sgx_free_epc_page(epc_page);
+>  err_out_unlock:
+>  	mutex_unlock(&encl->lock);
+>  	kfree(encl_page);
+
+Agree with code change 100% but not with the description.
+
+I'd cut out 90% of the description out and just make the argument of
+the wrong error code, and done. The sequence is great for showing
+how this could happen. The prose makes my head hurt tbh.
+
+BR, Jarkko
 
