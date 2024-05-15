@@ -1,98 +1,157 @@
-Return-Path: <stable+bounces-45173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932588C684D
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6613A8C685F
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216591F2154C
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:09:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F05761F218B3
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBC113F422;
-	Wed, 15 May 2024 14:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F8313F43A;
+	Wed, 15 May 2024 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXUi7vH6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y0T4C71O"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6423557CA1;
-	Wed, 15 May 2024 14:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EE113F423;
+	Wed, 15 May 2024 14:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715782160; cv=none; b=mzG9AsTwGm7DRAG9AOWn3QlNU/DCbyR+g5ktE3yLsMlkBqM5pD4aqwIw8aBM/KQZNVKSa5PIoCca+rTm+De8BYhF1jyOXCRx0lqKiajwZB80p2aX9+HiWooVBYcOALRViP0BWu8wJhSx97mFSr6fxVmYCH2GO9fTPxPsKEDdFwc=
+	t=1715782546; cv=none; b=VZhi2SyAnzXCUL81GWjii7y27hpi+Hepu5dp2WSc6/GKWymPLlkxPGQcV2ds3K5Z0NAluHPaZR7DEJnfo7239nd/YLS5IKdixbwk74WAI26I9ro546Nm6AH2DNiL6YGkWmvUNh3WOC9rOr6NvV1kTkVVAB+Pb43e0uH3+Cr5NpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715782160; c=relaxed/simple;
-	bh=m3ubuPGkIWjaq0e2Nny5BGf1VDtiMnclz4YCAR4yDug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=my9fAy+8yiGSxIpZ9syZNyPEHpSfhqLnI+IaQkOE3rlJeDoGYYrr2GhyKmAyycJ2LYxS4tri7e7NQL8N2IbfsI7E+dKSdXpVsi6VdT13B5WJMhrpFyVsxZirWTKFXs4upmW+TFQB9S0IJF5uI4VQlvhturuCxC8edUojxKmBHpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXUi7vH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9387FC116B1;
-	Wed, 15 May 2024 14:09:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715782160;
-	bh=m3ubuPGkIWjaq0e2Nny5BGf1VDtiMnclz4YCAR4yDug=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NXUi7vH6RB+h6Wu+wdMVJrCWs6D6IFkD4Wrs1ZIjA0byVSiHQ0Ru2qEgGmoAAHYZP
-	 Sas+ALcxa7JAXPnSgQK/ezfTrBwTADmp3oEofHqBUt33L+hg4sUJBYVedMj6hnK6No
-	 v/7U3324M+0bnhFRzRT+tUFLDPX/wqZisXcR/MEw=
-Date: Wed, 15 May 2024 16:09:17 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: three commits you might or might not want to pick up for 6.9.y
-Message-ID: <2024051501-dropkick-landmark-5db0@gregkh>
-References: <9e40badb-c4fa-4828-a4c5-3a170f624215@leemhuis.info>
+	s=arc-20240116; t=1715782546; c=relaxed/simple;
+	bh=pjCQbjxNSQxaDcSgxWfa+y5+4XuOJ2q0fwlVC8ss3u0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qP9K236HTP7SQTUf2VKJlfikIt8DhKMj0nbRzQiT+womqkPpLz2ab+lsh0lLEaLDSae68cqzSCPPs4DxJzmb4CiQdGg/JL6MGaW7+kvYCOB39JSP3/sr5+NR3sAkwUOvqfeQa+88lref7NKtuptAM85xXDOP9tkZaRZeiAcjE84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y0T4C71O; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715782545; x=1747318545;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pjCQbjxNSQxaDcSgxWfa+y5+4XuOJ2q0fwlVC8ss3u0=;
+  b=Y0T4C71OSVjBkfFuJtnHs6Y6GREsbCY009s4rHGLuZewhfWcRuQdH5ip
+   Ld7qUQssVH7vGm3X6NLtysSiB5D/g/8JHBUTQYGlAImgdIdZIkeh/0XYn
+   Z1NlayORXWPj90qt/Zfu57SpZoYTkW2+yppu355ZfntDAzrNLhrEtreeC
+   TW+fAt9mtOutmdvsWst6VpeYLw+Y2e/H/pYhUgr91VklAG2kdxwHZgr4Q
+   RgWn+8sN0jPFE+w+dsUd1+GqZCeEhHlwmQxPlaTWAsMs+Hd1ZPPeHQNFd
+   GIqGC4cjI0aAJyLPpLqU3F4A9u71XBkH7nbwuv/WZ+6xjzGBhLYUWA33K
+   A==;
+X-CSE-ConnectionGUID: l/y5e3NgTpenH/Cb2+r87w==
+X-CSE-MsgGUID: 3h80G/JdRPa1of1nBabpCQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="22505936"
+X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
+   d="scan'208";a="22505936"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 07:15:44 -0700
+X-CSE-ConnectionGUID: FkAUkoXLSZScKBK0qb8muA==
+X-CSE-MsgGUID: MMaZR422Sl64qrkXK2qYeQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
+   d="scan'208";a="61909761"
+Received: from rcheerla-mobl.amr.corp.intel.com (HELO [10.212.179.162]) ([10.212.179.162])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 07:15:43 -0700
+Message-ID: <58e9d453-7909-4157-86fd-a2d5561e728e@intel.com>
+Date: Wed, 15 May 2024 07:15:42 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9e40badb-c4fa-4828-a4c5-3a170f624215@leemhuis.info>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/sgx: Resolve EAUG race where losing thread
+ returns SIGBUS
+To: Jarkko Sakkinen <jarkko@kernel.org>,
+ Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>,
+ dave.hansen@linux.intel.com, kai.huang@intel.com,
+ haitao.huang@linux.intel.com, reinette.chatre@intel.com,
+ linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: mona.vij@intel.com, kailun.qin@intel.com, stable@vger.kernel.org,
+ =?UTF-8?Q?Marcelina_Ko=C5=9Bcielnicka?= <mwk@invisiblethingslab.com>
+References: <20240515131240.1304824-1-dmitrii.kuvaiskii@intel.com>
+ <20240515131240.1304824-2-dmitrii.kuvaiskii@intel.com>
+ <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 15, 2024 at 03:49:30PM +0200, Thorsten Leemhuis wrote:
-> Hi Greg. Here are three reports for regressions introduced during the
-> 6.9 cycle that were not fixed for 6.9 for one reason or another, but are
-> fixed in mainline now. So they might be good candidates to pick up early
-> for 6.9.y -- or maybe not, not sure. You are the better judge here. I
-> just thought you might wanted to know about them.
-> 
-> 
-> * net: Bluetooth: firmware loading problems with older firmware:
-> https://lore.kernel.org/lkml/20240401144424.1714-1-mike@fireburn.co.uk/
-> 
-> Fixed by 958cd6beab693f ("Bluetooth: btusb: Fix the patch for MT7920 the
-> affected to MT7921") – which likely should have gone into 6.9, but did
-> not due to lack of fixes: an stable tags:
-> https://lore.kernel.org/all/CABBYNZK1QWNHpmXUyne1Vmqqvy7csmivL7q7N2Mu=2fmrUV4jg@mail.gmail.com/
-> 
-> 
-> * leds/iwlwifi: hangs on boot:
-> https://lore.kernel.org/lkml/30f757e3-73c5-5473-c1f8-328bab98fd7d@candelatech.com/
-> 
-> Fixed by 3d913719df14c2 ("wifi: iwlwifi: Use request_module_nowait") –
-> not sure if that one is worth it, the regression might be an exotic
-> corner case.
-> 
-> 
-> * Ryzen 7840HS CPU single core never boosts to max frequency:
-> https://bugzilla.kernel.org/show_bug.cgi?id=218759
-> 
-> Fixed by bf202e654bfa57 ("cpufreq: amd-pstate: fix the highest frequency
-> issue which limits performance") – which was broken out of a patch-set
-> by the developers to send it in for 6.9, but then was only merged for
-> 6.10 by the maintainer.
+On 5/15/24 06:54, Jarkko Sakkinen wrote:
+> I'd cut out 90% of the description out and just make the argument of
+> the wrong error code, and done. The sequence is great for showing
+> how this could happen. The prose makes my head hurt tbh.
 
-Nice, thanks for these!  I'll look at them after this round of -rcs is
-out.
+The changelog is too long, but not fatally so.  I'd much rather have a
+super verbose description than something super sparse.
 
-greg k-h
+Would something like this make more sense to folks?
+
+	Imagine an mmap()'d file. Two threads touch the same address at
+	the same time and fault. Both allocate a physical page and race
+	to install a PTE for that page. Only one will win the race. The
+	loser frees its page, but still continues handling the fault as
+	a success and returns VM_FAULT_NOPAGE from the fault handler.
+
+	The same race can happen with SGX. But there's a bug: the loser
+	in the SGX steers into a failure path. The loser EREMOVE's the
+	winner's EPC page, then returns SIGBUS, likely killing the app.
+
+	Fix the SGX loser's behavior. Change the return code to
+	VM_FAULT_NOPAGE to avoid SIGBUS and call sgx_free_epc_page()
+	which avoids EREMOVE'ing the winner's page and only frees the
+	page that the loser allocated.
+
+
 
