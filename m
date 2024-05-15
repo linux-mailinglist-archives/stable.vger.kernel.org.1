@@ -1,138 +1,124 @@
-Return-Path: <stable+bounces-45140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5588C62CA
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 10:26:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FC18C62D4
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 10:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342B01C20DBB
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 08:26:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A172849C3
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 08:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2449C4D9E0;
-	Wed, 15 May 2024 08:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33994E1A8;
+	Wed, 15 May 2024 08:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAEHkl5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uppO28YY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFC0482E9;
-	Wed, 15 May 2024 08:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E6A4D9E2;
+	Wed, 15 May 2024 08:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715761607; cv=none; b=o14qdZX8oCS+08cLb+DrbJ7/ORHluhpsHK1mM6zXEbN3FEAZPo6KidsWscGoR/z+M/t/BtnZqwIa1CG+3HVwPQT8n6XlQiAXmJMu9FIo7+yogGcorD2PA0gAcsKri9ByxYsiFFVRvjNm9uTCbxyZMOTevEBZzED6hy8p6zL8vJE=
+	t=1715761628; cv=none; b=eSZ+u5BCF8MsR8tIRXU+0ry0w1IrxdHnPUFSd2QONt6891YegP4kuuL8IdXFR0HqnG9tpdHpFcmmyC0EUKhTQHFpUrnKXopEk7MILT25NP4D84O2NeYbHsicbeFrWLTz2iimjff2yuMw2jOyWupo9xRfkrOe+rDaYmMGqGZKXxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715761607; c=relaxed/simple;
-	bh=oBjUWM9Ueajikuvb1TVY6pQjtCf2aE1BFiQMqZCZ8Yk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IRHykIHXnR8gD7a8P8d3gBz8boMIklCxxD1Qzn07OggVGEBujfEPtfPGJNwm4pq2ktf7J3Cvu9NHP1ureMLKmua8XX+1R8/hgdr4gmB2v0SpfTDqGdRQ1m1T0KcT9OlJHZBom6buFlJuA/gmmBlGaHPSVbT0tLSuHY9OEhTpmpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAEHkl5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB70C116B1;
-	Wed, 15 May 2024 08:26:46 +0000 (UTC)
+	s=arc-20240116; t=1715761628; c=relaxed/simple;
+	bh=cR4iNBhkVcRgYgdv6EjiwCPUFDwhXtLzw5rPFFOEBrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iujjRhH+WVA5mfrU+ZB3RR5BOlFHipK6OzyQL2Bm4m8aa2N7Cg3LtlWpEAuSTpUU4qR3ocP3iZldKQE+2zq+tgPk5BnsNScHZYI2q3GmuFiWFM3csPpLqpjEhp2+hW3TNxpQ+PnJ8UckwDqLzX9a+22yaFdzs+BOWwj9PZ3TzMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uppO28YY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81098C116B1;
+	Wed, 15 May 2024 08:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715761607;
-	bh=oBjUWM9Ueajikuvb1TVY6pQjtCf2aE1BFiQMqZCZ8Yk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZAEHkl5F6AvMBaIQJ+PH0UcVSPbqYSvbnhEg90Szxx9NC5AQXdZCMQOk/wwRqCeYP
-	 EMMXvlwnuEa156QxA3UEdAD4j8e840I/Z9zsTaa/I89ip+vnqHorVBMW9un+HJ0Z7H
-	 PPshhBFp0zeCGN4DfnQyT69189VVjtvr3lx0tbxM=
+	s=korg; t=1715761627;
+	bh=cR4iNBhkVcRgYgdv6EjiwCPUFDwhXtLzw5rPFFOEBrE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uppO28YYzNXTCd7/QmZDVel8MYvkicP0T39sWyHTcxoAYNgkbjh43OFBwhY9+hK7O
+	 G2tq95cD+jU67gMe4XMi9RcGpcmWqdJN4KLBnL8gExChvYf69pSoR6y0gmDG3hj4b6
+	 pQbkBvTFq9KQ4nHpyCljJlaRPiIo34LlEZE1IGi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.9 0/5] 6.9.1-rc1 review
-Date: Wed, 15 May 2024 10:26:37 +0200
-Message-ID: <20240515082345.213796290@linuxfoundation.org>
+	Arjan van de Ven <arjan@linux.intel.com>
+Subject: [PATCH 6.9 1/5] VFIO: Add the SPR_DSA and SPR_IAX devices to the denylist
+Date: Wed, 15 May 2024 10:26:38 +0200
+Message-ID: <20240515082345.484193693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20240515082345.213796290@linuxfoundation.org>
+References: <20240515082345.213796290@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.1-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.9.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.9.1-rc1
-X-KernelTest-Deadline: 2024-05-17T08:23+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.9.1 release.
-There are 5 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Fri, 17 May 2024 08:23:27 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.1-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-and the diffstat can be found below.
+From: Arjan van de Ven <arjan@linux.intel.com>
 
-thanks,
+commit 95feb3160eef0caa6018e175a5560b816aee8e79 upstream.
 
-greg k-h
+Due to an erratum with the SPR_DSA and SPR_IAX devices, it is not secure to assign
+these devices to virtual machines. Add the PCI IDs of these devices to the VFIO
+denylist to ensure that this is handled appropriately by the VFIO subsystem.
 
--------------
-Pseudo-Shortlog of commits:
+The SPR_DSA and SPR_IAX devices are on-SOC devices for the Sapphire Rapids
+(and related) family of products that perform data movement and compression.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.9.1-rc1
+Signed-off-by: Arjan van de Ven <arjan@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/dma/idxd/registers.h |    3 ---
+ drivers/vfio/pci/vfio_pci.c  |    2 ++
+ include/linux/pci_ids.h      |    2 ++
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
-Ben Greear <greearb@candelatech.com>
-    wifi: mt76: mt7915: add missing chanctx ops
-
-Silvio Gissi <sifonsec@amazon.com>
-    keys: Fix overwrite of key expiration on instantiation
-
-Nikhil Rao <nikhil.rao@intel.com>
-    dmaengine: idxd: add a write() method for applications to submit work
-
-Arjan van de Ven <arjan@linux.intel.com>
-    dmaengine: idxd: add a new security check to deal with a hardware erratum
-
-Arjan van de Ven <arjan@linux.intel.com>
-    VFIO: Add the SPR_DSA and SPR_IAX devices to the denylist
-
-
--------------
-
-Diffstat:
-
- Makefile                                         |  4 +-
- drivers/dma/idxd/cdev.c                          | 77 ++++++++++++++++++++++++
- drivers/dma/idxd/idxd.h                          |  3 +
- drivers/dma/idxd/init.c                          |  4 ++
- drivers/dma/idxd/registers.h                     |  3 -
- drivers/dma/idxd/sysfs.c                         | 27 ++++++++-
- drivers/net/wireless/mediatek/mt76/mt7915/main.c |  4 ++
- drivers/vfio/pci/vfio_pci.c                      |  2 +
- include/linux/pci_ids.h                          |  2 +
- security/keys/key.c                              |  3 +-
- 10 files changed, 121 insertions(+), 8 deletions(-)
+--- a/drivers/dma/idxd/registers.h
++++ b/drivers/dma/idxd/registers.h
+@@ -6,9 +6,6 @@
+ #include <uapi/linux/idxd.h>
+ 
+ /* PCI Config */
+-#define PCI_DEVICE_ID_INTEL_DSA_SPR0	0x0b25
+-#define PCI_DEVICE_ID_INTEL_IAX_SPR0	0x0cfe
+-
+ #define DEVICE_VERSION_1		0x100
+ #define DEVICE_VERSION_2		0x200
+ 
+--- a/drivers/vfio/pci/vfio_pci.c
++++ b/drivers/vfio/pci/vfio_pci.c
+@@ -71,6 +71,8 @@ static bool vfio_pci_dev_in_denylist(str
+ 		case PCI_DEVICE_ID_INTEL_QAT_C62X_VF:
+ 		case PCI_DEVICE_ID_INTEL_QAT_DH895XCC:
+ 		case PCI_DEVICE_ID_INTEL_QAT_DH895XCC_VF:
++		case PCI_DEVICE_ID_INTEL_DSA_SPR0:
++		case PCI_DEVICE_ID_INTEL_IAX_SPR0:
+ 			return true;
+ 		default:
+ 			return false;
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2687,8 +2687,10 @@
+ #define PCI_DEVICE_ID_INTEL_I960	0x0960
+ #define PCI_DEVICE_ID_INTEL_I960RM	0x0962
+ #define PCI_DEVICE_ID_INTEL_HDA_HSW_0	0x0a0c
++#define PCI_DEVICE_ID_INTEL_DSA_SPR0	0x0b25
+ #define PCI_DEVICE_ID_INTEL_HDA_HSW_2	0x0c0c
+ #define PCI_DEVICE_ID_INTEL_CENTERTON_ILB	0x0c60
++#define PCI_DEVICE_ID_INTEL_IAX_SPR0	0x0cfe
+ #define PCI_DEVICE_ID_INTEL_HDA_HSW_3	0x0d0c
+ #define PCI_DEVICE_ID_INTEL_HDA_BYT	0x0f04
+ #define PCI_DEVICE_ID_INTEL_SST_BYT	0x0f28
 
 
 
