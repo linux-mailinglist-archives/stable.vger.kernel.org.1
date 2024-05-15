@@ -1,99 +1,139 @@
-Return-Path: <stable+bounces-45216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7E28C6C10
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 20:19:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04FA38C6C27
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 20:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0410CB218C5
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 18:19:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3CEE283624
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 18:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F6B158DC1;
-	Wed, 15 May 2024 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC75158DD0;
+	Wed, 15 May 2024 18:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGG8OjSI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1FA158DB8
-	for <stable@vger.kernel.org>; Wed, 15 May 2024 18:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E716A40858;
+	Wed, 15 May 2024 18:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715797146; cv=none; b=qLAYYbsIOhgyIaabbbjeDdqiEnPSDmZU1KCL6MDjzJWFQItXJpt9EWdTPERIcEaf5LqDoPV/BV36TsFUg6lbBRsAdjcWDBCqPc1upQ3LijSgNbPBK8uv57c80oCTzy9LTb5VEX5ffAy77E/AArNMIKe4BWMLgmMdNKf7Ky+Vgq0=
+	t=1715797807; cv=none; b=qc5Z8XZfsPKziWKm939+ktqu3jGTcNOnmJtNBz+krmhKXG7kEwDQkVMRqRqcQEOP0XiiPz+AzZH0B69bhlCLsMDTRio+3DRxebvN2SoxZeWZ8a38a6TvwENIbieGRrzgEyAi6jIGOxQHbrLBi9IBTt5AyajKYdxWv3wYG2kcnLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715797146; c=relaxed/simple;
-	bh=5eudQLXKDiRsYY49Oc+zW6UDq5YXoyySbCrA4nZlq9w=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=nZj/8bgpsSRbyWRL5bAmLxYRlm7g6WSMataNZNQhOqrQH9+1huCX7Zq2eoq3/CKvp2v8BHsRoFcExL7UrybQLsMWqGK4YpKKXZM8z++IuGz2GH3G+H7b+EfCqfGLfeADg9RoS8Qc6MmnCMFFzhJyXd5JTWR/f/CT4jJwH087r0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-7e1ea8608afso335650739f.2
-        for <stable@vger.kernel.org>; Wed, 15 May 2024 11:19:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715797144; x=1716401944;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z+tpDgK2JCqXeT0yDQHOxK3Y5nf0WqVOLoMtiI3Y/bw=;
-        b=HMZU2SFajoK3ArdNSHEN6AZ9KAyOly9Qx1GkG46m0UCoqivnwMwML5jIKBQ2rzl7fg
-         3ZVqgxSK0BkHWZPOW1cqj1zzq0jWJpn5b9hfmlH+vnHHKAxjmg07eHT2HJoItaJaeCO+
-         sZy/VX/r30lCmPqgj2BA8rp2pqqzLpKLkT8U6POKgtntKqW8mb4Wjh3yuhl7D9Oh9nwJ
-         vZW+Lbb/aBGccS/1Cx+obvvC9lkaJvSnyjnEhAw/zHeSuZ59UpmatAbIgtyR6kd8fGHo
-         xnHMHT7W4ulR/DwPobh1qS+2AvA+QT3RhZqhGmDAZEikeXkqrqUNEPG7jRVqJGCTClj4
-         4REw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUjot64qU0lXC523Y3xgua1swxaNLnBK4E+f687Q8zmHV07rwF3fJn20JREBFE6ClM3X9qNaU1l1SSKbuPqWo+P4jebb03
-X-Gm-Message-State: AOJu0Yyb+ckrV6ChI7wk38tZPZAlT1Oi+C1tYUokwa2T/Dkyj5djdh4W
-	Rz15y+YXHboXfI/Ng/9Qmj9JPyZJER848N0LlCVQyUrdxpYFTloTy2jvnfrUdD3NiBo629USpK5
-	nzHiod6aQkHfYZz6Yrfv/qAk+bb4Bnb96WvH6jjnPf9wxXosnC17zngA=
-X-Google-Smtp-Source: AGHT+IEjNm55R8nOlSIvYdtT/+wPoKVbHS4MXBNSquAdO95DQ/qV9dYHkp5IQ0ROpBGxD/p/1FKq4FdnI5XNMO2HYBR0ez1OuwCN
+	s=arc-20240116; t=1715797807; c=relaxed/simple;
+	bh=1H4ESRp4n7R82qzwLK63TMRqXzG39WJ6h6WdXq5tn0s=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=jMGATuMuxe7H+Ef7KFJSoFBNBJf2iZoD7HgXEJUfcBH/VTQYEwIuduj1C5ny5VQ0ysNj0OBm8R4zCEEAes/3uKmkinu3HOKQAbrcIcGc9/F/oFOrYePAw85917gyfbgT/vMjMjgf3O9DbmxjtD9V10Y6sLB79ZH9Cfp4zmx+oI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGG8OjSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E794C116B1;
+	Wed, 15 May 2024 18:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715797806;
+	bh=1H4ESRp4n7R82qzwLK63TMRqXzG39WJ6h6WdXq5tn0s=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=vGG8OjSIeW781V5I1Mq1XjN20oayTbfZUcvX7gFmSBIIuMekeMdERoqa1JMDoOIgE
+	 xrftDrj7q8wQI5PJ6WPuR7cQ0BEYYhG2d1NgrIBgTLFYLnMCsyGjc76CjoWgbbsP2T
+	 aPD2hmz3zViJSH2iwzvzuYtAvB7j/9BaH3xYsrgqtAdT+jn8iBzXx7DdEXgcrw8KWR
+	 ykTrGGn6/oOtyOAR8Mm+QB5zQ2U07ttTk5Y4FJoj9ZwyqJAAWtAmGXSIsRXjxNKfum
+	 9naBJ+n07qxnNyK/y3DGPwI5aDiLGKwQjySQoaYYTdKR2eK97QjUnEaEtndpfNqyln
+	 xFM+cuR17Cm9Q==
+Date: Wed, 15 May 2024 11:30:06 -0700
+From: Kees Cook <kees@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>, "Chaney, Ben" <bchaney@akamai.com>,
+ Kees Cook <keescook@chromium.org>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "Tottenham, Max" <mtottenh@akamai.com>, "Hunt, Joshua" <johunt@akamai.com>,
+ "Galaxy, Michael" <mgalaxy@akamai.com>
+Subject: Re: Regression in 6.1.81: Missing memory in pmem device
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAMj1kXE2ZvaKout=nSfv08Hn5yvf8SRGhQeTikZcUeQOmyDgnw@mail.gmail.com>
+References: <FA5F6719-8824-4B04-803E-82990E65E627@akamai.com> <CAMj1kXE2ZvaKout=nSfv08Hn5yvf8SRGhQeTikZcUeQOmyDgnw@mail.gmail.com>
+Message-ID: <742E72A5-4792-4B72-B556-22929BBB1AD9@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:861e:b0:488:59cc:eb4e with SMTP id
- 8926c6da1cb9f-4895854473cmr1136597173.1.1715797144326; Wed, 15 May 2024
- 11:19:04 -0700 (PDT)
-Date: Wed, 15 May 2024 11:19:04 -0700
-In-Reply-To: <000000000000c4b45a056a36872f@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000004b67120618822707@google.com>
-Subject: Re: [syzbot] [ntfs3?] kernel BUG at fs/ntfs/aops.c:LINE!
-From: syzbot <syzbot+6a5a7672f663cce8b156@syzkaller.appspotmail.com>
-To: almaz.alexandrovich@paragon-software.com, anton@tuxera.com, 
-	axboe@kernel.dk, brauner@kernel.org, cgel.zte@gmail.com, 
-	dai.shixin@zte.com.cn, ebiggers@kernel.org, gregkh@linuxfoundation.org, 
-	jack@suse.cz, jiang.xuexin@zte.com.cn, linkinjeon@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-ntfs-dev@lists.sourceforge.net, lu.zhongjun@zte.com.cn, 
-	ntfs3@lists.linux.dev, ran.maosheng1@zte.com.cn, ran.xiaokai@zte.com.cn, 
-	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com, xu.xin16@zte.com.cn, 
-	yang.tao172@zte.com.cn, yang.yang29@zte.com.cn, zealci@zte.com.cn, 
-	zhang.songyi@zte.com.cn, zhang.wenya1@zte.com.cn, zhang.yanan14@zte.com.cn
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-syzbot suspects this issue was fixed by commit:
 
-commit 6f861765464f43a71462d52026fbddfc858239a5
-Author: Jan Kara <jack@suse.cz>
-Date:   Wed Nov 1 17:43:10 2023 +0000
 
-    fs: Block writes to mounted block devices
+On May 15, 2024 10:42:49 AM PDT, Ard Biesheuvel <ardb@kernel=2Eorg> wrote:
+>(cc Kees)
+>
+>On Wed, 15 May 2024 at 19:32, Chaney, Ben <bchaney@akamai=2Ecom> wrote:
+>>
+>> Hello,
+>>                 I encountered an issue when upgrading to 6=2E1=2E89 fro=
+m 6=2E1=2E77=2E This upgrade caused a breakage in emulated persistent memor=
+y=2E Significant amounts of memory are missing from a pmem device:
+>>
+>> fdisk -l /dev/pmem*
+>> Disk /dev/pmem0: 355=2E9 GiB, 382117871616 bytes, 746323968 sectors
+>> Units: sectors of 1 * 512 =3D 512 bytes
+>> Sector size (logical/physical): 512 bytes / 4096 bytes
+>> I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+>>
+>> Disk /dev/pmem1: 25=2E38 GiB, 27246198784 bytes, 53215232 sectors
+>> Units: sectors of 1 * 512 =3D 512 bytes
+>> Sector size (logical/physical): 512 bytes / 4096 bytes
+>> I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+>>
+>>         The memmap parameter that created these pmem devices is =E2=80=
+=9Cmemmap=3D364416M!28672M,367488M!419840M=E2=80=9D, which should cause a m=
+uch larger amount of memory to be allocated to /dev/pmem1=2E The amount of =
+missing memory and the device it is missing from is randomized on each rebo=
+ot=2E There is some amount of memory missing in almost all cases, but not 1=
+00% of the time=2E Notably, the memory that is missing from these devices i=
+s not reclaimed by the system for general use=2E This system in question ha=
+s 768GB of memory split evenly across two NUMA nodes=2E
+>>
+>>         When the error occurs, there are also the following error messa=
+ges showing up in dmesg:
+>>
+>> [    5=2E318317] nd_pmem namespace1=2E0: [mem 0x5c2042c000-0x5ff7ffffff=
+ flags 0x200] misaligned, unable to map
+>> [    5=2E335073] nd_pmem: probe of namespace1=2E0 failed with error -95
+>>
+>>         Bisection implicates 2dfaeac3f38e4e550d215204eedd97a061fdc118 a=
+s the patch that first caused the issue=2E I believe the cause of the issue=
+ is that the EFI stub is randomizing the location of the decompressed kerne=
+l without accounting for the memory map, and it is clobbering some of the m=
+emory that has been reserved for pmem=2E
+>>
+>
+>Does using 'nokaslr' on the kernel command line work around this?
+>
+>I think in this particular case, we could just disable physical KASLR
+>(but retain virtual KASLR) if memmap=3D appears on the kernel command
+>line, on the basis that emulated persistent memory is somewhat of a
+>niche use case, and physical KASLR is not as important as virtual
+>KASLR (which shouldn't be implicated in this)=2E
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=134d0268980000
-start commit:   ceb6a6f023fd Linux 6.7-rc6
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e5751b3a2226135d
-dashboard link: https://syzkaller.appspot.com/bug?extid=6a5a7672f663cce8b156
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=172458d6e80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=120d8026e80000
+Yeah, that seems reasonable to me=2E As long as we put a notice to dmesg t=
+hat physical ASLR was disabled due to memmap's physical reservation=2E If t=
+his usage becomes more common, we should find a better way, though=2E=20
 
-If the result looks correct, please mark the issue as fixed by replying with:
+This reminds me a bit of the work Steve has been exploring:
+https://lore=2Ekernel=2Eorg/all/20240509163310=2E2aa0b2e1@rorschach=2Eloca=
+l=2Ehome/
 
-#syz fix: fs: Block writes to mounted block devices
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+--=20
+Kees Cook
 
