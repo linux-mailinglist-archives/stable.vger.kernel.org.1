@@ -1,197 +1,141 @@
-Return-Path: <stable+bounces-45191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB12E8C6A93
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 18:29:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BFE8C6A9C
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 18:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEDBB1C22438
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:29:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A14D284914
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFA5156669;
-	Wed, 15 May 2024 16:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5313FA2A;
+	Wed, 15 May 2024 16:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PvPLn1wK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rr2G/0EI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E618113EFE5;
-	Wed, 15 May 2024 16:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CAD5660
+	for <stable@vger.kernel.org>; Wed, 15 May 2024 16:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715790583; cv=none; b=F24c/v2oBywfTw1nNjhPJx+IkWfBAb1a05g445B5B5xJAr4E+d9X5lwXC4+L0LVvkryx+dORSdcvQNHfUTLBcRwFdh6oENY2QQCkoDt5noqX7QCTjqx3G/qvS+UZgEwvYrKFdY3+PxDoUHxOzSTk+AYCGqNOfrORwiyJkCtDZKU=
+	t=1715790682; cv=none; b=MfU09obXiVyT5ylhP6Axomj98O5Or5vkSjy980FEKJJ4p775jcJa3GR5QFSNlmJ03gWYvNOqGfd+4AunpcvcU4bNyLS4z2LqObzm5BpV6lM4Wgzg8g1iWnx9oYVjE2PC9l+ZZubs08WfVStMIiz+lBxI86ei9GiZj9lCLuR40D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715790583; c=relaxed/simple;
-	bh=rBBC+aSahEmVK7ZPwrfWO9sJBrFh5xxG85dkqntLIq8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Le4iUkKVIlE8V44OKta/dyxXZiNE5ffXPwU/E3+BzkOEhixb7SWLGvGZ7nlgfHov1dy7JZAPyaLgPucCUSNU+iQPsISKwNsr0a59ZIx5zB4imehyO04V9wjHLnhyA5UGIT4suZoaXw4mcqhdlWp7qlAB6G1nBmmGipwIncqXsWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PvPLn1wK; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a59a9d66a51so189768266b.2;
-        Wed, 15 May 2024 09:29:41 -0700 (PDT)
+	s=arc-20240116; t=1715790682; c=relaxed/simple;
+	bh=sfyua9Yc8tvS222gvzK1VRgYKMt/fhJswzDlGjgG8IM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SEA/Rg4zRN/D2fs2h+siAxSpGvd3YjK228vg7uxKVeG/xlQBwjKbqOEgykMlRNuBmdwz9xmUfRZXq1ZiYUigjHb0rfG6Df9S/eFPT+Myw9NHpnhHhcyuBkJZLKk35O16qjWFQfdf5ysk7sT6+pFlfNN3de7A3HzfFnxnYWosri8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rr2G/0EI; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-622f5a0badcso36666997b3.2
+        for <stable@vger.kernel.org>; Wed, 15 May 2024 09:31:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715790580; x=1716395380; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rBBC+aSahEmVK7ZPwrfWO9sJBrFh5xxG85dkqntLIq8=;
-        b=PvPLn1wKsSO9PJVvmVG+2WmNPx8vq5hWDU4auhlA+p075eYdXAfaLq0cSh8ebRZQEX
-         aU67e6aD63RAaQndV5fDagv90+iSY8BfRlnBJmUqnwnWjKPUahwuP5RjL8s7OYIx05QK
-         9avF+sslYmvsjgzJExtf0LSnWgG/mi6DM5647Ap7i1pjR963CjiV5msa9zCEd3Ix7Xtn
-         0dCA/fK3+7pEYbmW4WVVEFR0dXHF6a2ZehfE84xM57TOgv/0NUPbtk9sOzDFVE4PeBSa
-         rDrQXL7Ub1qlxkaBec/xZQTgJJ27FofvkLgG9I88Om8C+qLCj1MAwfRTpByASTC0/vEY
-         9G7g==
+        d=google.com; s=20230601; t=1715790679; x=1716395479; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gNcxnX5krXb8EzzF+UclW+WZmcx5qsJQodXo8b9hweE=;
+        b=Rr2G/0EImjcHGoLLZBvYA5bK/pZ8C4PTz+9BKimWUPCV3PpXnT5Tar8fehZ9GLSLe/
+         IxWlvYCjRD/pD9wv0icPweatretsKAeXzrWIqXi8QQ0FvTS5vIiMYyJ4nZuiDZmiFmqs
+         Dsbx/ZoUALbEiuCCsJROVVoe71M86UWlkFwVNrajTc5qb38jBryo97T/MJGnAoeXZ2vu
+         VxxFpdDFJIlGEzo7eYlA6TthKYuKyj59jHEvUdE/WCowpBguQ71GcsX61DqcLiUnK9bG
+         HqFCg9GuDNECyF3qrCSZ8jSqOOxRL8pdq/CwGDpxImyMi9v9WZESnj7Tgx1iEEdUxo6g
+         mcFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715790580; x=1716395380;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rBBC+aSahEmVK7ZPwrfWO9sJBrFh5xxG85dkqntLIq8=;
-        b=H4HBUuHVP6LLL7XYQYagi8vCAdSGiYDt9YJk/Rnvm5Z88H5wbDcq3HQkR1XRled9mq
-         x4/3f5+rR7HEXUzxdnPeff39/40A7VTg03YCYiaO37NvIGV+2IjhdYL0BRrQMU/x2csv
-         eGmE40WISuC93cCeqbHcroCJ1fU836LuZgxBtVOFEZiNZ2txt9pBdxTUBia+PLN5zZe6
-         5/4M0+xhL//ObCGfE3k1F64nen7ArzaKl/Z6OtJB06I2PXV6yODckxJTc/SEzoDY7zpL
-         4fyzFjlkVDzIRhVTdb2g6cEWD5UVZTmTq6wIOWe4TtWeU9wC9g/wxWBjARD6Y/I+nkrm
-         4ULA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTmdvU/A3yTrG2z3HqinXdKMMC9Gavd6G45mqrAWtG03M9llrDCwUdw5gTiGV5cSPzYg3SX6DivBAwEjgvlUTAiGSaeJZh19HHPokckzyCFA33kuK8V+oe5yBcOUC2ETSgjnP9Y/M/IM6tysIqCNPmosBIAvDe8Y8cy/LYVIpU37xd3fLO5R/5RD4Z1lZwlLeJHORpzbqt
-X-Gm-Message-State: AOJu0Yy3+sQg2e9qrUe4P+mNXvGZzTEx/Reqi9W3KwzuWA7kE//A4Hyu
-	Ydk++98GubBj37aM8ppIrhNUREXDiFqdCFe2lsBX7dXbsMJEk750
-X-Google-Smtp-Source: AGHT+IFKimaUstziNEwfRQmnoURBuwCag4JfaSU65VBAInR3zjN+zSk8n2vTRLiJ26j9RrK4poO98A==
-X-Received: by 2002:a17:906:5a5a:b0:a5a:34ae:10ea with SMTP id a640c23a62f3a-a5a34ae118emr924333366b.76.1715790579864;
-        Wed, 15 May 2024 09:29:39 -0700 (PDT)
-Received: from [192.168.10.8] (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17894d57sm881641966b.73.2024.05.15.09.29.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 May 2024 09:29:39 -0700 (PDT)
-Message-ID: <11e4ff07ad6c0e9077326cf288665922ccfc0afd.camel@gmail.com>
-Subject: Re: [PATCH v5] can: mcp251xfd: fix infinite loop when xmit fails
-From: Vitor Soares <ivitro@gmail.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Thomas Kopp
- <thomas.kopp@microchip.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Vitor Soares <vitor.soares@toradex.com>,
- linux-can@vger.kernel.org,  netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 15 May 2024 17:29:38 +0100
-In-Reply-To: <20240515-athletic-sensible-swine-4e7692-mkl@pengutronix.de>
-References: <20240514105822.99986-1-ivitro@gmail.com>
-	 <20240514-corgi-of-marvelous-peace-968f5c-mkl@pengutronix.de>
-	 <465a2ddb222beed7c90b36c523633fc5648715bb.camel@gmail.com>
-	 <20240515-athletic-sensible-swine-4e7692-mkl@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        d=1e100.net; s=20230601; t=1715790679; x=1716395479;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gNcxnX5krXb8EzzF+UclW+WZmcx5qsJQodXo8b9hweE=;
+        b=uQq//JkRe4qWiqySzq6jBqjjzvh30gHEpQDArjkQCfVuNc6bP/NDVsgENJLga+J4gX
+         fM0OJ+9SJ/T+g7mFPTDul+4hvEvT4pZi6/Hzmn6YmqvqODZXg3lFdx+XStRrCN+feQ6m
+         x0ztBL+8PXkTq3WJ8LNvDIgHXJbSU5HiXKbHdH3DTdBCKEEC9TkkPPmxC/sCL3DjsCS4
+         m20Xzt8SVWMaTUD+E53Pu1wwzbyIbX8onLD3xrvHswSwWev9LnNg8S1Lix+bSCok6YJ7
+         El5kpnABjbEv5gak9hFnkNGh9zFY8eNQzJTGIBiAqO+lecdFH30FIe3t+fuo+FfkZynZ
+         tTPg==
+X-Gm-Message-State: AOJu0YzWdmkrZGoGi7G/mxUPrMu04x/FdU7G2iDPpbHpq+bkmGObDCJM
+	iHKQxPyo33KyRHqEs6UZm7hR/+uv4gMi/0f98T+q9s5SHEPXdROvIDVzovaXLoC+RmQ0qa3oBrZ
+	5OEXJitDN0ThlPlJB8ksM5JHSHCcgzqEQeqTY
+X-Google-Smtp-Source: AGHT+IGD2WHtXpkipld10Auaut6BPHXAp73I/mhO7Vg5XFd2/8MwOCCIImnkEZZCR9BzvIwC6M1p0oDg+myM4hepAEg=
+X-Received: by 2002:a05:690c:6a0c:b0:609:fec8:779c with SMTP id
+ 00721157ae682-622b0193d89mr166637877b3.52.1715790679458; Wed, 15 May 2024
+ 09:31:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240513233058.885052-1-jbongio@google.com> <2024051523-precision-rosy-eac3@gregkh>
+In-Reply-To: <2024051523-precision-rosy-eac3@gregkh>
+From: Jeremy Bongio <jbongio@google.com>
+Date: Wed, 15 May 2024 09:31:07 -0700
+Message-ID: <CAOvQCn5LEhFw8njxO7oa9Q_Ku3b7UEEmJUAqPw9aTO3Gu90kRg@mail.gmail.com>
+Subject: Re: [PATCH] md: fix kmemleak of rdev->serial
+To: Greg KH <greg@kroah.com>
+Cc: stable@vger.kernel.org, Li Nan <linan122@huawei.com>, Song Liu <song@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2024-05-15 at 13:12 +0200, Marc Kleine-Budde wrote:
-> On 14.05.2024 15:34:01, Vitor Soares wrote:
-> > > > +void mcp251xfd_tx_obj_write_sync(struct work_struct *ws)
-> > > > +{
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mcp251xfd_priv *priv =
-=3D container_of(ws, struct
-> > > > mcp251xfd_priv,
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 tx_work);
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mcp251xfd_tx_obj *tx_o=
-bj =3D priv->tx_work_obj;
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mcp251xfd_tx_ring *tx_=
-ring =3D priv->tx;
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int err;
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 err =3D spi_sync(priv->spi, &=
-tx_obj->msg);
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (err)
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 mcp251xfd_tx_failure_drop(priv, tx_ring, err);
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 priv->tx_work_obj =3D NULL;
-> > >=20
-> > > Race condition:
-> > > - after spi_sync() the CAN frame is send
-> > > - after the TX complete IRQ the TX queue is restarted
-> > > - the xmit handler might get BUSY
-> > > - fill the tx_work_obj again
->=20
-> You can avoid the race condition by moving "priv->tx_work_obj =3D NULL;"
-> in front of the "spi_sync();". Right?
->=20
-> > > > +}
-> > > > +
-> > > > =C2=A0static int mcp251xfd_tx_obj_write(const struct mcp251xfd_priv=
- *priv,
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mcp251xfd_=
-tx_obj *tx_obj)
-> > > > =C2=A0{
-> > > > @@ -175,7 +210,7 @@ netdev_tx_t mcp251xfd_start_xmit(struct sk_buff
-> > > > *skb,
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (can_dev_dropped_skb(=
-ndev, skb))
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 return NETDEV_TX_OK;
-> > > > =C2=A0
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (mcp251xfd_tx_busy(priv, t=
-x_ring))
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (mcp251xfd_tx_busy(priv, t=
-x_ring) || priv->tx_work_obj)
-> > >=20
-> > > This should not happen, but better save than sorry.
-> >=20
-> > As there is the race condition you mentioned above, on this condition:
-> > priv->tx_work_obj =3D tx_obj --> xmit will return NETDEV_TX_BUSY
-> >=20
-> > or
-> >=20
-> > priv->tx_work_obj =3D NULL --> It goes through the rest of the code or
-> > the workqueue may sleep after setting tx_work_obj to NULL. Should I
-> > use work_busy() here instead or do you have another suggestion?
->=20
-> Yes, introduce mcp251xfd_work_busy().
->=20
+5.4 doesn't have "mddev_destroy_serial_pool" ... More work would be
+needed to figure out if the vulnerability exists and how to fix it.
 
-I'll implement it.
+The patch also applies to 5.15, but I haven't tested it.
 
-> I'm not sure what happens if the xmit is called between the
-> "priv->tx_work_obj =3D NULL" and the end of the work. Will queue_work()
-> return false, as the queue is still running?
-
-From the test I did so far, my understanding is the following:
-
-If mcp251xfd_tx_obj_write doesn't fail, everything is OK.
-
-if mcp251xfd_tx_obj_write fails with EBUSY=20
- - stop netif queue
- - fill the tx_work_obj
- - start worker
-
-queue_work() doesn't return false even when work_busy() =3D true.=20
- - xmit handler return, and wait netif_wake_queue()
- - the work handler waits until the previous job gets done before starting =
-the=20
-next one.
- - after the TX completes IRQ, the TX queue is restarted
-
-If the TX queue is restarted immediately after queue_work(), tx_work_obj is
-filled, making the xmit handler return NETDEV_TX_BUSY.
-
-The tests were done with a delay after priv->tx_work_obj =3D NULL.
-
-
-Best regards,
-Vitor Soares
+On Wed, May 15, 2024 at 12:33=E2=80=AFAM Greg KH <greg@kroah.com> wrote:
+>
+> On Mon, May 13, 2024 at 11:30:58PM +0000, Jeremy Bongio wrote:
+> > From: Li Nan <linan122@huawei.com>
+> >
+> > commit 6cf350658736681b9d6b0b6e58c5c76b235bb4c4 upstream.
+> >
+> > If kobject_add() is fail in bind_rdev_to_array(), 'rdev->serial' will b=
+e
+> > alloc not be freed, and kmemleak occurs.
+> >
+> > unreferenced object 0xffff88815a350000 (size 49152):
+> >   comm "mdadm", pid 789, jiffies 4294716910
+> >   hex dump (first 32 bytes):
+> >     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+> >     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+> >   backtrace (crc f773277a):
+> >     [<0000000058b0a453>] kmemleak_alloc+0x61/0xe0
+> >     [<00000000366adf14>] __kmalloc_large_node+0x15e/0x270
+> >     [<000000002e82961b>] __kmalloc_node.cold+0x11/0x7f
+> >     [<00000000f206d60a>] kvmalloc_node+0x74/0x150
+> >     [<0000000034bf3363>] rdev_init_serial+0x67/0x170
+> >     [<0000000010e08fe9>] mddev_create_serial_pool+0x62/0x220
+> >     [<00000000c3837bf0>] bind_rdev_to_array+0x2af/0x630
+> >     [<0000000073c28560>] md_add_new_disk+0x400/0x9f0
+> >     [<00000000770e30ff>] md_ioctl+0x15bf/0x1c10
+> >     [<000000006cfab718>] blkdev_ioctl+0x191/0x3f0
+> >     [<0000000085086a11>] vfs_ioctl+0x22/0x60
+> >     [<0000000018b656fe>] __x64_sys_ioctl+0xba/0xe0
+> >     [<00000000e54e675e>] do_syscall_64+0x71/0x150
+> >     [<000000008b0ad622>] entry_SYSCALL_64_after_hwframe+0x6c/0x74
+> >
+> > backport change:
+> > mddev_destroy_serial_pool third parameter was removed in mainline,
+> > where there is no need to suspend within this function anymore.
+> >
+> > Fixes: 963c555e75b0 ("md: introduce mddev_create/destroy_wb_pool for th=
+e change of member device")
+> > Signed-off-by: Li Nan <linan122@huawei.com>
+> > Signed-off-by: Song Liu <song@kernel.org>
+> > Link: https://lore.kernel.org/r/20240208085556.2412922-1-linan666@huawe=
+icloud.com
+> > Signed-off-by: Jeremy Bongio <jbongio@google.com>
+> > ---
+> >
+> > This backport is tested on LTS 5.10, 6.1, 6.6
+>
+> So this is not needed in 5.15.y or 5.4.y?  Why not?
+>
+> thanks,
+>
+> greg k-h
 
