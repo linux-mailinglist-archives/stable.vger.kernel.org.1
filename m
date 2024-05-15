@@ -1,168 +1,230 @@
-Return-Path: <stable+bounces-45178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E619D8C68F9
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:45:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E4F8C68F6
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1508B1C20FDE
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:45:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33541F232CD
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8757615572F;
-	Wed, 15 May 2024 14:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200CA155733;
+	Wed, 15 May 2024 14:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="Pgud1Hmz";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="YaQhe8x4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QdjLEVvR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout146.security-mail.net (smtpout146.security-mail.net [85.31.212.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63B75C8EF
-	for <stable@vger.kernel.org>; Wed, 15 May 2024 14:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=85.31.212.146
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715784306; cv=fail; b=VTou5fUA6CzObyaTtGZ96rDJtGqOLO2kp+KEfImiZuGk2NNav9UwvEbXflyMSKkb6az69u6tXY05m8zmn1oskuvH+RYH4qrCwqd7WBx5v0OKVBH2KE+ML0/nNqd5U2K7XbWB1z4KnFWQEPJfuBxqMdfDWoyc4GkncDxWMKeTLYo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715784306; c=relaxed/simple;
-	bh=IGd4ClDhPi36L6nEfn9iP1a1kK4ikMUMr61c56debq4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=LxhCNIkJbSX1nn29NuV7v1a+MZ3WPrLGtHB3qMyRVlVG/ld0bRbRbLT1a3eN4/AuXwmwddU9iNWGOEVuL95kUE8aedj6PBsm4xdU6Lcy9NIlD8U3xRyPVtuQpxxprP9fEOf4qeIWmGd77GWTiDiYVcDCkMZGjKx6K6lHWbA8H88=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; spf=pass smtp.mailfrom=kalrayinc.com; dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=Pgud1Hmz; dkim=fail (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=YaQhe8x4 reason="signature verification failed"; arc=fail smtp.client-ip=85.31.212.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kalrayinc.com
-Received: from localhost (fx601.security-mail.net [127.0.0.1])
-	by fx601.security-mail.net (Postfix) with ESMTP id A237934986E
-	for <stable@vger.kernel.org>; Wed, 15 May 2024 16:41:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
-	s=sec-sig-email; t=1715784083;
-	bh=IGd4ClDhPi36L6nEfn9iP1a1kK4ikMUMr61c56debq4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Pgud1Hmz/z1iczGhTP8R31KVHaFXq368adA7+ediVudBREejpt7lU6rGijynOJngE
-	 vKzETFDI3/YsAe+K9YiKKlJ5aoDOiauvIwnSh2L2c8ikdlcicL+dZQUkdLAY4qxJv6
-	 w+WW5fS10LRGBwMfucvkd5q7GdbkzCaOuMbgLC9g=
-Received: from fx601 (fx601.security-mail.net [127.0.0.1]) by
- fx601.security-mail.net (Postfix) with ESMTP id 3FAB934984A; Wed, 15 May
- 2024 16:41:23 +0200 (CEST)
-Received: from PA5P264CU001.outbound.protection.outlook.com
- (mail-francecentralazlp17010003.outbound.protection.outlook.com
- [40.93.76.3]) by fx601.security-mail.net (Postfix) with ESMTPS id
- 5F67B349848; Wed, 15 May 2024 16:41:22 +0200 (CEST)
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:14b::6)
- by PARP264MB5419.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:3f0::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.27; Wed, 15 May
- 2024 14:41:21 +0000
-Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::7a6f:1976:3bf3:aa39]) by PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- ([fe80::7a6f:1976:3bf3:aa39%4]) with mapi id 15.20.7587.026; Wed, 15 May
- 2024 14:41:21 +0000
-X-Virus-Scanned: E-securemail
-Secumail-id: <4e72.6644c992.5cf91.0>
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i/8mgNwHok5uOENK8I0Ih+m2gsIbRVYOe5vv5kIt6QCEnkqxkTDnFgX8eIkv2suG0MzZsXETU/ZORrYSaEgyviGMDG2mVegkCByjMHDm4zdjnCDnOcEhtIhMhdqJWpRtj8I6NUppyazAnK7txtSqlig3jDTujyY/AxTINEjnVUj7mC3ERgAxEPNF37CKMFUkwFHE58fMv9S/BWtWwVgJbsTrIpQ9M2Zy84thdsijCWuW3wANilzneLNSQltTZZVChoEeS4EnTi6ZlgN2QurEACv4AvTxsdnMAH084zU3eKFwJegbA2eIw+Pja1sLStYanVWXwesoJg79T7aJ8a8WTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microsoft.com; s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7vwT+TxOsx1r8ChwwqD3xvT2FJImA5lTBvAQ7+6rMkQ=;
- b=m5ENid1yK0GVBcQV3ErrdtdDd7HYGz/9V++P+U4Eg+RrZ8mbEYZ+9R3lB1gahRvRnCSKHVZy4dlStE+dtTkx/eVQxUWUvHlPB6V9t0I6L9GkWQqpAhHVMiUikH3dhZhceDZk00QVI4935o44vFXx0JBJs/zaqa7lCFXJp12BDDPJs0ZBj9o4l/uzc4HoI59aAXYyWjPjifARq0juyJsCLArFyPmq/31AfaYKsYqKbwFj0hISuf3CYS//00IHdLey2t63T0SBpmnAnBnPB8IAtgOPKIpyUWXbEVyuU92YUk/h5cbfxkOUPHJtQEtYkSNeOs3kTbhpKvPHK9uoAHf31A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
- header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7vwT+TxOsx1r8ChwwqD3xvT2FJImA5lTBvAQ7+6rMkQ=;
- b=YaQhe8x4X9R4eNKMJFQPEKBieEzhQbjKVwtLrzjtZSKt4hky3UuhAEhghhwr+9EOSMsb/IaXptFlAGCHaTywCDxvAlRcC9P8EreWVgUA/y+qskxj9b/KX3n8E2pm6+tB712Sf4QQUaK4k74RCFCCqU+WzHLFliJFRRp/2N51cyG+MzSmk8i9NY8yKOcjAO53OSK2syLUhpPGY6im/qSp3QovNUPwBUaxRk8oSy9T7hQL7D9qnILn9k82thB/Mv0o4nczldJJVR/tinshLQgpyElk7PqQDyOIuMJw9wNFJINlOIrAgvUzXJLul1wNpkqyzsnvYO5TMbwuFmrsoE/gJw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kalrayinc.com;
-Message-ID: <550d76ee-a783-4662-b16f-b29713a0d6cc@kalrayinc.com>
-Date: Wed, 15 May 2024 16:41:19 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/236] 6.1.91-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240514101020.320785513@linuxfoundation.org>
-Content-Language: en-us, fr
-From: Yann Sionneau <ysionneau@kalrayinc.com>
-In-Reply-To: <20240514101020.320785513@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PR1P264CA0046.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:2cb::17) To PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:14b::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A7515572B;
+	Wed, 15 May 2024 14:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715784268; cv=none; b=kB10PS4Yzk+oGotqAQWqjATEP/RuJq+k06JZy34Ql356VBcu1rqBy214qefeah5tiIXmAMlbZH0sNOL5rE6aHw2JllGcFU9rIWLFf5iEBukX0vo5I1uaEyiaVEhcOc14Uyx44F7Dzo5k+82CG/xpXOx3NLNdt98x4y5mdjNO/hE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715784268; c=relaxed/simple;
+	bh=QNqUB93y8PgV67K6mssFSCgz13UIfEW1Q2Kzl++uav4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=kCZKhcRlllMhRoSQUX9v3QpBaofm63Rp2KjKkZrAVpB9IFbjZ6Ob8cKAMOVh062ZK96GnDRPNNQV/qoLD/2KhpwhoIIfDcT7fWil0owhdmgT8mwAvciLg5miuN/1eVQ2s5o84gXxKvMzy4XBoySLH4EpXxldFfegyL5N01onwZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QdjLEVvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFDEC2BD11;
+	Wed, 15 May 2024 14:44:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715784268;
+	bh=QNqUB93y8PgV67K6mssFSCgz13UIfEW1Q2Kzl++uav4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=QdjLEVvR2CEYcnKwb6NJneUBnDtWE/VzeQaGlaoi1H0RgMzowDEEl3P46MN25YrSk
+	 5rrc3Zxc/3ATsJL9MijKiGLTki0Y8BKyAUqX3bg98WCwejdgxQCDOs2jvs1CFutqPn
+	 BQhSD+P+0KLzD7vxjWXyQEvar6QVzyTOxU1sa+eekHznK9A/jNlmLgZkAs6M13q4SA
+	 Y16JqRi6dyunFDBFCr7Matx7LMkTX1r64ci80EftXVNQ4YqQ3HCZVLmLezWouqCXAw
+	 wphZ+J7I7pF3RrW11SJ8AQM2uBTDDkvxxpHW25HlEEJPbMR3F9Kl/seMwE7gHksT8U
+	 mxYR0a8T8KtRQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PR0P264MB3481:EE_|PARP264MB5419:EE_
-X-MS-Office365-Filtering-Correlation-Id: 526a4ade-4788-4db2-ea51-08dc74ed166e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|7416005|1800799015|366007;
-X-Microsoft-Antispam-Message-Info: Apu9yK2J6aDNv0KDzLItCx+uOt9i9d3DCaQ7PXvMK4fNsLZi2Slj0Z2lSCDpUpIrrwF5jHnzdh7uP6hlsSrWPk1kfFdV+5IpQOj6wf/6Z5LyZB+6r2Jj8FGCZe+x5zjEUFE2q7cAvDcVTgPsmD4nA0CAjWE4a/zgEaz+KD76fT7J1esJuL0JVDiYchqOcDebXKajApr0nsjmbWEFsXCsRwlvC6oruTXo9/DySvE4CSbRpJeDI1Pj3mGbnOVQmfk8K7yYo4HNAcnOR5lr/UyUzKhZh0bmKMTnNDiqjOQcrtMqI9+4MceSvb6KxIxGq3OrHZYTf+FOrJynvziQ5retSzlu2lyO/sEq+rgbagnLMNSDL0I/kfx+grwvio7rgZjrgs5sACq7NPhK0Z5q6rySY5D1bL3B1dPp2DFFoYWP49WBYgLPe70JxMpK8mB9fkJYLY5oXtaxz/TmcNBPDVnonWFxiQIOyUbecBJlfYDTpCnqZnEs71Wp3wtn3fMa6IW5r9vEproUjk1zvQBte9IgnOuY5FbvfTMsVGofPyT0b1jZpnuEEh6zs38GWfj/JfXJ2c8OKqlS+243FUuVYi3ksnR4uC9gA4cITxpUiDGDHLXExdG0rvxY7C//EmZlIROFZmohN48t6Nfe02w3rnfsvGUPBFExpllXIEfKONGcOwwTisWlIh6MAB4S2mJKd8Sd2Z41Jk8d3eBXLWadVfIGIdbKR4+SJmoBS0QUW8NEqF35bPaK9gZ9MAT0km2cMv/SnUnV9C0MPHPuZhPH2uvI+lYZcsZtwKaA+pz3LLM77PP5EkD1SXcQ33mCHVSmlE+RoErN1PFAvqQuyMaaGRXxhyEsmpuoEuzkjIQwHS+9MFeAgkpVz3egl7HvUqCt6Qu54BXZ4N3SUzY28teZK0nwXvMj3b1j02THXCV9tWtl/+Pp8OIwA8LYIku+q1hvBNvuR4e
- lhxCEeo8DgSenD6CIh67zUKW+DK1y5sIqacVuiM+TOqSsqNfevUZt3KWVK9JQVEB+3dvAQNN50H9/DtSz7Gv/Kbgmfets6PAVJ7ZePFfNDdVKNr7zJW1NHhtYAsJ3i56Uq11LxxjjeDx1ZJQKkT4L8dTpgCMmjCYoZ4hySi9O+Tm42Y5yScx0ynENBH2Gi4PuOpEDqSNuXOkSCRDQWi8QParhAHde8y9t3cLpyGGFbgih2hR2P1ZUGDsaXv1fkHqZnCOuA+aAm9HurPit+ldqsFqA4FiN/hzf+ddXAiE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: Ny+RlaU1AXr0uuMLElndJFlN2Dz/3ZjUEKv45ltkJo6KWPhOIZIWAVtjj6eU4/bdcL3kELyecz9wpyvXr77LDv7sw9vUUrOUEuea2AWjgueE27SdMMwPmXoMi4LdFNwojEdEvooI63wB7wvAd1jvKLv2mWULQVqqhUg36hEQbNDEevXNa/SmTuvjRfFW7mytkIPJ18k7L+3MEf63E+JV0fOiRxCTr7VicIt6C780Jyl9DatHR/9V5pAJ+SsJ6nvOG52XSL0FJMphGAt/6FjlrzCL2FumlYJHpaSnztfgOfb5ZX7xFtBnDG7aooBb/8LXihUZyHUIEW9pf3UuNH/DI7WZrIt4bdjFibLNfK/juc6JEjCpGYc/vWc6h7IUjVM9/7Y4mEwWtDSNuhvwWTIdcMlB1r/9ek06gpXSV+pzmltKyfIK4+2CIsQm8nZB3fYur5o8w13yWkbXkII6GEixuLr/vTNncmI7wPhyrbb49UpHseNNQn4hn5ygTq17PQr24lifLshEXPzlxvGp/wjlnsmE5zmh0A0stRtXrdWENZDyvBC/+YatlohJOIigCIMTJ1WDR3oP8PlzL8hXZRe63YO9N5KrMdHIXP7lTFwVX8XGWTQCXd1XwApdbceixHMGl5FVPBLBO/K83rbPA5G3PRTqjxvBQP6qyjeAnsJJmLVaBj1cC1ao//n02qocwtGZqDw+mE8iZ4UuzQy073hWc6TWLRra0Q1lo0txCjryj/PrtEK68Ve93Z7BpB/BNNWfMCDzRVMmNCaxRSdxcJt5Lg8Ci1Q+GEZKo0gHZEir3XFx2BcH9vj4UT1l5jX8n0A/o6mWvpQTxfFCJE854M/YUZ9yG89qhcBLISdAZEYh9DXUJLKuW10BVsMbVI4ktO3XGAa3CPSTuGHtldHfR0/0GFJI8wlcCES8WZfDiIabwuWNQv4VUY+97IgI9+QpOTrh
- 6ctTHe0IkNWPExpcFeKwos/BQ5OosBy/KNmPMR56A2at8p5exf56h+hBqJNV8uQnMdlErdP7JHY9v/k44NajeJIezJLzC7PXxHXOcb3vTRmhb7TTecW4wOm17K6NGb2RtfUAkU9tl13FHLzNRF5j8gr3rfyB4ZY6p8sfm/kAj7fuLCg75YNRmMX9wBjkVWPbj2DlPUt4SxmV6sO2KHNHhYJCk9EyWz1iaWuVql0VMc0fiM3rp67aJCTrveDOKw2xtuVBjMziivg2UPkUe+wHLbLVlsbJxnrz91RL4yX3QdNVzQ9UCg6TmxGy9uFYTUCLbOOfsIALMUFM1x9mOrkVEAa7H56BOKKwXElLeD3voQznoqcobeXa07sKCvbsxUBwLvAQFFjGnlgdHFMPjl2qIKIZRriN/NPgZhUTGbhOX3nDbxmKIMCTeN8eDpqH0iNfUcGBsOIOZHu7sukXFU/Ii7Xg7t5viYlvKeGtYEO3eJB7aUAQ42ErtwuQ+jAEZzki4TfnbdEcHQ4Uvte9RePqiRoCtFAURueQp3s/l8sBWwle3ak9v0VDN9eoFvE4cCkMBYcV45AVaToqPpdwvTx2/A3xwcUZVu3YhrHjZ3xHvpsMNwq0t8+Dptu/Wd+pXMq+Y7g454GrnuCu2EJA1Vc1+JwALRXup2Y9Jbw0s64i+L4EtcPI30zL2+z0A6AJFSTRA0u8TOvvMCK0x0HDCf1Hdw==
-X-OriginatorOrg: kalrayinc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 526a4ade-4788-4db2-ea51-08dc74ed166e
-X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2024 14:41:21.5182
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JOXMAX5Lfrh/uYaUkp1KWC+Z7pNNwieI0uCd1RHeITTRMVR8RxfMlzccSlWdvqhUi1iSSBI9VNnbDU2jxcB7rw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PARP264MB5419
-X-ALTERMIMEV2_out: done
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 May 2024 17:44:24 +0300
+Message-Id: <D1AARDFZXEXW.2K9IDHUO8FK29@kernel.org>
+Cc: <mona.vij@intel.com>, <kailun.qin@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] x86/sgx: Resolve EREMOVE page vs EAUG page data
+ race
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Dmitrii Kuvaiskii" <dmitrii.kuvaiskii@intel.com>,
+ <dave.hansen@linux.intel.com>, <kai.huang@intel.com>,
+ <haitao.huang@linux.intel.com>, <reinette.chatre@intel.com>,
+ <linux-sgx@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240515131240.1304824-1-dmitrii.kuvaiskii@intel.com>
+ <20240515131240.1304824-3-dmitrii.kuvaiskii@intel.com>
+In-Reply-To: <20240515131240.1304824-3-dmitrii.kuvaiskii@intel.com>
 
-Hi Greg,
-
-On 14/05/2024 12:16, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.91 release.
-> There are 236 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed May 15, 2024 at 4:12 PM EEST, Dmitrii Kuvaiskii wrote:
+> Two enclave threads may try to add and remove the same enclave page
+> simultaneously (e.g., if the SGX runtime supports both lazy allocation
+> and MADV_DONTNEED semantics). Consider some enclave page added to the
+> enclave. User space decides to temporarily remove this page (e.g.,
+> emulating the MADV_DONTNEED semantics) on CPU1. At the same time, user
+> space performs a memory access on the same page on CPU2, which results
+> in a #PF and ultimately in sgx_vma_fault(). Scenario proceeds as
+> follows:
 >
-> Responses should be made by Thu, 16 May 2024 10:09:32 +0000.
-> Anything received after that time might be too late.
+> /*
+>  * CPU1: User space performs
+>  * ioctl(SGX_IOC_ENCLAVE_REMOVE_PAGES)
+>  * on enclave page X
+>  */
+> sgx_encl_remove_pages() {
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.91-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+>   mutex_lock(&encl->lock);
 >
-> thanks,
+>   entry =3D sgx_encl_load_page(encl);
+>   /*
+>    * verify that page is
+>    * trimmed and accepted
+>    */
+>
+>   mutex_unlock(&encl->lock);
+>
+>   /*
+>    * remove PTE entry; cannot
+>    * be performed under lock
+>    */
+>   sgx_zap_enclave_ptes(encl);
+>                                  /*
+>                                   * Fault on CPU2 on same page X
+>                                   */
+>                                  sgx_vma_fault() {
+>                                    /*
+>                                     * PTE entry was removed, but the
+>                                     * page is still in enclave's xarray
+>                                     */
+>                                    xa_load(&encl->page_array) !=3D NULL -=
+>
+>                                    /*
+>                                     * SGX driver thinks that this page
+>                                     * was swapped out and loads it
+>                                     */
+>                                    mutex_lock(&encl->lock);
+>                                    /*
+>                                     * this is effectively a no-op
+>                                     */
+>                                    entry =3D sgx_encl_load_page_in_vma();
+>                                    /*
+>                                     * add PTE entry
+>                                     *
+>                                     * *BUG*: a PTE is installed for a
+>                                     * page in process of being removed
+>                                     */
+>                                    vmf_insert_pfn(...);
+>
+>                                    mutex_unlock(&encl->lock);
+>                                    return VM_FAULT_NOPAGE;
+>                                  }
+>   /*
+>    * continue with page removal
+>    */
+>   mutex_lock(&encl->lock);
+>
+>   sgx_encl_free_epc_page(epc_page) {
+>     /*
+>      * remove page via EREMOVE
+>      */
+>     /*
+>      * free EPC page
+>      */
+>     sgx_free_epc_page(epc_page);
+>   }
+>
+>   xa_erase(&encl->page_array);
+>
+>   mutex_unlock(&encl->lock);
+> }
+>
+> Here, CPU1 removed the page. However CPU2 installed the PTE entry on the
+> same page. This enclave page becomes perpetually inaccessible (until
+> another SGX_IOC_ENCLAVE_REMOVE_PAGES ioctl). This is because the page is
+> marked accessible in the PTE entry but is not EAUGed, and any subsequent
+> access to this page raises a fault: with the kernel believing there to
+> be a valid VMA, the unlikely error code X86_PF_SGX encountered by code
+> path do_user_addr_fault() -> access_error() causes the SGX driver's
+> sgx_vma_fault() to be skipped and user space receives a SIGSEGV instead.
+> The userspace SIGSEGV handler cannot perform EACCEPT because the page
+> was not EAUGed. Thus, the user space is stuck with the inaccessible
+> page.
+>
+> Fix this race by forcing the fault handler on CPU2 to back off if the
+> page is currently being removed (on CPU1). This is achieved by
+> introducing a new flag SGX_ENCL_PAGE_BEING_REMOVED, which is unset by
+> default and set only right-before the first mutex_unlock() in
+> sgx_encl_remove_pages(). Upon loading the page, CPU2 checks whether this
+> page is being removed, and if yes then CPU2 backs off and waits until
+> the page is completely removed. After that, any memory access to this
+> page results in a normal "allocate and EAUG a page on #PF" flow.
+>
+> Fixes: 9849bb27152c ("x86/sgx: Support complete page removal")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+> ---
+>  arch/x86/kernel/cpu/sgx/encl.c  | 3 ++-
+>  arch/x86/kernel/cpu/sgx/encl.h  | 3 +++
+>  arch/x86/kernel/cpu/sgx/ioctl.c | 1 +
+>  3 files changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/enc=
+l.c
+> index 41f14b1a3025..7ccd8b2fce5f 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.c
+> +++ b/arch/x86/kernel/cpu/sgx/encl.c
+> @@ -257,7 +257,8 @@ static struct sgx_encl_page *__sgx_encl_load_page(str=
+uct sgx_encl *encl,
+> =20
+>  	/* Entry successfully located. */
+>  	if (entry->epc_page) {
+> -		if (entry->desc & SGX_ENCL_PAGE_BEING_RECLAIMED)
+> +		if (entry->desc & (SGX_ENCL_PAGE_BEING_RECLAIMED |
+> +				   SGX_ENCL_PAGE_BEING_REMOVED))
+>  			return ERR_PTR(-EBUSY);
+> =20
+>  		return entry;
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/enc=
+l.h
+> index f94ff14c9486..fff5f2293ae7 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.h
+> +++ b/arch/x86/kernel/cpu/sgx/encl.h
+> @@ -25,6 +25,9 @@
+>  /* 'desc' bit marking that the page is being reclaimed. */
+>  #define SGX_ENCL_PAGE_BEING_RECLAIMED	BIT(3)
+> =20
+> +/* 'desc' bit marking that the page is being removed. */
+> +#define SGX_ENCL_PAGE_BEING_REMOVED	BIT(2)
+> +
+>  struct sgx_encl_page {
+>  	unsigned long desc;
+>  	unsigned long vm_max_prot_bits:8;
+> diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/io=
+ctl.c
+> index b65ab214bdf5..c542d4dd3e64 100644
+> --- a/arch/x86/kernel/cpu/sgx/ioctl.c
+> +++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+> @@ -1142,6 +1142,7 @@ static long sgx_encl_remove_pages(struct sgx_encl *=
+encl,
+>  		 * Do not keep encl->lock because of dependency on
+>  		 * mmap_lock acquired in sgx_zap_enclave_ptes().
+>  		 */
+> +		entry->desc |=3D SGX_ENCL_PAGE_BEING_REMOVED;
+>  		mutex_unlock(&encl->lock);
+> =20
+>  		sgx_zap_enclave_ptes(encl, addr);
 
-I tested 6.1.91-rc1 (21f6332eaf4ea) on Kalray kvx arch (not upstream yet) and everything looks good!
+Makes perfect sense:
 
-It ran on real hw (k200, k200lp and k300 boards), on qemu as well as on our internal instruction set simulator (ISS).
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Tests were run on several interfaces/drivers (usb, qsfp ethernet, eMMC, PCIe endpoint+RC, SPI, remoteproc, uart, iommu). LTP and uClibc-ng testsuites are also run without any regression.
-
-Everything looks fine to us.
-
-Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
-
--- 
-
-Yann
-
-
-
-
-
+BR, Jarkko
 
