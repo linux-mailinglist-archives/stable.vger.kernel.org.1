@@ -1,115 +1,132 @@
-Return-Path: <stable+bounces-45215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59CB8C6C04
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 20:15:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBEE8C6C35
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 20:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E29F284DB3
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 18:15:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27B7FB22F7B
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 18:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8E3158DDF;
-	Wed, 15 May 2024 18:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE1215AADA;
+	Wed, 15 May 2024 18:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKUqQOrb"
+	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="rf1hovah"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB5E158DB5;
-	Wed, 15 May 2024 18:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69E4159596;
+	Wed, 15 May 2024 18:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715796913; cv=none; b=q4EfGdw6+G3eOlPg3AduzmUIMfW4OYIzzCPerPPrueLKknmyVd+CKjAUUsvb1a/sA0un3diV4SjX6tQnuJiG71XaoBfbKm6KrXwBjQiqdZUK882SMMXRfgAZIvt5zsWoF9mcJvT+6Nq8Ok8ivj8E/6nB3ICpIIlM+nZQkSTCxDg=
+	t=1715797998; cv=none; b=kqe7yoAu+gY7ox9kpDJc999LcV28tYHHVQKelHAp1M3HHQDgttv9gLQ67cg5NLQPAXQreDerWxFshW1fQ+PDarrOrXKbrnMHnioo9Z5PdBC/YEhbp8bXJjg7oiUOeOj2apIfyGCuf4Gjw4Mu+4lueDtllhvMdaQxisKXaQoXsB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715796913; c=relaxed/simple;
-	bh=E4Iwtxu2+/Psbmp/h4kJfXYz2OBjkeQjEI+8/JjX5EQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CZO2liQI1eIMxRsKJBK1CTHO+4/jFZsrUB5Q7d9tKTMjDRRaIdc8ome7Zi6d3lJxVaRSgQ+F8aensaruHP9EtmOhqZ2gMBGaOSWHoKWZ1n/APw1BdSl0KyI0OzWPVELLya5R1u3/qyVFlTDpbOTcqK0KuDOs00yXPgp8aBA8pow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKUqQOrb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AB7CBC32789;
-	Wed, 15 May 2024 18:15:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715796912;
-	bh=E4Iwtxu2+/Psbmp/h4kJfXYz2OBjkeQjEI+8/JjX5EQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sKUqQOrbz6+9qshSPT2m6n9CPcGSpJYbgbS4SDi0MrIy6RHgArm68GqmaXKrkeaGD
-	 aNSQYFNyduY4YcVwM1FF0YkWvEz6g7AfDON19cVhn7hs00pj+1tWY7wgDvi9d+k3NE
-	 JceTtG8UNk7+qUzK3mjYuFgXLzeFGqpl986LbLTbkkegvC84FnGAt016nXBtv2g3Ev
-	 uBPD0DoZjMhvCPuB0Cyhr6OxnZ0DPs1wFPC/ceSqwVRShdHWJNGdg1Akbw8Pp7ZLsr
-	 t+EoubXP+pHp+AaCB1EO5Co0MldOti9/8bvfd12H+erKgJSVdPTF6HFfLDX5GPNiZr
-	 0CjDztkf1oJVQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A291DC25B79;
-	Wed, 15 May 2024 18:15:12 +0000 (UTC)
-From: Sven Peter via B4 Relay <devnull+sven.svenpeter.dev@kernel.org>
-Date: Wed, 15 May 2024 18:15:04 +0000
-Subject: [PATCH v2 3/3] Bluetooth: hci_bcm4377: Fix msgid release
+	s=arc-20240116; t=1715797998; c=relaxed/simple;
+	bh=y2zayKWnk9+auOzdACJ/SZye0xW8Lm8mzmgdTyPY700=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EVcxmTasObkSLbFsvTUR3DhusB+7SbVXWSWFVGblcO8boOIiYmXONtmjCAvJxN6Zc0uAjgedN/kr9+//1vYyB/dvv7i8UmGi+XOD5i2IqvUem7gCZ+IMb5Q9q0qUNug0nFD6pLqde2oiKlj3VE7epVRnofRbRYW9NVrYsj075go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=rf1hovah; arc=none smtp.client-ip=217.72.192.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valentinobst.de;
+	s=s1-ionos; t=1715797983; x=1716402783; i=kernel@valentinobst.de;
+	bh=mSXPAJKXxzZyEDc83l6Cs0ff5IlLiJEXhV9mzqpTkAE=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:cc:content-transfer-encoding:content-type:
+	 date:from:message-id:mime-version:reply-to:subject:to;
+	b=rf1hovahGEVZoPzUBVzzohJ6u+wjvTv1yoDQMIRoZy6uQvD4mmqzgTOqHLkHtcsG
+	 V5T6I5EqiHQsEQ+AKq6VMJ86mC46jiks5xD0hbjR23kdY75lC0DEvSWM18p/pqond
+	 NtNA/TWdNBduEaT2/6aNPTKnb2QMWWVeUY8U1H+FfWJOj/rOoiVwtb8qxhmWu3nI0
+	 PdGDPHQPruv9vDHXwrxtmZ39/nrXIdLu4FL3g186i+X96xe/UjKSetUkcLZgdPEvK
+	 xSUTPRthFeJDnrbZt/u6eWhvvBvxBJH9LZb4rOwPiDiHQkVZFlajyOyZahMYujtyS
+	 DiVNhA4m2gWUpQSVgg==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from archbook.fritz.box ([217.245.131.25]) by
+ mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1N8GAQ-1sbqiY0Ppo-014Dgt; Wed, 15 May 2024 20:17:38 +0200
+From: Valentin Obst <kernel@valentinobst.de>
+To: mhiramat@kernel.org
+Cc: a.hindborg@samsung.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	hpa@zytor.com,
+	john.m.baublitz@gmail.com,
+	kernel@valentinobst.de,
+	linux-kernel@vger.kernel.org,
+	mingo@kernel.org,
+	mingo@redhat.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	sergio.collado@gmail.com,
+	stable@vger.kernel.org,
+	tglx@linutronix.de,
+	x86@kernel.org
+Subject: Re: [PATCH v3] x86/tools: fix line number reported for malformed lines
+Date: Wed, 15 May 2024 20:17:16 +0200
+Message-ID: <20240515181716.3313-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240403091748.ee180a7a1d4bf92e0c46fb8a@kernel.org>
+References: <20240403091748.ee180a7a1d4bf92e0c46fb8a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240515-btfix-msgid-v2-3-bb06b9ecb6d1@svenpeter.dev>
-References: <20240515-btfix-msgid-v2-0-bb06b9ecb6d1@svenpeter.dev>
-In-Reply-To: <20240515-btfix-msgid-v2-0-bb06b9ecb6d1@svenpeter.dev>
-To: Hector Martin <marcan@marcan.st>, 
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
- Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Sven Peter <sven@svenpeter.dev>, stable@vger.kernel.org, 
- Neal Gompa <neal@gompa.dev>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1715796911; l=1005;
- i=sven@svenpeter.dev; s=20240512; h=from:subject:message-id;
- bh=S7xKEZCg+8p3UVaw49Z8FtTJmOjvz1UbYciOj2+ura0=;
- b=Ozstng7yF96uysi12zXuTli9Av64oDUsLQGnA5QC7XKF+rkN/vFAN8YmgOFkBAkzcgLMw+oG8
- v1/n4dTc7moC9rw82K6I7tGXE6vhBtG/SHGdxQJmXK/iIGr0pvp3Djb
-X-Developer-Key: i=sven@svenpeter.dev; a=ed25519;
- pk=jIiCK29HFM4fFOT2YTiA6N+4N7W+xZYQDGiO0E37bNU=
-X-Endpoint-Received: by B4 Relay for sven@svenpeter.dev/20240512 with
- auth_id=159
-X-Original-From: Sven Peter <sven@svenpeter.dev>
-Reply-To: sven@svenpeter.dev
+X-Provags-ID: V03:K1:ttCaaco3vEonRvTh930mfcrIADBoReXBM9hGliQ2QuSLUQbtV3q
+ N/CLOKE9dhGTC+Q1Szo0uzGyPjKzVaxlZAlnD325gGzJn7zCarZ0iikssTW/yJU5Gj22Kyw
+ ovshi4BPFTmICFJx+sJi5gAFXFwkJuE82yzzSer5N+DQmrJwLxsH6UPj+9AGh7GOJd8m4GK
+ QH2DnBjfJvcKx4RlgJNOQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:CUGfVys0O1E=;LeLgmglAvO6+O7ly0QdmWWvmXNB
+ IUE18NMJearSvvzLQ5B/cEXEthivYfvTsI6x1ycGX1c84XTosfMb5Gg4aaKmTFoOeoEMgXRai
+ OalavXFvI41+rX8PaKecKrUM0b//tZy/Wwf6rU1/MJ060c+Ulid0Tztl9Us5QOaJ/Eo+pSkPA
+ qKWEjDaa0RZBy13MzzH0ncJAZJfMx0UGlgF7tseGMinH2+pew/fdDoNiOPI0O2wwf1O+ixdRK
+ L07PEypW8DTPLoMJ3ziRAv861oM2NSrr8ZdmJDC381ZneYCsT1hOB8MidkJiG9kLynDnIGcri
+ OqjKK0NnFgLB4ecll2Dlx9nt2QiWLbD/wlUcgZO4cypNvr+aGfVcwbi/zz7BvB//aMnhqyrlo
+ OTvaDKqNTChT8VJmAfWFnd34lXebm9mZvNHCUp2JiuZyS4zWmUT6eNojwdwv/+pIwhOyqd43C
+ VyBMGTRW6BN8ps3aXk2UA9dtaVcipTF9WVBNcJIkFCFN6zF1ZjpT/3S2kI0uU+oqE8o+y0Wmw
+ vKiiTB2w2c4iHN3pquAt4heraFi6AhGewEpkwbzx0NnEReCjlC82i87gK8Fo6O2q2VmbuOvoW
+ 7uqu6T6n6rBG2ZcrbhV7//oXhwIZUz2oD5jFPYKSGJFVcAAJ76K58ni51XmP2zzA8tEoCykN2
+ /G1zy5SzoMs4YgERH3vA5mPllsBy0yS4h0sdJHmlu8ru7rapGYl0JP0vLMtk/Ka3GZUQMFGci
+ aub9+5PoF//aMllPmgXnqBb3uS8tu6qxQghdyIwT6EBJCM3etPDrSw=
 
-From: Hector Martin <marcan@marcan.st>
+> > Commit 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
+> > included symbol lines in the post-processed objdump output consumed by
+> > the insn decoder test. This broke the `instuction lines == total lines`
+> > property that `insn_decoder_test.c` relied upon to print the offending
+> > line's number in error messages. This has the consequence that the line
+> > number reported on a test failure is unreated to, and much smaller than,
+> > the line that actually caused the problem.
+> >
+> > Add a new variable that counts the combined (insn+symbol) line count and
+> > report this in the error message.
+>
+> This looks good to me. Thanks!
+>
+> Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-We are releasing a single msgid, so the order argument to
-bitmap_release_region must be zero.
+Thanks!
 
-Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Reviewed-by: Sven Peter <sven@svenpeter.dev>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Sven Peter <sven@svenpeter.dev>
----
- drivers/bluetooth/hci_bcm4377.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+So what is the status on this one? Is there someone here who can take it
+through their tree s.t. it might make it into 6.10-rc1 or 6.11-rc1?
 
-diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
-index 5b818a0e33d6..92d734f02e00 100644
---- a/drivers/bluetooth/hci_bcm4377.c
-+++ b/drivers/bluetooth/hci_bcm4377.c
-@@ -717,7 +717,7 @@ static void bcm4377_handle_ack(struct bcm4377_data *bcm4377,
- 		ring->events[msgid] = NULL;
- 	}
- 
--	bitmap_release_region(ring->msgids, msgid, ring->n_entries);
-+	bitmap_release_region(ring->msgids, msgid, 0);
- 
- unlock:
- 	spin_unlock_irqrestore(&ring->lock, flags);
+	- Best Valentin
 
--- 
-2.34.1
-
-
+>
+> >
+> > Fixes: 35039eb6b199 ("x86: Show symbol name if insn decoder test failed")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+> > Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> > Reported-by: John Baublitz <john.m.baublitz@gmail.com>
+> > Debugged-by: John Baublitz <john.m.baublitz@gmail.com>
+> > Signed-off-by: Valentin Obst <kernel@valentinobst.de>
+>
+> --
+> Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
