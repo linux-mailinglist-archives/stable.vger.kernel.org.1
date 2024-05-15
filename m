@@ -1,117 +1,90 @@
-Return-Path: <stable+bounces-45154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D8B8C63B0
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 11:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D4E8C63D3
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 11:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D771A1C221BA
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:31:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5A651C22FAD
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A3358ADD;
-	Wed, 15 May 2024 09:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NNef67uq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6015D8F0;
+	Wed, 15 May 2024 09:37:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B921558AC3;
-	Wed, 15 May 2024 09:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668902744C;
+	Wed, 15 May 2024 09:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715765462; cv=none; b=sOPLazdOCBr3x76W+ooC/bOp+1kQeOVjdASq4PhCYnEBKtqHap00ZRj1005hTkNTzOJfK3/HF3a4RVOCEO84BXDOR1QW42DbgGbkBOXyzX1PcmR+xaczESGWQFwVK1pP2cLsps4GCHWi6sn8L6IKNS88MEexq66LjmsHr6help4=
+	t=1715765825; cv=none; b=kdK33Jpco9ziaviqSwsvmk5vd/aTxSp04YoNCRQPxi/oc62ozkXquwLz7uf4FOyyvq8RdkPumgIJYl0eCzIc7CDN/oFISwlrIB7lPQ6WwUL4vc7UaKWScesOpXk6vlSpJid4D3pfNn/ney9XT/MxsNOnkO2GU2i3IJ7Kf9lGI1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715765462; c=relaxed/simple;
-	bh=x0WiLqGSoZ3LIOEaEn9qtWswtKOTZTI/9ZmHSmH3WiA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AMDPeN/X7JC12Wlte9wxybVxx5WgFZKhYmWEX4D1c6QgNP3q1XBR10Xg1yHscXu5uoRGyvO3ndpChapw4cLnucUIck3FSF66wyY64+HjKfKJtOum53SkOaPRqoV8fGXRg5qAoaNAuV/VrgUn+aotuB56CR0IQpI+X+tBCT9r80s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NNef67uq; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715765461; x=1747301461;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=x0WiLqGSoZ3LIOEaEn9qtWswtKOTZTI/9ZmHSmH3WiA=;
-  b=NNef67uqwRctz1IzaiLdjyzjK3pa72EbfGsoLR+JBTgSs6owD28UW4/v
-   15t3blYy0696ApdaqgnkL5V0Q8CRkIj0zN6OIwmltbeubGBdfT3vTsEiU
-   w7bAqippbw+UAhvkXO2fxNjareen0OwoAXUkXdKMtaQkRBpYoqXAoYxlC
-   UQdE0L8MzwG/APy295olbapZ71CUQuNj25sAEM/fHmhHLx+VPmqffUemH
-   Amz3qhAVHPZBZmrt12VUwWWBISL/8GGqd6V9ahyvctAd+5S1sgyTzcQBY
-   EiuCcVqPutgn2xkbj140HsEBBYe1ByJmKV2WYnYACoDAL3Hk4lj6KsrX5
-   Q==;
-X-CSE-ConnectionGUID: w5G1RsEHQmGKy7BVRFANdQ==
-X-CSE-MsgGUID: ihwy01NbS4CvNsdl5bBJVw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="22386718"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
-   d="scan'208";a="22386718"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 02:31:00 -0700
-X-CSE-ConnectionGUID: rmsMv8BmTx6TfL6MlANqLg==
-X-CSE-MsgGUID: BeMOF8duQBW8pYVgEsaE4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; 
-   d="scan'208";a="31078044"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa006.fm.intel.com with ESMTP; 15 May 2024 02:30:58 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 95B0F327; Wed, 15 May 2024 12:30:56 +0300 (EEST)
-Date: Wed, 15 May 2024 12:30:56 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCHv4 3/4] x86/tdx: Dynamically disable SEPT violations from
- causing #VEs
-Message-ID: <hlif565xmuj4oqdpap3boizepwg5ch3dssb67zzvy7i7smzp3n@x6hzdyc2qk4y>
-References: <20240512122154.2655269-1-kirill.shutemov@linux.intel.com>
- <20240512122154.2655269-4-kirill.shutemov@linux.intel.com>
- <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
+	s=arc-20240116; t=1715765825; c=relaxed/simple;
+	bh=zNQ2NzOouLlV78Yiedaiqaes0qVGsXsk8gwCDZjyNSM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WWZT9P3kuWD/er1KLIoqh2msVVIlcGHgnTDc/JSLGm8sbJd1rgZq6zEK4c3cXq8MrIRIeFz9lgOEOl2eCEbM0KXpw1QbVhh90YEsK0KxknlqtW+l8hoPakSM1XFHRwUEoKADlR1/1hwlHxBOPjeHecsfkCsJYrko5BKdByOt0zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD0F51042;
+	Wed, 15 May 2024 02:37:22 -0700 (PDT)
+Received: from e116581.blr.arm.com (e116581.arm.com [10.162.42.15])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0AE0F3F7A6;
+	Wed, 15 May 2024 02:36:54 -0700 (PDT)
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Anshuman.Khandual@arm.com,
+	sjayaram@akamai.com,
+	Dev Jain <dev.jain@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] selftests/mm: compaction_test: Fix incorrect write of zero to nr_hugepages
+Date: Wed, 15 May 2024 15:06:32 +0530
+Message-Id: <20240515093633.54814-2-dev.jain@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240515093633.54814-1-dev.jain@arm.com>
+References: <20240515093633.54814-1-dev.jain@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4019eff6-18a9-49b2-9567-096cdb498fb0@suse.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 14, 2024 at 05:56:21PM +0300, Nikolay Borisov wrote:
-> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> > index 1ff571cb9177..ba37f4306f4e 100644
-> > --- a/arch/x86/coco/tdx/tdx.c
-> > +++ b/arch/x86/coco/tdx/tdx.c
-> > @@ -77,6 +77,20 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
-> >   		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
-> >   }
-> > +/* Read TD-scoped metadata */
-> > +static inline u64 tdg_vm_rd(u64 field, u64 *value)
-> > +{
-> > +	struct tdx_module_args args = {
-> > +		.rdx = field,
-> > +	};
-> > +	u64 ret;
-> > +
-> > +	ret = __tdcall_ret(TDG_VM_RD, &args);
-> > +	*value = args.r8;
-> > +
-> > +	return ret;
-> > +}
-> 
-> nit: Perhaps this function can be put in the first patch and the description
-> there be made more generic, something along the lines of "introduce
-> functions for tdg_rd/tdg_wr" ?
+nr_hugepages is not set to zero because the file offset has not been reset
+after read(). Fix that using lseek().
 
-A static function without an user will generate a build warning. I don't
-think it is good idea.
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Cc: stable@vger.kernel.org 
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+Merge dependency: https://lore.kernel.org/all/20240513082842.4117782-1-dev.jain@arm.com/
+Andrew, does it sound reasonable to have the fixes tag in the above
+patch too, along with this series?
 
+ tools/testing/selftests/mm/compaction_test.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+index 533999b6c284..c5be395f8363 100644
+--- a/tools/testing/selftests/mm/compaction_test.c
++++ b/tools/testing/selftests/mm/compaction_test.c
+@@ -107,6 +107,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 		goto close_fd;
+ 	}
+ 
++	lseek(fd, 0, SEEK_SET);
++
+ 	/* Start with the initial condition of 0 huge pages*/
+ 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
+ 		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.30.2
+
 
