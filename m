@@ -1,144 +1,104 @@
-Return-Path: <stable+bounces-45175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624148C6893
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:26:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1855C8C68A9
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72FD41C2175D
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:26:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4965D1C21D90
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363D713F45B;
-	Wed, 15 May 2024 14:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627B413F45D;
+	Wed, 15 May 2024 14:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="qUW0E3IH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JbiCqNfi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O424Jpx4"
 X-Original-To: stable@vger.kernel.org
-Received: from wfout4-smtp.messagingengine.com (wfout4-smtp.messagingengine.com [64.147.123.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5530313F450;
-	Wed, 15 May 2024 14:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C7E13F450;
+	Wed, 15 May 2024 14:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715783160; cv=none; b=TmB9IxIC0GQCLVWB8lMUprWmFQUM1x7r4pBmmjSCPY+hz8S2PcbMqG3Z/u9dO2f0GJUC1opOJGe/x4Nqg3j57/Fg3WJgtm8dA6Alt7c8C5X+PCb+wCfbHogX/4v0TEv55UxhEzPdTWfY/La+MQ0Q29qR6QkZ1BmPUWF6rypFUJ4=
+	t=1715783328; cv=none; b=cvewRM59S++Ti2/fh6joG2zlCYT1CMDbB4tV/7xwIsCgueim7zLBF9wWam6Rln9ENHxidVXsaVmkKRy4fw76XF0q+66Q+9PiQzPc+IPaI6r1p9bp5Eyet3bYytgj8UcwySLPHQHJUNt/zTg2gs+DWSQK/KFSSNkgp6MqJuJG8cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715783160; c=relaxed/simple;
-	bh=v0x+DpEEQ/CULK66tGCdFakqHf6CBwbzeJc6dtqG+8g=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=QnMUR+EaR3BH+RtPT2xS0Gaxb5BS54Rn3LnH+HjO5OPhEwDyDHum0RUPGDD7TBzFri1XYI2qoZKYs5gdKjamOi2vlSFsyojTw2qUjx0mhK8ipMYKBz6Dx3rcLZluMkOWJRNn+EketzZdrlGqVh8MTnb7W5BEFQhzuawx+L43xns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=qUW0E3IH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JbiCqNfi; arc=none smtp.client-ip=64.147.123.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.west.internal (Postfix) with ESMTP id BD2AF1C0011F;
-	Wed, 15 May 2024 10:25:56 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 15 May 2024 10:25:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1715783156;
-	 x=1715869556; bh=VYHmieqUmmpUUBGaoj5sdegT+mtMw56IFZEbX0OZWos=; b=
-	qUW0E3IHNV0pMPfRqgt3mn0hnA8AU1orLPsgNR0eNOGBxcuNTg3SL/qTJRCCP6kP
-	Xui8DnRR4yqxxl3JMLgAvGSiWr0XrOolLOQyp86RNtqeEb9fw5wu0y+nDO1OsTVi
-	2T7DqYFoxMQa2FCkCyJ/1yRHcRCPGTR8eSeFUb9jVU2aIcFl0zaaUbNfINpOcC4Q
-	59M8mVWNVfZLFsb/QXGUevN391ZYCw/b+voZqxwrn0tZlfI/uLHdtn6sLk52fZgS
-	nECiNlthidEQb4PpjMg0QEp50ubzSOXXLTUbfkvto3CAY82cWNuQVCQLjHi/qDcL
-	ncIiJVj/+E/IJRUKXRQilw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715783156; x=
-	1715869556; bh=VYHmieqUmmpUUBGaoj5sdegT+mtMw56IFZEbX0OZWos=; b=J
-	biCqNfiVIax+RcCdhhNfmby2OPYHVF7LWKY7r6n8K/T+KRi7Uh52540l96Ad+XiO
-	ERixAx5aV4eQ7LI0sLf7BDSyvDo86KCXkaCw3DH5wzobEo5eq50pDoLYBFnhOWat
-	e9S0D5m3ZiBtSDvE2D0+YSL/3uoiJa5jQpIREvianAscw3E1P/d8m6vskqoeYuWM
-	2pkcqursle3l1LSA1uP3e9X5miby8ZHOG/6aN3NKP7TOUO/wWkmT12itJsHYiAC3
-	iDtzW2VBOE93gSQIm8EZatH2OoZiGriTMfiGB4iT7PkaZlqq9ca+rD62Au3n+ClU
-	e3EYrozltGACD81fU3zDQ==
-X-ME-Sender: <xms:88VEZoTdUKmTrcPG2c6voHcpRiC-Od89384GN0_rJhqWAq8ka4QnuA>
-    <xme:88VEZlwFGbQHWrqAmxTghND0O3mPmrBXy9jDUbdA1F18l8XwLZ2b3KcEGUnYPODUy
-    dSKRIWVMQGga_J_Dl4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegkedgjeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:88VEZl1IqNmRq9DlG7cKJVIOlix6oQfEknqQ_DlZAfuNbc1WYoKevA>
-    <xmx:88VEZsDJSX4kacEqo1M0zNJLMWLI9XtdAensOXh6WAW3n3pPu8ssVw>
-    <xmx:88VEZhgr8cnFpel30Fg1F9ZA9AnYr_rlZmwe9OI2YxqSqIXPUXKQOg>
-    <xmx:88VEZoqFbbPnfc9LPvtAMDO6BWdU08Lv0xMMide6EtGiYKki_jfVfw>
-    <xmx:9MVEZsoO-OoTCATxnm_eq2u9bS3zpPI2lvIwcqnhyQvjkC-iYO468hVA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 23041B6008D; Wed, 15 May 2024 10:25:55 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-455-g0aad06e44-fm-20240509.001-g0aad06e4
+	s=arc-20240116; t=1715783328; c=relaxed/simple;
+	bh=wVxlxaCe3WCmkKrErEY5yiOlxIbpPpGgac7nwZVst50=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=B0YkHbeGNALn5YqgWB6zGiqRsJUkZOZfo2F9LJ+qFz6+3dSOtceXtDIRnW9/72Y+yXAvY8rXoqhKh0rXvePWuS6DwBAQ+cIN7vaG3dVlswVkd6gbRZocIRRJ34hP2bVQ4BXhEnagT23TM1w86qxfPBLqLoKrDj0rYqXp6XSH/HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O424Jpx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37208C116B1;
+	Wed, 15 May 2024 14:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715783327;
+	bh=wVxlxaCe3WCmkKrErEY5yiOlxIbpPpGgac7nwZVst50=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=O424Jpx4eTABQG70Ji1zLKnoiOWWaNqrxpvSW/DvCqHfLa05vyyCBVX5GH3VZUKk6
+	 O3QL9RMabQQX0nzu2PbVvkF+PLP9hoM0duU9K4dUWrZm9ce7bm2TAMrnCBnvmoAnkM
+	 Uf/plchz0n3Wza7jtk7w2/VylD6+Nt9xyHSY2fL5Fl0NWF3O0mszwYHIjuupEKUfZ9
+	 DNivSAZrPw007Mz/InHOP2cmS6pYndphnHeEq50htflhtBE6lAwF8rLbKMD6nsQKP6
+	 NZWDX3u8RAruvHx15PLE4miI7Rf2bEmLl6x1X6DbgXKwNCw+YkYC7oPqXUk4MZuCx1
+	 Zns8dy2xQAL4g==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-Id: <ebf493ee-1e8b-426d-bcf4-d8e17d10844a@app.fastmail.com>
-In-Reply-To: <3937d6b1-119b-195e-8b9b-314a0bfbeaeb@loongson.cn>
-References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
- <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
- <3937d6b1-119b-195e-8b9b-314a0bfbeaeb@loongson.cn>
-Date: Wed, 15 May 2024 14:25:28 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Bibo Mao" <maobibo@loongson.cn>, "Huacai Chen" <chenhuacai@loongson.cn>,
- "Huacai Chen" <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev, Linux-Arch <linux-arch@vger.kernel.org>,
- "Xuefeng Li" <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>,
- "WANG Xuerui" <kernel@xen0n.name>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
- linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
- stable@vger.kernel.org
-Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-Content-Type: text/plain;charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 May 2024 17:28:43 +0300
+Message-Id: <D1AAFDCSFYH1.11RF8JUS2NEZS@kernel.org>
+Cc: <mona.vij@intel.com>, <kailun.qin@intel.com>, <stable@vger.kernel.org>,
+ =?utf-8?q?Marcelina_Ko=C5=9Bcielnicka?= <mwk@invisiblethingslab.com>
+Subject: Re: [PATCH v2 1/2] x86/sgx: Resolve EAUG race where losing thread
+ returns SIGBUS
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Dave Hansen" <dave.hansen@intel.com>, "Dmitrii Kuvaiskii"
+ <dmitrii.kuvaiskii@intel.com>, <dave.hansen@linux.intel.com>,
+ <kai.huang@intel.com>, <haitao.huang@linux.intel.com>,
+ <reinette.chatre@intel.com>, <linux-sgx@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240515131240.1304824-1-dmitrii.kuvaiskii@intel.com>
+ <20240515131240.1304824-2-dmitrii.kuvaiskii@intel.com>
+ <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
+ <58e9d453-7909-4157-86fd-a2d5561e728e@intel.com>
+In-Reply-To: <58e9d453-7909-4157-86fd-a2d5561e728e@intel.com>
 
-On Wed, May 15, 2024, at 09:30, maobibo wrote:
-> On 2024/5/11 =E4=B8=8B=E5=8D=888:17, Arnd Bergmann wrote:
->> On Sat, May 11, 2024, at 12:01, Huacai Chen wrote:
->>=20
->> Importantly, we can't just add fstatat64() on riscv32 because
->> there is no time64 version for it other than statx(), and I don't
->> want the architectures to diverge more than necessary.
-> yes, I agree. Normally there is newfstatat() on 64-bit architectures b=
-ut=20
-> fstatat64() on 32-bit ones.
+On Wed May 15, 2024 at 5:15 PM EEST, Dave Hansen wrote:
+> On 5/15/24 06:54, Jarkko Sakkinen wrote:
+> > I'd cut out 90% of the description out and just make the argument of
+> > the wrong error code, and done. The sequence is great for showing
+> > how this could happen. The prose makes my head hurt tbh.
 >
-> I do not understand why fstatat64() can be added for riscv32 still.
-> 32bit timestamp seems works well for the present, it is valid until
-> (0x1UL << 32) / 365 / 24 / 3600 + 1970 =3D=3D 2106 year. Year 2106 sho=
-uld
-> be enough for 32bit system.
+> The changelog is too long, but not fatally so.  I'd much rather have a
+> super verbose description than something super sparse.
+>
+> Would something like this make more sense to folks?
+>
+> 	Imagine an mmap()'d file. Two threads touch the same address at
+> 	the same time and fault. Both allocate a physical page and race
+> 	to install a PTE for that page. Only one will win the race. The
+> 	loser frees its page, but still continues handling the fault as
+> 	a success and returns VM_FAULT_NOPAGE from the fault handler.
+>
+> 	The same race can happen with SGX. But there's a bug: the loser
+> 	in the SGX steers into a failure path. The loser EREMOVE's the
+> 	winner's EPC page, then returns SIGBUS, likely killing the app.
+>
+> 	Fix the SGX loser's behavior. Change the return code to
+> 	VM_FAULT_NOPAGE to avoid SIGBUS and call sgx_free_epc_page()
+> 	which avoids EREMOVE'ing the winner's page and only frees the
+> 	page that the loser allocated.
 
-There is a very small number of interfaces for which we ended up
-not using a 64-bit time_t replacement, but those are only for
-relative times, not epoch based offsets. The main problems
-here are:
+Yes!
 
-- time_t is defined to be a signed value in posix, and we need
-  to handle file timestamps before 1970 in stat(), so changing
-  this one to be unsigned is not an option.
+I did read the whole thing. My comment was only related to the
+chain of maintainers who also have to deal with this patch
+eventually.
 
-- A lot of products have already shipped that will have to
-  be supported past 2038 on existing 32-bit hardware. We
-  cannot regress on architectures that have already been
-  fixed to support this.=20
-
-- file timestamps can also be set into the future, so applications
-  relying on this are broken before 2038.
-
-      Arnd
+BR, Jarkko
 
