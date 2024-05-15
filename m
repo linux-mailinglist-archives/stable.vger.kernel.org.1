@@ -1,188 +1,133 @@
-Return-Path: <stable+bounces-45161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079058C658D
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 13:24:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4568C660F
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 393651C21F37
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 11:24:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0913F281598
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 12:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6764B6F085;
-	Wed, 15 May 2024 11:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994CC6F533;
+	Wed, 15 May 2024 12:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3AyuV5Ne"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="HXt9wlOf"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2077.outbound.protection.outlook.com [40.107.236.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235556A005;
-	Wed, 15 May 2024 11:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715772251; cv=fail; b=SrNhRhAWiUFvlejBVjwnDoQJ2E/RfBACLMaR14Py+2S1hnHdhOdftHkd8QfbHrJhiQbIV+Fh5iL19ROSBT/sodowg/3cpLDQk9xJuqp8W7dAQLkayjjb0I9w0WoWNwFeq1hvWPM7SqW7METwxzp+4VSgSuJyvpkWpoI7YAxyFmE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715772251; c=relaxed/simple;
-	bh=DMO3F6aCNQtwyjXnpWpKK3y5VEszzdlulV5ahxO3lxw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E0UyAPLL3XDZVreGZGVjulSH20Q0UiR4WcAcw4II3vxhiYLPqD7GmOR6XPWLdYlaJ62s1QLs6jyc7GwiHiuWP+BhpMc2ljRIiB9T8/x5cKzsKYkA4poIfHB07B4DGf4J5tqkM3H2ESZ2oUAPi1IpibWcYSwByTLXpMhTYXf3CEw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3AyuV5Ne; arc=fail smtp.client-ip=40.107.236.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TKWVVKa6p+TRYGU3C1Zxpa2/bWi/LzgFL2JglhwTfu99NVRVPrJ2rrXENiL6yKPh88mZm0i4D3tgA+Pt9TMtUbZ03zyZJdqeLkp4g9s3h/VTpD+q2+whrkwFZ6T7roFbf2N8+suOoBqv97d/ki+RrsmTorFZgbF3Sc0EKu2meIQ0VCf6yPxxz1cf5n23h4OxcpfLEqB2FEPwR/rmNGnghf8E3bYGRyTBsmgZb2a3Un4RykKOS1fDhuxHiziq0Duid3w5yyZDFAr0buMM008L18C/kbOzNbUTnt/VFRSiwoPHn2wvmhX7aP+ttG3KJ1HMBZd5BjXazf/DreCU9cReaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IxS50D6WIV2nsBUdq+i3kGRHpg5tcqiBPMMnzq6/a1s=;
- b=nnSoNb6gKTF8asqnX3lR+8rbC5IMdV4/dlzl6CD9fBiPyk0lBu94x1g9tMZAISKzB7cwDLh6qGDvQxNxAA/4yGt+iDV6039CKnlpM1sg9b8XhKGBztGj8aJgikBpI1pop28p7bzJk3zNMKpsp3VFnXaiAIA3AW3a8vbprVxRq+LAc8GXb3B6eNFgPIk27pw4KkQDS9F9EL3Pgt+CiMdLwxlhBxOogqwSyqk08nYTb6iusT9fLAQ8aOokWK3YLHjoj2iwx4vdGN0HDQVDqast+vLilpffM1dpyyX2JsNo46LRQC3S2s0gPoPj9+6h+QDSqVgfiV+KfQ/8QxiVjEmpBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linuxfoundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IxS50D6WIV2nsBUdq+i3kGRHpg5tcqiBPMMnzq6/a1s=;
- b=3AyuV5NeJqlnyKFw6jGLKTYWtGxY8rzrCiniUNziwZXfMcUcvcL4ktw5KaZ4m9JqflrtszPtp26IBWzbeXykQ49uPexRohGugTETgHkHdehQt1gytFjhZL4Q8NM2pnH9UGhZlvaSNjag6GABuEDvKC9i4Q3vyzNLHtnMVKoH16o=
-Received: from SJ0PR03CA0010.namprd03.prod.outlook.com (2603:10b6:a03:33a::15)
- by IA0PR12MB8976.namprd12.prod.outlook.com (2603:10b6:208:485::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.27; Wed, 15 May
- 2024 11:24:06 +0000
-Received: from SJ1PEPF00001CE1.namprd05.prod.outlook.com
- (2603:10b6:a03:33a:cafe::74) by SJ0PR03CA0010.outlook.office365.com
- (2603:10b6:a03:33a::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.26 via Frontend
- Transport; Wed, 15 May 2024 11:24:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF00001CE1.mail.protection.outlook.com (10.167.242.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7587.21 via Frontend Transport; Wed, 15 May 2024 11:24:05 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 15 May
- 2024 06:24:04 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 15 May
- 2024 06:24:04 -0500
-Received: from xsjarunbala50.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Wed, 15 May 2024 06:24:04 -0500
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-To: <michal.simek@amd.com>, <gregkh@linuxfoundation.org>
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3] drivers: soc: xilinx: check return status of get_api_version()
-Date: Wed, 15 May 2024 04:23:45 -0700
-Message-ID: <20240515112345.24673-1-jay.buddhabhatti@amd.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDF45A788
+	for <stable@vger.kernel.org>; Wed, 15 May 2024 12:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715774595; cv=none; b=Br0WByjE+YcZAULrDEDBka6KRZgSidM+uis88gT9NkBydpF9bO1y1O1Ier0IAdECnXiUrAHQa71xvMSw8Lz1qicQQU3YIpusEZu8noVzRimGgwb22mW7ozZldxE+UTgmidAylJ62y6JCig1beJOTK4g1GPPHMX3y/IGln5ZjCCY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715774595; c=relaxed/simple;
+	bh=cZULlQnzOZ2Pej2Sv06sBDw4hjTWF4t0tcOP2mtKUnY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XvmKlpwmD7Xu0BMSnQovBTB0BNL2lNatu3uo2nas4P67yDi8E5v94JuofMas68IC/TEDAnoV8YhJG1zGHQ+1Zqh/3zxR2iweQ7qEi0WMMYaDWDANs3EBVS4YbloE802kTtwwklDq0xWMtyok3s8vCCjc52MHGGoEqfiHujiBDHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=HXt9wlOf; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1ee954e0aa6so54229995ad.3
+        for <stable@vger.kernel.org>; Wed, 15 May 2024 05:03:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1715774593; x=1716379393; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4DcB2okqnAgkynFg9jcCuDayVN3zRAZHBcQStj5iFBs=;
+        b=HXt9wlOfvs2sIRCSWTFaAjblrRrOvJuDvO2b0jj921ZVX171pJfznv4gg1GbM2ChQ3
+         1Eli4ccfayEr4h5692lDV4dw3qJlzO6Ge+ZEFiFKmGMwSSz2XcSO2sNuESJtg9M+ygYn
+         LMSfq/+xtllH4zUx+YX+P1+tgRCCbWQSYve8vCYIId7vooCR5DcGplIsevzo1OubgYez
+         36Xv5TscXEy+rXBBYwuyOvTN5nWkzZxSrqZ6Gi6B2a7ik4YIqg9pe9Mwp38BmjaNl2MY
+         U8iamyKj3xZs8Pvh+VcuWZVNtjdnu2cxDCfuf2fHNwjvuEADflbf3Zxxj8wcaeMT85Yq
+         4qOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715774593; x=1716379393;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4DcB2okqnAgkynFg9jcCuDayVN3zRAZHBcQStj5iFBs=;
+        b=WhqL6tDW6aMwhrhcMtvQQ8ECwlhxYMKEkMw/2YcW1Em3LJmIda8UxXZu9Zc67MFgYu
+         fvfCox06fP0kK6ieoAz8GZiVH2u8b/NNEWw2Jw0cX/sKQnsfyvknIKJqe5WhClXXFxoV
+         fwBekp/N8r6wpzifFi0Xv4nU9QgK4fSuzqYytVGsa77K5+Fei2ZWMU/Y51coqZRWwZ0+
+         WN4p1IwR0Ke6d8HnzIg0hPsGDh7d9rzh3WZ9ERUSYH6PuC0V0d8kHKorq9omzG/B9xcQ
+         JJrTIJiB4rOed4KLSO9JCVnxjru3FHNa7LnSWHBvsQlW/Zf6tdDfW5TLXbg5zQ7jT+mI
+         jHGg==
+X-Gm-Message-State: AOJu0Yx/ku49Z6o3kXY2w/pGuhjehOKP06VRgvx4Hl8EtZl2k1Wmme+o
+	TGVLP7CwrGRS8lDXG+9ZmEDv0T6hDjM1sTFMr3CWMCdSpkHDHb9Gipo28oIrUE26uCkQhuN/dCt
+	fO9hIbvjBSMDYyQmlgS8A0WnhTAdIpsjo1ye3JQ==
+X-Google-Smtp-Source: AGHT+IFy3gmVgZkNpyZFzjDzx0VAz+u8/kXHpLODxZzc9kj++XjUCO678HSP+AFx1+KEX/6z3WmoITL5ipamNpy1768=
+X-Received: by 2002:a17:902:7d95:b0:1ee:b2ff:c93a with SMTP id
+ d9443c01a7336-1ef43f3e4admr144321025ad.40.1715774593154; Wed, 15 May 2024
+ 05:03:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: jay.buddhabhatti@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE1:EE_|IA0PR12MB8976:EE_
-X-MS-Office365-Filtering-Correlation-Id: b43c727c-c2ea-4e6c-5093-08dc74d187d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|82310400017|1800799015|376005|36860700004;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jR6o3yCRnoZm/noWQ7Ji3GxZNYY9gFRhCeS+1mKvMaoLjHDQ+pqPoZu/JZsr?=
- =?us-ascii?Q?qF5V5MvxUi8YEEixkH6xDzCmEsOmZkRS/hZE08duwV+lZIMutUCXbwbrhE1x?=
- =?us-ascii?Q?ZpgpvVY5Lics8e+C3nruyVv7vl3AJi9+4B+pEUdsFO3I+Txu55mcc2u4pQKK?=
- =?us-ascii?Q?TMRlil0wzPbjnWD6slstYdVGvw5/2T1IHX21zJdu+ub2RBSqz1k3JgHfmevU?=
- =?us-ascii?Q?/MXVHpAQ1LGd0mW8RmGkmdB5BlZV58W+KGvRnZmxONxMJjU34dz0XXDAtvKw?=
- =?us-ascii?Q?9Gcc6AJoqsyLvxzTyWjL1ZpFXJ6nl7vk9x4uo0hJYyamvh8iV7GjAYd4qWfv?=
- =?us-ascii?Q?YbozqzmNubruPWkUX0TsDZ88ZS0Y3BAuiC/+4R0rmXwqOyDRSel/SxUG83qK?=
- =?us-ascii?Q?tjPGiNn+Z2SWt+KXLDUDahw06g0YFfvYuKLYV428zK2ckcE02AM3bLLFB9YY?=
- =?us-ascii?Q?nFNbp11Zd6Sn7kBhcG7QpdwFHkXOug8UK1BR3RW2dMarXYcjvWQatTHxeq50?=
- =?us-ascii?Q?ayc4FldughaTmErNWJ6iSQjcTnmGMmNcv7nSq6MLxxUXtllF24yzLU6fWQhg?=
- =?us-ascii?Q?de4vEpFhVii56XIBtuzNpUhcyBS89YcDlX1zAKBcoWJlcA/ae9ZtIFvVCweQ?=
- =?us-ascii?Q?xphFlPlCBHsMy393SaK0j6mH5kqk3f5+jInY7OODoWiL2MxUAzZdMralFFC/?=
- =?us-ascii?Q?kRzZFvwL0I/xO6iFPAkJsGDEND6ckU9cpq5CgvQj7wUr5ol41XGcgSoaVAED?=
- =?us-ascii?Q?3swj+NXl0TF3QstMZeH50FlU7Cql+XFLrRITbHMvx7L+6VcItUqPEuyNj1lO?=
- =?us-ascii?Q?TeTOSpUvNBymJouBP7FExg/stUhGSZ5yFLRQoohKQZ52idQ8+mNZHPG2mvXh?=
- =?us-ascii?Q?AJG2iu7sii9wN5KoR0roEvrwLqtlZQ/v6zRI0wLVQa8Z4reU0BhDbQc2qKgI?=
- =?us-ascii?Q?5zA3HA44E2KPSfS+lUVZGYAYlzUuhZs86+cTlJ5pCjczA/GQ7+Sv9kyKYLDJ?=
- =?us-ascii?Q?Ccgeeu81JYxVPGE4SyqrKszVosYwjvQkfHLTjeRrVHbtJArrkuWZZw0xyNTN?=
- =?us-ascii?Q?/Z89ZqaCdrl0joCssVxlO+Rf9JY4AaNaUjQuRbQ/RVTogQqoGrn0VyU9voY0?=
- =?us-ascii?Q?0qThhpePOqAy3PgAh4l2HnNJkZR6qX2D/ifjnffUYnLXWutvrZ4efFbBvI4e?=
- =?us-ascii?Q?Mbio2XwQMv3VfmDElJ3AoBjgdUgLFyxNQN+zVo7C5Qq5vf91c+JQpGEnUH3r?=
- =?us-ascii?Q?ZLTHs1cvsHRCkqKGsKbpDHpQhb8XEbY/jgGUOh87fNMR25nO0XGCdyYBQ3QY?=
- =?us-ascii?Q?MRk1JeeTRTasNVTQQGAQWYhS1EhMiSiL9bNZwWCS+ij09A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400017)(1800799015)(376005)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2024 11:24:05.4383
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b43c727c-c2ea-4e6c-5093-08dc74d187d7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8976
+References: <20240515082510.431870507@linuxfoundation.org>
+In-Reply-To: <20240515082510.431870507@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Wed, 15 May 2024 21:03:01 +0900
+Message-ID: <CAKL4bV5YkLqnZJsLB6t-n0ZeSSZAHYsaE0c6=-=ohK8PBG8AvQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/309] 6.6.31-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently return status is not getting checked for get_api_version
-and because of that for x86 arch we are getting below smatch error.
+Hi Greg
 
-    CC      drivers/soc/xilinx/zynqmp_power.o
-drivers/soc/xilinx/zynqmp_power.c: In function 'zynqmp_pm_probe':
-drivers/soc/xilinx/zynqmp_power.c:295:12: warning: 'pm_api_version' is
-used uninitialized [-Wuninitialized]
-    295 |         if (pm_api_version < ZYNQMP_PM_VERSION)
-        |            ^
-    CHECK   drivers/soc/xilinx/zynqmp_power.c
-drivers/soc/xilinx/zynqmp_power.c:295 zynqmp_pm_probe() error:
-uninitialized symbol 'pm_api_version'.
+On Wed, May 15, 2024 at 5:27=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.31 release.
+> There are 309 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 17 May 2024 08:23:27 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.31-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-So, check return status of pm_get_api_version and return error in case
-of failure to avoid checking uninitialized pm_api_version variable.
+6.6.31-rc2 tested.
 
-Fixes: b9b3a8be28b3 ("firmware: xilinx: Remove eemi ops for get_api_version")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Cc: stable@vger.kernel.org
----
-V1: https://lore.kernel.org/lkml/20240424063118.23200-1-jay.buddhabhatti@amd.com/
-V2: https://lore.kernel.org/lkml/20240509045616.22338-1-jay.buddhabhatti@amd.com/
-V2->V3: Added stable tree email in cc
-V1->V2: Removed AMD copyright
----
- drivers/soc/xilinx/zynqmp_power.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-diff --git a/drivers/soc/xilinx/zynqmp_power.c b/drivers/soc/xilinx/zynqmp_power.c
-index 965b1143936a..b82c01373f53 100644
---- a/drivers/soc/xilinx/zynqmp_power.c
-+++ b/drivers/soc/xilinx/zynqmp_power.c
-@@ -190,7 +190,9 @@ static int zynqmp_pm_probe(struct platform_device *pdev)
- 	u32 pm_api_version;
- 	struct mbox_client *client;
- 
--	zynqmp_pm_get_api_version(&pm_api_version);
-+	ret = zynqmp_pm_get_api_version(&pm_api_version);
-+	if (ret)
-+		return ret;
- 
- 	/* Check PM API version number */
- 	if (pm_api_version < ZYNQMP_PM_VERSION)
--- 
-2.17.1
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
+[    0.000000] Linux version 6.6.31-rc2rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.1.1 20240507, GNU ld (GNU
+Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Wed May 15 20:35:08 JST 2024
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
