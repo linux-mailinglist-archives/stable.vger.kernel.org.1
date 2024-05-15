@@ -1,118 +1,160 @@
-Return-Path: <stable+bounces-45113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797598C5DFB
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 01:00:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18628C5E3C
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 02:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 341C51F21F07
-	for <lists+stable@lfdr.de>; Tue, 14 May 2024 23:00:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6691C20F03
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 00:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0311182C8A;
-	Tue, 14 May 2024 23:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADA619B;
+	Wed, 15 May 2024 00:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="tkXrVZLt"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lrEgG9ir"
 X-Original-To: stable@vger.kernel.org
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2901B181D1B;
-	Tue, 14 May 2024 23:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41F718E
+	for <stable@vger.kernel.org>; Wed, 15 May 2024 00:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715727616; cv=none; b=VMuMOJMJiPJEUnKAMT5LiswLhm8/KEWf/6hzNf0qrjjkyIT2VaQWv3CenKMwYzuEZQnQpyktBlkf0Io+AfzbQntrWAi3KK2Nf9r+qCjsmgMYdUsv+dy5V3nWi/eVM2/PSH9xsv+F4YDPeop+TPHuZYb0118dz8s1SmNlIUV1qXI=
+	t=1715731584; cv=none; b=lTjPZmahz5xZUsFoOIBXuUA1mU31NdZVTQNIlN+etBzLVNqQuYk2Ofg+r7Vt+x6tYMmnw1lhx+jFgHODAp1QRaxFt5IKKS2j9ajkkmIImUAtDbbVSsJ/Q2PUK2tWb9MW49wzq42czKW6+1OgE0PL6jYygzhZbfuDrhJ82RGicxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715727616; c=relaxed/simple;
-	bh=0MJ2bhVM/lmkgpCeYoXAEkoKaZL3wiXzUAz0VtakQIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H+fZKdiUWJ6T5rEW8pixDQoyZ5rxVhxYpcHOaPIW8/1oy7/eEPbtvoVONG/Kiyrjgt15HfdSBA6bdc2r/TPlutfOLEmCJWTHLuA0d9+h7swhYNwXIHWQ7rHR5JnkjlUlzLinb90bQnyjYBTdyFuJ1UNQrWOK5dQx2+6oOu9XLO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=tkXrVZLt; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1715727602; bh=0MJ2bhVM/lmkgpCeYoXAEkoKaZL3wiXzUAz0VtakQIo=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=tkXrVZLt71wowUEscx731wUeG0+JcplaZ92K+ND1f+dO/usaeAmP2igEnxIRMAY7J
-	 XOunD1uQVVq14Cbz4o+MCoZVvbUh4VOPF3yYr/xb2unKxaPqEFym0vey/hoN2azrX8
-	 OdfuukiPL9L2Y3QShoqWdlIDbRgYNLbhyndmCXWw=
-Date: Wed, 15 May 2024 01:00:02 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Amit Sunil Dhamne <amitsd@google.com>
-Cc: linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org, badhri@google.com, rdbabiera@google.com, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: tcpm: fix use-after-free case in
- tcpm_register_source_caps
-Message-ID: <b5dv5qmijibyhqsgcv5mcdr2m2sig5hlu2vqsual5rzszl7472@gznxkm3nztbx>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Amit Sunil Dhamne <amitsd@google.com>, linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org, badhri@google.com, rdbabiera@google.com, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <20240514220134.2143181-1-amitsd@google.com>
+	s=arc-20240116; t=1715731584; c=relaxed/simple;
+	bh=V6CTpVgYXrlq/4ejWbGGBKIUn4vs+g7U6kisWyra9sc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=clkD5qrtEESfcPRw/5oQxL1WWAVCVaPMP4XNZzN3vgOoZVx481juCi8Gsd32HRMf6uP6396+njggrSnr/n/96Q1FRtjWki5rUA0gpDQKvsVc662Wm0lMXnOPLZcg96WfwdfMxt+kdNKV3EaL/hlnkJ7qV3rEAraaeQruhihD3P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lrEgG9ir; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44F066HF031304;
+	Wed, 15 May 2024 00:06:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=aVx3hmhcBtdUIGMwUj1UALl4sV/Fm3fZMc01j6MWcEo=;
+ b=lrEgG9irqWNdcuzIZzFtMAqktdenBHvG6eOioK1Ls3BBAhsj23wSWd0mLseGxDMw0HFi
+ MdQhDiGVE5hPW7pjSApFRlUKLn8TjX5gE6qvCTqo2R6EwW+cgv6+OmaPo6eDR5vJd3lI
+ OD3eJ3g6KUOHLkV0dSZvFYQiRTsJguHlgQBjC3yM8ele2rqtJ5fXAutG9KcvsEWRHgNc
+ o8k2SI5zv+26QaEm+Ym15LNymUgK4qFkXCYozs8yW78tuBgC902wyPJH9u9TH9xcj67B
+ 42eFxfHD5S85WZCNPGPg1fnU0ujHaPgL83Q0jfLKRYCE0X60oCUABlb5mfOw7EMyaLuz 0Q== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y4h7c83xj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 May 2024 00:06:05 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44EMHSrQ006200;
+	Wed, 15 May 2024 00:01:40 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2mgmg9sm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 May 2024 00:01:39 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44F01ag755837144
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 May 2024 00:01:38 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0EE7F2005A;
+	Wed, 15 May 2024 00:01:36 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9703E20043;
+	Wed, 15 May 2024 00:01:35 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 May 2024 00:01:35 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.150.21.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 57DAA60426;
+	Wed, 15 May 2024 10:01:26 +1000 (AEST)
+Message-ID: <9d093600382fb412381827365a5a342d632d1269.camel@linux.ibm.com>
+Subject: Re: [PATCH 6.1 088/236] powerpc/pseries: Implement signed update
+ for PLPKS objects
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Nayna Jain <nayna@linux.ibm.com>,
+        Russell
+ Currey <ruscur@russell.cc>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Michael
+ Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Date: Wed, 15 May 2024 10:01:06 +1000
+In-Reply-To: <20240514101023.710898376@linuxfoundation.org>
+References: <20240514101020.320785513@linuxfoundation.org>
+	 <20240514101023.710898376@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Df7gaqDmJjGybBExg4QYx_ACJzAG4_pm
+X-Proofpoint-ORIG-GUID: Df7gaqDmJjGybBExg4QYx_ACJzAG4_pm
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240514220134.2143181-1-amitsd@google.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-14_14,2024-05-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=581
+ impostorscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1011 mlxscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405140174
 
-On Tue, May 14, 2024 at 03:01:31PM GMT, Amit Sunil Dhamne wrote:
-> There could be a potential use-after-free case in
-> tcpm_register_source_caps(). This could happen when:
->  * new (say invalid) source caps are advertised
->  * the existing source caps are unregistered
->  * tcpm_register_source_caps() returns with an error as
->    usb_power_delivery_register_capabilities() fails
-> 
-> This causes port->partner_source_caps to hold on to the now freed source
-> caps.
-> 
-> Reset port->partner_source_caps value to NULL after unregistering
-> existing source caps.
-> 
-> Fixes: 230ecdf71a64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
->
+On Tue, 2024-05-14 at 12:17 +0200, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.=C2=A0 If anyone has any objections, please let me
+> know.
+>=20
+> ------------------
+>=20
+> From: Nayna Jain <nayna@linux.ibm.com>
+>=20
+> [ Upstream commit 899d9b8fee66da820eadc60b2a70090eb83db761 ]
+>=20
+> The Platform Keystore provides a signed update interface which can be
+> used
+> to create, replace or append to certain variables in the PKS in a
+> secure
+> fashion, with the hypervisor requiring that the update be signed
+> using the
+> Platform Key.
+>=20
+> Implement an interface to the H_PKS_SIGNED_UPDATE hcall in the plpks
+> driver to allow signed updates to PKS objects.
+>=20
+> (The plpks driver doesn't need to do any cryptography or otherwise
+> handle
+> the actual signed variable contents - that will be handled by
+> userspace
+> tooling.)
+>=20
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> [ajd: split patch, add timeout handling and misc cleanups]
+> Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Link:
+> https://lore.kernel.org/r/20230210080401.345462-18-ajd@linux.ibm.com
+> Stable-dep-of: 784354349d2c ("powerpc/pseries: make max polling
+> consistent for longer H_CALLs")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Reviewed-by: Ondrej Jirman <megi@xff.cz>
+This is a new feature and I don't think it should be backported.
+784354349d2c can be backported by dropping the
+plpks_signed_update_var() hunk.
 
-Thanks for the fix.
-
-Kind regards,
-	o.
-
->
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 8a1af08f71b6..be4127ef84e9 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -3014,8 +3014,10 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
->  	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
->  	caps.role = TYPEC_SOURCE;
->  
-> -	if (cap)
-> +	if (cap) {
->  		usb_power_delivery_unregister_capabilities(cap);
-> +		port->partner_source_caps = NULL;
-> +	}
->  
->  	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
->  	if (IS_ERR(cap))
-> 
-> base-commit: 51474ab44abf907023a8a875e799b07de461e466
-> -- 
-> 2.45.0.rc1.225.g2a3ae87e7f-goog
-> 
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
