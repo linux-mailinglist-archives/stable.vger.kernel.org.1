@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-45145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21FC18C62D4
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 10:27:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615958C62CC
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 10:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A172849C3
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 08:27:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E77D1C2176E
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 08:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33994E1A8;
-	Wed, 15 May 2024 08:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B664CB5B;
+	Wed, 15 May 2024 08:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uppO28YY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naEyE5en"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E6A4D9E2;
-	Wed, 15 May 2024 08:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61BB482E9;
+	Wed, 15 May 2024 08:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715761628; cv=none; b=eSZ+u5BCF8MsR8tIRXU+0ry0w1IrxdHnPUFSd2QONt6891YegP4kuuL8IdXFR0HqnG9tpdHpFcmmyC0EUKhTQHFpUrnKXopEk7MILT25NP4D84O2NeYbHsicbeFrWLTz2iimjff2yuMw2jOyWupo9xRfkrOe+rDaYmMGqGZKXxc=
+	t=1715761616; cv=none; b=rtuqQUbtW5VOMYCf7oFv6QYpS1wJT6McOJJdukku80JF6zqv2oEhbmdUOVuaMd4aQ33Whz6DgsewtK86yEBPo6TPymnAILWVaNI88rrHYCUiVLJjX898LgQWt15ZA8znJ9qEsaP1FREbW6Lmqe39j3cPeVPtzFE5o+aGGm8hgN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715761628; c=relaxed/simple;
-	bh=cR4iNBhkVcRgYgdv6EjiwCPUFDwhXtLzw5rPFFOEBrE=;
+	s=arc-20240116; t=1715761616; c=relaxed/simple;
+	bh=TXFbClsquKLng4Fb6Qwq7I+2xqyCg/NdGwIDyZu3PAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iujjRhH+WVA5mfrU+ZB3RR5BOlFHipK6OzyQL2Bm4m8aa2N7Cg3LtlWpEAuSTpUU4qR3ocP3iZldKQE+2zq+tgPk5BnsNScHZYI2q3GmuFiWFM3csPpLqpjEhp2+hW3TNxpQ+PnJ8UckwDqLzX9a+22yaFdzs+BOWwj9PZ3TzMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uppO28YY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81098C116B1;
-	Wed, 15 May 2024 08:27:07 +0000 (UTC)
+	 MIME-Version; b=SwLkBfwooXzmHmYbmPbaO5JT4H3VlVa/s5EJkaPwUVxoRU3KaWEG5qLQCHYh8cREDE9Aqegem0gEKlFh1/qbcaeFRW3pwbTqEEDdr+ShMxPAhSTLzmu7Kk7tpRuvrii5JPCHRglF3cWX8dYcwyYuJ5Puw9bDaCXeSHTsKNsVtDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naEyE5en; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4292C116B1;
+	Wed, 15 May 2024 08:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715761627;
-	bh=cR4iNBhkVcRgYgdv6EjiwCPUFDwhXtLzw5rPFFOEBrE=;
+	s=korg; t=1715761616;
+	bh=TXFbClsquKLng4Fb6Qwq7I+2xqyCg/NdGwIDyZu3PAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uppO28YYzNXTCd7/QmZDVel8MYvkicP0T39sWyHTcxoAYNgkbjh43OFBwhY9+hK7O
-	 G2tq95cD+jU67gMe4XMi9RcGpcmWqdJN4KLBnL8gExChvYf69pSoR6y0gmDG3hj4b6
-	 pQbkBvTFq9KQ4nHpyCljJlaRPiIo34LlEZE1IGi8=
+	b=naEyE5enmmqUjOBLgz2E/AyKde6IkPKIXgTnmHD13NiqU+4xDW7/aCXMx+xS0jbuP
+	 z6Em3AVqCerZvSZ1JLOkv/++SYtbRptcb46yJpuE0vEifujyHA74USN1nI01Rf039t
+	 +mYSdJZFF5IcyxGZfv4OVxrJplF/3T75G3l7DrCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Arjan van de Ven <arjan@linux.intel.com>
-Subject: [PATCH 6.9 1/5] VFIO: Add the SPR_DSA and SPR_IAX devices to the denylist
-Date: Wed, 15 May 2024 10:26:38 +0200
-Message-ID: <20240515082345.484193693@linuxfoundation.org>
+Subject: [PATCH 6.9 2/5] dmaengine: idxd: add a new security check to deal with a hardware erratum
+Date: Wed, 15 May 2024 10:26:39 +0200
+Message-ID: <20240515082345.671446389@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240515082345.213796290@linuxfoundation.org>
 References: <20240515082345.213796290@linuxfoundation.org>
@@ -66,59 +66,96 @@ Content-Transfer-Encoding: 8bit
 
 From: Arjan van de Ven <arjan@linux.intel.com>
 
-commit 95feb3160eef0caa6018e175a5560b816aee8e79 upstream.
+commit e11452eb071b2a8e6ba52892b2e270bbdaa6640d upstream.
 
-Due to an erratum with the SPR_DSA and SPR_IAX devices, it is not secure to assign
-these devices to virtual machines. Add the PCI IDs of these devices to the VFIO
-denylist to ensure that this is handled appropriately by the VFIO subsystem.
+On Sapphire Rapids and related platforms, the DSA and IAA devices have an
+erratum that causes direct access (for example, by using the ENQCMD or
+MOVDIR64 instructions) from untrusted applications to be a security problem.
 
-The SPR_DSA and SPR_IAX devices are on-SOC devices for the Sapphire Rapids
-(and related) family of products that perform data movement and compression.
+To solve this, add a flag to the PCI device enumeration and device structures
+to indicate the presence/absence of this security exposure. In the mmap()
+method of the device, this flag is then used to enforce that the user
+has the CAP_SYS_RAWIO capability.
+
+In a future patch, a write() based method will be added that allows untrusted
+applications submit work to the accelerator, where the kernel can do
+sanity checking on the user input to ensure secure operation of the accelerator.
 
 Signed-off-by: Arjan van de Ven <arjan@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/registers.h |    3 ---
- drivers/vfio/pci/vfio_pci.c  |    2 ++
- include/linux/pci_ids.h      |    2 ++
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/dma/idxd/cdev.c |   12 ++++++++++++
+ drivers/dma/idxd/idxd.h |    3 +++
+ drivers/dma/idxd/init.c |    4 ++++
+ 3 files changed, 19 insertions(+)
 
---- a/drivers/dma/idxd/registers.h
-+++ b/drivers/dma/idxd/registers.h
-@@ -6,9 +6,6 @@
- #include <uapi/linux/idxd.h>
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -400,6 +400,18 @@ static int idxd_cdev_mmap(struct file *f
+ 	int rc;
  
- /* PCI Config */
--#define PCI_DEVICE_ID_INTEL_DSA_SPR0	0x0b25
--#define PCI_DEVICE_ID_INTEL_IAX_SPR0	0x0cfe
--
- #define DEVICE_VERSION_1		0x100
- #define DEVICE_VERSION_2		0x200
+ 	dev_dbg(&pdev->dev, "%s called\n", __func__);
++
++	/*
++	 * Due to an erratum in some of the devices supported by the driver,
++	 * direct user submission to the device can be unsafe.
++	 * (See the INTEL-SA-01084 security advisory)
++	 *
++	 * For the devices that exhibit this behavior, require that the user
++	 * has CAP_SYS_RAWIO capabilities.
++	 */
++	if (!idxd->user_submission_safe && !capable(CAP_SYS_RAWIO))
++		return -EPERM;
++
+ 	rc = check_vma(wq, vma, __func__);
+ 	if (rc < 0)
+ 		return rc;
+--- a/drivers/dma/idxd/idxd.h
++++ b/drivers/dma/idxd/idxd.h
+@@ -288,6 +288,7 @@ struct idxd_driver_data {
+ 	int evl_cr_off;
+ 	int cr_status_off;
+ 	int cr_result_off;
++	bool user_submission_safe;
+ 	load_device_defaults_fn_t load_device_defaults;
+ };
  
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -71,6 +71,8 @@ static bool vfio_pci_dev_in_denylist(str
- 		case PCI_DEVICE_ID_INTEL_QAT_C62X_VF:
- 		case PCI_DEVICE_ID_INTEL_QAT_DH895XCC:
- 		case PCI_DEVICE_ID_INTEL_QAT_DH895XCC_VF:
-+		case PCI_DEVICE_ID_INTEL_DSA_SPR0:
-+		case PCI_DEVICE_ID_INTEL_IAX_SPR0:
- 			return true;
- 		default:
- 			return false;
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2687,8 +2687,10 @@
- #define PCI_DEVICE_ID_INTEL_I960	0x0960
- #define PCI_DEVICE_ID_INTEL_I960RM	0x0962
- #define PCI_DEVICE_ID_INTEL_HDA_HSW_0	0x0a0c
-+#define PCI_DEVICE_ID_INTEL_DSA_SPR0	0x0b25
- #define PCI_DEVICE_ID_INTEL_HDA_HSW_2	0x0c0c
- #define PCI_DEVICE_ID_INTEL_CENTERTON_ILB	0x0c60
-+#define PCI_DEVICE_ID_INTEL_IAX_SPR0	0x0cfe
- #define PCI_DEVICE_ID_INTEL_HDA_HSW_3	0x0d0c
- #define PCI_DEVICE_ID_INTEL_HDA_BYT	0x0f04
- #define PCI_DEVICE_ID_INTEL_SST_BYT	0x0f28
+@@ -374,6 +375,8 @@ struct idxd_device {
+ 
+ 	struct dentry *dbgfs_dir;
+ 	struct dentry *dbgfs_evl_file;
++
++	bool user_submission_safe;
+ };
+ 
+ static inline unsigned int evl_ent_size(struct idxd_device *idxd)
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -47,6 +47,7 @@ static struct idxd_driver_data idxd_driv
+ 		.align = 32,
+ 		.dev_type = &dsa_device_type,
+ 		.evl_cr_off = offsetof(struct dsa_evl_entry, cr),
++		.user_submission_safe = false, /* See INTEL-SA-01084 security advisory */
+ 		.cr_status_off = offsetof(struct dsa_completion_record, status),
+ 		.cr_result_off = offsetof(struct dsa_completion_record, result),
+ 	},
+@@ -57,6 +58,7 @@ static struct idxd_driver_data idxd_driv
+ 		.align = 64,
+ 		.dev_type = &iax_device_type,
+ 		.evl_cr_off = offsetof(struct iax_evl_entry, cr),
++		.user_submission_safe = false, /* See INTEL-SA-01084 security advisory */
+ 		.cr_status_off = offsetof(struct iax_completion_record, status),
+ 		.cr_result_off = offsetof(struct iax_completion_record, error_code),
+ 		.load_device_defaults = idxd_load_iaa_device_defaults,
+@@ -774,6 +776,8 @@ static int idxd_pci_probe(struct pci_dev
+ 	dev_info(&pdev->dev, "Intel(R) Accelerator Device (v%x)\n",
+ 		 idxd->hw.version);
+ 
++	idxd->user_submission_safe = data->user_submission_safe;
++
+ 	return 0;
+ 
+  err_dev_register:
 
 
 
