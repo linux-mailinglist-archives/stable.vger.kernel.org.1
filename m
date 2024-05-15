@@ -1,101 +1,113 @@
-Return-Path: <stable+bounces-45232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43E28C6D0A
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 22:00:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961688C6D71
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 22:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B34B282630
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 20:00:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1BF283CA6
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 20:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B728C15B0E1;
-	Wed, 15 May 2024 20:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122D115B0E7;
+	Wed, 15 May 2024 20:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fv69uZCb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d/U46up4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DBC15ADA0;
-	Wed, 15 May 2024 20:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC07B3BBEA;
+	Wed, 15 May 2024 20:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715803230; cv=none; b=kLf4eqJFMzX1Lj1c6mHXdquMYoRpJvdnslKQ3mpOY+jyHLQt4hJaDrdd2/epdVE6/2XM3X5Q8XXnEb0wea4RBFDifR4nQR6lW9v5hjBb7UpSO4wa9BaOIS9qMu68uYqlKPUJZrl7JlwWQA5kXuocoL/TJhIF981cAUMAom/erac=
+	t=1715806549; cv=none; b=JSAbrrI45Kl+AN+L5x6FuaQUamuDvLA2oGDbNhTkK7eIWIutkvgJk7Wm6HEVS3nN+7ox+lKPAosmYqKaDWeFuokvpcobfLpbygurRQWBmXMEQ/hXbVpkeDsiW3kqZaDwLz0Pu1oKSmiN3EvAv/J3n1mQjVrG6c3bM6orS9v4r/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715803230; c=relaxed/simple;
-	bh=dSHISZAMSeuQo9ROse5BQNkX8tjfYGhjBhfmiIfadq8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=seE1t/fHIPqrw7Ff/CUhZlZw/5qbjrPUFdMuq82uT7ywdGJHdyVek2Xwpbi1rrpOVIMjhy7z74yKBXH4GnctVu3luP0Q9qvAoZjwNQlceuFXOWEljT/yBkfFsePI5t6/pdx3rJ2mR6oGMntzc5EsRNvGab/mUVyuMR1hZYD4Gqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fv69uZCb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D2CE4C2BD11;
-	Wed, 15 May 2024 20:00:29 +0000 (UTC)
+	s=arc-20240116; t=1715806549; c=relaxed/simple;
+	bh=AAeXwwHWMP0eHtZAb20qWMKLq5n94EYBqJos5Y7FBEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=tno2Y4jqDCznrRJPnLcGvto5bsDUzxIYv/o5BFMY/VbXXQAhyy9znqUTxW9kWbAv9M9BZkI1KTfDpK9xmsChinn658ahm5o2doe7mR0bMF6N0GSBm6sjYnkWbwR/wdTk1Tm+bQoXXOKVrwS3qVSH3+yQhXhZrV/Zz/yUTXKtj5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d/U46up4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A379C116B1;
+	Wed, 15 May 2024 20:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715803229;
-	bh=dSHISZAMSeuQo9ROse5BQNkX8tjfYGhjBhfmiIfadq8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Fv69uZCbNqLkwjYg3VMHoDAAnmxbvJMu3IPWFXSJJjTiBxIy46wQ5RqRR+HaGhQFS
-	 iSmkE3/WTDL2CXhYdv4OHHuO0Kx1D26Vo0slKBFjFo9OO44LmstOY+VXWZV5oa9RlE
-	 ebQ+84ZTEg/w+UiCuuuYCD1ITDYW453cg78I4csrmc2my1zo+ehcO2pZGZ+HHSBnb8
-	 o+RSf0rWnTAVURyKsMqGq+TmaV3M1LFMSDios16Y+g414g5FD9wFfRTSvLszSyIqF3
-	 p4NgXILWIGqSOV5HD4GFRtd6HQqkE/N1IPAokhRO1xn87uZ1+0VKNye7NiOFNoiPy0
-	 Ri/2t+FPVs7bg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id BF866CF21E3;
-	Wed, 15 May 2024 20:00:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1715806549;
+	bh=AAeXwwHWMP0eHtZAb20qWMKLq5n94EYBqJos5Y7FBEA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=d/U46up4/1F7xAwdTRSJTYMeQ0ft+y0RZ8yEnDsVnOWx+XUXmNLq2ZaTcS0PwJi21
+	 Is92bD6XPKbod2xd710vZHuXroJBdnqCE0oG33ui/DUsPLCbd4c4Cp9PWNZl/nUcrj
+	 xm0WCopuH4JLUcRkkbgoymeB+Nh2zNH8zj0zXBRIyFtVutNG5YpWo/a4L+m1OHjdnp
+	 0t7bGloxDN3jh2OUCoQOjD+rKKaVlksAjgQH2/psvco2L3HLNQSqgCS8Wq87rUXFyI
+	 gN03XVNbAohU4I6fVzPVuWD1LJnR8QiZAITxgfqIXKJB1mPC6+y4j6dGIYyej7/+re
+	 GSDrse3kZS56g==
+Date: Wed, 15 May 2024 15:55:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Cc: rick.wertenbroek@heig-vd.ch, dlemoal@kernel.org, stable@vger.kernel.org,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>, linux-pci@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
+Message-ID: <20240515205547.GA2137633@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 0/3] Bluetooth: hci_bcm4377 fixes
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <171580322978.27792.17065372036162836418.git-patchwork-notify@kernel.org>
-Date: Wed, 15 May 2024 20:00:29 +0000
-References: <20240515-btfix-msgid-v2-0-bb06b9ecb6d1@svenpeter.dev>
-In-Reply-To: <20240515-btfix-msgid-v2-0-bb06b9ecb6d1@svenpeter.dev>
-To: Sven Peter via B4 Relay <devnull+sven.svenpeter.dev@kernel.org>
-Cc: marcan@marcan.st, alyssa@rosenzweig.io, marcel@holtmann.org,
- luiz.dentz@gmail.com, asahi@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-bluetooth@vger.kernel.org,
- linux-kernel@vger.kernel.org, sven@svenpeter.dev, stable@vger.kernel.org,
- neal@gompa.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240403144508.489835-1-rick.wertenbroek@gmail.com>
 
-Hello:
-
-This series was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
-
-On Wed, 15 May 2024 18:15:01 +0000 you wrote:
-> Hi,
+On Wed, Apr 03, 2024 at 04:45:08PM +0200, Rick Wertenbroek wrote:
+> Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
+> Vendor ID are u16 variables and are written to a u32 register of the
+> controller. The Subsystem Vendor ID was always 0 because the u16 value
+> was masked incorrectly with GENMASK(31,16) resulting in all lower 16
+> bits being set to 0 prior to the shift.
 > 
-> There are just two minor fixes from Hector that we've been carrying downstream
-> for a while now. One increases the timeout while waiting for the firmware to
-> boot which is optional for the controller already supported upstream but
-> required for a newer 4388 board for which we'll also submit support soon.
-> It also fixes the units for the timeouts which is why I've already included it
-> here. The other one fixes a call to bitmap_release_region where we only wanted
-> to release a single bit but are actually releasing much more.
+> Remove both masks as they are unnecessary and set the register correctly
+> i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
+> Subsystem Vendor ID.
 > 
-> [...]
+> This is documented in the RK3399 TRM section 17.6.7.1.17
+> 
+> Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+> Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+> Cc: stable@vger.kernel.org
 
-Here is the summary with links:
-  - [v2,1/3] Bluetooth: hci_bcm4377: Use correct unit for timeouts
-    https://git.kernel.org/bluetooth/bluetooth-next/c/9ee7beea5921
-  - [v2,2/3] Bluetooth: hci_bcm4377: Increase boot timeout
-    https://git.kernel.org/bluetooth/bluetooth-next/c/710a05bcfd4a
-  - [v2,3/3] Bluetooth: hci_bcm4377: Fix msgid release
-    https://git.kernel.org/bluetooth/bluetooth-next/c/bb0e96ccc834
+Applied to pci/controller/rockchip by Krzysztof, but his outgoing mail
+queue got stuck.  I added Damien's Reviewed-by.  Trying to squeeze
+into v6.9.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> ---
+>  drivers/pci/controller/pcie-rockchip-ep.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+> index c9046e97a1d2..37d4bcb8bd5b 100644
+> --- a/drivers/pci/controller/pcie-rockchip-ep.c
+> +++ b/drivers/pci/controller/pcie-rockchip-ep.c
+> @@ -98,10 +98,9 @@ static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn, u8 vfn,
+>  
+>  	/* All functions share the same vendor ID with function 0 */
+>  	if (fn == 0) {
+> -		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
+> -			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
+> -
+> -		rockchip_pcie_write(rockchip, vid_regs,
+> +		rockchip_pcie_write(rockchip,
+> +				    hdr->vendorid |
+> +				    hdr->subsys_vendor_id << 16,
+>  				    PCIE_CORE_CONFIG_VENDOR);
+>  	}
+>  
+> -- 
+> 2.25.1
+> 
 
