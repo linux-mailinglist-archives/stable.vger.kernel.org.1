@@ -1,229 +1,107 @@
-Return-Path: <stable+bounces-45155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22348C63CF
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 11:37:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2598B8C63F6
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 11:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E56881C22CAD
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:37:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08D11F22375
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 09:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B7C5A788;
-	Wed, 15 May 2024 09:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B90F4F606;
+	Wed, 15 May 2024 09:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aRAaCy/G"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801DE58AA5;
-	Wed, 15 May 2024 09:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703105914C
+	for <stable@vger.kernel.org>; Wed, 15 May 2024 09:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715765824; cv=none; b=e1UAueIrebyMfvIwC894q35veK/pZdIky0xfH24IeIRmKBHiXqw3bRS/zDSij9ZjZlzqeOT2ayPoEm6PPbQn4oihT0EVIpqBf1rWxvRQFPsQnMNBq2u+VoYdLZY30T7cStUNTyFFD4kJWmAKQL/H/emwTCk3/avqF4Ytn5hrucU=
+	t=1715766231; cv=none; b=KHUHfhp3AV6YwgkcHhfa+WN1grOI0HwlZ8fB2ECLU1RhufEk6ECxhjXoRUOZuqSnP67HuChwf1M3pxV2/5i/UI6aEOCbzLzIo+jl2McaQwuXR0sMrvE2AC9Ta2ccY/X+7hCJqXLWww0c7oEP4m2ieoXWccr1njUHSvTfdnM1vqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715765824; c=relaxed/simple;
-	bh=BLRpEBdNNvjNMlAsjo9g7f89XRvo43IQU4onZx6YhTo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q0LahQJgRVOgd3O8kIpi4P1NyJr8qL2TWLuMEKPJCcDldBKW9NlYtTwlzGsZw2Ul/uMSpswrPQK2jHMZcYcaRcu2VkjddhD/uwiC8JHkXkK1049YrsAIg7Nq+m7XYjPEFXLAqhN+WLy2+tBjzOeB9L3StAfhJDCrAST+r08z4VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2FDD1474;
-	Wed, 15 May 2024 02:37:26 -0700 (PDT)
-Received: from e116581.blr.arm.com (e116581.arm.com [10.162.42.15])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B2AD63F7A6;
-	Wed, 15 May 2024 02:36:58 -0700 (PDT)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman.Khandual@arm.com,
-	sjayaram@akamai.com,
-	Dev Jain <dev.jain@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] selftests/mm: compaction_test: Fix trivial test success and reduce probability of OOM-killer invocation
-Date: Wed, 15 May 2024 15:06:33 +0530
-Message-Id: <20240515093633.54814-3-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240515093633.54814-1-dev.jain@arm.com>
-References: <20240515093633.54814-1-dev.jain@arm.com>
+	s=arc-20240116; t=1715766231; c=relaxed/simple;
+	bh=DdJm9Bit6Wh+9eclgu5ZV0rmCnz3Qf4JVoyFuHUVyhA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UZK7rUeqOIUzpL66bPhosgV9hXDXqhT4Wdegm0ohNZjrVN4cp1AfnicpH/I4myrmGXturO5tWAP7kn9ZoFct5sjLyr3S6B3/869HhyZvoY63gV2DHAVkKKwI50VkNZ4OUOVxSOY6aNOTGM6lzgVuXHd9hm0O0L2pyUZlx0bqV9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aRAaCy/G; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a5a7d28555bso172667266b.1
+        for <stable@vger.kernel.org>; Wed, 15 May 2024 02:43:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715766228; x=1716371028; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=S+MJzfm+E8r097Rlv3PlQkUBO0qXhOpW/sqPSTf6ReY=;
+        b=aRAaCy/GKw7JdtlBaE3gD9s2dsMQH1ZBJoSl1eFRZgXvhXAQvFGfdqU7RgLuTH5YbD
+         o5fSJ67MWGj0p6vmpcjckTewMnA/02ArlG5vafSsPK5vdVfVZs6FKgp32B7g9+i5Iaxl
+         2zmutJHlgfsVzQpImShonwPR4bMRYyRE0j8bLo4k1dTmQIDquKmApAAU8kayRZYwgFpE
+         jhXi8q+l9VoMxJ6BTnU0hVFw/+HyOX2ZFEJVqNG2ox0h/yiEFzEA6vwbcyq4WF/IzqSB
+         2QH8VdfHwmgK8dyYUQ8bdjNxLpMG8a5VswLJivGd5x7dioXbnGpwT5+9d41p9aRTm920
+         NcAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715766228; x=1716371028;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S+MJzfm+E8r097Rlv3PlQkUBO0qXhOpW/sqPSTf6ReY=;
+        b=uoGEwvKowtiOGdijpjK86FUqBklt6jLj/W3ILgeWSQDrqi0SFyXk4Yzd6O3RAwoW9A
+         ZaQWASMCYeNLkquqy13i1fPP8xP7q4EnWFeQvNfkSJfaiYn4pXvOG9zZm+ksLgHh/6Nt
+         x8yqB51jUr6qfcxMVmi5uOSprvhoKUS9TfFCua6da0XmhTVzGXiXYDBcy93Z6SqJ05Kl
+         pbyHAhFOh9n7+RQdOqTqWlSij/Nc+F1xPthffa0aQpabLZSFEfN2ROtfq4+lM+3ces6H
+         WgvfPjid6o5BHDxE3i2goezD2qm0d3dauhXT5hOZKbH6eGp9Y7Xt8JInJvU3CfqeMpcf
+         d/Yg==
+X-Gm-Message-State: AOJu0YzuQ5sYYzvrpG2ySxguq8SZoQqE31bER7hy8k1GLVQRXlwkySzR
+	4aEPm8Z5DcWIeETxa8qw6+h8xhlK2Po+8r7+Azs0kUfVtgt2Uooyg4/HkKLCE6s3iC+C1XYOqWm
+	urV0uDK872ZOYm0EocJj5aVFIi6rxYA==
+X-Google-Smtp-Source: AGHT+IFU6pwPrgmcuuL5DKala0I/F+8oidFX3atLIqmp4CAYuBIHcfPZpw7rRaJ0+nUT3U/W5JOTOseAZMRD8aDv97k=
+X-Received: by 2002:a17:906:a24e:b0:a59:aae5:b0bc with SMTP id
+ a640c23a62f3a-a5a2d5d494fmr931422566b.42.1715766227485; Wed, 15 May 2024
+ 02:43:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-Reset nr_hugepages to zero before the start of the test.
-
-If a non-zero number of hugepages is already set before the start of the
-test, the following problems arise:
-
- - The probability of the test getting OOM-killed increases.
-Proof: The test wants to run on 80% of available memory to prevent
-OOM-killing (see original code comments). Let the value of mem_free at the
-start of the test, when nr_hugepages = 0, be x. In the other case, when
-nr_hugepages > 0, let the memory consumed by hugepages be y. In the former
-case, the test operates on 0.8 * x of memory. In the latter, the test
-operates on 0.8 * (x - y) of memory, with y already filled, hence, memory
-consumed is y + 0.8 * (x - y) = 0.8 * x + 0.2 * y > 0.8 * x. Q.E.D
-
- - The probability of a bogus test success increases.
-Proof: Let the memory consumed by hugepages be greater than 25% of x,
-with x and y defined as above. The definition of compaction_index is
-c_index = (x - y)/z where z is the memory consumed by hugepages after
-trying to increase them again. In check_compaction(), we set the number
-of hugepages to zero, and then increase them back; the probability that
-they will be set back to consume at least y amount of memory again is
-very high (since there is not much delay between the two attempts of
-changing nr_hugepages). Hence, z >= y > (x/4) (by the 25% assumption).
-Therefore,
-c_index = (x - y)/z <= (x - y)/y = x/y - 1 < 4 - 1 = 3
-hence, c_index can always be forced to be less than 3, thereby the test
-succeeding always. Q.E.D
-
-NOTE: This patch depends on the previous one.
-
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+References: <CAAMvbhHra1jpjgR69_+91J2zTCayf_mzodD93XKGiLRGHoy2Pw@mail.gmail.com>
+ <2024051531-praising-john-b941@gregkh>
+In-Reply-To: <2024051531-praising-john-b941@gregkh>
+From: James Dutton <james.dutton@gmail.com>
+Date: Wed, 15 May 2024 10:43:09 +0100
+Message-ID: <CAAMvbhFoTRtiPWnb1vnyAhfygXJW_39C2N9DCJyy9--gVxkOEA@mail.gmail.com>
+Subject: Re: Regression fix e100e: change usleep_range to udelay in PHY mdic
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- tools/testing/selftests/mm/compaction_test.c | 72 ++++++++++++++------
- 1 file changed, 50 insertions(+), 22 deletions(-)
+Content-Type: text/plain; charset="UTF-8"
 
-diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index c5be395f8363..2ae059989771 100644
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -82,12 +82,15 @@ int prereq(void)
- 	return -1;
- }
- 
--int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned int hugepage_size,
-+		     int initial_nr_hugepages)
- {
- 	int fd, ret = -1;
- 	int compaction_index = 0;
--	char initial_nr_hugepages[10] = {0};
- 	char nr_hugepages[10] = {0};
-+	char init_nr_hugepages[10] = {0};
-+
-+	sprintf(init_nr_hugepages, "%d", initial_nr_hugepages);
- 
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -101,23 +104,6 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto out;
- 	}
- 
--	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
--		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
--			       strerror(errno));
--		goto close_fd;
--	}
--
--	lseek(fd, 0, SEEK_SET);
--
--	/* Start with the initial condition of 0 huge pages*/
--	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
--		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
--			       strerror(errno));
--		goto close_fd;
--	}
--
--	lseek(fd, 0, SEEK_SET);
--
- 	/* Request a large number of huge pages. The Kernel will allocate
- 	   as much as it can */
- 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
-@@ -140,8 +126,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	lseek(fd, 0, SEEK_SET);
- 
--	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
--	    != strlen(initial_nr_hugepages)) {
-+	if (write(fd, init_nr_hugepages, strlen(init_nr_hugepages))
-+	    != strlen(init_nr_hugepages)) {
- 		ksft_print_msg("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
- 			       strerror(errno));
- 		goto close_fd;
-@@ -165,6 +151,42 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 	return ret;
- }
- 
-+int set_zero_hugepages(int *initial_nr_hugepages)
-+{
-+	int fd, ret = -1;
-+	char nr_hugepages[10] = {0};
-+
-+	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
-+	if (fd < 0) {
-+		ksft_print_msg("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
-+		goto out;
-+	}
-+
-+	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
-+		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
-+		goto close_fd;
-+	}
-+
-+	lseek(fd, 0, SEEK_SET);
-+
-+	/* Start with the initial condition of 0 huge pages */
-+	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
-+		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
-+		goto close_fd;
-+	}
-+
-+	*initial_nr_hugepages = atoi(nr_hugepages);
-+	ret = 0;
-+
-+ close_fd:
-+	close(fd);
-+
-+ out:
-+	return ret;
-+}
- 
- int main(int argc, char **argv)
- {
-@@ -175,6 +197,7 @@ int main(int argc, char **argv)
- 	unsigned long mem_free = 0;
- 	unsigned long hugepage_size = 0;
- 	long mem_fragmentable_MB = 0;
-+	int initial_nr_hugepages;
- 
- 	ksft_print_header();
- 
-@@ -183,6 +206,10 @@ int main(int argc, char **argv)
- 
- 	ksft_set_plan(1);
- 
-+	/* start the test without hugepages reducing mem_free */
-+	if (set_zero_hugepages(&initial_nr_hugepages))
-+		return ksft_exit_fail();
-+
- 	lim.rlim_cur = RLIM_INFINITY;
- 	lim.rlim_max = RLIM_INFINITY;
- 	if (setrlimit(RLIMIT_MEMLOCK, &lim))
-@@ -226,7 +253,8 @@ int main(int argc, char **argv)
- 		entry = entry->next;
- 	}
- 
--	if (check_compaction(mem_free, hugepage_size) == 0)
-+	if (check_compaction(mem_free, hugepage_size,
-+			     initial_nr_hugepages) == 0)
- 		return ksft_exit_pass();
- 
- 	return ksft_exit_fail();
--- 
-2.30.2
+On Wed, 15 May 2024 at 10:12, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, May 15, 2024 at 09:36:02AM +0100, James Dutton wrote:
+> > Hi,
+> >
+> > Please can you add this regression fix to kernel 6.9.1.
+> > Feel free to add a:
+> > Tested-by: James Courtier-Dutton <james.dutton@gmail.com>
+> >
+> > It has been tested by many others also, as listed in the commit, so
+> > don't feel the need to add my name if it delays adding it to kernel 6.9.1.
+> > Without this fix, the network card in my HP laptop does not work.
+> >
+> > Here is the summary with links:
+> >   - [net] e1000e: change usleep_range to udelay in PHY mdic access
+> >     https://git.kernel.org/netdev/net/c/387f295cb215
+>
+> This commit is already in the 6.9 release, how can we add it to 6.9.1?
+>
+> confused,
+>
+> greg k-h
 
+Sorry, my mistake. You are correct, it is already there.  PBKAC
 
