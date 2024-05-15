@@ -1,97 +1,138 @@
-Return-Path: <stable+bounces-45139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C11D8C6290
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 10:11:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5588C62CA
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 10:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6436B21202
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 08:11:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342B01C20DBB
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 08:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41B74AEDD;
-	Wed, 15 May 2024 08:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2449C4D9E0;
+	Wed, 15 May 2024 08:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAEHkl5F"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2CB4EB20;
-	Wed, 15 May 2024 08:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFC0482E9;
+	Wed, 15 May 2024 08:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715760699; cv=none; b=WDEMffZ8B7TPCmExacgsp/u5gJc4EiZH5BpHTVw7EPB1eCl2jcukd5F2iTyky7RSMAGkJ8uB0o3yEiVohg7Ownoc9bLjWfe49Ag1NrVFy0HBydmKNikelQ+FxXzfabf3dSkwDAlwQ2O67a19tAjarMDKsHk1RK5i6PToB/p00xY=
+	t=1715761607; cv=none; b=o14qdZX8oCS+08cLb+DrbJ7/ORHluhpsHK1mM6zXEbN3FEAZPo6KidsWscGoR/z+M/t/BtnZqwIa1CG+3HVwPQT8n6XlQiAXmJMu9FIo7+yogGcorD2PA0gAcsKri9ByxYsiFFVRvjNm9uTCbxyZMOTevEBZzED6hy8p6zL8vJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715760699; c=relaxed/simple;
-	bh=DtvKFCA4qQyRirdQGXF1yoUoa6pALUM1ZE7B/dqBoB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j4yPyl4sxwg+NRSNE4yrTZHVSqC/YDGdbd6FdPg5JD1Q1ehksQw3PUQxYoc3Rk1NBRRk/a3G0evt5JgHtAUFlLREl6MbGupo1XAwEbDR37sLMRZE6VICw7p/jyymlibC3PtmGgqSL9kbyjv2LtRWbs1gmz5YL5pB9n4oME/Qbn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1A73B1007;
-	Wed, 15 May 2024 01:12:01 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE5843F7A6;
-	Wed, 15 May 2024 01:11:34 -0700 (PDT)
-Date: Wed, 15 May 2024 10:11:29 +0200
-From: Mark Rutland <mark.rutland@arm.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Kees Cook <keescook@chromium.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>, Uros Bizjak <ubizjak@gmail.com>,
-	linux-kernel@vger.kernel.org, kernel-team@android.com,
-	stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] locking/atomic: fix trivial typo in comment
-Message-ID: <ZkRuMcao7lusrypL@J2N7QTR9R3>
-References: <20240514224625.3280818-1-cmllamas@google.com>
+	s=arc-20240116; t=1715761607; c=relaxed/simple;
+	bh=oBjUWM9Ueajikuvb1TVY6pQjtCf2aE1BFiQMqZCZ8Yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IRHykIHXnR8gD7a8P8d3gBz8boMIklCxxD1Qzn07OggVGEBujfEPtfPGJNwm4pq2ktf7J3Cvu9NHP1ureMLKmua8XX+1R8/hgdr4gmB2v0SpfTDqGdRQ1m1T0KcT9OlJHZBom6buFlJuA/gmmBlGaHPSVbT0tLSuHY9OEhTpmpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAEHkl5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB70C116B1;
+	Wed, 15 May 2024 08:26:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715761607;
+	bh=oBjUWM9Ueajikuvb1TVY6pQjtCf2aE1BFiQMqZCZ8Yk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZAEHkl5F6AvMBaIQJ+PH0UcVSPbqYSvbnhEg90Szxx9NC5AQXdZCMQOk/wwRqCeYP
+	 EMMXvlwnuEa156QxA3UEdAD4j8e840I/Z9zsTaa/I89ip+vnqHorVBMW9un+HJ0Z7H
+	 PPshhBFp0zeCGN4DfnQyT69189VVjtvr3lx0tbxM=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.9 0/5] 6.9.1-rc1 review
+Date: Wed, 15 May 2024 10:26:37 +0200
+Message-ID: <20240515082345.213796290@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240514224625.3280818-1-cmllamas@google.com>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.1-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.9.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.9.1-rc1
+X-KernelTest-Deadline: 2024-05-17T08:23+00:00
+Content-Transfer-Encoding: 8bit
 
-Hi Carlos,
+This is the start of the stable review cycle for the 6.9.1 release.
+There are 5 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-On Tue, May 14, 2024 at 10:46:03PM +0000, Carlos Llamas wrote:
-> For atomic_sub_and_test() the @i parameter is the value to subtract, not
-> add. Fix the kerneldoc comment accordingly.
-> 
-> Fixes: ad8110706f38 ("locking/atomic: scripts: generate kerneldoc comments")
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> ---
->  include/linux/atomic/atomic-instrumented.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/atomic/atomic-instrumented.h b/include/linux/atomic/atomic-instrumented.h
-> index debd487fe971..12b558c05384 100644
-> --- a/include/linux/atomic/atomic-instrumented.h
-> +++ b/include/linux/atomic/atomic-instrumented.h
-> @@ -1349,7 +1349,7 @@ atomic_try_cmpxchg_relaxed(atomic_t *v, int *old, int new)
->  
->  /**
->   * atomic_sub_and_test() - atomic subtract and test if zero with full ordering
-> - * @i: int value to add
-> + * @i: int value to subtract
->   * @v: pointer to atomic_t
+Responses should be made by Fri, 17 May 2024 08:23:27 +0000.
+Anything received after that time might be too late.
 
-Whoops; sorry about that.
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.1-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+and the diffstat can be found below.
 
-The atomic headers are generated, and this kerneldoc comment is
-generated from the template in scripts/atomic/kerneldoc/sub_and_test
+thanks,
 
-You'll need to modify that then run:
+greg k-h
 
-  sh scripts/atomic/gen-atomics.sh
+-------------
+Pseudo-Shortlog of commits:
 
-... to regenerate all the affected instances of ${atomic}_sub_and_test()
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.9.1-rc1
 
-Thanks,
-Mark.
+Ben Greear <greearb@candelatech.com>
+    wifi: mt76: mt7915: add missing chanctx ops
+
+Silvio Gissi <sifonsec@amazon.com>
+    keys: Fix overwrite of key expiration on instantiation
+
+Nikhil Rao <nikhil.rao@intel.com>
+    dmaengine: idxd: add a write() method for applications to submit work
+
+Arjan van de Ven <arjan@linux.intel.com>
+    dmaengine: idxd: add a new security check to deal with a hardware erratum
+
+Arjan van de Ven <arjan@linux.intel.com>
+    VFIO: Add the SPR_DSA and SPR_IAX devices to the denylist
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                         |  4 +-
+ drivers/dma/idxd/cdev.c                          | 77 ++++++++++++++++++++++++
+ drivers/dma/idxd/idxd.h                          |  3 +
+ drivers/dma/idxd/init.c                          |  4 ++
+ drivers/dma/idxd/registers.h                     |  3 -
+ drivers/dma/idxd/sysfs.c                         | 27 ++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c |  4 ++
+ drivers/vfio/pci/vfio_pci.c                      |  2 +
+ include/linux/pci_ids.h                          |  2 +
+ security/keys/key.c                              |  3 +-
+ 10 files changed, 121 insertions(+), 8 deletions(-)
+
+
 
