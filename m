@@ -1,157 +1,144 @@
-Return-Path: <stable+bounces-45174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6613A8C685F
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:15:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624148C6893
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 16:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F05761F218B3
-	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72FD41C2175D
+	for <lists+stable@lfdr.de>; Wed, 15 May 2024 14:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F8313F43A;
-	Wed, 15 May 2024 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363D713F45B;
+	Wed, 15 May 2024 14:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y0T4C71O"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="qUW0E3IH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JbiCqNfi"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from wfout4-smtp.messagingengine.com (wfout4-smtp.messagingengine.com [64.147.123.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EE113F423;
-	Wed, 15 May 2024 14:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5530313F450;
+	Wed, 15 May 2024 14:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715782546; cv=none; b=VZhi2SyAnzXCUL81GWjii7y27hpi+Hepu5dp2WSc6/GKWymPLlkxPGQcV2ds3K5Z0NAluHPaZR7DEJnfo7239nd/YLS5IKdixbwk74WAI26I9ro546Nm6AH2DNiL6YGkWmvUNh3WOC9rOr6NvV1kTkVVAB+Pb43e0uH3+Cr5NpI=
+	t=1715783160; cv=none; b=TmB9IxIC0GQCLVWB8lMUprWmFQUM1x7r4pBmmjSCPY+hz8S2PcbMqG3Z/u9dO2f0GJUC1opOJGe/x4Nqg3j57/Fg3WJgtm8dA6Alt7c8C5X+PCb+wCfbHogX/4v0TEv55UxhEzPdTWfY/La+MQ0Q29qR6QkZ1BmPUWF6rypFUJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715782546; c=relaxed/simple;
-	bh=pjCQbjxNSQxaDcSgxWfa+y5+4XuOJ2q0fwlVC8ss3u0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qP9K236HTP7SQTUf2VKJlfikIt8DhKMj0nbRzQiT+womqkPpLz2ab+lsh0lLEaLDSae68cqzSCPPs4DxJzmb4CiQdGg/JL6MGaW7+kvYCOB39JSP3/sr5+NR3sAkwUOvqfeQa+88lref7NKtuptAM85xXDOP9tkZaRZeiAcjE84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y0T4C71O; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715782545; x=1747318545;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pjCQbjxNSQxaDcSgxWfa+y5+4XuOJ2q0fwlVC8ss3u0=;
-  b=Y0T4C71OSVjBkfFuJtnHs6Y6GREsbCY009s4rHGLuZewhfWcRuQdH5ip
-   Ld7qUQssVH7vGm3X6NLtysSiB5D/g/8JHBUTQYGlAImgdIdZIkeh/0XYn
-   Z1NlayORXWPj90qt/Zfu57SpZoYTkW2+yppu355ZfntDAzrNLhrEtreeC
-   TW+fAt9mtOutmdvsWst6VpeYLw+Y2e/H/pYhUgr91VklAG2kdxwHZgr4Q
-   RgWn+8sN0jPFE+w+dsUd1+GqZCeEhHlwmQxPlaTWAsMs+Hd1ZPPeHQNFd
-   GIqGC4cjI0aAJyLPpLqU3F4A9u71XBkH7nbwuv/WZ+6xjzGBhLYUWA33K
-   A==;
-X-CSE-ConnectionGUID: l/y5e3NgTpenH/Cb2+r87w==
-X-CSE-MsgGUID: 3h80G/JdRPa1of1nBabpCQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="22505936"
-X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
-   d="scan'208";a="22505936"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 07:15:44 -0700
-X-CSE-ConnectionGUID: FkAUkoXLSZScKBK0qb8muA==
-X-CSE-MsgGUID: MMaZR422Sl64qrkXK2qYeQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,162,1712646000"; 
-   d="scan'208";a="61909761"
-Received: from rcheerla-mobl.amr.corp.intel.com (HELO [10.212.179.162]) ([10.212.179.162])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2024 07:15:43 -0700
-Message-ID: <58e9d453-7909-4157-86fd-a2d5561e728e@intel.com>
-Date: Wed, 15 May 2024 07:15:42 -0700
+	s=arc-20240116; t=1715783160; c=relaxed/simple;
+	bh=v0x+DpEEQ/CULK66tGCdFakqHf6CBwbzeJc6dtqG+8g=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=QnMUR+EaR3BH+RtPT2xS0Gaxb5BS54Rn3LnH+HjO5OPhEwDyDHum0RUPGDD7TBzFri1XYI2qoZKYs5gdKjamOi2vlSFsyojTw2qUjx0mhK8ipMYKBz6Dx3rcLZluMkOWJRNn+EketzZdrlGqVh8MTnb7W5BEFQhzuawx+L43xns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=qUW0E3IH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JbiCqNfi; arc=none smtp.client-ip=64.147.123.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id BD2AF1C0011F;
+	Wed, 15 May 2024 10:25:56 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Wed, 15 May 2024 10:25:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1715783156;
+	 x=1715869556; bh=VYHmieqUmmpUUBGaoj5sdegT+mtMw56IFZEbX0OZWos=; b=
+	qUW0E3IHNV0pMPfRqgt3mn0hnA8AU1orLPsgNR0eNOGBxcuNTg3SL/qTJRCCP6kP
+	Xui8DnRR4yqxxl3JMLgAvGSiWr0XrOolLOQyp86RNtqeEb9fw5wu0y+nDO1OsTVi
+	2T7DqYFoxMQa2FCkCyJ/1yRHcRCPGTR8eSeFUb9jVU2aIcFl0zaaUbNfINpOcC4Q
+	59M8mVWNVfZLFsb/QXGUevN391ZYCw/b+voZqxwrn0tZlfI/uLHdtn6sLk52fZgS
+	nECiNlthidEQb4PpjMg0QEp50ubzSOXXLTUbfkvto3CAY82cWNuQVCQLjHi/qDcL
+	ncIiJVj/+E/IJRUKXRQilw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715783156; x=
+	1715869556; bh=VYHmieqUmmpUUBGaoj5sdegT+mtMw56IFZEbX0OZWos=; b=J
+	biCqNfiVIax+RcCdhhNfmby2OPYHVF7LWKY7r6n8K/T+KRi7Uh52540l96Ad+XiO
+	ERixAx5aV4eQ7LI0sLf7BDSyvDo86KCXkaCw3DH5wzobEo5eq50pDoLYBFnhOWat
+	e9S0D5m3ZiBtSDvE2D0+YSL/3uoiJa5jQpIREvianAscw3E1P/d8m6vskqoeYuWM
+	2pkcqursle3l1LSA1uP3e9X5miby8ZHOG/6aN3NKP7TOUO/wWkmT12itJsHYiAC3
+	iDtzW2VBOE93gSQIm8EZatH2OoZiGriTMfiGB4iT7PkaZlqq9ca+rD62Au3n+ClU
+	e3EYrozltGACD81fU3zDQ==
+X-ME-Sender: <xms:88VEZoTdUKmTrcPG2c6voHcpRiC-Od89384GN0_rJhqWAq8ka4QnuA>
+    <xme:88VEZlwFGbQHWrqAmxTghND0O3mPmrBXy9jDUbdA1F18l8XwLZ2b3KcEGUnYPODUy
+    dSKRIWVMQGga_J_Dl4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegkedgjeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
+    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:88VEZl1IqNmRq9DlG7cKJVIOlix6oQfEknqQ_DlZAfuNbc1WYoKevA>
+    <xmx:88VEZsDJSX4kacEqo1M0zNJLMWLI9XtdAensOXh6WAW3n3pPu8ssVw>
+    <xmx:88VEZhgr8cnFpel30Fg1F9ZA9AnYr_rlZmwe9OI2YxqSqIXPUXKQOg>
+    <xmx:88VEZoqFbbPnfc9LPvtAMDO6BWdU08Lv0xMMide6EtGiYKki_jfVfw>
+    <xmx:9MVEZsoO-OoTCATxnm_eq2u9bS3zpPI2lvIwcqnhyQvjkC-iYO468hVA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 23041B6008D; Wed, 15 May 2024 10:25:55 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-455-g0aad06e44-fm-20240509.001-g0aad06e4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] x86/sgx: Resolve EAUG race where losing thread
- returns SIGBUS
-To: Jarkko Sakkinen <jarkko@kernel.org>,
- Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>,
- dave.hansen@linux.intel.com, kai.huang@intel.com,
- haitao.huang@linux.intel.com, reinette.chatre@intel.com,
- linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: mona.vij@intel.com, kailun.qin@intel.com, stable@vger.kernel.org,
- =?UTF-8?Q?Marcelina_Ko=C5=9Bcielnicka?= <mwk@invisiblethingslab.com>
-References: <20240515131240.1304824-1-dmitrii.kuvaiskii@intel.com>
- <20240515131240.1304824-2-dmitrii.kuvaiskii@intel.com>
- <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <D1A9PC6LWL2S.38KB2X3EL9X79@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-Id: <ebf493ee-1e8b-426d-bcf4-d8e17d10844a@app.fastmail.com>
+In-Reply-To: <3937d6b1-119b-195e-8b9b-314a0bfbeaeb@loongson.cn>
+References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
+ <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
+ <3937d6b1-119b-195e-8b9b-314a0bfbeaeb@loongson.cn>
+Date: Wed, 15 May 2024 14:25:28 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Bibo Mao" <maobibo@loongson.cn>, "Huacai Chen" <chenhuacai@loongson.cn>,
+ "Huacai Chen" <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev, Linux-Arch <linux-arch@vger.kernel.org>,
+ "Xuefeng Li" <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>,
+ "WANG Xuerui" <kernel@xen0n.name>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 5/15/24 06:54, Jarkko Sakkinen wrote:
-> I'd cut out 90% of the description out and just make the argument of
-> the wrong error code, and done. The sequence is great for showing
-> how this could happen. The prose makes my head hurt tbh.
+On Wed, May 15, 2024, at 09:30, maobibo wrote:
+> On 2024/5/11 =E4=B8=8B=E5=8D=888:17, Arnd Bergmann wrote:
+>> On Sat, May 11, 2024, at 12:01, Huacai Chen wrote:
+>>=20
+>> Importantly, we can't just add fstatat64() on riscv32 because
+>> there is no time64 version for it other than statx(), and I don't
+>> want the architectures to diverge more than necessary.
+> yes, I agree. Normally there is newfstatat() on 64-bit architectures b=
+ut=20
+> fstatat64() on 32-bit ones.
+>
+> I do not understand why fstatat64() can be added for riscv32 still.
+> 32bit timestamp seems works well for the present, it is valid until
+> (0x1UL << 32) / 365 / 24 / 3600 + 1970 =3D=3D 2106 year. Year 2106 sho=
+uld
+> be enough for 32bit system.
 
-The changelog is too long, but not fatally so.  I'd much rather have a
-super verbose description than something super sparse.
+There is a very small number of interfaces for which we ended up
+not using a 64-bit time_t replacement, but those are only for
+relative times, not epoch based offsets. The main problems
+here are:
 
-Would something like this make more sense to folks?
+- time_t is defined to be a signed value in posix, and we need
+  to handle file timestamps before 1970 in stat(), so changing
+  this one to be unsigned is not an option.
 
-	Imagine an mmap()'d file. Two threads touch the same address at
-	the same time and fault. Both allocate a physical page and race
-	to install a PTE for that page. Only one will win the race. The
-	loser frees its page, but still continues handling the fault as
-	a success and returns VM_FAULT_NOPAGE from the fault handler.
+- A lot of products have already shipped that will have to
+  be supported past 2038 on existing 32-bit hardware. We
+  cannot regress on architectures that have already been
+  fixed to support this.=20
 
-	The same race can happen with SGX. But there's a bug: the loser
-	in the SGX steers into a failure path. The loser EREMOVE's the
-	winner's EPC page, then returns SIGBUS, likely killing the app.
+- file timestamps can also be set into the future, so applications
+  relying on this are broken before 2038.
 
-	Fix the SGX loser's behavior. Change the return code to
-	VM_FAULT_NOPAGE to avoid SIGBUS and call sgx_free_epc_page()
-	which avoids EREMOVE'ing the winner's page and only frees the
-	page that the loser allocated.
-
-
+      Arnd
 
