@@ -1,100 +1,102 @@
-Return-Path: <stable+bounces-45263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC4F8C744F
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B216B8C745D
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDF69B24461
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 10:03:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 173A4B2555E
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 10:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4317143C4D;
-	Thu, 16 May 2024 10:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94900143882;
+	Thu, 16 May 2024 10:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b="Ytb/weWl"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CC7143899;
-	Thu, 16 May 2024 10:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C1A143754
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 10:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715853779; cv=none; b=d+FzjIuIqbQXoXQqO2cnnZ3XTquUMzrKqTy+fpPDeZVKIRphnMcLz1h3xe2hJdvfzad8YETsTaLlOrhqfevQ2gkA8TcUhrQxgSgu+z3xWkytQsKS5DHiWY/WGpz7gwkQWZtvqAJNsHadwOGwdrGIJYzLaF3Ar5Ld4aErUG/gVKk=
+	t=1715853890; cv=none; b=rVb42u38WUo8vQH71yCAkJytesraiL763e5GprltlLmlcHcrAbWGNGzBw+UDTD7EpyhuCnCORWp+8Ijn9sz1NbMhsVPkl22vKgHq4++jcfSOuudYIgjia0HmszS0keeXYiKUNFQh3fwd/gj5kaypvgxrEpOlc2ACwnY+ozK7bD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715853779; c=relaxed/simple;
-	bh=4iU7fsCDbTgfTvlAlpiuArNe+aWS8SDmjPDXgljdep0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DftsFRjQJi6zzVMxk9XKETUXZiUeACoY9wpCW97/6zl8SLOBaCGttVAlixyN9i6wqkA8rLPqCYx5/8mU7gpOjtr7iR0TyUIqiEpnPnzL8F49KKFmo/y7Y+axxyd3n8gqsdz+7ZiLT6rPoI6v6ZGGCLpTghm/RpJULVy3u23ua6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6763213D5;
-	Thu, 16 May 2024 03:03:20 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CAEC93F762;
-	Thu, 16 May 2024 03:02:53 -0700 (PDT)
-Date: Thu, 16 May 2024 12:02:50 +0200
-From: Mark Rutland <mark.rutland@arm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Carlos Llamas <cmllamas@google.com>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Uros Bizjak <ubizjak@gmail.com>, Nhat Pham <nphamcs@gmail.com>,
-	linux-kernel@vger.kernel.org, kernel-team@android.com,
-	stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2] locking/atomic: scripts: fix ${atomic}_sub_and_test()
- kerneldoc
-Message-ID: <ZkXZyijVOdtxu763@J2N7QTR9R3>
-References: <ZkRuMcao7lusrypL@J2N7QTR9R3>
- <20240515133844.3502360-1-cmllamas@google.com>
- <ZkXHxhhER-T6MhIX@J2N7QTR9R3>
- <20240516085310.GC24704@noisy.programming.kicks-ass.net>
- <20240516094920.GP12673@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1715853890; c=relaxed/simple;
+	bh=xK0v8AIiDlldUb7cHlwbOClImWx39ygN3bmMQvR/yHU=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=rB+tJBkGxfSzF90dJ5m70bQ4k34r5LPLLz6RH+54uE8jan8cf/P/4lFHnCqtfVECyql1RMGHaQlwjVyFifilTJC/UhHMKaIBkC+RHj/KOVSOQodnFhjnwhSra5feAyT2bmwRhZTlNzjF8nTuXjQpSecLmn0aFtntbUElrsbjm1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (2048-bit key) header.d=smile-fr.20230601.gappssmtp.com header.i=@smile-fr.20230601.gappssmtp.com header.b=Ytb/weWl; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smile.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42011507a4eso34616705e9.0
+        for <stable@vger.kernel.org>; Thu, 16 May 2024 03:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1715853884; x=1716458684; darn=vger.kernel.org;
+        h=content-transfer-encoding:organization:subject:from:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j+32cQaRlNd3o+CUtnhjXlS4PILQqk/uAUAGJBO3Exg=;
+        b=Ytb/weWlyRKPFWsTjVq+u8/z4krnD07gO1tgWJshZh+tAxMTtTlEd6W4/VBgvPRFp7
+         wNkj3XXUcpmHR17vWm0ZI7BnA2AWRFD9vIWbOMpePlxm0nNdz5DXBX1eIfa/Nn2n4hvx
+         npCOSUQV1yyL3UBcURtn1lRqZmmG8Bb8G0yLVVxDXuEZpPJaz8q3CXM0W1d5OLPKU6D+
+         UaWTmKuOOx6KdBhnwMAYNTfwO/Y4Q9e4iPKBnNJYlmb8MzKygJz6UziX1GZT4GHOvYCV
+         z3NXTAuqQO+atIDQdAPr9hlTH8ZUwNcirev9/E88cvsC7cTEKfeYpkWHwiIxolkRwheI
+         ixjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715853884; x=1716458684;
+        h=content-transfer-encoding:organization:subject:from:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j+32cQaRlNd3o+CUtnhjXlS4PILQqk/uAUAGJBO3Exg=;
+        b=NwU6hMVJkt52hEPdUztZnTWtKSP9lMW50zuQYMwWMCmQ6CazreHsckwnHdDR3gcGDT
+         dzNgHdaHCK2gxkONq7c5FVjkUGO1P1bFd7FTxWDt9PM116fV3DFlDqHBwpTyCiHeKYhO
+         FDV82x8o2WAL3TyPYm+ppEPMuPk2BWu4K1W2qpQkMdLs6F1uWBVDnIdx3KfSARX7q1iN
+         Zh8DD+p63kktSHXm6FuiPdiLPX8bg9NXMGf0+rmKfcs16VMb/7+N3XI7+7TTv9mIqMSw
+         5AbFQpixIYyxj2QKRWsGs8Yp5s8oVzrw2IWpLVQjIoeFhB+U88ZFRL5qIYWxQot8rGPK
+         Gchg==
+X-Gm-Message-State: AOJu0YwO+Ti0XkHkDsFTsN0T1K/sfFnu8ZWb4QKF1neLaucdYqR9Phab
+	ky7U/15bXztjnOyQZ9UpGZ+/RXNFwXvVJt/cXydw8qx26gxIalpjxQ4CuJ6YnXwPctFM1qLA4BI
+	pvnk=
+X-Google-Smtp-Source: AGHT+IE502hCnYVxuHl3Lx02R7PRspz/3QxSmyTM59pQlB2gXWrH58mSiGsz0+72HhuUYaqVCus3bQ==
+X-Received: by 2002:a05:600c:4513:b0:41f:df08:5ef7 with SMTP id 5b1f17b1804b1-41feac5a4a7mr131902395e9.28.1715853884106;
+        Thu, 16 May 2024 03:04:44 -0700 (PDT)
+Received: from [10.1.10.3] (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4201916e7c6sm124787215e9.12.2024.05.16.03.04.43
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 May 2024 03:04:43 -0700 (PDT)
+Message-ID: <12c88a9d-0357-48b8-8f85-6f74a9d83a7b@smile.fr>
+Date: Thu, 16 May 2024 12:04:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240516094920.GP12673@noisy.programming.kicks-ass.net>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+From: Yoann Congal <yoann.congal@smile.fr>
+Subject: Pickup commit "mfd: stpmic1: Fix swapped mask/unmask in irq chip" for
+ stable kernel?
+Organization: Smile ECS
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 16, 2024 at 11:49:20AM +0200, Peter Zijlstra wrote:
-> On Thu, May 16, 2024 at 10:53:10AM +0200, Peter Zijlstra wrote:
-> > On Thu, May 16, 2024 at 10:45:58AM +0200, Mark Rutland wrote:
-> > > On Wed, May 15, 2024 at 01:37:10PM +0000, Carlos Llamas wrote:
-> > > > For ${atomic}_sub_and_test() the @i parameter is the value to subtract,
-> > > > not add. Fix the typo in the kerneldoc template and generate the headers
-> > > > with this update.
-> > > > 
-> > > > Fixes: ad8110706f38 ("locking/atomic: scripts: generate kerneldoc comments")
-> > > > Cc: Mark Rutland <mark.rutland@arm.com>
-> > > > Cc: stable@vger.kernel.org
-> > > > Suggested-by: Mark Rutland <mark.rutland@arm.com>
-> > > > Reviewed-by: Kees Cook <keescook@chromium.org>
-> > > > Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> > > > ---
-> > > > 
-> > > > Notes:
-> > > >     v2: fix kerneldoc template instead, as pointed out by Mark
-> > > 
-> > > Thanks for this!
-> > > 
-> > > Acked-by: Mark Rutland <mark.rutland@arm.com>
-> > > 
-> > > Peter, Ingo, are you happy to queue this up in the tip tree?
-> > 
-> > Yep can do. I'll sit on it until after the merge window though.
-> 
-> Also, do we really want this in stable? It's just a silly doc change.
+Hello,
 
-I think that we do, so that when people look at the generated docs for
-stable kernels they see the right thing.
+Please pickup commit c79e387389d5add7cb967d2f7622c3bf5550927b ("mfd: stpmic1: Fix swapped mask/unmask in irq chip")
+for inclusion in stable kernel 6.1.y.
 
-It *should* be a trivial backport, anyhow.
+This fixes this warning at boot:
+  stpmic1 [...]: mask_base and unmask_base are inverted, please fix it
 
-Mark.
+It also avoid to invert masks later in IRQ framework so regression risks should be minimal.
+
+Thanks!
+-- 
+Yoann Congal
+Smile ECS - Tech Expert
 
