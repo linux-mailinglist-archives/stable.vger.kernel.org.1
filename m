@@ -1,105 +1,86 @@
-Return-Path: <stable+bounces-45279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAEA8C75C3
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0B48C75CA
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7311C21005
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:15:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA28A1C20D0B
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BCB145FE0;
-	Thu, 16 May 2024 12:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86D91459E2;
+	Thu, 16 May 2024 12:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gffnAInN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR5KrQOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18845145B09;
-	Thu, 16 May 2024 12:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77925433D6
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 12:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715861713; cv=none; b=ORbC0fg1etuS81QgiV3VgUzcnB6PLwAfg5yy3+qYKrbTMi4ZEjYSF6X5i0xROd7UoZLd3LecWIjrxQFYRNMj4Lbqp/55MALECZ9WvNXWYqpJuphdyYIq6LFjhTxgjH8EcBB29fsJtLVDTh2g7JfO3jzg0jpje1rsZOZFkQTgMUc=
+	t=1715861774; cv=none; b=GaMS5isRQZ391JFi8gH0LWtk20w11arOhg8zjN0TGFg0scX33JMuKxumx+bTEyKSDseWZAYzxH6DyKwjEJ661vb2o5D7wNAs3jja0zNSeMdMFn48YgDOJiA5OCr0qkvJVVBMCJc14jK9l6s2Yzv6J9v4AFMfrEIhpDU31Q2PMps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715861713; c=relaxed/simple;
-	bh=jYUAdZb17tp2dNEYIxLWaWRVocHlMwhk4C2L3BaZEkU=;
+	s=arc-20240116; t=1715861774; c=relaxed/simple;
+	bh=4Fz1bl2P2SH2iq1lxfDHRNSq0ehnPFxIhinZfAQb7zE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n9NRKoa3iI5LRe7+qE9gdBVrJBIrHPmSsGSNwlIoE50gYttweh3zPdP//OAueHNIngyh0KlhEFZMykbyK9JBobYBVN7d5TETn2hAt/rsfrYwKV9AN+YirZXU5MJZF6jop7t1FNR6rHB4qEXS3yHbtyg6Leirlz7Q77mNI6fLajo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gffnAInN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C035C113CC;
-	Thu, 16 May 2024 12:15:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715861712;
-	bh=jYUAdZb17tp2dNEYIxLWaWRVocHlMwhk4C2L3BaZEkU=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=RCd31ulmaWxTbC1OSTobdDWW3AFOEX5ObrD/3CD0C0zaYElqZhWLFCTPSZptSSYFin1+RJObf0RNDF0guYoqf94IKO1jDWnEstLDZWgxW778SnfiYUXGTvy0wkp86qar4izVa+DFjcr6gPAkdLpY9LpnqVGimv5/JhHtYs4IvNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR5KrQOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E94C113CC;
+	Thu, 16 May 2024 12:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715861773;
+	bh=4Fz1bl2P2SH2iq1lxfDHRNSq0ehnPFxIhinZfAQb7zE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gffnAInN54mFnzwYjreJIegh7KeP9CoD4TgrZMeCraqf0i35Q39UpYhQ8Hxt4gLjr
-	 ODpkm5OF2nsEWZliGcIijS6AAokzIisKauFbtyh4r9lKj26w7TojgZ56xMn9QizO3x
-	 fQr5+9Gd9ISo2iDtCTNzETQFgT7x+kNFGQAjYmEk7oC683Dmad+872ynVjaVjIqBac
-	 HWuoBhbR6tacd4Sb+5bIMYM7XPwm+HrZpBEJjkks2mv7DNN0uj9EjjPHZDYqjJJA77
-	 9mwGCAem3eH5lMABKEBo+fFehZMzP2MzD4tZPKrekoG5s2ywaXA5tXhQIFTmp5c0Xb
-	 r+Ixx4brA4B4w==
-Date: Thu, 16 May 2024 13:15:04 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH 6.8 000/340] 6.8.10-rc2 review
-Message-ID: <df364ff1-2329-49ba-939b-82ac0796f84a@sirena.org.uk>
-References: <20240515082517.910544858@linuxfoundation.org>
- <8221e12b-4def-4faf-84c6-f2fe208a4bf3@sirena.org.uk>
- <2024051628-direness-grazing-d4ee@gregkh>
+	b=YR5KrQOaST9z9cOU8gb0lKtRlMjNZSzod0zYluLbIWGC8fNZ7EGIWay/6thDzzIlb
+	 LuUiEYH92XanfX7RkANqoYIlSYYUTscCoXkRExdMwlJeiUT/553aDe+dk7JQgQmwKm
+	 8vQnHnp/CE0VSML+bHRq+b1e5MJW3FpDiSgCIyzg=
+Date: Thu, 16 May 2024 14:16:10 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: rostedt@goodmis.org, akpm@linux-foundation.org, mark.rutland@arm.com,
+	mathieu.desnoyers@efficios.com, mhiramat@kernel.org
+Cc: stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] eventfs: Do not differentiate the
+ toplevel events directory" failed to apply to 6.8-stable tree
+Message-ID: <2024051624-delirium-punch-96f8@gregkh>
+References: <2024051624-efficient-jingle-fc71@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9xVrHvIclbQ11ykB"
-Content-Disposition: inline
-In-Reply-To: <2024051628-direness-grazing-d4ee@gregkh>
-X-Cookie: I'm having a MID-WEEK CRISIS!
-
-
---9xVrHvIclbQ11ykB
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <2024051624-efficient-jingle-fc71@gregkh>
 
-On Thu, May 16, 2024 at 02:10:58PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, May 15, 2024 at 05:37:15PM +0100, Mark Brown wrote:
+On Thu, May 16, 2024 at 02:11:24PM +0200, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.8-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x d53891d348ac3eceaf48f4732a1f4f5c0e0a55ce
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051624-efficient-jingle-fc71@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> d53891d348ac ("eventfs: Do not differentiate the toplevel events directory")
 
-> > # first bad commit: [21b410a9ae24348d143dbfe3062eae67d52d5a76] eventfs: Do not differentiate the toplevel events directory
+Note, it applies, and builds, but fails testing, see this thread:
+	https://lore.kernel.org/r/2024051628-direness-grazing-d4ee@gregkh
 
-> Thanks for the bisection, I'll go drop this from 6.8 and 6.6 queues.
+thanks,
 
-> Hopefully 6.9 doesn't also have this issue.
-
-v6.9 seems fine - it smells like a missing dependency, perhaps the patch
-Naresh mentioned but I didn't do any investigation myself.
-
---9xVrHvIclbQ11ykB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZF+McACgkQJNaLcl1U
-h9CdZAgAgYVS6BJi7ZiA/O3rgvAVQahWKPIpcDNzQFQrpicPJcEqbUrRi0H0dd1j
-9r0CFaLmeV1fjj+y9fgtDOb3QfBiugFy7AtfQOmKZ4SmVpAdOq6B/uV3mJZfDrCC
-gfFeKBBVCv5vo24pupZLRgXgJ8kT22gbr2Sc9+6oNlfsxr64NMTNO5AQM4gZxd3y
-8diVM/ealxtwWZOtk+qgyOXxImxP0U0lIcaxDF6/iVH2m3erilRGzUtLTvQ5Awfb
-UZswHbuaQg/0UyhqrFOC9LupbRGWyBugvvW1BWknwO6m9cJ2NC5wuhj61aRqudgw
-QMv6ymxBCVcnnoq/iFCCdYXFoZQ1SQ==
-=7JDz
------END PGP SIGNATURE-----
-
---9xVrHvIclbQ11ykB--
+greg k-h
 
