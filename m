@@ -1,165 +1,108 @@
-Return-Path: <stable+bounces-45298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA398C77BC
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 15:33:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814178C77E6
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 15:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75404B23BA7
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 13:33:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EFD3B20A09
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 13:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB0814B965;
-	Thu, 16 May 2024 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654511474DA;
+	Thu, 16 May 2024 13:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hNZDVzdj"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="4ZQtU7XF"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BB214B06E;
-	Thu, 16 May 2024 13:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65E61474B4;
+	Thu, 16 May 2024 13:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715866344; cv=none; b=qF53sJUmzVJDb6yTHUZVKNS2lXBhs4MF1Dg+tGmws+IVV3G/DjDbS+MWBX6xpEFC/nuczCPz8y7Cy1f3xodNSbp4iWYqPga5ESonzmZL9TQRBxydUC/Eo6B/1Cp8AEybVlTMSXg7vVGTsukyAQOyEBP+ISkLG6beY8rC2SAlCMY=
+	t=1715867134; cv=none; b=Fu3L8V/RGRsbyrEjk26mscwseYEpV2eVzPeM+Hja+obnUam5U/485/rpsz2TAu17WtYg8dgCQqgmfqnIwriZBslBXQqZr+/dCQ2Nzvk4LpYPIqHbjax0SCt5jrOcIqJ9nCHnBh/7dEMDbBWXir/BBvz10gu2SFTrRXx/bI+GsXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715866344; c=relaxed/simple;
-	bh=HsYZoT10qOQGfgRr3VKNQkyb70+BVLLxcy/xSeyokH8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bOnnqDA8G02b5qtofarIQgCZ5lZMfJCVZBDzjh2zh1BDcZrORWiNPWUA5/lteXE9kgvqTw2R2hFBzjoD7S2GidzrlECsnDsz9Qy7PGt1YUa8u3g9aTOWPichy7pTNyTEmAS1N0vh0K9yk6JIYgqCduY4KpNhSbymHzcvyEz27u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hNZDVzdj; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44G9r5fW021369;
-	Thu, 16 May 2024 13:31:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=+/eQ88JSeksu5lIGmXlMS3egFKoWcxF11wAcQsE1AzQ=; b=hN
-	ZDVzdjopn9NFhjhUz6CqKXoqk35xh/QuZXj1Pm02y0SbJ9/5OOrSxVZna7TI96qt
-	L//VeRLocPypGB3J3OwPHMGQTaGVn1Wwnv9NgWsFaVLxQNdduLMw4AgtdaRUEgqg
-	PxhIdLEei2uHwafOAEC+V691gJ5LF0f+jqZvvz0eEFPmL0CPrSgQSZfTSvJkxVbS
-	YUN62Ym+Fxzw2ZkYz8Oi9cSpppCEmjjX1FeCwdvSKA4VMrQt7QxUOTSCzv7aQl7F
-	cmgTRh43NNXxgG0Fypvt9zgv86y20cUnkUiJIwqb/vHMXHWhC6hVUXbzgkdgGwiy
-	88CQ6tgWgTgKqA6hXueg==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y45vbdvdr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 13:31:56 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44GDVtLl003759
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 13:31:55 GMT
-Received: from zijuhu-gv.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 16 May 2024 06:31:52 -0700
-From: Zijun Hu <quic_zijuhu@quicinc.com>
-To: <luiz.dentz@gmail.com>, <luiz.von.dentz@intel.com>, <marcel@holtmann.org>
-CC: <quic_zijuhu@quicinc.com>, <linux-bluetooth@vger.kernel.org>,
-        <wt@penguintechs.org>, <regressions@lists.linux.dev>,
-        <pmenzel@molgen.mpg.de>, <krzysztof.kozlowski@linaro.org>,
-        <lk_sii@163.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for QCA6390 after warm reboot
-Date: Thu, 16 May 2024 21:31:34 +0800
-Message-ID: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1715867134; c=relaxed/simple;
+	bh=SyLiGL7iHwYcUTCQzV17dRHo+K34vzQ26/nHK00U0Dk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=luzbjnyYc4T4ZfLPBQY2yIyLHOdfcp3cw4qB1AHbmY+KF7eVZ+LhxO1DXMcNUXw6MkoUO+SUPiKRfQIv5IOh68EKXA+6iHhReuEUEHowPAbekRsQhURnjchvqxyICKEGaQDwqEmCXSSIR7Ldm3q4eauPntLS1WvP5osVrkiR1Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=4ZQtU7XF; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4VgBDk4qyGzlgMVL;
+	Thu, 16 May 2024 13:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1715867124; x=1718459125; bh=x8LBwIIWWmPk2MeweSlKgqm+
+	Gv+UrO9eXS3tAe90WIo=; b=4ZQtU7XF4CMymS5TSAMJ5b5KAsIt7Ywz68MLKbUF
+	oxJe9nquoFJzSO96q4E99kXvqUrIj27mz/4Qp8FLwK7wY5O4g2Y9t7nabRO9ST8x
+	60iQQDrj8kFhHwKf1sJLoX/zQRC+VeCQfPmQ234Gug4xYhjynDlaLNqNltQCo1tW
+	LUIkxa68gpQtqaSf01JHHCx8+qDcxWpCj+6NqY/UULBK9p82a7Uz6zaZXo0nlA+7
+	Yg6WMRsY+n+OgHVK0+TcuWUBdZxNWUuPlJpmIHx4oriiza1e0gc/frKjsa3SOVgK
+	rhzLpcu0vgfGTUChxsqjoH1FqKaA2IsLOTFhO08Gmb2Ntw==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id NXC3SSf5GU_H; Thu, 16 May 2024 13:45:24 +0000 (UTC)
+Received: from [172.20.0.79] (unknown [8.9.45.205])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4VgBDg2Zv2zlgT1K;
+	Thu, 16 May 2024 13:45:23 +0000 (UTC)
+Message-ID: <a1c24153-007c-4510-9cb3-bc207e9a75e8@acm.org>
+Date: Thu, 16 May 2024 07:45:21 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: OWR5DugCuC7EIQRlLZgLv4luGjYdLDSe
-X-Proofpoint-ORIG-GUID: OWR5DugCuC7EIQRlLZgLv4luGjYdLDSe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 mlxscore=0 suspectscore=0 spamscore=0 malwarescore=0
- adultscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405160095
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable] block/mq-deadline: fix different priority request
+ on the same zone
+To: Wu Bo <bo.wu@vivo.com>, linux-kernel@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Wu Bo <wubo.oduw@gmail.com>, stable@vger.kernel.org,
+ Damien Le Moal <dlemoal@kernel.org>
+References: <20240516092838.1790674-1-bo.wu@vivo.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240516092838.1790674-1-bo.wu@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
-serdev") will cause below regression issue:
+On 5/16/24 03:28, Wu Bo wrote:
+> Zoned devices request sequential writing on the same zone. That means
+> if 2 requests on the saem zone, the lower pos request need to dispatch
+> to device first.
+> While different priority has it's own tree & list, request with high
+> priority will be disptch first.
+> So if requestA & requestB are on the same zone. RequestA is BE and pos
+> is X+0. ReqeustB is RT and pos is X+1. RequestB will be disptched before
+> requestA, which got an ERROR from zoned device.
+> 
+> This is found in a practice scenario when using F2FS on zoned device.
+> And it is very easy to reproduce:
+> 1. Use fsstress to run 8 test processes
+> 2. Use ionice to change 4/8 processes to RT priority
 
-BT can't be enabled after below steps:
-cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
-if property enable-gpios is not configured within DT|ACPI for QCA6390.
+Hi Wu,
 
-The commit is to fix a use-after-free issue within qca_serdev_shutdown()
-by adding condition to avoid the serdev is flushed or wrote after closed
-but also introduces this regression issue regarding above steps since the
-VSC is not sent to reset controller during warm reboot.
+I agree that there is a problem related to the interaction of I/O
+priority and zoned storage. A solution with a lower runtime overhead
+is available here:
+https://lore.kernel.org/linux-block/20231218211342.2179689-1-bvanassche@acm.org/T/#me97b088c535278fe3d1dc5846b388ed58aa53f46
 
-Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
-once BT was ever enabled, and the use-after-free issue is also fixed by
-this change since the serdev is still opened before it is flushed or wrote.
+Are you OK with that alternative solution?
 
-Verified by the reported machine Dell XPS 13 9310 laptop over below two
-kernel commits:
-commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
-implementation for QCA") of bluetooth-next tree.
-commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
-implementation for QCA") of linus mainline tree.
+Thanks,
 
-Fixes: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev")
-Cc: stable@vger.kernel.org
-Reported-by: Wren Turkal <wt@penguintechs.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218726
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Tested-by: Wren Turkal <wt@penguintechs.org>
----
-V1 -> V2: Add comments and more commit messages
-
-V1 discussion link:
-https://lore.kernel.org/linux-bluetooth/d553edef-c1a4-4d52-a892-715549d31ebe@163.com/T/#t
-
- drivers/bluetooth/hci_qca.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 0c9c9ee56592..9a0bc86f9aac 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2450,15 +2450,27 @@ static void qca_serdev_shutdown(struct device *dev)
- 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
- 	struct hci_uart *hu = &qcadev->serdev_hu;
- 	struct hci_dev *hdev = hu->hdev;
--	struct qca_data *qca = hu->priv;
- 	const u8 ibs_wake_cmd[] = { 0xFD };
- 	const u8 edl_reset_soc_cmd[] = { 0x01, 0x00, 0xFC, 0x01, 0x05 };
- 
- 	if (qcadev->btsoc_type == QCA_QCA6390) {
--		if (test_bit(QCA_BT_OFF, &qca->flags) ||
--		    !test_bit(HCI_RUNNING, &hdev->flags))
-+		/* The purpose of sending the VSC is to reset SOC into a initial
-+		 * state and the state will ensure next hdev->setup() success.
-+		 * if HCI_QUIRK_NON_PERSISTENT_SETUP is set, it means that
-+		 * hdev->setup() can do its job regardless of SoC state, so
-+		 * don't need to send the VSC.
-+		 * if HCI_SETUP is set, it means that hdev->setup() was never
-+		 * invoked and the SOC is already in the initial state, so
-+		 * don't also need to send the VSC.
-+		 */
-+		if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks) ||
-+		    hci_dev_test_flag(hdev, HCI_SETUP))
- 			return;
- 
-+		/* The serdev must be in open state when conrol logic arrives
-+		 * here, so also fix the use-after-free issue caused by that
-+		 * the serdev is flushed or wrote after it is closed.
-+		 */
- 		serdev_device_write_flush(serdev);
- 		ret = serdev_device_write_buf(serdev, ibs_wake_cmd,
- 					      sizeof(ibs_wake_cmd));
--- 
-2.7.4
-
+Bart.
 
