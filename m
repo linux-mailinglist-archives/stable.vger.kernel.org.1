@@ -1,137 +1,134 @@
-Return-Path: <stable+bounces-45326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEDE8C7B71
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 19:39:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FD28C7C6E
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 20:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70010B21579
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 17:39:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E332A1F21B7D
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 18:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA00156642;
-	Thu, 16 May 2024 17:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340751635AE;
+	Thu, 16 May 2024 18:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DDrB1Gnd"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="1+TVKVPP"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [84.16.66.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F3A14533D;
-	Thu, 16 May 2024 17:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15C15FD1B
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 18:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715881187; cv=none; b=gIOziQeMUcSbjoXs2yh5aKb64mEFzhL9O/4gPHURU/7lnjkjkhwamoyDuzFo6GoSjxVXQTPRPICDYT0mLPRT2ns88OgGbfBCn8tyP0at0JX27w9RegtNGak85q0bg6XeFsD6LaXWSef+WP7UohV7llcwK+yRW3kGi6M8kHTwVlk=
+	t=1715883598; cv=none; b=NnyHuVkK6oagu90AXw95JHXl8/8Qp/c2ZzNXhe1xM2KrOOoWvM2oqTQ6y6k6xH9nDVRdi5V0Ecu7/xB7CcCc2iSn4slpMUQhgRQA1X6I5oTdYO71t0kRzU/+OkkFSbmvQUuHx7sK0HWpjj9CATS0pfvs33wBMIAKOpvlG6RZuCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715881187; c=relaxed/simple;
-	bh=Ih2+B019IWo/SlVm8UkxUi6Qnobr9mo23QA54zfP0TA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j3MBx1Mk627WNGnxq1ZOHMXJ2fubhyZqCd4eb1y0X7039HPQMQrMOzyCyaX6xUz4FJgjxeNI8iV/p63rExZ5W1Z0B5yNhdT3RfnLfMBUttqdBFHjS+PIDpUBawcodHfd1kLLku2opAYWcZWuUM7aYL92U/cke4yF1tevs/jxo7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DDrB1Gnd; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715881185; x=1747417185;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Ih2+B019IWo/SlVm8UkxUi6Qnobr9mo23QA54zfP0TA=;
-  b=DDrB1GndXWCT9JmhCG+s9rbvMxjtBBc1S+NQNv6b9r0Wz17U2XSKaRyi
-   0N9AhPFaq4g0h4nfPsuDtiAA1V7rCrmGYvyw+YdoP7A3NE3ugoZpYg/2v
-   r6QxkaddiAuIZV/UGdbp2xg8VhgmrSnG6VJKTRx8g0/lnq5nyGMWZgG6R
-   FOdibfFB+TxApXdppNXScOmvy+xp9YosNMfTcl6BtkMFNVNSRzuYLOxJV
-   i5kMDGa1sNefzUm/MoQXEqJzqgHsfLy97OGmO6mcB3Ij56Oq/krpdx2kr
-   D3RjjO04uiQ1jyopdqQNpYcEcdDLSm3U6VXDgICR1tiYttyDSKdzh6xOP
-   A==;
-X-CSE-ConnectionGUID: RoZQALqvQF6LvC0MrN1sZw==
-X-CSE-MsgGUID: BMqKIO3pQqC2mTvYiBPUDg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="29518937"
-X-IronPort-AV: E=Sophos;i="6.08,165,1712646000"; 
-   d="scan'208";a="29518937"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2024 10:39:45 -0700
-X-CSE-ConnectionGUID: jT8Zz+qdSda7PJgRpZIGQA==
-X-CSE-MsgGUID: sv+ffuftRNKRBMZxBxaVvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,165,1712646000"; 
-   d="scan'208";a="31513810"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa008.fm.intel.com with ESMTP; 16 May 2024 10:39:42 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id C22FD136; Thu, 16 May 2024 20:39:40 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-kernel@vger.kernel.org
-Cc: Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Adam Dunlap <acdunlap@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1 1/1] x86/cpu: Fix boot on Intel Quark X1000
-Date: Thu, 16 May 2024 20:39:27 +0300
-Message-ID: <20240516173928.3960193-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	s=arc-20240116; t=1715883598; c=relaxed/simple;
+	bh=5KRWtyLsaH6DIVboHThP86V5QZIcRzReg8vtxsJ0D1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g/O0n7ieZ2koNYRRr9FXLKh+lMrulIOVMkVNXSU+iPB3gbey84VYwB8yqo3FwPB/W39qHT77hThC0iPl0A7zxfKqDPGpQnC3Z/rZAkEW7WjbnrxDHdo5pT+cU9l8aJMHjxLUt3fmA+HXPpN/N5SWAFP+37M1Xp1tN9XfFoyv/r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=1+TVKVPP; arc=none smtp.client-ip=84.16.66.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4VgJKG6Z0lzC4V;
+	Thu, 16 May 2024 20:19:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1715883586;
+	bh=3HPBFcfXIupAj8rBMIh3SYeVvxw0d3/RL490PTDHfy4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=1+TVKVPPz2feTbBej8nkBd3KW28RYulRNpHiWy9t/UGYLMlYCv7QjnZZVoO5mqqHM
+	 61vb+X7HZ0ksaxu1M8Tte4U0KvKv53pPHV0EheOGfYx+JV5juMpI8oQKkwSTx2xa0+
+	 SgOF2+JNnrENcTF2daXVpZp7/FyX8/I9wwhcfizg=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4VgJKG1fLNzhPV;
+	Thu, 16 May 2024 20:19:46 +0200 (CEST)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Paul Moore <paul@paul-moore.com>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	"Serge E . Hallyn" <serge@hallyn.com>,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	syzkaller-bugs@googlegroups.com,
+	trix@redhat.com,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+bf4903dc7e12b18ebc87@syzkaller.appspotmail.com
+Subject: [PATCH v1 1/2] landlock: Fix d_parent walk
+Date: Thu, 16 May 2024 20:19:34 +0200
+Message-ID: <20240516181935.1645983-2-mic@digikod.net>
+In-Reply-To: <20240516181935.1645983-1-mic@digikod.net>
+References: <20240516181935.1645983-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
-The initial change to set x86_virt_bits to the correct value straight
-away broke boot on Intel Quark X1000 CPUs (which are family 5, model 9,
-stepping 0)
+The canary in collect_domain_accesses() can be triggered when trying to
+link a root mount point.  This cannot work in practice because this
+directory is mounted, but the VFS check is done after the call to
+security_path_link().
 
-With deeper investigation it appears that the Quark doesn't have
-the bit 19 set in 0x01 CPUID leaf, which means it doesn't provide
-any clflush instructions and hence the cache alignment is set to 0.
-The actual cache line size is 16 bytes, hence we may set the alignment
-accordingly. At the same time the physical and virtual address bits
-are retrieved via 0x80000008 CPUID leaf.
+Do not use source directory's d_parent when the source directory is the
+mount point.
 
-Note, we don't really care about the value of x86_clflush_size as it
-is either used with a proper check for the instruction to be present,
-or, like in PCI case, it assumes 32 bytes for all supported 32-bit CPUs
-that have actually smaller cache line sizes and don't advertise it.
+Add tests to check error codes when renaming or linking a mount root
+directory.  This previously triggered a kernel warning.  The
+linux/mount.h file is not sorted with other headers to ease backport to
+Linux 6.1 .
 
-The commit fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct
-value straight away, instead of a two-phase approach") basically
-revealed the issue that has been present from day 1 of introducing
-the Quark support.
-
-Fixes: aece118e487a ("x86: Add cpu_detect_cache_sizes to init_intel() add Quark legacy_cache()")
+Cc: Günther Noack <gnoack@google.com>
+Cc: Paul Moore <paul@paul-moore.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: syzbot+bf4903dc7e12b18ebc87@syzkaller.appspotmail.com
+Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
+Closes: https://lore.kernel.org/r/000000000000553d3f0618198200@google.com
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20240516181935.1645983-2-mic@digikod.net
 ---
- arch/x86/kernel/cpu/intel.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ security/landlock/fs.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index be30d7fa2e66..2bffae158dd5 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -321,6 +321,15 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- #ifdef CONFIG_X86_64
- 	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
- #else
+diff --git a/security/landlock/fs.c b/security/landlock/fs.c
+index 22d8b7c28074..7877a64cc6b8 100644
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -1110,6 +1110,7 @@ static int current_check_refer_path(struct dentry *const old_dentry,
+ 	bool allow_parent1, allow_parent2;
+ 	access_mask_t access_request_parent1, access_request_parent2;
+ 	struct path mnt_dir;
++	struct dentry *old_parent;
+ 	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS] = {},
+ 		     layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS] = {};
+ 
+@@ -1157,9 +1158,17 @@ static int current_check_refer_path(struct dentry *const old_dentry,
+ 	mnt_dir.mnt = new_dir->mnt;
+ 	mnt_dir.dentry = new_dir->mnt->mnt_root;
+ 
 +	/*
-+	 * The Quark doesn't have bit 19 set in 0x01 CPUID leaf, which means
-+	 * it doesn't provide any clflush instructions and hence the cache
-+	 * alignment is set to 0. The actual cache line size is 16 bytes,
-+	 * hence set the alignment accordingly. At the same time the physical
-+	 * and virtual address bits are retrieved via 0x80000008 CPUID leaf.
++	 * old_dentry may be the root of the common mount point and
++	 * !IS_ROOT(old_dentry) at the same time (e.g. with open_tree() and
++	 * OPEN_TREE_CLONE).  We do not need to call dget(old_parent) because
++	 * we keep a reference to old_dentry.
 +	 */
-+	if (c->x86 == 5 && c->x86_model == 9)
-+		c->x86_cache_alignment = 16;
- 	/* Netburst reports 64 bytes clflush size, but does IO in 128 bytes */
- 	if (c->x86 == 15 && c->x86_cache_alignment == 64)
- 		c->x86_cache_alignment = 128;
++	old_parent = (old_dentry == mnt_dir.dentry) ? old_dentry :
++						      old_dentry->d_parent;
++
+ 	/* new_dir->dentry is equal to new_dentry->d_parent */
+-	allow_parent1 = collect_domain_accesses(dom, mnt_dir.dentry,
+-						old_dentry->d_parent,
++	allow_parent1 = collect_domain_accesses(dom, mnt_dir.dentry, old_parent,
+ 						&layer_masks_parent1);
+ 	allow_parent2 = collect_domain_accesses(
+ 		dom, mnt_dir.dentry, new_dir->dentry, &layer_masks_parent2);
 -- 
-2.43.0.rc1.1336.g36b5255a03ac
+2.45.0
 
 
