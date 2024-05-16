@@ -1,270 +1,187 @@
-Return-Path: <stable+bounces-45306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7438C79E6
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 17:56:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A424A8C7A74
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 18:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 143BA1C212E3
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 15:56:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F708282780
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 16:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CC414D431;
-	Thu, 16 May 2024 15:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1864A2C;
+	Thu, 16 May 2024 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mH0rw4ZE"
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="XpvgEd2D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171E314D433;
-	Thu, 16 May 2024 15:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92034A0C;
+	Thu, 16 May 2024 16:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715874958; cv=none; b=PtchZHNivoBAKSGHPeQaWfYnHx9YKObjaUm1ArdEk7ODj4RgPQtc9Mg03wYrcjathyQhn2zgVq709NCRbza0SHf5u9d6AhaxfJNNXg5zMv5aJ4wFAHi244zbkhzRSA8NWrJNFNdJYsnlzzv9xAUdLBxQAL4l2+2RdOw5jqqBCCQ=
+	t=1715877494; cv=none; b=uuHIBKTllxVYWpq22QzOLRxBA8F87IuqqoiC17byzhfehTv5pcJZLkmRa/FLnD86k3V/9OIONaaW2GZsWEMSyUNreoEUyauP2euOuh9e4aJQc6vE/tHm1cFVRJrmE3N50e0hOHamZ17f0oXiVRC7MfRAWmPI1l9uk1dThdr7vak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715874958; c=relaxed/simple;
-	bh=GotmUVvg3yCA1K/0AUhNy3lVYojERI0YjVqh8CZv7+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q9VqC2sUTegxi3EWTRPPKkYhB+QziU5b8UEsFdH7Dvd3VqsJixoTfyhPFYQWBGXoiN1lt5UgjPud47O2g+melUaYAvzrAL3sCtSolOsBHuVxYT9Udg7J8meOnzXC8m9g3qatCMZ/gjxDvzZywKegsihkZH/+ui7LpISq7AKnGGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mH0rw4ZE; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2e538a264e0so12590191fa.1;
-        Thu, 16 May 2024 08:55:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715874955; x=1716479755; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X51fSppkpogm5g68VevzSjdTrmvDiJaepwBpjEkIupc=;
-        b=mH0rw4ZE8DYaBErseHsfNcfGV7lsSzzcWmM95sDTocg9bUa/KC0tcvFkuNU7GpFQdO
-         9abnf8YUuVcYRDKLK+hPg9PsFcgf7Bt1EzRRDtEODzgO1JlBLPB7L31MJ0DGVP/nymh+
-         e5R3n/kDBbTJ5z80f0v5KCXHiYT7euwb57I6ClHMtkjTCT/NrvrcLtVZ4smlOfqVqePJ
-         T76ON7MJDMQDmFuvl8HWfJGsz9PCvxrYfM9l3RgmFo0ZxMLOl9XRPk+1BWhGOC8Iov7L
-         ucQoRBsjiPpQVZc7ZMWLZG6OJ72DAq88362Dbhxkog3aWs02WMZLuJq514ah7BMBTNKB
-         ufSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715874955; x=1716479755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X51fSppkpogm5g68VevzSjdTrmvDiJaepwBpjEkIupc=;
-        b=JMzXzset/mxUJ+ZbGJ0PJ9+bPEmt3pD17oySEXMc+QuG80VyKW79HJYZETtOdBJiBt
-         q87SM2FUJRZg9l+2wcDx4Rz4/xgR2QQ0fevC7nMWT86EuRiXhvkY0S+2CJSPJbszgDd6
-         Ev8vNs8SMcpOX0rAS4FXBrQNZnKqXQhUEDPkyAFJhXgNXU67IkwzBI4dNaueByPb8xAl
-         bODekKky0g/GPZb88GUB3S3zNlK89RHsK0mPtf187OwkpGNFxnevibULdstI6u7PYFzy
-         Y032lc+P/xUQzGYArqY95LauFyE5vOmKjtJNGo9zTE6HIg66Oyc8voFQa5hzazbGArBH
-         vCsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZYoixWEIyaOW3Plg98DE7QqGPrAPlACGa5Lk9EJE8JVXCuH6pqza9TPXyXB71IwwsWIzk42BQ6ZxMDhrHq+9mxXoayc6VeFIxuy8JK/IiGZMCqbg9GSwmGUgg0VHpKqUYsagtskaK
-X-Gm-Message-State: AOJu0Yyb87uTg/50dTzpDOrNfw7MD/Fqe2+PbFMgFe1fPIAL2qRAVueA
-	tuzh5IBVfeencB1pVueGckGhwFV5V0HvybT9I8v16irqWnf8gSmDAQ7iLKLWn2BbKp/vbJWg8/U
-	oJVoaLw2e7fJXtW/EWcwV8JaYiT0+RJEq
-X-Google-Smtp-Source: AGHT+IEFeaCtLRNo5VoiulyvOQ9u5fQIcZftbw9jZKZ2+uGwIk1yQQuY5A0kQEIrPVM/0MW0dIOTQUmRUckvz++9TIM=
-X-Received: by 2002:a2e:9657:0:b0:2e6:f57a:9854 with SMTP id
- 38308e7fff4ca-2e6f57aa0afmr56199111fa.38.1715874954817; Thu, 16 May 2024
- 08:55:54 -0700 (PDT)
+	s=arc-20240116; t=1715877494; c=relaxed/simple;
+	bh=PM+Xl9ZB9Zzi3irlGJ5QBcntm6FOPJDgLM5+LPHRhX4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=r8KegRHfEsODEJ3HQ3mdRVpd8MYc9mxlRz06BlcfWmly6JhNClG77aw4NveYGqaunFm3/qGbnr+Z5XkRWlZfqs5M/SF5IdTcoLQODiPZdCAGXPVogixAkYJ4lYM9amjh3uu5iMvQ8AH7cpU0RI6WHal8iL8Elg+AZLYkvD8PCDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=XpvgEd2D; arc=none smtp.client-ip=67.231.149.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+Received: from pps.filterd (m0409409.ppops.net [127.0.0.1])
+	by m0409409.ppops.net-00190b01. (8.18.1.2/8.18.1.2) with ESMTP id 44GExHaM031087;
+	Thu, 16 May 2024 15:59:40 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=
+	from:to:cc:subject:date:message-id:references:in-reply-to
+	:content-type:content-id:content-transfer-encoding:mime-version;
+	 s=jan2016.eng; bh=PM+Xl9ZB9Zzi3irlGJ5QBcntm6FOPJDgLM5+LPHRhX4=; b=
+	XpvgEd2DykOaPSl22BysRG+VBpR7QFYQmr/Z6lrpccjWoewiuVvOCDmtK4v9KIZi
+	6x9BbxzFPh/1a6JJWfAynFjK8VB1UTFlsC9Jlvay1AfV2bmuJ9jiIUfgnXzQI/uV
+	p5g/FhhFBUoBiQ7MPJKNqIsnZaX5GlNgDxsIIV6lJcw1Wj9bEPYM8p+bhnTf613D
+	9JViWkvN93ttgFD7l5BxZ7oT1dKlHiH3+A6ViuWRbZkp9dq97K3zjd+tIgNhYXns
+	2hZzJAjP6H6Ks5hboO5WdfkAgr2olshVm/4ju9uIr/0v5D0gwp3RUe+Xk7qQMark
+	Y/BcCAxucFiEvZG04rpGPw==
+Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61] (may be forged))
+	by m0409409.ppops.net-00190b01. (PPS) with ESMTPS id 3y5m1cr7uq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 May 2024 15:59:39 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
+	by prod-mail-ppoint6.akamai.com (8.17.1.19/8.17.1.19) with ESMTP id 44GAhZdU025772;
+	Thu, 16 May 2024 10:59:38 -0400
+Received: from email.msg.corp.akamai.com ([172.27.91.22])
+	by prod-mail-ppoint6.akamai.com (PPS) with ESMTPS id 3y240xynv5-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 May 2024 10:59:38 -0400
+Received: from usma1ex-dag4mb1.msg.corp.akamai.com (172.27.91.20) by
+ usma1ex-dag4mb3.msg.corp.akamai.com (172.27.91.22) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 16 May 2024 10:59:37 -0400
+Received: from usma1ex-dag4mb1.msg.corp.akamai.com ([172.27.91.20]) by
+ usma1ex-dag4mb1.msg.corp.akamai.com ([172.27.91.20]) with mapi id
+ 15.02.1258.028; Thu, 16 May 2024 10:59:37 -0400
+From: "Chaney, Ben" <bchaney@akamai.com>
+To: Kees Cook <kees@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Kees Cook
+	<keescook@chromium.org>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "bp@alien8.de"
+	<bp@alien8.de>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "tglx@linutronix.de"
+	<tglx@linutronix.de>,
+        "Tottenham, Max" <mtottenh@akamai.com>,
+        "Hunt, Joshua"
+	<johunt@akamai.com>,
+        "Galaxy, Michael" <mgalaxy@akamai.com>
+Subject: Re: Regression in 6.1.81: Missing memory in pmem device
+Thread-Topic: Regression in 6.1.81: Missing memory in pmem device
+Thread-Index: AQHapu3aAXNBspXH5EmfViMgDx95d7GY082AgAANNgCAARR3AA==
+Date: Thu, 16 May 2024 14:59:37 +0000
+Message-ID: <975461E5-D2BB-40FB-9345-31C4665224A2@akamai.com>
+References: <FA5F6719-8824-4B04-803E-82990E65E627@akamai.com>
+ <CAMj1kXE2ZvaKout=nSfv08Hn5yvf8SRGhQeTikZcUeQOmyDgnw@mail.gmail.com>
+ <742E72A5-4792-4B72-B556-22929BBB1AD9@kernel.org>
+In-Reply-To: <742E72A5-4792-4B72-B556-22929BBB1AD9@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BF58598D8264D242978369AA9489FA29@akamai.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com> <f343ecae-efee-4bdc-ac38-89b614e081b5@163.com>
-In-Reply-To: <f343ecae-efee-4bdc-ac38-89b614e081b5@163.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 16 May 2024 11:55:42 -0400
-Message-ID: <CABBYNZ+nLgozYxL=znsXrg0qoz-ENgSBwcPzY-KrBnVJJut8Kw@mail.gmail.com>
-Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
- QCA6390 after warm reboot
-To: Lk Sii <lk_sii@163.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>, luiz.von.dentz@intel.com, marcel@holtmann.org, 
-	linux-bluetooth@vger.kernel.org, wt@penguintechs.org, 
-	regressions@lists.linux.dev, pmenzel@molgen.mpg.de, 
-	krzysztof.kozlowski@linaro.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 adultscore=0 phishscore=0
+ mlxscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405160104
+X-Proofpoint-ORIG-GUID: ycuVwuJlfuifFGmJtf2JZhpd3lce9rO-
+X-Proofpoint-GUID: ycuVwuJlfuifFGmJtf2JZhpd3lce9rO-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 malwarescore=0 phishscore=0
+ mlxscore=0 mlxlogscore=946 clxscore=1011 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
+ definitions=main-2405160105
 
-Hi,
-
-On Thu, May 16, 2024 at 10:57=E2=80=AFAM Lk Sii <lk_sii@163.com> wrote:
->
->
->
-> On 2024/5/16 21:31, Zijun Hu wrote:
-> > Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
-> > serdev") will cause below regression issue:
-> >
-> > BT can't be enabled after below steps:
-> > cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failur=
-e
-> > if property enable-gpios is not configured within DT|ACPI for QCA6390.
-> >
-> > The commit is to fix a use-after-free issue within qca_serdev_shutdown(=
-)
-> > by adding condition to avoid the serdev is flushed or wrote after close=
-d
-> > but also introduces this regression issue regarding above steps since t=
-he
-> > VSC is not sent to reset controller during warm reboot.
-> >
-> > Fixed by sending the VSC to reset controller within qca_serdev_shutdown=
-()
-> > once BT was ever enabled, and the use-after-free issue is also fixed by
-> > this change since the serdev is still opened before it is flushed or wr=
-ote.
-> >
-> > Verified by the reported machine Dell XPS 13 9310 laptop over below two
-> > kernel commits:
-> > commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
-> > implementation for QCA") of bluetooth-next tree.
-> > commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
-> > implementation for QCA") of linus mainline tree.
-> >
-> > Fixes: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed=
- serdev")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Wren Turkal <wt@penguintechs.org>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218726
-> > Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> > Tested-by: Wren Turkal <wt@penguintechs.org>
-> > ---
-> > V1 -> V2: Add comments and more commit messages
-> >
-> > V1 discussion link:
-> > https://lore.kernel.org/linux-bluetooth/d553edef-c1a4-4d52-a892-715549d=
-31ebe@163.com/T/#t
-> >
-> >  drivers/bluetooth/hci_qca.c | 18 +++++++++++++++---
-> >  1 file changed, 15 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-> > index 0c9c9ee56592..9a0bc86f9aac 100644
-> > --- a/drivers/bluetooth/hci_qca.c
-> > +++ b/drivers/bluetooth/hci_qca.c
-> > @@ -2450,15 +2450,27 @@ static void qca_serdev_shutdown(struct device *=
-dev)
-> >       struct qca_serdev *qcadev =3D serdev_device_get_drvdata(serdev);
-> >       struct hci_uart *hu =3D &qcadev->serdev_hu;
-> >       struct hci_dev *hdev =3D hu->hdev;
-> > -     struct qca_data *qca =3D hu->priv;
-> >       const u8 ibs_wake_cmd[] =3D { 0xFD };
-> >       const u8 edl_reset_soc_cmd[] =3D { 0x01, 0x00, 0xFC, 0x01, 0x05 }=
-;
-> >
-> >       if (qcadev->btsoc_type =3D=3D QCA_QCA6390) {
-> > -             if (test_bit(QCA_BT_OFF, &qca->flags) ||
-> > -                 !test_bit(HCI_RUNNING, &hdev->flags))
-> > +             /* The purpose of sending the VSC is to reset SOC into a =
-initial
-> > +              * state and the state will ensure next hdev->setup() suc=
-cess.
-> > +              * if HCI_QUIRK_NON_PERSISTENT_SETUP is set, it means tha=
-t
-> > +              * hdev->setup() can do its job regardless of SoC state, =
-so
-> > +              * don't need to send the VSC.
-> > +              * if HCI_SETUP is set, it means that hdev->setup() was n=
-ever
-> > +              * invoked and the SOC is already in the initial state, s=
-o
-> > +              * don't also need to send the VSC.
-> > +              */
-> > +             if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirk=
-s) ||
-> > +                 hci_dev_test_flag(hdev, HCI_SETUP))
-> >                       return;
-> >
-> > +             /* The serdev must be in open state when conrol logic arr=
-ives
-> > +              * here, so also fix the use-after-free issue caused by t=
-hat
-> > +              * the serdev is flushed or wrote after it is closed.
-> > +              */
-> >               serdev_device_write_flush(serdev);
-> >               ret =3D serdev_device_write_buf(serdev, ibs_wake_cmd,
-> >                                             sizeof(ibs_wake_cmd));
-> i believe Zijun's change is able to fix both below issues and don't
-> introduce new issue.
->
-> regression issue A:  BT enable failure after warm reboot.
-> issue B:  use-after-free issue, namely, kernel crash.
->
->
-> For issue B, i have more findings related to below commits ordered by tim=
-e.
->
-> Commit A: 7e7bbddd029b ("Bluetooth: hci_qca: Fix qca6390 enable failure
-> after warm reboot")
->
-> Commit B: de8892df72be ("Bluetooth: hci_serdev: Close UART port if
-> NON_PERSISTENT_SETUP is set")
-> this commit introduces issue B, it is also not suitable to associate
-> protocol state with state of lower level transport type such as serdev
-> or uart, in my opinion, protocol state should be independent with
-> transport type state, flag HCI_UART_PROTO_READY is for protocol state,
-> it means if protocol hu->proto is initialized and if we can invoke its
-> interfaces.it is common for various kinds of transport types. perhaps,
-> this is the reason why Zijun's change doesn't use flag HCI_UART_PROTO_REA=
-DY.
-
-Don't really follow you here, if HCI_UART_PROTO_READY indicates the
-protocol state they is even _more_ important to use before invoking
-serdev APIs, so checking for the quirk sound like a problem because:
-
-[1] hci_uart_close
-     /* When QUIRK HCI_QUIRK_NON_PERSISTENT_SETUP is set by driver,
-     * BT SOC is completely powered OFF during BT OFF, holding port
-     * open may drain the battery.
-     */
-    if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-        clear_bit(HCI_UART_PROTO_READY, &hu->flags);
-        serdev_device_close(hu->serdev);
-    }
-
-[2] hci_uart_unregister_device
-    if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
-        clear_bit(HCI_UART_PROTO_READY, &hu->flags);
-        serdev_device_close(hu->serdev);
-    }
-
-So only in case 1 checking the quirk is equivalent to
-HCI_UART_PROTO_READY on case 2 it does actually check the quirk and
-will proceed to call serdev_device_close, now perhaps the code is
-assuming that shutdown won't be called after that, but it looks it
-does since:
-
-static void serdev_drv_remove(struct device *dev)
-{
-    const struct serdev_device_driver *sdrv =3D
-to_serdev_device_driver(dev->driver);
-    if (sdrv->remove)
-        sdrv->remove(to_serdev_device(dev));
-
-    dev_pm_domain_detach(dev, true);
-}
-
-dev_pm_domain_detach says it will power off so I assume that means
-that shutdown will be called _after_ remove, so not I'm not really
-convinced that we can avoid using HCI_UART_PROTO_READY, in fact the
-following sequence might always be triggering:
-
-serdev_drv_remove -> qca_serdev_remove -> hci_uart_unregister_device
--> serdev_device_close -> qca_close -> kfree(qca)
-dev_pm_domain_detach -> ??? -> qca_serdev_shutdown
-
-If this sequence is correct then qca_serdev_shutdown accessing
-qca_data will always result in a UAF problem.
-
-> Commit C: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on
-> closed serdev")
-> this commit is to fix issue B which is actually caused by Commit B, but
-> it has Fixes tag for Commit A. and it also introduces the regression
-> issue A.
->
-
-
---=20
-Luiz Augusto von Dentz
+VGhlICdub2thc2xyJyBmbGFnIGRvZXMgd29yayBhcm91bmQgdGhpcyBpc3N1ZSwgYnV0IHVzaW5n
+IGl0IGhhcyBhIGZldyBkb3duc2lkZXMuDQoNCkZpcnN0LCB3ZSB3b3VsZCBsaWtlIHRoZSBzZWN1
+cml0eSBiZW5lZml0IHByb3ZpZGVkIGJlIEFTTFIuIEFsc28sIHRoaXMgaW1wb3NlcyBhIHJlc3Ry
+aWN0aW9uIG9uIHdoYXQgbWVtbWFwcyBhcmUgcG9zc2libGUuIEl0IHdvdWxkIHRoZW4gYmUgcmVx
+dWlyZWQgdG8gaGF2ZSB0aGVtIG9mZnNldCBmcm9tIHRoZSBiZWdpbm5pbmcgb2YgdGhlIG1lbW9y
+eS4NCg0KSSBhbHNvIHRoaW5rIHRoZXJlIGFyZSBhIGZldyBvdGhlciBmZWF0dXJlcyB0aGF0IG1h
+eSBiZSBpbXBhY3RlZCBieSB0aGlzLCB0aGF0IHdlcmUgbm90IGFkZHJlc3NlZCBieSB0aGUgcGF0
+Y2guIGNyYXNoa2VybmVsIGFuZCBwc3RvcmUgYm90aCBwcm9iYWJseSBuZWVkIHBoeXNpY2FsIGth
+c2xyIGRpc2FibGVkIGFzIHdlbGwuDQoNClRoYW5rcywNCglCZW4gDQoNCg0K77u/T24gNS8xNS8y
+NCwgMjozMCBQTSwgIktlZXMgQ29vayIgPGtlZXNAa2VybmVsLm9yZyA8bWFpbHRvOmtlZXNAa2Vy
+bmVsLm9yZz4+IHdyb3RlOg0KDQoNCg0KDQoNCg0KT24gTWF5IDE1LCAyMDI0IDEwOjQyOjQ5IEFN
+IFBEVCwgQXJkIEJpZXNoZXV2ZWwgPGFyZGJAa2VybmVsLm9yZyA8bWFpbHRvOmFyZGJAa2VybmVs
+Lm9yZz4+IHdyb3RlOg0KPihjYyBLZWVzKQ0KPg0KPk9uIFdlZCwgMTUgTWF5IDIwMjQgYXQgMTk6
+MzIsIENoYW5leSwgQmVuIDxiY2hhbmV5QGFrYW1haS5jb20gPG1haWx0bzpiY2hhbmV5QGFrYW1h
+aS5jb20+PiB3cm90ZToNCj4+DQo+PiBIZWxsbywNCj4+IEkgZW5jb3VudGVyZWQgYW4gaXNzdWUg
+d2hlbiB1cGdyYWRpbmcgdG8gNi4xLjg5IGZyb20gNi4xLjc3LiBUaGlzIHVwZ3JhZGUgY2F1c2Vk
+IGEgYnJlYWthZ2UgaW4gZW11bGF0ZWQgcGVyc2lzdGVudCBtZW1vcnkuIFNpZ25pZmljYW50IGFt
+b3VudHMgb2YgbWVtb3J5IGFyZSBtaXNzaW5nIGZyb20gYSBwbWVtIGRldmljZToNCj4+DQo+PiBm
+ZGlzayAtbCAvZGV2L3BtZW0qDQo+PiBEaXNrIC9kZXYvcG1lbTA6IDM1NS45IEdpQiwgMzgyMTE3
+ODcxNjE2IGJ5dGVzLCA3NDYzMjM5Njggc2VjdG9ycw0KPj4gVW5pdHM6IHNlY3RvcnMgb2YgMSAq
+IDUxMiA9IDUxMiBieXRlcw0KPj4gU2VjdG9yIHNpemUgKGxvZ2ljYWwvcGh5c2ljYWwpOiA1MTIg
+Ynl0ZXMgLyA0MDk2IGJ5dGVzDQo+PiBJL08gc2l6ZSAobWluaW11bS9vcHRpbWFsKTogNDA5NiBi
+eXRlcyAvIDQwOTYgYnl0ZXMNCj4+DQo+PiBEaXNrIC9kZXYvcG1lbTE6IDI1LjM4IEdpQiwgMjcy
+NDYxOTg3ODQgYnl0ZXMsIDUzMjE1MjMyIHNlY3RvcnMNCj4+IFVuaXRzOiBzZWN0b3JzIG9mIDEg
+KiA1MTIgPSA1MTIgYnl0ZXMNCj4+IFNlY3RvciBzaXplIChsb2dpY2FsL3BoeXNpY2FsKTogNTEy
+IGJ5dGVzIC8gNDA5NiBieXRlcw0KPj4gSS9PIHNpemUgKG1pbmltdW0vb3B0aW1hbCk6IDQwOTYg
+Ynl0ZXMgLyA0MDk2IGJ5dGVzDQo+Pg0KPj4gVGhlIG1lbW1hcCBwYXJhbWV0ZXIgdGhhdCBjcmVh
+dGVkIHRoZXNlIHBtZW0gZGV2aWNlcyBpcyDigJxtZW1tYXA9MzY0NDE2TSEyODY3Mk0sMzY3NDg4
+TSE0MTk4NDBN4oCdLCB3aGljaCBzaG91bGQgY2F1c2UgYSBtdWNoIGxhcmdlciBhbW91bnQgb2Yg
+bWVtb3J5IHRvIGJlIGFsbG9jYXRlZCB0byAvZGV2L3BtZW0xLiBUaGUgYW1vdW50IG9mIG1pc3Np
+bmcgbWVtb3J5IGFuZCB0aGUgZGV2aWNlIGl0IGlzIG1pc3NpbmcgZnJvbSBpcyByYW5kb21pemVk
+IG9uIGVhY2ggcmVib290LiBUaGVyZSBpcyBzb21lIGFtb3VudCBvZiBtZW1vcnkgbWlzc2luZyBp
+biBhbG1vc3QgYWxsIGNhc2VzLCBidXQgbm90IDEwMCUgb2YgdGhlIHRpbWUuIE5vdGFibHksIHRo
+ZSBtZW1vcnkgdGhhdCBpcyBtaXNzaW5nIGZyb20gdGhlc2UgZGV2aWNlcyBpcyBub3QgcmVjbGFp
+bWVkIGJ5IHRoZSBzeXN0ZW0gZm9yIGdlbmVyYWwgdXNlLiBUaGlzIHN5c3RlbSBpbiBxdWVzdGlv
+biBoYXMgNzY4R0Igb2YgbWVtb3J5IHNwbGl0IGV2ZW5seSBhY3Jvc3MgdHdvIE5VTUEgbm9kZXMu
+DQo+Pg0KPj4gV2hlbiB0aGUgZXJyb3Igb2NjdXJzLCB0aGVyZSBhcmUgYWxzbyB0aGUgZm9sbG93
+aW5nIGVycm9yIG1lc3NhZ2VzIHNob3dpbmcgdXAgaW4gZG1lc2c6DQo+Pg0KPj4gWyA1LjMxODMx
+N10gbmRfcG1lbSBuYW1lc3BhY2UxLjA6IFttZW0gMHg1YzIwNDJjMDAwLTB4NWZmN2ZmZmZmZiBm
+bGFncyAweDIwMF0gbWlzYWxpZ25lZCwgdW5hYmxlIHRvIG1hcA0KPj4gWyA1LjMzNTA3M10gbmRf
+cG1lbTogcHJvYmUgb2YgbmFtZXNwYWNlMS4wIGZhaWxlZCB3aXRoIGVycm9yIC05NQ0KPj4NCj4+
+IEJpc2VjdGlvbiBpbXBsaWNhdGVzIDJkZmFlYWMzZjM4ZTRlNTUwZDIxNTIwNGVlZGQ5N2EwNjFm
+ZGMxMTggYXMgdGhlIHBhdGNoIHRoYXQgZmlyc3QgY2F1c2VkIHRoZSBpc3N1ZS4gSSBiZWxpZXZl
+IHRoZSBjYXVzZSBvZiB0aGUgaXNzdWUgaXMgdGhhdCB0aGUgRUZJIHN0dWIgaXMgcmFuZG9taXpp
+bmcgdGhlIGxvY2F0aW9uIG9mIHRoZSBkZWNvbXByZXNzZWQga2VybmVsIHdpdGhvdXQgYWNjb3Vu
+dGluZyBmb3IgdGhlIG1lbW9yeSBtYXAsIGFuZCBpdCBpcyBjbG9iYmVyaW5nIHNvbWUgb2YgdGhl
+IG1lbW9yeSB0aGF0IGhhcyBiZWVuIHJlc2VydmVkIGZvciBwbWVtLg0KPj4NCj4NCj5Eb2VzIHVz
+aW5nICdub2thc2xyJyBvbiB0aGUga2VybmVsIGNvbW1hbmQgbGluZSB3b3JrIGFyb3VuZCB0aGlz
+Pw0KPg0KPkkgdGhpbmsgaW4gdGhpcyBwYXJ0aWN1bGFyIGNhc2UsIHdlIGNvdWxkIGp1c3QgZGlz
+YWJsZSBwaHlzaWNhbCBLQVNMUg0KPihidXQgcmV0YWluIHZpcnR1YWwgS0FTTFIpIGlmIG1lbW1h
+cD0gYXBwZWFycyBvbiB0aGUga2VybmVsIGNvbW1hbmQNCj5saW5lLCBvbiB0aGUgYmFzaXMgdGhh
+dCBlbXVsYXRlZCBwZXJzaXN0ZW50IG1lbW9yeSBpcyBzb21ld2hhdCBvZiBhDQo+bmljaGUgdXNl
+IGNhc2UsIGFuZCBwaHlzaWNhbCBLQVNMUiBpcyBub3QgYXMgaW1wb3J0YW50IGFzIHZpcnR1YWwN
+Cj5LQVNMUiAod2hpY2ggc2hvdWxkbid0IGJlIGltcGxpY2F0ZWQgaW4gdGhpcykuDQoNCg0KWWVh
+aCwgdGhhdCBzZWVtcyByZWFzb25hYmxlIHRvIG1lLiBBcyBsb25nIGFzIHdlIHB1dCBhIG5vdGlj
+ZSB0byBkbWVzZyB0aGF0IHBoeXNpY2FsIEFTTFIgd2FzIGRpc2FibGVkIGR1ZSB0byBtZW1tYXAn
+cyBwaHlzaWNhbCByZXNlcnZhdGlvbi4gSWYgdGhpcyB1c2FnZSBiZWNvbWVzIG1vcmUgY29tbW9u
+LCB3ZSBzaG91bGQgZmluZCBhIGJldHRlciB3YXksIHRob3VnaC4gDQoNCg0KVGhpcyByZW1pbmRz
+IG1lIGEgYml0IG9mIHRoZSB3b3JrIFN0ZXZlIGhhcyBiZWVuIGV4cGxvcmluZzoNCmh0dHBzOi8v
+dXJsZGVmZW5zZS5jb20vdjMvX19odHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNDA1MDkx
+NjMzMTAuMmFhMGIyZTFAcm9yc2NoYWNoLmxvY2FsLmhvbWUgPG1haWx0bzoyMDI0MDUwOTE2MzMx
+MC4yYWEwYjJlMUByb3JzY2hhY2gubG9jYWwuaG9tZT4vX187ISFHanZUel92ayFXc0VOQTh3M1Bh
+WUVHcHBTa0VZU3BlbEMtQ0gySlIzNVNBVEpYcmo4bUhpeEZHM1NDX2FqX0lpMHlTYm1HaFFnOFYx
+U1Y0c3N6a1kkIA0KDQoNCg0KDQoNCg0KLS0gDQpLZWVzIENvb2sNCg0KDQoNCg==
 
