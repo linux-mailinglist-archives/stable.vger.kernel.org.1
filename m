@@ -1,88 +1,137 @@
-Return-Path: <stable+bounces-45325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30708C7B28
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 19:31:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFEDE8C7B71
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 19:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60E89281570
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 17:31:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70010B21579
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 17:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B1B156673;
-	Thu, 16 May 2024 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA00156642;
+	Thu, 16 May 2024 17:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5EImDGb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DDrB1Gnd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E59C1553BD;
-	Thu, 16 May 2024 17:31:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F3A14533D;
+	Thu, 16 May 2024 17:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715880661; cv=none; b=F17XP6OXoR1lPAK/cNFvZdw5QabWrkApCrtNm6JBgexQs7rxamxOZ9u1uJHTNYQWF9CsLD4Q0QXAc60E81Px1MgwCqC3ir8N0o+uS7aHNCMxAueb2E60rohE5vo1YiPta9xlIjAQGVy6YaIwfreTvHOvmmXmQB2x4mlKx/aYRSY=
+	t=1715881187; cv=none; b=gIOziQeMUcSbjoXs2yh5aKb64mEFzhL9O/4gPHURU/7lnjkjkhwamoyDuzFo6GoSjxVXQTPRPICDYT0mLPRT2ns88OgGbfBCn8tyP0at0JX27w9RegtNGak85q0bg6XeFsD6LaXWSef+WP7UohV7llcwK+yRW3kGi6M8kHTwVlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715880661; c=relaxed/simple;
-	bh=AzdaOrhGtep2kiJJKcuHoTinfqmwfr6/5CJDCo9riY8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qBzVMabozkfLhsvRw58ZLnaHnrtG+rqYzxjjEPAexaWwc+5hLc1yVj22HeJ8+EixUXa1ttImoY/pWyHy6kaavvCHpqtkXKUhCDxnI6OOgrmXQbwXfICC7epRpmoeAMu8ZLGpaGncbS1axMR5jjmZWVYSYhm2hCznfDLFiM3M/ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5EImDGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66B6C113CC;
-	Thu, 16 May 2024 17:31:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715880660;
-	bh=AzdaOrhGtep2kiJJKcuHoTinfqmwfr6/5CJDCo9riY8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=S5EImDGbO+wSPMgV91SqzCPyo8jC5cJS7Dg67yVG83Zg6Egrh+DePKJ8dVkw5pGHM
-	 swsedIWMLMX0JXjjMpLyX9YidwdlVz6PCc26m/Fl4HsYKjN10H77FayTIm+ez/pNTk
-	 1bBxT4HlzvptNcj1s7adQZFPgahiWm7w/HrfGWA5bF/6xnCek55xeqZ7BEFEXsfZLT
-	 368ZoGbEonq9T/Ft5dRntO8fqKx3dx2BG6QwjfZk8KqHGdMr0t8TOb0yuYGl3fAJsc
-	 340m/V0MZ4wtCllD/5dO/xSAd5X9i2eOUlmUgRLYtU0ayqnaw4lF9T10hIA2WLUjUT
-	 BgV2N+Bh1l7pQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52192578b95so1325134e87.2;
-        Thu, 16 May 2024 10:31:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWxPFcZa4d9DdrOMr3kgwOSR2W+FaEHcUkI0oYsyNZzMhZUaqo+q4VAAxlABL3KPf50lveWqUFVJfYqsuA5Jghu68RKt91fGBIYYBghNU29Ozu7y5HNrh0Rcbw6K1gTX8rHuQmpoZ27C3S/QeQu3h2U3RcV/Pjsjx1ySyfkmO6M
-X-Gm-Message-State: AOJu0YyufCdrk9vH4Q/IchPg9BvQyv8KHm4ifVwRGAnmVDZjDrxNAwvo
-	zj/AyCd+xC5mjXXkib8mOads1v1+7bA8brusH0eIQOqhu5kln7xHPGhycr6icQotpcbZO/bLC4R
-	XNCj1Ikjgad/uwDLmzw6g7g4ayjM=
-X-Google-Smtp-Source: AGHT+IGz2QoIsDKre6EENPFRqf4/Pb2krkDKRrigOkWAH6mdXxplQWwG2Z5weUsJewdlutu18655swmaj7R/Guf9P/A=
-X-Received: by 2002:a05:6512:3b20:b0:51d:2eba:614 with SMTP id
- 2adb3069b0e04-5220fe7a025mr15549611e87.53.1715880659275; Thu, 16 May 2024
- 10:30:59 -0700 (PDT)
+	s=arc-20240116; t=1715881187; c=relaxed/simple;
+	bh=Ih2+B019IWo/SlVm8UkxUi6Qnobr9mo23QA54zfP0TA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j3MBx1Mk627WNGnxq1ZOHMXJ2fubhyZqCd4eb1y0X7039HPQMQrMOzyCyaX6xUz4FJgjxeNI8iV/p63rExZ5W1Z0B5yNhdT3RfnLfMBUttqdBFHjS+PIDpUBawcodHfd1kLLku2opAYWcZWuUM7aYL92U/cke4yF1tevs/jxo7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DDrB1Gnd; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715881185; x=1747417185;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Ih2+B019IWo/SlVm8UkxUi6Qnobr9mo23QA54zfP0TA=;
+  b=DDrB1GndXWCT9JmhCG+s9rbvMxjtBBc1S+NQNv6b9r0Wz17U2XSKaRyi
+   0N9AhPFaq4g0h4nfPsuDtiAA1V7rCrmGYvyw+YdoP7A3NE3ugoZpYg/2v
+   r6QxkaddiAuIZV/UGdbp2xg8VhgmrSnG6VJKTRx8g0/lnq5nyGMWZgG6R
+   FOdibfFB+TxApXdppNXScOmvy+xp9YosNMfTcl6BtkMFNVNSRzuYLOxJV
+   i5kMDGa1sNefzUm/MoQXEqJzqgHsfLy97OGmO6mcB3Ij56Oq/krpdx2kr
+   D3RjjO04uiQ1jyopdqQNpYcEcdDLSm3U6VXDgICR1tiYttyDSKdzh6xOP
+   A==;
+X-CSE-ConnectionGUID: RoZQALqvQF6LvC0MrN1sZw==
+X-CSE-MsgGUID: BMqKIO3pQqC2mTvYiBPUDg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="29518937"
+X-IronPort-AV: E=Sophos;i="6.08,165,1712646000"; 
+   d="scan'208";a="29518937"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2024 10:39:45 -0700
+X-CSE-ConnectionGUID: jT8Zz+qdSda7PJgRpZIGQA==
+X-CSE-MsgGUID: sv+ffuftRNKRBMZxBxaVvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,165,1712646000"; 
+   d="scan'208";a="31513810"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa008.fm.intel.com with ESMTP; 16 May 2024 10:39:42 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id C22FD136; Thu, 16 May 2024 20:39:40 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-kernel@vger.kernel.org
+Cc: Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Adam Dunlap <acdunlap@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/1] x86/cpu: Fix boot on Intel Quark X1000
+Date: Thu, 16 May 2024 20:39:27 +0300
+Message-ID: <20240516173928.3960193-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240516090541.4164270-2-ardb+git@google.com> <FBF468D5-18D6-4D29-B6A2-83A0A1998A05@akamai.com>
-In-Reply-To: <FBF468D5-18D6-4D29-B6A2-83A0A1998A05@akamai.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 16 May 2024 19:30:47 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG1TLKR1ukg7Vn3rgAC2opL1LN6EX9L9XVxZQ3s+6wuBQ@mail.gmail.com>
-Message-ID: <CAMj1kXG1TLKR1ukg7Vn3rgAC2opL1LN6EX9L9XVxZQ3s+6wuBQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/efistub: Omit physical KASLR when memory reservations exist
-To: "Chaney, Ben" <bchaney@akamai.com>
-Cc: Ard Biesheuvel <ardb+git@google.com>, 
-	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, "keescook@chromium.org" <keescook@chromium.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, 16 May 2024 at 19:29, Chaney, Ben <bchaney@akamai.com> wrote:
->
-> > +static efi_status_t parse_options(const char *cmdline)
-> > +{
-> > + static const char opts[][14] = {
-> > + "mem=", "memmap=", "efi_fake_mem=", "hugepages="
-> > + };
-> > +
->
-> I think we probably want to include both crashkernel and pstore as arguments that can disable this randomization.
->
+The initial change to set x86_virt_bits to the correct value straight
+away broke boot on Intel Quark X1000 CPUs (which are family 5, model 9,
+stepping 0)
 
-The existing code in arch/x86/boot/compressed/kaslr.c currently does
-not take these into account, as far as I can tell.
+With deeper investigation it appears that the Quark doesn't have
+the bit 19 set in 0x01 CPUID leaf, which means it doesn't provide
+any clflush instructions and hence the cache alignment is set to 0.
+The actual cache line size is 16 bytes, hence we may set the alignment
+accordingly. At the same time the physical and virtual address bits
+are retrieved via 0x80000008 CPUID leaf.
+
+Note, we don't really care about the value of x86_clflush_size as it
+is either used with a proper check for the instruction to be present,
+or, like in PCI case, it assumes 32 bytes for all supported 32-bit CPUs
+that have actually smaller cache line sizes and don't advertise it.
+
+The commit fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct
+value straight away, instead of a two-phase approach") basically
+revealed the issue that has been present from day 1 of introducing
+the Quark support.
+
+Fixes: aece118e487a ("x86: Add cpu_detect_cache_sizes to init_intel() add Quark legacy_cache()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/x86/kernel/cpu/intel.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index be30d7fa2e66..2bffae158dd5 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -321,6 +321,15 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ #ifdef CONFIG_X86_64
+ 	set_cpu_cap(c, X86_FEATURE_SYSENTER32);
+ #else
++	/*
++	 * The Quark doesn't have bit 19 set in 0x01 CPUID leaf, which means
++	 * it doesn't provide any clflush instructions and hence the cache
++	 * alignment is set to 0. The actual cache line size is 16 bytes,
++	 * hence set the alignment accordingly. At the same time the physical
++	 * and virtual address bits are retrieved via 0x80000008 CPUID leaf.
++	 */
++	if (c->x86 == 5 && c->x86_model == 9)
++		c->x86_cache_alignment = 16;
+ 	/* Netburst reports 64 bytes clflush size, but does IO in 128 bytes */
+ 	if (c->x86 == 15 && c->x86_cache_alignment == 64)
+ 		c->x86_cache_alignment = 128;
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
+
 
