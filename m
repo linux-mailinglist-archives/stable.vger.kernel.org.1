@@ -1,190 +1,165 @@
-Return-Path: <stable+bounces-45257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870398C7375
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 11:06:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104A98C738E
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 11:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1663A1F23B51
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 09:06:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3237282248
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 09:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6AB142E9F;
-	Thu, 16 May 2024 09:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1DF14373F;
+	Thu, 16 May 2024 09:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SdRdpQPZ"
+	dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="cmmZPd2+";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="cpG6DbTl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout36.security-mail.net (smtpout36.security-mail.net [85.31.212.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F237142E91
-	for <stable@vger.kernel.org>; Thu, 16 May 2024 09:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715850358; cv=none; b=Rb1GTWI/vXIih2/hT73BIVF0qIqf1gYKKD2g8746S6lpaLtM8H7/qO90e9N61+wg5WmRvpLF/oW6Gd/ophU+0H2KHzURuSjRNXF2FQhz/GTuULP0brUMRgC33gliIrO8WImtIgJMOk2wfmo+E3rvNtId5RWVj723qP6DTVyy878=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715850358; c=relaxed/simple;
-	bh=0E+gPqH6jSJafScL9pyYv33ymYZlJA8AedYepE0ldGY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gno0+fR4T2OIl/Mp4ZRQzl3bHk8NMfUutoKpuWcVa30P2m6/8uE/JRhEXa+RyjJLpE1NV3MhU6hizWOYHAC0UCEq/X199dF7Y+Mn5iONnXEQpcH9EOiHx58J1VrYS1XBd1YzcGILPJ2SyXyhWZuY9Ie+QOcgsTEWNymYjkftATk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SdRdpQPZ; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4200efb9ac6so29088765e9.2
-        for <stable@vger.kernel.org>; Thu, 16 May 2024 02:05:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715850355; x=1716455155; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eCVjg4sqSDfY9TI5zH06fjgzS/36wYmW5IVSJ2sv/qA=;
-        b=SdRdpQPZUsg7VDeysAh0OEXsppk9PcbWNAimh5KzdU8ojMTRQ1U8RxGxNrYVZzco12
-         u9eM8fsn2hjDZtxJbMQmQ7m27tIDX5ogq5IT0DXdyWeUVgD3PYC2wabooCdwhFleovKt
-         XoO4ksK7yKHXkDacT+iIZJKluRviDnsc73mQPn0Kej15PyCFE+nXYXDjtL5hl0Tn+siI
-         FGy7yLbZiFRmfC4Bvo8QZYP+oXSAlZMZSnzgt1qSCftE/AIz1HPpAA7652jd3xiQoasE
-         9xuqCZ7mdU8ai1Ak+QfmwtQEhgLV/UDwaQ+kTXaznY3Qny3XxfFa20RBOHNILQ0/7IIC
-         lbew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715850355; x=1716455155;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eCVjg4sqSDfY9TI5zH06fjgzS/36wYmW5IVSJ2sv/qA=;
-        b=mUeDealiiGoANxpM4ECFA+KRI764AUIiwmlQdTOK0+vLADfs5OCrWAYYjplcNH1eTz
-         xQkYCax4TUzaxf7QwJYhCYKm58gAH01RNGGucrWYDJzCupVkTri59fBIgQrhgDzdIsQW
-         XNGOCOWwGrVowoyvVffS3Sx5vptlhLUgl14bAK55QA1/D4uZ5h3IF2U6AFbo4ZDOzusQ
-         70CH4U/zRfD0SGD2AFPXo3UShW996CRxGN6LlTp9vtt8EhTGmcB3t81g79suGFl0omhN
-         ldHmovuTLN4LmIoW3zfgYLyBDG9rip+rJPJHhoowbQ1RmM/ZHIQ+4jEarcc6qTqEXIaj
-         1Zyw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuE7QufgLnyLXrJAL3Dki4MVhh96biMRDCO0/qT8yFpG2Lr0GdbQrMKB4DFO0jEhqB+UYX/sR+iD3Y31xF6ukxDoLEraQa
-X-Gm-Message-State: AOJu0Yxm/WQBmW3ZM8lZicQnIn+0eV3CMzGyDYk2swUEFU5O5ud6R1aa
-	sKqYo2yu4JzJN8oXM63Minb/AXl8pVR3Eaxj8TIc584JyFv/3vZVqx0/15dqlEi1kR4RTg==
-X-Google-Smtp-Source: AGHT+IExAYePWaQ3A5GVUKfOSn5p57YB46bPWL6/P0sXj67q8bQsgVt0zHPnfetLFURFlbMeUdkLlKxe
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:118a])
- (user=ardb job=sendgmr) by 2002:a05:600c:1d86:b0:420:2962:242d with SMTP id
- 5b1f17b1804b1-4202962261cmr141205e9.8.1715850354957; Thu, 16 May 2024
- 02:05:54 -0700 (PDT)
-Date: Thu, 16 May 2024 11:05:42 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2CA13E88C
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 09:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=85.31.212.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715850907; cv=fail; b=jlA9X3fTYCSSjb9IdOx5HkGSuT592JvyPHVQh19qTckJE+huIZSkjQDEBBt1RZtjhKzDMFjBk9FWe1rO/XBQ4oOLbScrvnf6rAf4DOX7M6wVCEIxTb+DxEACJR7284XX1hG/3ALZ1zYfiLHHf7WxBIBGrKi1uTNc29lrJLoqmdM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715850907; c=relaxed/simple;
+	bh=Gk97dZ93D1jbPehlZpifsIayO1o78Zn1QAGKkvOAPIU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=OGkqDU2/x97lcs87wAI+O192A47rVuAphUJbPWULeE7Bcrgr4HY8rP18l5VNdXlJVB9F/juqahYz+uZhNGJu+JFMMg/uHYwIdbLUzJc03h2u77qV27orMOCjr5fZbsPf26qKCYtju88RRoZyvyiE97wg7yRQ8XSwR4X2tVBHENg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; spf=pass smtp.mailfrom=kalrayinc.com; dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=cmmZPd2+; dkim=fail (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=cpG6DbTl reason="signature verification failed"; arc=fail smtp.client-ip=85.31.212.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kalrayinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by fx301.security-mail.net (Postfix) with ESMTP id C0E0F3D1135
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 11:10:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
+	s=sec-sig-email; t=1715850653;
+	bh=Gk97dZ93D1jbPehlZpifsIayO1o78Zn1QAGKkvOAPIU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cmmZPd2+98eHOCfqRu62eD0E7SduEfGb78p+KUu9ya5NdAM3uKGQOmUw546Rv54sT
+	 TyZHrFs3RQQOaUox3fafqaPNuNcVtZL82NvP+83UWwca5gWEjKLvjmOyJqS5ZxSidP
+	 56XBNhBpU4gB01XvQHr8fwv1T1Oc8n32PBVJoJw0=
+Received: from fx301 (localhost [127.0.0.1]) by fx301.security-mail.net
+ (Postfix) with ESMTP id 6E8833D1433; Thu, 16 May 2024 11:10:53 +0200 (CEST)
+Received: from PR0P264CU014.outbound.protection.outlook.com
+ (mail-francecentralazlp17012010.outbound.protection.outlook.com
+ [40.93.76.10]) by fx301.security-mail.net (Postfix) with ESMTPS id
+ D3B673D10F4; Thu, 16 May 2024 11:10:52 +0200 (CEST)
+Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:14b::6)
+ by PR1P264MB3511.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:143::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.28; Thu, 16 May
+ 2024 09:10:51 +0000
+Received: from PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::7a6f:1976:3bf3:aa39]) by PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::7a6f:1976:3bf3:aa39%4]) with mapi id 15.20.7587.026; Thu, 16 May
+ 2024 09:10:51 +0000
+X-Virus-Scanned: E-securemail
+Secumail-id: <575b.6645cd9c.d2d8f.0>
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bMMBLEwBE/ObnHKQ4khNT0mpp4RqPE3IrUG9HSK2mJwo+3+qFDJHyC87qO/OZxG1Vrb2p3yLGN+EaAxm4shNCy61GREWDVuv0fb3bIVEMyy9qLCPGiULpfokIpxngUYPXLMXAyReio9uO3rqn0KHRW40H0DP+NhE7SqfFcQt4B9cqeY2uXflsVfV2BMV76GGcPLhoPvao3Y3jkMswkFk7OFP5KM5kBfa4DOLgDXvX/sW0AxgWqVntAtnkXXqNbjWoyUmUt2FlqG+CLxRNker/cF3CSnoy5KOf24mjpa8k13tJRAt6p/6cvctVpNaimJvd14DJnrvvfP2lo6xwZRNHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microsoft.com; s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tSwz5Dq6FqvDtkKK7Kx8CrgM6PvxxFnc83+LktgGgug=;
+ b=bmNrdpu01GleGm83Ya/+uqwR6Th2q5+mk08HNhJYu9ZQSO7Zuk9Avot4L5vvhyi94yTXO6b08odmBkopIPRPWAIp6DYvQ5wMHhBSVufNQ60n3esRUT+TAa7l3wS0CJJ+vzKwr9NBMzKOa+r3gYkbOZKSPLXFxuKH2gF85ftYBSEGp0djXTi2dDW9wLlt6mi8PIW1VTz+tKRNPOCbVyhGCm+plq2HVPwKxCnRqBlsPoiXZ6QhXFxZQiuaztco0ubjH0xez3W5Hy0TWagiL9+yzih4G/YKiw52hn9IogSePPcsfVHp0vTXfNUPBFPjLddm2QSd5wxrlVrx7rANXjoa2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
+ header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tSwz5Dq6FqvDtkKK7Kx8CrgM6PvxxFnc83+LktgGgug=;
+ b=cpG6DbTlQ2P/iKLPbscBYpFtc4yumxYPigVsaJ1oltIFtfPpnCR4QCLnT8wOfV8dNoFo9Eo12rKQW3ZIub8CaVys01l/Ea/tTfoQeRNdTJ6oN4SORZsSOr9gXU+agQAJylZShPwFDQ1aTnQhBat9Pr9MECdae5/jnt0Kv/giyV1601T8bQX3P5ECW0IAyloz74iSL1RFJ1kkJkC/LX9KkXCJRieq+up13XUi9sbWtSz1UCLyCrIgiFSSlB+S8lz9zGwR5KtplSrpg4X+ToaIN4Amqf8/Scxarbw726Bin/rxKUzdKA1Ix0zFFvc2WLEuTw7yb1GqMs/83H5578Iuzg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kalrayinc.com;
+Message-ID: <7a8a015d-24d9-4bd3-a252-988f5273978f@kalrayinc.com>
+Date: Thu, 16 May 2024 11:10:48 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/243] 6.1.91-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240515082456.986812732@linuxfoundation.org>
+Content-Language: fr
+From: Yann Sionneau <ysionneau@kalrayinc.com>
+In-Reply-To: <20240515082456.986812732@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4PR09CA0022.eurprd09.prod.outlook.com
+ (2603:10a6:20b:5d4::14) To PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:14b::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4092; i=ardb@kernel.org;
- h=from:subject; bh=TsQg8UBvrS233z0bzqtKVfmyw4Ycif6w17yanCPXV7E=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIc31TBpHW/RC/rlrTUxnZcf/uLb3/ESheT/barJqLDtiq
- jO2qT/qKGVhEONgkBVTZBGY/ffdztMTpWqdZ8nCzGFlAhnCwMUpABOJ3s7I8KtS7ou1ytW3Sswh
- c9W+XfX6vcPqrIfP98XVXFe+39F4EcPwzzBp5vzKGrUX64NiNJ5+vGxuy8HzPdHQMu3c8t5a99e 8vAA=
-X-Mailer: git-send-email 2.45.0.rc1.225.g2a3ae87e7f-goog
-Message-ID: <20240516090541.4164270-2-ardb+git@google.com>
-Subject: [PATCH] x86/efistub: Omit physical KASLR when memory reservations exist
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: keescook@chromium.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Ben Chaney <bchaney@akamai.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR0P264MB3481:EE_|PR1P264MB3511:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45aa62be-499b-4cfd-9b37-08dc758814cd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|7416005|1800799015;
+X-Microsoft-Antispam-Message-Info: CKgO31rDIVR80w7uwKkQ5GdGz9OUZvnRGxlqq08ElYbP0oLS8ZsodafFv09la2Weealuz7oJuEffxbwOKcurseqizL7+EI52y/aJ7auOcJgyUah95bFm4e1eLUKeslgB2zX4qnMGCu1eyOKz/s8tSXLBnsWeQTv6HepXBzzE5yRyRAop9yDvZ6UFweMgODkADIHayM0HOKCpAUxvXTmoM6s7xCa3/74HUSYtqjVHCFkwD9z1k6KRrnRbItqklkbdTnBZ5Oix0QiU6QcuPpIGPXBZNz7xpj8Nb/sjcgrJccDXjVZ+dwWW/yGd5F6bo7U3GLQGBPaPSLV8U9xhlUz+q75bf6kx8kipkKnWow/Ir/Jepu/8xBEuHBylgyvs9bsSM+Y66ytn5kr6fVsY1rhtJUGM0lcApnCYuNfVqZ+lZmLOy5EB/GyRKSZv719JyzavTqRwbmAWVrN6GSup0q3pesEqeqLmx3vRhrSQ7qb9uwYPdCV4hAccFVJ1DS+zLrpkz8JXsTNFrF7l2QPgqBO8zQq6PpRGyEG4ebOaCWFSzBNwpcFUl8VZ9PpA/ojTjL4SQ9gMBCN5+UN8kAQiaTTzPWXz/IHZ+0vOooxourYmirZUqJx57mW5KJTnIk8MJFCxpbfPFCsFFrDsXAV/cRGi9W4uurkwOnREzGRJK6S0G0G4XyaM8dtUsyt2P5M3PiGostTN9I0uJf3PUAJRB5Rs4loC6wgdFzN6gjhBaiGtUE3uMgFwdBN7jX33Sf4DoJX3o1kpBKDhb/YJW1Oss/tx9zstKlqUZpcGHQdx5sw5sdgEyQJLArZzIaV1inK8k0izLHgv2M5xcW0p+4H/Xx7KnarWTteYFY+G1NGwQ6fwHhYnJjw0x4/1pEb659FQQvgnmx6NEcLu2onNXdd/GhnzEaJmv/gTn+sfJ7L/XFstTiQdcK8otZWk2q8+u3pvEGYoQL/
+ PitfbMgR/02roedsmjNZtHwdRN65emeb3oc4aglfhytD7mXNW0qw6mCdFJGy6VVjNTbNeIYwh9Uc5l/R2IHNS0HJxRrYD83SlfhuNycBJ06Mox7u7KwNM4SWDEPCFcAQt21Us/WHafmMikKOBR7YHZ/IkExRwzpBhRPWbcpS8/+yJM/kWvLanWR2Nz/WVqz9mkrMw/+uOiRDHxFL7TbUaLv8yO8GR1XKF3SuG2rXy/+6K+ZcpOwFAa2u3PQXPr4bCxCcK9A7pp3TNBb+MtP618CbG29F7WzP9z4eTy+c=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: ao8OStSqmEU2P3Z/OZHzowA/hZjArs+240tkugjwrZQRi5As5OvCRxQJPUT67qacHp+lLCFqJ0UB8aLEH3MI+J7PfoCP/GV81bHjWBTBiLxCZBhYuRCVe8eXBOFY5LlK520THh4Im7IfxcDw3nCSsuAKXmuoxjJaN4zxCoXqlDo/UJgMjvbhRrl2ExSptE5xrz76ZzbM4uTBHJHAKLk223TbcsMgQrJHPAYjbX6QCP1BpffWxfVNdnVpSn2QWMreZ3lSTVhv2wK4QVvmEiKWIS27mohE4cv5iPHYl9kK28EbjqaYS88wUo4Id8Rf+CP4dWu7f0wgcM7XeDuuR/ViekwSn3U6a3cUiieN6AJ9mr4J9y6jC707uCj73Ltf4ZGKo9NKsthEd8SmBgZZ7YjVj75bfXslrQs1IGIsrOm2mz0i31OCiuN7Wk52x8VFQGFwGtrXHYpw8Sn7RbmmAnVtpGZLZUFe6AsgPVsXwBg0D/CzlCQAkYkOiTs5uNxykiG3uPHpyOY29mOFsI95Nsal6IRcsHUiReTXqYUIsqupA+uJJtO4w7QJ560DeUXbuTnxgm8F0YvJ4HCEu5ylBLuyDYEtNEL09+7KpiwkNK6pkgPp6BpDmd4OEyKX3l9YpVUAyqc/e/7n4os0K++ifdF1jYkVVdCSzn+ILUZHwm2dRyStPGFo5h88YVuAnmCs3qjsqcoS4vMcIho4qQ0g1c1VTcMPCn4DAsjW+I0r+/HNWecOxNsFCYJXyxAv0br4MM957zWcIsjLq70gjhKc6qX7z3fUm7jUDEFWYSwM4T0oCRdYNs7Z0Hf65uyvYM1ZIHTWffFhD30q/TwvlIqhtH8qYbG8PZoGxralChQTHaD+CA/E3SjSfTuAJCFWEplYOrKAXlN1ChqFI+oxeDS/Z/sGzGc5bYJvWW+PQ4WitzOLDEIgJZh1bjdsT595K1kLy/qf
+ 5T66ivC0jwP6aZqJsEIL0oYv3DWTKAdTAeeatHSfsGRUIYC+PyqBIegP2060iJHHCuSoog4m3roFJZM0KrL07RH1WEvVPbbyk0TBF5Z8Js+PchgbvMYIdrVvNMqWyYQesXqcS76hp6myM3L482KnY7INcAo3m1YJQtisdX8HJTmiT+5oANzcCQKQcsuVDEKxeoBK6IqxBFi0Eg56MCOAHj7PGxHtxWPao8Ctje5VmpnMeC8PeXoH6mG9dd07FRdMndMQ++/Gq8dh7HPIvBXmTCNTdEEMa/TXScwERONK5t4LXcdVy8VJYvl2PWWx91TCYlkHKRK3f6C7Sgiwmy1UFXUmPHPxo44gKIsP7LLwEI6j9ODmwKLwrL6Co57wkbkkVKzQc17ZdQa4ECOKtq6XPYac2hA7XwtZoTjrzJZxHyEPLgfbZ36tYpyoajMFeRd0q8Yos23YCzNvIwDQxRGItyrQaie+0nEbmEFRnFj+qd2Z97iwAQO3c3Yt7aLjcL/ONqy1zfS1le32jw+YwtlsZNLbmYcQ1JUvSc0lvCMMl17fQV6448iWROOnT56GaGAuYvlZnguU9IRo4DjNbdTjC0Thm+zVOmeTCDwJLJYwER8UTR5tAwv+QQFzDkda0IoNsFIbe7b3SB7wZ6qQxqbuOQ==
+X-OriginatorOrg: kalrayinc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45aa62be-499b-4cfd-9b37-08dc758814cd
+X-MS-Exchange-CrossTenant-AuthSource: PR0P264MB3481.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2024 09:10:51.3906
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6QJtzNeFVmIp8RHXD69CMA7qcpeftJ4TbBxdNCnywckcsKpkGSDtnpDSZ1JFhC0+J4Rs4TV3YJQ9ayeYb5Uh3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3511
+X-ALTERMIMEV2_out: done
 
-From: Ard Biesheuvel <ardb@kernel.org>
+Hi Greg,
 
-The legacy decompressor has elaborate logic to ensure that the
-randomized physical placement of the decompressed kernel image does not
-conflict with any memory reservations, including ones specified on the
-command line using mem=, memmap=, efi_fake_mem= or hugepages=, which are
-taken into account by the kernel proper at a later stage.
+Le 5/15/24 à 10:27, Greg Kroah-Hartman a écrit :
+> This is the start of the stable review cycle for the 6.1.91 release.
+> There are 243 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 17 May 2024 08:23:27 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.91-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
 
-When booting in EFI mode, it is the firmware's job to ensure that the
-chosen range does not conflict with any memory reservations that it
-knows about, and this is trivially achieved by using the firmware's
-memory allocation APIs.
+I tested 6.1.91-rc2 (ca2e773ed20f) on Kalray kvx arch (not upstream yet) and everything looks good!
 
-That leaves reservations specified on the command line, though, which
-the firmware knows nothing about, as these regions have no other special
-significance to the platform. Since commit
+It ran on real hw (k200, k200lp and k300 boards), on qemu as well as on our internal instruction set simulator (ISS).
 
-  a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+Tests were run on several interfaces/drivers (usb, qsfp ethernet, eMMC, PCIe endpoint+RC, SPI, remoteproc, uart, iommu). LTP and uClibc-ng testsuites are also run without any regression.
 
-these reservations are not taken into account when randomizing the
-physical placement, which may result in conflicts where the memory
-cannot be reserved by the kernel proper because its own executable image
-resides there.
+Everything looks fine to us.
 
-To avoid having to duplicate or reuse the existing complicated logic,
-disable physical KASLR entirely when such overrides are specified. These
-are mostly diagnostic tools or niche features, and physical KASLR (as
-opposed to virtual KASLR, which is much more important as it affects the
-memory addresses observed by code executing in the kernel) is something
-we can live without.
+Tested-by: Yann Sionneau<ysionneau@kalrayinc.com>
 
-Closes: https://lkml.kernel.org/r/FA5F6719-8824-4B04-803E-82990E65E627%40akamai.com
-Reported-by: Ben Chaney <bchaney@akamai.com>
-Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- drivers/firmware/efi/libstub/x86-stub.c | 28 +++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+-- Yann
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index d5a8182cf2e1..1983fd3bf392 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -776,6 +776,26 @@ static void error(char *str)
- 	efi_warn("Decompression failed: %s\n", str);
- }
- 
-+static const char *cmdline_memmap_override;
-+
-+static efi_status_t parse_options(const char *cmdline)
-+{
-+	static const char opts[][14] = {
-+		"mem=", "memmap=", "efi_fake_mem=", "hugepages="
-+	};
-+
-+	for (int i = 0; i < ARRAY_SIZE(opts); i++) {
-+		const char *p = strstr(cmdline, opts[i]);
-+
-+		if (p == cmdline || (p > cmdline && isspace(p[-1]))) {
-+			cmdline_memmap_override = opts[i];
-+			break;
-+		}
-+	}
-+
-+	return efi_parse_options(cmdline);
-+}
-+
- static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
- {
- 	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
-@@ -807,6 +827,10 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
- 		    !memcmp(efistub_fw_vendor(), ami, sizeof(ami))) {
- 			efi_debug("AMI firmware v2.0 or older detected - disabling physical KASLR\n");
- 			seed[0] = 0;
-+		} else if (cmdline_memmap_override) {
-+			efi_info("%s detected on the kernel command line - disabling physical KASLR\n",
-+				 cmdline_memmap_override);
-+			seed[0] = 0;
- 		}
- 
- 		boot_params_ptr->hdr.loadflags |= KASLR_FLAG;
-@@ -883,7 +907,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 	}
- 
- #ifdef CONFIG_CMDLINE_BOOL
--	status = efi_parse_options(CONFIG_CMDLINE);
-+	status = parse_options(CONFIG_CMDLINE);
- 	if (status != EFI_SUCCESS) {
- 		efi_err("Failed to parse options\n");
- 		goto fail;
-@@ -892,7 +916,7 @@ void __noreturn efi_stub_entry(efi_handle_t handle,
- 	if (!IS_ENABLED(CONFIG_CMDLINE_OVERRIDE)) {
- 		unsigned long cmdline_paddr = ((u64)hdr->cmd_line_ptr |
- 					       ((u64)boot_params->ext_cmd_line_ptr << 32));
--		status = efi_parse_options((char *)cmdline_paddr);
-+		status = parse_options((char *)cmdline_paddr);
- 		if (status != EFI_SUCCESS) {
- 			efi_err("Failed to parse options\n");
- 			goto fail;
--- 
-2.45.0.rc1.225.g2a3ae87e7f-goog
+
+
+
 
 
