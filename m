@@ -1,100 +1,77 @@
-Return-Path: <stable+bounces-45307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E978C7A11
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 18:07:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C31768C7A1E
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 18:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6E5628453B
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 16:07:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D6C91F23DB1
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 16:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1D714D713;
-	Thu, 16 May 2024 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AFF14D718;
+	Thu, 16 May 2024 16:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="D+vybkna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFo6xGgJ"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135A914B953;
-	Thu, 16 May 2024 16:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF7B14D705;
+	Thu, 16 May 2024 16:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715875621; cv=none; b=QdswXMcAxTf6ygHHrxIUbtzdyAcLgzuH5BA1LN8H5344SZ4QIM5fXufC/aVzJgXWIZbyNXwYc/DttpxIizeVGg32KPxlBdtJzOm4AaVBtsRyT6G3FtpuTyg290UipA92bo5zxOniJzgaGen/Dpp7gaddHg86iZB1b3If3o/WHos=
+	t=1715875940; cv=none; b=S7u4aDSfOIvX3qWmFdeGAn57EkitWOADmv1pWI7V3W3xYN6PZWdWQfjB0UD7ZeUauZXwRA69O5058Xit1MivyLbemZv6LpxCp1UtLwZ56tWaA5xU2zfwqhT3OCjdLhFBPRyZAwc+MWf4HfvnLJGzSFttyZQnN14TL4dMyrIUS3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715875621; c=relaxed/simple;
-	bh=NDl1/On8Xl0p+o2LhYUeEkJ4uggR90m3F+FyFOP1acI=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=CqsJQxS0B0s4RmwAbyYko2vuanq6rg0ncArbvBWBhQs6ZMiNLSOwdKVqJH2qVo7LzZye6C1osyOjy1qQ4RdxcBCRLUfoh+asIEdyq60xBdqTlSqFFKwrslUrxkslzzluENfjbtU5qPIwKZejREeDsKMTuec9p1sjHOjh/g2xR+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=D+vybkna; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1099)
-	id A63DD20B915A; Thu, 16 May 2024 09:06:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A63DD20B915A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1715875619;
-	bh=H1h4r/pbYCGt93I7ZZhMxZkjxnhh2Z7CdrZM+aGCgc4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D+vybknaQfz6UUVxhmK+s6MkF/uqCV2n77dyEOSCZnAiG3zoC7TaFRLhckgd2UIJo
-	 SQFBIEVDS6/eD/0GUj2t/W/x9U/R4krC42cgVzaaBuC5fSkyeEK7wyoUYHxInNXplO
-	 pSEz0qef+V1q4z9SjL/tzUwUb4QZZMCVy89+Iuxw=
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	longli@microsoft.com,
-	yury.norov@gmail.com,
-	leon@kernel.org,
-	cai.huoqing@linux.dev,
-	ssengar@linux.microsoft.com,
-	vkuznets@redhat.com,
-	tglx@linutronix.de,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: schakrabarti@microsoft.com,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: mana: Fix the extra HZ in mana_hwc_send_request
-Date: Thu, 16 May 2024 09:05:38 -0700
-Message-Id: <1715875538-21499-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+	s=arc-20240116; t=1715875940; c=relaxed/simple;
+	bh=AveY1UwJeMZdQSc/FB03KHEVXdIe7soELOoMFXXzsTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dl+7fIBb4GPcJuGPNWHwb5plGINnKpnfWH+R4rDEa6c6wiVzauSohmeymgRQKiGid1u/CeRyYFJkWU94du+dJvmerVenJb3g3b10Plrl4mAfmIdDiYCtnRSUUMTkTR039vVoROg1bxI2hHswP7/O+U3/LHSloZyI+99hxKLCCok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFo6xGgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1DBC113CC;
+	Thu, 16 May 2024 16:12:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715875939;
+	bh=AveY1UwJeMZdQSc/FB03KHEVXdIe7soELOoMFXXzsTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HFo6xGgJ+sRV4F97CW4UnUXHxcepio7O92phn8ErG7qZ1sWWNTAD2C2kkxvs7ZV/7
+	 WNKhzL4tyqVCSkKb6gyqDvhvgZY41nMPIuMc77TE82H+KNCfib+W+HeCni7VJjCONN
+	 AVQGHkVgUNd4Kmgj8/q46+eJu4s+cHmDsyxmVTSI=
+Date: Thu, 16 May 2024 18:12:16 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/308] 6.6.31-rc3 review
+Message-ID: <2024051607-prune-fiber-9e23@gregkh>
+References: <20240516121335.906510573@linuxfoundation.org>
+ <533a6e6f-83fd-4f06-a7bb-78144839d34a@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <533a6e6f-83fd-4f06-a7bb-78144839d34a@sirena.org.uk>
 
-Commit 62c1bff593b7 added an extra HZ along with msecs_to_jiffies.
-This patch fixes that.
+On Thu, May 16, 2024 at 04:41:49PM +0100, Mark Brown wrote:
+> On Thu, May 16, 2024 at 02:15:01PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.6.31 release.
+> > There are 308 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> Tested-by: Mark Brown <broonie@kernel.org>
 
-Cc: stable@vger.kernel.org
-Fixes: 62c1bff593b7 ("net: mana: Configure hwc timeout from hardware")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Great, thanks for the quick turn-around!
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 2729a2c5acf9..ca814fe8a775 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -848,7 +848,7 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	}
- 
- 	if (!wait_for_completion_timeout(&ctx->comp_event,
--					 (msecs_to_jiffies(hwc->hwc_timeout) * HZ))) {
-+					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
- 		dev_err(hwc->dev, "HWC: Request timed out!\n");
- 		err = -ETIMEDOUT;
- 		goto out;
--- 
-2.34.1
-
+greg k-h
 
