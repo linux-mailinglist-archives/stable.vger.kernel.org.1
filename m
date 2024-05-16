@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-45276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099068C75B4
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:11:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AB08C75B5
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B3501C21320
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C959828479A
 	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880B8145B00;
-	Thu, 16 May 2024 12:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCC2145B0B;
+	Thu, 16 May 2024 12:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGHLZfDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfqTc7C8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49961145A17
-	for <stable@vger.kernel.org>; Thu, 16 May 2024 12:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4CF145A06
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 12:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715861488; cv=none; b=t7lnS1aJOUt4iXF5SOOSZbJmpuY7vCED4qY0dcgBZ1r8CP6dJyfosYRwQfshBcUXIsSdq3m3TCuHLj643IpoSN1dpgaosUyaQ9XvxmCZkCWVoOni+Z9KNzTKl7hZNebK5dihd/bIlo6E7BLFedKG+/BsRWpV2BqxnadbszMOcR4=
+	t=1715861492; cv=none; b=FD6fdxqAcnfPQByedzGw2lzFrceBUD+TUdUZaSTFtXv/UBQLz+YP/lrhl6ApPfN5aSiaL0VmUBl/G+whlYzum7Mtuh3UpHXJnkVMq5W+bTZ+jbc2qci1sqRGtHk1TfFAitxdUG43WT4cTgkKZdoiGJYbUKeS2GPcscoqwxsRSdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715861488; c=relaxed/simple;
-	bh=y43jg3anMLMd6kp1sHDf3lvCGEoyCMKnQZ1a+ZC1iAw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fYd02vo5cENJmJj3P/FmLKFsN8yXrR78r5YhC7nnjdshFqGQPlqrefer1HE2uLhNEKw7uxi5YWMXz84JQcAx7Cj/hZtS/JJnxhNeuq0U9fgZOANCgNoF7PKv6/ldyXkn0ty5O5c/+1ZTAaVgVeNtyPB2gXvaiPLOk2/SpsLlkfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGHLZfDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9504EC113CC;
-	Thu, 16 May 2024 12:11:27 +0000 (UTC)
+	s=arc-20240116; t=1715861492; c=relaxed/simple;
+	bh=xLuLaVR52DVHDEZx+9Hx2WqEuyxk3LFardQlJlgFiMU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PKHAGhl6uValvEDVLtmo/cpnGKKmty06Giz1P4XtRYxUgT5hy+X2b9mC8jyMdtJe84NnbdbwkPdePi/F+cLRonXUEIQEjfjoMLIS8vIs/j45Rwf9b4iuNLzzvoMBfgfsVZv9OZq1ULEYc26Mw3mRwHKB1pdsj+Kw+VfWbdbdpnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfqTc7C8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77F6C2BD11;
+	Thu, 16 May 2024 12:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715861488;
-	bh=y43jg3anMLMd6kp1sHDf3lvCGEoyCMKnQZ1a+ZC1iAw=;
+	s=korg; t=1715861491;
+	bh=xLuLaVR52DVHDEZx+9Hx2WqEuyxk3LFardQlJlgFiMU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XGHLZfDGOmGyp6lSUFhrPPVFXrS2KdYeHVmmgxOzvrnKZP2lXqpT46KW6ob0tMp1s
-	 hQHNlwdeJB14pzZ11QF5rqbD7KEemz04jE5Te4xfhiQJ/k2WDxrM37WbxQs2XZWdiF
-	 PHjDDuUb/RFWS9XHlSqRYoaUC+BSDID+gHsOCeKA=
-Subject: FAILED: patch "[PATCH] eventfs: Do not differentiate the toplevel events directory" failed to apply to 6.8-stable tree
+	b=zfqTc7C8L87G67dgoFIYkCX0ft8cIyxG4KRz6wBiwnHMqZjdxEQ4t5LfB4ncFXUSa
+	 ZyiCVopP8D0qUcwLZOGT9kKWQAELkNbN64zHgsSTlBC4NfykM8UoQ5rJEQmp8NL3bj
+	 h8mc1fGAdpWvkcNAMhATvL9eY5qN6oxw0iitVpoM=
+Subject: FAILED: patch "[PATCH] eventfs: Do not differentiate the toplevel events directory" failed to apply to 6.6-stable tree
 To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 16 May 2024 14:11:24 +0200
-Message-ID: <2024051624-efficient-jingle-fc71@gregkh>
+Date: Thu, 16 May 2024 14:11:28 +0200
+Message-ID: <2024051627-armoire-sleep-3906@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,33 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.8-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x d53891d348ac3eceaf48f4732a1f4f5c0e0a55ce
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051624-efficient-jingle-fc71@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051627-armoire-sleep-3906@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 d53891d348ac ("eventfs: Do not differentiate the toplevel events directory")
+99c001cb617d ("tracefs: Avoid using the ei->dentry pointer unnecessarily")
+8186fff7ab64 ("tracefs/eventfs: Use root and instance inodes as default ownership")
+ad579864637a ("tracefs: Check for dentry->d_inode exists in set_gid()")
+7e8358edf503 ("eventfs: Fix file and directory uid and gid ownership")
+0dfc852b6fe3 ("eventfs: Have event files and directories default to parent uid and gid")
+28e12c09f5aa ("eventfs: Save ownership and mode")
+db3a397209b0 ("eventfs: Have a free_ei() that just frees the eventfs_inode")
+f2f496370afc ("eventfs: Remove "is_freed" union with rcu head")
+29e06c10702e ("eventfs: Fix typo in eventfs_inode union comment")
+5790b1fb3d67 ("eventfs: Remove eventfs_file and just use eventfs_inode")
 
 thanks,
 
