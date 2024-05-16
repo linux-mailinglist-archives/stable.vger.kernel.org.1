@@ -1,132 +1,113 @@
-Return-Path: <stable+bounces-45246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126D08C7195
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 08:21:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AEF8C71B4
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 08:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F27D1C20D98
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 06:21:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01DDD280D03
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 06:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EAF208D6;
-	Thu, 16 May 2024 06:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A839171AF;
+	Thu, 16 May 2024 06:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjWMPjsf"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C4C10A23
-	for <stable@vger.kernel.org>; Thu, 16 May 2024 06:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202162119
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 06:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715840458; cv=none; b=pPeMl/DD0DGlXqMQemMdz0Pb/VgQPPmSBFN1bTxwywJjeOOV/82sBY0ju56o3welepl7q3JQi79KJrS8+kQObpLfvncECKdCptwpGUBRBnoQZq7q9tTaMR+sUMzm+en+CI5iW1ND1QWelzdKzSStjAtIBIgzvmozLYvmdYacEvE=
+	t=1715841897; cv=none; b=TARy65ZMeXW0Jy//VNF+uCJtudwdGZ+M7X96xlvzI/2nKiQOUB6KDm4ytekLkMrtY8R2/aNQQJsQyfrB+yM0yhSM1dYlbBm0nTquISLHNqtJj8uP46tvkLQ0te+vdldwpYnCkQeQ5N0oCV7YxaTwCJmFiY8lX7m09QRCsnqsF6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715840458; c=relaxed/simple;
-	bh=15O9G0hnnVNYa+Z+k7dOkuVsEqMSJY1UXOF5E0DFcvc=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=eHI7WGnh+ZgbgmPfnKNLYafVYtInmMGR1Sp3SNf5EQA8CKqlvYGmA6TbSfDkZ/vw224/XUwkubK0EnfW3aYHmHBTvTx/sxdSyfkMPNX8azaissnIUUpu8XE5gI0z/eO1dCczNQtElVCd5BjBfM/HTS/mppXUQnGDiBKMU1teh+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from mchehab by linuxtv.org with local (Exim 4.96)
-	(envelope-from <mchehab@linuxtv.org>)
-	id 1s7UU4-0001wB-0E;
-	Thu, 16 May 2024 06:20:56 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Fri, 10 May 2024 09:20:02 +0000
-Subject: [git:media_tree/master] Revert "media: v4l2-ctrls: show all owned controls in log_status"
-To: linuxtv-commits@linuxtv.org
-Cc: stable@vger.kernel.org, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1s7UU4-0001wB-0E@linuxtv.org>
+	s=arc-20240116; t=1715841897; c=relaxed/simple;
+	bh=g7pYxiKSLA2oQCqln3s0R+Viz6wE3AIq48FfbKGphF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PvF/04Vbj8NnG5xQDP8QPBAB2mmomjptYl7or120GU4bhCgcTEpTkPkK4coVodtZjBdTXwr7unashZU7jzx1lUGbYQU/uYdeiNvgYRsvALEiPD26RgGU7YfAEw9vRIDLjsjebqkUNeNpT73be4f5XVzSNo2bxYc5cDKbcVSZZjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjWMPjsf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37662C113CC;
+	Thu, 16 May 2024 06:44:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715841896;
+	bh=g7pYxiKSLA2oQCqln3s0R+Viz6wE3AIq48FfbKGphF0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AjWMPjsffd8AJuVOONH5dSX6A9jjom0yum7D6OuCJC9rsgaw4sPI6FBC5PdDsQAMQ
+	 YHioIGVHZ5mkU4UcxsYii9sTMVvEhe9bo7CZdJivuxx+osfMr67F5n4pNUglu+GdXT
+	 bkovFiOlOO+mWraaxChXxyfR6nvojGqdo3AVOZ+8=
+Date: Thu, 16 May 2024 08:44:53 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ahmed Zaki <ahmed.zaki@intel.com>
+Cc: stable@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	"Chittim, Madhu" <madhu.chittim@intel.com>,
+	"Samudrala, Sridhar" <sridhar.samudrala@intel.com>
+Subject: Re: Fix Intel's ice driver in stable
+Message-ID: <2024051653-agility-dawn-0da9@gregkh>
+References: <b0d2b0b3-bbd5-4091-abf8-dfb6c5a57cf4@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b0d2b0b3-bbd5-4091-abf8-dfb6c5a57cf4@intel.com>
 
-This is an automatic generated email to let you know that the following patch were queued:
+On Wed, May 15, 2024 at 03:16:39PM -0600, Ahmed Zaki wrote:
+> Hello,
+> 
+> Upstream commit 11fbb1bfb5bc8c98b2d7db9da332b5e568f4aaab ("ice: use relative
+> VSI index for VFs VSIs") was applied to stable 6.1, 6.6 and 6.8:
+> 
+> 6.1: 5693dd6d3d01f0eea24401f815c98b64cb315b67
+> 6.6: c926393dc3442c38fdcab17d040837cf4acad1c3
+> 6.8: d3da0d4d9fb472ad7dccb784f3d9de40d0c2f6a9
+> 
+> However, it was a part of a series submitted to net-next [1]. Applying this
+> one patch on its own broke the VF devices created with the ice as a PF:
+> 
+>   # [  307.688237] iavf: Intel(R) Ethernet Adaptive Virtual Function Network
+> Driver
+>   # [  307.688241] Copyright (c) 2013 - 2018 Intel Corporation.
+>   # [  307.688424] iavf 0000:af:01.0: enabling device (0000 -> 0002)
+>   # [  307.758860] iavf 0000:af:01.0: Invalid MAC address 00:00:00:00:00:00,
+> using random
+>   # [  307.759628] iavf 0000:af:01.0: Multiqueue Enabled: Queue pair count =
+> 16
+>   # [  307.759683] iavf 0000:af:01.0: MAC address: 6a:46:83:88:c2:26
+>   # [  307.759688] iavf 0000:af:01.0: GRO is enabled
+>   # [  307.790937] iavf 0000:af:01.0 ens802f0v0: renamed from eth0
+>   # [  307.896041] iavf 0000:af:01.0: PF returned error -5 (IAVF_ERR_PARAM)
+> to our request 6
+>   # [  307.916967] iavf 0000:af:01.0: PF returned error -5 (IAVF_ERR_PARAM)
+> to our request 8
+> 
+> 
+> The VF initialization fails and the VF device is completely unusable.
+> 
+> This can be fixed either by:
+> 1 - Reverting the above mentioned commit (upstream
+> 11fbb1bfb5bc8c98b2d7db9da332b5e568f4aaab)
 
-Subject: Revert "media: v4l2-ctrls: show all owned controls in log_status"
-Author:  Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date:    Fri May 10 09:11:46 2024 +0200
+If you want this reverted, can you send the revert?
 
-This reverts commit 9801b5b28c6929139d6fceeee8d739cc67bb2739.
+> Or,
+> 
+> 2 - applying the following upstream commits (part of the series):
+>  a) a21605993dd5dfd15edfa7f06705ede17b519026 ("ice: pass VSI pointer into
+> ice_vc_isvalid_q_id")
+>  b) 363f689600dd010703ce6391bcfc729a97d21840 ("ice: remove unnecessary
+> duplicate checks for VF VSI ID")
 
-This patch introduced a potential deadlock scenario:
+We can take these too, it's your choice, which do you want us to do?
 
-[Wed May  8 10:02:06 2024]  Possible unsafe locking scenario:
+thanks,
 
-[Wed May  8 10:02:06 2024]        CPU0                    CPU1
-[Wed May  8 10:02:06 2024]        ----                    ----
-[Wed May  8 10:02:06 2024]   lock(vivid_ctrls:1620:(hdl_vid_cap)->_lock);
-[Wed May  8 10:02:06 2024]                                lock(vivid_ctrls:1608:(hdl_user_vid)->_lock);
-[Wed May  8 10:02:06 2024]                                lock(vivid_ctrls:1620:(hdl_vid_cap)->_lock);
-[Wed May  8 10:02:06 2024]   lock(vivid_ctrls:1608:(hdl_user_vid)->_lock);
-
-For now just revert.
-
-Fixes: 9801b5b28c69 ("media: v4l2-ctrls: show all owned controls in log_status")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
- drivers/media/v4l2-core/v4l2-ctrls-core.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
-
----
-
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index c59dd691f79f..eeab6a5eb7ba 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -2507,8 +2507,7 @@ int v4l2_ctrl_handler_setup(struct v4l2_ctrl_handler *hdl)
- EXPORT_SYMBOL(v4l2_ctrl_handler_setup);
- 
- /* Log the control name and value */
--static void log_ctrl(const struct v4l2_ctrl_handler *hdl,
--		     struct v4l2_ctrl *ctrl,
-+static void log_ctrl(const struct v4l2_ctrl *ctrl,
- 		     const char *prefix, const char *colon)
- {
- 	if (ctrl->flags & (V4L2_CTRL_FLAG_DISABLED | V4L2_CTRL_FLAG_WRITE_ONLY))
-@@ -2518,11 +2517,7 @@ static void log_ctrl(const struct v4l2_ctrl_handler *hdl,
- 
- 	pr_info("%s%s%s: ", prefix, colon, ctrl->name);
- 
--	if (ctrl->handler != hdl)
--		v4l2_ctrl_lock(ctrl);
- 	ctrl->type_ops->log(ctrl);
--	if (ctrl->handler != hdl)
--		v4l2_ctrl_unlock(ctrl);
- 
- 	if (ctrl->flags & (V4L2_CTRL_FLAG_INACTIVE |
- 			   V4L2_CTRL_FLAG_GRABBED |
-@@ -2541,7 +2536,7 @@ static void log_ctrl(const struct v4l2_ctrl_handler *hdl,
- void v4l2_ctrl_handler_log_status(struct v4l2_ctrl_handler *hdl,
- 				  const char *prefix)
- {
--	struct v4l2_ctrl_ref *ref;
-+	struct v4l2_ctrl *ctrl;
- 	const char *colon = "";
- 	int len;
- 
-@@ -2553,12 +2548,9 @@ void v4l2_ctrl_handler_log_status(struct v4l2_ctrl_handler *hdl,
- 	if (len && prefix[len - 1] != ' ')
- 		colon = ": ";
- 	mutex_lock(hdl->lock);
--	list_for_each_entry(ref, &hdl->ctrl_refs, node) {
--		if (ref->from_other_dev ||
--		    (ref->ctrl->flags & V4L2_CTRL_FLAG_DISABLED))
--			continue;
--		log_ctrl(hdl, ref->ctrl, prefix, colon);
--	}
-+	list_for_each_entry(ctrl, &hdl->ctrls, node)
-+		if (!(ctrl->flags & V4L2_CTRL_FLAG_DISABLED))
-+			log_ctrl(ctrl, prefix, colon);
- 	mutex_unlock(hdl->lock);
- }
- EXPORT_SYMBOL(v4l2_ctrl_handler_log_status);
+greg k-h
 
