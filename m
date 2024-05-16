@@ -1,203 +1,254 @@
-Return-Path: <stable+bounces-45296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61028C7757
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 15:13:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E495C8C7796
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 15:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E99B281899
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 13:13:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 103C81C222B7
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 13:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E1E146D51;
-	Thu, 16 May 2024 13:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24E71474B5;
+	Thu, 16 May 2024 13:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MCXIKfcR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BxZ/WkrZ"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BFC145FE8
-	for <stable@vger.kernel.org>; Thu, 16 May 2024 13:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1489A146A81
+	for <stable@vger.kernel.org>; Thu, 16 May 2024 13:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715865206; cv=none; b=YPvjgHsKGAGAWlI0zPAsS7Fxubf81fBy2oZyawy8SavZJlIgnNEAPGgxOsAXI8rcpvkeZtu+O6CE0QP6/inGpQjZylUOfj8sSTQSd5OamGHS/W78ZdqzP31s7h5vNS5tBktLGojHi/huHbdC9Cyd769dRlXETSUvSMtW4e5A0t0=
+	t=1715866138; cv=none; b=InzXpDH0VO2Th/2nMm8iwa2w4vfUQPm1zYRinXnf5eAM8Sf0KhMLbcQTEBJ062TR9IOm0S1ggQtA3aYqbc+/zH5WnNMMsF9r/E9Rxx8lSwYQviSHNLvIj4fNWp6ad44rnCEx2Rg8tBl/iLCx8TmWkMxNgOKKV3vm67V4jP68SO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715865206; c=relaxed/simple;
-	bh=/aIH5lv1ykkSsOoOdTBeMSjQ/AYjRWRo/L5DVy9ZGtU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZFHBrmTwSbQa0pCr3oY0FNud2wYZqlvWHKIQaSYnPdzhmaB79gh5OJDpYDW1eCF84H7BX1+XkddE4dgkzdVsF6ESNhKL5NdCvWdgdOrIx0aNcApAwFvd+e8UC6dRhXsW2YGvvomGD34kTauM0FIwFmGdSbllzoD4jGMuUQsE8Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MCXIKfcR; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6DFF14000D;
-	Thu, 16 May 2024 13:13:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1715865203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=niIhrWEjM3sU/kw98OzBrAKu9bIx/RRyEgWePiM1sso=;
-	b=MCXIKfcRLCTetH7bJGUTLsLR5IhXYK7Tx7jmubQgWxBdELgB/TeKRPUc9lk5wryuqSbBsj
-	9T+YfnamFcGGcnQeDki0AtcDCC6hH3BS8xvcZXANkpz2XhWI7nMdhXeWwj3ipFJDI2h4nx
-	iNnYSmQoNKbqNsbwJUIK8mVoH5psvW/eVxF2cw5M4sD+7HyiJqKus99wAwWKybuxtog9LS
-	RD/f46Q7VF1ZCE8Frlvaq+0a6HCCOCsJKtaip9Nb8ZX6mBWIJi5yDVp/n3DGo6tHWRWCd6
-	jAcQQ1KoNJ19gcNxa+wBY+B4zVA0skY7YIGjz710wLlIkOpvJVsKgi1MIXjpnQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	<linux-mtd@lists.infradead.org>
-Cc: Alexander Dahl <ada@thorsis.com>,
-	Steven Seeger <steven.seeger@flightsystems.net>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] mtd: rawnand: Bypass a couple of sanity checks during NAND identification
-Date: Thu, 16 May 2024 15:13:20 +0200
-Message-Id: <20240516131320.579822-3-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240516131320.579822-1-miquel.raynal@bootlin.com>
-References: <20240516131320.579822-1-miquel.raynal@bootlin.com>
+	s=arc-20240116; t=1715866138; c=relaxed/simple;
+	bh=iVUir/gLcWCFY7dIu7UsKZJERMiKnSaS2lO2UXu4iHw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eyHqJWKiDaH+APT6TSVhEWPghAYS4pybILPXfZUZedU6S5Vtz3j34nQlY6gzSQ3ckLVqjgZVew11fayTi8RY7TvaIgP6bi77jkC/EVVB39e6DCBxRbg/zFFlRejAbOF7s0268xFxip+fA2gideQ9qW5Eqzvmg3sFodrTUABHWGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BxZ/WkrZ; arc=none smtp.client-ip=209.85.167.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3c7513a991cso126643b6e.1
+        for <stable@vger.kernel.org>; Thu, 16 May 2024 06:28:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1715866136; x=1716470936; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YyjmRhpoF55A1ilLauDrV8RJGeR4fHgrsIYfzftwpR8=;
+        b=BxZ/WkrZoM5uq0BP7CCxgsnkH3udZBwn6fgak9j7p1JfFS4QvXADC4Zd0bTPWc+zQG
+         lQUpiaZohkzGzxgb480XOWV1dkM3MBrao+CFOYAN6wRBsX4sO4V+OewcnnZmGy56v/qa
+         fZAAaHM2QeLgB5/a70DufWp9JnltDnMLo1eH+dhBEMekKHQiSHOelwQgOmqMxJnPL0gg
+         WgErtCFwWCy6mpuU6pbPGOsrZSeKkqYxfcvyiStAp9j31yco/GX8YwEatTGWwsL+vXE8
+         GeHOK/ApXDv9PTBT29wWw9KXGWPoNcybvEFeP44QiiTfPBVPNKwxTCH3EDJ9/aEbvDUu
+         zprA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715866136; x=1716470936;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YyjmRhpoF55A1ilLauDrV8RJGeR4fHgrsIYfzftwpR8=;
+        b=rSRLZxyfzfRdhOkwq0XgWllb5E+/yp5iEuKs2iQABheEbvhb17dgr1F5vMvPiT65AJ
+         kcbNesKi0BkIXNYn5UsRpO89ojyyQyWsrGQP9sUsqTpBTZrniUxIs2/CWFn23ooDOe8d
+         flQbkqQ6FsATPadRh38l1fB8+CtkN1kJ378dKTajIkDl92PRKOzPJUBC47nTKKUXUUxB
+         rS0VbXwcr83JQqTWKthDnPx+bLrbwUkarCkSLOeq8EKM4DWPuNk1HEiMnVG/Mx70a909
+         CHlWY9XbA/TD/aJJtwFBQsKTBsPN5PqsLRbR42UrbRn8brW7bbk9X6XLNDs+DkXjHPm+
+         jYCg==
+X-Gm-Message-State: AOJu0Yye9Hlq6H1LM8J+wxYIyXFBrl47Pqpd3Sd2OZ2lu3OJOZfW8gKE
+	rLsvrzAue+JngEmD73QAPxCcV44wBPLjftgbJ4zMqa4NKA4rk7fEP41M7WAtEkv5/mgV/niPaAP
+	OYsXBK3IUScm/JYpa9lR2O53OeFB5RBKu1IPWiFP2dbxt6N2e0JI+c8tA
+X-Google-Smtp-Source: AGHT+IGiDXIu9aT5ycgGSk1DcOOJljD4YmEWzmMpPQM/7ewodG0RpkcgZThKwoz+3zDRZzSyPgFIUFKOYR1Q3zrahnM=
+X-Received: by 2002:a05:6808:2006:b0:3c9:62e0:1d2b with SMTP id
+ 5614622812f47-3c997039239mr25210018b6e.6.1715866134714; Thu, 16 May 2024
+ 06:28:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+References: <20240515082414.316080594@linuxfoundation.org>
+In-Reply-To: <20240515082414.316080594@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 16 May 2024 15:28:43 +0200
+Message-ID: <CA+G9fYupaeJ_kx+c1b+M92=q-+EVHLGh4Wud0WfJbi_EqYt-tA@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/168] 5.15.159-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Early during NAND identification, mtd_info fields have not yet been
-initialized (namely, writesize and oobsize) and thus cannot be used for
-sanity checks yet. Of course if there is a misuse of
-nand_change_read_column_op() so early we won't be warned, but there is
-anyway no actual check to perform at this stage as we do not yet know
-the NAND geometry.
+On Wed, 15 May 2024 at 10:28, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.159 release.
+> There are 168 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 17 May 2024 08:23:27 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.159-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-So, if the fields are empty, especially mtd->writesize which is *always*
-set quite rapidly after identification, let's skip the sanity checks.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-nand_change_read_column_op() is subject to be used early for ONFI/JEDEC
-identification in the very unlikely case of:
-- bitflips appearing in the parameter page,
-- the controller driver not supporting simple DATA_IN cycles.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-As nand_change_read_column_op() uses nand_fill_column_cycles() the logic
-explaind above also applies in this secondary helper.
+## Build
+* kernel: 5.15.159-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 1238a9b23a79317df7bcdecb6ef6d215d229ff3b
+* git describe: v5.15.158-169-g1238a9b23a79
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.158-169-g1238a9b23a79
 
-Fixes: c27842e7e11f ("mtd: rawnand: onfi: Adapt the parameter page read to constraint controllers")
-Fixes: daca31765e8b ("mtd: rawnand: jedec: Adapt the parameter page read to constraint controllers")
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Dahl <ada@thorsis.com>
-Closes: https://lore.kernel.org/linux-mtd/20240306-shaky-bunion-d28b65ea97d7@thorsis.com/
-Reported-by: Steven Seeger <steven.seeger@flightsystems.net>
-Closes: https://lore.kernel.org/linux-mtd/DM6PR05MB4506554457CF95191A670BDEF7062@DM6PR05MB4506.namprd05.prod.outlook.com/
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
-Changes in v2:
-* Dropped the double (( ))
-* Fixed nand_fill_column_cycles() as well.
----
- drivers/mtd/nand/raw/nand_base.c | 57 ++++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
+## Test Regressions (compared to v5.15.158)
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 248e654ecefd..53e16d39af4b 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -1093,28 +1093,32 @@ static int nand_fill_column_cycles(struct nand_chip *chip, u8 *addrs,
- 				   unsigned int offset_in_page)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	bool ident_stage = !mtd->writesize;
- 
--	/* Make sure the offset is less than the actual page size. */
--	if (offset_in_page > mtd->writesize + mtd->oobsize)
--		return -EINVAL;
--
--	/*
--	 * On small page NANDs, there's a dedicated command to access the OOB
--	 * area, and the column address is relative to the start of the OOB
--	 * area, not the start of the page. Asjust the address accordingly.
--	 */
--	if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
--		offset_in_page -= mtd->writesize;
--
--	/*
--	 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
--	 * wide, then it must be divided by 2.
--	 */
--	if (chip->options & NAND_BUSWIDTH_16) {
--		if (WARN_ON(offset_in_page % 2))
-+	/* Bypass all checks during NAND identification */
-+	if (likely(!ident_stage)) {
-+		/* Make sure the offset is less than the actual page size. */
-+		if (offset_in_page > mtd->writesize + mtd->oobsize)
- 			return -EINVAL;
- 
--		offset_in_page /= 2;
-+		/*
-+		 * On small page NANDs, there's a dedicated command to access the OOB
-+		 * area, and the column address is relative to the start of the OOB
-+		 * area, not the start of the page. Asjust the address accordingly.
-+		 */
-+		if (mtd->writesize <= 512 && offset_in_page >= mtd->writesize)
-+			offset_in_page -= mtd->writesize;
-+
-+		/*
-+		 * The offset in page is expressed in bytes, if the NAND bus is 16-bit
-+		 * wide, then it must be divided by 2.
-+		 */
-+		if (chip->options & NAND_BUSWIDTH_16) {
-+			if (WARN_ON(offset_in_page % 2))
-+				return -EINVAL;
-+
-+			offset_in_page /= 2;
-+		}
- 	}
- 
- 	addrs[0] = offset_in_page;
-@@ -1123,7 +1127,7 @@ static int nand_fill_column_cycles(struct nand_chip *chip, u8 *addrs,
- 	 * Small page NANDs use 1 cycle for the columns, while large page NANDs
- 	 * need 2
- 	 */
--	if (mtd->writesize <= 512)
-+	if (!ident_stage && mtd->writesize <= 512)
- 		return 1;
- 
- 	addrs[1] = offset_in_page >> 8;
-@@ -1436,16 +1440,19 @@ int nand_change_read_column_op(struct nand_chip *chip,
- 			       unsigned int len, bool force_8bit)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	bool ident_stage = !mtd->writesize;
- 
- 	if (len && !buf)
- 		return -EINVAL;
- 
--	if (offset_in_page + len > mtd->writesize + mtd->oobsize)
--		return -EINVAL;
-+	if (!ident_stage) {
-+		if (offset_in_page + len > mtd->writesize + mtd->oobsize)
-+			return -EINVAL;
- 
--	/* Small page NANDs do not support column change. */
--	if (mtd->writesize <= 512)
--		return -ENOTSUPP;
-+		/* Small page NANDs do not support column change. */
-+		if (mtd->writesize <= 512)
-+			return -ENOTSUPP;
-+	}
- 
- 	if (nand_has_exec_op(chip)) {
- 		const struct nand_interface_config *conf =
--- 
-2.40.1
+## Metric Regressions (compared to v5.15.158)
 
+## Test Fixes (compared to v5.15.158)
+
+## Metric Fixes (compared to v5.15.158)
+
+## Test result summary
+total: 75453, pass: 60921, fail: 1828, skip: 12643, xfail: 61
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 101 total, 101 passed, 0 failed
+* arm64: 30 total, 30 passed, 0 failed
+* i386: 25 total, 25 passed, 0 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 23 total, 23 passed, 0 failed
+* riscv: 7 total, 7 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 5 total, 5 passed, 0 failed
+* x86_64: 27 total, 27 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
