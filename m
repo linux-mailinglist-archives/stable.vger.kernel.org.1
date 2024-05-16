@@ -1,99 +1,98 @@
-Return-Path: <stable+bounces-45282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479338C75E5
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:21:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B2D8C7642
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE1E11F2363C
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:21:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 143A91C2253A
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA72A145B37;
-	Thu, 16 May 2024 12:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF131474D4;
+	Thu, 16 May 2024 12:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b="AO3xszRr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f91+QU/Q"
 X-Original-To: stable@vger.kernel.org
-Received: from relayaws-01.paragon-software.com (relayaws-01.paragon-software.com [35.157.23.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E0F26AD0;
-	Thu, 16 May 2024 12:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.157.23.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F580146003;
+	Thu, 16 May 2024 12:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715862058; cv=none; b=uHQvI+U67U1H8gIA/2z3OB1hBc2DZ0sQfRCmIXSjTWrhozC7E6DKajglVw2htcRlPsL6BNXOHQSAe2xQOKHTr4cfNbf4Yu37K700vemOIaXStp9mouWaHNMAX1ZKTvyY/FkXRRven2wcd3hP+vhrq7yvF3gG5VKO7byZpGt9NxM=
+	t=1715862169; cv=none; b=SQrCAU6gZwLv18xMHWeWJOi+yzoG1Xy8UM7CMi9hJwaPzra1QU+s2jnEaGJQZmI8caCRcuzENBAdcsrmlBLvlgCTui2Lq23xoIdss1ZbipMC4f3TK8gMJjHlTrS86pTyB/WcyL3NsUWL5ka+YFE9F2OwaqCZVRhIzgKAhlMZvw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715862058; c=relaxed/simple;
-	bh=F9eh9r9r/qZd5F49xlN6/fKmFGQdqoJZjiCsTZHQf9A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QPQAZS+J1OV/4leNlmXpsO6oQ+R82rQv6fiLTmiPgBxjmaYI+RDEJz+q8y6CsXm+uX3/Y6t5tVDmAMieorAGcxxrn4rLkX9wobjXfz3L4zEVVr6DXfjMpsWAs6A9n7k+42bwW9tEfihPNi0W4V6vYP0Sw9o3WgYLm5iSd/oxHWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com; spf=pass smtp.mailfrom=paragon-software.com; dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b=AO3xszRr; arc=none smtp.client-ip=35.157.23.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paragon-software.com
-Received: from dlg2.mail.paragon-software.com (vdlg-exch-02.paragon-software.com [172.30.1.105])
-	by relayaws-01.paragon-software.com (Postfix) with ESMTPS id CD4571F86;
-	Thu, 16 May 2024 12:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=paragon-software.com; s=mail; t=1715861591;
-	bh=138ZE/h5TNiCrz7tQ1X/Ht+h28eqyF8ISqvZy/ijiIs=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=AO3xszRrpn//tE5QGQZfFt7paqIrVePppoqB/v1/Gr88dJxUB2Uq0VurNp+bgqC5s
-	 9XIrJFaIdNLPuB3dAzagT35Gzq80l9M/SGozoj5pxWzi+ChCFTDYZEkPSFxbce8hy4
-	 o6s3X2ftvhxYQa/1bYZVTdb+1sl3lOwtt3HvbELA=
-Received: from ntfs3vm.paragon-software.com (192.168.211.154) by
- vdlg-exch-02.paragon-software.com (172.30.1.105) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Thu, 16 May 2024 15:20:54 +0300
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-To: <ntfs3@lists.linux.dev>
-CC: <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v2] fs/ntfs3: Break dir enumeration if directory contents error
-Date: Thu, 16 May 2024 15:20:41 +0300
-Message-ID: <20240516122041.5759-1-almaz.alexandrovich@paragon-software.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240423144155.10219-2-almaz.alexandrovich@paragon-software.com>
-References:
+	s=arc-20240116; t=1715862169; c=relaxed/simple;
+	bh=pbkgcyOMAvajczsNFMK5AKBGKVLG+pkcaFB75ObAP3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DUvGilnlg0sTfwkYAkyBNwXL0yHB2Z6Xk0pFDuI1qOawDc15ROzZ4P0ZKLbVEjUJWV7D4W5NymjX1ALFjqbx7zI2EbsUNSX5fp21CPtSpDgTdU5ibdY+0ySCYs5uE139syK2l0e7vHPRaOnQcqP1l0vbuHNZxsRVxBcGCKCBkLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f91+QU/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5C4C2BD11;
+	Thu, 16 May 2024 12:22:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715862168;
+	bh=pbkgcyOMAvajczsNFMK5AKBGKVLG+pkcaFB75ObAP3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f91+QU/QCdXhU0lQCGrbANudhZ9sklbIOkouSYyBkFpNwHCKQAjW/Tw/WovwPzeLE
+	 a1udjPqkMFhARICQ5yf708SP/hPSpIRqnKpE0IJZ31OP3PJ+NGLltRQuXo9XohubU2
+	 dgPDYC/i9OLTyHXdC3gYIEjelFXZ94gT9ZLcZ9noDbxOcIBykg1iqMaqMgDnvtz0P+
+	 imdbK1c23hrJvO2fBfWRY85ksAHybnPXG6JBq/nOfS1fLls38VH0PcHrVBTfwe1539
+	 L3D7CZmlE13zwFgdnlZfAehLxE+VErFlUHp+vDopzkQ52RyRr4jd6hVhvM73pxc9bX
+	 KgCfmvLR2/RKw==
+Date: Thu, 16 May 2024 13:22:42 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/244] 6.1.91-rc3 review
+Message-ID: <8b92c738-6719-4f14-8f86-5964e03abfaf@sirena.org.uk>
+References: <20240516091232.619851361@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: vdlg-exch-02.paragon-software.com (172.30.1.105) To
- vdlg-exch-02.paragon-software.com (172.30.1.105)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FIKgxqDy+M7OVyzr"
+Content-Disposition: inline
+In-Reply-To: <20240516091232.619851361@linuxfoundation.org>
+X-Cookie: I'm having a MID-WEEK CRISIS!
 
-If we somehow attempt to read beyond the directory size, an error
-is supposed to be returned.
 
-However, in some cases, read requests do not stop and instead enter
-into a loop.
+--FIKgxqDy+M7OVyzr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-To avoid this, we set the position in the directory to the end.
+On Thu, May 16, 2024 at 11:13:37AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.91 release.
+> There are 244 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Cc: stable@vger.kernel.org
----
- fs/ntfs3/dir.c | 1 +
- 1 file changed, 1 insertion(+)
+Tested-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index 5cf3d9decf64..45e556fd7c54 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -475,6 +475,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
- 		vbo = (u64)bit << index_bits;
- 		if (vbo >= i_size) {
- 			ntfs_inode_err(dir, "Looks like your dir is corrupt");
-+			ctx->pos = eod;
- 			err = -EINVAL;
- 			goto out;
- 		}
--- 
-2.34.1
+--FIKgxqDy+M7OVyzr
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZF+pEACgkQJNaLcl1U
+h9C8VQf7B1XtqkicL7UqbMI4wb/ilLikxiDsEiXSoRaNeaVcahaPrzkYjTLKRE2E
+2iUH5wEC5SMLwJp+cwA4iDjkewxJTmVvx+n7KcTKFrVxt7w6axt8otTdhJ8m4KKO
+TpGngmYkNi8TFBath/2xeEX9JrD3DIMbjSoMd3TFxm7Mcy3CrS2fSf8xHdvIVXVL
+0Dwubx7MJDAD3rrGO251N6eAHPgCpOYBwxKnk8tnhkK/Y9VuJ2ztQtFIXzP7X/A7
+t0HskZ1fOhjpmTOah0ObZb27KjKsumqTqMQEDjNV8Pkl4E5OF2bAmQLfR5sALNy5
+DCnJK7Ke7WZigRyoU+giVivjyyWDJg==
+=CJ9E
+-----END PGP SIGNATURE-----
+
+--FIKgxqDy+M7OVyzr--
 
