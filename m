@@ -1,86 +1,99 @@
-Return-Path: <stable+bounces-45281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0B48C75CA
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:16:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479338C75E5
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 14:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA28A1C20D0B
-	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:16:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE1E11F2363C
+	for <lists+stable@lfdr.de>; Thu, 16 May 2024 12:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86D91459E2;
-	Thu, 16 May 2024 12:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA72A145B37;
+	Thu, 16 May 2024 12:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR5KrQOa"
+	dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b="AO3xszRr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relayaws-01.paragon-software.com (relayaws-01.paragon-software.com [35.157.23.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77925433D6
-	for <stable@vger.kernel.org>; Thu, 16 May 2024 12:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E0F26AD0;
+	Thu, 16 May 2024 12:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.157.23.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715861774; cv=none; b=GaMS5isRQZ391JFi8gH0LWtk20w11arOhg8zjN0TGFg0scX33JMuKxumx+bTEyKSDseWZAYzxH6DyKwjEJ661vb2o5D7wNAs3jja0zNSeMdMFn48YgDOJiA5OCr0qkvJVVBMCJc14jK9l6s2Yzv6J9v4AFMfrEIhpDU31Q2PMps=
+	t=1715862058; cv=none; b=uHQvI+U67U1H8gIA/2z3OB1hBc2DZ0sQfRCmIXSjTWrhozC7E6DKajglVw2htcRlPsL6BNXOHQSAe2xQOKHTr4cfNbf4Yu37K700vemOIaXStp9mouWaHNMAX1ZKTvyY/FkXRRven2wcd3hP+vhrq7yvF3gG5VKO7byZpGt9NxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715861774; c=relaxed/simple;
-	bh=4Fz1bl2P2SH2iq1lxfDHRNSq0ehnPFxIhinZfAQb7zE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RCd31ulmaWxTbC1OSTobdDWW3AFOEX5ObrD/3CD0C0zaYElqZhWLFCTPSZptSSYFin1+RJObf0RNDF0guYoqf94IKO1jDWnEstLDZWgxW778SnfiYUXGTvy0wkp86qar4izVa+DFjcr6gPAkdLpY9LpnqVGimv5/JhHtYs4IvNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR5KrQOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E94C113CC;
-	Thu, 16 May 2024 12:16:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715861773;
-	bh=4Fz1bl2P2SH2iq1lxfDHRNSq0ehnPFxIhinZfAQb7zE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YR5KrQOaST9z9cOU8gb0lKtRlMjNZSzod0zYluLbIWGC8fNZ7EGIWay/6thDzzIlb
-	 LuUiEYH92XanfX7RkANqoYIlSYYUTscCoXkRExdMwlJeiUT/553aDe+dk7JQgQmwKm
-	 8vQnHnp/CE0VSML+bHRq+b1e5MJW3FpDiSgCIyzg=
-Date: Thu, 16 May 2024 14:16:10 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: rostedt@goodmis.org, akpm@linux-foundation.org, mark.rutland@arm.com,
-	mathieu.desnoyers@efficios.com, mhiramat@kernel.org
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] eventfs: Do not differentiate the
- toplevel events directory" failed to apply to 6.8-stable tree
-Message-ID: <2024051624-delirium-punch-96f8@gregkh>
-References: <2024051624-efficient-jingle-fc71@gregkh>
+	s=arc-20240116; t=1715862058; c=relaxed/simple;
+	bh=F9eh9r9r/qZd5F49xlN6/fKmFGQdqoJZjiCsTZHQf9A=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QPQAZS+J1OV/4leNlmXpsO6oQ+R82rQv6fiLTmiPgBxjmaYI+RDEJz+q8y6CsXm+uX3/Y6t5tVDmAMieorAGcxxrn4rLkX9wobjXfz3L4zEVVr6DXfjMpsWAs6A9n7k+42bwW9tEfihPNi0W4V6vYP0Sw9o3WgYLm5iSd/oxHWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com; spf=pass smtp.mailfrom=paragon-software.com; dkim=pass (1024-bit key) header.d=paragon-software.com header.i=@paragon-software.com header.b=AO3xszRr; arc=none smtp.client-ip=35.157.23.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=paragon-software.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paragon-software.com
+Received: from dlg2.mail.paragon-software.com (vdlg-exch-02.paragon-software.com [172.30.1.105])
+	by relayaws-01.paragon-software.com (Postfix) with ESMTPS id CD4571F86;
+	Thu, 16 May 2024 12:13:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=paragon-software.com; s=mail; t=1715861591;
+	bh=138ZE/h5TNiCrz7tQ1X/Ht+h28eqyF8ISqvZy/ijiIs=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=AO3xszRrpn//tE5QGQZfFt7paqIrVePppoqB/v1/Gr88dJxUB2Uq0VurNp+bgqC5s
+	 9XIrJFaIdNLPuB3dAzagT35Gzq80l9M/SGozoj5pxWzi+ChCFTDYZEkPSFxbce8hy4
+	 o6s3X2ftvhxYQa/1bYZVTdb+1sl3lOwtt3HvbELA=
+Received: from ntfs3vm.paragon-software.com (192.168.211.154) by
+ vdlg-exch-02.paragon-software.com (172.30.1.105) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 16 May 2024 15:20:54 +0300
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+To: <ntfs3@lists.linux.dev>
+CC: <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2] fs/ntfs3: Break dir enumeration if directory contents error
+Date: Thu, 16 May 2024 15:20:41 +0300
+Message-ID: <20240516122041.5759-1-almaz.alexandrovich@paragon-software.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240423144155.10219-2-almaz.alexandrovich@paragon-software.com>
+References:
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024051624-efficient-jingle-fc71@gregkh>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: vdlg-exch-02.paragon-software.com (172.30.1.105) To
+ vdlg-exch-02.paragon-software.com (172.30.1.105)
 
-On Thu, May 16, 2024 at 02:11:24PM +0200, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.8-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.8.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x d53891d348ac3eceaf48f4732a1f4f5c0e0a55ce
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024051624-efficient-jingle-fc71@gregkh' --subject-prefix 'PATCH 6.8.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> d53891d348ac ("eventfs: Do not differentiate the toplevel events directory")
+If we somehow attempt to read beyond the directory size, an error
+is supposed to be returned.
 
-Note, it applies, and builds, but fails testing, see this thread:
-	https://lore.kernel.org/r/2024051628-direness-grazing-d4ee@gregkh
+However, in some cases, read requests do not stop and instead enter
+into a loop.
 
-thanks,
+To avoid this, we set the position in the directory to the end.
 
-greg k-h
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: stable@vger.kernel.org
+---
+ fs/ntfs3/dir.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index 5cf3d9decf64..45e556fd7c54 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -475,6 +475,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
+ 		vbo = (u64)bit << index_bits;
+ 		if (vbo >= i_size) {
+ 			ntfs_inode_err(dir, "Looks like your dir is corrupt");
++			ctx->pos = eod;
+ 			err = -EINVAL;
+ 			goto out;
+ 		}
+-- 
+2.34.1
+
 
