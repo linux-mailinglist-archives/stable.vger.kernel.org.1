@@ -1,106 +1,226 @@
-Return-Path: <stable+bounces-45373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23C18C84F7
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 12:41:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760BC8C855E
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 13:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CAAD281E76
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 10:41:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A29E51C20B09
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 11:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF7E2E852;
-	Fri, 17 May 2024 10:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B7F3DB97;
+	Fri, 17 May 2024 11:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="adyVflj7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H5dZnPZ9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C48364AB;
-	Fri, 17 May 2024 10:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5792E3C489;
+	Fri, 17 May 2024 11:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715942478; cv=none; b=dmyX/ORfK7jE+c4E/sWvGvm60dKTkulmvwhIXhD4jBLa0KKbKGAlAVXUzw4xGk6fnYSPd+zkG7FpdWU7SQeSGX76Gejmp+xkaOgIxn/keIeizPtPErS4rrRLXZ3gRkzNGHOsKV98c63qRekxo7vBmJfYAZRGSBFZ5ikcD0PPT+o=
+	t=1715944497; cv=none; b=jbtLQhLw1NFX5sZvuq4FWo9QUSr5uzHeg/B4AIbII/xMj1gtgm53VfzmZImGSWTjkXcbV8XbgZPr3drOg4bPhEtgzzDKhNzpCkHYseoGBEkvg/0bLXYrvUbZ5o/oEFYFXzL5szbXQa6jbsbHJVNiYQwAW9xG1DcG1aYIArBzRVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715942478; c=relaxed/simple;
-	bh=HnELnEyUYaEKQpflPqcDhBPrjVZ6I+K13o1A83gtzZg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JQ/oq6foEjL/hAdnSIffQBgjEWBcOpGIFTQavFf/OEehOkn+NBXEcNA/jFqR0+yG8gK2ssWHyiKUfZM679YjzyFz5ERhhCf7Im2yW6YRjkDcctmLzhmEhvIH562G6WTLE0nNmGyAVUnvb0nQ61xfUtRpo8zaETL0ED2hp5qkkKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=adyVflj7; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1e83a2a4f2cso2602545ad.1;
-        Fri, 17 May 2024 03:41:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715942477; x=1716547277; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HnELnEyUYaEKQpflPqcDhBPrjVZ6I+K13o1A83gtzZg=;
-        b=adyVflj7nCc+6gD08I6huhizTRHZgdCB7YkH81R3p3WshtwccUvD0KkFdwYxWwAnaP
-         huoMB5eGUsxOkulZYb4QjSfaXFoe0khyzrOfd0KMZnBN4GnqCmSI5K2n6/w1/HPF/Epr
-         kcx9ndK/U3gExZYW0pVBZmCkIH3ttjVY+7TseEFDNIexQRF9saYyadvYxd5KEylx6aMp
-         jvlKgsa8LVHOzvON2RccyppMUUGBl2pt6CFII8+CKB8W6PIytv3mXE2fm1e2AqOPk3IT
-         LKqSfAGgSeS1qCNKlSENgyYoTY3YdX7LDQTSj4WOZIOoJbEw+qj0EsW78u7cyzPBDGrF
-         6KOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715942477; x=1716547277;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HnELnEyUYaEKQpflPqcDhBPrjVZ6I+K13o1A83gtzZg=;
-        b=H1JYb03oPGazrOS+892rwCBkuEyaMs++OJMKXqQUtXgW4g4jXjz33LLvkYWMd8G0zG
-         2Bm9Zrjobrm0sxV125PmlHRjidO1QGarQfWfBM7/eHcxknF4kJA0NlqXhOYpaCbiwYzt
-         bEMV6tZu7DUDEkBjUtCf5QP1+GWj3LbuTAOhxz15i13n6LNYH03NNi2AUa/Ro+HAHVrZ
-         hVyJYBGhfK8T04r1ySvEKdCq6pMQ4XEOgFec6U57ZItNacbijKhDsjqvoHOZOZwMB2Qe
-         APdqGLaJsnJNCk8JF+vimWPB1/QRkxNIbzoqVB3Wu06qYagWwzGIdZYDzISHKrcTopKy
-         3RZw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvrHuKYdUHEaVrmBTyEPXtC1YV6iVtaFq7KNc1QvFANN1+YXY4gPdlhI8AebYW6AmsaCdU54svSUr84J3BLAWgswve6CuMVEujJQxWsakszOaBy3eKNQLaFNH/O+91tum62MBa
-X-Gm-Message-State: AOJu0YwXQ4X765rDuO4y4H5O5+vd23Oh4vAOa/xNQkblW1qd2lhyG5ro
-	EgLr/9XR3yIgTfG1ueHUGAvx3ackzGweTol0jMevyOiRtxeMjPBzc676Kno7RxML2g2NBdZqSxi
-	JDYGB/JowNhn8mdLc8oxedTl+jZk=
-X-Google-Smtp-Source: AGHT+IHuZeKXtTVhGQKp1k29cbNkxgUfOuOsqfJ7eybmj4e6pQ5Rztp131C+Gw30g0TdCnnwnVqbyby7gn/y+vnmB+Y=
-X-Received: by 2002:a17:90b:1d05:b0:2b8:e75c:c7e3 with SMTP id
- 98e67ed59e1d1-2b8e75cc8abmr13712438a91.6.1715942476620; Fri, 17 May 2024
- 03:41:16 -0700 (PDT)
+	s=arc-20240116; t=1715944497; c=relaxed/simple;
+	bh=IPVHLXpO3BrKI/CM9d1gqnp5/8wq3scbDt0L3OmEGCc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jyh1gGlTGKW41m/oS9rnQCRpactIWI1Sco/Q/T9vi8GS5PmyYATPxoYbp9hhwQTJ7ZdUwEKZ7j4mA3kFnyXSDRWIYtFKptAURFG5X1M4nO3iimYflC/Ql7w47ZqQg6uurEAFLI2E0sVcLbZDHoLJRqTzfAGbUO2+HIGlIUAKPTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H5dZnPZ9; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715944495; x=1747480495;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IPVHLXpO3BrKI/CM9d1gqnp5/8wq3scbDt0L3OmEGCc=;
+  b=H5dZnPZ9rT626v44OmNzp6byKWAMRnjFKiyaegbrp9YENzjBaVtcbIaf
+   fHuetilKt+NIH7Yf6gjYXv2djfLxQ5eqPKGLe96fRyvwzNm/pXasLbhtR
+   alCLozRXFcllY+uYGhtFfqbFYwfA8IRljH3tJIef+JOMXYNvQJlx7JeLJ
+   E0BM53V3hMFTQqOoKERUAKR04HrlKgKtmyNBLR3EWXCMxoN163Y1U8Yig
+   ZaOBDRvguhKtGFjW9JbENyMVcfVPW+l3IC1bUlP0rDyFai96gSl06vlOS
+   RujcVu2y7TDwF5IG3hWOVqQp4+y7EJbvl58kK5A5WNT/5i0wOltejF0Z3
+   A==;
+X-CSE-ConnectionGUID: dPFaK5FsTYqt6BTBrK7adA==
+X-CSE-MsgGUID: LcD7kwLDRq6h4Sq2C6AwHw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="23529050"
+X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
+   d="scan'208";a="23529050"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 04:14:53 -0700
+X-CSE-ConnectionGUID: pNdjN9jlR6ybx6Y7KweJbw==
+X-CSE-MsgGUID: QK9YnTUsT/qnjDVMUEA58A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
+   d="scan'208";a="36276850"
+Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 04:14:52 -0700
+From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+To: dave.hansen@linux.intel.com,
+	jarkko@kernel.org,
+	kai.huang@intel.com,
+	haitao.huang@linux.intel.com,
+	reinette.chatre@intel.com,
+	linux-sgx@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: mona.vij@intel.com,
+	kailun.qin@intel.com,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Marcelina=20Ko=C5=9Bcielnicka?= <mwk@invisiblethingslab.com>
+Subject: [PATCH v3 1/2] x86/sgx: Resolve EAUG race where losing thread returns SIGBUS
+Date: Fri, 17 May 2024 04:06:30 -0700
+Message-Id: <20240517110631.3441817-2-dmitrii.kuvaiskii@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240517110631.3441817-1-dmitrii.kuvaiskii@intel.com>
+References: <20240517110631.3441817-1-dmitrii.kuvaiskii@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240516091232.619851361@linuxfoundation.org> <ZkYCYxoxqrwlVSI5@duo.ucw.cz>
-In-Reply-To: <ZkYCYxoxqrwlVSI5@duo.ucw.cz>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 17 May 2024 12:41:04 +0200
-Message-ID: <CANiq72k_JQVy=xYeFYb4h-gds=_4HPcV_1uBmUnaveSXVBPkdA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/244] 6.1.91-rc3 review
-To: Pavel Machek <pavel@denx.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, richard.weiyang@gmail.com, 
-	masahiroy@kernel.org, ojeda@kernel.org, stable@vger.kernel.org, 
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 16, 2024 at 2:56=E2=80=AFPM Pavel Machek <pavel@denx.de> wrote:
->
-> These are marked as Stable-dep-of: ded103c7eb23 ("kbuild: rust: force
-> `alloc` extern to allow "empty" Rust files"), but we don't have
-> ded103c7eb23 in 6.1-stable, so we should not need these.
+Imagine an mmap()'d file. Two threads touch the same address at the same
+time and fault. Both allocate a physical page and race to install a PTE
+for that page. Only one will win the race. The loser frees its page, but
+still continues handling the fault as a success and returns
+VM_FAULT_NOPAGE from the fault handler.
 
-I think what happened is that I asked for ded103c7eb23 to be dropped,
-but its deps didn't get dropped.
+The same race can happen with SGX. But there's a bug: the loser in the
+SGX steers into a failure path. The loser EREMOVE's the winner's EPC
+page, then returns SIGBUS, likely killing the app.
 
-Having said that, "kbuild: specify output names" was a fix in its own,
-so we may want to keep it anyway (with its fix).
+Fix the SGX loser's behavior. Change the return code to VM_FAULT_NOPAGE
+to avoid SIGBUS and call sgx_free_epc_page() which avoids EREMOVE'ing
+the winner's page and only frees the page that the loser allocated.
 
-Cheers,
-Miguel
+The race can be illustrated as follows:
+
+/*                             /*
+ * Fault on CPU1                * Fault on CPU2
+ * on enclave page X            * on enclave page X
+ */                             */
+sgx_vma_fault() {              sgx_vma_fault() {
+
+  xa_load(&encl->page_array)     xa_load(&encl->page_array)
+      == NULL -->                    == NULL -->
+
+  sgx_encl_eaug_page() {         sgx_encl_eaug_page() {
+
+    ...                            ...
+
+    /*                             /*
+     * alloc encl_page              * alloc encl_page
+     */                             */
+                                   mutex_lock(&encl->lock);
+                                   /*
+                                    * alloc EPC page
+                                    */
+                                   epc_page = sgx_alloc_epc_page(...);
+                                   /*
+                                    * add page to enclave's xarray
+                                    */
+                                   xa_insert(&encl->page_array, ...);
+                                   /*
+                                    * add page to enclave via EAUG
+                                    * (page is in pending state)
+                                    */
+                                   /*
+                                    * add PTE entry
+                                    */
+                                   vmf_insert_pfn(...);
+
+                                   mutex_unlock(&encl->lock);
+                                   return VM_FAULT_NOPAGE;
+                                 }
+                               }
+                               /*
+                                * All good up to here: enclave page
+                                * successfully added to enclave,
+                                * ready for EACCEPT from user space
+                                */
+    mutex_lock(&encl->lock);
+    /*
+     * alloc EPC page
+     */
+    epc_page = sgx_alloc_epc_page(...);
+    /*
+     * add page to enclave's xarray,
+     * this fails with -EBUSY as this
+     * page was already added by CPU2
+     */
+    xa_insert(&encl->page_array, ...);
+
+  err_out_shrink:
+    sgx_encl_free_epc_page(epc_page) {
+      /*
+       * remove page via EREMOVE
+       *
+       * *BUG*: page added by CPU2 is
+       * yanked from enclave while it
+       * remains accessible from OS
+       * perspective (PTE installed)
+       */
+      /*
+       * free EPC page
+       */
+      sgx_free_epc_page(epc_page);
+    }
+
+    mutex_unlock(&encl->lock);
+    /*
+     * *BUG*: SIGBUS is returned
+     * for a valid enclave page
+     */
+    return VM_FAULT_SIGBUS;
+  }
+}
+
+Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
+Cc: stable@vger.kernel.org
+Reported-by: Marcelina Kościelnicka <mwk@invisiblethingslab.com>
+Suggested-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+Reviewed-by: Haitao Huang <haitao.huang@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+---
+ arch/x86/kernel/cpu/sgx/encl.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 279148e72459..41f14b1a3025 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -382,8 +382,11 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+ 	 * If ret == -EBUSY then page was created in another flow while
+ 	 * running without encl->lock
+ 	 */
+-	if (ret)
++	if (ret) {
++		if (ret == -EBUSY)
++			vmret = VM_FAULT_NOPAGE;
+ 		goto err_out_shrink;
++	}
+ 
+ 	pginfo.secs = (unsigned long)sgx_get_epc_virt_addr(encl->secs.epc_page);
+ 	pginfo.addr = encl_page->desc & PAGE_MASK;
+@@ -419,7 +422,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+ err_out_shrink:
+ 	sgx_encl_shrink(encl, va_page);
+ err_out_epc:
+-	sgx_encl_free_epc_page(epc_page);
++	sgx_free_epc_page(epc_page);
+ err_out_unlock:
+ 	mutex_unlock(&encl->lock);
+ 	kfree(encl_page);
+-- 
+2.34.1
+
 
