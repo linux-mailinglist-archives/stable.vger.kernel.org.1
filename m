@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-45362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F09C8C827A
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 10:13:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45E28C8332
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 11:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4AAC1F2295C
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 08:13:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F18B282D88
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 09:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B4420B0E;
-	Fri, 17 May 2024 08:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEADE2561F;
+	Fri, 17 May 2024 09:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Y0/6Bnqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c167o6Eu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A6710A25;
-	Fri, 17 May 2024 08:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC061EB36;
+	Fri, 17 May 2024 09:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715933611; cv=none; b=MoSyGvSGgUTZtlAYpZfv+CBp3hRwAh5cQ7iJHbgsBTjGw80TgJZRweirg5rqYpCw/wXXUioYRqdIC7fKegOFXz7JIS2jfNa00gJe9LFldfGKjTZcZpF/tfGuZYLVbNpJ3SA/awR3ZDMsHxwXBDVxTLJdbndiRcCDw6tHcYWIQkE=
+	t=1715937760; cv=none; b=We+Iyv7QH5u9JoTNfblbT+EwX5t6sOk/LnCgN/HRa4xN95fVsbs54IkfQlpTWN5hzxZZNXEp/EILLEt9F/I07T8VO+e6jRoMAbSVzBl5asgKvXAnrbUh4/FMp+fNlbcIQS5fGcm73YcY70vUztfyI4+vr6JlVettYk+IsKsjo2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715933611; c=relaxed/simple;
-	bh=UGCSH19/QQFayopTinwL3UHdf3P2cCPKLv7liUHXfMY=;
+	s=arc-20240116; t=1715937760; c=relaxed/simple;
+	bh=EmoyoU0ptgoe4UYZLSeZng24uZGWBp7Ks7ThjHd2vR4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pL23Yzsa9/TzzKHHi52aZfOws/KWt8mAE/GniFGieChvzMEKVgINPwLQLfrntrq2u8Bz980Qgwp6MdEMxkLl5FW0CAAe8cB+XqPUv3VbBjf6RGOmqjvpzATRgzKfS/q8aM0dW/Le7HbSf+6kLSQ9ijo6oUBcxTgMbSLANjgJwBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Y0/6Bnqg; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id 1BB211F90C;
-	Fri, 17 May 2024 10:13:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1715933597;
-	bh=NREW6bcFroAQWer3qRmT1I+JmMfW1UsPIUtVyqTOHKk=; h=From:To:Subject;
-	b=Y0/6BnqgzDL78DgCwa2SK756a0ho+Irss9R7P0/LE1R5dDKTpFRqEUGh6wH+i3R/j
-	 bDX/YXvFVtxKicgbryJ6m4msKsUBd581wdblcPZo9rXq446tFvJRHAusn05sMizco2
-	 YcsEIebvKjSR2aa6IcRV+tvMa1d8zC03w9IkB4jh4BilfvdyxLOBH87wzFN65ODXIn
-	 DPxBZ9Kp43vp/g5tpObisdYv3oYNjpCVBUg6saS/j6h7DqotpGo1vNHkKxyj1c5EMs
-	 des8iChfVN4LRweOXprfwOObvCkCDpuodaBmN+uWt/rZeuW6povD4sYYjCogm2Wgi3
-	 qm9Qqj7UBt8Kg==
-Date: Fri, 17 May 2024 10:13:12 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Brian Norris <briannorris@chromium.org>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	tsung-hsien.hsieh@nxp.com, David Lin <yu-hao.lin@nxp.com>,
-	stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [v1] wifi: mwifiex: Fix interface type change
-Message-ID: <20240517081312.GA7974@francesco-nb>
-References: <20240510110458.15475-1-francesco@dolcini.it>
- <171593306296.3274748.4179889716794962474.kvalo@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=XeWyL+Yyfd5CjDfbRQA1KG21umU11RL1ghszz+UV2V6L0+kxQsreo5VtUu9mfYuzUz/BtrjmztK+KMzgyuoopk393498e3haboVabZsB0PfQFa9MezY76RAdh9Az8Iti9VxydJr7qZmNVuZXUEFLEy50NNaPf1zMiIms9cer3mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c167o6Eu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841FEC2BD10;
+	Fri, 17 May 2024 09:22:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1715937760;
+	bh=EmoyoU0ptgoe4UYZLSeZng24uZGWBp7Ks7ThjHd2vR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c167o6EudeuobrY+9IECdythJm0Ay4nYXFRqzOUJp82WYaPm6spkrzLuAqqYgbp2l
+	 82VUiKBWftliiiTsfdt3TXlYKdCmdfbZnvP+AUGZpMyQEAbkh5ukAd9QmU+eO7Taxm
+	 KXWySU4mOkSnejCqOMRJnGIcakE2fixo3gHNBP/E=
+Date: Fri, 17 May 2024 11:22:37 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pavel Machek <pavel@denx.de>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/111] 5.10.217-rc1 review
+Message-ID: <2024051700-jubilant-rotunda-eaac@gregkh>
+References: <20240514100957.114746054@linuxfoundation.org>
+ <ZkX+WBV4vJNpwX1i@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,36 +60,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <171593306296.3274748.4179889716794962474.kvalo@kernel.org>
+In-Reply-To: <ZkX+WBV4vJNpwX1i@duo.ucw.cz>
 
-On Fri, May 17, 2024 at 08:04:24AM +0000, Kalle Valo wrote:
-> Francesco Dolcini <francesco@dolcini.it> wrote:
+On Thu, May 16, 2024 at 02:38:48PM +0200, Pavel Machek wrote:
+> Hi!
 > 
-> > From: Rafael Beims <rafael.beims@toradex.com>
-> > 
-> > When changing the interface type we also need to update the bss_num, the
-> > driver private data is searched based on a unique (bss_type, bss_num)
-> > tuple, therefore every time bss_type changes, bss_num must also change.
-> > 
-> > This fixes for example an issue in which, after the mode changed, a
-> > wireless scan on the changed interface would not finish, leading to
-> > repeated -EBUSY messages to userspace when other scan requests were
-> > sent.
-> > 
-> > Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > This is the start of the stable review cycle for the 5.10.217 release.
+> > There are 111 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
 > 
-> BTW I removed the Reviewed-by from the commit message, I don't see the need to
-> have both Reviewed-by and s-o-b.
+> 
+> > Stephen Boyd <sboyd@kernel.org>
+> >     clk: Don't hold prepare_lock when calling kref_put()
+> 
+> Stephen said in a message that this depends on other patches,
+> including 9d1e795f754d clk: Get runtime PM before walking tree for
+> clk_summary. But we don't seem to have that one. Can you double-check?
+> 
+> (
+> Date: Tue, 23 Apr 2024 12:24:51 -0700
+> Subject: Re: [PATCH AUTOSEL 5.4 6/8] clk: Don't hold prepare_lock when calling kref_put()
+> )
 
-Sure, I was in doubt about this, in the end I added it because I have seen
-this done in other subsystems, e.g. commit 6a4020b4c639 ("drm/bridge:
-tc358768: fix PLL parameters computation").
+Ugh, please use lore links when referring to other threads so that we
+don't have to figure it out on our own...
 
-Thanks
-Francesco
+Anyway, that one commit seems missing, I'll look into it.
 
-
+greg k-h
 
