@@ -1,144 +1,96 @@
-Return-Path: <stable+bounces-45400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFE88C8962
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 17:32:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E9F8C8BDD
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 19:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABC301F23882
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 15:32:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 962E01C21DF4
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 17:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1468312D74F;
-	Fri, 17 May 2024 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762DA13FD84;
+	Fri, 17 May 2024 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="KFyjp5QG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dPnNRHpx"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="zOQCDy+J"
 X-Original-To: stable@vger.kernel.org
-Received: from flow1-smtp.messagingengine.com (flow1-smtp.messagingengine.com [103.168.172.136])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E49712CD8A;
-	Fri, 17 May 2024 15:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDE913DDCF;
+	Fri, 17 May 2024 17:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715959939; cv=none; b=EaAq9GZl0XTa60fyIHcCZINBOct9K5ToWs2JkLr/p4cJahldVvtWUZLWDJQA9ss3M8WL2rZ3kmFOAqXmC2Hs7LkhTFBn/GyZhTiZgpRsv6DrXBRz27IqbgMBQtGEkDF3kBjgOVTZP28nFL79vl9oGgwNvuyFgaMd2AG82PbCUv0=
+	t=1715968430; cv=none; b=ZTYQHropLJQEWqtdt+N+bUTLHHLvspycXgOtUHzox286CSlde+Cjkmp0/qgieHUCyF1d9abgfsxg5ublj7Vg7DYBs9V1o8DxVqXQ11xQOiboQjzY6/SFn7BhM3hnWj1QpQYAXgpC2yXg0CvQZIQgDMRLIFgu9eGMLT7+I1645C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715959939; c=relaxed/simple;
-	bh=D+aZeg+2cJFRvQasfMNMmYWH8MS31v4X+wRV4Zfj6AM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ayqcw4r9ET+VR8GqSGlYdhjQ9FYvwtIzUHssBAGcTObCNhIT7HB6N6h7YwLCEmSMKhpzWY8SBAtrjW5UdYO1qiD+ILTIFrFjuqxJNziPvuCKQITke1tFmYHZUBwDavpLgYqD5gbJPmSbPsuy+2g85H9bqMK/xB7n/hhmJf0Izq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=KFyjp5QG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dPnNRHpx; arc=none smtp.client-ip=103.168.172.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 88422200450;
-	Fri, 17 May 2024 11:32:16 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 17 May 2024 11:32:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1715959936;
-	 x=1715967136; bh=s8Q/l0wRHpTp9lBxT46kDXxjSSe7yKH9ZdbIurG921s=; b=
-	KFyjp5QGLxIPQPo4O+zmoE47Jgqxd4Yz/Ph7adPQ819doQ+vUOamctaLYbQaDSkE
-	STG2S4bzMOEA5CslT/UDD9Y7pKT7GBNySNmiVaWJ+NHcJGY4BLU7p91iAUr6OZIo
-	hYwJG1kNRrWyVv4nGK2DMdEtXjkxj/xCbgIZjWFbvNiaPyvJPmSkucmAwwLci3i5
-	wYPhrb+5fvfBtiikiIR4T2F8/z61p3dXUcWrK4tIJ8/DO+rYS5jS30EF8FtN+Do1
-	eqB3VXCW9KlhlSPy6qv/3ctxn+mUO9W8e4o8IkRyWQP/2VE4YY6sNlsYI0j0pZoy
-	W9A7lKeKTdjUVN5ozuH2iw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715959936; x=
-	1715967136; bh=s8Q/l0wRHpTp9lBxT46kDXxjSSe7yKH9ZdbIurG921s=; b=d
-	PnNRHpxgGOd3y0t1HZgRFwZq0lIa84YUvy7ksSoEKQ6dsraCoxAFp2Ojqdb+pLFP
-	WhNjPExz/Q7yUwZbdDfSvyoncx9yvhy2Wqt/kXDeIiaH+aLkwIh/8cbn9PCr3hNa
-	/lwPttFQO4j1LM6KbomvWoG3QisosZl/i0E5f0Bv0TQ5leEknPqjs/PuQHvP+l9s
-	+nsSrHmxGUVvX/lH7YZ4phwURyx2OK169Y73Z3VLs0ShNEyZz7SWV5XL3kXqMOBV
-	tYtoSs5lG3pPMPutNuBadU7VjC1/W2bVlHqNCs3hhkh7h9tPJS+WWY/2m2Eb0BdJ
-	R+KeeQH8r6lLCZqCD946A==
-X-ME-Sender: <xms:gHhHZi_uoK0ohc3Ob6gTqQ_1YFBMK9BwMXiP7vU3A8F6xXC4Vp6Iew>
-    <xme:gHhHZivAzSBO33oW1odv7C7dFOi_mmb95QGi4mMHbGXQ7ioLokx3_RRAcUtw1Vxhe
-    HXJwpdIqsg2wQ>
-X-ME-Received: <xmr:gHhHZoDMRTtQu9GIwlN8P0cmn1ErQNGXIR45mXKdiZDQPwOMep0gSYBydS8WYBxhcNcB513fL3Qz-Y7QQFyRafHAghAnC3AQCC4Seg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdehfedgudegvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepifhr
-    vghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnheple
-    ekheejjeeiheejvdetheejveekudegueeigfefudefgfffhfefteeuieekudefnecuffho
-    mhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:gHhHZqd-Vr2ozLK8ZN89CLKz5_JvooYw2FTifP2xp1PJekIN-Xigpw>
-    <xmx:gHhHZnO71SM8Pki1pXjseWsw1UcmznmbIHbUnd3u9Cfdu1YfaIKasg>
-    <xmx:gHhHZkm-VFHPtBCePeAys828Z6op_Tp3MI5GgDViB_eHzcYML_dTig>
-    <xmx:gHhHZpss9O8sYpESFJo2an3fRrSxZ1DqU5DX7EZLxnrivDafY6QCbQ>
-    <xmx:gHhHZo_D6DA87FMkIMNExhtlzq06u_JdSDIXNrql534y6tV7vURO7teR>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 May 2024 11:32:15 -0400 (EDT)
-Date: Fri, 17 May 2024 17:32:12 +0200
-From: Greg KH <greg@kroah.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Vitor Soares <vitor.soares@toradex.com>, linux-can@vger.kernel.org,
-	netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
-	Vitor Soares <ivitro@gmail.com>
-Subject: Re: [PATCH v6] can: mcp251xfd: fix infinite loop when xmit fails
-Message-ID: <2024051744-evaluate-dubbed-8433@gregkh>
-References: <20240517134355.770777-1-ivitro@gmail.com>
- <b95de04f-a2f8-4564-b9d4-9c09c47f23c3@web.de>
+	s=arc-20240116; t=1715968430; c=relaxed/simple;
+	bh=jQXTQPeZqoXtx1IhRfOgOt67vYHFNjCd5WEjfEKAqBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k3H8/E1qw/l1SSdsm0oomy+RkEaP5C1m82Y7dMrAAt4Buh7wfJr5C/0vhHl0907xZaT6UkYcVOE1j2e+wVXzYNnUdPXw+Ue84oaHfyOGVPuuFDmiyXc/wDe2Je/wE4ktReq3Fh5qLgaNonO39M4q+xvoCWB/IJfYX1PxONnqQtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=zOQCDy+J; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4Vgvhk527TzlgMVL;
+	Fri, 17 May 2024 17:53:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1715968420; x=1718560421; bh=jQXTQPeZqoXtx1IhRfOgOt67
+	vYHFNjCd5WEjfEKAqBg=; b=zOQCDy+JXun87BS5Zf1SeRYgIF8oquMBhmi2cI2s
+	T/GNXav015FLvig8Zf3b4+9nRFMOGWb1AFqXz4WazCD6cQEnWgbdT7twa69+XjK8
+	6fSMg8c+fVFdT51/1k+Ik+sTZJrGk0fVCGMgQR19jz5Wl8jjbj/UMn7hIwaov7wX
+	0PRZbf7N8K2P770egm5CcbcUYakflh5PpGCkHW60kBJqDntyKU5h9ZmLhjp/RnCe
+	HO6z8GYSQUB9hgOPKUACsgDGehN/kYqekm8PvO2CR13JWeNhn7RDtDY/Q0k4wZK/
+	JyWW8efzUmYLGZgSobKFedWmEc9fVyUto6l9bU51+glh+Q==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id DHFzKuMgcXiC; Fri, 17 May 2024 17:53:40 +0000 (UTC)
+Received: from [100.96.154.26] (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4Vgvhg0kSczlgT1K;
+	Fri, 17 May 2024 17:53:38 +0000 (UTC)
+Message-ID: <a1da2c7e-1b29-49cf-a45f-255d3b8b0da2@acm.org>
+Date: Fri, 17 May 2024 10:53:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b95de04f-a2f8-4564-b9d4-9c09c47f23c3@web.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable] block/mq-deadline: fix different priority request
+ on the same zone
+To: Wu Bo <bo.wu@vivo.com>
+Cc: axboe@kernel.dk, dlemoal@kernel.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, wubo.oduw@gmail.com
+References: <a1c24153-007c-4510-9cb3-bc207e9a75e8@acm.org>
+ <20240517014456.1919588-1-bo.wu@vivo.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240517014456.1919588-1-bo.wu@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 17, 2024 at 04:44:18PM +0200, Markus Elfring wrote:
-> …
-> > This patch resolves the issue by starting …
-> 
-> Will further imperative wordings be more desirable for an improved change description?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.9#n94
-> 
-> Regards,
-> Markus
-> 
+On 5/16/24 18:44, Wu Bo wrote:
+> So I figured this solution to fix this priority issue on zoned device. It sure
+> raises the overhead but can do fix it.
 
-Hi,
+Something I should have realized earlier is that this patch is not
+necessary with the latest upstream kernel (v6.10-rc1). Damien's zoned
+write plugging patch series has been merged. Hence, I/O schedulers,
+including the mq-deadline I/O schedulers, will only see a single
+zoned write at a time per zone. So it is no longer possible that
+zoned writes are reordered by the I/O scheduler because of their I/O
+priorities.
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+Thanks,
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
-
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
-
-thanks,
-
-greg k-h's patch email bot
+Bart.
 
