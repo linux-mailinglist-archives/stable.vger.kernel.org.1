@@ -1,129 +1,94 @@
-Return-Path: <stable+bounces-45378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3A78C8585
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 13:22:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EB48C860E
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 14:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 999F9285910
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 11:22:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0C381C2344A
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 12:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1013D39B;
-	Fri, 17 May 2024 11:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429CA537ED;
+	Fri, 17 May 2024 11:59:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED7F3E471;
-	Fri, 17 May 2024 11:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A7951C59;
+	Fri, 17 May 2024 11:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715944964; cv=none; b=RcjGYAV4ZCaeDCownT50d9+kW9+pgtg8OoFXsRaD/9vR6jjNnGhlZz18wAVnLQIMDtSNK+F/m/FkDCFFPYLMm26uRYacXvPmKZRzXonZVP8nO9hVtJmDnm+jWsudawkHrg847sCEf9Um8i6BTKiL3drjBhzKNVawh54D+G1mdXc=
+	t=1715947149; cv=none; b=SIGPPsx1iE5/j/pgUAPn7u+9BWOR/rsavYwgmsW0x+SSJ1WlDSwFsG8QxlOI/zF64zXDXhhXf3B1YNZXW8ewpAX1aeGcxNwakc+pa8h9V4/mCpwrm7zex6IgnvKJ3aziJ7qzxUksg+bj9EyD9ZcCuNNiLGclNh1C4J7ifXgT5KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715944964; c=relaxed/simple;
-	bh=y0gcdIWx2hhNx3bFhbLmbTGSbZSCvWEtpHIYYuD4/kI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d4dLTEplHhbzEMTvXi0ou95OxNEc5cLl/GGm8YWkuj/HknycitGUKqzzBFmkl963Es3fxZdDoq8KJmFge+ynbB3c4q18KPZpXI1zJIPRDRebiEimWqoeAps2B43ZU5OzmJ2B+V3LOLrn3JZqTRyCQ5cLXaci3p+J9plSpSqeBdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1ee954e0aa6so5335625ad.3;
-        Fri, 17 May 2024 04:22:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715944962; x=1716549762;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G2dvI+vZE8pCZhViJyMM66y2U5LdOWJJxNSUxl+PGww=;
-        b=qjgQhaHlpR5vdGbDrkEPpCSJbiC0HBPxv/dzpDVHXzjPdcrERGVJsSpFDOl6FVQgr9
-         XOPe94WSqOeRMcZtONKovA4U1ZBp5Kl6E8nfuFiMoFRrE9uRolKUxW9ui6xmTDbkhvf1
-         Ry4/RqLpMyFvM/JZJWU1Mq93GTFmTrXa+WEFOyuRmfRHLlkIBj67NQfV6rkq1WVWmDnN
-         cYTldETgJiVBDY2dm3e/KxX1ASiazC+6kaWapiI1g1TOHlOULfpdf3Ra1ENZpKzGfYaU
-         dgrU3cPCv4NVh2YQtudi1qUEKXJqZg8lXabtPIX8KshcEDVaN8ryt/n/0/TIG1B9jakM
-         3jvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHIPlDS8XTUc6niwc7yyoolDm6sIjWq8JjdXrBK0nM9oBnhaHT4dk74kOqSmJl50L8GcabAMoTFN+Iwxho3GSk72nzUzoG8QLQyHTo8r6M1AGMmjRT+FoSiiOjNKe8tSF+
-X-Gm-Message-State: AOJu0YxHwtF4SpSz4MQEtmqXeCXyUoetff1PSHFpR+nm9njxpxT07mQz
-	H6vblsHbZGD4yMnYE3hLYEINJDyT++JaLIgzAdRQTYcBz6MGPCnF
-X-Google-Smtp-Source: AGHT+IHeIMz2gvttVbu8YvoQNX0R+DpY+pIkhaL/+tyli1VVIoZ7xusCcFeOVbaL7QVaVkzkH6ZC4g==
-X-Received: by 2002:a17:903:245:b0:1e4:4ade:f504 with SMTP id d9443c01a7336-1ef44161e45mr231310545ad.46.1715944962575;
-        Fri, 17 May 2024 04:22:42 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0bad9d22sm155932115ad.72.2024.05.17.04.22.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 May 2024 04:22:41 -0700 (PDT)
-Date: Fri, 17 May 2024 20:22:39 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>, Simon Xue <xxm@rock-chips.com>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jianfeng Liu <liujianfeng1994@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	stable@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v3] PCI: dw-rockchip: Fix initial PERST# GPIO value
-Message-ID: <20240517112239.GU202520@rocinante>
-References: <20240417164227.398901-1-cassel@kernel.org>
+	s=arc-20240116; t=1715947149; c=relaxed/simple;
+	bh=fe43fJSj3i9NMSzNqNRStwhPd10HNnKc47sfeXR3k8E=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=DpVmuSfsUkMbxrcUT726hiMV7fAkX1cghOjOK+l/0Y7RCSY/eiLWyU8Xcm6XlJht8b58BxqVWZ1DkWFQHgLAo7t3i7e5OKYcf67LivfSE/2uQW9te3CUUuC/iZ+AceflJ6ot1B+xiwkPJk76tT4dt2lj3axEZhiTbb4S9oQgSd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
+ (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 17 May
+ 2024 13:43:52 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%4]) with mapi id
+ 15.01.2507.039; Fri, 17 May 2024 13:43:52 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Juergen Gross <jgross@suse.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, John Ernberg
+	<john.ernberg@actia.se>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH] USB: xen-hcd: Traverse host/ when CONFIG_USB_XEN_HCD is
+ selected
+Thread-Topic: [PATCH] USB: xen-hcd: Traverse host/ when CONFIG_USB_XEN_HCD is
+ selected
+Thread-Index: AQHaqE99M70NH7RzN0K31Fykj7Mi3Q==
+Date: Fri, 17 May 2024 11:43:52 +0000
+Message-ID: <20240517114345.1190755-1-john.ernberg@actia.se>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.45.0
+x-esetresult: clean, is OK
+x-esetid: 37303A29059A2F57607765
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240417164227.398901-1-cassel@kernel.org>
 
-Hello,
+If no other USB HCDs are selected when compiling a small pure virutal
+machine, the Xen HCD driver cannot be built.
 
-> PERST# is active low according to the PCIe specification.
-> 
-> However, the existing pcie-dw-rockchip.c driver does:
-> gpiod_set_value(..., 0); msleep(100); gpiod_set_value(..., 1);
-> When asserting + deasserting PERST#.
-> 
-> This is of course wrong, but because all the device trees for this
-> compatible string have also incorrectly marked this GPIO as ACTIVE_HIGH:
-> $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3568*
-> $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3588*
-> 
-> The actual toggling of PERST# is correct.
-> (And we cannot change it anyway, since that would break device tree
-> compatibility.)
-> 
-> However, this driver does request the GPIO to be initialized as
-> GPIOD_OUT_HIGH, which does cause a silly sequence where PERST# gets
-> toggled back and forth for no good reason.
-> 
-> Fix this by requesting the GPIO to be initialized as GPIOD_OUT_LOW
-> (which for this driver means PERST# asserted).
-> 
-> This will avoid an unnecessary signal change where PERST# gets deasserted
-> (by devm_gpiod_get_optional()) and then gets asserted
-> (by rockchip_pcie_start_link()) just a few instructions later.
-> 
-> Before patch, debug prints on EP side, when booting RC:
-> [  845.606810] pci: PERST# asserted by host!
-> [  852.483985] pci: PERST# de-asserted by host!
-> [  852.503041] pci: PERST# asserted by host!
-> [  852.610318] pci: PERST# de-asserted by host!
-> 
-> After patch, debug prints on EP side, when booting RC:
-> [  125.107921] pci: PERST# asserted by host!
-> [  132.111429] pci: PERST# de-asserted by host!
-> 
-> This extra, very short, PERST# assertion + deassertion has been reported
-> to cause issues with certain WLAN controllers, e.g. RTL8822CE.
+Fix it by traversing down host/ if CONFIG_USB_XEN_HCD is selected.
 
-Applied to controller/rockchip, thank you!
+Fixes: 494ed3997d75 ("usb: Introduce Xen pvUSB frontend (xen hcd)")
+Cc: stable@vger.kernel.org # v5.17+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+---
+ drivers/usb/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1/1] PCI: dw-rockchip: Fix initial PERST# GPIO value
-      https://git.kernel.org/pci/pci/c/b00c483a1075
-
-	Krzysztof
+diff --git a/drivers/usb/Makefile b/drivers/usb/Makefile
+index 3a9a0dd4be70..949eca0adebe 100644
+--- a/drivers/usb/Makefile
++++ b/drivers/usb/Makefile
+@@ -35,6 +35,7 @@ obj-$(CONFIG_USB_R8A66597_HCD)	+=3D host/
+ obj-$(CONFIG_USB_FSL_USB2)	+=3D host/
+ obj-$(CONFIG_USB_FOTG210_HCD)	+=3D host/
+ obj-$(CONFIG_USB_MAX3421_HCD)	+=3D host/
++obj-$(CONFIG_USB_XEN_HCD)	+=3D host/
+=20
+ obj-$(CONFIG_USB_C67X00_HCD)	+=3D c67x00/
+=20
+--=20
+2.45.0
 
