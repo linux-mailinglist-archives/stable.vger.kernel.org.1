@@ -1,106 +1,259 @@
-Return-Path: <stable+bounces-45369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D620C8C839E
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 11:34:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 338878C83FB
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 11:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73EFE1F21608
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 09:34:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62F6CB20DC6
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 09:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC2929437;
-	Fri, 17 May 2024 09:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0D92C85D;
+	Fri, 17 May 2024 09:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1Nv9yrN"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fx/jV5PU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C872BD00;
-	Fri, 17 May 2024 09:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98962C1A9
+	for <stable@vger.kernel.org>; Fri, 17 May 2024 09:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715938369; cv=none; b=ph+uXAZQ7cbLQE/JPP79gKZv6NQYzXYauEdmO4wnGyEsfEonKjYi6rcE4riTkqexHVp0hdRBOaA/1INpWSJIIErPUovuJA9XnwdzC+oqqqjB2LVvI4Sn2n/t1LTdfTL7IBb6iYMWgX29e45dn59f12Q0M+n9OoztNfjQq7KGPDc=
+	t=1715938754; cv=none; b=qon1gC1eGgfDG9m84tDd7/D2A6eRBaKlXhXl/u31LV3sMcVcekj8QDcew2+Hgb/Bv1MLKmgSopGVYpIZqkbyjL3jX3wHNh8bQuGW6jXDAsv5HRsSG5iWqs0yVyRz81QDYW88BvJGC+DP2qEMT0NQBWwAnr33SsCAj+rTIGUfiBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715938369; c=relaxed/simple;
-	bh=BIeOajTDnTE0oWk2OSRXZfKHkGcTs4mjiK2NQMCf3VY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=aocVbJiPt8+TFZpToHaOsB/dkh9DPsoOQftrzHcj+KhgxetpbRzVK57ivdPwA37J+EW9n7Q5eRQJZrLoHC8WNFeK4CNPBiM405mNFEVgc/BtcG72aUra1hyNKzQizRT3LnC10EJSexLkzXEX/3MnLVO8PWPyqgg9o72mq+aE6yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1Nv9yrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0D2C2BD10;
-	Fri, 17 May 2024 09:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715938368;
-	bh=BIeOajTDnTE0oWk2OSRXZfKHkGcTs4mjiK2NQMCf3VY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=S1Nv9yrNxdMNqknT7GMWrpBVRpZ1CpK5jotvkS29S8Khz6S2OpYe85lV5aMywTvKC
-	 BS22zRHAHeRH463OmY/3wWqfNsHb9mEehp9uIx5KXiXApSKZBc5CnbTLeFBJbtD99y
-	 bFwQ3q0AoxGszEKw5iNq/XvWeXztQlXP2zu60MI5lFez9PHKntkhv1BFUj5XNKNGf0
-	 QvedZHd3GcSMfVCQ3vZflychi3F3O47N6RT6qbubI0mUkgZ12aWHnNdPZ0a0lWVIFK
-	 lR1nnTenM+DOyh+sRycfbW+4cD3G/qJNBXU5kWmh9fL5BdgeNhWCB1nZsX5Bhw0b4n
-	 wN/qHNX1/1eRA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Brian Norris <briannorris@chromium.org>,  Rafael Beims
- <rafael.beims@toradex.com>,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  tsung-hsien.hsieh@nxp.com,  David Lin
- <yu-hao.lin@nxp.com>,  stable@vger.kernel.org,  Francesco Dolcini
- <francesco.dolcini@toradex.com>
-Subject: Re: [v1] wifi: mwifiex: Fix interface type change
-References: <20240510110458.15475-1-francesco@dolcini.it>
-	<171593306296.3274748.4179889716794962474.kvalo@kernel.org>
-	<20240517081312.GA7974@francesco-nb>
-Date: Fri, 17 May 2024 12:32:44 +0300
-In-Reply-To: <20240517081312.GA7974@francesco-nb> (Francesco Dolcini's message
-	of "Fri, 17 May 2024 10:13:12 +0200")
-Message-ID: <87zfsog4w3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1715938754; c=relaxed/simple;
+	bh=vwMdcDIQvua8QfAz0KCBvSIyqK+oD1woVdY8EEgI43A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PZP3w34HUhYxyXcfQh898LQgfpncwing6LFOtJuxC0cQrkWYrWoWnrIZWe4doMjnL3KouYn5pUvjuicynaxCAbVYuoziwKhxrgliTqtoHK6VHTsd9SmyL1IgbIHI4uL+jqbBIxAIwx7YOrFczoebxEqc0OxnrvgaAlrPGBwZDQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fx/jV5PU; arc=none smtp.client-ip=209.85.217.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-481f046f077so1959094137.3
+        for <stable@vger.kernel.org>; Fri, 17 May 2024 02:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1715938752; x=1716543552; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FuD+vaTVxp4rifybaa+fTKWXuMMvJfia8QWk97uGpDQ=;
+        b=Fx/jV5PUOOz64lpbJ+yW8NS172NgmydL28FAP3u/DLt+fl2CA+zgGn72Wqyj7GTq8Z
+         bqeb5rMwbDqhqM9UcHsJ3O4bn/ck4u+F+hXNx5TYVomkc2/5u6KxCbbs6NvEOhXBS/lm
+         RTrplPQ0EjLCtvXxF9YzSmAH82OR6mBsfx2g4nP1DcLcr4dfcmD7HFZrhhZYjqnlSt2D
+         APXeJulOcG0LBf+F4cfSGs4gyAyToYFjw7CgYzf4EBfgJ0H9VD8pC2w8ZllTNkKw2vOL
+         q5v5I71NUWliPZPrAakcTjXUQBC23Uh+RUMlo0kyt3pHlFfKnwi+HkU4Zaumb+tJjOaf
+         u+UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715938752; x=1716543552;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FuD+vaTVxp4rifybaa+fTKWXuMMvJfia8QWk97uGpDQ=;
+        b=I6qUppp7sfCHWNYmUxxGNTEsDmq6Kbb/EXnVZ+7YLxUFqcr6IWLqZKGhv8qbcP26Rj
+         NNssAZE5Uh6t8oKyLo5aIOXQPIRbRXbRFqyHVN4PUF6yjMwI9NKiUJb7NMsfezYjk2dg
+         KXY7+vqfrp0f2MYUpyjKm1IoGFOq2m4x8kpi2Pkv/ydg24nhPYEVGHQ7+okKdaBcKXCv
+         tNqEMWffANQIloywQNE2xI+YLVE7AaSV2L06ssK0lL4i07WlmvE8h7Nv3XgfI4uCGjB1
+         iVYODAx61oHzHYuiiuDPNdzGSd4UQqejdCdSuwAFxq6xMomjw8dr649Rb0tI3yUsBc6J
+         R5Nw==
+X-Gm-Message-State: AOJu0Yz6QzBXCUUxOcZUECKCexOGb0VmqVgfiFmxXoWjm6CDNdI8f5GK
+	6t4F2CeJUhSyJhfLExedb+W8cK7KmXaDPWMILzD4Zkvn3E8wyDi7TPsD9SzJ08Xu83Ret4haZkR
+	rAot+1f5td2FZaVkpnu3iF0TjhAaaEEISR/1wXQ==
+X-Google-Smtp-Source: AGHT+IHrWpEjQ4MuHn+1UCMXMvxo6TPAysFNBFiBtwi3VvVlxttL5ISqmS+xmbCxdfUzOtLRd9U5BMTsS7DqrGFH434=
+X-Received: by 2002:a05:6102:38cb:b0:47b:bea0:bdf7 with SMTP id
+ ada2fe7eead31-48077e8625cmr21291823137.27.1715938751847; Fri, 17 May 2024
+ 02:39:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240516121335.906510573@linuxfoundation.org>
+In-Reply-To: <20240516121335.906510573@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 17 May 2024 11:38:59 +0200
+Message-ID: <CA+G9fYvG=8z_8+zuOaWVSW7_XZFGuGTxsLY_wzy33S8SL990gA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/308] 6.6.31-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Francesco Dolcini <francesco@dolcini.it> writes:
-
-> On Fri, May 17, 2024 at 08:04:24AM +0000, Kalle Valo wrote:
+On Thu, 16 May 2024 at 14:15, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
->> Francesco Dolcini <francesco@dolcini.it> wrote:
->> 
->> > From: Rafael Beims <rafael.beims@toradex.com>
->> > 
->> > When changing the interface type we also need to update the bss_num, the
->> > driver private data is searched based on a unique (bss_type, bss_num)
->> > tuple, therefore every time bss_type changes, bss_num must also change.
->> > 
->> > This fixes for example an issue in which, after the mode changed, a
->> > wireless scan on the changed interface would not finish, leading to
->> > repeated -EBUSY messages to userspace when other scan requests were
->> > sent.
->> > 
->> > Fixes: c606008b7062 ("mwifiex: Properly initialize private
->> > structure on interface type changes")
->> > Cc: stable@vger.kernel.org
->> > Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
->> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
->> 
->> BTW I removed the Reviewed-by from the commit message, I don't see the need to
->> have both Reviewed-by and s-o-b.
+> This is the start of the stable review cycle for the 6.6.31 release.
+> There are 308 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Sure, I was in doubt about this, in the end I added it because I have seen
-> this done in other subsystems, e.g. commit 6a4020b4c639 ("drm/bridge:
-> tc358768: fix PLL parameters computation").
+> Responses should be made by Sat, 18 May 2024 12:12:33 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.31-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Heh, yeah we all do things a bit differently :) In my view s-o-b implies
-that you have reviewed it as well but clearly not everyone think the
-same. I'm fine either way, this is cosmetics anyway.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+## Build
+* kernel: 6.6.31-rc3
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.6.y
+* git commit: 2379391bdb9dd9e503c33379d81b96ea5ed321a8
+* git describe: v6.6.30-309-g2379391bdb9d
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.3=
+0-309-g2379391bdb9d
+
+## Test Regressions (compared to v6.6.30)
+
+## Metric Regressions (compared to v6.6.30)
+
+## Test Fixes (compared to v6.6.30)
+
+## Metric Fixes (compared to v6.6.30)
+
+## Test result summary
+total: 173996, pass: 150566, fail: 2409, skip: 20778, xfail: 243
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 129 total, 129 passed, 0 failed
+* arm64: 38 total, 38 passed, 0 failed
+* i386: 29 total, 29 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 17 total, 17 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 33 total, 33 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
