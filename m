@@ -1,128 +1,94 @@
-Return-Path: <stable+bounces-45359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B278C80BE
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 07:56:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3728C8241
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 10:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606521F21BC4
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 05:56:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11061283458
+	for <lists+stable@lfdr.de>; Fri, 17 May 2024 08:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A1F125C7;
-	Fri, 17 May 2024 05:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD52F2BAE6;
+	Fri, 17 May 2024 08:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="luFCcyoS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bw/I/l81"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072DB1170D;
-	Fri, 17 May 2024 05:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B0FEC4;
+	Fri, 17 May 2024 08:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715925412; cv=none; b=d4PDZmnOM1bYiarYB6vyfBlNQzZJOIU4rSp3zRWInxNKIaieNBmzeKbQaCfWpBlk/vIg4+KZwWimmADdGiEfHkA1jjbwdfNZTt2HhagRwsVm3hfqRFB+j5wiEcELzTU/8YRZHOWetqpoT+tNK1oSgFk4Akb4nfevkVakMe7QMc4=
+	t=1715932993; cv=none; b=ky2r2JfxYGgiwrgb5r96NOP2aaOdlzTCZcY3LotmF67Crv2rJimBfElZfl0VTXADcw2PUFdMTZt1oXT5SC3YMyyKcmRHz0mqI73xWjncgyG3RAPcui8NSmjUkQP+nM9Wx6v+OZ1pm+5iJ6He6kdbpFpb1mvaO0JDseXyxD6UijI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715925412; c=relaxed/simple;
-	bh=YmSGsQFqP2sM/tghthyHZt/WfhYPDSOmoFnURY8upkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pOBb+LdY43jjRwZxq1eAy/NKOxvCSxkyliWB88FVHzo5ukgp/64i5TWl6Sou0UmUzwD3LWH34ploMntF6dVhccO3fBApRk1bgm2G1s2xCiAi1e/+zdPWrmrBNlIK32TsUEdzpVJStqR5CNzRcJY76ffrhlLWEbkOXp84inswDR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=luFCcyoS; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6f0f0494459so621530a34.0;
-        Thu, 16 May 2024 22:56:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715925410; x=1716530210; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=esvpS+HJVmGYN9zlMcpOZlojnY2YKhtm2CtrJvMWw1A=;
-        b=luFCcyoStEU1ddeMN/HUQOHnAR+qkR1zzFcIa/7HZzkK2DamRgbSuyUkVJU9E7xVzi
-         W2PJeDNYuz179Th2/327tahnnmIyq39MzjgsJtGZ2+coLLpgSbVnoWZqHy9WIWv7dhzu
-         x6D1kxHiKZPxlNRY0jJMggrAmctwCIFHVaN1YELNcpe+mwq4dyBLxB3iqUeSRFsdChOw
-         UxlWlIvm661a0n/b+A2KDX6KoD4xi8sczofJnmnCDyqIIz9Hq7XDkcABUCSn64CzX9DQ
-         oFLiGTt32q384Yw2cKRZPRwN4v4VJmXYFTxjO1T/Bhh4WPsrj85KDw6WKi8f6msKnNzW
-         FdRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715925410; x=1716530210;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=esvpS+HJVmGYN9zlMcpOZlojnY2YKhtm2CtrJvMWw1A=;
-        b=iQt4mnLJJ0MpsxL9HUc7ofqxvCxBXzkPs9vBNcuXd2V30UWnu5sT+SwN21KjwymBCK
-         sS3F8OGJ55S+XA7jq1usBL2B1zWHsJURnuMfxL95SQrjoJKXxrAMrOpRm6/Rgajs7plZ
-         yJ0d69XBe8jbBRsI/S5Ne7vGC2XEwhB8o27igDb6vPBuCZmuiZbJGdk8xjIdpPqVq6mb
-         27/Yz7vd0OSQc3aFo/YnYWozp6fUocqUEJ6bXix2ZYof8eNx6qB4lTVe4xPRZV2R6t2q
-         2AyWNMebMLFfo8LWCmvbc5g17gLAC/BLZO4PTN5w3ccgBk1y3kFYJ7/tGwIFWvKdGQHO
-         HIQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRvyoEK3u5+JFV9yBE2z5BPhBOErjN+Oprrfodomch3hS25AeYwVhHxVrUxbCfi7Sx4nRAq+MYpLi5p7sgOwIann7z5IWOD41BBBZD/v1ARPZVvYtedar7JXTOiVEeaGSXkLeF
-X-Gm-Message-State: AOJu0YyLXrxdgZERad+syqeQpkHdkxs/LOMSjS9r8nhrDx5lcqpOa4jQ
-	ke/OokBFeiEVv1J/yPjdiJkxQSTy04uBFVk1QWiG40gey4olKgte
-X-Google-Smtp-Source: AGHT+IFlbXgIANme5udm932an91YyNDPFM783y6kvOlmYR2NH/ClaYk8g/x1Re/kZa/8KVe23/AyEA==
-X-Received: by 2002:a05:6870:d69c:b0:23b:f2d0:7b9c with SMTP id 586e51a60fabf-24172bdf92fmr23759567fac.24.1715925409923;
-        Thu, 16 May 2024 22:56:49 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a66428sm14021515b3a.27.2024.05.16.22.56.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 May 2024 22:56:49 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 40BED186F78EA; Fri, 17 May 2024 12:56:47 +0700 (WIB)
-Date: Fri, 17 May 2024 12:56:47 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.8 000/339] 6.8.10-rc3 review
-Message-ID: <ZkbxnwyfeIiIwLPc@archie.me>
-References: <20240516121349.430565475@linuxfoundation.org>
+	s=arc-20240116; t=1715932993; c=relaxed/simple;
+	bh=5mfe7yBVIkw7H5OSayGdSn3kS2VYj3CX0eJpo7nXuHc=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Xp1Ka+xCKI3/uQ71Icr3/Mbcf+KF4M0QO1WtwyojbO1WpBKrn5d3p1nwVQ1A+XK1IkprFvXqJUhW801rjKmvVT8c4k+oFYsT/Ur5IYlguQeCNt8HtYf1+5dKFaGTBmCRicCu9/W/EY5j8I5wJs0S5iorhXOAaQBfle2S0Rx4nMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bw/I/l81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74EDC2BD10;
+	Fri, 17 May 2024 08:03:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715932992;
+	bh=5mfe7yBVIkw7H5OSayGdSn3kS2VYj3CX0eJpo7nXuHc=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=Bw/I/l81zW67cM21ugTgD/pi3kqYZrUsw9e90mM5Py1e8xnlalTYctqcQrhOtFX8U
+	 bbnYCRO1146NbsKlizJK3wk6nJO2730eo+lgI0FheNFIcdr/JY94Jcq/i8YKoPwcmD
+	 rThVDj7tPI5jAmMqXolgJJeq9ceabZpqmN5fhWZV07hx6Pbn0LwIhXUol5ikp+tUw3
+	 vovSKaAilqnXumBekjtWmrDqHkf0XHuehV7yIE7VbOVbXN0EWu/e63EwRZwtwbErlJ
+	 ALcw80NJyayzqkkLRdvRVzmKKMua8HAZ7vAJpA9XhDSR01UFEYR9skxtB56fOq9XAI
+	 56x8YgdKUO39Q==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="X7EahXYUI8wOp0ZB"
-Content-Disposition: inline
-In-Reply-To: <20240516121349.430565475@linuxfoundation.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [v1] wifi: mwifiex: Fix interface type change
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240510110458.15475-1-francesco@dolcini.it>
+References: <20240510110458.15475-1-francesco@dolcini.it>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Brian Norris <briannorris@chromium.org>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Rafael Beims <rafael.beims@toradex.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, tsung-hsien.hsieh@nxp.com,
+ David Lin <yu-hao.lin@nxp.com>, stable@vger.kernel.org,
+ Francesco Dolcini <francesco.dolcini@toradex.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171593298896.3274748.6589375938243977457.kvalo@kernel.org>
+Date: Fri, 17 May 2024 08:03:10 +0000 (UTC)
 
+Francesco Dolcini <francesco@dolcini.it> wrote:
 
---X7EahXYUI8wOp0ZB
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Rafael Beims <rafael.beims@toradex.com>
+> 
+> When changing the interface type we also need to update the bss_num, the
+> driver private data is searched based on a unique (bss_type, bss_num)
+> tuple, therefore every time bss_type changes, bss_num must also change.
+> 
+> This fixes for example an issue in which, after the mode changed, a
+> wireless scan on the changed interface would not finish, leading to
+> repeated -EBUSY messages to userspace when other scan requests were
+> sent.
+> 
+> Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-On Thu, May 16, 2024 at 02:14:57PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.8.10 release.
-> There are 339 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+Patch applied to wireless-next.git, thanks.
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+a17b9f590f6e wifi: mwifiex: Fix interface type change
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240510110458.15475-1-francesco@dolcini.it/
 
---=20
-An old man doll... just what I always wanted! - Clara
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
---X7EahXYUI8wOp0ZB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZkbxmgAKCRD2uYlJVVFO
-o/VcAQDd3hve2Ri08VYkrZpn/ZcRSgAxL1uotH5DpftZbVurZAD/UB5eW+D/E9Dd
-ouHI00/F+H+zVxE0pf2w6eyCg6SPzAw=
-=9d5O
------END PGP SIGNATURE-----
-
---X7EahXYUI8wOp0ZB--
 
