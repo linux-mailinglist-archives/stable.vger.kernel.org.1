@@ -1,132 +1,164 @@
-Return-Path: <stable+bounces-45412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CD48C9289
-	for <lists+stable@lfdr.de>; Sat, 18 May 2024 23:37:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94258C92FB
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 00:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A43E41F2146A
-	for <lists+stable@lfdr.de>; Sat, 18 May 2024 21:37:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16151C20A54
+	for <lists+stable@lfdr.de>; Sat, 18 May 2024 22:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361376EB64;
-	Sat, 18 May 2024 21:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C566CDD8;
+	Sat, 18 May 2024 22:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ed+nA6ka"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="ToFpam+K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCA56CDC8;
-	Sat, 18 May 2024 21:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4388F49;
+	Sat, 18 May 2024 22:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716068250; cv=none; b=kWHM6l8JsCpNCZXEJrcs5aFTrolPT6OVSeS5JiGFYL+j+IVKtpgJeLo+FaWaT9+nEEOUg46slHDhjlQvBfdI8hJjjoxxCIRsw+oiuwShWDui1lZlDX6gxW41u6WHwktNuqdbpml7EOV4FzrUAhS2qTeGCkNR9iKUuWKtfsXiBbA=
+	t=1716070053; cv=none; b=cA22B4yoBylDpZ02Lo3iBDrICKu/cvuC8JLg9mIzvBnel92skxeRl7KkHpWRtGwATmS3u/28/UrQ4mnKMxnLbp63Miv1NWcGuPB7GPvWdNa0WtZr18KrQ6jC9pUxSfIs4dBMARrDdpmBviZcyYnZXsYuvYo0WdqNa9pDP69HeI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716068250; c=relaxed/simple;
-	bh=tA41U9a2wJeaKnsli+rQ8ii0Z8V5FL/JPrU6bK6Nik0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwiOah7lL+fXq5tiVqmppfXx9eOlxIbSvqsZanoxv92nB8Iro+s7MCgbxmyTkYGheY6t5W7g6S+yTJ5b628qjlmbU4NZAw8zq5HePIIvlqErTl6VH1JTkbek/WwLpFySZABzXbsi0PKQ18DtdjaIc9a3hzdL3MSR55JYtrm4VvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ed+nA6ka; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172B0C113CC;
-	Sat, 18 May 2024 21:37:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716068249;
-	bh=tA41U9a2wJeaKnsli+rQ8ii0Z8V5FL/JPrU6bK6Nik0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ed+nA6karKcB1mIgDVAhFBBO0U0GV0RiNJn9faBv9vR9wtVAbUetdW90GPR9guC/z
-	 GUhJ3gJHRP4MvyroDIgA8cSML9SJ4X0iO9bTc1Ys0QJbXlFn3xgMeUYcRdCcsRgcY1
-	 zuXCuB0kd9/B1UZq7pTdpegek1Aq+z6cmx8twpK1oBd9ydTWsqzSUX7OkFbXicWTom
-	 S0cCTpIQqeSs121rSkOwVYzO8iQyrvVQR3JKMDBs5demkfjH/mKGgyd6aylpI89Sgv
-	 +WkeKvQCSY+jVn3J6xS+YgawI0ReLuDcvk3q3w0Y/s75xpTvHr+Hg+S/fronCo9NMK
-	 lsl7nPmiJN5Ng==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	Andreas.Fuchs@infineon.com,
-	James Prestwood <prestwoj@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	linux-crypto@vger.kernel.org (open list:CRYPTO API),
-	linux-kernel@vger.kernel.org (open list),
-	stable@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
-Subject: [PATCH RFC 3/5] KEYS: trusted: Do not use WARN when encode fails
-Date: Sun, 19 May 2024 00:36:23 +0300
-Message-ID: <20240518213700.5960-4-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240518213700.5960-1-jarkko@kernel.org>
-References: <20240518213700.5960-1-jarkko@kernel.org>
+	s=arc-20240116; t=1716070053; c=relaxed/simple;
+	bh=7WZoC8Cv9EUhQkWgeAytRxfMcPYt+SStwinFuIc4Sy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mcTf/3ryJ3n49G3o9uh+GAR3WwtwYVhRr7oVyT7zsOoVEjCPGcaGNLcRlfCge0p7gw2knjCjlCeCJzyZi3XFIszFSemuQg2CnuKJVzQXENBSrm+8jW2KlKPmyzrN5SQ7e0tbYdqjSHXG42k5odG9iyN/NI4QQDBbk5tZxBG3o/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=ToFpam+K; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1716070044;
+	bh=7WZoC8Cv9EUhQkWgeAytRxfMcPYt+SStwinFuIc4Sy0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ToFpam+KIVz5AUTeBcEhAT2PgruryZpzQ+fU+2O06JwRPsg4+BLVX+SbUuenIbL6A
+	 H/4KG0Z3F1C6ODmhqsmKO3GqTbiFKWD9hJ00qc2fsyw17QZEmaW0o+IBEcQ0kpS81V
+	 TVpnC3iHkPUq6hvJXKiy8vlr3ZWntMT27nbldhUA=
+Date: Sun, 19 May 2024 00:07:24 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: stable@vger.kernel.org
+Cc: rafael.j.wysocki@intel.com, Mario.Limonciello@amd.com, 
+	viresh.kumar@linaro.org, Ray.Huang@amd.com, gautham.shenoy@amd.com, 
+	Borislav.Petkov@amd.com, Alexander.Deucher@amd.com, Xinmei.Huang@amd.com, 
+	Xiaojian.Du@amd.com, Li.Meng@amd.com, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Perry Yuan <perry.yuan@amd.com>
+Subject: Re: [PATCH] cpufreq: amd-pstate: fix the highest frequency issue
+ which limit performance
+Message-ID: <4212df0b-5797-42a8-9c64-3e03851293b5@t-8ch.de>
+References: <20240508054703.3728337-1-perry.yuan@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240508054703.3728337-1-perry.yuan@amd.com>
 
-When asn1_encode_sequence() fails, WARN is not the correct solution.
+Hi stable team,
 
-1. asn1_encode_sequence() is not an internal function (located
-   in lib/asn1_encode.c).
-2. Location is known, which makes the stack trace useless.
-3. Results a crash if panic_on_warn is set.
+Please backport the mainline commit
+bf202e654bfa ("cpufreq: amd-pstate: fix the highest frequency issue which limits performance")
+to the 6.9 stable series.
 
-It is also noteworthy that the use of WARN is undocumented, and it
-should be avoided unless there is a carefully considered rationale to
-use it.
+It fixes a performance regression on AMD Phoenix platforms.
 
-Replace WARN with pr_err, and print the return value instead, which is
-only useful piece of information.
+It was meant to get into the 6.9 release or the stable branch shortly
+after, but apparently that didn't happen.
 
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- security/keys/trusted-keys/trusted_tpm2.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index dfeec06301ce..dbdd6a318b8b 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -38,6 +38,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	u8 *end_work = scratch + SCRATCH_SIZE;
- 	u8 *priv, *pub;
- 	u16 priv_len, pub_len;
-+	int ret;
- 
- 	priv_len = get_unaligned_be16(src) + 2;
- 	priv = src;
-@@ -79,8 +80,11 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
--	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
--		return PTR_ERR(work1);
-+	if (IS_ERR(work1)) {
-+		ret = PTR_ERR(work1);
-+		pr_err("ASN.1 encode error %d\n", ret);
-+		return ret;
-+	}
- 
- 	return work1 - payload->blob;
- }
--- 
-2.45.1
-
+On 2024-05-08 13:47:03+0000, Perry Yuan wrote:
+> To address the performance drop issue, an optimization has been
+> implemented. The incorrect highest performance value previously set by the
+> low-level power firmware for AMD CPUs with Family ID 0x19 and Model ID
+> ranging from 0x70 to 0x7F series has been identified as the cause.
+> 
+> To resolve this, a check has been implemented to accurately determine the
+> CPU family and model ID. The correct highest performance value is now set
+> and the performance drop caused by the incorrect highest performance value
+> are eliminated.
+> 
+> Before the fix, the highest frequency was set to 4200MHz, now it is set
+> to 4971MHz which is correct.
+> 
+> CPU NODE SOCKET CORE L1d:L1i:L2:L3 ONLINE    MAXMHZ   MINMHZ       MHZ
+>   0    0      0    0 0:0:0:0          yes 4971.0000 400.0000  400.0000
+>   1    0      0    0 0:0:0:0          yes 4971.0000 400.0000  400.0000
+>   2    0      0    1 1:1:1:0          yes 4971.0000 400.0000 4865.8140
+>   3    0      0    1 1:1:1:0          yes 4971.0000 400.0000  400.0000
+> 
+> v1->v2:
+>  * add test by flag from Gaha Bana
+> 
+> Fixes: f3a052391822 ("cpufreq: amd-pstate: Enable amd-pstate preferred core support")
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218759
+> Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+> Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Tested-by: Gaha Bana <gahabana@gmail.com>
+> ---
+>  drivers/cpufreq/amd-pstate.c | 22 +++++++++++++++++++---
+>  1 file changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+> index 2db095867d03..6a342b0c0140 100644
+> --- a/drivers/cpufreq/amd-pstate.c
+> +++ b/drivers/cpufreq/amd-pstate.c
+> @@ -50,7 +50,8 @@
+>  
+>  #define AMD_PSTATE_TRANSITION_LATENCY	20000
+>  #define AMD_PSTATE_TRANSITION_DELAY	1000
+> -#define AMD_PSTATE_PREFCORE_THRESHOLD	166
+> +#define CPPC_HIGHEST_PERF_PERFORMANCE	196
+> +#define CPPC_HIGHEST_PERF_DEFAULT	166
+>  
+>  /*
+>   * TODO: We need more time to fine tune processors with shared memory solution
+> @@ -326,6 +327,21 @@ static inline int amd_pstate_enable(bool enable)
+>  	return static_call(amd_pstate_enable)(enable);
+>  }
+>  
+> +static u32 amd_pstate_highest_perf_set(struct amd_cpudata *cpudata)
+> +{
+> +	struct cpuinfo_x86 *c = &cpu_data(0);
+> +
+> +	/*
+> +	 * For AMD CPUs with Family ID 19H and Model ID range 0x70 to 0x7f,
+> +	 * the highest performance level is set to 196.
+> +	 * https://bugzilla.kernel.org/show_bug.cgi?id=218759
+> +	 */
+> +	if (c->x86 == 0x19 && (c->x86_model >= 0x70 && c->x86_model <= 0x7f))
+> +		return CPPC_HIGHEST_PERF_PERFORMANCE;
+> +
+> +	return CPPC_HIGHEST_PERF_DEFAULT;
+> +}
+> +
+>  static int pstate_init_perf(struct amd_cpudata *cpudata)
+>  {
+>  	u64 cap1;
+> @@ -342,7 +358,7 @@ static int pstate_init_perf(struct amd_cpudata *cpudata)
+>  	 * the default max perf.
+>  	 */
+>  	if (cpudata->hw_prefcore)
+> -		highest_perf = AMD_PSTATE_PREFCORE_THRESHOLD;
+> +		highest_perf = amd_pstate_highest_perf_set(cpudata);
+>  	else
+>  		highest_perf = AMD_CPPC_HIGHEST_PERF(cap1);
+>  
+> @@ -366,7 +382,7 @@ static int cppc_init_perf(struct amd_cpudata *cpudata)
+>  		return ret;
+>  
+>  	if (cpudata->hw_prefcore)
+> -		highest_perf = AMD_PSTATE_PREFCORE_THRESHOLD;
+> +		highest_perf = amd_pstate_highest_perf_set(cpudata);
+>  	else
+>  		highest_perf = cppc_perf.highest_perf;
+>  
+> -- 
+> 2.34.1
+> 
 
