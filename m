@@ -1,142 +1,119 @@
-Return-Path: <stable+bounces-45404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DC28C8D2E
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 22:05:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E818C8EFC
+	for <lists+stable@lfdr.de>; Sat, 18 May 2024 02:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9421B1F210CC
-	for <lists+stable@lfdr.de>; Fri, 17 May 2024 20:05:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 325EEB2183F
+	for <lists+stable@lfdr.de>; Sat, 18 May 2024 00:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E59112FF80;
-	Fri, 17 May 2024 20:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E7D1FBA;
+	Sat, 18 May 2024 00:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fwt9qPb4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/nnhePA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31ACE65F;
-	Fri, 17 May 2024 20:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D074624;
+	Sat, 18 May 2024 00:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715976336; cv=none; b=WWgDooKyZ3NYutiAMbrNU9YubbtMGbAyRvMc2XTpPJIIbPlHdbI5GBbRNzmrURjIQ/fFocY9897ZmRGiEoqYkeHWjLVu5NfkKc7/Ndk0UzuH+FEizyOP8AisRMtBNGefpGMDlcbiW5UDeQPGmH4hG937eI3fjgn7P68r5I5k+CQ=
+	t=1715993585; cv=none; b=GxHFI9GSLFZDbD389K01GWlRT/MEzn24ZmJZpnnsMY34R784hGMqp2mVcoLad83RdxIOZPMArurteDW5unzvTxk0HfY6who+udyIc9YoSq/6ZOhu3myTqdk6fbxtIkeEmwm58EejLzwXO78XKktW2LDbnlSCHihSGmbCl7PC7Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715976336; c=relaxed/simple;
-	bh=L4UHLoKNdvHEJ52gXHRJqvJH5NbwO+Do+x6c9RoKfa4=;
-	h=Subject:To:Cc:From:Date:Message-Id; b=l1elmyI2P/yhG1omxukHmZDlzV+PP+3ovdSS+L6XNpKSnrRGCpP0QvMO02Aj0A0zONqyv5Ka2BwaCIzEr6e0GYvBDORIXwYtiG2RJrmYjeeFzHKAi6AVWk3PsKHuc0ocSdcE9gvOD/xro5DQJiNTgu+eY1gP8G6ZwuUL1BVaRz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fwt9qPb4; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715976336; x=1747512336;
-  h=subject:to:cc:from:date:message-id;
-  bh=L4UHLoKNdvHEJ52gXHRJqvJH5NbwO+Do+x6c9RoKfa4=;
-  b=fwt9qPb4kVc8gV+0tbb4TnZ/38AJc3tkvcr/M5Woxs9mkfRq/fWf5tcZ
-   5Zo0LPDA+GibK7cOeoK42qXrSEbXpVZb3lQQS4JhkKjmU+qn8lcUnLsuo
-   TkQUYh/NyIIxVBIwFxtx60LizV++0Aop/82O5+oPRXEYU7gWgIP6SkP5b
-   YdONsSnvBvUt+CYDFnz+shrxp0WfMt66yo1cPsGnIui1F4r8SrbRIebmJ
-   bSM9s3FZ6yWf2Rq3Hx97YNa1DjBCs7Ena6tQfb1Iei8MycF5ohY0CHrYO
-   7ht2aTFJN/EE6hsLRkI4Hwgx8Q3wI9mN2Vx6qPBUSf9RoMLA1iXf/VLP6
-   A==;
-X-CSE-ConnectionGUID: ToER8IJ7TOOURuQsERfF5w==
-X-CSE-MsgGUID: nkdozRhpRMa7gjeVBs5arA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12024949"
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="12024949"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 13:05:35 -0700
-X-CSE-ConnectionGUID: Cam4j2YbRM+lHBAMBnOLVw==
-X-CSE-MsgGUID: R4YZAeCsTgWpVghNZicH7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
-   d="scan'208";a="32306903"
-Received: from davehans-spike.ostc.intel.com (HELO localhost.localdomain) ([10.165.164.11])
-  by orviesa006.jf.intel.com with ESMTP; 17 May 2024 13:05:34 -0700
-Subject: [PATCH] x86/cpu: Provide default cache line size if not enumerated
-To: linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de,x86@kernel.org,bp@alien8.de,Dave Hansen <dave.hansen@linux.intel.com>,andriy.shevchenko@linux.intel.com,stable@vger.kernel.org
-From: Dave Hansen <dave.hansen@linux.intel.com>
-Date: Fri, 17 May 2024 13:05:34 -0700
-Message-Id: <20240517200534.8EC5F33E@davehans-spike.ostc.intel.com>
+	s=arc-20240116; t=1715993585; c=relaxed/simple;
+	bh=kxpNGd21aNnFsS8Tun+x1viqQNqfEmOXf6AfWQzZkhc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ilpl/AyuZkydrvBkgVlMyXxxC7Svh2LgQnt49zjz52KvomPDDpTtT82ZOr7mitsFbBF6VCASHdRwugAvTl3m2ztz/K9NCN7I8rtkDoXzQ8BWFIgraVFvUFZWNRZu4Z/TYlN3C0QJd/CN2SyjdY3M4jedzl4bwb7aBbtUslK6lKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g/nnhePA; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1ec69e3dbcfso28224975ad.0;
+        Fri, 17 May 2024 17:53:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715993583; x=1716598383; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2bIw/FmfmnY1dbtLfrsgC3aPpzWY8ZVFcFhTBEtvdIg=;
+        b=g/nnhePAhxOUQ30UjmlpTybAIr67vBG/a/ehPy/h/RMbMy8WnNsNr3rOi5rgnzqXzp
+         DDn9/04+1HSJ+aByDOixbwCqeOWT1zrVwL1Vxy6pGPUXaTUIrybIZBfIusjZ3Op7cRZY
+         B6rRQ+0yOQaDzd+3qNtWL8SklX54DCui7UHtSutRAezBVjamqjIy0t/1tZqJjXaV3y8x
+         9tvRGZzuhEmrwB1AUXv5/z4s15aE8BXxKyDStuigkKQzGqDYL7pxgGe/1OnXR1aQCA6t
+         EC9W8PKtvVCG58c36lKD4ountfTHmTuO6EKWmyJV+zt1yvsk24mf62RmKfAgpCe8a61e
+         6J4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715993583; x=1716598383;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2bIw/FmfmnY1dbtLfrsgC3aPpzWY8ZVFcFhTBEtvdIg=;
+        b=FGKgaG7CTXfElp2EHbxTgBmZfYpEeimBi+lmUARX9dw/FUF/AJGluYKAhbDD9+xdek
+         NO6wd4EBpiw46xhPHVdIReeLpuFDcObwAe/eXFe1fSZd0WDAvfV1Q7zqtG7vjGQs5n4I
+         Q/09+WOZ85XegtFAD01LBfMYk/wMB6xDb/zZpTXSqb6lhO7T6O37XSP0dNUmBJ7nAdcj
+         vwcjTG6qKuRqRFxnydRptbc+kRXAlPT3ENZO/3YhoLQxnOgqGpzoEG+oRFLuoixapm88
+         M4ScC5R2D0HjGUjOI00nY+XNgK9ppU4uEL/gf+ZYXtnmY+KQZquLPDJ825O5cX3j5ZqY
+         Q+zA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFs0TXP8tMzLf3BaaYtIElFhNeOH13ykt6F/K4x9a6jfJeamCFdJdNmAIWBbQZfqwe97aZkU/ZFtCCq9gznGwC73/l13JGwOK0RV+TezMEgnbGORb9bQlIHuZyO3uX8w3QC0TXxQckodnkFz8BcGrZXuwNlcqWqOeHvuO+1M2ytwY=
+X-Gm-Message-State: AOJu0YwufMuElQzGoRozoEOejeAZBBHgn7vwPvTmhKkCsTTLmHfhAoVF
+	eV6i0buvvTeHpBld5Q1mt/02YWBcHFtw/qz1/VOH1fJRXcB9kw41
+X-Google-Smtp-Source: AGHT+IHKWMGs9nZ9glGJICXGp/lnk3zbLGPv06pwuWoh7CMFd7JnCV+l588sA4B0uKWcpckylTUjow==
+X-Received: by 2002:a17:902:e5d2:b0:1e2:a31e:2062 with SMTP id d9443c01a7336-1ef4404a35dmr306433475ad.53.1715993583310;
+        Fri, 17 May 2024 17:53:03 -0700 (PDT)
+Received: from [192.168.50.127] ([147.78.243.100])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0c0374ffsm162886825ad.220.2024.05.17.17.53.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 May 2024 17:53:02 -0700 (PDT)
+Message-ID: <a65ca1ef-1c9a-4d40-8e11-d9dc2cc75e1e@gmail.com>
+Date: Sat, 18 May 2024 08:52:54 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable] block/mq-deadline: fix different priority request
+ on the same zone
+To: Bart Van Assche <bvanassche@acm.org>, Wu Bo <bo.wu@vivo.com>
+Cc: axboe@kernel.dk, dlemoal@kernel.org, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <a1c24153-007c-4510-9cb3-bc207e9a75e8@acm.org>
+ <20240517014456.1919588-1-bo.wu@vivo.com>
+ <a1da2c7e-1b29-49cf-a45f-255d3b8b0da2@acm.org>
+Content-Language: en-US
+From: Wu Bo <wubo.oduw@gmail.com>
+In-Reply-To: <a1da2c7e-1b29-49cf-a45f-255d3b8b0da2@acm.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 2024/5/18 01:53, Bart Van Assche wrote:
+> On 5/16/24 18:44, Wu Bo wrote:
+>> So I figured this solution to fix this priority issue on zoned 
+>> device. It sure
+>> raises the overhead but can do fix it.
+>
+> Something I should have realized earlier is that this patch is not
+> necessary with the latest upstream kernel (v6.10-rc1). Damien's zoned
+> write plugging patch series has been merged. Hence, I/O schedulers,
+> including the mq-deadline I/O schedulers, will only see a single
+> zoned write at a time per zone. So it is no longer possible that
+> zoned writes are reordered by the I/O scheduler because of their I/O
+> priorities.
+Hi Bart,
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+Yes, I noticed that 'zone write plugging' has been merged to latest
+branch. But it seems hard to backport to old version which mq-deadline
+priority feature has been merged. So is it possible to apply this fix to
+old versions?
 
-tl;dr: CPUs with CPUID.80000008H but without CPUID.01H:EDX[CLFSH]
-will end up reporting cache_line_size()==0 and bad things happen.
-Fill in a default on those to avoid the problem.
-
-Long Story:
-
-The kernel dies a horrible death if c->x86_cache_alignment (aka.
-cache_line_size() is 0.  Normally, this value is populated from
-c->x86_clflush_size.
-
-Right now the code is set up to get c->x86_clflush_size from two
-places.  First, modern CPUs get it from CPUID.  Old CPUs that don't
-have leaf 0x80000008 (or CPUID at all) just get some sane defaults
-from the kernel in get_cpu_address_sizes().
-
-The vast majority of CPUs that have leaf 0x80000008 also get
-->x86_clflush_size from CPUID.  But there are oddballs.
-
-Intel Quark CPUs[1] and others[2] have leaf 0x80000008 but don't set
-CPUID.01H:EDX[CLFSH], so they skip over filling in ->x86_clflush_size:
-
-	cpuid(0x00000001, &tfms, &misc, &junk, &cap0);
-	if (cap0 & (1<<19))
-		c->x86_clflush_size = ((misc >> 8) & 0xff) * 8;
-
-So they: land in get_cpu_address_sizes(), set vp_bits_from_cpuid=0 and
-never fill in c->x86_clflush_size, assign c->x86_cache_alignment, and
-hilarity ensues in code like:
-
-        buffer = kzalloc(ALIGN(sizeof(*buffer), cache_line_size()),
-                         GFP_KERNEL);
-
-To fix this, always provide a sane value for ->x86_clflush_size.
-
-Big thanks to Andy Shevchenko for finding and reporting this and also
-providing a first pass at a fix. But his fix was only partial and only
-worked on the Quark CPUs.  It would not, for instance, have worked on
-the QEMU config.
-
-1. https://raw.githubusercontent.com/InstLatx64/InstLatx64/master/GenuineIntel/GenuineIntel0000590_Clanton_03_CPUID.txt
-2. You can also get this behavior if you use "-cpu 486,+clzero"
-   in QEMU.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
-Link: https://lore.kernel.org/all/20240516173928.3960193-1-andriy.shevchenko@linux.intel.com/
-Cc: stable@vger.kernel.org
----
-
- b/arch/x86/kernel/cpu/common.c |    4 ++++
- 1 file changed, 4 insertions(+)
-
-diff -puN arch/x86/kernel/cpu/common.c~default-x86_clflush_size arch/x86/kernel/cpu/common.c
---- a/arch/x86/kernel/cpu/common.c~default-x86_clflush_size	2024-05-17 12:51:25.886169008 -0700
-+++ b/arch/x86/kernel/cpu/common.c	2024-05-17 13:03:09.761999885 -0700
-@@ -1064,6 +1064,10 @@ void get_cpu_address_sizes(struct cpuinf
- 
- 		c->x86_virt_bits = (eax >> 8) & 0xff;
- 		c->x86_phys_bits = eax & 0xff;
-+
-+		/* Provide a sane default if not enumerated: */
-+		if (!c->x86_clflush_size)
-+			c->x86_clflush_size = 32;
- 	} else {
- 		if (IS_ENABLED(CONFIG_X86_64)) {
- 			c->x86_clflush_size = 64;
-_
+Thanks,
+Wu Bo
+>
+> Thanks,
+>
+> Bart.
 
