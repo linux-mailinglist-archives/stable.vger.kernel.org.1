@@ -1,74 +1,63 @@
-Return-Path: <stable+bounces-45405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E818C8EFC
-	for <lists+stable@lfdr.de>; Sat, 18 May 2024 02:53:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BDC8C8F55
+	for <lists+stable@lfdr.de>; Sat, 18 May 2024 04:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 325EEB2183F
-	for <lists+stable@lfdr.de>; Sat, 18 May 2024 00:53:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82D35282972
+	for <lists+stable@lfdr.de>; Sat, 18 May 2024 02:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E7D1FBA;
-	Sat, 18 May 2024 00:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9274C8B;
+	Sat, 18 May 2024 02:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/nnhePA"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="D6ZKS0Cr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D074624;
-	Sat, 18 May 2024 00:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48251A2C10;
+	Sat, 18 May 2024 02:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715993585; cv=none; b=GxHFI9GSLFZDbD389K01GWlRT/MEzn24ZmJZpnnsMY34R784hGMqp2mVcoLad83RdxIOZPMArurteDW5unzvTxk0HfY6who+udyIc9YoSq/6ZOhu3myTqdk6fbxtIkeEmwm58EejLzwXO78XKktW2LDbnlSCHihSGmbCl7PC7Vs=
+	t=1715998481; cv=none; b=DTzO+hXNDm5inmTk1hP5CbZ/n0XVbjdPfxkuhj/saIxlofaxarMPmXlIdSgLlY0E2GPe/WoW8OIMQh4HESweN1ZpIsTh5XvUCmR7OI8M//ffhPjITGr6wZqqbuB+5NJu9ssmCJFZymla3pXseSNzG3RQMbLAYWNw1h+3MNStvEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715993585; c=relaxed/simple;
-	bh=kxpNGd21aNnFsS8Tun+x1viqQNqfEmOXf6AfWQzZkhc=;
+	s=arc-20240116; t=1715998481; c=relaxed/simple;
+	bh=UbQnzm+5CypOEttM2+Nl4mA/XfIDfwurp0+enqNeHJM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ilpl/AyuZkydrvBkgVlMyXxxC7Svh2LgQnt49zjz52KvomPDDpTtT82ZOr7mitsFbBF6VCASHdRwugAvTl3m2ztz/K9NCN7I8rtkDoXzQ8BWFIgraVFvUFZWNRZu4Z/TYlN3C0QJd/CN2SyjdY3M4jedzl4bwb7aBbtUslK6lKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g/nnhePA; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1ec69e3dbcfso28224975ad.0;
-        Fri, 17 May 2024 17:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715993583; x=1716598383; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2bIw/FmfmnY1dbtLfrsgC3aPpzWY8ZVFcFhTBEtvdIg=;
-        b=g/nnhePAhxOUQ30UjmlpTybAIr67vBG/a/ehPy/h/RMbMy8WnNsNr3rOi5rgnzqXzp
-         DDn9/04+1HSJ+aByDOixbwCqeOWT1zrVwL1Vxy6pGPUXaTUIrybIZBfIusjZ3Op7cRZY
-         B6rRQ+0yOQaDzd+3qNtWL8SklX54DCui7UHtSutRAezBVjamqjIy0t/1tZqJjXaV3y8x
-         9tvRGZzuhEmrwB1AUXv5/z4s15aE8BXxKyDStuigkKQzGqDYL7pxgGe/1OnXR1aQCA6t
-         EC9W8PKtvVCG58c36lKD4ountfTHmTuO6EKWmyJV+zt1yvsk24mf62RmKfAgpCe8a61e
-         6J4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715993583; x=1716598383;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2bIw/FmfmnY1dbtLfrsgC3aPpzWY8ZVFcFhTBEtvdIg=;
-        b=FGKgaG7CTXfElp2EHbxTgBmZfYpEeimBi+lmUARX9dw/FUF/AJGluYKAhbDD9+xdek
-         NO6wd4EBpiw46xhPHVdIReeLpuFDcObwAe/eXFe1fSZd0WDAvfV1Q7zqtG7vjGQs5n4I
-         Q/09+WOZ85XegtFAD01LBfMYk/wMB6xDb/zZpTXSqb6lhO7T6O37XSP0dNUmBJ7nAdcj
-         vwcjTG6qKuRqRFxnydRptbc+kRXAlPT3ENZO/3YhoLQxnOgqGpzoEG+oRFLuoixapm88
-         M4ScC5R2D0HjGUjOI00nY+XNgK9ppU4uEL/gf+ZYXtnmY+KQZquLPDJ825O5cX3j5ZqY
-         Q+zA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFs0TXP8tMzLf3BaaYtIElFhNeOH13ykt6F/K4x9a6jfJeamCFdJdNmAIWBbQZfqwe97aZkU/ZFtCCq9gznGwC73/l13JGwOK0RV+TezMEgnbGORb9bQlIHuZyO3uX8w3QC0TXxQckodnkFz8BcGrZXuwNlcqWqOeHvuO+1M2ytwY=
-X-Gm-Message-State: AOJu0YwufMuElQzGoRozoEOejeAZBBHgn7vwPvTmhKkCsTTLmHfhAoVF
-	eV6i0buvvTeHpBld5Q1mt/02YWBcHFtw/qz1/VOH1fJRXcB9kw41
-X-Google-Smtp-Source: AGHT+IHKWMGs9nZ9glGJICXGp/lnk3zbLGPv06pwuWoh7CMFd7JnCV+l588sA4B0uKWcpckylTUjow==
-X-Received: by 2002:a17:902:e5d2:b0:1e2:a31e:2062 with SMTP id d9443c01a7336-1ef4404a35dmr306433475ad.53.1715993583310;
-        Fri, 17 May 2024 17:53:03 -0700 (PDT)
-Received: from [192.168.50.127] ([147.78.243.100])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0c0374ffsm162886825ad.220.2024.05.17.17.53.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 17:53:02 -0700 (PDT)
-Message-ID: <a65ca1ef-1c9a-4d40-8e11-d9dc2cc75e1e@gmail.com>
-Date: Sat, 18 May 2024 08:52:54 +0800
+	 In-Reply-To:Content-Type; b=a+M5LOJDD5NxTFponx1JJ/62bG9EDYYK5WC1Oz9PK9TdlQA3MQYJ2dKqp0DAFHOMimDW/5ZqgGxPVdEUFtDfeEZnkoFiSLpY9hdFmuJKVO1cugsI4+hN3GfC9m/VgjBVaAWR5vPO3FP6CK+kCKn9MIM3IJpWqJ1Qrnhzhq6fT1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=D6ZKS0Cr; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4Vh6pd59hwz6Cnk8t;
+	Sat, 18 May 2024 02:14:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1715998471; x=1718590472; bh=UbQnzm+5CypOEttM2+Nl4mA/
+	XfIDfwurp0+enqNeHJM=; b=D6ZKS0Cr/1tgAnBkdZaaZ2nVPOp0wOyTn6xfKt8P
+	wwEzE9bX2OEeuSAa6xK+0KhwhfZHN+5SD1TR7Q2HhpUHKkkCfw8eoztVRmxBbOfU
+	zuHaY++ET/uBi6DsC/wo7Kio4Kj4LFlbK+GAfylAumJa38p9Hn2jNHkB2AaOcwhc
+	7g9yRNKRoFCTL/5VhVTPZCYxZGDS5KpzZP7AyfrmK1kG4zUCT9BQOqMdYdN58iNH
+	zrg86TI123bkTZKF76YRjx/zDY/PmFmcFYlXNhZDwkUOlfQsHikqUjSovKTAyfah
+	RNHOFipv8dQw39amspgHanLc83F5qc/wBiM2u1rX8qOLfw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 31GtY76U9S_a; Sat, 18 May 2024 02:14:31 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4Vh6pY28z2z6Cnk8s;
+	Sat, 18 May 2024 02:14:28 +0000 (UTC)
+Message-ID: <81d66a3c-89fc-443d-bf8a-3c080d2049de@acm.org>
+Date: Fri, 17 May 2024 19:14:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,42 +67,31 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH stable] block/mq-deadline: fix different priority request
  on the same zone
-To: Bart Van Assche <bvanassche@acm.org>, Wu Bo <bo.wu@vivo.com>
+To: Wu Bo <wubo.oduw@gmail.com>, Wu Bo <bo.wu@vivo.com>
 Cc: axboe@kernel.dk, dlemoal@kernel.org, linux-block@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <a1c24153-007c-4510-9cb3-bc207e9a75e8@acm.org>
  <20240517014456.1919588-1-bo.wu@vivo.com>
  <a1da2c7e-1b29-49cf-a45f-255d3b8b0da2@acm.org>
+ <a65ca1ef-1c9a-4d40-8e11-d9dc2cc75e1e@gmail.com>
 Content-Language: en-US
-From: Wu Bo <wubo.oduw@gmail.com>
-In-Reply-To: <a1da2c7e-1b29-49cf-a45f-255d3b8b0da2@acm.org>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <a65ca1ef-1c9a-4d40-8e11-d9dc2cc75e1e@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2024/5/18 01:53, Bart Van Assche wrote:
-> On 5/16/24 18:44, Wu Bo wrote:
->> So I figured this solution to fix this priority issue on zoned 
->> device. It sure
->> raises the overhead but can do fix it.
->
-> Something I should have realized earlier is that this patch is not
-> necessary with the latest upstream kernel (v6.10-rc1). Damien's zoned
-> write plugging patch series has been merged. Hence, I/O schedulers,
-> including the mq-deadline I/O schedulers, will only see a single
-> zoned write at a time per zone. So it is no longer possible that
-> zoned writes are reordered by the I/O scheduler because of their I/O
-> priorities.
-Hi Bart,
+On 5/17/24 18:52, Wu Bo wrote:
+> Yes, I noticed that 'zone write plugging' has been merged to latest
+> branch. But it seems hard to backport to old version which mq-deadline
+> priority feature has been merged. So is it possible to apply this fix to
+> old versions?
 
-Yes, I noticed that 'zone write plugging' has been merged to latest
-branch. But it seems hard to backport to old version which mq-deadline
-priority feature has been merged. So is it possible to apply this fix to
-old versions?
+If you need this change in the Android kernel, please either submit a CL
+to the Android kernel repository or submit a request to Android Partner
+Engineering program.
 
 Thanks,
-Wu Bo
->
-> Thanks,
->
-> Bart.
+
+Bart.
+
 
