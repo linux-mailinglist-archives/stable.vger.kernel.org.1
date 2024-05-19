@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-45418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63248C93B6
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 09:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5764B8C93B8
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 09:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286881F21330
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 07:41:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB8A61F2142E
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 07:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5473E17C6B;
-	Sun, 19 May 2024 07:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5BC17BA2;
+	Sun, 19 May 2024 07:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="uyHLxjhM"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="vOygvmCD"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294061C2E;
-	Sun, 19 May 2024 07:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C940C18EA2
+	for <stable@vger.kernel.org>; Sun, 19 May 2024 07:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716104489; cv=none; b=jS5vDygh/mLd2FplBIuMGnsaYn4R6YkDsnxpWesULWs82JENGfzmSnF2jngJZmV3xfZcyMQ4O45ePHHHN1H2LaixuGvG308iOuNQ8aZ+bba8+s/kmck9uBXkOk8TmF219px3GOJ+axe6uGgQbleSKlhMuyeH3tX9YelwQZ3lud0=
+	t=1716104496; cv=none; b=KYtbWO4Qz5IxTe6FFZcSZoaBtqmpxqpA3Nf3ESdlMEqCczDto5geG6EKkNwbNLemJ0XSUlsES/QcIXI+YLHN3zfbN1ohAhcGcNPauauq32KqvUEdS1Yza30Q1YDDEBPRJcCzFOCRAOnpWoVH+G88IY2QX+GoKyDBBbJolhs7ypo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716104489; c=relaxed/simple;
-	bh=r7qebuKPlwDwTzkVFn4u2wgs6vKh7lR+jcu5oIF9jbA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z0nCN5O5UYfhlf7JkljGSR9JPxeE5o+gDxMmQ3+BwrUvUnn//iUbrYsmqmkQYw+bvmqxCBMCbFX0yKOZgwEi8Ky4oE6jY1UB8kE/lVD2Rh9ExP+hRBOYhVKVYfrb3ERLJCfjrZraUVRzQsqEBzjGRipynLqkOrOgMtVHZtf2NW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=uyHLxjhM; arc=none smtp.client-ip=95.215.58.180
+	s=arc-20240116; t=1716104496; c=relaxed/simple;
+	bh=Scg55UA1RklCqNoWsYUK6xDYQtS3H7dxz/frrtpb58o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hpPOi4nm/Kq8f2GAsZ4vFraOOmDYXoNysE/VYAu1PiOswSs6o2Lw0hatpitiK7osaCSOUYNOm7rx4SuxZoIABmZK9Sv/M3bgU8ShQQx34Rn2yCwQ9gx3R6snGPKKKjKxa0vIoojtT2M2q0gNLuga6Ov8yQ5/FCNV8aNQmxVnzPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=vOygvmCD; arc=none smtp.client-ip=95.215.58.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 X-Envelope-To: val@packett.cool
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1716104484;
+	s=key1; t=1716104492;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=iCzZwZj36Iz4vA1dDun7lszpPSZPxwDHKR4L5BLCjIg=;
-	b=uyHLxjhMy3s5Tm8T1twQKRP6W5/3ZNw6oYwG7SQFEmrp6HRLn9yvjp+J4WS2RYr0/Xug/7
-	IeOM96jyjfSeADjc5wXZsFDZ4PzL0NkAM2Hnekudu2iQACIYkoHkFHCOFZQeXs0KQi4HxY
-	Qz7n9kvfBdnt6WINxFLWpbPNiVTQMrghArcTu81SSvTOh6mO29DLWYTeC6gHJwKnNw3QDj
-	l0mR9Pwt6Iq2XP+guouOVkxYjVkvdwEhbxXV8CA2/ZQo//VrO1UA51+Be3fIRslylfuj3b
-	CvzZt6Tv3PIRaXu12T4LcfDUSYbmP79QoZiW1g815fC0gY//CBQtKBSTSGN+YQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MnNP0xmGDxanAFfueiOaEkQQkHaHD1N0yNfpZxYHu7g=;
+	b=vOygvmCDYinXST/hlK0BHdTlaBBRBua3v5DJoizXW0DvbnBy+6JMwYe825c+hN/C6EIrAU
+	lkjsD5+VqDB/koqTW6oERNexd+smn06YnvgtrM5wvxYggFd7+xL6Ak0o4sp581Y0A+qLFC
+	YC+cT7kry3X8lXNhqpcJIMQU7TPmmli3kg7+COe9BrF4izNbNK5e3DkMJ4to3GDm9dxAvC
+	MRKyDzxMaLzmIQyQTc/2BrxrlbdFK4mtByEPvUI7aWyl3E+LyJbnjVDHk7nPH9P3UU7mOD
+	0jFX8VnkCjcaBqEns5klYd7p348AoA/D2O6NYnNylrPRyhDUmcnKd0PRjRnpEg==
 X-Envelope-To: stable@vger.kernel.org
 X-Envelope-To: hjc@rock-chips.com
 X-Envelope-To: heiko@sntech.de
@@ -72,9 +74,11 @@ Cc: Val Packett <val@packett.cool>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-rockchip@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] drm/rockchip: vop: clear DMA stop bit on flush on RK3066
-Date: Sun, 19 May 2024 04:31:31 -0300
-Message-ID: <20240519074019.10424-1-val@packett.cool>
+Subject: [PATCH 2/2] drm/rockchip: vop: enable VOP_FEATURE_INTERNAL_RGB on RK3066
+Date: Sun, 19 May 2024 04:31:32 -0300
+Message-ID: <20240519074019.10424-2-val@packett.cool>
+In-Reply-To: <20240519074019.10424-1-val@packett.cool>
+References: <20240519074019.10424-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,65 +88,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-On the RK3066, there is a bit that must be cleared on flush, otherwise
-we do not get display output (at least for RGB).
-
 Signed-off-by: Val Packett <val@packett.cool>
 Cc: stable@vger.kernel.org
 ---
-Hi! This was required to get display working on an old RK3066 tablet,
-along with the next tiny patch in the series enabling the RGB output.
-
-I have spent quite a lot of time banging my head against the wall debugging
-that display (especially since at the same time a scaler chip is used for
-LVDS encoding), but finally adding debug prints showed that RK3066_SYS_CTRL0
-ended up being reset to all-zero after being written correctly upon init.
-Looking at the register definitions in the vendor driver revealed that the
-reason was pretty self-explanatory: "dma_stop".
----
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 3 +++
- drivers/gpu/drm/rockchip/rockchip_drm_vop.h | 1 +
  drivers/gpu/drm/rockchip/rockchip_vop_reg.c | 1 +
- 3 files changed, 5 insertions(+)
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index a13473b2d..d4daeba74 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -1578,6 +1578,9 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
- 
- 	spin_lock(&vop->reg_lock);
- 
-+	/* If the chip has a DMA stop bit (RK3066), it must be cleared. */
-+	VOP_REG_SET(vop, common, dma_stop, 0);
-+
- 	/* Enable AFBC if there is some AFBC window, disable otherwise. */
- 	s = to_rockchip_crtc_state(crtc->state);
- 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-index b33e5bdc2..0cf512cc1 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-@@ -122,6 +122,7 @@ struct vop_common {
- 	struct vop_reg lut_buffer_index;
- 	struct vop_reg gate_en;
- 	struct vop_reg mmu_en;
-+	struct vop_reg dma_stop;
- 	struct vop_reg out_mode;
- 	struct vop_reg standby;
- };
 diff --git a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-index b9ee02061..9bcb40a64 100644
+index 9bcb40a64..e2c6ba26f 100644
 --- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
 +++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-@@ -466,6 +466,7 @@ static const struct vop_output rk3066_output = {
+@@ -515,6 +515,7 @@ static const struct vop_data rk3066_vop = {
+ 	.output = &rk3066_output,
+ 	.win = rk3066_vop_win_data,
+ 	.win_size = ARRAY_SIZE(rk3066_vop_win_data),
++	.feature = VOP_FEATURE_INTERNAL_RGB,
+ 	.max_output = { 1920, 1080 },
  };
  
- static const struct vop_common rk3066_common = {
-+	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
- 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
- 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
- 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
 -- 
 2.45.0
 
