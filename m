@@ -1,120 +1,90 @@
-Return-Path: <stable+bounces-45415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2D28C9357
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 05:15:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7FB8C937C
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 07:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A7DD1F214B3
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 03:15:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500081F21380
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 05:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B9FCA6B;
-	Sun, 19 May 2024 03:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D0CEAF6;
+	Sun, 19 May 2024 05:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="RFqSbC2s"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="iyzWNVs3"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536EDD515
-	for <stable@vger.kernel.org>; Sun, 19 May 2024 03:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1783F9450;
+	Sun, 19 May 2024 05:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716088506; cv=none; b=Lh/QaLvBB/iSX+nywtiGH8tQ/d4OUcnftXRzuPIDoX4Lsx7IfwsGRpUozFH5o9jwfGPAymyICglSfWpWumpSVv5gkljEh0fo+XEKISmBh53PPbIFzbU9HJhIhWmF/EWJ5/GmtlGfIWBoTMYsMgCIUMhVCdxId5ZxukvyB+6gzok=
+	t=1716096771; cv=none; b=BrDYgMDAqPvwpASrwHwhxCi0Sf7gm/78b4eNXlSxw7arVtszkcwed+zKniK0EhIVmQdXJZb10kVOKTc8tk92mm8qs1fTuUH+NsFSs0PWaN48iYTdfdGaWqjp8A77plY8HKXkJ6v+8VnNb5JTJmvc1P9qFmfyZ3xrUxxsIuNZseE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716088506; c=relaxed/simple;
-	bh=pM5i6LqokDz4pzzZFVyCXFt0ByKBOSnsXU6BpIshdws=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z05QuvjIvDe283Lv79s4l62+l25vZ4itaXpqZcPbETSs8HbKRcN6ifrmFHxtaa7jFzq7BLgABNIPZV32xqcS0yM+u0N7ZA+0sv0Fe5wGgZr8R0cJCJqhOmyStEZw8GCljYxdlWKq6KbCSPtEw0j90ZgoKg0+mnkNoQWpUfimCX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=RFqSbC2s; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
-X-Envelope-To: val@packett.cool
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1716088501;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mQ68eiixPLPA8K8ibwC9Cqzr0rdSmWCBdWf8xU1y1GM=;
-	b=RFqSbC2snfhymVSfYyYailtwV2CqggBM/RQHKsrNoV3zW3MCK9cpI1GjMbIu624pm6PfOf
-	wMZxYamANR3bImVCiq3rd4Hey2NKzUTdjLZW2TmnW6HxtGiohDrEnlWvPfeh94XTIQmTWG
-	RkZ+/kTLV+QTyRJ6fGX6ifWe4SQ9p7hFBBJZEssvD/EZ3yPEymxWItYHBjcEPbz7KXgohG
-	BbrN+IVoTm+cEKZ5LHwvSV8y6sIn1qqos9AizSoliMKpVHEuANf6+ot95p8Nr6DcY8FFZ5
-	bAJa+9or7pdVeu/zXV1hTt73Lu3vETEgjRXxYBOSnTnEGSBckyFPRw9qptYMxA==
-X-Envelope-To: stable@vger.kernel.org
-X-Envelope-To: miquel.raynal@bootlin.com
-X-Envelope-To: richard@nod.at
-X-Envelope-To: vigneshr@ti.com
-X-Envelope-To: heiko@sntech.de
-X-Envelope-To: sfr@canb.auug.org.au
-X-Envelope-To: linux-mtd@lists.infradead.org
-X-Envelope-To: linux-arm-kernel@lists.infradead.org
-X-Envelope-To: linux-rockchip@lists.infradead.org
-X-Envelope-To: linux-kernel@vger.kernel.org
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-To: 
-Cc: Val Packett <val@packett.cool>,
-	stable@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	linux-mtd@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mtd: rawnand: rockchip: ensure NVDDR timings are rejected
-Date: Sun, 19 May 2024 00:13:39 -0300
-Message-ID: <20240519031409.26464-1-val@packett.cool>
-In-Reply-To: <20240518124404.472eb60b@xps-13>
-References: <20240518124404.472eb60b@xps-13>
+	s=arc-20240116; t=1716096771; c=relaxed/simple;
+	bh=Xkll09NzcXRMEDvaUMAQDVObEDOYOIOCqOZFJSdiRRM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ENcfSXgu1lQP2Q59LRWwV7i2AIS4G/cD4XjT08MCvRHggfsx/X0xJsIXu47TOuI8LBs5o+FSv6YY9q3XKIXd4e7T7/h2Iryd++rM3W7/6H2U/kneCbjLHxLhXBCpkx4bWd2+ffvvOPPaOPpzyFygyArIDXfeG6NxUaMXwSphDE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=iyzWNVs3; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=Xkll09NzcXRMEDvaUMAQDVObEDOYOIOCqOZFJSdiRRM=;
+	t=1716096769; x=1716528769; b=iyzWNVs3/WRHnF5ipGL1O+iembIf6lYZM71+rTuV0PUqMR9
+	ZCFCXTsGGthU2DT0JYuV8i9tjs3sRHhvOXMyHIQWjv7klZSdZtgboPPjnY1t2LZ76iVcuqzhxJyFq
+	pwjn7vJY3oYfIFKKuSmQTtp+gjinTPwLZPghYA+4CKR9xukw40Vbw6kzD9JckV5wYE+PsAuXgnow+
+	nrM0iXqnx3XFziCY33ZHa3nL2wQkQikfd4rqUdrRWfqSDdoNsUUeFvOMwdwMa/1OuvfYB+vLdd31g
+	V8wHd3rh1jRL4qGH5zazZKW+qI5Z/J4ySh+oDXIUkUzJI/4eQxpPvVyaas3sq2Ow==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1s8ZA6-0003gZ-7X; Sun, 19 May 2024 07:32:46 +0200
+Message-ID: <7ed1e3ca-2160-4c52-a19e-8b5f2a90a0ff@leemhuis.info>
+Date: Sun, 19 May 2024 07:32:45 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpufreq: amd-pstate: fix the highest frequency issue
+ which limit performance
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ stable@vger.kernel.org
+Cc: rafael.j.wysocki@intel.com, Mario.Limonciello@amd.com,
+ viresh.kumar@linaro.org, Ray.Huang@amd.com, gautham.shenoy@amd.com,
+ Borislav.Petkov@amd.com, Alexander.Deucher@amd.com, Xinmei.Huang@amd.com,
+ Xiaojian.Du@amd.com, Li.Meng@amd.com, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Perry Yuan <perry.yuan@amd.com>
+References: <20240508054703.3728337-1-perry.yuan@amd.com>
+ <4212df0b-5797-42a8-9c64-3e03851293b5@t-8ch.de>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <4212df0b-5797-42a8-9c64-3e03851293b5@t-8ch.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716096769;d0a3a4cb;
+X-HE-SMSGID: 1s8ZA6-0003gZ-7X
 
-.setup_interface first gets called with a "target" value of
-NAND_DATA_IFACE_CHECK_ONLY, in which case an error is expected
-if the controller driver does not support the timing mode (NVDDR).
+On 19.05.24 00:07, Thomas Weißschuh wrote:
 
-Fixes: a9ecc8c814e9 ("mtd: rawnand: Choose the best timings, NV-DDR included")
-Signed-off-by: Val Packett <val@packett.cool>
-Cc: stable@vger.kernel.org
----
- drivers/mtd/nand/raw/rockchip-nand-controller.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Please backport the mainline commit
+> bf202e654bfa ("cpufreq: amd-pstate: fix the highest frequency issue which limits performance")
+> to the 6.9 stable series.
+> [...]
 
-diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-index 7baaef69d..555804476 100644
---- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
-+++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-@@ -420,13 +420,13 @@ static int rk_nfc_setup_interface(struct nand_chip *chip, int target,
- 	u32 rate, tc2rw, trwpw, trw2c;
- 	u32 temp;
- 
--	if (target < 0)
--		return 0;
--
- 	timings = nand_get_sdr_timings(conf);
- 	if (IS_ERR(timings))
- 		return -EOPNOTSUPP;
- 
-+	if (target < 0)
-+		return 0;
-+
- 	if (IS_ERR(nfc->nfc_clk))
- 		rate = clk_get_rate(nfc->ahb_clk);
- 	else
--- 
-2.45.0
+FWIW, that commit already queued, as can be seen here:
 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.9
+
+Ciao, Thorsten
 
