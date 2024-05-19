@@ -1,76 +1,78 @@
-Return-Path: <stable+bounces-45414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A868C932E
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 02:27:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2D28C9357
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 05:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9D551C20B2B
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 00:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A7DD1F214B3
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 03:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDA44A31;
-	Sun, 19 May 2024 00:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B9FCA6B;
+	Sun, 19 May 2024 03:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LYgqatHz"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="RFqSbC2s"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCB617BB4;
-	Sun, 19 May 2024 00:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536EDD515
+	for <stable@vger.kernel.org>; Sun, 19 May 2024 03:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716078410; cv=none; b=SYv6GgtnvqtlGbKDjcva5TBN16e/XnUEcG3zwtgxETWM4kLI9K4cPc1y+ECW6VNuMlZ3Q6telDRzY9eLq61PP1NO1Ne7ZcPgv9q3h/Apmwz0Ug5QielFg4p7K+uRdnIhWJQdron4/npIWpA83WjsYQIgbKjQrHhRQisx7JDwK2I=
+	t=1716088506; cv=none; b=Lh/QaLvBB/iSX+nywtiGH8tQ/d4OUcnftXRzuPIDoX4Lsx7IfwsGRpUozFH5o9jwfGPAymyICglSfWpWumpSVv5gkljEh0fo+XEKISmBh53PPbIFzbU9HJhIhWmF/EWJ5/GmtlGfIWBoTMYsMgCIUMhVCdxId5ZxukvyB+6gzok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716078410; c=relaxed/simple;
-	bh=tA41U9a2wJeaKnsli+rQ8ii0Z8V5FL/JPrU6bK6Nik0=;
+	s=arc-20240116; t=1716088506; c=relaxed/simple;
+	bh=pM5i6LqokDz4pzzZFVyCXFt0ByKBOSnsXU6BpIshdws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooz+4RB6qmNjDyn/IVuQAYDGlcvQboeiFDcxyKwbv8xpTqEsZTO5bY8MDHfVK9hWJV8K41vFdDxpHU+b6+Tl8EwBTU2QDHymotB3lABTGJCUaABMEZdjZJcs7CSTOGWvSClR3cBBG3Q3tHuJ1X1+Xnf2vzyD8GVVYCIZ13wsaGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LYgqatHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72F2C113CC;
-	Sun, 19 May 2024 00:26:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716078410;
-	bh=tA41U9a2wJeaKnsli+rQ8ii0Z8V5FL/JPrU6bK6Nik0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYgqatHzz1WGjNvwpUpAVbnbC6B/NbjwS0MlenTbE2+xLJIgc0ueGxZys8RPOdghJ
-	 tFJaozoUKGuicRSwMVwUIeVa3nQGYrwOuubRix9syo0imHO35dof6ooNYzLgQ50ANm
-	 xo9AJQVjK3qRsLNmbXkYeFmAWMEcX8ZUWWm0G5Y3vbVE29shw4q5BeDItDgKrT26hn
-	 enWAiyTwwsJ+FTUsxqN0CXK4KmZsmur8rUrrXBsn/9eBKQlanxkOUmQLhGocDzX/V7
-	 7w6ngwcM53IsIn8v9gFgaRafW4hPsjI8NV6AKsO3+b/wC4CWhRU1lMKFmKGtY3yks5
-	 GuzOeOrsQYcpg==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	Andreas.Fuchs@infineon.com,
-	James Prestwood <prestwoj@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	linux-crypto@vger.kernel.org (open list:CRYPTO API),
-	linux-kernel@vger.kernel.org (open list),
+	 MIME-Version; b=Z05QuvjIvDe283Lv79s4l62+l25vZ4itaXpqZcPbETSs8HbKRcN6ifrmFHxtaa7jFzq7BLgABNIPZV32xqcS0yM+u0N7ZA+0sv0Fe5wGgZr8R0cJCJqhOmyStEZw8GCljYxdlWKq6KbCSPtEw0j90ZgoKg0+mnkNoQWpUfimCX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=RFqSbC2s; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+X-Envelope-To: val@packett.cool
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1716088501;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mQ68eiixPLPA8K8ibwC9Cqzr0rdSmWCBdWf8xU1y1GM=;
+	b=RFqSbC2snfhymVSfYyYailtwV2CqggBM/RQHKsrNoV3zW3MCK9cpI1GjMbIu624pm6PfOf
+	wMZxYamANR3bImVCiq3rd4Hey2NKzUTdjLZW2TmnW6HxtGiohDrEnlWvPfeh94XTIQmTWG
+	RkZ+/kTLV+QTyRJ6fGX6ifWe4SQ9p7hFBBJZEssvD/EZ3yPEymxWItYHBjcEPbz7KXgohG
+	BbrN+IVoTm+cEKZ5LHwvSV8y6sIn1qqos9AizSoliMKpVHEuANf6+ot95p8Nr6DcY8FFZ5
+	bAJa+9or7pdVeu/zXV1hTt73Lu3vETEgjRXxYBOSnTnEGSBckyFPRw9qptYMxA==
+X-Envelope-To: stable@vger.kernel.org
+X-Envelope-To: miquel.raynal@bootlin.com
+X-Envelope-To: richard@nod.at
+X-Envelope-To: vigneshr@ti.com
+X-Envelope-To: heiko@sntech.de
+X-Envelope-To: sfr@canb.auug.org.au
+X-Envelope-To: linux-mtd@lists.infradead.org
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: linux-rockchip@lists.infradead.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+To: 
+Cc: Val Packett <val@packett.cool>,
 	stable@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
-Subject: [PATCH RFC v2 3/5] KEYS: trusted: Do not use WARN when encode fails
-Date: Sun, 19 May 2024 03:25:38 +0300
-Message-ID: <20240519002616.4432-4-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240519002616.4432-1-jarkko@kernel.org>
-References: <20240519002616.4432-1-jarkko@kernel.org>
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	linux-mtd@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mtd: rawnand: rockchip: ensure NVDDR timings are rejected
+Date: Sun, 19 May 2024 00:13:39 -0300
+Message-ID: <20240519031409.26464-1-val@packett.cool>
+In-Reply-To: <20240518124404.472eb60b@xps-13>
+References: <20240518124404.472eb60b@xps-13>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,55 +80,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-When asn1_encode_sequence() fails, WARN is not the correct solution.
+.setup_interface first gets called with a "target" value of
+NAND_DATA_IFACE_CHECK_ONLY, in which case an error is expected
+if the controller driver does not support the timing mode (NVDDR).
 
-1. asn1_encode_sequence() is not an internal function (located
-   in lib/asn1_encode.c).
-2. Location is known, which makes the stack trace useless.
-3. Results a crash if panic_on_warn is set.
-
-It is also noteworthy that the use of WARN is undocumented, and it
-should be avoided unless there is a carefully considered rationale to
-use it.
-
-Replace WARN with pr_err, and print the return value instead, which is
-only useful piece of information.
-
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: a9ecc8c814e9 ("mtd: rawnand: Choose the best timings, NV-DDR included")
+Signed-off-by: Val Packett <val@packett.cool>
+Cc: stable@vger.kernel.org
 ---
- security/keys/trusted-keys/trusted_tpm2.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index dfeec06301ce..dbdd6a318b8b 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -38,6 +38,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	u8 *end_work = scratch + SCRATCH_SIZE;
- 	u8 *priv, *pub;
- 	u16 priv_len, pub_len;
-+	int ret;
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index 7baaef69d..555804476 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -420,13 +420,13 @@ static int rk_nfc_setup_interface(struct nand_chip *chip, int target,
+ 	u32 rate, tc2rw, trwpw, trw2c;
+ 	u32 temp;
  
- 	priv_len = get_unaligned_be16(src) + 2;
- 	priv = src;
-@@ -79,8 +80,11 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
--	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
--		return PTR_ERR(work1);
-+	if (IS_ERR(work1)) {
-+		ret = PTR_ERR(work1);
-+		pr_err("ASN.1 encode error %d\n", ret);
-+		return ret;
-+	}
+-	if (target < 0)
+-		return 0;
+-
+ 	timings = nand_get_sdr_timings(conf);
+ 	if (IS_ERR(timings))
+ 		return -EOPNOTSUPP;
  
- 	return work1 - payload->blob;
- }
++	if (target < 0)
++		return 0;
++
+ 	if (IS_ERR(nfc->nfc_clk))
+ 		rate = clk_get_rate(nfc->ahb_clk);
+ 	else
 -- 
-2.45.1
+2.45.0
 
 
