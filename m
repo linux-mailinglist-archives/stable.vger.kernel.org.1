@@ -1,120 +1,149 @@
-Return-Path: <stable+bounces-45417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FB28C9387
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 07:52:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63248C93B6
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 09:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4341F21282
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 05:52:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286881F21330
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 07:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3189A10940;
-	Sun, 19 May 2024 05:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5473E17C6B;
+	Sun, 19 May 2024 07:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b="eIVo+al9"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="uyHLxjhM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0C1FC0E
-	for <stable@vger.kernel.org>; Sun, 19 May 2024 05:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294061C2E;
+	Sun, 19 May 2024 07:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716097920; cv=none; b=RzZdhh8abX9Utl8s7Ih4uf8eqpB1N85xtgn1AFVyRCY91C4DgnJyHNdzS2CB6ruYSUMAm4rc7sURI/h3qvRlA+OisF1JgBnulCMI/YZAO4GIvf3A1QFR6nsjE1Uw+yIMgb32g/ssmwiBpqYJQSuHKIX1wYDF6NAlFmj1MjA3wJo=
+	t=1716104489; cv=none; b=jS5vDygh/mLd2FplBIuMGnsaYn4R6YkDsnxpWesULWs82JENGfzmSnF2jngJZmV3xfZcyMQ4O45ePHHHN1H2LaixuGvG308iOuNQ8aZ+bba8+s/kmck9uBXkOk8TmF219px3GOJ+axe6uGgQbleSKlhMuyeH3tX9YelwQZ3lud0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716097920; c=relaxed/simple;
-	bh=iiThBqGg+z+wiT+1+OMKOP35xrELiR5JRc4emeMv/44=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=trbfiYJSIwxrWLXVcGnmfsuJSsIGpcAPiumUzDFWzngpMDbSx/nBX2SaMiIjKy0M8RbwX7F10zBdeaE5VTDrbW6jqm4q9YPQK/sX9frtQkC+0MEd70fihszfEd+kOgT/BI62M7DBXXNGfCOOxIHw/ysshIdHFTcyU4/fXd+uuZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com; spf=pass smtp.mailfrom=schmorgal.com; dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b=eIVo+al9; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schmorgal.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1ed72194f0aso4639245ad.1
-        for <stable@vger.kernel.org>; Sat, 18 May 2024 22:51:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=schmorgal.com; s=google; t=1716097918; x=1716702718; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iiThBqGg+z+wiT+1+OMKOP35xrELiR5JRc4emeMv/44=;
-        b=eIVo+al9wM/MOahLQrd6POnvtOAMTGyusp4dW2GyhH5OqTFXlIV2QODLO49poiyw2q
-         SOIqf1uxS2CzdNDDae+0rzz/6irHatSBxa+zOEfvH3lLHRUC06XlXTig7GboLYG+c2gs
-         dVYnhzoL/66AA1ki/ZRE8tUr2p/14oVz+igPQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716097918; x=1716702718;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iiThBqGg+z+wiT+1+OMKOP35xrELiR5JRc4emeMv/44=;
-        b=rJXCpTMpHH3WZQGIFCKgafFNzsNxB8DDUJBIF5qM8VWFkP50VjHIalX09EY1LmE1Z8
-         YBChxD6ihOuL45dqsv4eva/EagHM3586fMGngVy1Als8/VLRhZY5F3cznMn77XUAVq4l
-         sFJTTvYEMRw3NwRlJJh/DwGscCtQ7MXERhRv93RjVUFfKFEXXMUVFELf+yFKgkuJntsM
-         2NLotGH59MDslqE8KWweHfCJ7vRjye23WKk3Ea8oPim0IVz/8noGulmNlqaSI7gQGgBP
-         fNJ8COdAA5lCZl/eBdoAJkCyVzPX8rtyQJuytcND+NiZ9gB1IQd61w8j00UMHhe/QvKs
-         8mZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVazo+Xjh4i6XpgnNFEWquXCc/8qFV6AEOWiCr+BjVNO8f0HuRrDjgGVWFEz7PwcitmNmKMPi4hcVjFZO+NHAhDyyWrRpow
-X-Gm-Message-State: AOJu0YzElrhD1MnbaruP3IJgT7kcc3kCMPElmTw1OSpYjH9aHvv/puX/
-	H93MyAe7ZIiWlNY+QQ3uCmUWXX1NoI4fysKDNssAXGgBfE0zIveCH2KXtb96YNo=
-X-Google-Smtp-Source: AGHT+IFmzx1wmxCx24pjSLNJLMmnh2tsb4Lr0ISETKX8mWSBIrpJFbyjvpIXM/SELRjXRsUtOXDyzQ==
-X-Received: by 2002:a17:90b:2389:b0:2b1:99fd:4eea with SMTP id 98e67ed59e1d1-2b6ccd7d042mr25891545a91.2.1716097916702;
-        Sat, 18 May 2024 22:51:56 -0700 (PDT)
-Received: from [192.168.1.33] ([50.37.206.39])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2bd5f76e0a7sm1217785a91.0.2024.05.18.22.51.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 May 2024 22:51:56 -0700 (PDT)
-Message-ID: <f7744e88-8123-4ab9-8542-209b10b09321@schmorgal.com>
-Date: Sat, 18 May 2024 22:51:54 -0700
+	s=arc-20240116; t=1716104489; c=relaxed/simple;
+	bh=r7qebuKPlwDwTzkVFn4u2wgs6vKh7lR+jcu5oIF9jbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z0nCN5O5UYfhlf7JkljGSR9JPxeE5o+gDxMmQ3+BwrUvUnn//iUbrYsmqmkQYw+bvmqxCBMCbFX0yKOZgwEi8Ky4oE6jY1UB8kE/lVD2Rh9ExP+hRBOYhVKVYfrb3ERLJCfjrZraUVRzQsqEBzjGRipynLqkOrOgMtVHZtf2NW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=uyHLxjhM; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+X-Envelope-To: val@packett.cool
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1716104484;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iCzZwZj36Iz4vA1dDun7lszpPSZPxwDHKR4L5BLCjIg=;
+	b=uyHLxjhMy3s5Tm8T1twQKRP6W5/3ZNw6oYwG7SQFEmrp6HRLn9yvjp+J4WS2RYr0/Xug/7
+	IeOM96jyjfSeADjc5wXZsFDZ4PzL0NkAM2Hnekudu2iQACIYkoHkFHCOFZQeXs0KQi4HxY
+	Qz7n9kvfBdnt6WINxFLWpbPNiVTQMrghArcTu81SSvTOh6mO29DLWYTeC6gHJwKnNw3QDj
+	l0mR9Pwt6Iq2XP+guouOVkxYjVkvdwEhbxXV8CA2/ZQo//VrO1UA51+Be3fIRslylfuj3b
+	CvzZt6Tv3PIRaXu12T4LcfDUSYbmP79QoZiW1g815fC0gY//CBQtKBSTSGN+YQ==
+X-Envelope-To: stable@vger.kernel.org
+X-Envelope-To: hjc@rock-chips.com
+X-Envelope-To: heiko@sntech.de
+X-Envelope-To: andy.yan@rock-chips.com
+X-Envelope-To: maarten.lankhorst@linux.intel.com
+X-Envelope-To: mripard@kernel.org
+X-Envelope-To: tzimmermann@suse.de
+X-Envelope-To: airlied@gmail.com
+X-Envelope-To: daniel@ffwll.ch
+X-Envelope-To: dri-devel@lists.freedesktop.org
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: linux-rockchip@lists.infradead.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+To: 
+Cc: Val Packett <val@packett.cool>,
+	stable@vger.kernel.org,
+	Sandy Huang <hjc@rock-chips.com>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] drm/rockchip: vop: clear DMA stop bit on flush on RK3066
+Date: Sun, 19 May 2024 04:31:31 -0300
+Message-ID: <20240519074019.10424-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] serial: core: only stop transmit when HW fifo is empty
-From: Doug Brown <doug@schmorgal.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, stable@vger.kernel.org
-References: <20240303150807.68117-1-jonas.gorski@gmail.com>
- <77b71bd9-42be-40e8-8b96-196e214c8afb@schmorgal.com>
-Content-Language: en-US
-In-Reply-To: <77b71bd9-42be-40e8-8b96-196e214c8afb@schmorgal.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi again,
+On the RK3066, there is a bit that must be cleared on flush, otherwise
+we do not get display output (at least for RGB).
 
-On 5/16/2024 9:22 PM, Doug Brown wrote:
+Signed-off-by: Val Packett <val@packett.cool>
+Cc: stable@vger.kernel.org
+---
+Hi! This was required to get display working on an old RK3066 tablet,
+along with the next tiny patch in the series enabling the RGB output.
 
-> I'm hoping there is some kind of simple fix that can be made to the pxa
-> driver to work around it with this new behavior. Can anyone think of a
-> reason that this driver would not like this change? It seems
-> counterintuitive to me -- the patch makes perfect sense.
+I have spent quite a lot of time banging my head against the wall debugging
+that display (especially since at the same time a scaler chip is used for
+LVDS encoding), but finally adding debug prints showed that RK3066_SYS_CTRL0
+ended up being reset to all-zero after being written correctly upon init.
+Looking at the register definitions in the vendor driver revealed that the
+reason was pretty self-explanatory: "dma_stop".
+---
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 3 +++
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.h | 1 +
+ drivers/gpu/drm/rockchip/rockchip_vop_reg.c | 1 +
+ 3 files changed, 5 insertions(+)
 
-After further experimentation, I've come to the conclusion that this is
-a bug in the pxa uart driver, and this patch simply exposed the bug.
-I'll submit a patch to fix the issue in the pxa driver.
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index a13473b2d..d4daeba74 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1578,6 +1578,9 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
+ 
+ 	spin_lock(&vop->reg_lock);
+ 
++	/* If the chip has a DMA stop bit (RK3066), it must be cleared. */
++	VOP_REG_SET(vop, common, dma_stop, 0);
++
+ 	/* Enable AFBC if there is some AFBC window, disable otherwise. */
+ 	s = to_rockchip_crtc_state(crtc->state);
+ 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+index b33e5bdc2..0cf512cc1 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+@@ -122,6 +122,7 @@ struct vop_common {
+ 	struct vop_reg lut_buffer_index;
+ 	struct vop_reg gate_en;
+ 	struct vop_reg mmu_en;
++	struct vop_reg dma_stop;
+ 	struct vop_reg out_mode;
+ 	struct vop_reg standby;
+ };
+diff --git a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+index b9ee02061..9bcb40a64 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+@@ -466,6 +466,7 @@ static const struct vop_output rk3066_output = {
+ };
+ 
+ static const struct vop_common rk3066_common = {
++	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
+ 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
+ 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
+ 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
+-- 
+2.45.0
 
-If anyone's interested in the details: basically, the pxa driver in its
-current state doesn't work correctly if it receives a TX interrupt when
-the circular buffer is empty. It handles it, but then gets stuck waiting
-for the next TX IRQ that will never happen because no characters were
-transmitted. The way stop_tx() was previously being called before the
-transmitter was empty, it prevented that situation from happening
-because toggling the TX interrupt enable flag off (with stop_tx) and
-back on (with the next start_tx) causes a new TX interrupt to fire and
-kickstarts the transmit process again.
-
-The 8250 driver, for example, isn't affected by this problem because it
-effectively does stop_tx() on its own if it detects an empty circular
-buffer in the TX interrupt handler. Adding similar logic to the pxa
-driver fixes it.
-
-Doug
 
