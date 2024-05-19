@@ -1,52 +1,71 @@
-Return-Path: <stable+bounces-45416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7FB8C937C
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 07:32:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FB28C9387
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 07:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500081F21380
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 05:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4341F21282
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 05:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D0CEAF6;
-	Sun, 19 May 2024 05:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3189A10940;
+	Sun, 19 May 2024 05:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="iyzWNVs3"
+	dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b="eIVo+al9"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1783F9450;
-	Sun, 19 May 2024 05:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0C1FC0E
+	for <stable@vger.kernel.org>; Sun, 19 May 2024 05:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716096771; cv=none; b=BrDYgMDAqPvwpASrwHwhxCi0Sf7gm/78b4eNXlSxw7arVtszkcwed+zKniK0EhIVmQdXJZb10kVOKTc8tk92mm8qs1fTuUH+NsFSs0PWaN48iYTdfdGaWqjp8A77plY8HKXkJ6v+8VnNb5JTJmvc1P9qFmfyZ3xrUxxsIuNZseE=
+	t=1716097920; cv=none; b=RzZdhh8abX9Utl8s7Ih4uf8eqpB1N85xtgn1AFVyRCY91C4DgnJyHNdzS2CB6ruYSUMAm4rc7sURI/h3qvRlA+OisF1JgBnulCMI/YZAO4GIvf3A1QFR6nsjE1Uw+yIMgb32g/ssmwiBpqYJQSuHKIX1wYDF6NAlFmj1MjA3wJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716096771; c=relaxed/simple;
-	bh=Xkll09NzcXRMEDvaUMAQDVObEDOYOIOCqOZFJSdiRRM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ENcfSXgu1lQP2Q59LRWwV7i2AIS4G/cD4XjT08MCvRHggfsx/X0xJsIXu47TOuI8LBs5o+FSv6YY9q3XKIXd4e7T7/h2Iryd++rM3W7/6H2U/kneCbjLHxLhXBCpkx4bWd2+ffvvOPPaOPpzyFygyArIDXfeG6NxUaMXwSphDE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=iyzWNVs3; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=Xkll09NzcXRMEDvaUMAQDVObEDOYOIOCqOZFJSdiRRM=;
-	t=1716096769; x=1716528769; b=iyzWNVs3/WRHnF5ipGL1O+iembIf6lYZM71+rTuV0PUqMR9
-	ZCFCXTsGGthU2DT0JYuV8i9tjs3sRHhvOXMyHIQWjv7klZSdZtgboPPjnY1t2LZ76iVcuqzhxJyFq
-	pwjn7vJY3oYfIFKKuSmQTtp+gjinTPwLZPghYA+4CKR9xukw40Vbw6kzD9JckV5wYE+PsAuXgnow+
-	nrM0iXqnx3XFziCY33ZHa3nL2wQkQikfd4rqUdrRWfqSDdoNsUUeFvOMwdwMa/1OuvfYB+vLdd31g
-	V8wHd3rh1jRL4qGH5zazZKW+qI5Z/J4ySh+oDXIUkUzJI/4eQxpPvVyaas3sq2Ow==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s8ZA6-0003gZ-7X; Sun, 19 May 2024 07:32:46 +0200
-Message-ID: <7ed1e3ca-2160-4c52-a19e-8b5f2a90a0ff@leemhuis.info>
-Date: Sun, 19 May 2024 07:32:45 +0200
+	s=arc-20240116; t=1716097920; c=relaxed/simple;
+	bh=iiThBqGg+z+wiT+1+OMKOP35xrELiR5JRc4emeMv/44=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=trbfiYJSIwxrWLXVcGnmfsuJSsIGpcAPiumUzDFWzngpMDbSx/nBX2SaMiIjKy0M8RbwX7F10zBdeaE5VTDrbW6jqm4q9YPQK/sX9frtQkC+0MEd70fihszfEd+kOgT/BI62M7DBXXNGfCOOxIHw/ysshIdHFTcyU4/fXd+uuZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com; spf=pass smtp.mailfrom=schmorgal.com; dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b=eIVo+al9; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schmorgal.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1ed72194f0aso4639245ad.1
+        for <stable@vger.kernel.org>; Sat, 18 May 2024 22:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=schmorgal.com; s=google; t=1716097918; x=1716702718; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=iiThBqGg+z+wiT+1+OMKOP35xrELiR5JRc4emeMv/44=;
+        b=eIVo+al9wM/MOahLQrd6POnvtOAMTGyusp4dW2GyhH5OqTFXlIV2QODLO49poiyw2q
+         SOIqf1uxS2CzdNDDae+0rzz/6irHatSBxa+zOEfvH3lLHRUC06XlXTig7GboLYG+c2gs
+         dVYnhzoL/66AA1ki/ZRE8tUr2p/14oVz+igPQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716097918; x=1716702718;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iiThBqGg+z+wiT+1+OMKOP35xrELiR5JRc4emeMv/44=;
+        b=rJXCpTMpHH3WZQGIFCKgafFNzsNxB8DDUJBIF5qM8VWFkP50VjHIalX09EY1LmE1Z8
+         YBChxD6ihOuL45dqsv4eva/EagHM3586fMGngVy1Als8/VLRhZY5F3cznMn77XUAVq4l
+         sFJTTvYEMRw3NwRlJJh/DwGscCtQ7MXERhRv93RjVUFfKFEXXMUVFELf+yFKgkuJntsM
+         2NLotGH59MDslqE8KWweHfCJ7vRjye23WKk3Ea8oPim0IVz/8noGulmNlqaSI7gQGgBP
+         fNJ8COdAA5lCZl/eBdoAJkCyVzPX8rtyQJuytcND+NiZ9gB1IQd61w8j00UMHhe/QvKs
+         8mZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVazo+Xjh4i6XpgnNFEWquXCc/8qFV6AEOWiCr+BjVNO8f0HuRrDjgGVWFEz7PwcitmNmKMPi4hcVjFZO+NHAhDyyWrRpow
+X-Gm-Message-State: AOJu0YzElrhD1MnbaruP3IJgT7kcc3kCMPElmTw1OSpYjH9aHvv/puX/
+	H93MyAe7ZIiWlNY+QQ3uCmUWXX1NoI4fysKDNssAXGgBfE0zIveCH2KXtb96YNo=
+X-Google-Smtp-Source: AGHT+IFmzx1wmxCx24pjSLNJLMmnh2tsb4Lr0ISETKX8mWSBIrpJFbyjvpIXM/SELRjXRsUtOXDyzQ==
+X-Received: by 2002:a17:90b:2389:b0:2b1:99fd:4eea with SMTP id 98e67ed59e1d1-2b6ccd7d042mr25891545a91.2.1716097916702;
+        Sat, 18 May 2024 22:51:56 -0700 (PDT)
+Received: from [192.168.1.33] ([50.37.206.39])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2bd5f76e0a7sm1217785a91.0.2024.05.18.22.51.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 May 2024 22:51:56 -0700 (PDT)
+Message-ID: <f7744e88-8123-4ab9-8542-209b10b09321@schmorgal.com>
+Date: Sat, 18 May 2024 22:51:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,37 +73,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cpufreq: amd-pstate: fix the highest frequency issue
- which limit performance
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- stable@vger.kernel.org
-Cc: rafael.j.wysocki@intel.com, Mario.Limonciello@amd.com,
- viresh.kumar@linaro.org, Ray.Huang@amd.com, gautham.shenoy@amd.com,
- Borislav.Petkov@amd.com, Alexander.Deucher@amd.com, Xinmei.Huang@amd.com,
- Xiaojian.Du@amd.com, Li.Meng@amd.com, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Perry Yuan <perry.yuan@amd.com>
-References: <20240508054703.3728337-1-perry.yuan@amd.com>
- <4212df0b-5797-42a8-9c64-3e03851293b5@t-8ch.de>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <4212df0b-5797-42a8-9c64-3e03851293b5@t-8ch.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716096769;d0a3a4cb;
-X-HE-SMSGID: 1s8ZA6-0003gZ-7X
+Subject: Re: [PATCH v2] serial: core: only stop transmit when HW fifo is empty
+From: Doug Brown <doug@schmorgal.com>
+To: Jonas Gorski <jonas.gorski@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, stable@vger.kernel.org
+References: <20240303150807.68117-1-jonas.gorski@gmail.com>
+ <77b71bd9-42be-40e8-8b96-196e214c8afb@schmorgal.com>
+Content-Language: en-US
+In-Reply-To: <77b71bd9-42be-40e8-8b96-196e214c8afb@schmorgal.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 19.05.24 00:07, Thomas Weißschuh wrote:
+Hi again,
 
-> Please backport the mainline commit
-> bf202e654bfa ("cpufreq: amd-pstate: fix the highest frequency issue which limits performance")
-> to the 6.9 stable series.
-> [...]
+On 5/16/2024 9:22 PM, Doug Brown wrote:
 
-FWIW, that commit already queued, as can be seen here:
+> I'm hoping there is some kind of simple fix that can be made to the pxa
+> driver to work around it with this new behavior. Can anyone think of a
+> reason that this driver would not like this change? It seems
+> counterintuitive to me -- the patch makes perfect sense.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.9
+After further experimentation, I've come to the conclusion that this is
+a bug in the pxa uart driver, and this patch simply exposed the bug.
+I'll submit a patch to fix the issue in the pxa driver.
 
-Ciao, Thorsten
+If anyone's interested in the details: basically, the pxa driver in its
+current state doesn't work correctly if it receives a TX interrupt when
+the circular buffer is empty. It handles it, but then gets stuck waiting
+for the next TX IRQ that will never happen because no characters were
+transmitted. The way stop_tx() was previously being called before the
+transmitter was empty, it prevented that situation from happening
+because toggling the TX interrupt enable flag off (with stop_tx) and
+back on (with the next start_tx) causes a new TX interrupt to fire and
+kickstarts the transmit process again.
+
+The 8250 driver, for example, isn't affected by this problem because it
+effectively does stop_tx() on its own if it detects an empty circular
+buffer in the TX interrupt handler. Adding similar logic to the pxa
+driver fixes it.
+
+Doug
 
