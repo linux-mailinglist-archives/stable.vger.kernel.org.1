@@ -1,100 +1,166 @@
-Return-Path: <stable+bounces-45425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C868C9468
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 13:29:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807BF8C9765
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 01:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A52A1F2169D
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 11:29:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9FE6281189
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 23:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F35433A8;
-	Sun, 19 May 2024 11:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0185B71B4C;
+	Sun, 19 May 2024 23:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dy3HbUkK"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wWo2Qz0P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE3933D5;
-	Sun, 19 May 2024 11:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF063335C7;
+	Sun, 19 May 2024 23:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716118164; cv=none; b=dgZ/O9Uh/jlA2gBKjw7QTwIbTJHGJD0yuMh7RMoqfFbT7igBzumZ7BJryqSU8qdl0bg72ELdW0dLIfS90XGAdLOPThdq7JcHaiW2rT/4LpNFepjRcAqw+Js96FRnltE1qZJOz1WOMyqKS1b/sx1QOHHYpSaQ1kfIyiDsfUIAmwE=
+	t=1716161909; cv=none; b=HejTgoMAO6DpGnPwdQY4zP5QuY7iSkFW9GhKvmtRA/0Ybs/aPQ5e4a3yibO4xZrhdPomHGLqgUYyPLmpVoXWstJcBxz2RdY7GTVvOU+PmVI+QQZ5CTnSirlnLkR6cb0eSHvg2tFNy7FHmpdIMUOFiGUvbOeux8Gl3vdU8KpJtrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716118164; c=relaxed/simple;
-	bh=WLT9uocrfUoeCTMoX/+FhyeHHMbgy93Nnbq2e26GqVA=;
-	h=Date:From:Subject:To:Cc:Message-Id:MIME-Version:Content-Type; b=jnJqesjCugzmIIYswO2/eG2tzYE2YUHlDWBxcw5amPI+CI31L3NJlBnuXyxqm71ED+n6JtdZOnABE58bON7+ajBuW9HfQHgHhtzcBzK9VnyOTbQ4PdMCfiXf/nw6xjmQShXahd/3ZRJsUBCw6a76+xTFw73/YxB7xbbta5JF/DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dy3HbUkK; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2e724bc46c4so2940571fa.2;
-        Sun, 19 May 2024 04:29:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716118161; x=1716722961; darn=vger.kernel.org;
-        h=mime-version:message-id:cc:to:subject:reply-to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XgwPOHi2IvjHxAmbZFb0XYYddVSt1WB+5/iwnDhelds=;
-        b=dy3HbUkKCFvUIowHcnpOp/u+/A0hQAkXlSSFcN0Ht2x86RbINNZBdMTr/wRhN0MmMP
-         lRCuPFAGA8azkLY4eb7/Ag8kyeeIH4NC8Mi9ms9jTI64qTCzaZLb2YVFdb0HLQlBDpZ7
-         XpUncXUq22pVJS+6Vo6XxU0j7aP2u1q2wE9+fiUwcF1aHiLOjrhQlzf6W/Otm0v4CajN
-         Gh+5ACDYQqp93fH33GdFv3gdmbG9s96BniJmQVCSU9QrNAL62jRn4H7Oyx+HEXoUTSMd
-         x49NRcjbp0w+b1dA5C5u0+vs2vNl8Mds1VXI0eReLzId0s6tQruRsU+DpDHh/MiJq20c
-         3J/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716118161; x=1716722961;
-        h=mime-version:message-id:cc:to:subject:reply-to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XgwPOHi2IvjHxAmbZFb0XYYddVSt1WB+5/iwnDhelds=;
-        b=co1ip8hZg6Rp6K5WtKBgEIIT2AE+0P0Zj3qpHf7zKjZKFkIc6GpeS2qZTsQlfYfpnW
-         jT+sJR9RVqTbmLwxpF+N5QMfcqxR5OouTUBjNc1fSuFmgu1a2wTST/S1crfUqhX6Pw/F
-         U9LPOYSFk4gQTmvPdUHegav4X5eP5zFpyygF0xhNbR0CManb/adNbSGbfU+nm2j+ckx6
-         9BhNqsrGRhEMcALu5uXlIvzDXoFg3qGFZJePQtHB6lRL8VAaUZLMyeJo59Rtuj7d34vc
-         dr/j0rGZpmS5W+AAOqBXiSlz+NIrC0zEOQqgmG4fnxDxEZZwIGgEqmMn7AVyKUtGrOVT
-         OLWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNpJVi5WywdsfYSJPDJ6izSNBtgbke/o4AGQgdjN2qYoR9eO/KVzh3jpqC5FlP9oHlK540On/weyXVwG7/yZrFn2dwzct2
-X-Gm-Message-State: AOJu0Yy+BpBmOILHAwnI3plmOgCH9xfw0WF0a0Y2yzEZ31jU9bBc16hy
-	GAB6uAT1cACUiIu3iyrX1FDXxUq6M1R9p4LmLMIzmPx8Pay7UeJQ
-X-Google-Smtp-Source: AGHT+IFtOVFTXd0A+2n43urqgSMYE2e46NTPC4KJzfPIOtTC4MdFW3aIT62AHoa+UsPAyZ82oAj8+w==
-X-Received: by 2002:a2e:9f41:0:b0:2e0:42db:df7f with SMTP id 38308e7fff4ca-2e56ea3af7cmr149431791fa.0.1716118160471;
-        Sun, 19 May 2024 04:29:20 -0700 (PDT)
-Received: from [192.168.1.35] (82-64-78-170.subs.proxad.net. [82.64.78.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41fd97e842csm370275675e9.24.2024.05.19.04.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 May 2024 04:29:19 -0700 (PDT)
-Date: Sun, 19 May 2024 13:28:58 +0200
-From: Paul Grandperrin <paul.grandperrin@gmail.com>
-Reply-To: CAK2bqVJoT3yy2m0OmTnqH9EAKkj6O1iTk42EyyMtvvxKh6YDKg@mail.gmail.com
-Subject: Re: [BUG] Linux 6.8.10 NPE
-To: rankincj@gmail.com
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Message-Id: <A8DQDS.ZXN0FMYZ3DIM1@gmail.com>
-X-Mailer: geary/44.1
+	s=arc-20240116; t=1716161909; c=relaxed/simple;
+	bh=pGDiMU3VLjKvOuPmkbe0yr6cavGUkz5eEdtWWP+UlP0=;
+	h=Date:To:From:Subject:Message-Id; b=OJlnmyKUm0n/+YFSL9Ui6MjcqDp2WHuVPQyAadkK4m+wrJ/PoeXmBgeKp5UTIU9vmu9NZQEO174P5FmVDzP2GHidecQ5/j4tOJ4Tqafg3sbzmwb9jy80sWHucY10+Zu9J2FYQ2/ogEeduOCk9gUDwxs4yMlkh6oM/+8GbIhYqcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wWo2Qz0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A52C32781;
+	Sun, 19 May 2024 23:38:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1716161909;
+	bh=pGDiMU3VLjKvOuPmkbe0yr6cavGUkz5eEdtWWP+UlP0=;
+	h=Date:To:From:Subject:From;
+	b=wWo2Qz0Pk8PXW+Ui5hQo3q3AaRHO1Oq2Xa/993017Gn+lKeCz13hoXvopsdwQkfzp
+	 s6rUoSEXJq207kRlTdaGxKfcvilF1Qe1nF043lIq2XdhECg2ax4jE57+10M3fjHnyT
+	 WZEYAAg3Kj74E6GhHDVdNp9hrinFrqynB3BpqFTA=
+Date: Sun, 19 May 2024 16:38:28 -0700
+To: mm-commits@vger.kernel.org,xuyu@linux.alibaba.com,stable@vger.kernel.org,shy828301@gmail.com,osalvador@suse.de,nao.horiguchi@gmail.com,david@redhat.com,anshuman.khandual@arm.com,linmiaohe@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-huge_memory-dont-unpoison-huge_zero_folio.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240519233829.15A52C32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
 
- > I am using vanilla Linux 6.8.10, and I've just noticed this BUG in my
-dmesg log. I have no idea what triggered it, and especially since I
-have not even mounted any NFS filesystems?!
 
-Hi all,
-I have the exact same bug. I'm using the NixOS kernel but as soon as it 
-was updated to 6.8.10 my server has gone in a crash-reboot-loop.
+The patch titled
+     Subject: mm/huge_memory: don't unpoison huge_zero_folio
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-huge_memory-dont-unpoison-huge_zero_folio.patch
 
-The server is hosting an NFS deamon and it crashes about 10 seconds 
-after the tty login prompt is displayed.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-dont-unpoison-huge_zero_folio.patch
 
-Dowgrading to 6.8.9 fixes the issue.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Regards,
-Paul Grandperrin
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/huge_memory: don't unpoison huge_zero_folio
+Date: Thu, 16 May 2024 20:26:08 +0800
+
+When I did memory failure tests recently, below panic occurs:
+
+ kernel BUG at include/linux/mm.h:1135!
+ invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+ Call Trace:
+  <TASK>
+  do_shrink_slab+0x14f/0x6a0
+  shrink_slab+0xca/0x8c0
+  shrink_node+0x2d0/0x7d0
+  balance_pgdat+0x33a/0x720
+  kswapd+0x1f3/0x410
+  kthread+0xd5/0x100
+  ret_from_fork+0x2f/0x50
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ Modules linked in: mce_inject hwpoison_inject
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+
+The root cause is that HWPoison flag will be set for huge_zero_folio
+without increasing the folio refcnt.  But then unpoison_memory() will
+decrease the folio refcnt unexpectedly as it appears like a successfully
+hwpoisoned folio leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0) when
+releasing huge_zero_folio.
+
+Skip unpoisoning huge_zero_folio in unpoison_memory() to fix this issue. 
+We're not prepared to unpoison huge_zero_folio yet.
+
+Link: https://lkml.kernel.org/r/20240516122608.22610-1-linmiaohe@huawei.com
+Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Xu Yu <xuyu@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory-failure.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/mm/memory-failure.c~mm-huge_memory-dont-unpoison-huge_zero_folio
++++ a/mm/memory-failure.c
+@@ -2546,6 +2546,13 @@ int unpoison_memory(unsigned long pfn)
+ 		goto unlock_mutex;
+ 	}
+ 
++	if (is_huge_zero_folio(folio)) {
++		unpoison_pr_info("Unpoison: huge zero page is not supported %#lx\n",
++				 pfn, &unpoison_rs);
++		ret = -EOPNOTSUPP;
++		goto unlock_mutex;
++	}
++
+ 	if (!PageHWPoison(p)) {
+ 		unpoison_pr_info("Unpoison: Page was already unpoisoned %#lx\n",
+ 				 pfn, &unpoison_rs);
+_
+
+Patches currently in -mm which might be from linmiaohe@huawei.com are
+
+mm-huge_memory-dont-unpoison-huge_zero_folio.patch
 
 
