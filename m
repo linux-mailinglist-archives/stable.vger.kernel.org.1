@@ -1,166 +1,142 @@
-Return-Path: <stable+bounces-45426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807BF8C9765
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 01:38:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0C98C9777
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 01:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9FE6281189
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 23:38:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3521C2089B
+	for <lists+stable@lfdr.de>; Sun, 19 May 2024 23:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0185B71B4C;
-	Sun, 19 May 2024 23:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1B174BF0;
+	Sun, 19 May 2024 23:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wWo2Qz0P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FvOoPXd4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF063335C7;
-	Sun, 19 May 2024 23:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E6BFC01;
+	Sun, 19 May 2024 23:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716161909; cv=none; b=HejTgoMAO6DpGnPwdQY4zP5QuY7iSkFW9GhKvmtRA/0Ybs/aPQ5e4a3yibO4xZrhdPomHGLqgUYyPLmpVoXWstJcBxz2RdY7GTVvOU+PmVI+QQZ5CTnSirlnLkR6cb0eSHvg2tFNy7FHmpdIMUOFiGUvbOeux8Gl3vdU8KpJtrs=
+	t=1716162696; cv=none; b=iVlQH3c1y9dxfU8xzfHxVj4+Sv5GmUlAIdqti2JKRf+Ty6jsK4SUr7RJG97T6dhxusmz/vweIAVzcfu2cr+kA5k6FXhBxPl9JhiEHVuC/I4l0Al7kcfVih4ksrs+WIiru/BWdwq5skN8oBPBEtC/ml/coUPydDNv1nm1/QHEAlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716161909; c=relaxed/simple;
-	bh=pGDiMU3VLjKvOuPmkbe0yr6cavGUkz5eEdtWWP+UlP0=;
-	h=Date:To:From:Subject:Message-Id; b=OJlnmyKUm0n/+YFSL9Ui6MjcqDp2WHuVPQyAadkK4m+wrJ/PoeXmBgeKp5UTIU9vmu9NZQEO174P5FmVDzP2GHidecQ5/j4tOJ4Tqafg3sbzmwb9jy80sWHucY10+Zu9J2FYQ2/ogEeduOCk9gUDwxs4yMlkh6oM/+8GbIhYqcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wWo2Qz0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A52C32781;
-	Sun, 19 May 2024 23:38:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1716161909;
-	bh=pGDiMU3VLjKvOuPmkbe0yr6cavGUkz5eEdtWWP+UlP0=;
-	h=Date:To:From:Subject:From;
-	b=wWo2Qz0Pk8PXW+Ui5hQo3q3AaRHO1Oq2Xa/993017Gn+lKeCz13hoXvopsdwQkfzp
-	 s6rUoSEXJq207kRlTdaGxKfcvilF1Qe1nF043lIq2XdhECg2ax4jE57+10M3fjHnyT
-	 WZEYAAg3Kj74E6GhHDVdNp9hrinFrqynB3BpqFTA=
-Date: Sun, 19 May 2024 16:38:28 -0700
-To: mm-commits@vger.kernel.org,xuyu@linux.alibaba.com,stable@vger.kernel.org,shy828301@gmail.com,osalvador@suse.de,nao.horiguchi@gmail.com,david@redhat.com,anshuman.khandual@arm.com,linmiaohe@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-dont-unpoison-huge_zero_folio.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240519233829.15A52C32781@smtp.kernel.org>
+	s=arc-20240116; t=1716162696; c=relaxed/simple;
+	bh=FZnEkMOpn0PCjEi882Nayoei2+TEsEgYzwl1ZagOIgM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D33OTg7jAZu0k+cEoJ26F8XUeTkK8aJ+STd5N55vtaGgGL3UH9omvVErDE2QOshvYLCALcYHa/JqMgWdpEKOVj+hXGln5QjJI07osSl/oALV65RW15oZ6TNhDIiw1ccn1DewPKgxR0pAFm6LvyZUApC/oqAy4eHKKAxMT1uW4/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FvOoPXd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0533FC32789;
+	Sun, 19 May 2024 23:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716162696;
+	bh=FZnEkMOpn0PCjEi882Nayoei2+TEsEgYzwl1ZagOIgM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FvOoPXd4i7knzZOO3yoJKYEeWHwsCBqia2TSZJ2mE3C2cGqxRK9te1oxF7nGx6syh
+	 bZtCmdNKdmQDfXKbjpcR/MFUPGSe92TI1DOe0CBMzE2K11p6eVLWlvz9Gf58QV0W32
+	 AzvsMUPMPUlKfU8o4i25HGZf9KZKY2iBbnMGzeYyWrW0Zp/yzxHWQbC0eGo9WAVVmA
+	 61Rt/EZzME3p8iGOsUVzg5dWc0O892dR4pB2XqznxepaKI3Xggx5ZHD4v8KwtwQTez
+	 Hhk4lKSIesf5x9hA8PZsU4fFeBSeD7CdOAQubP896SUdWTly843gNDntKsrSPawwXQ
+	 w35kCqhPO0FaQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org,
+	James.Bottomley@HansenPartnership.com,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.org,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/3] KEYS: trusted: Fix memory leak in tpm2_key_encode()
+Date: Mon, 20 May 2024 02:51:20 +0300
+Message-ID: <20240519235122.3380-3-jarkko@kernel.org>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240519235122.3380-1-jarkko@kernel.org>
+References: <20240519235122.3380-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+'scratch' is never freed. Fix this by calling kfree() in the success, and
+in the error case.
 
-The patch titled
-     Subject: mm/huge_memory: don't unpoison huge_zero_folio
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-huge_memory-dont-unpoison-huge_zero_folio.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-dont-unpoison-huge_zero_folio.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Miaohe Lin <linmiaohe@huawei.com>
-Subject: mm/huge_memory: don't unpoison huge_zero_folio
-Date: Thu, 16 May 2024 20:26:08 +0800
-
-When I did memory failure tests recently, below panic occurs:
-
- kernel BUG at include/linux/mm.h:1135!
- invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
- RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
- RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
- RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
- RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
- RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
- R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
- R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
- FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
- Call Trace:
-  <TASK>
-  do_shrink_slab+0x14f/0x6a0
-  shrink_slab+0xca/0x8c0
-  shrink_node+0x2d0/0x7d0
-  balance_pgdat+0x33a/0x720
-  kswapd+0x1f3/0x410
-  kthread+0xd5/0x100
-  ret_from_fork+0x2f/0x50
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in: mce_inject hwpoison_inject
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
- RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
- RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
- RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
- RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
- R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
- R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
- FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
-
-The root cause is that HWPoison flag will be set for huge_zero_folio
-without increasing the folio refcnt.  But then unpoison_memory() will
-decrease the folio refcnt unexpectedly as it appears like a successfully
-hwpoisoned folio leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0) when
-releasing huge_zero_folio.
-
-Skip unpoisoning huge_zero_folio in unpoison_memory() to fix this issue. 
-We're not prepared to unpoison huge_zero_folio yet.
-
-Link: https://lkml.kernel.org/r/20240516122608.22610-1-linmiaohe@huawei.com
-Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Xu Yu <xuyu@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # +v5.13
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
+ security/keys/trusted-keys/trusted_tpm2.c | 24 +++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
- mm/memory-failure.c |    7 +++++++
- 1 file changed, 7 insertions(+)
-
---- a/mm/memory-failure.c~mm-huge_memory-dont-unpoison-huge_zero_folio
-+++ a/mm/memory-failure.c
-@@ -2546,6 +2546,13 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index dfeec06301ce..c6882f5d094f 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -38,6 +38,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	u8 *end_work = scratch + SCRATCH_SIZE;
+ 	u8 *priv, *pub;
+ 	u16 priv_len, pub_len;
++	int ret;
+ 
+ 	priv_len = get_unaligned_be16(src) + 2;
+ 	priv = src;
+@@ -57,8 +58,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 		unsigned char bool[3], *w = bool;
+ 		/* tag 0 is emptyAuth */
+ 		w = asn1_encode_boolean(w, w + sizeof(bool), true);
+-		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode"))
+-			return PTR_ERR(w);
++		if (WARN(IS_ERR(w), "BUG: Boolean failed to encode")) {
++			ret = PTR_ERR(w);
++			goto err;
++		}
+ 		work = asn1_encode_tag(work, end_work, 0, bool, w - bool);
  	}
  
-+	if (is_huge_zero_folio(folio)) {
-+		unpoison_pr_info("Unpoison: huge zero page is not supported %#lx\n",
-+				 pfn, &unpoison_rs);
-+		ret = -EOPNOTSUPP;
-+		goto unlock_mutex;
+@@ -69,8 +72,10 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	 * trigger, so if it does there's something nefarious going on
+ 	 */
+ 	if (WARN(work - scratch + pub_len + priv_len + 14 > SCRATCH_SIZE,
+-		 "BUG: scratch buffer is too small"))
+-		return -EINVAL;
++		 "BUG: scratch buffer is too small")) {
++		ret = -EINVAL;
++		goto err;
 +	}
+ 
+ 	work = asn1_encode_integer(work, end_work, options->keyhandle);
+ 	work = asn1_encode_octet_string(work, end_work, pub, pub_len);
+@@ -79,10 +84,17 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+-		return PTR_ERR(work1);
++	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
++		ret = PTR_ERR(work1);
++		goto err;
++	}
+ 
++	kfree(scratch);
+ 	return work1 - payload->blob;
 +
- 	if (!PageHWPoison(p)) {
- 		unpoison_pr_info("Unpoison: Page was already unpoisoned %#lx\n",
- 				 pfn, &unpoison_rs);
-_
-
-Patches currently in -mm which might be from linmiaohe@huawei.com are
-
-mm-huge_memory-dont-unpoison-huge_zero_folio.patch
++err:
++	kfree(scratch);
++	return ret;
+ }
+ 
+ struct tpm2_key_context {
+-- 
+2.45.1
 
 
