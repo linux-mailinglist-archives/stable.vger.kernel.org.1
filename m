@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-45453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341A18CA0F8
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 19:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F888CA0FC
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 19:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4160B20FB8
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:00:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F5F1B216AD
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8370137901;
-	Mon, 20 May 2024 17:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777C9137C48;
+	Mon, 20 May 2024 17:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="wkaxZbFQ"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ju26hfmW"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC5111184;
-	Mon, 20 May 2024 17:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89318137C42;
+	Mon, 20 May 2024 17:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716224427; cv=none; b=V5/k03ZZtbcun33VOLx96ULAYizCou6jiTKo4KuMuHi+u+0bpQMkWLqOLdrMkzv/g8jm48jcR+dQKlDnSuhOo8mB4PU4EMm9ajl3sH1aBAELEq6/YH6qi0YWXArm080qYhq/dPGJhNX2idUNlMrYd+WQ9AVg3wSDoDqPVyGYsf4=
+	t=1716224432; cv=none; b=S3BrjVJ7mn3gqBBo2qMHMJdyCxjkFhbuN7DuvD/BQQ5pqAIDJOIOTRl4MQAw+6s8y0+rm6o2IbSHEaDg0MTmQZFrkm9BPrXyDvVC00R1cv4ZswHLxvZ5jMrVU5F3HkeCSkFXzQzw9gHdc3RtWWOC9m8M7KLkxdDswvdh5xo4JiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716224427; c=relaxed/simple;
-	bh=w6g49xcGEthjVP0dxErZ8gbHgtAup/lb9gSSJAEdNNI=;
+	s=arc-20240116; t=1716224432; c=relaxed/simple;
+	bh=JGYB2S6yTcgO2d865g5dJ9N3Cr0pfgIfMlJ+HBoWHqM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J2dllvDZi/VtKAz/1tTw5GoijtxO9uQOgv47VLHDFIZ4s3i+Lh5a6bxDm+IB6l83aaQQPiWUwWamEMp2uJwJsfLyqSFlvzEzy4suZvxnMtyN03oNSE9MQuRTgqN/C55TQ2XCsb85EsSM6hlL5G8HkwdFEP33UAg1ptsGXj41OtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=wkaxZbFQ; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1716224410; x=1716829210; i=markus.elfring@web.de;
-	bh=w6g49xcGEthjVP0dxErZ8gbHgtAup/lb9gSSJAEdNNI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=wkaxZbFQiTHULWpXJK1diJvTBB7F1H9GGL2xWIeZrUS9IqLqIElEvhvo8kR6BPZY
-	 uqtRw90ynSHGYzPZJ+WAn3OdJKagfVlMZRxNrlGsN2nxIvmsYkXLh29xy051uWLzf
-	 NdVnCnMzlvjeIg6HnickKlmwUsWRSd2lwKmL2Wg2DdDD0rgnE8Nn52z+wFGnQu53H
-	 +Oe7O0JpS6hGlKDaNV8m6TPuixUzsCNkfrl8Rjr26YRjvpq8qQyJr/9yagYPxbg9z
-	 z28Synx2Y7fWVBMeVkN9aZlCYPbaxIdg2li80FbIUt1sjOkxH8X5oHZmlB/bsksoj
-	 OyyXdUQpMMQH0mG9cQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mho04-1smZuk0Gki-00dbB7; Mon, 20
- May 2024 19:00:10 +0200
-Message-ID: <e98f8e4c-bd1f-43d8-aea9-52ea45c0d5c2@web.de>
-Date: Mon, 20 May 2024 19:00:08 +0200
+	 In-Reply-To:Content-Type; b=VYtdV02YBeJhOTGtsQut8Tabp9pPO7mEmxpW4emJNTgQPLCQHoso12bTQRjEKh+Nr1oorODmgTraPRlFoHF0KH//P8VsYAhlOZVH2VC9A2GSkjh8LjE4WpEsx1lGVO7v7FujvZwr73bRa9znx8j9w1B1gIktIoVG/y0tq4Vd0II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ju26hfmW; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4VjkMr2SKzzlgT1M;
+	Mon, 20 May 2024 17:00:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1716224419; x=1718816420; bh=vKr+u0Wv7UNQpsfIGSaoT6+D
+	nTw+Zuk0k0HaxCTxkh0=; b=ju26hfmWvh+lMdtwq5Ass4+hGfqL7MqGFMp7yoAC
+	0WiBc8gVrWTyay2JvLCyFFnrYW3r45ENRYp8A8aqf5jrCdxLvxru+LBKFjwZ4c6u
+	0QdEdK+qNILyEpnWVBldh1/FrEnLJQwldYT5Ojdm5bD3AqfN4GOsz17vYviOYAk9
+	0bem7bz0Ei4XVEX5/fvF15szxxaHJHCZDvs3kdW97zmbESolR3gjy9+VaOlcmHz0
+	Ur5+MlHhRi2RFsQpif4WCceE1JxCisIjw7S534NU7m3fvwhkcZqjnubwfKxKH1tl
+	UhCs/8c/WZYwEr8jQLYhIQsZFAEv9buxfPC6Lw6PAHCOBw==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id uCTKBezyTx6O; Mon, 20 May 2024 17:00:19 +0000 (UTC)
+Received: from [100.96.154.26] (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4VjkMj5yN1zlgT1K;
+	Mon, 20 May 2024 17:00:17 +0000 (UTC)
+Message-ID: <55e8c5f0-d80b-49a8-8026-4e5a25290fa7@acm.org>
+Date: Mon, 20 May 2024 10:00:14 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,57 +65,156 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] i2c: ocores: set IACK bit after core is enabled
-To: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
- bsp-development.geo@leica-geosystems.com, linux-i2c@vger.kernel.org,
- Andrew Lunn <andrew@lunn.ch>, Peter Korsgaard <peter@korsgaard.com>,
- Thomas Gleixner <tglx@linutronix.de>
-Cc: LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
- Grygorii Tertychnyi <grembeter@gmail.com>
-References: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0DR43tciFBEsUrfkqLfVrYfuElTHRWtQCtsVo1muoNj/g5bQoma
- wm429Yrg6vVaTnf+xg4/QcM2XWJZhMYUUKEqzwaoKXtsFYJRiFH7J2gkDVvTUW/vA45pdjN
- 9Lcf80zpFAiZHJHtia0CwKfca61k3d3H2a0sCl3v85o2fvB7s1i1PIqIkarri1QJ4T4tSXQ
- Uo6KPbPbPcZYpcdqbTfLw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:f/r08ZsaOiM=;ROj7G7ROQF9zvjZekoF1tDas+zA
- yl9YZS88I+Qhxkgv8YNJlGWs/D9I/DdRiPtTsxh633PdQtcge0zWSiWForzqIXtEIBk2BI75z
- yFEzQCEbZy5cy0ugtwPaGr6iPakdSodNgW73TG7O2t03DjwTZaGG8TJ+9eZp7jDacZ48EX3fV
- ufEDeVriu0FXCK8mKYmAOred60Vy6szKAlPNb+rrLncyTmPwmTPlw9m3Nnbw3GnDogeki93IH
- 4ZCpLA4/Lf81AstVias/sov1UjHnWZnvzaTBsqFuHg22AlHpVopcUCtGrSDVQs705gsxikyOj
- Mz20YnHLl4/EgrCRSkDaxsf4y9IiuYmHk64DSAs3DNQXbWlfkUynHyQyUqImPqgp53u/qSLFV
- RGPbpdBwQXpF693McSld0UGIV3SB/zU4lwNIyWewCx3UyuVDoWomV8efCPGZiQqaSWqGXzIdp
- 1jblEdci+/lu2kI7gCo/dCBnAtG0CC4AyB9wycIdIYXv7bVnIGdBVpAESzKmZCN9qA8knaxXm
- Of0VOLRJ88tMwX9M4orbSjkOVaJgd2KUjRjnu77fIKuVws2X0rDLE0SEVs+ibBZKyAi18XxIB
- oMg0DHImU4a4KWf88AdzgLDe8YIJOObNpZysflc9L3/4iI/dbkb+W51/jf5rsKwJnw9tgxdmL
- EkJLNwH4Pg4DITSdsjuFMLsyOsoFEIcEf17MTXsfkyT+PLP/j2WUfiYeGTsrL1gVNTAA9Fe9C
- V32111B6Mbirsy3lJx6qZ8bn676QltJ4okvEcP8dAWeoR+z6kj2t44UPC8KHLLyV/D/j+qk7y
- o06Kx3ERaUyKBDcFnG6Htj8MMlsgmg6U+MWpQQJXkjADg=
+Subject: Re: [PATCH 5/5] nbd: Fix signal handling
+To: Christoph Hellwig <hch@lst.de>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Josef Bacik <jbacik@fb.com>, Yu Kuai <yukuai3@huawei.com>,
+ Markus Pargmann <mpa@pengutronix.de>, stable@vger.kernel.org
+References: <20240510202313.25209-1-bvanassche@acm.org>
+ <20240510202313.25209-6-bvanassche@acm.org> <20240520124137.GA30199@lst.de>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240520124137.GA30199@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-=E2=80=A6
-> Sometimes it causes failure for the very first message transfer, =E2=80=
-=A6
+On 5/20/24 05:41, Christoph Hellwig wrote:
+> On Fri, May 10, 2024 at 01:23:13PM -0700, Bart Van Assche wrote:
+>> Both nbd_send_cmd() and nbd_handle_cmd() return either a negative error
+>> number or a positive blk_status_t value.
+> 
+> Eww.  Please split these into separate values instead.  There is a reason
+> why blk_status_t is a separate type with sparse checks, and drivers
+> really shouldn't do avoid with that for a tiny micro-optimization of
+> the calling convention (if this even is one and not just the driver
+> being sloppy).
 
-Would it be helpful to mention the term =E2=80=9Cdata corruption=E2=80=9D =
-here?
-https://lore.kernel.org/lkml/CAGFuAuwot_7+R=3DJ4NC=3D0Z_48YZ-RTJjRUoQnSjZU=
-vpt=3DAWF39Q@mail.gmail.com/
-https://lkml.org/lkml/2024/5/20/549
+How about the (untested) patch below?
 
+Thanks,
 
-> Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C =
-controller")
+Bart.
 
-Will the text =E2=80=9C[PATCH] =E2=80=9D be omitted from this tag for the =
-final commit?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.9#n145
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 22a79a62cc4e..4ee76c39e3a5 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -588,11 +588,17 @@ static inline int was_interrupted(int result)
+  	return result == -ERESTARTSYS || result == -EINTR;
+  }
 
-Regards,
-Markus
++struct send_res {
++	int result;
++	blk_status_t status;
++};
++
+  /*
+   * Returns BLK_STS_RESOURCE if the caller should retry after a delay. Returns
+   * -EAGAIN if the caller should requeue @cmd. Returns -EIO if sending failed.
+   */
+-static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
++static struct send_res nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd,
++				    int index)
+  {
+  	struct request *req = blk_mq_rq_from_pdu(cmd);
+  	struct nbd_config *config = nbd->config;
+@@ -614,13 +620,13 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+
+  	type = req_to_nbd_cmd_type(req);
+  	if (type == U32_MAX)
+-		return -EIO;
++		return (struct send_res){ .result = -EIO };
+
+  	if (rq_data_dir(req) == WRITE &&
+  	    (config->flags & NBD_FLAG_READ_ONLY)) {
+  		dev_err_ratelimited(disk_to_dev(nbd->disk),
+  				    "Write on read-only\n");
+-		return -EIO;
++		return (struct send_res){ .result = -EIO };
+  	}
+
+  	if (req->cmd_flags & REQ_FUA)
+@@ -674,11 +680,11 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+  				nsock->sent = sent;
+  			}
+  			set_bit(NBD_CMD_REQUEUED, &cmd->flags);
+-			return (__force int)BLK_STS_RESOURCE;
++			return (struct send_res){ .status = BLK_STS_RESOURCE };
+  		}
+  		dev_err_ratelimited(disk_to_dev(nbd->disk),
+  			"Send control failed (result %d)\n", result);
+-		return -EAGAIN;
++		return (struct send_res){ .result = -EAGAIN };
+  	}
+  send_pages:
+  	if (type != NBD_CMD_WRITE)
+@@ -715,12 +721,14 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+  					nsock->pending = req;
+  					nsock->sent = sent;
+  					set_bit(NBD_CMD_REQUEUED, &cmd->flags);
+-					return (__force int)BLK_STS_RESOURCE;
++					return (struct send_res){
++						.status = BLK_STS_RESOURCE
++					};
+  				}
+  				dev_err(disk_to_dev(nbd->disk),
+  					"Send data failed (result %d)\n",
+  					result);
+-				return -EAGAIN;
++				return (struct send_res){ .result = -EAGAIN };
+  			}
+  			/*
+  			 * The completion might already have come in,
+@@ -737,7 +745,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+  	trace_nbd_payload_sent(req, handle);
+  	nsock->pending = NULL;
+  	nsock->sent = 0;
+-	return 0;
++	return (struct send_res){};
+  }
+
+  static int nbd_read_reply(struct nbd_device *nbd, struct socket *sock,
+@@ -1018,7 +1026,8 @@ static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+  	struct nbd_device *nbd = cmd->nbd;
+  	struct nbd_config *config;
+  	struct nbd_sock *nsock;
+-	int ret;
++	struct send_res send_res;
++	blk_status_t ret;
+
+  	lockdep_assert_held(&cmd->lock);
+
+@@ -1076,14 +1085,15 @@ static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+  	 * Some failures are related to the link going down, so anything that
+  	 * returns EAGAIN can be retried on a different socket.
+  	 */
+-	ret = nbd_send_cmd(nbd, cmd, index);
+-	/*
+-	 * Access to this flag is protected by cmd->lock, thus it's safe to set
+-	 * the flag after nbd_send_cmd() succeed to send request to server.
+-	 */
+-	if (!ret)
++	send_res = nbd_send_cmd(nbd, cmd, index);
++	ret = send_res.result < 0 ? BLK_STS_IOERR : send_res.status;
++	if (ret == BLK_STS_OK) {
++		/*
++		 * cmd->lock is held. Hence, it's safe to set this flag after
++		 * nbd_send_cmd() succeeded sending the request to the server.
++		 */
+  		__set_bit(NBD_CMD_INFLIGHT, &cmd->flags);
+-	else if (ret == -EAGAIN) {
++	} else if (send_res.result == -EAGAIN) {
+  		dev_err_ratelimited(disk_to_dev(nbd->disk),
+  				    "Request send failed, requeueing\n");
+  		nbd_mark_nsock_dead(nbd, nsock, 1);
+@@ -1093,7 +1103,7 @@ static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+  out:
+  	mutex_unlock(&nsock->tx_lock);
+  	nbd_config_put(nbd);
+-	return ret < 0 ? BLK_STS_IOERR : (__force blk_status_t)ret;
++	return ret;
+  }
+
+  static blk_status_t nbd_queue_rq(struct blk_mq_hw_ctx *hctx,
+
 
