@@ -1,169 +1,126 @@
-Return-Path: <stable+bounces-45447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438198C9FCD
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:38:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B116D8C9FD6
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEBF9285423
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 15:38:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2587C1F219B6
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 15:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA00137750;
-	Mon, 20 May 2024 15:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2A3137749;
+	Mon, 20 May 2024 15:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jcDWKg0s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cdB08FAO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E27FC01
-	for <stable@vger.kernel.org>; Mon, 20 May 2024 15:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43AAFC01;
+	Mon, 20 May 2024 15:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716219522; cv=none; b=ajAJHmkYW0QeDV1ObAFqFKvigjnXdi3u/TNW/axuOWwsy65kD9VEGtVNu7ZT2KrgKOqKCqhEd4lgTE3A2xXU85gCz2Cn8GyxJKQDffRPlB+NOA4Fr/7lCRok8sT+ji5+66r1Cr43TEiZRI5cIZ35DOIoyb2tRPrF3qJVq330TI4=
+	t=1716219615; cv=none; b=KprWtHnuRwVDARsU/LkvCJqRbdq35l0Yok3MFnuSCFz0fkt5loAitl7iL/p4W84gh4anSC2sFk9Ga8xWhQkXP5MOv+HOu8S90mMoQSKMkya03rXiywrJ6CjUrIUXJ9VcS9txXHyfS1tz1JjRwB3Sj/vEEFwmG1u/qk16hn1lG4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716219522; c=relaxed/simple;
-	bh=xR38KVD3bbKUAoYUfwjtudqWW7AHDRaw+vcgMm2ki0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fSu0xpLIZo/Y+/H3+8zAWb+Hx2T02C6QOwaMwYdwR1a41h2zXcy0rPXqkOodKiChtl10W6IHGQIKZzRuph269byh4ASzW4NkKia4U7CiNRDisZFVxj2MvMeNWUxzCbsbjEqU8BxYv6czHBTzxoP14ThrhqulL0f5GLc62gVHH3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=jcDWKg0s; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-69b730fc89bso10007246d6.1
-        for <stable@vger.kernel.org>; Mon, 20 May 2024 08:38:41 -0700 (PDT)
+	s=arc-20240116; t=1716219615; c=relaxed/simple;
+	bh=bxz7jyZF4t7F6adRiq0DRQVZau32bwbgme1aKJMz9gM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUJxmq+JODJ9sNe6nVxdun/xbFxitH3R3R1tpVyUNlNW5acCYoSWW+0M1Qelvk5UFAmkLfSUr3m8Kzmk+H/BcQc3c1X+Vu09hBFBNxWeyE6Mox7hSof8bdQhJx4ZwQF1Ph3ZBy3w5AZUp8biPWzDAmxuv0ERTq1fhbJiwrxj6hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cdB08FAO; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-571ba432477so8419258a12.1;
+        Mon, 20 May 2024 08:40:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1716219519; x=1716824319; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OKPnejpOVVglMsc+d8kH/kXQPdEfmoXhhEf4Gy8y/h4=;
-        b=jcDWKg0sCj9Z1di9jCbTIx5rkSsbT3LhrbMyn7yENFnTPNcxNyDJ0zf0d2CHFf34JT
-         i576qs6AC94WVfmFFMgIVz3ZdnOGZ9GHmN92EktC2txstqXDkWTSK6hoWeo9Ptu8yLIa
-         ZGZL21wAbxmorqAO4T1F1IZj8Gq2/r8mQeISU=
+        d=gmail.com; s=20230601; t=1716219612; x=1716824412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lnr1potWpuTZcvydit76tGvDXKhaYKHwXt27AplNE/o=;
+        b=cdB08FAOTHJcCvcB99obQF9x21JlPWxZVV0Lvi2Nd/Dju91NWERRLfoL6D14LXlYYt
+         WNCrC1PtVxiEY/2WECDjhPZyW5KkX4nrGjaS1Zh2lwjvz2KyOwImw2YfMs71/YcIP9bs
+         6xxBuNtk3AizrtFiKXEdN6urgJNmXwdRMHOXndLFlit1F7mJAUcDVVtFFHr1POm8HdLJ
+         lYcf5i2hMX6f7C+NKrtua8Mt/9fxUyzIcZ3jfX0lk3y61PgeiLoihKJFVnHyCAaHkxt3
+         vxX1ZCYu94niDFk+Fx0Nqu+2q5Bl88ezL4r3Cf3BeGxdZU5kKtsHUxpTfRHtxlaaGnNi
+         ctZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716219519; x=1716824319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OKPnejpOVVglMsc+d8kH/kXQPdEfmoXhhEf4Gy8y/h4=;
-        b=VlAkc2hqsbAuaSI27ephtJAomcW1wwTJkAFq3qTy2Bah9+FcPf8jgzILEzJ+T/yyFM
-         ZrUk7tZp86JSJv02/eeSYlYYuWZzGteopJ6kr3J8W9Z9439ITBQDsU9+5lBxpn5hp5ad
-         Z3iP0jH0n51JYaARAS+QaBNTKlRPySjAumdCrXGZ0m8hf34u28hml2vT7bns9H+gz6gq
-         4XgrA7oq6s1MBfYNcpfQh9Tbbj3e5ca5LRlWbU8ddWUqZE/OOw+byzk/SHpm2UEorPi1
-         qriY4OUdvarNvyADgrMIAVk049MetzciiluqlG80d0Bssu32RC/2ucBCUDddUGzARCdW
-         AMow==
-X-Forwarded-Encrypted: i=1; AJvYcCXzF9qVVA6j2cn6MWNW9izJFqAIQOFd5y2udc1RX1FZHW4gwLOsZX9eBTu3u1xE7kpS+NDYdRXXXYGKhL5+4hadaieMr5rE
-X-Gm-Message-State: AOJu0YxPhdcNFtajMFBFhpG1/g5w58Mt+Kfurg8cWDtOW5ny0fF5yBIC
-	wTOtemBPYEVUwPHA8PKXfZQACDelZK0rs5IpyZkKHJmFJTgqo2JTGMyKHejs7ta8HrSIUVhRRmI
-	=
-X-Google-Smtp-Source: AGHT+IFLMwYJxlNHuF8FRy7ZBXhOO6BqmYRdIkfbjaYMkMHsrb4j8s92uhcLLXL7cnb0AZ1oGsHFXw==
-X-Received: by 2002:a05:6214:5bc5:b0:6a3:53cd:40a2 with SMTP id 6a1803df08f44-6a353cdd87emr194871576d6.50.1716219518818;
-        Mon, 20 May 2024 08:38:38 -0700 (PDT)
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com. [209.85.160.170])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6a3490f0fc2sm67720006d6.63.2024.05.20.08.38.37
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 May 2024 08:38:37 -0700 (PDT)
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-43dfe020675so648011cf.0
-        for <stable@vger.kernel.org>; Mon, 20 May 2024 08:38:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWMnC231vjKED/yLOKNHPlvTq8FDGJVSvH5Ut0XC/mGC8qJz5nU7c4xr6vsulYlX6/Tx24pmjNZxe6ZN3FWJEWBOk5O8jId
-X-Received: by 2002:a05:622a:5917:b0:43e:ec2:4bb8 with SMTP id
- d75a77b69052e-43f797e0ecemr5611191cf.26.1716219516885; Mon, 20 May 2024
- 08:38:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716219612; x=1716824412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lnr1potWpuTZcvydit76tGvDXKhaYKHwXt27AplNE/o=;
+        b=aQbnUYp7Oz/NVQODOVy8YPe9MOusPYuWFEhW3Z1CkTQrp8/qto0zcg9LkzbA1KMijY
+         Epx61tDLHV45Lz6O3zJitof7/BlEFvs1uBXNnF52JGIIzsEEwycBz0+fkSj13OPj10Hp
+         c2BbzOegAr6nOxDG69rFDPu1MJFrKZcpqSiNkxaxVCuKCisBya8A5nWvV0BZJa4pO5Bw
+         Zcw86vHNbI5Jk83kB33cSY9T35XkjfqsPd9hFcfUnvMMeBHI2hciO9CYdHdhtJrkjPFS
+         ugWl8MT5bq/e4FqwI6x2+WAOkob3ATVlme0RSgxO0maDhp6apA+3sdN+sbQHTthYYHjV
+         QLbw==
+X-Forwarded-Encrypted: i=1; AJvYcCVL7pnbUIhApZ2IvKWKJWXGPrXIscZsIr4XFDBpXvEG0FgPl9bL89lRGD4lpG1WPGvB00+z7uf/weYw+v5RvSL9Pqt1ZN2uWOT6XxU0g0xdtt+TZwt6FOukaLBj0xMSfLMrvHvIwDVqB9alo6Vvs0Y7ToPx+c9FMnqV6OBrOU8h
+X-Gm-Message-State: AOJu0Yy2vas8lPS37k70RUFs5Qot6biC1zNfiVFAkmWPn+TVZp+DBqdl
+	tqn/X1qF+EETcE5ZnczwA5t+dKs6yYMzulN8I5PpP5M5VKva1YxU
+X-Google-Smtp-Source: AGHT+IEMExvEaNZcfHPPaX/8k+WlPHRrW1ag/azymJJNxRfVzHV/Z79udHSmjR4oX2TvioCo2Y/O+w==
+X-Received: by 2002:a50:9ec5:0:b0:568:8e22:4eff with SMTP id 4fb4d7f45d1cf-5734d6df0d5mr18784232a12.37.1716219612034;
+        Mon, 20 May 2024 08:40:12 -0700 (PDT)
+Received: from think.fritz.box (2001-8e0-3c0d-4001-4e1d-96ff-fe13-2153.bbcs.ip6.as8758.net. [2001:8e0:3c0d:4001:4e1d:96ff:fe13:2153])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-574bcad0362sm11760902a12.20.2024.05.20.08.40.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 May 2024 08:40:11 -0700 (PDT)
+From: Grygorii Tertychnyi <grembeter@gmail.com>
+X-Google-Original-From: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
+To: Markus Elfring <Markus.Elfring@web.de>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
+	bsp-development.geo@leica-geosystems.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] i2c: ocores: set IACK bit after core is enabled
+Date: Mon, 20 May 2024 17:39:32 +0200
+Message-ID: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240507144821.12275-1-johan+linaro@kernel.org>
- <20240507144821.12275-5-johan+linaro@kernel.org> <CAD=FV=V59t_tZ9Xk=uhbgOdTRYLKu+kZt8cpaksTkJo+D4yt8Q@mail.gmail.com>
- <Zks3hp5iUhTe3rLH@hovoldconsulting.com> <Zks5gJ7H6ZuWr_Xm@hovoldconsulting.com>
-In-Reply-To: <Zks5gJ7H6ZuWr_Xm@hovoldconsulting.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 20 May 2024 08:38:20 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UDdc_YgZ=JGamWpdyCgAM_0szk-m_RgUnkDA9m1zbzWw@mail.gmail.com>
-Message-ID: <CAD=FV=UDdc_YgZ=JGamWpdyCgAM_0szk-m_RgUnkDA9m1zbzWw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/7] HID: i2c-hid: elan: fix reset suspend current leakage
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Linus Walleij <linus.walleij@linaro.org>, 
-	linux-input@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Steev Klimaszewski <steev@kali.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
+bit in the status register, and the interrupt remains pending.
 
-On Mon, May 20, 2024 at 4:52=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> On Mon, May 20, 2024 at 01:44:06PM +0200, Johan Hovold wrote:
-> > On Fri, May 10, 2024 at 04:36:08PM -0700, Doug Anderson wrote:
-> > > On Tue, May 7, 2024 at 7:48=E2=80=AFAM Johan Hovold <johan+linaro@ker=
-nel.org> wrote:
->
-> > > > @@ -67,7 +77,14 @@ static void elan_i2c_hid_power_down(struct i2chi=
-d_ops *ops)
-> > > >         struct i2c_hid_of_elan *ihid_elan =3D
-> > > >                 container_of(ops, struct i2c_hid_of_elan, ops);
-> > > >
-> > > > -       gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
-> > > > +       /*
-> > > > +        * Do not assert reset when the hardware allows for it to r=
-emain
-> > > > +        * deasserted regardless of the state of the (shared) power=
- supply to
-> > > > +        * avoid wasting power when the supply is left on.
-> > > > +        */
-> > > > +       if (!ihid_elan->no_reset_on_power_off)
-> > > > +               gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
-> > > > +
-> > > >         if (ihid_elan->chip_data->post_gpio_reset_off_delay_ms)
-> > > >                 msleep(ihid_elan->chip_data->post_gpio_reset_off_de=
-lay_ms);
-> > >
-> > > Shouldn't  the above two lines be inside the "if
-> > > (!ihid_elan->no_reset_on_power_off)" test? If you're not setting the
-> > > reset GPIO then you don't need to do the delay, right?
-> >
-> > Yes, I guess you're right. The off-delay is weird and not normally used=
-,
-> > but apparently it is needed by some panel-follower use case. AFAICT it'=
-s
-> > not even related to the reset line, just a hack to add a delay before
-> > the panel is reset by some other driver (see f2f43bf15d7a ("HID:
-> > i2c-hid: elan: Add ili9882t timing")).
-> >
-> > I think that's why I just looked the other way and left this little
-> > oddity here unchanged.
->
-> Hit send too soon.
->
-> Since this hack does not appear to be related to the reset line, I think
-> it's correct to not have it depend on whether the reset line is asserted
-> or not (e.g. as there could be 'panel-followers' with
-> 'no_reset_on_power_off'):
->
->          The datasheet specifies there should be 60ms between touch SDA
->          sleep and panel RESX. Doug's series[1] allows panels and
->          touchscreens to power on/off together, so we can add the 65 ms
->          delay in i2c_hid_core_suspend before panel_unprepare.
->
-> The power-off delay variable should probably be renamed, but that's a
-> separate change.
->
-> So I think v2 of this series is good to go.
+Sometimes it causes failure for the very first message transfer, that is
+usually a device probe.
 
-Sure. As I think we've seen in the past, my choice of bikeshed paint
-color seems to be quite different than yours, but nothing here seems
-like it needs to block landing, so:
+Hence, set IACK bit after core is enabled to clear pending interrupt.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
+Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Cc: stable@vger.kernel.org
+---
+V1 -> V2: Added "Acked-by:", "Fixes:" and "Cc:" tags
+
+ drivers/i2c/busses/i2c-ocores.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-ocores.c b/drivers/i2c/busses/i2c-ocores.c
+index e106af83cef4..350ccfbe8634 100644
+--- a/drivers/i2c/busses/i2c-ocores.c
++++ b/drivers/i2c/busses/i2c-ocores.c
+@@ -442,8 +442,8 @@ static int ocores_init(struct device *dev, struct ocores_i2c *i2c)
+ 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
+ 
+ 	/* Init the device */
+-	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
++	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
