@@ -1,220 +1,113 @@
-Return-Path: <stable+bounces-45454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F888CA0FC
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 19:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FD28CA12D
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 19:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F5F1B216AD
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:00:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC27DB218D1
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777C9137C48;
-	Mon, 20 May 2024 17:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5F3137C2A;
+	Mon, 20 May 2024 17:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ju26hfmW"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="LuU/fEMP"
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89318137C42;
-	Mon, 20 May 2024 17:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECF653E13;
+	Mon, 20 May 2024 17:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716224432; cv=none; b=S3BrjVJ7mn3gqBBo2qMHMJdyCxjkFhbuN7DuvD/BQQ5pqAIDJOIOTRl4MQAw+6s8y0+rm6o2IbSHEaDg0MTmQZFrkm9BPrXyDvVC00R1cv4ZswHLxvZ5jMrVU5F3HkeCSkFXzQzw9gHdc3RtWWOC9m8M7KLkxdDswvdh5xo4JiY=
+	t=1716225640; cv=none; b=QpvEbEgvsY0yfKsafXjIPuZu8uXeYNLTh3WaLkkPNt/wWVCQ5DVIGMez2vFEUVRUVbBj7uM9faHO7ofF7SAFcDYunzNWuOf4U3IfiOfzNJXP3AI/fG6xKIQd/T+9+6zwId3Tk/WkEV9svd3cX2Ga30F/5sO3i/DX7O8cHlf3zaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716224432; c=relaxed/simple;
-	bh=JGYB2S6yTcgO2d865g5dJ9N3Cr0pfgIfMlJ+HBoWHqM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VYtdV02YBeJhOTGtsQut8Tabp9pPO7mEmxpW4emJNTgQPLCQHoso12bTQRjEKh+Nr1oorODmgTraPRlFoHF0KH//P8VsYAhlOZVH2VC9A2GSkjh8LjE4WpEsx1lGVO7v7FujvZwr73bRa9znx8j9w1B1gIktIoVG/y0tq4Vd0II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ju26hfmW; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4VjkMr2SKzzlgT1M;
-	Mon, 20 May 2024 17:00:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1716224419; x=1718816420; bh=vKr+u0Wv7UNQpsfIGSaoT6+D
-	nTw+Zuk0k0HaxCTxkh0=; b=ju26hfmWvh+lMdtwq5Ass4+hGfqL7MqGFMp7yoAC
-	0WiBc8gVrWTyay2JvLCyFFnrYW3r45ENRYp8A8aqf5jrCdxLvxru+LBKFjwZ4c6u
-	0QdEdK+qNILyEpnWVBldh1/FrEnLJQwldYT5Ojdm5bD3AqfN4GOsz17vYviOYAk9
-	0bem7bz0Ei4XVEX5/fvF15szxxaHJHCZDvs3kdW97zmbESolR3gjy9+VaOlcmHz0
-	Ur5+MlHhRi2RFsQpif4WCceE1JxCisIjw7S534NU7m3fvwhkcZqjnubwfKxKH1tl
-	UhCs/8c/WZYwEr8jQLYhIQsZFAEv9buxfPC6Lw6PAHCOBw==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id uCTKBezyTx6O; Mon, 20 May 2024 17:00:19 +0000 (UTC)
-Received: from [100.96.154.26] (unknown [104.132.0.90])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4VjkMj5yN1zlgT1K;
-	Mon, 20 May 2024 17:00:17 +0000 (UTC)
-Message-ID: <55e8c5f0-d80b-49a8-8026-4e5a25290fa7@acm.org>
-Date: Mon, 20 May 2024 10:00:14 -0700
+	s=arc-20240116; t=1716225640; c=relaxed/simple;
+	bh=ujOZdM12m2SkEuErdLg31UfXALUkOK8fYQRRZe+CGPo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a63vvnYNAPjHErnZgEGQg8mAH8uQSP4n7XYdo0B6EYuljDCPASut4n1Q99ZRQsZ7hscvEHt04tPByXecsjAHBYAnBeTHaZokqtHgwwRQvqYe+f7asFiz8QBDcHESY5gCSUCCPnUkrll+IiVGsg3x+tB4AFk2ZbDZkegzgSV92j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=LuU/fEMP; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+From: Dragan Simic <dsimic@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1716225634;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M5mdKrQZ6Ky+oql5N4jU0irfjSORSwfq+zI30MiBIko=;
+	b=LuU/fEMPZL0GHan6Z1Z0f2BpKu+NaY/w0OmOAbO9PaNcTiGPihIk+jEt/FfcthR7H3nL49
+	x0+z0UXxgVjOsQ4RV0z7dVY7wGEnxexYc38rqFz+VW8Q0eiaW30/JLEPmHl3CDuf1HQyEO
+	vQWrQpGOneFSwbcwMw5LlRhcEP625t/+cISm+aHJxTkkqXMI8YQW3FfrJbZ/mK4k/ld1Az
+	mbK/ui3vFhOZ7TavIMGZZARU9c1zlI1CAE3K66gHAQFECNsbCdWbfmMZfbBijvGrfDJyp6
+	U0+HQ8NnpQ2MyISitkaJU2fd9duUnbjUApV4peHrnyaDa9IoRvxzApTeaBgvEw==
+To: linux-rockchip@lists.infradead.org
+Cc: heiko@sntech.de,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	robh+dt@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Diederik de Haas <didi.debian@cknow.org>
+Subject: [PATCH] arm64: dts: rockchip: Fix the DCDC_REG2 minimum voltage on Quartz64 Model B
+Date: Mon, 20 May 2024 19:20:28 +0200
+Message-Id: <e70742ea2df432bf57b3f7de542d81ca22b0da2f.1716225483.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] nbd: Fix signal handling
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Josef Bacik <jbacik@fb.com>, Yu Kuai <yukuai3@huawei.com>,
- Markus Pargmann <mpa@pengutronix.de>, stable@vger.kernel.org
-References: <20240510202313.25209-1-bvanassche@acm.org>
- <20240510202313.25209-6-bvanassche@acm.org> <20240520124137.GA30199@lst.de>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240520124137.GA30199@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On 5/20/24 05:41, Christoph Hellwig wrote:
-> On Fri, May 10, 2024 at 01:23:13PM -0700, Bart Van Assche wrote:
->> Both nbd_send_cmd() and nbd_handle_cmd() return either a negative error
->> number or a positive blk_status_t value.
-> 
-> Eww.  Please split these into separate values instead.  There is a reason
-> why blk_status_t is a separate type with sparse checks, and drivers
-> really shouldn't do avoid with that for a tiny micro-optimization of
-> the calling convention (if this even is one and not just the driver
-> being sloppy).
+Correct the specified regulator-min-microvolt value for the buck DCDC_REG2
+regulator, which is part of the Rockchip RK809 PMIC, in the Pine64 Quartz64
+Model B board dts.  According to the RK809 datasheet, version 1.01, this
+regulator is capable of producing voltages as low as 0.5 V on its output,
+instead of going down to 0.9 V only, which is additionally confirmed by the
+regulator-min-microvolt values found in the board dts files for the other
+supported boards that use the same RK809 PMIC.
 
-How about the (untested) patch below?
+This allows the DVFS to clock the GPU on the Quartz64 Model B below 700 MHz,
+all the way down to 200 MHz, which saves some power and reduces the amount of
+generated heat a bit, improving the thermal headroom and possibly improving
+the bursty CPU and GPU performance on this board.
 
-Thanks,
+This also eliminates the following warnings in the kernel log:
 
-Bart.
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (200000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (300000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (400000000)
+  core: _opp_supported_by_regulators: OPP minuV: 825000 maxuV: 825000, not supported by regulator
+  panfrost fde60000.gpu: _opp_add: OPP not supported by regulators (600000000)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 22a79a62cc4e..4ee76c39e3a5 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -588,11 +588,17 @@ static inline int was_interrupted(int result)
-  	return result == -ERESTARTSYS || result == -EINTR;
-  }
+Fixes: dcc8c66bef79 ("arm64: dts: rockchip: add Pine64 Quartz64-B device tree")
+Cc: stable@vger.kernel.org
+Reported-By: Diederik de Haas <didi.debian@cknow.org>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+---
+ arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-+struct send_res {
-+	int result;
-+	blk_status_t status;
-+};
-+
-  /*
-   * Returns BLK_STS_RESOURCE if the caller should retry after a delay. Returns
-   * -EAGAIN if the caller should requeue @cmd. Returns -EIO if sending failed.
-   */
--static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
-+static struct send_res nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd,
-+				    int index)
-  {
-  	struct request *req = blk_mq_rq_from_pdu(cmd);
-  	struct nbd_config *config = nbd->config;
-@@ -614,13 +620,13 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
-
-  	type = req_to_nbd_cmd_type(req);
-  	if (type == U32_MAX)
--		return -EIO;
-+		return (struct send_res){ .result = -EIO };
-
-  	if (rq_data_dir(req) == WRITE &&
-  	    (config->flags & NBD_FLAG_READ_ONLY)) {
-  		dev_err_ratelimited(disk_to_dev(nbd->disk),
-  				    "Write on read-only\n");
--		return -EIO;
-+		return (struct send_res){ .result = -EIO };
-  	}
-
-  	if (req->cmd_flags & REQ_FUA)
-@@ -674,11 +680,11 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
-  				nsock->sent = sent;
-  			}
-  			set_bit(NBD_CMD_REQUEUED, &cmd->flags);
--			return (__force int)BLK_STS_RESOURCE;
-+			return (struct send_res){ .status = BLK_STS_RESOURCE };
-  		}
-  		dev_err_ratelimited(disk_to_dev(nbd->disk),
-  			"Send control failed (result %d)\n", result);
--		return -EAGAIN;
-+		return (struct send_res){ .result = -EAGAIN };
-  	}
-  send_pages:
-  	if (type != NBD_CMD_WRITE)
-@@ -715,12 +721,14 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
-  					nsock->pending = req;
-  					nsock->sent = sent;
-  					set_bit(NBD_CMD_REQUEUED, &cmd->flags);
--					return (__force int)BLK_STS_RESOURCE;
-+					return (struct send_res){
-+						.status = BLK_STS_RESOURCE
-+					};
-  				}
-  				dev_err(disk_to_dev(nbd->disk),
-  					"Send data failed (result %d)\n",
-  					result);
--				return -EAGAIN;
-+				return (struct send_res){ .result = -EAGAIN };
-  			}
-  			/*
-  			 * The completion might already have come in,
-@@ -737,7 +745,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
-  	trace_nbd_payload_sent(req, handle);
-  	nsock->pending = NULL;
-  	nsock->sent = 0;
--	return 0;
-+	return (struct send_res){};
-  }
-
-  static int nbd_read_reply(struct nbd_device *nbd, struct socket *sock,
-@@ -1018,7 +1026,8 @@ static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
-  	struct nbd_device *nbd = cmd->nbd;
-  	struct nbd_config *config;
-  	struct nbd_sock *nsock;
--	int ret;
-+	struct send_res send_res;
-+	blk_status_t ret;
-
-  	lockdep_assert_held(&cmd->lock);
-
-@@ -1076,14 +1085,15 @@ static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
-  	 * Some failures are related to the link going down, so anything that
-  	 * returns EAGAIN can be retried on a different socket.
-  	 */
--	ret = nbd_send_cmd(nbd, cmd, index);
--	/*
--	 * Access to this flag is protected by cmd->lock, thus it's safe to set
--	 * the flag after nbd_send_cmd() succeed to send request to server.
--	 */
--	if (!ret)
-+	send_res = nbd_send_cmd(nbd, cmd, index);
-+	ret = send_res.result < 0 ? BLK_STS_IOERR : send_res.status;
-+	if (ret == BLK_STS_OK) {
-+		/*
-+		 * cmd->lock is held. Hence, it's safe to set this flag after
-+		 * nbd_send_cmd() succeeded sending the request to the server.
-+		 */
-  		__set_bit(NBD_CMD_INFLIGHT, &cmd->flags);
--	else if (ret == -EAGAIN) {
-+	} else if (send_res.result == -EAGAIN) {
-  		dev_err_ratelimited(disk_to_dev(nbd->disk),
-  				    "Request send failed, requeueing\n");
-  		nbd_mark_nsock_dead(nbd, nsock, 1);
-@@ -1093,7 +1103,7 @@ static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
-  out:
-  	mutex_unlock(&nsock->tx_lock);
-  	nbd_config_put(nbd);
--	return ret < 0 ? BLK_STS_IOERR : (__force blk_status_t)ret;
-+	return ret;
-  }
-
-  static blk_status_t nbd_queue_rq(struct blk_mq_hw_ctx *hctx,
-
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
+index 26322a358d91..b908ce006c26 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-quartz64-b.dts
+@@ -289,7 +289,7 @@ vdd_gpu: DCDC_REG2 {
+ 				regulator-name = "vdd_gpu";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+-				regulator-min-microvolt = <900000>;
++				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <1350000>;
+ 				regulator-ramp-delay = <6001>;
+ 
 
