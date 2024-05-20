@@ -1,74 +1,103 @@
-Return-Path: <stable+bounces-45461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874718CA1EB
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 20:19:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3348CA1EC
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 20:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41D1E282A2F
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 18:19:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CADDBB20E13
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 18:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E77653E13;
-	Mon, 20 May 2024 18:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE725136989;
+	Mon, 20 May 2024 18:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJpXADkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8Ckhm0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7C211184
-	for <stable@vger.kernel.org>; Mon, 20 May 2024 18:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CADB11184;
+	Mon, 20 May 2024 18:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716229184; cv=none; b=OFEHssWmNlCkYN8TKo3eUhbFTuJ5TKKI+6Xp+7tc+PUF/xUVVklEm6ffgt5pd8dTHB8avlKdBzSSdH8ZfMuVUDaGKpjb/k2k0tHZSOcszCBuvI2ZCR9GPD02AjsvJaIx8A5Yh/c08GI5AxDw1E/bJlO4nKXjbLseWUNfMJ5DBek=
+	t=1716229226; cv=none; b=Aw6yUKS3ocrUwEWNOfWPfERNKORCR/pvNHqH37Z0N9TBDdJV3B37GttfG9e+1/AHP8TvVC9kUeRlHv8pCn1+JNhH6iIIaoDTSzW6LrA3ocNzqarYyGef9aL/MFijzYG/WlM7kqQTem6VG4qKH27sx5OWqd1Z6rOl31MNlDP9nAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716229184; c=relaxed/simple;
-	bh=xQJFulkVrnnn3woxhca4HK9mp0Pp2QS3h+r5fGcwg9k=;
+	s=arc-20240116; t=1716229226; c=relaxed/simple;
+	bh=H8Q72YEIGkjT9THTFe3AYhUu+aTl5214xKOqH1kKnuE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FSSRQknz/+yQQjxGbUw2YpiLSt4qLjCKNof0QqabnAOGqQZlDMauPMQTp8rCLOpwRmi9OKOo7StdnpWK0MOQjuGl9ujJRP1f+LMt6SQOoICYb78tw79a2BGI/SvX+rxajEvGhLP//StWYeR8PKgnhMiE2H8+h8u+nORrZvDt4ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJpXADkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73182C2BD10;
-	Mon, 20 May 2024 18:19:43 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UcLNGM6/0XY7+8Wyd+Iy2EQ1EFgKvxOxvorfWcDLmyPdMK65JvOVKBa+rQfKD0Jp/zK5i/5SyU1N/XxzD79ZG6LIf9tVGtbOFUj1wWgnamRSm09cG7h05AfD/3xAQXQmQMgIXS18Q5FAtjwi8r1dNVcN53a2eltkYNKf3SO8OtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8Ckhm0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF816C2BD10;
+	Mon, 20 May 2024 18:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716229183;
-	bh=xQJFulkVrnnn3woxhca4HK9mp0Pp2QS3h+r5fGcwg9k=;
+	s=korg; t=1716229226;
+	bh=H8Q72YEIGkjT9THTFe3AYhUu+aTl5214xKOqH1kKnuE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yJpXADkpq9LVX3pXUHTb1Rpa3oZmkLif5oL5RpFoiwvpDtiG9IUg5/ZDGTc+XX9jq
-	 Kp+Sxu/Ko3fvfttMz4iCFMl1fTf9VxVpAvKpJW9cHtgZm/ArqB+dsNRk8JT2Er7eId
-	 1QnYqSq2bWMqRR4gzfNeRU36kMHffFO0sUCMLAQM=
-Date: Mon, 20 May 2024 20:19:41 +0200
+	b=V8Ckhm0rYvMwFmQ/oZ1VzNZO0UZUdSBjvHqX6GBMwCl6hjfbQmXFmEWkWVwxEmGvN
+	 NADwlwY4GgmR4iTCJgnONQPa6TPzFhW6dIOLZhGFcE6kbASG61PBJdrstNSacJ5Mpg
+	 U+KVqcejV+E3cTkiEqNmRuD1SGlrUOEqmp6prMCY=
+Date: Mon, 20 May 2024 20:20:23 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Vidya Srinivas <vidya.srinivas@intel.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/dpt: Make DPT object unshrinkable
-Message-ID: <2024052054-zebra-throat-0da6@gregkh>
-References: <20240520165005.1162448-1-vidya.srinivas@intel.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
+	bsp-development.geo@leica-geosystems.com, linux-i2c@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Peter Korsgaard <peter@korsgaard.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+	Grygorii Tertychnyi <grembeter@gmail.com>
+Subject: Re: [PATCH v2] i2c: ocores: set IACK bit after core is enabled
+Message-ID: <2024052016-luckily-cuddly-bbe2@gregkh>
+References: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
+ <e98f8e4c-bd1f-43d8-aea9-52ea45c0d5c2@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240520165005.1162448-1-vidya.srinivas@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e98f8e4c-bd1f-43d8-aea9-52ea45c0d5c2@web.de>
 
-On Mon, May 20, 2024 at 10:20:05PM +0530, Vidya Srinivas wrote:
-> In some scenarios, the DPT object gets shrunk but
-> the actual framebuffer did not and thus its still
-> there on the DPT's vm->bound_list. Then it tries to
-> rewrite the PTEs via a stale CPU mapping. This causes panic.
+On Mon, May 20, 2024 at 07:00:08PM +0200, Markus Elfring wrote:
+> …
+> > Sometimes it causes failure for the very first message transfer, …
 > 
-> Credits-to: Ville Syrjala <ville.syrjala@linux.intel.com>
-> 	    Shawn Lee <shawn.c.lee@intel.com>
+> Would it be helpful to mention the term “data corruption” here?
+> https://lore.kernel.org/lkml/CAGFuAuwot_7+R=J4NC=0Z_48YZ-RTJjRUoQnSjZUvpt=AWF39Q@mail.gmail.com/
+> https://lkml.org/lkml/2024/5/20/549
+> 
+> 
+> > Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
+> 
+> Will the text “[PATCH] ” be omitted from this tag for the final commit?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.9#n145
+> 
+> Regards,
+> Markus
+> 
 
-Isn't that what "Co-developed-by:" is for, or "Suggested-by:"?
+Hi,
 
-I haven't seen "Credits-to:" before, where is that documented?
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
+
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
 
 thanks,
 
-greg k-h
+greg k-h's patch email bot
 
