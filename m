@@ -1,232 +1,186 @@
-Return-Path: <stable+bounces-45444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2EF8C9EED
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 16:41:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171758C9F0F
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 16:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25DFC1F21C10
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 14:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA9F62810A1
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 14:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95D8136669;
-	Mon, 20 May 2024 14:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1E7136E32;
+	Mon, 20 May 2024 14:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2z6eGyG5"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OO5YMqBI"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2046.outbound.protection.outlook.com [40.107.95.46])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049C013666E;
-	Mon, 20 May 2024 14:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716216111; cv=fail; b=lGv8+xhqvUlCRoYsIL7RcyosvoHpjDB0o+Kr1crTvIo3raGv3TDSq+lBzu3LgWet5d0InF7yG4i64Z2QmcAV7Ksj9zpb486D5GSed3SO7XztnrekTLvRyW2bchaW7dapEVYlC8Ov3IVrW/f61MEKA5rEFLiCci8CIUoKxQ6kt8w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716216111; c=relaxed/simple;
-	bh=xKfUtZRXvcJd2NdD2ZbbX7J+EPz1FiarnyNO5j4v3GQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qx+ylv2pZD+HdajFEcJfPqbvSkDH1/Qwh3cGLwqHs0qtK8HWVMNfo1FQQXtlGTINrPTTUv31YdCqHH5rxK4Jg4JcSZLTEN1MvLgtdIg9g2988oFYt69hVoqfZodDXM7hohv5WTi2s9+tO8jQ3Jtb+yeIs4mrQiACPRk94sABlE4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2z6eGyG5; arc=fail smtp.client-ip=40.107.95.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SpGKQf0x9aLamv1sNCjv5jlLeraUMW9fTo8xvQZYdbMopKkuahhIyzcWmSaj7wkSi+Rh+DFcrQfjCo5Yedgl0UqQdn0nMPWGKnoYKTtG9SW9IfjuEMaG5MHzNogM9ySFUucavhLm8zw2+nr9H7fwd99fUWf8PQQ/skkiMTLktmQH9Hvh8I7PSJjKrtKK/nOhROu+HgtvEptrQ1M7LO8D8aayQSXuRCucR19L4AHBYVIPKHfBfSADTECgn26X0Lq9Lj/7vLUWXgjLXD6HJOR9OgWbJR6QmZt0GT0GtMPrScrYl6JndwyOsSN/46bhr5UDvVfXPZbMVK0PkKmQdX+32g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/7eu3DzVFGh99i1wY3ypYXdMNAVZvfmncPExyuO/CcQ=;
- b=HSRVmdPVCVkib4oDd+y9R2Mxsp0/xNqQnX1+Q1zexRDHdDFqmYoGtLIWJJxT3Ap0V8SZMpJq0g2QiESqfyha6x9pEWK3po7oF/TUHMWTCrXX1soSAE72QhNfCrrh3SIirzTy2B6Twjdy+o1wPZgsStQoI1/DaBWGBAsd0gFO7zMDBcPmQNvW6j0dsdq68YUK5IsPEaDsk10Vkshx2kmUqg9FfUP1oDVaHn5FHpDRUU7os83XFtVl5Ugqyy8QCNzklzVxhwm2SqyYzncc+V7WBo5T70eliRr/Oy2HNUocwGspleLsFcJkj8har4lYbOyUpDXyGusFwA31h3iVuCoDjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/7eu3DzVFGh99i1wY3ypYXdMNAVZvfmncPExyuO/CcQ=;
- b=2z6eGyG5Q062QIrd+JSlQtzofB5K4w8Ej9eAKIQOBTQucFMnytakpazbEI4KWKUF1LytJVQoaBI55OdTCe1m3m0HAzJTjxfmRLp16Qd1ahVE98wLVSOXvrDLO7LSshy8WQfbqxGhQE/Trw4U7KcAlvHoX6r6ll6vzTKmMoFHPNg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by IA1PR12MB6481.namprd12.prod.outlook.com (2603:10b6:208:3aa::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Mon, 20 May
- 2024 14:41:45 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.7587.030; Mon, 20 May 2024
- 14:41:45 +0000
-Message-ID: <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com>
-Date: Mon, 20 May 2024 09:41:43 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] "xHCI host controller not responding,
- assume dead" on stable kernel > 6.8.7
-To: Christian Heusel <christian@heusel.eu>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Gia <giacomo.gio@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "kernel@micha.zone" <kernel@micha.zone>,
- Andreas Noever <andreas.noever@gmail.com>,
- Michael Jamet <michael.jamet@intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Yehezkel Bernat <YehezkelShB@gmail.com>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- =?UTF-8?Q?Benjamin_B=C3=B6hmke?= <benjamin@boehmke.net>,
- "S, Sanath" <Sanath.S@amd.com>
-References: <CAHe5sWavQcUTg2zTYaryRsMywSBgBgETG=R1jRexg4qDqwCfdw@mail.gmail.com>
- <38de0776-3adf-4223-b8e0-cedb5a5ebf4d@leemhuis.info>
- <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0070.namprd11.prod.outlook.com
- (2603:10b6:806:d2::15) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361AE1369BB;
+	Mon, 20 May 2024 14:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716216860; cv=none; b=AGXPsa6M+g7YkixpI6qGo5TNUy/OTNdBd7OkhpC2o7vYNhaYR2lcFCAQdIEEFr2hAV8M7O53CR/z2Ft2ss/Fya2ytODweWXMWiqTlG1B+CtyyNC6x1puM/AxQf7EMB/9oOuUZwa9vFtR4yKnFVlVyLt/NojqLNKr3GWkEex7zGY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716216860; c=relaxed/simple;
+	bh=jpJD3Ut/eKZ4vL397+AxVQqI1CgT5ITqcuH0Fk7f2Os=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=V+bW8z6Z14HwII4YR098EyERJiwx89MjZd0ELdC01mbyYgH1XnIny+xXPj7zy0dupdE6ZyRnEciYnPK1jrBcub7WdhY6S9sO7u+wpomszhsMhbhvLGj8Mk7+cfMfRltfJ5OAsOegvnC7hP7rPuFjPY/7zWpRI2w8SfPsd0EA6d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OO5YMqBI; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: lpieralisi@kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1716216856;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/t1FSYP+bGcYTDKpcE/G5Hl/ZwYo8lrjuzlYxLI6Fm8=;
+	b=OO5YMqBIX0rj+TStl103p1v/ghce9G/17JW08A4sY1ddfg2Asm3i155oq3JolauPJrUV5D
+	2HtoIA7KTiqXlf2oHn+GJuHBoPYAiBQ86I+Uksmybn0+gka2h3zeSIP0sZIHF9suGgI6xo
+	L6fOZ37Bj/PiNZ8ixyC8vEx4RHsMpyY=
+X-Envelope-To: kw@linux.com
+X-Envelope-To: robh@kernel.org
+X-Envelope-To: linux-pci@vger.kernel.org
+X-Envelope-To: michal.simek@amd.com
+X-Envelope-To: thippeswamy.havalige@amd.com
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: bhelgaas@google.com
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: sean.anderson@linux.dev
+X-Envelope-To: stable@vger.kernel.org
+X-Envelope-To: bharatku@xilinx.com
+X-Envelope-To: helgaas@kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	linux-pci@vger.kernel.org
+Cc: Michal Simek <michal.simek@amd.com>,
+	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-kernel@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>,
+	stable@vger.kernel.org,
+	Bharat Kumar Gogada <bharatku@xilinx.com>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Subject: [PATCH v3 2/7] PCI: xilinx-nwl: Fix off-by-one in IRQ handler
+Date: Mon, 20 May 2024 10:53:57 -0400
+Message-Id: <20240520145402.2526481-3-sean.anderson@linux.dev>
+In-Reply-To: <20240520145402.2526481-1-sean.anderson@linux.dev>
+References: <20240520145402.2526481-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA1PR12MB6481:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1dcea2cf-fe6a-40ba-e5b2-08dc78daf90b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OVVlTzNsWEV6bnVabGJ6ZUpkelJpNkNYUDBveDBESHlkZzNlQnJhWGZHYlcv?=
- =?utf-8?B?RUE5N2FxMElDV1B4VFkxZ2lPTmNYcHNmZHJHb1I2cTJzVU9YTkYvOG5BZTJB?=
- =?utf-8?B?YVpvQVl4cjEvRndjYnpGVEV6dXQvMGdEblZta24zUlFwSHR3OUt3WmpuMmVt?=
- =?utf-8?B?MTZPd1lzZ3FWUDgwVHdFR3dLWXRZQ0ZYbzJzaDVEekEvb1lqRGlJdmw3L2hY?=
- =?utf-8?B?aU4vUVpXNG5PUWhHSVlkajhLdndmTmVEdHE3N1ZUczdUdVlMbVY3bnhNSkoz?=
- =?utf-8?B?N2pqM21vR3lHb1ZwT2Nxa0FiL1RTZ2pkU0VIdGNXNXZBUXAwVEhlUmtWQkZG?=
- =?utf-8?B?cFRHWU5hYWFySDZRalNWdlNsK2ZhYW0zZFpwQzFjdDJTcWhmQzdVTmhIem5q?=
- =?utf-8?B?K2lsMDZpeXhUQ0VGUUhnZU9YVU1KcUZUVEVwa2lMSi9RMm45YzI5SjYwZkR1?=
- =?utf-8?B?L2JXUnhTdFpsNjdDUmIwSXByZ3NZWHRDZHRVUjM3NExrdkwxMDE3T3g1MzRK?=
- =?utf-8?B?NG5YWnhQMCtadzFvdERQOHpCUFcyb003TlZMSWFQSFlPZzErdDFHWC9xWnk5?=
- =?utf-8?B?SjJMVmkvTDZBT3FHeVNsT011bE51Z3AyQXNCZVNHOWljYUw2dS9wbEo0QVdQ?=
- =?utf-8?B?dnRWL1hPODBPUjdZTmZrUVc1clVnakU1ZERmbGJmYzJFd2s0RE5TOFNLZ0xa?=
- =?utf-8?B?QTdOSmhEQXp2eUhMN1NxVXdlajR0V2RScy92eC93L2ZlNFpTbjFEYm1RWmVp?=
- =?utf-8?B?UVM5N2RWT3o0UE5JN3Vla2xhNDF1MVJKUzExaEhadHlpdXlaZnd6a3R2N1c4?=
- =?utf-8?B?cmI0ZERKdVVTOHVyUzZsVExKWnhLTEhCM01ReHRCODZPTGVmM21uTGRzSTVY?=
- =?utf-8?B?eDFyTUV3cUc0UWxnZUZIalNGYTdtQWZKK2dxSkpIMFFmMm5TdmpoOTM4UEIv?=
- =?utf-8?B?a0pIZW02MFdmZU9wQk5UMjEzMUZwS2Q2NjFIOFUzMmJFM0luUDdsNllhZlFk?=
- =?utf-8?B?Y3d6RzFlSVdJRmZJTkd1UXg4WVVYdjRLNi9VOUpFczRlS0haWWhrVmM0TnQw?=
- =?utf-8?B?YncyVkZrSjVBSXF0MHdaS21sajNXeUJobVVucjBnUFFIY2s1QnJ5VmVKd3k1?=
- =?utf-8?B?VFNMR2ROOVFMOCtnSnZkTHJSWVJFZUpneHBjajd4Q3IyM2hoVE96eUkvVVJh?=
- =?utf-8?B?ZzBUMi9ZNWcxZkwzcXVBaTRqVXBwWDZidk1GaDRaUm9VUHdoQTVBWEFZVStM?=
- =?utf-8?B?VWoxQWNJd0FWMVhFb2llbEozRUV6VkNOY1FKaGJUOUZwdjRGL0IvM1BTaTg5?=
- =?utf-8?B?VElNUGI2ZTNoeW1mcTlydHdZOHcvTGR6WnV1T24rMHB2V2wrNHFXYkYzL1RL?=
- =?utf-8?B?US9kV09uT2FQZTdJY0tUN3JrZjQxUE9IRkZ4UmZVZ1NWc2pnSldkVVFTelhI?=
- =?utf-8?B?OWprcFc4L0luc2xWZHkyU293Q3BLbHQrNjM1VnlBdWVJeTRaeGZHMWZEaG5H?=
- =?utf-8?B?cjhHOXo4aHZjdENmT2lnanBsNkNnVThMdmxBTnRrVm1WWnN0Ny9aYnYyWWJJ?=
- =?utf-8?B?QzVQRURIalJwQXhtVTc3WjdwTkRNMlFyZitwUjN2S2QyMU5RcmNTMkR1YnB2?=
- =?utf-8?Q?WKR8LRT55inT7Gkj/PD0EhRLnuC57S48a/Sf9CrQ/+4Y=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bFlYRitWSHh1bUZtcGExclZxaE52eXNnUFRXTm1OL1pSdEU2cXY0VitLOG9B?=
- =?utf-8?B?dFBNb1FYeVFjQ1I4Q1dNbzMydVNoREtiUzlvNTdwRllFN282UkhiNDl5SVhX?=
- =?utf-8?B?NTF4ZkxzOTNVRkthZjNpUG1CUUlydGpqaklDN2djZ3NyS005Z3ZGS2d5MXJs?=
- =?utf-8?B?dHY4Zjg3WDA5OWE3WlB6Z3JGL1JtRUJlRjZkSVN2aEtranBSbG05N24ramY0?=
- =?utf-8?B?T3FpeVBvQTladnJ4WjBzMFM0eTZTOC9GLzlpc2lDc1kwSVA1MEpicjEwc0xu?=
- =?utf-8?B?Uk40RDBlRXJtV3dvMEhWUTN1bVRUUFFYYisrUG5RY3ZRejRyVXZ6ZGVnUFBO?=
- =?utf-8?B?ZTlUQzVGM2RmZE9mTTVsRDdBZ0JuMW9mbVh3dU9TYU90RG16dVg4MzJhOENY?=
- =?utf-8?B?dE5meVIzN09oTnlDbW1aVmMwZUFacnIyRXlEKzFmc3Zjc1BlUjVZcEh2YlFY?=
- =?utf-8?B?dE9yc0hsWDNUWjk3Qzh6M28vR28vWnVsVFFIbmVtakd2UGNtUDUwT0JXblEv?=
- =?utf-8?B?YkFGb0VlUHAvZ1p5VWRVYWptTGVUQVg1Vy9uRlBQUGc1VEROZ2ZjQVhWbGxr?=
- =?utf-8?B?TDZydDBsSWlxV1pJcEtFTmtUSmpVNHY0QWwvbnZ6TUMvSmlBa3YrMndlbGtw?=
- =?utf-8?B?UHpPZEQrL21sRzdmRTBiU1R6N3Z3QnhtTVhCNWQydmE1c0M5QnZNTXU1Nndx?=
- =?utf-8?B?OGFqQWpuTnhtTElGTHpMeCtvNmZpQ2toWkNMcmhwN09RaFZDMU1pUDgzcnpn?=
- =?utf-8?B?ejFuUjFQaktpeVBCQzNEN0dxbVovRnF6cXQyQWtyWGxZUUhBTmJvaEVkU1BY?=
- =?utf-8?B?bDdYOElNK3VSS2JtRHM0L3NVWS90bUNBdUlvT1ZybjVrMm5aQy8yaGFKZm5t?=
- =?utf-8?B?RHQ1dUU3bW9Ka2hXOWNBTlRYNTVLaVdEb2Nnd3JacmQ5Z3FPMjFGOGNlWmYw?=
- =?utf-8?B?QkRRVU5QeDNFbWlQQzFaZ0VRME8zd0hRSE15VzN5cjhPLzdRL3BjUEdURFF0?=
- =?utf-8?B?T3JydjRCNmxnd2tBekQrWUJDdVE0cnFjaE1IRW9SRi9YVjVEcitYOTlBUkxw?=
- =?utf-8?B?OEJVaDBEYysrQjhwa3FjNDdJNUNoNG1JOVVDeEF3TTAxK214Rko0alljUWw5?=
- =?utf-8?B?eUFTaEJxTmV0OEJLaTI1b3crREdMeUcwazh6TFpxUGMzR0N3eTNTZWtUVnUw?=
- =?utf-8?B?SElUQUpzK2tCb3BMUXhlQlFZWnV1ckNhNjR4ZlNJS2tIeVJBeVYzOXNvdUZx?=
- =?utf-8?B?WDduQi9FSWJkZ1o2aU9HTWhEMzNUMmR4R1NTMlIwRUFZZ2k1bXdXZ2RzalNF?=
- =?utf-8?B?SWszV05iUXNKbkIxd1ppREVCa0pVeFhVQUFyR0JJb1p1UVlRT0YvYmp1OEhr?=
- =?utf-8?B?WEM5TVpBb1RNeUZqd3JUek5KaG5jaDM2M2Q3SDZNK0E0SjY4aWRaZWxoTDk1?=
- =?utf-8?B?aHp4SFNEYlYrbitOdWwrQlVXUXhFTFByRUVnaXJKVkkxbm9uSjllMDJxWlFL?=
- =?utf-8?B?eTA1azR5bnRJSXQwc0E2K29La2N5b0hERzFxZzZZUGJjYWo2ZUVYVlNMdmpP?=
- =?utf-8?B?L2tsZXBzMU8wblBoV0dRU0p6MjJOeXdkSzJ5Z01xbzBiUHVhbTg2eFJUTVRU?=
- =?utf-8?B?LzQ2NjM3N0RKNVEzWHNXSjRvU3BPMGpMQUxqU3k0UlVLTTdlZ0NwcUI0cnRq?=
- =?utf-8?B?bzRGdmcrZU1kVE1DRTBIUTVqcWt2VWJPU3h1T00xRHY3eGJldXY2QUZoMDdO?=
- =?utf-8?B?aU9udEpmYzlCUUFpRXovUlVESUlFVHJ6QTZuYWRsc25QUlZCcEFhTTdtNFNU?=
- =?utf-8?B?cDJxNE54QnhId1l2UUtrWVdrT05KLzdVQlpCbkVHamcydnRURjdCNWswZVlS?=
- =?utf-8?B?cnArNkllZ2VkMjNTaGZmbGtNdHloaFlCNm1nckdMVVhUQ2NOdm5YekhTYk95?=
- =?utf-8?B?TmRWSXloZGkyRXc4WWwzMnBNK3ZETmR3QnBRVklmV2tCS0FQTno0V212OG1T?=
- =?utf-8?B?OXBKMmtjQXJ2RHNyc09HVjZGeTBRdnJOR2kwSWlDZEJYb0s5QlFiRUdZeVRu?=
- =?utf-8?B?cW40ZWVzYWN5cjZjdFVRZ1hSZXh4YmxmZkN2TEhFV1FySU5aeGhoN05DQnY0?=
- =?utf-8?Q?NfW3sPYdVNya5vdpg7B3sscM+?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dcea2cf-fe6a-40ba-e5b2-08dc78daf90b
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2024 14:41:45.7670
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4qhVb974Sf+2KrdoidE4vNB+Pp7duPi2k/M+YXskcFh3ztl4iF2mfggOErThFqJC2O8Mr1Yr5bXJcxZhq7Me9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6481
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 5/20/2024 09:39, Christian Heusel wrote:
-> On 24/05/06 02:53PM, Linux regression tracking (Thorsten Leemhuis) wrote:
->> [CCing Mario, who asked for the two suspected commits to be backported]
->>
->> On 06.05.24 14:24, Gia wrote:
->>> Hello, from 6.8.7=>6.8.8 I run into a similar problem with my Caldigit
->>> TS3 Plus Thunderbolt 3 dock.
->>>
->>> After the update I see this message on boot "xHCI host controller not
->>> responding, assume dead" and the dock is not working anymore. Kernel
->>> 6.8.7 works great.
-> 
-> We now have some further information on the matter as somebody was kind
-> enough to bisect the issue in the [Arch Linux Forums][0]:
-> 
->      cc4c94a5f6c4 ("thunderbolt: Reset topology created by the boot firmware")
-> 
-> This is a stable commit id, the relevant mainline commit is:
-> 
->      59a54c5f3dbd ("thunderbolt: Reset topology created by the boot firmware")
-> 
-> The other reporter created [a issue][1] in our bugtracker, which I'll
-> leave here just for completeness sake.
-> 
-> Reported-by: Benjamin Böhmke <benjamin@boehmke.net>
-> Reported-by: Gia <giacomo.gio@gmail.com>
-> Bisected-by: Benjamin Böhmke <benjamin@boehmke.net>
-> 
-> The person doing the bisection also offered to chime in here if further
-> debugging is needed!
-> 
-> Also CC'ing the Commitauthors & Subsystem Maintainers for this report.
-> 
-> Cheers,
-> Christian
-> 
-> [0]: https://bbs.archlinux.org/viewtopic.php?pid=2172526
-> [1]: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/48
-> 
-> #regzbot introduced: 59a54c5f3dbd
-> #regzbot link: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/48
+MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit
+2, and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
+PCI_NUM_INTX irqs. So to enable INTA (aka hwirq 0) we should set bit 0.
+Remove the subtraction of one. This fixes the following UBSAN error:
 
-As I mentioned in my other email I would like to collate logs onto a 
-kernel Bugzilla.  With these two cases:
+[    5.037483] ================================================================================
+[    5.046260] UBSAN: shift-out-of-bounds in ../drivers/pci/controller/pcie-xilinx-nwl.c:389:11
+[    5.054983] shift exponent 18446744073709551615 is too large for 32-bit type 'int'
+[    5.062813] CPU: 1 PID: 61 Comm: kworker/u10:1 Not tainted 6.6.20+ #268
+[    5.070008] Hardware name: xlnx,zynqmp (DT)
+[    5.074348] Workqueue: events_unbound deferred_probe_work_func
+[    5.080410] Call trace:
+[    5.082958] dump_backtrace (arch/arm64/kernel/stacktrace.c:235)
+[    5.086850] show_stack (arch/arm64/kernel/stacktrace.c:242)
+[    5.090292] dump_stack_lvl (lib/dump_stack.c:107)
+[    5.094095] dump_stack (lib/dump_stack.c:114)
+[    5.097540] __ubsan_handle_shift_out_of_bounds (lib/ubsan.c:218 lib/ubsan.c:387)
+[    5.103227] nwl_unmask_leg_irq (drivers/pci/controller/pcie-xilinx-nwl.c:389 (discriminator 1))
+[    5.107386] irq_enable (kernel/irq/internals.h:234 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
+[    5.110838] __irq_startup (kernel/irq/internals.h:239 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
+[    5.114552] irq_startup (kernel/irq/chip.c:270)
+[    5.118266] __setup_irq (kernel/irq/manage.c:1800)
+[    5.121982] request_threaded_irq (kernel/irq/manage.c:2206)
+[    5.126412] pcie_pme_probe (include/linux/interrupt.h:168 drivers/pci/pcie/pme.c:348)
+[    5.130303] pcie_port_probe_service (drivers/pci/pcie/portdrv.c:528)
+[    5.134915] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
+[    5.138720] __driver_probe_device (drivers/base/dd.c:800)
+[    5.143236] driver_probe_device (drivers/base/dd.c:830)
+[    5.147571] __device_attach_driver (drivers/base/dd.c:959)
+[    5.152179] bus_for_each_drv (drivers/base/bus.c:457)
+[    5.156163] __device_attach (drivers/base/dd.c:1032)
+[    5.160147] device_initial_probe (drivers/base/dd.c:1080)
+[    5.164488] bus_probe_device (drivers/base/bus.c:532)
+[    5.168471] device_add (drivers/base/core.c:3638)
+[    5.172098] device_register (drivers/base/core.c:3714)
+[    5.175994] pcie_portdrv_probe (drivers/pci/pcie/portdrv.c:309 drivers/pci/pcie/portdrv.c:363 drivers/pci/pcie/portdrv.c:695)
+[    5.180338] pci_device_probe (drivers/pci/pci-driver.c:324 drivers/pci/pci-driver.c:392 drivers/pci/pci-driver.c:417 drivers/pci/pci-driver.c:460)
+[    5.184410] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
+[    5.188213] __driver_probe_device (drivers/base/dd.c:800)
+[    5.192729] driver_probe_device (drivers/base/dd.c:830)
+[    5.197064] __device_attach_driver (drivers/base/dd.c:959)
+[    5.201672] bus_for_each_drv (drivers/base/bus.c:457)
+[    5.205657] __device_attach (drivers/base/dd.c:1032)
+[    5.209641] device_attach (drivers/base/dd.c:1074)
+[    5.213357] pci_bus_add_device (drivers/pci/bus.c:352)
+[    5.217518] pci_bus_add_devices (drivers/pci/bus.c:371 (discriminator 2))
+[    5.221774] pci_host_probe (drivers/pci/probe.c:3099)
+[    5.225581] nwl_pcie_probe (drivers/pci/controller/pcie-xilinx-nwl.c:938)
+[    5.229562] platform_probe (drivers/base/platform.c:1404)
+[    5.233367] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
+[    5.237169] __driver_probe_device (drivers/base/dd.c:800)
+[    5.241685] driver_probe_device (drivers/base/dd.c:830)
+[    5.246020] __device_attach_driver (drivers/base/dd.c:959)
+[    5.250628] bus_for_each_drv (drivers/base/bus.c:457)
+[    5.254612] __device_attach (drivers/base/dd.c:1032)
+[    5.258596] device_initial_probe (drivers/base/dd.c:1080)
+[    5.262938] bus_probe_device (drivers/base/bus.c:532)
+[    5.266920] deferred_probe_work_func (drivers/base/dd.c:124)
+[    5.271619] process_one_work (arch/arm64/include/asm/jump_label.h:21 include/linux/jump_label.h:207 include/trace/events/workqueue.h:108 kernel/workqueue.c:2632)
+[    5.275788] worker_thread (kernel/workqueue.c:2694 (discriminator 2) kernel/workqueue.c:2781 (discriminator 2))
+[    5.279686] kthread (kernel/kthread.c:388)
+[    5.283048] ret_from_fork (arch/arm64/kernel/entry.S:862)
+[    5.286765] ================================================================================
 
-thunderbolt.dyndbg=+p
-thunderbolt.dyndbg=+p thunderbolt.host_reset=false
+Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
 
-Also what is the value for:
+Changes in v3:
+- Expand commit message
 
-$ cat /sys/bus/thunderbolt/devices/domain0/iommu_dma_protection
+ drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 0408f4d612b5..437927e3bcca 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
+ 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
+@@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
+ 	u32 mask;
+ 	u32 val;
+ 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
+-- 
+2.35.1.1320.gc452695387.dirty
+
 
