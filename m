@@ -1,179 +1,125 @@
-Return-Path: <stable+bounces-45466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00BB8CA3DD
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 23:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AE98CA466
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 00:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FFB31C21577
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 21:43:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA48A1C20F42
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 22:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04894139D0B;
-	Mon, 20 May 2024 21:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F792137F;
+	Mon, 20 May 2024 22:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="seD2tPjl"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PkUyPguE"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20731369BA;
-	Mon, 20 May 2024 21:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9641C2A3
+	for <stable@vger.kernel.org>; Mon, 20 May 2024 22:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716241420; cv=none; b=GpyGbjCqvdQoMSb39e/nSTWgpr9J5jcQI3N3V5b2AwHowpwVMbj4abYd1ErlOy9livOE1NqZPFPQxLn0aIxYZ7cKKfOR7DRpRWM+LyYNaAfGCCuzGchfjP+S0YxY4/X0N9pbsTr8onBIfP8+5UDdnnlMxWWcfXygxw44qA/lva4=
+	t=1716243495; cv=none; b=rQcEIBoNvYjY4Fv/6CzgDHDgYoe/0NeybAxWsA7z+Igxq4mz0tyNify3U0rH6QvVA3awoHEetfnh6cISz6tDgs5slO7h9zeCrm2m40WTDtzGKTBl3vr/PsAaGRPusfcln8XdOnFK41yio/XJc49JoHXmBy9rtNwntjAyN+Y61yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716241420; c=relaxed/simple;
-	bh=7WNiq+m24TdoDjrU3CX4peS8kSGwsRE718xgtAGf3kA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qWDNnsVGHX/ngbpKuE7ipFiqnKOmceqOi6ItxLNSyeHWzVOrttpW0gQrtd++r1F+EZ7UTWwnM29yFOOaXHeno8m5+jsuSHZemQffVhQLVKHkCHq/0Syba8ZXQJyOL9Vt/v+ujRbfzNSMCYyl98CFMIvAmf+uNXtILEp93e1zeeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=seD2tPjl; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=nRaPtaGD+w2O2Xn9ZyX0XaVoJoGCp+hsvN0C/YGO87c=; b=seD2tPjl1ZuwN0XVfUGP6eptAZ
-	sFqT3ZVRnQ4KqYU0/klnL16OJ0w3SqdGWyuVocLw0s/PyXaC3lihbPnHFNs/GRN+I1D2GZhP29Nzz
-	2kHJofFAuP3jC+m2TLcP9Tu+ehaq3Dw04E7GbMMeErovazgcOFOZwCyIfTh9LKHjKWLNWS7IIJT9y
-	WNCpjMzEf/93DsWb/lNQpCXSPXxxThgIWgOvi2kFq8i2ISpnqetMY7LWu+FAbJ0m8obXdUD8wEHgj
-	1FAL8ZBXb8vi04I3ClMPdQnmybbmItKk68GvzVudO4TLEE7HUFm8VbPU73PCKtAPVtZXy2LtCtaUx
-	+M4tjvZQ==;
-Received: from 179-125-79-244-dinamico.pombonet.net.br ([179.125.79.244] helo=quatroqueijos.lan)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1s9Amv-00AOaJ-Mf; Mon, 20 May 2024 23:43:22 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: netdev@vger.kernel.org
-Cc: Cong Wang <cong.wang@bytedance.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	bpf@vger.kernel.org,
-	kernel-dev@igalia.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net] sock_map: avoid race between sock_map_close and sk_psock_put
-Date: Mon, 20 May 2024 18:41:53 -0300
-Message-Id: <20240520214153.847619-1-cascardo@igalia.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1716243495; c=relaxed/simple;
+	bh=l3uDnU5Omnw9mvPyeTg0I3onhlPaw2D0S6U8dzuWFOE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dAAIQJEHUYn2/MdgWMQfmLRKG8FULfLStd2Y6mAoworiaRwDbLk+tbPKKDXKj+6Hf3JDcI+nhqprpXeAz1ZQvbWfiN3zyLnYcdY6zSQFSLl/FfqA/gBcVlzf1k2Q4vHgFNA1FxcYh3+1nSkytPUAgPyn0jhzXlFZJh5iTYmxLqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PkUyPguE; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-61df496df01so19871917b3.3
+        for <stable@vger.kernel.org>; Mon, 20 May 2024 15:18:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1716243493; x=1716848293; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sBrO1ctFc2c/0tvUK6NJhFoOiIbX2bS/Vh9H6Ivw8V4=;
+        b=PkUyPguE/mAZVEurRGgDTUF8OZmN/tDTR0ZluNuXWBjzG2PA+h4B8+IbGvAgP6+ymT
+         tYuSM0M2N9eq48X2amRDCz9xzeP/rqghTjoDOQS9zQvBLd4tnBgXAIJuitx6Sx5dUfMt
+         oEZLpKQBHPBqONiyjF8qcK+/uV3MkBmq/JI2iUNNfc4ISorPreZAxDaCGTn71q3+9hM2
+         WURNrMVudq09mVC2u/uJg8vDYiUDFol/wHkRWVj4W6pJNF2p4R/K8nUanx7aGROYgxe/
+         QPHjx9TsB2GjUxWyRBspq2ybLqmHn4WREmc8bBl7jpDaJVkwqvcbtsTFtMEem9c5qJPT
+         sRUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716243493; x=1716848293;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sBrO1ctFc2c/0tvUK6NJhFoOiIbX2bS/Vh9H6Ivw8V4=;
+        b=UQO0dDEYJYMddnkEnanU71hviP79lsvsYHDqxLeJSwuFreY3bcWgkjH44H+fxnVJVp
+         d0JMwN3uNk20JchjANnWW93CrNbZQE+Hn42eOVcH8XJMW5oEwFA7qLE/bFBx/nyPHQBC
+         UCfIVj96y0MODZR4e4IYMWdyJS32ryV0Uwg/LivHs1LQbRSw5UeFae6grF+zOXEj8+wZ
+         ++/uKtE+gW4I/m4RCj64eLTmiW3EqJt0Fc2dnB1LNMixwRPdDIGaiKhjefq21e/wOLNc
+         HBeo0xgmCHxuzivQbKcuHvauFuwkHK9AwfovjdXf9O7tDSsfb23N+vyXYjyg/VaC/WbT
+         /0oQ==
+X-Gm-Message-State: AOJu0Yy9jgG2HhR/saKevUI9MyLIMHdOEC5Uh7HMvKO+zg/SW74iXv4W
+	BArqIPeb8+e8fvHePkeUVjNH5epj6hP9D0DaTWKQQ73jQw8kxWDmb9rAiRHoEW8WbZq8ciBxE8V
+	mr0j3vhv7Y13uAYgYJ87ZufLsv7YfA6UnMH9aD/TqsV9S7bhTA4DF
+X-Google-Smtp-Source: AGHT+IF2QB47BWSswR07JkE0WYCBisLCLQRyP/Ey7pF0cE+ItODh3f6Soq2dCHa5JIM2Jv64qkb7d0K4H8DYQs3uFMA=
+X-Received: by 2002:a05:690c:6d91:b0:615:15fe:3cb8 with SMTP id
+ 00721157ae682-622aff80a5bmr328629507b3.28.1716243492574; Mon, 20 May 2024
+ 15:18:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240513233058.885052-1-jbongio@google.com> <2024051523-precision-rosy-eac3@gregkh>
+ <CAOvQCn5LEhFw8njxO7oa9Q_Ku3b7UEEmJUAqPw9aTO3Gu90kRg@mail.gmail.com> <2024051632-qualifier-delta-f626@gregkh>
+In-Reply-To: <2024051632-qualifier-delta-f626@gregkh>
+From: Jeremy Bongio <jbongio@google.com>
+Date: Mon, 20 May 2024 15:18:01 -0700
+Message-ID: <CAOvQCn4XH7iV=Qcn7Oi9O3H=TG7ueTzj6Pck22J9eL7JJ3A=HA@mail.gmail.com>
+Subject: Re: [PATCH] md: fix kmemleak of rdev->serial
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Li Nan <linan122@huawei.com>, Song Liu <song@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-sk_psock_get will return NULL if the refcount of psock has gone to 0, which
-will happen when the last call of sk_psock_put is done. However,
-sk_psock_drop may not have finished yet, so the close callback will still
-point to sock_map_close despite psock being NULL.
+On Wed, May 15, 2024 at 11:54=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+>
+> A: http://en.wikipedia.org/wiki/Top_post
+> Q: Were do I find info about this thing called top-posting?
+> A: Because it messes up the order in which people normally read text.
+> Q: Why is top-posting such a bad thing?
+> A: Top-posting.
+> Q: What is the most annoying thing in e-mail?
+>
+> A: No.
+> Q: Should I include quotations after my reply?
+>
+> http://daringfireball.net/2007/07/on_top
+Got it.
 
-This can be reproduced with a thread deleting an element from the sock map,
-while the second one creates a socket, adds it to the map and closes it.
 
-That will trigger the WARN_ON_ONCE:
+>
+> On Wed, May 15, 2024 at 09:31:07AM -0700, Jeremy Bongio wrote:
+> > 5.4 doesn't have "mddev_destroy_serial_pool" ... More work would be
+> > needed to figure out if the vulnerability exists and how to fix it.
+>
+> Can you do that please?  I know Google still cares about 5.4 kernel
+> trees :)
+For 5.4 renaming mddev_destroy_serial_pool() to
+mddev_destroy_wb_pool() should be good.
+I notified the Android security team to test.
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Modules linked in:
-CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-07726-g3c999d1ae3c7 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
-RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
-RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
-RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
-RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
-R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
-R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
-FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- unix_release+0x87/0xc0 net/unix/af_unix.c:1048
- __sock_release net/socket.c:659 [inline]
- sock_close+0xbe/0x240 net/socket.c:1421
- __fput+0x42b/0x8a0 fs/file_table.c:422
- __do_sys_close fs/open.c:1556 [inline]
- __se_sys_close fs/open.c:1541 [inline]
- __x64_sys_close+0x7f/0x110 fs/open.c:1541
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb37d618070
-Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8 10 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
-RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+>
+> > The patch also applies to 5.15, but I haven't tested it.
+>
+> I took it there as we can't take a patch for an older kernel and not a
+> newer one, as that would cause a regression when people upgrade.
+Makes sense.
 
-Use sk_psock, which will only check that the pointer is not been set to
-NULL yet, which should only happen after the callbacks are restored. If,
-then, a reference can still be gotten, we may call sk_psock_stop and cancel
-psock->work.
-
-After that change, the reproducer does not trigger the WARN_ON_ONCE
-anymore.
-
-Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07a2e4a1a57118ef7355
-Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_map_close()")
-Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- net/core/sock_map.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 9402889840bf..13267e667a4c 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1680,19 +1680,23 @@ void sock_map_close(struct sock *sk, long timeout)
- 
- 	lock_sock(sk);
- 	rcu_read_lock();
--	psock = sk_psock_get(sk);
-+	psock = sk_psock(sk);
- 	if (unlikely(!psock)) {
-+		saved_close = READ_ONCE(sk->sk_prot)->close;
- 		rcu_read_unlock();
- 		release_sock(sk);
--		saved_close = READ_ONCE(sk->sk_prot)->close;
- 	} else {
- 		saved_close = psock->saved_close;
- 		sock_map_remove_links(sk, psock);
-+		psock = sk_psock_get(sk);
- 		rcu_read_unlock();
--		sk_psock_stop(psock);
-+		if (psock)
-+			sk_psock_stop(psock);
- 		release_sock(sk);
--		cancel_delayed_work_sync(&psock->work);
--		sk_psock_put(sk, psock);
-+		if (psock) {
-+			cancel_delayed_work_sync(&psock->work);
-+			sk_psock_put(sk, psock);
-+		}
- 	}
- 
- 	/* Make sure we do not recurse. This is a bug.
--- 
-2.34.1
-
+>
+> thanks,
+>
+> greg k-h
 
