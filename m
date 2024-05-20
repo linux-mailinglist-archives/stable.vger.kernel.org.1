@@ -1,110 +1,70 @@
-Return-Path: <stable+bounces-45428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9638C977C
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 01:52:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C47D8C9781
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 02:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C4201F210FD
-	for <lists+stable@lfdr.de>; Sun, 19 May 2024 23:52:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A97D1C20A92
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 00:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256D275803;
-	Sun, 19 May 2024 23:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C2A45026;
+	Mon, 20 May 2024 00:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3Lb2162"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uJZPEt6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC327319C;
-	Sun, 19 May 2024 23:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAD923BB;
+	Mon, 20 May 2024 00:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716162700; cv=none; b=rXaSUy07TWHam0tr6IUN+EmA4/qsLcPeKbIcX8Wlla3IR1G5yiTg/3JOixhbx+8dYo0vhG52KCmeMhRgifRbj3LFNr1ovqnwk4b70pVvPLGUSahLUAAlEtttxFfBWKclHV6sNSmISgJ0PbdXp9keKUWTeffUPtulAkuXUVhzJw4=
+	t=1716163227; cv=none; b=OGMjlBnMUDKcvNT0vMHGJM+DejxxA8VLkPogrcgyNrmiqK7vtBAsWnZUZODSdFjaW/On6VdR9ihEaKOlHsiVbgpZB53sO70zDM7B/+9Rk8ojat0c3laxzXHqYt5pw8Bc6A70w3JH0iLj3hXq4uiTtNGLcYUJeP66RNaHZuCe4Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716162700; c=relaxed/simple;
-	bh=zjmdVHD9xhS/1n4Rw9BcJgcMBhyRpG01mLSj2X8CQ7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfkvPHxlCk0ASx4yH5WlbhBbvG0mRmuNyVKUWj+kYfj397+xuxcf4usYAuFhdL8duhSOZPU8g4bbpJNCXTr/fG4Hc+E19ZQIurtpZcZhLTdlESO9RBiAqT6IZQIxAjRCGBQcFJDExksnDqAQKocPztbLpZIshdnwaBLm60GUfb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3Lb2162; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E683C32781;
-	Sun, 19 May 2024 23:51:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716162700;
-	bh=zjmdVHD9xhS/1n4Rw9BcJgcMBhyRpG01mLSj2X8CQ7M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3Lb2162/JhmAcr52fdxBYIVFT0E0WJqupbELbdF7J/L+4DQ1f/B9o3012H8g6c9w
-	 wmzLSzMjwFDWWSduTDLjbgXWQPATveMALp4SZS9CoGD5KKynYXO/5RZjc+oUw0tcJM
-	 +qGBxmFCEoN0bV8fdKxLceFd634RgcK8cxUhrZsNjLUp75m+NkuCJ0FLQQfT++0Rqd
-	 owCILHuxNo0OQIyE+FPI+Rp7j5sW2ox4LFyHkMopYAkFIfvMCHQ4WyuJD5/pVsYROf
-	 xOSU455i/+We96q/x+a2PtLZdZC98DgKk+zaqCjCZ/abHOJQLVG7XVHGGFs3FABQHe
-	 Y9tJ0LMP5TeCw==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org,
-	James.Bottomley@HansenPartnership.com,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] KEYS: trusted: Do not use WARN when encode fails
-Date: Mon, 20 May 2024 02:51:21 +0300
-Message-ID: <20240519235122.3380-4-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240519235122.3380-1-jarkko@kernel.org>
-References: <20240519235122.3380-1-jarkko@kernel.org>
+	s=arc-20240116; t=1716163227; c=relaxed/simple;
+	bh=K7ZdYke6mZmulP4ruJdT4qcASJpvqUrfFF/cByhd60g=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=IE8NetejBn/sjMdxd9s/ij3yxmD5r9PH8edY2rWfq2B6F/Zr6GaG+KIeCiN2SlPqxd1bnUMxqnseqnLNCMfwBU4jDS42oAkQWp1a/dspLC6wbewFgYTl4G8li4okRZheqnjFwcDbOXNRCxwkXaWXm0w0qYX2FcwDCtL2AXgWvh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uJZPEt6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC232C32781;
+	Mon, 20 May 2024 00:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1716163227;
+	bh=K7ZdYke6mZmulP4ruJdT4qcASJpvqUrfFF/cByhd60g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uJZPEt6u0yI4sB5B3ecpMDU9I0b6fOLkd9ufi2t25EcTCkJKF5Lia2tXV7gf9Avum
+	 MnrGy/0w34CNeNEdRg2NI7CcRNv242+GLp7YI/xpMfLJHn97CdGU08TwiSeK/TnpJG
+	 +ThJICjFGkaWjfRwa0FQWU1+eEIqbY31jKGiRHrE=
+Date: Sun, 19 May 2024 17:00:24 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Anshuman.Khandual@arm.com,
+ sjayaram@akamai.com, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] selftests/mm: compaction_test: Fix incorrect write
+ of zero to nr_hugepages
+Message-Id: <20240519170024.c2e62a7b69b00bb30e86a157@linux-foundation.org>
+In-Reply-To: <20240515093633.54814-2-dev.jain@arm.com>
+References: <20240515093633.54814-1-dev.jain@arm.com>
+	<20240515093633.54814-2-dev.jain@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When asn1_encode_sequence() fails, WARN is not the correct solution.
+On Wed, 15 May 2024 15:06:32 +0530 Dev Jain <dev.jain@arm.com> wrote:
 
-1. asn1_encode_sequence() is not an internal function (located
-   in lib/asn1_encode.c).
-2. Location is known, which makes the stack trace useless.
-3. Results a crash if panic_on_warn is set.
+> nr_hugepages is not set to zero because the file offset has not been reset
+> after read(). Fix that using lseek().
+> 
 
-It is also noteworthy that the use of WARN is undocumented, and it
-should be avoided unless there is a carefully considered rationale to
-use it.
-
-Replace WARN with pr_err, and print the return value instead, which is
-only useful piece of information.
-
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- security/keys/trusted-keys/trusted_tpm2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index c6882f5d094f..8b7dd73d94c1 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -84,8 +84,9 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
--	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
-+	if (IS_ERR(work1)) {
- 		ret = PTR_ERR(work1);
-+		pr_err("BUG: ASN.1 encoder failed with %d\n", ret);
- 		goto err;
- 	}
- 
--- 
-2.45.1
-
+Please fully describe the runtime effects of this bug.
 
