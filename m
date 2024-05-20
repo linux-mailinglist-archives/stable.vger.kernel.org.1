@@ -1,130 +1,182 @@
-Return-Path: <stable+bounces-45449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D6A8CA00F
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BBE8CA05E
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 17:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56B75B215B2
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 15:49:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98A49B21F5D
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 15:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F0A13665F;
-	Mon, 20 May 2024 15:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4DE13776A;
+	Mon, 20 May 2024 15:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WCRdbWwb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WZ8P6Zu6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F674C66
-	for <stable@vger.kernel.org>; Mon, 20 May 2024 15:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7B44C66;
+	Mon, 20 May 2024 15:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716220161; cv=none; b=LYL6CrkleIWs8eGPwimxtoVBkfUa883MQvIKYfiJM0WjPYY+Sj4Iuz+JgxG3SvXp0aQmPHZjsF0bcAifkET1BdRdUws2r6JezeMru7t6I7e/EDKj78LiA1zb8A7qG35qCOjBEaSENorN/4tw1Cq6l+NLprH2nI2veqZxse1Gxjc=
+	t=1716220675; cv=none; b=jkOe8f1f9E32YCPhbJIBSQkWWhDSKfb+dIhL4pETsjlTRQM+Docd/C3ZpaBZIZ6k4vrOarfxE8cmdthxXNcF3NSqVXesFqGLCgoSl8epSaae+zKBBEXR4XlOzcHVycI4o1DlS2LW4ECxoF2dcrT5E20JF//SQaY+s+hrOHRPZrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716220161; c=relaxed/simple;
-	bh=4iB0UniyvGsVchRqtMoChe7NlqVHuiQOzngJRi+uD6o=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OFam8Z7P9U+tyZK8vvErTuxMOtzb0ssBoH0Wfsjvph+3QD5D3nDOzM8LllnPaOQs0tp17n8WuI8WMjE/a1N3HjpgEO/xwJTOv1+QCESBPi+6v0k38LwP526WlIVCU6PLCOjLzpft8yZcQS1XetcBdCloSm1ocsiHFvM79IxDMDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WCRdbWwb; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kyletso.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-61bed763956so217918297b3.3
-        for <stable@vger.kernel.org>; Mon, 20 May 2024 08:49:20 -0700 (PDT)
+	s=arc-20240116; t=1716220675; c=relaxed/simple;
+	bh=Ubvg7/bUDji76tdgAn5Z+55CXMf3HjF4vhBaLuUlYEs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rIus1MQ/aY3zMjU43ZaY7mt4bW+247OKirbSdu+ei8xhYH2pwOh9RclFnSKiS5GdIsWL9pNyivuua+e9kjkfRUxr46SB/9cqPYevOQuzVTqIUyREmFux/JUSKaeVAaqzkJSGxBsDyF0iXKtEHXM75zR/+E4Qh5klAsWurobnZ/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WZ8P6Zu6; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1edf506b216so75545215ad.2;
+        Mon, 20 May 2024 08:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716220159; x=1716824959; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3Hta5Q6/b2rPRyvZAPSqwK1sqIL5wofS3TUQ5XOr7Cs=;
-        b=WCRdbWwb3h9YKpUTyyIeIrWAoBbRg2SyEDVvAuyxVVXVp2XBwg9gKfsScI2HW5ilQ+
-         ndT2MxOmv8IEgZwMplkk+y+0XWODXFBnxU8OZpZ/5a+Cg1Nwzm6Cn5jz00Xq569SLAHa
-         SWtHngG05WDcp2zNDGQRyQ1Nqxupp8Oi6bpODCjOMcKZJ+Buht1wqIsVSU8SHCJtFoHv
-         F3nedsdHviLjbBkJsnigBUUrvc+4c/Ptk8PicatkscFJdaYKivS98nsHRMCJJAooMiOG
-         Zrii/j48u7thpxZFCPBim07mes5tWv8lZc5MWo9DC604+6eNRFhwaYfH75033ZoxqPbc
-         BxHA==
+        d=gmail.com; s=20230601; t=1716220673; x=1716825473; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fjH8e+R60esnA42ensqqUdM+fwtzfN5aPs3zsl9Chx8=;
+        b=WZ8P6Zu6Ga4NDr6unUwMgqG+9pVBMQOuMGAcR265KQP0L3u5yOtGQwlrFJYu0hczO+
+         ifeJea0xfJ3MTWar7QLQ0rsLjLkh+CP5O52DFVhFSojrF2d8N8ncevZr/8xWxfb3hU5P
+         Xgey4I5Skc5mriLIZeAlQG/BnA1xTjZXldxDWKLRhpzWckSIyo42oOUYm2K01V64pzvo
+         aFJ9IUm25/ahEZ8cUM4BFaUFQG8ccPlCNEMfEHzO0Rh+mnk8Zuta1Vo2kYY8MAvLxKBU
+         kNnwdSRKsF64L5GGjqIgWtXYDaWpHGCcfRlvWGrK3xmzd3BDdHcz1O4SkPdWjOepJSPS
+         ii/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716220159; x=1716824959;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3Hta5Q6/b2rPRyvZAPSqwK1sqIL5wofS3TUQ5XOr7Cs=;
-        b=ef0K7N4j+5JjMqYDkii3oGnRxtcisu/fzbp+3mJ815lznmjp69P+BJp73HRJZuCLX+
-         pO+wqhHw0V07sWTXZPaj3f4nZUI8ctrlhQR6muXU6ptCVFz3kbwMJYF8/Y6puMTHSMjj
-         txm47sFqVVJgzODWa21E1/kA6451fEd4ZEjnKDN2NhWgm5crOYwUPH1fj0ZeEuDJpjx1
-         TECPp7DR1hEJzNmzYTep9+8eu30pzySdHZ4CQCc/Yq/6Cqt29M4H7sr4rr/WrizJXal8
-         Ko6VPbeDKdGNFJgNjE7LiP+l8l8fgZJsigaZeA4EBaBnfTjoOOzWBqCpYeGPpuji0T6l
-         TQHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwuTNBQo1uB4uVpOuOT0iW/On6iwum4ozvJgqbLlO9P6GdF3sTKEkZI6w5Ax8g+Cgw0v0pFUeTZgzLM0nnKRRGJcmLy8Ix
-X-Gm-Message-State: AOJu0YygO1h93kdDOWIx23sSsnRAaj9dei7b32TO6WsZxc1n0A/1XG5k
-	YH06m8xVQC2pX9d+X9ZGFdRL3zmR04Pj2DazddRJFZV7IxmLSUD+USpYgqn6Z502ryLKQVx6vTe
-	r8CtRSQ==
-X-Google-Smtp-Source: AGHT+IFiZXUt8sxoCkvWR9ksdbwYOAWH9aUG7crxl4brbEO5+hvznY+zLbTMl/qWVD2B4Kq7QWK0AT+WRJAL
-X-Received: from kyletso-p620lin01.ntc.corp.google.com ([2401:fa00:a7:c:e7e6:5547:2aba:8696])
- (user=kyletso job=sendgmr) by 2002:a05:6902:1241:b0:df4:9b3d:66a6 with SMTP
- id 3f1490d57ef6-df49b3d9b3emr1603204276.10.1716220159335; Mon, 20 May 2024
- 08:49:19 -0700 (PDT)
-Date: Mon, 20 May 2024 23:48:58 +0800
+        d=1e100.net; s=20230601; t=1716220673; x=1716825473;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fjH8e+R60esnA42ensqqUdM+fwtzfN5aPs3zsl9Chx8=;
+        b=cZ3yZI5MZS9k260v67r7UONhyCtYERzgFV7OGJHs/JF/0NKseVrgtO3+xdvdnvYefv
+         iTKqaiO5enlpoOl66mrhbApRH6OqvoocNzvoBPWRNumkryNJ+a1Y7jFnUxt5xWMimC0f
+         w3CWdmXm0TzuqJt3+XfqgV4sheN0eutuUSY9CjxSD7ulgpo0iCoCHZVyuB83NVfNB3DZ
+         WyMjRydMwlASiEHAMBWwRosUhlP4uDnaoGpSbVcvg7Eiva1KCL9nosVytVFDGoQ79MRw
+         wNHezSKofNXnqyuiwg+3doC2RSNxV/s+Q6o/DZdXP5Iqarv+P9bz3A4Y+YHg9gqAj0/l
+         vVAA==
+X-Forwarded-Encrypted: i=1; AJvYcCXf8+LhWqEtZ1ajo0Ige1jW0/5NqHJ4l2Z/icFZQ2uhaCE6UhADk/pl3SIYkoSYMQ830mgagiEzdeUYRxfg9JaGv8w3snrnJ7lt+8wqsFwdvFRUUhP6Gl9fnMW6nTF5iP7Sj41hu5Y0+tp/r+uX2J/7vkFElN5/0cbRmMGzkKr/
+X-Gm-Message-State: AOJu0YyQHR9ABSLmfREQhpa6SO1+m6Ab+sH/R0pUOzRZRFwUSY9ObM4Z
+	1t5neVsxko8uOV1Xsq7Z3L2tS5LRCpoFMkCXdnB8QvmBzY+aEM+lHSCc7QEKkz+rjPmkOqiQKm+
+	cKAps8dqumLixqG0SD/k0iDscUsc=
+X-Google-Smtp-Source: AGHT+IGR0QJwNONgLrUrdS9bK1zR2hDGXfZLtrDr3dOnQQbOEKaLAKicvLTb2C4p5DrkQw4YSMQ8x0x/um9d2gfsaZs=
+X-Received: by 2002:a17:90a:ab02:b0:2b4:39cd:2e0e with SMTP id
+ 98e67ed59e1d1-2b6cc76bdd5mr26911326a91.21.1716220673365; Mon, 20 May 2024
+ 08:57:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.0.rc1.225.g2a3ae87e7f-goog
-Message-ID: <20240520154858.1072347-1-kyletso@google.com>
-Subject: [PATCH] usb: typec: tcpm: Ignore received Hard Reset in TOGGLING state
-From: Kyle Tso <kyletso@google.com>
-To: linux@roeck-us.net, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org
-Cc: badhri@google.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Kyle Tso <kyletso@google.com>, stable@vger.kernel.org
+MIME-Version: 1.0
+References: <CAHe5sWavQcUTg2zTYaryRsMywSBgBgETG=R1jRexg4qDqwCfdw@mail.gmail.com>
+ <38de0776-3adf-4223-b8e0-cedb5a5ebf4d@leemhuis.info> <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
+ <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com>
+In-Reply-To: <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com>
+From: Gia <giacomo.gio@gmail.com>
+Date: Mon, 20 May 2024 17:57:42 +0200
+Message-ID: <CAHe5sWY_YJsyiuwf2TsfRTS9AoGoYh4+UxkkZZ0G9z2pXfbnzg@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] "xHCI host controller not responding,
+ assume dead" on stable kernel > 6.8.7
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Christian Heusel <christian@heusel.eu>, 
+	Linux regressions mailing list <regressions@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "kernel@micha.zone" <kernel@micha.zone>, 
+	Andreas Noever <andreas.noever@gmail.com>, Michael Jamet <michael.jamet@intel.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Yehezkel Bernat <YehezkelShB@gmail.com>, 
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, =?UTF-8?Q?Benjamin_B=C3=B6hmke?= <benjamin@boehmke.net>, 
+	"S, Sanath" <Sanath.S@amd.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Similar to what fixed in Commit a6fe37f428c1 ("usb: typec: tcpm: Skip
-hard reset when in error recovery"), the handling of the received Hard
-Reset has to be skipped during TOGGLING state.
+Hi Mario,
 
-[ 4086.021288] VBUS off
-[ 4086.021295] pending state change SNK_READY -> SNK_UNATTACHED @ 650 ms [rev2 NONE_AMS]
-[ 4086.022113] VBUS VSAFE0V
-[ 4086.022117] state change SNK_READY -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.022447] VBUS off
-[ 4086.022450] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.023060] VBUS VSAFE0V
-[ 4086.023064] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.023070] disable BIST MODE TESTDATA
-[ 4086.023766] disable vbus discharge ret:0
-[ 4086.023911] Setting usb_comm capable false
-[ 4086.028874] Setting voltage/current limit 0 mV 0 mA
-[ 4086.028888] polarity 0
-[ 4086.030305] Requesting mux state 0, usb-role 0, orientation 0
-[ 4086.033539] Start toggling
-[ 4086.038496] state change SNK_UNATTACHED -> TOGGLING [rev2 NONE_AMS]
+In my case in both cases the value for:
 
-// This Hard Reset is unexpected
-[ 4086.038499] Received hard reset
-[ 4086.038501] state change TOGGLING -> HARD_RESET_START [rev2 HARD_RESET]
+$ cat /sys/bus/thunderbolt/devices/domain0/iommu_dma_protection
 
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 1 +
- 1 file changed, 1 insertion(+)
+is 0.
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 8a1af08f71b6..9c1cb8c11bd6 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6172,6 +6172,7 @@ static void _tcpm_pd_hard_reset(struct tcpm_port *port)
- 		port->tcpc->set_bist_data(port->tcpc, false);
- 
- 	switch (port->state) {
-+	case TOGGLING:
- 	case ERROR_RECOVERY:
- 	case PORT_RESET:
- 	case PORT_RESET_WAIT_OFF:
--- 
-2.45.0.rc1.225.g2a3ae87e7f-goog
+Output of sudo journalctl -k with kernel option thunderbolt.dyndbg=3D+p:
+https://codeshare.io/qAXLoj
 
+Output of sudo dmesg with kernel option thunderbolt.dyndbg=3D+p:
+https://codeshare.io/zlPgRb
+
+Output of sudo journalctl -k with kernel options thunderbolt.dyndbg=3D+p
+thunderbolt.host_reset=3Dfalse:
+https://codeshare.io/Lj3rPV
+
+Output of sudo dmesg with kernel option thunderbolt.dyndbg=3D+p
+thunderbolt.host_reset=3Dfalse:
+https://codeshare.io/beQw36
+
+Best
+
+Giacomo
+
+On Mon, May 20, 2024 at 4:41=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> On 5/20/2024 09:39, Christian Heusel wrote:
+> > On 24/05/06 02:53PM, Linux regression tracking (Thorsten Leemhuis) wrot=
+e:
+> >> [CCing Mario, who asked for the two suspected commits to be backported=
+]
+> >>
+> >> On 06.05.24 14:24, Gia wrote:
+> >>> Hello, from 6.8.7=3D>6.8.8 I run into a similar problem with my Caldi=
+git
+> >>> TS3 Plus Thunderbolt 3 dock.
+> >>>
+> >>> After the update I see this message on boot "xHCI host controller not
+> >>> responding, assume dead" and the dock is not working anymore. Kernel
+> >>> 6.8.7 works great.
+> >
+> > We now have some further information on the matter as somebody was kind
+> > enough to bisect the issue in the [Arch Linux Forums][0]:
+> >
+> >      cc4c94a5f6c4 ("thunderbolt: Reset topology created by the boot fir=
+mware")
+> >
+> > This is a stable commit id, the relevant mainline commit is:
+> >
+> >      59a54c5f3dbd ("thunderbolt: Reset topology created by the boot fir=
+mware")
+> >
+> > The other reporter created [a issue][1] in our bugtracker, which I'll
+> > leave here just for completeness sake.
+> >
+> > Reported-by: Benjamin B=C3=B6hmke <benjamin@boehmke.net>
+> > Reported-by: Gia <giacomo.gio@gmail.com>
+> > Bisected-by: Benjamin B=C3=B6hmke <benjamin@boehmke.net>
+> >
+> > The person doing the bisection also offered to chime in here if further
+> > debugging is needed!
+> >
+> > Also CC'ing the Commitauthors & Subsystem Maintainers for this report.
+> >
+> > Cheers,
+> > Christian
+> >
+> > [0]: https://bbs.archlinux.org/viewtopic.php?pid=3D2172526
+> > [1]: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/=
+issues/48
+> >
+> > #regzbot introduced: 59a54c5f3dbd
+> > #regzbot link: https://gitlab.archlinux.org/archlinux/packaging/package=
+s/linux/-/issues/48
+>
+> As I mentioned in my other email I would like to collate logs onto a
+> kernel Bugzilla.  With these two cases:
+>
+> thunderbolt.dyndbg=3D+p
+> thunderbolt.dyndbg=3D+p thunderbolt.host_reset=3Dfalse
+>
+> Also what is the value for:
+>
+> $ cat /sys/bus/thunderbolt/devices/domain0/iommu_dma_protection
 
