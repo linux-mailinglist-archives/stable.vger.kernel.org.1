@@ -1,151 +1,102 @@
-Return-Path: <stable+bounces-45432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7238C98CB
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 07:33:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6628C98E9
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 08:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10D2528208D
-	for <lists+stable@lfdr.de>; Mon, 20 May 2024 05:33:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F1CC1F2168B
+	for <lists+stable@lfdr.de>; Mon, 20 May 2024 06:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A06114006;
-	Mon, 20 May 2024 05:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47E11758B;
+	Mon, 20 May 2024 06:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TQck0Xur"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30774A33;
-	Mon, 20 May 2024 05:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493505235;
+	Mon, 20 May 2024 06:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716183227; cv=none; b=GjxvFdhNaiXWQqDEzXqP2GmlyFLiTlcYQCxMGMt3VZOKeu0My5pSR8UFeqRtJ0hPqB0ilgOP7CCn1bnsVn1srCGJe/PNzrGGf/Kx3zVGjht65dhjV5H7OlQ1hDT9WDQR8ymomrnawYDh7+Pw6er6KtHiME77LdWZNGXUli2sqPU=
+	t=1716185122; cv=none; b=H9ZHbsd7dYIj/MXN/74yDv6mZjRMXFGZ9RnQZFA+DdWYlYZEyiRq35GqIKAOR0wngmwbgDS5beHWiV0dzC9dXxFmxqS0hq/wRmW6tmIEa29zpVaTNRaOr+LLzxdaJm/Ew2EMjjtStD2UpP/xFO2XjentqsCheylXnCPqPty/s6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716183227; c=relaxed/simple;
-	bh=IsM10BpPphUwdEvI3pBk/i9Z2dn7vmXffsVb7eqnyYI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rvwzHw3AccVYmBsCFGZd3KlF1Df3DEASgGjOoGTwf0937UV0ITDxs0qWr1SNf/BdaOAi2bSy1ErwhW8E9mfh0Rnm+cg90h7R6gwHHxG5BxdGfstBZwqu0bPxwIcQpsmEV8earHUqtUQSmowB5ZFZ2AridXjb2yI36p45Kb3wEjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02867FEC;
-	Sun, 19 May 2024 22:34:08 -0700 (PDT)
-Received: from [10.162.40.20] (e116581.arm.com [10.162.40.20])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 52C203F641;
-	Sun, 19 May 2024 22:33:41 -0700 (PDT)
-Message-ID: <4bef9468-a403-4bb5-940d-aacb611f28d1@arm.com>
-Date: Mon, 20 May 2024 11:03:38 +0530
+	s=arc-20240116; t=1716185122; c=relaxed/simple;
+	bh=/8FGYyFajtYsUI/UY6TXkg1f+FUarY0aZMfBN4KAy7Q=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=MubRjgwNXS8/N55pSNrYe71uACwYZX24wy9p6OWoJYtLtt0nm5kon4P5BJX1VtyBgapBh5MHxLcHKupvRBTYYekBohCmkKeeeKJoAd2F0c85Mn2hTq4lWy5hb/GoVOKUUYaJodQhYXXRQpVyUS4c/6hP0KQOc3gbPLID39hik+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TQck0Xur; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1099)
+	id 6346D20678EE; Sun, 19 May 2024 23:05:15 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6346D20678EE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1716185115;
+	bh=OJF633DxKsVlsVlcJfKvP+Cgzrk0Y8wVfiiDT0ja/a4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TQck0Xur0JBqXWvjYHaETzxFDyt5n4j2V8vwBaY6jmPxxtNJpT+zbTbMq3IavI10B
+	 iAkQCdmhBGiCtP+IS1ge8qvG/aUjgJhvJAwejpGsw4s0PbhG49QH54c6kXaRvGyvMR
+	 pqffXZkktzBtTHIWXr+DBrXRPJWRInPoiBZkODv8=
+From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	longli@microsoft.com,
+	yury.norov@gmail.com,
+	leon@kernel.org,
+	cai.huoqing@linux.dev,
+	ssengar@linux.microsoft.com,
+	vkuznets@redhat.com,
+	tglx@linutronix.de,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Cc: schakrabarti@microsoft.com,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V2 net] net: mana: Fix the extra HZ in mana_hwc_send_request
+Date: Sun, 19 May 2024 23:05:04 -0700
+Message-Id: <1716185104-31658-1-git-send-email-schakrabarti@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] selftests/mm: compaction_test: Fix trivial test
- success and reduce probability of OOM-killer invocation
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Anshuman.Khandual@arm.com,
- sjayaram@akamai.com, stable@vger.kernel.org
-References: <20240515093633.54814-1-dev.jain@arm.com>
- <20240515093633.54814-3-dev.jain@arm.com>
- <20240519170357.757d30aac192c686f10d709c@linux-foundation.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20240519170357.757d30aac192c686f10d709c@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
+Commit 62c1bff593b7 added an extra HZ along with msecs_to_jiffies.
+This patch fixes that.
 
-On 5/20/24 05:33, Andrew Morton wrote:
-> On Wed, 15 May 2024 15:06:33 +0530 Dev Jain <dev.jain@arm.com> wrote:
->
->> Reset nr_hugepages to zero before the start of the test.
->>
->> If a non-zero number of hugepages is already set before the start of the
->> test, the following problems arise:
->>
->>   - The probability of the test getting OOM-killed increases.
->> Proof: The test wants to run on 80% of available memory to prevent
->> OOM-killing (see original code comments). Let the value of mem_free at the
->> start of the test, when nr_hugepages = 0, be x. In the other case, when
->> nr_hugepages > 0, let the memory consumed by hugepages be y. In the former
->> case, the test operates on 0.8 * x of memory. In the latter, the test
->> operates on 0.8 * (x - y) of memory, with y already filled, hence, memory
->> consumed is y + 0.8 * (x - y) = 0.8 * x + 0.2 * y > 0.8 * x. Q.E.D
->>
->>   - The probability of a bogus test success increases.
->> Proof: Let the memory consumed by hugepages be greater than 25% of x,
->> with x and y defined as above. The definition of compaction_index is
->> c_index = (x - y)/z where z is the memory consumed by hugepages after
->> trying to increase them again. In check_compaction(), we set the number
->> of hugepages to zero, and then increase them back; the probability that
->> they will be set back to consume at least y amount of memory again is
->> very high (since there is not much delay between the two attempts of
->> changing nr_hugepages). Hence, z >= y > (x/4) (by the 25% assumption).
->> Therefore,
->> c_index = (x - y)/z <= (x - y)/y = x/y - 1 < 4 - 1 = 3
->> hence, c_index can always be forced to be less than 3, thereby the test
->> succeeding always. Q.E.D
->>
->> NOTE: This patch depends on the previous one.
->>
->> -int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
->> +int check_compaction(unsigned long mem_free, unsigned int hugepage_size,
->> +		     int initial_nr_hugepages)
->>   {
->>   	int fd, ret = -1;
->>   	int compaction_index = 0;
->> -	char initial_nr_hugepages[10] = {0};
->>   	char nr_hugepages[10] = {0};
->> +	char init_nr_hugepages[10] = {0};
->> +
->> +	sprintf(init_nr_hugepages, "%d", initial_nr_hugepages);
-> Well, [10] isn't really large enough.  "-1111111111" requires 12 chars,
-> with the trailing \0.  And I'd suggest an unsigned type and a %u -
-> negative initial_nr_hugepages doesn't make a lot of sense.
->
->>   
->> +int set_zero_hugepages(int *initial_nr_hugepages)
->> +{
->> +	int fd, ret = -1;
->> +	char nr_hugepages[10] = {0};
-> Ditto?
+Cc: stable@vger.kernel.org
+Fixes: 62c1bff593b7 ("net: mana: Configure hwc timeout from hardware")
+Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/hw_channel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index 2729a2c5acf9..ca814fe8a775 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -848,7 +848,7 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
+ 	}
+ 
+ 	if (!wait_for_completion_timeout(&ctx->comp_event,
+-					 (msecs_to_jiffies(hwc->hwc_timeout) * HZ))) {
++					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
+ 		dev_err(hwc->dev, "HWC: Request timed out!\n");
+ 		err = -ETIMEDOUT;
+ 		goto out;
+-- 
+2.34.1
 
-Sure, makes sense. I'll just change that to 20 and make it unsigned.
-
->
->> +	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
->> +	if (fd < 0) {
->> +		ksft_print_msg("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
->> +			       strerror(errno));
->> +		goto out;
->> +	}
->> +
->> +	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
->> +		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
->> +			       strerror(errno));
->> +		goto close_fd;
->> +	}
->> +
->> +	lseek(fd, 0, SEEK_SET);
->> +
->> +	/* Start with the initial condition of 0 huge pages */
->> +	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
->> +		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
->> +			       strerror(errno));
->> +		goto close_fd;
->> +	}
->> +
->> +	*initial_nr_hugepages = atoi(nr_hugepages);
->> +	ret = 0;
->> +
->> + close_fd:
->> +	close(fd);
->> +
->> + out:
->> +	return ret;
->> +}
 
