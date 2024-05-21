@@ -1,199 +1,156 @@
-Return-Path: <stable+bounces-45526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72C68CB1FA
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 18:12:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058C18CB239
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 18:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CAA9283974
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 16:12:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 350881C21CD6
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 16:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749981CD11;
-	Tue, 21 May 2024 16:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DAD142E72;
+	Tue, 21 May 2024 16:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOIkckH2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6/pnjrH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C4A1C68C
-	for <stable@vger.kernel.org>; Tue, 21 May 2024 16:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC417F49A;
+	Tue, 21 May 2024 16:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716307970; cv=none; b=by4C6muFrl7vUJfJA/8vRPSqGwIvPkB9qHFWZ8SqY7tcsIWQqukJttKy/u3xxWMwhOsk9iMjyzv90q8vQeju6MILHULcB/j0u96XYqJqaxyEQt7kZlEO3PNM/OkIorxKYWeLlz880RVPgJmtCytVwC7ZdW1lg5GRDkO/XczfaeI=
+	t=1716309248; cv=none; b=UFexAvAvJrW7GQBKNCrNLJwQzc0/eATTWFqMVq9Yo0I35+a1Hh58v8+ELgtOGif6HAF8fJMpRploeBKeTH+tzoAbeJUBhY4aivGY6Qq+FQO91//IzZkFsZtxQoboeZmH5U0diCD9+TF4zhd2RyRo0AvAdI+1rK7dcb/94JisMsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716307970; c=relaxed/simple;
-	bh=16LUPK2BDH83+ZeUEibqD0CSXfCzHgidoB/WLnqChcs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K5ZHhCYrz084wbwViNSgOb0zd71XexXuo3N0pY/xkArcsm83ci61Sgt/TPly/6jBeiPehqxYlU/aUti1XfMWouaarfKWKdC4nLR4HVoZWyaYGzD+G4nyc7QiRwPLiJxXrV84YX341rsITxo6Eb0GKd+7eQN5DYrk35Gou9Xa4vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOIkckH2; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5ff57410ebbso1517239a12.1
-        for <stable@vger.kernel.org>; Tue, 21 May 2024 09:12:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716307968; x=1716912768; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CCvtAT9yL4bsyunfEMr4mUSenqzklzI9+JXqeALbOyQ=;
-        b=gOIkckH2wQOY/bNjAWlbU0YbQ/qPsMWNVbu7hKjrUetaGorKJSsSHxPnZ3Tq6nmSBZ
-         +wux19+x5s6MLcjLZs+hYQ5IfLqVQwH9KWeNkKKYAEf/KbHwu7wwina8E4fwCb5MXi3G
-         D20Aiod+twgYjcGMFAdJwaRIqXNMFsnm5vta8yid6WIQlPC0TIMTWOlin/4E0eS54Eps
-         gN0kJLO0H7zRbf8jItwabd8XeJcH3yq3uYTvRXKgpvPJXiTKP5pckfRU6lzwq7yu/n5V
-         VxowJ5sISWxuDKOaYVAeL5A3+CUqEJi9rxtkxZSmg82FZVCa4R9VDru6j656AmSw69ZK
-         0SoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716307968; x=1716912768;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CCvtAT9yL4bsyunfEMr4mUSenqzklzI9+JXqeALbOyQ=;
-        b=ePY3ENi+diaFK0zyoDWbF2bev1XEdZTyejsGfvU5dq3z6Hoz7YTdM8hdaOKUOxbCeV
-         tUAvJLSoJij4GnxkW+zaQWb5McWZmpIZWt9bwIzfjx+ras/Lt9borcJP4NSvqIEVAgp8
-         HOhAM6uRgT0cV707yuVtiLYaPUQ14nmESRF0wYlBc4VswmypojNhoOCJS7Y8VvcaZoNs
-         StJk6Hvn3TK/2Xome8XVH4EeOYZJ602HtXAwmmFmbsSl669ihuvE426UacdZptrCMBEu
-         qqpLIwDLGkt4q6GjGurjdVLfli+l//ZSJAWmMhUId4Xll4/wTQpoe5gnS7R3qFrubg7r
-         jbCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7Tjr8UJ9xxVMSkQLEH7KXJTGjlDhC6ij2qllWJUAv5+k3y8M2T0bNQUq7ouf880kj4P3TekoRQLE7U6Eu5ssRvg+vyFuX
-X-Gm-Message-State: AOJu0Yz2Id9dLcoECQmx+SWnDYLvyr7/EjzPHlorRfx9xvUNJVfWFHII
-	saE5PSy5/i0ls5hk2nzRatM4RwFeSkKgbmLa7+0WAUEgYiK6ZlYYYQlSouJPrzHPHZ5iI+CqQ29
-	sq/QK/Er5uicX6x4sm7EcYRgNTWE=
-X-Google-Smtp-Source: AGHT+IHAP3KDnJJS0O7SkGfKIP7uk1EKp+f8X1mluB24KubBN9tLU3rOHMtfN8y0ky6xkTXQo2yflL/anOYUpzKLWLA=
-X-Received: by 2002:a17:90a:eb07:b0:2a3:10d3:239d with SMTP id
- 98e67ed59e1d1-2b6ccd6bbbdmr28841420a91.32.1716307967824; Tue, 21 May 2024
- 09:12:47 -0700 (PDT)
+	s=arc-20240116; t=1716309248; c=relaxed/simple;
+	bh=H9fGkZFd1ODphe/7btOkZWzp5B/Y0DZC4PW8bEKrqAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EV9xrtOSBlEmabxqjv/OUANvTSnYlXh7zFH9GtbPf5gzyNfAtdP4AC3zHG0B2G1HINdiap+bJRGLbNjP8NaOgn84xH26Y6mxOOLahcUPxCI5DululAPUuCi4jgYrbSzPgG0MByydqJAehvz1kAkjYv7/XQx67j3r3DB58LMR3N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6/pnjrH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA142C2BD11;
+	Tue, 21 May 2024 16:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716309247;
+	bh=H9fGkZFd1ODphe/7btOkZWzp5B/Y0DZC4PW8bEKrqAQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=g6/pnjrH0TcIZOP5lHkTEEHUtXL0MRhrecFqPF8lqdB92rhNOlA9EDD4F5rMZABPl
+	 cFYISCD7MXziwTDJT9HW3gIiI1hcg8b0SXYZGSKAz8EufVFwycVyuxKB5jAy5h207j
+	 XKrbHw8xyMwewIOkzB+1kN09ehJ4T0RlyxJKRXlaJZkdf2zIaskMsEeZvbjPAvEuX0
+	 LT6BnnA5xYxsgxJT1w+/gr30TkDYXGLJ/G6jyEtOwCNaJNYNvtuL/6b+mm4WztkJOL
+	 Bh2qeSq+o/mqrzM6I5x3XIEXY1WrMOTWbD/R5UB4Yh5LYQqCViBRgct6DeBeZFh9Th
+	 144Lm7h7QZDJQ==
+From: Andrii Nakryiko <andrii@kernel.org>
+To: bpf@vger.kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	martin.lau@kernel.org
+Cc: andrii@kernel.org,
+	kernel-team@meta.com,
+	stable@vger.kernel.org,
+	Jiri Olsa <jolsa@kernel.org>
+Subject: [PATCH v2 bpf 1/5] bpf: fix multi-uprobe PID filtering logic
+Date: Tue, 21 May 2024 09:33:57 -0700
+Message-ID: <20240521163401.3005045-2-andrii@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240521163401.3005045-1-andrii@kernel.org>
+References: <20240521163401.3005045-1-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240307062957.2323620-1-Wayne.Lin@amd.com> <0847dc03-c7db-47d7-998b-bda2e82ed442@amd.com>
- <41b87510-7abf-47e8-b28a-9ccc91bbd3c1@leemhuis.info> <177cfae4-b2b5-4e2c-9f1e-9ebe262ce48c@amd.com>
- <CO6PR12MB5489FA9307280A4442BAD51DFCE72@CO6PR12MB5489.namprd12.prod.outlook.com>
- <87wmo2hver.fsf@intel.com> <6f66e479-2f5a-477a-9705-dca4a3606760@amd.com> <83df4e94-e1ec-42f6-8a15-6439ef4a25b7@leemhuis.info>
-In-Reply-To: <83df4e94-e1ec-42f6-8a15-6439ef4a25b7@leemhuis.info>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Tue, 21 May 2024 12:12:36 -0400
-Message-ID: <CADnq5_P+WsL8B6B2vK5ENe8VWdvheoHyxoUfgF3Oex8Gvp7Lbg@mail.gmail.com>
-Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at drm_dp_add_payload_part2
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: "Limonciello, Mario" <mario.limonciello@amd.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	"Lin, Wayne" <Wayne.Lin@amd.com>, "Wentland, Harry" <Harry.Wentland@amd.com>, 
-	"lyude@redhat.com" <lyude@redhat.com>, "imre.deak@intel.com" <imre.deak@intel.com>, 
-	=?UTF-8?Q?Leon_Wei=C3=9F?= <leon.weiss@ruhr-uni-bochum.de>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, 
-	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>, 
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-I've got it teed up.  Is drm-misc-fixes the right branch since we are
-in the merge window?
+Current implementation of PID filtering logic for multi-uprobes in
+uprobe_prog_run() is filtering down to exact *thread*, while the intent
+for PID filtering it to filter by *process* instead. The check in
+uprobe_prog_run() also differs from the analogous one in
+uprobe_multi_link_filter() for some reason. The latter is correct,
+checking task->mm, not the task itself.
 
-Alex
+Fix the check in uprobe_prog_run() to perform the same task->mm check.
 
-On Tue, May 21, 2024 at 7:20=E2=80=AFAM Linux regression tracking (Thorsten
-Leemhuis) <regressions@leemhuis.info> wrote:
->
-> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-> for once, to make this easily accessible to everyone.
->
-> Hmm, from here it looks like the patch now that it was reviewed more
-> that a week ago is still not even in -next. Is there a reason?
->
-> I know, we are in the merge window. But at the same time this is a fix
-> (that already lingered on the lists for way too long before it was
-> reviewed) for a regression in a somewhat recent kernel, so it in Linus
-> own words should be "expedited"[1].
->
-> Or are we again just missing a right person for the job in the CC?
-> Adding Dave and Sima just in case.
->
-> Ciao, Thorsten
->
-> [1]
-> https://lore.kernel.org/all/CAHk-=3Dwis_qQy4oDNynNKi5b7Qhosmxtoj1jxo5wmB6=
-SRUwQUBQ@mail.gmail.com/
->
-> On 12.05.24 18:11, Limonciello, Mario wrote:
-> > On 5/10/2024 4:24 AM, Jani Nikula wrote:
-> >> On Fri, 10 May 2024, "Lin, Wayne" <Wayne.Lin@amd.com> wrote:
-> >>>> -----Original Message-----
-> >>>> From: Limonciello, Mario <Mario.Limonciello@amd.com>
-> >>>> Sent: Friday, May 10, 2024 3:18 AM
-> >>>> To: Linux regressions mailing list <regressions@lists.linux.dev>;
-> >>>> Wentland, Harry
-> >>>> <Harry.Wentland@amd.com>; Lin, Wayne <Wayne.Lin@amd.com>
-> >>>> Cc: lyude@redhat.com; imre.deak@intel.com; Leon Wei=C3=9F
-> >>>> <leon.weiss@ruhr-uni-
-> >>>> bochum.de>; stable@vger.kernel.org; dri-devel@lists.freedesktop.org;
-> >>>> amd-
-> >>>> gfx@lists.freedesktop.org; intel-gfx@lists.freedesktop.org
-> >>>> Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at
-> >>>> drm_dp_add_payload_part2
-> >>>>
-> >>>> On 5/9/2024 07:43, Linux regression tracking (Thorsten Leemhuis) wro=
-te:
-> >>>>> On 18.04.24 21:43, Harry Wentland wrote:
-> >>>>>> On 2024-03-07 01:29, Wayne Lin wrote:
-> >>>>>>> [Why]
-> >>>>>>> Commit:
-> >>>>>>> - commit 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload
-> >>>>>>> allocation/removement") accidently overwrite the commit
-> >>>>>>> - commit 54d217406afe ("drm: use mgr->dev in drm_dbg_kms in
-> >>>>>>> drm_dp_add_payload_part2") which cause regression.
-> >>>>>>>
-> >>>>>>> [How]
-> >>>>>>> Recover the original NULL fix and remove the unnecessary input
-> >>>>>>> parameter 'state' for drm_dp_add_payload_part2().
-> >>>>>>>
-> >>>>>>> Fixes: 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload
-> >>>>>>> allocation/removement")
-> >>>>>>> Reported-by: Leon Wei=C3=9F <leon.weiss@ruhr-uni-bochum.de>
-> >>>>>>> Link:
-> >>>>>>> https://lore.kernel.org/r/38c253ea42072cc825dc969ac4e6b9b600371cc=
-8.c
-> >>>>>>> amel@ruhr-uni-bochum.de/
-> >>>>>>> Cc: lyude@redhat.com
-> >>>>>>> Cc: imre.deak@intel.com
-> >>>>>>> Cc: stable@vger.kernel.org
-> >>>>>>> Cc: regressions@lists.linux.dev
-> >>>>>>> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-> >>>>>>
-> >>>>>> I haven't been deep in MST code in a while but this all looks pret=
-ty
-> >>>>>> straightforward and good.
-> >>>>>>
-> >>>>>> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-> >>>>>
-> >>>>> Hmmm, that was three weeks ago, but it seems since then nothing
-> >>>>> happened to fix the linked regression through this or some other
-> >>>>> patch. Is there a reason? The build failure report from the CI mayb=
-e?
-> >>>>
-> >>>> It touches files outside of amd but only has an ack from AMD.  I
-> >>>> think we
-> >>>> /probably/ want an ack from i915 and nouveau to take it through.
-> >>>
-> >>> Thanks, Mario!
-> >>>
-> >>> Hi Thorsten,
-> >>> Yeah, like what Mario said. Would also like to have ack from i915 and
-> >>> nouveau.
-> >>
-> >> It usually works better if you Cc the folks you want an ack from! ;)
-> >>
-> >> Acked-by: Jani Nikula <jani.nikula@intel.com>
-> >>
-> >
-> > Thanks! Can someone with commit permissions take this to drm-misc?
-> >
-> >
-> >
+While doing this, we also update get_pid_task() use to use PIDTYPE_TGID
+type of lookup, given the intent is to get a representative task of an
+entire process. This doesn't change behavior, but seems more logical. It
+would hold task group leader task now, not any random thread task.
+
+Last but not least, given multi-uprobe support is half-broken due to
+this PID filtering logic (depending on whether PID filtering is
+important or not), we need to make it easy for user space consumers
+(including libbpf) to easily detect whether PID filtering logic was
+already fixed.
+
+We do it here by adding an early check on passed pid parameter. If it's
+negative (and so has no chance of being a valid PID), we return -EINVAL.
+Previous behavior would eventually return -ESRCH ("No process found"),
+given there can't be any process with negative PID. This subtle change
+won't make any practical change in behavior, but will allow applications
+to detect PID filtering fixes easily. Libbpf fixes take advantage of
+this in the next patch.
+
+Cc: stable@vger.kernel.org
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Fixes: b733eeade420 ("bpf: Add pid filter support for uprobe_multi link")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+---
+ kernel/trace/bpf_trace.c                                  | 8 ++++----
+ .../testing/selftests/bpf/prog_tests/uprobe_multi_test.c  | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index f5154c051d2c..1baaeb9ca205 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3295,7 +3295,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	struct bpf_run_ctx *old_run_ctx;
+ 	int err = 0;
+ 
+-	if (link->task && current != link->task)
++	if (link->task && current->mm != link->task->mm)
+ 		return 0;
+ 
+ 	if (sleepable)
+@@ -3396,8 +3396,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	upath = u64_to_user_ptr(attr->link_create.uprobe_multi.path);
+ 	uoffsets = u64_to_user_ptr(attr->link_create.uprobe_multi.offsets);
+ 	cnt = attr->link_create.uprobe_multi.cnt;
++	pid = attr->link_create.uprobe_multi.pid;
+ 
+-	if (!upath || !uoffsets || !cnt)
++	if (!upath || !uoffsets || !cnt || pid < 0)
+ 		return -EINVAL;
+ 	if (cnt > MAX_UPROBE_MULTI_CNT)
+ 		return -E2BIG;
+@@ -3421,10 +3422,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 		goto error_path_put;
+ 	}
+ 
+-	pid = attr->link_create.uprobe_multi.pid;
+ 	if (pid) {
+ 		rcu_read_lock();
+-		task = get_pid_task(find_vpid(pid), PIDTYPE_PID);
++		task = get_pid_task(find_vpid(pid), PIDTYPE_TGID);
+ 		rcu_read_unlock();
+ 		if (!task) {
+ 			err = -ESRCH;
+diff --git a/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c b/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
+index 8269cdee33ae..38fda42fd70f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
++++ b/tools/testing/selftests/bpf/prog_tests/uprobe_multi_test.c
+@@ -397,7 +397,7 @@ static void test_attach_api_fails(void)
+ 	link_fd = bpf_link_create(prog_fd, 0, BPF_TRACE_UPROBE_MULTI, &opts);
+ 	if (!ASSERT_ERR(link_fd, "link_fd"))
+ 		goto cleanup;
+-	ASSERT_EQ(link_fd, -ESRCH, "pid_is_wrong");
++	ASSERT_EQ(link_fd, -EINVAL, "pid_is_wrong");
+ 
+ cleanup:
+ 	if (link_fd >= 0)
+-- 
+2.43.0
+
 
