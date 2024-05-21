@@ -1,108 +1,124 @@
-Return-Path: <stable+bounces-45543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1059A8CB627
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 00:46:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43728CB654
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 01:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414D11C21A19
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 22:46:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41D4AB20E28
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 23:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D63148820;
-	Tue, 21 May 2024 22:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE709149C60;
+	Tue, 21 May 2024 23:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YcxO7xJ+"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NorE2ApS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D834168BD;
-	Tue, 21 May 2024 22:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7138852F70;
+	Tue, 21 May 2024 23:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716331596; cv=none; b=ja8hyoEGsMpHSAmPcJzzA5kSkONJz6JvlPMAKhw551Z9cRMVcpBfAtHQicEMvenCWXktK+5Sq/W+5U9OrPlKpLy4pykWyLBJts9IwS8/XPRPoOwxpauvYjGgOtGHnNHw1B2/m4U6yGEDKq4VorkY/N3dvMLSXqUfxBc2fsd9KNQ=
+	t=1716334214; cv=none; b=BGvSinq/k84KV7wW4HUY0+TCHSFEw7vKRkWUMspQjccb/1rpENeorEPMuax1IPgJgrx54AtwiR+KnRPldpYhTZoK8dhxGOnzle/w8DCMa2VegL9Cwv+NKA17Ig34T9E757vaDWyzm/xiv6w2xEP1M2QDI3iE6G1Wl+JLnxeZDWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716331596; c=relaxed/simple;
-	bh=BcrLjbagQ0OOp0tcnj3iWcflKGe3jg94wrP0GyeJOLs=;
-	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=gvM4RQGw+wt4YKvTVd1tOaM95m/2iniyNR9RDeAAazNB0J+0V0XGYmKyfyzBwhFJvjzxtEGKo8A4A5kCP9T6eZ7f676j9h5BHAUyyCPdE/T9j5grynJ9pElTQoT+8w2wS8tHqSJqipVjhIMv6H8kECNdbcxr8l7G6rDZBvxvN/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YcxO7xJ+; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716331595; x=1747867595;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BcrLjbagQ0OOp0tcnj3iWcflKGe3jg94wrP0GyeJOLs=;
-  b=YcxO7xJ+syfTNFj+HF0qv4MJawZZwiFr1ZsVaDuGbWsQB2FNYkSHWrcw
-   xXeeYlDn8yy6k1SPe85HKA8J4N7GjoCa6ra7LnhIkyw0Qe80X6/F47B/d
-   nhWPas3yUNUL+bC7fYLbNwwXvDraa9kgm4DR3tCjT18cAtDLfVQ40m4zr
-   PuCfCka7/oqGp0+QRr5pMC0xW4qH/ijdNgYk4b4t9PijdfEw8SHb5flKX
-   PVYVOAnTfPX39oUXiFUO067N/u1rVyKqV9S+9ucFRt2TYCf3xgrvujYRJ
-   3kHV4BXhSR1SPytHzGiscBGZgksywhjGZLVRuzO1FnCsOYLeOQgmNY8Jq
-   w==;
-X-CSE-ConnectionGUID: EuX04l8JRQihhpkqplyJBg==
-X-CSE-MsgGUID: pcmDdE8xRUyXgQzCD8tG8g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="16393986"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; 
-   d="scan'208";a="16393986"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 15:46:34 -0700
-X-CSE-ConnectionGUID: bMFq7YtmRMmrVh0lYRG46w==
-X-CSE-MsgGUID: SURD8LBBQ5mU4l1+I0eyVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; 
-   d="scan'208";a="70486013"
-Received: from kjajulax-mobl1.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.212.227.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 15:46:34 -0700
-Subject: [PATCH] ACPI: APEI: EINJ: Fix einj_dev release leak
-From: Dan Williams <dan.j.williams@intel.com>
-To: rafael.j.wysocki@intel.com
-Cc: stable@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ben Cheatham <Benjamin.Cheatham@amd.com>, linux-acpi@vger.kernel.org,
- linux-cxl@vger.kernel.org
-Date: Tue, 21 May 2024 15:46:32 -0700
-Message-ID: <171633159194.398195.10059732788629089925.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	s=arc-20240116; t=1716334214; c=relaxed/simple;
+	bh=8oLezZvMMlzUJMZexbnHMFCRKFIqWVPe4uWFf3j6BPw=;
+	h=Date:To:From:Subject:Message-Id; b=K680IhGw0sTAyV1KilORux8Kxb1E1RLhsz+adpLNsQxHn+QcP+jCEcyD9QQ5hOeTMuMshYwkc8l087TNNFyKf7q9qU5LZt2ylEUgK6NGSNznJekuAZVThiOoojw93prXF989Grf2J0QqbBd2IXB0wDqmcPzk4ZzLhKJMvBcJLY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NorE2ApS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43DCC2BD11;
+	Tue, 21 May 2024 23:30:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1716334213;
+	bh=8oLezZvMMlzUJMZexbnHMFCRKFIqWVPe4uWFf3j6BPw=;
+	h=Date:To:From:Subject:From;
+	b=NorE2ApSybUKGntDFN/s6cLwXhfgY3NO8k3euI4D+Br9mPKcUUSZsA9VSrex3i2hs
+	 vTu6ZYgtq+8U9JQccBrZljXqhXusA2GhWovMP7zW10Y54Xy7+emR5YAUqM92gLuqyK
+	 w4wb34IsU1jnwZPYpw6X98RefSsoZXwftREXaMhY=
+Date: Tue, 21 May 2024 16:30:13 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,skhan@linuxfoundation.org,mpe@ellerman.id.au,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-mm-fix-build-warnings-on-ppc64.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240521233013.B43DCC2BD11@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 
-The platform driver conversion of EINJ mistakenly used
-platform_device_del() to unwind platform_device_register_full() at
-module exit. This leads to a small leak of one 'struct platform_device'
-instance per module load/unload cycle. Switch to
-platform_device_unregister() which performs both device_del() and final
-put_device().
 
-Fixes: 5621fafaac00 ("EINJ: Migrate to a platform driver")
+The patch titled
+     Subject: selftests/mm: fix build warnings on ppc64
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-fix-build-warnings-on-ppc64.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-build-warnings-on-ppc64.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Michael Ellerman <mpe@ellerman.id.au>
+Subject: selftests/mm: fix build warnings on ppc64
+Date: Tue, 21 May 2024 13:02:19 +1000
+
+Fix warnings like:
+
+  In file included from uffd-unit-tests.c:8:
+  uffd-unit-tests.c: In function `uffd_poison_handle_fault':
+  uffd-common.h:45:33: warning: format `%llu' expects argument of type
+  `long long unsigned int', but argument 3 has type `__u64' {aka `long
+  unsigned int'} [-Wformat=]
+
+By switching to unsigned long long for u64 for ppc64 builds.
+
+Link: https://lkml.kernel.org/r/20240521030219.57439-1-mpe@ellerman.id.au
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
 Cc: <stable@vger.kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/acpi/apei/einj-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-index 01faca3a238a..bb9f8475ce59 100644
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -903,7 +903,7 @@ static void __exit einj_exit(void)
- 	if (einj_initialized)
- 		platform_driver_unregister(&einj_driver);
+ tools/testing/selftests/mm/gup_test.c    |    1 +
+ tools/testing/selftests/mm/uffd-common.h |    1 +
+ 2 files changed, 2 insertions(+)
+
+--- a/tools/testing/selftests/mm/gup_test.c~selftests-mm-fix-build-warnings-on-ppc64
++++ a/tools/testing/selftests/mm/gup_test.c
+@@ -1,3 +1,4 @@
++#define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <stdio.h>
+--- a/tools/testing/selftests/mm/uffd-common.h~selftests-mm-fix-build-warnings-on-ppc64
++++ a/tools/testing/selftests/mm/uffd-common.h
+@@ -8,6 +8,7 @@
+ #define __UFFD_COMMON_H__
  
--	platform_device_del(einj_dev);
-+	platform_device_unregister(einj_dev);
- }
- 
- module_init(einj_init);
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <stdio.h>
+ #include <errno.h>
+ #include <unistd.h>
+_
+
+Patches currently in -mm which might be from mpe@ellerman.id.au are
+
+selftests-mm-fix-build-warnings-on-ppc64.patch
 
 
