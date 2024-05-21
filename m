@@ -1,132 +1,163 @@
-Return-Path: <stable+bounces-45514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73CE8CAF97
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 15:44:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF218CAFA4
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 15:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23DDB1C21581
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:44:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CCC81C21591
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBB37EEF8;
-	Tue, 21 May 2024 13:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979FE768EE;
+	Tue, 21 May 2024 13:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kayoway.com header.i=@kayoway.com header.b="KZqp588N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdnWDP7a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8177EEED
-	for <stable@vger.kernel.org>; Tue, 21 May 2024 13:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8C055783;
+	Tue, 21 May 2024 13:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716299074; cv=none; b=XWrlT+/XuSeD/jS/4H0zsBR3iPrzNPZGC9o2xrBHYlW35v1vm4ea0GS6El+t6Mf/Aoy5juZXe/L1W4ZlezbNSj6h+N31n8gol0QfMPcaH81io9dQC2mQw1hHXy8U9Xn4pVQc9aPFkmkYDIcrhTuxRA7vxvrRLsgaRbVrqpYPBSo=
+	t=1716299265; cv=none; b=PDoljsqvqX+n3LrNxUmiiTaVaW0TjtoPorr8zQICNkHeWjmGp5Una96MX6l4u/g6EhTljrHRr9WxYcKDMoZulNzSx1/TEpgdXyL7ChtfakafPD862DCQX98ynEjCTyR3xDLRkCfe1qIKLKoGedmwnW5SlGI19N9BLaeNEgV74CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716299074; c=relaxed/simple;
-	bh=ZZ7hZq4Gpo4WIoLu6dtwuUkYl2UN7NRX2iSQlP1W0iM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSuXdQhrZjA0e7/I0Vz3nNAFSMOEZPh7rl96+W5LeHX6JwZOBpUUz/So3Iyzapt8h1fXZg126UbXeKhHKa13dqjqKtO8a272454BTV5JSStnftZSb6vQhUULeD8g7qvG9rXVkGZz135fFbBgH/XadWaAZTrhbuKflodeoF2APeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kayoway.com; spf=pass smtp.mailfrom=kayoway.com; dkim=pass (1024-bit key) header.d=kayoway.com header.i=@kayoway.com header.b=KZqp588N; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kayoway.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kayoway.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1ee954e0aa6so1462315ad.3
-        for <stable@vger.kernel.org>; Tue, 21 May 2024 06:44:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kayoway.com; s=google; t=1716299072; x=1716903872; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g53LGidiqlLV0XFSPhCxAXaK1s2/Eo4cee72313a33w=;
-        b=KZqp588NCgh5INJqvkLshSFIa8N66w6dEdxWVh0ZpC4++QHFZuKT7UL29sICvSiZMB
-         ltiM9UcV6rJVcdS9yGg8fs7rD9xviwZXgwSTy7qvUOO75oBmZbVatXi2yyolcxIfpJjF
-         5IDawKNI5q8aAW/s2mhaI7aBgyOUViCl55Kqk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716299072; x=1716903872;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g53LGidiqlLV0XFSPhCxAXaK1s2/Eo4cee72313a33w=;
-        b=NpRB3kMbQfG0pTp4cw/N+406JNyJMfhcHhdr+exkgUHOL6rYa06hf+fmW1Npmxbk5A
-         hwoaGhQ6sDctpdf8gwfLWURGI7KWoiVIGsBZC6j2uqwla5Qz0xcV7+DuOcc0HNPRC7bv
-         42nc2atw+cG4bVQa5MOx2EfK6pQZzHT0Fp0VGI0h89vS1SfRtF31ydBupQrxuCuahm+y
-         39zvlZxkv/r5mAIQbsehBxju61RfbzZqLLHhlGD2n2ElR9AMoFNRDNUk1q/7JnKE9A60
-         w3pzsIAcSKadKfmsIDJ13+krOFf9nWDLeWPpjGgVunKeUiM+mPLYrPotNp8XUf0hSHca
-         T2Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCXLzsU/Pj7WTV/q2+PWwzJaNgLqqnhGrpl0IFpoMAOdjZK9Mfnr5lJtKzfeYSNXlcebZgRTdlXzqLA/QJjteHQcLPAxLuIr
-X-Gm-Message-State: AOJu0YzV/iSp0ff5/XJJsXlKFCteyPlNjYe7giniVKLZOCcTylv/dZsv
-	KyAhMrRkRYDyqtfkh9fhVDvOus5wfu4ohy+qNo4lY3V5Yuag8KNeCwMRnPtB/Iw=
-X-Google-Smtp-Source: AGHT+IESMasNcm1TOGhtqsez1BvA6Zz/XknDRTVGoc/vDgT46BRLjviWAEu6jWcCyw7J3mATCmVYAQ==
-X-Received: by 2002:a17:902:728c:b0:1ec:31f5:16d5 with SMTP id d9443c01a7336-1ef43f2c758mr247514905ad.33.1716299072225;
-        Tue, 21 May 2024 06:44:32 -0700 (PDT)
-Received: from minidesk.. (101-142-33-202f1.hyg2.eonet.ne.jp. [101.142.33.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f2e064049fsm79809385ad.24.2024.05.21.06.44.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 May 2024 06:44:32 -0700 (PDT)
-From: Jason Nader <dev@kayoway.com>
-To: dlemoal@kernel.org,
-	cassel@kernel.org
-Cc: linux-ide@vger.kernel.org,
-	Jason Nader <dev@kayoway.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] ata: ahci: Do not apply Intel PCS quirk on Intel Alder Lake
-Date: Tue, 21 May 2024 22:36:24 +0900
-Message-ID: <20240521133624.1103100-1-dev@kayoway.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240513135302.1869084-1-dev@kayoway.com>
-References: <20240513135302.1869084-1-dev@kayoway.com>
+	s=arc-20240116; t=1716299265; c=relaxed/simple;
+	bh=Rs0778QKzKCdk0BVA98zOTHQl+mRFeefvwXEHJ/1we8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IByw8ck5vaj1XHI2O2ap/sJNIdV21FiO9lHDyTBb4x8Q+KWkSMT8wTSb2LhzealfEULxF8v0VqnPVYvkqzjxbbYixCmvw8Amvwxz0ezX1JkZEgwAU0u/WXNEsBeG4chMc6fK6iwi2Ri4/cwodsu2HYLeQQs+uKpTPJ+3iMR77B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdnWDP7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC6CC2BD11;
+	Tue, 21 May 2024 13:47:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716299264;
+	bh=Rs0778QKzKCdk0BVA98zOTHQl+mRFeefvwXEHJ/1we8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RdnWDP7adAioYkB3/+Il09h51NgpF8SMAVZyOlo4p1vHsDU8W/MmkscYN3ZaqPUvh
+	 LJJyfhttBT1gQbWzZA65iJeGWv8wz+cfco9WKnizzAj4wSwPNVeM6kXOtfvJ4VxIC/
+	 dKTVtxVgFa0pORmupAShSMqwC9XPkDPG0YVZBHckGuCWfwRbis10RHmhNEm6ZftgNK
+	 GZp1T6A/upBmVnSxgjJoNZU+xemHpmENftx9Etor5hVqexWIToaxjbOpVh+eYiI2Mm
+	 fFfbLAACqP4MQk/LeEay0vniuHCpwirjQeLw/3fxCUglIuP+4KEpcYTmG6SEWS1+Es
+	 O1BAaRNoj3u9A==
+Date: Tue, 21 May 2024 14:47:39 +0100
+From: Simon Horman <horms@kernel.org>
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Diogo Ivo <diogo.ivo@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH net] net: ti: icssg_prueth: Fix NULL pointer dereference
+ in prueth_probe()
+Message-ID: <20240521134739.GE764145@kernel.org>
+References: <20240521-icssg-prueth-fix-v1-1-b4b17b1433e9@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240521-icssg-prueth-fix-v1-1-b4b17b1433e9@bootlin.com>
 
-Commit b8b8b4e0c052 ("ata: ahci: Add Intel Alder Lake-P AHCI controller
-to low power chipsets list") added Intel Alder Lake to the ahci_pci_tbl.
++ Andrew Lunn, Diogo Ivo, Vignesh Raghavendra
+  Not trimming reply to provide context for these people
 
-Because of the way that the Intel PCS quirk was implemented, having
-an explicit entry in the ahci_pci_tbl caused the Intel PCS quirk to
-be applied. (The quirk was not being applied if there was no explict
-entry.)
+On Tue, May 21, 2024 at 02:44:11PM +0200, Romain Gantois wrote:
+> In the prueth_probe() function, if one of the calls to emac_phy_connect()
+> fails due to of_phy_connect() returning NULL, then the subsequent call to
+> phy_attached_info() will dereference a NULL pointer.
+> 
+> Check the return code of emac_phy_connect and fail cleanly if there is an
+> error.
+> 
+> Fixes: 128d5874c082 ("net: ti: icssg-prueth: Add ICSSG ethernet driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
 
-Thus, entries that were added to the ahci_pci_tbl also got the Intel
-PCS quirk applied.
+For Networking patches, please consider seeding the CC
+list using ./scripts/get_maintainer.pl this.patch.
+I've added the people who seemed to be missing.
 
-The quirk was cleaned up in commit 7edbb6059274 ("ahci: clean up
-intel_pcs_quirk"), such that it is clear which entries that actually
-applies the Intel PCS quirk.
+The patch itself looks good to me.
 
-Newer Intel AHCI controllers do not need the Intel PCS quirk,
-and applying it when not needed actually breaks some platforms.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Do not apply the Intel PCS quirk for Intel Alder Lake.
-This is in line with how things worked before commit b8b8b4e0c052 ("ata:
-ahci: Add Intel Alder Lake-P AHCI controller to low power chipsets list"),
-such that certain platforms using Intel Alder Lake will work once again.
-
-Cc: stable@vger.kernel.org # 6.7
-Fixes: b8b8b4e0c052 ("ata: ahci: Add Intel Alder Lake-P AHCI controller to low power chipsets list")
-Signed-off-by: Jason Nader <dev@kayoway.com>
----
- drivers/ata/ahci.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 6548f10e61d9..07d66d2c5f0d 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -429,7 +429,6 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_pcs_quirk }, /* Comet Lake PCH RAID */
- 	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
- 	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_pcs_quirk }, /* Elkhart Lake AHCI */
--	{ PCI_VDEVICE(INTEL, 0x7ae2), board_ahci_pcs_quirk }, /* Alder Lake-P AHCI */
- 
- 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
- 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
--- 
-2.45.1
-
+> ---
+> Hello everyone,
+> 
+> There is a possible NULL pointer dereference in the prueth_probe() function of
+> the icssg_prueth driver. I discovered this while testing a platform with one
+> PRUETH MAC enabled out of the two available.
+> 
+> These are the requirements to reproduce the bug:
+> 
+> prueth_probe() is called
+> either eth0_node or eth1_node is not NULL
+> in emac_phy_connect: of_phy_connect() returns NULL
+> 
+> Then, the following leads to the NULL pointer dereference:
+> 
+> prueth->emac[PRUETH_MAC0]->ndev->phydev is set to NULL
+> prueth->emac[PRUETH_MAC0]->ndev->phydev is passed to phy_attached_info()
+> -> phy_attached_print() dereferences phydev which is NULL
+> 
+> This series provides a fix by checking the return code of emac_phy_connect().
+> 
+> Best Regards,
+> 
+> Romain
+> ---
+>  drivers/net/ethernet/ti/icssg/icssg_prueth.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> index 7c9e9518f555a..1ea3fbd5e954e 100644
+> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> @@ -1039,7 +1039,12 @@ static int prueth_probe(struct platform_device *pdev)
+>  
+>  		prueth->registered_netdevs[PRUETH_MAC0] = prueth->emac[PRUETH_MAC0]->ndev;
+>  
+> -		emac_phy_connect(prueth->emac[PRUETH_MAC0]);
+> +		ret = emac_phy_connect(prueth->emac[PRUETH_MAC0]);
+> +		if (ret) {
+> +			dev_err(dev,
+> +				"can't connect to MII0 PHY, error -%d", ret);
+> +			goto netdev_unregister;
+> +		}
+>  		phy_attached_info(prueth->emac[PRUETH_MAC0]->ndev->phydev);
+>  	}
+>  
+> @@ -1051,7 +1056,12 @@ static int prueth_probe(struct platform_device *pdev)
+>  		}
+>  
+>  		prueth->registered_netdevs[PRUETH_MAC1] = prueth->emac[PRUETH_MAC1]->ndev;
+> -		emac_phy_connect(prueth->emac[PRUETH_MAC1]);
+> +		ret = emac_phy_connect(prueth->emac[PRUETH_MAC1]);
+> +		if (ret) {
+> +			dev_err(dev,
+> +				"can't connect to MII1 PHY, error %d", ret);
+> +			goto netdev_unregister;
+> +		}
+>  		phy_attached_info(prueth->emac[PRUETH_MAC1]->ndev->phydev);
+>  	}
+>  
+> 
+> ---
+> base-commit: e4a87abf588536d1cdfb128595e6e680af5cf3ed
+> change-id: 20240521-icssg-prueth-fix-03b03064c5ce
+> 
+> Best regards,
+> -- 
+> Romain Gantois <romain.gantois@bootlin.com>
+> 
+> 
 
