@@ -1,73 +1,65 @@
-Return-Path: <stable+bounces-45530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3E38CB3F1
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 21:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B528CB40D
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 21:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5EB11C21D4C
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 19:00:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 725231C239CD
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 19:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CBE148820;
-	Tue, 21 May 2024 19:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9C614901E;
+	Tue, 21 May 2024 19:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0ffvS9U"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JugbqVue"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665AA69DF7
-	for <stable@vger.kernel.org>; Tue, 21 May 2024 19:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57252142916;
+	Tue, 21 May 2024 19:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716318041; cv=none; b=KvxWkLnVxE1oChbWBecwa7iM2RGHNUP1Ry70IoReyMdXS73rGBSoYoCERnvARDgC0dcMSopqFluELhFkwsrwKCuejpWZc54jtFBDlLWixbX4lHDEcpAm2Wz1WAMyQLlA4Q6dcaTXt+MomXdaJ+HnNKCfZ1LWcbMWxHU0wkGa4/U=
+	t=1716318498; cv=none; b=gO7mqCqCP0ox5BDuCDD/MDy5u3T1jFQmBB9+R/3GYjEV/IHEd8QKrNT/BwDt7i60cl7Lrb0g8JfP9OHSsmMm2lYf5Cryu6olP/XLENBvfRgPOGOydgAgMgIW9UvMg6ZxLlYne4+giqnMvExLIT97iBP+exhXV+UqhTtb1YfG2yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716318041; c=relaxed/simple;
-	bh=t8+mRO88om1UW+2EYYfZw6S+QbpWR1dse6sSI6RyE84=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=QdfZ6pkhTEY9Cl7CuRJGrb9yajaH4maChtzXDS/sRxEUO2JXoxXIkgDaMqrwsbVdAzW5gWXeBk91a0ZyjXZ1sY58C8F5ZWXPjZwWe3YvBZv861r13oStUSGcOJfXBlK5LNltpNULr/9wgi2MTypXJijrE0yAVnBd7GxX6lf1adI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0ffvS9U; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716318039; x=1747854039;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=t8+mRO88om1UW+2EYYfZw6S+QbpWR1dse6sSI6RyE84=;
-  b=J0ffvS9UVdny2H8g4i5ymkIeIFtHNMZJfmcAfki7USoo08BARlDw6CzK
-   l9EnWM67xn3Gr3dgYECAaM/qXUdZILob0v3fjH8HlxtuQxRhaaoMkAq9q
-   usD480/vHCigRqKklS79U+6E32iRZqVwrwiR3u8eGve9eNqvJDahTGDkW
-   g0w+8FC/YrPCsCpMwNEQnX/f0KNm0ZZKcVQTWTym30Iruex93sACl0I5q
-   RDQca+SFJceuoX4MnnysHhWKQYLy0Iu1sHJH/Q7rpPfrSeu5mV5RISXpA
-   qx6TesiBLcJhVwPoj6Cov03xnCPVv622N1NIKGjkooySPKs07TSraMa9u
-   Q==;
-X-CSE-ConnectionGUID: qiazNG8QSHi9/ZfY/hxngQ==
-X-CSE-MsgGUID: C6vQ4V6FSlGxzHSMWY8N0g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="30060687"
-X-IronPort-AV: E=Sophos;i="6.08,178,1712646000"; 
-   d="scan'208";a="30060687"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 12:00:39 -0700
-X-CSE-ConnectionGUID: ecTIzuHBQriBX/qF1IMIxg==
-X-CSE-MsgGUID: z5qIi4seTwCI/mKW4HjYFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,178,1712646000"; 
-   d="scan'208";a="32876702"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 21 May 2024 12:00:38 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s9Uix-0000d3-1I;
-	Tue, 21 May 2024 19:00:35 +0000
-Date: Wed, 22 May 2024 02:59:00 +0800
-From: kernel test robot <lkp@intel.com>
+	s=arc-20240116; t=1716318498; c=relaxed/simple;
+	bh=U4wbU+4FKbRdiy0GkDK+FyHdxCCPRXfs7pfAF6gNJrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wxa0j/wONqrkbiYtGPhMDVM4aKQZ4gdI/EJsKfILEMDkKywMLJI4TaY8lDde2teyjIV6Ym8LEy5HUL3YuGF0ZtlzH14mbccEE0IXGIMxYrVgIbdn4K3ZIA11gKmUz/enXh9AkYGOlRbI4LAmIvjgdu2g9tSPCrAypUzYSbbReX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JugbqVue; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Aa0cLQv6EXqOfkPotmVcZhdZiy3itIGTrTeuDAF0fks=; b=JugbqVueUMPEOzD6J0OMO/9EUb
+	HVQwA9KIYPYMQBLTwCMP3MfSLThC4zef/dXWPErhjdUyKOEoNvSM0TDt6f0GEJ3OPJV2j4vp9DjJ7
+	DJOGnhcRqdyekj0IducRHiff0mImOKiA/wvJGV6qXI7kdd6uo86LRDtuWuRWdQ8YxBK0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1s9Uq1-00FmSO-8x; Tue, 21 May 2024 21:07:53 +0200
+Date: Tue, 21 May 2024 21:07:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
 To: Da Xue <da@libre.computer>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-stable <stable@vger.kernel.org>
 Subject: Re: [PATCH] net: mdio: meson-gxl set 28th bit in eth_reg2
-Message-ID: <Zkzu9PU5Mq6O4OUD@9ce27862b6d0>
+Message-ID: <8593ae57-d5ec-4b89-899d-4619d7767f81@lunn.ch>
+References: <CACqvRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx=8=9VhqZi13BCQQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,22 +70,32 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <CACqvRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx=8=9VhqZi13BCQQ@mail.gmail.com>
 
-Hi,
+On Tue, May 21, 2024 at 02:56:45PM -0400, Da Xue wrote:
+> This bit is necessary to enable packets on the interface. Without this
+> bit set, ethernet behaves as if it is working but no activity occurs.
+> 
+> The vendor SDK sets this bit along with the PHY_ID bits. u-boot will set
+> this bit as well but if u-boot is not compiled with networking, the
+> interface will not work.
+> 
+> Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support");
+> 
+> Signed-off-by: Da Xue <da@libre.computer>
 
-Thanks for your patch.
+Please don't put blank lines between tags.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+If you intend that this patch is backported to stable, please add
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Cc: stable@vger.kernel.org
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] net: mdio: meson-gxl set 28th bit in eth_reg2
-Link: https://lore.kernel.org/stable/CACqvRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx%3D8%3D9VhqZi13BCQQ%40mail.gmail.com
+Also please read:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html#netdev-faq
 
+particularly the bit about indicating the tree in the Subject:
 
+    Andrew
 
+---
+pw-bot: cr
 
