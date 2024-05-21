@@ -1,77 +1,83 @@
-Return-Path: <stable+bounces-45492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668068CAB54
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 11:57:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 049718CAC26
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 12:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2323C281E2D
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 09:57:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35BEE1C219B2
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 10:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB746BB20;
-	Tue, 21 May 2024 09:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24E37EF08;
+	Tue, 21 May 2024 10:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rUU7PaPC";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rUU7PaPC"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="QKrHGL7h"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3814561664;
-	Tue, 21 May 2024 09:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142DE6CDD5
+	for <stable@vger.kernel.org>; Tue, 21 May 2024 10:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716285461; cv=none; b=pUyrBfk5EKlBv63RMQLoEHJAtq9mNT3W5xKS6qQ95fOZx1J7BW0R5S4l4Kifwm3GLjr6yRasFMSMoWWH1428JJ9++QzZP8ACsuZOMHSsGFzRlfaGz3hf7auOcbJRo+DNdjV4xS2Ru+kgmV5/6osPshnoXKM5fOH62cWb8yP4bDc=
+	t=1716286748; cv=none; b=TY3YoODQfGw9bzX/WDjISCBEXv+OyRX+7GPQwqIzUNFRxWWDDhy9rqEOi2OzTnBoBHhaH86rz+VySnySUfyx/Hly4Sx0PR3QsAKdhXYgJSIuMxNWAO+aj+pU8hSvfP1NvKMg0oKzQbMqXXnJulENaNV5FT4NuxNoeFT4P7zywxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716285461; c=relaxed/simple;
-	bh=Bas5WRjn0dclZkkBNUogHr028J1KhD4M8KnWvB9UP14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=siqbsyta1J2xy6HCo40+YwA+i7VEVkTFVMYDJFhcMBJRlwOuWGSmgAGM1CYYFITV7WD8lYM0fkRbnXS8z+Yvi4XSwUWgGouqcqipBZy/lPEc3aCIstq7BvWn2nmLP3RrdlkZoWYXu0hB6KrRIDVa2vDrUkFmsqgYBPKx4bBBXg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rUU7PaPC; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rUU7PaPC; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 461E45C01F;
-	Tue, 21 May 2024 09:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1716285457; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=nuLERO3cjCptDjETD65Hh/zsf1Qdit+nFyKeEqzY0YQ=;
-	b=rUU7PaPCtVT6pruL/exnhNmJGYpHjApziGeOugdGqJ4oZJ1ALW5JTV5zrf7AAI95le9rF6
-	k+hUYvK/3zGnhXIR4muMoi9+F0ZOYVcLFBPxmAJPWhxTnP2wEkxEQukyGdax06yKkJSemp
-	iE9vc3ab6dL9T0kzQDYqlY5aFSOMIzU=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1716285457; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=nuLERO3cjCptDjETD65Hh/zsf1Qdit+nFyKeEqzY0YQ=;
-	b=rUU7PaPCtVT6pruL/exnhNmJGYpHjApziGeOugdGqJ4oZJ1ALW5JTV5zrf7AAI95le9rF6
-	k+hUYvK/3zGnhXIR4muMoi9+F0ZOYVcLFBPxmAJPWhxTnP2wEkxEQukyGdax06yKkJSemp
-	iE9vc3ab6dL9T0kzQDYqlY5aFSOMIzU=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 66BD513A21;
-	Tue, 21 May 2024 09:57:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id XF/wBg9wTGYiEgAAD6G6ig
-	(envelope-from <wqu@suse.com>); Tue, 21 May 2024 09:57:35 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: Lennart Poettering <lennart@poettering.net>,
-	Jiri Slaby <jslaby@suse.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] btrfs: re-introduce 'norecovery' mount option
-Date: Tue, 21 May 2024 19:27:31 +0930
-Message-ID: <44c367eab0f3fbac9567f40da7b274f2125346f3.1716285322.git.wqu@suse.com>
-X-Mailer: git-send-email 2.45.1
+	s=arc-20240116; t=1716286748; c=relaxed/simple;
+	bh=aTLAfJ7NTAq195IS6FqbKzM3Y760wbMl85VWvhcZgbA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lDNHzC+prOj7uI8TeK8zdQo1jG6DJEk0NKdX3LVm1uSFgDtey8KQUlitNGgkwdb37BLZy/mvpz9atTOL91rVqeZ4bcL5k+JjuKvg+FRkp0hSRMC6WKfmFvOVyfA1DwQC83e1gySnk+L69zYbb094PExUL3aQJw3xW7gT+9siTnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=QKrHGL7h; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-52388d9ca98so7121505e87.0
+        for <stable@vger.kernel.org>; Tue, 21 May 2024 03:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1716286745; x=1716891545; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RVE6+ZCNpzwGUe1XsnJn7ueU+NKyXAImX94cXiq0K+c=;
+        b=QKrHGL7hpwz/uI3zNsDl72G93KBtnl+z4XG+5T8OcIhPVRxm0n1KBQQD27xOKbAd4B
+         42Ks534ejYQ8O0n3675IaGEMnfLTcyydEuyVRGgn3e4+neAeUE3oVcVIFB+veCl4IeXN
+         +IZFT0SK3tGrrRyjCcdrBdlCDYwBTX3QPlCkpSY7ncqu6BXCsuH4VH3A3vCOaiGkuYgC
+         qmzg/FBR5LFaSeTYeWIFC9qTkJtNLI6sh/RmFzkpvXtRzgvrbID/tRhJvqkyP9DxLSwv
+         NL+T0nCUpJJPtRmzBZjT8tLOwvJll6tEQyPyZzgXfH/L5UGGz6wKRnmV7tc2JQ7uXxl7
+         ZLLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716286745; x=1716891545;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RVE6+ZCNpzwGUe1XsnJn7ueU+NKyXAImX94cXiq0K+c=;
+        b=Q79RkAwUlQmBKzhScLqvjc+P8o778qFaRVOg/G2kIljBkGmx6vPPDlwtsf44pctyVu
+         qebF/MvcLojYAX6q1dkLOQXMOV3nazv+630bVN3tcFdxVng94QHStoah98rpv5xIHhfJ
+         v/OMoOSoUtjhPu17FVKDqnE5oY1HvGYpexp2nz+QbfMlBS+aH2tuCMrMS8ZeJMxSdfxH
+         FCChxvETvHfYoDLSrwHNI/NA0xWJNYZTTTyJfJa8d0jZTtGFzPwn5OszDwlGnWzahkac
+         qpA+NVwJM/w6sCnIxnbAjZmXFSNs/Cm6n0u1+03WbzdLSM/yOAxam6pyq2DG+udjjgVI
+         LoKA==
+X-Gm-Message-State: AOJu0YyqICN6g/nE2X3NhoVS0OXoWSAwXDtPXNy7ROw/kh3O1SN4J7ev
+	9a8FNQvZBGbR1DKNJn3WDcE3hkGTVvEkjVvYibb5hmitWIaDsyF1LVzFrO9AAAtwKI+zsLbvcNq
+	N
+X-Google-Smtp-Source: AGHT+IHkv0xLQlJx9nmGqPzFCA5HSn/x5Ym5Kxlwi2kfYV/zoIdIVyZNAL9J7SEi3/cktsuxGCgFKQ==
+X-Received: by 2002:ac2:592f:0:b0:51f:4d57:6812 with SMTP id 2adb3069b0e04-5220fd7c8dcmr23637379e87.19.1716286744270;
+        Tue, 21 May 2024 03:19:04 -0700 (PDT)
+Received: from localhost.localdomain ([104.28.232.6])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a179c7fcfsm1577106566b.119.2024.05.21.03.19.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 21 May 2024 03:19:03 -0700 (PDT)
+From: Ignat Korchagin <ignat@cloudflare.com>
+To: stable@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: kernel-team@cloudflare.com,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Hou Tao <houtao1@huawei.com>
+Subject: [PATCH 6.6.y] bpf: Add missing BPF_LINK_TYPE invocations
+Date: Tue, 21 May 2024 11:18:26 +0100
+Message-Id: <20240521101826.95373-1-ignat@cloudflare.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,87 +85,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -0.58
-X-Spam-Level: 
-X-Spamd-Result: default: False [-0.58 / 50.00];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	BAYES_HAM(-0.78)[84.53%];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.com:email];
-	RCVD_TLS_ALL(0.00)[]
 
-Although 'norecovery' mount option is marked deprecated for a long time
-and a warning message is introduced during the deprecation window, it's
-still actively utilized by several projects that need a safely way to
-mount a btrfs without any writes.
+From: Jiri Olsa <jolsa@kernel.org>
 
-Furthermore this 'norecovery' mount option is supported by most major
-filesystems, which makes it harder to validate our motivation.
+commit 117211aa739a926e6555cfea883be84bee6f1695 upstream.
 
-This patch would re-introduce the 'norecovery' mount option, and output
-a message to recommend 'rescue=nologreplay' option.
+Pengfei Xu reported [1] Syzkaller/KASAN issue found in bpf_link_show_fdinfo.
 
-Link: https://lore.kernel.org/linux-btrfs/ZkxZT0J-z0GYvfy8@gardel-login/#t
-Link: https://github.com/systemd/systemd/pull/32892
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1222429
-Reported-by: Lennart Poettering <lennart@poettering.net>
-Reported-by: Jiri Slaby <jslaby@suse.com>
-Fixes: a1912f712188 ("btrfs: remove code for inode_cache and recovery mount options")
-Cc: stable@vger.kernel.org # 6.8+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+The reason is missing BPF_LINK_TYPE invocation for uprobe multi
+link and for several other links, adding that.
+
+[1] https://lore.kernel.org/bpf/ZXptoKRSLspnk2ie@xpf.sh.intel.com/
+
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Fixes: e420bed02507 ("bpf: Add fd-based tcx multi-prog infra with link support")
+Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
+Fixes: 35dfaad7188c ("netkit, bpf: Add bpf programmable net device")
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/bpf/20231215230502.2769743-1-jolsa@kernel.org
+Cc: stable@vger.kernel.org # 6.6
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
 ---
- fs/btrfs/super.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Hi,
 
-diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-index 2dbc930a20f7..f05cce7c8b8d 100644
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -119,6 +119,7 @@ enum {
- 	Opt_thread_pool,
- 	Opt_treelog,
- 	Opt_user_subvol_rm_allowed,
-+	Opt_norecovery,
- 
- 	/* Rescue options */
- 	Opt_rescue,
-@@ -245,6 +246,8 @@ static const struct fs_parameter_spec btrfs_fs_parameters[] = {
- 	__fsparam(NULL, "nologreplay", Opt_nologreplay, fs_param_deprecated, NULL),
- 	/* Deprecated, with alias rescue=usebackuproot */
- 	__fsparam(NULL, "usebackuproot", Opt_usebackuproot, fs_param_deprecated, NULL),
-+	/* For compatibility only, alias for "rescue=nologreplay". */
-+	fsparam_flag("norecovery", Opt_norecovery),
- 
- 	/* Debugging options. */
- 	fsparam_flag_no("enospc_debug", Opt_enospc_debug),
-@@ -438,6 +441,11 @@ static int btrfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 		"'nologreplay' is deprecated, use 'rescue=nologreplay' instead");
- 		btrfs_set_opt(ctx->mount_opt, NOLOGREPLAY);
- 		break;
-+	case Opt_norecovery:
-+		btrfs_info(NULL,
-+"'norecovery' is for compatibility only, recommended to use 'rescue=nologreplay'");
-+		btrfs_set_opt(ctx->mount_opt, NOLOGREPLAY);
-+		break;
- 	case Opt_flushoncommit:
- 		if (result.negated)
- 			btrfs_clear_opt(ctx->mount_opt, FLUSHONCOMMIT);
+We have experienced a KASAN warning in production on a 6.6 kernel, similar to
+[1]. This backported patch was adjusted to apply onto 6.6 stable branch: the
+only change is dropping the BPF_LINK_TYPE(BPF_LINK_TYPE_NETKIT, netkit)
+definition from the header as netkit was only introduced in 6.7 and 6.7 has the
+backport already.
+
+I was not able to run the syzkaller reproducer from [1], but we have not seen
+the KASAN warning in production since applying this patch internally.
+
+Regards,
+Ignat 
+
+ include/linux/bpf_types.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/bpf_types.h b/include/linux/bpf_types.h
+index fc0d6f32c687..dfaae3e3ec15 100644
+--- a/include/linux/bpf_types.h
++++ b/include/linux/bpf_types.h
+@@ -142,9 +142,12 @@ BPF_LINK_TYPE(BPF_LINK_TYPE_ITER, iter)
+ #ifdef CONFIG_NET
+ BPF_LINK_TYPE(BPF_LINK_TYPE_NETNS, netns)
+ BPF_LINK_TYPE(BPF_LINK_TYPE_XDP, xdp)
++BPF_LINK_TYPE(BPF_LINK_TYPE_NETFILTER, netfilter)
++BPF_LINK_TYPE(BPF_LINK_TYPE_TCX, tcx)
+ #endif
+ #ifdef CONFIG_PERF_EVENTS
+ BPF_LINK_TYPE(BPF_LINK_TYPE_PERF_EVENT, perf)
+ #endif
+ BPF_LINK_TYPE(BPF_LINK_TYPE_KPROBE_MULTI, kprobe_multi)
+ BPF_LINK_TYPE(BPF_LINK_TYPE_STRUCT_OPS, struct_ops)
++BPF_LINK_TYPE(BPF_LINK_TYPE_UPROBE_MULTI, uprobe_multi)
 -- 
-2.45.1
+2.39.2
 
 
