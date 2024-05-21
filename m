@@ -1,196 +1,261 @@
-Return-Path: <stable+bounces-45512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21608CAF71
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 15:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C878CAF93
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 15:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF7E0B232D1
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:32:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6CD7B21E4E
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CC976049;
-	Tue, 21 May 2024 13:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="IND5PBmT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D597EEF3;
+	Tue, 21 May 2024 13:43:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unicorn.mansr.com (unicorn.mansr.com [81.2.72.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292DCBA53;
-	Tue, 21 May 2024 13:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490677F46B;
+	Tue, 21 May 2024 13:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.2.72.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716298372; cv=none; b=Cfu2yI14FQelstRjQw/JsMU5c5bChew0zXgYcmtIr4iDwEs5YqpPsWLgr/Vf6vgCnB+8edxbXw+PfgOi57+5VSRhfrAs6UIK84ku2iJwIXHB4/jQyQnDpllvlMve4hxLX34/B7K11gl/cyY44hquU1xxqzzh0hZqZtFMLC0nh4Y=
+	t=1716298988; cv=none; b=tVMXjhKjIzIzarKsRVNaIW4luU/qaEKOaGgEuRSbVMg5t20akBTvibiMrmLIGg/FTV74WmjHap99eyvoZAdslP3D1FoPZpbmzWu/SwGc/jHkYxA8eNBfgK94qlxLqfPqtUOSYQ98S7JYJ8MeNbRxDFW9XFzgATFty3XQmzjLaks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716298372; c=relaxed/simple;
-	bh=z6T0HVhmc6PWWm4/WnvDPQF6G+tY1KmjDUmgWneQUgE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i7lD7mnnN18lDmZ3s6hY29yY2U73Xt3ECTMmozzB2Jnp64EIYHvUse2GGf5rf2Vj+oJIvw71VgoQV5a4a/BcQ/fLC7sSjTUME2lkpIvvQBzRD2qzQ4H24UYa6rmVJpkuwYgGkkLkFIf1M3LysmfcNNJXrsq9/8G2foQDztct8fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=IND5PBmT; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-571ba432477so9806646a12.1;
-        Tue, 21 May 2024 06:32:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1716298369; x=1716903169; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:content-language
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=z6T0HVhmc6PWWm4/WnvDPQF6G+tY1KmjDUmgWneQUgE=;
-        b=IND5PBmTbMItrGnpmsqkhTWBMPxPtLjVi0ZvRRuqzx4ilezht7vYlnnvhILDD4ZKNt
-         wrw3L6HgonTHcs6iFf6iageb0Uffr5WkHnO24xnE+ZE+AhPWbjiWjkdeh665rUej+/mI
-         faSoM2ykyiMkCd3fEc89IE7pWj8Xtk+qy6fo/wDCGNUF/qMlQuiHXKGhJ36bDRuX2biM
-         03j0uA1zfJnuRbpobn1JUjNn6f7ji/AOfH5f0mB1sAuiZ62cNB+jQQIcV0Gav4V38M/V
-         UqgpjJTDyb6U/9V9pEB/g0pUYQ9ZeipBvsXBqvpmFESkOXgdPPz+Dra3yD3TZ3+Jc+YF
-         1xRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716298369; x=1716903169;
-        h=in-reply-to:autocrypt:from:references:cc:to:content-language
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z6T0HVhmc6PWWm4/WnvDPQF6G+tY1KmjDUmgWneQUgE=;
-        b=qdwqKQQWtdWpPioFlgNL9k3tJnNQIvzFY+AME9cg8nRjDTe5qLEoizsV3KcLfwo5a9
-         eIxnBflibLocucoirKnyCKJnBKuyBcMyqRvgWs2S7qhPzDU9rcOvpif5o/jxVZcXINgw
-         TbiFA7agJqjMRoOYlrP4wZMsPng0iJvzbwX3XkRq3ZerPP8Q8xZo1DEOZI2BgVBlWtIT
-         JxekxujEM4CBGAusuqR1H8IAJjsLRY94gKQvXhcxb8FihYWy8ti2Nu6R6ZXOIduoFypA
-         LOR9NryP3o8XWpnQtEYwMJOsAM9YHPvOdVBGeeLN9fmliY0Fic6aBjw6aftl/zMgdHYa
-         FWuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULA54SHqOx2AMv47PnoiYqVC8I3LI/CwJnTE4tIHkpYN/W/BXbuA0CVr/cwknv86GwBBRMytiL4zEiK8izILgiCuUBfv9t8+Akag==
-X-Gm-Message-State: AOJu0YwO96++R2aqPtY4mL1aMeGWRB2zGEHE6kBP045U5x1/ypRBteso
-	wbWiHyGF11dTS+73GX2Tt+U62rN1GHHopM52t1jLQvIv/hSKRzFUHPW7lwI=
-X-Google-Smtp-Source: AGHT+IEIYSQJt2GpOvAoo40guDZK1jBMVRKK1i2AjxZYjMkPMUY3ppOu7AVoGiFfoXAq21ViWLVT0g==
-X-Received: by 2002:a05:6402:1a4d:b0:573:50d8:3fc0 with SMTP id 4fb4d7f45d1cf-57350d84107mr20881439a12.11.1716298369133;
-        Tue, 21 May 2024 06:32:49 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4433.dip0.t-ipconnect.de. [91.43.68.51])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5733bea653bsm16892463a12.1.2024.05.21.06.32.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 May 2024 06:32:48 -0700 (PDT)
-Message-ID: <d6e96532-4727-4c72-9b4b-0cf0bdbf7288@googlemail.com>
-Date: Tue, 21 May 2024 15:32:47 +0200
+	s=arc-20240116; t=1716298988; c=relaxed/simple;
+	bh=zjB8v+NoVOfwtkTTGvRVzO2+JLMrRbv6D0wkhQKyrv0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TR2wMQ+K8g/IQNOkiSYHHM4Kb2qIOhWAXVi4eBowQVgsBTzHF4sjUUhGb0fMeV6fknrwmxVOzILQb3KoZ62svVFjWTPuF1PFHkYvIRvsk9EWXemaTgTFALAvyfosDgDTvPEsfCXNavTrZUIJDAm1JQOK06OWWWI/9YrbIhTgAYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com; spf=pass smtp.mailfrom=mansr.com; arc=none smtp.client-ip=81.2.72.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mansr.com
+Received: from raven.mansr.com (raven.mansr.com [IPv6:2001:8b0:ca0d:1::3])
+	by unicorn.mansr.com (Postfix) with ESMTPS id 5E1C915362;
+	Tue, 21 May 2024 14:35:47 +0100 (BST)
+Received: by raven.mansr.com (Postfix, from userid 51770)
+	id 4E7CB219E4D; Tue, 21 May 2024 14:35:47 +0100 (BST)
+From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To: Frank Oltmanns <frank@oltmanns.dev>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Guido
+ =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>, Purism Kernel Team
+ <kernel@puri.sm>, Ondrej
+ Jirman <megi@xff.cz>, Neil Armstrong <neil.armstrong@linaro.org>, Jessica
+ Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] clk: sunxi-ng: common: Support minimum and
+ maximum rate
+In-Reply-To: <20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
+	(Frank Oltmanns's message of "Sun, 10 Mar 2024 14:21:11 +0100")
+References: <20240310-pinephone-pll-fixes-v4-0-46fc80c83637@oltmanns.dev>
+	<20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
+Date: Tue, 21 May 2024 14:35:47 +0100
+Message-ID: <yw1xo78z8ez0.fsf@mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/29.3 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH] scsi: core: Handle devices which return an unusually
- large VPD page count
-Content-Language: de-DE
-To: "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com>
- <20240521023040.2703884-1-martin.petersen@oracle.com>
-From: Peter Schneider <pschneider1968@googlemail.com>
-Autocrypt: addr=pschneider1968@googlemail.com; keydata=
- xjMEY58biBYJKwYBBAHaRw8BAQdADPnoGTrfCUCyH7SZVkFtnlzsFpeKANckofR4WVLMtMzN
- L1BldGVyIFNjaG5laWRlciA8cHNjaG5laWRlcjE5NjhAZ29vZ2xlbWFpbC5jb20+wpwEExYK
- AEQCGyMFCQW15qgFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSjgovXlszhGoyt6IZu
- OpLJLD/yRAUCY58b8AIZAQAKCRBuOpLJLD/yRIeIAQD0+/LMdKHM6AJdPCt+e9Z92BMybfnN
- RtGqkdZWtvdhDQD9FJkGh/3PFtDinimB8UOB7Gi6AGxt9Nu9ne7PvHa0KQXOOARjnxuIEgor
- BgEEAZdVAQUBAQdAw2GRwTf5HJlO6CCigzqH6GUKOjqR1xJ+3nR5EbBze0sDAQgHwn4EGBYK
- ACYWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCY58biAIbDAUJBbXmqAAKCRBuOpLJLD/yRONS
- AQCwB9qiEQoSnxHodu8kRuvUxXKIqN7701W+INXtFGtJygEAyPZH3/vSBJ4A7GUG7BZyQRcr
- ryS0CUq77B7ZkcI1Nwo=
-In-Reply-To: <20240521023040.2703884-1-martin.petersen@oracle.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------OQ9gyKzdROHjwZ1bm52jIPEM"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------OQ9gyKzdROHjwZ1bm52jIPEM
-Content-Type: multipart/mixed; boundary="------------Vf0anrmFofT3GWNU6AlOh46d";
- protected-headers="v1"
-From: Peter Schneider <pschneider1968@googlemail.com>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org
-Cc: stable@vger.kernel.org
-Message-ID: <d6e96532-4727-4c72-9b4b-0cf0bdbf7288@googlemail.com>
-Subject: Re: [PATCH] scsi: core: Handle devices which return an unusually
- large VPD page count
-References: <eec6ebbf-061b-4a7b-96dc-ea748aa4d035@googlemail.com>
- <20240521023040.2703884-1-martin.petersen@oracle.com>
-In-Reply-To: <20240521023040.2703884-1-martin.petersen@oracle.com>
+Frank Oltmanns <frank@oltmanns.dev> writes:
 
---------------Vf0anrmFofT3GWNU6AlOh46d
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+> The Allwinner SoC's typically have an upper and lower limit for their
+> clocks' rates. Up until now, support for that has been implemented
+> separately for each clock type.
+>
+> Implement that functionality in the sunxi-ng's common part making use of
+> the CCF rate liming capabilities, so that it is available for all clock
+> types.
+>
+> Suggested-by: Maxime Ripard <mripard@kernel.org>
+> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/clk/sunxi-ng/ccu_common.c | 19 +++++++++++++++++++
+>  drivers/clk/sunxi-ng/ccu_common.h |  3 +++
+>  2 files changed, 22 insertions(+)
 
-QW0gMjEuMDUuMjAyNCB1bSAwNDozMCBzY2hyaWViIE1hcnRpbiBLLiBQZXRlcnNlbjoNCiA+
-IFBldGVyIFNjaG5laWRlciByZXBvcnRlZCB0aGF0IGEgc3lzdGVtIHdvdWxkIG5vIGxvbmdl
-ciBib290IGFmdGVyDQogPiB1cGRhdGluZyB0byA2LjguNC4gIFBldGVyIGJpc2VjdGVkIHRo
-ZSBpc3N1ZSBhbmQgaWRlbnRpZmllZCBjb21taXQNCiA+IGI1ZmMwN2E1ZmI1NiAoInNjc2k6
-IGNvcmU6IENvbnN1bHQgc3VwcG9ydGVkIFZQRCBwYWdlIGxpc3QgcHJpb3IgdG8NCiA+IGZl
-dGNoaW5nIHBhZ2UiKSBhcyBiZWluZyB0aGUgY3VscHJpdC4NCiA+DQogPiBUdXJucyBvdXQg
-dGhlIGVuY2xvc3VyZSBkZXZpY2UgaW4gUGV0ZXIncyBzeXN0ZW0gcmVwb3J0cyBhIGJ5dGVz
-d2FwcGVkDQogPiBwYWdlIGxlbmd0aCBmb3IgVlBEIHBhZ2UgMC4gSXQgcmVwb3J0cyAiMDIg
-MDAiIGFzIHBhZ2UgbGVuZ3RoIGluc3RlYWQNCiA+IG9mICIwMCAwMiIuIFRoaXMgY2F1c2Vz
-IHVzIHRvIGF0dGVtcHQgdG8gYWNjZXNzIDUxNiBieXRlcyAocGFnZSBsZW5ndGgNCiA+ICsg
-aGVhZGVyKSBvZiBpbmZvcm1hdGlvbiBkZXNwaXRlIG9ubHkgMiBwYWdlcyBiZWluZyBwcmVz
-ZW50Lg0KID4NCiA+IExpbWl0IHRoZSBwYWdlIHNlYXJjaCBzY29wZSB0byB0aGUgc2l6ZSBv
-ZiBvdXIgVlBEIGJ1ZmZlciB0byBndWFyZA0KID4gYWdhaW5zdCBkZXZpY2VzIHJldHVybmlu
-ZyBhIGxhcmdlciBwYWdlIGNvdW50IHRoYW4gcmVxdWVzdGVkLg0KID4NCiA+IENjOiBzdGFi
-bGVAdmdlci5rZXJuZWwub3JnDQogPiBSZXBvcnRlZC1ieTogUGV0ZXIgU2NobmVpZGVyIDxw
-c2NobmVpZGVyMTk2OEBnb29nbGVtYWlsLmNvbT4NCiA+IFRlc3RlZC1ieTogUGV0ZXIgU2No
-bmVpZGVyIDxwc2NobmVpZGVyMTk2OEBnb29nbGVtYWlsLmNvbT4NCiA+IEZpeGVzOiBiNWZj
-MDdhNWZiNTYgKCJzY3NpOiBjb3JlOiBDb25zdWx0IHN1cHBvcnRlZCBWUEQgcGFnZSBsaXN0
-IHByaW9yIHRvIGZldGNoaW5nIHBhZ2UiKQ0KID4gTGluazogaHR0cHM6Ly9sb3JlLmtlcm5l
-bC5vcmcvYWxsL2VlYzZlYmJmLTA2MWItNGE3Yi05NmRjLWVhNzQ4YWE0ZDAzNUBnb29nbGVt
-YWlsLmNvbS8NCiA+IFNpZ25lZC1vZmYtYnk6IE1hcnRpbiBLLiBQZXRlcnNlbiA8bWFydGlu
-LnBldGVyc2VuQG9yYWNsZS5jb20+DQogPiAtLS0NCiA+ICAgZHJpdmVycy9zY3NpL3Njc2ku
-YyB8IDcgKysrKysrKw0KID4gICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspDQog
-Pg0KID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvc2NzaS9zY3NpLmMgYi9kcml2ZXJzL3Njc2kv
-c2NzaS5jDQogPiBpbmRleCAzZTBjMDM4MTI3N2EuLmYwNDY0ZGIzZjlkZSAxMDA2NDQNCiA+
-IC0tLSBhL2RyaXZlcnMvc2NzaS9zY3NpLmMNCiA+ICsrKyBiL2RyaXZlcnMvc2NzaS9zY3Np
-LmMNCiA+IEBAIC0zNTAsNiArMzUwLDEzIEBAIHN0YXRpYyBpbnQgc2NzaV9nZXRfdnBkX3Np
-emUoc3RydWN0IHNjc2lfZGV2aWNlICpzZGV2LCB1OCBwYWdlKQ0KID4gICAJCWlmIChyZXN1
-bHQgPCBTQ1NJX1ZQRF9IRUFERVJfU0laRSkNCiA+ICAgCQkJcmV0dXJuIDA7DQogPg0KID4g
-KwkJaWYgKHJlc3VsdCA+IHNpemVvZih2cGQpKSB7DQogPiArCQkJZGV2X3dhcm5fb25jZSgm
-c2Rldi0+c2Rldl9nZW5kZXYsDQogPiArCQkJCSAgICAgICIlczogbG9uZyBWUEQgcGFnZSAw
-IGxlbmd0aDogJWQgYnl0ZXNcbiIsDQogPiArCQkJCSAgICAgIF9fZnVuY19fLCByZXN1bHQp
-Ow0KID4gKwkJCXJlc3VsdCA9IHNpemVvZih2cGQpOw0KID4gKwkJfQ0KID4gKw0KID4gICAJ
-CXJlc3VsdCAtPSBTQ1NJX1ZQRF9IRUFERVJfU0laRTsNCiA+ICAgCQlpZiAoIW1lbWNocigm
-dnBkW1NDU0lfVlBEX0hFQURFUl9TSVpFXSwgcGFnZSwgcmVzdWx0KSkNCiA+ICAgCQkJcmV0
-dXJuIDA7DQoNCg0KDQpJIGhhdmUgYnVpbHQgYW5kIHRlc3RlZCBNYXJ0aW4ncyBwYXRjaCBh
-Z2FpbnN0IDYuOC40LCA2LjguMTAsIGFuZCA2LjkuMSwgYW5kIGl0IHdvcmtzIGZpbmUgDQph
-bmQgZml4ZXMgbXkgaXNzdWUuDQoNClRlc3RlZC1ieTogUGV0ZXIgU2NobmVpZGVyIDxwc2No
-bmVpZGVyMTk2OEBnb29nbGVtYWlsLmNvbT4NCg0KSW4gY2FzZSBhbnlib2R5IGVsc2UgaXMg
-YWZmZWN0ZWQ6IFRoZSBlbmNsb3N1cmUgZGV2aWNlIGluIHF1ZXN0aW9uIHdpdGggdGhhdCBi
-dWdneSANCmJlaGF2aW91ciBpcyB0aGF0IGluIGEgU3VwZXJtaWNybyA3NDVCVFEtUjkyMEIg
-c2VydmVyIGNhc2luZywgd2l0aCBTQVMvU0FUQSBCYWNrcGxhbmUgDQoiNzQzwqBTQVPCoEJB
-Q0tQTEFORcKgVy9BTUnCoE1HOTA3MiIsIE1HOTA3MiBiZWluZyB0aGUgY29udHJvbGxlciBj
-aGlwIGJ5IEFtZXJpY2FuIE1lZ2F0cmVuZHMsIA0KSW5jLiBhY2NvcmRpbmcgdG8gdGhlIGRl
-dmljZSBkb2N1bWVudGF0aW9uIHdoaWNoIGNhbiBiZSBmb3VuZCBoZXJlOg0KDQpodHRwczov
-L3d3dy5zdXBlcm1pY3JvLmNvbS9kZS9wcm9kdWN0cy9jaGFzc2lzLzR1Lzc0NS9zYzc0NWJ0
-cS1yOTIwYg0KDQoNCg0KQmVzdGUgR3LDvMOfZSwNClBldGVyIFNjaG5laWRlcg0KDQotLSAN
-CkNsaW1iIHRoZSBtb3VudGFpbiBub3QgdG8gcGxhbnQgeW91ciBmbGFnLCBidXQgdG8gZW1i
-cmFjZSB0aGUgY2hhbGxlbmdlLA0KZW5qb3kgdGhlIGFpciBhbmQgYmVob2xkIHRoZSB2aWV3
-LiBDbGltYiBpdCBzbyB5b3UgY2FuIHNlZSB0aGUgd29ybGQsDQpub3Qgc28gdGhlIHdvcmxk
-IGNhbiBzZWUgeW91LiAgICAgICAgICAgICAgICAgICAgLS0gRGF2aWQgTWNDdWxsb3VnaCBK
-ci4NCg0KT3BlblBHUDogIDB4QTM4MjhCRDc5NkNDRTExQThDQURFODg2NkUzQTkyQzkyQzNG
-RjI0NA0KRG93bmxvYWQ6IGh0dHBzOi8vd3d3LnBldGVycy1uZXR6cGxhdHouZGUvZG93bmxv
-YWQvcHNjaG5laWRlcjE5NjhfcHViLmFzYw0KaHR0cHM6Ly9rZXlzLm1haWx2ZWxvcGUuY29t
-L3Brcy9sb29rdXA/b3A9Z2V0JnNlYXJjaD1wc2NobmVpZGVyMTk2OEBnb29nbGVtYWlsLmNv
-bQ0KaHR0cHM6Ly9rZXlzLm1haWx2ZWxvcGUuY29tL3Brcy9sb29rdXA/b3A9Z2V0JnNlYXJj
-aD1wc2NobmVpZGVyMTk2OEBnbWFpbC5jb20NCg==
+This just landed in 6.6 stable, and it broke HDMI output on an A20 based
+device, the clocks ending up all wrong as seen in this diff of
+/sys/kernel/debug/clk/clk_summary:
 
---------------Vf0anrmFofT3GWNU6AlOh46d--
+@@ -70,16 +71,14 @@
+           apb1-i2c0                  0       0        0        24000000   =
+ 0=20=20=20
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+        pll-gpu                       0       0        0        1200000000 =
+ 0=20=20=20
+-       pll-video1                    3       3        1        159000000  =
+ 0=20=20=20
++       pll-video1                    2       2        1        159000000  =
+ 0=20=20=20
+           hdmi                       1       1        0        39750000   =
+ 0=20=20=20
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+           tcon0-ch1-sclk2            1       1        1        39750000   =
+ 0=20=20=20
+              tcon0-ch1-sclk1         1       1        1        39750000   =
+ 0=20=20=20
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+-          pll-video1-2x              1       1        0        318000000  =
+ 0=20=20=20
++          pll-video1-2x              0       0        0        318000000  =
+ 0=20=20=20
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+-             hdmi-tmds               2       2        0        39750000   =
+ 0=20=20=20
+-                hdmi-ddc             1       1        0        1987500    =
+ 0=20=20=20
+        pll-periph-base               2       2        0        1200000000 =
+ 0=20=20=20
+           mbus                       1       1        0        300000000  =
+ 0=20=20=20
+           pll-periph-sata            0       0        0        100000000  =
+ 0=20=20=20
+@@ -199,7 +198,7 @@
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+           ace                        0       0        0        384000000  =
+ 0=20=20=20
+           ve                         0       0        0        384000000  =
+ 0=20=20=20
+-       pll-video0                    4       4        2        297000000  =
+ 0=20=20=20
++       pll-video0                    5       5        2        297000000  =
+ 0=20=20=20
+           hdmi1                      0       0        0        297000000  =
+ 0=20=20=20
+           tcon1-ch1-sclk2            0       0        0        297000000  =
+ 0=20=20=20
+              tcon1-ch1-sclk1         0       0        0        297000000  =
+ 0=20=20=20
+@@ -222,8 +221,10 @@
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+           de-be0                     1       1        1        297000000  =
+ 0=20=20=20
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+-          pll-video0-2x              0       0        0        594000000  =
+ 0=20=20=20
++          pll-video0-2x              1       1        0        594000000  =
+ 0=20=20=20
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
++             hdmi-tmds               2       2        0        594000000  =
+ 0=20=20=20
++                hdmi-ddc             1       1        0        29700000   =
+ 0=20=20=20
+        pll-audio-base                0       0        0        1500000    =
+ 0=20=20=20
+           pll-audio-8x               0       0        0        3000000    =
+ 0=20=20=20
+              i2s2                    0       0        0        3000000    =
+ 0=20=20=20
 
---------------OQ9gyKzdROHjwZ1bm52jIPEM
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Reverting this commit makes it work again.
 
------BEGIN PGP SIGNATURE-----
+> diff --git a/drivers/clk/sunxi-ng/ccu_common.c b/drivers/clk/sunxi-ng/ccu=
+_common.c
+> index 8babce55302f..ac0091b4ce24 100644
+> --- a/drivers/clk/sunxi-ng/ccu_common.c
+> +++ b/drivers/clk/sunxi-ng/ccu_common.c
+> @@ -44,6 +44,16 @@ bool ccu_is_better_rate(struct ccu_common *common,
+>  			unsigned long current_rate,
+>  			unsigned long best_rate)
+>  {
+> +	unsigned long min_rate, max_rate;
+> +
+> +	clk_hw_get_rate_range(&common->hw, &min_rate, &max_rate);
+> +
+> +	if (current_rate > max_rate)
+> +		return false;
+> +
+> +	if (current_rate < min_rate)
+> +		return false;
+> +
+>  	if (common->features & CCU_FEATURE_CLOSEST_RATE)
+>  		return abs(current_rate - target_rate) < abs(best_rate - target_rate);
+>
+> @@ -122,6 +132,7 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, str=
+uct device *dev,
+>
+>  	for (i =3D 0; i < desc->hw_clks->num ; i++) {
+>  		struct clk_hw *hw =3D desc->hw_clks->hws[i];
+> +		struct ccu_common *common =3D hw_to_ccu_common(hw);
+>  		const char *name;
+>
+>  		if (!hw)
+> @@ -136,6 +147,14 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, st=
+ruct device *dev,
+>  			pr_err("Couldn't register clock %d - %s\n", i, name);
+>  			goto err_clk_unreg;
+>  		}
+> +
+> +		if (common->max_rate)
+> +			clk_hw_set_rate_range(hw, common->min_rate,
+> +					      common->max_rate);
+> +		else
+> +			WARN(common->min_rate,
+> +			     "No max_rate, ignoring min_rate of clock %d - %s\n",
+> +			     i, name);
+>  	}
+>
+>  	ret =3D of_clk_add_hw_provider(node, of_clk_hw_onecell_get,
+> diff --git a/drivers/clk/sunxi-ng/ccu_common.h b/drivers/clk/sunxi-ng/ccu=
+_common.h
+> index 942a72c09437..329734f8cf42 100644
+> --- a/drivers/clk/sunxi-ng/ccu_common.h
+> +++ b/drivers/clk/sunxi-ng/ccu_common.h
+> @@ -31,6 +31,9 @@ struct ccu_common {
+>  	u16		lock_reg;
+>  	u32		prediv;
+>
+> +	unsigned long	min_rate;
+> +	unsigned long	max_rate;
+> +
+>  	unsigned long	features;
+>  	spinlock_t	*lock;
+>  	struct clk_hw	hw;
+>
+> --=20
+>
+> 2.44.0
+>
 
-wnsEABYIACMWIQSjgovXlszhGoyt6IZuOpLJLD/yRAUCZkyifwUDAAAAAAAKCRBuOpLJLD/yRHn7
-AP4otGQWvGg4JHdFd9LRpwhAkmxYeVHbFpQk1xB0brMhagD/XefSDLqgfPS0eCv9A+2829iG7LFK
-Iw+PuLtqIkFIUQI=
-=4AEU
------END PGP SIGNATURE-----
-
---------------OQ9gyKzdROHjwZ1bm52jIPEM--
+--=20
+M=E5ns Rullg=E5rd
 
