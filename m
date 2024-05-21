@@ -1,157 +1,121 @@
-Return-Path: <stable+bounces-45485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92618CA9CB
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 10:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD528CA9F0
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 10:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5033A1F2132A
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 08:15:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34F71F216C2
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 08:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEE25028A;
-	Tue, 21 May 2024 08:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC5B54F8D;
+	Tue, 21 May 2024 08:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SR3i1CBv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tMzcLzl5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C2315EA2;
-	Tue, 21 May 2024 08:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934F04643A
+	for <stable@vger.kernel.org>; Tue, 21 May 2024 08:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716279343; cv=none; b=WjXAyB0y2tqcwCO9hV8Y1QSTreuv06R93htdslLslfyc251zkkZ+Ae6ECZreD21rSjn1x0FkNJhLwTPHhAGkYaBrQ++WK9xxAG53WdXA9xtp/Zvw3kDZINZQ2jzLDVp09cLQWzldDpbtA+eiZlAX3IrnEMbTdIS8dNAx6WmbFB0=
+	t=1716280231; cv=none; b=Om7Sgx5gc9P+ktox8uVrEr0sp/Ov9z2GDBMuBYca5jAVTWzv1ouX9JSgnfJsJxtniHkxwmKQyW2/ATcoktUBFO4t7hDIZ/xEK08WrdU/Dn5Dx6tYO9n8nAyGdLDN4ySiH8eyk6uII+vQl92M3LBcJzkFMBX1Nw5qMJp2kqec60A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716279343; c=relaxed/simple;
-	bh=03NnX/gPP5q80BC4asuBpkqYVv98rLURX/ei/Ofcp+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PH3bDPeQEYc27QX1avUOiKRQhwLafKD4wuJyLwp12vgvSPV9Wt4bVySLMKm4Q7GOWCWCB54fV4QXLb2tuqlOz0CVliYbyBDL7Ty13FeAmzLpzwaYOOIldEI9RwNi73WPC9CfA1H2aT3iA7/8TkieBaJtNWcq1mgVjj3jIS6yuIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SR3i1CBv; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1ecd9a81966so24502275ad.0;
-        Tue, 21 May 2024 01:15:40 -0700 (PDT)
+	s=arc-20240116; t=1716280231; c=relaxed/simple;
+	bh=13gYofko46IZMmpvH5qkx1agAyFYwqb1N2f3GxAXerM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m8RRjI+WjdEziPV+Ql2USQGdw4NCTzKyF+IauChlWwsduwXqfYMpiooaDelbVXhTIQ6j78O3BbNRDfrlcEbgWhLIl2CiU/fCHv0k1wlx0hyTms7nd7HHNGRMXaGxCLh1MM1+om2QPpfii1OVWvwU7HoaC1QBHOpxRKLeXbK1hsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tMzcLzl5; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-34f0e55787aso2728254f8f.2
+        for <stable@vger.kernel.org>; Tue, 21 May 2024 01:30:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716279340; x=1716884140; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7fOkVqi2qkIsFMvRkB9KtVo2EQjUhNueVGG8DYcj/Qw=;
-        b=SR3i1CBvX+PLCUCHCMpzu9fw8l7+17tfeV+M+CFTB3LHSlsgEI9XkhjqugNLzpEBfG
-         96gDbgf94uFmZNfpjBCxzxxqUQ0i3875WwRWVRit2HAsWwmwe2kdGvUqocbWkp3Ne57h
-         T36jO1Z5gVjHW0n7VnL2MS/WZWfFg+5D08BLzxl1RMadP3Vn5N+67Wxn1hfgebJ99fip
-         ocbObI4EZ7ip2UnZVE0ZFE7gL84Qd7nGHKNFNCM6itjHr6LblGjDNHWTeZsMviSKYq2z
-         RVKeoFU38l3hNJrpv1xEfUJsPfN07Fku43LUkLH97aTuwWB5Yrz+RH/lhqt8omRbX02M
-         AHaw==
+        d=linaro.org; s=google; t=1716280228; x=1716885028; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wrA786U4KPavR4LnBySZw2GdS7HLYmlFSbgJ1uOdz/o=;
+        b=tMzcLzl5cu7NYEQg5pJPzYCI4K5OZDVcL16E/F3vL88fwZywPZt/ZrzrhI1r95+IgL
+         K4tFmaWw4OPhB8swgw/5moMKLe5ydhPfsrbkJccq+PS2CmwKULnRKY2Z7mouvqlPMZaP
+         DrO1EfGJ8KTsNChnrK83j7uIAYnyFZ64eZyK2SsqnFFgss9MberQ+Rp3MeR1hQMsRMez
+         5aEAYtQa6YEuIHpAZ3VCyHpTeWvp1L+OoqiRQ2itbOzQ1Bsgs03mMODbjgPfNvFcbP5N
+         e51HaHEbL4TOa3iYQlXVoGyGqxidSB+mAykYGhOp3QthJ+3C8nIsnodItIAQPTI4cZDL
+         nQ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716279340; x=1716884140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7fOkVqi2qkIsFMvRkB9KtVo2EQjUhNueVGG8DYcj/Qw=;
-        b=kpqAd44AooVG5lMlNl8uS/gLxurb04witapOodGc7kmrI/k6DEDId/D3LmkqkUOGoO
-         r5JGu6+JNRNNrwQnDq3gIbCBjKFV6Z7evJhUffhpdXQrkZHj/Li5GXVfpAbfUmJvEhfo
-         Dx31FRnnxUjxvb6pX4LB5aG4HAXSJPIZTLq6fqI49rc7MYmBqwaDigYQQJAoIiwPWqis
-         SaE5MtBaWbN+hybIYVkbHHiE88zkMYXoW93lLN4uDHSbIlmyZ2EOU9+XRaE4AQzs5Idy
-         jZUywXRJPJ739cLT3h/rcZCPjJSck92fzcW491IoaukPv5/mVupKtPVfZge/jdp93foS
-         DVpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVF1qLW8Cz4ahq2zBXt+b+u7onV+v8S2nksa860EOUYCZtnIehIIQPQhFqMgERG+yrLVJk7Rw3fmB5NfwMi/0ZasWBmlmhmfzT40GdqYIk6Mf5IgCQh3RDBvDPz2sGYN+iwo4XVFiMNkF+9jnSZDvRXethOy0VX++DBhDqsOxMo
-X-Gm-Message-State: AOJu0YzjyEiWZvXfmXsNL7j3yKwnHZ0ryIfJvpvOWdQUUqtPf8IZLm63
-	wxNMSy8G9lOblmYFDxdwCGsDXERH9/MvZ0ldTReFxVcxhd/95el05Gp67ma+JTPyZoTpv817yf4
-	B41c44J69RpQtuGrP3PIgcL8XlYc=
-X-Google-Smtp-Source: AGHT+IFLaQW9QKaaME5VziwLlJJd6X1Hm84dCjjfR3MMubkylS+O4mlXM2VIdqdXQQPwKtUSwl0vHOXPPTOvjnNnkeI=
-X-Received: by 2002:a17:902:c406:b0:1f2:ef8f:8573 with SMTP id
- d9443c01a7336-1f2ef8f8ce7mr92016585ad.0.1716279339681; Tue, 21 May 2024
- 01:15:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716280228; x=1716885028;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wrA786U4KPavR4LnBySZw2GdS7HLYmlFSbgJ1uOdz/o=;
+        b=jEmtFzMX4clHHimRRPwMMHmguQLDKqhNqY/2az0iGIZC6e3bTmMqSUZt/sziPf0dIE
+         dgQxufhuzD6bT/neG+otrdSH0mZ0uq6pw67ESn8ikqN6h9e32OfdU0vEABxn8+Ahc4KJ
+         N6iQbYKzqKgAWENjx/QuvKT4c6p6WeSWn4jft3iQ3xPC6TE7Fl77aeBZfhp+PzyyZ7Lu
+         TMqOq5hNpHfWnvqXt0ZfyBPHjRGgSbm8JzetvnlsknPAJONJEmHGGlnguHSHdCZq0Ej/
+         TDz5EI/mmicZKgm9Z9uqfio1JY01At7QEX688ibed2gSnd1en8o3WSZuSKImWWmhjXwA
+         iAtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWwsNhEDgRWtt9YsE5GS67N9UefW3D8deduA+EeByVqj6YzMVvAfioi3b6iyyT0Pff52Vh6UPpZSlvhfVRqRpSqV+GSbFK/
+X-Gm-Message-State: AOJu0YzcBNz0UtICL3pZQUIeydO4VFyBf2pCjJWL5Cl0incUhHk+JSgK
+	5rp3LLVv50PEBXU4E/9FCCN5lRG/JvOCSEXj6p8mGIysSMtH2minBziqT4irP30=
+X-Google-Smtp-Source: AGHT+IHVWqYYv8hCOa92k+zWOJjeMXITMTd7bwD6mQcIHDreBv9G4RztpYp+KuIYeogkzXFxDXyW4Q==
+X-Received: by 2002:a05:6000:12d0:b0:34d:a719:4e09 with SMTP id ffacd0b85a97d-3504a96866cmr21533641f8f.45.1716280227892;
+        Tue, 21 May 2024 01:30:27 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.206.169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502b897e39sm31282433f8f.48.2024.05.21.01.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 May 2024 01:30:27 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	imx@lists.linux.dev,
+	dmaengine@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] dt-bindings: dma: fsl-edma: fix dma-channels constraints
+Date: Tue, 21 May 2024 10:30:02 +0200
+Message-ID: <20240521083002.23262-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAHe5sWavQcUTg2zTYaryRsMywSBgBgETG=R1jRexg4qDqwCfdw@mail.gmail.com>
- <38de0776-3adf-4223-b8e0-cedb5a5ebf4d@leemhuis.info> <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
- <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com> <61-664b6880-3-6826fc80@79948770>
- <20240520162100.GI1421138@black.fi.intel.com> <5d-664b8000-d-70f82e80@161590144>
- <CAHe5sWazL96zPa-v9S515ciE46JLZ1ROL7gmGikfn-vhUoDaZg@mail.gmail.com> <20240521051151.GK1421138@black.fi.intel.com>
-In-Reply-To: <20240521051151.GK1421138@black.fi.intel.com>
-From: Gia <giacomo.gio@gmail.com>
-Date: Tue, 21 May 2024 10:15:28 +0200
-Message-ID: <CAHe5sWb7kHurBvu6JC6OgXZm9mSg5a2W2XK9L8gCygYaFZz7JQ@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] "xHCI host controller not responding,
- assume dead" on stable kernel > 6.8.7
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: =?UTF-8?Q?Benjamin_B=C3=B6hmke?= <benjamin@boehmke.net>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Christian Heusel <christian@heusel.eu>, 
-	Linux regressions mailing list <regressions@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "kernel@micha.zone" <kernel@micha.zone>, 
-	Andreas Noever <andreas.noever@gmail.com>, Michael Jamet <michael.jamet@intel.com>, 
-	Yehezkel Bernat <YehezkelShB@gmail.com>, 
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, "S, Sanath" <Sanath.S@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Here you go:
+dma-channels is a number, not a list.  Apply proper constraints on the
+actual number.
 
-0x0080 0x003c01c0 0b00000000 00111100 00000001 11000000 .... LANE_ADP_CS_0
-  [00:07]       0xc0 Next Capability Pointer
-  [08:15]        0x1 Capability ID
-  [16:19]        0xc Supported Link Speeds
-  [20:21]        0x3 Supported Link Widths (SLW)
-  [22:23]        0x0 Gen 4 Asymmetric Support (G4AS)
-  [26:26]        0x0 CL0s Support
-  [27:27]        0x0 CL1 Support
-  [28:28]        0x0 CL2 Support
-0x0081 0x0828003c 0b00001000 00101000 00000000 00111100 .... LANE_ADP_CS_1
-  [00:03]        0xc Target Link Speed =E2=86=92 Router shall attempt Gen 3=
- speed
-  [04:05]        0x3 Target Link Width =E2=86=92 Establish a Symmetric Link
-  [06:07]        0x0 Target Asymmetric Link =E2=86=92 Establish Symmetric L=
-ink
-  [10:10]        0x0 CL0s Enable
-  [11:11]        0x0 CL1 Enable
-  [12:12]        0x0 CL2 Enable
-  [14:14]        0x0 Lane Disable (LD)
-  [15:15]        0x0 Lane Bonding (LB)
-  [16:19]        0x8 Current Link Speed =E2=86=92 Gen 2
-  [20:25]        0x2 Negotiated Link Width =E2=86=92 Symmetric Link (x2)
-  [26:29]        0x2 Adapter State =E2=86=92 CL0
-  [30:30]        0x0 PM Secondary (PMS)
+Fixes: 6eb439dff645 ("dt-bindings: fsl-dma: fsl-edma: add edma3 compatible string")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/dma/fsl,edma.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Tue, May 21, 2024 at 7:11=E2=80=AFAM Mika Westerberg
-<mika.westerberg@linux.intel.com> wrote:
->
-> Hi,
->
-> On Mon, May 20, 2024 at 07:30:28PM +0200, Gia wrote:
-> > In my case I use the official Thunderbolt cable that came with my
-> > CalDigit TS3 Plus and yet the log - attached in a previous email -
-> > says current link speed 10.0 Gb/s. I just tried a good quality USB4
-> > cable too and nothing changed.
->
-> I will take a look at your logs today but in the meantime can you run
-> following command on the system with the dock connected?
->
->   # tbdump -r 0 -a 1 -vv -N 2 LANE_ADP_CS_0
->
-> Here tbdump comes from https://github.com/intel/tbtools. It should be
-> pretty straighforward to build but let me know if any issues
-> (unfortunately there is no binary package available at this time).
->
-> The '-a 1' should match the adapter the dock is connected. You can get
-> it for instance like this (this is an example from my system):
->
->   # tblist
->   Domain 0 Route 0: 8087:7eb2 Intel Gen14
->   Domain 0 Route 1: 003d:0011 CalDigit, Inc. TS3 Plus
->   Domain 1 Route 0: 8087:7eb2 Intel Gen14
->
-> Here the CalDigit has "Route 1" so it means I use "-a 1" above. It could
-> be also "Domain 0 Route 3" in which case replace the "-a 1" with "-a 3".
->
-> This command should dump two lane adapter registers LANE_ADP_CS_0/1 that
-> show the link capabilities.
+diff --git a/Documentation/devicetree/bindings/dma/fsl,edma.yaml b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+index 825f4715499e..9ef99eb54104 100644
+--- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
++++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+@@ -60,8 +60,8 @@ properties:
+       - 3
+ 
+   dma-channels:
+-    minItems: 1
+-    maxItems: 64
++    minimum: 1
++    maximum: 64
+ 
+   clocks:
+     minItems: 1
+-- 
+2.43.0
+
 
