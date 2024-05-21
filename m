@@ -1,122 +1,133 @@
-Return-Path: <stable+bounces-45500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAE18CAD5E
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:29:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2068CAE17
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 14:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DF641C21C76
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 11:29:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7E291F2335B
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 12:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EEF74C1B;
-	Tue, 21 May 2024 11:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAC1524C9;
+	Tue, 21 May 2024 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DFDQ/6M4"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UciPErUs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD0A73174;
-	Tue, 21 May 2024 11:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52D01CD20
+	for <stable@vger.kernel.org>; Tue, 21 May 2024 12:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716290961; cv=none; b=XbQOZhnbES+IEYY5KgZDQ57rDGVS3ikFALzXbScp3Gk/qq2YaMPbd6FE+rBHNEe0oEO4RyDEBBxO0LJJI9bbDPqqdpc9WOhZn12XbcwJo5ik+/U8Rsc6Hg3pKeGZ5fTfn0zUR5ycxiscYjiyvHnqhICZZ0yjkFiB2j4xK1CuSpM=
+	t=1716294160; cv=none; b=p9u2mAYBzjmAnA1MtX/dNr8rLEPGj3bzyk+rD4yWgdOSdZGsR9ulQ0tHLSdWXSnBjTecpR9dOktgpDByP5/HPMiQAfWjbMXaJ74x562YVJmSmvVEfUPqtyoUhzePQEHsW1pqH0KVEpwHlvZk3RlUBhSZLqvY1ZhWvKW9ro+35VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716290961; c=relaxed/simple;
-	bh=9UyG8NR2nB4nFh3V+pbEi6yVtB+rOBjbai89rumi9dU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nJhHh4BtdGgLI+kHTyNxeo9vkMi6jDJN9x1q0V918tCrS0x7IYcmsrwrrx0WNAERsDBbkpP6Ca2KoyAC82wftxvsUsqXN2piG9Lp19FEN0eGK2//bhV13gqV7km6nzeblQPLghBd42Ohc2+kCK9j/2c/T4Pv38v0+v4chT9HKkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DFDQ/6M4; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716290960; x=1747826960;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9UyG8NR2nB4nFh3V+pbEi6yVtB+rOBjbai89rumi9dU=;
-  b=DFDQ/6M4ei/FLuIYgrdaGiu4KFWHbYsTSKi9K7BRAW7JqzB8IuXT4DDS
-   H0AFJZJhBhJ9Wez4qfqIxwEPW1dZCIZvAI+drH1fTIFpHVnH5rzQKvjur
-   TEif52BvIcYJH8bYNTvIqORDWqJg9ymqV5QsefJ9vYo5rfK3qHVYl8wPy
-   7Tomw6TdL7oJfrz6HqRM9AVGXiSTxK3rzJu4VLFuWkoawHhvCfwk5IiY+
-   IzdHpzbWqFI6CUVuq8p8Q5zbAFAsro/8rnj38MjAUpOhXy+EykRgX5A1E
-   /OOkdDG94k3Kejjzl9Gmx12vAIlOfQogfEwo9iZqXtL9NDJN622cUnRbZ
-   g==;
-X-CSE-ConnectionGUID: CWvuyZOtT5KNugreJYGzWA==
-X-CSE-MsgGUID: +9wMWUlGSpe/SLQoqKoUyw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="23145733"
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
-   d="scan'208";a="23145733"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 04:29:19 -0700
-X-CSE-ConnectionGUID: p/A6XjsLRyiWx1rx3gursw==
-X-CSE-MsgGUID: RQLoNqTiQfabFqgjd56z0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
-   d="scan'208";a="37275244"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 21 May 2024 04:29:16 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 4AF2917F; Tue, 21 May 2024 14:29:15 +0300 (EEST)
-Date: Tue, 21 May 2024 14:29:15 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Gia <giacomo.gio@gmail.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Christian Heusel <christian@heusel.eu>,
-	Linux regressions mailing list <regressions@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"kernel@micha.zone" <kernel@micha.zone>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Michael Jamet <michael.jamet@intel.com>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	Benjamin =?utf-8?Q?B=C3=B6hmke?= <benjamin@boehmke.net>,
-	"S, Sanath" <Sanath.S@amd.com>
-Subject: Re: [REGRESSION][BISECTED] "xHCI host controller not responding,
- assume dead" on stable kernel > 6.8.7
-Message-ID: <20240521112915.GQ1421138@black.fi.intel.com>
-References: <CAHe5sWavQcUTg2zTYaryRsMywSBgBgETG=R1jRexg4qDqwCfdw@mail.gmail.com>
- <38de0776-3adf-4223-b8e0-cedb5a5ebf4d@leemhuis.info>
- <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
- <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com>
- <CAHe5sWY_YJsyiuwf2TsfRTS9AoGoYh4+UxkkZZ0G9z2pXfbnzg@mail.gmail.com>
- <20240521051525.GL1421138@black.fi.intel.com>
- <CAHe5sWY3P7AopLqwaeXSO7n-SFwEZom+MfWpLKGmbuA7L=VdmA@mail.gmail.com>
- <20240521085501.GN1421138@black.fi.intel.com>
- <CAHe5sWaABJi0Xo4ygFK4Oa3LdNUiQJSLidGPdAE=gwmy=b+ycw@mail.gmail.com>
+	s=arc-20240116; t=1716294160; c=relaxed/simple;
+	bh=JLbgghzY1mJq9Hc1l1auGJYzpsIggp7sNFb84VZ7adU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=j2+hcUF577nDLm9dCI/FnkATIP6YZJJsMddVn/iK4OecpJxxIkOgd4pMYojYcW7PaWbBAsFiQ3h/ryjbe/CPCfym4k8/1N2lG9hIA2G5ZtJazEMtqT2WAwk26pAQBSIPKz3TVkpZZGAfY/0YCkh4QYd/kdN+jSq+n0++Y5J2gdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UciPErUs; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1edc696df2bso779915ad.0
+        for <stable@vger.kernel.org>; Tue, 21 May 2024 05:22:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1716294157; x=1716898957; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xarA3hqV44kgRif+8XSWqnvW9KILIkSaq+8s2S9i7+g=;
+        b=UciPErUstCYpneqM8jlrheYGmYA80KXx9MqRyMGmTMm2LVR2e0bQ2lqTkqjb5F+nQu
+         5cCbiUnWjrUzjUihZ7A91JzO7u1UaV/1keVHJmyGj+NIVTGy+/oqAzW5eHvfWqA9gqQB
+         45FS77BgcMIMYl5gd2kmu2/n1Ga7ulpcymxYY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716294157; x=1716898957;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xarA3hqV44kgRif+8XSWqnvW9KILIkSaq+8s2S9i7+g=;
+        b=Vjru9TS15ENCGCnYTEf3ybZc+UNeDVa8lGeRM+fMCfb4gBFrbjvR+5nmtE8CXaJJkl
+         A/x6L9gWZVaz6KZ3kjHkIJfDcPOBxuobpvtIFRjmS/3+++K6saHRXvv1wgpAlJd8JTSi
+         fZ3obh338PS1jq8SGuSn5Kbp2gpx+hg740dRDLqTsy1zZ94puR6URcuJBuJMknan3Xvf
+         oie98pQ53v49r0pcC1gr3ZdUeus3DLsSJrrvZov+EZBL1b8VCeG6YhQGkCEy3byIke4O
+         bIG4UdYaoqXnCQNKhqwpboERtPQUGEFuT+UW1uiRf2FvK6qDDLyGrOQNEPqbw/fkuC/G
+         UtPw==
+X-Gm-Message-State: AOJu0Yz7ZoiLYmytP7hOZPUzf+pwZHMov0JX+L+9xabHuHTWzEdqRDxh
+	FpaBp1qT89QXBvi1M58c/X8yICtMUWXxDom3cuKJ28r9RIzpEG4XbJVodCRGIjsr9miUeBSbyJW
+	xCk6Uc91jae9sldArpuPjWLSzikIhTiI39CNVt0OuP5wXT5MFpMQqRjMloUZvG6xfVK1AAL3gwJ
+	fLDMjtDoEVMkaUUqhnddbb8/BZ+rn3AXJn6D13Eg==
+X-Google-Smtp-Source: AGHT+IGqW/5EFnO7khPQ2gJCAHo/U6uNX/1X0P4ct/6/MzPqYJvm0sxiBgDn1Ff5gf1PeiW9mRzI7Q==
+X-Received: by 2002:a17:902:9a4b:b0:1eb:5b59:fab9 with SMTP id d9443c01a7336-1ef4404a1admr316358305ad.53.1716294156921;
+        Tue, 21 May 2024 05:22:36 -0700 (PDT)
+Received: from akaher-virtual-machine.eng.vmware.com ([66.170.99.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0bf31da2sm225873485ad.165.2024.05.21.05.22.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 21 May 2024 05:22:36 -0700 (PDT)
+From: Ajay Kaher <ajay.kaher@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Subject: [PATCH v5.10, v5.4] drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
+Date: Tue, 21 May 2024 17:52:19 +0530
+Message-Id: <1716294141-48647-1-git-send-email-ajay.kaher@broadcom.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAHe5sWaABJi0Xo4ygFK4Oa3LdNUiQJSLidGPdAE=gwmy=b+ycw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 21, 2024 at 11:24:56AM +0200, Gia wrote:
-> Thank you for your suggestion Mika, as a general rule I totally agree
-> with you and I do not mess with kernel default parameters, but I
-> remember "pcie_aspm=off" was necessary at the time I set up the
-> system. Probably a kernel or a BIOS update makes it unnecessary today.
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-Okay, thanks.
+[ Upstream commit b8d55a90fd55b767c25687747e2b24abd1ef8680 ]
 
-> I see it removes these messages from my logs but I trust you when you
-> say they have not an impact on functionality:
-> 
-> May 21 11:01:36 um773arch kernel: pcieport 0000:05:04.0: Unable to
-> change power state from D3hot to D0, device inaccessible
-> May 21 11:01:36 um773arch kernel: igb 0000:09:00.0 eth0: PCIe link lost
-> May 21 11:01:36 um773arch kernel: xhci_hcd 0000:08:00.0: xHCI host
-> controller not responding, assume dead
-> May 21 11:01:36 um773arch kernel: xhci_hcd 0000:07:00.0: xHCI host
-> controller not responding, assume dead
+Return invalid error code -EINVAL for invalid block id.
 
-Correct these are side-effect of the USB4 topology reset we do. As
-explained earlier the tunnels get re-established and the devices will
-come back soon after this.
+Fixes the below:
+
+drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:1183 amdgpu_ras_query_error_status_helper() error: we previously assumed 'info' could be null (see line 1176)
+
+Suggested-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Tao Zhou <tao.zhou1@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Ajay: applied AMDGPU_RAS_BLOCK_COUNT condition to amdgpu_ras_error_query()
+       as amdgpu_ras_query_error_status_helper() not present in v5.10, v5.4
+       amdgpu_ras_query_error_status_helper() was introduced in 8cc0f5669eb6]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index a8f1c49..e971d2b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -765,6 +765,9 @@ int amdgpu_ras_error_query(struct amdgpu_device *adev,
+ 	if (!obj)
+ 		return -EINVAL;
+ 
++	if (!info || info->head.block == AMDGPU_RAS_BLOCK_COUNT)
++		return -EINVAL;
++
+ 	switch (info->head.block) {
+ 	case AMDGPU_RAS_BLOCK__UMC:
+ 		if (adev->umc.funcs->query_ras_error_count)
+-- 
+2.7.4
+
 
