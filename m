@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-45490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89868CAA82
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 11:12:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13A88CAABF
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 11:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F1462831FB
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 09:12:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48711C2143A
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 09:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D8355C29;
-	Tue, 21 May 2024 09:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370DF57CB2;
+	Tue, 21 May 2024 09:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jdasMsdr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzFcs6QK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6575A56454;
-	Tue, 21 May 2024 09:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFF06D1B0;
+	Tue, 21 May 2024 09:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716282743; cv=none; b=N2xRdzeWZ3LRhg7zhlsY01sGp10t5YaT08TKE8YNgymjkwt7I+Js+IlOBJWxSsi86bAJRex3lZy0cusudt5o0xTpRQr/FWU/cjZUFUXpc/mRpFTVkA8pZsmk8LAwCk7AluN0jV7n4rPTWQUW/kZtnpPCHl6yQXpqtuEvxGoC/Rk=
+	t=1716283510; cv=none; b=AbM96lQPcDpLD/mkbcL3yh+W7FJ9r0P4upGEndNkjyBXzFioTFWCZV3CMhLz4RtPGs2Pnj89WvwbOB8HcLuXIWqNyFkNIt3429PZbspeIclvLKkJgf9ccUxufb/h8/N8rlPSO/hM0oHsKhkYWBgCfAXwjnXl6i5FXPLVrDq0FHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716282743; c=relaxed/simple;
-	bh=2wjs3mdw4rOGvrIqoeda4h5sOrmnWs3RpnJdlvtjnio=;
+	s=arc-20240116; t=1716283510; c=relaxed/simple;
+	bh=W7C8qCu9f8aWv8t+JSd20FzArS+tgmmsu1qXPGKkqQk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LHh03O2ExUpx6wuB+2ZRpztJtVGWQESu5FJSwsrIh5t5XdFlgb/nQtB0UdycXM8Hy2/0XOb1ZuTLP9pdTk0s82pIf8fn07DwmyWp4o031mxFDRdpHg7DbUhI2z/ajqBWzlhcxCApT34wO1b9wMWItEPnNqQJULOzVYej4DUHkxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jdasMsdr; arc=none smtp.client-ip=209.85.214.169
+	 To:Cc:Content-Type; b=KjXMUujzwJ19F/XC5czgXWohgaKPiRT/S9RzgAbT3XKfjYqiNxDsNjPxmaruLMAXof9Qh7Wy212J4JAvOhMNRxvTYLNps+rs78aN6h53gQ6Zu7s9NdQoV3a+UxW7y6EaMB93ucHen+ZHUtDxCO/hGSuQHTnl4+LVFDj2sdXeIcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzFcs6QK; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1ed835f3c3cso34011295ad.3;
-        Tue, 21 May 2024 02:12:22 -0700 (PDT)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e3c3aa8938so102245785ad.1;
+        Tue, 21 May 2024 02:25:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716282742; x=1716887542; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716283508; x=1716888308; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VFFc8dkP7sP+uu3rw1v9YarWpJd2vkJbAvnBTD0BiKI=;
-        b=jdasMsdrwlrLKhIfGg4S7APIzsdpU5MNdgxIIkCjwMr6zeKOeVuoRkWWaAo5nqvopz
-         nXXbpKvxAGDvC0gcybTxMuTqo5pi819f8/R3O7Wjt8FEHXfgND+x6NQ5Ti5KluKRcjyn
-         Wu68FKTYedcJ26d8qL6w1u7iSSGDOVOcG5FV+o7PJwondyhx0tjND2+6z1M4VvxjXwmo
-         s8OQI/WHOFb+xTViuj66ozuTCDxMocg7NS8o7mnyUHNx1dGfkfpEFc6/1QgjWG/O/MIz
-         ER2cnpLYMMWBU12bjUEZTBckrw73nxzIBa872FoSxJAmiQJgydKmNO8e2xhFf5ps8hJy
-         010g==
+        bh=cx9Q/EMTUpa92+pOPrcJO/MH3AWeXtVafWw6ElrJXwI=;
+        b=PzFcs6QKsraea6O4nNMbEjCzvGFvSLD1u7s8lS5BH7NLuTqulqohI1+Z4BVGA5Bljt
+         DrMqXqfKGnnNb+5oRkdpy+LKA0hRc5CyS42Xm6bKmZMxDB0G3BfzFDwFugmyEY4KSTWj
+         tJz6pEuA62HGhA8xX7pddBZgMoPKmZ2e5oW6Xiz74LOtE1wSD4pSmW7pfSbfs98OCFHB
+         vae774blmzCu9llBEOEM+58zojQ3J+4/cJfa7zM8CkodhknP6qeDFnagB0rZ5QPlTuWz
+         F/NW+AL0Ibf2djFmwUMBI/LJsufQTs6RqFzJex7ko3ueiRniQylC+q14TZgjFVQYPhaF
+         XCtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716282742; x=1716887542;
+        d=1e100.net; s=20230601; t=1716283508; x=1716888308;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VFFc8dkP7sP+uu3rw1v9YarWpJd2vkJbAvnBTD0BiKI=;
-        b=vDY/xbmyZsr25flD/rIyAJ+5SiyFHpuEjSPQBDJt60b7RK8YHhs82Dx5WLDpA+YQ5d
-         CITzz0Hgy799R3xRLvL+RtKfYwqP2odyBNoaDk6+hoKfK35J895PbA7WmD/ushm+YhrM
-         a3k+E4Sf1N+UMq8qkaDFM84jy9YG/u9p+IEqLl8UdMbJVeFMRcBNTIgXlstz+lw6lRsi
-         P690W+ijJ2TQZS2ks1caswz10xpcVF5hLAeZquxrmDwGbQoATt3i9PdTggmI1muZzf4s
-         YiYJVA/jfirnI3NOqIsJU56Xa/z544esNZDFXhpaJbpdobFq4izc75X5UxikS4yaG8q6
-         driA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZgFltBoG6TI6VloHxuaaS8cBkl135yJ0Pmha8aX2IMOWYa54o7qfHcuckEPSD3/D4QThIqzO6miWAQP1Hn8SRUduSiQMjEgyxGfdPg7lZdYOgPExT/fzCOVEVZ2nqN2EBzgQvAFO9NmACwj3HpSgFcDpYAoHSuOXhl2gbB0Za
-X-Gm-Message-State: AOJu0YyE9UEC2zt5jQy0GpJaI8gAKerZfZq4NMm9e05UwKwKDb7YsjdW
-	3sj5Pi/3c+qiA2rzQYoeaNYKL7Hy1GFeWceLyjYPYBBWhTvDyB9DZsg4SCBpamOT+VzVZ1PuCRB
-	BJf6JA5OwSYZDNmd2nuXu2CPGcb4=
-X-Google-Smtp-Source: AGHT+IEZhwsCyczFPZJb/vjIbSf+CiTU9TdOAlzSwjvUCGMcHTAml6sMLqSnnpQ2+kd26Ga3oom9L2K9e7gZCCGVCrU=
-X-Received: by 2002:a17:90b:2305:b0:2b1:782:8827 with SMTP id
- 98e67ed59e1d1-2b6cc564325mr28630098a91.20.1716282741684; Tue, 21 May 2024
- 02:12:21 -0700 (PDT)
+        bh=cx9Q/EMTUpa92+pOPrcJO/MH3AWeXtVafWw6ElrJXwI=;
+        b=Jdw+2mAaxaDVxVXfkze7mCdiQVSq8YPI+Dy+jMR33zwLCnmdyURtjEe9QZ/x/MTH8R
+         /mFONSRENbjGFbhEyM+WIOgf5JMbFUvjXLSg/vlNvta94lJJSKPZT2KomzQUPP9CtQtW
+         wrW8sQ1EFKHuwqTamW7kUGBxYhdL3/89YAe/0ejNXI0sQBvV//6TrLkc3EQPvecFbz+a
+         Ltxu1n+/LrA32H/giw/DciuWddC3sUjHw2tQoM1m8lm93vKUg4fa+dguZHhmaQPzj3sM
+         A3mM+gdhhEGXJ6RwDh3SJ1ifsYTLXOm0RyGI1uZqJ46a77YHiJZXpeWa+rAS6P4NtGJy
+         dxeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcC2JPZHCf3zVW364uadu0Gr4zYVLdGUmOnyok55LDHe2GfxeoZYK/RUGijQ2G2jC7mqK3E0Q1BEg918w/OGS/w1/RQeOyEZdQNpJhyrcu9/F/PFVW5BlY2dW+2O0EThYs4fDzTAG7c5WKqj5+CyPro2FQK4UwaguRJhCz2/rw
+X-Gm-Message-State: AOJu0YytVwqMDQWRMEY03l05n26jW8zVZVpySQ8a81nTbYl6miCEyBDD
+	2ya11Xt9C9eyG1DOwsJkHiZzIyvoIJ4yPGvYv1FbUc9q4DVC6eaa3MJ3Nv7BgonGfZ7C9OHjKdT
+	G+fq2fXlWY5XdpFOvLE0FrwIkywQ=
+X-Google-Smtp-Source: AGHT+IEwCS7Kheh/nn+lzkJGd0xBKEmdH0HPDsPUkPmuz+sowdI7it3ZW1guqCXJUYh1almZi/G075PMfPqiuKbJrKc=
+X-Received: by 2002:a17:90b:46c4:b0:2b1:817d:982b with SMTP id
+ 98e67ed59e1d1-2b6cc777f3cmr28269888a91.14.1716283507825; Tue, 21 May 2024
+ 02:25:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,95 +73,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <CAHe5sWavQcUTg2zTYaryRsMywSBgBgETG=R1jRexg4qDqwCfdw@mail.gmail.com>
  <38de0776-3adf-4223-b8e0-cedb5a5ebf4d@leemhuis.info> <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
- <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com> <61-664b6880-3-6826fc80@79948770>
- <20240520162100.GI1421138@black.fi.intel.com> <5d-664b8000-d-70f82e80@161590144>
- <CAHe5sWazL96zPa-v9S515ciE46JLZ1ROL7gmGikfn-vhUoDaZg@mail.gmail.com>
- <20240521051151.GK1421138@black.fi.intel.com> <CAHe5sWb7kHurBvu6JC6OgXZm9mSg5a2W2XK9L8gCygYaFZz7JQ@mail.gmail.com>
- <20240521085926.GO1421138@black.fi.intel.com>
-In-Reply-To: <20240521085926.GO1421138@black.fi.intel.com>
+ <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com> <CAHe5sWY_YJsyiuwf2TsfRTS9AoGoYh4+UxkkZZ0G9z2pXfbnzg@mail.gmail.com>
+ <20240521051525.GL1421138@black.fi.intel.com> <CAHe5sWY3P7AopLqwaeXSO7n-SFwEZom+MfWpLKGmbuA7L=VdmA@mail.gmail.com>
+ <20240521085501.GN1421138@black.fi.intel.com>
+In-Reply-To: <20240521085501.GN1421138@black.fi.intel.com>
 From: Gia <giacomo.gio@gmail.com>
-Date: Tue, 21 May 2024 11:12:10 +0200
-Message-ID: <CAHe5sWb=14MWvQc1xkyrkct2Y9jn=-dKgX55Cow_9VKEeapFwA@mail.gmail.com>
+Date: Tue, 21 May 2024 11:24:56 +0200
+Message-ID: <CAHe5sWaABJi0Xo4ygFK4Oa3LdNUiQJSLidGPdAE=gwmy=b+ycw@mail.gmail.com>
 Subject: Re: [REGRESSION][BISECTED] "xHCI host controller not responding,
  assume dead" on stable kernel > 6.8.7
 To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: =?UTF-8?Q?Benjamin_B=C3=B6hmke?= <benjamin@boehmke.net>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Christian Heusel <christian@heusel.eu>, 
+Cc: Mario Limonciello <mario.limonciello@amd.com>, Christian Heusel <christian@heusel.eu>, 
 	Linux regressions mailing list <regressions@lists.linux.dev>, 
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
 	"stable@vger.kernel.org" <stable@vger.kernel.org>, "kernel@micha.zone" <kernel@micha.zone>, 
 	Andreas Noever <andreas.noever@gmail.com>, Michael Jamet <michael.jamet@intel.com>, 
 	Yehezkel Bernat <YehezkelShB@gmail.com>, 
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, "S, Sanath" <Sanath.S@amd.com>
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, =?UTF-8?Q?Benjamin_B=C3=B6hmke?= <benjamin@boehmke.net>, 
+	"S, Sanath" <Sanath.S@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Here you have the output from the dock upstream port:
+Thank you for your suggestion Mika, as a general rule I totally agree
+with you and I do not mess with kernel default parameters, but I
+remember "pcie_aspm=3Doff" was necessary at the time I set up the
+system. Probably a kernel or a BIOS update makes it unnecessary today.
 
-sudo tbdump -r 2 -a 1 -vv -N2 LANE_ADP_CS_0
+I see it removes these messages from my logs but I trust you when you
+say they have not an impact on functionality:
 
-0x0036 0x003c013e 0b00000000 00111100 00000001 00111110 .... LANE_ADP_CS_0
-  [00:07]       0x3e Next Capability Pointer
-  [08:15]        0x1 Capability ID
-  [16:19]        0xc Supported Link Speeds
-  [20:21]        0x3 Supported Link Widths (SLW)
-  [22:23]        0x0 Gen 4 Asymmetric Support (G4AS)
-  [26:26]        0x0 CL0s Support
-  [27:27]        0x0 CL1 Support
-  [28:28]        0x0 CL2 Support
-0x0037 0x0828003c 0b00001000 00101000 00000000 00111100 .... LANE_ADP_CS_1
-  [00:03]        0xc Target Link Speed =E2=86=92 Router shall attempt Gen 3=
- speed
-  [04:05]        0x3 Target Link Width =E2=86=92 Establish a Symmetric Link
-  [06:07]        0x0 Target Asymmetric Link =E2=86=92 Establish Symmetric L=
-ink
-  [10:10]        0x0 CL0s Enable
-  [11:11]        0x0 CL1 Enable
-  [12:12]        0x0 CL2 Enable
-  [14:14]        0x0 Lane Disable (LD)
-  [15:15]        0x0 Lane Bonding (LB)
-  [16:19]        0x8 Current Link Speed =E2=86=92 Gen 2
-  [20:25]        0x2 Negotiated Link Width =E2=86=92 Symmetric Link (x2)
-  [26:29]        0x2 Adapter State =E2=86=92 CL0
-  [30:30]        0x0 PM Secondary (PMS)
+May 21 11:01:36 um773arch kernel: pcieport 0000:05:04.0: Unable to
+change power state from D3hot to D0, device inaccessible
+May 21 11:01:36 um773arch kernel: igb 0000:09:00.0 eth0: PCIe link lost
+May 21 11:01:36 um773arch kernel: xhci_hcd 0000:08:00.0: xHCI host
+controller not responding, assume dead
+May 21 11:01:36 um773arch kernel: xhci_hcd 0000:07:00.0: xHCI host
+controller not responding, assume dead
+May 21 11:01:36 um773arch kernel: usb 3-1: 1:1: cannot set freq 48000 to ep=
+ 0x82
+May 21 11:01:36 um773arch kernel: usb 3-1: 10:0: cannot get min/max
+values for control 2 (id 10)
+May 21 11:01:41 um773arch kernel: xhci_hcd 0000:06:00.0: xHCI host
+controller not responding, assume dead
+May 21 11:01:41 um773arch kernel: xhci_hcd 0000:06:00.0: HC died; cleaning =
+up
+May 21 11:01:41 um773arch kernel: usb 1-2: 1:1: cannot set freq 48000 to ep=
+ 0x1
+May 21 11:01:41 um773arch kernel: usb 1-2: 1:2: cannot set freq 48000 to ep=
+ 0x1
+May 21 11:01:41 um773arch kernel: usb 1-2: 1:3: cannot set freq 96000 to ep=
+ 0x1
+May 21 11:01:41 um773arch kernel: usb 1-2: 1:4: cannot set freq 96000 to ep=
+ 0x1
+May 21 11:01:41 um773arch kernel: usb 1-2: 1:5: cannot set freq 48000 to ep=
+ 0x1
+May 21 11:01:41 um773arch kernel: usb 1-2: 2:1: cannot set freq 48000 to ep=
+ 0x82
+May 21 11:01:41 um773arch kernel: usb 1-2: 7:0: cannot get min/max
+values for control 2 (id 7)
+May 21 11:01:41 um773arch kernel: usb 1-2: 5:0: cannot get min/max
+values for control 2 (id 5)
+May 21 11:01:41 um773arch kernel: usb 1-2: 6:0: cannot get min/max
+values for control 2 (id 6)
+May 21 11:01:41 um773arch (udev-worker)[453]: controlC0:
+/usr/lib/udev/rules.d/78-sound-card.rules:5 Failed to write
+ATTR{/sys/devices/pci0000:00/0000:00:03.1/0000:04:00.0/0000:05:01.0/0000:07=
+:00.0/usb3/3-1/3-1:1.0/sound/card0/controlC0/../uevent},
+ignoring: No such file or directory
+May 21 11:01:42 um773arch (udev-worker)[440]: controlC1:
+/usr/lib/udev/rules.d/78-sound-card.rules:5 Failed to write
+ATTR{/sys/devices/pci0000:00/0000:00:03.1/0000:04:00.0/0000:05:00.0/0000:06=
+:00.0/usb1/1-2/1-2:1.0/sound/card1/controlC1/../uevent},
+ignoring: No such file or directory
+May 21 11:01:43 um773arch kernel: hid-generic 0003:0D8C:0134.000A: No
+inputs registered, leaving
 
-On Tue, May 21, 2024 at 10:59=E2=80=AFAM Mika Westerberg
+On Tue, May 21, 2024 at 10:55=E2=80=AFAM Mika Westerberg
 <mika.westerberg@linux.intel.com> wrote:
 >
-> On Tue, May 21, 2024 at 10:15:28AM +0200, Gia wrote:
-> > Here you go:
+> Hi,
+>
+> On Tue, May 21, 2024 at 10:07:23AM +0200, Gia wrote:
+> > Thank you Mika,
 > >
-> > 0x0080 0x003c01c0 0b00000000 00111100 00000001 11000000 .... LANE_ADP_C=
-S_0
-> >   [00:07]       0xc0 Next Capability Pointer
-> >   [08:15]        0x1 Capability ID
-> >   [16:19]        0xc Supported Link Speeds
-> >   [20:21]        0x3 Supported Link Widths (SLW)
-> >   [22:23]        0x0 Gen 4 Asymmetric Support (G4AS)
-> >   [26:26]        0x0 CL0s Support
-> >   [27:27]        0x0 CL1 Support
-> >   [28:28]        0x0 CL2 Support
-> > 0x0081 0x0828003c 0b00001000 00101000 00000000 00111100 .... LANE_ADP_C=
-S_1
-> >   [00:03]        0xc Target Link Speed =E2=86=92 Router shall attempt G=
-en 3 speed
-> >   [04:05]        0x3 Target Link Width =E2=86=92 Establish a Symmetric =
-Link
-> >   [06:07]        0x0 Target Asymmetric Link =E2=86=92 Establish Symmetr=
-ic Link
-> >   [10:10]        0x0 CL0s Enable
-> >   [11:11]        0x0 CL1 Enable
-> >   [12:12]        0x0 CL2 Enable
-> >   [14:14]        0x0 Lane Disable (LD)
-> >   [15:15]        0x0 Lane Bonding (LB)
-> >   [16:19]        0x8 Current Link Speed =E2=86=92 Gen 2
-> >   [20:25]        0x2 Negotiated Link Width =E2=86=92 Symmetric Link (x2=
-)
-> >   [26:29]        0x2 Adapter State =E2=86=92 CL0
-> >   [30:30]        0x0 PM Secondary (PMS)
+> > Here you have the output of sudo journalctl -k without enabling the
+> > kernel option "pcie_aspm=3Doff": https://codeshare.io/7JPgpE. Without
+> > "pcie_aspm=3Doff", "thunderbolt.host_reset=3Dfalse" is not needed, my
+> > thunderbolt dock does work. I also connected a 4k monitor to the
+> > thunderbolt dock thinking it could provide more data.
+> >
+> > I'm almost sure I used this option when I set up this system because
+> > it solved some issues with system suspending, but it happened many
+> > months ago.
 >
-> Thanks this looks fine (although the link is still Gen 2). Can you run
-> the same from the dock upstream port too?
+> Okay. I recommend not to use it. The defaults should always be the best
+> option (unless you really know what you are doing or working around some
+> issue).
 >
->   # tbdump -r 2 -a 1 -vv -N2 LANE_ADP_CS_0
+> The dmesg you shared looks good, there are few oddities but they should
+> not matter from functional perspective (unless you are planning to have
+> a second monitor connected).
+>
+> First is this:
+>
+>   May 21 09:59:40 um773arch kernel: thunderbolt 0000:36:00.5: IOMMU DMA p=
+rotection is disabled
+>
+> It should really be enabled but I'm not familiar with AMD hardware to
+> tell more so hoping Mario can comment on that.
+>
+> The second thing is the USB4 link that seems to be degraded to 2x10G =3D
+> 20G even though you say it is a Thunderbolt cable. I'll comment more on
+> that in the other email.
 
