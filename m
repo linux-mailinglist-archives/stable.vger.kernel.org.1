@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-45471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831738CA780
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 06:59:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538538CA78C
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 07:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F08D2822A6
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 04:59:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07F21F21F58
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 05:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A6936AF8;
-	Tue, 21 May 2024 04:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC5A3D963;
+	Tue, 21 May 2024 05:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L7v23qj4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ahyKiBK0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD85B13FF9;
-	Tue, 21 May 2024 04:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DBB610C;
+	Tue, 21 May 2024 05:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716267586; cv=none; b=ZlA5t8gK+N31SwP2kflzAsf2jsL84ehDqK+LZyHZV/5HSrgGeck/6vT+sSx2xMjaexZV+IgpFc9wYYudUzR8Mha6eb5aRVWSfvDliihjPcJ0YksJ6GwJII2eS6tbdC+x+eut76ffKr0eGvgN+D7PcKXRqbCY3lHpibz+Y9W8nJo=
+	t=1716268318; cv=none; b=F1uP0kHFoEkvSRVTC3IcYa4YQPw1+A4Z4BblF9ApsmW8hjgIYzyuy8ROrDJlvLQT/Pz9odRQaMleSRFseZxumF771br+1eALFxOyPbQDki82dNkRCPL58VIG6sAIz75IEaMOyT110lOUogYWWmlwayi41MzklRicqoqK8h/x3aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716267586; c=relaxed/simple;
-	bh=VPid/XdZiKogI7hU4m4Xc7/+ltEiS5oOPGuIP8CkX7c=;
+	s=arc-20240116; t=1716268318; c=relaxed/simple;
+	bh=qFSJ0rsco8+WuXhll/0TerB+xpQA36XKgLgz4erYikY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dM3ILqil40PHtD8CzqnktBO1quVkv/WUoen1i9Xq22P8aCu+FVPKKh7VCBasu9ocAmvtzqCGyrErAgr6ltXmRl2/epJoi9HjexvzOKO58He37vMFHjA39d6MzhRLNgg/4bNXRhZaEt6cbPVB7qnAH9rU4nIxegnqX1et79AJuv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L7v23qj4; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=U8CKHd5NUmpOe6pYRK5xTq4i80MbiYQfgcsxdhsLWze+KN3sLyyGTqW8SMCz8n9liGs9oVRs7/B4JjBhXTo9tuzPXdt2ki+yYa5A4mKyiu/E7iAnTNPsVAz5xhjWBZjj7N5rDiU7ChSk1XeQG7E+D97qMI5163214J03A2mQ7Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ahyKiBK0; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716267585; x=1747803585;
+  t=1716268317; x=1747804317;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=VPid/XdZiKogI7hU4m4Xc7/+ltEiS5oOPGuIP8CkX7c=;
-  b=L7v23qj4KdEvavJ36aYUbEjvP9m+I8l+JcEQY7miH8ocgte0v8ooqbpY
-   bBTF2G7W3LHT2hMOJhUUwPlnv7pD/JEZDiJNvhmjNDu78m/fxKreGokIm
-   GcU/JGpNID7oIDNaeBd/ygdjtH1wK5UN3pHZ90NLZlW/X8wGsyzym/FKy
-   B0TuyCjOk7Ezx+Hwm2U5Mis++855I408T6b0aLX0qlsCs7pxHPAVKeOQ/
-   UljGUYpSOXWu8FSTJAjEbRQBNeAjgozltuecmpQHKV78Y3vQOORIBP3uZ
-   bTBN7NYNXvMNzyN/tQHBW2oJxCFCrGKLbDe9/AuXMmjkmCy/Wm5d0WVFb
-   g==;
-X-CSE-ConnectionGUID: Kdb31h5mTlSUt1kryPwELQ==
-X-CSE-MsgGUID: NIZFwnYVS5+oELOxPYaW+Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="15380568"
+   mime-version:in-reply-to;
+  bh=qFSJ0rsco8+WuXhll/0TerB+xpQA36XKgLgz4erYikY=;
+  b=ahyKiBK0y6MKfOql6sggDvVB8cxUC+N5XCB0/ZvxrPkBG97veT7rAngj
+   hZWU2Ob9vSsgen6W4S3Ts9k9VQf1Kxn4SApTGsocwW7ihg46DDXv47vzU
+   9g9UNS74Talda0ViVQ9KjayYh3n3mZw9xLpfalGSdWwAGCR40pWGlFol0
+   1cYfN+1+WlCPqgxYVzxSpFCWT9+IwFz25VrQfPld9IZQIeAww1zevZu6L
+   vTmVU3AFuZIQiY8X7Tbm5v+CNN+nz2ESb982Ux0rsM+VlZWaw/jGSo821
+   CZ23X8gi/WYDtNw2d6yWreuHDo0nFRc1aseD7mWBKV1gb/f0WPnfZBdkc
+   w==;
+X-CSE-ConnectionGUID: qXsqUT9QTwyyjX1C0s1tVg==
+X-CSE-MsgGUID: AnSmHBO8T424rBcqvDtNCg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12610741"
 X-IronPort-AV: E=Sophos;i="6.08,176,1712646000"; 
-   d="scan'208";a="15380568"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 21:59:44 -0700
-X-CSE-ConnectionGUID: DqMLqRLNQta2q0LxllhmeA==
-X-CSE-MsgGUID: qakD+Ow7S063xRnPYT0EYg==
+   d="scan'208";a="12610741"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 22:11:56 -0700
+X-CSE-ConnectionGUID: jmc5xnqSRZuuMYonG8wyTA==
+X-CSE-MsgGUID: MBHjqaDvR8e+IpDTQrvK0Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,176,1712646000"; 
-   d="scan'208";a="32678289"
+   d="scan'208";a="32762236"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa007.fm.intel.com with ESMTP; 20 May 2024 21:59:41 -0700
+  by fmviesa008.fm.intel.com with ESMTP; 20 May 2024 22:11:53 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 2110F179; Tue, 21 May 2024 07:59:40 +0300 (EEST)
-Date: Tue, 21 May 2024 07:59:40 +0300
+	id DECD7179; Tue, 21 May 2024 08:11:51 +0300 (EEST)
+Date: Tue, 21 May 2024 08:11:51 +0300
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Benjamin =?utf-8?Q?B=C3=B6hmke?= <benjamin@boehmke.net>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
+To: Gia <giacomo.gio@gmail.com>
+Cc: Benjamin =?utf-8?Q?B=C3=B6hmke?= <benjamin@boehmke.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Christian Heusel <christian@heusel.eu>,
 	Linux regressions mailing list <regressions@lists.linux.dev>,
-	Gia <giacomo.gio@gmail.com>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>,
 	"kernel@micha.zone" <kernel@micha.zone>,
@@ -77,7 +77,7 @@ Cc: Mario Limonciello <mario.limonciello@amd.com>,
 	"S, Sanath" <Sanath.S@amd.com>
 Subject: Re: [REGRESSION][BISECTED] "xHCI host controller not responding,
  assume dead" on stable kernel > 6.8.7
-Message-ID: <20240521045940.GJ1421138@black.fi.intel.com>
+Message-ID: <20240521051151.GK1421138@black.fi.intel.com>
 References: <CAHe5sWavQcUTg2zTYaryRsMywSBgBgETG=R1jRexg4qDqwCfdw@mail.gmail.com>
  <38de0776-3adf-4223-b8e0-cedb5a5ebf4d@leemhuis.info>
  <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
@@ -85,6 +85,7 @@ References: <CAHe5sWavQcUTg2zTYaryRsMywSBgBgETG=R1jRexg4qDqwCfdw@mail.gmail.com>
  <61-664b6880-3-6826fc80@79948770>
  <20240520162100.GI1421138@black.fi.intel.com>
  <5d-664b8000-d-70f82e80@161590144>
+ <CAHe5sWazL96zPa-v9S515ciE46JLZ1ROL7gmGikfn-vhUoDaZg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,64 +94,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5d-664b8000-d-70f82e80@161590144>
+In-Reply-To: <CAHe5sWazL96zPa-v9S515ciE46JLZ1ROL7gmGikfn-vhUoDaZg@mail.gmail.com>
 
 Hi,
 
-On Mon, May 20, 2024 at 06:53:18PM +0200, Benjamin Böhmke wrote:
-> > All the USB devices seem to work fine (assuming I read this right).
-> 
-> To keep the log small I unplugged all USB devices from the dock.
-> But even if connected I don't have issues with them.
+On Mon, May 20, 2024 at 07:30:28PM +0200, Gia wrote:
+> In my case I use the official Thunderbolt cable that came with my
+> CalDigit TS3 Plus and yet the log - attached in a previous email -
+> says current link speed 10.0 Gb/s. I just tried a good quality USB4
+> cable too and nothing changed.
 
-Okay that's good to know.
+I will take a look at your logs today but in the meantime can you run
+following command on the system with the dock connected?
 
-Yeah, in the dmesg it might seem odd that the xHCI is "gone" for a while
-as we do USB4 topology reset but it comes back after the tunnels get
-re-created.
+  # tbdump -r 0 -a 1 -vv -N 2 LANE_ADP_CS_0
 
-> > There is the DP tunneling limitation but other than that how the dock
-> > does not work? At least reading this log everything else seems to be
-> > fine except the second monitor?
-> 
-> Exactly only the second monitor is/was not working.
+Here tbdump comes from https://github.com/intel/tbtools. It should be
+pretty straighforward to build but let me know if any issues
+(unfortunately there is no binary package available at this time).
 
-Got it.
+The '-a 1' should match the adapter the dock is connected. You can get
+it for instance like this (this is an example from my system):
 
-> > Now it is interesting why the link is only 20G and not 40G. I do have
-> > this same device and it gets the link up as 40G just fine:
-> > 
-> > [   17.867868] thunderbolt 0000:00:0d.2: 1: current link speed 20.0 Gb/s
-> > [   17.867869] thunderbolt 0000:00:0d.2: 1: current link width symmetric, single lane
-> > [   17.868437] thunderbolt 0000:00:0d.2: 0:1: total credits changed 120 -> 60
-> > [   17.868625] thunderbolt 0000:00:0d.2: 0:2: total credits changed 0 -> 60
-> > [   17.872472] thunderbolt 0000:00:0d.2: 1: TMU: current mode: bi-directional, HiFi
-> > [   17.872608] thunderbolt 0-1: new device found, vendor=0x3d device=0x11
-> > [   17.879102] thunderbolt 0-1: CalDigit, Inc. TS3 Plus
-> > 
-> 
-> My dock is a little different model (see https://www.caldigit.com/usb-c-pro-dock/)
-> I don't have a CalDigit TS3 Plus.
+  # tblist
+  Domain 0 Route 0: 8087:7eb2 Intel Gen14
+  Domain 0 Route 1: 003d:0011 CalDigit, Inc. TS3 Plus
+  Domain 1 Route 0: 8087:7eb2 Intel Gen14
 
-Indeed, my mistake.
+Here the CalDigit has "Route 1" so it means I use "-a 1" above. It could
+be also "Domain 0 Route 3" in which case replace the "-a 1" with "-a 3".
 
-> > Do you use a Thunderbolt cable or some regular type-C one? There is the
-> > lightning symbol on the connector when it is Thunderbolt one.
-> 
-> The dock was connected with a Thunderbolt cable, that I used for a
-> couple of years without any issues. Based on the hint I replaced the
-> cable and the issue is now gone for me.
-> 
-> I still don't understand why this happened as it was working great for
-> years and is still working with kernels 6.8.7 or older. But
-> nevertheless sorry if I wasted time of anyone because of broken
-> hardware.
-
-I think the BIOS CM creates the "first" tunnel using reduced
-capabilities already so this makes the "second" tunnel fit there in the
-18G link. Now that we do the reset the "first" tunnel is re-created with
-max capabilities and that makes the "second" not to fit there anymore.
-
-But now you get the full 40G link :)
+This command should dump two lane adapter registers LANE_ADP_CS_0/1 that
+show the link capabilities.
 
