@@ -1,177 +1,133 @@
-Return-Path: <stable+bounces-45498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E67E8CAD40
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:21:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4762F8CAD50
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 852F7B21E07
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 11:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA737281C09
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 11:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276DF74E26;
-	Tue, 21 May 2024 11:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FD974BF0;
+	Tue, 21 May 2024 11:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="jOncpPrX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aXe8poBI"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB1478B4C;
-	Tue, 21 May 2024 11:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66AC55E43;
+	Tue, 21 May 2024 11:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716290429; cv=none; b=f/CCzzlue6cvr40BuYCayahjnLLQ8wiXuPtLh43jb0ZMDZG+L0troboK07l+2zWP6YSQwZP/3W1vUBG9Y+RVQzef2CCs1bh0zNXYgf+5kxqPLrlELP81yCNoX14EXPuiMMcPyoGk1G0QHkIODGNwMXnv6Zy+U+84mzG8sL1+mAU=
+	t=1716290820; cv=none; b=p0ZO/yUv8UTATpimwdFPatJAZsycnPrsgffa9zc2X+581IXClSKd5rtTPIJ1MUIxznCIUpNKDi3qIAgyEUQukKb7+9KdjPMmeC7gOx1SdXW6fNgm8JQQROD8SCbmoi4eiHzcRRUh5tRAMyUDW8QyfUXySOABM8x2W9rqa7MCfE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716290429; c=relaxed/simple;
-	bh=LZ+rsiOJNbuvUBqa8SfnpSBVNsHQlw64ObMmyDOFgkg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SAfB0uQdS7LU9mEk0bI5T+sjMJmIbpDG2epJVY/I6jzslh4AMcRoGJF0cYYbgClqwpUOU0a3KTPWTraT/MC7+6YZGAj18K1/vfiNeCOXvBujeMFOzXHmXoyaYlJFycT+e1xKNxztJd4bp2F/sVGNNAoVMUbLwo8wSt8aWviT5Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=jOncpPrX; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=bryoWbNN8cFi6dYEo/k2lPyQOXpLR2x/eApoa9hqlW8=;
-	t=1716290427; x=1716722427; b=jOncpPrXv5FfF4S3b8Rv+jfHgEa3B6WdX3nL21bFGh5dcLe
-	RLgJqvdabvfyhCHremNRTDLrpdUOyoEUHMOONGvd+0blk7QZMWLxk6nZGSqIBpRX1PEc6aDBtuYqi
-	JipK+gBD+NE4yjQoFxI/7aQJZAsHnpkAPqNH7FTJQTOIJ2JDNQwYNWEgHTC4Iq4ANxdb+b8ImZ7/g
-	Sbb+GWIm3WwBpnwKb/PtsWOsCOgG91rFAx6fCe+uBQlLKFeBMpL2HUb3BMl3GmWq3deHzqO0Ps6CW
-	3Guw3pY6Rrrudd6j+l5YboOQzatDA3F+m/968k7vSvn5fsV2EFR/5Fg8sxnGGJAw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s9NXZ-000357-WB; Tue, 21 May 2024 13:20:22 +0200
-Message-ID: <83df4e94-e1ec-42f6-8a15-6439ef4a25b7@leemhuis.info>
-Date: Tue, 21 May 2024 13:20:21 +0200
+	s=arc-20240116; t=1716290820; c=relaxed/simple;
+	bh=PJqoCPkOCR3UUd+gl0wkD3v4z7g4IbzVghSUwmDYQaY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mc9O4NwBoiIABZHhwJIjD9nu7FLQXPPr8kcwYPOsHqSixXUoDee/y/GCSZxG0ROxYC3AnPaS3MjtvnLcq9bnxal4N0OS9fRStYqSwKD9BsqvFw5q9np9XwQZwUjVWxEW1SJYozCU37J71ewi/MdfMTHjvtOyg9VZLIVy0XZQtMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aXe8poBI; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716290819; x=1747826819;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=PJqoCPkOCR3UUd+gl0wkD3v4z7g4IbzVghSUwmDYQaY=;
+  b=aXe8poBIPaQyuogP0q8ar217cCgg4wyJHNE8oYccgbrIkNy8gi1BX/B1
+   3BM5Vd9v0zTsyS+H8MWFTLUBEtMRhMnucm3PGiiA/35t3LT0fx8JF/Yxl
+   Sa9/Akg5SO1zDFciMhdENTBHUIJIRqV5+JhmOw5U9If1N3qG5GDVsqDwl
+   FAnKpS1Lj6dVqhxQw+1gABX7COWGjVcMlB1J1OO2asvSEKyXD2mC2+dgd
+   xkzpP9W1cCeztvSjXPh1Adq6pzSeia/8/JBGKGgedVJitmu6VT4rQo4+A
+   fk0GOXsp6bZsrct55fzYgcWOiDt3I/AvUdCPiSkWMc9n9AxkNU8ZbFVqL
+   Q==;
+X-CSE-ConnectionGUID: UghX9h0bSkOFPQJ4O0ZA7Q==
+X-CSE-MsgGUID: yqF66r/ES+ufLGcmrJ6oTA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="23145506"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
+   d="scan'208";a="23145506"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 04:26:58 -0700
+X-CSE-ConnectionGUID: sp4Q/AZZTUKPAIAcwYmi9Q==
+X-CSE-MsgGUID: Uzep9t58QoiuClQwX3w4iQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
+   d="scan'208";a="37274456"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa005.fm.intel.com with ESMTP; 21 May 2024 04:26:55 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 697FD17F; Tue, 21 May 2024 14:26:54 +0300 (EEST)
+Date: Tue, 21 May 2024 14:26:54 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Gia <giacomo.gio@gmail.com>
+Cc: Benjamin =?utf-8?Q?B=C3=B6hmke?= <benjamin@boehmke.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Christian Heusel <christian@heusel.eu>,
+	Linux regressions mailing list <regressions@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"kernel@micha.zone" <kernel@micha.zone>,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Michael Jamet <michael.jamet@intel.com>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"S, Sanath" <Sanath.S@amd.com>
+Subject: Re: [REGRESSION][BISECTED] "xHCI host controller not responding,
+ assume dead" on stable kernel > 6.8.7
+Message-ID: <20240521112654.GP1421138@black.fi.intel.com>
+References: <lqdpk7lopqq4jn22mycxgg6ps4yfs7hcca33tqb2oy6jxc2y7p@rhjjbzs6wigu>
+ <611f8200-8e0e-40e4-aff4-cc2c55dc6354@amd.com>
+ <61-664b6880-3-6826fc80@79948770>
+ <20240520162100.GI1421138@black.fi.intel.com>
+ <5d-664b8000-d-70f82e80@161590144>
+ <CAHe5sWazL96zPa-v9S515ciE46JLZ1ROL7gmGikfn-vhUoDaZg@mail.gmail.com>
+ <20240521051151.GK1421138@black.fi.intel.com>
+ <CAHe5sWb7kHurBvu6JC6OgXZm9mSg5a2W2XK9L8gCygYaFZz7JQ@mail.gmail.com>
+ <20240521085926.GO1421138@black.fi.intel.com>
+ <CAHe5sWb=14MWvQc1xkyrkct2Y9jn=-dKgX55Cow_9VKEeapFwA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at
- drm_dp_add_payload_part2
-To: "Limonciello, Mario" <mario.limonciello@amd.com>,
- Jani Nikula <jani.nikula@linux.intel.com>, "Lin, Wayne" <Wayne.Lin@amd.com>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- "Wentland, Harry" <Harry.Wentland@amd.com>
-Cc: "lyude@redhat.com" <lyude@redhat.com>,
- "imre.deak@intel.com" <imre.deak@intel.com>,
- =?UTF-8?Q?Leon_Wei=C3=9F?= <leon.weiss@ruhr-uni-bochum.de>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
-References: <20240307062957.2323620-1-Wayne.Lin@amd.com>
- <0847dc03-c7db-47d7-998b-bda2e82ed442@amd.com>
- <41b87510-7abf-47e8-b28a-9ccc91bbd3c1@leemhuis.info>
- <177cfae4-b2b5-4e2c-9f1e-9ebe262ce48c@amd.com>
- <CO6PR12MB5489FA9307280A4442BAD51DFCE72@CO6PR12MB5489.namprd12.prod.outlook.com>
- <87wmo2hver.fsf@intel.com> <6f66e479-2f5a-477a-9705-dca4a3606760@amd.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <6f66e479-2f5a-477a-9705-dca4a3606760@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716290427;ef363253;
-X-HE-SMSGID: 1s9NXZ-000357-WB
+In-Reply-To: <CAHe5sWb=14MWvQc1xkyrkct2Y9jn=-dKgX55Cow_9VKEeapFwA@mail.gmail.com>
 
-Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-for once, to make this easily accessible to everyone.
-
-Hmm, from here it looks like the patch now that it was reviewed more
-that a week ago is still not even in -next. Is there a reason?
-
-I know, we are in the merge window. But at the same time this is a fix
-(that already lingered on the lists for way too long before it was
-reviewed) for a regression in a somewhat recent kernel, so it in Linus
-own words should be "expedited"[1].
-
-Or are we again just missing a right person for the job in the CC?
-Adding Dave and Sima just in case.
-
-Ciao, Thorsten
-
-[1]
-https://lore.kernel.org/all/CAHk-=wis_qQy4oDNynNKi5b7Qhosmxtoj1jxo5wmB6SRUwQUBQ@mail.gmail.com/
-
-On 12.05.24 18:11, Limonciello, Mario wrote:
-> On 5/10/2024 4:24 AM, Jani Nikula wrote:
->> On Fri, 10 May 2024, "Lin, Wayne" <Wayne.Lin@amd.com> wrote:
->>>> -----Original Message-----
->>>> From: Limonciello, Mario <Mario.Limonciello@amd.com>
->>>> Sent: Friday, May 10, 2024 3:18 AM
->>>> To: Linux regressions mailing list <regressions@lists.linux.dev>;
->>>> Wentland, Harry
->>>> <Harry.Wentland@amd.com>; Lin, Wayne <Wayne.Lin@amd.com>
->>>> Cc: lyude@redhat.com; imre.deak@intel.com; Leon Weiß
->>>> <leon.weiss@ruhr-uni-
->>>> bochum.de>; stable@vger.kernel.org; dri-devel@lists.freedesktop.org;
->>>> amd-
->>>> gfx@lists.freedesktop.org; intel-gfx@lists.freedesktop.org
->>>> Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at
->>>> drm_dp_add_payload_part2
->>>>
->>>> On 5/9/2024 07:43, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>>> On 18.04.24 21:43, Harry Wentland wrote:
->>>>>> On 2024-03-07 01:29, Wayne Lin wrote:
->>>>>>> [Why]
->>>>>>> Commit:
->>>>>>> - commit 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload
->>>>>>> allocation/removement") accidently overwrite the commit
->>>>>>> - commit 54d217406afe ("drm: use mgr->dev in drm_dbg_kms in
->>>>>>> drm_dp_add_payload_part2") which cause regression.
->>>>>>>
->>>>>>> [How]
->>>>>>> Recover the original NULL fix and remove the unnecessary input
->>>>>>> parameter 'state' for drm_dp_add_payload_part2().
->>>>>>>
->>>>>>> Fixes: 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload
->>>>>>> allocation/removement")
->>>>>>> Reported-by: Leon Weiß <leon.weiss@ruhr-uni-bochum.de>
->>>>>>> Link:
->>>>>>> https://lore.kernel.org/r/38c253ea42072cc825dc969ac4e6b9b600371cc8.c
->>>>>>> amel@ruhr-uni-bochum.de/
->>>>>>> Cc: lyude@redhat.com
->>>>>>> Cc: imre.deak@intel.com
->>>>>>> Cc: stable@vger.kernel.org
->>>>>>> Cc: regressions@lists.linux.dev
->>>>>>> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
->>>>>>
->>>>>> I haven't been deep in MST code in a while but this all looks pretty
->>>>>> straightforward and good.
->>>>>>
->>>>>> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
->>>>>
->>>>> Hmmm, that was three weeks ago, but it seems since then nothing
->>>>> happened to fix the linked regression through this or some other
->>>>> patch. Is there a reason? The build failure report from the CI maybe?
->>>>
->>>> It touches files outside of amd but only has an ack from AMD.  I
->>>> think we
->>>> /probably/ want an ack from i915 and nouveau to take it through.
->>>
->>> Thanks, Mario!
->>>
->>> Hi Thorsten,
->>> Yeah, like what Mario said. Would also like to have ack from i915 and
->>> nouveau.
->>
->> It usually works better if you Cc the folks you want an ack from! ;)
->>
->> Acked-by: Jani Nikula <jani.nikula@intel.com>
->>
+On Tue, May 21, 2024 at 11:12:10AM +0200, Gia wrote:
+> Here you have the output from the dock upstream port:
 > 
-> Thanks! Can someone with commit permissions take this to drm-misc?
+> sudo tbdump -r 2 -a 1 -vv -N2 LANE_ADP_CS_0
 > 
-> 
-> 
+> 0x0036 0x003c013e 0b00000000 00111100 00000001 00111110 .... LANE_ADP_CS_0
+>   [00:07]       0x3e Next Capability Pointer
+>   [08:15]        0x1 Capability ID
+>   [16:19]        0xc Supported Link Speeds
+>   [20:21]        0x3 Supported Link Widths (SLW)
+>   [22:23]        0x0 Gen 4 Asymmetric Support (G4AS)
+>   [26:26]        0x0 CL0s Support
+>   [27:27]        0x0 CL1 Support
+>   [28:28]        0x0 CL2 Support
+> 0x0037 0x0828003c 0b00001000 00101000 00000000 00111100 .... LANE_ADP_CS_1
+>   [00:03]        0xc Target Link Speed → Router shall attempt Gen 3 speed
+>   [04:05]        0x3 Target Link Width → Establish a Symmetric Link
+>   [06:07]        0x0 Target Asymmetric Link → Establish Symmetric Link
+>   [10:10]        0x0 CL0s Enable
+>   [11:11]        0x0 CL1 Enable
+>   [12:12]        0x0 CL2 Enable
+>   [14:14]        0x0 Lane Disable (LD)
+>   [15:15]        0x0 Lane Bonding (LB)
+>   [16:19]        0x8 Current Link Speed → Gen 2
+>   [20:25]        0x2 Negotiated Link Width → Symmetric Link (x2)
+>   [26:29]        0x2 Adapter State → CL0
+>   [30:30]        0x0 PM Secondary (PMS)
+
+Hmm, okay both sides announce support of Gen3 yet the link is Gen2 which
+makes me still suspect the cable, or the connection in general. I
+suggest, if you have, try with another Thunderbolt cable.
 
