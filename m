@@ -1,72 +1,76 @@
-Return-Path: <stable+bounces-45524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FBF8CB1D8
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 18:02:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6C48CB1D9
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 18:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7706E1C21F6C
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 16:02:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1490CB223CA
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 16:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E501B966;
-	Tue, 21 May 2024 16:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB2817BB5;
+	Tue, 21 May 2024 16:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XCwj4iEL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FT4A5aoO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C2917BB5
-	for <stable@vger.kernel.org>; Tue, 21 May 2024 16:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191D418054
+	for <stable@vger.kernel.org>; Tue, 21 May 2024 16:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716307350; cv=none; b=uSuViNPLph+MsDGWeQfxk6gEWjXxGXs4Z4ZuVFzGctPxoCGehkqdtxYNv1fmmsmJtE1ZXjS1Q6mX13vSXnzq9gHxQNk6/MptL65P01diUmBfweYXNJzhbh88UAELAJJHPXZhWb3Ri3PG2kn1Fvs86XBu2V1VFR77N2CrbTbnKc8=
+	t=1716307361; cv=none; b=isZzZKIHLBU9kxDAxkJClJcyGi2fjCtxsYNea7IoNz6scG+Om7bxHbVN1ROpqtj9v5O3QkFrRK6OAUaPUJmZlC2tQBuvT2MRUcPkK75vHgXayvln/jsAyTPELLtSEjE49qF6WAfQ6NL2uPST5QPjW5dFezrnXm9qXoyZkcr//cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716307350; c=relaxed/simple;
-	bh=USFH02LdogHwlFaWdJnvdq4tX7l/sqkZXQ30J/Gv/sQ=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=sjnA0E4EJ9DTdY9N1pbyfbyNpGRIVGM0MZwLTpuXdgjWSeRRB+x5NqCdsxffa0YLqf0xDLikNos+lx6Z3RlmWSCO22L0AAAkks4bCeMv1dQJ+hjIXaacQCNSb1/OVvUIQS5rC+v0Azp3YNc4cNx7o+iKLg3EzDFkAe/up1uKbPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XCwj4iEL; arc=none smtp.client-ip=209.85.217.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-47f03844ea3so1156404137.0
-        for <stable@vger.kernel.org>; Tue, 21 May 2024 09:02:29 -0700 (PDT)
+	s=arc-20240116; t=1716307361; c=relaxed/simple;
+	bh=LvQkK1x6wKDbqniMQIsTNsYXVp9z4lc1HTvxzlRvhOQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cj+/YP/RflCrjFBHYv6RQg0P7xc7yW8OHIdjWZPHWdOj0gn/db7JtevBs7qMdYUI89BJ9HsoXReTJrXxqPMbbklqez4nBC04T7ugyn6HLnl77ReNUlP89xUdwTeAm4yaL60EMLscuye5XUZuCHlORVK9VAkYhbOkssIDaCPh0wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FT4A5aoO; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-351b683f2d8so3233180f8f.3
+        for <stable@vger.kernel.org>; Tue, 21 May 2024 09:02:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716307348; x=1716912148; darn=vger.kernel.org;
-        h=cc:autocrypt:content-language:to:subject:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=USFH02LdogHwlFaWdJnvdq4tX7l/sqkZXQ30J/Gv/sQ=;
-        b=XCwj4iELkh2h5K0hZhxlOQs7iu6CLXF9E9Y6FmDsUW6j4kALauHNMbWV1hqXa/CbJL
-         IDAWqTyy9fr2tJgquC6u7W6u7SNkXfRDwDPZmtDTrtoi1K0ivmM+9u4VKGqaA01ijx6C
-         yoUV28x2kK1jciWmWrSK0k886HAuPzQaoMa8CcC+3fWJXqE1O9KDEzWGGAz9RGMO1Z48
-         2zMzAjKHhBdSekd5pQNfTH/88H4q3bBDIi/w0aP1rveTZFR9wNbU2rHlvFQqgMLvlR80
-         GMutcMSVixOLGvmOo4Hm+0RBWctqG1DjIngnhavZ0RJk11kiZ5dfh9AUjbCrs2h0wr84
-         Uuyw==
+        d=linaro.org; s=google; t=1716307358; x=1716912158; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=CwLrAnoDcKfl4pASlzPf6/g0NwpfS2Ef+d5jWtjl7A0=;
+        b=FT4A5aoOog15/yw8YC3DaPCRduTyyo6At9ji5oh8W1ZwpW/y8K8/Cm/lMsvRYFtDad
+         gxmvSa04zOmDzUqdWzHylPALyN5NeruabDpvVPUTEo0I1Tw7TzIvnzAtBWnVAft6lSGz
+         nCZs/gncNMznweb4yQVrUSCX+3hwRIbMkhG2KlmJ9gFBRHWcFTrPYVG2UrgtBw5AWC+H
+         KlULgUtEnS0XZ5bCaJA65Kah2X6Hz8lY1i/F7vuhBrm6aIy3qTnW2szAkPVauCpHKwJx
+         /Uy8ITzLMc3kVwA2msp/1mGi+lY6II8csHGPN/ssouHqJbfCBXuUKhKyBOMObbeXIlAM
+         65LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716307348; x=1716912148;
-        h=cc:autocrypt:content-language:to:subject:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=USFH02LdogHwlFaWdJnvdq4tX7l/sqkZXQ30J/Gv/sQ=;
-        b=QB63L9R3ynLdZRjnz3/dSDM5CMnI24Odi1CcNz05ig+VjUC6q0bQKU4btDJuJ/nsB4
-         LZrEK/o508S+SCGUX4rWtb0VWa9NLMGtff+ZkZnTMCQ2ALafC6bhOa5nUS7MVOkzkmab
-         T9rK+AWpKwAEGJpINOaV9f4Lq7z1DDNFe24zUg5+LknRIfn45QqhK/ZDzaKzDDkK35pV
-         y2LW6InmS69ZrDU/gOzfxXmiNmHUpuZb16J38cRP0PjS9NQOQw8cEeDg8wY812CCG1A0
-         ZY57EpbAkiuGdbPMKNB+6luM6MdCmFWm/YTaedg72wqcPEke2mMD1/mA2vu84DKUf2sS
-         r7sA==
-X-Gm-Message-State: AOJu0YwxTMTG4jFzRHf1TN/elAkPDHyR6GwwvzGRKnhafulJMkvVeny2
-	DgcFf9HM11TJ8KbZdVRsadye8xevLHgT5EScsbEbkLnuDebDIDzS
-X-Google-Smtp-Source: AGHT+IHPsKkBLQIhUi0AbjRALzFUp5Rw1YHqU3reXONPRrborMHknrwYE3p/tFbV/OOW2xKTDpDhog==
-X-Received: by 2002:a05:6122:17a0:b0:4d4:eff:454 with SMTP id 71dfb90a1353d-4df8829ce08mr31341376e0c.1.1716307346753;
-        Tue, 21 May 2024 09:02:26 -0700 (PDT)
-Received: from [192.168.1.213] (syn-142-197-127-150.res.spectrum.com. [142.197.127.150])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-4df7c050c57sm3391139e0c.36.2024.05.21.09.02.25
+        d=1e100.net; s=20230601; t=1716307358; x=1716912158;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CwLrAnoDcKfl4pASlzPf6/g0NwpfS2Ef+d5jWtjl7A0=;
+        b=E36rxcNlFum4KeBQSbGMDVDJ2annkZHcdel3HgKQcqcLk27UIaJJ6CQf8da95IFQpb
+         Tw9Vwnavf6VmzbVoBeWo3oOAuD2/q8hqOKCJyNZjo2j8wtKZdhmBNlZEMMA1goPtSKFc
+         WwZI31bHc2Mya2bZVoYEECnX39oR3GgGCsI/yfqSr+orJhgB3GTtA1KK9tzpZBogaR1d
+         nhQVZymcEoPCwWfd3zgL18jAVm4CZ4I3kfcqzxIsfdMiBRZGyyrvADwDeE/TrDFtYdo/
+         I0oH/DttrdHZ87+QjDfEO1EUgmFRqLV7qkQrAnCh0Uo+6vKT+jnRAZ4SoBPXBf9x3gZy
+         QcUg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGDUG8vNoEuTiYNnk3IJEzKsvzvbCT0iL+1K2p3JQERMEATTWCOvtFX9zDA4Q1G8Eb/PULTIvAX1iOZd0v04C+Ud+SVqv+
+X-Gm-Message-State: AOJu0YzaUJL19YbcvFpy4KCL/g6f1ZXUS6FCptvnVFIpCGmNpFVngEH2
+	TCMPDGZNFmZmhsoW7c3XhebT6ERctheKYlWwNm7uuany1SJdVUvKeYZPNEKvkizb6Ppe+bCHsqE
+	6
+X-Google-Smtp-Source: AGHT+IFWv2DibPTZdRxMs8ItKbWP+f7I+Zrb3KKf4jtBV49zvoSqvL8D0wlAMMaY6rsZbNEw+9hBRA==
+X-Received: by 2002:a5d:6044:0:b0:34c:5448:b81a with SMTP id ffacd0b85a97d-3504a96a820mr25830846f8f.48.1716307358313;
+        Tue, 21 May 2024 09:02:38 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.206.169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502baacfb9sm32096026f8f.68.2024.05.21.09.02.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 May 2024 09:02:25 -0700 (PDT)
-Message-ID: <313824bc-799d-414f-96b7-e6de57c7e21d@gmail.com>
-Date: Tue, 21 May 2024 12:02:25 -0400
+        Tue, 21 May 2024 09:02:37 -0700 (PDT)
+Message-ID: <7927abbe-3395-4a53-9eed-7b4204d57df5@linaro.org>
+Date: Tue, 21 May 2024 18:02:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,122 +78,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Andrew Udvare <audvare@gmail.com>
-Subject: [REGRESSION] ETXTBSY when running Yarn (Node) since af5d68f
-To: regressions@lists.linux.dev
-Content-Language: en-GB
-Autocrypt: addr=audvare@gmail.com; keydata=
- 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
-Cc: stable@vger.kernel.org, axboe@kernel.dk
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------lzTjzw3fjyxCla2u8cwxx07T"
+Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
+ QCA6390 after warm reboot
+To: Zijun Hu <quic_zijuhu@quicinc.com>, luiz.dentz@gmail.com,
+ luiz.von.dentz@intel.com, marcel@holtmann.org
+Cc: linux-bluetooth@vger.kernel.org, wt@penguintechs.org,
+ regressions@lists.linux.dev, pmenzel@molgen.mpg.de, lk_sii@163.com,
+ stable@vger.kernel.org
+References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------lzTjzw3fjyxCla2u8cwxx07T
-Content-Type: multipart/mixed; boundary="------------3abi3fBPQRMsFYpysPAZhB5h";
- protected-headers="v1"
-From: Andrew Udvare <audvare@gmail.com>
-To: regressions@lists.linux.dev
-Cc: stable@vger.kernel.org, axboe@kernel.dk
-Message-ID: <313824bc-799d-414f-96b7-e6de57c7e21d@gmail.com>
-Subject: [REGRESSION] ETXTBSY when running Yarn (Node) since af5d68f
+On 16/05/2024 15:31, Zijun Hu wrote:
+> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
+> serdev") will cause below regression issue:
+> 
+> BT can't be enabled after below steps:
+> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
+> if property enable-gpios is not configured within DT|ACPI for QCA6390.
+> 
+> The commit is to fix a use-after-free issue within qca_serdev_shutdown()
+> by adding condition to avoid the serdev is flushed or wrote after closed
+> but also introduces this regression issue regarding above steps since the
+> VSC is not sent to reset controller during warm reboot.
+> 
+> Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
+> once BT was ever enabled, and the use-after-free issue is also fixed by
+> this change since the serdev is still opened before it is flushed or wrote.
+> 
+> Verified by the reported machine Dell XPS 13 9310 laptop over below two
+> kernel commits:
 
---------------3abi3fBPQRMsFYpysPAZhB5h
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+I don't understand how does it solve my question. I asked you: on which
+hardware did you, not the reporter, test?
 
-I3JlZ3pib3QgaW50cm9kdWNlZDogdjYuOC4udjYuOS1yYzENCg0KaHR0cHM6Ly9naXQua2Vy
-bmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvc3RhYmxlL2xpbnV4LmdpdC9jb21t
-aXQvP2lkPWFmNWQ2OGY4ODkyZjhlZThmMTM3NjQ4Yjc5Y2ViMmFiYzE1M2ExOWINCg0KU2lu
-Y2UgdGhlIGFib3ZlIGNvbW1pdCBwcmVzZW50IGluIDYuOSssIE5vZGUgcnVubmluZyBhIFlh
-cm4gaW5zdGFsbGF0aW9uIA0KdGhhdCBleGVjdXRlcyBhIHN1YnByb2Nlc3MgYWx3YXlzIHNo
-b3dzIHRoZSBmb2xsb3dpbmc6DQoNCi90ZXN0ICMgeWFybiAtLW9mZmxpbmUgaW5zdGFsbA0K
-eWFybiBpbnN0YWxsIHYxLjIyLjIyDQp3YXJuaW5nIHBhY2thZ2UuanNvbjogInRlc3QiIGlz
-IGFsc28gdGhlIG5hbWUgb2YgYSBub2RlIGNvcmUgbW9kdWxlDQp3YXJuaW5nIHRlc3RAMS4w
-LjA6ICJ0ZXN0IiBpcyBhbHNvIHRoZSBuYW1lIG9mIGEgbm9kZSBjb3JlIG1vZHVsZQ0KWzEv
-NF0gUmVzb2x2aW5nIHBhY2thZ2VzLi4uDQpbMi80XSBGZXRjaGluZyBwYWNrYWdlcy4uLg0K
-WzMvNF0gTGlua2luZyBkZXBlbmRlbmNpZXMuLi4NCls0LzRdIEJ1aWxkaW5nIGZyZXNoIHBh
-Y2thZ2VzLi4uDQplcnJvciAvdGVzdC9ub2RlX21vZHVsZXMvc255azogQ29tbWFuZCBmYWls
-ZWQuDQpFeGl0IGNvZGU6IDEyNg0KQ29tbWFuZDogbm9kZSB3cmFwcGVyX2Rpc3QvYm9vdHN0
-cmFwLmpzIGV4ZWMNCkFyZ3VtZW50czoNCkRpcmVjdG9yeTogL3Rlc3Qvbm9kZV9tb2R1bGVz
-L3NueWsNCk91dHB1dDoNCi9iaW4vc2g6IG5vZGU6IFRleHQgZmlsZSBidXN5DQoNClRoZSBj
-b21taXQgd2FzIGZvdW5kIGJ5IGJpc2VjdGlvbiB3aXRoIGEgc2ltcGxlIGluaXRyYW1mcyB0
-aGF0IGp1c3QgcnVucyANCid5YXJuIC0tb2ZmbGluZSBpbnN0YWxsJyB3aXRoIGEgdGVzdCBw
-cm9qZWN0IGFuZCBjYWNoZWQgWWFybiBwYWNrYWdlcy4NCg0KVG8gcmVwcm9kdWNlOg0KDQpu
-cG0gaW5zdGFsbCAtZyB5YXJuDQpta2RpciB0ZXN0DQpjZCB0ZXN0DQpjYXQgPiBwYWNrYWdl
-Lmpzb24gPDxFT0YNCnsNCiAgICAibmFtZSI6ICJ0ZXN0IiwNCiAgICAidmVyc2lvbiI6ICIx
-LjAuMCIsDQogICAgIm1haW4iOiAiaW5kZXguanMiLA0KICAgICJsaWNlbnNlIjogIk1JVCIs
-DQogICAgImRlcGVuZGVuY2llcyI6IHsNCiAgICAgICJzbnlrIjogIl4xLjEyOTEuMCINCiAg
-ICB9DQp9DQpFT0YNCnlhcm4gaW5zdGFsbA0KDQpNb2Rlcm4gWWFybiB3aWxsIGdpdmUgdGhl
-IHNhbWUgcmVzdWx0IGJ1dCB3aXRoIHNsaWdodGx5IGRpZmZlcmVudCBvdXRwdXQuDQoNClRo
-aXMgYWxzbyBhcHBlYXJzIHRvIGFmZmVjdCBub2RlLWd5cDogDQpodHRwczovL2dpdGh1Yi5j
-b20vbm9kZWpzL25vZGUvaXNzdWVzLzUzMDUxDQoNClNlZSBhbHNvOiBodHRwczovL2J1Z3Mu
-Z2VudG9vLm9yZy85MzE5NDINCg0KLS0NCkFuZHJldw0K
+> commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
+> implementation for QCA") of bluetooth-next tree.
+> commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
+> implementation for QCA") of linus mainline tree.
 
---------------3abi3fBPQRMsFYpysPAZhB5h--
+? Same commit with different hashes? No, it looks like you are working
+on some downstream tree with cherry picks.
 
---------------lzTjzw3fjyxCla2u8cwxx07T
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+No, test it on mainline and answer finally, after *five* tries, which
+kernel and which hardware did you use for testing this.
 
------BEGIN PGP SIGNATURE-----
 
-wsF5BAABCAAjFiEEYK9084jvT0kxwI44Gv2a/BIMJt0FAmZMxZEFAwAAAAAACgkQGv2a/BIMJt0z
-mw/+NVqRDtQz+Fqh3nmkdGJEU5EQGVzZ7TAj/XiL3wgs2x3KOJQoBA+czZXX/STIlzvvcPP9Nx7c
-z1paJFazfKhrAdNBfS9dpQqslCigohHslZHEYOEZk+7pBc71R5fk8kf3EamIgoz+qq45lpi+nIIQ
-+1+xxYrTv2I1a21MeypgxHZwHypsSJdq8k8vb12cb4Nb6I65m8z1+iQdEQGklCI+rPYJqyj9Ad6c
-hhtgS9EJmvADStSFPsMoXpEv+0hYOPWFLo3dBRNo36bkVF4XykpaiUuVaitKjQgY37JOk/RuNNsE
-NB2Y6kbZ5y4zYhKBQMRo542u3IRUP8CxPzlO6sEHcWiRkRfSC6fq2QHVcACDzkYJdHrhOV0zMbWE
-8N/RNyXzBRSWJlb1nL3dZqRS37YGoQZVvtR9mzCr5W9dz+2anPGJthoRjidLYOE5n4XXRnSmHmvK
-eB6RMzFqfMaES/pwkZ/L4ODafakQ+LTibpfggrw3U1z3HCga3slsG17/Nm6oFgXJIa89eD2XeEmK
-Da1JQvv13dQLGWydKKVgfbaKfsWviUslRNgC6gXptlm6IqTbcbfKSR7CB4r3VQkRN7vf61wrHuGT
-m+JfRkinUe1UuqIiZiqUIogDlbg+H5H2etHUaXJTN/AT4RKxuRQv3Vc2UcpUdVbpsPEnkqIhszMt
-EhI=
-=ipZq
------END PGP SIGNATURE-----
 
---------------lzTjzw3fjyxCla2u8cwxx07T--
+Best regards,
+Krzysztof
+
 
