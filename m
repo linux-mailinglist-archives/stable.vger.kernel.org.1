@@ -1,52 +1,61 @@
-Return-Path: <stable+bounces-45531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B528CB40D
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 21:08:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 890658CB431
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 21:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 725231C239CD
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 19:08:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 269811F22EEE
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 19:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9C614901E;
-	Tue, 21 May 2024 19:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E71A149C41;
+	Tue, 21 May 2024 19:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JugbqVue"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="vRjQkKgG"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57252142916;
-	Tue, 21 May 2024 19:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1771494BE;
+	Tue, 21 May 2024 19:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716318498; cv=none; b=gO7mqCqCP0ox5BDuCDD/MDy5u3T1jFQmBB9+R/3GYjEV/IHEd8QKrNT/BwDt7i60cl7Lrb0g8JfP9OHSsmMm2lYf5Cryu6olP/XLENBvfRgPOGOydgAgMgIW9UvMg6ZxLlYne4+giqnMvExLIT97iBP+exhXV+UqhTtb1YfG2yY=
+	t=1716319522; cv=none; b=V+KDBvJbMF58MFVJDLnbJZ5NkGql2MZ92+9Sb14EybqlEFepa/+nJzCgn2RBe7WYXIqgDIPXOTqYMUwJ3mvoPo9zXHWQK5dT/ooNPGCw/QpuS4hvpSzvGdp+zoWnT3Pp2mgAb6Y7cMuNLtGY7NYrKhLLn4SEb/FdhAMqDd73WJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716318498; c=relaxed/simple;
-	bh=U4wbU+4FKbRdiy0GkDK+FyHdxCCPRXfs7pfAF6gNJrE=;
+	s=arc-20240116; t=1716319522; c=relaxed/simple;
+	bh=13sRR4Cg7j5Obz0rW59UU1DAKPd30HumByDp2DZT2dg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wxa0j/wONqrkbiYtGPhMDVM4aKQZ4gdI/EJsKfILEMDkKywMLJI4TaY8lDde2teyjIV6Ym8LEy5HUL3YuGF0ZtlzH14mbccEE0IXGIMxYrVgIbdn4K3ZIA11gKmUz/enXh9AkYGOlRbI4LAmIvjgdu2g9tSPCrAypUzYSbbReX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JugbqVue; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Aa0cLQv6EXqOfkPotmVcZhdZiy3itIGTrTeuDAF0fks=; b=JugbqVueUMPEOzD6J0OMO/9EUb
-	HVQwA9KIYPYMQBLTwCMP3MfSLThC4zef/dXWPErhjdUyKOEoNvSM0TDt6f0GEJ3OPJV2j4vp9DjJ7
-	DJOGnhcRqdyekj0IducRHiff0mImOKiA/wvJGV6qXI7kdd6uo86LRDtuWuRWdQ8YxBK0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1s9Uq1-00FmSO-8x; Tue, 21 May 2024 21:07:53 +0200
-Date: Tue, 21 May 2024 21:07:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HVSmlxEv0lzbl/7dKWnwUg51NsB8A+/ZzJzLK40GLNOH5SRCHYbcg/6a/Lwt/gkZshM9EKKdyl6kRhzzjD/mAcA+lPHVpcOFxW6G9AvK1X8ZMstQiNIdDn5Uc62OVAtF5cOsVIDFWQ3yj+ICD/kMEPjp4sTtg2u/EsTZBYx5hIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=vRjQkKgG; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZFRPG/s8Udv0lTg44aiXcb7QGspIA/wWM/HaBDg/rf0=; b=vRjQkKgGcgQ8JjB+noOjPk4YvA
+	hNS7dUTomZslnzQzvqOklJZU7SP8WWxR63hLGSC1tqfepoehuvV1U/gRRNpWDz4lh2gCVwITQFtKu
+	hO+U+omMCnpejxzzOw3itoUi7JIgQB9qr/COAKHRkky3tmBhTSpe+5UsBdsKYzbf3jx0wE4w8KQ/K
+	Tuu4GQvfGh3xp3rCPIHNI1KYi6v4BqEcKqWGIM63pMHwo7ef+DlDuCZ2J06VfXGoNUF0xDWXwuf1f
+	9aB0rK3gqCR5DBoT1dGWt8k+a/lTa9KlHZdLd5pyw/CYUPXRPoM+1IA+H5EM3xwC1vlUJdjRlERPh
+	y9xNIX0A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49428)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1s9V6Q-0002hi-1S;
+	Tue, 21 May 2024 20:24:50 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1s9V6Q-0005S3-5B; Tue, 21 May 2024 20:24:50 +0100
+Date: Tue, 21 May 2024 20:24:50 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Da Xue <da@libre.computer>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -58,7 +67,7 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-stable <stable@vger.kernel.org>
 Subject: Re: [PATCH] net: mdio: meson-gxl set 28th bit in eth_reg2
-Message-ID: <8593ae57-d5ec-4b89-899d-4619d7767f81@lunn.ch>
+Message-ID: <Zkz1Au7njclh1r3g@shell.armlinux.org.uk>
 References: <CACqvRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx=8=9VhqZi13BCQQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,33 +78,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <CACqvRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx=8=9VhqZi13BCQQ@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
 On Tue, May 21, 2024 at 02:56:45PM -0400, Da Xue wrote:
-> This bit is necessary to enable packets on the interface. Without this
-> bit set, ethernet behaves as if it is working but no activity occurs.
+> @@ -65,7 +66,7 @@ static void gxl_enable_internal_mdio(struct
+> gxl_mdio_mux *priv)
+>   * The only constraint is that it must match the one in
+>   * drivers/net/phy/meson-gxl.c to properly match the PHY.
+>   */
+> - writel(FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
+> + writel(REG2_RESERVED_28 | FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
+>          priv->regs + ETH_REG2);
 > 
-> The vendor SDK sets this bit along with the PHY_ID bits. u-boot will set
-> this bit as well but if u-boot is not compiled with networking, the
-> interface will not work.
-> 
-> Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support");
-> 
-> Signed-off-by: Da Xue <da@libre.computer>
+>   /* Enable the internal phy */
 
-Please don't put blank lines between tags.
+In addition to what Andrew said, you need to look at how you're sending
+patches - this patch looks like it has been whitespace damaged, which
+means it can't be applied.
 
-If you intend that this patch is backported to stable, please add
-
-Cc: stable@vger.kernel.org
-
-Also please read:
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html#netdev-faq
-
-particularly the bit about indicating the tree in the Subject:
-
-    Andrew
-
----
-pw-bot: cr
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
