@@ -1,178 +1,199 @@
-Return-Path: <stable+bounces-45525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6C48CB1D9
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 18:02:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72C68CB1FA
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 18:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1490CB223CA
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 16:02:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CAA9283974
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 16:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB2817BB5;
-	Tue, 21 May 2024 16:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749981CD11;
+	Tue, 21 May 2024 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FT4A5aoO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOIkckH2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191D418054
-	for <stable@vger.kernel.org>; Tue, 21 May 2024 16:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C4A1C68C
+	for <stable@vger.kernel.org>; Tue, 21 May 2024 16:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716307361; cv=none; b=isZzZKIHLBU9kxDAxkJClJcyGi2fjCtxsYNea7IoNz6scG+Om7bxHbVN1ROpqtj9v5O3QkFrRK6OAUaPUJmZlC2tQBuvT2MRUcPkK75vHgXayvln/jsAyTPELLtSEjE49qF6WAfQ6NL2uPST5QPjW5dFezrnXm9qXoyZkcr//cE=
+	t=1716307970; cv=none; b=by4C6muFrl7vUJfJA/8vRPSqGwIvPkB9qHFWZ8SqY7tcsIWQqukJttKy/u3xxWMwhOsk9iMjyzv90q8vQeju6MILHULcB/j0u96XYqJqaxyEQt7kZlEO3PNM/OkIorxKYWeLlz880RVPgJmtCytVwC7ZdW1lg5GRDkO/XczfaeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716307361; c=relaxed/simple;
-	bh=LvQkK1x6wKDbqniMQIsTNsYXVp9z4lc1HTvxzlRvhOQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cj+/YP/RflCrjFBHYv6RQg0P7xc7yW8OHIdjWZPHWdOj0gn/db7JtevBs7qMdYUI89BJ9HsoXReTJrXxqPMbbklqez4nBC04T7ugyn6HLnl77ReNUlP89xUdwTeAm4yaL60EMLscuye5XUZuCHlORVK9VAkYhbOkssIDaCPh0wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FT4A5aoO; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-351b683f2d8so3233180f8f.3
-        for <stable@vger.kernel.org>; Tue, 21 May 2024 09:02:39 -0700 (PDT)
+	s=arc-20240116; t=1716307970; c=relaxed/simple;
+	bh=16LUPK2BDH83+ZeUEibqD0CSXfCzHgidoB/WLnqChcs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K5ZHhCYrz084wbwViNSgOb0zd71XexXuo3N0pY/xkArcsm83ci61Sgt/TPly/6jBeiPehqxYlU/aUti1XfMWouaarfKWKdC4nLR4HVoZWyaYGzD+G4nyc7QiRwPLiJxXrV84YX341rsITxo6Eb0GKd+7eQN5DYrk35Gou9Xa4vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOIkckH2; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5ff57410ebbso1517239a12.1
+        for <stable@vger.kernel.org>; Tue, 21 May 2024 09:12:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716307358; x=1716912158; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=CwLrAnoDcKfl4pASlzPf6/g0NwpfS2Ef+d5jWtjl7A0=;
-        b=FT4A5aoOog15/yw8YC3DaPCRduTyyo6At9ji5oh8W1ZwpW/y8K8/Cm/lMsvRYFtDad
-         gxmvSa04zOmDzUqdWzHylPALyN5NeruabDpvVPUTEo0I1Tw7TzIvnzAtBWnVAft6lSGz
-         nCZs/gncNMznweb4yQVrUSCX+3hwRIbMkhG2KlmJ9gFBRHWcFTrPYVG2UrgtBw5AWC+H
-         KlULgUtEnS0XZ5bCaJA65Kah2X6Hz8lY1i/F7vuhBrm6aIy3qTnW2szAkPVauCpHKwJx
-         /Uy8ITzLMc3kVwA2msp/1mGi+lY6II8csHGPN/ssouHqJbfCBXuUKhKyBOMObbeXIlAM
-         65LQ==
+        d=gmail.com; s=20230601; t=1716307968; x=1716912768; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CCvtAT9yL4bsyunfEMr4mUSenqzklzI9+JXqeALbOyQ=;
+        b=gOIkckH2wQOY/bNjAWlbU0YbQ/qPsMWNVbu7hKjrUetaGorKJSsSHxPnZ3Tq6nmSBZ
+         +wux19+x5s6MLcjLZs+hYQ5IfLqVQwH9KWeNkKKYAEf/KbHwu7wwina8E4fwCb5MXi3G
+         D20Aiod+twgYjcGMFAdJwaRIqXNMFsnm5vta8yid6WIQlPC0TIMTWOlin/4E0eS54Eps
+         gN0kJLO0H7zRbf8jItwabd8XeJcH3yq3uYTvRXKgpvPJXiTKP5pckfRU6lzwq7yu/n5V
+         VxowJ5sISWxuDKOaYVAeL5A3+CUqEJi9rxtkxZSmg82FZVCa4R9VDru6j656AmSw69ZK
+         0SoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716307358; x=1716912158;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CwLrAnoDcKfl4pASlzPf6/g0NwpfS2Ef+d5jWtjl7A0=;
-        b=E36rxcNlFum4KeBQSbGMDVDJ2annkZHcdel3HgKQcqcLk27UIaJJ6CQf8da95IFQpb
-         Tw9Vwnavf6VmzbVoBeWo3oOAuD2/q8hqOKCJyNZjo2j8wtKZdhmBNlZEMMA1goPtSKFc
-         WwZI31bHc2Mya2bZVoYEECnX39oR3GgGCsI/yfqSr+orJhgB3GTtA1KK9tzpZBogaR1d
-         nhQVZymcEoPCwWfd3zgL18jAVm4CZ4I3kfcqzxIsfdMiBRZGyyrvADwDeE/TrDFtYdo/
-         I0oH/DttrdHZ87+QjDfEO1EUgmFRqLV7qkQrAnCh0Uo+6vKT+jnRAZ4SoBPXBf9x3gZy
-         QcUg==
-X-Forwarded-Encrypted: i=1; AJvYcCVGDUG8vNoEuTiYNnk3IJEzKsvzvbCT0iL+1K2p3JQERMEATTWCOvtFX9zDA4Q1G8Eb/PULTIvAX1iOZd0v04C+Ud+SVqv+
-X-Gm-Message-State: AOJu0YzaUJL19YbcvFpy4KCL/g6f1ZXUS6FCptvnVFIpCGmNpFVngEH2
-	TCMPDGZNFmZmhsoW7c3XhebT6ERctheKYlWwNm7uuany1SJdVUvKeYZPNEKvkizb6Ppe+bCHsqE
-	6
-X-Google-Smtp-Source: AGHT+IFWv2DibPTZdRxMs8ItKbWP+f7I+Zrb3KKf4jtBV49zvoSqvL8D0wlAMMaY6rsZbNEw+9hBRA==
-X-Received: by 2002:a5d:6044:0:b0:34c:5448:b81a with SMTP id ffacd0b85a97d-3504a96a820mr25830846f8f.48.1716307358313;
-        Tue, 21 May 2024 09:02:38 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.206.169])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502baacfb9sm32096026f8f.68.2024.05.21.09.02.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 May 2024 09:02:37 -0700 (PDT)
-Message-ID: <7927abbe-3395-4a53-9eed-7b4204d57df5@linaro.org>
-Date: Tue, 21 May 2024 18:02:35 +0200
+        d=1e100.net; s=20230601; t=1716307968; x=1716912768;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CCvtAT9yL4bsyunfEMr4mUSenqzklzI9+JXqeALbOyQ=;
+        b=ePY3ENi+diaFK0zyoDWbF2bev1XEdZTyejsGfvU5dq3z6Hoz7YTdM8hdaOKUOxbCeV
+         tUAvJLSoJij4GnxkW+zaQWb5McWZmpIZWt9bwIzfjx+ras/Lt9borcJP4NSvqIEVAgp8
+         HOhAM6uRgT0cV707yuVtiLYaPUQ14nmESRF0wYlBc4VswmypojNhoOCJS7Y8VvcaZoNs
+         StJk6Hvn3TK/2Xome8XVH4EeOYZJ602HtXAwmmFmbsSl669ihuvE426UacdZptrCMBEu
+         qqpLIwDLGkt4q6GjGurjdVLfli+l//ZSJAWmMhUId4Xll4/wTQpoe5gnS7R3qFrubg7r
+         jbCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Tjr8UJ9xxVMSkQLEH7KXJTGjlDhC6ij2qllWJUAv5+k3y8M2T0bNQUq7ouf880kj4P3TekoRQLE7U6Eu5ssRvg+vyFuX
+X-Gm-Message-State: AOJu0Yz2Id9dLcoECQmx+SWnDYLvyr7/EjzPHlorRfx9xvUNJVfWFHII
+	saE5PSy5/i0ls5hk2nzRatM4RwFeSkKgbmLa7+0WAUEgYiK6ZlYYYQlSouJPrzHPHZ5iI+CqQ29
+	sq/QK/Er5uicX6x4sm7EcYRgNTWE=
+X-Google-Smtp-Source: AGHT+IHAP3KDnJJS0O7SkGfKIP7uk1EKp+f8X1mluB24KubBN9tLU3rOHMtfN8y0ky6xkTXQo2yflL/anOYUpzKLWLA=
+X-Received: by 2002:a17:90a:eb07:b0:2a3:10d3:239d with SMTP id
+ 98e67ed59e1d1-2b6ccd6bbbdmr28841420a91.32.1716307967824; Tue, 21 May 2024
+ 09:12:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
- QCA6390 after warm reboot
-To: Zijun Hu <quic_zijuhu@quicinc.com>, luiz.dentz@gmail.com,
- luiz.von.dentz@intel.com, marcel@holtmann.org
-Cc: linux-bluetooth@vger.kernel.org, wt@penguintechs.org,
- regressions@lists.linux.dev, pmenzel@molgen.mpg.de, lk_sii@163.com,
- stable@vger.kernel.org
-References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240307062957.2323620-1-Wayne.Lin@amd.com> <0847dc03-c7db-47d7-998b-bda2e82ed442@amd.com>
+ <41b87510-7abf-47e8-b28a-9ccc91bbd3c1@leemhuis.info> <177cfae4-b2b5-4e2c-9f1e-9ebe262ce48c@amd.com>
+ <CO6PR12MB5489FA9307280A4442BAD51DFCE72@CO6PR12MB5489.namprd12.prod.outlook.com>
+ <87wmo2hver.fsf@intel.com> <6f66e479-2f5a-477a-9705-dca4a3606760@amd.com> <83df4e94-e1ec-42f6-8a15-6439ef4a25b7@leemhuis.info>
+In-Reply-To: <83df4e94-e1ec-42f6-8a15-6439ef4a25b7@leemhuis.info>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Tue, 21 May 2024 12:12:36 -0400
+Message-ID: <CADnq5_P+WsL8B6B2vK5ENe8VWdvheoHyxoUfgF3Oex8Gvp7Lbg@mail.gmail.com>
+Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at drm_dp_add_payload_part2
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: "Limonciello, Mario" <mario.limonciello@amd.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	"Lin, Wayne" <Wayne.Lin@amd.com>, "Wentland, Harry" <Harry.Wentland@amd.com>, 
+	"lyude@redhat.com" <lyude@redhat.com>, "imre.deak@intel.com" <imre.deak@intel.com>, 
+	=?UTF-8?Q?Leon_Wei=C3=9F?= <leon.weiss@ruhr-uni-bochum.de>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, 
+	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>, 
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 16/05/2024 15:31, Zijun Hu wrote:
-> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
-> serdev") will cause below regression issue:
-> 
-> BT can't be enabled after below steps:
-> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
-> if property enable-gpios is not configured within DT|ACPI for QCA6390.
-> 
-> The commit is to fix a use-after-free issue within qca_serdev_shutdown()
-> by adding condition to avoid the serdev is flushed or wrote after closed
-> but also introduces this regression issue regarding above steps since the
-> VSC is not sent to reset controller during warm reboot.
-> 
-> Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
-> once BT was ever enabled, and the use-after-free issue is also fixed by
-> this change since the serdev is still opened before it is flushed or wrote.
-> 
-> Verified by the reported machine Dell XPS 13 9310 laptop over below two
-> kernel commits:
+I've got it teed up.  Is drm-misc-fixes the right branch since we are
+in the merge window?
 
-I don't understand how does it solve my question. I asked you: on which
-hardware did you, not the reporter, test?
+Alex
 
-> commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
-> implementation for QCA") of bluetooth-next tree.
-> commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
-> implementation for QCA") of linus mainline tree.
-
-? Same commit with different hashes? No, it looks like you are working
-on some downstream tree with cherry picks.
-
-No, test it on mainline and answer finally, after *five* tries, which
-kernel and which hardware did you use for testing this.
-
-
-
-Best regards,
-Krzysztof
-
+On Tue, May 21, 2024 at 7:20=E2=80=AFAM Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
+>
+> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+> for once, to make this easily accessible to everyone.
+>
+> Hmm, from here it looks like the patch now that it was reviewed more
+> that a week ago is still not even in -next. Is there a reason?
+>
+> I know, we are in the merge window. But at the same time this is a fix
+> (that already lingered on the lists for way too long before it was
+> reviewed) for a regression in a somewhat recent kernel, so it in Linus
+> own words should be "expedited"[1].
+>
+> Or are we again just missing a right person for the job in the CC?
+> Adding Dave and Sima just in case.
+>
+> Ciao, Thorsten
+>
+> [1]
+> https://lore.kernel.org/all/CAHk-=3Dwis_qQy4oDNynNKi5b7Qhosmxtoj1jxo5wmB6=
+SRUwQUBQ@mail.gmail.com/
+>
+> On 12.05.24 18:11, Limonciello, Mario wrote:
+> > On 5/10/2024 4:24 AM, Jani Nikula wrote:
+> >> On Fri, 10 May 2024, "Lin, Wayne" <Wayne.Lin@amd.com> wrote:
+> >>>> -----Original Message-----
+> >>>> From: Limonciello, Mario <Mario.Limonciello@amd.com>
+> >>>> Sent: Friday, May 10, 2024 3:18 AM
+> >>>> To: Linux regressions mailing list <regressions@lists.linux.dev>;
+> >>>> Wentland, Harry
+> >>>> <Harry.Wentland@amd.com>; Lin, Wayne <Wayne.Lin@amd.com>
+> >>>> Cc: lyude@redhat.com; imre.deak@intel.com; Leon Wei=C3=9F
+> >>>> <leon.weiss@ruhr-uni-
+> >>>> bochum.de>; stable@vger.kernel.org; dri-devel@lists.freedesktop.org;
+> >>>> amd-
+> >>>> gfx@lists.freedesktop.org; intel-gfx@lists.freedesktop.org
+> >>>> Subject: Re: [PATCH] drm/mst: Fix NULL pointer dereference at
+> >>>> drm_dp_add_payload_part2
+> >>>>
+> >>>> On 5/9/2024 07:43, Linux regression tracking (Thorsten Leemhuis) wro=
+te:
+> >>>>> On 18.04.24 21:43, Harry Wentland wrote:
+> >>>>>> On 2024-03-07 01:29, Wayne Lin wrote:
+> >>>>>>> [Why]
+> >>>>>>> Commit:
+> >>>>>>> - commit 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload
+> >>>>>>> allocation/removement") accidently overwrite the commit
+> >>>>>>> - commit 54d217406afe ("drm: use mgr->dev in drm_dbg_kms in
+> >>>>>>> drm_dp_add_payload_part2") which cause regression.
+> >>>>>>>
+> >>>>>>> [How]
+> >>>>>>> Recover the original NULL fix and remove the unnecessary input
+> >>>>>>> parameter 'state' for drm_dp_add_payload_part2().
+> >>>>>>>
+> >>>>>>> Fixes: 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload
+> >>>>>>> allocation/removement")
+> >>>>>>> Reported-by: Leon Wei=C3=9F <leon.weiss@ruhr-uni-bochum.de>
+> >>>>>>> Link:
+> >>>>>>> https://lore.kernel.org/r/38c253ea42072cc825dc969ac4e6b9b600371cc=
+8.c
+> >>>>>>> amel@ruhr-uni-bochum.de/
+> >>>>>>> Cc: lyude@redhat.com
+> >>>>>>> Cc: imre.deak@intel.com
+> >>>>>>> Cc: stable@vger.kernel.org
+> >>>>>>> Cc: regressions@lists.linux.dev
+> >>>>>>> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+> >>>>>>
+> >>>>>> I haven't been deep in MST code in a while but this all looks pret=
+ty
+> >>>>>> straightforward and good.
+> >>>>>>
+> >>>>>> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+> >>>>>
+> >>>>> Hmmm, that was three weeks ago, but it seems since then nothing
+> >>>>> happened to fix the linked regression through this or some other
+> >>>>> patch. Is there a reason? The build failure report from the CI mayb=
+e?
+> >>>>
+> >>>> It touches files outside of amd but only has an ack from AMD.  I
+> >>>> think we
+> >>>> /probably/ want an ack from i915 and nouveau to take it through.
+> >>>
+> >>> Thanks, Mario!
+> >>>
+> >>> Hi Thorsten,
+> >>> Yeah, like what Mario said. Would also like to have ack from i915 and
+> >>> nouveau.
+> >>
+> >> It usually works better if you Cc the folks you want an ack from! ;)
+> >>
+> >> Acked-by: Jani Nikula <jani.nikula@intel.com>
+> >>
+> >
+> > Thanks! Can someone with commit permissions take this to drm-misc?
+> >
+> >
+> >
 
