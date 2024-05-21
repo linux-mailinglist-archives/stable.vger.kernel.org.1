@@ -1,180 +1,216 @@
-Return-Path: <stable+bounces-45507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B838CAEBD
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 14:58:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D2B8CAED0
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 15:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 730082810F1
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 12:58:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA85EB220E5
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9688C770F1;
-	Tue, 21 May 2024 12:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BF174C1B;
+	Tue, 21 May 2024 13:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="L67jfMij"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RWVVMyNZ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jzOG9bhU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B315E770E2
-	for <stable@vger.kernel.org>; Tue, 21 May 2024 12:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F331E48B;
+	Tue, 21 May 2024 13:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716296309; cv=none; b=F2yUc1OtGeSPnowQecryNZJ7hpNsSEVbl5xOrEps8popyoIw+YYyoEVQQ0iNUvzqIfihiGXmU6oRysi/uzVyZwjNWk14Zuto1tR/BGbH0d5tDYdiEPdPAfuaaj4BxHvdGFjnp6+6VP313J5nyvoOzv/o3q29ZH7oZm90npExy84=
+	t=1716296657; cv=none; b=g4buZS8OLXpmMKScUWW5vqIpYkXXeRcvZo12XI/0xZLqjTRjTS32zJK7gboycIV6mPb9JQ+fyHMCY9LwGFx4yB07+BULzlZ9Aejcsf03aZHJUuzFnGoJBiIYkF9Bm0ex/pMEXFvY8LTAuzdn3tKI8nRh0Ssex+VROB29fj7mVCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716296309; c=relaxed/simple;
-	bh=wGkCVr/vTOvKJpwLYPD4pZTjMeDlZUjUE0DFrGFnH0Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FaXtU+kq8LojXhfluxhPjnPDa6Os/Vy2mBBJ5Yc4Mv5sMSfTC8b357W/LcBtl8STXGFtuBVj01f0vrd50l4vQ5l+87+xlXPHCEQ1iyZaUj39ENaDPvi7j1/fES+Y8ZQkrxBaoMcbbtDXVPGiYcSNiL6at6o2H7TnpR2DLP9xDMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=L67jfMij; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-51f929b9f10so1060322e87.2
-        for <stable@vger.kernel.org>; Tue, 21 May 2024 05:58:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1716296306; x=1716901106; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xL4sO2Du5udtePocStbPxV+46lZn+8qWvHd7QbGr4NQ=;
-        b=L67jfMij/0Dzzx2YCV0pLs0JKY8tYqM0sPcrvgzvrjpR9CpeMhe6Pu8fAcRWD6w+VW
-         to0oZq5DjPMtHxPWFFh2Wn6sqhWgg+nthJoRTUqFGzq05grEQfxjl7LdSr5/06pOXIy+
-         7d6lFZuHA/1xrYyOXv9oShehAgk1GfGpJHVjE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716296306; x=1716901106;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xL4sO2Du5udtePocStbPxV+46lZn+8qWvHd7QbGr4NQ=;
-        b=utP0NbgRhyvWQvM4EP0bhVXlHaYPkvDv6FNwlwC3Oxg42gm6bgKeEdAH5Rzbakz4G4
-         /c4xxePQ7JVHO4nLfLEaPXlUeq5E3FJOEWYQW0fMhFfqaxgZ33mvuBbziw7fNHyuiyvR
-         N/XiPLPs9tIYd9n5KDS62O8nhLlLJTSaCrQ2UdC0zop8zyXmWMSJdL3Pd1U2Urc4A52H
-         JHdsriHMOX1RlrdaYaF+si5oLD7K2X4XRs1SmxHmdo5r8OGw9JUWEBOIC+zv4o2ztqYU
-         Aq1JF8ALf/yphY7Amm8BxO1x2RR1hCukHn7k2iOvoITkqrQs2etaYNqRepkBmBWtuO2Q
-         lOOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgBsmLrA/b62g4+31WrnO21dCVaHndXK2/Rf5BFAuXiDfqxII//ZqP7OqLbS+eu2D/OjMgpsPqgzjFQNVgcnabnFxR4BoQ
-X-Gm-Message-State: AOJu0Yx9y9+MKiYCFU6w0nenrhPSW358b3rDsdw30HR/R9PUymL/HNIe
-	W/iYhLpMAfyPr97TKnBeB7ldDiST5IL/qZuPm+oYjDcgkXXCodylKJ2aVv8IHpqM/WFSJXyegJz
-	x0MqpdHuYaXp8MI2RcNIMKFEWa+XFtMqHoGZvdg==
-X-Google-Smtp-Source: AGHT+IGWEfy2X6cC8DVw9rDd+ZVNbuUXVS091grZksXxwgGTDkygIdCxsI9rrnx/WN/BzZz1nXWZnrZNUrRsdtx3HvM=
-X-Received: by 2002:a05:6512:3c9e:b0:51f:3bc2:1ed2 with SMTP id
- 2adb3069b0e04-52210478710mr22489408e87.4.1716296305878; Tue, 21 May 2024
- 05:58:25 -0700 (PDT)
+	s=arc-20240116; t=1716296657; c=relaxed/simple;
+	bh=vwHfsvgjzbLzRecVm6LdMSMEjNnboRxXPQyX6cIb1/E=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Y1XM0wY/eoPZlq9MVvX3BoTeG2Fqpe4LsHAmT0b7tmbxgjh9sL8XL2fXCJUm2+aY5L9K1BGV5IJrkceJzJcOyAluOgWvFHv0/VCDspQwH7ODB3cJZg149hWhA51/92gYyJD75o9VACrscH6ZXuF27LDms9kQG29JtenMO6rtPOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RWVVMyNZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jzOG9bhU; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 21 May 2024 13:04:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1716296652;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=beGMZHUSz3A0CZk48/UyRVR7jbhwRb/Z/9EOHk+yFjA=;
+	b=RWVVMyNZwGoYBC4BUJpVIppk4LKHdGHX0y8FR5NpCiPI7/cDokNlfsN14eP8NLIIShayVL
+	UfCNVEAbOEIKTjM0QhNfhMT9d5Px8aH0fbTEIYigoNqv4KjlIjWN0fj+cyywF4nht4s9ja
+	KRytyEPY9KTTAiJgG91D3jBHDr41lkIWW0wVzN6d/1Cp447PTtTpz8ZuGIxIwm2llT8Ts+
+	FF2Zl/48+Y2gMTK0dUPck3gkYmP3/t02W7AfC6h5K0u2iDE+iQQb6n3Rd/AL0G+RUl6CWo
+	hQWr2Jjjh5GfUNv6f8GzA7ZF8i2z/KtGLHFTrQhZZLfKAjFUjuMC6iINN2h0lw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1716296652;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=beGMZHUSz3A0CZk48/UyRVR7jbhwRb/Z/9EOHk+yFjA=;
+	b=jzOG9bhULiE+sD2kJq061YIevFE9R2xBckwGc96LotpFdmU0pj8yjsH8oCc8nvHQG3An5d
+	WeiEpJz4Yh7eKEBA==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/topology: Handle bogus ACPI tables correctly
+Cc: Carsten Tolkmit <ctolkmit@ennit.de>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <87le48jycb.ffs@tglx>
+References: <87le48jycb.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com> <ZkyVyLVQn25taxCn@phenom.ffwll.local>
-In-Reply-To: <ZkyVyLVQn25taxCn@phenom.ffwll.local>
-From: Daniel Vetter <daniel@ffwll.ch>
-Date: Tue, 21 May 2024 14:58:12 +0200
-Message-ID: <CAKMK7uFnOYJED0G2XJk4mf-dAD1VWrpVUvccFGz_g2sZSpTsVA@mail.gmail.com>
-Subject: Re: [PATCH] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Cc: dri-devel@lists.freedesktop.org, 
-	"Wachowski, Karol" <karol.wachowski@intel.com>, =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>, 
-	Eric Anholt <eric@anholt.net>, Rob Herring <robh@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <171629665158.10875.17651940971003547815.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Tue, 21 May 2024 at 14:38, Daniel Vetter <daniel@ffwll.ch> wrote:
->
-> On Mon, May 20, 2024 at 12:05:14PM +0200, Jacek Lawrynowicz wrote:
-> > From: "Wachowski, Karol" <karol.wachowski@intel.com>
-> >
-> > Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
-> > allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
-> > causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
-> > BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
-> >
-> > Return -EINVAL early if COW mapping is detected.
-> >
-> > This bug affects all drm drivers using default shmem helpers.
-> > It can be reproduced by this simple example:
-> > void *ptr =3D mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
-> > ptr[0] =3D 0;
-> >
-> > Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
-> > Cc: Noralf Tr=C3=B8nnes <noralf@tronnes.org>
-> > Cc: Eric Anholt <eric@anholt.net>
-> > Cc: Rob Herring <robh@kernel.org>
-> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > Cc: Maxime Ripard <mripard@kernel.org>
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: David Airlie <airlied@gmail.com>
-> > Cc: Daniel Vetter <daniel@ffwll.ch>
-> > Cc: dri-devel@lists.freedesktop.org
-> > Cc: <stable@vger.kernel.org> # v5.2+
-> > Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-> > Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->
-> Excellent catch!
->
-> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
->
-> I reviewed the other helpers, and ttm/vram helpers already block this wit=
-h
-> the check in ttm_bo_mmap_obj.
->
-> But the dma helpers does not, because the remap_pfn_range that underlies
-> the various dma_mmap* function (at least on most platforms) allows some
-> limited use of cow. But it makes no sense at all to all that only for
-> gpu buffer objects backed by specific allocators.
->
-> Would you be up for the 2nd patch that also adds this check to
-> drm_gem_dma_mmap, so that we have a consistent uapi?
->
-> I'll go ahead and apply this one to drm-misc-fixes meanwhile.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Forgot to add: A testcase in igt would also be really lovely.
+Commit-ID:     9d22c96316ac59ed38e80920c698fed38717b91b
+Gitweb:        https://git.kernel.org/tip/9d22c96316ac59ed38e80920c698fed38717b91b
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 17 May 2024 16:40:36 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 21 May 2024 14:52:35 +02:00
 
-https://dri.freedesktop.org/docs/drm/gpu/drm-uapi.html#validating-changes-w=
-ith-igt
--Sima
+x86/topology: Handle bogus ACPI tables correctly
 
+The ACPI specification clearly states how the processors should be
+enumerated in the MADT:
 
->
-> Thanks, Sima
->
-> > ---
-> >  drivers/gpu/drm/drm_gem_shmem_helper.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/d=
-rm_gem_shmem_helper.c
-> > index 177773bcdbfd..885a62c2e1be 100644
-> > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > @@ -611,6 +611,9 @@ int drm_gem_shmem_mmap(struct drm_gem_shmem_object =
-*shmem, struct vm_area_struct
-> >               return ret;
-> >       }
-> >
-> > +     if (is_cow_mapping(vma->vm_flags))
-> > +             return -EINVAL;
-> > +
-> >       dma_resv_lock(shmem->base.resv, NULL);
-> >       ret =3D drm_gem_shmem_get_pages(shmem);
-> >       dma_resv_unlock(shmem->base.resv);
-> > --
-> > 2.45.1
-> >
->
-> --
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+ "To ensure that the boot processor is supported post initialization,
+  two guidelines should be followed. The first is that OSPM should
+  initialize processors in the order that they appear in the MADT. The
+  second is that platform firmware should list the boot processor as the
+  first processor entry in the MADT.
+  ...
+  Failure of OSPM implementations and platform firmware to abide by
+  these guidelines can result in both unpredictable and non optimal
+  platform operation."
 
+The kernel relies on that ordering to detect the real BSP on crash kernels
+which is important to avoid sending a INIT IPI to it as that would cause a
+full machine reset.
 
+On a Dell XPS 16 9640 the BIOS ignores this rule and enumerates the CPUs in
+the wrong order. As a consequence the kernel falsely detects a crash kernel
+and disables the corresponding CPU.
 
---=20
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Prevent this by checking the IA32_APICBASE MSR for the BSP bit on the boot
+CPU. If that bit is set, then the MADT based BSP detection can be safely
+ignored. If the kernel detects a mismatch between the BSP bit and the first
+enumerated MADT entry then emit a firmware bug message.
+
+This obviously also has to be taken into account when the boot APIC ID and
+the first enumerated APIC ID match. If the boot CPU does not have the BSP
+bit set in the APICBASE MSR then there is no way for the boot CPU to
+determine which of the CPUs is the real BSP. Sending an INIT to the real
+BSP would reset the machine so the only sane way to deal with that is to
+limit the number of CPUs to one and emit a corresponding warning message.
+
+Fixes: 5c5682b9f87a ("x86/cpu: Detect real BSP on crash kernels")
+Reported-by: Carsten Tolkmit <ctolkmit@ennit.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Carsten Tolkmit <ctolkmit@ennit.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87le48jycb.ffs@tglx
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218837
+---
+ arch/x86/kernel/cpu/topology.c | 53 +++++++++++++++++++++++++++++++--
+ 1 file changed, 50 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index d17c9b7..621a151 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -128,6 +128,9 @@ static void topo_set_cpuids(unsigned int cpu, u32 apic_id, u32 acpi_id)
+ 
+ static __init bool check_for_real_bsp(u32 apic_id)
+ {
++	bool is_bsp = false, has_apic_base = boot_cpu_data.x86 >= 6;
++	u64 msr;
++
+ 	/*
+ 	 * There is no real good way to detect whether this a kdump()
+ 	 * kernel, but except on the Voyager SMP monstrosity which is not
+@@ -144,17 +147,61 @@ static __init bool check_for_real_bsp(u32 apic_id)
+ 	if (topo_info.real_bsp_apic_id != BAD_APICID)
+ 		return false;
+ 
++	/*
++	 * Check whether the enumeration order is broken by evaluating the
++	 * BSP bit in the APICBASE MSR. If the CPU does not have the
++	 * APICBASE MSR then the BSP detection is not possible and the
++	 * kernel must rely on the firmware enumeration order.
++	 */
++	if (has_apic_base) {
++		rdmsrl(MSR_IA32_APICBASE, msr);
++		is_bsp = !!(msr & MSR_IA32_APICBASE_BSP);
++	}
++
+ 	if (apic_id == topo_info.boot_cpu_apic_id) {
+-		topo_info.real_bsp_apic_id = apic_id;
+-		return false;
++		/*
++		 * If the boot CPU has the APIC BSP bit set then the
++		 * firmware enumeration is agreeing. If the CPU does not
++		 * have the APICBASE MSR then the only choice is to trust
++		 * the enumeration order.
++		 */
++		if (is_bsp || !has_apic_base) {
++			topo_info.real_bsp_apic_id = apic_id;
++			return false;
++		}
++		/*
++		 * If the boot APIC is enumerated first, but the APICBASE
++		 * MSR does not have the BSP bit set, then there is no way
++		 * to discover the real BSP here. Assume a crash kernel and
++		 * limit the number of CPUs to 1 as an INIT to the real BSP
++		 * would reset the machine.
++		 */
++		pr_warn("Enumerated BSP APIC %x is not marked in APICBASE MSR\n", apic_id);
++		pr_warn("Assuming crash kernel. Limiting to one CPU to prevent machine INIT\n");
++		set_nr_cpu_ids(1);
++		goto fwbug;
+ 	}
+ 
+-	pr_warn("Boot CPU APIC ID not the first enumerated APIC ID: %x > %x\n",
++	pr_warn("Boot CPU APIC ID not the first enumerated APIC ID: %x != %x\n",
+ 		topo_info.boot_cpu_apic_id, apic_id);
++
++	if (is_bsp) {
++		/*
++		 * The boot CPU has the APIC BSP bit set. Use it and complain
++		 * about the broken firmware enumeration.
++		 */
++		topo_info.real_bsp_apic_id = topo_info.boot_cpu_apic_id;
++		goto fwbug;
++	}
++
+ 	pr_warn("Crash kernel detected. Disabling real BSP to prevent machine INIT\n");
+ 
+ 	topo_info.real_bsp_apic_id = apic_id;
+ 	return true;
++
++fwbug:
++	pr_warn(FW_BUG "APIC enumeration order not specification compliant\n");
++	return false;
+ }
+ 
+ static unsigned int topo_unit_count(u32 lvlid, enum x86_topology_domains at_level,
 
