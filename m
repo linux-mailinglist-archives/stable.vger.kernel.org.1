@@ -1,121 +1,145 @@
-Return-Path: <stable+bounces-45534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD27A8CB441
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 21:30:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C768CB490
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 22:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9165C1F21555
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 19:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8A171C2179B
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 20:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8EF148859;
-	Tue, 21 May 2024 19:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63B0148FF1;
+	Tue, 21 May 2024 20:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=libre.computer header.i=@libre.computer header.b="kavSZDTc"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="4LTogLoG";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="brJx1+nr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfout1-smtp.messagingengine.com (wfout1-smtp.messagingengine.com [64.147.123.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F94219ED
-	for <stable@vger.kernel.org>; Tue, 21 May 2024 19:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031201CD18;
+	Tue, 21 May 2024 20:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716319846; cv=none; b=pZHfGQHofXPwEpsxxVJMBkGOeE6+oDbuhgndzAwhmkF6yW8vs1grut7JNBAAmqplGXpQ2B1TChNJtfA3QllOiq/3BjcydpasBprUOWzeZYQvW9AHNKQoi0pWOK7GFT/W5siAKrypOSqFjCXZ+P0TL/CzOm3L4LQVJrCD6vaDEyI=
+	t=1716322340; cv=none; b=COd3Z25m84lE6Zx2VTH8/B09VvQ7EcntYYv0CL26dNIq4m54tZqXqQKj8UiYi0A27GomOsKwpV4T6LdT8LCI0TBwnWM2pEJ7Ze/uckTUjk6M07OCX0evtXL8UmYEVpf5r3Ya9SS/3FledgZpaCFeW6caRzFdoe5jENVeW5PVIFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716319846; c=relaxed/simple;
-	bh=uN497LMSSrTG2otGHW/OSlKS89nLU98TjsFNGvgc7BM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dn5vkUOLZcYTUm1cPx5no9gs+Unc9eiRpZ539bnUZbBJJFqI902OHqpjdv8772jJLjMxxn43MI7pyvnoUKqn6qo+OUIeiFVIKJeT8Z4sJxq3pnmHVXXrnS0nzBqpseUB1DTpYcbp+QCcEsMTWbLMgrkN+XD+Wz8sdX2UJMrqGYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libre.computer; spf=none smtp.mailfrom=libretech.co; dkim=pass (2048-bit key) header.d=libre.computer header.i=@libre.computer header.b=kavSZDTc; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libre.computer
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=libretech.co
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2e52181c228so55720361fa.0
-        for <stable@vger.kernel.org>; Tue, 21 May 2024 12:30:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=libre.computer; s=google; t=1716319843; x=1716924643; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mScw330//XjyClrpxvPSs6MjpV33vzEHLROrLRihprk=;
-        b=kavSZDTcn7rkZP0vQJurkWAiSxIvcuo6LFF+9CDER3XgvhYFXv5Z4j/NnoyVaNohm0
-         bS+jcz+jKe0DC89YD1U+LaQrQyfDA9YN2AQ4xpz1TlSjqENrTDYbcfIXEsKnmyrsC7d1
-         ZMAVkvnxp3SYfNwplbnJ9PBMoJ2boNCK41F6VIDMU3rgl9wdFQ0P6SbAnhDHTYVthnvp
-         Uik/tjE9JQC85s1uwQ4RHCamJsztnREWg1XGQySxFyj92zLrc2YmRSi9nvF94bnbc8dh
-         gqB1PZeed2XMRx+q37Z4GCnLxl2FsgMutg3afp3E8XRp8dl5dPS3T2tR0NunrULGmkfh
-         ZeFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716319843; x=1716924643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mScw330//XjyClrpxvPSs6MjpV33vzEHLROrLRihprk=;
-        b=dgPNkniUY3KhWrAUPB6SoVp8cLcdJSfX/0CtwvqqA3ThS77L7vyD8zYfSi2eFlMnaW
-         77UotxCJUbz8m9hhyUcy1ZOTDk/3DRQCAtwZpeADXmIrUCvVUYaifu+d3JM6DUF4TBpv
-         OlXJR78TkpTfs1MaAfbn4LIcZHOm7WmQWBkL+VOcyBneYRk1s6uB/lWsEvHlnwm1PceQ
-         LeN0RmaojqL9xx3fKsYqBey+CtnHBA+89uM8HD/9YSrNr220D5Dqc60M8WEOahf56WGe
-         hqk6WiMSppioOLXUGkRx7FBBpe1IyqDf1KUy23eurI2vLqNH9ggEaq0bsi8T3toAWjRe
-         TMiA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeEYzEN/5SVxp+LIjM2GZbIoL9XVLruCMNkHrEt+HVnMwGF4RBpO9XEwxqEbejwUiGMUeWiHu/r/Kmrlad+FOtJaj+ec6T
-X-Gm-Message-State: AOJu0YxD7EkZRgMchxLI+1iw7ixbWjj6/xKHUyiZhrflVt2DybfZ2rAr
-	DiX0LadiWNk6+777QHhhVtoJSUaN1vdzodqBcIO8ScNeutmhKNCNuPMSL3Flr1KOk0MGzikVEi1
-	J7ZBomP4lLWs8VQtOFHysiqTbwl8Y9/paGrKk
-X-Google-Smtp-Source: AGHT+IFN7IRJY5kiBiKBEGefkggLY3iU8MsJap6OuX1crsyCiwkXjeBbDTmfMBuiSArK98CecXCUx/Cf3hDAe9Yiprk=
-X-Received: by 2002:a2e:3206:0:b0:2e0:c81c:25da with SMTP id
- 38308e7fff4ca-2e51ff5fb1bmr232817751fa.30.1716319843220; Tue, 21 May 2024
- 12:30:43 -0700 (PDT)
+	s=arc-20240116; t=1716322340; c=relaxed/simple;
+	bh=/3RYxDMoRE6zF4QXwHWBpSH29hM6c2SjbD5QDOOo7E0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ljVWJy1XySBHsCjEycFZDfA3i+uVr51RNuHGo/8CEFj7dHiyWzximYGYGxdVRsKRolzVJsjfQVd1G4QdWesfJDZpBIvXnhavxT2IoS88uskomfOQ4t0wylDQi9pRTPMzW0HxjjM6axH7BhgR0gt07FaF9ubTRKLroo9HmcVoBTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=4LTogLoG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=brJx1+nr; arc=none smtp.client-ip=64.147.123.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfout.west.internal (Postfix) with ESMTP id E1A461C000B6;
+	Tue, 21 May 2024 16:12:17 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Tue, 21 May 2024 16:12:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1716322337; x=1716408737; bh=CK
+	d/Bt9HXJciJ5UZehDW04kyPnJ5NZPt6aGBwwwY28Y=; b=4LTogLoG6xWs7a85Yi
+	wknjS0laHoy6z3HD/fBA0XrHVpipkSUUH+vV7I1NQte/X7KnFkg4XWfFnFx1zudr
+	TIR22pFi2fHOol988mk033/iqrlMqVEpy59LTpLPZOBqhnClE7qYTMRQhD4QZnbQ
+	DW6uhrqdugAxEAQ2baEzwBHQr+VvlmCMiwOo99WoviSTvUoKVQJ1xEZq5Qajc7D1
+	tHkXIVayDq9L2T91Bd0LWgOEzSpb1kt2ELCkJx0E8KH0ilasmeW13iJnDDe1LUVV
+	l9ZXQ6RUbwhI93pephTS87loqPwevrAhh+YiVDefGzetj4Fb4tnqLXaDtXsyYZ6k
+	UMbw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1716322337; x=1716408737; bh=CKd/Bt9HXJciJ
+	5UZehDW04kyPnJ5NZPt6aGBwwwY28Y=; b=brJx1+nr2Zjydf+8QOJyhdYZQmrGT
+	NPBNDRvY7kv4bAWW1Dw9PjBrqAX3qpYjwoUfFSsQVwEkVXfVM/oPMmALtAZuXGM/
+	zgoJ4WoLa0IBr6YieJ6y809TpXvycfvFiijGq2KoWbW+l8k7pJigFrlrDiE1lsRU
+	I1QT5g8HYgd8Ys/w3YIl/AyODhJ+wEdvRaqrYVkS4juf7m20Cn5UhfHYEpFAka7a
+	+2ZQ++F1/2m7X1KLTu4b/DPfY4u61KkGAsm77yduSwwa0N72eMMpsucj4ATEtDRB
+	IKj5rCCHcjJx2F1wTJo95fEyY8Bp7vfF7r2VV/poerBjV+3CiREZcb4/Q==
+X-ME-Sender: <xms:IQBNZiattS9qKDp2h6WTlibmV-kLkeJgQkCw1BVNNGfLDjhfsyDs5Q>
+    <xme:IQBNZlb56GTr-ypDhH_Bl-4pkalUEF-em-LUiaqyhdy1zolZQNyWISLx75Ba9W5rk
+    QHMqB7p9LIuaGvZabM>
+X-ME-Received: <xmr:IQBNZs_F3a08OD_mGYBJC2qz5ualvmnffPdREDTVcNbh7dLx5ErbMyY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeivddgudegfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheplfhirgig
+    uhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenuc
+    ggtffrrghtthgvrhhnpedufffffffhueehvefhgfelveekueegteefgeeiieejheefkeeh
+    keevudevieegueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:IQBNZkqf3Ghh3JHk0-4dTamksdsmEZPvpb6wXJ-18J6sAKUMzTT4QA>
+    <xmx:IQBNZtoSiB2SKHdyna0v2DXa6K0zgOn-vsTKoDpfAR-kS_dgteaL-w>
+    <xmx:IQBNZiR_vsEAB8oa9j_it52YEVbcNDjiOOHlBc8FiiJHQCPjobD0kQ>
+    <xmx:IQBNZtoLJITOxgmtbEFkXnozVss16dfRS3nWTpGq8S44ECeEXwce8g>
+    <xmx:IQBNZuenIOkWhP6je5SHfQTdwbFzubSqsiTyvoqaAV_lS1mx_EiKh8jI>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 21 May 2024 16:12:16 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 0/4] LoongArch: Bootloader interface fixes
+Date: Tue, 21 May 2024 21:12:11 +0100
+Message-Id: <20240521-loongarch-booting-fixes-v1-0-659c201c0370@flygoat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CACqvRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx=8=9VhqZi13BCQQ@mail.gmail.com>
- <Zkz1Au7njclh1r3g@shell.armlinux.org.uk>
-In-Reply-To: <Zkz1Au7njclh1r3g@shell.armlinux.org.uk>
-From: Da Xue <da@libre.computer>
-Date: Tue, 21 May 2024 15:30:31 -0400
-Message-ID: <CACqvRUYo+KJJjq+AtpLpZhS9WrTUoGuCJ0ZV-7=fy0zvD=xF7A@mail.gmail.com>
-Subject: Re: [PATCH] net: mdio: meson-gxl set 28th bit in eth_reg2
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Da Xue <da@libre.computer>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABsATWYC/x3LQQqAIBBA0avErBtIzYKuEi3MJhsIJzQiiO6et
+ Hx8/gOZElOGoXog0cWZJRaougK/uRgIeSkG3ei2sVrhLhKDS37DWeTkGHDlmzKariNlqPfOWij
+ 3kegPZR6n9/0AJP7hYGkAAAA=
+To: Huacai Chen <chenhuacai@kernel.org>, 
+ Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=975;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=/3RYxDMoRE6zF4QXwHWBpSH29hM6c2SjbD5QDOOo7E0=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhjRfBgWLQj0mCcl1F4UT85fMCb/xek7otu8x+7dd0f1eG
+ H3IM35jRykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAEzk83eGX8ydN54rhD2QvtV0
+ 46mEv2Kl/I8bLsJ3Cgo2Fc27lP74YxIjw5TWv9POVL3XmezL9fvdnwvPQuyNJdyNbpyNfbbNeuq
+ Om7wA
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-On Tue, May 21, 2024 at 3:24=E2=80=AFPM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
->
-> On Tue, May 21, 2024 at 02:56:45PM -0400, Da Xue wrote:
-> > @@ -65,7 +66,7 @@ static void gxl_enable_internal_mdio(struct
-> > gxl_mdio_mux *priv)
-> >   * The only constraint is that it must match the one in
-> >   * drivers/net/phy/meson-gxl.c to properly match the PHY.
-> >   */
-> > - writel(FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
-> > + writel(REG2_RESERVED_28 | FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
-> >          priv->regs + ETH_REG2);
-> >
-> >   /* Enable the internal phy */
->
-> In addition to what Andrew said, you need to look at how you're sending
-> patches - this patch looks like it has been whitespace damaged, which
-> means it can't be applied.
+Hi all,
 
-Thanks for the feedback. There's 2 reserved ranges in that register
-with no further descriptions available.
-If naming the bit offset after the field range is OK, I will make edit
-and submit a V2 though send-email.
+This series fixed some issues on bootloader - kernel
+interface.
 
->
-> --
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+The first two fixed booting with devicetree, the last two
+enhanced kernel's tolerance on different bootloader implementation.
+
+Please review.
+
+Thanks
+
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+Jiaxun Yang (4):
+      LoongArch: Fix built-in DTB detection
+      LoongArch: smp: Add all CPUs enabled by fdt to NUMA node 0
+      LoongArch: Fix entry point in image header
+      LoongArch: Clear higher address bits in JUMP_VIRT_ADDR
+
+ arch/loongarch/include/asm/stackframe.h | 4 +++-
+ arch/loongarch/kernel/head.S            | 2 +-
+ arch/loongarch/kernel/setup.c           | 6 ++++--
+ arch/loongarch/kernel/smp.c             | 5 ++++-
+ 4 files changed, 12 insertions(+), 5 deletions(-)
+---
+base-commit: 124cfbcd6d185d4f50be02d5f5afe61578916773
+change-id: 20240521-loongarch-booting-fixes-366e13e7ca55
+
+Best regards,
+-- 
+Jiaxun Yang <jiaxun.yang@flygoat.com>
+
 
