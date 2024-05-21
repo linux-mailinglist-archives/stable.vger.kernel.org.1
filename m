@@ -1,62 +1,74 @@
-Return-Path: <stable+bounces-45515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF218CAFA4
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 15:47:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5388CAFAF
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 15:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CCC81C21591
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DAB21C222C5
+	for <lists+stable@lfdr.de>; Tue, 21 May 2024 13:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979FE768EE;
-	Tue, 21 May 2024 13:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DD27711E;
+	Tue, 21 May 2024 13:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdnWDP7a"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GpT0XP6i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8C055783;
-	Tue, 21 May 2024 13:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7C455783;
+	Tue, 21 May 2024 13:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716299265; cv=none; b=PDoljsqvqX+n3LrNxUmiiTaVaW0TjtoPorr8zQICNkHeWjmGp5Una96MX6l4u/g6EhTljrHRr9WxYcKDMoZulNzSx1/TEpgdXyL7ChtfakafPD862DCQX98ynEjCTyR3xDLRkCfe1qIKLKoGedmwnW5SlGI19N9BLaeNEgV74CI=
+	t=1716299613; cv=none; b=qfEsS1DH1szGVh96bIjfqROk0sjviGnVxH+4baLnTfb/SMby/XHBDXEC0FaZ/2JCCwJGO+XtKvo9N2Vodmm11ELMxkA+y/Lt4Js0BbpjgFcvzOnRqY47a56L6cKY5tWLoYEdcVdn6a44ihEYTTRJBG5t0WGT9dfQ/5fZeZTlf+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716299265; c=relaxed/simple;
-	bh=Rs0778QKzKCdk0BVA98zOTHQl+mRFeefvwXEHJ/1we8=;
+	s=arc-20240116; t=1716299613; c=relaxed/simple;
+	bh=oSPfbBS5fUMpH5podn+rXXCR+dtGnM4JAnkfz3GiD4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IByw8ck5vaj1XHI2O2ap/sJNIdV21FiO9lHDyTBb4x8Q+KWkSMT8wTSb2LhzealfEULxF8v0VqnPVYvkqzjxbbYixCmvw8Amvwxz0ezX1JkZEgwAU0u/WXNEsBeG4chMc6fK6iwi2Ri4/cwodsu2HYLeQQs+uKpTPJ+3iMR77B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdnWDP7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC6CC2BD11;
-	Tue, 21 May 2024 13:47:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716299264;
-	bh=Rs0778QKzKCdk0BVA98zOTHQl+mRFeefvwXEHJ/1we8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RdnWDP7adAioYkB3/+Il09h51NgpF8SMAVZyOlo4p1vHsDU8W/MmkscYN3ZaqPUvh
-	 LJJyfhttBT1gQbWzZA65iJeGWv8wz+cfco9WKnizzAj4wSwPNVeM6kXOtfvJ4VxIC/
-	 dKTVtxVgFa0pORmupAShSMqwC9XPkDPG0YVZBHckGuCWfwRbis10RHmhNEm6ZftgNK
-	 GZp1T6A/upBmVnSxgjJoNZU+xemHpmENftx9Etor5hVqexWIToaxjbOpVh+eYiI2Mm
-	 fFfbLAACqP4MQk/LeEay0vniuHCpwirjQeLw/3fxCUglIuP+4KEpcYTmG6SEWS1+Es
-	 O1BAaRNoj3u9A==
-Date: Tue, 21 May 2024 14:47:39 +0100
-From: Simon Horman <horms@kernel.org>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Diogo Ivo <diogo.ivo@siemens.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH net] net: ti: icssg_prueth: Fix NULL pointer dereference
- in prueth_probe()
-Message-ID: <20240521134739.GE764145@kernel.org>
-References: <20240521-icssg-prueth-fix-v1-1-b4b17b1433e9@bootlin.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bx9yvfakb+rSL0Xng7rrfAu+YlgOwPPP/2rZnyxTux73P2AXUIKrX09/3GFXzabJLPX7w20QK8j6wpUAFWXS0rW4ktoKbW22FimDMD/dza6UBk0jOTuruO2eJdlAOQrzY/KDtT8Q7GL/ZgrOmAaGP0L9ZHrbiSpe3x1wrLSmNDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GpT0XP6i; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716299612; x=1747835612;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oSPfbBS5fUMpH5podn+rXXCR+dtGnM4JAnkfz3GiD4Q=;
+  b=GpT0XP6inSN7RhdGu5W73jgeCjomltCqq5+2C4PDm6EyVHIC0TnOc+zU
+   +nv+uvhp4XLgAH9Av9LBxgOu/j5nN/C5tPSw9SY/ef8OagJkxsdEgbKCY
+   6XuJsizFWXAGS9/75ZzCuMaPLvJcBoRH2GeLl4+xCeLZaraXy5n6ubrxB
+   uurUZ7TbMAvdS4L/PsHG4IpVuxSt+x79x287Uhqu1UEs1dQSfJBqgWeih
+   ASgpeVnS4yninXmH4e21dItFdqavEer0RgNGde0ew1xK0izIV1darG2YN
+   Wlikqb00+nnd7ebfsA/PH9yyljvo2McFPG/jh87BphIQAWHukqy7/2ZJn
+   A==;
+X-CSE-ConnectionGUID: qIOkbHtUTPKlOG3QLknsOg==
+X-CSE-MsgGUID: fnpnCG7nSA+DCUH3ZJNYiw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12284429"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
+   d="scan'208";a="12284429"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 06:53:26 -0700
+X-CSE-ConnectionGUID: O2Tne72EQj+xBI6uM0ueqQ==
+X-CSE-MsgGUID: YH9JMsHxSgifuS1FwsUpmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
+   d="scan'208";a="63761966"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by orviesa002.jf.intel.com with SMTP; 21 May 2024 06:53:23 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 21 May 2024 16:53:21 +0300
+Date: Tue, 21 May 2024 16:53:21 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Amit Sunil Dhamne <amitsd@google.com>
+Cc: linux@roeck-us.net, gregkh@linuxfoundation.org, megi@xff.cz,
+	badhri@google.com, rdbabiera@google.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: tcpm: fix use-after-free case in
+ tcpm_register_source_caps
+Message-ID: <ZkynURTFeB3fu8V6@kuha.fi.intel.com>
+References: <20240514220134.2143181-1-amitsd@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,99 +77,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240521-icssg-prueth-fix-v1-1-b4b17b1433e9@bootlin.com>
+In-Reply-To: <20240514220134.2143181-1-amitsd@google.com>
 
-+ Andrew Lunn, Diogo Ivo, Vignesh Raghavendra
-  Not trimming reply to provide context for these people
-
-On Tue, May 21, 2024 at 02:44:11PM +0200, Romain Gantois wrote:
-> In the prueth_probe() function, if one of the calls to emac_phy_connect()
-> fails due to of_phy_connect() returning NULL, then the subsequent call to
-> phy_attached_info() will dereference a NULL pointer.
+On Tue, May 14, 2024 at 03:01:31PM -0700, Amit Sunil Dhamne wrote:
+> There could be a potential use-after-free case in
+> tcpm_register_source_caps(). This could happen when:
+>  * new (say invalid) source caps are advertised
+>  * the existing source caps are unregistered
+>  * tcpm_register_source_caps() returns with an error as
+>    usb_power_delivery_register_capabilities() fails
 > 
-> Check the return code of emac_phy_connect and fail cleanly if there is an
-> error.
+> This causes port->partner_source_caps to hold on to the now freed source
+> caps.
 > 
-> Fixes: 128d5874c082 ("net: ti: icssg-prueth: Add ICSSG ethernet driver")
+> Reset port->partner_source_caps value to NULL after unregistering
+> existing source caps.
+> 
+> Fixes: 230ecdf71a64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
 
-For Networking patches, please consider seeding the CC
-list using ./scripts/get_maintainer.pl this.patch.
-I've added the people who seemed to be missing.
-
-The patch itself looks good to me.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
 > ---
-> Hello everyone,
+>  drivers/usb/typec/tcpm/tcpm.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> There is a possible NULL pointer dereference in the prueth_probe() function of
-> the icssg_prueth driver. I discovered this while testing a platform with one
-> PRUETH MAC enabled out of the two available.
-> 
-> These are the requirements to reproduce the bug:
-> 
-> prueth_probe() is called
-> either eth0_node or eth1_node is not NULL
-> in emac_phy_connect: of_phy_connect() returns NULL
-> 
-> Then, the following leads to the NULL pointer dereference:
-> 
-> prueth->emac[PRUETH_MAC0]->ndev->phydev is set to NULL
-> prueth->emac[PRUETH_MAC0]->ndev->phydev is passed to phy_attached_info()
-> -> phy_attached_print() dereferences phydev which is NULL
-> 
-> This series provides a fix by checking the return code of emac_phy_connect().
-> 
-> Best Regards,
-> 
-> Romain
-> ---
->  drivers/net/ethernet/ti/icssg/icssg_prueth.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> index 7c9e9518f555a..1ea3fbd5e954e 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> @@ -1039,7 +1039,12 @@ static int prueth_probe(struct platform_device *pdev)
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 8a1af08f71b6..be4127ef84e9 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -3014,8 +3014,10 @@ static int tcpm_register_source_caps(struct tcpm_port *port)
+>  	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
+>  	caps.role = TYPEC_SOURCE;
 >  
->  		prueth->registered_netdevs[PRUETH_MAC0] = prueth->emac[PRUETH_MAC0]->ndev;
+> -	if (cap)
+> +	if (cap) {
+>  		usb_power_delivery_unregister_capabilities(cap);
+> +		port->partner_source_caps = NULL;
+> +	}
 >  
-> -		emac_phy_connect(prueth->emac[PRUETH_MAC0]);
-> +		ret = emac_phy_connect(prueth->emac[PRUETH_MAC0]);
-> +		if (ret) {
-> +			dev_err(dev,
-> +				"can't connect to MII0 PHY, error -%d", ret);
-> +			goto netdev_unregister;
-> +		}
->  		phy_attached_info(prueth->emac[PRUETH_MAC0]->ndev->phydev);
->  	}
->  
-> @@ -1051,7 +1056,12 @@ static int prueth_probe(struct platform_device *pdev)
->  		}
->  
->  		prueth->registered_netdevs[PRUETH_MAC1] = prueth->emac[PRUETH_MAC1]->ndev;
-> -		emac_phy_connect(prueth->emac[PRUETH_MAC1]);
-> +		ret = emac_phy_connect(prueth->emac[PRUETH_MAC1]);
-> +		if (ret) {
-> +			dev_err(dev,
-> +				"can't connect to MII1 PHY, error %d", ret);
-> +			goto netdev_unregister;
-> +		}
->  		phy_attached_info(prueth->emac[PRUETH_MAC1]->ndev->phydev);
->  	}
->  
+>  	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+>  	if (IS_ERR(cap))
 > 
-> ---
-> base-commit: e4a87abf588536d1cdfb128595e6e680af5cf3ed
-> change-id: 20240521-icssg-prueth-fix-03b03064c5ce
-> 
-> Best regards,
+> base-commit: 51474ab44abf907023a8a875e799b07de461e466
 > -- 
-> Romain Gantois <romain.gantois@bootlin.com>
-> 
-> 
+> 2.45.0.rc1.225.g2a3ae87e7f-goog
+
+-- 
+heikki
 
