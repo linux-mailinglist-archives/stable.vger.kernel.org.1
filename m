@@ -1,189 +1,139 @@
-Return-Path: <stable+bounces-45547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8678CB659
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 01:38:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36B28CBA22
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 05:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A598B211F5
-	for <lists+stable@lfdr.de>; Tue, 21 May 2024 23:38:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27DAFB21265
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 03:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A9314A0A9;
-	Tue, 21 May 2024 23:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D195470CC9;
+	Wed, 22 May 2024 03:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZCgV2BMl"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="keZGPWzx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BC89475;
-	Tue, 21 May 2024 23:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79081103
+	for <stable@vger.kernel.org>; Wed, 22 May 2024 03:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716334719; cv=none; b=JD3XyKtgOfEvJ/JUqv6uGovRYeQEz4prD3dfYEs4s6lfiaOjTuOFmKt2JRm5CgdbLCwdYr8Soj535n6SkjB9xexn7HK0tLLTtOkd2WdCMeO/zbwULHK6RK2lnY8/Icukyl8MTcbg47cT72QJTlennUYxScpmNdF+3O3ElOOxX90=
+	t=1716350344; cv=none; b=dBctzDWFZMW+SMasu16qo5V5v1QuIBwWhNl09Eg3u4S+WuOh7Ls58T42RRcxQDbHcwYWY4tadsa4pLLy+908sdPYvssJqDj10YYTc27c372w7MrzU3yGjJdkr2ArQgNj7UdGFBGCVcm+Zm2agN0m5rh1VU/bjd5E66CMRN6qtE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716334719; c=relaxed/simple;
-	bh=PREz0aYf4CT1lY11PijxN5ZsN6o2KgHYTWFMtQNhSAo=;
-	h=Date:To:From:Subject:Message-Id; b=LV8DnNx8VNIJ8j0vxHk1bu3zY58P0FpgN0it0uRIzqkHlNWwUA592IasFtHiKBJaWgEeGovTbYNDzbAiqQlSl7i8etmW1WqKhH0n0KDzpXChv00qAyCRhe3zttr2G9zguF+YG34PzY8Ke8iZPIxUb41R9XEZVjLwsc4MKfh93mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZCgV2BMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FEDC2BD11;
-	Tue, 21 May 2024 23:38:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1716334718;
-	bh=PREz0aYf4CT1lY11PijxN5ZsN6o2KgHYTWFMtQNhSAo=;
-	h=Date:To:From:Subject:From;
-	b=ZCgV2BMlwxUPRExCwaENrx9WwtGg/Ow4vmHqCy2kbOT9yCqbkvPDyZF9JE4vEexsf
-	 nTN/euE7QSnOeY5MzgWIyyehxuUFw73e7N8FXgzVv1HtSAMMDh+r87irL66x3DMFad
-	 UEhkUZZsswgxDoYK7Nnimo0vBGDGzLDlkQhD5RKI=
-Date: Tue, 21 May 2024 16:38:37 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sjb7183@psu.edu,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-potential-hang-in-nilfs_detach_log_writer.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240521233838.62FEDC2BD11@smtp.kernel.org>
+	s=arc-20240116; t=1716350344; c=relaxed/simple;
+	bh=tmEP58P4hyfvScHIXrGzsH5ujX/7NMB2KTOEDdQWtZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ky/ExTVMJF/KNpiT+k1PWdOySmePrvLlQqeXvlFiP57UcUcLBj32aZsczo+2XhmcxX5MQNdVJR6v9tb+ROIhQf8IIVdlwXNv6uJPsubojV/zT2KwALhqUXb/C/Hm4LgbCWV1xZ0cFYeqD6GK5ZGxY1jI0eNTIXh/LLXdX1xrdHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=keZGPWzx; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5E88B400F7
+	for <stable@vger.kernel.org>; Wed, 22 May 2024 03:58:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1716350334;
+	bh=y255971hrLvTqQBRybQowt2FPyNyI3D6Ajai4qb3uTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=keZGPWzx8Rfvdtr3d7qH0lZ6uwm6CFvmytb1wCVD1FdfCYXsSewLc400sgArajFN0
+	 6H9jo9FCiX5AN8BKGmNRrNspt+GRQvt23LzG9q42lcOCH6sJV6FcDp0RGD3IZjYYFX
+	 Xpj48qRjJIQQdhpzzjLK6DkTKeWOSxkCgapjUipHYjr/C5lSWms7WJ1+QmpB5NAdyQ
+	 z3jlR/umEjZoDgTNmpI+GXW/zsyjMonh2sm58lt3662hbzeigYLNYm0Wl7qAb8K6RK
+	 o7TJJDUUJrX+Kmuu+3+kGq9/JkkSthFAZJmvCb8ZFaRYzrJFSXaWkUDNzn2uFrkY2v
+	 91K0m6HudR3eQ==
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2a49440f7b5so11977317a91.1
+        for <stable@vger.kernel.org>; Tue, 21 May 2024 20:58:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716350333; x=1716955133;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y255971hrLvTqQBRybQowt2FPyNyI3D6Ajai4qb3uTg=;
+        b=iTWJB9EJWU3EFj3vqT4iTaFldx4SE+BJtcgou8m8a9XKY/X6UwzdfIzEJKJty0Iy6d
+         bXphqFcp+DtGyOspyuFMHg1jCq/qgbQAaaCxMNfeSw9vG1dSG2uHgjhRZ7zaoEwBtmWZ
+         Lh/iLAfycO7NDdr3TTmrsryv17t+XYk6EAYsPRunLDrKPADqEOSNcD8WE9tNxlLhPkM2
+         zx6YaKep4Av6XeP+Sp9bfH3C75yakMiNPzXxAitJzoPN9e1qztrP0ygJYO3coaynobrf
+         fwDMYDG5TqDaMcZEJOIaB8HVoAyF94iDiPuWF/SjgE6uirIYSGTJ4EXCNTnhSh6vB4Ql
+         6DJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqDJUAFOlUDMonFix250GJ7b9FIDftwaJm/xyh9dQjtcHq0XFyujfgTXwZghqdzwEb+VinJCSUbVwAVGZzel8pZva20FIr
+X-Gm-Message-State: AOJu0YxCLQkJEy+pX5Vj18a9nh4BcDpX8qn3TUlUZXbmcagDlC5vbW9I
+	1CATfoep1qfpJ342SIPh6LU4y0JMcHkfhLYS3xYtGRK0+sfD3D5/gsyvGT3j4LCR6fnUwXjGpr+
+	9EFoadSes4WEt+Hoe03qbpMZ4nMBDt18uTVO2lDjTrcPimP5ZW82CjovcvMvJb/LO2ytajA==
+X-Received: by 2002:a17:90b:300f:b0:2b4:32ae:8569 with SMTP id 98e67ed59e1d1-2bd9f5c3967mr904847a91.40.1716350332963;
+        Tue, 21 May 2024 20:58:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHD/+WM1l2z4SYoyQiK3JqFZu/WsAd/TrCmOzd57x6dSe56cZF/FUxVYi74CU90QsGVkD196Q==
+X-Received: by 2002:a17:90b:300f:b0:2b4:32ae:8569 with SMTP id 98e67ed59e1d1-2bd9f5c3967mr904835a91.40.1716350332507;
+        Tue, 21 May 2024 20:58:52 -0700 (PDT)
+Received: from localhost ([122.199.27.104])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2bd8abf5013sm3399077a91.3.2024.05.21.20.58.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 May 2024 20:58:52 -0700 (PDT)
+From: Liam Kearney <liam.kearney@canonical.com>
+To: gregkh@linuxfoundation.org
+Cc: Liam Kearney <liam.kearney@canonical.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] crypto: arm64: use simd_skcipher_create() when registering aes internal algs
+Date: Wed, 22 May 2024 13:58:37 +1000
+Message-ID: <20240522035837.18610-1-liam.kearney@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+The arm64 crypto drivers duplicate driver names when adding simd
+variants, which after backported commit 27016f75f5ed ("crypto: api -
+Disallow identical driver names"), causes an error that leads to the
+aes algs not being installed. On weaker processors this results in hangs
+due to falling back to SW crypto.
+Use simd_skcipher_create() as it will properly namespace the new algs.
+This issue does not exist in mainline/latest (and stable v6.1+) as the
+driver has been refactored to remove the simd algs from this code path.
 
-The patch titled
-     Subject: nilfs2: fix potential hang in nilfs_detach_log_writer()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-potential-hang-in-nilfs_detach_log_writer.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-potential-hang-in-nilfs_detach_log_writer.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix potential hang in nilfs_detach_log_writer()
-Date: Mon, 20 May 2024 22:26:21 +0900
-
-Syzbot has reported a potential hang in nilfs_detach_log_writer() called
-during nilfs2 unmount.
-
-Analysis revealed that this is because nilfs_segctor_sync(), which
-synchronizes with the log writer thread, can be called after
-nilfs_segctor_destroy() terminates that thread, as shown in the call trace
-below:
-
-nilfs_detach_log_writer
-  nilfs_segctor_destroy
-    nilfs_segctor_kill_thread  --> Shut down log writer thread
-    flush_work
-      nilfs_iput_work_func
-        nilfs_dispose_list
-          iput
-            nilfs_evict_inode
-              nilfs_transaction_commit
-                nilfs_construct_segment (if inode needs sync)
-                  nilfs_segctor_sync  --> Attempt to synchronize with
-                                          log writer thread
-                           *** DEADLOCK ***
-
-Fix this issue by changing nilfs_segctor_sync() so that the log writer
-thread returns normally without synchronizing after it terminates, and by
-forcing tasks that are already waiting to complete once after the thread
-terminates.
-
-The skipped inode metadata flushout will then be processed together in the
-subsequent cleanup work in nilfs_segctor_destroy().
-
-Link: https://lkml.kernel.org/r/20240520132621.4054-4-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+e3973c409251e136fdd0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e3973c409251e136fdd0
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Cc: "Bai, Shuangpeng" <sjb7183@psu.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 27016f75f5ed ("crypto: api - Disallow identical driver names")
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org
+Signed-off-by: Liam Kearney <liam.kearney@canonical.com>
 ---
+v2:
+ - No changes
+---
+ arch/arm64/crypto/aes-glue.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
- fs/nilfs2/segment.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
-
---- a/fs/nilfs2/segment.c~nilfs2-fix-potential-hang-in-nilfs_detach_log_writer
-+++ a/fs/nilfs2/segment.c
-@@ -2190,6 +2190,14 @@ static int nilfs_segctor_sync(struct nil
- 	for (;;) {
- 		set_current_state(TASK_INTERRUPTIBLE);
+diff --git a/arch/arm64/crypto/aes-glue.c b/arch/arm64/crypto/aes-glue.c
+index aa13344a3a5e..af862e52a36b 100644
+--- a/arch/arm64/crypto/aes-glue.c
++++ b/arch/arm64/crypto/aes-glue.c
+@@ -1028,7 +1028,6 @@ static int __init aes_init(void)
+ 	struct simd_skcipher_alg *simd;
+ 	const char *basename;
+ 	const char *algname;
+-	const char *drvname;
+ 	int err;
+ 	int i;
  
-+		/*
-+		 * Synchronize only while the log writer thread is alive.
-+		 * Leave flushing out after the log writer thread exits to
-+		 * the cleanup work in nilfs_segctor_destroy().
-+		 */
-+		if (!sci->sc_task)
-+			break;
-+
- 		if (atomic_read(&wait_req.done)) {
- 			err = wait_req.err;
- 			break;
-@@ -2205,7 +2213,7 @@ static int nilfs_segctor_sync(struct nil
- 	return err;
- }
+@@ -1045,9 +1044,8 @@ static int __init aes_init(void)
+ 			continue;
  
--static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err)
-+static void nilfs_segctor_wakeup(struct nilfs_sc_info *sci, int err, bool force)
- {
- 	struct nilfs_segctor_wait_request *wrq, *n;
- 	unsigned long flags;
-@@ -2213,7 +2221,7 @@ static void nilfs_segctor_wakeup(struct
- 	spin_lock_irqsave(&sci->sc_wait_request.lock, flags);
- 	list_for_each_entry_safe(wrq, n, &sci->sc_wait_request.head, wq.entry) {
- 		if (!atomic_read(&wrq->done) &&
--		    nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq)) {
-+		    (force || nilfs_cnt32_ge(sci->sc_seq_done, wrq->seq))) {
- 			wrq->err = err;
- 			atomic_set(&wrq->done, 1);
- 		}
-@@ -2362,7 +2370,7 @@ static void nilfs_segctor_notify(struct
- 	if (mode == SC_LSEG_SR) {
- 		sci->sc_state &= ~NILFS_SEGCTOR_COMMIT;
- 		sci->sc_seq_done = sci->sc_seq_accepted;
--		nilfs_segctor_wakeup(sci, err);
-+		nilfs_segctor_wakeup(sci, err, false);
- 		sci->sc_flush_request = 0;
- 	} else {
- 		if (mode == SC_FLUSH_FILE)
-@@ -2746,6 +2754,13 @@ static void nilfs_segctor_destroy(struct
- 		|| sci->sc_seq_request != sci->sc_seq_done);
- 	spin_unlock(&sci->sc_state_lock);
- 
-+	/*
-+	 * Forcibly wake up tasks waiting in nilfs_segctor_sync(), which can
-+	 * be called from delayed iput() via nilfs_evict_inode() and can race
-+	 * with the above log writer thread termination.
-+	 */
-+	nilfs_segctor_wakeup(sci, 0, true);
-+
- 	if (flush_work(&sci->sc_iput_work))
- 		flag = true;
- 
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-fix-use-after-free-of-timer-for-log-writer-thread.patch
-nilfs2-fix-unexpected-freezing-of-nilfs_segctor_sync.patch
-nilfs2-fix-potential-hang-in-nilfs_detach_log_writer.patch
+ 		algname = aes_algs[i].base.cra_name + 2;
+-		drvname = aes_algs[i].base.cra_driver_name + 2;
+ 		basename = aes_algs[i].base.cra_driver_name;
+-		simd = simd_skcipher_create_compat(algname, drvname, basename);
++		simd = simd_skcipher_create(algname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto unregister_simds;
+-- 
+2.40.1
 
 
