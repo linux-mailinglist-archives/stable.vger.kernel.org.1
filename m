@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-45577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53048CC3E0
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 17:11:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6758CC3E2
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 17:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60D67281A95
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 15:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE91B1C22D4D
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 15:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFAE24B2A;
-	Wed, 22 May 2024 15:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1832A24B2A;
+	Wed, 22 May 2024 15:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYAjHC2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFoHTvvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D926723768;
-	Wed, 22 May 2024 15:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3884F883;
+	Wed, 22 May 2024 15:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716390700; cv=none; b=KEEzTUZeW6BAY4jh45nMhBH5FHjHoogLENLAPPER2Dr0mVn/SwYBG8xag+5PpXtbn7zcv1DHzOt5Y0NsBGkYXzyf+nd9IAaxSe3LR1KzyTO8rojHeFZT/QuZOFO5K2z5qqFn7xfT9A2aZpMNfGVa6HkFb/pVdFaguWYBoCD7y5c=
+	t=1716390730; cv=none; b=lx4g6J0eAZCreYOtmxFzakvr+y3g6w7eetqOfXQoFqqMFFlWNhDHPc6P1sP1ktRSaMQHbv7ut2gRazJ5VT98iPLKw+AtMIcZpSWpWMxqtmTBByTKBp89HANaBBU6aFNttQ7JSl97Oco0MyjuFf4H3F4H9XaQEl8r0hhcyVZ7FLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716390700; c=relaxed/simple;
-	bh=YAatkQd5KOCKjwiMuA+OejetVgIWxGP0pr3ZlQGJDnY=;
+	s=arc-20240116; t=1716390730; c=relaxed/simple;
+	bh=YFJnJyDwtPC7OdnMBtp3lNZatMd5ed+t5HUSZsapbic=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nE7gcoX7Mv6jc4ZTI8CgA130NR/IIAFTdtY9CxrzuEx0jkjTk9xmUd6t63arjEhh5eHF361CENN9UNx5M3OH7yyoD6JzT3REn2zAwIV9aVnASWc/vr0JDsKp+4pxc17wht1BCQZlXfszWb7big7cKwkl4lQupXeHcVgc6snLEeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYAjHC2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B16BC2BBFC;
-	Wed, 22 May 2024 15:11:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DrHBPe+t0LIoaoPD0bpcQ2sWqckrIHgCCaRfgSPJWWMNvx2tC4baAlNrqWbqfiq1WGYX6/GWwc+bn3JIs3ndzqWXaH20Ps0jCiixlovK4GI+5qd1P5hxCuklHvvPQo3VfCkEqTCMVLThnA8ieobe69K9eWKQdQJdCAF7uX90UCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFoHTvvF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB987C2BBFC;
+	Wed, 22 May 2024 15:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716390699;
-	bh=YAatkQd5KOCKjwiMuA+OejetVgIWxGP0pr3ZlQGJDnY=;
+	s=korg; t=1716390730;
+	bh=YFJnJyDwtPC7OdnMBtp3lNZatMd5ed+t5HUSZsapbic=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qYAjHC2nXoMYQ1Ry99raJDCzBZRrHVooMAFTDMpkvAJYggmDNMyDVwq9gMo/nj5Od
-	 LvIyGGOW6YcsZXnQTtyRLn3I86XyocrbgGCBEf8dboXvZFqp6+F8lciqfWYV01ovro
-	 CRVuFVD0JHXc3wbrle+A88mTkTHyO7YIaoJLZw1s=
-Date: Wed, 22 May 2024 17:11:36 +0200
+	b=bFoHTvvFv+aM22hunXSt154tj7Ue7KKqYb7zdX1lEOPo/0nMo6M+9U5g7eTj+vMHu
+	 DQB/yju4wrNHAwl4HP5jEIS6RfiZFH3axpJAyY1JPEsf7XXCEXwhKayZs07kmqFE9I
+	 He1ylWf1VTPC1jCqpY+yNTAe2NkSoAhwUJhmuhO4=
+Date: Wed, 22 May 2024 17:12:07 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: CAK2bqVJoT3yy2m0OmTnqH9EAKkj6O1iTk42EyyMtvvxKh6YDKg@mail.gmail.com
+To: Paul Grandperrin <paul.grandperrin@gmail.com>
 Cc: rankincj@gmail.com, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Subject: Re: [BUG] Linux 6.8.10 NPE
-Message-ID: <2024052222-refutable-magenta-94da@gregkh>
+Message-ID: <2024052249-cryptic-anthem-5bd2@gregkh>
 References: <A8DQDS.ZXN0FMYZ3DIM1@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,7 +70,8 @@ On Sun, May 19, 2024 at 01:28:58PM +0200, Paul Grandperrin wrote:
 > 
 > Dowgrading to 6.8.9 fixes the issue.
 
-Any chance you all can use 'git bisect' to find the offending commit?
+Any chance you all can use 'git bisect' to track down the offending
+commit?
 
 thanks,
 
