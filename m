@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-45583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9718CC44F
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 17:45:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717238CC45A
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 17:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1261F2134A
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 15:45:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5372842B6
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 15:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172661CD35;
-	Wed, 22 May 2024 15:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC14D1CD35;
+	Wed, 22 May 2024 15:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqGP1Xjt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFwkQSCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5E128EA
-	for <stable@vger.kernel.org>; Wed, 22 May 2024 15:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BE71422A3
+	for <stable@vger.kernel.org>; Wed, 22 May 2024 15:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716392736; cv=none; b=qbZOwLLB6fAHfwFSr09HJoa+l6/3R0GtZIzv+PV9ppb4tMuLz74+ccWT8BA1swh90woyNPFOrM7wj42mA27fMLPeUpl5X0TOWZuYYpLfdWnQEhc8zD2cxHBY9xuRwqg4lPXatcayGQetrTt5RG4xg5Vb+3/JDB9iukGu7nx3GLc=
+	t=1716392769; cv=none; b=uRvQKmNzKqgqwdxwLyfVPTO2IMg8BsLQO+iJBHEC9j7BRPETmBjWSSOpX4w8dhWJrAIpgVde1H0HKHHna62f+efph+6u+xA0dy/x7btyTyhsfK7gtifImZ/0brcgRaUTg5sxCbI/A4F5pYk1iyCuvKt5PKkxkBKpf+Z9GINsslo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716392736; c=relaxed/simple;
-	bh=SkwK+qpMy/c01qmKRjbfDCT1a8fvUTAw0R5ObmyCNks=;
+	s=arc-20240116; t=1716392769; c=relaxed/simple;
+	bh=mNziexDuiql6cOeih29cWtp8jAuJHeaqyoD2fJILgz0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kvw2QGghiYCkgXvPTqSXDm+dy68m4wVg+CineyRYKCnESCTswozevdUnvuzD40FeCzzWu78qIKsTE3ot6qGJyGie5Assck3wSfLBRUjXz2+k6HVEXht0Lls50b/eX0OLB59yo7E+EWyimSlnMlj/rXoNvT8CbncI+HP967k8yl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqGP1Xjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E76C2BBFC;
-	Wed, 22 May 2024 15:45:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fm9dwC7Oqcwb6V3UIoG8SpQBFC+rvuLetiIcltTVRhS3q8Ob6LYGDv6DXIrzaN4knbsRiMp4Ju+NOlZT1fCbnKtkEVIVE5HE5sZtja886xFaBFP1vjHbKPB1+EoqpSkgFV7iH+D4TF6B/dad1zPqEDrqiE2EQYnHL+PViE8i9wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFwkQSCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E28C2BBFC;
+	Wed, 22 May 2024 15:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716392736;
-	bh=SkwK+qpMy/c01qmKRjbfDCT1a8fvUTAw0R5ObmyCNks=;
+	s=korg; t=1716392769;
+	bh=mNziexDuiql6cOeih29cWtp8jAuJHeaqyoD2fJILgz0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bqGP1Xjt61irZzmo01P+db4y0JGMf+kwMZ0xem7RB+yJJWI3fJEX2ytiMINT39q8G
-	 EeL4+0YCeoz+8adNrS92sBvOKFGwSL2M+zOiimYLEjYArtc1SIvajgZMhdlABKWaYJ
-	 URb2vUVi9cTQJ3GwRAOSGECUCnY7IGANVTvRnK7Q=
-Date: Wed, 22 May 2024 17:45:33 +0200
+	b=mFwkQSCaHpWdI00qR4K4daK1/fXqadv/wJx1AyKzzOEhSvSLUFVxNMAOpN9rWtBkz
+	 uS5v9LBw3TGZS7uVMFm5K75fxc4nnRdUyKKNH/YBXvH+bAGoJ5dW/1ipMvOYDCnBKk
+	 h7x0/53oE0DbM6zzYNMF5B3LqqiMdUweaUP8XdWI=
+Date: Wed, 22 May 2024 17:46:06 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"Manthey, Norbert" <nmanthey@amazon.de>
-Subject: Re: Backport request
-Message-ID: <2024052223-mortally-covenant-d28b@gregkh>
-References: <927F3175-7810-467F-A015-13B446248548@amazon.de>
+To: Yoann Congal <yoann.congal@smile.fr>
+Cc: stable@vger.kernel.org
+Subject: Re: Pickup commit "mfd: stpmic1: Fix swapped mask/unmask in irq
+ chip" for stable kernel?
+Message-ID: <2024052257-system-ellipse-5fdb@gregkh>
+References: <12c88a9d-0357-48b8-8f85-6f74a9d83a7b@smile.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,21 +54,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <927F3175-7810-467F-A015-13B446248548@amazon.de>
+In-Reply-To: <12c88a9d-0357-48b8-8f85-6f74a9d83a7b@smile.fr>
 
-On Thu, May 16, 2024 at 10:16:15AM +0000, Hemdan, Hagar Gamal Halim wrote:
-> Hi,
+On Thu, May 16, 2024 at 12:04:43PM +0200, Yoann Congal wrote:
+> Hello,
 > 
-> Please backport commit:
+> Please pickup commit c79e387389d5add7cb967d2f7622c3bf5550927b ("mfd: stpmic1: Fix swapped mask/unmask in irq chip")
+> for inclusion in stable kernel 6.1.y.
 > 
-> ecfe9a015d3e ("pinctrl: core: handle radix_tree_insert() errors in pinctrl_register_one_pin()")
+> This fixes this warning at boot:
+>   stpmic1 [...]: mask_base and unmask_base are inverted, please fix it
 > 
-> to stable trees 5.4.y, 5.10.y, 5.15.y, 6.1.y. This commit fixes error handling of radix_tree_insert().
-> 
-> This bug was discovered and resolved using Coverity Static Analysis
-> Security Testing (SAST) by Synopsys, Inc.
+> It also avoid to invert masks later in IRQ framework so regression risks should be minimal.
 
-Now picked up, thanks.
+Now queued up, thanks.
 
 greg k-h
 
