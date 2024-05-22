@@ -1,149 +1,189 @@
-Return-Path: <stable+bounces-45602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D77D8CC8B4
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 00:03:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9E18CC90D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 00:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 146A71F22D6C
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 22:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCDA428347A
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 22:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42BB148316;
-	Wed, 22 May 2024 22:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C6F148315;
+	Wed, 22 May 2024 22:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="cWtGFMvU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iBB34r8X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rg0SdRCD"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh4-smtp.messagingengine.com (wfhigh4-smtp.messagingengine.com [64.147.123.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222181411D8;
-	Wed, 22 May 2024 22:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC966148308;
+	Wed, 22 May 2024 22:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716415352; cv=none; b=WgKiE++3hQfhNjpTc2Uld+7OMIOtypUoASyVq53eY3tZvoHMdymh7T7uuKg8ariS6Nbvj0H3XWOHmH99rpHJgK19tpRgqnwtZzQ1erQHeXny+ahD/5D4/FEbTE8QWt3XJEO9whEKZ29SOy/DTRjsyeRwh7kfxzbZWyt+4Xge164=
+	t=1716416917; cv=none; b=BSoU+gO+t0XCpHX4LeC3OqWV0PMr55VGcjBYodAJ97Jx9o2pYItpCJAStEN02GvbriUbS4l8GafTsW2JrLlpnCfuMNZ3m77W7qd5E8CTz7YhFtqTk7ydVQoNE2JU35NMft2ZI7aBfMeSL+ISs+OpsYXg8F2ZlbWAGk//CLOGl0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716415352; c=relaxed/simple;
-	bh=7fdJBdzIPfqGGEwtcL8/d/uM5agRxxUtdOfdCs2glQQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y9XHesWADTT/Ese8Le5S5dF27uO4pxY4zHBqT71yjtYOChEow73HI/eU5vRJRZwwcgJXr9gwkEXANTYUFc+H5q8XsOAtt1H0cTlf6OmoVJG1F2IHP/dH0K4UZ1Fs7DvU0EXil0tJDJmV1oSsqmTtvg4Gf+kRkMoON4xHmksrXuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=cWtGFMvU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iBB34r8X; arc=none smtp.client-ip=64.147.123.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 40575180012F;
-	Wed, 22 May 2024 18:02:30 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 22 May 2024 18:02:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1716415349;
-	 x=1716501749; bh=eohBkNeC9goPP1VCyGzG57xJ91PgPdvWRQbAuvbCQlw=; b=
-	cWtGFMvU/1fsBfnOLQYfE1/RRhrbnG9lwDpP2nTUTSSIzlj2FzrWs8a+2ngN+mIF
-	1ul5L+xMrMJUite9KxIC8Ei8SldhSzIbyK09UbFP4HGA10k9EURyr+QthvuVsGYL
-	Bp6vPm9gZ6Le7p+q6KU5wA0vnv5XD6+065k40+5OIQqRuwK7YJqGfwks7IM7Lr83
-	QkJAhVYtxcKTiosng9LjhVN90jtCf2EyciiCcJ7g/V6NDCMARgZY+UOs+o/rNzDT
-	iCN5nyUrqLiE3QoqsCdecC685+odFUeSqRl9Rsu2nVWIFJ0dYe+5yctTdp1CJvt9
-	lbqkNdNS+oO0aWhHIEnZqA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716415349; x=
-	1716501749; bh=eohBkNeC9goPP1VCyGzG57xJ91PgPdvWRQbAuvbCQlw=; b=i
-	BB34r8XRZUoTLMyUy2w3h6zzY8B2MyyX6gaQTRKhGO8/X7x3nBaCYpAY65NtilTg
-	VJH7SJiIFfFOZUwmvjFbNeWGFUvK+OicAoxoFlhEavONJTIeEeGXet5cgCNlCx/p
-	XQwIUN1pV069s49kSfymbPA6zyUQTgkox/KRjVnoz/9Xf2YBC33lilPeCSxqyRNY
-	aD+SoG2jakd6tUwcha1WcEGqP2KRFvKfahN3JdiIxKDX4Y4yRkjMekVZaEAJTneZ
-	o6pSs8xzhCnNtpPdC0b0jr+dcBqYgJPZWt3Hz1iWrcfCTc2kJxZ6zXIpcvYXs741
-	5Nl3iYmMG3OTErg0QrnCg==
-X-ME-Sender: <xms:dWtOZvdnZicuVsDe8T0eLpf3old_WET7EC7jkfjkXoeNjas2DTyL8A>
-    <xme:dWtOZlNKrBk92rXMBTtrulp_jmPu0SLEIJtW0dsO_R_uZGW9whhMgIuVgTBzBErZp
-    JZZTzq-jR--klC5Ygk>
-X-ME-Received: <xmr:dWtOZoiPBi9p4o2tcdH0PEkDX4BQE0mh8IPkV3Zwp2sruWPYSnHkr_g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeihedgtdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
-    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
-    cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
-    veegffegudekjeelnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilh
-    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:dWtOZg-5AnFNO4JL5UXWFhQnyprk-pO-SKAANAacZ0UfhMLSQnSagQ>
-    <xmx:dWtOZrsJhGgHWu9kyfVW-z5L6-l1o2FL2O-ze6l7o_kus_Tqbs9zHQ>
-    <xmx:dWtOZvHCQMTjX0APRNO40rNHdcnNSpfyUN04ENGArONqcpz1GAm3rg>
-    <xmx:dWtOZiMYgeV89GtThfawqerNGuMLUsWVB7dBcv9IEaoLOhqDn4jeYQ>
-    <xmx:dWtOZvi4KTXrMfaFWvx9ebcStTjaMqo9RwznBjm0Uk5bcxvyQL5FG6zh>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 May 2024 18:02:28 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Wed, 22 May 2024 23:02:20 +0100
-Subject: [PATCH v3 4/4] LoongArch: Override higher address bits in
- JUMP_VIRT_ADDR
+	s=arc-20240116; t=1716416917; c=relaxed/simple;
+	bh=iPEcTEaSVmPMU3drT0qtv/3prDhf9jxctPjLd5VISnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=s4sRkeCAsUncLMUapnDIN9yrXCgLPkxgqVzzXq7BsQSxpebTPwc/uGhbCKkzyXAlYiBdl8BX8PNBKdbELx7jbLKifUVIS8hvDqEdSlNzBUQG5z8SJfvRTkd91ofYyMZMsBo5EpRPzo5hh1hrZ2A+9/jDdK1+NjJ0LuG0i/ShPtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rg0SdRCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8FEC2BBFC;
+	Wed, 22 May 2024 22:28:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716416916;
+	bh=iPEcTEaSVmPMU3drT0qtv/3prDhf9jxctPjLd5VISnw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Rg0SdRCD8tMxBFmuNkrT8piCf4KssC8nQakQrYsiP7YRocQMcKmpAMXLGNqLVbd43
+	 s36IRJfasXi7J7y43s9kzGSzrrSo3NY5KkZt46iKr0Q+mZtivJD0Jo5auMSBaxAPjD
+	 S4UZyBr734C7q4P7tGRn91ifXbAo6cX25N3E6jZAGXiYLSLtPqVi4xFJIYkWXwSiJ0
+	 EQdZRdg17nIzAxFqe9npLQLO+swx7u+zrZ/RRgNT9pAJjhgWemzSyls8I35ZGODq5u
+	 ExiTao3WJgwnDDi+smYpK4tG/cRcanaKRqVl/nOgsFP9lr+SBwBiM/fhgja9xSiDAd
+	 H0aLGFMDyD/Rw==
+Date: Wed, 22 May 2024 17:28:34 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
+	Michal Simek <michal.simek@amd.com>,
+	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Bharat Kumar Gogada <bharatku@xilinx.com>
+Subject: Re: [PATCH v3 2/7] PCI: xilinx-nwl: Fix off-by-one in IRQ handler
+Message-ID: <20240522222834.GA101664@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240522-loongarch-booting-fixes-v3-4-25e77a8fc86e@flygoat.com>
-References: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
-In-Reply-To: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
-To: Huacai Chen <chenhuacai@kernel.org>, 
- Binbin Zhou <zhoubinbin@loongson.cn>
-Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1077;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=7fdJBdzIPfqGGEwtcL8/d/uM5agRxxUtdOfdCs2glQQ=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhjS/7JzH9+Mblh89VqzPGryVL6GvdHpx3L/l74O2WUpn8
- l5e+Kuyo5SFQYyLQVZMkSVEQKlvQ+PFBdcfZP2BmcPKBDKEgYtTACZylZGRobckVX7HaWZ9/R1T
- xa+/aO3u2JHWv5pNKPa+5+nbVvF1/Az/HaqOcHWFnP5vk/umifX3Hsl0oaBvzOc90uc/zrlht3U
- BLwA=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240520145402.2526481-3-sean.anderson@linux.dev>
 
-In JUMP_VIRT_ADDR we are performing an or calculation on
-address value directly from pcaddi.
+On Mon, May 20, 2024 at 10:53:57AM -0400, Sean Anderson wrote:
+> MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit
+> 2, and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
+> PCI_NUM_INTX irqs. So to enable INTA (aka hwirq 0) we should set bit 0.
+> Remove the subtraction of one. This fixes the following UBSAN error:
 
-This will only work if we are currently running from direct
-1:1 mapping addresses or firmware's DMW is configured exactly
-same as kernel. Still, we should not rely on such assumption.
+Thanks for these details!
 
-Fix by overriding higher bits in address comes from pcaddi,
-so we can get rid of or operator.
+I guess UBSAN == "undefined behavior sanitizer", right?  That sounds
+like an easy way to find this but not the way users are likely to find
+it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
-v2: Overriding address with bstrins
----
- arch/loongarch/include/asm/stackframe.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I assume users would notice spurious and missing interrupts, e.g.,
+a driver that tried to enable INTB would have actually enabled INTA,
+so we'd see spurious INTA interrupts and the driver would never see
+the INTB it expected.
 
-diff --git a/arch/loongarch/include/asm/stackframe.h b/arch/loongarch/include/asm/stackframe.h
-index 45b507a7b06f..51dec8b17d16 100644
---- a/arch/loongarch/include/asm/stackframe.h
-+++ b/arch/loongarch/include/asm/stackframe.h
-@@ -42,7 +42,7 @@
- 	.macro JUMP_VIRT_ADDR temp1 temp2
- 	li.d	\temp1, CACHE_BASE
- 	pcaddi	\temp2, 0
--	or	\temp1, \temp1, \temp2
-+	bstrins.d	\temp1, \temp2, (DMW_PABITS - 1), 0
- 	jirl	zero, \temp1, 0xc
- 	.endm
- 
+And a driver that tried to enable INTA would never see that interrupt,
+and we might not set any bit in MSGF_LEG_MASK?
 
--- 
-2.43.0
+I think the normal way people would trip over this, i.e., spurious and
+missing INTx interrupts, is the important thing to mention here.
 
+> [    5.037483] ================================================================================
+> [    5.046260] UBSAN: shift-out-of-bounds in ../drivers/pci/controller/pcie-xilinx-nwl.c:389:11
+> [    5.054983] shift exponent 18446744073709551615 is too large for 32-bit type 'int'
+> [    5.062813] CPU: 1 PID: 61 Comm: kworker/u10:1 Not tainted 6.6.20+ #268
+> [    5.070008] Hardware name: xlnx,zynqmp (DT)
+> [    5.074348] Workqueue: events_unbound deferred_probe_work_func
+> [    5.080410] Call trace:
+> [    5.082958] dump_backtrace (arch/arm64/kernel/stacktrace.c:235)
+> [    5.086850] show_stack (arch/arm64/kernel/stacktrace.c:242)
+> [    5.090292] dump_stack_lvl (lib/dump_stack.c:107)
+> [    5.094095] dump_stack (lib/dump_stack.c:114)
+> [    5.097540] __ubsan_handle_shift_out_of_bounds (lib/ubsan.c:218 lib/ubsan.c:387)
+> [    5.103227] nwl_unmask_leg_irq (drivers/pci/controller/pcie-xilinx-nwl.c:389 (discriminator 1))
+> [    5.107386] irq_enable (kernel/irq/internals.h:234 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
+> [    5.110838] __irq_startup (kernel/irq/internals.h:239 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
+> [    5.114552] irq_startup (kernel/irq/chip.c:270)
+> [    5.118266] __setup_irq (kernel/irq/manage.c:1800)
+> [    5.121982] request_threaded_irq (kernel/irq/manage.c:2206)
+> [    5.126412] pcie_pme_probe (include/linux/interrupt.h:168 drivers/pci/pcie/pme.c:348)
+
+The rest of the stacktrace below is not relevant and could be omitted.
+The timestamps don't add useful information either.
+
+> [    5.130303] pcie_port_probe_service (drivers/pci/pcie/portdrv.c:528)
+> [    5.134915] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
+> [    5.138720] __driver_probe_device (drivers/base/dd.c:800)
+> [    5.143236] driver_probe_device (drivers/base/dd.c:830)
+> [    5.147571] __device_attach_driver (drivers/base/dd.c:959)
+> [    5.152179] bus_for_each_drv (drivers/base/bus.c:457)
+> [    5.156163] __device_attach (drivers/base/dd.c:1032)
+> [    5.160147] device_initial_probe (drivers/base/dd.c:1080)
+> [    5.164488] bus_probe_device (drivers/base/bus.c:532)
+> [    5.168471] device_add (drivers/base/core.c:3638)
+> [    5.172098] device_register (drivers/base/core.c:3714)
+> [    5.175994] pcie_portdrv_probe (drivers/pci/pcie/portdrv.c:309 drivers/pci/pcie/portdrv.c:363 drivers/pci/pcie/portdrv.c:695)
+> [    5.180338] pci_device_probe (drivers/pci/pci-driver.c:324 drivers/pci/pci-driver.c:392 drivers/pci/pci-driver.c:417 drivers/pci/pci-driver.c:460)
+> [    5.184410] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
+> [    5.188213] __driver_probe_device (drivers/base/dd.c:800)
+> [    5.192729] driver_probe_device (drivers/base/dd.c:830)
+> [    5.197064] __device_attach_driver (drivers/base/dd.c:959)
+> [    5.201672] bus_for_each_drv (drivers/base/bus.c:457)
+> [    5.205657] __device_attach (drivers/base/dd.c:1032)
+> [    5.209641] device_attach (drivers/base/dd.c:1074)
+> [    5.213357] pci_bus_add_device (drivers/pci/bus.c:352)
+> [    5.217518] pci_bus_add_devices (drivers/pci/bus.c:371 (discriminator 2))
+> [    5.221774] pci_host_probe (drivers/pci/probe.c:3099)
+> [    5.225581] nwl_pcie_probe (drivers/pci/controller/pcie-xilinx-nwl.c:938)
+> [    5.229562] platform_probe (drivers/base/platform.c:1404)
+> [    5.233367] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
+> [    5.237169] __driver_probe_device (drivers/base/dd.c:800)
+> [    5.241685] driver_probe_device (drivers/base/dd.c:830)
+> [    5.246020] __device_attach_driver (drivers/base/dd.c:959)
+> [    5.250628] bus_for_each_drv (drivers/base/bus.c:457)
+> [    5.254612] __device_attach (drivers/base/dd.c:1032)
+> [    5.258596] device_initial_probe (drivers/base/dd.c:1080)
+> [    5.262938] bus_probe_device (drivers/base/bus.c:532)
+> [    5.266920] deferred_probe_work_func (drivers/base/dd.c:124)
+> [    5.271619] process_one_work (arch/arm64/include/asm/jump_label.h:21 include/linux/jump_label.h:207 include/trace/events/workqueue.h:108 kernel/workqueue.c:2632)
+> [    5.275788] worker_thread (kernel/workqueue.c:2694 (discriminator 2) kernel/workqueue.c:2781 (discriminator 2))
+> [    5.279686] kthread (kernel/kthread.c:388)
+> [    5.283048] ret_from_fork (arch/arm64/kernel/entry.S:862)
+> [    5.286765] ================================================================================
+> 
+> Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+> ---
+> 
+> Changes in v3:
+> - Expand commit message
+> 
+>  drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+> index 0408f4d612b5..437927e3bcca 100644
+> --- a/drivers/pci/controller/pcie-xilinx-nwl.c
+> +++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+> @@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
+>  	u32 mask;
+>  	u32 val;
+>  
+> -	mask = 1 << (data->hwirq - 1);
+> +	mask = 1 << data->hwirq;
+>  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+>  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+>  	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
+> @@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
+>  	u32 mask;
+>  	u32 val;
+>  
+> -	mask = 1 << (data->hwirq - 1);
+> +	mask = 1 << data->hwirq;
+>  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+>  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+>  	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
+> -- 
+> 2.35.1.1320.gc452695387.dirty
+> 
 
