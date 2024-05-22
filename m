@@ -1,189 +1,394 @@
-Return-Path: <stable+bounces-45603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9E18CC90D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 00:28:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841258CC98E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 01:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCDA428347A
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 22:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1B21F22100
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 23:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C6F148315;
-	Wed, 22 May 2024 22:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF1214A627;
+	Wed, 22 May 2024 23:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rg0SdRCD"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="L3V4nHSK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC966148308;
-	Wed, 22 May 2024 22:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353FA146A76;
+	Wed, 22 May 2024 23:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716416917; cv=none; b=BSoU+gO+t0XCpHX4LeC3OqWV0PMr55VGcjBYodAJ97Jx9o2pYItpCJAStEN02GvbriUbS4l8GafTsW2JrLlpnCfuMNZ3m77W7qd5E8CTz7YhFtqTk7ydVQoNE2JU35NMft2ZI7aBfMeSL+ISs+OpsYXg8F2ZlbWAGk//CLOGl0U=
+	t=1716420385; cv=none; b=IdCE8lFndvwyIYZ+QTftHtOzgk++PuxOuoUAWcGYJfW4PqibGZz3DtzY2u4LACqbkU4kd2HFWfZaLMvXwUVYhGCbn7I+OPvPkgUkQAOi/Qyp333f/X5RhWmeYU+IDYnJuQOVDRTo59eQFO9VS5Vy77jooflsIPUB1krMCO90YRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716416917; c=relaxed/simple;
-	bh=iPEcTEaSVmPMU3drT0qtv/3prDhf9jxctPjLd5VISnw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=s4sRkeCAsUncLMUapnDIN9yrXCgLPkxgqVzzXq7BsQSxpebTPwc/uGhbCKkzyXAlYiBdl8BX8PNBKdbELx7jbLKifUVIS8hvDqEdSlNzBUQG5z8SJfvRTkd91ofYyMZMsBo5EpRPzo5hh1hrZ2A+9/jDdK1+NjJ0LuG0i/ShPtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rg0SdRCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8FEC2BBFC;
-	Wed, 22 May 2024 22:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716416916;
-	bh=iPEcTEaSVmPMU3drT0qtv/3prDhf9jxctPjLd5VISnw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Rg0SdRCD8tMxBFmuNkrT8piCf4KssC8nQakQrYsiP7YRocQMcKmpAMXLGNqLVbd43
-	 s36IRJfasXi7J7y43s9kzGSzrrSo3NY5KkZt46iKr0Q+mZtivJD0Jo5auMSBaxAPjD
-	 S4UZyBr734C7q4P7tGRn91ifXbAo6cX25N3E6jZAGXiYLSLtPqVi4xFJIYkWXwSiJ0
-	 EQdZRdg17nIzAxFqe9npLQLO+swx7u+zrZ/RRgNT9pAJjhgWemzSyls8I35ZGODq5u
-	 ExiTao3WJgwnDDi+smYpK4tG/cRcanaKRqVl/nOgsFP9lr+SBwBiM/fhgja9xSiDAd
-	 H0aLGFMDyD/Rw==
-Date: Wed, 22 May 2024 17:28:34 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
-	Michal Simek <michal.simek@amd.com>,
-	Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Bharat Kumar Gogada <bharatku@xilinx.com>
-Subject: Re: [PATCH v3 2/7] PCI: xilinx-nwl: Fix off-by-one in IRQ handler
-Message-ID: <20240522222834.GA101664@bhelgaas>
+	s=arc-20240116; t=1716420385; c=relaxed/simple;
+	bh=SmMdZV+48vA3uRMvpKMa0WfNcBGvF4iPP3xBH9mpF9I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=itiAzIgps8VebbZf5pMMRhQFDDSUFaz3yp3i2T/uypudc9NTisRiKjSxRkpesA5HBjreuH0aqhyaSGJdDE5GeZBLMObMEz79HP5bu+PRHdEsGpNALYRUcpZHdT+8HDL1v0aEv/MoPIrFpGJiZgXRH+w3U2V9MKPo9n+hEjsNeEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=L3V4nHSK; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=z23Ki4e2NABlBf02MgjBQ9MDAsB2Ew9POLwHallhTSM=;
+	b=L3V4nHSKTkutpumWCz6M3FnBNnvr95YfxH0AahdGV0VBx/IUXcQf1EpqGqFYww
+	/FZOKLq6DDtWBNFvMxe3hSukODasAzHuFHCkNf2UPt0NfinVtv1ScPYmdLe7AYn5
+	RcgSPyHS/fdIcUGqnQuCL22TRcuhX1ZDHiLKzSnOB5IlY=
+Received: from [192.168.1.25] (unknown [183.195.6.89])
+	by gzga-smtp-mta-g2-5 (Coremail) with SMTP id _____wD3X9Dnfk5m0xtVBw--.52033S2;
+	Thu, 23 May 2024 07:25:28 +0800 (CST)
+Message-ID: <aa04210f-ffef-4fdf-9413-e4d6fde5de11@163.com>
+Date: Thu, 23 May 2024 07:25:27 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240520145402.2526481-3-sean.anderson@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
+ QCA6390 after warm reboot
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Zijun Hu <quic_zijuhu@quicinc.com>, luiz.von.dentz@intel.com,
+ marcel@holtmann.org, linux-bluetooth@vger.kernel.org, wt@penguintechs.org,
+ regressions@lists.linux.dev, pmenzel@molgen.mpg.de,
+ krzysztof.kozlowski@linaro.org, stable@vger.kernel.org
+References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
+ <f343ecae-efee-4bdc-ac38-89b614e081b5@163.com>
+ <CABBYNZ+nLgozYxL=znsXrg0qoz-ENgSBwcPzY-KrBnVJJut8Kw@mail.gmail.com>
+ <34a8e7c3-8843-4f07-9eef-72fb1f8e9378@163.com>
+ <CABBYNZLzTcnXP3bKdQB3wdBCMgCJrqu=jXQ91ws6+c1mioYt9A@mail.gmail.com>
+ <75809a40-d269-4326-8feb-19963526f014@163.com>
+ <CABBYNZKtX54f1QrTrCth-sU83s2_9pLOr+zwRni0UdO7tjFj6A@mail.gmail.com>
+Content-Language: en-US
+From: Lk Sii <lk_sii@163.com>
+In-Reply-To: <CABBYNZKtX54f1QrTrCth-sU83s2_9pLOr+zwRni0UdO7tjFj6A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3X9Dnfk5m0xtVBw--.52033S2
+X-Coremail-Antispam: 1Uf129KBjvAXoW3tw4rCw18Gry3CF18KFy7trb_yoW8GFWDKo
+	Wftr47Xa18tr1UCr45Aa4UArW3J34DZw18ArWUXrs8Jrs2qa45ur4UCw15XFsxJr4rGr48
+	J34UAr98ZrZ8Xa1fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIYiiUUUUU
+X-CM-SenderInfo: 5onb2xrl6rljoofrz/1tbiEw7mNWXAlRL9nQAAsM
 
-On Mon, May 20, 2024 at 10:53:57AM -0400, Sean Anderson wrote:
-> MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit
-> 2, and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
-> PCI_NUM_INTX irqs. So to enable INTA (aka hwirq 0) we should set bit 0.
-> Remove the subtraction of one. This fixes the following UBSAN error:
 
-Thanks for these details!
 
-I guess UBSAN == "undefined behavior sanitizer", right?  That sounds
-like an easy way to find this but not the way users are likely to find
-it.
-
-I assume users would notice spurious and missing interrupts, e.g.,
-a driver that tried to enable INTB would have actually enabled INTA,
-so we'd see spurious INTA interrupts and the driver would never see
-the INTB it expected.
-
-And a driver that tried to enable INTA would never see that interrupt,
-and we might not set any bit in MSGF_LEG_MASK?
-
-I think the normal way people would trip over this, i.e., spurious and
-missing INTx interrupts, is the important thing to mention here.
-
-> [    5.037483] ================================================================================
-> [    5.046260] UBSAN: shift-out-of-bounds in ../drivers/pci/controller/pcie-xilinx-nwl.c:389:11
-> [    5.054983] shift exponent 18446744073709551615 is too large for 32-bit type 'int'
-> [    5.062813] CPU: 1 PID: 61 Comm: kworker/u10:1 Not tainted 6.6.20+ #268
-> [    5.070008] Hardware name: xlnx,zynqmp (DT)
-> [    5.074348] Workqueue: events_unbound deferred_probe_work_func
-> [    5.080410] Call trace:
-> [    5.082958] dump_backtrace (arch/arm64/kernel/stacktrace.c:235)
-> [    5.086850] show_stack (arch/arm64/kernel/stacktrace.c:242)
-> [    5.090292] dump_stack_lvl (lib/dump_stack.c:107)
-> [    5.094095] dump_stack (lib/dump_stack.c:114)
-> [    5.097540] __ubsan_handle_shift_out_of_bounds (lib/ubsan.c:218 lib/ubsan.c:387)
-> [    5.103227] nwl_unmask_leg_irq (drivers/pci/controller/pcie-xilinx-nwl.c:389 (discriminator 1))
-> [    5.107386] irq_enable (kernel/irq/internals.h:234 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
-> [    5.110838] __irq_startup (kernel/irq/internals.h:239 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
-> [    5.114552] irq_startup (kernel/irq/chip.c:270)
-> [    5.118266] __setup_irq (kernel/irq/manage.c:1800)
-> [    5.121982] request_threaded_irq (kernel/irq/manage.c:2206)
-> [    5.126412] pcie_pme_probe (include/linux/interrupt.h:168 drivers/pci/pcie/pme.c:348)
-
-The rest of the stacktrace below is not relevant and could be omitted.
-The timestamps don't add useful information either.
-
-> [    5.130303] pcie_port_probe_service (drivers/pci/pcie/portdrv.c:528)
-> [    5.134915] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
-> [    5.138720] __driver_probe_device (drivers/base/dd.c:800)
-> [    5.143236] driver_probe_device (drivers/base/dd.c:830)
-> [    5.147571] __device_attach_driver (drivers/base/dd.c:959)
-> [    5.152179] bus_for_each_drv (drivers/base/bus.c:457)
-> [    5.156163] __device_attach (drivers/base/dd.c:1032)
-> [    5.160147] device_initial_probe (drivers/base/dd.c:1080)
-> [    5.164488] bus_probe_device (drivers/base/bus.c:532)
-> [    5.168471] device_add (drivers/base/core.c:3638)
-> [    5.172098] device_register (drivers/base/core.c:3714)
-> [    5.175994] pcie_portdrv_probe (drivers/pci/pcie/portdrv.c:309 drivers/pci/pcie/portdrv.c:363 drivers/pci/pcie/portdrv.c:695)
-> [    5.180338] pci_device_probe (drivers/pci/pci-driver.c:324 drivers/pci/pci-driver.c:392 drivers/pci/pci-driver.c:417 drivers/pci/pci-driver.c:460)
-> [    5.184410] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
-> [    5.188213] __driver_probe_device (drivers/base/dd.c:800)
-> [    5.192729] driver_probe_device (drivers/base/dd.c:830)
-> [    5.197064] __device_attach_driver (drivers/base/dd.c:959)
-> [    5.201672] bus_for_each_drv (drivers/base/bus.c:457)
-> [    5.205657] __device_attach (drivers/base/dd.c:1032)
-> [    5.209641] device_attach (drivers/base/dd.c:1074)
-> [    5.213357] pci_bus_add_device (drivers/pci/bus.c:352)
-> [    5.217518] pci_bus_add_devices (drivers/pci/bus.c:371 (discriminator 2))
-> [    5.221774] pci_host_probe (drivers/pci/probe.c:3099)
-> [    5.225581] nwl_pcie_probe (drivers/pci/controller/pcie-xilinx-nwl.c:938)
-> [    5.229562] platform_probe (drivers/base/platform.c:1404)
-> [    5.233367] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
-> [    5.237169] __driver_probe_device (drivers/base/dd.c:800)
-> [    5.241685] driver_probe_device (drivers/base/dd.c:830)
-> [    5.246020] __device_attach_driver (drivers/base/dd.c:959)
-> [    5.250628] bus_for_each_drv (drivers/base/bus.c:457)
-> [    5.254612] __device_attach (drivers/base/dd.c:1032)
-> [    5.258596] device_initial_probe (drivers/base/dd.c:1080)
-> [    5.262938] bus_probe_device (drivers/base/bus.c:532)
-> [    5.266920] deferred_probe_work_func (drivers/base/dd.c:124)
-> [    5.271619] process_one_work (arch/arm64/include/asm/jump_label.h:21 include/linux/jump_label.h:207 include/trace/events/workqueue.h:108 kernel/workqueue.c:2632)
-> [    5.275788] worker_thread (kernel/workqueue.c:2694 (discriminator 2) kernel/workqueue.c:2781 (discriminator 2))
-> [    5.279686] kthread (kernel/kthread.c:388)
-> [    5.283048] ret_from_fork (arch/arm64/kernel/entry.S:862)
-> [    5.286765] ================================================================================
+On 2024/5/22 22:25, Luiz Augusto von Dentz wrote:
+> Hi,
 > 
-> Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> ---
+> On Wed, May 22, 2024 at 9:33 AM Lk Sii <lk_sii@163.com> wrote:
+>>
+>>
+>>
+>> On 2024/5/21 23:48, Luiz Augusto von Dentz wrote:
+>>> Hi,
+>>>
+>>> On Tue, May 21, 2024 at 10:52 AM Lk Sii <lk_sii@163.com> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2024/5/16 23:55, Luiz Augusto von Dentz wrote:
+>>>>> Hi,
+>>>>>
+>>>>> On Thu, May 16, 2024 at 10:57 AM Lk Sii <lk_sii@163.com> wrote:
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> On 2024/5/16 21:31, Zijun Hu wrote:
+>>>>>>> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
+>>>>>>> serdev") will cause below regression issue:
+>>>>>>>
+>>>>>>> BT can't be enabled after below steps:
+>>>>>>> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
+>>>>>>> if property enable-gpios is not configured within DT|ACPI for QCA6390.
+>>>>>>>
+>>>>>>> The commit is to fix a use-after-free issue within qca_serdev_shutdown()
+>>>>>>> by adding condition to avoid the serdev is flushed or wrote after closed
+>>>>>>> but also introduces this regression issue regarding above steps since the
+>>>>>>> VSC is not sent to reset controller during warm reboot.
+>>>>>>>
+>>>>>>> Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
+>>>>>>> once BT was ever enabled, and the use-after-free issue is also fixed by
+>>>>>>> this change since the serdev is still opened before it is flushed or wrote.
+>>>>>>>
+>>>>>>> Verified by the reported machine Dell XPS 13 9310 laptop over below two
+>>>>>>> kernel commits:
+>>>>>>> commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
+>>>>>>> implementation for QCA") of bluetooth-next tree.
+>>>>>>> commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
+>>>>>>> implementation for QCA") of linus mainline tree.
+>>>>>>>
+>>>>>>> Fixes: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev")
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Reported-by: Wren Turkal <wt@penguintechs.org>
+>>>>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218726
+>>>>>>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+>>>>>>> Tested-by: Wren Turkal <wt@penguintechs.org>
+>>>>>>> ---
+>>>>>>> V1 -> V2: Add comments and more commit messages
+>>>>>>>
+>>>>>>> V1 discussion link:
+>>>>>>> https://lore.kernel.org/linux-bluetooth/d553edef-c1a4-4d52-a892-715549d31ebe@163.com/T/#t
+>>>>>>>
+>>>>>>>  drivers/bluetooth/hci_qca.c | 18 +++++++++++++++---
+>>>>>>>  1 file changed, 15 insertions(+), 3 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+>>>>>>> index 0c9c9ee56592..9a0bc86f9aac 100644
+>>>>>>> --- a/drivers/bluetooth/hci_qca.c
+>>>>>>> +++ b/drivers/bluetooth/hci_qca.c
+>>>>>>> @@ -2450,15 +2450,27 @@ static void qca_serdev_shutdown(struct device *dev)
+>>>>>>>       struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
+>>>>>>>       struct hci_uart *hu = &qcadev->serdev_hu;
+>>>>>>>       struct hci_dev *hdev = hu->hdev;
+>>>>>>> -     struct qca_data *qca = hu->priv;
+>>>>>>>       const u8 ibs_wake_cmd[] = { 0xFD };
+>>>>>>>       const u8 edl_reset_soc_cmd[] = { 0x01, 0x00, 0xFC, 0x01, 0x05 };
+>>>>>>>
+>>>>>>>       if (qcadev->btsoc_type == QCA_QCA6390) {
+>>>>>>> -             if (test_bit(QCA_BT_OFF, &qca->flags) ||
+>>>>>>> -                 !test_bit(HCI_RUNNING, &hdev->flags))
+>>>>>>> +             /* The purpose of sending the VSC is to reset SOC into a initial
+>>>>>>> +              * state and the state will ensure next hdev->setup() success.
+>>>>>>> +              * if HCI_QUIRK_NON_PERSISTENT_SETUP is set, it means that
+>>>>>>> +              * hdev->setup() can do its job regardless of SoC state, so
+>>>>>>> +              * don't need to send the VSC.
+>>>>>>> +              * if HCI_SETUP is set, it means that hdev->setup() was never
+>>>>>>> +              * invoked and the SOC is already in the initial state, so
+>>>>>>> +              * don't also need to send the VSC.
+>>>>>>> +              */
+>>>>>>> +             if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks) ||
+>>>>>>> +                 hci_dev_test_flag(hdev, HCI_SETUP))
+>>>>>>>                       return;
+>>>> The main purpose of above checking is NOT to make sure the serdev within
+>>>> open state as its comments explained.
+>>>>>>>
+>>>>>>> +             /* The serdev must be in open state when conrol logic arrives
+>>>>>>> +              * here, so also fix the use-after-free issue caused by that
+>>>>>>> +              * the serdev is flushed or wrote after it is closed.
+>>>>>>> +              */
+>>>>>>>               serdev_device_write_flush(serdev);
+>>>>>>>               ret = serdev_device_write_buf(serdev, ibs_wake_cmd,
+>>>>>>>                                             sizeof(ibs_wake_cmd));
+>>>>>> i believe Zijun's change is able to fix both below issues and don't
+>>>>>> introduce new issue.
+>>>>>>
+>>>>>> regression issue A:  BT enable failure after warm reboot.
+>>>>>> issue B:  use-after-free issue, namely, kernel crash.
+>>>>>>
+>>>>>>
+>>>>>> For issue B, i have more findings related to below commits ordered by time.
+>>>>>>
+>>>>>> Commit A: 7e7bbddd029b ("Bluetooth: hci_qca: Fix qca6390 enable failure
+>>>>>> after warm reboot")
+>>>>>>
+>>>>>> Commit B: de8892df72be ("Bluetooth: hci_serdev: Close UART port if
+>>>>>> NON_PERSISTENT_SETUP is set")
+>>>>>> this commit introduces issue B, it is also not suitable to associate
+>>>>>> protocol state with state of lower level transport type such as serdev
+>>>>>> or uart, in my opinion, protocol state should be independent with
+>>>>>> transport type state, flag HCI_UART_PROTO_READY is for protocol state,
+>>>>>> it means if protocol hu->proto is initialized and if we can invoke its
+>>>>>> interfaces.it is common for various kinds of transport types. perhaps,
+>>>>>> this is the reason why Zijun's change doesn't use flag HCI_UART_PROTO_READY.
+>>>>>
+>>>>> Don't really follow you here, if HCI_UART_PROTO_READY indicates the
+>>>>> protocol state they is even _more_ important to use before invoking
+>>>>> serdev APIs, so checking for the quirk sound like a problem because:
+>>>>>
+>>>>> [1] hci_uart_close
+>>>>>      /* When QUIRK HCI_QUIRK_NON_PERSISTENT_SETUP is set by driver,
+>>>>>      * BT SOC is completely powered OFF during BT OFF, holding port
+>>>>>      * open may drain the battery.
+>>>>>      */
+>>>>>     if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
+>>>>>         clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+>>>>>         serdev_device_close(hu->serdev);
+>>>>>     }
+>>>>>
+>>>>> [2] hci_uart_unregister_device
+>>>>>     if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
+>>>>>         clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+>>>>>         serdev_device_close(hu->serdev);
+>>>>>     }
+>>>>> both case 1 and case 2 were introduced by Commit B in question which
+>>>> uses protocol state flag HCI_UART_PROTO_READY to track lower level
+>>>> transport type state, i don't think it is perfect.
+>>>>
+>>>> for common files hci_serdev.c and hci_ldisc.c, as you saw, the purpose
+>>>> of checking HCI_UART_PROTO_READY is to call protocol relevant
+>>>> interfaces, moreover, these protocol relevant interfaces do not deal
+>>>> with lower transport state. you maybe even notice below present function
+>>>> within which lower level serdev is flushed before HCI_UART_PROTO_READY
+>>>> is checked:
+>>>>
+>>>> static int hci_uart_flush(struct hci_dev *hdev)
+>>>> {
+>>>> ......
+>>>>         /* Flush any pending characters in the driver and discipline. */
+>>>>         serdev_device_write_flush(hu->serdev);
+>>>>
+>>>>         if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
+>>>>                 hu->proto->flush(hu);
+>>>>
+>>>>         return 0;
+>>>> }
+>>>>
+>>>> in my opinion, that is why qca_serdev_shutdown() does not check
+>>>> HCI_UART_PROTO_READY for later lower level serdev operations.
+>>>>> So only in case 1 checking the quirk is equivalent to
+>>>>> HCI_UART_PROTO_READY on case 2 it does actually check the quirk and
+>>>>> will proceed to call serdev_device_close, now perhaps the code is
+>>>>> assuming that shutdown won't be called after that, but it looks it
+>>>>> does since:
+>>>>>
+>>>> qca_serdev_shutdown() will never be called after case 2 as explained
+>>>> in the end.
+>>>>> static void serdev_drv_remove(struct device *dev)
+>>>>> {
+>>>>>     const struct serdev_device_driver *sdrv =
+>>>>> to_serdev_device_driver(dev->driver);
+>>>>>     if (sdrv->remove)
+>>>>>         sdrv->remove(to_serdev_device(dev));
+>>>>>
+>>>>>     dev_pm_domain_detach(dev, true);
+>>>>> }
+>>>>>
+>>>>> dev_pm_domain_detach says it will power off so I assume that means
+>>>>> that shutdown will be called _after_ remove, so not I'm not really
+>>>>> convinced that we can avoid using HCI_UART_PROTO_READY, in fact the
+>>>>> following sequence might always be triggering:
+>>>>>
+>>>> dev_pm_domain_detach() should be irrelevant with qca_serdev_shutdown(),
+>>>> should not trigger call of qca_serdev_shutdown() as explained in the end
+>>>>> serdev_drv_remove -> qca_serdev_remove -> hci_uart_unregister_device
+>>>>> -> serdev_device_close -> qca_close -> kfree(qca)
+>>>>> dev_pm_domain_detach -> ??? -> qca_serdev_shutdown
+>>>>>
+>>>>> If this sequence is correct then qca_serdev_shutdown accessing
+>>>>> qca_data will always result in a UAF problem.
+>>>>>
+>>>> above sequence should not correct as explained below.
+>>>>
+>>>> serdev and its driver should also follow below generic device and driver
+>>>> design.
+>>>>
+>>>> 1)
+>>>> driver->shutdown() will be called during shut-down time at this time
+>>>> driver->remove() should not have been called.
+>>>>
+>>>> 2)
+>>>> driver->shutdown() is impossible to be called once driver->remove()
+>>>> was called.
+>>>>
+>>>> 3) for serdev, driver->remove() does not trigger call of
+>>>> driver->shutdown() since PM relevant poweroff is irrelevant with
+>>>> driver->shutdown() and i also don't find any PM relevant interfaces will
+>>>> call driver->shutdown().
+>>>>
+>>>> i would like to explain issue B based on comments Zijun posted by public
+>>>> as below:
+>>>>
+>>>> issue B actually happens during reboot and let me look at these steps
+>>>> boot -> enable BT -> disable BT -> reboot.
+>>>>
+>>>> 1) step boot will call driver->probe() to register hdev and the serdev
+>>>> is opened after boot.
+>>>>
+>>>> 2) step enable will call hdev->open() and the serdev will still in open
+>>>> state
+>>>>
+>>>> 3) step disable will call hdev->close() and the serdev will be closed
+>>>> after hdev->close() for machine with config which results in
+>>>> HCI_QUIRK_NON_PERSISTENT_SETUP is set.
+>>>>
+>>>> 4) step reboot will call qca_serdev_shutdown() which will flush and
+>>>> write the serdev which are closed by above step disable, so cause the
+>>>> UAF issue, namely, kernel crash issue.
+>>>>
+>>>> so this issue is caused by commit B which close the serdev during
+>>>> hdev->close().
+>>>>
+>>>> driver->remove() even is not triggered during above steps.
+>>>>>> Commit C: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on
+>>>>>> closed serdev")
+>>>>>> this commit is to fix issue B which is actually caused by Commit B, but
+>>>>>> it has Fixes tag for Commit A. and it also introduces the regression
+>>>>>> issue A.
+>>>>>>
+>>>>>
+>>>>>
+>>>
+>>> Reading again the commit message for the UAF fix it sounds like a
+>>> different problem:
+>>>
+>> no, the UAF issue commit C fixes should be the same issue descripted by
+>> me previously as explained below:
+>>
+>> the UAF issue happened with machine "qualcomm Technologies, Inc.
+>> Robotics RB5 (DT)", the machine uses qca6390 and have property
+>> enable-gpios configured, which will results in that quirk
+>> HCI_QUIRK_NON_PERSISTENT_SETUP is set, so must meet the UAF issue
+>> for normal operation sequences "boot -> enable BT -> disable BT -> reboot".
 > 
-> Changes in v3:
-> - Expand commit message
+> Wait, are you telling me that UAF was wrongly described? Or perhaps
+> they are just different trees and you don't see the problem because
+> you are not actually running with the mainline code?
 > 
->  drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+sorry, please ignore my last comment to simply discussion
+>> Actually, only machines which uses QCA6390 and have property
+>> enable-gpios configured will meet the UAF issue as commented by Zijun
+>> with below link
+>> https://lore.kernel.org/linux-bluetooth/9ac11453-b7cf-43f3-8e46-f96e41ef190d@quicinc.com/
+>>
+>>>     The driver shutdown callback (which sends EDL_SOC_RESET to the device
+>>>     over serdev) should not be invoked when HCI device is not open (e.g. if
+>>>     hci_dev_open_sync() failed), because the serdev and its TTY are not open
+>>>     either.  Also skip this step if device is powered off
+>>>     (qca_power_shutdown()).
+>>>
+>>> So if hci_dev_open_sync has failed it says serdev and its TTY will not
+>>> be open either, so I guess that's why HCI_SETUP was added as a
+>>> condition to bail out? So it seems correct to do that although I'd
+>>> change the comments.
+>>>
+>> i believe hci_dev_open_sync failure should not really happens with the
+>> machine Robotics RB5, the purpose that it is mentioned with commit
+>> message is to illustrate that the serdev in closed state is operated and
+>> causes the UAF issue.
 > 
-> diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
-> index 0408f4d612b5..437927e3bcca 100644
-> --- a/drivers/pci/controller/pcie-xilinx-nwl.c
-> +++ b/drivers/pci/controller/pcie-xilinx-nwl.c
-> @@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
->  	u32 mask;
->  	u32 val;
->  
-> -	mask = 1 << (data->hwirq - 1);
-> +	mask = 1 << data->hwirq;
->  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
->  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
->  	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
-> @@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
->  	u32 mask;
->  	u32 val;
->  
-> -	mask = 1 << (data->hwirq - 1);
-> +	mask = 1 << data->hwirq;
->  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
->  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
->  	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
-> -- 
-> 2.35.1.1320.gc452695387.dirty
+> Sorry but Im not really following, there seems to be instances where
+> qca driver will fail on hci_dev_open_sync, now the shutdown sequence
+> is only done for a specific model, not a machine like Robotics RB5,
+> btw you are not really contributing to solving the problem if you are
+> throwing us back in different directions like this.
 > 
+sorry, please ignore my last comment to simply discussion
+>> let us assume that hci_dev_open_sync failure -> serdev is not opened ->
+>> UAF issue happens within qca_serdev_shutdown(), then BT will not be
+>> working at all and the commit C is actually a workaroud instead of a fix
+>> since the right approach is to solve the hci_dev_open_sync failure which
+>> happens firstly.
+>>
+>>
+>> Frankly, only checking quirk HCI_QUIRK_NON_PERSISTENT_SETUP is enough to
+>> fix the UAF issue caused by either "normal operation sequences" or
+>> "hci_dev_open_sync failure".
+> 
+> Ok, just stop contributing to this thread, you don't know what you are
+> talking about, HCI_QUIRK_NON_PERSISTENT_SETUP has nothing to do with
+> serdev state.
+> 
+okay, please ignore my last comment to simply discussion about Zijun's
+change.
+>>> @Krzysztof Kozlowski do you still have a test setup for 272970be3dab
+>>> ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev"), can you
+>>> try with these changes?
+>>>
+>>
+> 
+> 
+
 
