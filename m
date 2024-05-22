@@ -1,69 +1,70 @@
-Return-Path: <stable+bounces-45559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3242C8CBC8C
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 10:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE0B8CBCAA
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 10:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D82391F21691
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 08:00:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF591F21CFD
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 08:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9804D79949;
-	Wed, 22 May 2024 08:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BAB7F483;
+	Wed, 22 May 2024 08:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2+/g0JC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ub7dQRRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543E8182DB;
-	Wed, 22 May 2024 08:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDBB7F484;
+	Wed, 22 May 2024 08:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716364842; cv=none; b=Rsd4OJXHGwixoPpsKBD5y/dtx4TNwxl9CylgXPQbW+mEQciCB0dAotMucz5AU8CgunpzUNxYUvN0GWM275owSOW2gSimf6/rjv+pvCEUc+NDXgUJH6jWaUBK5caBS41ozR01fLWpjhpNaiK5YyrJyJDu+ATEe7lcPXiIkZKCehw=
+	t=1716365293; cv=none; b=PrLQdPCScf1kgggKV738k9opTkwzFYojGtoxxpAcIr8NLTbefXRXcAcUZPBEu5/tHzcdAPPrXGDQREEZxBEj+ALkNmvXhfFolBxkZbxigUALBqXEOeXADm+TGE07xkyiYiSJznu9offi8HwZWvGsDdDtEwM84/3Ke5JJzQyEBco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716364842; c=relaxed/simple;
-	bh=aV7NdtVB/SzBUj/d+kn2bUhxu2Qvmc8Xm3U4xn5YA3Q=;
+	s=arc-20240116; t=1716365293; c=relaxed/simple;
+	bh=XsVorddufHJHW9jCOTtwIqAeudeLJX7nT1NbKFEuzSk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V3cIOO/p7ji+gnAh0VWNHY7IwmoX+wpnpJp1xCfPcQ/3AQzn6vRxXJIKeOEjObIylCaK7x4wPPL6PhDt3BvBF3gwY6fVqr/BhiG+/HpC1dhvTEme8avge3a9U+MjvZXUMdulpfOk7kU1mC/P32ntMUtP1uEuaxgXVL5JbiDd8iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2+/g0JC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C107C32781;
-	Wed, 22 May 2024 08:00:42 +0000 (UTC)
+	 To:Cc:Content-Type; b=jfCU2W4aeL5Un6WU6Q7aSscHbRDfx+kNPCGiQehEy01vl69opQEMGswV2dwiza7CoigwQcU9dNMrpsdUXhMlIbYkYcrZBxifMDAS16ymA3n9hpYBgm7WjA+NusrTaf8HH/0sLnQpyzPAfJtIA7GoTTZha9s37jdeoRzFZsdZWu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ub7dQRRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE70C4AF09;
+	Wed, 22 May 2024 08:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716364842;
-	bh=aV7NdtVB/SzBUj/d+kn2bUhxu2Qvmc8Xm3U4xn5YA3Q=;
+	s=k20201202; t=1716365293;
+	bh=XsVorddufHJHW9jCOTtwIqAeudeLJX7nT1NbKFEuzSk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=k2+/g0JCirUhfOBiUEonbgEDaaTA+nXUollhqidvEQ+V0rOCM7bqkiEdg1d0mXeve
-	 NnhvCUndy/vQpprZQQZ9ZXrby+qNvJ65l9nnxXqfdLwxATBOWm5cJ4zsOXA4CD89H1
-	 6VVoaBc5S0m/7xE2FubaLEPr5E4Zx+su482GaoiAGq5GCVrkG9CATqFQkIZAkArPJc
-	 M2O5CwvGOUpoZYKYQYXn76tOWSIgJMt58BeURUcJVQEKazq1kPz2nKx8oEOIcB8Wnb
-	 RrVCPS173Z+uA1niHUqmf+7oN6018eJo1TinQB2++q2Rtq3Iab85c9muTGEemmlT9s
-	 0BAD+M4RwZnnw==
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-34d9c9f2cf0so530809f8f.3;
-        Wed, 22 May 2024 01:00:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVbUFKZjD+U3bK9afaEqpXx4+njt8196yWfWTAE6olDOIVR7xB+dLiV+UDTd/kdVSJ/NgqYOH+nkJCwZHx4zQU2RcMdTmJM/ABnHS6aOobuJPn+Pk6N8UpsMOtdA1wr1OdKTJ9c
-X-Gm-Message-State: AOJu0YylA8zSTz9pphnZKWMQPgTQF5B/nnSLTRIQHMeMIdsmWBamVVUW
-	GKxR1WZxz+i2dt2hJPLet0rsi4Fhii7dKrKIyZIL6PstaSEMwYFlb3YF1lTDdvgLXsiLdIFlW97
-	y04AkqeLnTjJc8K5VR+29/ubYvnU=
-X-Google-Smtp-Source: AGHT+IGB9BIS9Kop1kEq4bxJyatyF4JrT25siZ44mZDszmXdW0jKScK7W34sTieEYRDBfaV1TG/QovV0S90rAFTzvIM=
-X-Received: by 2002:a05:6000:bd0:b0:34c:71d0:1151 with SMTP id
- ffacd0b85a97d-354d8c75e43mr1050070f8f.10.1716364840755; Wed, 22 May 2024
- 01:00:40 -0700 (PDT)
+	b=ub7dQRRYmgvGQIXOKkzcALnqKjdM+kZsOun7dJb4WOMFCtRCQ6V0yqAVNS+H+zhHw
+	 xkU1tyazOtIdw3SzINSIjctScF0rx5MEFgSwgiWSZtLfFhX4rhkY4oLAJBWlVUdwJh
+	 kQ1lvutc25IUT12jL0ca6Q/8hjIkbXin+2EkNxTdqNObXC0E0T/0xU4YEbk0PAn8OS
+	 isDDEVKBw5YBZtGcW94r7rF2qi+X28SIkuwWXgeXyV11s7cPFUEB+p9f6o5tR9+sg2
+	 OlvSMsAX/GNRfNsLzO7ZtAcRvL/w36Cz7rL66F3R/GHCa9Z6RpACM7XOxGPXNQQ0OF
+	 rgtZ3Zlm6+BQQ==
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5238b7d0494so6259471e87.3;
+        Wed, 22 May 2024 01:08:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUM+1mdMv44phN1sm93CR73wEq/ShahYZD4fEIh3Ct9aHel+OYEe9mV6HXTUgv7rPadJYDuIOWsOP2nin0CkOTqX6+NtknEMBUAsgP3rhSQ41AjkeO23z8h/7jbRqVPpD3wbvPM
+X-Gm-Message-State: AOJu0YwRLRM2N5MWqlRPokAVp++VlaaQYVdF3IT3bzLqdDOtx08yEklS
+	SugaZXyy8a2qKN5ip7EO2MA2d3gXpgSDWYeY08MH0bhYRvlXf9nrCxDSljwA70S5IVAE+MaXz9/
+	J3j+ahTJg7bSecIXS+qYpfbDXEGo=
+X-Google-Smtp-Source: AGHT+IFAwGmgLyWddo6GG2KC4+9FOm3Fivw6BZNWf4Z82XgHm/o2gbsmxHaMbRAHB6CWe4Pb1CXzQJ+VgCtRrBSM6SM=
+X-Received: by 2002:ac2:4884:0:b0:524:34ad:ba7d with SMTP id
+ 2adb3069b0e04-526c0a68f31mr1201735e87.42.1716365291354; Wed, 22 May 2024
+ 01:08:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240522-loongarch-booting-fixes-v2-0-727edb96e548@flygoat.com> <20240522-loongarch-booting-fixes-v2-3-727edb96e548@flygoat.com>
-In-Reply-To: <20240522-loongarch-booting-fixes-v2-3-727edb96e548@flygoat.com>
+References: <20240522-loongarch-booting-fixes-v2-0-727edb96e548@flygoat.com> <20240522-loongarch-booting-fixes-v2-2-727edb96e548@flygoat.com>
+In-Reply-To: <20240522-loongarch-booting-fixes-v2-2-727edb96e548@flygoat.com>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 22 May 2024 16:00:29 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7+2BFEN4qgkJ0N48t8o7rixPK7_kn8jwowWPNHS7=Ohw@mail.gmail.com>
-Message-ID: <CAAhV-H7+2BFEN4qgkJ0N48t8o7rixPK7_kn8jwowWPNHS7=Ohw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] LoongArch: Fix entry point in image header
+Date: Wed, 22 May 2024 16:07:59 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4r=2LbOBsM8oas=ewXGA+4Z=Y==iSgZfsdSk7GHOrieA@mail.gmail.com>
+Message-ID: <CAAhV-H4r=2LbOBsM8oas=ewXGA+4Z=Y==iSgZfsdSk7GHOrieA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] LoongArch: smp: Add all CPUs enabled by fdt to
+ NUMA node 0
 To: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Cc: Binbin Zhou <zhoubinbin@loongson.cn>, loongarch@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
@@ -75,69 +76,53 @@ Hi, Jiaxun,
 On Wed, May 22, 2024 at 2:30=E2=80=AFPM Jiaxun Yang <jiaxun.yang@flygoat.co=
 m> wrote:
 >
-> Currently kernel entry in head.S is in DMW address range,
-> firmware is instructed to jump to this address after loading
-> the image.
+> NUMA enabled kernel on FDT based machine fails to boot
+> because CPUs are all in NUMA_NO_NODE and mm subsystem
+> won't accept that.
 >
-> However kernel should not make any assumption on firmware's
-> DMW setting, thus the entry point should be a physical address
-> falls into direct translation region.
->
-> Fix by applying a calculation to the entry and amend entry
-> calculation logic in libstub accordingly.
->
-> Note that due to relocation restriction TO_PHYS can't be used
-> in assembly, we can only do plus and minus here.
+> Fix by adding them to default NUMA node for now.
 >
 > Cc: stable@vger.kernel.org
+> Fixes: 88d4d957edc7 ("LoongArch: Add FDT booting support from efi system =
+table")
 > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 > ---
-> v2: Fix efistub
-> ---
->  arch/loongarch/kernel/head.S             | 2 +-
->  drivers/firmware/efi/libstub/loongarch.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  arch/loongarch/kernel/smp.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
-> index c4f7de2e2805..1a83564023e1 100644
-> --- a/arch/loongarch/kernel/head.S
-> +++ b/arch/loongarch/kernel/head.S
-> @@ -22,7 +22,7 @@
->  _head:
->         .word   MZ_MAGIC                /* "MZ", MS-DOS header */
->         .org    0x8
-> -       .dword  kernel_entry            /* Kernel entry point */
-> +       .dword  PHYS_LINK_KADDR + (kernel_entry - _head)        /* Kernel=
- entry point */
-It could be better to calculate it in the link script, just as _kernel_asiz=
-e.
+> diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+> index 0dfe2388ef41..866757b76ecb 100644
+> --- a/arch/loongarch/kernel/smp.c
+> +++ b/arch/loongarch/kernel/smp.c
+> @@ -273,7 +273,6 @@ static void __init fdt_smp_setup(void)
+>
+>                 if (cpuid =3D=3D loongson_sysconf.boot_cpu_id) {
+>                         cpu =3D 0;
+> -                       numa_add_cpu(cpu);
+>                 } else {
+>                         cpu =3D cpumask_next_zero(-1, cpu_present_mask);
+>                 }
+> @@ -283,6 +282,10 @@ static void __init fdt_smp_setup(void)
+>                 set_cpu_present(cpu, true);
+>                 __cpu_number_map[cpuid] =3D cpu;
+>                 __cpu_logical_map[cpu] =3D cpuid;
+> +
+> +               early_numa_add_cpu(cpu, 0);
+> +               set_cpuid_to_node(cpuid, 0);
+> +               numa_add_cpu(cpu);
+What's wrong exactly? Real machine has no problem here, and at least
+numa_add_cpu() should not be called for non-zero cpu so early, because
+it need per-cpu area be setup. I guess the root cause is that there is
+something wrong and "cpuid =3D=3D loongson_sysconf.boot_cpu_id" is
+skipped.
 
 Huacai
 
->         .dword  _kernel_asize           /* Kernel image effective size */
->         .quad   PHYS_LINK_KADDR         /* Kernel image load offset from =
-start of RAM */
->         .org    0x38                    /* 0x20 ~ 0x37 reserved */
-> diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/=
-efi/libstub/loongarch.c
-> index 684c9354637c..60c145121393 100644
-> --- a/drivers/firmware/efi/libstub/loongarch.c
-> +++ b/drivers/firmware/efi/libstub/loongarch.c
-> @@ -41,7 +41,7 @@ static efi_status_t exit_boot_func(struct efi_boot_memm=
-ap *map, void *priv)
->  unsigned long __weak kernel_entry_address(unsigned long kernel_addr,
->                 efi_loaded_image_t *image)
->  {
-> -       return *(unsigned long *)(kernel_addr + 8) - VMLINUX_LOAD_ADDRESS=
- + kernel_addr;
-> +       return *(unsigned long *)(kernel_addr + 8) - TO_PHYS(VMLINUX_LOAD=
-_ADDRESS) + kernel_addr;
->  }
+>         }
 >
->  efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
+>         loongson_sysconf.nr_cpus =3D num_processors;
 >
 > --
 > 2.43.0
->
 >
 
