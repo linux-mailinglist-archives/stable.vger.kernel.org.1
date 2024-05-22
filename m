@@ -1,101 +1,100 @@
-Return-Path: <stable+bounces-45568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8AC98CC12C
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 14:24:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A5C8CC258
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 15:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FCCA1F228F7
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 12:24:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 837B01C227F7
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 13:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9120813D626;
-	Wed, 22 May 2024 12:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95E414038A;
+	Wed, 22 May 2024 13:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="HAL+jQ5B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJ696Q5J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B7F13D623;
-	Wed, 22 May 2024 12:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAD913E3EB;
+	Wed, 22 May 2024 13:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716380687; cv=none; b=DW5phyaz4qsXByP68FyKbRNDD3YjNq6QB+1Lvzwog+l3p6OppM7HNCUXx05XxMV/gDgo5Rk1BqUwNznvKxlNLV8LT/gTtO62JDUqmB+lpU3zAsDYmYWNmqzZr6c1MTb2Y7ZgMe/X10o48CDH+9evVgmHovKbaiYNCmVzzjFfVYI=
+	t=1716385370; cv=none; b=dSxiqKioaVzCVTEYp7ffVaRChk4qMeWaz7UAYnXfqcPuObF+DJaGNFbS47y8aKG8OY0bFG0Lvg7Zz12ld1eR3XtjJoc6xJO2fJBlBxG4oxGtdeaziV5nKDNFZJMAIIbwCTDOtMkbg3vCGoLoysxG0pcuapcOqGuJ1IueLokRrvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716380687; c=relaxed/simple;
-	bh=SbgR4B/8IUmHI5DK+/2w/6ZWjC7dExfDIqXUiYTONlA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Cg9riUT0vAfeE9gQA1AjdDVvTGxS3l9iegO+DnZAmLwzETioHjBNv7pySOBZtiExgKIfykly9zyxKZ/ltP5EVT9oZYHNAKVZbEF613udFX4woKDzHhgcld/evE07dz/qPCJJIfYNSTxH+oUg4e/IKTnvEjI70p+gJf3TR3jo/Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=HAL+jQ5B; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.15])
-	by mail.ispras.ru (Postfix) with ESMTPSA id C31C74076723;
-	Wed, 22 May 2024 12:24:41 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C31C74076723
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1716380681;
-	bh=rUu2N2ra3UJOVujeAUs8p16HRSJ3CxlvSQFgHAEciJQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HAL+jQ5B00d6NN5gqADYkmUDvs/AwYoXznpBcLvjjuk5ceUT40KCjExf2AMX94rWg
-	 qJS4NzODO20uMm0SQfeqo5JHLEPRZfgfR40ez2S52YcR7YBOMm5qqqT2XIVCQvqsQB
-	 d5S34/eA0XruF8UaVr57Jem/4C6SHQTdM6IMHHMU=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Chris Wilson <chris@chris-wilson.co.uk>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] dma-buf: handle testing kthreads creation failure
-Date: Wed, 22 May 2024 15:23:26 +0300
-Message-Id: <20240522122326.696928-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1716385370; c=relaxed/simple;
+	bh=T28A7QNWQkhXDshEFyD2WCyzjLns6B7vVcmqDqKuwrY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sB1dXmXuTcSB8IcizeD2rJ+kakpUFr1bUf9r/75lDa2akZu8OJ8rEAF/d2PuTMQGQIL9xthPAlbgnbLYjoEVImWxj3ZbJ01AU36lmcBtY84aWDDHHaOsAYLECgrJ3GRsd1FLWnWtsXtyLO4mEO6o7H6m/I5WPhqXQjJMCI3Md2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qJ696Q5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54EFC2BD11;
+	Wed, 22 May 2024 13:42:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716385370;
+	bh=T28A7QNWQkhXDshEFyD2WCyzjLns6B7vVcmqDqKuwrY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qJ696Q5JCZcBy1c+Hh1dk6OSrEb1z8kbbl0f12m4/wTOYaSHn8Y8416n1wYdFVwY1
+	 fhLq7ycjinBoMSq+kG1jnULQlM+bFrkR193SAs04+1VPL4x1KIvYrw7nzqxyU8FB6R
+	 RWgdyG9ivsLpIQV7CrwdeNH8B//BG7EAwpyHSqKaTu18pLxsZcddOdjfyVnNKzb8hk
+	 MxadlOtdX4j/6MKs5K6lOQ5K2FcxBGz9XeG2xdItTnigjfoi0XMbrvVt5xUGJiWP3B
+	 mdXIOPhhE8/u1f/WSBzHNI5TgNx1b5Lu403KULNZZ9PCJf8xiuwBJhSkx7yDzXJ4zH
+	 m98ogOG27rpDA==
+Date: Wed, 22 May 2024 08:57:31 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: =?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>
+Cc: Pavel Machek <pavel@denx.de>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>, manishc@marvell.com,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.10 5/9] net: qede: sanitize 'rc' in
+ qede_add_tc_flower_fltr()
+Message-ID: <Zk3ruzqbpMAzZr9q@sashalap>
+References: <20240507231406.395123-1-sashal@kernel.org>
+ <20240507231406.395123-5-sashal@kernel.org>
+ <ZkHMvNFzwPfMeJL3@duo.ucw.cz>
+ <ea7ae0c4-a582-42ce-9bc9-5f3df1915ca0@fiberby.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ea7ae0c4-a582-42ce-9bc9-5f3df1915ca0@fiberby.net>
 
-kthread creation may possibly fail inside race_signal_callback(). In
-such case stop the already started threads and return with error code.
+On Mon, May 13, 2024 at 09:46:02AM +0000, Asbjørn Sloth Tønnesen wrote:
+>Hi Pavel and Sasha,
+>
+>On 5/13/24 8:18 AM, Pavel Machek wrote:
+>>>Explicitly set 'rc' (return code), before jumping to the
+>>>unlock and return path.
+>>>
+>>>By not having any code depend on that 'rc' remains at
+>>>it's initial value of -EINVAL, then we can re-use 'rc' for
+>>>the return code of function calls in subsequent patches.
+>>>
+>>>Only compile tested.
+>>
+>>Only compile tested, and is a preparation for something we won't do in
+>>stable. Does not fix a bug, please drop.
+>
+>Please see the original thread about this series[1], this patch is a requirement for
+>two of the next patches, which does fix a few bugs with overruled error codes returned
+>to user space.
+>
+>I was originally going to ignore these AUTOSEL mails, since the whole series was already
+>added to the queued more than 24 hours earlier[2]. In the queue Sasha has also added "Stable-dep-of:'.
+>
+>So the weird thing is that AUTOSEL selected this patch, given that it was already in the queue.
 
-Found by Linux Verification Center (linuxtesting.org).
+Two different processes on my end, sorry for the noise!
 
-Fixes: 2989f6451084 ("dma-buf: Add selftests for dma-fence")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/dma-buf/st-dma-fence.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/dma-buf/st-dma-fence.c b/drivers/dma-buf/st-dma-fence.c
-index b7c6f7ea9e0c..ab1ec4631578 100644
---- a/drivers/dma-buf/st-dma-fence.c
-+++ b/drivers/dma-buf/st-dma-fence.c
-@@ -540,6 +540,12 @@ static int race_signal_callback(void *arg)
- 			t[i].before = pass;
- 			t[i].task = kthread_run(thread_signal_callback, &t[i],
- 						"dma-fence:%d", i);
-+			if (IS_ERR(t[i].task)) {
-+				ret = PTR_ERR(t[i].task);
-+				while (--i >= 0)
-+					kthread_stop(t[i].task);
-+				return ret;
-+			}
- 			get_task_struct(t[i].task);
- 		}
- 
 -- 
-2.39.2
-
+Thanks,
+Sasha
 
