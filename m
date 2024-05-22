@@ -1,363 +1,206 @@
-Return-Path: <stable+bounces-45571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387538CC26B
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 15:48:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E13F48CC24D
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 15:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF88C2817EC
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 13:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4213128185F
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 13:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506DE140E22;
-	Wed, 22 May 2024 13:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5902214038F;
+	Wed, 22 May 2024 13:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="YFO0M3Qh"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SL1lmUfd"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499A617FE;
-	Wed, 22 May 2024 13:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716385700; cv=none; b=dbqh6mM/t6w8DTIA3JkMVFNCJaDkPiJIVv2kUykNkxOMPyNnyp3ZhLQbAMb4m5THKPAybUW6MYg5plZVqeM0w72lqJCqcvLArIF2WA00UNtWP846aWWRMsW611eY9nJajjdC54ZtceNosbVg0RKqYwWx8qkZyzx/3KV2/2DS6aI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716385700; c=relaxed/simple;
-	bh=y81o5gxsOgSrE6Wd2PgkbHBJ5a8Qr5IcrafeV56BNuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jfo20gzFDGC4aAnhFwoFGmPjspPY4Jlq3/1H8K9tJyTiuiVwmDCMVBDF46gj64L9RwHOWup2Cgp5Aq0ARqQRy0HblH12C6r0Ul7krMX9i562mhFKXk+0jghQDEGmmrZ7RosONXb7FPEj71ZPnJT1/n2xcjSZrRjC2eZ2EygT9Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=YFO0M3Qh; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=3q1GRXfZs/+H9mg/QxAriv1diT+OzMSaPCCVfW3ILEE=;
-	b=YFO0M3QhnYxyIU3vU180IR1iG9YQDsB/wgtADoi7/rZEGgMLUwfOrq1kRJpRuN
-	EKKD8SRitOOuvH/Pl5kuqP1rIZazlDedFbejR23gJ8YWDCEQ0L1gu9svOE0OL9oM
-	JvE32M4hN0XxlMhBzRM6d68hG/5+G/ZAbErht3CMt6PAQ=
-Received: from [192.168.1.26] (unknown [183.195.6.89])
-	by gzga-smtp-mta-g2-2 (Coremail) with SMTP id _____wC3fzXB801m4O_8FQ--.29460S2;
-	Wed, 22 May 2024 21:31:47 +0800 (CST)
-Message-ID: <75809a40-d269-4326-8feb-19963526f014@163.com>
-Date: Wed, 22 May 2024 21:31:45 +0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2054.outbound.protection.outlook.com [40.107.92.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74787140361;
+	Wed, 22 May 2024 13:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716385221; cv=fail; b=PRbJly6ctpDRTfD9dysjTmW7jKXAHHUMZ3Cx5uS5DufgzHqsnq4JN67CGG1wTOilXpmy5dB3HowqUtl4G5TEYRe1qf6ACITRjR/a8Kntu+tmAHI/we+ph87n8VUiz63ZWcEKGa5YqSai6l9kzCRt6HyGp86TuXvGS2vq5SF/0sQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716385221; c=relaxed/simple;
+	bh=9Y+oc+IApwQP5lmeJd+gZbcsQDw2gieAMnrUq+zRMz8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LyZd+KHfzFvA1B+Bx0XL+g7X4wQzewdme7VlHUtTXDRft+m55A5Z+1yfBEfQbjfdsA2LdXIK5AClazoYm+a0PTJ6pEjbTwKrVcmLq/CnDftF/r6GApWT2fpws+zJPxGGY/+UkJH56f6IMlsDS0PqEDN4wGBfJw9PeLuAq0DOqdU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SL1lmUfd; arc=fail smtp.client-ip=40.107.92.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BxBeMP69Nlu3ezJlAFwjkrEZhO3Ms51QUdYLBHexS9AqZjbvlXsgYnB2dLxWnhyv9sGNoJrlCoDucBCavtALpXkBHpeBUwuxPUM40C2DeM69IiKqQkxSArlX0yRiHfmbwzbKm6K286DskX8zQX4IJYVUagmE4ue50kkfc/XqGEKSaw5q6OdNVE37ptqTOrrlnZUe9x3zhYFoz9xhYw+IZeqt9L/9lVIFWiV59xD9P3fHEQ2xZYZcEPBbwK0OvLHVpqfVOfy5Nt7frYRt0avjk+uxXqQvFA+yMv/2GSntyPFmLHtZQY25UooHb1FN+ybZ3IocvIjfrh4eyZJhYw8aQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zGSNFbdYBdzcILWum/nOuyxHt+8Y1P1czP8zu3BsBvk=;
+ b=UlTRgZyb4GZfEtwd9ZP8kM7QdmMoNMQDSu3JaOxqN5vA0JuAM5LqaHQiNx1UeQMmCrOM1Ltfi4eYn8+gb9lmLV24tKKho2Fr8sO4GFKrs0AjmmSyCdMuz6fNcY80vTlhEaAAF2aPTmlpAXECD7ShbgLhvWXk8QYD9+ny8HGeIAiokSEaLYxiU83hwxuSBNYcpWnxkHTxL7KSWgWczArjyIrs6Cw9s+JAjO2g07InWSJzb9VjbzbWykrjIa+qDmLoJpggncAzr0OiqIRBCHYhwgO9UHrNFxW9cuQpiS1PibxhHSiiubSbam6Car7BCs6/LWHXv+tnNWyBgZT7xeLwZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zGSNFbdYBdzcILWum/nOuyxHt+8Y1P1czP8zu3BsBvk=;
+ b=SL1lmUfd7X1K4X4aQR40SLbrrvMujusutGy2A+7sUXwi2JvNkAXTTWKmCvWUFDSIO27ed3JiRThMqZ8GNn0jxuikKvvzulPzzDKMp/zG9rO3/f9tZiog/ewMNjqFc4pF0G0pjU2biMzuSj9I6NSMQhoMmtZTknCCEJTDNl8ZEKg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8535.namprd12.prod.outlook.com (2603:10b6:610:160::19)
+ by CY8PR12MB8241.namprd12.prod.outlook.com (2603:10b6:930:76::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36; Wed, 22 May
+ 2024 13:40:16 +0000
+Received: from CH3PR12MB8535.namprd12.prod.outlook.com
+ ([fe80::ad89:457b:e4bd:b619]) by CH3PR12MB8535.namprd12.prod.outlook.com
+ ([fe80::ad89:457b:e4bd:b619%5]) with mapi id 15.20.7587.030; Wed, 22 May 2024
+ 13:40:16 +0000
+Message-ID: <0da7f58a-309f-4e25-b2f8-3bd80902341c@amd.com>
+Date: Wed, 22 May 2024 08:40:10 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: APEI: EINJ: Fix einj_dev release leak
+To: Dan Williams <dan.j.williams@intel.com>, rafael.j.wysocki@intel.com
+Cc: stable@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org
+References: <171633159194.398195.10059732788629089925.stgit@dwillia2-xfh.jf.intel.com>
+Content-Language: en-US
+From: Ben Cheatham <benjamin.cheatham@amd.com>
+In-Reply-To: <171633159194.398195.10059732788629089925.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN8PR03CA0015.namprd03.prod.outlook.com
+ (2603:10b6:408:94::28) To CH3PR12MB8535.namprd12.prod.outlook.com
+ (2603:10b6:610:160::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Bluetooth: qca: Fix BT enable failure again for
- QCA6390 after warm reboot
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>, luiz.von.dentz@intel.com,
- marcel@holtmann.org, linux-bluetooth@vger.kernel.org, wt@penguintechs.org,
- regressions@lists.linux.dev, pmenzel@molgen.mpg.de,
- krzysztof.kozlowski@linaro.org, stable@vger.kernel.org
-References: <1715866294-1549-1-git-send-email-quic_zijuhu@quicinc.com>
- <f343ecae-efee-4bdc-ac38-89b614e081b5@163.com>
- <CABBYNZ+nLgozYxL=znsXrg0qoz-ENgSBwcPzY-KrBnVJJut8Kw@mail.gmail.com>
- <34a8e7c3-8843-4f07-9eef-72fb1f8e9378@163.com>
- <CABBYNZLzTcnXP3bKdQB3wdBCMgCJrqu=jXQ91ws6+c1mioYt9A@mail.gmail.com>
-Content-Language: en-US
-From: Lk Sii <lk_sii@163.com>
-In-Reply-To: <CABBYNZLzTcnXP3bKdQB3wdBCMgCJrqu=jXQ91ws6+c1mioYt9A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3fzXB801m4O_8FQ--.29460S2
-X-Coremail-Antispam: 1Uf129KBjvAXoW3tw47tFWfKFW5CF4DXrW3GFg_yoW8JrWfGo
-	Wftr43Xa18tr1jka15Aa4UArW3J34DZw1rArWUXrs8Jrs2ga45Xr4UCw1rXFZxJr4Fgr48
-	Ja4jyr98ZrZ8Xa1fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUIYiiUUUUU
-X-CM-SenderInfo: 5onb2xrl6rljoofrz/1tbisgjmNWVODTlraQAAs0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8535:EE_|CY8PR12MB8241:EE_
+X-MS-Office365-Filtering-Correlation-Id: 907e42af-80a0-44e0-ce0b-08dc7a64b6fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NG5pNy90ZjFyTG1tOElVNmI2bVY4dWtHeXMxdDN6MjRKakc0NWp2T3NtN25W?=
+ =?utf-8?B?aG5aU3NpQmh5YkJ1ODR3Qm1ibFdmdktaOGRIbGp4clQ2UytqMSsxNUlKQ3pZ?=
+ =?utf-8?B?VVVDQlcyWEN5OVN4Q2RrQ2dqczRtQzl0NCttbDdXdmNEN2swT1NSV2t0NUpU?=
+ =?utf-8?B?blI5RVk2ZDZHNmdiLzhIUTJZNGxJNDJJTW9zL3diT2doaFVuK1N3VFhtcHF5?=
+ =?utf-8?B?YVRKdGh6Q0EvdWdXeTAyM1Z4RzlTM21vMVhpVUVOSjZSL0N0Y3RPMGpnT1Iw?=
+ =?utf-8?B?VFIxTU5VbVBvZVRiaFphVVpyMVRXZFNwdW9YRzRzS3hXTUFSdWtDQUZ1TU1M?=
+ =?utf-8?B?dXRvYkxmVDZwMStqWEM3K2RveXRqOGlTVkllVCtXS1BWVGRCZzJTcGdkT0xE?=
+ =?utf-8?B?YTVoVnlSS0tJL1MxTUlMTUUySllpdUJ3VjlIMlczOGJVaHlBT0Y4OFI4YUxL?=
+ =?utf-8?B?Y1lSWWZ0ejZTZGcyZ1F6ZUxnTEVKOU1kZ0pxR3RubS9HbDEyY09Xa0RSNndt?=
+ =?utf-8?B?Qk5JMTJZQko2bXNra3Z3VUdWU3FuVi9PR1BZbG1LOG4vbW1SVTN0c1daMTlx?=
+ =?utf-8?B?OGkrVFh3WWxDcUcrV29ieExuNjMrLzJ1Mm8xTEhzUzZVdUkwdVlLdjllbDJQ?=
+ =?utf-8?B?b09sdWl1RGRkdlJQRjVLckRpeDBwYTZnSDc1cm5aUUtHUFAydkhVYmp0a2lJ?=
+ =?utf-8?B?c0tGQUs2QkJORG9WVFF3Sm1Wc3psQk9HdEIwbXhwL0hITnZyOTFJZDRuZm55?=
+ =?utf-8?B?eVBFMFRlK0Y1Wmw5SWN4NGI0NVlqWjBqUWNuLzJWZ2J5Q2hQUmZOVGdGYVRL?=
+ =?utf-8?B?b3VMbmJ3Q1VtWkFxZlFPS2lGTExhMjRXNUFuMHlHQmM1L2gzOGpQa3Qzb3Vn?=
+ =?utf-8?B?RkI3RktIV1hsWFFVajVaUzVNRm83OFQ2bVdWbjJVQTh6Q2ZuN3NKaTJVazNw?=
+ =?utf-8?B?T040KzJpUWgxNGZTbEJldUo4L3ExYVVDcktneTVRS3ZWTWxJdkgwdkYxOXdF?=
+ =?utf-8?B?TkFPZEpROXJUY0lIUUkyd20vbGRpMU81RFRtOEQ4YnI0d0ZXaUVxYklBOWJ3?=
+ =?utf-8?B?MlVXanJDdXFNZUFxOEV2UzhqNC8xL1pBZndJU0NXUURKQ1ZldlJIRHRTQjRy?=
+ =?utf-8?B?RnlOd2Q3OUhTK1ZvTGowTGlpZ2FCOFJQL3VyOFUxb29vaVdsU0RMQldNbjdw?=
+ =?utf-8?B?bk91RlA2eXlZYWFzS2J5Y1B1QzY0ZGhhTzdwODdnUmVRcHQ5OHdnd2ovYTN4?=
+ =?utf-8?B?L3FiNkJId2NxYWRGNmI1TkNlTmppS3ZDRDRBRk9YMElVVnBWaTRGdHVuVFJ1?=
+ =?utf-8?B?T1FrOGVydWV6ZmFGd1NBOGNydmNJL0pPSHo3QWNUQ29obWNFY3RFeVZZRk9N?=
+ =?utf-8?B?dEdTeitRWHExRlMzcVJkQ05Rek8zUk4xUWJ5SFhKQldaa2x5ekpUaVBRS1Rx?=
+ =?utf-8?B?V0NmMWZ4djJhU0xzOGFiWC8vZjA3RWdWTGtyUUppemVYL2hNc0hzTUlHN1NP?=
+ =?utf-8?B?SWljSm9CdkdrR2RLaXBKRFliTVowTmJ3RFQvaHRBc2ZjVnROamxlaytjMy9E?=
+ =?utf-8?B?aUVVcEdMdEM0K1ZkYytublVJYUdjL0hYK2hHMEQxUFJraU9oK21OeG5HQmVP?=
+ =?utf-8?B?WGRWZHNtN1hRdVZkQVRnM3hwV3Y5VEMvSit6aUtNRzlxTUxzSTMzdHF4SU8r?=
+ =?utf-8?B?ZjFoOGo0blhMZ2Zlb0QwUUFNam9GVE9UandNQkk0OXY3SnpGSDdjYlR3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8535.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aG9MZHFudk9iMFdSd2xhQTRoTmUwOHFJNXR3disrUWxDTFA1dlZzUjZPa284?=
+ =?utf-8?B?T0xIRDJEbzZqS1BYUWtUb28xOTNITS8zdGQxcUZkckpkQXJiRFJxdDRGSWNF?=
+ =?utf-8?B?cU1OU0ludTVPK1p4aU1zNkNidDFRNGxzbnhJTnRBc2tid3g2UUxTRXQ4V2xS?=
+ =?utf-8?B?Sk5WeTMwOEp4TXBkYk9TRlNJSEhxTTZyWWozckNFYnU0M2p3ZURtQktrOUNR?=
+ =?utf-8?B?ZFJvMDNFUHV0MFczK29NbFZKL1NLRFZaRURJVlMwcGpTa1dDWml4QWU5SGMx?=
+ =?utf-8?B?dmJOOW9rSGc1bFowYmNLZ09NYWgwYmx6OCtMdC9iNktZM1NlUFNrY0lENGpT?=
+ =?utf-8?B?OGlodjlCT2pIbVhBNXRpRStqWk85NTNYL2RSVkpOTzVkUFZhL3dLSzNsVEZy?=
+ =?utf-8?B?QjN4bEJGSzdCWnZoeUI2bzZUaVlEYXRFQldmNEZTVHVMbWQrZmp6RGJKWUJN?=
+ =?utf-8?B?MDJSUjVuUVpXR1g1WWYwSk04cmtjYXlwQWthelVrYUV4U1JZVzZ0WnVZbVJ1?=
+ =?utf-8?B?d1R2QVJvSVJJQUZIRW8wTGIyWWE5SmQzREVoWHRDcEJuVGRBTFJRUkE0c1Fr?=
+ =?utf-8?B?ODZ0WkwzOG9wTlRiRjMwME04U2JnNnJZczVPVHd1TVg5dDdXd3BHWEpKTnBE?=
+ =?utf-8?B?Yk14LzF5RGZpdjJ6eDc2SU41eTZIVlBsNGhMU2ZuaHU4TWI0b3RUeFM4ckdM?=
+ =?utf-8?B?dElMY041VGZuY3l6aFVIcVNmenVmZmVRcmlqRWZFRUk4ZkpJV2J2VHR3ZnZm?=
+ =?utf-8?B?ZFJwQUo5T0VEaGptV1RLVFd0UFVBS0dqdWd1aytDMXJ3VVQxWWc1Vmt4elFD?=
+ =?utf-8?B?cmk2ZXNCYzJrTVFsS0IxTlhwelZvVXRtaTJwTEdiZGc2aG92M1NhTE4xb25w?=
+ =?utf-8?B?ZldZcG5VbWpaWEF5TzEzRTRNKytwZnVJemJEZUJ6SkdzRHZCTzhYTG05ZGNJ?=
+ =?utf-8?B?NktVck51ekZEd3JmUDFUVEhza0U5RFdNdTNONFlpMTZzNHB4a0hPU0JMN1pF?=
+ =?utf-8?B?SWlhSWZiSFozWTk5SmJiOERtQldGU3dpTzBVc2ZrODR6cVVPZmRSZE1OMVN2?=
+ =?utf-8?B?OHR2TnFHK0ZHVk52c1grdmpFd0YzeVRwNVZucFA1bGZHa1dMSW0yOWZWRUVI?=
+ =?utf-8?B?aUpOOE5QSTNXODRMQzB1L1BoQ0YxeVkwdGEwbzhpOWlCa0g4a0NKeGVLczFl?=
+ =?utf-8?B?RGtwdVd6aG1VcWNWUzJNNmtDSWZJRzdOeGkrWGtob0g3c09YZGFzOUt0R05L?=
+ =?utf-8?B?MjJJUDNyYmNoM3J0U1U1MHM4Wmh0SEs4ZTB6YjE2YXFUckpNS0FmN1RRTEZv?=
+ =?utf-8?B?VnZEZVgwQkovTzh4UjBWZ2o3Zi9TdWI5SUMwRFVvSlh1aFZnMS8rOGl3SjBK?=
+ =?utf-8?B?SUNXbkxaSEozYzlBZDFqQ0pILzdNMm9hVnZRTDlOdmxnK28rYWw4am1CZUlt?=
+ =?utf-8?B?WHo0UllCbTAxR1VYS09ZZ0V1V1FmU2UrclFBNXBjR0ZWdFFWQTJEekN2WGIx?=
+ =?utf-8?B?dEg4Sjd4MmRwWmk4cHMwUE9QY21reVhsUDh6aVBCK2xSbXo5L3p3bkJycU1r?=
+ =?utf-8?B?UVJmcXJoY09xZlFEWmQxVFc0NWtGMlBpUUNsZjdPNEJhWDFlNmoyNWtGb3Uv?=
+ =?utf-8?B?RlNWaTB4cCt2ZE1WbmROZWRnQWVDUG9WeWI0a2Jib3luQ3NKSTEvUnc0aU9R?=
+ =?utf-8?B?bEhVaFF1a2Y3RE14QjZDWkovR0owazJNbnhXRGFUQ2FDaXpIWDMzM3lpOEMr?=
+ =?utf-8?B?Z1BRbWRCQU1PVmp2NWhUaEhxdVgwb0xUSEdlekloQ0daYjlsQ2ZJUEpHdmgr?=
+ =?utf-8?B?M0dJeEZGM1dFdGpuUE9KcmExbGQ1RDdSWTNuNk5QNzh2OVdHL2dVUFR4bm5a?=
+ =?utf-8?B?Y0dRaVh5UCt3dEVic2t6bFhBU2xNTXBLV2t2bjJHdkFzL0NFcm1xa2E3MzEv?=
+ =?utf-8?B?eUNVVVVXbG9lY3BkcHpSS2g4Q1FabzZBSUpYQUdQazNVNGdIbU03aU5yUWdr?=
+ =?utf-8?B?bDJQeWFaaHhBK1RQVVhUR0dRdnNVbFB5NjBsY2xaOEowc3R5M1Q1QUhsdU5j?=
+ =?utf-8?B?Z3JVcURnQzBzTzd0Zk80SDhpaXlDLzlvTXRvZTBtRThwZTRTV3ErUG9UMFlq?=
+ =?utf-8?Q?6SV5g3b/LPR0zF5cYIIJxCwwe?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 907e42af-80a0-44e0-ce0b-08dc7a64b6fb
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8535.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2024 13:40:16.6717
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6F1uauFsKaPkm2G6v5OlRIxWhJ8WiiRJVQn4Aj3PmKsgrRe9mejOwmJ548YqUayuOGu1EBUTwVZgfemTGLtFFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8241
 
-
-
-On 2024/5/21 23:48, Luiz Augusto von Dentz wrote:
-> Hi,
-> 
-> On Tue, May 21, 2024 at 10:52 AM Lk Sii <lk_sii@163.com> wrote:
->>
->>
->>
->> On 2024/5/16 23:55, Luiz Augusto von Dentz wrote:
->>> Hi,
->>>
->>> On Thu, May 16, 2024 at 10:57 AM Lk Sii <lk_sii@163.com> wrote:
->>>>
->>>>
->>>>
->>>> On 2024/5/16 21:31, Zijun Hu wrote:
->>>>> Commit 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed
->>>>> serdev") will cause below regression issue:
->>>>>
->>>>> BT can't be enabled after below steps:
->>>>> cold boot -> enable BT -> disable BT -> warm reboot -> BT enable failure
->>>>> if property enable-gpios is not configured within DT|ACPI for QCA6390.
->>>>>
->>>>> The commit is to fix a use-after-free issue within qca_serdev_shutdown()
->>>>> by adding condition to avoid the serdev is flushed or wrote after closed
->>>>> but also introduces this regression issue regarding above steps since the
->>>>> VSC is not sent to reset controller during warm reboot.
->>>>>
->>>>> Fixed by sending the VSC to reset controller within qca_serdev_shutdown()
->>>>> once BT was ever enabled, and the use-after-free issue is also fixed by
->>>>> this change since the serdev is still opened before it is flushed or wrote.
->>>>>
->>>>> Verified by the reported machine Dell XPS 13 9310 laptop over below two
->>>>> kernel commits:
->>>>> commit e00fc2700a3f ("Bluetooth: btusb: Fix triggering coredump
->>>>> implementation for QCA") of bluetooth-next tree.
->>>>> commit b23d98d46d28 ("Bluetooth: btusb: Fix triggering coredump
->>>>> implementation for QCA") of linus mainline tree.
->>>>>
->>>>> Fixes: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev")
->>>>> Cc: stable@vger.kernel.org
->>>>> Reported-by: Wren Turkal <wt@penguintechs.org>
->>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218726
->>>>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->>>>> Tested-by: Wren Turkal <wt@penguintechs.org>
->>>>> ---
->>>>> V1 -> V2: Add comments and more commit messages
->>>>>
->>>>> V1 discussion link:
->>>>> https://lore.kernel.org/linux-bluetooth/d553edef-c1a4-4d52-a892-715549d31ebe@163.com/T/#t
->>>>>
->>>>>  drivers/bluetooth/hci_qca.c | 18 +++++++++++++++---
->>>>>  1 file changed, 15 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
->>>>> index 0c9c9ee56592..9a0bc86f9aac 100644
->>>>> --- a/drivers/bluetooth/hci_qca.c
->>>>> +++ b/drivers/bluetooth/hci_qca.c
->>>>> @@ -2450,15 +2450,27 @@ static void qca_serdev_shutdown(struct device *dev)
->>>>>       struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
->>>>>       struct hci_uart *hu = &qcadev->serdev_hu;
->>>>>       struct hci_dev *hdev = hu->hdev;
->>>>> -     struct qca_data *qca = hu->priv;
->>>>>       const u8 ibs_wake_cmd[] = { 0xFD };
->>>>>       const u8 edl_reset_soc_cmd[] = { 0x01, 0x00, 0xFC, 0x01, 0x05 };
->>>>>
->>>>>       if (qcadev->btsoc_type == QCA_QCA6390) {
->>>>> -             if (test_bit(QCA_BT_OFF, &qca->flags) ||
->>>>> -                 !test_bit(HCI_RUNNING, &hdev->flags))
->>>>> +             /* The purpose of sending the VSC is to reset SOC into a initial
->>>>> +              * state and the state will ensure next hdev->setup() success.
->>>>> +              * if HCI_QUIRK_NON_PERSISTENT_SETUP is set, it means that
->>>>> +              * hdev->setup() can do its job regardless of SoC state, so
->>>>> +              * don't need to send the VSC.
->>>>> +              * if HCI_SETUP is set, it means that hdev->setup() was never
->>>>> +              * invoked and the SOC is already in the initial state, so
->>>>> +              * don't also need to send the VSC.
->>>>> +              */
->>>>> +             if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks) ||
->>>>> +                 hci_dev_test_flag(hdev, HCI_SETUP))
->>>>>                       return;
->> The main purpose of above checking is NOT to make sure the serdev within
->> open state as its comments explained.
->>>>>
->>>>> +             /* The serdev must be in open state when conrol logic arrives
->>>>> +              * here, so also fix the use-after-free issue caused by that
->>>>> +              * the serdev is flushed or wrote after it is closed.
->>>>> +              */
->>>>>               serdev_device_write_flush(serdev);
->>>>>               ret = serdev_device_write_buf(serdev, ibs_wake_cmd,
->>>>>                                             sizeof(ibs_wake_cmd));
->>>> i believe Zijun's change is able to fix both below issues and don't
->>>> introduce new issue.
->>>>
->>>> regression issue A:  BT enable failure after warm reboot.
->>>> issue B:  use-after-free issue, namely, kernel crash.
->>>>
->>>>
->>>> For issue B, i have more findings related to below commits ordered by time.
->>>>
->>>> Commit A: 7e7bbddd029b ("Bluetooth: hci_qca: Fix qca6390 enable failure
->>>> after warm reboot")
->>>>
->>>> Commit B: de8892df72be ("Bluetooth: hci_serdev: Close UART port if
->>>> NON_PERSISTENT_SETUP is set")
->>>> this commit introduces issue B, it is also not suitable to associate
->>>> protocol state with state of lower level transport type such as serdev
->>>> or uart, in my opinion, protocol state should be independent with
->>>> transport type state, flag HCI_UART_PROTO_READY is for protocol state,
->>>> it means if protocol hu->proto is initialized and if we can invoke its
->>>> interfaces.it is common for various kinds of transport types. perhaps,
->>>> this is the reason why Zijun's change doesn't use flag HCI_UART_PROTO_READY.
->>>
->>> Don't really follow you here, if HCI_UART_PROTO_READY indicates the
->>> protocol state they is even _more_ important to use before invoking
->>> serdev APIs, so checking for the quirk sound like a problem because:
->>>
->>> [1] hci_uart_close
->>>      /* When QUIRK HCI_QUIRK_NON_PERSISTENT_SETUP is set by driver,
->>>      * BT SOC is completely powered OFF during BT OFF, holding port
->>>      * open may drain the battery.
->>>      */
->>>     if (test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
->>>         clear_bit(HCI_UART_PROTO_READY, &hu->flags);
->>>         serdev_device_close(hu->serdev);
->>>     }
->>>
->>> [2] hci_uart_unregister_device
->>>     if (test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
->>>         clear_bit(HCI_UART_PROTO_READY, &hu->flags);
->>>         serdev_device_close(hu->serdev);
->>>     }
->>> both case 1 and case 2 were introduced by Commit B in question which
->> uses protocol state flag HCI_UART_PROTO_READY to track lower level
->> transport type state, i don't think it is perfect.
->>
->> for common files hci_serdev.c and hci_ldisc.c, as you saw, the purpose
->> of checking HCI_UART_PROTO_READY is to call protocol relevant
->> interfaces, moreover, these protocol relevant interfaces do not deal
->> with lower transport state. you maybe even notice below present function
->> within which lower level serdev is flushed before HCI_UART_PROTO_READY
->> is checked:
->>
->> static int hci_uart_flush(struct hci_dev *hdev)
->> {
->> ......
->>         /* Flush any pending characters in the driver and discipline. */
->>         serdev_device_write_flush(hu->serdev);
->>
->>         if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
->>                 hu->proto->flush(hu);
->>
->>         return 0;
->> }
->>
->> in my opinion, that is why qca_serdev_shutdown() does not check
->> HCI_UART_PROTO_READY for later lower level serdev operations.
->>> So only in case 1 checking the quirk is equivalent to
->>> HCI_UART_PROTO_READY on case 2 it does actually check the quirk and
->>> will proceed to call serdev_device_close, now perhaps the code is
->>> assuming that shutdown won't be called after that, but it looks it
->>> does since:
->>>
->> qca_serdev_shutdown() will never be called after case 2 as explained
->> in the end.
->>> static void serdev_drv_remove(struct device *dev)
->>> {
->>>     const struct serdev_device_driver *sdrv =
->>> to_serdev_device_driver(dev->driver);
->>>     if (sdrv->remove)
->>>         sdrv->remove(to_serdev_device(dev));
->>>
->>>     dev_pm_domain_detach(dev, true);
->>> }
->>>
->>> dev_pm_domain_detach says it will power off so I assume that means
->>> that shutdown will be called _after_ remove, so not I'm not really
->>> convinced that we can avoid using HCI_UART_PROTO_READY, in fact the
->>> following sequence might always be triggering:
->>>
->> dev_pm_domain_detach() should be irrelevant with qca_serdev_shutdown(),
->> should not trigger call of qca_serdev_shutdown() as explained in the end
->>> serdev_drv_remove -> qca_serdev_remove -> hci_uart_unregister_device
->>> -> serdev_device_close -> qca_close -> kfree(qca)
->>> dev_pm_domain_detach -> ??? -> qca_serdev_shutdown
->>>
->>> If this sequence is correct then qca_serdev_shutdown accessing
->>> qca_data will always result in a UAF problem.
->>>
->> above sequence should not correct as explained below.
->>
->> serdev and its driver should also follow below generic device and driver
->> design.
->>
->> 1)
->> driver->shutdown() will be called during shut-down time at this time
->> driver->remove() should not have been called.
->>
->> 2)
->> driver->shutdown() is impossible to be called once driver->remove()
->> was called.
->>
->> 3) for serdev, driver->remove() does not trigger call of
->> driver->shutdown() since PM relevant poweroff is irrelevant with
->> driver->shutdown() and i also don't find any PM relevant interfaces will
->> call driver->shutdown().
->>
->> i would like to explain issue B based on comments Zijun posted by public
->> as below:
->>
->> issue B actually happens during reboot and let me look at these steps
->> boot -> enable BT -> disable BT -> reboot.
->>
->> 1) step boot will call driver->probe() to register hdev and the serdev
->> is opened after boot.
->>
->> 2) step enable will call hdev->open() and the serdev will still in open
->> state
->>
->> 3) step disable will call hdev->close() and the serdev will be closed
->> after hdev->close() for machine with config which results in
->> HCI_QUIRK_NON_PERSISTENT_SETUP is set.
->>
->> 4) step reboot will call qca_serdev_shutdown() which will flush and
->> write the serdev which are closed by above step disable, so cause the
->> UAF issue, namely, kernel crash issue.
->>
->> so this issue is caused by commit B which close the serdev during
->> hdev->close().
->>
->> driver->remove() even is not triggered during above steps.
->>>> Commit C: 272970be3dab ("Bluetooth: hci_qca: Fix driver shutdown on
->>>> closed serdev")
->>>> this commit is to fix issue B which is actually caused by Commit B, but
->>>> it has Fixes tag for Commit A. and it also introduces the regression
->>>> issue A.
->>>>
->>>
->>>
-> 
-> Reading again the commit message for the UAF fix it sounds like a
-> different problem:
-> 
-no, the UAF issue commit C fixes should be the same issue descripted by
-me previously as explained below:
-
-the UAF issue happened with machine "qualcomm Technologies, Inc.
-Robotics RB5 (DT)", the machine uses qca6390 and have property
-enable-gpios configured, which will results in that quirk
-HCI_QUIRK_NON_PERSISTENT_SETUP is set, so must meet the UAF issue
-for normal operation sequences "boot -> enable BT -> disable BT -> reboot".
-
-Actually, only machines which uses QCA6390 and have property
-enable-gpios configured will meet the UAF issue as commented by Zijun
-with below link
-https://lore.kernel.org/linux-bluetooth/9ac11453-b7cf-43f3-8e46-f96e41ef190d@quicinc.com/
-
->     The driver shutdown callback (which sends EDL_SOC_RESET to the device
->     over serdev) should not be invoked when HCI device is not open (e.g. if
->     hci_dev_open_sync() failed), because the serdev and its TTY are not open
->     either.  Also skip this step if device is powered off
->     (qca_power_shutdown()).
-> 
-> So if hci_dev_open_sync has failed it says serdev and its TTY will not
-> be open either, so I guess that's why HCI_SETUP was added as a
-> condition to bail out? So it seems correct to do that although I'd
-> change the comments.
-> 
-i believe hci_dev_open_sync failure should not really happens with the
-machine Robotics RB5, the purpose that it is mentioned with commit
-message is to illustrate that the serdev in closed state is operated and
-causes the UAF issue.
-
-let us assume that hci_dev_open_sync failure -> serdev is not opened ->
-UAF issue happens within qca_serdev_shutdown(), then BT will not be
-working at all and the commit C is actually a workaroud instead of a fix
-since the right approach is to solve the hci_dev_open_sync failure which
-happens firstly.
-
-
-Frankly, only checking quirk HCI_QUIRK_NON_PERSISTENT_SETUP is enough to
-fix the UAF issue caused by either "normal operation sequences" or
-"hci_dev_open_sync failure".
-> @Krzysztof Kozlowski do you still have a test setup for 272970be3dab
-> ("Bluetooth: hci_qca: Fix driver shutdown on closed serdev"), can you
-> try with these changes?
+On 5/21/24 5:46 PM, Dan Williams wrote:
+> The platform driver conversion of EINJ mistakenly used
+> platform_device_del() to unwind platform_device_register_full() at
+> module exit. This leads to a small leak of one 'struct platform_device'
+> instance per module load/unload cycle. Switch to
+> platform_device_unregister() which performs both device_del() and final
+> put_device().
 > 
 
+Reviewed-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+
+Thanks,
+Ben
+
+> Fixes: 5621fafaac00 ("EINJ: Migrate to a platform driver")
+> Cc: <stable@vger.kernel.org>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Ben Cheatham <Benjamin.Cheatham@amd.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  drivers/acpi/apei/einj-core.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+> index 01faca3a238a..bb9f8475ce59 100644
+> --- a/drivers/acpi/apei/einj-core.c
+> +++ b/drivers/acpi/apei/einj-core.c
+> @@ -903,7 +903,7 @@ static void __exit einj_exit(void)
+>  	if (einj_initialized)
+>  		platform_driver_unregister(&einj_driver);
+>  
+> -	platform_device_del(einj_dev);
+> +	platform_device_unregister(einj_dev);
+>  }
+>  
+>  module_init(einj_init);
+> 
 
