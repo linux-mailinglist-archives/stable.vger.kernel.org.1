@@ -1,158 +1,250 @@
-Return-Path: <stable+bounces-45566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3705D8CC025
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 13:22:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8BD8CC0E1
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 14:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722001C21CF9
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 11:22:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66B76281C4A
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 12:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA7482899;
-	Wed, 22 May 2024 11:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E5F13D537;
+	Wed, 22 May 2024 12:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F9Ki0jpn"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877968289A;
-	Wed, 22 May 2024 11:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3128712F392
+	for <stable@vger.kernel.org>; Wed, 22 May 2024 12:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716376962; cv=none; b=BowvoyVYBTD7O3T5Vkcbi14LvQVQ9uRkX+yF4VCR/prWT5MeSj56L1AyhkAG9vfA01mC2/TmllHnXxPR6anEK84oBpNrF5D6z7UvYWTI1CPq5/Om52nNi5/wax89vG/qceo1SFEDbSb+W9OaDipeKyIUCWQhukfr3G2RNukcshU=
+	t=1716379731; cv=none; b=ch6JOiwyasrwTfhODAunolFCAqecnjVXatV1WwX0QHHmVDhiXD96N3tib4At3tSwlwJXFMtoFc1sHEnxn8tWHwjCjOVDmL0/0mW3pOk6Qb8GsBu9CYTLLMPboejsSiPEmmziBBsLChIf/ZXH2hPi5AMLbw3aNaD7+vu9KjG+21A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716376962; c=relaxed/simple;
-	bh=F+eLMP7vomG4vgGnf2QTGMnK4y1oDm374YCutBXL7wU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mZStDywAVhFGYMF4ff7lXLFDjIOhRQEaYw9S3dUVJplgBPYajMu/K05U4HaCUDdrqPaf/MJ/enrA2wj44FJsPK7EwCUMvYmdfMCaBGHQqo7WJtfSFCzOyDKWHbPYDiLkt8ga7EC5V7RfDk1a1KClnFfBLOKOuTp7QRoK8213ths=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E86A61BF207;
-	Wed, 22 May 2024 11:22:32 +0000 (UTC)
-Message-ID: <fd2100a8-a17c-460c-a8e8-b5cede3d51c1@ghiti.fr>
-Date: Wed, 22 May 2024 13:22:31 +0200
+	s=arc-20240116; t=1716379731; c=relaxed/simple;
+	bh=lCQVcNdlujNqsrb4RnySvZeW3rfwvKxSXFjC+djQKik=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kTk2gtdAsUAqZmfZPYGYSaDlGT92E0N6fS5dGIaq+ypc7vHW8OEAIuwyxxFWwMXUyw7fGNBmLVCo5Tdxf5NIXTDFVvk+UG7YFMhlNwvk0tdvA5p7Cytq65rbznTPxuEtu3s6OQyQBqtgZSzM277fwwSdiZA8P8UJI97R9sC+VCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F9Ki0jpn; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716379729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=m8ofHR/zkZq2uTNi/EY8s+4Ty4W1/mxnDHsktYBgmZQ=;
+	b=F9Ki0jpnSLALK7Pqq+gdwlkpD+vQrdrHE3YybkidqNy8ILSvhIwDBXJnJ9vWcczibROZrD
+	5LIfYgWcNiBEmWVlQQ87H42HRqw9cQDj3Re9NUVblubw3/moHH4o0TrGBotjJgBEog2ZQb
+	RR2CywohiP3mVj38ghWPoP4G60hfxco=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-c7mzlq4yP0m96rDoJHDNwA-1; Wed, 22 May 2024 08:08:47 -0400
+X-MC-Unique: c7mzlq4yP0m96rDoJHDNwA-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2e289eec4bfso282301fa.0
+        for <stable@vger.kernel.org>; Wed, 22 May 2024 05:08:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716379724; x=1716984524;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=m8ofHR/zkZq2uTNi/EY8s+4Ty4W1/mxnDHsktYBgmZQ=;
+        b=R2Qsn4iPLgcPix7/q6XQtw8m5eFzDZmFQbb49LhygN2LKBuzzjPiooZjzjgPuLQKZv
+         kP4+U1Com3/DPpytu575fXifZHw1Ui4b2qRyOIVQSvDsk6AmffIIKsSzaE6aeAGQenM0
+         zrTjV8ClJUzmW8ZWt2m2IjcJjngdVpWCpSSLtSLwlc1342rFm0mn6DTTPzheUeaB2VJ7
+         Ji261j2BU9Bvk0D7xMDqp73ZyIGqIu0rpxS5zc8aNej2EtvZQHfz0OXu3AZAa/lcgrGu
+         ptDqw9JzmqnKpVlsDkFNfJDyq7iwpFQVBsDbcKPTxOgp9rwaHeUUFMuc3p+SsEAn5sb8
+         oa/g==
+X-Forwarded-Encrypted: i=1; AJvYcCXG1wUhqluehU3PsEEP13GcDQLdWD9z2iPmX290LMMOStffs2lQKoEVHZmJYnR9iN/6YRKMWdEx6TDhqzVTYQxI6GriGosg
+X-Gm-Message-State: AOJu0YzP3rNU4sfsVkMMlArXGhnpQHOCbiKLVZZB3Xm4Evc5JvB3HWdS
+	bOQRExPNy0XHlh55R8esBdRPpi+kKMVEtJwEzFLWiaAp/qxLy01IugtRMrBQN5XI0spBwLcl7mW
+	LiXlK5OtrEqd2fXl8HIPiuHOxxZ6+suCvJav+ynvd/gEA4x8VWZGeyg==
+X-Received: by 2002:ac2:5e26:0:b0:523:68bf:9d55 with SMTP id 2adb3069b0e04-526bf07ee3dmr1034388e87.2.1716379723930;
+        Wed, 22 May 2024 05:08:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGbShGZTyDoasgCPxoWeag611DATTlc3plDJxcUwiepdiBTodpC/4FdFDfus0WiMjljRzXKw==
+X-Received: by 2002:ac2:5e26:0:b0:523:68bf:9d55 with SMTP id 2adb3069b0e04-526bf07ee3dmr1034368e87.2.1716379723394;
+        Wed, 22 May 2024 05:08:43 -0700 (PDT)
+Received: from gerbillo.redhat.com ([2a0d:3341:b094:ab10::f71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502b8a777dsm33952098f8f.50.2024.05.22.05.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 May 2024 05:08:42 -0700 (PDT)
+Message-ID: <13b77d180c2bad74d6749a6c34190a10134bd6fa.camel@redhat.com>
+Subject: Re: [PATCH net] sock_map: avoid race between sock_map_close and
+ sk_psock_put
+From: Paolo Abeni <pabeni@redhat.com>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+	netdev@vger.kernel.org
+Cc: Cong Wang <cong.wang@bytedance.com>, Jakub Sitnicki
+ <jakub@cloudflare.com>,  Eric Dumazet <edumazet@google.com>, Daniel
+ Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, bpf@vger.kernel.org, 
+ kernel-dev@igalia.com,
+ syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com, 
+ stable@vger.kernel.org
+Date: Wed, 22 May 2024 14:08:41 +0200
+In-Reply-To: <20240520214153.847619-1-cascardo@igalia.com>
+References: <20240520214153.847619-1-cascardo@igalia.com>
+Autocrypt: addr=pabeni@redhat.com; prefer-encrypt=mutual; keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] riscv: rewrite __kernel_map_pages() to fix sleeping
- in invalid context
-Content-Language: en-US
-To: Nam Cao <namcao@linutronix.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alexghiti@rivosinc.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <cover.1715750938.git.namcao@linutronix.de>
- <1289ecba9606a19917bc12b6c27da8aa23e1e5ae.1715750938.git.namcao@linutronix.de>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <1289ecba9606a19917bc12b6c27da8aa23e1e5ae.1715750938.git.namcao@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
 
-On 15/05/2024 07:50, Nam Cao wrote:
-> __kernel_map_pages() is a debug function which clears the valid bit in page
-> table entry for deallocated pages to detect illegal memory accesses to
-> freed pages.
->
-> This function set/clear the valid bit using __set_memory(). __set_memory()
-> acquires init_mm's semaphore, and this operation may sleep. This is
-> problematic, because  __kernel_map_pages() can be called in atomic context,
-> and thus is illegal to sleep. An example warning that this causes:
->
-> BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1578
-> in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2, name: kthreadd
-> preempt_count: 2, expected: 0
-> CPU: 0 PID: 2 Comm: kthreadd Not tainted 6.9.0-g1d4c6d784ef6 #37
-> Hardware name: riscv-virtio,qemu (DT)
+On Mon, 2024-05-20 at 18:41 -0300, Thadeu Lima de Souza Cascardo wrote:
+> sk_psock_get will return NULL if the refcount of psock has gone to 0, whi=
+ch
+> will happen when the last call of sk_psock_put is done. However,
+> sk_psock_drop may not have finished yet, so the close callback will still
+> point to sock_map_close despite psock being NULL.
+>=20
+> This can be reproduced with a thread deleting an element from the sock ma=
+p,
+> while the second one creates a socket, adds it to the map and closes it.
+>=20
+> That will trigger the WARN_ON_ONCE:
+>=20
+> ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x2a=
+2/0x2d0 net/core/sock_map.c:1701
+> Modules linked in:
+> CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-07726-=
+g3c999d1ae3c7 #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
+oogle 04/02/2024
+> RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
+> Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 0=
+8 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 83=
+ c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
+> RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
+> RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
+> RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
+> RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
+> R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
+> R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
+> FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
 > Call Trace:
-> [<ffffffff800060dc>] dump_backtrace+0x1c/0x24
-> [<ffffffff8091ef6e>] show_stack+0x2c/0x38
-> [<ffffffff8092baf8>] dump_stack_lvl+0x5a/0x72
-> [<ffffffff8092bb24>] dump_stack+0x14/0x1c
-> [<ffffffff8003b7ac>] __might_resched+0x104/0x10e
-> [<ffffffff8003b7f4>] __might_sleep+0x3e/0x62
-> [<ffffffff8093276a>] down_write+0x20/0x72
-> [<ffffffff8000cf00>] __set_memory+0x82/0x2fa
-> [<ffffffff8000d324>] __kernel_map_pages+0x5a/0xd4
-> [<ffffffff80196cca>] __alloc_pages_bulk+0x3b2/0x43a
-> [<ffffffff8018ee82>] __vmalloc_node_range+0x196/0x6ba
-> [<ffffffff80011904>] copy_process+0x72c/0x17ec
-> [<ffffffff80012ab4>] kernel_clone+0x60/0x2fe
-> [<ffffffff80012f62>] kernel_thread+0x82/0xa0
-> [<ffffffff8003552c>] kthreadd+0x14a/0x1be
-> [<ffffffff809357de>] ret_from_fork+0xe/0x1c
->
-> Rewrite this function with apply_to_existing_page_range(). It is fine to
-> not have any locking, because __kernel_map_pages() works with pages being
-> allocated/deallocated and those pages are not changed by anyone else in the
-> meantime.
->
-> Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
+>  <TASK>
+>  unix_release+0x87/0xc0 net/unix/af_unix.c:1048
+>  __sock_release net/socket.c:659 [inline]
+>  sock_close+0xbe/0x240 net/socket.c:1421
+>  __fput+0x42b/0x8a0 fs/file_table.c:422
+>  __do_sys_close fs/open.c:1556 [inline]
+>  __se_sys_close fs/open.c:1541 [inline]
+>  __x64_sys_close+0x7f/0x110 fs/open.c:1541
+>  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>  do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fb37d618070
+> Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8 1=
+0 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff=
+ ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
+> RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+> RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
+> RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
+> RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
+> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+> R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+>  </TASK>
+>=20
+> Use sk_psock, which will only check that the pointer is not been set to
+> NULL yet, which should only happen after the callbacks are restored. If,
+> then, a reference can still be gotten, we may call sk_psock_stop and canc=
+el
+> psock->work.
+>=20
+> After that change, the reproducer does not trigger the WARN_ON_ONCE
+> anymore.
+>=20
+> Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D07a2e4a1a57118ef7355
+> Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_ma=
+p_close()")
+> Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,unh=
+ash} call itself")
 > Cc: stable@vger.kernel.org
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 > ---
->   arch/riscv/mm/pageattr.c | 28 ++++++++++++++++++++++------
->   1 file changed, 22 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-> index 410056a50aa9..271d01a5ba4d 100644
-> --- a/arch/riscv/mm/pageattr.c
-> +++ b/arch/riscv/mm/pageattr.c
-> @@ -387,17 +387,33 @@ int set_direct_map_default_noflush(struct page *page)
->   }
->   
->   #ifdef CONFIG_DEBUG_PAGEALLOC
-> +static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *data)
-> +{
-> +	int enable = *(int *)data;
-> +
-> +	unsigned long val = pte_val(ptep_get(pte));
-> +
-> +	if (enable)
-> +		val |= _PAGE_PRESENT;
-> +	else
-> +		val &= ~_PAGE_PRESENT;
-> +
-> +	set_pte(pte, __pte(val));
-> +
-> +	return 0;
-> +}
-> +
->   void __kernel_map_pages(struct page *page, int numpages, int enable)
->   {
->   	if (!debug_pagealloc_enabled())
->   		return;
->   
-> -	if (enable)
-> -		__set_memory((unsigned long)page_address(page), numpages,
-> -			     __pgprot(_PAGE_PRESENT), __pgprot(0));
-> -	else
-> -		__set_memory((unsigned long)page_address(page), numpages,
-> -			     __pgprot(0), __pgprot(_PAGE_PRESENT));
-> +	unsigned long start = (unsigned long)page_address(page);
-> +	unsigned long size = PAGE_SIZE * numpages;
-> +
-> +	apply_to_existing_page_range(&init_mm, start, size, debug_pagealloc_set_page, &enable);
-> +
-> +	flush_tlb_kernel_range(start, start + size);
->   }
->   #endif
->   
+>  net/core/sock_map.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+> index 9402889840bf..13267e667a4c 100644
+> --- a/net/core/sock_map.c
+> +++ b/net/core/sock_map.c
+> @@ -1680,19 +1680,23 @@ void sock_map_close(struct sock *sk, long timeout=
+)
+> =20
+>  	lock_sock(sk);
+>  	rcu_read_lock();
+> -	psock =3D sk_psock_get(sk);
+> +	psock =3D sk_psock(sk);
+>  	if (unlikely(!psock)) {
+> +		saved_close =3D READ_ONCE(sk->sk_prot)->close;
+>  		rcu_read_unlock();
+>  		release_sock(sk);
+> -		saved_close =3D READ_ONCE(sk->sk_prot)->close;
+>  	} else {
+>  		saved_close =3D psock->saved_close;
+>  		sock_map_remove_links(sk, psock);
+> +		psock =3D sk_psock_get(sk);
+>  		rcu_read_unlock();
+> -		sk_psock_stop(psock);
+> +		if (psock)
+> +			sk_psock_stop(psock);
+>  		release_sock(sk);
+> -		cancel_delayed_work_sync(&psock->work);
+> -		sk_psock_put(sk, psock);
+> +		if (psock) {
+> +			cancel_delayed_work_sync(&psock->work);
+> +			sk_psock_put(sk, psock);
+> +		}
+>  	}
+> =20
+>  	/* Make sure we do not recurse. This is a bug.
 
+As a personal opinion I think the code will become simple reordering
+the condition, something alike:
 
-And you can add:
+	if (psock) {
+		saved_close =3D psock->saved_close;
+ 		sock_map_remove_links(sk, psock);
+		psock =3D sk_psock_get(sk);
+		if (!psock)
+			goto no_psock;
+ 		rcu_read_unlock();
+		sk_psock_stop(psock);
+ 		release_sock(sk);
+		cancel_delayed_work_sync(&psock->work);
+		sk_psock_put(sk, psock);
+	} else {
+no_psock:
+		saved_close =3D READ_ONCE(sk->sk_prot)->close;
+ 		rcu_read_unlock();
+ 		release_sock(sk);
+	}
 
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Overall looks safe to me, but I would appreciate an explicit ack from
+Jakub S. or John.
 
-Thanks!
+Cheers,
 
-Alex
+Paolo
 
 
