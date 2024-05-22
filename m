@@ -1,99 +1,119 @@
-Return-Path: <stable+bounces-45564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D108CBDA8
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 11:20:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B188CC013
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 13:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36C4FB21C3C
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 09:20:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6871FB2214A
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 11:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3462F811FF;
-	Wed, 22 May 2024 09:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zcgnz/v3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDED823DC;
+	Wed, 22 May 2024 11:17:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D394D2D047;
-	Wed, 22 May 2024 09:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6097BB17;
+	Wed, 22 May 2024 11:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716369630; cv=none; b=bWbTqgePgWjPU2+Q+WfbvK+5pfx0PzicVgbp0Oal7KQY18C5OZYOiU4EtiXWZL8oa8q3snVboWfXYzykdLXLJxqea5NN3HClVNN7PI4XYjcGOUe13Z/PlfWq4mE1La/eh0g9q1xjg6tl34t+ACuwuByfOGYCJfxZjRmO8G9edhM=
+	t=1716376633; cv=none; b=elSUWCm/ZTD0vZJOi5ztw3VTfMh3ZQI6AwLrpCfRvLPemKRx4Pz5eU2b8N9TBMJK90o2NBEjrMQslMq6UjckP8l8mnPW6IHpJP6uQX6SxrcCM8HOSSFHJyanCCVHz382DZ4QHYT60lfxwDId1qaWUfpfAdIRu+XGSWg4lfBDiHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716369630; c=relaxed/simple;
-	bh=xZs+ye5qwNKov0tLlq5iXfmZRCL5RvXS0tDyXCyIVYM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cfCTcE5+9u4PL5D40b/j+rR7f72PVd6hap/ddTMOYecjIFj7PwVMkqSoESlu27Jl9Y1OUfjXipyAqhQnVss7aHzfeNcJ/eaK5trC5Dc6GDysQUlFv4y7eBHMbwZ7T7KFK11qKQFrSWxRjRRM52lcgYTRwGmFEbC4F1DES1Kschg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zcgnz/v3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D76BC32781;
-	Wed, 22 May 2024 09:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716369629;
-	bh=xZs+ye5qwNKov0tLlq5iXfmZRCL5RvXS0tDyXCyIVYM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Zcgnz/v3xLpANv3pLHA5JZSj6Eml9zBnDwCrG33JwY/tXdM/srH4fSUHG00m+4X2/
-	 nAmBkCaFldyF1DyeMCQbMQLGxvqRrljwPSUYfozmADSwLbmQKEde/JNY2yNjUVVUax
-	 T2zddxxoaTWKVQFK2M8Sq1LSMQw80ZOK5zv/O0rgNnaHTQ4i0WPRPmeTV9EpeQhf3S
-	 d6xrQMdkc5LCflI4Trt6hiI30OvFcbz9MPlFh8PPxZlLcW8JuLokNWqZbvYQeSbLrs
-	 R+MQh4qtkunJaEEAnb+eCkPiS4Y1BA0NvBrelwySPp3kBd7WNHNmDugHiquTbNF52Q
-	 IcElKkdn8QWdg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3C09CC4361B;
-	Wed, 22 May 2024 09:20:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1716376633; c=relaxed/simple;
+	bh=CPEqhqyGm2UZF8UZo0VoyFgQT3dnqGYzpOjGsl/H4IE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hz34u17DKb3a7SFS1xXzII4J3LINXUNjuh4bem41a7LeE4igEtUXcF4vTEV1aHjoT7c5NnR23ZVd7it9cGUMVG/aZEWd/sZkjNKFhTFONxGXoM4zwfT2Aa0EfrwyxOaPkk8DGpV3972nuEKl0t8c1v0j1RbYZ+PeZ1tYyiLEOCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F3A84240008;
+	Wed, 22 May 2024 11:16:57 +0000 (UTC)
+Message-ID: <35bf5362-ae70-4fbe-acff-691bfe4a9e34@ghiti.fr>
+Date: Wed, 22 May 2024 13:16:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH V2 net] net: mana: Fix the extra HZ in mana_hwc_send_request
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171636962924.3713.1861130025429857473.git-patchwork-notify@kernel.org>
-Date: Wed, 22 May 2024 09:20:29 +0000
-References: <1716185104-31658-1-git-send-email-schakrabarti@linux.microsoft.com>
-In-Reply-To: <1716185104-31658-1-git-send-email-schakrabarti@linux.microsoft.com>
-To: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
- yury.norov@gmail.com, leon@kernel.org, cai.huoqing@linux.dev,
- ssengar@linux.microsoft.com, vkuznets@redhat.com, tglx@linutronix.de,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- schakrabarti@microsoft.com, stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] riscv: force PAGE_SIZE linear mapping if
+ debug_pagealloc is enabled
+To: Nam Cao <namcao@linutronix.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <cover.1715750938.git.namcao@linutronix.de>
+ <2e391fa6c6f9b3fcf1b41cefbace02ee4ab4bf59.1715750938.git.namcao@linutronix.de>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <2e391fa6c6f9b3fcf1b41cefbace02ee4ab4bf59.1715750938.git.namcao@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: alex@ghiti.fr
 
-Hello:
+Hi Nam,
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Sun, 19 May 2024 23:05:04 -0700 you wrote:
-> Commit 62c1bff593b7 added an extra HZ along with msecs_to_jiffies.
-> This patch fixes that.
-> 
+On 15/05/2024 07:50, Nam Cao wrote:
+> debug_pagealloc is a debug feature which clears the valid bit in page table
+> entry for freed pages to detect illegal accesses to freed memory.
+>
+> For this feature to work, virtual mapping must have PAGE_SIZE resolution.
+> (No, we cannot map with huge pages and split them only when needed; because
+> pages can be allocated/freed in atomic context and page splitting cannot be
+> done in atomic context)
+>
+> Force linear mapping to use small pages if debug_pagealloc is enabled.
+>
+> Note that it is not necessary to force the entire linear mapping, but only
+> those that are given to memory allocator. Some parts of memory can keep
+> using huge page mapping (for example, kernel's executable code). But these
+> parts are minority, so keep it simple. This is just a debug feature, some
+> extra overhead should be acceptable.
+>
+> Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
 > Cc: stable@vger.kernel.org
-> Fixes: 62c1bff593b7 ("net: mana: Configure hwc timeout from hardware")
-> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-> Reviewed-by: Dexuan Cui <decui@microsoft.com>
-> 
-> [...]
+> ---
+> Interestingly this feature somehow still worked when first introduced.
+> My guess is that back then only 2MB page size is used. When a 4KB page is
+> freed, the entire 2MB will be (incorrectly) invalidated by this feature.
+> But 2MB is quite small, so no one else happen to use other 4KB pages in
+> this 2MB area. In other words, it used to work by luck.
+>
+> Now larger page sizes are used, so this feature invalidate large chunk of
+> memory, and the probability that someone else access this chunk and
+> trigger a page fault is much higher.
+>
+>   arch/riscv/mm/init.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index 2574f6a3b0e7..73914afa3aba 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -682,6 +682,9 @@ void __init create_pgd_mapping(pgd_t *pgdp,
+>   static uintptr_t __init best_map_size(phys_addr_t pa, uintptr_t va,
+>   				      phys_addr_t size)
+>   {
+> +	if (debug_pagealloc_enabled())
+> +		return PAGE_SIZE;
+> +
+>   	if (pgtable_l5_enabled &&
+>   	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
+>   		return P4D_SIZE;
 
-Here is the summary with links:
-  - [V2,net] net: mana: Fix the extra HZ in mana_hwc_send_request
-    https://git.kernel.org/netdev/net/c/9c91c7fadb17
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+You can add:
 
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+
+Thanks,
+
+Alex
 
 
