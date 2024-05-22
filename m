@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-45598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8348CC8AC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 00:02:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41B68CC8AE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 00:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBAED1F21C7A
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 22:02:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C42D1F21A73
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 22:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20888120C;
-	Wed, 22 May 2024 22:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B27E146A9C;
+	Wed, 22 May 2024 22:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="bOzprQDC";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="o5TeU4xE"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="s8zM7Rg1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ExhHPk39"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh4-smtp.messagingengine.com (wfhigh4-smtp.messagingengine.com [64.147.123.155])
+Received: from wfout1-smtp.messagingengine.com (wfout1-smtp.messagingengine.com [64.147.123.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE06A23CB;
-	Wed, 22 May 2024 22:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E245D56452;
+	Wed, 22 May 2024 22:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716415345; cv=none; b=LQQKO3VnZGE8aUKNoAtwTd83VIhOGgLllgGMHbOzSBGAkhfVxp8peniSBy6YBSXZC5sLI42RuJCpJOqRjNKut+/5YoM8h8QrAKvKX9GwfzEcmHf+Q9BIWbnhCAQurXsNlwO9FAIsM4lK6oxJ3colfaXsel04a8i5axsA+tU9TTo=
+	t=1716415346; cv=none; b=IodtstH8u++udWQzvjbX05VaFTiE99PW46MngsdnFnZA4RqkfbfRQ0v5aA+irAYokSEIKUXGSNSfk5gqQZZtIWEhXCZ6K6G082Y9N03q7n3qGl//PjmoUMEkSgCWOzYi7WpLD7qD4uCJM0Q+ol2wwMnchF53/vYgIXaG59YWc6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716415345; c=relaxed/simple;
-	bh=p2/PlDQriaIsR1jy5J5xFUSAUzQ9nze99NlrlTAGyLc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oyQz2t/HcuQv9GXIL68a+nrC8ImjKcG5u0fxeBbKDkQ4GHzV/F4x/Qt8G4WhuaeASmRww/6oCEXY1A/eDoxOugxcRr4BWmpEPU6McdROTY5ismdaSlrGaj0Wjv2gl+ByRXGecPfibviAw9t5+oE8Rn5yaX2JTFXf36H+29M8FWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=bOzprQDC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=o5TeU4xE; arc=none smtp.client-ip=64.147.123.155
+	s=arc-20240116; t=1716415346; c=relaxed/simple;
+	bh=+ZkFOOEzPJ9R8rASkmEVkeYaiXTIikAfh4ZoUZH4DP8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ovvhN+bLy85Q+0GKXcjj8rwJ1Maffi03v+XHm7cMIDnRFGBc8By69iTq8Hv+zez3NnZoZ+K9KRKG1hQJWR5/ciQSJ3i9krr18X4TCn8lAhQt9woN72g+nH/uStckl1L0IJZ7SLAbZARiAXN2qK6zAnH23BQNHZM/vWGvs1Qn/FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=s8zM7Rg1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ExhHPk39; arc=none smtp.client-ip=64.147.123.144
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 964BD180010B;
-	Wed, 22 May 2024 18:02:21 -0400 (EDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfout.west.internal (Postfix) with ESMTP id DF39C1C00180;
+	Wed, 22 May 2024 18:02:23 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Wed, 22 May 2024 18:02:22 -0400
+  by compute2.internal (MEProxy); Wed, 22 May 2024 18:02:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1716415341; x=1716501741; bh=1l
-	VFWowAKoYeYcU9JPCxf0HAA1fler+xeLdc8O1dM1Q=; b=bOzprQDCkwcpY/U/yq
-	52iFm9CRm59bLMfWfaip3iH+ewR11MRw/jsdJzrcFBblrEdrQdrL/2lxVJsstAL6
-	nMKLjnuWGWSBRRd6Yl3wuWbr3+zu1wUsHZicLJWcWeRsWQLI78f/i+j3cOtwlGr7
-	26FBDW+2sMBu/Dszl0nGyDNHow7rbBfayKheUG0Tu0tREwXKvT2VGEPYqgHoGfmQ
-	rR5MLk34utcFKwSnanlS19HtS/G2A0fzPg+rlUDEX/AxWCFxrK8c5niiAMUKE1Zr
-	yEM7U0BArROLNT3eHjAlulAzF5K4NUhq7U1CwOzfFejz2Zi4iH/HHrcwHm0z+NYm
-	woyA==
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1716415343;
+	 x=1716501743; bh=U8JuBi3PiTbDpXQpVISnqe5gsrf64wIswzQg2DS+gq0=; b=
+	s8zM7Rg1AqFT9uQxsthDiFncrnGpX92gxABQDnutw6CkqmL1uYGWPHKviPpwlkBa
+	OD/mDfI0BP0niTYrArA7oUapJdZk1mrOXmQVMgQSOBi0yQCpoZdhHAr3iCql/Gqg
+	8iBAnuWRD/ZRZxgGLRyIE++vg8rv4xk3cWaIHav1eKp5d04u457H6E/M5xBFqsrw
+	GcPMbcXagCFvsXEAwnF9pCdz6VRtIn3cutEOvaZfsdWmpBafMwXf4WJMieM6meOh
+	IQjTxMJddslXUUkVhm6MZUgfEMaNNV4QL3YwJql32xfmNUUVFl1yLKfXi8QLQRqu
+	rBGXAiUV6shCp3jCAXrzDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1716415341; x=1716501741; bh=1lVFWowAKoYeY
-	cU9JPCxf0HAA1fler+xeLdc8O1dM1Q=; b=o5TeU4xEMeVDxgn5xkmV14Rc6se5r
-	dm5zGELI6FTJUHi8j1DPfq4oTxVGEberOR9F45twpKbLlyP6x67RETSG9+IoiCy5
-	7qDNcy0QVYJl5QHnTYwBsUUjAB+mSs4DSUDOUsmxk01Pulx4Y1JWKFHI/ON9S0kU
-	I6sTH/rab7QsUXJD4dD8x2ZkAV28sBvFdgH1NsLNn5+8zFKM9LuIm0N06RIpPTzY
-	RaMH+oM7MaYH+LDkr3eLZt0XAA2XivY/J0br3fKRXO9dh97RSgFGTawFdgPCn1zE
-	JaN3Hi9V1GZswQDncojXJF8PPZvWodyQ961PudOYcPr+BGS1jqp3QQnMw==
-X-ME-Sender: <xms:bGtOZlTuV4wcp-XyWrzUbDXMrveVOvsa9FoRIdLh84Uq68e4UKYmdQ>
-    <xme:bGtOZuwN9pbep6v0i0j4QlEsVU6wc2D3rPR0C4mgcWEAaxDexl5ccu5b243xTNGVI
-    xPiYIWBWnC1d-XD_GA>
-X-ME-Received: <xmr:bGtOZq1NNswyr_LbTkJb3fqMxw-cVEDh9R9XI_PQrCgNV9W1XVdIMnQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeihedgtdegucetufdoteggodetrfdotf
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716415343; x=
+	1716501743; bh=U8JuBi3PiTbDpXQpVISnqe5gsrf64wIswzQg2DS+gq0=; b=E
+	xhHPk39rG/IiEN+DuKA3NjQY6Voz64wqGcriKhgTg33lBct/UUV+C4NMkZX4why3
+	uz0gvpt0HUwkP6hlwEy+jByxCiVvx6Urlnk+6E/k52ZeBMVZ2PDECEaAm4qNsTJI
+	XldXc3HTUsfaXbn6xy5cpDyiRXxS/pIts01OFq0i8lczQ7t7Ey3iYQWfs3rEXiYO
+	J/ZfZ1F/apgjyiLuPhOSBbxlGRmh+QWEVeve3zfcXop3C9OoA3CkqgrElGMD9F9I
+	AsipGN32fIoCdjlAbK4Km7Sp1Ti3ruVx74lbaCdzsFAqu1fEtoQ3MEWO4JP6i0J8
+	3APAwjtLxpH4D9+iz1gGw==
+X-ME-Sender: <xms:b2tOZiwPc_ntUbC645jnVX2IYXidrGn6SChlx4pxIALRPvI-cRzcJw>
+    <xme:b2tOZuQZJQJJ2m3m1V4Kgfs6iBT5xg-Qwc3hL6Zx2Wm5Dy3eVfp9vbXU52dSK_lPf
+    IHVTyxpLlnI0XAiifc>
+X-ME-Received: <xmr:b2tOZkU2n8yT1rqahqc3IQXmEnr6JoMcF6SfWpYg4GU5Tq2lm8Aypps>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeihedgtdehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeflihgrgihu
-    nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
-    ftrfgrthhtvghrnhepgfevffejteegjeeflefgkeetleekhfeugfegvdeuueejkeejteek
-    kedvfffffedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehf
-    lhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:bGtOZtDsR6OsJs9hKGiOJvdnciwm4I8suh0f3dcsg-Ijc2n7vVLM1g>
-    <xmx:bGtOZuh4ZhCLY4Rap-Qcd8Pq2Bzv5vCOLAfzHdp0TdPVc5emfr8yEw>
-    <xmx:bGtOZhqHCDO6Hx2K0JvbcH7DIQnV5e3csMQUfGJRskEjkmOmooxjjw>
-    <xmx:bGtOZphzmO4pwiHGlaeARZbe8mOO78aYMaYKDg-sT_x3u8ZArT05QQ>
-    <xmx:bWtOZpWQrXuZecMQkyXaA6nXVUhGAgMoQDRGetJfWhUToIzKjqMyvH1p>
+    cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
+    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+    cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
+    veegffegudekjeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:b2tOZoiFC03QQjMj8N8vZTDOBjXbjGM85vsaud4QGazODP_ypEFcSQ>
+    <xmx:b2tOZkDPg21ZIJY5L0vG0Y_-_wsXmUZp3J2CZM2BKK88sH-96N3__Q>
+    <xmx:b2tOZpJaOR01FJTBG-xgcKYEfPZ-flXb4H9kz6X740jqwNrMUliY7A>
+    <xmx:b2tOZrBNAIZh546xCzzuBmY6TrdNdqdV95JmcR-UJVhmTLAqa58-tQ>
+    <xmx:b2tOZm2XskfSp4-64B2k_CHV5zi83__PYS14o_CSTOn5nG8Di8qV7eMT>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 May 2024 18:02:19 -0400 (EDT)
+ 22 May 2024 18:02:22 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v3 0/4] LoongArch: Bootloader interface fixes
-Date: Wed, 22 May 2024 23:02:16 +0100
-Message-Id: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
+Date: Wed, 22 May 2024 23:02:17 +0100
+Subject: [PATCH v3 1/4] LoongArch: Fix built-in DTB detection
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,67 +92,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGhrTmYC/4XNTQ7CIBAF4Ks0rMXwU0BdeQ/jgtIpJakdAw2xa
- Xp3aVe6MC7fm7xvFpIgBkjkUi0kQg4p4FiCPFTE9Xb0QENbMhFM1EwJTgfE0dvoetogTmH0tAs
- vSFRqDVyCcVYpUtbPCPuhjG/3kvuQJozz/ijzrf1vZk4Z1ersBOOOScOu3TB7tNPR4YNsahafk
- vgtiSIZYaBtzhpUffqW1nV9A2oz0wkKAQAA
+Message-Id: <20240522-loongarch-booting-fixes-v3-1-25e77a8fc86e@flygoat.com>
+References: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
+In-Reply-To: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
 To: Huacai Chen <chenhuacai@kernel.org>, 
  Binbin Zhou <zhoubinbin@loongson.cn>
 Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1463;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1478;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=p2/PlDQriaIsR1jy5J5xFUSAUzQ9nze99NlrlTAGyLc=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhjS/7JyAguk2h26HP7MRmxF292BasOjkNrEP+6J1C9tjU
- uf91MrtKGVhEONikBVTZAkRUOrb0HhxwfUHWX9g5rAygQxh4OIUgIkotzEy/HgqtO8+W81dxQpF
- sbSzffWHsmXKD17QlZ/ueM+vL3uBFMP/slP7pA5esE669OnK5osfjxSembJ000zxezFv0nWfcJf
- PYQIA
+ bh=+ZkFOOEzPJ9R8rASkmEVkeYaiXTIikAfh4ZoUZH4DP8=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhjS/7JxvDx3in+xkvqjqtLrTvtNUKkvQPSKHqc4uPmC13
+ YqaqfYdpSwMYlwMsmKKLCECSn0bGi8uuP4g6w/MHFYmkCEMXJwCMJHCewz/K5+5OX2c7qm9b0mv
+ XOefqYoC85qSX7ruMjzhf1VOUTrXi+EPT4OmBO+6hqlXvfofnYy+Fx6a8yDWc3a5QXZ5z0QJX1Z
+ uAA==
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-Hi all,
+fdt_check_header(__dtb_start) will always success because kernel
+provided a dummy dtb, and by coincidence __dtb_start clashed with
+entry of this dummy dtb. The consequence is fdt passed from
+firmware will never be taken.
 
-This series fixed some issues on bootloader - kernel
-interface.
+Fix by trying to utilise __dtb_start only when CONFIG_BUILTIN_DTB
+is enabled.
 
-The first two fixed booting with devicetree, the last two
-enhanced kernel's tolerance on different bootloader implementation.
-
-Please review.
-
-Thanks
-
+Cc: stable@vger.kernel.org
+Fixes: 7b937cc243e5 ("of: Create of_root if no dtb provided by firmware")
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
-Changes in v3:
-- Polish all individual patches with comments received offline.
-- Link to v2: https://lore.kernel.org/r/20240522-loongarch-booting-fixes-v2-0-727edb96e548@flygoat.com
-
-Changes in v2:
-- Enhance PATCH 3-4 based on off list discussions with Huacai & co.
-- Link to v1: https://lore.kernel.org/r/20240521-loongarch-booting-fixes-v1-0-659c201c0370@flygoat.com
-
+v3: Better reasoning in commit message, thanks Binbin and Huacai!
 ---
-Jiaxun Yang (4):
-      LoongArch: Fix built-in DTB detection
-      LoongArch: smp: Add all CPUs enabled by fdt to NUMA node 0
-      LoongArch: Fix entry point in image header
-      LoongArch: Override higher address bits in JUMP_VIRT_ADDR
+ arch/loongarch/kernel/setup.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- arch/loongarch/include/asm/stackframe.h  | 2 +-
- arch/loongarch/kernel/head.S             | 2 +-
- arch/loongarch/kernel/setup.c            | 6 ++++--
- arch/loongarch/kernel/smp.c              | 5 ++++-
- arch/loongarch/kernel/vmlinux.lds.S      | 2 ++
- drivers/firmware/efi/libstub/loongarch.c | 2 +-
- 6 files changed, 13 insertions(+), 6 deletions(-)
----
-base-commit: 124cfbcd6d185d4f50be02d5f5afe61578916773
-change-id: 20240521-loongarch-booting-fixes-366e13e7ca55
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 60e0fe97f61a..ea6d5db6c878 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -275,16 +275,18 @@ static void __init arch_reserve_crashkernel(void)
+ static void __init fdt_setup(void)
+ {
+ #ifdef CONFIG_OF_EARLY_FLATTREE
+-	void *fdt_pointer;
++	void *fdt_pointer = NULL;
+ 
+ 	/* ACPI-based systems do not require parsing fdt */
+ 	if (acpi_os_get_root_pointer())
+ 		return;
+ 
++#ifdef CONFIG_BUILTIN_DTB
+ 	/* Prefer to use built-in dtb, checking its legality first. */
+ 	if (!fdt_check_header(__dtb_start))
+ 		fdt_pointer = __dtb_start;
+-	else
++#endif
++	if (!fdt_pointer)
+ 		fdt_pointer = efi_fdt_pointer(); /* Fallback to firmware dtb */
+ 
+ 	if (!fdt_pointer || fdt_check_header(fdt_pointer))
 
-Best regards,
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+2.43.0
 
 
