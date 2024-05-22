@@ -1,165 +1,158 @@
-Return-Path: <stable+bounces-45597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FE08CC84E
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 23:55:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8348CC8AC
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 00:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AE7B2812BB
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 21:55:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBAED1F21C7A
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 22:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74711465BE;
-	Wed, 22 May 2024 21:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20888120C;
+	Wed, 22 May 2024 22:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a1KU88kl"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="bOzprQDC";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="o5TeU4xE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfhigh4-smtp.messagingengine.com (wfhigh4-smtp.messagingengine.com [64.147.123.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBD51BF2A;
-	Wed, 22 May 2024 21:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE06A23CB;
+	Wed, 22 May 2024 22:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716414931; cv=none; b=ngJP7KnET87RK7OsA+Tg7Y5dHx2QbOUfGHr3ya14TnbXnCeA+9YWjWk32iLXQ/z5ePMudtjgvd8GOxsUmqQi8Dx8xhM+zYwLbAcx1YWVk/O2Wxs3y2o957/dd4SIC9LZpZW0GR304BnJjFkZF2SLvwMQdIl6qxiuwDaaJNSFFqw=
+	t=1716415345; cv=none; b=LQQKO3VnZGE8aUKNoAtwTd83VIhOGgLllgGMHbOzSBGAkhfVxp8peniSBy6YBSXZC5sLI42RuJCpJOqRjNKut+/5YoM8h8QrAKvKX9GwfzEcmHf+Q9BIWbnhCAQurXsNlwO9FAIsM4lK6oxJ3colfaXsel04a8i5axsA+tU9TTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716414931; c=relaxed/simple;
-	bh=biS27k1v25ESh7nlKLwuhk7msK7Vxc95usSBLqpbkVc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GzYwNmIxTXq5Lbrg7n9wKSdgdlX90sZY+sXY8wFehxdNv7141LZJlyKehigex44X16q3SHCzeiCYJZSxitjDYGgNb+nIl3y5dIzkFpcP8hLHO142rZZwfEIf6etJPKE04dslapgQ6We7CzaLiD3xiqtoSqRO6Lm52pPPUX6eaFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a1KU88kl; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-61bee45d035so58022497b3.1;
-        Wed, 22 May 2024 14:55:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716414929; x=1717019729; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qvHEXtI8w2mJSWFFWNE5WHl/b53q+5tj9SqX8JL+kf4=;
-        b=a1KU88kl931GNsUx/9+xrsjMdPIjTbRXGi1lcWsm83BFCh/Xtr/ij7XUMf0jchnpBi
-         njgV3WGHMYmZkFcVl9kIXjVoXQqH6TnzfKYIxDeaIGXUx+3KMwhfl/76NxbWtdzatuLm
-         YFprP47WSLMBKpasKdU6n/TkKAfD4Lsm2hZcOWfQ33HUA6XuecllOkCJm+BkknfPo8cK
-         IF4wdY6eKhtiS4FqmK56C4VfJV2JDgNGn4ExJac0zyo0JcO/yrYPBoJuhNVdRk5cELtA
-         2w1bfQLJFOUwBOGPKLknj+XYRq9EheXfT1B35Ehy8HjZ8rXLStufv9RpT1BUS3O4szdt
-         +4lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716414929; x=1717019729;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qvHEXtI8w2mJSWFFWNE5WHl/b53q+5tj9SqX8JL+kf4=;
-        b=lXaEKOnxCD8STpTDYAjktIAH4JBpixt2sF01JFGsd4imR4l7tyqIHopr5tACMCZR7K
-         78aoLMwXGzLT3MRSBKYNWyEzM9hJ3QMfsVLVO2X+Gy5jkeh5D8iU8zltxaoaG9ZCpO36
-         2k/x/B232p81dKdXJAuVu+czIO3tVQLUrvztdWAyjZmZMpbe2yHpnmuoJJ4xu9/MRAmA
-         47KdaWE90oaqcvBR2ZTL05J/SW7DJDQFVJFBa5Iis8wUhsL7UvrcXNcFQNQ+mqc/yhi9
-         p1Vx426c1zFQZ00FJRQ7PcxODFTNBJfvw3oOOAvY3lENbnFsx2tiEXf+iJFu742xBk1D
-         x2xA==
-X-Forwarded-Encrypted: i=1; AJvYcCXkX6vbM4Fz+1jKvE3+1xWtOP0gp4An2TZz9RiSWpoE4j0M3JN2ZBMWOllvpJRjqzC9hUyPNIi8HE+Gh0BInuS/QEUJLiV/FXVPxYA8e4KOBCpk3WP0Tqw8IsrqtADEEqBz
-X-Gm-Message-State: AOJu0YzvlJt+J+t5nZKf82AlV2iT0Nx3ZTbdwNRmWSiC6+g0RX2rEZ0w
-	LPfFi5+nPX+NSO9RlxdFD7Ni+YS2oXDW999CC44IT7tFhY7vWXzMMCY7CIJQ2iO7f8wPSNViNYl
-	z5PVSnvTUTjy8GlvervZaqfhTmuS3qx5S
-X-Google-Smtp-Source: AGHT+IEiscBx1uu8+wmYNfvzZIUfh6mAICeSHfdeOAIEqxaswj3+oWoFbGbHAqF/rUOMe4pVWdLmMPfbWXqU80+VKfQ=
-X-Received: by 2002:a0d:ddc6:0:b0:61d:fcf7:3377 with SMTP id
- 00721157ae682-627e48809fbmr34428347b3.44.1716414928946; Wed, 22 May 2024
- 14:55:28 -0700 (PDT)
+	s=arc-20240116; t=1716415345; c=relaxed/simple;
+	bh=p2/PlDQriaIsR1jy5J5xFUSAUzQ9nze99NlrlTAGyLc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oyQz2t/HcuQv9GXIL68a+nrC8ImjKcG5u0fxeBbKDkQ4GHzV/F4x/Qt8G4WhuaeASmRww/6oCEXY1A/eDoxOugxcRr4BWmpEPU6McdROTY5ismdaSlrGaj0Wjv2gl+ByRXGecPfibviAw9t5+oE8Rn5yaX2JTFXf36H+29M8FWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=bOzprQDC; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=o5TeU4xE; arc=none smtp.client-ip=64.147.123.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 964BD180010B;
+	Wed, 22 May 2024 18:02:21 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Wed, 22 May 2024 18:02:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1716415341; x=1716501741; bh=1l
+	VFWowAKoYeYcU9JPCxf0HAA1fler+xeLdc8O1dM1Q=; b=bOzprQDCkwcpY/U/yq
+	52iFm9CRm59bLMfWfaip3iH+ewR11MRw/jsdJzrcFBblrEdrQdrL/2lxVJsstAL6
+	nMKLjnuWGWSBRRd6Yl3wuWbr3+zu1wUsHZicLJWcWeRsWQLI78f/i+j3cOtwlGr7
+	26FBDW+2sMBu/Dszl0nGyDNHow7rbBfayKheUG0Tu0tREwXKvT2VGEPYqgHoGfmQ
+	rR5MLk34utcFKwSnanlS19HtS/G2A0fzPg+rlUDEX/AxWCFxrK8c5niiAMUKE1Zr
+	yEM7U0BArROLNT3eHjAlulAzF5K4NUhq7U1CwOzfFejz2Zi4iH/HHrcwHm0z+NYm
+	woyA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1716415341; x=1716501741; bh=1lVFWowAKoYeY
+	cU9JPCxf0HAA1fler+xeLdc8O1dM1Q=; b=o5TeU4xEMeVDxgn5xkmV14Rc6se5r
+	dm5zGELI6FTJUHi8j1DPfq4oTxVGEberOR9F45twpKbLlyP6x67RETSG9+IoiCy5
+	7qDNcy0QVYJl5QHnTYwBsUUjAB+mSs4DSUDOUsmxk01Pulx4Y1JWKFHI/ON9S0kU
+	I6sTH/rab7QsUXJD4dD8x2ZkAV28sBvFdgH1NsLNn5+8zFKM9LuIm0N06RIpPTzY
+	RaMH+oM7MaYH+LDkr3eLZt0XAA2XivY/J0br3fKRXO9dh97RSgFGTawFdgPCn1zE
+	JaN3Hi9V1GZswQDncojXJF8PPZvWodyQ961PudOYcPr+BGS1jqp3QQnMw==
+X-ME-Sender: <xms:bGtOZlTuV4wcp-XyWrzUbDXMrveVOvsa9FoRIdLh84Uq68e4UKYmdQ>
+    <xme:bGtOZuwN9pbep6v0i0j4QlEsVU6wc2D3rPR0C4mgcWEAaxDexl5ccu5b243xTNGVI
+    xPiYIWBWnC1d-XD_GA>
+X-ME-Received: <xmr:bGtOZq1NNswyr_LbTkJb3fqMxw-cVEDh9R9XI_PQrCgNV9W1XVdIMnQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeihedgtdegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeflihgrgihu
+    nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
+    ftrfgrthhtvghrnhepgfevffejteegjeeflefgkeetleekhfeugfegvdeuueejkeejteek
+    kedvfffffedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehf
+    lhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:bGtOZtDsR6OsJs9hKGiOJvdnciwm4I8suh0f3dcsg-Ijc2n7vVLM1g>
+    <xmx:bGtOZuh4ZhCLY4Rap-Qcd8Pq2Bzv5vCOLAfzHdp0TdPVc5emfr8yEw>
+    <xmx:bGtOZhqHCDO6Hx2K0JvbcH7DIQnV5e3csMQUfGJRskEjkmOmooxjjw>
+    <xmx:bGtOZphzmO4pwiHGlaeARZbe8mOO78aYMaYKDg-sT_x3u8ZArT05QQ>
+    <xmx:bWtOZpWQrXuZecMQkyXaA6nXVUhGAgMoQDRGetJfWhUToIzKjqMyvH1p>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 May 2024 18:02:19 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v3 0/4] LoongArch: Bootloader interface fixes
+Date: Wed, 22 May 2024 23:02:16 +0100
+Message-Id: <20240522-loongarch-booting-fixes-v3-0-25e77a8fc86e@flygoat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240501184112.3799035-1-leah.rumancik@gmail.com>
- <2024050436-conceded-idealness-d2c5@gregkh> <CAOQ4uxhcFSPhnAfDxm-GQ8i-NmDonzLAq5npMh84EZxxr=qhjQ@mail.gmail.com>
- <CACzhbgSNe5amnMPEz8AYu3Z=qZRyKLFDvOtA_9wFGW9Bh-jg+g@mail.gmail.com> <2024052207-curve-revered-b879@gregkh>
-In-Reply-To: <2024052207-curve-revered-b879@gregkh>
-From: Leah Rumancik <leah.rumancik@gmail.com>
-Date: Wed, 22 May 2024 14:55:18 -0700
-Message-ID: <CACzhbgQzrmKHX-VAzt8VKsxRT8YZN1nVdnd5Tq4bc4THtp5Lxg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 01/24] xfs: write page faults in iomap are not
- buffered writes
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Amir Goldstein <amir73il@gmail.com>, stable@vger.kernel.org, linux-xfs@vger.kernel.org, 
-	chandan.babu@oracle.com, fred@cloudflare.com, 
-	Dave Chinner <dchinner@redhat.com>, Christoph Hellwig <hch@lst.de>, "Darrick J . Wong" <djwong@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGhrTmYC/4XNTQ7CIBAF4Ks0rMXwU0BdeQ/jgtIpJakdAw2xa
+ Xp3aVe6MC7fm7xvFpIgBkjkUi0kQg4p4FiCPFTE9Xb0QENbMhFM1EwJTgfE0dvoetogTmH0tAs
+ vSFRqDVyCcVYpUtbPCPuhjG/3kvuQJozz/ijzrf1vZk4Z1ersBOOOScOu3TB7tNPR4YNsahafk
+ vgtiSIZYaBtzhpUffqW1nV9A2oz0wkKAQAA
+To: Huacai Chen <chenhuacai@kernel.org>, 
+ Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1463;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=p2/PlDQriaIsR1jy5J5xFUSAUzQ9nze99NlrlTAGyLc=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhjS/7JyAguk2h26HP7MRmxF292BasOjkNrEP+6J1C9tjU
+ uf91MrtKGVhEONikBVTZAkRUOrb0HhxwfUHWX9g5rAygQxh4OIUgIkotzEy/HgqtO8+W81dxQpF
+ sbSzffWHsmXKD17QlZ/ueM+vL3uBFMP/slP7pA5esE669OnK5osfjxSembJ000zxezFv0nWfcJf
+ PYQIA
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-On Wed, May 22, 2024 at 7:11=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Mon, May 06, 2024 at 10:52:16AM -0700, Leah Rumancik wrote:
-> > Ah my bad, I'll make sure to explicitly mention its been ACK'd by
-> > linux-xfs in the future.
-> >
-> > Will send out a MAINTAINERS file patch as well.
->
-> Did that happen?
+Hi all,
 
-Yep, https://lore.kernel.org/all/Zj9xj1wIzlTK8VCm@sashalap/
+This series fixed some issues on bootloader - kernel
+interface.
 
->
-> Anyway, this patch series breaks the build:
->
-> s/xfs/xfs_iomap.c: In function =E2=80=98xfs_iomap_inode_sequence=E2=80=99=
-:
-> fs/xfs/xfs_iomap.c:58:27: error: =E2=80=98IOMAP_F_XATTR=E2=80=99 undeclar=
-ed (first use in this function); did you mean =E2=80=98IOP_XATTR=E2=80=99?
->    58 |         if (iomap_flags & IOMAP_F_XATTR)
->       |                           ^~~~~~~~~~~~~
->       |                           IOP_XATTR
-> fs/xfs/xfs_iomap.c:58:27: note: each undeclared identifier is reported on=
-ly once for each function it appears in
-> fs/xfs/xfs_iomap.c: In function =E2=80=98xfs_iomap_valid=E2=80=99:
-> fs/xfs/xfs_iomap.c:74:21: error: =E2=80=98const struct iomap=E2=80=99 has=
- no member named =E2=80=98validity_cookie=E2=80=99
->    74 |         return iomap->validity_cookie =3D=3D
->       |                     ^~
-> fs/xfs/xfs_iomap.c: At top level:
-> fs/xfs/xfs_iomap.c:79:10: error: =E2=80=98const struct iomap_page_ops=E2=
-=80=99 has no member named =E2=80=98iomap_valid=E2=80=99
->    79 |         .iomap_valid            =3D xfs_iomap_valid,
->       |          ^~~~~~~~~~~
-> fs/xfs/xfs_iomap.c:79:35: error: positional initialization of field in =
-=E2=80=98struct=E2=80=99 declared with =E2=80=98designated_init=E2=80=99 at=
-tribute [-Werror=3Ddesignated-init]
->    79 |         .iomap_valid            =3D xfs_iomap_valid,
->       |                                   ^~~~~~~~~~~~~~~
-> fs/xfs/xfs_iomap.c:79:35: note: (near initialization for =E2=80=98xfs_iom=
-ap_page_ops=E2=80=99)
-> fs/xfs/xfs_iomap.c:79:35: error: invalid initializer
-> fs/xfs/xfs_iomap.c:79:35: note: (near initialization for =E2=80=98xfs_iom=
-ap_page_ops.<anonymous>=E2=80=99)
-> fs/xfs/xfs_iomap.c: In function =E2=80=98xfs_bmbt_to_iomap=E2=80=99:
-> fs/xfs/xfs_iomap.c:127:14: error: =E2=80=98struct iomap=E2=80=99 has no m=
-ember named =E2=80=98validity_cookie=E2=80=99
->   127 |         iomap->validity_cookie =3D sequence_cookie;
->       |              ^~
-> fs/xfs/xfs_iomap.c: In function =E2=80=98xfs_xattr_iomap_begin=E2=80=99:
-> fs/xfs/xfs_iomap.c:1375:44: error: =E2=80=98IOMAP_F_XATTR=E2=80=99 undecl=
-ared (first use in this function); did you mean =E2=80=98IOP_XATTR=E2=80=99=
-?
->  1375 |         seq =3D xfs_iomap_inode_sequence(ip, IOMAP_F_XATTR);
->       |                                            ^~~~~~~~~~~~~
->       |                                            IOP_XATTR
-> fs/xfs/xfs_iomap.c:1382:1: error: control reaches end of non-void functio=
-n [-Werror=3Dreturn-type]
->  1382 | }
->       | ^
-> cc1: all warnings being treated as errors
->
->
-> Any chance you can rebase and resend it?
->
+The first two fixed booting with devicetree, the last two
+enhanced kernel's tolerance on different bootloader implementation.
 
-Will do.
+Please review.
 
-Thanks,
-Leah
+Thanks
 
-> thanks,
->
-> greg k-h
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+Changes in v3:
+- Polish all individual patches with comments received offline.
+- Link to v2: https://lore.kernel.org/r/20240522-loongarch-booting-fixes-v2-0-727edb96e548@flygoat.com
+
+Changes in v2:
+- Enhance PATCH 3-4 based on off list discussions with Huacai & co.
+- Link to v1: https://lore.kernel.org/r/20240521-loongarch-booting-fixes-v1-0-659c201c0370@flygoat.com
+
+---
+Jiaxun Yang (4):
+      LoongArch: Fix built-in DTB detection
+      LoongArch: smp: Add all CPUs enabled by fdt to NUMA node 0
+      LoongArch: Fix entry point in image header
+      LoongArch: Override higher address bits in JUMP_VIRT_ADDR
+
+ arch/loongarch/include/asm/stackframe.h  | 2 +-
+ arch/loongarch/kernel/head.S             | 2 +-
+ arch/loongarch/kernel/setup.c            | 6 ++++--
+ arch/loongarch/kernel/smp.c              | 5 ++++-
+ arch/loongarch/kernel/vmlinux.lds.S      | 2 ++
+ drivers/firmware/efi/libstub/loongarch.c | 2 +-
+ 6 files changed, 13 insertions(+), 6 deletions(-)
+---
+base-commit: 124cfbcd6d185d4f50be02d5f5afe61578916773
+change-id: 20240521-loongarch-booting-fixes-366e13e7ca55
+
+Best regards,
+-- 
+Jiaxun Yang <jiaxun.yang@flygoat.com>
+
 
