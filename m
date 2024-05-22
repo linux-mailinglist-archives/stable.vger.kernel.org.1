@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-45555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302C48CBB60
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 08:31:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41CB8CBB63
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 08:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B38051F2309B
-	for <lists+stable@lfdr.de>; Wed, 22 May 2024 06:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EB81282C0F
+	for <lists+stable@lfdr.de>; Wed, 22 May 2024 06:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8A87E0FC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2B37E118;
 	Wed, 22 May 2024 06:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="Sbs2rTEp";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZVl3AV+Y"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="fVoUJwDY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TIs24USG"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
+Received: from fout4-smtp.messagingengine.com (fout4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6CB7CF34;
-	Wed, 22 May 2024 06:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C27A79B9D;
+	Wed, 22 May 2024 06:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716359430; cv=none; b=QK4m4jK3PnGfTtuLg/0PY5d3n3htoLcpFSn0R/YSoQxaV9EPWOxbcrdDKLUj6+VG+VJPGg3hA/AEgjtRg4dzbd+VoTCEDHOJaH466jmN1saGYXtsyo4gAUa+L19DdCfoa8rzGodDzRVvCeBQxJftwOW8w7bP5FujQkX65Hx/PW4=
+	t=1716359430; cv=none; b=tvfDmRplCvYkJExivAuPpyZT3vkxxKZ+BJ+QiAn4qYkWlLkEHrIk7kKh4kaHv5IthLyd6i9RiB3yckYhkyDNDtQzJEFTymliOT/gzHSSmThRGCJA4qnhSVZDgIfQJKvENqWD2rCaScNoV84wfSZYtvSPW+cyckIQ2FEHwNCXMhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716359430; c=relaxed/simple;
-	bh=gTmfR3TyuSkIyI33dPFwnMQoUU/REBQal1l+rTKDhxc=;
+	bh=7fdJBdzIPfqGGEwtcL8/d/uM5agRxxUtdOfdCs2glQQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=N/3Jfthonr0t+GvMTMlcv3Wlql7TQ/GH04Am/O5WIAHLFUOlY9BJiLG0WesdX/Ez7qrwhLXSIutBMQ1SATldC3r6gUHPHaDZS7L6zEILL9J+J7qxjsxNy8E8vk2i+rXtEReIo4fr81JiGVMJDzPUaeDUIZMXCPPtiZITLG1aA58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=Sbs2rTEp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZVl3AV+Y; arc=none smtp.client-ip=103.168.172.153
+	 In-Reply-To:To:Cc; b=InDttVzW5k/bIC9yHvwSLzLDBb1d7xdMoBuoyrbtfCfcB1pDpBkXXSB72gkMulUXLDPfaFFO+fQ5HMieD77A7kndKoFUP+IPS6k9I4V48JZHylekWPh3ud9o8Ows7/6DQP77An+h8J1unEifaKcoX7M3qUPNZnI+UtUm+0UhVdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=fVoUJwDY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TIs24USG; arc=none smtp.client-ip=103.168.172.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
 Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 2E9CF11401ED;
-	Wed, 22 May 2024 02:30:27 -0400 (EDT)
+	by mailfout.nyi.internal (Postfix) with ESMTP id 50A011380136;
+	Wed, 22 May 2024 02:30:28 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Wed, 22 May 2024 02:30:27 -0400
+  by compute5.internal (MEProxy); Wed, 22 May 2024 02:30:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1716359427;
-	 x=1716445827; bh=OvjxMEn+h3QhgfDTBmqSa7RU1eI0gRXkjUhWMA2M8CI=; b=
-	Sbs2rTEpPHwnXO+ueozjdV8wogVpiRUQLzy6Y8vha241TwXhjJP035PgrHYpjMQd
-	W1euniPLVLKDiW8PKigPCzrsd0hQD+GwMxtBW2hKmYngW48+f2RnhzyEWqMarFTQ
-	V0nYlpMvHc6rKCHx0tV4KtfqFor9RevBrrQKELn0pI+EXZC9lAjdljf1g3RmFmWL
-	N5XjuhEjHmSX4AJSFYzP+W+MtfAjnQoJ8OiI1q4A2ob+PYXAVohmbJ6l3D2OQroL
-	RUEdz3bJoJNhlO/bPYCVkOzR+5Nw3vN+0Zzy2G/YSkU/Mdny5LjoYN4IkSWK2QK1
-	U1PuitZt77Mo2PSBqwvbOQ==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1716359428;
+	 x=1716445828; bh=eohBkNeC9goPP1VCyGzG57xJ91PgPdvWRQbAuvbCQlw=; b=
+	fVoUJwDY2+YLcoVZNqYZjf7btGSTqv/aNWOouqg2i9AFQLMH4xSLFzHWmMMISEj+
+	hU99knFR80sxC+y3auR5oSb+Nw+DPkdHXNfI7p/APUUbvKDx8AiUU02Td65DG3E0
+	1CWUbYOCK5RM7mJPAnNT//jRgsgX/rO8bIb7i3NISDdBeGRSJWtnX3jAvW1KS1EM
+	lkckQM0TWVR8VjY/1qYHiYjQmPyqL6VPJHZq1SnzGCz8Z4ncV8AF6jGnIM8DH6Ho
+	ev2dZViV2iKl9ILTp4aFM8tQhrdRZMxbbxw6/KlylxuJjBd5eOR1YrDfT6CYquAA
+	s3fkRnl+CSHB82XI4FMq8w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716359427; x=
-	1716445827; bh=OvjxMEn+h3QhgfDTBmqSa7RU1eI0gRXkjUhWMA2M8CI=; b=Z
-	Vl3AV+YD65CvfNH8uYxpabT+WolEoUwlwRr5ZZetxpQH23kroY+LcBhIl9zZGUqT
-	Hyd3STJKZEaSK+lifIDYQQlTWGQATwMzu4ysKLIjAfLai53kcGNF1kbl/KGfW9El
-	OA/6Yw2kGwIx9/mAfE+PsPgPv4/6TiTcult82iEGWdhGbWmyCw+7a+0ctzW2h8Y2
-	9IklLroF4Vrpinu9sidNSDQXULqn30R/VevP2MRtUnoC7ixRcN2D4qBcyNtmjcNT
-	FQpX/pFErjVBZD4wC1Cw/M/TcmM8otTZrKCZjbhtI0kQ3YDXT5ssV3h7jFbUqcCG
-	AukCrQEOoJgnAiLOJRGmw==
-X-ME-Sender: <xms:ApFNZggc_f5GQh1u1JUS5-688vO35LkDVH4Dqh79YGIoPyVMN6Euzg>
-    <xme:ApFNZpA7Sghd9ikF8n13GDiJKGFfvYDlVPaS0kNpIGmAQNkucvKA_ReeUOdULZEeY
-    hC8iDwg5IGUW_5wdEU>
-X-ME-Received: <xmr:ApFNZoEUP_krz9zIc3NsyAY6ueb3NZTpl8rX1PMoHHTSM7Ql7qCNgmE>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716359428; x=
+	1716445828; bh=eohBkNeC9goPP1VCyGzG57xJ91PgPdvWRQbAuvbCQlw=; b=T
+	Is24USGqMD5yV6/GD4pfOiVEoVjSYdv0aFK07EHJ8wssa7CWTz9GdjrWeueUp68b
+	8r21VKiePxdChBhCtekK9vizAC29QVu5GVqu0yG/xCcTj56hp4SI4E4+IPgayFYK
+	PlsVb99kYylNotP/OtX6TE+ZZLxrCmEqE9izc4B1f3/6yqp9+PC1SZTuve0aWy4o
+	OsQcQeiralXLjr9yiWVq3tHBxnkJqbfcwJpvtT0prHFmbTq9xxlNQp2Pmd+9SAPx
+	mNiNTA/gJO5IKoS0cmUD7qVn1giP4KCrJfkjkFcVVoGtT59NPfvwuXaynkT5FYsU
+	M5dLcjoyLm61geW047qEA==
+X-ME-Sender: <xms:BJFNZliiQyolOdyLkhn73-b34Ck0kPzi5Av7Z91gUnqrx6-1BaAtMQ>
+    <xme:BJFNZqBLvQNnhy3_iYFWua5VnNPVr8U6tTox5U5uEZJK2ptaehPWG8mjsWkOkQHiT
+    -pHqElJZwcYM65EO50>
+X-ME-Received: <xmr:BJFNZlFLaxivxEqJAg07rMP8aUOzpcUD1ApH4LbKhK77MLIuzy9-THM>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeifedgleekucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
     gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
-    cuggftrfgrthhtvghrnhephefgueffudegueeiveefleelhfevhfdtudelhefgvdegvefh
-    ieelveevffduvdfgnecuffhomhgrihhnpehhvggrugdrshgspdhhvggruggvrhdrohhrgh
-    dprhgrmhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:A5FNZhQNF9Y326EBxjHePjkzemzOd3omFa_WAy_GMVuLdomeWIuiWQ>
-    <xmx:A5FNZtxNRID7yROPw1izDFZy0cwsHH7R6lj7u2gBJl_hjjyHhx4JTQ>
-    <xmx:A5FNZv5qvwru3eMcp1rY5_useqZnPHaCvuWseYnQHglCBa0GHxEkzA>
-    <xmx:A5FNZqxTZubz4dZem9XnuYlrsU_iwAdqsH2KEu89DC7R9n_NM9g4mA>
-    <xmx:A5FNZkmTiRed7DQw08gC7PzniFaAjy8mpbFXk1iSyB1sEsz7mTWABOx0>
+    cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
+    veegffegudekjeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:BJFNZqRD6bxjuR1ZTfwkD2tNO2VevwT_5JWvbmPm5FkPu0GDMTWsxQ>
+    <xmx:BJFNZizpitEmvHvlVyYjwMVReZGdvm8tw5Wyms3fiFpBURUvOO-7TQ>
+    <xmx:BJFNZg5sGaMyuq9idM3OxFzx3rfebSw21ij9QxMJsvxeqEgeIgG-SA>
+    <xmx:BJFNZnwnbXyUmX7o9tsYlSBu2bzV03ODUX9qKzcZV34vTwxMNKziKA>
+    <xmx:BJFNZplNvn0m6Jvhps1M694SVVyRXcKfxJx6E9SEPzLyKCxj4YSekuyR>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 May 2024 02:30:26 -0400 (EDT)
+ 22 May 2024 02:30:27 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Wed, 22 May 2024 07:30:22 +0100
-Subject: [PATCH v2 3/4] LoongArch: Fix entry point in image header
+Date: Wed, 22 May 2024 07:30:23 +0100
+Subject: [PATCH v2 4/4] LoongArch: Override higher address bits in
+ JUMP_VIRT_ADDR
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,7 +93,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240522-loongarch-booting-fixes-v2-3-727edb96e548@flygoat.com>
+Message-Id: <20240522-loongarch-booting-fixes-v2-4-727edb96e548@flygoat.com>
 References: <20240522-loongarch-booting-fixes-v2-0-727edb96e548@flygoat.com>
 In-Reply-To: <20240522-loongarch-booting-fixes-v2-0-727edb96e548@flygoat.com>
 To: Huacai Chen <chenhuacai@kernel.org>, 
@@ -101,65 +101,47 @@ To: Huacai Chen <chenhuacai@kernel.org>,
 Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2063;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1077;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=gTmfR3TyuSkIyI33dPFwnMQoUU/REBQal1l+rTKDhxc=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhjTfCf8+JLza08dw5uRSr4d7ch76Vp/tzc66NCmSt2r9/
- Bn9y6PKO0pZGMS4GGTFFFlCBJT6NjReXHD9QdYfmDmsTCBDGLg4BWAintyMDPdvybLrqz1YsnOG
- Vo/fv4k3HKb/ddj2PMX7i5NI1455JxIYGdZYxW1wX2H3sa945UvhvvnBwcsc6pitdm1nmXbx+nb
- O3SwA
+ bh=7fdJBdzIPfqGGEwtcL8/d/uM5agRxxUtdOfdCs2glQQ=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhjTfCf82tCQskD17SqvD5e2E7Tb8NxzYQh44W7zPfsvGL
+ SvSNWlPRykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAExESZ7hf7ma4e6t876fevqn
+ siVk2nHWLUf5v7zfrHz6z/w7Bd/SuPwY/qnvYthjEhe3ZnnWux2psz7vWfT+3eFXa47zeuwObJb
+ wU+ADAA==
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-Currently kernel entry in head.S is in DMW address range,
-firmware is instructed to jump to this address after loading
-the image.
+In JUMP_VIRT_ADDR we are performing an or calculation on
+address value directly from pcaddi.
 
-However kernel should not make any assumption on firmware's
-DMW setting, thus the entry point should be a physical address
-falls into direct translation region.
+This will only work if we are currently running from direct
+1:1 mapping addresses or firmware's DMW is configured exactly
+same as kernel. Still, we should not rely on such assumption.
 
-Fix by applying a calculation to the entry and amend entry
-calculation logic in libstub accordingly.
-
-Note that due to relocation restriction TO_PHYS can't be used
-in assembly, we can only do plus and minus here.
+Fix by overriding higher bits in address comes from pcaddi,
+so we can get rid of or operator.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
-v2: Fix efistub
+v2: Overriding address with bstrins
 ---
- arch/loongarch/kernel/head.S             | 2 +-
- drivers/firmware/efi/libstub/loongarch.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/stackframe.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
-index c4f7de2e2805..1a83564023e1 100644
---- a/arch/loongarch/kernel/head.S
-+++ b/arch/loongarch/kernel/head.S
-@@ -22,7 +22,7 @@
- _head:
- 	.word	MZ_MAGIC		/* "MZ", MS-DOS header */
- 	.org	0x8
--	.dword	kernel_entry		/* Kernel entry point */
-+	.dword	PHYS_LINK_KADDR + (kernel_entry	- _head)	/* Kernel entry point */
- 	.dword	_kernel_asize		/* Kernel image effective size */
- 	.quad	PHYS_LINK_KADDR		/* Kernel image load offset from start of RAM */
- 	.org	0x38			/* 0x20 ~ 0x37 reserved */
-diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/efi/libstub/loongarch.c
-index 684c9354637c..60c145121393 100644
---- a/drivers/firmware/efi/libstub/loongarch.c
-+++ b/drivers/firmware/efi/libstub/loongarch.c
-@@ -41,7 +41,7 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
- unsigned long __weak kernel_entry_address(unsigned long kernel_addr,
- 		efi_loaded_image_t *image)
- {
--	return *(unsigned long *)(kernel_addr + 8) - VMLINUX_LOAD_ADDRESS + kernel_addr;
-+	return *(unsigned long *)(kernel_addr + 8) - TO_PHYS(VMLINUX_LOAD_ADDRESS) + kernel_addr;
- }
+diff --git a/arch/loongarch/include/asm/stackframe.h b/arch/loongarch/include/asm/stackframe.h
+index 45b507a7b06f..51dec8b17d16 100644
+--- a/arch/loongarch/include/asm/stackframe.h
++++ b/arch/loongarch/include/asm/stackframe.h
+@@ -42,7 +42,7 @@
+ 	.macro JUMP_VIRT_ADDR temp1 temp2
+ 	li.d	\temp1, CACHE_BASE
+ 	pcaddi	\temp2, 0
+-	or	\temp1, \temp1, \temp2
++	bstrins.d	\temp1, \temp2, (DMW_PABITS - 1), 0
+ 	jirl	zero, \temp1, 0xc
+ 	.endm
  
- efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
 
 -- 
 2.43.0
