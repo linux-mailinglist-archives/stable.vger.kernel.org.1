@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964868CD3CF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7F88CD3E3
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 434BA2830ED
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 511AE1C204F7
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B94A2AE94;
-	Thu, 23 May 2024 13:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7514A635;
+	Thu, 23 May 2024 13:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWE8l/rA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJhrPn/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAD614B083;
-	Thu, 23 May 2024 13:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC43A14A60D;
+	Thu, 23 May 2024 13:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470326; cv=none; b=s839EvFTM1RxwLy6exL1jfySaWW2GGW5EhazrbjVmU0iWpVyyVS9+RAB2sxj+pH+NkW+0RV2phL5mNcIjU4uPIFciEaSxd2gE+nSRF5blnDUT0tYO5E4yuZnDbdFZIVgQVeIPzbZmeJVNZdCz/JlKPdQZ5y/GERWNEL4Rp2hb98=
+	t=1716470368; cv=none; b=Q2IFldf4l1Ls1z+DTrFeXd9MXxWIl+FxwD28BBQ3bCBK0QVEVabOz1LE4s3hqQfaL2AUPhV1/lgDoj5X6UAQjqujinVib0s8NcUBCMzXD4cWgwNt4x10AmVP+a0lB6UBZRM9XmbBo9KDfCpeYM8T3W168/Todlw8+b7YsvKGA5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470326; c=relaxed/simple;
-	bh=gH//Nd+UlS+e4EDPhwTPdsUIF5hBHBLdZp2JgyKolaY=;
+	s=arc-20240116; t=1716470368; c=relaxed/simple;
+	bh=P85zy7sElETjaXHYQHVQtF7y/eE+/FQzZHtwH/UdagA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SE11uRukHQauBLeSr9OjvFpj+eZtl+JBiCq1vAjLyG4KPjRi17KlkA1nz/qdFjLDwxAv354e8KOmoZ2aqV9LcxZQS4RfLAsWpsHiQtO8QJyINpYFl/zRsEKQgUfKp2V1Gw+eopn7b940yDaxC0mVHybJoqWJXx6lzg5jIr5RbYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWE8l/rA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A12C3277B;
-	Thu, 23 May 2024 13:18:45 +0000 (UTC)
+	 MIME-Version; b=D87ICAMWXlfGv+xSCDyFWRbQ2awMZS5gAb7o0KN5MnmA8bsoR1kPAwjk/DaVn019Rv+KqcNLOMgz1MpiMINY+VBYM4uVxwvqRERpt9aHV6oP2Ra3uugDHqOAIYrWLQYATld2STNg3/Bp5cDpwAVnRiKYW3LuLktto/KCfqRHDX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJhrPn/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C319C4AF12;
+	Thu, 23 May 2024 13:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470325;
-	bh=gH//Nd+UlS+e4EDPhwTPdsUIF5hBHBLdZp2JgyKolaY=;
+	s=korg; t=1716470368;
+	bh=P85zy7sElETjaXHYQHVQtF7y/eE+/FQzZHtwH/UdagA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWE8l/rAffe50mPTwR7LFeOPb8kEwSwAA5zNHnYL166Yr2ezd3D50uGUgKMW5Q2Qi
-	 K8w71nPGUu2YTqQKqx45cxdlHKsHaqudwJ+FUBfZCCdL1V0EQe1VaoP5X2G84nMTWj
-	 tWrv9XSaalNdUVQGGsLQJNLQzFr2ZmI+jhVuUTXc=
+	b=kJhrPn/eSHlHwVNytbTEAYAbiD+6s3o/jc3zYbesHZ6JmjSCR9s2ObrHGFdEF0zFy
+	 oPx6JMVd7OAP5IpML80y04HBHRPUrtkrsQXgKQWnWPoqbXO3EFDktu6AFxps+7Kl9L
+	 TpVouiZvN0pG/39AeyeYS7ABn5liC79NhQG8+4f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shaoying Xu <shaoyi@amazon.com>
-Subject: [PATCH 5.15 08/23] tls: rx: simplify async wait
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 13/45] xfs,iomap: move delalloc punching to iomap
 Date: Thu, 23 May 2024 15:13:04 +0200
-Message-ID: <20240523130328.268096025@linuxfoundation.org>
+Message-ID: <20240523130332.994623346@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit 37943f047bfb88ba4dfc7a522563f57c86d088a0 upstream.
+[ Upstream commit 9c7babf94a0d686b552e53aded8d4703d1b8b92b ]
 
-Since we are protected from async completions by decrypt_compl_lock
-we can drop the async_notify and reinit the completion before we
-start waiting.
+Because that's what Christoph wants for this error handling path
+only XFS uses.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: aec7961916f3 ("tls: fix race between async notify and socket close")
-Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
+It requires a new iomap export for handling errors over delalloc
+ranges. This is basically the XFS code as is stands, but even though
+Christoph wants this as iomap funcitonality, we still have
+to call it from the filesystem specific ->iomap_end callback, and
+call into the iomap code with yet another filesystem specific
+callback to punch the delalloc extent within the defined ranges.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tls.h |    1 -
- net/tls/tls_sw.c  |   14 ++------------
- 2 files changed, 2 insertions(+), 13 deletions(-)
+ fs/iomap/buffered-io.c |   60 +++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/xfs/xfs_iomap.c     |   47 ++++++--------------------------------
+ include/linux/iomap.h  |    4 +++
+ 3 files changed, 72 insertions(+), 39 deletions(-)
 
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -150,7 +150,6 @@ struct tls_sw_context_rx {
- 	atomic_t decrypt_pending;
- 	/* protect crypto_wait with decrypt_pending*/
- 	spinlock_t decrypt_compl_lock;
--	bool async_notify;
- };
- 
- struct tls_record_info {
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -174,7 +174,6 @@ static void tls_decrypt_done(struct cryp
- 	struct scatterlist *sg;
- 	struct sk_buff *skb;
- 	unsigned int pages;
--	int pending;
- 
- 	skb = (struct sk_buff *)req->data;
- 	tls_ctx = tls_get_ctx(skb->sk);
-@@ -222,9 +221,7 @@ static void tls_decrypt_done(struct cryp
- 	kfree(aead_req);
- 
- 	spin_lock_bh(&ctx->decrypt_compl_lock);
--	pending = atomic_dec_return(&ctx->decrypt_pending);
--
--	if (!pending && ctx->async_notify)
-+	if (!atomic_dec_return(&ctx->decrypt_pending))
- 		complete(&ctx->async_wait.completion);
- 	spin_unlock_bh(&ctx->decrypt_compl_lock);
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -827,6 +827,66 @@ iomap_file_buffered_write(struct kiocb *
  }
-@@ -1917,7 +1914,7 @@ recv_end:
+ EXPORT_SYMBOL_GPL(iomap_file_buffered_write);
  
- 		/* Wait for all previously submitted records to be decrypted */
- 		spin_lock_bh(&ctx->decrypt_compl_lock);
--		ctx->async_notify = true;
-+		reinit_completion(&ctx->async_wait.completion);
- 		pending = atomic_read(&ctx->decrypt_pending);
- 		spin_unlock_bh(&ctx->decrypt_compl_lock);
- 		if (pending) {
-@@ -1929,15 +1926,8 @@ recv_end:
- 				decrypted = 0;
- 				goto end;
- 			}
--		} else {
--			reinit_completion(&ctx->async_wait.completion);
- 		}
++/*
++ * When a short write occurs, the filesystem may need to remove reserved space
++ * that was allocated in ->iomap_begin from it's ->iomap_end method. For
++ * filesystems that use delayed allocation, we need to punch out delalloc
++ * extents from the range that are not dirty in the page cache. As the write can
++ * race with page faults, there can be dirty pages over the delalloc extent
++ * outside the range of a short write but still within the delalloc extent
++ * allocated for this iomap.
++ *
++ * This function uses [start_byte, end_byte) intervals (i.e. open ended) to
++ * simplify range iterations, but converts them back to {offset,len} tuples for
++ * the punch callback.
++ */
++int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
++		struct iomap *iomap, loff_t pos, loff_t length,
++		ssize_t written,
++		int (*punch)(struct inode *inode, loff_t pos, loff_t length))
++{
++	loff_t			start_byte;
++	loff_t			end_byte;
++	int			blocksize = i_blocksize(inode);
++	int			error = 0;
++
++	if (iomap->type != IOMAP_DELALLOC)
++		return 0;
++
++	/* If we didn't reserve the blocks, we're not allowed to punch them. */
++	if (!(iomap->flags & IOMAP_F_NEW))
++		return 0;
++
++	/*
++	 * start_byte refers to the first unused block after a short write. If
++	 * nothing was written, round offset down to point at the first block in
++	 * the range.
++	 */
++	if (unlikely(!written))
++		start_byte = round_down(pos, blocksize);
++	else
++		start_byte = round_up(pos + written, blocksize);
++	end_byte = round_up(pos + length, blocksize);
++
++	/* Nothing to do if we've written the entire delalloc extent */
++	if (start_byte >= end_byte)
++		return 0;
++
++	/*
++	 * Lock the mapping to avoid races with page faults re-instantiating
++	 * folios and dirtying them via ->page_mkwrite between the page cache
++	 * truncation and the delalloc extent removal. Failing to do this can
++	 * leave dirty pages with no space reservation in the cache.
++	 */
++	filemap_invalidate_lock(inode->i_mapping);
++	truncate_pagecache_range(inode, start_byte, end_byte - 1);
++	error = punch(inode, start_byte, end_byte - start_byte);
++	filemap_invalidate_unlock(inode->i_mapping);
++
++	return error;
++}
++EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
++
+ static loff_t iomap_unshare_iter(struct iomap_iter *iter)
+ {
+ 	struct iomap *iomap = &iter->iomap;
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1123,12 +1123,12 @@ out_unlock:
+ static int
+ xfs_buffered_write_delalloc_punch(
+ 	struct inode		*inode,
+-	loff_t			start_byte,
+-	loff_t			end_byte)
++	loff_t			offset,
++	loff_t			length)
+ {
+ 	struct xfs_mount	*mp = XFS_M(inode->i_sb);
+-	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, start_byte);
+-	xfs_fileoff_t		end_fsb = XFS_B_TO_FSB(mp, end_byte);
++	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, offset);
++	xfs_fileoff_t		end_fsb = XFS_B_TO_FSB(mp, offset + length);
  
--		/* There can be no concurrent accesses, since we have no
--		 * pending decrypt operations
--		 */
--		WRITE_ONCE(ctx->async_notify, false);
+ 	return xfs_bmap_punch_delalloc_range(XFS_I(inode), start_fsb,
+ 				end_fsb - start_fsb);
+@@ -1143,13 +1143,9 @@ xfs_buffered_write_iomap_end(
+ 	unsigned		flags,
+ 	struct iomap		*iomap)
+ {
+-	struct xfs_mount	*mp = XFS_M(inode->i_sb);
+-	loff_t			start_byte;
+-	loff_t			end_byte;
+-	int			error = 0;
+ 
+-	if (iomap->type != IOMAP_DELALLOC)
+-		return 0;
++	struct xfs_mount	*mp = XFS_M(inode->i_sb);
++	int			error;
+ 
+ 	/*
+ 	 * Behave as if the write failed if drop writes is enabled. Set the NEW
+@@ -1160,35 +1156,8 @@ xfs_buffered_write_iomap_end(
+ 		written = 0;
+ 	}
+ 
+-	/* If we didn't reserve the blocks, we're not allowed to punch them. */
+-	if (!(iomap->flags & IOMAP_F_NEW))
+-		return 0;
 -
- 		/* Drain records from the rx_list & copy if required */
- 		if (is_peek || is_kvec)
- 			err = process_rx_list(ctx, msg, &control, copied,
+-	/*
+-	 * start_fsb refers to the first unused block after a short write. If
+-	 * nothing was written, round offset down to point at the first block in
+-	 * the range.
+-	 */
+-	if (unlikely(!written))
+-		start_byte = round_down(offset, mp->m_sb.sb_blocksize);
+-	else
+-		start_byte = round_up(offset + written, mp->m_sb.sb_blocksize);
+-	end_byte = round_up(offset + length, mp->m_sb.sb_blocksize);
+-
+-	/* Nothing to do if we've written the entire delalloc extent */
+-	if (start_byte >= end_byte)
+-		return 0;
+-
+-	/*
+-	 * Lock the mapping to avoid races with page faults re-instantiating
+-	 * folios and dirtying them via ->page_mkwrite between the page cache
+-	 * truncation and the delalloc extent removal. Failing to do this can
+-	 * leave dirty pages with no space reservation in the cache.
+-	 */
+-	filemap_invalidate_lock(inode->i_mapping);
+-	truncate_pagecache_range(inode, start_byte, end_byte - 1);
+-	error = xfs_buffered_write_delalloc_punch(inode, start_byte, end_byte);
+-	filemap_invalidate_unlock(inode->i_mapping);
++	error = iomap_file_buffered_write_punch_delalloc(inode, iomap, offset,
++			length, written, &xfs_buffered_write_delalloc_punch);
+ 	if (error && !xfs_is_shutdown(mp)) {
+ 		xfs_alert(mp, "%s: unable to clean up ino 0x%llx",
+ 			__func__, XFS_I(inode)->i_ino);
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -226,6 +226,10 @@ static inline const struct iomap *iomap_
+ 
+ ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
+ 		const struct iomap_ops *ops);
++int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
++		struct iomap *iomap, loff_t pos, loff_t length, ssize_t written,
++		int (*punch)(struct inode *inode, loff_t pos, loff_t length));
++
+ int iomap_read_folio(struct folio *folio, const struct iomap_ops *ops);
+ void iomap_readahead(struct readahead_control *, const struct iomap_ops *ops);
+ bool iomap_is_partially_uptodate(struct folio *, size_t from, size_t count);
 
 
 
