@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-45915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91158CD488
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E5B8CD418
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5801F22B9D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78C1C1F26B76
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D8F14A60D;
-	Thu, 23 May 2024 13:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6655A14B081;
+	Thu, 23 May 2024 13:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5d1QWdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWt5Kuig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7431D545;
-	Thu, 23 May 2024 13:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ED613BAC3;
+	Thu, 23 May 2024 13:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470729; cv=none; b=J2+xE3LrUG8nBVb7yqmATGBpj8M6/dCLpx0eu42au5hwZihcFXai4NNHmhkZymD/sVEbF4pm+SZ4tAmyY/db8Pcz8cC6w8fhA0TF03AXoJp/zFRieCSK1xCsqNWJQNEkNus8wsHxwJsb6wpOPiibKNGyV8In1de9Y/iA8YB5qEU=
+	t=1716470481; cv=none; b=sZWRJ7QHrlwTPrkToPHe7g/MiACoJc8r6K16koGtZxJD2rdDGP20TZgCKQIk7vxK+R44WFrYetXqUQrhpLBAih11wo28b6IF05v6PH4Ekpzjdjs90ZsUnt2i7KVB0M1l1xor5nkcl++yjAj+L4cY1sjsvY0ivgi/IjTRqrmkzqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470729; c=relaxed/simple;
-	bh=Ss9CPhF93q5yItXdI02jU9lHvW7OMFO4/kS+Bt74Rhc=;
+	s=arc-20240116; t=1716470481; c=relaxed/simple;
+	bh=ajltnXu+rIJOTxd//4AT/ip+njkOkMlCQXmBGiOn1Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuibMNPQWnrdHHlaf2QXYnz+BYnE/8ilM3sib8xjQijyo1goEJX488gQ9anP/6d1VTYU+bYcah0BEjpLQzns/FEkT9mmDQJT38nGqwcoZXIuHGiIXFjns+Z/z+ts76Y7dUzH5hqaY34r5OODDKzVCjpy/8+UUE51D6oVCI4SAKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5d1QWdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B99C32781;
-	Thu, 23 May 2024 13:25:28 +0000 (UTC)
+	 MIME-Version; b=R9qZ0Sru2W5LMggnQC9VWxMvdlWHL5UgsK4kTsDWDdaMgwFuRRzwY9x6j9ts8fHPyG2TB/HDjsA+dH0t64DdWUNA31wUAnuTIg7Dhqn7vrYg1B8bF9NR3SrsKINKLSiDDzMvahuj12li4YiZXLHiEoWxrgAj2sDBgCGKi5c4Yjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWt5Kuig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2867C2BD10;
+	Thu, 23 May 2024 13:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470729;
-	bh=Ss9CPhF93q5yItXdI02jU9lHvW7OMFO4/kS+Bt74Rhc=;
+	s=korg; t=1716470481;
+	bh=ajltnXu+rIJOTxd//4AT/ip+njkOkMlCQXmBGiOn1Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5d1QWdmrLT742Yc3lsezjopgL6XGVnEkpUykw+lsfsfTHKINeW7lL2HiMygt8UkN
-	 fZ2lIVfxdpQSQjozDI/aKltPNKPEJ9q6ejKxp2NRDZz8Pcf/4WiheeezHfzSNIYTRy
-	 wmAb3RoaLcG7adAn3KEN/gUcgsX5FdBBVPQSAHcg=
+	b=TWt5KuigrEfT4YSCQRtY6cB5eSzMg7HHLURnghoAwGQpPXF+grlgyEGTJqvIpZo5f
+	 tM8VLKWTHslVJbnq41Yl/0hFp2ltldbDdwfJFleCOt4cjQ4HMcHl9+C/Yin+X0Zilg
+	 n2XzBjXlLZ1SiudvSo8Giyh4BUHthXSYLPLp4eNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/102] cifs: Move some extern decls from .c files to .h
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.1 42/45] remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
 Date: Thu, 23 May 2024 15:13:33 +0200
-Message-ID: <20240523130345.034131795@linuxfoundation.org>
+Message-ID: <20240523130334.073081760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 5b142b37c70b1fa6936fa2d0babb0b8c16767d3a ]
+commit 331f91d86f71d0bb89a44217cc0b2a22810bbd42 upstream.
 
-Move the following:
+The IPI buffer location is read from the firmware that we load to the
+System Companion Processor, and it's not granted that both the SRAM
+(L2TCM) size that is defined in the devicetree node is large enough
+for that, and while this is especially true for multi-core SCP, it's
+still useful to check on single-core variants as well.
 
-        extern mempool_t *cifs_sm_req_poolp;
-        extern mempool_t *cifs_req_poolp;
-        extern mempool_t *cifs_mid_poolp;
-        extern bool disable_legacy_dialects;
+Failing to perform this check may make this driver perform R/W
+operations out of the L2TCM boundary, resulting (at best) in a
+kernel panic.
 
-from various .c files to cifsglob.h.
+To fix that, check that the IPI buffer fits, otherwise return a
+failure and refuse to boot the relevant SCP core (or the SCP at
+all, if this is single core).
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3efa0ea743b7 ("remoteproc/mediatek: read IPI buffer offset from FW")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240321084614.45253-2-angelogioacchino.delregno@collabora.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsfs.c   | 4 ----
- fs/smb/client/cifsglob.h | 2 ++
- fs/smb/client/connect.c  | 3 ---
- fs/smb/client/misc.c     | 3 ---
- 4 files changed, 2 insertions(+), 10 deletions(-)
+ drivers/remoteproc/mtk_scp.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 30bf754c9fc93..539ac9774de1b 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -150,10 +150,6 @@ MODULE_PARM_DESC(disable_legacy_dialects, "To improve security it may be "
- 				  "vers=1.0 (CIFS/SMB1) and vers=2.0 are weaker"
- 				  " and less secure. Default: n/N/0");
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -126,7 +126,7 @@ static int scp_elf_read_ipi_buf_addr(str
+ static int scp_ipi_init(struct mtk_scp *scp, const struct firmware *fw)
+ {
+ 	int ret;
+-	size_t offset;
++	size_t buf_sz, offset;
  
--extern mempool_t *cifs_sm_req_poolp;
--extern mempool_t *cifs_req_poolp;
--extern mempool_t *cifs_mid_poolp;
--
- struct workqueue_struct	*cifsiod_wq;
- struct workqueue_struct	*decrypt_wq;
- struct workqueue_struct	*fileinfo_put_wq;
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 70a12584375de..9597887280ff3 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -2112,6 +2112,8 @@ extern struct workqueue_struct *deferredclose_wq;
- extern struct workqueue_struct *serverclose_wq;
- extern __u32 cifs_lock_secret;
+ 	/* read the ipi buf addr from FW itself first */
+ 	ret = scp_elf_read_ipi_buf_addr(scp, fw, &offset);
+@@ -138,6 +138,14 @@ static int scp_ipi_init(struct mtk_scp *
+ 	}
+ 	dev_info(scp->dev, "IPI buf addr %#010zx\n", offset);
  
-+extern mempool_t *cifs_sm_req_poolp;
-+extern mempool_t *cifs_req_poolp;
- extern mempool_t *cifs_mid_poolp;
- 
- /* Operations for different SMB versions */
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 5acfd2057ca04..4e35970681bf0 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -52,9 +52,6 @@
- #include "fs_context.h"
- #include "cifs_swn.h"
- 
--extern mempool_t *cifs_req_poolp;
--extern bool disable_legacy_dialects;
--
- /* FIXME: should these be tunable? */
- #define TLINK_ERROR_EXPIRE	(1 * HZ)
- #define TLINK_IDLE_EXPIRE	(600 * HZ)
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index 669d27b4d414a..ad44f8d66b377 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -27,9 +27,6 @@
- #include "fs_context.h"
- #include "cached_dir.h"
- 
--extern mempool_t *cifs_sm_req_poolp;
--extern mempool_t *cifs_req_poolp;
--
- /* The xid serves as a useful identifier for each incoming vfs request,
-    in a similar way to the mid which is useful to track each sent smb,
-    and CurrentXid can also provide a running counter (although it
--- 
-2.43.0
-
++	/* Make sure IPI buffer fits in the L2TCM range assigned to this core */
++	buf_sz = sizeof(*scp->recv_buf) + sizeof(*scp->send_buf);
++
++	if (scp->sram_size < buf_sz + offset) {
++		dev_err(scp->dev, "IPI buffer does not fit in SRAM.\n");
++		return -EOVERFLOW;
++	}
++
+ 	scp->recv_buf = (struct mtk_share_obj __iomem *)
+ 			(scp->sram_base + offset);
+ 	scp->send_buf = (struct mtk_share_obj __iomem *)
 
 
 
