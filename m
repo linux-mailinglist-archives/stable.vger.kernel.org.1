@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-45750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9EAE8CD3B1
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812228CD3DE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9657F1C224BC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12DC1F25E16
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1D814B957;
-	Thu, 23 May 2024 13:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D2114AD3D;
+	Thu, 23 May 2024 13:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5rwJQyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkF6XE+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7832D14B954;
-	Thu, 23 May 2024 13:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3591814AD36;
+	Thu, 23 May 2024 13:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470254; cv=none; b=dNq9bC2nzeEyXNGux8PAIE+R26/Qo/D8CkB1hn62fRYxncSJgJH3oAdQOGOuKXyWjmrxGMP72j5X0ANN8pakv5b0v3z+X+GwOW/DIV9lRyFRMGOLQGtBg7fWBOfDPKuDVWYNAjLkEgEkWYHS0A+NTbhFjqfyu2Y3IjkaCD5XmZs=
+	t=1716470360; cv=none; b=FhDzM3oBs3tYyTYSGKs2os8YYMBzmHAGBHxV2QAJXNdYoBSry9k3y3KkmTSgfRXo5ufds2u1QcjALO9Hv3JfJPhOyyncel62G9TsCNJF5YgU19sb9PSi/94QggQiJEHog/yjRCECK27aWGnAH6hBZZMat6Af8YeIQCb2Z+Vd96g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470254; c=relaxed/simple;
-	bh=jo8W4rMzAlQ3BFN9Q7b2Q21pnLtD9DfGj/jF2tugkVo=;
+	s=arc-20240116; t=1716470360; c=relaxed/simple;
+	bh=DeVNXyER3vM85IiPX8KBsSPd06AXCdkdbgVFBEQqdgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWteFG5OkHnqWglkoFEfpC0nM6f7gxkP/Q3gnXoddzqW5BNIH3iVJrsBwUat0A/CMeDv9No+MDyeV6sW4llCSZaCQ0nqsstxrylshSIjLgZBSO6PFwS1zNRXMnLBKVnTc1BuLxMXBBktKvlCGKOxFvcXmWlICI4dBIryJeV0U8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5rwJQyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F11C3277B;
-	Thu, 23 May 2024 13:17:33 +0000 (UTC)
+	 MIME-Version; b=Ybgy88ZT26CPw5dqzwRZT87fKm6R89moNpyBI5vvUT7jGF/05t/enu7mHbrugQp7vYothgIurgEIL8HNILZzxa/ExP/J2e4SWebj8PjWaqYn/C83fQd1Lvlzt6cdDfMEIZt8aYXxmfKHK/xxp6aSVRCOB0938e3RYW3Cp6JLjhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkF6XE+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C69C32782;
+	Thu, 23 May 2024 13:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470254;
-	bh=jo8W4rMzAlQ3BFN9Q7b2Q21pnLtD9DfGj/jF2tugkVo=;
+	s=korg; t=1716470360;
+	bh=DeVNXyER3vM85IiPX8KBsSPd06AXCdkdbgVFBEQqdgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5rwJQyyXI499L1WpXbDV0+vQR3Tlp1PnFS4GaxdDdOqkJQWYBZDTEh1ia0+0QXze
-	 tk3HE3sIGG3yerQa7W5rI9YMYzvvDCbJ+eQ+dS/kua15RuZ4ubdwIY78Qv38WhhACe
-	 2hNC4qXHYUBe7NP36tWg9rvZvM7ykENpUyHUcHec=
+	b=wkF6XE+OEMi2QkEEXdHub8gTfst6aCCwh6186DWhkING5lgK4WVXkvbnNAuSmmRB+
+	 gqbf38VSm9XlKf/MvHq75qlDIG8CPqGu7bWxMt+YOdefkJfle1XsFe21PXLAbEn2Zz
+	 IS9QA2L0WgBrTeobRFxMOq8Agt6SLg9SU3LZa2bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco@wolfvision.net>
-Subject: [PATCH 6.9 15/25] usb: typec: tipd: fix event checking for tps6598x
-Date: Thu, 23 May 2024 15:13:00 +0200
-Message-ID: <20240523130330.962668355@linuxfoundation.org>
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 10/45] xfs: write page faults in iomap are not buffered writes
+Date: Thu, 23 May 2024 15:13:01 +0200
+Message-ID: <20240523130332.884192289@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,153 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco@wolfvision.net>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit 409c1cfb5a803f3cf2d17aeaf75c25c4be951b07 upstream.
+[ Upstream commit 118e021b4b66f758f8e8f21dc0e5e0a4c721e69e ]
 
-The current interrupt service routine of the tps6598x only reads the
-first 64 bits of the INT_EVENT1 and INT_EVENT2 registers, which means
-that any event above that range will be ignored, leaving interrupts
-unattended. Moreover, those events will not be cleared, and the device
-will keep the interrupt enabled.
+When we reserve a delalloc region in xfs_buffered_write_iomap_begin,
+we mark the iomap as IOMAP_F_NEW so that the the write context
+understands that it allocated the delalloc region.
 
-This issue has been observed while attempting to load patches, and the
-'ReadyForPatch' field (bit 81) of INT_EVENT1 was set.
+If we then fail that buffered write, xfs_buffered_write_iomap_end()
+checks for the IOMAP_F_NEW flag and if it is set, it punches out
+the unused delalloc region that was allocated for the write.
 
-Given that older versions of the tps6598x (1, 2 and 6) provide 8-byte
-registers, a mechanism based on the upper byte of the version register
-(0x0F) has been included. The manufacturer has confirmed [1] that this
-byte is always 0 for older versions, and either 0xF7 (DH parts) or 0xF9
-(DK parts) is returned in newer versions (7 and 8).
+The assumption this code makes is that all buffered write operations
+that can allocate space are run under an exclusive lock (i_rwsem).
+This is an invalid assumption: page faults in mmap()d regions call
+through this same function pair to map the file range being faulted
+and this runs only holding the inode->i_mapping->invalidate_lock in
+shared mode.
 
-Read the complete INT_EVENT registers to handle all interrupts generated
-by the device and account for the hardware version to select the
-register size.
+IOWs, we can have races between page faults and write() calls that
+fail the nested page cache write operation that result in data loss.
+That is, the failing iomap_end call will punch out the data that
+the other racing iomap iteration brought into the page cache. This
+can be reproduced with generic/34[46] if we arbitrarily fail page
+cache copy-in operations from write() syscalls.
 
-Link: https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1346521/tps65987d-register-command-to-distinguish-between-tps6591-2-6-and-tps65987-8 [1]
-Fixes: 0a4c005bd171 ("usb: typec: driver for TI TPS6598x USB Power Delivery controllers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
-Link: https://lore.kernel.org/r/20240429-tps6598x_fix_event_handling-v3-2-4e8e58dce489@wolfvision.net
+Code analysis tells us that the iomap_page_mkwrite() function holds
+the already instantiated and uptodate folio locked across the iomap
+mapping iterations. Hence the folio cannot be removed from memory
+whilst we are mapping the range it covers, and as such we do not
+care if the mapping changes state underneath the iomap iteration
+loop:
+
+1. if the folio is not already dirty, there is no writeback races
+   possible.
+2. if we allocated the mapping (delalloc or unwritten), the folio
+   cannot already be dirty. See #1.
+3. If the folio is already dirty, it must be up to date. As we hold
+   it locked, it cannot be reclaimed from memory. Hence we always
+   have valid data in the page cache while iterating the mapping.
+4. Valid data in the page cache can exist when the underlying
+   mapping is DELALLOC, UNWRITTEN or WRITTEN. Having the mapping
+   change from DELALLOC->UNWRITTEN or UNWRITTEN->WRITTEN does not
+   change the data in the page - it only affects actions if we are
+   initialising a new page. Hence #3 applies  and we don't care
+   about these extent map transitions racing with
+   iomap_page_mkwrite().
+5. iomap_page_mkwrite() checks for page invalidation races
+   (truncate, hole punch, etc) after it locks the folio. We also
+   hold the mapping->invalidation_lock here, and hence the mapping
+   cannot change due to extent removal operations while we are
+   iterating the folio.
+
+As such, filesystems that don't use bufferheads will never fail
+the iomap_folio_mkwrite_iter() operation on the current mapping,
+regardless of whether the iomap should be considered stale.
+
+Further, the range we are asked to iterate is limited to the range
+inside EOF that the folio spans. Hence, for XFS, we will only map
+the exact range we are asked for, and we will only do speculative
+preallocation with delalloc if we are mapping a hole at the EOF
+page. The iterator will consume the entire range of the folio that
+is within EOF, and anything beyond the EOF block cannot be accessed.
+We never need to truncate this post-EOF speculative prealloc away in
+the context of the iomap_page_mkwrite() iterator because if it
+remains unused we'll remove it when the last reference to the inode
+goes away.
+
+Hence we don't actually need an .iomap_end() cleanup/error handling
+path at all for iomap_page_mkwrite() for XFS. This means we can
+separate the page fault processing from the complexity of the
+.iomap_end() processing in the buffered write path. This also means
+that the buffered write path will also be able to take the
+mapping->invalidate_lock as necessary.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tipd/core.c     |   45 +++++++++++++++++++++++++++-----------
- drivers/usb/typec/tipd/tps6598x.h |   11 +++++++++
- 2 files changed, 43 insertions(+), 13 deletions(-)
+ fs/xfs/xfs_file.c  |    2 +-
+ fs/xfs/xfs_iomap.c |    9 +++++++++
+ fs/xfs/xfs_iomap.h |    1 +
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -28,6 +28,7 @@
- #define TPS_REG_MODE			0x03
- #define TPS_REG_CMD1			0x08
- #define TPS_REG_DATA1			0x09
-+#define TPS_REG_VERSION			0x0F
- #define TPS_REG_INT_EVENT1		0x14
- #define TPS_REG_INT_EVENT2		0x15
- #define TPS_REG_INT_MASK1		0x16
-@@ -636,49 +637,67 @@ err_unlock:
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -1325,7 +1325,7 @@ __xfs_filemap_fault(
+ 		if (write_fault) {
+ 			xfs_ilock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+ 			ret = iomap_page_mkwrite(vmf,
+-					&xfs_buffered_write_iomap_ops);
++					&xfs_page_mkwrite_iomap_ops);
+ 			xfs_iunlock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+ 		} else {
+ 			ret = filemap_fault(vmf);
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1187,6 +1187,15 @@ const struct iomap_ops xfs_buffered_writ
+ 	.iomap_end		= xfs_buffered_write_iomap_end,
+ };
  
- static irqreturn_t tps6598x_interrupt(int irq, void *data)
- {
-+	int intev_len = TPS_65981_2_6_INTEVENT_LEN;
- 	struct tps6598x *tps = data;
--	u64 event1 = 0;
--	u64 event2 = 0;
-+	u64 event1[2] = { };
-+	u64 event2[2] = { };
-+	u32 version;
- 	u32 status;
- 	int ret;
- 
- 	mutex_lock(&tps->lock);
- 
--	ret = tps6598x_read64(tps, TPS_REG_INT_EVENT1, &event1);
--	ret |= tps6598x_read64(tps, TPS_REG_INT_EVENT2, &event2);
-+	ret = tps6598x_read32(tps, TPS_REG_VERSION, &version);
-+	if (ret)
-+		dev_warn(tps->dev, "%s: failed to read version (%d)\n",
-+			 __func__, ret);
++/*
++ * iomap_page_mkwrite() will never fail in a way that requires delalloc extents
++ * that it allocated to be revoked. Hence we do not need an .iomap_end method
++ * for this operation.
++ */
++const struct iomap_ops xfs_page_mkwrite_iomap_ops = {
++	.iomap_begin		= xfs_buffered_write_iomap_begin,
++};
 +
-+	if (TPS_VERSION_HW_VERSION(version) == TPS_VERSION_HW_65987_8_DH ||
-+	    TPS_VERSION_HW_VERSION(version) == TPS_VERSION_HW_65987_8_DK)
-+		intev_len = TPS_65987_8_INTEVENT_LEN;
-+
-+	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT1, event1, intev_len);
-+
-+	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT1, event1, intev_len);
- 	if (ret) {
--		dev_err(tps->dev, "%s: failed to read events\n", __func__);
-+		dev_err(tps->dev, "%s: failed to read event1\n", __func__);
- 		goto err_unlock;
- 	}
--	trace_tps6598x_irq(event1, event2);
-+	ret = tps6598x_block_read(tps, TPS_REG_INT_EVENT2, event2, intev_len);
-+	if (ret) {
-+		dev_err(tps->dev, "%s: failed to read event2\n", __func__);
-+		goto err_unlock;
-+	}
-+	trace_tps6598x_irq(event1[0], event2[0]);
- 
--	if (!(event1 | event2))
-+	if (!(event1[0] | event1[1] | event2[0] | event2[1]))
- 		goto err_unlock;
- 
- 	if (!tps6598x_read_status(tps, &status))
- 		goto err_clear_ints;
- 
--	if ((event1 | event2) & TPS_REG_INT_POWER_STATUS_UPDATE)
-+	if ((event1[0] | event2[0]) & TPS_REG_INT_POWER_STATUS_UPDATE)
- 		if (!tps6598x_read_power_status(tps))
- 			goto err_clear_ints;
- 
--	if ((event1 | event2) & TPS_REG_INT_DATA_STATUS_UPDATE)
-+	if ((event1[0] | event2[0]) & TPS_REG_INT_DATA_STATUS_UPDATE)
- 		if (!tps6598x_read_data_status(tps))
- 			goto err_clear_ints;
- 
- 	/* Handle plug insert or removal */
--	if ((event1 | event2) & TPS_REG_INT_PLUG_EVENT)
-+	if ((event1[0] | event2[0]) & TPS_REG_INT_PLUG_EVENT)
- 		tps6598x_handle_plug_event(tps, status);
- 
- err_clear_ints:
--	tps6598x_write64(tps, TPS_REG_INT_CLEAR1, event1);
--	tps6598x_write64(tps, TPS_REG_INT_CLEAR2, event2);
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR1, event1, intev_len);
-+	tps6598x_block_write(tps, TPS_REG_INT_CLEAR2, event2, intev_len);
- 
- err_unlock:
- 	mutex_unlock(&tps->lock);
- 
--	if (event1 | event2)
-+	if (event1[0] | event1[1] | event2[0] | event2[1])
- 		return IRQ_HANDLED;
-+
- 	return IRQ_NONE;
+ static int
+ xfs_read_iomap_begin(
+ 	struct inode		*inode,
+--- a/fs/xfs/xfs_iomap.h
++++ b/fs/xfs/xfs_iomap.h
+@@ -47,6 +47,7 @@ xfs_aligned_fsb_count(
  }
  
---- a/drivers/usb/typec/tipd/tps6598x.h
-+++ b/drivers/usb/typec/tipd/tps6598x.h
-@@ -253,4 +253,15 @@
- #define TPS_PTCC_DEV				2
- #define TPS_PTCC_APP				3
- 
-+/* Version Register */
-+#define TPS_VERSION_HW_VERSION_MASK            GENMASK(31, 24)
-+#define TPS_VERSION_HW_VERSION(x)              TPS_FIELD_GET(TPS_VERSION_HW_VERSION_MASK, (x))
-+#define TPS_VERSION_HW_65981_2_6               0x00
-+#define TPS_VERSION_HW_65987_8_DH              0xF7
-+#define TPS_VERSION_HW_65987_8_DK              0xF9
-+
-+/* Int Event Register length */
-+#define TPS_65981_2_6_INTEVENT_LEN             8
-+#define TPS_65987_8_INTEVENT_LEN               11
-+
- #endif /* __TPS6598X_H__ */
+ extern const struct iomap_ops xfs_buffered_write_iomap_ops;
++extern const struct iomap_ops xfs_page_mkwrite_iomap_ops;
+ extern const struct iomap_ops xfs_direct_write_iomap_ops;
+ extern const struct iomap_ops xfs_read_iomap_ops;
+ extern const struct iomap_ops xfs_seek_iomap_ops;
 
 
 
