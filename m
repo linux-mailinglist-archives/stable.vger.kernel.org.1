@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-45760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5026B8CD3BF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AA78CD3C4
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C05528517A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAEC21F25947
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6917814A632;
-	Thu, 23 May 2024 13:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54AF14AD0D;
+	Thu, 23 May 2024 13:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x385M5DN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZatVEcGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B5614A60D;
-	Thu, 23 May 2024 13:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BE82AE94;
+	Thu, 23 May 2024 13:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470283; cv=none; b=bDWbhQLapnhUtvLg4O7rp7JhhdwlKEvKVmP3vXja5mgJjVDgqvSJLzmvKXnJGdCChl/GdDduVijNjr2cFjil9/frjkC73VXa3Vkrn8y7EBCRuSDyQEmsV5iHgV1ilpw7y8KTvMg3DbpGU5e/I91Ye/JzvHbahDzqqXEDqbiJpwA=
+	t=1716470297; cv=none; b=Lx4Cs6VJWRn7FuEd6dA6DNFVkoLESYfY3Oi1k19rMemBGWv/qgrDWsWq/wIFulbh0HYy+M2W3fNxKfc6dPakawRLwPxJUCxwid3DNnW7lLzcafVsedJFV0yDcji6jFgBLvO2KMO4NTBSQhUMvjw9AizsUKAPKsONb2l26VjHAfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470283; c=relaxed/simple;
-	bh=SVfX7DG2cIf09x/+bi6h0LAuxaeB4G0kZAxUsJYExXo=;
+	s=arc-20240116; t=1716470297; c=relaxed/simple;
+	bh=9Wewl6hkz2i23EI/shFjVXCt+PeBPa/8rOD7usPn1yU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVYTPndiEsuQeAIo4Pf0X9eDWBGfUzZaF8ZWh9/63F2EouOhUezVFyh4u/Wlytt5IJIEZhTSf0ZmDFvXwYXpZjjF8G4hbAgnkj8C7inNQB59P/FrVxz9DwjMN9lQnVAF3xEnywtOHDxLS0PPZd7NzxKg/8ILKV75/31KpEX7OHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x385M5DN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E563C2BD10;
-	Thu, 23 May 2024 13:18:02 +0000 (UTC)
+	 MIME-Version; b=RxwrF2IQGBFXNSJdPdkMKuxdeGQ6dQFQyl/b1wOBO1Kp1pMGcN72IJ3BFdABuhy6SU8q6tODCGIIBxPNsbExk8WnoonMrnnDc1Vqg+dUoqkhEJcBsACTSHbcg99dOFf0iSXLGSwa8sN1Igm4ksu2Nk/aMoEQ4W4tI7Shab8I85o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZatVEcGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0CCC32781;
+	Thu, 23 May 2024 13:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470283;
-	bh=SVfX7DG2cIf09x/+bi6h0LAuxaeB4G0kZAxUsJYExXo=;
+	s=korg; t=1716470297;
+	bh=9Wewl6hkz2i23EI/shFjVXCt+PeBPa/8rOD7usPn1yU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x385M5DNbQAbGkvkV6O3dM4vhYbcPca72+x5hUR33nC+mFBJVDrNNafchsl+LFPlE
-	 ctwZUV9THG335xYjrmU9ZDV0BPtFTICgSmBU6hFQH8DRbewL2/lFW1ReNKWhB5Nxcq
-	 LThWkz0Y2vOdCfUZwehy2XZ+rJ+5GJbHDNgjmznU=
+	b=ZatVEcGu7zxxN5lQTht8hDUXv3nyNCLlt+rU8d0VO0ujJVYZvmbW2t4LFZxByDNp7
+	 BUqzZS+3mr2ovQgDm0Br+GGl8bY7MmshDwqjz1wRfnCnE4MXAJEa8ptGd0WZOPZq6W
+	 G/dHXHdeG0pcs+7xQi64iG8ZvICacUPvu3zV+vAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 23/25] Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shaoying Xu <shaoyi@amazon.com>
+Subject: [PATCH 5.15 12/23] net: tls: handle backlogging of crypto requests
 Date: Thu, 23 May 2024 15:13:08 +0200
-Message-ID: <20240523130331.254667140@linuxfoundation.org>
+Message-ID: <20240523130328.418565055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 14e70e4660d6ecaf503c461f072949ef8758e4a1 upstream.
+commit 8590541473188741055d27b955db0777569438e3 upstream.
 
-To update effective size quota of DAMOS schemes on DAMON sysfs file
-interface, user should write 'update_schemes_effective_quotas' to the
-kdamond 'state' file.  But the document is mistakenly saying the input
-string as 'update_schemes_effective_bytes'.  Fix it (s/bytes/quotas/).
+Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
+requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
+ -EBUSY instead of -EINPROGRESS in valid situations. For example, when
+the cryptd queue for AESNI is full (easy to trigger with an
+artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
+to the backlog but still processed. In that case, the async callback
+will also be called twice: first with err == -EINPROGRESS, which it
+seems we can just ignore, then with err == 0.
 
-Link: https://lkml.kernel.org/r/20240503180318.72798-8-sj@kernel.org
-Fixes: a6068d6dfa2f ("Docs/admin-guide/mm/damon/usage: document effective_bytes file")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.9.x]
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Compared to Sabrina's original patch this version uses the new
+tls_*crypt_async_wait() helpers and converts the EBUSY to
+EINPROGRESS to avoid having to modify all the error handling
+paths. The handling is identical.
+
+Fixes: a54667f6728c ("tls: Add support for encryption using async offload accelerator")
+Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
+Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66983f28.1694018970.git.sd@queasysnail.net/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[v5.15: fixed contextual merge-conflicts in tls_decrypt_done and tls_encrypt_done]
+Cc: <stable@vger.kernel.org> # 5.15
+Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -153,7 +153,7 @@ Users can write below commands for the k
- - ``clear_schemes_tried_regions``: Clear the DAMON-based operating scheme
-   action tried regions directory for each DAMON-based operation scheme of the
-   kdamond.
--- ``update_schemes_effective_bytes``: Update the contents of
-+- ``update_schemes_effective_quotas``: Update the contents of
-   ``effective_bytes`` files for each DAMON-based operation scheme of the
-   kdamond.  For more details, refer to :ref:`quotas directory <sysfs_quotas>`.
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -175,6 +175,17 @@ static void tls_decrypt_done(struct cryp
+ 	struct sk_buff *skb;
+ 	unsigned int pages;
  
-@@ -342,7 +342,7 @@ Based on the user-specified :ref:`goal <
- effective size quota is further adjusted.  Reading ``effective_bytes`` returns
- the current effective size quota.  The file is not updated in real time, so
- users should ask DAMON sysfs interface to update the content of the file for
--the stats by writing a special keyword, ``update_schemes_effective_bytes`` to
-+the stats by writing a special keyword, ``update_schemes_effective_quotas`` to
- the relevant ``kdamonds/<N>/state`` file.
++	/* If requests get too backlogged crypto API returns -EBUSY and calls
++	 * ->complete(-EINPROGRESS) immediately followed by ->complete(0)
++	 * to make waiting for backlog to flush with crypto_wait_req() easier.
++	 * First wait converts -EBUSY -> -EINPROGRESS, and the second one
++	 * -EINPROGRESS -> 0.
++	 * We have a single struct crypto_async_request per direction, this
++	 * scheme doesn't help us, so just ignore the first ->complete().
++	 */
++	if (err == -EINPROGRESS)
++		return;
++
+ 	skb = (struct sk_buff *)req->data;
+ 	tls_ctx = tls_get_ctx(skb->sk);
+ 	ctx = tls_sw_ctx_rx(tls_ctx);
+@@ -273,6 +284,10 @@ static int tls_do_decryption(struct sock
+ 	}
  
- Under ``weights`` directory, three files (``sz_permil``,
+ 	ret = crypto_aead_decrypt(aead_req);
++	if (ret == -EBUSY) {
++		ret = tls_decrypt_async_wait(ctx);
++		ret = ret ?: -EINPROGRESS;
++	}
+ 	if (ret == -EINPROGRESS) {
+ 		if (darg->async)
+ 			return 0;
+@@ -455,6 +470,9 @@ static void tls_encrypt_done(struct cryp
+ 	struct tls_rec *rec;
+ 	bool ready = false;
+ 
++	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
++		return;
++
+ 	rec = container_of(aead_req, struct tls_rec, aead_req);
+ 	msg_en = &rec->msg_encrypted;
+ 
+@@ -551,6 +569,10 @@ static int tls_do_encryption(struct sock
+ 	atomic_inc(&ctx->encrypt_pending);
+ 
+ 	rc = crypto_aead_encrypt(aead_req);
++	if (rc == -EBUSY) {
++		rc = tls_encrypt_async_wait(ctx);
++		rc = rc ?: -EINPROGRESS;
++	}
+ 	if (!rc || rc != -EINPROGRESS) {
+ 		atomic_dec(&ctx->encrypt_pending);
+ 		sge->offset -= prot->prepend_size;
 
 
 
