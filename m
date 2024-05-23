@@ -1,120 +1,137 @@
-Return-Path: <stable+bounces-45983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098018CDA07
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 20:36:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44E58CDA1C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 20:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAB772822B3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 18:36:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72DCA1F2239D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 18:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62047604F;
-	Thu, 23 May 2024 18:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7190763E6;
+	Thu, 23 May 2024 18:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHHR9fm7"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sVc84db7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32587433A4;
-	Thu, 23 May 2024 18:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52586187F
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 18:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716489359; cv=none; b=ZZLktG4s+MasqHGyUxPIfbJI4tpEMcRJ2vuCaHfxdqS3RLSDp23MJSq0P8NO9Syqi3yI+9ikipFlD0u8eiNEjxuQetO27+JvBX79bsCI71cw7HQG77XUsBcgDVFLlqEb2nVGEZSgvCUsyJuj33NVHE5ndsD05+MDgrcwqKLLI+8=
+	t=1716489845; cv=none; b=VQEad4cWjApckRPi/3PfwgVEKuruxJToBDWJ2TCN05ShO+Pv3e1gUo1AiNGv6FBUT/67JXM3uAJsDlxl+yT9sXXMTK4fRapGZCPkUlegxOEiDiDHXgKyU1HA4OXpGv5PZx8kbmQ3rQkUXM5N4P1xD6jQ6xMa4JE+qEGm5ZZ8/tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716489359; c=relaxed/simple;
-	bh=e1g4M6PP/Tu52fL0+f5mEFTHjeQVpZLqOhGBVTnrLWE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lf4s0ZdI7KQ9YE+k4q5UoD4x0En3ewkWG+IO0nJXa0IcKPLIzXdOvfFyBNtpIfZtZXuCABDiTIrOdrKEs2Te85bxzdEkbw3mj0nNx1Em8vmKeAJ0MiKFiL9R+jgaiyh+HatU/05WZSpOW9Sz3HIRaccAAi7QaQzg9RaJiaOULZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHHR9fm7; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6a3652a732fso13417156d6.3;
-        Thu, 23 May 2024 11:35:57 -0700 (PDT)
+	s=arc-20240116; t=1716489845; c=relaxed/simple;
+	bh=Iq0e9vMRPjrgBBUGWR5a+1x2pGIRgPq6aHNB3OhZfzI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qsX28DednLWqRvg1ajPHGQlAilpEiWc0nsqLeMf2BrnxIvLg6Nee31+JXoaEykf4R8rTq1U16h4xTpKt78zAaXgFrJhvl6vg/KZ3tvQp3efLzo6gjGQEDAZkYjlKLXJsNsTHqy9oO6KPr86bBOMBx8LRbA6cZiTvX9P+Vuk8Tls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sVc84db7; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-6f8edbb8eb2so72545b3a.3
+        for <stable@vger.kernel.org>; Thu, 23 May 2024 11:44:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716489357; x=1717094157; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AcM1HEYW+RYXL509g3aAc7ycNKgv1hXSbOH207bKEdQ=;
-        b=ZHHR9fm76DTpkKvPFI+5FBdZwfxppFAuwmiyGwE73qwYm+oSJhzpF8vMGEZ8aMNm8H
-         Qr6rA5jJsI6K2+LXL14xsingKoCny3egQIwJLLS5aNpR3YV1nFUxBS3dPa17P5eaY7L0
-         h5u4RYt03PwsPYUhxrk13EjMWp0ZN0gSAvnaozHwLDvPYO8ra4mqHlyv/bHsFyBict+A
-         elDfxNSkBCaFIc2NrbRZ2F01sYLlt5lvQkTpGp2s6jLeDUdXUc5DBye7RyVIuecggMKS
-         hU8LTVK0d1ojUIiEkEFfDikJG5Pwc0MsMjSDp91xH4yxEM0qIo1DCqvbDeKvhmqNM3D2
-         8tZA==
+        d=google.com; s=20230601; t=1716489843; x=1717094643; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OJhYo6Bm4ilNPJnxKHarAOV2HozYAcvQZlVRjigniR0=;
+        b=sVc84db7UM7or8qNAa6IRZ3Rtc8hBAQFWnNFGCFCXdBHVYMe5oNl8yCkDruhdUzXbR
+         Q/5IH8s8wqEFXtDmcd7BPPHhrW8hcIbUtwqZv5BvOwlnSh0w55fvb90Rb38IeShghXWU
+         YblfprEyOZ7Bjt9Hx6jCkym/x3YdSWXyqs0WTxzRPAwWYFEdxGb/oodNe2PYIqsg7TOz
+         PagYbXmdIFp8XgUCzh0ZVTgm4EJLxh/joY37wZQ21BmR9mJ3OrnzaiiE8DYm9pGXzOGk
+         P+WWGXPZeEx2kRrDkN+nLOwr84nPx5SmzJ/E+9J1pXrTPYdIEVXPuH/TFhxNz4wyxlnl
+         rquw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716489357; x=1717094157;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AcM1HEYW+RYXL509g3aAc7ycNKgv1hXSbOH207bKEdQ=;
-        b=BdeZjoDp9A8VOsWi3rlAezqz4HoGjgylJIRfCNGEfmYK8+qbIm6K6QO9IHPqwEomHE
-         z3U4E0CkrD9PnJuswL2XsWReIHCdmJiFr0hG5rwFeXGS2t60BJk4yrZHhESOB3WAg/h7
-         F4xSDjKSRwp6LCmn8fzU4BxCHRG4C7yh2xqxUcdBVk9S9fkF9Lnnif/pOkDHTtFMW0Sj
-         cAi+G+qk/7UQtL3HdtW5JfWoEmh5dvUKSRXYFamhsm+tuF0x6k2H8TKwsvh33UisiSiJ
-         SoqLL5IG1DoScsS0WG9WRlWRmHAx1UVGF4pagxLVcOGzoz4fCWJtx+uDq3MwpPeURWBL
-         EWVw==
-X-Forwarded-Encrypted: i=1; AJvYcCX7yHKprAISg2XXUBnKLR3DWbJ++yUi3Jzn8y5py6d2prwUlkmLRn819hWcsqdwwYhOGLjp0buhPMnOfHDYD9ROhrgYJJw0WIDYwfV164WCqFkfTmakckdbUHQQw/gL1aSo8iM2
-X-Gm-Message-State: AOJu0Yyc+fd2qSVEv3HWZNVqRgZi+78MYnBzOvH9BDqOvbVcma3P8mJS
-	mYciB1NGJ3kFqn5TkdO41w0oKyWbGImki8nfLFfLOIy6aKYKtKuo
-X-Google-Smtp-Source: AGHT+IHsvP5Q7DiWwyS3W7rrKp1gK0kHW8+e5/rS/l628A9sPfGlzh23EaHca7OdXue0kQSpK451lw==
-X-Received: by 2002:a05:6214:911:b0:6ab:898b:42e7 with SMTP id 6a1803df08f44-6ab898b4406mr34770196d6.65.1716489357055;
-        Thu, 23 May 2024 11:35:57 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id 6a1803df08f44-6a941c29753sm51784136d6.18.2024.05.23.11.35.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 May 2024 11:35:56 -0700 (PDT)
-Message-ID: <44c42a1a-00d4-4d74-93cb-fb97be9191ea@gmail.com>
-Date: Thu, 23 May 2024 11:35:53 -0700
+        d=1e100.net; s=20230601; t=1716489843; x=1717094643;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OJhYo6Bm4ilNPJnxKHarAOV2HozYAcvQZlVRjigniR0=;
+        b=RmiNHiYk1qiiDelYVHLFTZsuRzf/y3SOlqVjryZmteUx0DJo/ovppRYIah+S6vsLdw
+         oeZAMzJG3gs16RYbSoAH16tEgffLAXigkDzzOj3MSgHjkLpsKwekH/pbC/aFFfYoXQDp
+         uLOgOk7kwl83v21VyZc4uQ1F4fChJfB6xghsaodRfi+wAhDUFTeKyar/I7t6/V9l25qr
+         wK16QHhVLjTyvwXgQSefkjoSyb1P1gKfq2p/WmY/9Mpr/Q65mqtA31JUy7/4orLi4ILM
+         Q9CsHNrx9rqcPtv7bnZtM+SNEb+1LG7KsBWWjNE1iKAKw3YepXM+5k+vUE0ui5nyaukY
+         qc2A==
+X-Gm-Message-State: AOJu0YwCI69phazSJ8EUMezw1MtSRUE1owzPiR3gCmeuYS0TsapGSox3
+	W/Yj9LpsQod0XxTQs9I0JiyEoButz68E8/bta79ucBrEeq7ukpLQPXOmwDnv3SSo1X9Nz4Fdqyk
+	SU9EYsX+NTw62adv2ESpTmdpV9pnS3rj1C3RH1l8IgzkxCHVYzR/3S6z0w75S7gX9lSZl1oEkII
+	MsWb4FHQ+jk7rdH84nfb0lkj7eoeHp18wqoA3USTkH9Nk=
+X-Google-Smtp-Source: AGHT+IHKUfDeimC0/rDT0mcqu1Am2UJtvorQLLyc8/s4mUg6/IXXzhx4+WLcJE50DvDe/rr4WDysyWUAW7EH1w==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a05:6a00:3927:b0:6ea:8a0d:185f with SMTP
+ id d2e1a72fcca58-6f8f2e67626mr896b3a.2.1716489843188; Thu, 23 May 2024
+ 11:44:03 -0700 (PDT)
+Date: Thu, 23 May 2024 18:43:52 +0000
+In-Reply-To: <2024052313-runner-spree-04c1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 00/15] 5.10.218-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240523130326.451548488@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <2024052313-runner-spree-04c1@gregkh>
+X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
+Message-ID: <20240523184352.1541595-1-cmllamas@google.com>
+Subject: [PATCH 5.10.y] binder: fix max_thread type inconsistency
+From: Carlos Llamas <cmllamas@google.com>
+To: stable@vger.kernel.org
+Cc: Carlos Llamas <cmllamas@google.com>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/23/24 06:12, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.218 release.
-> There are 15 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.218-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+commit 42316941335644a98335f209daafa4c122f28983 upstream.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
+size_t to __u32 in order to avoid incompatibility issues between 32 and
+64-bit kernels. However, the internal types used to copy from user and
+store the value were never updated. Use u32 to fix the inconsistency.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS =
+declaration")
+Reported-by: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240421173750.3117808-1-cmllamas@google.co=
+m
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[cmllamas: resolve minor conflicts due to missing commit 421518a2740f]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index bcbaa4d6a0ff..6631a65f632b 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -476,7 +476,7 @@ struct binder_proc {
+ 	struct list_head todo;
+ 	struct binder_stats stats;
+ 	struct list_head delivered_death;
+-	int max_threads;
++	u32 max_threads;
+ 	int requested_threads;
+ 	int requested_threads_started;
+ 	int tmp_ref;
+@@ -5408,7 +5408,7 @@ static long binder_ioctl(struct file *filp, unsigned =
+int cmd, unsigned long arg)
+ 			goto err;
+ 		break;
+ 	case BINDER_SET_MAX_THREADS: {
+-		int max_threads;
++		u32 max_threads;
+=20
+ 		if (copy_from_user(&max_threads, ubuf,
+ 				   sizeof(max_threads))) {
+--=20
+2.45.1.288.g0e0cd299f1-goog
 
 
