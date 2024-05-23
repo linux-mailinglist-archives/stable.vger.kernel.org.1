@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B567B8CD46E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811118CD3F0
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70172281039
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E754A1F26AD2
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E70114A4E9;
-	Thu, 23 May 2024 13:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD7614A60E;
+	Thu, 23 May 2024 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcRNbzQQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/BchWFc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F3A13B7AE;
-	Thu, 23 May 2024 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F3D14A605;
+	Thu, 23 May 2024 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470662; cv=none; b=aCsNTHkgLdKpaRLzvt8oq31UxzdhK26BxINTqdov4i5ZKFqrs3XznFUd0ieEmOxq3VS+BirNFzREKz7LqM0BRDmSlKI8SdI8jK66tNtcREQMpqTKV9rIhPAbhFrtYlx6Mp5CxuS5cTKxICRKR0sHVRxATkK4sTmiKj76uPu2/PA=
+	t=1716470383; cv=none; b=JOIKqxG8oGqx0wU+UYxMp+SKN09RtF5ySS9Qgfib6XVHgKE9fmW0eCTJM4fD5wRlsvhE0qLGTgDIlQ5JigXaB02ba9UMauuQY7RRoa4UQCJ4iT7iWv4htZutWQTkTw1xYhv6rvTzZwH+AFy2g4e8j0C+3hO/p0zmOqk2FzEynx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470662; c=relaxed/simple;
-	bh=fBQTXv/2V5fuBrKrYoE2bD3dnNnlzFgOMYzoDWzuuzU=;
+	s=arc-20240116; t=1716470383; c=relaxed/simple;
+	bh=hdz4o+CDamjgLKKZE+49fJNUknFRGcmxg3VKH6BWGCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwBiw/dJSjJXEc4l54QhNGTnelgcZbwXyk9VYu3w4/mzSukvyzvP93DjLkCGG2K3kqmyCg2V5b/NtmvYB9WnUIY9ApIsYTwZ4RcGDKRIGtnG3quRw1PruLemqvtekUm79nELVN5M8++0ecZLlBorskp3TALp2yJzPxGkg+VOt+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcRNbzQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE3BC32781;
-	Thu, 23 May 2024 13:24:22 +0000 (UTC)
+	 MIME-Version; b=ooZWGUE7urKB/tMzRAq8XzM/SdbzjBx2/m8rqdA3seRqOhmF8Xj/FymbsTSd1YhZuAT+pZbOZVPENmKcHxQOlC8w8zHYT2BXu+OBAJo1FXnrjHzpAem4w8ibcy5e+dqMS6N5AAnC+KNrxePL5Jqpt1ngnfOxsmYlLiV30uAiuo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/BchWFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EF5C2BD10;
+	Thu, 23 May 2024 13:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470662;
-	bh=fBQTXv/2V5fuBrKrYoE2bD3dnNnlzFgOMYzoDWzuuzU=;
+	s=korg; t=1716470382;
+	bh=hdz4o+CDamjgLKKZE+49fJNUknFRGcmxg3VKH6BWGCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcRNbzQQRRUV5YnOAPPQNFZdck1kT07pDiSCdrHFK5jS0uS/xqKzuIF32wOEhrRqT
-	 C0j7n9d7a4ddvCfwQo4bJDEk0WVLNvKqsFc9+KsRZWftHIhu5Ht+NEwwjxBgvpD11K
-	 bPkXzAv3PSt7EPGpeaWH3OZmxN0RL+rs+Sm3jS1I=
+	b=c/BchWFc8rvCrSIqgdzzzR3cousJJF2YKmaW5jRoQqn+erUo3RCZZg9L/+rDr5jmc
+	 ccXrKhT0YyMiwj0btIK+MVc0IjM3DWQ0FjqJ9V9HbmfHq89K+dgdDH6THpLf6CQ/Nj
+	 q2uXV1OmLYNcx5S2a3oLr36tmg4mYLQQxpzs9LWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/102] smb: client: retry compound request without reusing lease
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 18/45] xfs: drop write error injection is unfixable, remove it
 Date: Thu, 23 May 2024 15:13:09 +0200
-Message-ID: <20240523130344.127635533@linuxfoundation.org>
+Message-ID: <20240523130333.180855255@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +62,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meetakshi Setiya <msetiya@microsoft.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit 71f15c90e785d1de4bcd65a279e7256684c25c0d ]
+[ Upstream commit 6e8af15ccdc4e138a5b529c1901a0013e1dcaa09 ]
 
-There is a shortcoming in the current implementation of the file
-lease mechanism exposed when the lease keys were attempted to be
-reused for unlink, rename and set_path_size operations for a client. As
-per MS-SMB2, lease keys are associated with the file name. Linux smb
-client maintains lease keys with the inode. If the file has any hardlinks,
-it is possible that the lease for a file be wrongly reused for an
-operation on the hardlink or vice versa. In these cases, the mentioned
-compound operations fail with STATUS_INVALID_PARAMETER.
-This patch adds a fallback to the old mechanism of not sending any
-lease with these compound operations if the request with lease key fails
-with STATUS_INVALID_PARAMETER.
-Resending the same request without lease key should not hurt any
-functionality, but might impact performance especially in cases where
-the error is not because of the usage of wrong lease key and we might
-end up doing an extra roundtrip.
+With the changes to scan the page cache for dirty data to avoid data
+corruptions from partial write cleanup racing with other page cache
+operations, the drop writes error injection no longer works the same
+way it used to and causes xfs/196 to fail. This is because xfs/196
+writes to the file and populates the page cache before it turns on
+the error injection and starts failing -overwrites-.
 
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The result is that the original drop-writes code failed writes only
+-after- overwriting the data in the cache, followed by invalidates
+the cached data, then punching out the delalloc extent from under
+that data.
+
+On the surface, this looks fine. The problem is that page cache
+invalidation *doesn't guarantee that it removes anything from the
+page cache* and it doesn't change the dirty state of the folio. When
+block size == page size and we do page aligned IO (as xfs/196 does)
+everything happens to align perfectly and page cache invalidation
+removes the single page folios that span the written data. Hence the
+followup delalloc punch pass does not find cached data over that
+range and it can punch the extent out.
+
+IOWs, xfs/196 "works" for block size == page size with the new
+code. I say "works", because it actually only works for the case
+where IO is page aligned, and no data was read from disk before
+writes occur. Because the moment we actually read data first, the
+readahead code allocates multipage folios and suddenly the
+invalidate code goes back to zeroing subfolio ranges without
+changing dirty state.
+
+Hence, with multipage folios in play, block size == page size is
+functionally identical to block size < page size behaviour, and
+drop-writes is manifestly broken w.r.t to this case. Invalidation of
+a subfolio range doesn't result in the folio being removed from the
+cache, just the range gets zeroed. Hence after we've sequentially
+walked over a folio that we've dirtied (via write data) and then
+invalidated, we end up with a dirty folio full of zeroed data.
+
+And because the new code skips punching ranges that have dirty
+folios covering them, we end up leaving the delalloc range intact
+after failing all the writes. Hence failed writes now end up
+writing zeroes to disk in the cases where invalidation zeroes folios
+rather than removing them from cache.
+
+This is a fundamental change of behaviour that is needed to avoid
+the data corruption vectors that exist in the old write fail path,
+and it renders the drop-writes injection non-functional and
+unworkable as it stands.
+
+As it is, I think the error injection is also now unnecessary, as
+partial writes that need delalloc extent are going to be a lot more
+common with stale iomap detection in place. Hence this patch removes
+the drop-writes error injection completely. xfs/196 can remain for
+testing kernels that don't have this data corruption fix, but those
+that do will report:
+
+xfs/196 3s ... [not run] XFS error injection drop_writes unknown on this kernel.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2inode.c | 41 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 38 insertions(+), 3 deletions(-)
+ fs/xfs/libxfs/xfs_errortag.h |   12 +++++-------
+ fs/xfs/xfs_error.c           |   27 ++++++++++++++++++++-------
+ fs/xfs/xfs_iomap.c           |    9 ---------
+ 3 files changed, 25 insertions(+), 23 deletions(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 0b7b083352919..add90eb8fc165 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -154,6 +154,17 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 	}
- 
- 	/* if there is an existing lease, reuse it */
+--- a/fs/xfs/libxfs/xfs_errortag.h
++++ b/fs/xfs/libxfs/xfs_errortag.h
+@@ -40,13 +40,12 @@
+ #define XFS_ERRTAG_REFCOUNT_FINISH_ONE			25
+ #define XFS_ERRTAG_BMAP_FINISH_ONE			26
+ #define XFS_ERRTAG_AG_RESV_CRITICAL			27
 +
-+	/*
-+	 * note: files with hardlinks cause unexpected behaviour. As per MS-SMB2,
-+	 * lease keys are associated with the filepath. We are maintaining lease keys
-+	 * with the inode on the client. If the file has hardlinks, it is possible
-+	 * that the lease for a file be reused for an operation on its hardlink or
-+	 * vice versa.
-+	 * As a workaround, send request using an existing lease key and if the server
-+	 * returns STATUS_INVALID_PARAMETER, which maps to EINVAL, send the request
-+	 * again without the lease.
-+	 */
- 	if (dentry) {
- 		inode = d_inode(dentry);
- 		if (CIFS_I(inode)->lease_granted && server->ops->get_lease_key) {
-@@ -874,11 +885,20 @@ int
- smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
- 	    struct cifs_sb_info *cifs_sb, struct dentry *dentry)
+ /*
+- * DEBUG mode instrumentation to test and/or trigger delayed allocation
+- * block killing in the event of failed writes. When enabled, all
+- * buffered writes are silenty dropped and handled as if they failed.
+- * All delalloc blocks in the range of the write (including pre-existing
+- * delalloc blocks!) are tossed as part of the write failure error
+- * handling sequence.
++ * Drop-writes support removed because write error handling cannot trash
++ * pre-existing delalloc extents in any useful way anymore. We retain the
++ * definition so that we can reject it as an invalid value in
++ * xfs_errortag_valid().
+  */
+ #define XFS_ERRTAG_DROP_WRITES				28
+ #define XFS_ERRTAG_LOG_BAD_CRC				29
+@@ -95,7 +94,6 @@
+ #define XFS_RANDOM_REFCOUNT_FINISH_ONE			1
+ #define XFS_RANDOM_BMAP_FINISH_ONE			1
+ #define XFS_RANDOM_AG_RESV_CRITICAL			4
+-#define XFS_RANDOM_DROP_WRITES				1
+ #define XFS_RANDOM_LOG_BAD_CRC				1
+ #define XFS_RANDOM_LOG_ITEM_PIN				1
+ #define XFS_RANDOM_BUF_LRU_REF				2
+--- a/fs/xfs/xfs_error.c
++++ b/fs/xfs/xfs_error.c
+@@ -46,7 +46,7 @@ static unsigned int xfs_errortag_random_
+ 	XFS_RANDOM_REFCOUNT_FINISH_ONE,
+ 	XFS_RANDOM_BMAP_FINISH_ONE,
+ 	XFS_RANDOM_AG_RESV_CRITICAL,
+-	XFS_RANDOM_DROP_WRITES,
++	0, /* XFS_RANDOM_DROP_WRITES has been removed */
+ 	XFS_RANDOM_LOG_BAD_CRC,
+ 	XFS_RANDOM_LOG_ITEM_PIN,
+ 	XFS_RANDOM_BUF_LRU_REF,
+@@ -162,7 +162,6 @@ XFS_ERRORTAG_ATTR_RW(refcount_continue_u
+ XFS_ERRORTAG_ATTR_RW(refcount_finish_one,	XFS_ERRTAG_REFCOUNT_FINISH_ONE);
+ XFS_ERRORTAG_ATTR_RW(bmap_finish_one,	XFS_ERRTAG_BMAP_FINISH_ONE);
+ XFS_ERRORTAG_ATTR_RW(ag_resv_critical,	XFS_ERRTAG_AG_RESV_CRITICAL);
+-XFS_ERRORTAG_ATTR_RW(drop_writes,	XFS_ERRTAG_DROP_WRITES);
+ XFS_ERRORTAG_ATTR_RW(log_bad_crc,	XFS_ERRTAG_LOG_BAD_CRC);
+ XFS_ERRORTAG_ATTR_RW(log_item_pin,	XFS_ERRTAG_LOG_ITEM_PIN);
+ XFS_ERRORTAG_ATTR_RW(buf_lru_ref,	XFS_ERRTAG_BUF_LRU_REF);
+@@ -206,7 +205,6 @@ static struct attribute *xfs_errortag_at
+ 	XFS_ERRORTAG_ATTR_LIST(refcount_finish_one),
+ 	XFS_ERRORTAG_ATTR_LIST(bmap_finish_one),
+ 	XFS_ERRORTAG_ATTR_LIST(ag_resv_critical),
+-	XFS_ERRORTAG_ATTR_LIST(drop_writes),
+ 	XFS_ERRORTAG_ATTR_LIST(log_bad_crc),
+ 	XFS_ERRORTAG_ATTR_LIST(log_item_pin),
+ 	XFS_ERRORTAG_ATTR_LIST(buf_lru_ref),
+@@ -256,6 +254,19 @@ xfs_errortag_del(
+ 	kmem_free(mp->m_errortag);
+ }
+ 
++static bool
++xfs_errortag_valid(
++	unsigned int		error_tag)
++{
++	if (error_tag >= XFS_ERRTAG_MAX)
++		return false;
++
++	/* Error out removed injection types */
++	if (error_tag == XFS_ERRTAG_DROP_WRITES)
++		return false;
++	return true;
++}
++
+ bool
+ xfs_errortag_test(
+ 	struct xfs_mount	*mp,
+@@ -277,7 +288,9 @@ xfs_errortag_test(
+ 	if (!mp->m_errortag)
+ 		return false;
+ 
+-	ASSERT(error_tag < XFS_ERRTAG_MAX);
++	if (!xfs_errortag_valid(error_tag))
++		return false;
++
+ 	randfactor = mp->m_errortag[error_tag];
+ 	if (!randfactor || prandom_u32_max(randfactor))
+ 		return false;
+@@ -293,7 +306,7 @@ xfs_errortag_get(
+ 	struct xfs_mount	*mp,
+ 	unsigned int		error_tag)
  {
--	return smb2_compound_op(xid, tcon, cifs_sb, name, DELETE, FILE_OPEN,
-+	int rc = smb2_compound_op(xid, tcon, cifs_sb, name, DELETE, FILE_OPEN,
- 				CREATE_DELETE_ON_CLOSE | OPEN_REPARSE_POINT,
- 				ACL_NO_MODE, NULL,
- 				&(int){SMB2_OP_DELETE}, 1,
- 				NULL, NULL, NULL, dentry);
-+	if (rc == -EINVAL) {
-+		cifs_dbg(FYI, "invalid lease key, resending request without lease");
-+		rc = smb2_compound_op(xid, tcon, cifs_sb, name, DELETE, FILE_OPEN,
-+				CREATE_DELETE_ON_CLOSE | OPEN_REPARSE_POINT,
-+				ACL_NO_MODE, NULL,
-+				&(int){SMB2_OP_DELETE}, 1,
-+				NULL, NULL, NULL, NULL);
-+	}
-+	return rc;
- }
+-	if (error_tag >= XFS_ERRTAG_MAX)
++	if (!xfs_errortag_valid(error_tag))
+ 		return -EINVAL;
  
- static int smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
-@@ -919,8 +939,14 @@ int smb2_rename_path(const unsigned int xid,
- 	drop_cached_dir_by_name(xid, tcon, from_name, cifs_sb);
- 	cifs_get_writable_path(tcon, from_name, FIND_WR_WITH_DELETE, &cfile);
+ 	return mp->m_errortag[error_tag];
+@@ -305,7 +318,7 @@ xfs_errortag_set(
+ 	unsigned int		error_tag,
+ 	unsigned int		tag_value)
+ {
+-	if (error_tag >= XFS_ERRTAG_MAX)
++	if (!xfs_errortag_valid(error_tag))
+ 		return -EINVAL;
  
--	return smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
-+	int rc = smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
- 				  co, DELETE, SMB2_OP_RENAME, cfile, source_dentry);
-+	if (rc == -EINVAL) {
-+		cifs_dbg(FYI, "invalid lease key, resending request without lease");
-+		rc = smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
-+				  co, DELETE, SMB2_OP_RENAME, cfile, NULL);
-+	}
-+	return rc;
- }
+ 	mp->m_errortag[error_tag] = tag_value;
+@@ -319,7 +332,7 @@ xfs_errortag_add(
+ {
+ 	BUILD_BUG_ON(ARRAY_SIZE(xfs_errortag_random_default) != XFS_ERRTAG_MAX);
  
- int smb2_create_hardlink(const unsigned int xid,
-@@ -949,11 +975,20 @@ smb2_set_path_size(const unsigned int xid, struct cifs_tcon *tcon,
- 	in_iov.iov_base = &eof;
- 	in_iov.iov_len = sizeof(eof);
- 	cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
--	return smb2_compound_op(xid, tcon, cifs_sb, full_path,
-+	int rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
- 				FILE_WRITE_DATA, FILE_OPEN,
- 				0, ACL_NO_MODE, &in_iov,
- 				&(int){SMB2_OP_SET_EOF}, 1,
- 				cfile, NULL, NULL, dentry);
-+	if (rc == -EINVAL) {
-+		cifs_dbg(FYI, "invalid lease key, resending request without lease");
-+		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
-+				FILE_WRITE_DATA, FILE_OPEN,
-+				0, ACL_NO_MODE, &in_iov,
-+				&(int){SMB2_OP_SET_EOF}, 1,
-+				cfile, NULL, NULL, NULL);
-+	}
-+	return rc;
- }
+-	if (error_tag >= XFS_ERRTAG_MAX)
++	if (!xfs_errortag_valid(error_tag))
+ 		return -EINVAL;
  
- int
--- 
-2.43.0
-
+ 	return xfs_errortag_set(mp, error_tag,
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1190,15 +1190,6 @@ xfs_buffered_write_iomap_end(
+ 	struct xfs_mount	*mp = XFS_M(inode->i_sb);
+ 	int			error;
+ 
+-	/*
+-	 * Behave as if the write failed if drop writes is enabled. Set the NEW
+-	 * flag to force delalloc cleanup.
+-	 */
+-	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_DROP_WRITES)) {
+-		iomap->flags |= IOMAP_F_NEW;
+-		written = 0;
+-	}
+-
+ 	error = iomap_file_buffered_write_punch_delalloc(inode, iomap, offset,
+ 			length, written, &xfs_buffered_write_delalloc_punch);
+ 	if (error && !xfs_is_shutdown(mp)) {
 
 
 
