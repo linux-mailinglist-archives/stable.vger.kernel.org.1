@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-45929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043AB8CD49E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654428CD426
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DDC7B22F4D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BB0A1C222F1
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6D913BAE2;
-	Thu, 23 May 2024 13:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E8D14AD36;
+	Thu, 23 May 2024 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dArYzWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pATATye1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83CC14830E;
-	Thu, 23 May 2024 13:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FAE14A60E;
+	Thu, 23 May 2024 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470769; cv=none; b=nDZOjRe5SLSQVPczRcq0DFkx2Dst0qoWrQyrnJVriXhrxz9CfkkvszpZggJuKWHi0Y6Ohg/DmWcOeWxLM0wRmxgTOndrhzRbUHWuOHyaXXeYCtcahxgHnuQXyDwcV1FiEzYAl7PdMSLXm827LjfTp5XRXa8GzBUERCxxTYEIFqU=
+	t=1716470515; cv=none; b=O8vmZnn8Rh5CHCKMi7RTHxQWbgYtraevVTyuvYLzXuosTQSO/OWrtTC8w28unjGk2esyIHU+J+1KP25MBfcuaR1k3WAUzCzzju80mp5OMGAOviIFe3YPG8f/fKvLOe8qRhc/a5xCB1MDB2jmsmH7MEP2GkpbkRcl8kHjMWZNO0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470769; c=relaxed/simple;
-	bh=DYJPnitqFkwL8ZIlAMs7u3V8/rg9YrdHl//hA+CNg6g=;
+	s=arc-20240116; t=1716470515; c=relaxed/simple;
+	bh=XS+gmQSxYjeueZSpSOlbDVUGvPiCqEDGeIv5cRCg4zQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt6GY5jFXSbdjDCUDj/ccQCqblhRVEDzd1o0Wf23mYdc22XpaPp16j5YX6Qcy+N/Mg3JCOolj9CRHHWDNJ12j/kR9/oO2Z63sbA+FBhUnff268hxY7I299QFSh40iqaZHokDK/JbvIjQQGk1r69KxMDtVRIn7cyr3GWOIsRqfgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dArYzWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29426C2BD10;
-	Thu, 23 May 2024 13:26:08 +0000 (UTC)
+	 MIME-Version; b=MJMbSF3GtD07c+CuOFpia4nvtViUxjuERNIDoiaoemRk/lzNT2BEZ9euvZd2G9vW/nagVoyGZCVCzhmdpYMX6SM/cksZTk75tWaYkNukbBxT5Sa+uPmdcjpJIXuerV98XI71OYfBrkTDsGq3qC/E0h4jlI7t1xeuSv0qivugdlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pATATye1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01014C2BD10;
+	Thu, 23 May 2024 13:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470769;
-	bh=DYJPnitqFkwL8ZIlAMs7u3V8/rg9YrdHl//hA+CNg6g=;
+	s=korg; t=1716470515;
+	bh=XS+gmQSxYjeueZSpSOlbDVUGvPiCqEDGeIv5cRCg4zQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dArYzWmXo7qscFXBWty7yqY51r+tWAHkqiw4IUYvbxyAWsL35w6dDOJd2usb1b4n
-	 /L3KnItliLUN3HbZXavoMAvBCtXdYFJR6aHEHAklkOA6vWcyDUZY1xADODdFq0awTT
-	 gldJmpTxn88L90ggzExOt1lzCDVHrGC5mgSpTRcM=
+	b=pATATye14pAV08+f8v1y+mR55whtk59Bck4mriNM93AUwY9tGrro8oeK/oO1h3kLR
+	 uh2hawKziaGDSUJuJYm89BhtVlFsfhdDXhi1Z9ZAUwsISZn1BmO66uQIj+O1BbBKPL
+	 fstNm35yTRc3caYhqb6pxCSsQNEZJgnfYig7et2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 080/102] ice: remove unnecessary duplicate checks for VF VSI ID
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.8 18/23] KEYS: trusted: Do not use WARN when encode fails
 Date: Thu, 23 May 2024 15:13:45 +0200
-Message-ID: <20240523130345.484792007@linuxfoundation.org>
+Message-ID: <20240523130330.439332048@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
+References: <20240523130329.745905823@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit 363f689600dd010703ce6391bcfc729a97d21840 upstream.
+commit 050bf3c793a07f96bd1e2fd62e1447f731ed733b upstream.
 
-The ice_vc_fdir_param_check() function validates that the VSI ID of the
-virtchnl flow director command matches the VSI number of the VF. This is
-already checked by the call to ice_vc_isvalid_vsi_id() immediately
-following this.
+When asn1_encode_sequence() fails, WARN is not the correct solution.
 
-This check is unnecessary since ice_vc_isvalid_vsi_id() already confirms
-this by checking that the VSI ID can locate the VSI associated with the VF
-structure.
+1. asn1_encode_sequence() is not an internal function (located
+   in lib/asn1_encode.c).
+2. Location is known, which makes the stack trace useless.
+3. Results a crash if panic_on_warn is set.
 
-Furthermore, a following change is going to refactor the ice driver to
-report VSI IDs using a relative index for each VF instead of reporting the
-PF VSI number. This additional check would break that logic since it
-enforces that the VSI ID matches the VSI number.
+It is also noteworthy that the use of WARN is undocumented, and it
+should be avoided unless there is a carefully considered rationale to
+use it.
 
-Since this check duplicates  the logic in ice_vc_isvalid_vsi_id() and gets
-in the way of refactoring that logic, remove it.
+Replace WARN with pr_err, and print the return value instead, which is
+only useful piece of information.
 
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |    3 ---
- 1 file changed, 3 deletions(-)
+ security/keys/trusted-keys/trusted_tpm2.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -107,9 +107,6 @@ ice_vc_fdir_param_check(struct ice_vf *v
- 	if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_FDIR_PF))
- 		return -EINVAL;
- 
--	if (vsi_id != vf->lan_vsi_num)
--		return -EINVAL;
--
- 	if (!ice_vc_isvalid_vsi_id(vf, vsi_id))
- 		return -EINVAL;
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -84,8 +84,9 @@ static int tpm2_key_encode(struct truste
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
++	if (IS_ERR(work1)) {
+ 		ret = PTR_ERR(work1);
++		pr_err("BUG: ASN.1 encoder failed with %d\n", ret);
+ 		goto err;
+ 	}
  
 
 
