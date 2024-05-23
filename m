@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-45797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28EEF8CD3F2
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B93E8CD454
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B15C1C20982
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E13DB214D6
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2783B14AD3E;
-	Thu, 23 May 2024 13:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489E114830E;
+	Thu, 23 May 2024 13:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxH8wXBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+vqihPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D487E1E504;
-	Thu, 23 May 2024 13:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081401E497;
+	Thu, 23 May 2024 13:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470388; cv=none; b=awbzClKDTU1asi/S2gP56Ec+d+TcnraPOCcaVdBJm62F0BHJKQl/6DZsS+SaL8Gl0Rl5TPAlAf+6NgUHUdRECdmHDynP9CU0aWlXoVYrZc8YMPLujCwenlNTtPO6HgEr0O9YZlNu19J58QjJUVR3ssYMLkgIa8HFhbfQj7Qz6hM=
+	t=1716470614; cv=none; b=BEzrMs/bGbi1nq94/VQy/4Vq+yCrSy13n2q0KFqgiuKt4haQuLdUZgMT4dSIxfUQT/2lB59Uwvy5i+eCnmxxUCFe68QuDZF0WJKzGQIR+FUfQ467+I0rZCXp11W3c2sk+/YVBaAOIDvWjGx90lYArlxgHau0das0xC2Ra4nmSog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470388; c=relaxed/simple;
-	bh=R4/lwUxBiUSlMXZuASscL6sbMfKQ47bnjEZHfHREgEo=;
+	s=arc-20240116; t=1716470614; c=relaxed/simple;
+	bh=nsrZ0InUB23PC2zXl/I1xvHGOMG7fDwlJUprFddflhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSbqYQM3oS8T2ocGClgIEGv1hfFgKUtqkls/0JCTDmbXX6QCOeiSJWA+wLM+B2V0HCGFD8clPz1xJv2VTVbQfGXibq+swCVf6HtzAAsDBzqlghgJCwYe5aaftJomk426Fsevb7FJuCIQfvXuht6ZbY4Z9/dA6C/ITniE8ggic+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxH8wXBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6F8C2BD10;
-	Thu, 23 May 2024 13:19:48 +0000 (UTC)
+	 MIME-Version; b=Gd//KE/29eUp+gQxhdepdHxCLSDt/54k29mjhc2v+XE6ItcjiMDfqrOOD3XqMxa9dOhrG6dfqoIPAvVxqYvh/WKJbN94iPPZYXuL0OadRqpywr3fZ2n2162EvRSghSrwGAzWJ/9+e82B5p5a0s1tUOn5QKGTJbJgmf7aK+6LGPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+vqihPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379EFC2BD10;
+	Thu, 23 May 2024 13:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470388;
-	bh=R4/lwUxBiUSlMXZuASscL6sbMfKQ47bnjEZHfHREgEo=;
+	s=korg; t=1716470613;
+	bh=nsrZ0InUB23PC2zXl/I1xvHGOMG7fDwlJUprFddflhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxH8wXBqcYpjgMtcGVvHCy/I95h28CdefBkXih4dxuZ1E7bY9guBhhdC2Y3HrPs+Y
-	 AvOntxUlThcSfeCyz3k3mNgM+mj8j4HNGAaoRKMKLSUdGarBDPvJ0G+NydG0oXsSlB
-	 o4g+iD5rDFqGIoEhw/jfagcbaDCMCSaIdMWQzINw=
+	b=P+vqihPBrcl1MDeF5Xc4Zu4ORNDMBrIf+UXV7sgsa8LMez9Bq96p8IVPfpjbw4CC5
+	 jLshjHUIMdzSgZsBnZM64/k/oQotngCFYwTGee32zeme2xxznJ/S9TC8e65O0DcMls
+	 CtVIH1/To0HyxNOixy7Cyx+o4dr6jasrtRse/64k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@raritan.com>
-Subject: [PATCH 6.1 02/45] net: ks8851: Fix another TX stall caused by wrong ISR flag handling
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/102] cifs: pick channel for tcon and tdis
 Date: Thu, 23 May 2024 15:12:53 +0200
-Message-ID: <20240523130332.588507835@linuxfoundation.org>
+Message-ID: <20240523130343.524174586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 317a215d493230da361028ea8a4675de334bfa1a upstream.
+[ Upstream commit 268b8b5797becb242013fcd63173eb28c007c8ae ]
 
-Under some circumstances it may happen that the ks8851 Ethernet driver
-stops sending data.
+Today, the tree connect and disconnect requests are
+sent on the primary channel only. However, the new
+multichannel logic allows the session to remain active
+even if one of the channels are alive. So a tree connect
+can now be triggered during a reconnect on any of
+its channels.
 
-Currently the interrupt handler resets the interrupt status flags in the
-hardware after handling TX. With this approach we may lose interrupts in
-the time window between handling the TX interrupt and resetting the TX
-interrupt status bit.
+This change changes tcon and tdis calls to pick an
+active channel instead of the first one.
 
-When all of the three following conditions are true then transmitting
-data stops:
-
-  - TX queue is stopped to wait for room in the hardware TX buffer
-  - no queued SKBs in the driver (txq) that wait for being written to hw
-  - hardware TX buffer is empty and the last TX interrupt was lost
-
-This is because reenabling the TX queue happens when handling the TX
-interrupt status but if the TX status bit has already been cleared then
-this interrupt will never come.
-
-With this commit the interrupt status flags will be cleared before they
-are handled. That way we stop losing interrupts.
-
-The wrong handling of the ISR flags was there from the beginning but
-with commit 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX
-buffer overrun") the issue becomes apparent.
-
-Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/micrel/ks8851_common.c |   18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ fs/smb/client/smb2pdu.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -328,7 +328,6 @@ static irqreturn_t ks8851_irq(int irq, v
- {
- 	struct ks8851_net *ks = _ks;
- 	struct sk_buff_head rxq;
--	unsigned handled = 0;
- 	unsigned long flags;
- 	unsigned int status;
- 	struct sk_buff *skb;
-@@ -336,24 +335,17 @@ static irqreturn_t ks8851_irq(int irq, v
- 	ks8851_lock(ks, &flags);
- 
- 	status = ks8851_rdreg16(ks, KS_ISR);
-+	ks8851_wrreg16(ks, KS_ISR, status);
- 
- 	netif_dbg(ks, intr, ks->netdev,
- 		  "%s: status 0x%04x\n", __func__, status);
- 
--	if (status & IRQ_LCI)
--		handled |= IRQ_LCI;
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 3f9448b5ada9b..95b5b4bdb4b7f 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2019,10 +2019,7 @@ SMB2_tcon(const unsigned int xid, struct cifs_ses *ses, const char *tree,
+ 	__le16 *unc_path = NULL;
+ 	int flags = 0;
+ 	unsigned int total_len;
+-	struct TCP_Server_Info *server;
 -
- 	if (status & IRQ_LDI) {
- 		u16 pmecr = ks8851_rdreg16(ks, KS_PMECR);
- 		pmecr &= ~PMECR_WKEVT_MASK;
- 		ks8851_wrreg16(ks, KS_PMECR, pmecr | PMECR_WKEVT_LINK);
--
--		handled |= IRQ_LDI;
- 	}
+-	/* always use master channel */
+-	server = ses->server;
++	struct TCP_Server_Info *server = cifs_pick_channel(ses);
  
--	if (status & IRQ_RXPSI)
--		handled |= IRQ_RXPSI;
--
- 	if (status & IRQ_TXI) {
- 		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 	cifs_dbg(FYI, "TCON\n");
  
-@@ -365,20 +357,12 @@ static irqreturn_t ks8851_irq(int irq, v
- 		if (netif_queue_stopped(ks->netdev))
- 			netif_wake_queue(ks->netdev);
- 		spin_unlock(&ks->statelock);
--
--		handled |= IRQ_TXI;
- 	}
+@@ -2155,6 +2152,7 @@ SMB2_tdis(const unsigned int xid, struct cifs_tcon *tcon)
+ 	struct smb2_tree_disconnect_req *req; /* response is trivial */
+ 	int rc = 0;
+ 	struct cifs_ses *ses = tcon->ses;
++	struct TCP_Server_Info *server = cifs_pick_channel(ses);
+ 	int flags = 0;
+ 	unsigned int total_len;
+ 	struct kvec iov[1];
+@@ -2177,7 +2175,7 @@ SMB2_tdis(const unsigned int xid, struct cifs_tcon *tcon)
  
--	if (status & IRQ_RXI)
--		handled |= IRQ_RXI;
--
- 	if (status & IRQ_SPIBEI) {
- 		netdev_err(ks->netdev, "%s: spi bus error\n", __func__);
--		handled |= IRQ_SPIBEI;
- 	}
+ 	invalidate_all_cached_dirs(tcon);
  
--	ks8851_wrreg16(ks, KS_ISR, handled);
--
- 	if (status & IRQ_RXI) {
- 		/* the datasheet says to disable the rx interrupt during
- 		 * packet read-out, however we're masking the interrupt
+-	rc = smb2_plain_req_init(SMB2_TREE_DISCONNECT, tcon, ses->server,
++	rc = smb2_plain_req_init(SMB2_TREE_DISCONNECT, tcon, server,
+ 				 (void **) &req,
+ 				 &total_len);
+ 	if (rc)
+@@ -2195,7 +2193,7 @@ SMB2_tdis(const unsigned int xid, struct cifs_tcon *tcon)
+ 	rqst.rq_iov = iov;
+ 	rqst.rq_nvec = 1;
+ 
+-	rc = cifs_send_recv(xid, ses, ses->server,
++	rc = cifs_send_recv(xid, ses, server,
+ 			    &rqst, &resp_buf_type, flags, &rsp_iov);
+ 	cifs_small_buf_release(req);
+ 	if (rc) {
+-- 
+2.43.0
+
 
 
 
