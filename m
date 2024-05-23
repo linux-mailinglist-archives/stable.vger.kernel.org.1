@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75188CD373
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0568E8CD389
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 482B41F21421
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377121C216DB
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3503513B7AE;
-	Thu, 23 May 2024 13:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3522D14A4FF;
+	Thu, 23 May 2024 13:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OELRbfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVbvPkXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34061D555;
-	Thu, 23 May 2024 13:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57021E497;
+	Thu, 23 May 2024 13:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470123; cv=none; b=AFUtfm1Ue/k7s53b071sF7dLBki0g9jGL6drfF+SobN+LJR0exU9juStw5wn5EYob7gAbmLCPXk3safjrrJQUTHfumSgBj7CNQnNq+Tr05PeUU1Tte8e0dXRDYpB0gjO16dpofyGN6UE6/XpLRIaQp48QxVfgycfXvatGSWVKrs=
+	t=1716470169; cv=none; b=YAahZPBLpAfYNTUfud4qTnvfIv+n+eZIK4dpir3R01IEfcDBiD/bsvC9q79AfA274Hlh3FxZ6nGjAvc7iy01kTsVUow8ONaLH3w5MeDmPWWDHsomqpFAIW1+VXLDVloUCxHo3HLVuephGnp3TRbwtgrWUercl4v96c+MiiF1wTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470123; c=relaxed/simple;
-	bh=Rk7pnm6VY1UMWYJRyfvM/+wWQrhcXbvS4opzk2UqXoA=;
+	s=arc-20240116; t=1716470169; c=relaxed/simple;
+	bh=VUXWg//6R/0jFIUVOGCeJrHw1ouUrKteeMUm1hhHRJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IK8UXSrryIfx6rteCW06XltbzkUKI+UX3SZF+YCBb9647dlyYtlAOs50T3sy0Ov5neAPo+v0QB/AVGwLgM36ICGjhodeOMPF6eYx241wSc6T3cdd4ZQ5B9xWTEvdTngueypfhX+LJPPWWT50PWIa3wxI37Llnp9lb0REDkzFHhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OELRbfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64522C2BD10;
-	Thu, 23 May 2024 13:15:22 +0000 (UTC)
+	 MIME-Version; b=dEWo7fVJhd6DJtw8BoEbBeh0/IvKVFaTvyt3dzdMjQpdFLnR/rEkuCwmi/FR6IaBiFBJSBT61vQ1mhqXg6Zfej8xgKjjBe8Ixo5bqXDAL0kx7iulJcW6QWhkszsarwI3cUyUyUcdenxdhWB/3XMGikDpxzDlqwmbUMOgWONSjas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVbvPkXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2143EC2BD10;
+	Thu, 23 May 2024 13:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470122;
-	bh=Rk7pnm6VY1UMWYJRyfvM/+wWQrhcXbvS4opzk2UqXoA=;
+	s=korg; t=1716470168;
+	bh=VUXWg//6R/0jFIUVOGCeJrHw1ouUrKteeMUm1hhHRJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1OELRbfX36APNjRu5FmthZCZBuXPk2oEyacri5+dC5WHh98BG8LWH/MKeP/SW9OGG
-	 SNAe4eqlYzGzVasdRRnNOupZHALO3j/NvFmKrdf9CNkiRD9GFpRGPCk5kYjtUVmHh9
-	 TkCDOTA4/RTE3ZTpeKC0/LL2DGSnRFPGSuhPgdYY=
+	b=DVbvPkXmTliktOU7JbRSD4mVdKF882cfrDHSlQFkJrP+C0B1CnQkscdsIFBSyglxR
+	 yqV+7Wae6qZLOt8ZHOt2p+y8T9+QpDi+43yW5RIZce6q5IOqCVNWqFHiuCMrnSTmuH
+	 uH/QweLiCTbkfb+ESwJQo07C9TGZM9d4EYlTUsQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>
-Subject: [PATCH 5.4 10/16] firmware: arm_scmi: Harden accesses to the reset domains
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
+Subject: [PATCH 5.10 01/15] pinctrl: core: handle radix_tree_insert() errors in pinctrl_register_one_pin()
 Date: Thu, 23 May 2024 15:12:43 +0200
-Message-ID: <20240523130326.138140225@linuxfoundation.org>
+Message-ID: <20240523130326.508349187@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.743454852@linuxfoundation.org>
-References: <20240523130325.743454852@linuxfoundation.org>
+In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
+References: <20240523130326.451548488@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit e9076ffbcaed5da6c182b144ef9f6e24554af268 upstream.
+commit ecfe9a015d3e1e46504d5b3de7eef1f2d186194a upstream.
 
-Accessing reset domains descriptors by the index upon the SCMI drivers
-requests through the SCMI reset operations interface can potentially
-lead to out-of-bound violations if the SCMI driver misbehave.
+pinctrl_register_one_pin() doesn't check the result of radix_tree_insert()
+despite they both may return a negative error code.  Linus Walleij said he
+has copied the radix tree code from kernel/irq/ where the functions calling
+radix_tree_insert() are *void* themselves; I think it makes more sense to
+propagate the errors from radix_tree_insert() upstream if we can do that...
 
-Add an internal consistency check before any such domains descriptors
-accesses.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Link: https://lore.kernel.org/r/20220817172731.1185305-5-cristian.marussi@arm.com
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230719202253.13469-3-s.shtylyov@omp.ru
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/reset.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pinctrl/core.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/firmware/arm_scmi/reset.c
-+++ b/drivers/firmware/arm_scmi/reset.c
-@@ -135,8 +135,12 @@ static int scmi_domain_reset(const struc
- 	struct scmi_xfer *t;
- 	struct scmi_msg_reset_domain_reset *dom;
- 	struct scmi_reset_info *pi = handle->reset_priv;
--	struct reset_dom_info *rdom = pi->dom_info + domain;
-+	struct reset_dom_info *rdom;
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -205,6 +205,7 @@ static int pinctrl_register_one_pin(stru
+ 				    const struct pinctrl_pin_desc *pin)
+ {
+ 	struct pin_desc *pindesc;
++	int error;
  
-+	if (domain >= pi->num_domains)
-+		return -EINVAL;
+ 	pindesc = pin_desc_get(pctldev, pin->number);
+ 	if (pindesc) {
+@@ -226,18 +227,25 @@ static int pinctrl_register_one_pin(stru
+ 	} else {
+ 		pindesc->name = kasprintf(GFP_KERNEL, "PIN%u", pin->number);
+ 		if (!pindesc->name) {
+-			kfree(pindesc);
+-			return -ENOMEM;
++			error = -ENOMEM;
++			goto failed;
+ 		}
+ 		pindesc->dynamic_name = true;
+ 	}
+ 
+ 	pindesc->drv_data = pin->drv_data;
+ 
+-	radix_tree_insert(&pctldev->pin_desc_tree, pin->number, pindesc);
++	error = radix_tree_insert(&pctldev->pin_desc_tree, pin->number, pindesc);
++	if (error)
++		goto failed;
 +
-+	rdom = pi->dom_info + domain;
- 	if (rdom->async_reset)
- 		flags |= ASYNCHRONOUS_RESET;
+ 	pr_debug("registered pin %d (%s) on %s\n",
+ 		 pin->number, pindesc->name, pctldev->desc->name);
+ 	return 0;
++
++failed:
++	kfree(pindesc);
++	return error;
+ }
  
+ static int pinctrl_register_pins(struct pinctrl_dev *pctldev,
 
 
 
