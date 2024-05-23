@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-45793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C5B8CD3E7
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296818CD3C3
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22C4B1C20ACC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1731F2595C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C67914A4C1;
-	Thu, 23 May 2024 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857414AD03;
+	Thu, 23 May 2024 13:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqtILJSe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHwdI+XD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEA41E4B0;
-	Thu, 23 May 2024 13:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9524E2AE94;
+	Thu, 23 May 2024 13:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470377; cv=none; b=lPox/Emj+AWDR7q3rfoq2uouJuV9o6jgK3drXM2nPruJj4AxvqW3V7Z9HBFdY4bCfkrJRIZ8x6iLm+XwmcDA78XB/thU/d/WOa46L5xjDEeXAhQNQR0zJK6nTc1V9L1jm3CZX20LOngt1u/zlbqpRvwVvURddvGHDLXIC4UWQ5s=
+	t=1716470294; cv=none; b=BjWNpyVFqLswEIPb7PC1nIvuFoklURBDNawKdIWkHyDWVax9zQCs01ndgohy1xVJdMM3cBJxHttFI6eUgQ8i1V2keS64aQk2Mo8Pgg62PCbofL/bAy2gffO+u/eEwT5PKou/En5SN+F4hdFv8PgalBMtnHkyCRgyFiprCfsj/fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470377; c=relaxed/simple;
-	bh=MPBTeuSfY8aTQOiRlD0FULTi2xUvqX0ba8rYBd38ztI=;
+	s=arc-20240116; t=1716470294; c=relaxed/simple;
+	bh=clbvBLTGA/dWwceJit2jmVA4H1ec14yENQHlDGM+eMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzcJuFZeml7d3Tl6TVPhoE+rKE2//4on8Smn9VMjF/uamuu5P1l5xCVZ4U7a4uhhCFLK7S5gq4J00jmXwHX9nhOko3Eca5Kg4co++a5aTizUi1i7chSXI4ORpj51RZnISeP7wJQYGfyzv6fOjnwwd2WfbdWzsCgi0J8TTMg8GsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqtILJSe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3A5C2BD10;
-	Thu, 23 May 2024 13:19:36 +0000 (UTC)
+	 MIME-Version; b=INbs+bxHpHB/fJA0gXMAIfma6oe/j9GJdV4WOyhaJY3f4HYn8Vd4wYQ081jIA+E4d1dP7A7w4Fkqzlxk1uk/vkG5MOuENlaEh/FX56KRH22ZFS8DhOUNu2wTI1eS1tdA3C7M3NglFc9VKrVW04LIqhhO0b9TvjypkJ2pUXla34k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHwdI+XD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D49EC2BD10;
+	Thu, 23 May 2024 13:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470377;
-	bh=MPBTeuSfY8aTQOiRlD0FULTi2xUvqX0ba8rYBd38ztI=;
+	s=korg; t=1716470294;
+	bh=clbvBLTGA/dWwceJit2jmVA4H1ec14yENQHlDGM+eMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqtILJSeZageyRFAeUZ+4Ee9hJLUoHTOL1VYv3xhHEOepgFVmHNwUYFrf3tPad3xF
-	 FvwIM36NYO4Kv+F0VjsOJk9j/XnU9mzToU1OcuAPslY66rRAz75K3Bx5mgeHFv0wh0
-	 OluxsrjPKha5sGQVqEyTV9GxBjc5SgXgYkIcmBts=
+	b=pHwdI+XDtL7G+hEV+zY4gpRLF0TtslO5b89Oao4Urm+filLbaUF9ulXX2xCnq9BCF
+	 9eEFXkQOrAakVE7WKG6lg16YCC/nPjyh5ahm8YsWCxxsz5xiaDIGQMHiIPIaRTjf7E
+	 /NVfqhDpSRIyXHGE4I7z4sSsZRwDsU/hltyN/TNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 16/45] iomap: write iomap validity checks
+	valis <sec@valis.email>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shaoying Xu <shaoyi@amazon.com>
+Subject: [PATCH 5.15 11/23] tls: fix race between async notify and socket close
 Date: Thu, 23 May 2024 15:13:07 +0200
-Message-ID: <20240523130333.104778685@linuxfoundation.org>
+Message-ID: <20240523130328.380394341@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,265 +66,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit d7b64041164ca177170191d2ad775da074ab2926 ]
+commit aec7961916f3f9e88766e2688992da6980f11b8d upstream.
 
-A recent multithreaded write data corruption has been uncovered in
-the iomap write code. The core of the problem is partial folio
-writes can be flushed to disk while a new racing write can map it
-and fill the rest of the page:
+The submitting thread (one which called recvmsg/sendmsg)
+may exit as soon as the async crypto handler calls complete()
+so any code past that point risks touching already freed data.
 
-writeback			new write
+Try to avoid the locking and extra flags altogether.
+Have the main thread hold an extra reference, this way
+we can depend solely on the atomic ref counter for
+synchronization.
 
-allocate blocks
-  blocks are unwritten
-submit IO
-.....
-				map blocks
-				iomap indicates UNWRITTEN range
-				loop {
-				  lock folio
-				  copyin data
-.....
-IO completes
-  runs unwritten extent conv
-    blocks are marked written
-				  <iomap now stale>
-				  get next folio
-				}
+Don't futz with reiniting the completion, either, we are now
+tightly controlling when completion fires.
 
-Now add memory pressure such that memory reclaim evicts the
-partially written folio that has already been written to disk.
-
-When the new write finally gets to the last partial page of the new
-write, it does not find it in cache, so it instantiates a new page,
-sees the iomap is unwritten, and zeros the part of the page that
-it does not have data from. This overwrites the data on disk that
-was originally written.
-
-The full description of the corruption mechanism can be found here:
-
-https://lore.kernel.org/linux-xfs/20220817093627.GZ3600936@dread.disaster.area/
-
-To solve this problem, we need to check whether the iomap is still
-valid after we lock each folio during the write. We have to do it
-after we lock the page so that we don't end up with state changes
-occurring while we wait for the folio to be locked.
-
-Hence we need a mechanism to be able to check that the cached iomap
-is still valid (similar to what we already do in buffered
-writeback), and we need a way for ->begin_write to back out and
-tell the high level iomap iterator that we need to remap the
-remaining write range.
-
-The iomap needs to grow some storage for the validity cookie that
-the filesystem provides to travel with the iomap. XFS, in
-particular, also needs to know some more information about what the
-iomap maps (attribute extents rather than file data extents) to for
-the validity cookie to cover all the types of iomaps we might need
-to validate.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Reported-by: valis <sec@valis.email>
+Fixes: 0cada33241d9 ("net/tls: fix race condition causing kernel panic")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[v5.15: fixed contextual conflicts in struct tls_sw_context_rx and func
+init_ctx_rx; replaced DEBUG_NET_WARN_ON_ONCE with BUILD_BUG_ON_INVALID
+since they're equivalent when DEBUG_NET is not defined]
+Cc: <stable@vger.kernel.org> # 5.15
+Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c |   29 ++++++++++++++++++++++++++++-
- fs/iomap/iter.c        |   19 ++++++++++++++++++-
- include/linux/iomap.h  |   43 +++++++++++++++++++++++++++++++++++--------
- 3 files changed, 81 insertions(+), 10 deletions(-)
+ include/net/tls.h |    5 -----
+ net/tls/tls_sw.c  |   43 ++++++++++---------------------------------
+ 2 files changed, 10 insertions(+), 38 deletions(-)
 
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -579,7 +579,7 @@ static int iomap_write_begin_inline(cons
- 	return iomap_read_inline_data(iter, folio);
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -128,9 +128,6 @@ struct tls_sw_context_tx {
+ 	struct tls_rec *open_rec;
+ 	struct list_head tx_list;
+ 	atomic_t encrypt_pending;
+-	/* protect crypto_wait with encrypt_pending */
+-	spinlock_t encrypt_compl_lock;
+-	int async_notify;
+ 	u8 async_capable:1;
+ 
+ #define BIT_TX_SCHEDULED	0
+@@ -148,8 +145,6 @@ struct tls_sw_context_rx {
+ 	struct sk_buff *recv_pkt;
+ 	u8 async_capable:1;
+ 	atomic_t decrypt_pending;
+-	/* protect crypto_wait with decrypt_pending*/
+-	spinlock_t decrypt_compl_lock;
+ };
+ 
+ struct tls_record_info {
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -220,22 +220,15 @@ static void tls_decrypt_done(struct cryp
+ 
+ 	kfree(aead_req);
+ 
+-	spin_lock_bh(&ctx->decrypt_compl_lock);
+-	if (!atomic_dec_return(&ctx->decrypt_pending))
++	if (atomic_dec_and_test(&ctx->decrypt_pending))
+ 		complete(&ctx->async_wait.completion);
+-	spin_unlock_bh(&ctx->decrypt_compl_lock);
  }
  
--static int iomap_write_begin(const struct iomap_iter *iter, loff_t pos,
-+static int iomap_write_begin(struct iomap_iter *iter, loff_t pos,
- 		size_t len, struct folio **foliop)
+ static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
  {
- 	const struct iomap_page_ops *page_ops = iter->iomap.page_ops;
-@@ -613,6 +613,27 @@ static int iomap_write_begin(const struc
- 		status = (iter->flags & IOMAP_NOWAIT) ? -EAGAIN : -ENOMEM;
- 		goto out_no_page;
+-	int pending;
+-
+-	spin_lock_bh(&ctx->decrypt_compl_lock);
+-	reinit_completion(&ctx->async_wait.completion);
+-	pending = atomic_read(&ctx->decrypt_pending);
+-	spin_unlock_bh(&ctx->decrypt_compl_lock);
+-	if (pending)
++	if (!atomic_dec_and_test(&ctx->decrypt_pending))
+ 		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	atomic_inc(&ctx->decrypt_pending);
+ 
+ 	return ctx->async_wait.err;
+ }
+@@ -271,6 +264,7 @@ static int tls_do_decryption(struct sock
+ 		aead_request_set_callback(aead_req,
+ 					  CRYPTO_TFM_REQ_MAY_BACKLOG,
+ 					  tls_decrypt_done, skb);
++		BUILD_BUG_ON_INVALID(atomic_read(&ctx->decrypt_pending) < 1);
+ 		atomic_inc(&ctx->decrypt_pending);
+ 	} else {
+ 		aead_request_set_callback(aead_req,
+@@ -460,7 +454,6 @@ static void tls_encrypt_done(struct cryp
+ 	struct sk_msg *msg_en;
+ 	struct tls_rec *rec;
+ 	bool ready = false;
+-	int pending;
+ 
+ 	rec = container_of(aead_req, struct tls_rec, aead_req);
+ 	msg_en = &rec->msg_encrypted;
+@@ -495,12 +488,8 @@ static void tls_encrypt_done(struct cryp
+ 			ready = true;
  	}
-+
-+	/*
-+	 * Now we have a locked folio, before we do anything with it we need to
-+	 * check that the iomap we have cached is not stale. The inode extent
-+	 * mapping can change due to concurrent IO in flight (e.g.
-+	 * IOMAP_UNWRITTEN state can change and memory reclaim could have
-+	 * reclaimed a previously partially written page at this index after IO
-+	 * completion before this write reaches this file offset) and hence we
-+	 * could do the wrong thing here (zero a page range incorrectly or fail
-+	 * to zero) and corrupt data.
-+	 */
-+	if (page_ops && page_ops->iomap_valid) {
-+		bool iomap_valid = page_ops->iomap_valid(iter->inode,
-+							&iter->iomap);
-+		if (!iomap_valid) {
-+			iter->iomap.flags |= IOMAP_F_STALE;
-+			status = 0;
-+			goto out_unlock;
-+		}
-+	}
-+
- 	if (pos + len > folio_pos(folio) + folio_size(folio))
- 		len = folio_pos(folio) + folio_size(folio) - pos;
  
-@@ -768,6 +789,8 @@ again:
- 		status = iomap_write_begin(iter, pos, bytes, &folio);
- 		if (unlikely(status))
- 			break;
-+		if (iter->iomap.flags & IOMAP_F_STALE)
-+			break;
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	pending = atomic_dec_return(&ctx->encrypt_pending);
+-
+-	if (!pending && ctx->async_notify)
++	if (atomic_dec_and_test(&ctx->encrypt_pending))
+ 		complete(&ctx->async_wait.completion);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
  
- 		page = folio_file_page(folio, pos >> PAGE_SHIFT);
- 		if (mapping_writably_mapped(mapping))
-@@ -1076,6 +1099,8 @@ static loff_t iomap_unshare_iter(struct
- 		status = iomap_write_begin(iter, pos, bytes, &folio);
- 		if (unlikely(status))
- 			return status;
-+		if (iter->iomap.flags & IOMAP_F_STALE)
-+			break;
+ 	if (!ready)
+ 		return;
+@@ -512,22 +501,9 @@ static void tls_encrypt_done(struct cryp
  
- 		status = iomap_write_end(iter, pos, bytes, bytes, folio);
- 		if (WARN_ON_ONCE(status == 0))
-@@ -1131,6 +1156,8 @@ static loff_t iomap_zero_iter(struct iom
- 		status = iomap_write_begin(iter, pos, bytes, &folio);
- 		if (status)
- 			return status;
-+		if (iter->iomap.flags & IOMAP_F_STALE)
-+			break;
- 
- 		offset = offset_in_folio(folio, pos);
- 		if (bytes > folio_size(folio) - offset)
---- a/fs/iomap/iter.c
-+++ b/fs/iomap/iter.c
-@@ -7,12 +7,28 @@
- #include <linux/iomap.h>
- #include "trace.h"
- 
-+/*
-+ * Advance to the next range we need to map.
-+ *
-+ * If the iomap is marked IOMAP_F_STALE, it means the existing map was not fully
-+ * processed - it was aborted because the extent the iomap spanned may have been
-+ * changed during the operation. In this case, the iteration behaviour is to
-+ * remap the unprocessed range of the iter, and that means we may need to remap
-+ * even when we've made no progress (i.e. iter->processed = 0). Hence the
-+ * "finished iterating" case needs to distinguish between
-+ * (processed = 0) meaning we are done and (processed = 0 && stale) meaning we
-+ * need to remap the entire remaining range.
-+ */
- static inline int iomap_iter_advance(struct iomap_iter *iter)
+ static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
  {
-+	bool stale = iter->iomap.flags & IOMAP_F_STALE;
-+
- 	/* handle the previous iteration (if any) */
- 	if (iter->iomap.length) {
--		if (iter->processed <= 0)
-+		if (iter->processed < 0)
- 			return iter->processed;
-+		if (!iter->processed && !stale)
-+			return 0;
- 		if (WARN_ON_ONCE(iter->processed > iomap_length(iter)))
- 			return -EIO;
- 		iter->pos += iter->processed;
-@@ -33,6 +49,7 @@ static inline void iomap_iter_done(struc
- 	WARN_ON_ONCE(iter->iomap.offset > iter->pos);
- 	WARN_ON_ONCE(iter->iomap.length == 0);
- 	WARN_ON_ONCE(iter->iomap.offset + iter->iomap.length <= iter->pos);
-+	WARN_ON_ONCE(iter->iomap.flags & IOMAP_F_STALE);
+-	int pending;
+-
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	ctx->async_notify = true;
+-
+-	pending = atomic_read(&ctx->encrypt_pending);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
+-	if (pending)
++	if (!atomic_dec_and_test(&ctx->encrypt_pending))
+ 		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
+-	else
+-		reinit_completion(&ctx->async_wait.completion);
+-
+-	/* There can be no concurrent accesses, since we have no
+-	 * pending encrypt operations
+-	 */
+-	WRITE_ONCE(ctx->async_notify, false);
++	atomic_inc(&ctx->encrypt_pending);
  
- 	trace_iomap_iter_dstmap(iter->inode, &iter->iomap);
- 	if (iter->srcmap.type != IOMAP_HOLE)
---- a/include/linux/iomap.h
-+++ b/include/linux/iomap.h
-@@ -49,26 +49,35 @@ struct vm_fault;
-  *
-  * IOMAP_F_BUFFER_HEAD indicates that the file system requires the use of
-  * buffer heads for this mapping.
-+ *
-+ * IOMAP_F_XATTR indicates that the iomap is for an extended attribute extent
-+ * rather than a file data extent.
-  */
--#define IOMAP_F_NEW		0x01
--#define IOMAP_F_DIRTY		0x02
--#define IOMAP_F_SHARED		0x04
--#define IOMAP_F_MERGED		0x08
--#define IOMAP_F_BUFFER_HEAD	0x10
--#define IOMAP_F_ZONE_APPEND	0x20
-+#define IOMAP_F_NEW		(1U << 0)
-+#define IOMAP_F_DIRTY		(1U << 1)
-+#define IOMAP_F_SHARED		(1U << 2)
-+#define IOMAP_F_MERGED		(1U << 3)
-+#define IOMAP_F_BUFFER_HEAD	(1U << 4)
-+#define IOMAP_F_ZONE_APPEND	(1U << 5)
-+#define IOMAP_F_XATTR		(1U << 6)
+ 	return ctx->async_wait.err;
+ }
+@@ -571,6 +547,7 @@ static int tls_do_encryption(struct sock
  
- /*
-  * Flags set by the core iomap code during operations:
-  *
-  * IOMAP_F_SIZE_CHANGED indicates to the iomap_end method that the file size
-  * has changed as the result of this write operation.
-+ *
-+ * IOMAP_F_STALE indicates that the iomap is not valid any longer and the file
-+ * range it covers needs to be remapped by the high level before the operation
-+ * can proceed.
-  */
--#define IOMAP_F_SIZE_CHANGED	0x100
-+#define IOMAP_F_SIZE_CHANGED	(1U << 8)
-+#define IOMAP_F_STALE		(1U << 9)
+ 	/* Add the record in tx_list */
+ 	list_add_tail((struct list_head *)&rec->list, &ctx->tx_list);
++	BUILD_BUG_ON_INVALID(atomic_read(&ctx->encrypt_pending) < 1);
+ 	atomic_inc(&ctx->encrypt_pending);
  
- /*
-  * Flags from 0x1000 up are for file system specific usage:
-  */
--#define IOMAP_F_PRIVATE		0x1000
-+#define IOMAP_F_PRIVATE		(1U << 12)
+ 	rc = crypto_aead_encrypt(aead_req);
+@@ -2312,7 +2289,7 @@ static struct tls_sw_context_tx *init_ct
+ 	}
  
+ 	crypto_init_wait(&sw_ctx_tx->async_wait);
+-	spin_lock_init(&sw_ctx_tx->encrypt_compl_lock);
++	atomic_set(&sw_ctx_tx->encrypt_pending, 1);
+ 	INIT_LIST_HEAD(&sw_ctx_tx->tx_list);
+ 	INIT_DELAYED_WORK(&sw_ctx_tx->tx_work.work, tx_work_handler);
+ 	sw_ctx_tx->tx_work.sk = sk;
+@@ -2333,7 +2310,7 @@ static struct tls_sw_context_rx *init_ct
+ 	}
  
- /*
-@@ -89,6 +98,7 @@ struct iomap {
- 	void			*inline_data;
- 	void			*private; /* filesystem private */
- 	const struct iomap_page_ops *page_ops;
-+	u64			validity_cookie; /* used with .iomap_valid() */
- };
+ 	crypto_init_wait(&sw_ctx_rx->async_wait);
+-	spin_lock_init(&sw_ctx_rx->decrypt_compl_lock);
++	atomic_set(&sw_ctx_rx->decrypt_pending, 1);
+ 	skb_queue_head_init(&sw_ctx_rx->rx_list);
  
- static inline sector_t iomap_sector(const struct iomap *iomap, loff_t pos)
-@@ -128,6 +138,23 @@ struct iomap_page_ops {
- 	int (*page_prepare)(struct inode *inode, loff_t pos, unsigned len);
- 	void (*page_done)(struct inode *inode, loff_t pos, unsigned copied,
- 			struct page *page);
-+
-+	/*
-+	 * Check that the cached iomap still maps correctly to the filesystem's
-+	 * internal extent map. FS internal extent maps can change while iomap
-+	 * is iterating a cached iomap, so this hook allows iomap to detect that
-+	 * the iomap needs to be refreshed during a long running write
-+	 * operation.
-+	 *
-+	 * The filesystem can store internal state (e.g. a sequence number) in
-+	 * iomap->validity_cookie when the iomap is first mapped to be able to
-+	 * detect changes between mapping time and whenever .iomap_valid() is
-+	 * called.
-+	 *
-+	 * This is called with the folio over the specified file position held
-+	 * locked by the iomap code.
-+	 */
-+	bool (*iomap_valid)(struct inode *inode, const struct iomap *iomap);
- };
- 
- /*
+ 	return sw_ctx_rx;
 
 
 
