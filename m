@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA43C8CD3E5
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3318CD46B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FC862830A3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B615B22A90
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4024113B7AE;
-	Thu, 23 May 2024 13:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C95E14D451;
+	Thu, 23 May 2024 13:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VllvtaBk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvM7TeU1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF31A14A60D;
-	Thu, 23 May 2024 13:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C3514D420;
+	Thu, 23 May 2024 13:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470372; cv=none; b=d0INpkbkukF493A8QS1j5Wi7pg+Z6cyh69HQF0Llx9mE7bpvaEApdBkNljb1jsThHLNOup8QMKW1nHrxY49x9VZx2o5yS+bJpBFXpt/3U+tJMxXmfySSPLEo0lkwT15s41kVRtGr3cVN0wBlZU9moasd8liJ/5V6uaV1IQgKD6I=
+	t=1716470651; cv=none; b=u5yqGhwfxC2haeYkO7JIyQmYa6EsrFy3mXmNqKrR9aJQpAbHdSJC2/z35JnN0YFWNFO+7JfrPXh1u04xEFlsfSzsbZBSR9GUmZKQYL8yz8G7ZnGoi9XGOc+t6Hcz1OfSxh/a/8Ec4RG1iVqMH/U8AsZyuh1xW3QFokFPv3M1xm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470372; c=relaxed/simple;
-	bh=j1r0G+kT7O4nnWM2DLVvONV4lnfG4nYKYgLubgnEu3c=;
+	s=arc-20240116; t=1716470651; c=relaxed/simple;
+	bh=H5KbsdvcNnwnsGd6ItpdvIFQHvfLXCC+DsbXd+Lf7v4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmQ9GDuKKS/0ZTkaeBPpcha4v0VPyht8/ltyNeFZPQzjuoRl7UT7rmNiuiVjJw4rg4f3Kq+4Y2WJvvy7AphckkZvr4dqKbkpTDIDFkqyFt1gndUy+F3FJC4vSO8rBjb+uGD002uePGdWb7TiwAdCnzodFA02abRzG2yKwHg2Iok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VllvtaBk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D14AC2BD10;
-	Thu, 23 May 2024 13:19:31 +0000 (UTC)
+	 MIME-Version; b=fOl0k8oqHw8ifKWdIzhZwis/Mf3d+C52CJxgUHRst3SeDINlubaiDFoM0LclQl2Z82kIqHUbnhC7GTSsqMW7zCxBpmtGmc083PnFfCz4E2LxqZP6PEW3LKbsFKVbRKrbaqM1DcED7dD61+Bl+SrJiexVwOzQ8TDCDAcHNoWebWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvM7TeU1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4656C4AF08;
+	Thu, 23 May 2024 13:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470371;
-	bh=j1r0G+kT7O4nnWM2DLVvONV4lnfG4nYKYgLubgnEu3c=;
+	s=korg; t=1716470651;
+	bh=H5KbsdvcNnwnsGd6ItpdvIFQHvfLXCC+DsbXd+Lf7v4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VllvtaBk+CFqjClGZVXQ+mkLK38x+Dc3PDfOSTwiNbUbyX1rkV7HKl+pqQA/Cm5U2
-	 WPcEBrEFrsHPvS08Mp+k6HUA9Kz9ozEFG9seV+vMulICfM0U32yRVzWBZreQFQXQi2
-	 1F91dfWbfqegFVnAsOWmA9JqeIf/uFh777a9tofo=
+	b=ZvM7TeU1W8MwHp5y/zkpC80sVGVNvsaXNLnhVZq8fLmziyVjiPHgXopW8mpqteZ41
+	 PUX27fU2T0WKQuUHBoLAN9+/V0GkNKBzTC/CDf+Y4hNJs3mUJCRQXTvfrwJC7bMBqE
+	 d1CPZ4UYeVxqy8J21ZryFuG2T3OUhe93d37U0XTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 14/45] iomap: buffered write failure should not truncate the page cache
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 040/102] smb: client: parse owner/group when creating reparse points
 Date: Thu, 23 May 2024 15:13:05 +0200
-Message-ID: <20240523130333.031511077@linuxfoundation.org>
+Message-ID: <20240523130343.976296119@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,297 +62,419 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit f43dc4dc3eff028b5ddddd99f3a66c5a6bdd4e78 ]
+[ Upstream commit 858e74876c5cbff1dfd5bace99e32fbce2abd4b5 ]
 
-iomap_file_buffered_write_punch_delalloc() currently invalidates the
-page cache over the unused range of the delalloc extent that was
-allocated. While the write allocated the delalloc extent, it does
-not own it exclusively as the write does not hold any locks that
-prevent either writeback or mmap page faults from changing the state
-of either the page cache or the extent state backing this range.
+Parse owner/group when creating special files and symlinks under
+SMB3.1.1 POSIX mounts.
 
-Whilst xfs_bmap_punch_delalloc_range() already handles races in
-extent conversion - it will only punch out delalloc extents and it
-ignores any other type of extent - the page cache truncate does not
-discriminate between data written by this write or some other task.
-As a result, truncating the page cache can result in data corruption
-if the write races with mmap modifications to the file over the same
-range.
+Move the parsing of owner/group to smb2_compound_op() so we don't have
+to duplicate it in both smb2_get_reparse_inode() and
+smb311_posix_query_path_info().
 
-generic/346 exercises this workload, and if we randomly fail writes
-(as will happen when iomap gets stale iomap detection later in the
-patchset), it will randomly corrupt the file data because it removes
-data written by mmap() in the same page as the write() that failed.
-
-Hence we do not want to punch out the page cache over the range of
-the extent we failed to write to - what we actually need to do is
-detect the ranges that have dirty data in cache over them and *not
-punch them out*.
-
-To do this, we have to walk the page cache over the range of the
-delalloc extent we want to remove. This is made complex by the fact
-we have to handle partially up-to-date folios correctly and this can
-happen even when the FSB size == PAGE_SIZE because we now support
-multi-page folios in the page cache.
-
-Because we are only interested in discovering the edges of data
-ranges in the page cache (i.e. hole-data boundaries) we can make use
-of mapping_seek_hole_data() to find those transitions in the page
-cache. As we hold the invalidate_lock, we know that the boundaries
-are not going to change while we walk the range. This interface is
-also byte-based and is sub-page block aware, so we can find the data
-ranges in the cache based on byte offsets rather than page, folio or
-fs block sized chunks. This greatly simplifies the logic of finding
-dirty cached ranges in the page cache.
-
-Once we've identified a range that contains cached data, we can then
-iterate the range folio by folio. This allows us to determine if the
-data is dirty and hence perform the correct delalloc extent punching
-operations. The seek interface we use to iterate data ranges will
-give us sub-folio start/end granularity, so we may end up looking up
-the same folio multiple times as the seek interface iterates across
-each discontiguous data region in the folio.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c |  195 +++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 180 insertions(+), 15 deletions(-)
+ fs/smb/client/cifsglob.h  |   2 +
+ fs/smb/client/inode.c     |  25 +++-----
+ fs/smb/client/smb2inode.c | 130 ++++++++++++++++++--------------------
+ fs/smb/client/smb2proto.h |   4 +-
+ 4 files changed, 71 insertions(+), 90 deletions(-)
 
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -828,6 +828,165 @@ iomap_file_buffered_write(struct kiocb *
- EXPORT_SYMBOL_GPL(iomap_file_buffered_write);
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 181e9d5b10f92..678a9c671cdcd 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -209,6 +209,8 @@ struct cifs_open_info_data {
+ 		};
+ 	} reparse;
+ 	char *symlink_target;
++	struct cifs_sid posix_owner;
++	struct cifs_sid posix_group;
+ 	union {
+ 		struct smb2_file_all_info fi;
+ 		struct smb311_posix_qinfo posix_fi;
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index b8260ace2bee9..0110589acb853 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -666,8 +666,6 @@ static int cifs_sfu_mode(struct cifs_fattr *fattr, const unsigned char *path,
+ /* Fill a cifs_fattr struct with info from POSIX info struct */
+ static void smb311_posix_info_to_fattr(struct cifs_fattr *fattr,
+ 				       struct cifs_open_info_data *data,
+-				       struct cifs_sid *owner,
+-				       struct cifs_sid *group,
+ 				       struct super_block *sb)
+ {
+ 	struct smb311_posix_qinfo *info = &data->posix_fi;
+@@ -723,8 +721,8 @@ static void smb311_posix_info_to_fattr(struct cifs_fattr *fattr,
+ 		fattr->cf_symlink_target = data->symlink_target;
+ 		data->symlink_target = NULL;
+ 	}
+-	sid_to_id(cifs_sb, owner, fattr, SIDOWNER);
+-	sid_to_id(cifs_sb, group, fattr, SIDGROUP);
++	sid_to_id(cifs_sb, &data->posix_owner, fattr, SIDOWNER);
++	sid_to_id(cifs_sb, &data->posix_group, fattr, SIDGROUP);
  
- /*
-+ * Scan the data range passed to us for dirty page cache folios. If we find a
-+ * dirty folio, punch out the preceeding range and update the offset from which
-+ * the next punch will start from.
-+ *
-+ * We can punch out storage reservations under clean pages because they either
-+ * contain data that has been written back - in which case the delalloc punch
-+ * over that range is a no-op - or they have been read faults in which case they
-+ * contain zeroes and we can remove the delalloc backing range and any new
-+ * writes to those pages will do the normal hole filling operation...
-+ *
-+ * This makes the logic simple: we only need to keep the delalloc extents only
-+ * over the dirty ranges of the page cache.
-+ *
-+ * This function uses [start_byte, end_byte) intervals (i.e. open ended) to
-+ * simplify range iterations.
-+ */
-+static int iomap_write_delalloc_scan(struct inode *inode,
-+		loff_t *punch_start_byte, loff_t start_byte, loff_t end_byte,
-+		int (*punch)(struct inode *inode, loff_t offset, loff_t length))
+ 	cifs_dbg(FYI, "POSIX query info: mode 0x%x uniqueid 0x%llx nlink %d\n",
+ 		fattr->cf_mode, fattr->cf_uniqueid, fattr->cf_nlink);
+@@ -1071,9 +1069,7 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 				 const unsigned int xid,
+ 				 struct cifs_tcon *tcon,
+ 				 const char *full_path,
+-				 struct cifs_fattr *fattr,
+-				 struct cifs_sid *owner,
+-				 struct cifs_sid *group)
++				 struct cifs_fattr *fattr)
+ {
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+@@ -1118,7 +1114,7 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 	}
+ 
+ 	if (tcon->posix_extensions)
+-		smb311_posix_info_to_fattr(fattr, data, owner, group, sb);
++		smb311_posix_info_to_fattr(fattr, data, sb);
+ 	else
+ 		cifs_open_info_to_fattr(fattr, data, sb);
+ out:
+@@ -1172,8 +1168,7 @@ static int cifs_get_fattr(struct cifs_open_info_data *data,
+ 		 */
+ 		if (cifs_open_data_reparse(data)) {
+ 			rc = reparse_info_to_fattr(data, sb, xid, tcon,
+-						   full_path, fattr,
+-						   NULL, NULL);
++						   full_path, fattr);
+ 		} else {
+ 			cifs_open_info_to_fattr(fattr, data, sb);
+ 		}
+@@ -1321,7 +1316,6 @@ static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifs_tcon *tcon;
+ 	struct tcon_link *tlink;
+-	struct cifs_sid owner, group;
+ 	int tmprc;
+ 	int rc = 0;
+ 
+@@ -1335,8 +1329,7 @@ static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
+ 	 */
+ 	if (!data) {
+ 		rc = smb311_posix_query_path_info(xid, tcon, cifs_sb,
+-						  full_path, &tmp_data,
+-						  &owner, &group);
++						  full_path, &tmp_data);
+ 		data = &tmp_data;
+ 	}
+ 
+@@ -1348,11 +1341,9 @@ static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
+ 	case 0:
+ 		if (cifs_open_data_reparse(data)) {
+ 			rc = reparse_info_to_fattr(data, sb, xid, tcon,
+-						   full_path, fattr,
+-						   &owner, &group);
++						   full_path, fattr);
+ 		} else {
+-			smb311_posix_info_to_fattr(fattr, data,
+-						   &owner, &group, sb);
++			smb311_posix_info_to_fattr(fattr, data, sb);
+ 		}
+ 		break;
+ 	case -EREMOTE:
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 94df328a1965d..4cd4b8a63316d 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -56,6 +56,35 @@ static struct reparse_data_buffer *reparse_buf_ptr(struct kvec *iov)
+ 	return buf;
+ }
+ 
++/* Parse owner and group from SMB3.1.1 POSIX query info */
++static int parse_posix_sids(struct cifs_open_info_data *data,
++			    struct kvec *rsp_iov)
 +{
-+	while (start_byte < end_byte) {
-+		struct folio	*folio;
++	struct smb2_query_info_rsp *qi = rsp_iov->iov_base;
++	unsigned int out_len = le32_to_cpu(qi->OutputBufferLength);
++	unsigned int qi_len = sizeof(data->posix_fi);
++	int owner_len, group_len;
++	u8 *sidsbuf, *sidsbuf_end;
 +
-+		/* grab locked page */
-+		folio = filemap_lock_folio(inode->i_mapping,
-+				start_byte >> PAGE_SHIFT);
-+		if (!folio) {
-+			start_byte = ALIGN_DOWN(start_byte, PAGE_SIZE) +
-+					PAGE_SIZE;
-+			continue;
-+		}
++	if (out_len <= qi_len)
++		return -EINVAL;
 +
-+		/* if dirty, punch up to offset */
-+		if (folio_test_dirty(folio)) {
-+			if (start_byte > *punch_start_byte) {
-+				int	error;
++	sidsbuf = (u8 *)qi + le16_to_cpu(qi->OutputBufferOffset) + qi_len;
++	sidsbuf_end = sidsbuf + out_len - qi_len;
 +
-+				error = punch(inode, *punch_start_byte,
-+						start_byte - *punch_start_byte);
-+				if (error) {
-+					folio_unlock(folio);
-+					folio_put(folio);
-+					return error;
-+				}
-+			}
++	owner_len = posix_info_sid_size(sidsbuf, sidsbuf_end);
++	if (owner_len == -1)
++		return -EINVAL;
 +
-+			/*
-+			 * Make sure the next punch start is correctly bound to
-+			 * the end of this data range, not the end of the folio.
-+			 */
-+			*punch_start_byte = min_t(loff_t, end_byte,
-+					folio_next_index(folio) << PAGE_SHIFT);
-+		}
++	memcpy(&data->posix_owner, sidsbuf, owner_len);
++	group_len = posix_info_sid_size(sidsbuf + owner_len, sidsbuf_end);
++	if (group_len == -1)
++		return -EINVAL;
 +
-+		/* move offset to start of next folio in range */
-+		start_byte = folio_next_index(folio) << PAGE_SHIFT;
-+		folio_unlock(folio);
-+		folio_put(folio);
-+	}
++	memcpy(&data->posix_group, sidsbuf + owner_len, group_len);
 +	return 0;
 +}
 +
-+/*
-+ * Punch out all the delalloc blocks in the range given except for those that
-+ * have dirty data still pending in the page cache - those are going to be
-+ * written and so must still retain the delalloc backing for writeback.
-+ *
-+ * As we are scanning the page cache for data, we don't need to reimplement the
-+ * wheel - mapping_seek_hole_data() does exactly what we need to identify the
-+ * start and end of data ranges correctly even for sub-folio block sizes. This
-+ * byte range based iteration is especially convenient because it means we
-+ * don't have to care about variable size folios, nor where the start or end of
-+ * the data range lies within a folio, if they lie within the same folio or even
-+ * if there are multiple discontiguous data ranges within the folio.
-+ *
-+ * It should be noted that mapping_seek_hole_data() is not aware of EOF, and so
-+ * can return data ranges that exist in the cache beyond EOF. e.g. a page fault
-+ * spanning EOF will initialise the post-EOF data to zeroes and mark it up to
-+ * date. A write page fault can then mark it dirty. If we then fail a write()
-+ * beyond EOF into that up to date cached range, we allocate a delalloc block
-+ * beyond EOF and then have to punch it out. Because the range is up to date,
-+ * mapping_seek_hole_data() will return it, and we will skip the punch because
-+ * the folio is dirty. THis is incorrect - we always need to punch out delalloc
-+ * beyond EOF in this case as writeback will never write back and covert that
-+ * delalloc block beyond EOF. Hence we limit the cached data scan range to EOF,
-+ * resulting in always punching out the range from the EOF to the end of the
-+ * range the iomap spans.
-+ *
-+ * Intervals are of the form [start_byte, end_byte) (i.e. open ended) because it
-+ * matches the intervals returned by mapping_seek_hole_data(). i.e. SEEK_DATA
-+ * returns the start of a data range (start_byte), and SEEK_HOLE(start_byte)
-+ * returns the end of the data range (data_end). Using closed intervals would
-+ * require sprinkling this code with magic "+ 1" and "- 1" arithmetic and expose
-+ * the code to subtle off-by-one bugs....
-+ */
-+static int iomap_write_delalloc_release(struct inode *inode,
-+		loff_t start_byte, loff_t end_byte,
-+		int (*punch)(struct inode *inode, loff_t pos, loff_t length))
-+{
-+	loff_t punch_start_byte = start_byte;
-+	loff_t scan_end_byte = min(i_size_read(inode), end_byte);
-+	int error = 0;
-+
-+	/*
-+	 * Lock the mapping to avoid races with page faults re-instantiating
-+	 * folios and dirtying them via ->page_mkwrite whilst we walk the
-+	 * cache and perform delalloc extent removal. Failing to do this can
-+	 * leave dirty pages with no space reservation in the cache.
-+	 */
-+	filemap_invalidate_lock(inode->i_mapping);
-+	while (start_byte < scan_end_byte) {
-+		loff_t		data_end;
-+
-+		start_byte = mapping_seek_hole_data(inode->i_mapping,
-+				start_byte, scan_end_byte, SEEK_DATA);
-+		/*
-+		 * If there is no more data to scan, all that is left is to
-+		 * punch out the remaining range.
-+		 */
-+		if (start_byte == -ENXIO || start_byte == scan_end_byte)
-+			break;
-+		if (start_byte < 0) {
-+			error = start_byte;
-+			goto out_unlock;
-+		}
-+		WARN_ON_ONCE(start_byte < punch_start_byte);
-+		WARN_ON_ONCE(start_byte > scan_end_byte);
-+
-+		/*
-+		 * We find the end of this contiguous cached data range by
-+		 * seeking from start_byte to the beginning of the next hole.
-+		 */
-+		data_end = mapping_seek_hole_data(inode->i_mapping, start_byte,
-+				scan_end_byte, SEEK_HOLE);
-+		if (data_end < 0) {
-+			error = data_end;
-+			goto out_unlock;
-+		}
-+		WARN_ON_ONCE(data_end <= start_byte);
-+		WARN_ON_ONCE(data_end > scan_end_byte);
-+
-+		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
-+				start_byte, data_end, punch);
-+		if (error)
-+			goto out_unlock;
-+
-+		/* The next data search starts at the end of this one. */
-+		start_byte = data_end;
-+	}
-+
-+	if (punch_start_byte < end_byte)
-+		error = punch(inode, punch_start_byte,
-+				end_byte - punch_start_byte);
-+out_unlock:
-+	filemap_invalidate_unlock(inode->i_mapping);
-+	return error;
-+}
-+
-+/*
-  * When a short write occurs, the filesystem may need to remove reserved space
-  * that was allocated in ->iomap_begin from it's ->iomap_end method. For
-  * filesystems that use delayed allocation, we need to punch out delalloc
-@@ -837,8 +996,25 @@ EXPORT_SYMBOL_GPL(iomap_file_buffered_wr
-  * allocated for this iomap.
-  *
-  * This function uses [start_byte, end_byte) intervals (i.e. open ended) to
-- * simplify range iterations, but converts them back to {offset,len} tuples for
-- * the punch callback.
-+ * simplify range iterations.
-+ *
-+ * The punch() callback *must* only punch delalloc extents in the range passed
-+ * to it. It must skip over all other types of extents in the range and leave
-+ * them completely unchanged. It must do this punch atomically with respect to
-+ * other extent modifications.
-+ *
-+ * The punch() callback may be called with a folio locked to prevent writeback
-+ * extent allocation racing at the edge of the range we are currently punching.
-+ * The locked folio may or may not cover the range being punched, so it is not
-+ * safe for the punch() callback to lock folios itself.
-+ *
-+ * Lock order is:
-+ *
-+ * inode->i_rwsem (shared or exclusive)
-+ *   inode->i_mapping->invalidate_lock (exclusive)
-+ *     folio_lock()
-+ *       ->punch
-+ *         internal filesystem allocation lock
-  */
- int iomap_file_buffered_write_punch_delalloc(struct inode *inode,
- 		struct iomap *iomap, loff_t pos, loff_t length,
-@@ -848,7 +1024,6 @@ int iomap_file_buffered_write_punch_dela
- 	loff_t			start_byte;
- 	loff_t			end_byte;
- 	int			blocksize = i_blocksize(inode);
--	int			error = 0;
+ /*
+  * note: If cfile is passed, the reference to it is dropped here.
+  * So make sure that you do not reuse cfile after return from this func.
+@@ -69,7 +98,6 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 			    __u32 desired_access, __u32 create_disposition,
+ 			    __u32 create_options, umode_t mode, struct kvec *in_iov,
+ 			    int *cmds, int num_cmds, struct cifsFileInfo *cfile,
+-			    __u8 **extbuf, size_t *extbuflen,
+ 			    struct kvec *out_iov, int *out_buftype)
+ {
  
- 	if (iomap->type != IOMAP_DELALLOC)
- 		return 0;
-@@ -872,18 +1047,8 @@ int iomap_file_buffered_write_punch_dela
- 	if (start_byte >= end_byte)
- 		return 0;
- 
--	/*
--	 * Lock the mapping to avoid races with page faults re-instantiating
--	 * folios and dirtying them via ->page_mkwrite between the page cache
--	 * truncation and the delalloc extent removal. Failing to do this can
--	 * leave dirty pages with no space reservation in the cache.
--	 */
--	filemap_invalidate_lock(inode->i_mapping);
--	truncate_pagecache_range(inode, start_byte, end_byte - 1);
--	error = punch(inode, start_byte, end_byte - start_byte);
--	filemap_invalidate_unlock(inode->i_mapping);
+@@ -509,21 +537,9 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 					&rsp_iov[i + 1], sizeof(idata->posix_fi) /* add SIDs */,
+ 					(char *)&idata->posix_fi);
+ 			}
+-			if (rc == 0) {
+-				unsigned int length = le32_to_cpu(qi_rsp->OutputBufferLength);
 -
--	return error;
-+	return iomap_write_delalloc_release(inode, start_byte, end_byte,
-+					punch);
- }
- EXPORT_SYMBOL_GPL(iomap_file_buffered_write_punch_delalloc);
+-				if (length > sizeof(idata->posix_fi)) {
+-					char *base = (char *)rsp_iov[i + 1].iov_base +
+-						le16_to_cpu(qi_rsp->OutputBufferOffset) +
+-						sizeof(idata->posix_fi);
+-					*extbuflen = length - sizeof(idata->posix_fi);
+-					*extbuf = kmemdup(base, *extbuflen, GFP_KERNEL);
+-					if (!*extbuf)
+-						rc = -ENOMEM;
+-				} else {
+-					rc = -EINVAL;
+-				}
+-			}
++			if (rc == 0)
++				rc = parse_posix_sids(idata, &rsp_iov[i + 1]);
++
+ 			SMB2_query_info_free(&rqst[num_rqst++]);
+ 			if (rc)
+ 				trace_smb3_posix_query_info_compound_err(xid,  ses->Suid,
+@@ -714,9 +730,8 @@ int smb2_query_path_info(const unsigned int xid,
+ 	cifs_get_readable_path(tcon, full_path, &cfile);
+ 	rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 			      FILE_READ_ATTRIBUTES, FILE_OPEN,
+-			      create_options, ACL_NO_MODE,
+-			      in_iov, cmds, 1, cfile,
+-			      NULL, NULL, out_iov, out_buftype);
++			      create_options, ACL_NO_MODE, in_iov,
++			      cmds, 1, cfile, out_iov, out_buftype);
+ 	hdr = out_iov[0].iov_base;
+ 	/*
+ 	 * If first iov is unset, then SMB session was dropped or we've got a
+@@ -743,8 +758,8 @@ int smb2_query_path_info(const unsigned int xid,
+ 		cifs_get_readable_path(tcon, full_path, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 				      FILE_READ_ATTRIBUTES, FILE_OPEN,
+-				      create_options, ACL_NO_MODE, in_iov, cmds,
+-				      num_cmds, cfile, NULL, NULL, NULL, NULL);
++				      create_options, ACL_NO_MODE, in_iov,
++				      cmds, num_cmds, cfile, NULL, NULL);
+ 		break;
+ 	case -EREMOTE:
+ 		break;
+@@ -771,19 +786,13 @@ int smb311_posix_query_path_info(const unsigned int xid,
+ 				 struct cifs_tcon *tcon,
+ 				 struct cifs_sb_info *cifs_sb,
+ 				 const char *full_path,
+-				 struct cifs_open_info_data *data,
+-				 struct cifs_sid *owner,
+-				 struct cifs_sid *group)
++				 struct cifs_open_info_data *data)
+ {
+ 	int rc;
+ 	__u32 create_options = 0;
+ 	struct cifsFileInfo *cfile;
+ 	struct kvec in_iov[2], out_iov[3] = {};
+ 	int out_buftype[3] = {};
+-	__u8 *sidsbuf = NULL;
+-	__u8 *sidsbuf_end = NULL;
+-	size_t sidsbuflen = 0;
+-	size_t owner_len, group_len;
+ 	int cmds[2] = { SMB2_OP_POSIX_QUERY_INFO,  };
+ 	int i, num_cmds;
  
+@@ -803,8 +812,8 @@ int smb311_posix_query_path_info(const unsigned int xid,
+ 	cifs_get_readable_path(tcon, full_path, &cfile);
+ 	rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 			      FILE_READ_ATTRIBUTES, FILE_OPEN,
+-			      create_options, ACL_NO_MODE, in_iov, cmds, 1,
+-			      cfile, &sidsbuf, &sidsbuflen, out_iov, out_buftype);
++			      create_options, ACL_NO_MODE, in_iov,
++			      cmds, 1, cfile, out_iov, out_buftype);
+ 	/*
+ 	 * If first iov is unset, then SMB session was dropped or we've got a
+ 	 * cached open file (@cfile).
+@@ -831,32 +840,12 @@ int smb311_posix_query_path_info(const unsigned int xid,
+ 		cifs_get_readable_path(tcon, full_path, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 				      FILE_READ_ATTRIBUTES, FILE_OPEN,
+-				      create_options, ACL_NO_MODE, in_iov, cmds,
+-				      num_cmds, cfile, &sidsbuf, &sidsbuflen, NULL, NULL);
++				      create_options, ACL_NO_MODE, in_iov,
++				      cmds, num_cmds, cfile, NULL, NULL);
+ 		break;
+ 	}
+ 
+ out:
+-	if (rc == 0) {
+-		sidsbuf_end = sidsbuf + sidsbuflen;
+-
+-		owner_len = posix_info_sid_size(sidsbuf, sidsbuf_end);
+-		if (owner_len == -1) {
+-			rc = -EINVAL;
+-			goto out;
+-		}
+-		memcpy(owner, sidsbuf, owner_len);
+-
+-		group_len = posix_info_sid_size(
+-			sidsbuf + owner_len, sidsbuf_end);
+-		if (group_len == -1) {
+-			rc = -EINVAL;
+-			goto out;
+-		}
+-		memcpy(group, sidsbuf + owner_len, group_len);
+-	}
+-
+-	kfree(sidsbuf);
+ 	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
+ 		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
+ 	return rc;
+@@ -869,9 +858,9 @@ smb2_mkdir(const unsigned int xid, struct inode *parent_inode, umode_t mode,
+ {
+ 	return smb2_compound_op(xid, tcon, cifs_sb, name,
+ 				FILE_WRITE_ATTRIBUTES, FILE_CREATE,
+-				CREATE_NOT_FILE, mode, NULL,
+-				&(int){SMB2_OP_MKDIR}, 1,
+-				NULL, NULL, NULL, NULL, NULL);
++				CREATE_NOT_FILE, mode,
++				NULL, &(int){SMB2_OP_MKDIR}, 1,
++				NULL, NULL, NULL);
+ }
+ 
+ void
+@@ -896,7 +885,7 @@ smb2_mkdir_setinfo(struct inode *inode, const char *name,
+ 				 FILE_WRITE_ATTRIBUTES, FILE_CREATE,
+ 				 CREATE_NOT_FILE, ACL_NO_MODE, &in_iov,
+ 				 &(int){SMB2_OP_SET_INFO}, 1,
+-				 cfile, NULL, NULL, NULL, NULL);
++				 cfile, NULL, NULL);
+ 	if (tmprc == 0)
+ 		cifs_i->cifsAttrs = dosattrs;
+ }
+@@ -908,8 +897,9 @@ smb2_rmdir(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
+ 	drop_cached_dir_by_name(xid, tcon, name, cifs_sb);
+ 	return smb2_compound_op(xid, tcon, cifs_sb, name,
+ 				DELETE, FILE_OPEN, CREATE_NOT_FILE,
+-				ACL_NO_MODE, NULL, &(int){SMB2_OP_RMDIR}, 1,
+-				NULL, NULL, NULL, NULL, NULL);
++				ACL_NO_MODE, NULL,
++				&(int){SMB2_OP_RMDIR}, 1,
++				NULL, NULL, NULL);
+ }
+ 
+ int
+@@ -918,8 +908,9 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
+ {
+ 	return smb2_compound_op(xid, tcon, cifs_sb, name, DELETE, FILE_OPEN,
+ 				CREATE_DELETE_ON_CLOSE | OPEN_REPARSE_POINT,
+-				ACL_NO_MODE, NULL, &(int){SMB2_OP_DELETE}, 1,
+-				NULL, NULL, NULL, NULL, NULL);
++				ACL_NO_MODE, NULL,
++				&(int){SMB2_OP_DELETE}, 1,
++				NULL, NULL, NULL);
+ }
+ 
+ static int smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -939,10 +930,9 @@ static int smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
+ 	}
+ 	in_iov.iov_base = smb2_to_name;
+ 	in_iov.iov_len = 2 * UniStrnlen((wchar_t *)smb2_to_name, PATH_MAX);
+-
+ 	rc = smb2_compound_op(xid, tcon, cifs_sb, from_name, access,
+-			      FILE_OPEN, 0, ACL_NO_MODE, &in_iov,
+-			      &command, 1, cfile, NULL, NULL, NULL, NULL);
++			      FILE_OPEN, create_options, ACL_NO_MODE,
++			      &in_iov, &command, 1, cfile, NULL, NULL);
+ smb2_rename_path:
+ 	kfree(smb2_to_name);
+ 	return rc;
+@@ -993,7 +983,7 @@ smb2_set_path_size(const unsigned int xid, struct cifs_tcon *tcon,
+ 				FILE_WRITE_DATA, FILE_OPEN,
+ 				0, ACL_NO_MODE, &in_iov,
+ 				&(int){SMB2_OP_SET_EOF}, 1,
+-				cfile, NULL, NULL, NULL, NULL);
++				cfile, NULL, NULL);
+ }
+ 
+ int
+@@ -1021,8 +1011,8 @@ smb2_set_file_info(struct inode *inode, const char *full_path,
+ 	rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 			      FILE_WRITE_ATTRIBUTES, FILE_OPEN,
+ 			      0, ACL_NO_MODE, &in_iov,
+-			      &(int){SMB2_OP_SET_INFO}, 1, cfile,
+-			      NULL, NULL, NULL, NULL);
++			      &(int){SMB2_OP_SET_INFO}, 1,
++			      cfile, NULL, NULL);
+ 	cifs_put_tlink(tlink);
+ 	return rc;
+ }
+@@ -1057,7 +1047,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 				      da, cd, co, ACL_NO_MODE, in_iov,
+-				      cmds, 2, cfile, NULL, NULL, NULL, NULL);
++				      cmds, 2, cfile, NULL, NULL);
+ 		if (!rc) {
+ 			rc = smb311_posix_get_inode_info(&new, full_path,
+ 							 data, sb, xid);
+@@ -1067,7 +1057,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 				      da, cd, co, ACL_NO_MODE, in_iov,
+-				      cmds, 2, cfile, NULL, NULL, NULL, NULL);
++				      cmds, 2, cfile, NULL, NULL);
+ 		if (!rc) {
+ 			rc = cifs_get_inode_info(&new, full_path,
+ 						 data, sb, xid, NULL);
+@@ -1094,8 +1084,8 @@ int smb2_query_reparse_point(const unsigned int xid,
+ 	rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
+ 			      FILE_READ_ATTRIBUTES, FILE_OPEN,
+ 			      OPEN_REPARSE_POINT, ACL_NO_MODE, &in_iov,
+-			      &(int){SMB2_OP_GET_REPARSE}, 1, cfile,
+-			      NULL, NULL, NULL, NULL);
++			      &(int){SMB2_OP_GET_REPARSE}, 1,
++			      cfile, NULL, NULL);
+ 	if (rc)
+ 		goto out;
+ 
+diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
+index 330e36c6b91f0..b3069911e9dd8 100644
+--- a/fs/smb/client/smb2proto.h
++++ b/fs/smb/client/smb2proto.h
+@@ -304,9 +304,7 @@ int smb311_posix_query_path_info(const unsigned int xid,
+ 				 struct cifs_tcon *tcon,
+ 				 struct cifs_sb_info *cifs_sb,
+ 				 const char *full_path,
+-				 struct cifs_open_info_data *data,
+-				 struct cifs_sid *owner,
+-				 struct cifs_sid *group);
++				 struct cifs_open_info_data *data);
+ int posix_info_parse(const void *beg, const void *end,
+ 		     struct smb2_posix_info_parsed *out);
+ int posix_info_sid_size(const void *beg, const void *end);
+-- 
+2.43.0
+
 
 
 
