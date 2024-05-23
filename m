@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-45856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC188CD438
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7301B8CD366
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 250921F21544
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280F2285272
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BDF14AD38;
-	Thu, 23 May 2024 13:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CD914AD0C;
+	Thu, 23 May 2024 13:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEZOgw01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3OIftlQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E424914A604;
-	Thu, 23 May 2024 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571214A635;
+	Thu, 23 May 2024 13:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470559; cv=none; b=Qi1uA5lt4ccmhe4CWcvs8koyE8j4MmTEozRR4UZ8wOMWI/+RLD3+Xaq8u7peLL9auMB5WttJbbeGdF6NXZ6SIuLEsijHkFFy3Sd3iri0GR1uLRfokqA2zgbXRm+A1iL8HSs6lJxKaPzvS0eGxveTHa/N4fucg85EpIva/Ixct3U=
+	t=1716470090; cv=none; b=j4LU4dZGtfwpBvzz00FNekDbbCNcJU98Zrp86g5s46PgPO0pt1sIX8Y3EaolhatrFZZBoO4/XhHokCm+PiV82ZvJhcxqpZ+HoQ6FIkDBLGfTfUQL72KjJEVAX0F0RnR3IMhWjDrukhBpteOBqOEql7nSy+4H9rFqU1XkbcKd9Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470559; c=relaxed/simple;
-	bh=d97sStexVFxvz+QxbSd2aaXF/jqvzVQ9BLcv0APztKg=;
+	s=arc-20240116; t=1716470090; c=relaxed/simple;
+	bh=LHjN11KINyzryf4nyMaoIN+RboFjp4WPgXHkSCr8VAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4w/hji+q5yMtYzaLp0uruQ2Aqoumh/2sXJ0GViW4uox7JTTBuKEJHW6BrV4epX30W3vAK68a4QKTMajK0lX2f4JysoHDh7OPaT/V2rFXr+FIKyUKC2+kO/39gEz2LbJRPiW9dZetghjJIOJZNmhwAPqRzFqkNj03i+2oRXhULs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEZOgw01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C048C2BD10;
-	Thu, 23 May 2024 13:22:38 +0000 (UTC)
+	 MIME-Version; b=GgT8ElQsMiXxwhFLXSitcDFjTZ9nVUlb0YgkOuxKVFzXSm/8r3Ky8wv7PQzJcgI1dLLEGZd0GCkgTLK6h0mKolj7bAz0zuONbtIOVX0U82U0AjkBZs7ckldOWXgf1YEtz8nCuVzIobF005M8vRFB9fHRuPCL/Z3nWGZqkt78XE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3OIftlQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCE2C32782;
+	Thu, 23 May 2024 13:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470558;
-	bh=d97sStexVFxvz+QxbSd2aaXF/jqvzVQ9BLcv0APztKg=;
+	s=korg; t=1716470090;
+	bh=LHjN11KINyzryf4nyMaoIN+RboFjp4WPgXHkSCr8VAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEZOgw01SO4O6IpbrEhkjPY++ASAoGeeyGYOZFbgj3iFdQrN01gEgmDvxK2TbJ5d0
-	 pN0c8wynySDQk5AYQulk3xaxYWRP3lZW5yraPJB5kNkzFpTEDMO5k23EhbZg5fQVMT
-	 gil/O5DmOi1sENCuIQPQVv4ZyfIpdh8Z6biEqldY=
+	b=C3OIftlQJ2eIuO8/6JSElK6EUNVA1F0hV3C9bK+pss+nNZyHk+PPORCXRpw4s1Hiz
+	 gRqkrCu00zfwEEuqS6ORuRpilMDPa2nq8REMOCjs34pWpSG98w1cDWcCMFCrlxsraw
+	 JReMoy+RqMPlWdi2zAJyJrRDiAyA8cBQZ5t+WuZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/102] cifs: Add client version details to NTLM authenticate message
-Date: Thu, 23 May 2024 15:12:26 +0200
-Message-ID: <20240523130342.520134047@linuxfoundation.org>
+	"stable@vger.kernel.org, George Guo" <guodongtai@kylinos.cn>,
+	Tom Zanussi <tom.zanussi@linux.intel.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+	George Guo <guodongtai@kylinos.cn>
+Subject: [PATCH 4.19 04/18] tracing: Simplify creation and deletion of synthetic events
+Date: Thu, 23 May 2024 15:12:27 +0200
+Message-ID: <20240523130325.898254176@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
+References: <20240523130325.727602650@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meetakshi Setiya <msetiya@microsoft.com>
+From: Masami Hiramatsu <mhiramat@kernel.org>
 
-[ Upstream commit 1460720c5913c11415e4d7c4df5a287eb2ad3f3e ]
+commit faacb361f271be4baf2d807e2eeaba87e059225f upstream.
 
-The NTLM authenticate message currently sets the NTLMSSP_NEGOTIATE_VERSION
-flag but does not populate the VERSION structure. This commit fixes this
-bug by ensuring that the flag is set and the version details are included
-in the message.
+Since the event_mutex and synth_event_mutex ordering issue
+is gone, we can skip existing event check when adding or
+deleting events, and some redundant code in error path.
 
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This changes release_all_synth_events() to abort the process
+when it hits any error and returns the error code. It succeeds
+only if it has no error.
+
+Link: http://lkml.kernel.org/r/154140847194.17322.17960275728005067803.stgit@devbox
+
+Reviewed-by: Tom Zanussi <tom.zanussi@linux.intel.com>
+Tested-by: Tom Zanussi <tom.zanussi@linux.intel.com>
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: George Guo <guodongtai@kylinos.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/ntlmssp.h |  4 ++--
- fs/smb/client/sess.c    | 12 +++++++++---
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ kernel/trace/trace_events_hist.c |   53 +++++++++++++--------------------------
+ 1 file changed, 18 insertions(+), 35 deletions(-)
 
-diff --git a/fs/smb/client/ntlmssp.h b/fs/smb/client/ntlmssp.h
-index 2c5dde2ece588..875de43b72de3 100644
---- a/fs/smb/client/ntlmssp.h
-+++ b/fs/smb/client/ntlmssp.h
-@@ -133,8 +133,8 @@ typedef struct _AUTHENTICATE_MESSAGE {
- 	SECURITY_BUFFER WorkstationName;
- 	SECURITY_BUFFER SessionKey;
- 	__le32 NegotiateFlags;
--	/* SECURITY_BUFFER for version info not present since we
--	   do not set the version is present flag */
-+	struct	ntlmssp_version Version;
-+	/* SECURITY_BUFFER */
- 	char UserString[];
- } __attribute__((packed)) AUTHENTICATE_MESSAGE, *PAUTHENTICATE_MESSAGE;
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -1028,18 +1028,6 @@ struct hist_var_data {
+ 	struct hist_trigger_data *hist_data;
+ };
  
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index e4168cd8b6c28..bd4dcd1a9af83 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -1201,10 +1201,16 @@ int build_ntlmssp_auth_blob(unsigned char **pbuffer,
- 	memcpy(sec_blob->Signature, NTLMSSP_SIGNATURE, 8);
- 	sec_blob->MessageType = NtLmAuthenticate;
+-static void add_or_delete_synth_event(struct synth_event *event, int delete)
+-{
+-	if (delete)
+-		free_synth_event(event);
+-	else {
+-		if (!find_synth_event(event->name))
+-			list_add(&event->list, &synth_event_list);
+-		else
+-			free_synth_event(event);
+-	}
+-}
+-
+ static int create_synth_event(int argc, char **argv)
+ {
+ 	struct synth_field *field, *fields[SYNTH_FIELDS_MAX];
+@@ -1072,15 +1060,16 @@ static int create_synth_event(int argc,
+ 	if (event) {
+ 		if (delete_event) {
+ 			if (event->ref) {
+-				event = NULL;
+ 				ret = -EBUSY;
+ 				goto out;
+ 			}
+-			list_del(&event->list);
+-			goto out;
+-		}
+-		event = NULL;
+-		ret = -EEXIST;
++			ret = unregister_synth_event(event);
++			if (!ret) {
++				list_del(&event->list);
++				free_synth_event(event);
++			}
++		} else
++			ret = -EEXIST;
+ 		goto out;
+ 	} else if (delete_event) {
+ 		ret = -ENOENT;
+@@ -1120,29 +1109,21 @@ static int create_synth_event(int argc,
+ 		event = NULL;
+ 		goto err;
+ 	}
++	ret = register_synth_event(event);
++	if (!ret)
++		list_add(&event->list, &synth_event_list);
++	else
++		free_synth_event(event);
+  out:
+-	if (event) {
+-		if (delete_event) {
+-			ret = unregister_synth_event(event);
+-			add_or_delete_synth_event(event, !ret);
+-		} else {
+-			ret = register_synth_event(event);
+-			add_or_delete_synth_event(event, ret);
+-		}
+-	}
+ 	mutex_unlock(&synth_event_mutex);
+ 	mutex_unlock(&event_mutex);
  
-+	/* send version information in ntlmssp authenticate also */
- 	flags = ses->ntlmssp->server_flags | NTLMSSP_REQUEST_TARGET |
--		NTLMSSP_NEGOTIATE_TARGET_INFO | NTLMSSP_NEGOTIATE_WORKSTATION_SUPPLIED;
--	/* we only send version information in ntlmssp negotiate, so do not set this flag */
--	flags = flags & ~NTLMSSP_NEGOTIATE_VERSION;
-+		NTLMSSP_NEGOTIATE_TARGET_INFO | NTLMSSP_NEGOTIATE_VERSION |
-+		NTLMSSP_NEGOTIATE_WORKSTATION_SUPPLIED;
-+
-+	sec_blob->Version.ProductMajorVersion = LINUX_VERSION_MAJOR;
-+	sec_blob->Version.ProductMinorVersion = LINUX_VERSION_PATCHLEVEL;
-+	sec_blob->Version.ProductBuild = cpu_to_le16(SMB3_PRODUCT_BUILD);
-+	sec_blob->Version.NTLMRevisionCurrent = NTLMSSP_REVISION_W2K3;
-+
- 	tmp = *pbuffer + sizeof(AUTHENTICATE_MESSAGE);
- 	sec_blob->NegotiateFlags = cpu_to_le32(flags);
+ 	return ret;
+  err:
+-	mutex_unlock(&synth_event_mutex);
+-	mutex_unlock(&event_mutex);
+-
+ 	for (i = 0; i < n_fields; i++)
+ 		free_synth_field(fields[i]);
+-	free_synth_event(event);
  
--- 
-2.43.0
-
+-	return ret;
++	goto out;
+ }
+ 
+ static int release_all_synth_events(void)
+@@ -1161,10 +1142,12 @@ static int release_all_synth_events(void
+ 	}
+ 
+ 	list_for_each_entry_safe(event, e, &synth_event_list, list) {
+-		list_del(&event->list);
+-
+ 		ret = unregister_synth_event(event);
+-		add_or_delete_synth_event(event, !ret);
++		if (!ret) {
++			list_del(&event->list);
++			free_synth_event(event);
++		} else
++			break;
+ 	}
+ 	mutex_unlock(&synth_event_mutex);
+ 	mutex_unlock(&event_mutex);
 
 
 
