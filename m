@@ -1,142 +1,98 @@
-Return-Path: <stable+bounces-45973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FD68CD92A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 19:31:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B06F78CD939
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 19:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A26BDB2141F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 17:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476FF1F21D84
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 17:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8A31170F;
-	Thu, 23 May 2024 17:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425802BAE8;
+	Thu, 23 May 2024 17:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="OZEMrSjp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0zkFhT9"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A3E17556
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 17:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4BD12E75;
+	Thu, 23 May 2024 17:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716485468; cv=none; b=LcM3Vu0hkQK98wPlvR8Zrz20T3vqwdniXmdHSljPghu9M5I7MZVrp5+xHi7+BKBhChhZ4HTMVIAvLiNOMhSNmbCY/tZ2CnieveOKxteX0Ik+jL8TR2WZzL/D4/bgBxY3znjdfz/KxX4+E4EbWlKm0GqVE3d5xoQRTGw3vuohTRA=
+	t=1716486012; cv=none; b=DYF47A8YWNO+xpJbt/rzpRW575o2McMss3NATHypEf8dxrrgaNpK3iCStH/czcOZqFsmku2EB+bM48UbnjpMbNxyajaRZTdY4fBhFUhVXET5g+Nq3+vm6qBXg1DdN6s7XSWe/Z2rhOdgol4vNEwpeDVoP6GoTYigPv7A3A1y/UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716485468; c=relaxed/simple;
-	bh=/4Xtk9VApKgTGxfRm/biR72Ywmf5F0ikP+F+Og2SnEk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BxzGSG1en3AALYAasVUXLgiWOn5PPi4+XfR/yUHnkyjy44LSoQKbGvWuqrjJITL6byOD3W9lWPRv6XJGG4SHLL+LT8vxyyjqEIRPJQiLlt0IZpaf5WKoeZj0tv5ThRrBAn/6uJ6IfzDR4nQrp4J0gqniTP9NHzc6iHpFOLgcmAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=OZEMrSjp; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1716485453; x=1717090253; i=w_armin@gmx.de;
-	bh=ml1OIk1ADGSN0Bv7BhxFFCfB6DaSzESeZqgOlINQEik=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=OZEMrSjpRCpZNHtDzlmr0mM8Z76qBOA47wRnpJmk2+GZMBHSY6dP+E6IS3bEoTr2
-	 cs+oUuQy6G/5SvY5rTw8Y4m4iXXGV6BByaWCGWeZc1RDfIyYW60ml8hUXkBJuuWbR
-	 2eN02l2UPaMHeIxBNBZdsLPCIBXuqaDAa44rc9aHt1ZvsYQQ+BwwG3DCLd9GCm5Pm
-	 /uxmdfHru1oAYwc2U0wyv1Ncu0C9Ob3cogxQe9ivAHrnSuP1JrV4+STZBeD5jkpdm
-	 Z9fIYxGnB6mkMUrCADchMsYPBnFJG/ZcZeXjzw5ZT1cphv1sTax4iraSdQLg3pNO+
-	 /nzBoUi8mnC8osS14w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MMXQF-1rqbKE2jRP-00Jbrc; Thu, 23 May 2024 19:30:53 +0200
-From: Armin Wolf <W_Armin@gmx.de>
-To: alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: stable@vger.kernel.org,
-	bkauler@gmail.com,
-	yifan1.zhang@amd.com,
-	Prike.Liang@amd.com,
-	dri-devel@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org
-Subject: [PATCH] Revert "drm/amdgpu: init iommu after amdkfd device init"
-Date: Thu, 23 May 2024 19:30:31 +0200
-Message-Id: <20240523173031.4212-1-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1716486012; c=relaxed/simple;
+	bh=awGoNhuONhvwplE/E9LvfYO45qmVez3JpHDk+oUhgqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kDUi5IwomqQDzr5BEmtHSRVKu35jdo2TgnfrJPFiHY7nSaOqjIllfbnvM6PQM4oIjxgD6njYgpeBlgseMaNp8Ydpm7SADVOGl10Scirsa7Qn05R+VdTqFcSjTv8nPgXvOgnUR75HE9eD2oNAfpTZDkyodMeAcs2kIMACsq2KN/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0zkFhT9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87F1C2BD10;
+	Thu, 23 May 2024 17:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716486011;
+	bh=awGoNhuONhvwplE/E9LvfYO45qmVez3JpHDk+oUhgqE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u0zkFhT9yZFKRfL6LHmT5HRPgIhaO5/w9t9lBd5vLfyGjNyvhP+uZ0nbfN3ObcawU
+	 E04ttsqNK2u5owQhw4htNqDMo4EE3BMXEQg+tQ9qZm7b45o9I1QdbjccF+3GdtYIry
+	 EK0BXhqJg3ugPTTYK0+YVpy/kEtRmlSFYOIu2nLZ2+G5Tph0PMPZLeAwWcuaymomgm
+	 bKU7w3cCrFTJFLOSsMYLM1AHmY3TpcbNY5NMbgCsYxRhyS64/AUEmLkQKPoJle57nj
+	 sb9rerLcD8gepRTqoHzM0c+MofDB4MPEtTo8Tmum6vVEk5n/0xj5okg5AHjqn0TAJC
+	 LtDbUlYmPJBZQ==
+Date: Thu, 23 May 2024 18:40:04 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/102] 6.6.32-rc1 review
+Message-ID: <2013b8c5-1834-4567-a1c5-afdfc70882bf@sirena.org.uk>
+References: <20240523130342.462912131@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0V9lwu73H77PqAdjA+YQOQLM2+3KzTTl9zrsb6I30uhUOPxiA1p
- JLJxYqkyMKgStNVIay7ID6KI216ZNz3ubM8XYpSGnu66EzUxT8sXLASfudxjjdwKULpb7VC
- +Y+O7sbY7kIa+IPrB1Bw1Am+litWkoWWTdhMITaXxEbvfBMPo2yyoGSwkhR1eikF9FRkxYj
- COK97gWxEtIP+rgPugzrw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:MEiYmEz3rHs=;s9mwmp1yHhBowpawx+LtT7SZ6Xc
- Ns4RuJiZEs1nwVj7+WoUd9e+kWZr+Q0o40l2gyQyVx+Pl2AhW7RyQm/C0NZkNySFBi16uJnV/
- BemqPt4r78N5j8CraYadRR6IObRjM6HL2dE8/YKrMW+CklnchL769R8NeiXfL2iXv+rCx2r+Y
- XTVhHXx8okDrATK3JQ3OC3H/roKRKle+RiTf1okUL6bVDnpHel803nNn1ICSfmdIWhT321T0B
- XA2ml4Ju8vSBABVVh1Gwglv9bKYenJQO8bJmG5ysh25OG7bHVeAEdrrYSVEjESKfjZhs7Nq1n
- sPlYgVJva9HRzdjlHxWUWpOjdoqBIYq8KiWPznMcS3Ter+lVQZxW6kUBL9lTbcilBF1R/f/J4
- HCv6Ju9Kxt2jADK6R6SiBLGaN2H2oKuSWJLDdG0nSrWRuNt6eiJKETz9CANksjBxd9FFeXNA/
- PodgJ2iVj4FG6GPNapewroNC/tnPTe/aMOVQ9w+eol7juR8TRHXQpkUl9bQ8hgdoIJdUGa58v
- 9mOxJkLta5cIil4bx4+1UcJn7ECpCDU8yes3PgS77R+aCbyOdD2cJjBMEdf7tJuDstRUkcmz5
- Uodv4dP8MOVzqailVNOE/Ho92XCj8tq6f3szvD0/vl29vB55RvqEiONdDAE1DOMpCZNKgoUq8
- zjqbjpkAoU8KZSpZgVJrT4a09iftR3uezi6AZwgO3s5I7lpelCfl8MQ4mjS+h30cN0kT7P+8P
- dNTWt0CfmaiIJX0Kf7BbjwEGtAD5/cYSl1pE2k7K+m0VJe5ofQkupObwyW33SuVq3VqdJVIhe
- eX3Ipoz8hnS2ekmUIwv8izc9Jv9clbiX5TyCloDiFll7g=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VJVhFld6tRD01AN7"
+Content-Disposition: inline
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+X-Cookie: You auto buy now.
 
-This reverts commit 56b522f4668167096a50c39446d6263c96219f5f.
 
-A user reported that this commit breaks the integrated gpu of his
-notebook, causing a black screen. He was able to bisect the problematic
-commit and verified that by reverting it the notebook works again.
-He also confirmed that kernel 6.8.1 also works on his device, so the
-upstream commit itself seems to be ok.
+--VJVhFld6tRD01AN7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-An amdgpu developer (Alex Deucher) confirmed that this patch should
-have never been ported to 5.15 in the first place, so revert this
-commit from the 5.15 stable series.
+On Thu, May 23, 2024 at 03:12:25PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.32 release.
+> There are 102 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Reported-by: Barry Kauler <bkauler@gmail.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Tested-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/=
-amd/amdgpu/amdgpu_device.c
-index 222a1d9ecf16..5f6c32ec674d 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2487,6 +2487,10 @@ static int amdgpu_device_ip_init(struct amdgpu_devi=
-ce *adev)
- 	if (r)
- 		goto init_failed;
+--VJVhFld6tRD01AN7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-+	r =3D amdgpu_amdkfd_resume_iommu(adev);
-+	if (r)
-+		goto init_failed;
-+
- 	r =3D amdgpu_device_ip_hw_init_phase1(adev);
- 	if (r)
- 		goto init_failed;
-@@ -2525,10 +2529,6 @@ static int amdgpu_device_ip_init(struct amdgpu_devi=
-ce *adev)
- 	if (!adev->gmc.xgmi.pending_reset)
- 		amdgpu_amdkfd_device_init(adev);
+-----BEGIN PGP SIGNATURE-----
 
--	r =3D amdgpu_amdkfd_resume_iommu(adev);
--	if (r)
--		goto init_failed;
--
- 	amdgpu_fru_get_product_info(adev);
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZPf3QACgkQJNaLcl1U
+h9A0jQf/TzeDrVyzDRgg8cvFfDha4j9vanSVOhvavEd9A7+SsIubazw/u2UAPJ3j
+FRSDDpDrB+uqiI+fkRtVwhx251ZrRIX/PbjDWpETWKcN2z/ku0OjOn/F7LVz0c45
+6IvAV3k2WHEg24AVyw7iZEqqx58hOt1pW+GqhGd2EuJQIVT5WWgofMJG84WlbWBM
+AJKbYJTRDWnE7Y9xCzQgJzVf00mltPQCert/Acld/Hc8XpsZyrPqVrNEfe0kcW9F
+u/RTErp7gyVHqtOpe9EZ9KHcqicUb7o/7U3jGhYXTc48bf6cGD5tAGPIDiYrAPAX
+mPxAp1RxYvjeaNhtFuzPORIbx/I2eA==
+=FKst
+-----END PGP SIGNATURE-----
 
- init_failed:
-=2D-
-2.39.2
-
+--VJVhFld6tRD01AN7--
 
