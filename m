@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2562F8CD47B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D288CD397
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15325B234B2
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D37E6B22920
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A78C14BFBC;
-	Thu, 23 May 2024 13:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C8114A62A;
+	Thu, 23 May 2024 13:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svyRpCA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIzJsM8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288C714BFB0;
-	Thu, 23 May 2024 13:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2193514A60D;
+	Thu, 23 May 2024 13:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470689; cv=none; b=j2U2JVU+0aGrB9jtfKHp/1n0EiQIIrDj4Z9Bn0ocxmPvlltzHjeBenwvBME/4rSaLODXlDrzJat8us59P/BgulHv0HwcNGyOKV9ybrC4CGiWA2JxCtzbX9S5RO/ppmOHgY5Tlk7lQ1vXM9/a+jcMl6e2f6+jHB1Zk3Psu/1CY2E=
+	t=1716470197; cv=none; b=EKLcooJ2utQQwqyAjAobxyfZXa4Lgj6t53AZ3dU/DIclrxQeOdKVW4UUiahXGpq4t8AhBwonXgTWIBfjtzNGHOSoPS/Niu/oBuWXN19rKu1pmeICGE8993IGRiJN9KIgaEYwCrZThForSl9Fp/SgzFjZdGVw8OyMb5qeTe4jFYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470689; c=relaxed/simple;
-	bh=Md5B/qbY7tNuY9/sgioKDQrDUwodlDNHyX+ewLQRseA=;
+	s=arc-20240116; t=1716470197; c=relaxed/simple;
+	bh=PklkpLSbS2VsPhTbnoqOBY6hTxJvQexRTmoauhQYx4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuX+SoI/zJZxsBKxei6ImPKrKAzGS4fW3JlBWIhTT8zN4Q3Wj4uGlC41inbIVk1wi4bZvZZ1ZR8GWM4Kbmjm1fNCk78tMPLnbGouNYdWvKv068JRZVI2dGrJsHd+SR5FnM4Nybq/45Fn6x4NAOEqHTvp9XzXdHH771TgigKh4FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svyRpCA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3A0C3277B;
-	Thu, 23 May 2024 13:24:48 +0000 (UTC)
+	 MIME-Version; b=S5YcGsJnpn4TCYtAC+MQf3O+RpyOSyLK8BEtCvzoygcxVMUuCwUHXw/ECCPhcAZVBbuo9nIUJIHC5CSAszK8mUi1mzPILwEG56GcWcMHsx7+X4jNjJr9Tq8cLb6zfA1+QNri0+X1PrEz32RwGQ+eU2aj8o05HF4va/K74O/m5Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIzJsM8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD86C2BD10;
+	Thu, 23 May 2024 13:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470688;
-	bh=Md5B/qbY7tNuY9/sgioKDQrDUwodlDNHyX+ewLQRseA=;
+	s=korg; t=1716470197;
+	bh=PklkpLSbS2VsPhTbnoqOBY6hTxJvQexRTmoauhQYx4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=svyRpCA/pP2xY2lfnxnUmz+G8WkfU7jVmvsyFHFe3Q3q1jNk3He4cartmuvvnMuim
-	 KsNUzYgAKpzUI8zjxIQWs+LxjtzHmuvTdt+BkNEYoui2atVUilZULVazl1Vqo4Yz+Z
-	 V6NkQTra9lu6S2UJ5dsgaBnI0ATwP3MlB0on8BI8=
+	b=mIzJsM8TykFq4o+je9E7YyIgYe4f/2lPDIllYbCXXoyMDo+eXZPG2GkXKC/8N9lP9
+	 LbclbFKg+76XC6PB3NKATavMJIwH1fZ6rSL0xn3ws/fwUCyIupwmlctGxSsLeih2p5
+	 McyNVBoIa0DbHTgFBqW54I0unUPa4xaPyfz869pE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/102] cifs: get rid of dup length check in parse_reparse_point()
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 05/15] net: bcmgenet: synchronize UMAC_CMD access
 Date: Thu, 23 May 2024 15:12:47 +0200
-Message-ID: <20240523130343.301369464@linuxfoundation.org>
+Message-ID: <20240523130326.658475819@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
+References: <20240523130326.451548488@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit 8a3c4e44c243308c2364a00f9944c3d6fbdeb125 ]
+commit 0d5e2a82232605b337972fb2c7d0cbc46898aca1 upstream.
 
-smb2_compound_op(SMB2_OP_GET_REPARSE) already checks if ioctl response
-has a valid reparse data buffer's length, so there's no need to check
-it again in parse_reparse_point().
+The UMAC_CMD register is written from different execution
+contexts and has insufficient synchronization protections to
+prevent possible corruption. Of particular concern are the
+acceses from the phy_device delayed work context used by the
+adjust_link call and the BH context that may be used by the
+ndo_set_rx_mode call.
 
-In order to get rid of duplicate check, validate reparse data buffer's
-length also in cifs_query_reparse_point().
+A spinlock is added to the driver to protect contended register
+accesses (i.e. reg_lock) and it is used to synchronize accesses
+to UMAC_CMD.
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifssmb.c | 14 ++++++++++++--
- fs/smb/client/smb2ops.c | 12 ------------
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   12 +++++++++++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |    2 ++
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |    6 ++++++
+ drivers/net/ethernet/broadcom/genet/bcmmii.c       |    2 ++
+ 4 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index e9e33b0b3ac47..01e89070df5ab 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -2700,11 +2700,12 @@ int cifs_query_reparse_point(const unsigned int xid,
- 			     u32 *tag, struct kvec *rsp,
- 			     int *rsp_buftype)
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2420,14 +2420,18 @@ static void umac_enable_set(struct bcmge
  {
-+	struct reparse_data_buffer *buf;
- 	struct cifs_open_parms oparms;
- 	TRANSACT_IOCTL_REQ *io_req = NULL;
- 	TRANSACT_IOCTL_RSP *io_rsp = NULL;
- 	struct cifs_fid fid;
--	__u32 data_offset, data_count;
-+	__u32 data_offset, data_count, len;
- 	__u8 *start, *end;
- 	int io_rsp_len;
- 	int oplock = 0;
-@@ -2774,7 +2775,16 @@ int cifs_query_reparse_point(const unsigned int xid,
- 		goto error;
+ 	u32 reg;
+ 
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+-	if (reg & CMD_SW_RESET)
++	if (reg & CMD_SW_RESET) {
++		spin_unlock_bh(&priv->reg_lock);
+ 		return;
++	}
+ 	if (enable)
+ 		reg |= mask;
+ 	else
+ 		reg &= ~mask;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	/* UniMAC stops on a packet boundary, wait for a full-size packet
+ 	 * to be processed
+@@ -2443,8 +2447,10 @@ static void reset_umac(struct bcmgenet_p
+ 	udelay(10);
+ 
+ 	/* issue soft reset and disable MAC while updating its registers */
++	spin_lock_bh(&priv->reg_lock);
+ 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
+ 	udelay(2);
++	spin_unlock_bh(&priv->reg_lock);
+ }
+ 
+ static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
+@@ -3572,16 +3578,19 @@ static void bcmgenet_set_rx_mode(struct
+ 	 * 3. The number of filters needed exceeds the number filters
+ 	 *    supported by the hardware.
+ 	*/
++	spin_lock(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
+ 	    (nfilter > MAX_MDF_FILTER)) {
+ 		reg |= CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
+ 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
+ 		return;
+ 	} else {
+ 		reg &= ~CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
  	}
  
--	*tag = le32_to_cpu(((struct reparse_data_buffer *)start)->ReparseTag);
-+	data_count = le16_to_cpu(io_rsp->ByteCount);
-+	buf = (struct reparse_data_buffer *)start;
-+	len = sizeof(*buf);
-+	if (data_count < len ||
-+	    data_count < le16_to_cpu(buf->ReparseDataLength) + len) {
-+		rc = -EIO;
-+		goto error;
-+	}
-+
-+	*tag = le32_to_cpu(buf->ReparseTag);
- 	rsp->iov_base = io_rsp;
- 	rsp->iov_len = io_rsp_len;
- 	*rsp_buftype = CIFS_LARGE_BUFFER;
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 9b7cdb7d7ece8..3e07ab1564ea7 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -2946,18 +2946,6 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
- 			u32 plen, struct cifs_sb_info *cifs_sb,
- 			bool unicode, struct cifs_open_info_data *data)
- {
--	if (plen < sizeof(*buf)) {
--		cifs_dbg(VFS, "%s: reparse buffer is too small. Must be at least 8 bytes but was %d\n",
--			 __func__, plen);
--		return -EIO;
--	}
--
--	if (plen < le16_to_cpu(buf->ReparseDataLength) + sizeof(*buf)) {
--		cifs_dbg(VFS, "%s: invalid reparse buf length: %d\n",
--			 __func__, plen);
--		return -EIO;
--	}
--
- 	data->reparse.buf = buf;
+ 	/* update MDF filter */
+@@ -3975,6 +3984,7 @@ static int bcmgenet_probe(struct platfor
+ 		goto err;
+ 	}
  
- 	/* See MS-FSCC 2.1.2 */
--- 
-2.43.0
-
++	spin_lock_init(&priv->reg_lock);
+ 	spin_lock_init(&priv->lock);
+ 
+ 	SET_NETDEV_DEV(dev, &pdev->dev);
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -627,6 +627,8 @@ struct bcmgenet_rxnfc_rule {
+ /* device context */
+ struct bcmgenet_priv {
+ 	void __iomem *base;
++	/* reg_lock: lock to serialize access to shared registers */
++	spinlock_t reg_lock;
+ 	enum bcmgenet_version version;
+ 	struct net_device *dev;
+ 
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -134,6 +134,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Can't suspend with WoL if MAC is still in reset */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if (reg & CMD_SW_RESET)
+ 		reg &= ~CMD_SW_RESET;
+@@ -141,6 +142,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* disable RX */
+ 	reg &= ~CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 	mdelay(10);
+ 
+ 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE)) {
+@@ -186,6 +188,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Enable CRC forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	priv->crc_fwd_en = 1;
+ 	reg |= CMD_CRC_FWD;
+@@ -193,6 +196,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* Receiver must be enabled for WOL MP detection */
+ 	reg |= CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	reg = UMAC_IRQ_MPD_R;
+ 	if (hfb_enable)
+@@ -239,7 +243,9 @@ void bcmgenet_wol_power_up_cfg(struct bc
+ 	}
+ 
+ 	/* Disable CRC Forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~CMD_CRC_FWD;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ }
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -91,6 +91,7 @@ void bcmgenet_mii_setup(struct net_devic
+ 		reg |= RGMII_LINK;
+ 		bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
+ 
++		spin_lock_bh(&priv->reg_lock);
+ 		reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 		reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
+ 			       CMD_HD_EN |
+@@ -103,6 +104,7 @@ void bcmgenet_mii_setup(struct net_devic
+ 			reg |= CMD_TX_EN | CMD_RX_EN;
+ 		}
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock_bh(&priv->reg_lock);
+ 
+ 		priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
+ 		bcmgenet_eee_enable_set(dev,
 
 
 
