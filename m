@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F898CD357
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:14:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE8D8CD449
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C30BB2204B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:14:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DEC91C20D63
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C7A14A4DD;
-	Thu, 23 May 2024 13:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD2014AD3D;
+	Thu, 23 May 2024 13:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqGdwLai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCu/QHJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E66613D2BD;
-	Thu, 23 May 2024 13:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D52514532F;
+	Thu, 23 May 2024 13:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470070; cv=none; b=YD/fNVy4bqmCG/oQCkO4LgAsUHNhBZEYJwJA3TXSY8zmHxMebazhNP8tg9QtH3b5O872wd9HSMQZSBm4nV0kXCBkxvauk8tpawgZPKrLWyjSTLkcETMpKJ+AhnESQY7+z08QHjVurF/tGVzeDWPrgQPbAcrPK0DCMIj9lbsP2aQ=
+	t=1716470596; cv=none; b=ocuMLQE41QVHtv0yg1Qvp2ARx/J9bairxsMe7F89QF2WCWilf9ikk0YkEy0vt1JG/EFUAd0DkIvPM64ifrvdTJ/wtKZ6Vew98CAHr0BlzPGMBX3qABmHcwGATmBC09OUVPlninq5okO8KdHPYbW7en3RksF0OAQMEZMgkJhs2XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470070; c=relaxed/simple;
-	bh=b0hTXFhplrfoBHoVtx+NNwrXQ5eMkptGiQ+CzFPL3c8=;
+	s=arc-20240116; t=1716470596; c=relaxed/simple;
+	bh=Vn1SfbeYpBW0pmLlt5NYoCH2eJ5+wQREZOnRu06JUnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUiNPAyh3UT3uZxI1m03CgxVI2/o5uEJYdLD0rr7dz/9Vh5VMV7rwHV3YaVnhu2J0GzQ2Jb7u6CBTShxtIbPXtpsPUAbUbCPN6+R/AicYzmEpKk3VOS4m3yg6e7uv9qxEserqX0bierWpytEestnlqeaxFQ1AQ2JjpfWNgj78S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqGdwLai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5796EC2BD10;
-	Thu, 23 May 2024 13:14:29 +0000 (UTC)
+	 MIME-Version; b=H1V7phZDwDKIx1sBFWa3ySEZKxnHTkomtPoBwTlL6dmXBeRuf/pLr1FXzY059WLLPHVOoNOIm7jAOYGsAIwRpYengI/aBvZDQDHOueVhWPwqyhnerVpp6R3Ssh9qnEmomJK1HYOlsAKLP55zG8oaRxR2syHL1LHJNeMerqwYOQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCu/QHJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A0FC2BD10;
+	Thu, 23 May 2024 13:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470069;
-	bh=b0hTXFhplrfoBHoVtx+NNwrXQ5eMkptGiQ+CzFPL3c8=;
+	s=korg; t=1716470596;
+	bh=Vn1SfbeYpBW0pmLlt5NYoCH2eJ5+wQREZOnRu06JUnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqGdwLaiyDTp88BUfxx0krw6U6WWu2GvhJD+yfMBdBLTyTtr1sLmZPpR5RzXq8kGk
-	 LdPmqom1zzbfIRPi9W+wfZXt22t3kaj5zvma1NaJYs4CJ2NbhZHQKAxqf8ASh3+DLd
-	 HS4gv0JbJJON+T7JzbPSEY4RApeNvkkABqdSE1/o=
+	b=bCu/QHJ9RzJAN6YKTQugzRkWIgMNljc0vTDe0iwek5NVaDqScCBGxS0CrrgS157CZ
+	 Htb9Vvfb2SnsXaOwQxWN+D2OTKEtOrY0bdq5kNJcUz0k1evg4YEUVt3+zeomByvBQZ
+	 U9l53FADRTIMele5pInDRorpGcD5cGfNHJslmrmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19 11/18] tracing: Use str_has_prefix() instead of using fixed sizes
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 009/102] Missing field not being returned in ioctl CIFS_IOC_GET_MNT_INFO
 Date: Thu, 23 May 2024 15:12:34 +0200
-Message-ID: <20240523130326.165095627@linuxfoundation.org>
+Message-ID: <20240523130342.815945458@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit b6b2735514bcd70ad1556a33892a636b20ece671 upstream.
+[ Upstream commit 784e0e20b4c97c270b2892f677d3fad658e2c1d5 ]
 
-There are several instances of strncmp(str, "const", 123), where 123 is the
-strlen of the const string to check if "const" is the prefix of str. But
-this can be error prone. Use str_has_prefix() instead.
+The tcon_flags field was always being set to zero in the information
+about the mount returned by the ioctl CIFS_IOC_GET_MNT_INFO instead
+of being set to the value of the Flags field in the tree connection
+structure as intended.
 
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c             |    2 +-
- kernel/trace/trace_events.c      |    2 +-
- kernel/trace/trace_events_hist.c |    2 +-
- kernel/trace/trace_probe.c       |    2 +-
- kernel/trace/trace_stack.c       |    2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/client/ioctl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4470,7 +4470,7 @@ static int trace_set_options(struct trac
+diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
+index 204dd7c47126e..682eabdd1d6cc 100644
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -143,6 +143,7 @@ static long smb_mnt_get_fsinfo(unsigned int xid, struct cifs_tcon *tcon,
  
- 	cmp = strstrip(option);
- 
--	if (strncmp(cmp, "no", 2) == 0) {
-+	if (str_has_prefix(cmp, "no")) {
- 		neg = 1;
- 		cmp += 2;
- 	}
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -1249,7 +1249,7 @@ static int f_show(struct seq_file *m, vo
- 	 */
- 	array_descriptor = strchr(field->type, '[');
- 
--	if (!strncmp(field->type, "__data_loc", 10))
-+	if (str_has_prefix(field->type, "__data_loc"))
- 		array_descriptor = NULL;
- 
- 	if (!array_descriptor)
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -484,7 +484,7 @@ static int synth_event_define_fields(str
- 
- static bool synth_field_signed(char *type)
- {
--	if (strncmp(type, "u", 1) == 0)
-+	if (str_has_prefix(type, "u"))
- 		return false;
- 	if (strcmp(type, "gfp_t") == 0)
- 		return false;
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -342,7 +342,7 @@ static int parse_probe_vars(char *arg, c
- 			f->fn = t->fetch[FETCH_MTD_retval];
- 		else
- 			ret = -EINVAL;
--	} else if (strncmp(arg, "stack", 5) == 0) {
-+	} else if (str_has_prefix(arg, "stack")) {
- 		if (arg[5] == '\0') {
- 			if (strcmp(t->name, DEFAULT_FETCH_TYPE_STR))
- 				return -EINVAL;
---- a/kernel/trace/trace_stack.c
-+++ b/kernel/trace/trace_stack.c
-@@ -453,7 +453,7 @@ static char stack_trace_filter_buf[COMMA
- 
- static __init int enable_stacktrace(char *str)
- {
--	if (strncmp(str, "_filter=", 8) == 0)
-+	if (str_has_prefix(str, "_filter="))
- 		strncpy(stack_trace_filter_buf, str+8, COMMAND_LINE_SIZE);
- 
- 	stack_tracer_enabled = 1;
+ 	fsinf->version = 1;
+ 	fsinf->protocol_id = tcon->ses->server->vals->protocol_id;
++	fsinf->tcon_flags = tcon->Flags;
+ 	fsinf->device_characteristics =
+ 			le32_to_cpu(tcon->fsDevInfo.DeviceCharacteristics);
+ 	fsinf->device_type = le32_to_cpu(tcon->fsDevInfo.DeviceType);
+-- 
+2.43.0
+
 
 
 
