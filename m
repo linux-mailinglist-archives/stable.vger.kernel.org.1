@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-45806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEAB8CD3FE
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CE98CD3D8
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECABCB216EF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332061F25B51
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2F214A0A9;
-	Thu, 23 May 2024 13:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAB714A4E9;
+	Thu, 23 May 2024 13:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyZIToNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPZsJ2Xk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9767E13B7AE;
-	Thu, 23 May 2024 13:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0471E497;
+	Thu, 23 May 2024 13:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470414; cv=none; b=aYE8ultvnyt6e+shx/3jQGkzZ0XWvWJ6tO0qbWeiQGUkyhe5y/1j8cuXtOnAGoMDybAT0cG3xktfdj4Aj42aG0wxDVZOO8BFpGORhlpaWQVxRCNe//4bGemW6x3jLaBNgVBV6yLo6gDix6mKB1gsZpU8gw0z9aa4XRHFEOaCMQg=
+	t=1716470351; cv=none; b=tJb7UsPioBFmdL2lt8d/UGKXQ8PEZeO00OsaVhn1j12pluDiQd92TkOltlsAt12oVLlvtPJZcac+lgSODIUYJUW38srUejGttjGWNU82UlcontLG1cvlf5rz42vufb6CKqDxTweJH8xujuzAq/1BvHoIw7Rc6FRaHQ92eFl+Mn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470414; c=relaxed/simple;
-	bh=vozqe5HJFExakPx4VYJs81NZXQ1p1+EkNDrstmecujg=;
+	s=arc-20240116; t=1716470351; c=relaxed/simple;
+	bh=uGVWeSYk/5RAHoFtLjmOifmJ5FmaLMeq7h3UDFqWa8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYlv7O4XY9nkj5yMfch59Avf+Jo0+fs2A4lEN+4TdRE+4wtquOlhBjeyBLqoAoqnmHn9BbJ0XhjzsBNcxjVR3x7ptKogdqCgJ15xxTDrVBaPvS8tmmMUKQlN8fLQhFGVOfa1N6AASDPyY7JeaJhjYV6LiI4zJ7XKxhE9c83q3H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyZIToNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221CAC2BD10;
-	Thu, 23 May 2024 13:20:13 +0000 (UTC)
+	 MIME-Version; b=WFzfWsTGkurm61YS2xNf/ATam+SNd1NIwtxcbYtCpp2PZsGZ+PqiMwx+94VLK6bAtAIkRC72djPTP3Od+aZ31INdQ6WhtM3wayEoWb+ahApuDKdb2SN9JoD6x0E5Vp3HAkqmHRUzachyKAaiQfi2J5r2ef77rtAbaRgE3E4o4UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPZsJ2Xk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E01C32786;
+	Thu, 23 May 2024 13:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470414;
-	bh=vozqe5HJFExakPx4VYJs81NZXQ1p1+EkNDrstmecujg=;
+	s=korg; t=1716470351;
+	bh=uGVWeSYk/5RAHoFtLjmOifmJ5FmaLMeq7h3UDFqWa8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lyZIToNGIGdn7ZB06EorcHB5rC6XB6YU0qvqDELbw243vp1rrOrhhm3CXZ9Qbt483
-	 2myShi/hfvDDoGsj/a7iTFbiQxoCTe/2hTMpkLYL1+uTnRmq1Gh2QUiEbcVN34KNHx
-	 MmOAogc0L34E8HPO5BxFT29X4VL2Kx1qBwATXa+k=
+	b=XPZsJ2Xk/lM1CCzwveddSrHwk7JP7JfXN6eKFnl9b4ToZe4HLK0AIi55joGVXnLh6
+	 uas0RfQPmXMf/MdcfNeLCvX+Y5WksjUHOEBrDzHhrokeBH4+GqiMG5LCTLWTRkLdLb
+	 DRO2TS9SYyzIjihVXSu3kmzQPO2lS9a9z/MpxP0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Xiao Yang <yangx.jy@fujitsu.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 28/45] xfs: estimate post-merge refcounts correctly
+	Akira Yokosawa <akiyks@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 5.15 23/23] docs: kernel_include.py: Cope with docutils 0.21
 Date: Thu, 23 May 2024 15:13:19 +0200
-Message-ID: <20240523130333.558568101@linuxfoundation.org>
+Message-ID: <20240523130328.823590263@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Akira Yokosawa <akiyks@gmail.com>
 
-[ Upstream commit b25d1984aa884fc91a73a5a407b9ac976d441e9b ]
+commit d43ddd5c91802a46354fa4c4381416ef760676e2 upstream.
 
-Upon enabling fsdax + reflink for XFS, xfs/179 began to report refcount
-metadata corruptions after being run.  Specifically, xfs_repair noticed
-single-block refcount records that could be combined but had not been.
+Running "make htmldocs" on a newly installed Sphinx 7.3.7 ends up in
+a build error:
 
-The root cause of this is improper MAXREFCOUNT edge case handling in
-xfs_refcount_merge_extents.  When we're trying to find candidates for a
-refcount btree record merge, we compute the refcount attribute of the
-merged record, but we fail to account for the fact that once a record
-hits rc_refcount == MAXREFCOUNT, it is pinned that way forever.  Hence
-the computed refcount is wrong, and we fail to merge the extents.
+    Sphinx parallel build error:
+    AttributeError: module 'docutils.nodes' has no attribute 'reprunicode'
 
-Fix this by adjusting the merge predicates to compute the adjusted
-refcount correctly.
+docutils 0.21 has removed nodes.reprunicode, quote from release note [1]:
 
-Fixes: 3172725814f9 ("xfs: adjust refcount of an extent of blocks in refcount btree")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Xiao Yang <yangx.jy@fujitsu.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+  * Removed objects:
+
+    docutils.nodes.reprunicode, docutils.nodes.ensure_str()
+        Python 2 compatibility hacks
+
+Sphinx 7.3.0 supports docutils 0.21 [2]:
+
+kernel_include.py, whose origin is misc.py of docutils, uses reprunicode.
+
+Upstream docutils removed the offending line from the corresponding file
+(docutils/docutils/parsers/rst/directives/misc.py) in January 2022.
+Quoting the changelog [3]:
+
+    Deprecate `nodes.reprunicode` and `nodes.ensure_str()`.
+
+    Drop uses of the deprecated constructs (not required with Python 3).
+
+Do the same for kernel_include.py.
+
+Tested against:
+  - Sphinx 2.4.5 (docutils 0.17.1)
+  - Sphinx 3.4.3 (docutils 0.17.1)
+  - Sphinx 5.3.0 (docutils 0.18.1)
+  - Sphinx 6.2.1 (docutils 0.19)
+  - Sphinx 7.2.6 (docutils 0.20.1)
+  - Sphinx 7.3.7 (docutils 0.21.2)
+
+Link: http://www.docutils.org/RELEASE-NOTES.html#release-0-21-2024-04-09 [1]
+Link: https://www.sphinx-doc.org/en/master/changes.html#release-7-3-0-released-apr-16-2024 [2]
+Link: https://github.com/docutils/docutils/commit/c8471ce47a24 [3]
+Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_refcount.c |   25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ Documentation/sphinx/kernel_include.py |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_refcount.c
-+++ b/fs/xfs/libxfs/xfs_refcount.c
-@@ -820,6 +820,17 @@ xfs_refc_valid(
- 	return rc->rc_startblock != NULLAGBLOCK;
- }
+--- a/Documentation/sphinx/kernel_include.py
++++ b/Documentation/sphinx/kernel_include.py
+@@ -94,7 +94,6 @@ class KernelInclude(Include):
+         # HINT: this is the only line I had to change / commented out:
+         #path = utils.relative_path(None, path)
  
-+static inline xfs_nlink_t
-+xfs_refc_merge_refcount(
-+	const struct xfs_refcount_irec	*irec,
-+	enum xfs_refc_adjust_op		adjust)
-+{
-+	/* Once a record hits MAXREFCOUNT, it is pinned there forever */
-+	if (irec->rc_refcount == MAXREFCOUNT)
-+		return MAXREFCOUNT;
-+	return irec->rc_refcount + adjust;
-+}
-+
- static inline bool
- xfs_refc_want_merge_center(
- 	const struct xfs_refcount_irec	*left,
-@@ -831,6 +842,7 @@ xfs_refc_want_merge_center(
- 	unsigned long long		*ulenp)
- {
- 	unsigned long long		ulen = left->rc_blockcount;
-+	xfs_nlink_t			new_refcount;
- 
- 	/*
- 	 * To merge with a center record, both shoulder records must be
-@@ -846,9 +858,10 @@ xfs_refc_want_merge_center(
- 		return false;
- 
- 	/* The shoulder record refcounts must match the new refcount. */
--	if (left->rc_refcount != cleft->rc_refcount + adjust)
-+	new_refcount = xfs_refc_merge_refcount(cleft, adjust);
-+	if (left->rc_refcount != new_refcount)
- 		return false;
--	if (right->rc_refcount != cleft->rc_refcount + adjust)
-+	if (right->rc_refcount != new_refcount)
- 		return false;
- 
- 	/*
-@@ -871,6 +884,7 @@ xfs_refc_want_merge_left(
- 	enum xfs_refc_adjust_op		adjust)
- {
- 	unsigned long long		ulen = left->rc_blockcount;
-+	xfs_nlink_t			new_refcount;
- 
- 	/*
- 	 * For a left merge, the left shoulder record must be adjacent to the
-@@ -881,7 +895,8 @@ xfs_refc_want_merge_left(
- 		return false;
- 
- 	/* Left shoulder record refcount must match the new refcount. */
--	if (left->rc_refcount != cleft->rc_refcount + adjust)
-+	new_refcount = xfs_refc_merge_refcount(cleft, adjust);
-+	if (left->rc_refcount != new_refcount)
- 		return false;
- 
- 	/*
-@@ -903,6 +918,7 @@ xfs_refc_want_merge_right(
- 	enum xfs_refc_adjust_op		adjust)
- {
- 	unsigned long long		ulen = right->rc_blockcount;
-+	xfs_nlink_t			new_refcount;
- 
- 	/*
- 	 * For a right merge, the right shoulder record must be adjacent to the
-@@ -913,7 +929,8 @@ xfs_refc_want_merge_right(
- 		return false;
- 
- 	/* Right shoulder record refcount must match the new refcount. */
--	if (right->rc_refcount != cright->rc_refcount + adjust)
-+	new_refcount = xfs_refc_merge_refcount(cright, adjust);
-+	if (right->rc_refcount != new_refcount)
- 		return false;
- 
- 	/*
+-        path = nodes.reprunicode(path)
+         encoding = self.options.get(
+             'encoding', self.state.document.settings.input_encoding)
+         e_handler=self.state.document.settings.input_encoding_error_handler
 
 
 
