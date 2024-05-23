@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653E18CD395
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCE38CD475
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 972B01C2183E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFCED1C20B6F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E29814B94F;
-	Thu, 23 May 2024 13:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE0014B061;
+	Thu, 23 May 2024 13:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j33qogzy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQvvO9xx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36A14B943;
-	Thu, 23 May 2024 13:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7415C13B7AE;
+	Thu, 23 May 2024 13:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470191; cv=none; b=Fej2C2XjC3v35UVtT1Jpa5qIBzUMuTVEBGfRnAZsu8m06+kcTKSeaOHDfZGHoXqgOJ4vmy1f98kh9bTVrajU6ZcLmruQWPOjPhfZWHYgm8yH6aO7rwGj1UObPBMwTmDIxHcSjraceEtATIBHN+eOj1mYuTHG4IAEuYetwRRNUNA=
+	t=1716470683; cv=none; b=pS55kzvjZtOD7zndn09qwyHTbtFjtFeU4mX7xV8AX0wCHpdPJk2VUJ2cNS239CA8tE64cAopGZeIBg8mAj0WOuij2j+iPPQbPsjbFOFBpACcUcodnwFn+OqbACKwutAIM78bvBDJPS4jLeH4I3mLF0QVY21YR/hUzai2nS03umE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470191; c=relaxed/simple;
-	bh=0G+nFJ+XiMH6Q9DUBahGF8L0U52nSezlAJSjh3xmL7A=;
+	s=arc-20240116; t=1716470683; c=relaxed/simple;
+	bh=mnjraK8r7rw6cPYV1xYWztEr8hOgiAA4XyAl0init8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTMldrm6fra0P+ojQBidlvkHQ0HwB8T7B/JQQRmvgQru/zHf57t5N6cHOusRZc5rlgD7OEaU0sJNNwCrsstnhkeHKcSkHZXjOUH4bbrje7rRCI/g7F10ryR9Sk7rCEbsBtPR753Yfp7eORSqT0gBiytH27MKzopi2udmbKaIc20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j33qogzy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4A3C3277B;
-	Thu, 23 May 2024 13:16:30 +0000 (UTC)
+	 MIME-Version; b=isnFhgAjo81f6g+Gi44IhNb1AU+tMHeLVYXENpNcQnrC3l1ilZkUeE6pifb6V1ftKmGdDFzE0jXiA1Te0xnMp0sO10yNog05/XUwd7n+/w1/zyOyPkuUl1D6+oDj3uBnIlaFpx4BS1klLSHBaGnkhV7Xop740J5h+so7zxAtOA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQvvO9xx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915D2C3277B;
+	Thu, 23 May 2024 13:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470191;
-	bh=0G+nFJ+XiMH6Q9DUBahGF8L0U52nSezlAJSjh3xmL7A=;
+	s=korg; t=1716470683;
+	bh=mnjraK8r7rw6cPYV1xYWztEr8hOgiAA4XyAl0init8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j33qogzyPk83O+/EvjLjDgNodXAh0oA2W5YQVQYg5XdEwpbXfsaITUlKzhVMuTMKj
-	 pFlg6kZFDEYd7EGc7i1Z5B8XzzEt+uLXUQFZCO9LrIOZaGMZ5QuEDctE4s47OXkAgF
-	 pJZWRWNbJUzx/K9NOkqRa8oJrngAVlsLu/JpQxm4=
+	b=NQvvO9xxb5X+hQoXv499wuKs8GYxcNttbsgk4eXYivJE36yBOAazjNyB3VrNaF+gC
+	 J3X7qE46jdG8fIEP/5ViEipAW0OTpdqteJa75DX84jSoz5L8LiLGKbabbMI2AkDQYs
+	 LU9VtUEsQ8vAONjbhfFbsr2H1aZj10HUpk23mZgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"sashal@kernel.org, vegard.nossum@oracle.com, darren.kenny@oracle.com, Harshit Mogalapalli" <harshit.m.mogalapalli@oracle.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.10 03/15] Revert "selftests: mm: fix map_hugetlb failure on 64K page size systems"
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 020/102] smb3: Improve exception handling in allocate_mr_list()
 Date: Thu, 23 May 2024 15:12:45 +0200
-Message-ID: <20240523130326.584185649@linuxfoundation.org>
+Message-ID: <20240523130343.225001457@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
-References: <20240523130326.451548488@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-This reverts commit c9c3cc6a13bddc76bb533ad8147a5528cac5ba5a which is
-commit 91b80cc5b39f00399e8e2d17527cad2c7fa535e2 upstream.
+[ Upstream commit 96d566b6c933be96e9f5b216f04024ab522e0465 ]
 
-map_hugetlb.c:18:10: fatal error: vm_util.h: No such file or directory
-   18 | #include "vm_util.h"
-      |          ^~~~~~~~~~~
-compilation terminated.
+The kfree() function was called in one case by
+the allocate_mr_list() function during error handling
+even if the passed variable contained a null pointer.
+This issue was detected by using the Coccinelle software.
 
-vm_util.h is not present in 5.10.y, as commit:642bc52aed9c ("selftests:
-vm: bring common functions to a new file") is not present in stable
-kernels <=6.1.y
+Thus use another label.
 
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/map_hugetlb.c |    7 -------
- 1 file changed, 7 deletions(-)
+ fs/smb/client/smbdirect.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/vm/map_hugetlb.c
-+++ b/tools/testing/selftests/vm/map_hugetlb.c
-@@ -15,7 +15,6 @@
- #include <unistd.h>
- #include <sys/mman.h>
- #include <fcntl.h>
--#include "vm_util.h"
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 94df9eec3d8d1..d74e829de51c2 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -2136,7 +2136,7 @@ static int allocate_mr_list(struct smbd_connection *info)
+ 	for (i = 0; i < info->responder_resources * 2; i++) {
+ 		smbdirect_mr = kzalloc(sizeof(*smbdirect_mr), GFP_KERNEL);
+ 		if (!smbdirect_mr)
+-			goto out;
++			goto cleanup_entries;
+ 		smbdirect_mr->mr = ib_alloc_mr(info->pd, info->mr_type,
+ 					info->max_frmr_depth);
+ 		if (IS_ERR(smbdirect_mr->mr)) {
+@@ -2162,7 +2162,7 @@ static int allocate_mr_list(struct smbd_connection *info)
  
- #define LENGTH (256UL*1024*1024)
- #define PROTECTION (PROT_READ | PROT_WRITE)
-@@ -71,16 +70,10 @@ int main(int argc, char **argv)
- {
- 	void *addr;
- 	int ret;
--	size_t hugepage_size;
- 	size_t length = LENGTH;
- 	int flags = FLAGS;
- 	int shift = 0;
- 
--	hugepage_size = default_huge_page_size();
--	/* munmap with fail if the length is not page aligned */
--	if (hugepage_size > length)
--		length = hugepage_size;
+ out:
+ 	kfree(smbdirect_mr);
 -
- 	if (argc > 1)
- 		length = atol(argv[1]) << 20;
- 	if (argc > 2) {
++cleanup_entries:
+ 	list_for_each_entry_safe(smbdirect_mr, tmp, &info->mr_list, list) {
+ 		list_del(&smbdirect_mr->list);
+ 		ib_dereg_mr(smbdirect_mr->mr);
+-- 
+2.43.0
+
 
 
 
