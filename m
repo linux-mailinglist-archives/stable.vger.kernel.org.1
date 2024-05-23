@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-45882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27EB18CD45F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F918CD46F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FD9E1F21648
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C1B32817F3
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178DF14BF98;
-	Thu, 23 May 2024 13:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E2514A4F4;
+	Thu, 23 May 2024 13:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4rJCmuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IszQq43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB4714B946;
-	Thu, 23 May 2024 13:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003DA13B7AE;
+	Thu, 23 May 2024 13:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470633; cv=none; b=Yp0HoaG2cdP0+lI0q81s4fVZ+87XTIjxvIwsjVZPEjUPx+WwsZqbXYXYolxG1RbCWA83X2rpChQkhjLGUKJM1o+FOv36E5dtkxCPl+uBgY6+GeSfMyTWfzy/KEdaZTVJim+iwhy+2Nqn4kzhctb9QOBeBl9TbhfmgsN+iZA1iII=
+	t=1716470666; cv=none; b=t1p5W96K4slUm/w0CaMRKa8u9YgvhmqLDpT0ZGJHBsSSj/xxkNq/l7EhdBB3B0l+l8uY9OWkiOkVn1TIStloK81t/xas8N0uJ5BzSTsHFNxkZi7KOJLwGsxqrJARE52O50QJcUeeVkChcC269nWq4vFRfU6tCRU99VJj8H4f830=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470633; c=relaxed/simple;
-	bh=uF6TTukbnSZQYew432n/SOk1271WZMFrs20NHdNHOAo=;
+	s=arc-20240116; t=1716470666; c=relaxed/simple;
+	bh=uiPwcAQOxbfHo3gn7jfFVEJZDQBKpSaffxprEomLZ1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEGJeW2epINzFANuIFTjmeZHlRKqbZCJmtnmVZkthwmeT9l1f/kd5B5UfxaZvyJcPcfTszFrVOmphWDAo842N505Fbv8uwJpha9/3SYYewuqps1cqG9FjYAgeT3wzgpETR7uVw7CzgzvVOn1cCZfWsv5jEvUlmLj5NcPq7zmK40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4rJCmuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDE9C2BD10;
-	Thu, 23 May 2024 13:23:53 +0000 (UTC)
+	 MIME-Version; b=AlzYBnKS3D4KxCbNdun1Jt54XOVRvu2Vp/Zr4fgQkwY1iwJ/Ztwb6+VWqALB3jrbbe2BNSJSvQ4DAIXmY5vi28GwoaPnQMKgmHWrtpTzRalZqcbnuQ49j0cXq0RSgs1d6SWU9EbTBoYnqpr7cVcY29GkLs79t9bUXFkth1LBewo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IszQq43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31448C32781;
+	Thu, 23 May 2024 13:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470633;
-	bh=uF6TTukbnSZQYew432n/SOk1271WZMFrs20NHdNHOAo=;
+	s=korg; t=1716470665;
+	bh=uiPwcAQOxbfHo3gn7jfFVEJZDQBKpSaffxprEomLZ1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4rJCmuvEDbtDy6GlnsqUIDCwpzZyOD3a6c91Ql47msxLuZqZ7jtVVTfijXJDPgaR
-	 PzIKFXX09JzG2TV4N1ij+akrwFE1m4dZBx1kZnXuDLBr2aSKpLVZiFJKN/ytvC0wem
-	 gWslydlO7B/FD2U3fCGDrKXT5ZnNkT0EkI3nrERU=
+	b=0IszQq43GznkKmvQYmKO1d0pNybubZXA8/RvKBagLFjMk60LHXC8rW/29vgwnsoAa
+	 iyCII3ZswGCbqjqinZ9ic80a8vZIZqXi18aZm7Rh0ySPhxk5ZdSfttDgvVb0gz9hEw
+	 z/6x8FXMYhQ2cMcdun1AdVMB0mVYblJe6fhoB/J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/102] smb: client: cleanup smb2_query_reparse_point()
-Date: Thu, 23 May 2024 15:12:42 +0200
-Message-ID: <20240523130343.114562470@linuxfoundation.org>
+Subject: [PATCH 6.6 018/102] smb: client: handle special files and symlinks in SMB3 POSIX
+Date: Thu, 23 May 2024 15:12:43 +0200
+Message-ID: <20240523130343.150748137@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
 References: <20240523130342.462912131@linuxfoundation.org>
@@ -68,227 +68,144 @@ Content-Transfer-Encoding: 8bit
 
 From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 3ded18a9e9d22a9cba8acad24b77a87851f9c9fa ]
+[ Upstream commit 9c38568a75c160786d5f5d5b96aeefed0c1b76bd ]
 
-Use smb2_compound_op() with SMB2_OP_GET_REPARSE to get reparse point.
+Parse reparse points in SMB3 posix query info as they will be
+supported and required by the new specification.
 
 Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c |  33 +++++++++
- fs/smb/client/smb2ops.c   | 139 --------------------------------------
- fs/smb/client/smb2proto.h |   6 ++
- 3 files changed, 39 insertions(+), 139 deletions(-)
+ fs/smb/client/inode.c | 50 +++++++++++++++++++++++++------------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 11c1e06ab5417..1388ce5421a89 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -1054,3 +1054,36 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 89dfb405f9c1e..b8260ace2bee9 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -693,29 +693,36 @@ static void smb311_posix_info_to_fattr(struct cifs_fattr *fattr,
+ 		fattr->cf_mtime.tv_sec += tcon->ses->server->timeAdj;
  	}
- 	return rc ? ERR_PTR(rc) : new;
- }
-+
-+int smb2_query_reparse_point(const unsigned int xid,
-+			     struct cifs_tcon *tcon,
-+			     struct cifs_sb_info *cifs_sb,
-+			     const char *full_path,
-+			     u32 *tag, struct kvec *rsp,
-+			     int *rsp_buftype)
-+{
-+	struct cifs_open_info_data data = {};
-+	struct cifsFileInfo *cfile;
-+	struct kvec in_iov = { .iov_base = &data, .iov_len = sizeof(data), };
-+	int rc;
-+
-+	cifs_dbg(FYI, "%s: path: %s\n", __func__, full_path);
-+
-+	cifs_get_readable_path(tcon, full_path, &cfile);
-+	rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
-+			      FILE_READ_ATTRIBUTES, FILE_OPEN,
-+			      OPEN_REPARSE_POINT, ACL_NO_MODE, &in_iov,
-+			      &(int){SMB2_OP_GET_REPARSE}, 1, cfile,
-+			      NULL, NULL, NULL, NULL);
-+	if (rc)
-+		goto out;
-+
-+	*tag = data.reparse.tag;
-+	*rsp = data.reparse.io.iov;
-+	*rsp_buftype = data.reparse.io.buftype;
-+	memset(&data.reparse.io.iov, 0, sizeof(data.reparse.io.iov));
-+	data.reparse.io.buftype = CIFS_NO_BUFFER;
-+out:
-+	cifs_free_open_info(&data);
-+	return rc;
-+}
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index c5957deb1a859..a623a720db9e0 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -2996,145 +2996,6 @@ static int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
- 	return parse_reparse_point(buf, plen, cifs_sb, true, data);
- }
  
--static int smb2_query_reparse_point(const unsigned int xid,
--				    struct cifs_tcon *tcon,
--				    struct cifs_sb_info *cifs_sb,
--				    const char *full_path,
--				    u32 *tag, struct kvec *rsp,
--				    int *rsp_buftype)
--{
--	struct smb2_compound_vars *vars;
--	int rc;
--	__le16 *utf16_path = NULL;
--	__u8 oplock = SMB2_OPLOCK_LEVEL_NONE;
--	struct cifs_open_parms oparms;
--	struct cifs_fid fid;
--	struct TCP_Server_Info *server = cifs_pick_channel(tcon->ses);
--	int flags = CIFS_CP_CREATE_CLOSE_OP;
--	struct smb_rqst *rqst;
--	int resp_buftype[3];
--	struct kvec *rsp_iov;
--	struct smb2_ioctl_rsp *ioctl_rsp;
--	struct reparse_data_buffer *reparse_buf;
--	u32 off, count, len;
++	/*
++	 * The srv fs device id is overridden on network mount so setting
++	 * @fattr->cf_rdev isn't needed here.
++	 */
+ 	fattr->cf_eof = le64_to_cpu(info->EndOfFile);
+ 	fattr->cf_bytes = le64_to_cpu(info->AllocationSize);
+ 	fattr->cf_createtime = le64_to_cpu(info->CreationTime);
 -
--	cifs_dbg(FYI, "%s: path: %s\n", __func__, full_path);
--
--	if (smb3_encryption_required(tcon))
--		flags |= CIFS_TRANSFORM_REQ;
--
--	utf16_path = cifs_convert_path_to_utf16(full_path, cifs_sb);
--	if (!utf16_path)
--		return -ENOMEM;
--
--	resp_buftype[0] = resp_buftype[1] = resp_buftype[2] = CIFS_NO_BUFFER;
--	vars = kzalloc(sizeof(*vars), GFP_KERNEL);
--	if (!vars) {
--		rc = -ENOMEM;
--		goto out_free_path;
--	}
--	rqst = vars->rqst;
--	rsp_iov = vars->rsp_iov;
--
--	/*
--	 * setup smb2open - TODO add optimization to call cifs_get_readable_path
--	 * to see if there is a handle already open that we can use
--	 */
--	rqst[0].rq_iov = vars->open_iov;
--	rqst[0].rq_nvec = SMB2_CREATE_IOV_SIZE;
--
--	oparms = (struct cifs_open_parms) {
--		.tcon = tcon,
--		.path = full_path,
--		.desired_access = FILE_READ_ATTRIBUTES,
--		.disposition = FILE_OPEN,
--		.create_options = cifs_create_options(cifs_sb, OPEN_REPARSE_POINT),
--		.fid = &fid,
--	};
--
--	rc = SMB2_open_init(tcon, server,
--			    &rqst[0], &oplock, &oparms, utf16_path);
--	if (rc)
--		goto query_rp_exit;
--	smb2_set_next_command(tcon, &rqst[0]);
--
--
--	/* IOCTL */
--	rqst[1].rq_iov = vars->io_iov;
--	rqst[1].rq_nvec = SMB2_IOCTL_IOV_SIZE;
--
--	rc = SMB2_ioctl_init(tcon, server,
--			     &rqst[1], COMPOUND_FID,
--			     COMPOUND_FID, FSCTL_GET_REPARSE_POINT, NULL, 0,
--			     CIFSMaxBufSize -
--			     MAX_SMB2_CREATE_RESPONSE_SIZE -
--			     MAX_SMB2_CLOSE_RESPONSE_SIZE);
--	if (rc)
--		goto query_rp_exit;
--
--	smb2_set_next_command(tcon, &rqst[1]);
--	smb2_set_related(&rqst[1]);
--
--	/* Close */
--	rqst[2].rq_iov = &vars->close_iov;
--	rqst[2].rq_nvec = 1;
--
--	rc = SMB2_close_init(tcon, server,
--			     &rqst[2], COMPOUND_FID, COMPOUND_FID, false);
--	if (rc)
--		goto query_rp_exit;
--
--	smb2_set_related(&rqst[2]);
--
--	rc = compound_send_recv(xid, tcon->ses, server,
--				flags, 3, rqst,
--				resp_buftype, rsp_iov);
--
--	ioctl_rsp = rsp_iov[1].iov_base;
--
--	/*
--	 * Open was successful and we got an ioctl response.
--	 */
--	if (rc == 0) {
--		/* See MS-FSCC 2.3.23 */
--		off = le32_to_cpu(ioctl_rsp->OutputOffset);
--		count = le32_to_cpu(ioctl_rsp->OutputCount);
--		if (check_add_overflow(off, count, &len) ||
--		    len > rsp_iov[1].iov_len) {
--			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
--				      __func__, off, count);
--			rc = -EIO;
--			goto query_rp_exit;
--		}
--
--		reparse_buf = (void *)((u8 *)ioctl_rsp + off);
--		len = sizeof(*reparse_buf);
--		if (count < len ||
--		    count < le16_to_cpu(reparse_buf->ReparseDataLength) + len) {
--			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
--				      __func__, off, count);
--			rc = -EIO;
--			goto query_rp_exit;
--		}
--		*tag = le32_to_cpu(reparse_buf->ReparseTag);
--		*rsp = rsp_iov[1];
--		*rsp_buftype = resp_buftype[1];
--		resp_buftype[1] = CIFS_NO_BUFFER;
--	}
--
-- query_rp_exit:
--	SMB2_open_free(&rqst[0]);
--	SMB2_ioctl_free(&rqst[1]);
--	SMB2_close_free(&rqst[2]);
--	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
--	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
--	free_rsp_buf(resp_buftype[2], rsp_iov[2].iov_base);
--	kfree(vars);
--out_free_path:
--	kfree(utf16_path);
--	return rc;
--}
--
- static struct cifs_ntsd *
- get_smb2_acl_by_fid(struct cifs_sb_info *cifs_sb,
- 		    const struct cifs_fid *cifsfid, u32 *pacllen, u32 info)
-diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
-index efa2f8fe23449..1e20f87a5f584 100644
---- a/fs/smb/client/smb2proto.h
-+++ b/fs/smb/client/smb2proto.h
-@@ -62,6 +62,12 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
- 				     struct cifs_tcon *tcon,
- 				     const char *full_path,
- 				     struct kvec *iov);
-+int smb2_query_reparse_point(const unsigned int xid,
-+			     struct cifs_tcon *tcon,
-+			     struct cifs_sb_info *cifs_sb,
-+			     const char *full_path,
-+			     u32 *tag, struct kvec *rsp,
-+			     int *rsp_buftype);
- int smb2_query_path_info(const unsigned int xid,
- 			 struct cifs_tcon *tcon,
- 			 struct cifs_sb_info *cifs_sb,
+ 	fattr->cf_nlink = le32_to_cpu(info->HardLinks);
+ 	fattr->cf_mode = (umode_t) le32_to_cpu(info->Mode);
+-	/* The srv fs device id is overridden on network mount so setting rdev isn't needed here */
+-	/* fattr->cf_rdev = le32_to_cpu(info->DeviceId); */
+ 
+-	if (data->symlink) {
+-		fattr->cf_mode |= S_IFLNK;
+-		fattr->cf_dtype = DT_LNK;
+-		fattr->cf_symlink_target = data->symlink_target;
+-		data->symlink_target = NULL;
+-	} else if (fattr->cf_cifsattrs & ATTR_DIRECTORY) {
++	if (cifs_open_data_reparse(data) &&
++	    cifs_reparse_point_to_fattr(cifs_sb, fattr, data))
++		goto out_reparse;
++
++	fattr->cf_mode &= ~S_IFMT;
++	if (fattr->cf_cifsattrs & ATTR_DIRECTORY) {
+ 		fattr->cf_mode |= S_IFDIR;
+ 		fattr->cf_dtype = DT_DIR;
+ 	} else { /* file */
+ 		fattr->cf_mode |= S_IFREG;
+ 		fattr->cf_dtype = DT_REG;
+ 	}
+-	/* else if reparse point ... TODO: add support for FIFO and blk dev; special file types */
+ 
++out_reparse:
++	if (S_ISLNK(fattr->cf_mode)) {
++		if (likely(data->symlink_target))
++			fattr->cf_eof = strnlen(data->symlink_target, PATH_MAX);
++		fattr->cf_symlink_target = data->symlink_target;
++		data->symlink_target = NULL;
++	}
+ 	sid_to_id(cifs_sb, owner, fattr, SIDOWNER);
+ 	sid_to_id(cifs_sb, group, fattr, SIDGROUP);
+ 
+@@ -740,25 +747,25 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 	if (tag == IO_REPARSE_TAG_NFS && buf) {
+ 		switch (le64_to_cpu(buf->InodeType)) {
+ 		case NFS_SPECFILE_CHR:
+-			fattr->cf_mode |= S_IFCHR | cifs_sb->ctx->file_mode;
++			fattr->cf_mode |= S_IFCHR;
+ 			fattr->cf_dtype = DT_CHR;
+ 			fattr->cf_rdev = nfs_mkdev(buf);
+ 			break;
+ 		case NFS_SPECFILE_BLK:
+-			fattr->cf_mode |= S_IFBLK | cifs_sb->ctx->file_mode;
++			fattr->cf_mode |= S_IFBLK;
+ 			fattr->cf_dtype = DT_BLK;
+ 			fattr->cf_rdev = nfs_mkdev(buf);
+ 			break;
+ 		case NFS_SPECFILE_FIFO:
+-			fattr->cf_mode |= S_IFIFO | cifs_sb->ctx->file_mode;
++			fattr->cf_mode |= S_IFIFO;
+ 			fattr->cf_dtype = DT_FIFO;
+ 			break;
+ 		case NFS_SPECFILE_SOCK:
+-			fattr->cf_mode |= S_IFSOCK | cifs_sb->ctx->file_mode;
++			fattr->cf_mode |= S_IFSOCK;
+ 			fattr->cf_dtype = DT_SOCK;
+ 			break;
+ 		case NFS_SPECFILE_LNK:
+-			fattr->cf_mode = S_IFLNK | cifs_sb->ctx->file_mode;
++			fattr->cf_mode |= S_IFLNK;
+ 			fattr->cf_dtype = DT_LNK;
+ 			break;
+ 		default:
+@@ -770,29 +777,29 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 
+ 	switch (tag) {
+ 	case IO_REPARSE_TAG_LX_SYMLINK:
+-		fattr->cf_mode |= S_IFLNK | cifs_sb->ctx->file_mode;
++		fattr->cf_mode |= S_IFLNK;
+ 		fattr->cf_dtype = DT_LNK;
+ 		break;
+ 	case IO_REPARSE_TAG_LX_FIFO:
+-		fattr->cf_mode |= S_IFIFO | cifs_sb->ctx->file_mode;
++		fattr->cf_mode |= S_IFIFO;
+ 		fattr->cf_dtype = DT_FIFO;
+ 		break;
+ 	case IO_REPARSE_TAG_AF_UNIX:
+-		fattr->cf_mode |= S_IFSOCK | cifs_sb->ctx->file_mode;
++		fattr->cf_mode |= S_IFSOCK;
+ 		fattr->cf_dtype = DT_SOCK;
+ 		break;
+ 	case IO_REPARSE_TAG_LX_CHR:
+-		fattr->cf_mode |= S_IFCHR | cifs_sb->ctx->file_mode;
++		fattr->cf_mode |= S_IFCHR;
+ 		fattr->cf_dtype = DT_CHR;
+ 		break;
+ 	case IO_REPARSE_TAG_LX_BLK:
+-		fattr->cf_mode |= S_IFBLK | cifs_sb->ctx->file_mode;
++		fattr->cf_mode |= S_IFBLK;
+ 		fattr->cf_dtype = DT_BLK;
+ 		break;
+ 	case 0: /* SMB1 symlink */
+ 	case IO_REPARSE_TAG_SYMLINK:
+ 	case IO_REPARSE_TAG_NFS:
+-		fattr->cf_mode = S_IFLNK | cifs_sb->ctx->file_mode;
++		fattr->cf_mode |= S_IFLNK;
+ 		fattr->cf_dtype = DT_LNK;
+ 		break;
+ 	default:
+@@ -832,6 +839,7 @@ static void cifs_open_info_to_fattr(struct cifs_fattr *fattr,
+ 	fattr->cf_createtime = le64_to_cpu(info->CreationTime);
+ 	fattr->cf_nlink = le32_to_cpu(info->NumberOfLinks);
+ 
++	fattr->cf_mode = cifs_sb->ctx->file_mode;
+ 	if (cifs_open_data_reparse(data) &&
+ 	    cifs_reparse_point_to_fattr(cifs_sb, fattr, data))
+ 		goto out_reparse;
 -- 
 2.43.0
 
