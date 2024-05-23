@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-45884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F364B8CD463
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C50C8CD3CD
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE308281DC9
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C62283D2B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBE914B955;
-	Thu, 23 May 2024 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9631714B07E;
+	Thu, 23 May 2024 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/GPRlSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ogelknpd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C4F14A632;
-	Thu, 23 May 2024 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A9D2AE94;
+	Thu, 23 May 2024 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470639; cv=none; b=hUMxQHDsfyE9b7rxUkJVJrwbyEawun6ipl3oOSrUx3w33/x19X1wsCUHFNMSNLajnNmzQq4g9+iTwcrccODCaa7Ljk5UMN6S/3fIXfMt805WJ9qY7F1TYoLVjyp4FicRmByxbFv5R+OP7mMyI7HR3i+CgQHsUZ8tgGTdj9GM9UI=
+	t=1716470320; cv=none; b=jI1tTzHQ3slbzBwlUxpX4aOWIJ0eRwDxegcVgzniGI7vR8XD/epeISXOpbAVmnFzGWxcItF5nKyh1uWOHDDBEDciqTA+s8VjT9lXgAZVm9SFHx2rjgY1JnjvWelKWXqXsDI/9Iw9VGJSc1oHvpNA+uqd+WG1L7V4rgrvEuQtqPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470639; c=relaxed/simple;
-	bh=7rt1nvRsAAkAKaL6xV4wacMlnv2CN1bmY2fr4fKGTqI=;
+	s=arc-20240116; t=1716470320; c=relaxed/simple;
+	bh=Bb0q5r0EHV5ZzUgbgx+WXjBy5kmAWRWx15cns605iNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvXJjFvx7Kvtxi9KYeE9zMme7Be0Vgvo5V34ZfncA0yDV6ED/jVFp9y+vGayMvZSxskmukgd4kP4ls55CO1gq3WClrE4RB+KXfksjjz2JdgzQBAXxJjyZu/6G72OKX+TKvIw9pvWwkOBa3PtsBC7oaPhk/2YmWEufruYz6oPz74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/GPRlSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305A7C2BD10;
-	Thu, 23 May 2024 13:23:59 +0000 (UTC)
+	 MIME-Version; b=PhmsFGlmwG9cOgCJkkMkh9IARBWgFtoyl5a21IXR8H6gvYGFZaX2ESe9HR0R7YgjERq742NuGXBPQ4k+oST4P6ke/GgE6NFtBphIhKnGALR9zndijf3y0WjbDjziH1jZu/Ez7GizV9nzZCajyWN71L/IzNkSy2oXPQHGyDK2Bds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ogelknpd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30ABC2BD10;
+	Thu, 23 May 2024 13:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470639;
-	bh=7rt1nvRsAAkAKaL6xV4wacMlnv2CN1bmY2fr4fKGTqI=;
+	s=korg; t=1716470320;
+	bh=Bb0q5r0EHV5ZzUgbgx+WXjBy5kmAWRWx15cns605iNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/GPRlSwaRpH8oUDleKUBcTl1YSxuMhhtelLoHZihrI88AbWKYnLSkB8CtOGYvpy8
-	 BcOsUfR2I/b+3/TLjMAqZT1+Rx3naO7I0BMEMrOyELYT+kIUGI4jhCGd5wwtGnaHyf
-	 oRrcd8+DBGCP0m4uQaiSu1CoDhVFHI3B2dTm4Trk=
+	b=OgelknpdXkJzDqpVZXEpSwa5ugyI0+iroOlnBUsNRVMdjOchr8h3Mroa8Q8nExanX
+	 NIFqZUhmWJsqF3RgEbvjV6WZX6eMm31HVDsTLr6B5jzn3FgGxi9LsihZdt/ng+rEqa
+	 J+O2Ooqhvc+WTyUKHSBm8LGRoaFdAixQqfg+Od08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/102] ksmbd: Add kernel-doc for ksmbd_extract_sharename() function
-Date: Thu, 23 May 2024 15:13:01 +0200
-Message-ID: <20240523130343.826551206@linuxfoundation.org>
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 06/23] net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
+Date: Thu, 23 May 2024 15:13:02 +0200
+Message-ID: <20240523130328.196694486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit a12bc36032a2f7917068f9ce9eb26d869e54b31a ]
+commit d85cf67a339685beae1d0aee27b7f61da95455be upstream.
 
-The ksmbd_extract_sharename() function lacked a complete kernel-doc
-comment. This patch adds parameter descriptions and detailed function
-behavior to improve code readability and maintainability.
+The EXT_RGMII_OOB_CTRL register can be written from different
+contexts. It is predominantly written from the adjust_link
+handler which is synchronized by the phydev->lock, but can
+also be written from a different context when configuring the
+mii in bcmgenet_mii_config().
 
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The chances of contention are quite low, but it is conceivable
+that adjust_link could occur during resume when WoL is enabled
+so use the phydev->lock synchronizer in bcmgenet_mii_config()
+to be sure.
+
+Fixes: afe3f907d20f ("net: bcmgenet: power on MII block for all MII modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/misc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/broadcom/genet/bcmmii.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/server/misc.c b/fs/smb/server/misc.c
-index 9e8afaa686e3a..1a5faa6f6e7bc 100644
---- a/fs/smb/server/misc.c
-+++ b/fs/smb/server/misc.c
-@@ -261,6 +261,7 @@ char *ksmbd_casefold_sharename(struct unicode_map *um, const char *name)
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -264,6 +264,7 @@ int bcmgenet_mii_config(struct net_devic
+ 	 * block for the interface to work
+ 	 */
+ 	if (priv->ext_phy) {
++		mutex_lock(&phydev->lock);
+ 		reg = bcmgenet_ext_readl(priv, EXT_RGMII_OOB_CTRL);
+ 		reg &= ~ID_MODE_DIS;
+ 		reg |= id_mode_dis;
+@@ -272,6 +273,7 @@ int bcmgenet_mii_config(struct net_devic
+ 		else
+ 			reg |= RGMII_MODE_EN;
+ 		bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
++		mutex_unlock(&phydev->lock);
+ 	}
  
- /**
-  * ksmbd_extract_sharename() - get share name from tree connect request
-+ * @um: pointer to a unicode_map structure for character encoding handling
-  * @treename:	buffer containing tree name and share name
-  *
-  * Return:      share name on success, otherwise error
--- 
-2.43.0
-
+ 	if (init)
 
 
 
