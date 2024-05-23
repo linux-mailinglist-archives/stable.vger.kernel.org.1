@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-45785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27FC8CD3DA
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A188CD3F5
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 619741F25EE7
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBB9D1C20A65
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFDC14A4C1;
-	Thu, 23 May 2024 13:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFBB14B076;
+	Thu, 23 May 2024 13:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeEuaHTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIPeXK6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B48B1E497;
-	Thu, 23 May 2024 13:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCE014A4DC;
+	Thu, 23 May 2024 13:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470354; cv=none; b=pMHT87K+9DfOC85frmrCJsc35Xgj+fWY/MvCGdRglnka8BZhlBAPVwEGVk5xR752qR8fY6qCYpyLbLSQUnTQHj8mXmHZFDv7EjeXhJy3jMtGYy4CF/u6959qzRGZEuPeF66B4AsAdRN+w/DsZId8/QW1nZIxuWwMhDV+aZktHNg=
+	t=1716470394; cv=none; b=tf44FAaJHQDyoUukt925a9ErcCPnxcsQ0dwBlaDhiYOH62G1eekZ6we7gs1LJLNtQXGN4b+eqHjs7+rTVagD8tedYViR2nXbTDIwQPRB4xskP0zLG196qxMA0mIVqxycdw4IfIH0/9JPk957Ff2UiCvXZNGKNrzQ+BpDW1KvBJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470354; c=relaxed/simple;
-	bh=emW3GIWvbtXENMUS/L4Y3q2kITijpYUR3lvcIXdHnmI=;
+	s=arc-20240116; t=1716470394; c=relaxed/simple;
+	bh=P21SDQuljE9hvki7NPIwqkltFBptvIz1www3J9UK7Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K0D2WZ0+l5pW1PoVHHsacX1tcee6T5W6Do8D8O66HWchosf1//StV/C3VQlo4EAdXfHb4hpEwvEdF1A5wLn5r/nG2JG2CGFGX6Hq3nmNAOfxMk9Ijj0K9JpPK5SPOttOcimm/sSk7oXP9Qny+2ckJm2T+MQVTo+WufyFMRrO5K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeEuaHTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02665C3277B;
-	Thu, 23 May 2024 13:19:13 +0000 (UTC)
+	 MIME-Version; b=ZqjaC4bH6UovCBGoQDnlVkVUxlzG8H2KLNz6YH16KvOAub006NT/GTgGqKYaur0Varr96hN8F4ZYvsOWRGzdHgf178R9gs6cAWkA1SdQlw8kiV0OrKOIB6hiztdqiUfMUfaseZgioGH+fmv+yVUGDdMBn9OVYVqiugbw9wJ3M7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIPeXK6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA1CC2BD10;
+	Thu, 23 May 2024 13:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470354;
-	bh=emW3GIWvbtXENMUS/L4Y3q2kITijpYUR3lvcIXdHnmI=;
+	s=korg; t=1716470394;
+	bh=P21SDQuljE9hvki7NPIwqkltFBptvIz1www3J9UK7Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeEuaHTmQK0BcNaoHTShKiPSCXz7TiL1Ztej4Z2wjOkIkC9d8kpVDgij+IiydvAwF
-	 Ibj09anMFpOOtCgxJajQMSq4PG8loqn7LjT7PPs8RlSbecpqPubeHkmJD3gIhVrmpQ
-	 A9cIVtgZlK4mSSBEuy363qvrQ0YL0/pO6CCi5QnU=
+	b=pIPeXK6F6UL/DP5qu/c4zVG53xxHUaflsYXAQ1T68zhFYIY3nTOJyVhHllKa+fyA8
+	 ZQeOMvbjFqA3nfutXW5PastUnd+pfcqF8gx/lfAbiFf2+uNmTrjd7twqHnftHExUKf
+	 X2ac0QpknNs13bgxqG8YbrKCjK5TVbXffX36d/Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH 5.15 16/23] drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 21/45] xfs: fix sb write verify for lazysbcount
 Date: Thu, 23 May 2024 15:13:12 +0200
-Message-ID: <20240523130328.566298893@linuxfoundation.org>
+Message-ID: <20240523130333.292940842@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +60,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Long Li <leo.lilong@huawei.com>
 
-commit b8d55a90fd55b767c25687747e2b24abd1ef8680 upstream.
+[ Upstream commit 59f6ab40fd8735c9a1a15401610a31cc06a0bbd6 ]
 
-Return invalid error code -EINVAL for invalid block id.
+When lazysbcount is enabled, fsstress and loop mount/unmount test report
+the following problems:
 
-Fixes the below:
+XFS (loop0): SB summary counter sanity check failed
+XFS (loop0): Metadata corruption detected at xfs_sb_write_verify+0x13b/0x460,
+	xfs_sb block 0x0
+XFS (loop0): Unmount and run xfs_repair
+XFS (loop0): First 128 bytes of corrupted metadata buffer:
+00000000: 58 46 53 42 00 00 10 00 00 00 00 00 00 28 00 00  XFSB.........(..
+00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+00000020: 69 fb 7c cd 5f dc 44 af 85 74 e0 cc d4 e3 34 5a  i.|._.D..t....4Z
+00000030: 00 00 00 00 00 20 00 06 00 00 00 00 00 00 00 80  ..... ..........
+00000040: 00 00 00 00 00 00 00 81 00 00 00 00 00 00 00 82  ................
+00000050: 00 00 00 01 00 0a 00 00 00 00 00 04 00 00 00 00  ................
+00000060: 00 00 0a 00 b4 b5 02 00 02 00 00 08 00 00 00 00  ................
+00000070: 00 00 00 00 00 00 00 00 0c 09 09 03 14 00 00 19  ................
+XFS (loop0): Corruption of in-memory data (0x8) detected at _xfs_buf_ioapply
+	+0xe1e/0x10e0 (fs/xfs/xfs_buf.c:1580).  Shutting down filesystem.
+XFS (loop0): Please unmount the filesystem and rectify the problem(s)
+XFS (loop0): log mount/recovery failed: error -117
+XFS (loop0): log mount failed
 
-drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:1183 amdgpu_ras_query_error_status_helper() error: we previously assumed 'info' could be null (see line 1176)
+This corruption will shutdown the file system and the file system will
+no longer be mountable. The following script can reproduce the problem,
+but it may take a long time.
 
-Suggested-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: Tao Zhou <tao.zhou1@amd.com>
-Cc: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[Ajay: applied AMDGPU_RAS_BLOCK_COUNT condition to amdgpu_ras_query_error_status()
-       as amdgpu_ras_query_error_status_helper() not present in v5.15
-       amdgpu_ras_query_error_status_helper() was introduced in 8cc0f5669eb6]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+ #!/bin/bash
+
+ device=/dev/sda
+ testdir=/mnt/test
+ round=0
+
+ function fail()
+ {
+	 echo "$*"
+	 exit 1
+ }
+
+ mkdir -p $testdir
+ while [ $round -lt 10000 ]
+ do
+	 echo "******* round $round ********"
+	 mkfs.xfs -f $device
+	 mount $device $testdir || fail "mount failed!"
+	 fsstress -d $testdir -l 0 -n 10000 -p 4 >/dev/null &
+	 sleep 4
+	 killall -w fsstress
+	 umount $testdir
+	 xfs_repair -e $device > /dev/null
+	 if [ $? -eq 2 ];then
+		 echo "ERR CODE 2: Dirty log exception during repair."
+		 exit 1
+	 fi
+	 round=$(($round+1))
+ done
+
+With lazysbcount is enabled, There is no additional lock protection for
+reading m_ifree and m_icount in xfs_log_sb(), if other cpu modifies the
+m_ifree, this will make the m_ifree greater than m_icount. For example,
+consider the following sequence and ifreedelta is postive:
+
+ CPU0				 CPU1
+ xfs_log_sb			 xfs_trans_unreserve_and_mod_sb
+ ----------			 ------------------------------
+ percpu_counter_sum(&mp->m_icount)
+				 percpu_counter_add_batch(&mp->m_icount,
+						idelta, XFS_ICOUNT_BATCH)
+				 percpu_counter_add(&mp->m_ifree, ifreedelta);
+ percpu_counter_sum(&mp->m_ifree)
+
+After this, incorrect inode count (sb_ifree > sb_icount) will be writen to
+the log. In the subsequent writing of sb, incorrect inode count (sb_ifree >
+sb_icount) will fail to pass the boundary check in xfs_validate_sb_write()
+that cause the file system shutdown.
+
+When lazysbcount is enabled, we don't need to guarantee that Lazy sb
+counters are completely correct, but we do need to guarantee that sb_ifree
+<= sb_icount. On the other hand, the constraint that m_ifree <= m_icount
+must be satisfied any time that there /cannot/ be other threads allocating
+or freeing inode chunks. If the constraint is violated under these
+circumstances, sb_i{count,free} (the ondisk superblock inode counters)
+maybe incorrect and need to be marked sick at unmount, the count will
+be rebuilt on the next mount.
+
+Fixes: 8756a5af1819 ("libxfs: add more bounds checking to sb sanity checks")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/xfs/libxfs/xfs_sb.c |    4 +++-
+ fs/xfs/xfs_mount.c     |   15 +++++++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -820,6 +820,9 @@ int amdgpu_ras_query_error_status(struct
- 	if (!obj)
- 		return -EINVAL;
+--- a/fs/xfs/libxfs/xfs_sb.c
++++ b/fs/xfs/libxfs/xfs_sb.c
+@@ -973,7 +973,9 @@ xfs_log_sb(
+ 	 */
+ 	if (xfs_has_lazysbcount(mp)) {
+ 		mp->m_sb.sb_icount = percpu_counter_sum(&mp->m_icount);
+-		mp->m_sb.sb_ifree = percpu_counter_sum(&mp->m_ifree);
++		mp->m_sb.sb_ifree = min_t(uint64_t,
++				percpu_counter_sum(&mp->m_ifree),
++				mp->m_sb.sb_icount);
+ 		mp->m_sb.sb_fdblocks = percpu_counter_sum(&mp->m_fdblocks);
+ 	}
  
-+	if (!info || info->head.block == AMDGPU_RAS_BLOCK_COUNT)
-+		return -EINVAL;
+--- a/fs/xfs/xfs_mount.c
++++ b/fs/xfs/xfs_mount.c
+@@ -538,6 +538,20 @@ xfs_check_summary_counts(
+ 	return 0;
+ }
+ 
++static void
++xfs_unmount_check(
++	struct xfs_mount	*mp)
++{
++	if (xfs_is_shutdown(mp))
++		return;
 +
- 	switch (info->head.block) {
- 	case AMDGPU_RAS_BLOCK__UMC:
- 		if (adev->umc.ras_funcs &&
++	if (percpu_counter_sum(&mp->m_ifree) >
++			percpu_counter_sum(&mp->m_icount)) {
++		xfs_alert(mp, "ifree/icount mismatch at unmount");
++		xfs_fs_mark_sick(mp, XFS_SICK_FS_COUNTERS);
++	}
++}
++
+ /*
+  * Flush and reclaim dirty inodes in preparation for unmount. Inodes and
+  * internal inode structures can be sitting in the CIL and AIL at this point,
+@@ -1077,6 +1091,7 @@ xfs_unmountfs(
+ 	if (error)
+ 		xfs_warn(mp, "Unable to free reserved block pool. "
+ 				"Freespace may not be correct on next mount.");
++	xfs_unmount_check(mp);
+ 
+ 	xfs_log_unmount(mp);
+ 	xfs_da_unmount(mp);
 
 
 
