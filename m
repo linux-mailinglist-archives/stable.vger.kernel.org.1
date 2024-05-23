@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-45822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B9E8CD411
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E5C8CD434
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 632B2B2280B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32887B22F02
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F06214AD38;
-	Thu, 23 May 2024 13:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06FA14A62A;
+	Thu, 23 May 2024 13:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydS03vGG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xucmw8nB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAC214AD1A;
-	Thu, 23 May 2024 13:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2D214A633;
+	Thu, 23 May 2024 13:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470461; cv=none; b=IhNaos0lE76etw+Yc1k/wwJfLHCmaSCc2Y0o8PwiMmfNg02Hb+5ZIUu85ALp5LCxbWsIVr27u9ZbSywoy2T0A06q2x/ZlDvDwz9bl+sZZeNaOQt/oXHLRbhz0m86qch8Sx5TXSOosK/9yiEx1aSHzx8k+csnWcfytbqcTIiYvDs=
+	t=1716470544; cv=none; b=kGtVwkcKrPhBOvJFhijF0xFNCZoy/DZ1pZjWF8DG+iFAAWJh+E+8lUayWGroKIUwfdzkxhgIxNg485hF6waCLmasfXZ7gtFd5ch7z85MLlaRIJHgqIvONHWV769jrLc8pEa3CmtPrLV8Z9CABKKhS2L5uV8qgJU65qJwIJ4C9vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470461; c=relaxed/simple;
-	bh=dOfNCDgpjNanpJRX8qaNkMDx4UGije1i4lxVdmgokkE=;
+	s=arc-20240116; t=1716470544; c=relaxed/simple;
+	bh=HUaurkJiVusfUHbo+rjAA8T1xryVytzZ5sUAwbGsif4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGsyW7SuIXsw97eW5YCEBwgrSXbkOKwrq22NWezWvdE7U7YwTOJQS9irfeB6aztHwLMG1MGwAZ5xo0QtLaADZq0pgJFNEvTgMehdBocOsj3pjyuTM2AwpumAy60By26Kp46mhhWnzpBmFToA7N/5b3UP4rZVVf6dPq0mPk3SQsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydS03vGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9912C2BD10;
-	Thu, 23 May 2024 13:21:00 +0000 (UTC)
+	 MIME-Version; b=uNkUyFbQUzuaE2+jNL+pzj1AeBovM+hyagl0erTTIgGA0+gU4Z5uETNxFqlY1X2w7AfGCBI3lpjEuvQ3XdDLhYg74fsFCfcpyVYs7I/0+P8I3bhBreBHwBlLRBzsQiWAITXtRmAHIq3yO9Z3dSKb+BgXz6yc54qyzYFivvbF6Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xucmw8nB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274B6C3277B;
+	Thu, 23 May 2024 13:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470461;
-	bh=dOfNCDgpjNanpJRX8qaNkMDx4UGije1i4lxVdmgokkE=;
+	s=korg; t=1716470544;
+	bh=HUaurkJiVusfUHbo+rjAA8T1xryVytzZ5sUAwbGsif4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydS03vGGAfhNfAvCbr2PbogkFzSFQRFWQl0v76l6dKEyygAU59X3jvmZl5qqho59E
-	 D7pIbhJtBtx2MmG+kl8fLdOfiLdrxZVUZ5yaAn0u0IdCqV8uR6bG9qQ4OYYLrh4HQg
-	 WG0dFkpE8ncgxD8WjKDsUmPfFEUbSZ7EGmsZQ6GI=
+	b=xucmw8nB8KegvW0kjGT7CMJZaYqv0482PGb1bbZZqbVSV1EnE3s0CSg8j3Y5cUKbe
+	 VsVoV3+Vzci0snC6eVGF1or9Q+8522ihi6RqDgrkhedQBnJLj7T5/WVOGGJ14kl+5Q
+	 J5yjid7ANbNv+TsUDoXh5UhXE0L5IGp+nEfDoRAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.1 45/45] docs: kernel_include.py: Cope with docutils 0.21
+	Christian Brauner <brauner@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.8 09/23] erofs: reliably distinguish block based and fscache mode
 Date: Thu, 23 May 2024 15:13:36 +0200
-Message-ID: <20240523130334.181642519@linuxfoundation.org>
+Message-ID: <20240523130330.099973146@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
+References: <20240523130329.745905823@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Yokosawa <akiyks@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit d43ddd5c91802a46354fa4c4381416ef760676e2 upstream.
+commit 7af2ae1b1531feab5d38ec9c8f472dc6cceb4606 upstream.
 
-Running "make htmldocs" on a newly installed Sphinx 7.3.7 ends up in
-a build error:
+When erofs_kill_sb() is called in block dev based mode, s_bdev may not
+have been initialised yet, and if CONFIG_EROFS_FS_ONDEMAND is enabled,
+it will be mistaken for fscache mode, and then attempt to free an anon_dev
+that has never been allocated, triggering the following warning:
 
-    Sphinx parallel build error:
-    AttributeError: module 'docutils.nodes' has no attribute 'reprunicode'
+============================================
+ida_free called for id=0 which is not allocated.
+WARNING: CPU: 14 PID: 926 at lib/idr.c:525 ida_free+0x134/0x140
+Modules linked in:
+CPU: 14 PID: 926 Comm: mount Not tainted 6.9.0-rc3-dirty #630
+RIP: 0010:ida_free+0x134/0x140
+Call Trace:
+ <TASK>
+ erofs_kill_sb+0x81/0x90
+ deactivate_locked_super+0x35/0x80
+ get_tree_bdev+0x136/0x1e0
+ vfs_get_tree+0x2c/0xf0
+ do_new_mount+0x190/0x2f0
+ [...]
+============================================
 
-docutils 0.21 has removed nodes.reprunicode, quote from release note [1]:
+Now when erofs_kill_sb() is called, erofs_sb_info must have been
+initialised, so use sbi->fsid to distinguish between the two modes.
 
-  * Removed objects:
-
-    docutils.nodes.reprunicode, docutils.nodes.ensure_str()
-        Python 2 compatibility hacks
-
-Sphinx 7.3.0 supports docutils 0.21 [2]:
-
-kernel_include.py, whose origin is misc.py of docutils, uses reprunicode.
-
-Upstream docutils removed the offending line from the corresponding file
-(docutils/docutils/parsers/rst/directives/misc.py) in January 2022.
-Quoting the changelog [3]:
-
-    Deprecate `nodes.reprunicode` and `nodes.ensure_str()`.
-
-    Drop uses of the deprecated constructs (not required with Python 3).
-
-Do the same for kernel_include.py.
-
-Tested against:
-  - Sphinx 2.4.5 (docutils 0.17.1)
-  - Sphinx 3.4.3 (docutils 0.17.1)
-  - Sphinx 5.3.0 (docutils 0.18.1)
-  - Sphinx 6.2.1 (docutils 0.19)
-  - Sphinx 7.2.6 (docutils 0.20.1)
-  - Sphinx 7.3.7 (docutils 0.21.2)
-
-Link: http://www.docutils.org/RELEASE-NOTES.html#release-0-21-2024-04-09 [1]
-Link: https://www.sphinx-doc.org/en/master/changes.html#release-7-3-0-released-apr-16-2024 [2]
-Link: https://github.com/docutils/docutils/commit/c8471ce47a24 [3]
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20240419123611.947084-3-libaokun1@huawei.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/sphinx/kernel_include.py |    1 -
- 1 file changed, 1 deletion(-)
+ fs/erofs/super.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/Documentation/sphinx/kernel_include.py
-+++ b/Documentation/sphinx/kernel_include.py
-@@ -97,7 +97,6 @@ class KernelInclude(Include):
-         # HINT: this is the only line I had to change / commented out:
-         #path = utils.relative_path(None, path)
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -790,17 +790,13 @@ static int erofs_init_fs_context(struct
  
--        path = nodes.reprunicode(path)
-         encoding = self.options.get(
-             'encoding', self.state.document.settings.input_encoding)
-         e_handler=self.state.document.settings.input_encoding_error_handler
+ static void erofs_kill_sb(struct super_block *sb)
+ {
+-	struct erofs_sb_info *sbi;
++	struct erofs_sb_info *sbi = EROFS_SB(sb);
+ 
+-	if (erofs_is_fscache_mode(sb))
++	if (IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND) && sbi->fsid)
+ 		kill_anon_super(sb);
+ 	else
+ 		kill_block_super(sb);
+ 
+-	sbi = EROFS_SB(sb);
+-	if (!sbi)
+-		return;
+-
+ 	erofs_free_dev_context(sbi->devs);
+ 	fs_put_dax(sbi->dax_dev, NULL);
+ 	erofs_fscache_unregister_fs(sb);
 
 
 
