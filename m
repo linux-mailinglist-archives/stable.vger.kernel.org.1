@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65128CD3E1
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816B28CD3CE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E81F81C20ACC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2305428530A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4428514B09F;
-	Thu, 23 May 2024 13:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B968B14B081;
+	Thu, 23 May 2024 13:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LejzDSny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFoXiBjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE1314B083;
-	Thu, 23 May 2024 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AB32AE94;
+	Thu, 23 May 2024 13:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470366; cv=none; b=K1KXV9Uvfz68y91HWsbTVs1sHdZ45nTZ2CirYpEwJQ84vJZDpHwYU6+bMoj9JfnhhdC8sSk6GCAxWkUMpRCzicwzTX0W8v4oXuRlkibXzXq5hbJo6ybKJkIo//NtmzXiOLmtD7+qeGGfUZkTxKsvTUM45FwE6bMG1YNnOYMQCGM=
+	t=1716470323; cv=none; b=Igg8FBbb3uyNwN/fMm0W7NnhlrpwXpqMUnNWR7Zkgb9TRrb7flF3tQU3vWJCT/H0MOJ/z5EvzEyyehXieNtnSBhll2enErjRdevnJ3Rk1u+vmQmCxRWA4Kfo4k5muKrXNpNfwgyf5M5j4RbMXecykU3d4EyKeL/LJuBcBdeSCWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470366; c=relaxed/simple;
-	bh=fA7GE2YgYqxPyxAffHyTxrtobWl7Kju5olgp0JaIzq4=;
+	s=arc-20240116; t=1716470323; c=relaxed/simple;
+	bh=iErxtoDxp8LmuDORn28njsyzVyp08ESEdMx6kd/aMic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXfAzP1DjboJOoIz1SAh8+0VcLDSx5h8mm0BQSLZUB0+e0HeaA4/0koeS64RxLvfTvny7Gh5bwe6pilvu9GYR2pakcJ1CLbK8DMAyDtqc7+Q+0rq2lNKPb3ekv+BQ6/+kSWaAK4u2yTaLs3dnQqmMQ1ELcdfPD96XGxU8MBMsFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LejzDSny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC8EC2BD10;
-	Thu, 23 May 2024 13:19:25 +0000 (UTC)
+	 MIME-Version; b=Mi0iI1ZWrt01xnn9uZoOLSn8kbfNvLFDwiPGIdiqSUWZe+yFqWfNn9jtNbQiRPbLzRrYY0pncr8UfumR06JaH/CNQznXqL+N8IknzHdx/wkJADXzHM86/ogXqByzCh0o+rxykOT3yKDBGgAN6Fn47c5SCi2CI+XfRGGjE0Q0whM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFoXiBjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF2AC2BD10;
+	Thu, 23 May 2024 13:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470365;
-	bh=fA7GE2YgYqxPyxAffHyTxrtobWl7Kju5olgp0JaIzq4=;
+	s=korg; t=1716470323;
+	bh=iErxtoDxp8LmuDORn28njsyzVyp08ESEdMx6kd/aMic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LejzDSnymYChlkv1MuGTXhMbCAn9hHeuhC9HEayG0OOKS1mPS58GT6K7sbs2PxOsr
-	 K3y+3XQSmPy2pJzxFbm7QnfkV+fOUYjXuTVcaovgghY/YdXQUXrtrrt6KrdelsFtbV
-	 cOWQINE/Whc+PEyVTW6Kktj0eMYTAUC1DlOn13YU=
+	b=fFoXiBjf8LsEJkycRnIcQlWsa+4cCtbNyl1HGpcBNQLUbHKI/b008363Y46V76E7k
+	 l3TZTaXz8VQmQEpEuyNJW9au1bc+6U8D2gjMsJ3u5QOO2za3T2BL9KvaO3RxB4ogBd
+	 DMsIghtyd4qYlXAvpCz+Px+c/HwmfpAeNOYCLvi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 12/45] xfs: use byte ranges for write cleanup ranges
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 07/23] net: bcmgenet: synchronize UMAC_CMD access
 Date: Thu, 23 May 2024 15:13:03 +0200
-Message-ID: <20240523130332.958919497@linuxfoundation.org>
+Message-ID: <20240523130328.232362736@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit b71f889c18ada210a97aa3eb5e00c0de552234c6 ]
+commit 0d5e2a82232605b337972fb2c7d0cbc46898aca1 upstream.
 
-xfs_buffered_write_iomap_end() currently converts the byte ranges
-passed to it to filesystem blocks to pass them to the bmap code to
-punch out delalloc blocks, but then has to convert filesytem
-blocks back to byte ranges for page cache truncate.
+The UMAC_CMD register is written from different execution
+contexts and has insufficient synchronization protections to
+prevent possible corruption. Of particular concern are the
+acceses from the phy_device delayed work context used by the
+adjust_link call and the BH context that may be used by the
+ndo_set_rx_mode call.
 
-We're about to make the page cache truncate go away and replace it
-with a page cache walk, so having to convert everything to/from/to
-filesystem blocks is messy and error-prone. It is much easier to
-pass around byte ranges and convert to page indexes and/or
-filesystem blocks only where those units are needed.
+A spinlock is added to the driver to protect contended register
+accesses (i.e. reg_lock) and it is used to synchronize accesses
+to UMAC_CMD.
 
-In preparation for the page cache walk being added, add a helper
-that converts byte ranges to filesystem blocks and calls
-xfs_bmap_punch_delalloc_range() and convert
-xfs_buffered_write_iomap_end() to calculate limits in byte ranges.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+Cc: stable@vger.kernel.org
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_iomap.c |   40 +++++++++++++++++++++++++---------------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   12 +++++++++++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |    2 ++
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c |    6 ++++++
+ drivers/net/ethernet/broadcom/genet/bcmmii.c       |    2 ++
+ 4 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1121,6 +1121,20 @@ out_unlock:
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2424,14 +2424,18 @@ static void umac_enable_set(struct bcmge
+ {
+ 	u32 reg;
+ 
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+-	if (reg & CMD_SW_RESET)
++	if (reg & CMD_SW_RESET) {
++		spin_unlock_bh(&priv->reg_lock);
+ 		return;
++	}
+ 	if (enable)
+ 		reg |= mask;
+ 	else
+ 		reg &= ~mask;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	/* UniMAC stops on a packet boundary, wait for a full-size packet
+ 	 * to be processed
+@@ -2447,8 +2451,10 @@ static void reset_umac(struct bcmgenet_p
+ 	udelay(10);
+ 
+ 	/* issue soft reset and disable MAC while updating its registers */
++	spin_lock_bh(&priv->reg_lock);
+ 	bcmgenet_umac_writel(priv, CMD_SW_RESET, UMAC_CMD);
+ 	udelay(2);
++	spin_unlock_bh(&priv->reg_lock);
  }
  
- static int
-+xfs_buffered_write_delalloc_punch(
-+	struct inode		*inode,
-+	loff_t			start_byte,
-+	loff_t			end_byte)
-+{
-+	struct xfs_mount	*mp = XFS_M(inode->i_sb);
-+	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, start_byte);
-+	xfs_fileoff_t		end_fsb = XFS_B_TO_FSB(mp, end_byte);
-+
-+	return xfs_bmap_punch_delalloc_range(XFS_I(inode), start_fsb,
-+				end_fsb - start_fsb);
-+}
-+
-+static int
- xfs_buffered_write_iomap_end(
- 	struct inode		*inode,
- 	loff_t			offset,
-@@ -1129,10 +1143,9 @@ xfs_buffered_write_iomap_end(
- 	unsigned		flags,
- 	struct iomap		*iomap)
- {
--	struct xfs_inode	*ip = XFS_I(inode);
--	struct xfs_mount	*mp = ip->i_mount;
--	xfs_fileoff_t		start_fsb;
--	xfs_fileoff_t		end_fsb;
-+	struct xfs_mount	*mp = XFS_M(inode->i_sb);
-+	loff_t			start_byte;
-+	loff_t			end_byte;
- 	int			error = 0;
- 
- 	if (iomap->type != IOMAP_DELALLOC)
-@@ -1157,13 +1170,13 @@ xfs_buffered_write_iomap_end(
- 	 * the range.
- 	 */
- 	if (unlikely(!written))
--		start_fsb = XFS_B_TO_FSBT(mp, offset);
-+		start_byte = round_down(offset, mp->m_sb.sb_blocksize);
- 	else
--		start_fsb = XFS_B_TO_FSB(mp, offset + written);
--	end_fsb = XFS_B_TO_FSB(mp, offset + length);
-+		start_byte = round_up(offset + written, mp->m_sb.sb_blocksize);
-+	end_byte = round_up(offset + length, mp->m_sb.sb_blocksize);
- 
- 	/* Nothing to do if we've written the entire delalloc extent */
--	if (start_fsb >= end_fsb)
-+	if (start_byte >= end_byte)
- 		return 0;
- 
- 	/*
-@@ -1173,15 +1186,12 @@ xfs_buffered_write_iomap_end(
- 	 * leave dirty pages with no space reservation in the cache.
- 	 */
- 	filemap_invalidate_lock(inode->i_mapping);
--	truncate_pagecache_range(VFS_I(ip), XFS_FSB_TO_B(mp, start_fsb),
--				 XFS_FSB_TO_B(mp, end_fsb) - 1);
--
--	error = xfs_bmap_punch_delalloc_range(ip, start_fsb,
--				       end_fsb - start_fsb);
-+	truncate_pagecache_range(inode, start_byte, end_byte - 1);
-+	error = xfs_buffered_write_delalloc_punch(inode, start_byte, end_byte);
- 	filemap_invalidate_unlock(inode->i_mapping);
- 	if (error && !xfs_is_shutdown(mp)) {
--		xfs_alert(mp, "%s: unable to clean up ino %lld",
--			__func__, ip->i_ino);
-+		xfs_alert(mp, "%s: unable to clean up ino 0x%llx",
-+			__func__, XFS_I(inode)->i_ino);
- 		return error;
+ static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
+@@ -3576,16 +3582,19 @@ static void bcmgenet_set_rx_mode(struct
+ 	 * 3. The number of filters needed exceeds the number filters
+ 	 *    supported by the hardware.
+ 	*/
++	spin_lock(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if ((dev->flags & (IFF_PROMISC | IFF_ALLMULTI)) ||
+ 	    (nfilter > MAX_MDF_FILTER)) {
+ 		reg |= CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
+ 		bcmgenet_umac_writel(priv, 0, UMAC_MDF_CTRL);
+ 		return;
+ 	} else {
+ 		reg &= ~CMD_PROMISC;
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock(&priv->reg_lock);
  	}
- 	return 0;
+ 
+ 	/* update MDF filter */
+@@ -3979,6 +3988,7 @@ static int bcmgenet_probe(struct platfor
+ 		goto err;
+ 	}
+ 
++	spin_lock_init(&priv->reg_lock);
+ 	spin_lock_init(&priv->lock);
+ 
+ 	SET_NETDEV_DEV(dev, &pdev->dev);
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -572,6 +572,8 @@ struct bcmgenet_rxnfc_rule {
+ /* device context */
+ struct bcmgenet_priv {
+ 	void __iomem *base;
++	/* reg_lock: lock to serialize access to shared registers */
++	spinlock_t reg_lock;
+ 	enum bcmgenet_version version;
+ 	struct net_device *dev;
+ 
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -133,6 +133,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Can't suspend with WoL if MAC is still in reset */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	if (reg & CMD_SW_RESET)
+ 		reg &= ~CMD_SW_RESET;
+@@ -140,6 +141,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* disable RX */
+ 	reg &= ~CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 	mdelay(10);
+ 
+ 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE)) {
+@@ -185,6 +187,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	}
+ 
+ 	/* Enable CRC forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	priv->crc_fwd_en = 1;
+ 	reg |= CMD_CRC_FWD;
+@@ -192,6 +195,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ 	/* Receiver must be enabled for WOL MP detection */
+ 	reg |= CMD_RX_EN;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ 
+ 	reg = UMAC_IRQ_MPD_R;
+ 	if (hfb_enable)
+@@ -238,7 +242,9 @@ void bcmgenet_wol_power_up_cfg(struct bc
+ 	}
+ 
+ 	/* Disable CRC Forward */
++	spin_lock_bh(&priv->reg_lock);
+ 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 	reg &= ~CMD_CRC_FWD;
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++	spin_unlock_bh(&priv->reg_lock);
+ }
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -91,6 +91,7 @@ void bcmgenet_mii_setup(struct net_devic
+ 		reg |= RGMII_LINK;
+ 		bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
+ 
++		spin_lock_bh(&priv->reg_lock);
+ 		reg = bcmgenet_umac_readl(priv, UMAC_CMD);
+ 		reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
+ 			       CMD_HD_EN |
+@@ -103,6 +104,7 @@ void bcmgenet_mii_setup(struct net_devic
+ 			reg |= CMD_TX_EN | CMD_RX_EN;
+ 		}
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++		spin_unlock_bh(&priv->reg_lock);
+ 
+ 		priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
+ 		bcmgenet_eee_enable_set(dev,
 
 
 
