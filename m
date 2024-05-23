@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A53B8CD3FC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AAB8CD3D7
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A38231F26B72
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00652283669
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5650714B96C;
-	Thu, 23 May 2024 13:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0725C14AD0C;
+	Thu, 23 May 2024 13:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdwFL1fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMiHCFWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203414A4F0;
-	Thu, 23 May 2024 13:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E201E497;
+	Thu, 23 May 2024 13:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470412; cv=none; b=R8Ah/4QOa0bpbJTerApQsGzm4ql1ZH15I/kJPy9WQNXdDb2gCAiMDGezNnWgnF2DjwPyrUx0f3shU1/W1/Z+PRYuHY+xi2ksPuewNMxfeB5WPAITnMxQBGdOprZ9gJugDpOZ7r9/9MB2o0rWl7ISHpN5X/uhVy3rbSu+bxIUWto=
+	t=1716470348; cv=none; b=N2RobsLiv9FROlLQh2eO6IgD1vJwOykI9HrPHpFp3KTk/3fE7bF8n9Hpw7JW2c8+bzcaru6jon7r4M5ed+AZMn3Ht94IOuc4IWVlvubkRI3BV1ZNiSKQwTKuhfo5SzA+hjM4gHYMCgrtoWeMBRYsy1ESrS3wuaeH2V0i+2kbgPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470412; c=relaxed/simple;
-	bh=XCowPjSTRuZNVOIKL3wIuVoRHjyQfm0hq4mLf6iBsKY=;
+	s=arc-20240116; t=1716470348; c=relaxed/simple;
+	bh=lda/JvoJt+TY0TzJSLVp/oVXym+3Z/43llqYC449YTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgGHp9Dz44CLPWUiG7VGtgcQ7teoaRTWHOc1QSSqZCyskEHfi4opJxb+k8KAxPwjj7CBNPN7XKTxC6za4NpYAByJzDoiH0fKNfWp/AOTT+1M2oLWZUw5VtxLb+6/c0dWmPWHSKAV3u/JM0C2Nj2Xclnt1SBXRPCpdHYPNJJCXls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdwFL1fh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF37C32786;
-	Thu, 23 May 2024 13:20:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ONqxUqjry9uRZZoquUgeYb7pf4vmPEK9zMdiMuHMivUVyLZB64TZ9gHIJRUQ//gDvrwBuRp2Q1RaUAjDg3YJc3J1tpV3eF3t5R+2QnhgGuc1G8LRBlGM529EAaNeW39yKcN9kOBj0W0MmTeFNydnpzt2GD87kOySN4wIMIl0D44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMiHCFWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C58C2BD10;
+	Thu, 23 May 2024 13:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470411;
-	bh=XCowPjSTRuZNVOIKL3wIuVoRHjyQfm0hq4mLf6iBsKY=;
+	s=korg; t=1716470348;
+	bh=lda/JvoJt+TY0TzJSLVp/oVXym+3Z/43llqYC449YTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdwFL1fhhsFOWONBFoyCB4+C0/37TbVHTMmgxmL+iQzufs0SbjhOc5RBtwHErrT/g
-	 nL+HemHHCTZYQQ7eaXaYH8+BFladGPllbgT1oYrDLYLTA5+HuWv0ElUVAwOZADFMCH
-	 5FESO1OOJdAsmgpberPEBIXg8a2o1AClcg2NSt3k=
+	b=TMiHCFWkRWcffIC/22n9Coj3ESkz1ILTvxJQbWGZWOIKWJPPK41Jkogq1z8393XZw
+	 eejLI9OIRCCp+NP76NqI+rS9F9ePq9H2aT8Ml9wDL25iuyzOVLRfBMup3VzXrEbSAK
+	 g665iq7JiYJHQ0butHuWjKH7qnEWUouiewCQdHRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Xiao Yang <yangx.jy@fujitsu.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 27/45] xfs: hoist refcount record merge predicates
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Chris Hyser <chris.hyser@oracle.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 5.15 22/23] admin-guide/hw-vuln/core-scheduling: fix return type of PR_SCHED_CORE_GET
 Date: Thu, 23 May 2024 15:13:18 +0200
-Message-ID: <20240523130333.520491656@linuxfoundation.org>
+Message-ID: <20240523130328.787045698@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,192 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 9d720a5a658f5135861773f26e927449bef93d61 ]
+commit 8af2d1ab78f2342f8c4c3740ca02d86f0ebfac5a upstream.
 
-Hoist these multiline conditionals into separate static inline helpers
-to improve readability and set the stage for corruption fixes that will
-be introduced in the next patch.
+sched_core_share_pid() copies the cookie to userspace with
+put_user(id, (u64 __user *)uaddr), expecting 64 bits of space.
+The "unsigned long" datatype that is documented in core-scheduling.rst
+however is only 32 bits large on 32 bit architectures.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Xiao Yang <yangx.jy@fujitsu.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Document "unsigned long long" as the correct data type that is always
+64bits large.
+
+This matches what the selftest cs_prctl_test.c has been doing all along.
+
+Fixes: 0159bb020ca9 ("Documentation: Add usecases, design and interface for core scheduling")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/util-linux/df7a25a0-7923-4f8b-a527-5e6f0064074d@t-8ch.de/
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Chris Hyser <chris.hyser@oracle.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20240423-core-scheduling-cookie-v1-1-5753a35f8dfc@weissschuh.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_refcount.c |  129 +++++++++++++++++++++++++++++++++++++------
- 1 file changed, 113 insertions(+), 16 deletions(-)
+ Documentation/admin-guide/hw-vuln/core-scheduling.rst |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_refcount.c
-+++ b/fs/xfs/libxfs/xfs_refcount.c
-@@ -815,11 +815,119 @@ out_error:
- /* Is this extent valid? */
- static inline bool
- xfs_refc_valid(
--	struct xfs_refcount_irec	*rc)
-+	const struct xfs_refcount_irec	*rc)
- {
- 	return rc->rc_startblock != NULLAGBLOCK;
- }
+--- a/Documentation/admin-guide/hw-vuln/core-scheduling.rst
++++ b/Documentation/admin-guide/hw-vuln/core-scheduling.rst
+@@ -66,8 +66,8 @@ arg4:
+     will be performed for all tasks in the task group of ``pid``.
  
-+static inline bool
-+xfs_refc_want_merge_center(
-+	const struct xfs_refcount_irec	*left,
-+	const struct xfs_refcount_irec	*cleft,
-+	const struct xfs_refcount_irec	*cright,
-+	const struct xfs_refcount_irec	*right,
-+	bool				cleft_is_cright,
-+	enum xfs_refc_adjust_op		adjust,
-+	unsigned long long		*ulenp)
-+{
-+	unsigned long long		ulen = left->rc_blockcount;
-+
-+	/*
-+	 * To merge with a center record, both shoulder records must be
-+	 * adjacent to the record we want to adjust.  This is only true if
-+	 * find_left and find_right made all four records valid.
-+	 */
-+	if (!xfs_refc_valid(left)  || !xfs_refc_valid(right) ||
-+	    !xfs_refc_valid(cleft) || !xfs_refc_valid(cright))
-+		return false;
-+
-+	/* There must only be one record for the entire range. */
-+	if (!cleft_is_cright)
-+		return false;
-+
-+	/* The shoulder record refcounts must match the new refcount. */
-+	if (left->rc_refcount != cleft->rc_refcount + adjust)
-+		return false;
-+	if (right->rc_refcount != cleft->rc_refcount + adjust)
-+		return false;
-+
-+	/*
-+	 * The new record cannot exceed the max length.  ulen is a ULL as the
-+	 * individual record block counts can be up to (u32 - 1) in length
-+	 * hence we need to catch u32 addition overflows here.
-+	 */
-+	ulen += cleft->rc_blockcount + right->rc_blockcount;
-+	if (ulen >= MAXREFCEXTLEN)
-+		return false;
-+
-+	*ulenp = ulen;
-+	return true;
-+}
-+
-+static inline bool
-+xfs_refc_want_merge_left(
-+	const struct xfs_refcount_irec	*left,
-+	const struct xfs_refcount_irec	*cleft,
-+	enum xfs_refc_adjust_op		adjust)
-+{
-+	unsigned long long		ulen = left->rc_blockcount;
-+
-+	/*
-+	 * For a left merge, the left shoulder record must be adjacent to the
-+	 * start of the range.  If this is true, find_left made left and cleft
-+	 * contain valid contents.
-+	 */
-+	if (!xfs_refc_valid(left) || !xfs_refc_valid(cleft))
-+		return false;
-+
-+	/* Left shoulder record refcount must match the new refcount. */
-+	if (left->rc_refcount != cleft->rc_refcount + adjust)
-+		return false;
-+
-+	/*
-+	 * The new record cannot exceed the max length.  ulen is a ULL as the
-+	 * individual record block counts can be up to (u32 - 1) in length
-+	 * hence we need to catch u32 addition overflows here.
-+	 */
-+	ulen += cleft->rc_blockcount;
-+	if (ulen >= MAXREFCEXTLEN)
-+		return false;
-+
-+	return true;
-+}
-+
-+static inline bool
-+xfs_refc_want_merge_right(
-+	const struct xfs_refcount_irec	*cright,
-+	const struct xfs_refcount_irec	*right,
-+	enum xfs_refc_adjust_op		adjust)
-+{
-+	unsigned long long		ulen = right->rc_blockcount;
-+
-+	/*
-+	 * For a right merge, the right shoulder record must be adjacent to the
-+	 * end of the range.  If this is true, find_right made cright and right
-+	 * contain valid contents.
-+	 */
-+	if (!xfs_refc_valid(right) || !xfs_refc_valid(cright))
-+		return false;
-+
-+	/* Right shoulder record refcount must match the new refcount. */
-+	if (right->rc_refcount != cright->rc_refcount + adjust)
-+		return false;
-+
-+	/*
-+	 * The new record cannot exceed the max length.  ulen is a ULL as the
-+	 * individual record block counts can be up to (u32 - 1) in length
-+	 * hence we need to catch u32 addition overflows here.
-+	 */
-+	ulen += cright->rc_blockcount;
-+	if (ulen >= MAXREFCEXTLEN)
-+		return false;
-+
-+	return true;
-+}
-+
- /*
-  * Try to merge with any extents on the boundaries of the adjustment range.
-  */
-@@ -861,23 +969,15 @@ xfs_refcount_merge_extents(
- 		 (cleft.rc_blockcount == cright.rc_blockcount);
+ arg5:
+-    userspace pointer to an unsigned long for storing the cookie returned by
+-    ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
++    userspace pointer to an unsigned long long for storing the cookie returned
++    by ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
  
- 	/* Try to merge left, cleft, and right.  cleft must == cright. */
--	ulen = (unsigned long long)left.rc_blockcount + cleft.rc_blockcount +
--			right.rc_blockcount;
--	if (xfs_refc_valid(&left) && xfs_refc_valid(&right) &&
--	    xfs_refc_valid(&cleft) && xfs_refc_valid(&cright) && cequal &&
--	    left.rc_refcount == cleft.rc_refcount + adjust &&
--	    right.rc_refcount == cleft.rc_refcount + adjust &&
--	    ulen < MAXREFCEXTLEN) {
-+	if (xfs_refc_want_merge_center(&left, &cleft, &cright, &right, cequal,
-+				adjust, &ulen)) {
- 		*shape_changed = true;
- 		return xfs_refcount_merge_center_extents(cur, &left, &cleft,
- 				&right, ulen, aglen);
- 	}
- 
- 	/* Try to merge left and cleft. */
--	ulen = (unsigned long long)left.rc_blockcount + cleft.rc_blockcount;
--	if (xfs_refc_valid(&left) && xfs_refc_valid(&cleft) &&
--	    left.rc_refcount == cleft.rc_refcount + adjust &&
--	    ulen < MAXREFCEXTLEN) {
-+	if (xfs_refc_want_merge_left(&left, &cleft, adjust)) {
- 		*shape_changed = true;
- 		error = xfs_refcount_merge_left_extent(cur, &left, &cleft,
- 				agbno, aglen);
-@@ -893,10 +993,7 @@ xfs_refcount_merge_extents(
- 	}
- 
- 	/* Try to merge cright and right. */
--	ulen = (unsigned long long)right.rc_blockcount + cright.rc_blockcount;
--	if (xfs_refc_valid(&right) && xfs_refc_valid(&cright) &&
--	    right.rc_refcount == cright.rc_refcount + adjust &&
--	    ulen < MAXREFCEXTLEN) {
-+	if (xfs_refc_want_merge_right(&cright, &right, adjust)) {
- 		*shape_changed = true;
- 		return xfs_refcount_merge_right_extent(cur, &right, &cright,
- 				aglen);
+ In order for a process to push a cookie to, or pull a cookie from a process, it
+ is required to have the ptrace access mode: `PTRACE_MODE_READ_REALCREDS` to the
 
 
 
