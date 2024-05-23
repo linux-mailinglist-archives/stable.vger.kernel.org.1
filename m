@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE7A8CD3C8
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9FD8CD457
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ABD8281760
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18CEE1F22A7A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EC714AD29;
-	Thu, 23 May 2024 13:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F52914A4FF;
+	Thu, 23 May 2024 13:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kREsMDwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfRsb9yg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F187E2AE94;
-	Thu, 23 May 2024 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1941D545;
+	Thu, 23 May 2024 13:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470309; cv=none; b=cGe9jRL8EgztRDkahR0r+6zkpwfZ2d5xR4y1LJ/44qeQV5qLGo7L8KwylYJZJ3ZZcyXCUM7rvc5Nhyc53U2/x56nImTAG6PFbFtzMsrDsjlJh+oqgzpRRRJufb1MMFRxobyUKjt3AGxj0Y7wOaTOuR5TlVs0jpkmd+bu8ungIaQ=
+	t=1716470628; cv=none; b=g9RoBNvQV2FSFgIJfhz/JlTVQbRppNAo6pWZLrj94opQTAJ5twO/rAeYxk74IRbcU1qPZFeMByAggGy9p7moa4otX929cBVwkJMbgEB43a2v6za8ufk5Y98ckvCPzDLxSLyBda4oNwyiCjsdptTHfinH47qsLuUP7kRyKkg4/nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470309; c=relaxed/simple;
-	bh=Q33rdetUKd/x7JWaK4jo2LniXHiSQDLLglPJYaougKU=;
+	s=arc-20240116; t=1716470628; c=relaxed/simple;
+	bh=G/4CFnU4oKnu4him1nE1CHQwar0YqmzaoFZ1r8NMmlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6Bj23dmTVrzBEbpicLvzHUUr2MyNqVIgB4jrDvQg1FrHfeRfz7EDZt4gj08IkGZNcWiXy/PA7yUxvy5RIyo1WdINJPTZmGs56maqZZGlpEqUXByoBx3PG5RV0sMTwYFvIgCNYjCR9QyXIBEBYlt9HLGqHc1sHdLd/WGY8r8A2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kREsMDwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 725BDC32781;
-	Thu, 23 May 2024 13:18:28 +0000 (UTC)
+	 MIME-Version; b=UcsIzXBg+RIz0xvbpvD2rmJmBZ1+srDfEUq/QFdnmt/UOhgO6CjoZ0P1EA48Xo/IxxO9DYN5UD65kugqP298rV4oT0PW85oLwQOKM5xKfIrd3rF2h4v2o39M/jJARAI8YxS2dPwJxOakw4kjVgpHo4nDPpyxO9FcT/GQEvCZOL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfRsb9yg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755C4C2BD10;
+	Thu, 23 May 2024 13:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470308;
-	bh=Q33rdetUKd/x7JWaK4jo2LniXHiSQDLLglPJYaougKU=;
+	s=korg; t=1716470627;
+	bh=G/4CFnU4oKnu4him1nE1CHQwar0YqmzaoFZ1r8NMmlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kREsMDwQA4QZQ0K9sDpz2D/TYEpUAJlxGfsK+T1gsfJkVAIwhLalnd+oaHMZ6mv7/
-	 8qLIvZrIAQ6opaZqddb2uQTzn+Jquv2IYU0M2jRQZNMqVtvYFPKko0pNho7DvAKFGQ
-	 X4cfAFDEJ0KaJbocdPkGv6eU0qUnf0IjUyXwHbUc=
+	b=BfRsb9yg/jSfMOayO3VSKDvf649RKww4WJ7wM4g9fGz2/QuvbVGUsT15jeOX7zjiW
+	 9/NkjJ6Of8bjLV7R/vnlSTJZ8IqE9oVePhToNcj7/pZ2Zkz9FhRyYelTbF/3OuoiM6
+	 nDHbhi0jOxY96pULYNNkHktpoRs0GfDbOX2qls+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
-Subject: [PATCH 5.15 02/23] pinctrl: core: handle radix_tree_insert() errors in pinctrl_register_one_pin()
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 033/102] smb: client: delete "true", "false" defines
 Date: Thu, 23 May 2024 15:12:58 +0200
-Message-ID: <20240523130328.051503093@linuxfoundation.org>
+Message-ID: <20240523130343.712882109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-commit ecfe9a015d3e1e46504d5b3de7eef1f2d186194a upstream.
+[ Upstream commit 5d390df3bdd13d178eb2e02e60e9a480f7103f7b ]
 
-pinctrl_register_one_pin() doesn't check the result of radix_tree_insert()
-despite they both may return a negative error code.  Linus Walleij said he
-has copied the radix tree code from kernel/irq/ where the functions calling
-radix_tree_insert() are *void* themselves; I think it makes more sense to
-propagate the errors from radix_tree_insert() upstream if we can do that...
+Kernel has its own official true/false definitions.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+The defines aren't even used in this file.
 
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230719202253.13469-3-s.shtylyov@omp.ru
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/core.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/smb/client/smbencrypt.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -205,6 +205,7 @@ static int pinctrl_register_one_pin(stru
- 				    const struct pinctrl_pin_desc *pin)
- {
- 	struct pin_desc *pindesc;
-+	int error;
+diff --git a/fs/smb/client/smbencrypt.c b/fs/smb/client/smbencrypt.c
+index f0ce26414f173..1d1ee9f18f373 100644
+--- a/fs/smb/client/smbencrypt.c
++++ b/fs/smb/client/smbencrypt.c
+@@ -26,13 +26,6 @@
+ #include "cifsproto.h"
+ #include "../common/md4.h"
  
- 	pindesc = pin_desc_get(pctldev, pin->number);
- 	if (pindesc) {
-@@ -226,18 +227,25 @@ static int pinctrl_register_one_pin(stru
- 	} else {
- 		pindesc->name = kasprintf(GFP_KERNEL, "PIN%u", pin->number);
- 		if (!pindesc->name) {
--			kfree(pindesc);
--			return -ENOMEM;
-+			error = -ENOMEM;
-+			goto failed;
- 		}
- 		pindesc->dynamic_name = true;
- 	}
- 
- 	pindesc->drv_data = pin->drv_data;
- 
--	radix_tree_insert(&pctldev->pin_desc_tree, pin->number, pindesc);
-+	error = radix_tree_insert(&pctldev->pin_desc_tree, pin->number, pindesc);
-+	if (error)
-+		goto failed;
-+
- 	pr_debug("registered pin %d (%s) on %s\n",
- 		 pin->number, pindesc->name, pctldev->desc->name);
- 	return 0;
-+
-+failed:
-+	kfree(pindesc);
-+	return error;
- }
- 
- static int pinctrl_register_pins(struct pinctrl_dev *pctldev,
+-#ifndef false
+-#define false 0
+-#endif
+-#ifndef true
+-#define true 1
+-#endif
+-
+ /* following came from the other byteorder.h to avoid include conflicts */
+ #define CVAL(buf,pos) (((unsigned char *)(buf))[pos])
+ #define SSVALX(buf,pos,val) (CVAL(buf,pos)=(val)&0xFF,CVAL(buf,pos+1)=(val)>>8)
+-- 
+2.43.0
+
 
 
 
