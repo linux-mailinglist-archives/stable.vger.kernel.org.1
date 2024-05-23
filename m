@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-45903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C108CD47A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE8A8CD3A8
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D7C81F22AAF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEA9C1C229E4
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C087A14B95D;
-	Thu, 23 May 2024 13:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13591E4B0;
+	Thu, 23 May 2024 13:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKDkYEME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1MSD8Gf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7904414B941;
-	Thu, 23 May 2024 13:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D71613C66A;
+	Thu, 23 May 2024 13:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470694; cv=none; b=HF957S2PUhrNT1uw2YHQchoue6aIKqLOQmqbQ2oL7/f8PavxTH4cd9wN5b4cWfzayu3paF6uOxZhRipvI1spcXO24r/jMr9U+U553qQ/AzVdYZr2bt3OsN90eHxKQVRM84mtRcl1xYuBzG8NINSjMCcbDB6oiiyXcV+0jVCA+5E=
+	t=1716470234; cv=none; b=slcYJI1wGLQEp2DjfY9qY1EvOksb9BxatihAMfUJp6Tk2zhrmgYQTz97Ft9ByIbAtahfG1wmuzWrX2znGs8+STMFB98zN/7EIiAddNd8tQowJIqLFVBju7jdERMXoIu5ZnDi05IJtOUYt45CaIVGicjfEWUGNQfSOMN90BZ+res=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470694; c=relaxed/simple;
-	bh=9hIp0+VlXg/wlkW6hJzxAsexjBfYzP96CZ3pGYQIeGE=;
+	s=arc-20240116; t=1716470234; c=relaxed/simple;
+	bh=Xr5W1Y1vcss3vrjxFVUhmrsrP7AGCd8irn6EFmxERiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBMhjGkPBQxhQICEF5n7PPwMn0plYGfUvUV2oDmSYFSUp0PfoPX0T59G+sqIYjgIIAm3ukk+ZBp5V0we7cTIZnr5oFVk7OevpN4m61WkhrolAGfx73ja+cznqkaKc95ewA+76abVDym1Hl4ixJSioKqRANxjXacTmpf5/TMx758=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKDkYEME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0126EC32782;
-	Thu, 23 May 2024 13:24:53 +0000 (UTC)
+	 MIME-Version; b=OC3vmjd+Rtb4cuUXc5POdi0U305hSku8eGeuxWfShigFsL1JvfCIV14nxgRcHl2qSDyqWqxvrhlAGxlsQqI1emn18vv2IgwoWYCoTX7p+a3CVoKqbLWKnCu5+vOzw6/qX6u/bU6bV2t3X3xkaTwnlG/3R3u9sxvqfPU7eN28m2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1MSD8Gf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB4CC3277B;
+	Thu, 23 May 2024 13:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470694;
-	bh=9hIp0+VlXg/wlkW6hJzxAsexjBfYzP96CZ3pGYQIeGE=;
+	s=korg; t=1716470234;
+	bh=Xr5W1Y1vcss3vrjxFVUhmrsrP7AGCd8irn6EFmxERiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKDkYEMErzbtnlpU29ZSmf130nWdgYCJMHfnMIO2lkV4PFQz05BF0Pf+J+ycvQlzR
-	 LImyGYMPmi5z7+uQeLnA3lsrnDWhP0TJ0M2P7q0V0VvcvkVfEcJhSWnqkN/8Cjy1cl
-	 XQhrorjAw0LESX2mhzLTqBrw+JpKXk3YkHZ5gnGQ=
+	b=w1MSD8GfEDAAc37LCOwKJ9QtetUz8CBqCyq7gWHLxxZ+pSyg4hzD0uf2NGIQEObT0
+	 EVZMmxPBGvDioGfTKElditvfL8D7fIAxIf64TmN6gDJyPN3ClAV5W/3/5WYlL9vOtT
+	 KOj+zxYCE0tjCBnlxkQyFnFmEOwKZ8d/0RrIy1wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <sfrench@samba.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/102] ksmbd: auth: fix most kernel-doc warnings
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Jose Fernandez <josef@netflix.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Limonciello, Mario" <mario.limonciello@amd.com>
+Subject: [PATCH 6.9 04/25] drm/amd/display: Fix division by zero in setup_dsc_config
 Date: Thu, 23 May 2024 15:12:49 +0200
-Message-ID: <20240523130343.375559595@linuxfoundation.org>
+Message-ID: <20240523130330.552973276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+References: <20240523130330.386580714@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,103 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jose Fernandez <josef@netflix.com>
 
-[ Upstream commit b4068f1ef36d634ef44ece894738284d756d6627 ]
+commit 130afc8a886183a94cf6eab7d24f300014ff87ba upstream.
 
-Fix 12 of 17 kernel-doc warnings in auth.c:
+When slice_height is 0, the division by slice_height in the calculation
+of the number of slices will cause a division by zero driver crash. This
+leaves the kernel in a state that requires a reboot. This patch adds a
+check to avoid the division by zero.
 
-auth.c:221: warning: Function parameter or member 'conn' not described in 'ksmbd_auth_ntlmv2'
-auth.c:221: warning: Function parameter or member 'cryptkey' not described in 'ksmbd_auth_ntlmv2'
-auth.c:305: warning: Function parameter or member 'blob_len' not described in 'ksmbd_decode_ntlmssp_auth_blob'
-auth.c:305: warning: Function parameter or member 'conn' not described in 'ksmbd_decode_ntlmssp_auth_blob'
-auth.c:305: warning: Excess function parameter 'usr' description in 'ksmbd_decode_ntlmssp_auth_blob'
-auth.c:385: warning: Function parameter or member 'blob_len' not described in 'ksmbd_decode_ntlmssp_neg_blob'
-auth.c:385: warning: Function parameter or member 'conn' not described in 'ksmbd_decode_ntlmssp_neg_blob'
-auth.c:385: warning: Excess function parameter 'rsp' description in 'ksmbd_decode_ntlmssp_neg_blob'
-auth.c:385: warning: Excess function parameter 'sess' description in 'ksmbd_decode_ntlmssp_neg_blob'
-auth.c:413: warning: Function parameter or member 'conn' not described in 'ksmbd_build_ntlmssp_challenge_blob'
-auth.c:413: warning: Excess function parameter 'rsp' description in 'ksmbd_build_ntlmssp_challenge_blob'
-auth.c:413: warning: Excess function parameter 'sess' description in 'ksmbd_build_ntlmssp_challenge_blob'
+The stack trace below is for the 6.8.4 Kernel. I reproduced the issue on
+a Z16 Gen 2 Lenovo Thinkpad with a Apple Studio Display monitor
+connected via Thunderbolt. The amdgpu driver crashed with this exception
+when I rebooted the system with the monitor connected.
 
-The other 5 are only present when a W=1 kernel build is done or
-when scripts/kernel-doc is run with -Wall. They are:
+kernel: ? die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434 arch/x86/kernel/dumpstack.c:447)
+kernel: ? do_trap (arch/x86/kernel/traps.c:113 arch/x86/kernel/traps.c:154)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? do_error_trap (./arch/x86/include/asm/traps.h:58 arch/x86/kernel/traps.c:175)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? exc_divide_error (arch/x86/kernel/traps.c:194 (discriminator 2))
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? asm_exc_divide_error (./arch/x86/include/asm/idtentry.h:548)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: dc_dsc_compute_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1109) amdgpu
 
-auth.c:81: warning: No description found for return value of 'ksmbd_gen_sess_key'
-auth.c:385: warning: No description found for return value of 'ksmbd_decode_ntlmssp_neg_blob'
-auth.c:413: warning: No description found for return value of 'ksmbd_build_ntlmssp_challenge_blob'
-auth.c:577: warning: No description found for return value of 'ksmbd_sign_smb2_pdu'
-auth.c:628: warning: No description found for return value of 'ksmbd_sign_smb3_pdu'
+After applying this patch, the driver no longer crashes when the monitor
+is connected and the system is rebooted. I believe this is the same
+issue reported for 3113.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <sfrench@samba.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Jose Fernandez <josef@netflix.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3113
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Limonciello, Mario" <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/auth.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index 229a6527870d0..09b20039636e7 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -208,10 +208,12 @@ static int calc_ntlmv2_hash(struct ksmbd_conn *conn, struct ksmbd_session *sess,
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+@@ -1055,7 +1055,12 @@ static bool setup_dsc_config(
+ 	if (!is_dsc_possible)
+ 		goto done;
  
- /**
-  * ksmbd_auth_ntlmv2() - NTLMv2 authentication handler
-- * @sess:	session of connection
-+ * @conn:		connection
-+ * @sess:		session of connection
-  * @ntlmv2:		NTLMv2 challenge response
-  * @blen:		NTLMv2 blob length
-  * @domain_name:	domain name
-+ * @cryptkey:		session crypto key
-  *
-  * Return:	0 on success, error number on error
-  */
-@@ -294,7 +296,8 @@ int ksmbd_auth_ntlmv2(struct ksmbd_conn *conn, struct ksmbd_session *sess,
-  * ksmbd_decode_ntlmssp_auth_blob() - helper function to construct
-  * authenticate blob
-  * @authblob:	authenticate blob source pointer
-- * @usr:	user details
-+ * @blob_len:	length of the @authblob message
-+ * @conn:	connection
-  * @sess:	session of connection
-  *
-  * Return:	0 on success, error number on error
-@@ -376,8 +379,8 @@ int ksmbd_decode_ntlmssp_auth_blob(struct authenticate_message *authblob,
-  * ksmbd_decode_ntlmssp_neg_blob() - helper function to construct
-  * negotiate blob
-  * @negblob: negotiate blob source pointer
-- * @rsp:     response header pointer to be updated
-- * @sess:    session of connection
-+ * @blob_len:	length of the @authblob message
-+ * @conn:	connection
-  *
-  */
- int ksmbd_decode_ntlmssp_neg_blob(struct negotiate_message *negblob,
-@@ -403,8 +406,7 @@ int ksmbd_decode_ntlmssp_neg_blob(struct negotiate_message *negblob,
-  * ksmbd_build_ntlmssp_challenge_blob() - helper function to construct
-  * challenge blob
-  * @chgblob: challenge blob source pointer to initialize
-- * @rsp:     response header pointer to be updated
-- * @sess:    session of connection
-+ * @conn:	connection
-  *
-  */
- unsigned int
--- 
-2.43.0
-
+-	dsc_cfg->num_slices_v = pic_height/slice_height;
++	if (slice_height > 0) {
++		dsc_cfg->num_slices_v = pic_height / slice_height;
++	} else {
++		is_dsc_possible = false;
++		goto done;
++	}
+ 
+ 	if (target_bandwidth_kbps > 0) {
+ 		is_dsc_possible = decide_dsc_target_bpp_x16(
 
 
 
