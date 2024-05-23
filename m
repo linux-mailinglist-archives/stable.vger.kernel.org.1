@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2598CD40F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 149BD8CD482
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91690285F47
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C49BC280123
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E3114B075;
-	Thu, 23 May 2024 13:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3960014A4D9;
+	Thu, 23 May 2024 13:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajqT3+RX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLwiBm4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069BC14A632;
-	Thu, 23 May 2024 13:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DB614830E;
+	Thu, 23 May 2024 13:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470464; cv=none; b=tXSd2qubL9QAT56GYpJtXV9eKLIYZKfVMnnOV//xxTbGW44rKHLR1M8ufgapFRCApRX7kGU/PopOfkHyxMkb76+QdOSMFqrR/7K/qR99aR8MZzDa9ixL0lOHubtdGdkhhH6iyakfpwPSs2wpKvzbbvUgkWy6BBL8xAg/WqtAbDA=
+	t=1716470712; cv=none; b=khg/0lqvIUGrvhdWqSWb4WFnRlK+cMIZHdWNZ804i5LaAhbk9fgZnK75P/t4BInuqurhzjcE1gZGhA+V4zRER1+QMH3idz5iJ1Nxqmfumc4DgoWLg4zZ3TsB3R9lPI6/GAK8b6B4ZdzZFWBrWuQxXunaNoRdiF8ben5neIRWI5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470464; c=relaxed/simple;
-	bh=zWrLXU3r/XCIiXCbBygD3AZaHVRF5T2Z7C/bBS77CXc=;
+	s=arc-20240116; t=1716470712; c=relaxed/simple;
+	bh=F9dtzP/r3st81qFFtCURqOvKhIPyQtAcXLuSY03mWWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XenZrePaRIv3asAAOReniwjVWeJ/l9iKSLRH8QRcM9KHV2kTmbIdEYdHqY1YEWC32MRpr2dzrxR4GsArsEQbcYCSaTiixeuvFewpRSoE6R3SdZ5OnhH54FtBC7GCBuIH4KUCfJd+VtUXUoUXWHaYKuZ/VCq13EkGr3dD2/uEF+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajqT3+RX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8379EC3277B;
-	Thu, 23 May 2024 13:21:03 +0000 (UTC)
+	 MIME-Version; b=O91cnry1qmog4GuYHhRBufk1NpfFAwH85KTnc3SUxJfyTkyPgWX3psZHzLwtE58Cb/XwMNUobrrQiMhhG9r8654kkHKsXn9VMWoDlGNyRQQNWT8Iu0snqlszb+Y4vs1FfLwXI0iDqggWCpBBNTA3Wgdw9h5UEllGd/g5NN98OHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLwiBm4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72368C4AF08;
+	Thu, 23 May 2024 13:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470463;
-	bh=zWrLXU3r/XCIiXCbBygD3AZaHVRF5T2Z7C/bBS77CXc=;
+	s=korg; t=1716470711;
+	bh=F9dtzP/r3st81qFFtCURqOvKhIPyQtAcXLuSY03mWWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajqT3+RXvK3wscn1WCjZoaM2Y4/lRfJ3McPpyjWdAxnleyel3FHuwMpEPdDCNQnXl
-	 r6BKaNBGuGlxzQ9/8SGZjuhEMQEwB9Kidl4qWBfIrGV7ppilSdappylR3HWk//13tJ
-	 d2cFnRt3PUOIMdLkGRGmErlk6KU/6p3k0TPBfwkE=
+	b=FLwiBm4gSpowH7uZhUgY82iLlPtDfO11LK9x/zKCSMZGqPoZxDTNq36th1LV+mwnU
+	 FesMsoWE3pax5OHt+wWqQkNjqDSMQyFdeYiwycqijplhiV+ZJpmaveHcL5uLK0iMJp
+	 fBsedKva83f/tm1McpxO4nBpx+vDq/VM3YBysHB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.1 36/45] binder: fix max_thread type inconsistency
+	Paulo Alcantara <pc@manguebit.com>,
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 062/102] cifs: fixes for get_inode_info
 Date: Thu, 23 May 2024 15:13:27 +0200
-Message-ID: <20240523130333.858597025@linuxfoundation.org>
+Message-ID: <20240523130344.810106341@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Meetakshi Setiya <msetiya@microsoft.com>
 
-commit 42316941335644a98335f209daafa4c122f28983 upstream.
+[ Upstream commit fc20c523211a38b87fc850a959cb2149e4fd64b0 ]
 
-The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
-size_t to __u32 in order to avoid incompatibility issues between 32 and
-64-bit kernels. However, the internal types used to copy from user and
-store the value were never updated. Use u32 to fix the inconsistency.
+Fix potential memory leaks, add error checking, remove unnecessary
+initialisation of status_file_deleted and do not use cifs_iget() to get
+inode in reparse_info_to_fattr since fattrs may not be fully set.
 
-Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS declaration")
-Reported-by: Arve Hjønnevåg <arve@android.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240421173750.3117808-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ffceb7640cbf ("smb: client: do not defer close open handles to deleted files")
+Reported-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c          |    2 +-
- drivers/android/binder_internal.h |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/file.c  |  1 -
+ fs/smb/client/inode.c | 24 +++++++++++++-----------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5350,7 +5350,7 @@ static long binder_ioctl(struct file *fi
- 			goto err;
- 		break;
- 	case BINDER_SET_MAX_THREADS: {
--		int max_threads;
-+		u32 max_threads;
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 6dc2e8db9c8ed..7ea8c3cf70f6c 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -501,7 +501,6 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
+ 	cfile->uid = current_fsuid();
+ 	cfile->dentry = dget(dentry);
+ 	cfile->f_flags = file->f_flags;
+-	cfile->status_file_deleted = false;
+ 	cfile->invalidHandle = false;
+ 	cfile->deferred_close_scheduled = false;
+ 	cfile->tlink = cifs_get_tlink(tlink);
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 67bc1a1e54fde..67ad8eeaa7665 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -820,8 +820,10 @@ cifs_get_file_info(struct file *filp)
+ 	void *page = alloc_dentry_path();
+ 	const unsigned char *path;
  
- 		if (copy_from_user(&max_threads, ubuf,
- 				   sizeof(max_threads))) {
---- a/drivers/android/binder_internal.h
-+++ b/drivers/android/binder_internal.h
-@@ -420,7 +420,7 @@ struct binder_proc {
- 	struct list_head todo;
- 	struct binder_stats stats;
- 	struct list_head delivered_death;
--	int max_threads;
-+	u32 max_threads;
- 	int requested_threads;
- 	int requested_threads_started;
- 	int tmp_ref;
+-	if (!server->ops->query_file_info)
++	if (!server->ops->query_file_info) {
++		free_dentry_path(page);
+ 		return -ENOSYS;
++	}
+ 
+ 	xid = get_xid();
+ 	rc = server->ops->query_file_info(xid, tcon, cfile, &data);
+@@ -835,8 +837,8 @@ cifs_get_file_info(struct file *filp)
+ 		}
+ 		path = build_path_from_dentry(dentry, page);
+ 		if (IS_ERR(path)) {
+-			free_dentry_path(page);
+-			return PTR_ERR(path);
++			rc = PTR_ERR(path);
++			goto cgfi_exit;
+ 		}
+ 		cifs_open_info_to_fattr(&fattr, &data, inode->i_sb);
+ 		if (fattr.cf_flags & CIFS_FATTR_DELETE_PENDING)
+@@ -1009,7 +1011,6 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 	struct kvec rsp_iov, *iov = NULL;
+ 	int rsp_buftype = CIFS_NO_BUFFER;
+ 	u32 tag = data->reparse.tag;
+-	struct inode *inode = NULL;
+ 	int rc = 0;
+ 
+ 	if (!tag && server->ops->query_reparse_point) {
+@@ -1049,12 +1050,8 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 
+ 	if (tcon->posix_extensions)
+ 		smb311_posix_info_to_fattr(fattr, data, sb);
+-	else {
++	else
+ 		cifs_open_info_to_fattr(fattr, data, sb);
+-		inode = cifs_iget(sb, fattr);
+-		if (inode && fattr->cf_flags & CIFS_FATTR_DELETE_PENDING)
+-			cifs_mark_open_handles_for_deleted_file(inode, full_path);
+-	}
+ out:
+ 	fattr->cf_cifstag = data->reparse.tag;
+ 	free_rsp_buf(rsp_buftype, rsp_iov.iov_base);
+@@ -1109,9 +1106,9 @@ static int cifs_get_fattr(struct cifs_open_info_data *data,
+ 						   full_path, fattr);
+ 		} else {
+ 			cifs_open_info_to_fattr(fattr, data, sb);
+-			if (fattr->cf_flags & CIFS_FATTR_DELETE_PENDING)
+-				cifs_mark_open_handles_for_deleted_file(*inode, full_path);
+ 		}
++		if (!rc && fattr->cf_flags & CIFS_FATTR_DELETE_PENDING)
++			cifs_mark_open_handles_for_deleted_file(*inode, full_path);
+ 		break;
+ 	case -EREMOTE:
+ 		/* DFS link, no metadata available on this server */
+@@ -1340,6 +1337,8 @@ int smb311_posix_get_inode_info(struct inode **inode,
+ 		goto out;
+ 
+ 	rc = update_inode_info(sb, &fattr, inode);
++	if (!rc && fattr.cf_flags & CIFS_FATTR_DELETE_PENDING)
++		cifs_mark_open_handles_for_deleted_file(*inode, full_path);
+ out:
+ 	kfree(fattr.cf_symlink_target);
+ 	return rc;
+@@ -1503,6 +1502,9 @@ struct inode *cifs_root_iget(struct super_block *sb)
+ 		goto out;
+ 	}
+ 
++	if (!rc && fattr.cf_flags & CIFS_FATTR_DELETE_PENDING)
++		cifs_mark_open_handles_for_deleted_file(inode, path);
++
+ 	if (rc && tcon->pipe) {
+ 		cifs_dbg(FYI, "ipc connection - fake read inode\n");
+ 		spin_lock(&inode->i_lock);
+-- 
+2.43.0
+
 
 
 
