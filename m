@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-45782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B719D8CD3D9
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 642398CD49C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2047AB229F2
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCCB28627D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3372114A4F4;
-	Thu, 23 May 2024 13:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCA514A4E9;
+	Thu, 23 May 2024 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gw3h28Hr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI9PIMYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B921E497;
-	Thu, 23 May 2024 13:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691D814532F;
+	Thu, 23 May 2024 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470346; cv=none; b=j0fn3tpHrcmvVB2gqdA7CnjTLIa9WOUU5Xl0V30EDYo/ocUQkWmUvl8+2mbkWHyVuaLqry8T2OzlwvwlmhwwvvBsXYM/4ML2bR5Bg4qG0832y+0lo03iTZvzbLkWNuz/6MIq3i8Mp7eHlaxBWTlmWmWm2sJOOPBYCyVytybkCzA=
+	t=1716470775; cv=none; b=XtOOU6OYYrzI6Se2wjGI7r8RkHW9ytHUjS2GpauHhf8cc0OE6kFth+Ic6e8vrQiWZEQp+y28vht1K/tk4yq6c3oDS0zj/xdYDuqEFrPz3UJFigAc+zh0NePGSX/pF4qbGj8kKNZgRlCmp6vnTNsXbAX45VDnOsbG4e4uk/8uFLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470346; c=relaxed/simple;
-	bh=2BdwpiaPjOMPc2qA7EsE5fJHFe9Iq6vQ0Uhlggx8tNM=;
+	s=arc-20240116; t=1716470775; c=relaxed/simple;
+	bh=yr7mGFKKZmUqj4O8InPltfkbiWnfMg3BPXIXpOqKgV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKhMTvWGW576Froa9vBDcftabQbfynf0uRuzB1c9/HNphS8wBlO1S/Q0XYgPG0prHV4OSsTLNuD6vxuDsqpFAJcuL6c4b6ViFTRPr3iGt4g4nYn6vpuC/llRH9wDSNxI79NuY7mYA7UWbQEMjPncr53VV/W42QFUM/FiB6/g+7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gw3h28Hr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732D1C2BD10;
-	Thu, 23 May 2024 13:19:05 +0000 (UTC)
+	 MIME-Version; b=rpg1LwUQhMJDM8Q7mk8/MgZjSsCMkdCd5rOigDPRqi3ltY61mkDIN48GFUcTaaUq4O/u08qhC5kw9RZyIWOWZ964rll2deD9sh1t9IjVZs2mpKubjVuGquhFC9HaB5bM1G6uOUip2BpkKLO+A3FKG9a7Iy6wiAuQ9RGO8fYvaNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI9PIMYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7177C2BD10;
+	Thu, 23 May 2024 13:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470345;
-	bh=2BdwpiaPjOMPc2qA7EsE5fJHFe9Iq6vQ0Uhlggx8tNM=;
+	s=korg; t=1716470775;
+	bh=yr7mGFKKZmUqj4O8InPltfkbiWnfMg3BPXIXpOqKgV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gw3h28HrANMAaigEVNuEn02mpu74tH+o6TGWqFODOpnymxSqi4y0AXqBqUxIPa07f
-	 IfL2dP5IQdDovcCHGXl8ZmZpddBGBsqic3DubJYJt85EBEk3G4u/lIB5FKrYhvjGgN
-	 O1K9tfpI8TsnKuvUOQnB2tK05oHcYTKvaRLik5z0=
+	b=vI9PIMYdt9ziJegWrROvVYBeN9Ysutn1F6ra+uqukBA51hYTit5u86CPOoTY8UaK6
+	 ap80EX7L94yG2FUcuU/uN5Skj+qH+dli+u6cG7Pjcy3rab3Zqaef4oLESEeF7C0J6U
+	 fMMDBOuveIAXjv5JkE3tBYtqpsqrav6OlJ3VCRNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.15 21/23] KEYS: trusted: Do not use WARN when encode fails
-Date: Thu, 23 May 2024 15:13:17 +0200
-Message-ID: <20240523130328.750122646@linuxfoundation.org>
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/102] smb: client: set correct d_type for reparse DFS/DFSR and mount point
+Date: Thu, 23 May 2024 15:13:18 +0200
+Message-ID: <20240523130344.465297334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 050bf3c793a07f96bd1e2fd62e1447f731ed733b upstream.
+[ Upstream commit 8bd25b61c5a55bc769c6608e9ce95860759acdcb ]
 
-When asn1_encode_sequence() fails, WARN is not the correct solution.
+Set correct dirent->d_type for IO_REPARSE_TAG_DFS{,R} and
+IO_REPARSE_TAG_MOUNT_POINT reparse points.
 
-1. asn1_encode_sequence() is not an internal function (located
-   in lib/asn1_encode.c).
-2. Location is known, which makes the stack trace useless.
-3. Results a crash if panic_on_warn is set.
-
-It is also noteworthy that the use of WARN is undocumented, and it
-should be avoided unless there is a carefully considered rationale to
-use it.
-
-Replace WARN with pr_err, and print the return value instead, which is
-only useful piece of information.
-
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/trusted-keys/trusted_tpm2.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/reparse.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -84,8 +84,9 @@ static int tpm2_key_encode(struct truste
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
--	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
-+	if (IS_ERR(work1)) {
- 		ret = PTR_ERR(work1);
-+		pr_err("BUG: ASN.1 encoder failed with %d\n", ret);
- 		goto err;
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index 29a47f20643b1..a0ffbda907331 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -482,34 +482,35 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 		switch (le64_to_cpu(buf->InodeType)) {
+ 		case NFS_SPECFILE_CHR:
+ 			fattr->cf_mode |= S_IFCHR;
+-			fattr->cf_dtype = DT_CHR;
+ 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
+ 			break;
+ 		case NFS_SPECFILE_BLK:
+ 			fattr->cf_mode |= S_IFBLK;
+-			fattr->cf_dtype = DT_BLK;
+ 			fattr->cf_rdev = reparse_nfs_mkdev(buf);
+ 			break;
+ 		case NFS_SPECFILE_FIFO:
+ 			fattr->cf_mode |= S_IFIFO;
+-			fattr->cf_dtype = DT_FIFO;
+ 			break;
+ 		case NFS_SPECFILE_SOCK:
+ 			fattr->cf_mode |= S_IFSOCK;
+-			fattr->cf_dtype = DT_SOCK;
+ 			break;
+ 		case NFS_SPECFILE_LNK:
+ 			fattr->cf_mode |= S_IFLNK;
+-			fattr->cf_dtype = DT_LNK;
+ 			break;
+ 		default:
+ 			WARN_ON_ONCE(1);
+ 			return false;
+ 		}
+-		return true;
++		goto out;
  	}
  
+ 	switch (tag) {
++	case IO_REPARSE_TAG_DFS:
++	case IO_REPARSE_TAG_DFSR:
++	case IO_REPARSE_TAG_MOUNT_POINT:
++		/* See cifs_create_junction_fattr() */
++		fattr->cf_mode = S_IFDIR | 0711;
++		break;
+ 	case IO_REPARSE_TAG_LX_SYMLINK:
+ 	case IO_REPARSE_TAG_LX_FIFO:
+ 	case IO_REPARSE_TAG_AF_UNIX:
+@@ -521,10 +522,11 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 	case IO_REPARSE_TAG_SYMLINK:
+ 	case IO_REPARSE_TAG_NFS:
+ 		fattr->cf_mode |= S_IFLNK;
+-		fattr->cf_dtype = DT_LNK;
+ 		break;
+ 	default:
+ 		return false;
+ 	}
++out:
++	fattr->cf_dtype = S_DT(fattr->cf_mode);
+ 	return true;
+ }
+-- 
+2.43.0
+
 
 
 
