@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5078CD378
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CF28CD43C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0777B1C2184D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA841F240AD
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909CF14A60D;
-	Thu, 23 May 2024 13:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BA71E497;
+	Thu, 23 May 2024 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f39D6IRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvOiQO+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2041D555;
-	Thu, 23 May 2024 13:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D1714A634;
+	Thu, 23 May 2024 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470134; cv=none; b=CrAA4lfRGH7cc4XuieT+oQ4sLjpv62LOFV37GQd5ZgW0OhcEFlDO/Lde1IwmI86EZjp6027yhSvM+MMtM//OW798odkxSqg2gLC8dhcI+Fuq/k7x2XPRb5ni0SkU+Td5H1cDfaOozd0rSQKZfGLSd6WYCMC6R2SJsrnnf2CBDQE=
+	t=1716470567; cv=none; b=Vqrs7remERvu1iXT6IzXaDPXSMrn/EEzWWWY4i9Ij03Cl1uD6tlCHagK7ATC1UG7alDJf8zPmbSiLP6R0jBZEA2C/GEt1IS6ggC78M0BnmcifPWbTBJ9VrQvyTQDUy9F+Tdl1PxGHX6YYs0cU8WT50+kCugKBGZOJCv6nrH4t6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470134; c=relaxed/simple;
-	bh=DRZs6rje9UHn0c2to7AH2OUhiFf+MgxFPWxzdaCords=;
+	s=arc-20240116; t=1716470567; c=relaxed/simple;
+	bh=ztGmeoKAEGdDm5Ff2G4XSKEy4g/pDR7d2keGr9iRtfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWeoWkXJNSb/LZIKmAx/ab2ThS5VYn9gR7E5F1jKm3p5Px3hxSLFeOmAry6oAdClN3fElMk05XW//WBwfh/mBU2SPLwV3MhOgzpXkKh81aa4b3ECFH+POZQFM/hqI2z+1G60R+JvmghHvPpwRvuIHyywz6enTxx5vuFYEQ3IaTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f39D6IRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9196C32781;
-	Thu, 23 May 2024 13:15:33 +0000 (UTC)
+	 MIME-Version; b=jk7YBbeiRqMtHk023POIGDVejuZML3LL6po8Y37j3qb85xIGEZLneFJApUMK8Kws6Q0Wh4klhYEB1KLTIgzlX4jYiVqCi0r8V8T4is665ZIXkvzTMv+DVe2+8Y7V10HiFReVn6ZOl8/WsN8Nr6BSMUmOvjr1uBWY5mi7DRXP0Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvOiQO+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1184BC3277B;
+	Thu, 23 May 2024 13:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470134;
-	bh=DRZs6rje9UHn0c2to7AH2OUhiFf+MgxFPWxzdaCords=;
+	s=korg; t=1716470567;
+	bh=ztGmeoKAEGdDm5Ff2G4XSKEy4g/pDR7d2keGr9iRtfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f39D6IRD0Z/pIVQCUnjJ58Bncd7ZzPXl39oKdN4qqs6dD26BBSK4ApC9rvyPlUUcl
-	 sjou8imvi5MRfS8NipM1kwBPRP1K0Ss/C6pnlYIDSTEPlO+JyibobNCoVB0YVBNYdy
-	 nndAnmy/bgo5CMvhrvjbZXvLB5H5KmB0Znfx6xmk=
+	b=bvOiQO+iZPSnvOus9bdmW2qSQFcJuMb1kONHFCCYcb35TzN9sxzaa85SXn9H0W8k7
+	 V9auyo2mUkwoMCNhx+kHck//eIwcU44Gmra/2XNGli3VMJ0ttbwPr6835IkL0uE8ZZ
+	 zUhhcAdpoulPe/cKQ90g3ycRtw3HhasO/D6EOaKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 04/16] Revert "net: bcmgenet: use RGMII loopback for MAC reset"
+	Pierre Mariani <pierre.mariani@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 012/102] smb: client: Fix minor whitespace errors and warnings
 Date: Thu, 23 May 2024 15:12:37 +0200
-Message-ID: <20240523130325.911651523@linuxfoundation.org>
+Message-ID: <20240523130342.927260629@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.743454852@linuxfoundation.org>
-References: <20240523130325.743454852@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Pierre Mariani <pierre.mariani@gmail.com>
 
-commit 612eb1c3b9e504de24136c947ed7c07bc342f3aa upstream.
+[ Upstream commit 0108ce08aed195d200ffbad74c1948bbaefe6625 ]
 
-This reverts commit 3a55402c93877d291b0a612d25edb03d1b4b93ac.
+Fixes no-op checkpatch errors and warnings.
 
-This is not a good solution when connecting to an external switch
-that may not support the isolation of the TXC signal resulting in
-output driver contention on the pin.
-
-A different solution is necessary.
-
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[Adjusted to accommodate lack of commit 4f8d81b77e66]
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pierre Mariani <pierre.mariani@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c |    2 +
- drivers/net/ethernet/broadcom/genet/bcmmii.c   |   33 -------------------------
- 2 files changed, 2 insertions(+), 33 deletions(-)
+ fs/smb/client/connect.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2015,6 +2015,8 @@ static void reset_umac(struct bcmgenet_p
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index cb3bed8364e07..2466b28379ff8 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -501,6 +501,7 @@ static int reconnect_target_unlocked(struct TCP_Server_Info *server, struct dfs_
+ static int reconnect_dfs_server(struct TCP_Server_Info *server)
+ {
+ 	struct dfs_cache_tgt_iterator *target_hint = NULL;
++
+ 	DFS_CACHE_TGT_LIST(tl);
+ 	int num_targets = 0;
+ 	int rc = 0;
+@@ -763,6 +764,7 @@ cifs_read_from_socket(struct TCP_Server_Info *server, char *buf,
+ {
+ 	struct msghdr smb_msg = {};
+ 	struct kvec iov = {.iov_base = buf, .iov_len = to_read};
++
+ 	iov_iter_kvec(&smb_msg.msg_iter, ITER_DEST, &iov, 1, to_read);
  
- 	/* issue soft reset with (rg)mii loopback to ensure a stable rxclk */
- 	bcmgenet_umac_writel(priv, CMD_SW_RESET | CMD_LCL_LOOP_EN, UMAC_CMD);
-+	udelay(2);
-+	bcmgenet_umac_writel(priv, 0, UMAC_CMD);
+ 	return cifs_readv_from_socket(server, &smb_msg);
+@@ -1418,11 +1420,13 @@ cifs_match_ipaddr(struct sockaddr *srcaddr, struct sockaddr *rhs)
+ 	case AF_INET: {
+ 		struct sockaddr_in *saddr4 = (struct sockaddr_in *)srcaddr;
+ 		struct sockaddr_in *vaddr4 = (struct sockaddr_in *)rhs;
++
+ 		return (saddr4->sin_addr.s_addr == vaddr4->sin_addr.s_addr);
+ 	}
+ 	case AF_INET6: {
+ 		struct sockaddr_in6 *saddr6 = (struct sockaddr_in6 *)srcaddr;
+ 		struct sockaddr_in6 *vaddr6 = (struct sockaddr_in6 *)rhs;
++
+ 		return (ipv6_addr_equal(&saddr6->sin6_addr, &vaddr6->sin6_addr)
+ 			&& saddr6->sin6_scope_id == vaddr6->sin6_scope_id);
+ 	}
+@@ -2607,8 +2611,8 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 			rc = -EOPNOTSUPP;
+ 			goto out_fail;
+ 		} else {
+-			cifs_dbg(VFS, "Check vers= mount option. SMB3.11 "
+-				"disabled but required for POSIX extensions\n");
++			cifs_dbg(VFS,
++				"Check vers= mount option. SMB3.11 disabled but required for POSIX extensions\n");
+ 			rc = -EOPNOTSUPP;
+ 			goto out_fail;
+ 		}
+@@ -2751,7 +2755,6 @@ cifs_put_tlink(struct tcon_link *tlink)
+ 	if (!IS_ERR(tlink_tcon(tlink)))
+ 		cifs_put_tcon(tlink_tcon(tlink));
+ 	kfree(tlink);
+-	return;
  }
  
- static void bcmgenet_intr_disable(struct bcmgenet_priv *priv)
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -187,38 +187,8 @@ int bcmgenet_mii_config(struct net_devic
- 	const char *phy_name = NULL;
- 	u32 id_mode_dis = 0;
- 	u32 port_ctrl;
--	int bmcr = -1;
--	int ret;
- 	u32 reg;
+ static int
+@@ -2892,6 +2895,7 @@ static inline void
+ cifs_reclassify_socket4(struct socket *sock)
+ {
+ 	struct sock *sk = sock->sk;
++
+ 	BUG_ON(!sock_allow_reclassification(sk));
+ 	sock_lock_init_class_and_name(sk, "slock-AF_INET-CIFS",
+ 		&cifs_slock_key[0], "sk_lock-AF_INET-CIFS", &cifs_key[0]);
+@@ -2901,6 +2905,7 @@ static inline void
+ cifs_reclassify_socket6(struct socket *sock)
+ {
+ 	struct sock *sk = sock->sk;
++
+ 	BUG_ON(!sock_allow_reclassification(sk));
+ 	sock_lock_init_class_and_name(sk, "slock-AF_INET6-CIFS",
+ 		&cifs_slock_key[1], "sk_lock-AF_INET6-CIFS", &cifs_key[1]);
+@@ -2935,15 +2940,18 @@ static int
+ bind_socket(struct TCP_Server_Info *server)
+ {
+ 	int rc = 0;
++
+ 	if (server->srcaddr.ss_family != AF_UNSPEC) {
+ 		/* Bind to the specified local IP address */
+ 		struct socket *socket = server->ssocket;
++
+ 		rc = kernel_bind(socket,
+ 				 (struct sockaddr *) &server->srcaddr,
+ 				 sizeof(server->srcaddr));
+ 		if (rc < 0) {
+ 			struct sockaddr_in *saddr4;
+ 			struct sockaddr_in6 *saddr6;
++
+ 			saddr4 = (struct sockaddr_in *)&server->srcaddr;
+ 			saddr6 = (struct sockaddr_in6 *)&server->srcaddr;
+ 			if (saddr6->sin6_family == AF_INET6)
+@@ -3173,6 +3181,7 @@ void reset_cifs_unix_caps(unsigned int xid, struct cifs_tcon *tcon,
  
--	/* MAC clocking workaround during reset of umac state machines */
--	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
--	if (reg & CMD_SW_RESET) {
--		/* An MII PHY must be isolated to prevent TXC contention */
--		if (priv->phy_interface == PHY_INTERFACE_MODE_MII) {
--			ret = phy_read(phydev, MII_BMCR);
--			if (ret >= 0) {
--				bmcr = ret;
--				ret = phy_write(phydev, MII_BMCR,
--						bmcr | BMCR_ISOLATE);
--			}
--			if (ret) {
--				netdev_err(dev, "failed to isolate PHY\n");
--				return ret;
--			}
--		}
--		/* Switch MAC clocking to RGMII generated clock */
--		bcmgenet_sys_writel(priv, PORT_MODE_EXT_GPHY, SYS_PORT_CTRL);
--		/* Ensure 5 clks with Rx disabled
--		 * followed by 5 clks with Reset asserted
--		 */
--		udelay(4);
--		reg &= ~(CMD_SW_RESET | CMD_LCL_LOOP_EN);
--		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
--		/* Ensure 5 more clocks before Rx is enabled */
--		udelay(2);
+ 	if (!CIFSSMBQFSUnixInfo(xid, tcon)) {
+ 		__u64 cap = le64_to_cpu(tcon->fsUnixInfo.Capability);
++
+ 		cifs_dbg(FYI, "unix caps which server supports %lld\n", cap);
+ 		/*
+ 		 * check for reconnect case in which we do not
+@@ -3698,7 +3707,7 @@ CIFSTCon(const unsigned int xid, struct cifs_ses *ses,
+ 	smb_buffer_response = smb_buffer;
+ 
+ 	header_assemble(smb_buffer, SMB_COM_TREE_CONNECT_ANDX,
+-			NULL /*no tid */ , 4 /*wct */ );
++			NULL /*no tid */, 4 /*wct */);
+ 
+ 	smb_buffer->Mid = get_next_mid(ses->server);
+ 	smb_buffer->Uid = ses->Suid;
+@@ -3717,12 +3726,12 @@ CIFSTCon(const unsigned int xid, struct cifs_ses *ses,
+ 	if (ses->server->sign)
+ 		smb_buffer->Flags2 |= SMBFLG2_SECURITY_SIGNATURE;
+ 
+-	if (ses->capabilities & CAP_STATUS32) {
++	if (ses->capabilities & CAP_STATUS32)
+ 		smb_buffer->Flags2 |= SMBFLG2_ERR_STATUS;
 -	}
--
- 	priv->ext_phy = !priv->internal_phy &&
- 			(priv->phy_interface != PHY_INTERFACE_MODE_MOCA);
- 
-@@ -250,9 +220,6 @@ int bcmgenet_mii_config(struct net_devic
- 		phy_set_max_speed(phydev, SPEED_100);
- 		bcmgenet_sys_writel(priv,
- 				    PORT_MODE_EXT_EPHY, SYS_PORT_CTRL);
--		/* Restore the MII PHY after isolation */
--		if (bmcr >= 0)
--			phy_write(phydev, MII_BMCR, bmcr);
- 		break;
- 
- 	case PHY_INTERFACE_MODE_REVMII:
+-	if (ses->capabilities & CAP_DFS) {
++
++	if (ses->capabilities & CAP_DFS)
+ 		smb_buffer->Flags2 |= SMBFLG2_DFS;
+-	}
++
+ 	if (ses->capabilities & CAP_UNICODE) {
+ 		smb_buffer->Flags2 |= SMBFLG2_UNICODE;
+ 		length =
+-- 
+2.43.0
+
 
 
 
