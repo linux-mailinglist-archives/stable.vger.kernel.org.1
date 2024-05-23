@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067938CD35B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:14:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829068CD43B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F420B21D4A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:14:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5A121C2096C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8C814A4EA;
-	Thu, 23 May 2024 13:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D151D545;
+	Thu, 23 May 2024 13:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="196dr4zy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKlmmZpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C5713D2BD;
-	Thu, 23 May 2024 13:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ED41E497;
+	Thu, 23 May 2024 13:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470077; cv=none; b=oGB+wq5sM8oVVfFFYjNX8dzKJjRGQ4Of4TwBBa1dyO0AAamc4Rjl7hibubT8cSRvWH4sY4zIK/kIxoHII6V+31nacsWtGv/xC6zjJs59g/a6bm8IyW+HBuhEKTWCTk1ShmJsMEkqo20nrm1Qh2WGCRFqli9oFpvzYNVK8ajjmFo=
+	t=1716470564; cv=none; b=JUybSxc7gG/bAFgNaHJhtjzFTzBFl76HgQyqGD7yk0r5xp4hoEMdZDVDE8g604dP9w3cTTMpqrUKDj1v3FdbpGFN0vvvD2bQlAsM64neG78ieotL09Uq1mjHBfEzyGceMXBdhuziT7owU8y0FamSoHa/Oki8uNpfehFq4SoDNCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470077; c=relaxed/simple;
-	bh=0SPPw4gcX4pMcB88Yumg2Oe+qS/ly4twgg/UEtV4RtU=;
+	s=arc-20240116; t=1716470564; c=relaxed/simple;
+	bh=CiL0T8Kj8jfy8azRcYJw2HLntzoXoHhZmMoLPdz+BgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUjSJkHAqQfHAo1pDEcYELoOSD1PPdHUy5M44VZ4fp0ND1IF5XolEdeuiaRl9YPAQfPnuYUOW5zHHx2YBSGfOvlFsYwDJ7ECHjSXAPgnhJksffiiGL8y35DnxHhuaJNac0WpneojhHyPfTvrPGUweVru3YcnwrHJ0buXLESKnnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=196dr4zy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97867C2BD10;
-	Thu, 23 May 2024 13:14:35 +0000 (UTC)
+	 MIME-Version; b=G2sc/EOs8CHkdeJ7roLlkqtu2E4kh1+AoM0mrI4IYulNu++/XP0eOy3zZi1P6YknFuP+taObOyhU/1bJoaHEhW86Hofcej/ads+Gm+bp0KbbwhLwVcBEMK4kLl6Lrq/PTMVsRR6zuYzxy8d90dpE36VJE3twRkW3OAjtU5HnlQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKlmmZpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CF5C2BD10;
+	Thu, 23 May 2024 13:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470076;
-	bh=0SPPw4gcX4pMcB88Yumg2Oe+qS/ly4twgg/UEtV4RtU=;
+	s=korg; t=1716470564;
+	bh=CiL0T8Kj8jfy8azRcYJw2HLntzoXoHhZmMoLPdz+BgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=196dr4zyjNUqUIoRJPowvJY+hJ9YkpmV+dJnS1gvJu74CzHbChVv//hItSMYtSiKV
-	 SjRAY22an9sTMg2su9+9ClhMU05mh4eIBzCA314h/Q9n6OPpYcsV/GCLMsDxjJ5DcW
-	 SiLD6E03LPTcQOX8Ev2B5UITOgUPEC1nC2ux3DGo=
+	b=EKlmmZpP4/nfOrJGN2AmxqzAM2k6IrO3akyl5Op23+Pq1/j5CH7KTm9491N0fZ9mU
+	 PxM1OIOnkY29EK/ueaqoKOvnk27r0l+EOMEP+3Rux+8VURZeafGz8+NkLl0UrJE/Vj
+	 Tg5FyIO/+wqFXbRBVg4akykM3LKQ0FEizoIDTcwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"stable@vger.kernel.org, George Guo" <guodongtai@kylinos.cn>,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19 13/18] tracing: Refactor hist trigger action code
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 011/102] smb: client: introduce cifs_sfu_make_node()
 Date: Thu, 23 May 2024 15:12:36 +0200
-Message-ID: <20240523130326.242975906@linuxfoundation.org>
+Message-ID: <20240523130342.890217658@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,853 +62,288 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Zanussi <tom.zanussi@linux.intel.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 7d18a10c316783357fb1b2b649cfcf97c70a7bee upstream.
+[ Upstream commit b0348e459c836abdb0f4b967e006d15c77cf1c87 ]
 
-The hist trigger action code currently implements two essentially
-hard-coded pairs of 'actions' - onmax(), which tracks a variable and
-saves some event fields when a max is hit, and onmatch(), which is
-hard-coded to generate a synthetic event.
+Remove duplicate code and add new helper for creating special files in
+SFU (Services for UNIX) format that can be shared by SMB1+ code.
 
-These hardcoded pairs (track max/save fields and detect match/generate
-synthetic event) should really be decoupled into separate components
-that can then be arbitrarily combined.  The first component of each
-pair (track max/detect match) is called a 'handler' in the new code,
-while the second component (save fields/generate synthetic event) is
-called an 'action' in this scheme.
-
-This change refactors the action code to reflect this split by adding
-two handlers, HANDLER_ONMATCH and HANDLER_ONMAX, along with two
-actions, ACTION_SAVE and ACTION_TRACE.
-
-The new code combines them to produce the existing ONMATCH/TRACE and
-ONMAX/SAVE functionality, but doesn't implement the other combinations
-now possible.  Future patches will expand these to further useful
-cases, such as ONMAX/TRACE, as well as add additional handlers and
-actions such as ONCHANGE and SNAPSHOT.
-
-Also, add abbreviated documentation for handlers and actions to
-README.
-
-Link: http://lkml.kernel.org/r/98bfdd48c1b4ff29fc5766442f99f5bc3c34b76b.1550100284.git.tom.zanussi@linux.intel.com
-
-Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c |  407 ++++++++++++++++++++++-----------------
- 1 file changed, 238 insertions(+), 169 deletions(-)
+ fs/smb/client/cifsproto.h |  3 ++
+ fs/smb/client/smb1ops.c   | 80 ++++-------------------------------
+ fs/smb/client/smb2ops.c   | 89 ++++++++++++++++++---------------------
+ 3 files changed, 52 insertions(+), 120 deletions(-)
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -287,9 +287,9 @@ struct hist_trigger_data {
- 	struct field_var_hist		*field_var_hists[SYNTH_FIELDS_MAX];
- 	unsigned int			n_field_var_hists;
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 1bdad33580b57..9480cdb9588d5 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -673,6 +673,9 @@ char *extract_sharename(const char *unc);
+ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 			u32 plen, struct cifs_sb_info *cifs_sb,
+ 			bool unicode, struct cifs_open_info_data *data);
++int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
++		       struct dentry *dentry, struct cifs_tcon *tcon,
++		       const char *full_path, umode_t mode, dev_t dev);
  
--	struct field_var		*max_vars[SYNTH_FIELDS_MAX];
--	unsigned int			n_max_vars;
--	unsigned int			n_max_var_str;
-+	struct field_var		*save_vars[SYNTH_FIELDS_MAX];
-+	unsigned int			n_save_vars;
-+	unsigned int			n_save_var_str;
- };
- 
- static int synth_event_create(int argc, const char **argv);
-@@ -357,11 +357,25 @@ struct action_data;
- 
- typedef void (*action_fn_t) (struct hist_trigger_data *hist_data,
- 			     struct tracing_map_elt *elt, void *rec,
--			     struct ring_buffer_event *rbe,
-+			     struct ring_buffer_event *rbe, void *key,
- 			     struct action_data *data, u64 *var_ref_vals);
- 
-+enum handler_id {
-+	HANDLER_ONMATCH = 1,
-+	HANDLER_ONMAX,
-+};
-+
-+enum action_id {
-+	ACTION_SAVE = 1,
-+	ACTION_TRACE,
-+};
-+
- struct action_data {
-+	enum handler_id		handler;
-+	enum action_id		action;
-+	char			*action_name;
- 	action_fn_t		fn;
-+
- 	unsigned int		n_params;
- 	char			*params[SYNTH_FIELDS_MAX];
- 
-@@ -370,13 +384,11 @@ struct action_data {
- 			unsigned int		var_ref_idx;
- 			char			*match_event;
- 			char			*match_event_system;
--			char			*synth_event_name;
- 			struct synth_event	*synth_event;
- 		} onmatch;
- 
- 		struct {
- 			char			*var_str;
--			char			*fn_name;
- 			unsigned int		max_var_ref_idx;
- 			struct hist_field	*max_var;
- 			struct hist_field	*var;
-@@ -1065,7 +1077,7 @@ static struct synth_event *alloc_synth_e
- 
- static void action_trace(struct hist_trigger_data *hist_data,
- 			 struct tracing_map_elt *elt, void *rec,
--			 struct ring_buffer_event *rbe,
-+			 struct ring_buffer_event *rbe, void *key,
- 			 struct action_data *data, u64 *var_ref_vals)
+ #ifdef CONFIG_CIFS_DFS_UPCALL
+ static inline int get_dfs_path(const unsigned int xid, struct cifs_ses *ses,
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index 1aebcf95c1951..212ec6f66ec65 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -1041,15 +1041,7 @@ cifs_make_node(unsigned int xid, struct inode *inode,
  {
- 	struct synth_event *event = data->onmatch.synth_event;
-@@ -1635,7 +1647,7 @@ find_match_var(struct hist_trigger_data
- 	for (i = 0; i < hist_data->n_actions; i++) {
- 		struct action_data *data = hist_data->actions[i];
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct inode *newinode = NULL;
+-	int rc = -EPERM;
+-	struct cifs_open_info_data buf = {};
+-	struct cifs_io_parms io_parms;
+-	__u32 oplock = 0;
+-	struct cifs_fid fid;
+-	struct cifs_open_parms oparms;
+-	unsigned int bytes_written;
+-	struct win_dev *pdev;
+-	struct kvec iov[2];
++	int rc;
  
--		if (data->fn == action_trace) {
-+		if (data->handler == HANDLER_ONMATCH) {
- 			char *system = data->onmatch.match_event_system;
- 			char *event_name = data->onmatch.match_event;
- 
-@@ -2073,7 +2085,7 @@ static int hist_trigger_elt_data_alloc(s
- 		}
+ 	if (tcon->unix_ext) {
+ 		/*
+@@ -1083,74 +1075,18 @@ cifs_make_node(unsigned int xid, struct inode *inode,
+ 			d_instantiate(dentry, newinode);
+ 		return rc;
  	}
- 
--	n_str = hist_data->n_field_var_str + hist_data->n_max_var_str;
-+	n_str = hist_data->n_field_var_str + hist_data->n_save_var_str;
- 
- 	size = STR_VAR_LEN_MAX;
- 
-@@ -3115,7 +3127,7 @@ create_field_var_hist(struct hist_trigge
- 	int ret;
- 
- 	if (target_hist_data->n_field_var_hists >= SYNTH_FIELDS_MAX) {
--		hist_err_event("onmatch: Too many field variables defined: ",
-+		hist_err_event("trace action: Too many field variables defined: ",
- 			       subsys_name, event_name, field_name);
- 		return ERR_PTR(-EINVAL);
- 	}
-@@ -3123,7 +3135,7 @@ create_field_var_hist(struct hist_trigge
- 	file = event_file(tr, subsys_name, event_name);
- 
- 	if (IS_ERR(file)) {
--		hist_err_event("onmatch: Event file not found: ",
-+		hist_err_event("trace action: Event file not found: ",
- 			       subsys_name, event_name, field_name);
- 		ret = PTR_ERR(file);
- 		return ERR_PTR(ret);
-@@ -3137,7 +3149,7 @@ create_field_var_hist(struct hist_trigge
+-
+ 	/*
+-	 * SMB1 SFU emulation: should work with all servers, but only
+-	 * support block and char device (no socket & fifo)
++	 * Check if mounted with mount parm 'sfu' mount parm.
++	 * SFU emulation should work with all servers, but only
++	 * supports block and char device (no socket & fifo),
++	 * and was used by default in earlier versions of Windows
  	 */
- 	hist_data = find_compatible_hist(target_hist_data, file);
- 	if (!hist_data) {
--		hist_err_event("onmatch: Matching event histogram not found: ",
-+		hist_err_event("trace action: Matching event histogram not found: ",
- 			       subsys_name, event_name, field_name);
- 		return ERR_PTR(-EINVAL);
- 	}
-@@ -3199,7 +3211,7 @@ create_field_var_hist(struct hist_trigge
- 		kfree(cmd);
- 		kfree(var_hist->cmd);
- 		kfree(var_hist);
--		hist_err_event("onmatch: Couldn't create histogram for field: ",
-+		hist_err_event("trace action: Couldn't create histogram for field: ",
- 			       subsys_name, event_name, field_name);
- 		return ERR_PTR(ret);
- 	}
-@@ -3212,7 +3224,7 @@ create_field_var_hist(struct hist_trigge
- 	if (IS_ERR_OR_NULL(event_var)) {
- 		kfree(var_hist->cmd);
- 		kfree(var_hist);
--		hist_err_event("onmatch: Couldn't find synthetic variable: ",
-+		hist_err_event("trace action: Couldn't find synthetic variable: ",
- 			       subsys_name, event_name, field_name);
- 		return ERR_PTR(-EINVAL);
- 	}
-@@ -3295,8 +3307,8 @@ static void update_max_vars(struct hist_
- 			    struct ring_buffer_event *rbe,
- 			    void *rec)
- {
--	__update_field_vars(elt, rbe, rec, hist_data->max_vars,
--			    hist_data->n_max_vars, hist_data->n_field_var_str);
-+	__update_field_vars(elt, rbe, rec, hist_data->save_vars,
-+			    hist_data->n_save_vars, hist_data->n_field_var_str);
- }
- 
- static struct hist_field *create_var(struct hist_trigger_data *hist_data,
-@@ -3440,9 +3452,9 @@ static void onmax_print(struct seq_file
- 
- 	seq_printf(m, "\n\tmax: %10llu", tracing_map_read_var(elt, max_idx));
- 
--	for (i = 0; i < hist_data->n_max_vars; i++) {
--		struct hist_field *save_val = hist_data->max_vars[i]->val;
--		struct hist_field *save_var = hist_data->max_vars[i]->var;
-+	for (i = 0; i < hist_data->n_save_vars; i++) {
-+		struct hist_field *save_val = hist_data->save_vars[i]->val;
-+		struct hist_field *save_var = hist_data->save_vars[i]->var;
- 		u64 val;
- 
- 		save_var_idx = save_var->var.idx;
-@@ -3459,7 +3471,7 @@ static void onmax_print(struct seq_file
- 
- static void onmax_save(struct hist_trigger_data *hist_data,
- 		       struct tracing_map_elt *elt, void *rec,
--		       struct ring_buffer_event *rbe,
-+		       struct ring_buffer_event *rbe, void *key,
- 		       struct action_data *data, u64 *var_ref_vals)
- {
- 	unsigned int max_idx = data->onmax.max_var->var.idx;
-@@ -3486,7 +3498,7 @@ static void onmax_destroy(struct action_
- 	destroy_hist_field(data->onmax.var, 0);
- 
- 	kfree(data->onmax.var_str);
--	kfree(data->onmax.fn_name);
-+	kfree(data->action_name);
- 
- 	for (i = 0; i < data->n_params; i++)
- 		kfree(data->params[i]);
-@@ -3494,15 +3506,16 @@ static void onmax_destroy(struct action_
- 	kfree(data);
- }
- 
-+static int action_create(struct hist_trigger_data *hist_data,
-+			 struct action_data *data);
-+
- static int onmax_create(struct hist_trigger_data *hist_data,
- 			struct action_data *data)
- {
-+	struct hist_field *var_field, *ref_field, *max_var = NULL;
- 	struct trace_event_file *file = hist_data->event_file;
--	struct hist_field *var_field, *ref_field, *max_var;
- 	unsigned int var_ref_idx = hist_data->n_var_refs;
--	struct field_var *field_var;
--	char *onmax_var_str, *param;
--	unsigned int i;
-+	char *onmax_var_str;
- 	int ret = 0;
- 
- 	onmax_var_str = data->onmax.var_str;
-@@ -3524,8 +3537,8 @@ static int onmax_create(struct hist_trig
- 
- 	data->onmax.var = ref_field;
- 
--	data->fn = onmax_save;
- 	data->onmax.max_var_ref_idx = var_ref_idx;
-+
- 	max_var = create_var(hist_data, file, "max", sizeof(u64), "u64");
- 	if (IS_ERR(max_var)) {
- 		hist_err("onmax: Couldn't create onmax variable: ", "max");
-@@ -3534,27 +3547,7 @@ static int onmax_create(struct hist_trig
- 	}
- 	data->onmax.max_var = max_var;
- 
--	for (i = 0; i < data->n_params; i++) {
--		param = kstrdup(data->params[i], GFP_KERNEL);
--		if (!param) {
--			ret = -ENOMEM;
--			goto out;
--		}
+ 	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL))
+-		return rc;
 -
--		field_var = create_target_field_var(hist_data, NULL, NULL, param);
--		if (IS_ERR(field_var)) {
--			hist_err("onmax: Couldn't create field variable: ", param);
--			ret = PTR_ERR(field_var);
--			kfree(param);
--			goto out;
--		}
+-	if (!S_ISCHR(mode) && !S_ISBLK(mode))
+-		return rc;
 -
--		hist_data->max_vars[hist_data->n_max_vars++] = field_var;
--		if (field_var->val->flags & HIST_FIELD_FL_STRING)
--			hist_data->n_max_var_str++;
+-	cifs_dbg(FYI, "sfu compat create special file\n");
 -
--		kfree(param);
+-	oparms = (struct cifs_open_parms) {
+-		.tcon = tcon,
+-		.cifs_sb = cifs_sb,
+-		.desired_access = GENERIC_WRITE,
+-		.create_options = cifs_create_options(cifs_sb, CREATE_NOT_DIR |
+-						      CREATE_OPTION_SPECIAL),
+-		.disposition = FILE_CREATE,
+-		.path = full_path,
+-		.fid = &fid,
+-	};
+-
+-	if (tcon->ses->server->oplocks)
+-		oplock = REQ_OPLOCK;
+-	else
+-		oplock = 0;
+-	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, &buf);
+-	if (rc)
+-		return rc;
+-
+-	/*
+-	 * BB Do not bother to decode buf since no local inode yet to put
+-	 * timestamps in, but we can reuse it safely.
+-	 */
+-
+-	pdev = (struct win_dev *)&buf.fi;
+-	io_parms.pid = current->tgid;
+-	io_parms.tcon = tcon;
+-	io_parms.offset = 0;
+-	io_parms.length = sizeof(struct win_dev);
+-	iov[1].iov_base = &buf.fi;
+-	iov[1].iov_len = sizeof(struct win_dev);
+-	if (S_ISCHR(mode)) {
+-		memcpy(pdev->type, "IntxCHR", 8);
+-		pdev->major = cpu_to_le64(MAJOR(dev));
+-		pdev->minor = cpu_to_le64(MINOR(dev));
+-		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
+-							&bytes_written, iov, 1);
+-	} else if (S_ISBLK(mode)) {
+-		memcpy(pdev->type, "IntxBLK", 8);
+-		pdev->major = cpu_to_le64(MAJOR(dev));
+-		pdev->minor = cpu_to_le64(MINOR(dev));
+-		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
+-							&bytes_written, iov, 1);
 -	}
-+	ret = action_create(hist_data, data);
-  out:
- 	return ret;
- }
-@@ -3565,11 +3558,14 @@ static int parse_action_params(char *par
- 	int ret = 0;
- 
- 	while (params) {
--		if (data->n_params >= SYNTH_FIELDS_MAX)
-+		if (data->n_params >= SYNTH_FIELDS_MAX) {
-+			hist_err("Too many action params", "");
- 			goto out;
-+		}
- 
- 		param = strsep(&params, ",");
- 		if (!param) {
-+			hist_err("No action param found", "");
- 			ret = -EINVAL;
- 			goto out;
- 		}
-@@ -3593,10 +3589,71 @@ static int parse_action_params(char *par
- 	return ret;
+-	tcon->ses->server->ops->close(xid, tcon, &fid);
+-	d_drop(dentry);
+-
+-	/* FIXME: add code here to set EAs */
+-
+-	cifs_free_open_info(&buf);
+-	return rc;
++		return -EPERM;
++	return cifs_sfu_make_node(xid, inode, dentry, tcon,
++				  full_path, mode, dev);
  }
  
--static struct action_data *onmax_parse(char *str)
-+static int action_parse(char *str, struct action_data *data,
-+			enum handler_id handler)
+-
+-
+ struct smb_version_operations smb1_operations = {
+ 	.send_cancel = send_nt_cancel,
+ 	.compare_fids = cifs_compare_fids,
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 04fea874d0a33..2b892a736e5f9 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -5105,41 +5105,24 @@ static int smb2_next_header(struct TCP_Server_Info *server, char *buf,
+ 	return 0;
+ }
+ 
+-static int
+-smb2_make_node(unsigned int xid, struct inode *inode,
+-	       struct dentry *dentry, struct cifs_tcon *tcon,
+-	       const char *full_path, umode_t mode, dev_t dev)
++int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
++		       struct dentry *dentry, struct cifs_tcon *tcon,
++		       const char *full_path, umode_t mode, dev_t dev)
+ {
+-	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+-	int rc = -EPERM;
+ 	struct cifs_open_info_data buf = {};
+-	struct cifs_io_parms io_parms = {0};
+-	__u32 oplock = 0;
+-	struct cifs_fid fid;
++	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct cifs_open_parms oparms;
++	struct cifs_io_parms io_parms = {};
++	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
++	struct cifs_fid fid;
+ 	unsigned int bytes_written;
+ 	struct win_dev *pdev;
+ 	struct kvec iov[2];
+-
+-	/*
+-	 * Check if mounted with mount parm 'sfu' mount parm.
+-	 * SFU emulation should work with all servers, but only
+-	 * supports block and char device (no socket & fifo),
+-	 * and was used by default in earlier versions of Windows
+-	 */
+-	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL))
+-		return rc;
+-
+-	/*
+-	 * TODO: Add ability to create instead via reparse point. Windows (e.g.
+-	 * their current NFS server) uses this approach to expose special files
+-	 * over SMB2/SMB3 and Samba will do this with SMB3.1.1 POSIX Extensions
+-	 */
++	__u32 oplock = server->oplocks ? REQ_OPLOCK : 0;
++	int rc;
+ 
+ 	if (!S_ISCHR(mode) && !S_ISBLK(mode) && !S_ISFIFO(mode))
+-		return rc;
+-
+-	cifs_dbg(FYI, "sfu compat create special file\n");
++		return -EPERM;
+ 
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+@@ -5152,11 +5135,7 @@ smb2_make_node(unsigned int xid, struct inode *inode,
+ 		.fid = &fid,
+ 	};
+ 
+-	if (tcon->ses->server->oplocks)
+-		oplock = REQ_OPLOCK;
+-	else
+-		oplock = 0;
+-	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, &buf);
++	rc = server->ops->open(xid, &oparms, &oplock, &buf);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -5164,42 +5143,56 @@ smb2_make_node(unsigned int xid, struct inode *inode,
+ 	 * BB Do not bother to decode buf since no local inode yet to put
+ 	 * timestamps in, but we can reuse it safely.
+ 	 */
+-
+ 	pdev = (struct win_dev *)&buf.fi;
+ 	io_parms.pid = current->tgid;
+ 	io_parms.tcon = tcon;
+-	io_parms.offset = 0;
+-	io_parms.length = sizeof(struct win_dev);
+-	iov[1].iov_base = &buf.fi;
+-	iov[1].iov_len = sizeof(struct win_dev);
++	io_parms.length = sizeof(*pdev);
++	iov[1].iov_base = pdev;
++	iov[1].iov_len = sizeof(*pdev);
+ 	if (S_ISCHR(mode)) {
+ 		memcpy(pdev->type, "IntxCHR", 8);
+ 		pdev->major = cpu_to_le64(MAJOR(dev));
+ 		pdev->minor = cpu_to_le64(MINOR(dev));
+-		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
+-							&bytes_written, iov, 1);
+ 	} else if (S_ISBLK(mode)) {
+ 		memcpy(pdev->type, "IntxBLK", 8);
+ 		pdev->major = cpu_to_le64(MAJOR(dev));
+ 		pdev->minor = cpu_to_le64(MINOR(dev));
+-		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
+-							&bytes_written, iov, 1);
+ 	} else if (S_ISFIFO(mode)) {
+ 		memcpy(pdev->type, "LnxFIFO", 8);
+-		pdev->major = 0;
+-		pdev->minor = 0;
+-		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
+-							&bytes_written, iov, 1);
+ 	}
+-	tcon->ses->server->ops->close(xid, tcon, &fid);
+-	d_drop(dentry);
+ 
++	rc = server->ops->sync_write(xid, &fid, &io_parms,
++				     &bytes_written, iov, 1);
++	server->ops->close(xid, tcon, &fid);
++	d_drop(dentry);
+ 	/* FIXME: add code here to set EAs */
+-
+ 	cifs_free_open_info(&buf);
+ 	return rc;
+ }
+ 
++static int smb2_make_node(unsigned int xid, struct inode *inode,
++			  struct dentry *dentry, struct cifs_tcon *tcon,
++			  const char *full_path, umode_t mode, dev_t dev)
 +{
-+	char *action_name;
-+	int ret = 0;
++	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
 +
-+	strsep(&str, ".");
-+	if (!str) {
-+		hist_err("action parsing: No action found", "");
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	action_name = strsep(&str, "(");
-+	if (!action_name || !str) {
-+		hist_err("action parsing: No action found", "");
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	if (str_has_prefix(action_name, "save")) {
-+		char *params = strsep(&str, ")");
-+
-+		if (!params) {
-+			hist_err("action parsing: No params found for %s", "save");
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		ret = parse_action_params(params, data);
-+		if (ret)
-+			goto out;
-+
-+		if (handler == HANDLER_ONMAX)
-+			data->fn = onmax_save;
-+
-+		data->action = ACTION_SAVE;
-+	} else {
-+		char *params = strsep(&str, ")");
-+
-+		if (params) {
-+			ret = parse_action_params(params, data);
-+			if (ret)
-+				goto out;
-+		}
-+
-+		data->fn = action_trace;
-+		data->action = ACTION_TRACE;
-+	}
-+
-+	data->action_name = kstrdup(action_name, GFP_KERNEL);
-+	if (!data->action_name) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	data->handler = handler;
-+ out:
-+	return ret;
++	/*
++	 * Check if mounted with mount parm 'sfu' mount parm.
++	 * SFU emulation should work with all servers, but only
++	 * supports block and char device (no socket & fifo),
++	 * and was used by default in earlier versions of Windows
++	 */
++	if (!(cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL))
++		return -EPERM;
++	/*
++	 * TODO: Add ability to create instead via reparse point. Windows (e.g.
++	 * their current NFS server) uses this approach to expose special files
++	 * over SMB2/SMB3 and Samba will do this with SMB3.1.1 POSIX Extensions
++	 */
++	return cifs_sfu_make_node(xid, inode, dentry, tcon,
++				  full_path, mode, dev);
 +}
 +
-+static struct action_data *onmax_parse(char *str, enum handler_id handler)
- {
--	char *onmax_fn_name, *onmax_var_str;
- 	struct action_data *data;
-+	char *onmax_var_str;
- 	int ret = -EINVAL;
- 
- 	data = kzalloc(sizeof(*data), GFP_KERNEL);
-@@ -3615,33 +3672,9 @@ static struct action_data *onmax_parse(c
- 		goto free;
- 	}
- 
--	strsep(&str, ".");
--	if (!str)
--		goto free;
--
--	onmax_fn_name = strsep(&str, "(");
--	if (!onmax_fn_name || !str)
--		goto free;
--
--	if (str_has_prefix(onmax_fn_name, "save")) {
--		char *params = strsep(&str, ")");
--
--		if (!params) {
--			ret = -EINVAL;
--			goto free;
--		}
--
--		ret = parse_action_params(params, data);
--		if (ret)
--			goto free;
--	} else
--		goto free;
--
--	data->onmax.fn_name = kstrdup(onmax_fn_name, GFP_KERNEL);
--	if (!data->onmax.fn_name) {
--		ret = -ENOMEM;
-+	ret = action_parse(str, data, handler);
-+	if (ret)
- 		goto free;
--	}
-  out:
- 	return data;
-  free:
-@@ -3658,7 +3691,7 @@ static void onmatch_destroy(struct actio
- 
- 	kfree(data->onmatch.match_event);
- 	kfree(data->onmatch.match_event_system);
--	kfree(data->onmatch.synth_event_name);
-+	kfree(data->action_name);
- 
- 	for (i = 0; i < data->n_params; i++)
- 		kfree(data->params[i]);
-@@ -3716,8 +3749,9 @@ static int check_synth_field(struct synt
- }
- 
- static struct hist_field *
--onmatch_find_var(struct hist_trigger_data *hist_data, struct action_data *data,
--		 char *system, char *event, char *var)
-+trace_action_find_var(struct hist_trigger_data *hist_data,
-+		      struct action_data *data,
-+		      char *system, char *event, char *var)
- {
- 	struct hist_field *hist_field;
- 
-@@ -3725,7 +3759,7 @@ onmatch_find_var(struct hist_trigger_dat
- 
- 	hist_field = find_target_event_var(hist_data, system, event, var);
- 	if (!hist_field) {
--		if (!system) {
-+		if (!system && data->handler == HANDLER_ONMATCH) {
- 			system = data->onmatch.match_event_system;
- 			event = data->onmatch.match_event;
- 		}
-@@ -3734,15 +3768,15 @@ onmatch_find_var(struct hist_trigger_dat
- 	}
- 
- 	if (!hist_field)
--		hist_err_event("onmatch: Couldn't find onmatch param: $", system, event, var);
-+		hist_err_event("trace action: Couldn't find param: $", system, event, var);
- 
- 	return hist_field;
- }
- 
- static struct hist_field *
--onmatch_create_field_var(struct hist_trigger_data *hist_data,
--			 struct action_data *data, char *system,
--			 char *event, char *var)
-+trace_action_create_field_var(struct hist_trigger_data *hist_data,
-+			      struct action_data *data, char *system,
-+			      char *event, char *var)
- {
- 	struct hist_field *hist_field = NULL;
- 	struct field_var *field_var;
-@@ -3765,7 +3799,7 @@ onmatch_create_field_var(struct hist_tri
- 		 * looking for fields on the onmatch(system.event.xxx)
- 		 * event.
- 		 */
--		if (!system) {
-+		if (!system && data->handler == HANDLER_ONMATCH) {
- 			system = data->onmatch.match_event_system;
- 			event = data->onmatch.match_event;
- 		}
-@@ -3791,9 +3825,8 @@ onmatch_create_field_var(struct hist_tri
- 	goto out;
- }
- 
--static int onmatch_create(struct hist_trigger_data *hist_data,
--			  struct trace_event_file *file,
--			  struct action_data *data)
-+static int trace_action_create(struct hist_trigger_data *hist_data,
-+			       struct action_data *data)
- {
- 	char *event_name, *param, *system = NULL;
- 	struct hist_field *hist_field, *var_ref;
-@@ -3804,11 +3837,12 @@ static int onmatch_create(struct hist_tr
- 
- 	lockdep_assert_held(&event_mutex);
- 
--	event = find_synth_event(data->onmatch.synth_event_name);
-+	event = find_synth_event(data->action_name);
- 	if (!event) {
--		hist_err("onmatch: Couldn't find synthetic event: ", data->onmatch.synth_event_name);
-+		hist_err("trace action: Couldn't find synthetic event: ", data->action_name);
- 		return -EINVAL;
- 	}
-+
- 	event->ref++;
- 
- 	var_ref_idx = hist_data->n_var_refs;
-@@ -3836,13 +3870,15 @@ static int onmatch_create(struct hist_tr
- 		}
- 
- 		if (param[0] == '$')
--			hist_field = onmatch_find_var(hist_data, data, system,
--						      event_name, param);
-+			hist_field = trace_action_find_var(hist_data, data,
-+							   system, event_name,
-+							   param);
- 		else
--			hist_field = onmatch_create_field_var(hist_data, data,
--							      system,
--							      event_name,
--							      param);
-+			hist_field = trace_action_create_field_var(hist_data,
-+								   data,
-+								   system,
-+								   event_name,
-+								   param);
- 
- 		if (!hist_field) {
- 			kfree(p);
-@@ -3864,7 +3900,7 @@ static int onmatch_create(struct hist_tr
- 			continue;
- 		}
- 
--		hist_err_event("onmatch: Param type doesn't match synthetic event field type: ",
-+		hist_err_event("trace action: Param type doesn't match synthetic event field type: ",
- 			       system, event_name, param);
- 		kfree(p);
- 		ret = -EINVAL;
-@@ -3872,12 +3908,11 @@ static int onmatch_create(struct hist_tr
- 	}
- 
- 	if (field_pos != event->n_fields) {
--		hist_err("onmatch: Param count doesn't match synthetic event field count: ", event->name);
-+		hist_err("trace action: Param count doesn't match synthetic event field count: ", event->name);
- 		ret = -EINVAL;
- 		goto err;
- 	}
- 
--	data->fn = action_trace;
- 	data->onmatch.synth_event = event;
- 	data->onmatch.var_ref_idx = var_ref_idx;
-  out:
-@@ -3888,10 +3923,58 @@ static int onmatch_create(struct hist_tr
- 	goto out;
- }
- 
-+static int action_create(struct hist_trigger_data *hist_data,
-+			 struct action_data *data)
-+{
-+	struct field_var *field_var;
-+	unsigned int i;
-+	char *param;
-+	int ret = 0;
-+
-+	if (data->action == ACTION_TRACE)
-+		return trace_action_create(hist_data, data);
-+
-+	if (data->action == ACTION_SAVE) {
-+		if (hist_data->n_save_vars) {
-+			ret = -EEXIST;
-+			hist_err("save action: Can't have more than one save() action per hist", "");
-+			goto out;
-+		}
-+
-+		for (i = 0; i < data->n_params; i++) {
-+			param = kstrdup(data->params[i], GFP_KERNEL);
-+			if (!param) {
-+				ret = -ENOMEM;
-+				goto out;
-+			}
-+
-+			field_var = create_target_field_var(hist_data, NULL, NULL, param);
-+			if (IS_ERR(field_var)) {
-+				hist_err("save action: Couldn't create field variable: ", param);
-+				ret = PTR_ERR(field_var);
-+				kfree(param);
-+				goto out;
-+			}
-+
-+			hist_data->save_vars[hist_data->n_save_vars++] = field_var;
-+			if (field_var->val->flags & HIST_FIELD_FL_STRING)
-+				hist_data->n_save_var_str++;
-+			kfree(param);
-+		}
-+	}
-+ out:
-+	return ret;
-+}
-+
-+static int onmatch_create(struct hist_trigger_data *hist_data,
-+			  struct action_data *data)
-+{
-+	return action_create(hist_data, data);
-+}
-+
- static struct action_data *onmatch_parse(struct trace_array *tr, char *str)
- {
- 	char *match_event, *match_event_system;
--	char *synth_event_name, *params;
- 	struct action_data *data;
- 	int ret = -EINVAL;
- 
-@@ -3929,31 +4012,7 @@ static struct action_data *onmatch_parse
- 		goto free;
- 	}
- 
--	strsep(&str, ".");
--	if (!str) {
--		hist_err("onmatch: Missing . after onmatch(): ", str);
--		goto free;
--	}
--
--	synth_event_name = strsep(&str, "(");
--	if (!synth_event_name || !str) {
--		hist_err("onmatch: Missing opening paramlist paren: ", synth_event_name);
--		goto free;
--	}
--
--	data->onmatch.synth_event_name = kstrdup(synth_event_name, GFP_KERNEL);
--	if (!data->onmatch.synth_event_name) {
--		ret = -ENOMEM;
--		goto free;
--	}
--
--	params = strsep(&str, ")");
--	if (!params || !str || (str && strlen(str))) {
--		hist_err("onmatch: Missing closing paramlist paren: ", params);
--		goto free;
--	}
--
--	ret = parse_action_params(params, data);
-+	ret = action_parse(str, data, HANDLER_ONMATCH);
- 	if (ret)
- 		goto free;
-  out:
-@@ -4394,9 +4453,9 @@ static void destroy_actions(struct hist_
- 	for (i = 0; i < hist_data->n_actions; i++) {
- 		struct action_data *data = hist_data->actions[i];
- 
--		if (data->fn == action_trace)
-+		if (data->handler == HANDLER_ONMATCH)
- 			onmatch_destroy(data);
--		else if (data->fn == onmax_save)
-+		else if (data->handler == HANDLER_ONMAX)
- 			onmax_destroy(data);
- 		else
- 			kfree(data);
-@@ -4423,16 +4482,14 @@ static int parse_actions(struct hist_tri
- 				ret = PTR_ERR(data);
- 				break;
- 			}
--			data->fn = action_trace;
- 		} else if ((len = str_has_prefix(str, "onmax("))) {
- 			char *action_str = str + len;
- 
--			data = onmax_parse(action_str);
-+			data = onmax_parse(action_str, HANDLER_ONMAX);
- 			if (IS_ERR(data)) {
- 				ret = PTR_ERR(data);
- 				break;
- 			}
--			data->fn = onmax_save;
- 		} else {
- 			ret = -EINVAL;
- 			break;
-@@ -4444,8 +4501,7 @@ static int parse_actions(struct hist_tri
- 	return ret;
- }
- 
--static int create_actions(struct hist_trigger_data *hist_data,
--			  struct trace_event_file *file)
-+static int create_actions(struct hist_trigger_data *hist_data)
- {
- 	struct action_data *data;
- 	unsigned int i;
-@@ -4454,14 +4510,17 @@ static int create_actions(struct hist_tr
- 	for (i = 0; i < hist_data->attrs->n_actions; i++) {
- 		data = hist_data->actions[i];
- 
--		if (data->fn == action_trace) {
--			ret = onmatch_create(hist_data, file, data);
-+		if (data->handler == HANDLER_ONMATCH) {
-+			ret = onmatch_create(hist_data, data);
- 			if (ret)
--				return ret;
--		} else if (data->fn == onmax_save) {
-+				break;
-+		} else if (data->handler == HANDLER_ONMAX) {
- 			ret = onmax_create(hist_data, data);
- 			if (ret)
--				return ret;
-+				break;
-+		} else {
-+			ret = -EINVAL;
-+			break;
- 		}
- 	}
- 
-@@ -4477,26 +4536,42 @@ static void print_actions(struct seq_fil
- 	for (i = 0; i < hist_data->n_actions; i++) {
- 		struct action_data *data = hist_data->actions[i];
- 
--		if (data->fn == onmax_save)
-+		if (data->handler == HANDLER_ONMAX)
- 			onmax_print(m, hist_data, elt, data);
- 	}
- }
- 
-+static void print_action_spec(struct seq_file *m,
-+			      struct hist_trigger_data *hist_data,
-+			      struct action_data *data)
-+{
-+	unsigned int i;
-+
-+	if (data->action == ACTION_SAVE) {
-+		for (i = 0; i < hist_data->n_save_vars; i++) {
-+			seq_printf(m, "%s", hist_data->save_vars[i]->var->var.name);
-+			if (i < hist_data->n_save_vars - 1)
-+				seq_puts(m, ",");
-+		}
-+	} else if (data->action == ACTION_TRACE) {
-+		for (i = 0; i < data->n_params; i++) {
-+			if (i)
-+				seq_puts(m, ",");
-+			seq_printf(m, "%s", data->params[i]);
-+		}
-+	}
-+}
-+
- static void print_onmax_spec(struct seq_file *m,
- 			     struct hist_trigger_data *hist_data,
- 			     struct action_data *data)
- {
--	unsigned int i;
--
- 	seq_puts(m, ":onmax(");
- 	seq_printf(m, "%s", data->onmax.var_str);
--	seq_printf(m, ").%s(", data->onmax.fn_name);
-+	seq_printf(m, ").%s(", data->action_name);
-+
-+	print_action_spec(m, hist_data, data);
- 
--	for (i = 0; i < hist_data->n_max_vars; i++) {
--		seq_printf(m, "%s", hist_data->max_vars[i]->var->var.name);
--		if (i < hist_data->n_max_vars - 1)
--			seq_puts(m, ",");
--	}
- 	seq_puts(m, ")");
- }
- 
-@@ -4504,18 +4579,12 @@ static void print_onmatch_spec(struct se
- 			       struct hist_trigger_data *hist_data,
- 			       struct action_data *data)
- {
--	unsigned int i;
--
- 	seq_printf(m, ":onmatch(%s.%s).", data->onmatch.match_event_system,
- 		   data->onmatch.match_event);
- 
--	seq_printf(m, "%s(", data->onmatch.synth_event->name);
-+	seq_printf(m, "%s(", data->action_name);
- 
--	for (i = 0; i < data->n_params; i++) {
--		if (i)
--			seq_puts(m, ",");
--		seq_printf(m, "%s", data->params[i]);
--	}
-+	print_action_spec(m, hist_data, data);
- 
- 	seq_puts(m, ")");
- }
-@@ -4532,7 +4601,9 @@ static bool actions_match(struct hist_tr
- 		struct action_data *data = hist_data->actions[i];
- 		struct action_data *data_test = hist_data_test->actions[i];
- 
--		if (data->fn != data_test->fn)
-+		if (data->handler != data_test->handler)
-+			return false;
-+		if (data->action != data_test->action)
- 			return false;
- 
- 		if (data->n_params != data_test->n_params)
-@@ -4543,23 +4614,20 @@ static bool actions_match(struct hist_tr
- 				return false;
- 		}
- 
--		if (data->fn == action_trace) {
--			if (strcmp(data->onmatch.synth_event_name,
--				   data_test->onmatch.synth_event_name) != 0)
--				return false;
-+		if (strcmp(data->action_name, data_test->action_name) != 0)
-+			return false;
-+
-+		if (data->handler == HANDLER_ONMATCH) {
- 			if (strcmp(data->onmatch.match_event_system,
- 				   data_test->onmatch.match_event_system) != 0)
- 				return false;
- 			if (strcmp(data->onmatch.match_event,
- 				   data_test->onmatch.match_event) != 0)
- 				return false;
--		} else if (data->fn == onmax_save) {
-+		} else if (data->handler == HANDLER_ONMAX) {
- 			if (strcmp(data->onmax.var_str,
- 				   data_test->onmax.var_str) != 0)
- 				return false;
--			if (strcmp(data->onmax.fn_name,
--				   data_test->onmax.fn_name) != 0)
--				return false;
- 		}
- 	}
- 
-@@ -4575,9 +4643,9 @@ static void print_actions_spec(struct se
- 	for (i = 0; i < hist_data->n_actions; i++) {
- 		struct action_data *data = hist_data->actions[i];
- 
--		if (data->fn == action_trace)
-+		if (data->handler == HANDLER_ONMATCH)
- 			print_onmatch_spec(m, hist_data, data);
--		else if (data->fn == onmax_save)
-+		else if (data->handler == HANDLER_ONMAX)
- 			print_onmax_spec(m, hist_data, data);
- 	}
- }
-@@ -4770,14 +4838,15 @@ static inline void add_to_key(char *comp
- static void
- hist_trigger_actions(struct hist_trigger_data *hist_data,
- 		     struct tracing_map_elt *elt, void *rec,
--		     struct ring_buffer_event *rbe, u64 *var_ref_vals)
-+		     struct ring_buffer_event *rbe, void *key,
-+		     u64 *var_ref_vals)
- {
- 	struct action_data *data;
- 	unsigned int i;
- 
- 	for (i = 0; i < hist_data->n_actions; i++) {
- 		data = hist_data->actions[i];
--		data->fn(hist_data, elt, rec, rbe, data, var_ref_vals);
-+		data->fn(hist_data, elt, rec, rbe, key, data, var_ref_vals);
- 	}
- }
- 
-@@ -4838,7 +4907,7 @@ static void event_hist_trigger(struct ev
- 	hist_trigger_elt_update(hist_data, elt, rec, rbe, var_ref_vals);
- 
- 	if (resolve_var_refs(hist_data, key, var_ref_vals, true))
--		hist_trigger_actions(hist_data, elt, rec, rbe, var_ref_vals);
-+		hist_trigger_actions(hist_data, elt, rec, rbe, key, var_ref_vals);
- }
- 
- static void hist_trigger_stacktrace_print(struct seq_file *m,
-@@ -5757,7 +5826,7 @@ static int event_hist_trigger_func(struc
- 	if (get_named_trigger_data(trigger_data))
- 		goto enable;
- 
--	ret = create_actions(hist_data, file);
-+	ret = create_actions(hist_data);
- 	if (ret)
- 		goto out_unreg;
- 
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ struct smb_version_operations smb20_operations = {
+ 	.compare_fids = smb2_compare_fids,
+-- 
+2.43.0
+
 
 
 
