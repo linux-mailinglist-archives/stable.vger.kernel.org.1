@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C3E8CD3A2
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF18CD405
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29D4AB21631
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E97BF285AED
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E85314BF87;
-	Thu, 23 May 2024 13:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7995414B958;
+	Thu, 23 May 2024 13:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUWyBKEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msjRd6PM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C70013A897;
-	Thu, 23 May 2024 13:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354CA14AD0D;
+	Thu, 23 May 2024 13:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470217; cv=none; b=ZKEUoeaYU4ONmZyV1B5anmEZrxi+mKI6CzhF8sdZliNjABmZ9HAZdJitljxf+uVZhFOKbI7d2yhpKZ7hGr7//TdvK41+xlyZon4M1Od0/O3GRNeJYP7qahopgT8TFMnpeRdOHDSXB7AjIIflV9G9sGVZGDqwbfQkTniZbZT900M=
+	t=1716470435; cv=none; b=g4IZYEKHrsglEjoGXqgXuEE8+bjEOgzwUFsC1XmxfuIcDHY1oNic+F1HbPczngJcay4p3QQA9J8DFIABpRQAAYZYLP290zstKhAH0rfH5jO8NxIdWdNgNahps6MjnrDWQz6AeaSszO83ZE3zF+F+1fkkAPqOXB4jpIpG8L2Ydok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470217; c=relaxed/simple;
-	bh=hDRFyw2/RhvsJ8SbmqdxvJpmUgaPkBsm3kH5HDJAzRU=;
+	s=arc-20240116; t=1716470435; c=relaxed/simple;
+	bh=9sN5wR37VHpQXrXKDtZtL9dkb5ht3INBCzcyQNar43U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q8Cp4er6pgXlIgLCXNd8pFXwUeM5NzoVfuJqKKWmniY1XSFNXWkCkqa4LE9HW8De/HTFadfvtfwDb0dQMtLvlBc4GY286ohe7T/YseDj5a/upOGrj8kOnWksQ54a/ZUCJ7Wht4HoA23x4gMEgeidhvYeBrL2GeltETjro5Vl2EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUWyBKEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C598C3277B;
-	Thu, 23 May 2024 13:16:56 +0000 (UTC)
+	 MIME-Version; b=bGvS7R+KzspYTzTwyar598P5mh9CeTR+pG7u+orhpIrKiC3aAnDcj9TjM6BwPCewf5b10gO+ctejhJpN6cr7Ih37AxeD0xR5JKfU/IWBnv4p2XW7+6FCAye1UKt6Jtha7SJwbejt8UZnaIDP/LyqPbOqgMvjEgHVLYeubeQAqpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msjRd6PM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCB2C32786;
+	Thu, 23 May 2024 13:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470216;
-	bh=hDRFyw2/RhvsJ8SbmqdxvJpmUgaPkBsm3kH5HDJAzRU=;
+	s=korg; t=1716470435;
+	bh=9sN5wR37VHpQXrXKDtZtL9dkb5ht3INBCzcyQNar43U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUWyBKEMfHuYvDsMs8xfIuTsn08fPkfbRRv2wav79z9a91FCL5qSG5nXsjQidhGvA
-	 VJLeZGzl+zICnkRRLsYsfd1FCnN2NAkto0AjohBGU0RYiaDXgaJLtFPPBA5hbBoGGZ
-	 SNA4L/qHkLeryggXioMYHoG8YP6rFdzOY108WqSY=
+	b=msjRd6PMfiYiU0jF5wSi5E8LxAf328h6iAlRrRXTraxsIMOJ5aOjMI8+FCtKcSDMn
+	 EjxlRr8qcRR7XvcsVQHmlAynkKq8PedakQsV3d3rpZp54MDd05tHW6VdJNgIb5Nlju
+	 c0L3Sdd1eeAhsfzt2BHV+jlq9qYVJYQ5Ni2nP2jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.9 10/25] binder: fix max_thread type inconsistency
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 04/45] ice: remove unnecessary duplicate checks for VF VSI ID
 Date: Thu, 23 May 2024 15:12:55 +0200
-Message-ID: <20240523130330.775904839@linuxfoundation.org>
+Message-ID: <20240523130332.667690287@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 42316941335644a98335f209daafa4c122f28983 upstream.
+commit 363f689600dd010703ce6391bcfc729a97d21840 upstream.
 
-The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
-size_t to __u32 in order to avoid incompatibility issues between 32 and
-64-bit kernels. However, the internal types used to copy from user and
-store the value were never updated. Use u32 to fix the inconsistency.
+The ice_vc_fdir_param_check() function validates that the VSI ID of the
+virtchnl flow director command matches the VSI number of the VF. This is
+already checked by the call to ice_vc_isvalid_vsi_id() immediately
+following this.
 
-Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS declaration")
-Reported-by: Arve Hjønnevåg <arve@android.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240421173750.3117808-1-cmllamas@google.com
+This check is unnecessary since ice_vc_isvalid_vsi_id() already confirms
+this by checking that the VSI ID can locate the VSI associated with the VF
+structure.
+
+Furthermore, a following change is going to refactor the ice driver to
+report VSI IDs using a relative index for each VF instead of reporting the
+PF VSI number. This additional check would break that logic since it
+enforces that the VSI ID matches the VSI number.
+
+Since this check duplicates  the logic in ice_vc_isvalid_vsi_id() and gets
+in the way of refactoring that logic, remove it.
+
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c          |    2 +-
- drivers/android/binder_internal.h |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5367,7 +5367,7 @@ static long binder_ioctl(struct file *fi
- 			goto err;
- 		break;
- 	case BINDER_SET_MAX_THREADS: {
--		int max_threads;
-+		u32 max_threads;
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -107,9 +107,6 @@ ice_vc_fdir_param_check(struct ice_vf *v
+ 	if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_FDIR_PF))
+ 		return -EINVAL;
  
- 		if (copy_from_user(&max_threads, ubuf,
- 				   sizeof(max_threads))) {
---- a/drivers/android/binder_internal.h
-+++ b/drivers/android/binder_internal.h
-@@ -421,7 +421,7 @@ struct binder_proc {
- 	struct list_head todo;
- 	struct binder_stats stats;
- 	struct list_head delivered_death;
--	int max_threads;
-+	u32 max_threads;
- 	int requested_threads;
- 	int requested_threads_started;
- 	int tmp_ref;
+-	if (vsi_id != vf->lan_vsi_num)
+-		return -EINVAL;
+-
+ 	if (!ice_vc_isvalid_vsi_id(vf, vsi_id))
+ 		return -EINVAL;
+ 
 
 
 
