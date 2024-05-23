@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-45813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF18CD405
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0FE8CD453
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E97BF285AED
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE67F1C20D49
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7995414B958;
-	Thu, 23 May 2024 13:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEC514A4C1;
+	Thu, 23 May 2024 13:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msjRd6PM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu6TwlXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354CA14AD0D;
-	Thu, 23 May 2024 13:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF21D545;
+	Thu, 23 May 2024 13:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470435; cv=none; b=g4IZYEKHrsglEjoGXqgXuEE8+bjEOgzwUFsC1XmxfuIcDHY1oNic+F1HbPczngJcay4p3QQA9J8DFIABpRQAAYZYLP290zstKhAH0rfH5jO8NxIdWdNgNahps6MjnrDWQz6AeaSszO83ZE3zF+F+1fkkAPqOXB4jpIpG8L2Ydok=
+	t=1716470619; cv=none; b=RK2OgRxsT+7UUN0Ix7Skj/KOgEnmMaF4Qgi6N7CZ7nhKpECf79a+hW7e+9haqM6tic1bq2I/a0eN4c73954qEv5B9V9rm6Rf0wZrc20D47rAyU7ZN7L9sleCdi5ZJ12p1UmgS+mkgZ84VbuntEjNhi3YF9tmLCyKxqP9cVmXJ60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470435; c=relaxed/simple;
-	bh=9sN5wR37VHpQXrXKDtZtL9dkb5ht3INBCzcyQNar43U=;
+	s=arc-20240116; t=1716470619; c=relaxed/simple;
+	bh=uaJx5xKa7R1e7pC6dwo/WlkBkDH0IPk2ylhcy6qdRtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGvS7R+KzspYTzTwyar598P5mh9CeTR+pG7u+orhpIrKiC3aAnDcj9TjM6BwPCewf5b10gO+ctejhJpN6cr7Ih37AxeD0xR5JKfU/IWBnv4p2XW7+6FCAye1UKt6Jtha7SJwbejt8UZnaIDP/LyqPbOqgMvjEgHVLYeubeQAqpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msjRd6PM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCB2C32786;
-	Thu, 23 May 2024 13:20:34 +0000 (UTC)
+	 MIME-Version; b=RNcgJJ+BwpxHiS00G5+LlhbPXduJiDTNrrFGyh3qLR5I1tFvYuG842zXbzO0b0N9MViRJtdQ6ts+OwNfIuvAFYT9J6YyMgkqBJA704czEH5nC05sYMUmmkip3UFnFJa/QlLoGHu4PaN05ztEVc49GEuIH0QM3msSdaWIKHghA0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu6TwlXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA153C3277B;
+	Thu, 23 May 2024 13:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470435;
-	bh=9sN5wR37VHpQXrXKDtZtL9dkb5ht3INBCzcyQNar43U=;
+	s=korg; t=1716470619;
+	bh=uaJx5xKa7R1e7pC6dwo/WlkBkDH0IPk2ylhcy6qdRtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=msjRd6PMfiYiU0jF5wSi5E8LxAf328h6iAlRrRXTraxsIMOJ5aOjMI8+FCtKcSDMn
-	 EjxlRr8qcRR7XvcsVQHmlAynkKq8PedakQsV3d3rpZp54MDd05tHW6VdJNgIb5Nlju
-	 c0L3Sdd1eeAhsfzt2BHV+jlq9qYVJYQ5Ni2nP2jY=
+	b=Tu6TwlXk6yHmRa9HoXg1/2Whe8H2oZjGXnF8HoeOPScK1M604b/smxyWEHU4L1N4q
+	 xQP36Yr3wJl1XMoMhh3GM7n+D3D87oiOPdENXS1ldl2eHhHjShsCIZmScB9gaZOYEX
+	 tZL2Qh3S1ScAsrKMmZxE5J+afSNCMmNJvfO4jpkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.1 04/45] ice: remove unnecessary duplicate checks for VF VSI ID
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 030/102] smb: client: dont clobber ->i_rdev from cached reparse points
 Date: Thu, 23 May 2024 15:12:55 +0200
-Message-ID: <20240523130332.667690287@linuxfoundation.org>
+Message-ID: <20240523130343.600043667@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 363f689600dd010703ce6391bcfc729a97d21840 upstream.
+[ Upstream commit 66c9314b61ed5b7bfcff0d89359aa0f975c0ab53 ]
 
-The ice_vc_fdir_param_check() function validates that the VSI ID of the
-virtchnl flow director command matches the VSI number of the VF. This is
-already checked by the call to ice_vc_isvalid_vsi_id() immediately
-following this.
+Don't clobber ->i_rdev from valid reparse inodes over readdir(2) as it
+can't be provided by query dir responses.
 
-This check is unnecessary since ice_vc_isvalid_vsi_id() already confirms
-this by checking that the VSI ID can locate the VSI associated with the VF
-structure.
-
-Furthermore, a following change is going to refactor the ice driver to
-report VSI IDs using a relative index for each VF instead of reporting the
-PF VSI number. This additional check would break that logic since it
-enforces that the VSI ID matches the VSI number.
-
-Since this check duplicates  the logic in ice_vc_isvalid_vsi_id() and gets
-in the way of refactoring that logic, remove it.
-
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |    3 ---
- 1 file changed, 3 deletions(-)
+ fs/smb/client/readdir.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -107,9 +107,6 @@ ice_vc_fdir_param_check(struct ice_vf *v
- 	if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_FDIR_PF))
- 		return -EINVAL;
- 
--	if (vsi_id != vf->lan_vsi_num)
--		return -EINVAL;
--
- 	if (!ice_vc_isvalid_vsi_id(vf, vsi_id))
- 		return -EINVAL;
- 
+diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
+index 47f5a82bc2507..73ff9bd059682 100644
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -133,14 +133,14 @@ cifs_prime_dcache(struct dentry *parent, struct qstr *name,
+ 				 * Query dir responses don't provide enough
+ 				 * information about reparse points other than
+ 				 * their reparse tags.  Save an invalidation by
+-				 * not clobbering the existing mode, size and
+-				 * symlink target (if any) when reparse tag and
+-				 * ctime haven't changed.
++				 * not clobbering some existing attributes when
++				 * reparse tag and ctime haven't changed.
+ 				 */
+ 				rc = 0;
+ 				if (fattr->cf_cifsattrs & ATTR_REPARSE) {
+ 					if (likely(reparse_inode_match(inode, fattr))) {
+ 						fattr->cf_mode = inode->i_mode;
++						fattr->cf_rdev = inode->i_rdev;
+ 						fattr->cf_eof = CIFS_I(inode)->server_eof;
+ 						fattr->cf_symlink_target = NULL;
+ 					} else {
+-- 
+2.43.0
+
 
 
 
