@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-45770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A708CD3CA
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EF18CD3C0
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB5281C20359
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20FEA28147E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162D81E497;
-	Thu, 23 May 2024 13:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DE114A633;
+	Thu, 23 May 2024 13:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcobkIst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYpS3zon"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EBA14A62D;
-	Thu, 23 May 2024 13:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382EB2AE94;
+	Thu, 23 May 2024 13:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470311; cv=none; b=Vl4y0W7FkfSQqv5zbq22FCUSfBaGPDMG2fluU875eORw/jhasxsPtkIhxCQKv+9BMeIGlkVeGUPkQPWs7WgTSf+JZMpJgAtUHIPD0ns6tmRcqpzClYTSGNGCn0oDsyNWegPOeQt4t9y0/GGm3hvpAljDjne9jlo5rhr9FwsOFnY=
+	t=1716470286; cv=none; b=jTco4V30pC5DY3kcGFth1erb70yZEvMQu1Bk2XoboGkBzED81MkWVg/vy0NeNzWcRbjX8OtKtF3kcul0EzshFVlNZu2wIyu0I6fZyOrv1Pn74XDUBQ2IBluY0bwCdpNNLuFpWEvs3SEEMoS1cYcW1LpAz8bPsUGzSby7fhpaPP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470311; c=relaxed/simple;
-	bh=kHJZrClg4f2xjg8mFPR3cngLsh0FLDz9aY3CWx3CJn0=;
+	s=arc-20240116; t=1716470286; c=relaxed/simple;
+	bh=j502eUQRyRQ0rmk0zHZYhHd61TEqrO+miE+N3yBgp/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlPRb/UlS4q6TtLDdrr8VlJyu9FK7Hy5//LpIbmkoQMm/MCSsec9ovbzjoumS2FpcOVqGmWjad3pu89RelYGb4L6BUkqXQCiozQeFm9AOyG8NRt18BLDMbmTosaa4e01OzBLuZ1Lvc27dZT7MFiTkepDE3ixqDa4P3xUe+zKjDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcobkIst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44682C32786;
-	Thu, 23 May 2024 13:18:31 +0000 (UTC)
+	 MIME-Version; b=YQuGzmuPkJy47TLlONKlahHpfEqc8Co3tHqam1BWD5yqFsPaAV12TjjmT5yXZn/hKF+uNWFv7Pe5eNFcRlBS7B3r5lJIzvWrpBQ7aIZBDacI6OqMBDX8kBqh4dlwlFd5U2nCMLlPXoQ47FKjzpyz3zetraSpi0Nk/TzTbzaA9XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYpS3zon; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DACC2BD10;
+	Thu, 23 May 2024 13:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470311;
-	bh=kHJZrClg4f2xjg8mFPR3cngLsh0FLDz9aY3CWx3CJn0=;
+	s=korg; t=1716470285;
+	bh=j502eUQRyRQ0rmk0zHZYhHd61TEqrO+miE+N3yBgp/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OcobkIstbl3h4UVHEtrlptlvQWc1fim5Bn7R2SseAnwpu1jmNqiIxjXQ4UdWS75ua
-	 ZfvFgnx1XtTvlGZpp9gvi9OFisKXZsv84nTyV9YtS3LWRhX9nVFRKIJoDhYdij1BtK
-	 lBQL/HyKoAcSFYTBePhOcCtOrSVUg8lay0ZGDWZM=
+	b=WYpS3zonHE88My8V+t33OY2BMWxQ2tj0OxZsmobpg4MC6kFCbP5/8F+Pg/qZWXJPR
+	 9hhnCV+Tg5OF1HF0LROto/l/d72BxoQPt8qU+vn1MTfXZIihM/rnkqDLMd8ztVl9Fj
+	 gMFyXv3D+lB4GWAuM/fsHwgfLnjLubQv1VjVUFg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 03/23] nfsd: dont allow nfsd threads to be signalled.
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Javier Carrasco <javier.carrasco@wolfvision.net>
+Subject: [PATCH 6.9 14/25] usb: typec: tipd: fix event checking for tps25750
 Date: Thu, 23 May 2024 15:12:59 +0200
-Message-ID: <20240523130328.087334492@linuxfoundation.org>
+Message-ID: <20240523130330.927059534@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+References: <20240523130330.386580714@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,170 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Javier Carrasco <javier.carrasco@wolfvision.net>
 
-commit 3903902401451b1cd9d797a8c79769eb26ac7fe5 upstream.
+commit d64adb0f41e62f91fcfdf0e0d9d5bfa714db0d23 upstream.
 
-The original implementation of nfsd used signals to stop threads during
-shutdown.
-In Linux 2.3.46pre5 nfsd gained the ability to shutdown threads
-internally it if was asked to run "0" threads.  After this user-space
-transitioned to using "rpc.nfsd 0" to stop nfsd and sending signals to
-threads was no longer an important part of the API.
+In its current form, the interrupt service routine of the tps25750
+checks the event flags in the lowest 64 bits of the interrupt event
+register (event[0]), but also in the upper part (event[1]).
 
-In commit 3ebdbe5203a8 ("SUNRPC: discard svo_setup and rename
-svc_set_num_threads_sync()") (v5.17-rc1~75^2~41) we finally removed the
-use of signals for stopping threads, using kthread_stop() instead.
+Given that all flags are defined as BIT() or BIT_ULL(), they are
+restricted to the first 64 bits of the INT_EVENT1 register. Including
+the upper part of the register can lead to false positives e.g. if the
+event 64 bits above the one being checked is set, but the one being
+checked is not.
 
-This patch makes the "obvious" next step and removes the ability to
-signal nfsd threads - or any svc threads.  nfsd stops allowing signals
-and we don't check for their delivery any more.
+Restrict the flag checking to the first 64 bits of the INT_EVENT1
+register.
 
-This will allow for some simplification in later patches.
-
-A change worth noting is in nfsd4_ssc_setup_dul().  There was previously
-a signal_pending() check which would only succeed when the thread was
-being shut down.  It should really have tested kthread_should_stop() as
-well.  Now it just does the latter, not the former.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 7e7a3c815d22 ("USB: typec: tps6598x: Add TPS25750 support")
+Cc: stable@vger.kernel.org
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
+Link: https://lore.kernel.org/r/20240429-tps6598x_fix_event_handling-v3-1-4e8e58dce489@wolfvision.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/callback.c     |    9 +--------
- fs/nfsd/nfs4proc.c    |    5 ++---
- fs/nfsd/nfssvc.c      |   12 ------------
- net/sunrpc/svc_xprt.c |   16 ++++++----------
- 4 files changed, 9 insertions(+), 33 deletions(-)
+ drivers/usb/typec/tipd/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nfs/callback.c
-+++ b/fs/nfs/callback.c
-@@ -80,9 +80,6 @@ nfs4_callback_svc(void *vrqstp)
- 	set_freezable();
+--- a/drivers/usb/typec/tipd/core.c
++++ b/drivers/usb/typec/tipd/core.c
+@@ -604,11 +604,11 @@ static irqreturn_t tps25750_interrupt(in
+ 	if (!tps6598x_read_status(tps, &status))
+ 		goto err_clear_ints;
  
- 	while (!kthread_freezable_should_stop(NULL)) {
--
--		if (signal_pending(current))
--			flush_signals(current);
- 		/*
- 		 * Listen for a request on the socket
- 		 */
-@@ -112,11 +109,7 @@ nfs41_callback_svc(void *vrqstp)
- 	set_freezable();
+-	if ((event[0] | event[1]) & TPS_REG_INT_POWER_STATUS_UPDATE)
++	if (event[0] & TPS_REG_INT_POWER_STATUS_UPDATE)
+ 		if (!tps6598x_read_power_status(tps))
+ 			goto err_clear_ints;
  
- 	while (!kthread_freezable_should_stop(NULL)) {
--
--		if (signal_pending(current))
--			flush_signals(current);
--
--		prepare_to_wait(&serv->sv_cb_waitq, &wq, TASK_INTERRUPTIBLE);
-+		prepare_to_wait(&serv->sv_cb_waitq, &wq, TASK_IDLE);
- 		spin_lock_bh(&serv->sv_cb_lock);
- 		if (!list_empty(&serv->sv_cb_list)) {
- 			req = list_first_entry(&serv->sv_cb_list,
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1317,12 +1317,11 @@ try_again:
- 		/* found a match */
- 		if (ni->nsui_busy) {
- 			/*  wait - and try again */
--			prepare_to_wait(&nn->nfsd_ssc_waitq, &wait,
--				TASK_INTERRUPTIBLE);
-+			prepare_to_wait(&nn->nfsd_ssc_waitq, &wait, TASK_IDLE);
- 			spin_unlock(&nn->nfsd_ssc_lock);
+-	if ((event[0] | event[1]) & TPS_REG_INT_DATA_STATUS_UPDATE)
++	if (event[0] & TPS_REG_INT_DATA_STATUS_UPDATE)
+ 		if (!tps6598x_read_data_status(tps))
+ 			goto err_clear_ints;
  
- 			/* allow 20secs for mount/unmount for now - revisit */
--			if (signal_pending(current) ||
-+			if (kthread_should_stop() ||
- 					(schedule_timeout(20*HZ) == 0)) {
- 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 				kfree(work);
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -938,15 +938,6 @@ nfsd(void *vrqstp)
+@@ -617,7 +617,7 @@ static irqreturn_t tps25750_interrupt(in
+ 	 * a plug event. Therefore, we need to check
+ 	 * for pr/dr status change to set TypeC dr/pr accordingly.
+ 	 */
+-	if ((event[0] | event[1]) & TPS_REG_INT_PLUG_EVENT ||
++	if (event[0] & TPS_REG_INT_PLUG_EVENT ||
+ 	    tps6598x_has_role_changed(tps, status))
+ 		tps6598x_handle_plug_event(tps, status);
  
- 	current->fs->umask = 0;
- 
--	/*
--	 * thread is spawned with all signals set to SIG_IGN, re-enable
--	 * the ones that will bring down the thread
--	 */
--	allow_signal(SIGKILL);
--	allow_signal(SIGHUP);
--	allow_signal(SIGINT);
--	allow_signal(SIGQUIT);
--
- 	atomic_inc(&nfsdstats.th_cnt);
- 
- 	set_freezable();
-@@ -971,9 +962,6 @@ nfsd(void *vrqstp)
- 		validate_process_creds();
- 	}
- 
--	/* Clear signals before calling svc_exit_thread() */
--	flush_signals(current);
--
- 	atomic_dec(&nfsdstats.th_cnt);
- 
- out:
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -700,8 +700,8 @@ static int svc_alloc_arg(struct svc_rqst
- 			/* Made progress, don't sleep yet */
- 			continue;
- 
--		set_current_state(TASK_INTERRUPTIBLE);
--		if (signalled() || kthread_should_stop()) {
-+		set_current_state(TASK_IDLE);
-+		if (kthread_should_stop()) {
- 			set_current_state(TASK_RUNNING);
- 			return -EINTR;
- 		}
-@@ -736,7 +736,7 @@ rqst_should_sleep(struct svc_rqst *rqstp
- 		return false;
- 
- 	/* are we shutting down? */
--	if (signalled() || kthread_should_stop())
-+	if (kthread_should_stop())
- 		return false;
- 
- 	/* are we freezing? */
-@@ -758,11 +758,7 @@ static struct svc_xprt *svc_get_next_xpr
- 	if (rqstp->rq_xprt)
- 		goto out_found;
- 
--	/*
--	 * We have to be able to interrupt this wait
--	 * to bring down the daemons ...
--	 */
--	set_current_state(TASK_INTERRUPTIBLE);
-+	set_current_state(TASK_IDLE);
- 	smp_mb__before_atomic();
- 	clear_bit(SP_CONGESTED, &pool->sp_flags);
- 	clear_bit(RQ_BUSY, &rqstp->rq_flags);
-@@ -784,7 +780,7 @@ static struct svc_xprt *svc_get_next_xpr
- 	if (!time_left)
- 		atomic_long_inc(&pool->sp_stats.threads_timedout);
- 
--	if (signalled() || kthread_should_stop())
-+	if (kthread_should_stop())
- 		return ERR_PTR(-EINTR);
- 	return ERR_PTR(-EAGAIN);
- out_found:
-@@ -882,7 +878,7 @@ int svc_recv(struct svc_rqst *rqstp, lon
- 	try_to_freeze();
- 	cond_resched();
- 	err = -EINTR;
--	if (signalled() || kthread_should_stop())
-+	if (kthread_should_stop())
- 		goto out;
- 
- 	xprt = svc_get_next_xprt(rqstp, timeout);
 
 
 
