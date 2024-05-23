@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-45691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6938CD362
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:14:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC188CD438
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BF48B22097
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 250921F21544
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BFF13D2BD;
-	Thu, 23 May 2024 13:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BDF14AD38;
+	Thu, 23 May 2024 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00KBZhHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEZOgw01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E668314A60C;
-	Thu, 23 May 2024 13:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E424914A604;
+	Thu, 23 May 2024 13:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470088; cv=none; b=GM+ZRtgulYtdrMvTB1OD9v/rz4tP1P1efwUNGwpkxEtY+mZNQtfru6YdDJI9A533N9mkG+gtGFixuR1R85IX9I+ESvJSTgoPH/8UskQUB3L7nkX/TeXkJrMMJt84KNs28pEggl+kRbqPZbrNTeZpo3xoVHvuyk1dIgYMX2FtTvQ=
+	t=1716470559; cv=none; b=Qi1uA5lt4ccmhe4CWcvs8koyE8j4MmTEozRR4UZ8wOMWI/+RLD3+Xaq8u7peLL9auMB5WttJbbeGdF6NXZ6SIuLEsijHkFFy3Sd3iri0GR1uLRfokqA2zgbXRm+A1iL8HSs6lJxKaPzvS0eGxveTHa/N4fucg85EpIva/Ixct3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470088; c=relaxed/simple;
-	bh=IR/J6A3a89v22PtZ0pgcoGQm6GIYf7AXAs0uGcubVwk=;
+	s=arc-20240116; t=1716470559; c=relaxed/simple;
+	bh=d97sStexVFxvz+QxbSd2aaXF/jqvzVQ9BLcv0APztKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmHgjDkmdxTRWWJHFpn0+exGpmrBK/czEYRUmEwL6Q/amLU1WAshNGpweJQA4QcUflTOB4gSBG6dc2zdXB4iKy2jJ/0mKXmFKsRLva/rutV+/p5rt1yAVmx+FYqJpyfYofT8dbviDYRemA7W8CeBW0mXcDkEs6kDDm6ZV3RZnLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00KBZhHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F756C3277B;
-	Thu, 23 May 2024 13:14:47 +0000 (UTC)
+	 MIME-Version; b=C4w/hji+q5yMtYzaLp0uruQ2Aqoumh/2sXJ0GViW4uox7JTTBuKEJHW6BrV4epX30W3vAK68a4QKTMajK0lX2f4JysoHDh7OPaT/V2rFXr+FIKyUKC2+kO/39gEz2LbJRPiW9dZetghjJIOJZNmhwAPqRzFqkNj03i+2oRXhULs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEZOgw01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C048C2BD10;
+	Thu, 23 May 2024 13:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470087;
-	bh=IR/J6A3a89v22PtZ0pgcoGQm6GIYf7AXAs0uGcubVwk=;
+	s=korg; t=1716470558;
+	bh=d97sStexVFxvz+QxbSd2aaXF/jqvzVQ9BLcv0APztKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00KBZhHCJa1s5wgMwXULAXAmJoLCzE4Qo9TRiWhxZUv7RIB8PodtedICpS+Bi8sBF
-	 vF8xfFuO7ke5+T6MIb9mOsklLCsKmURv5vVYjVxow/xWLi4OGpSkddTB9w8S+17vFm
-	 5mdmgQShmt8Wr/BZ+l8+wqSL1TAXd0THhmsx3JHw=
+	b=jEZOgw01SO4O6IpbrEhkjPY++ASAoGeeyGYOZFbgj3iFdQrN01gEgmDvxK2TbJ5d0
+	 pN0c8wynySDQk5AYQulk3xaxYWRP3lZW5yraPJB5kNkzFpTEDMO5k23EhbZg5fQVMT
+	 gil/O5DmOi1sENCuIQPQVv4ZyfIpdh8Z6biEqldY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Machek <pavel@denx.de>,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.19 03/18] btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 001/102] cifs: Add client version details to NTLM authenticate message
 Date: Thu, 23 May 2024 15:12:26 +0200
-Message-ID: <20240523130325.862612416@linuxfoundation.org>
+Message-ID: <20240523130342.520134047@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Meetakshi Setiya <msetiya@microsoft.com>
 
-commit 9af503d91298c3f2945e73703f0e00995be08c30 upstream.
+[ Upstream commit 1460720c5913c11415e4d7c4df5a287eb2ad3f3e ]
 
-The previous patch that replaced BUG_ON by error handling forgot to
-unlock the mutex in the error path.
+The NTLM authenticate message currently sets the NTLMSSP_NEGOTIATE_VERSION
+flag but does not populate the VERSION structure. This commit fixes this
+bug by ensuring that the flag is set and the version details are included
+in the message.
 
-Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
-Reported-by: Pavel Machek <pavel@denx.de>
-Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
-CC: stable@vger.kernel.org
-Reviewed-by: Pavel Machek <pavel@denx.de>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/ntlmssp.h |  4 ++--
+ fs/smb/client/sess.c    | 12 +++++++++---
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -2957,6 +2957,7 @@ again:
- 			 * alignment and size).
- 			 */
- 			ret = -EUCLEAN;
-+			mutex_unlock(&fs_info->delete_unused_bgs_mutex);
- 			goto error;
- 		}
+diff --git a/fs/smb/client/ntlmssp.h b/fs/smb/client/ntlmssp.h
+index 2c5dde2ece588..875de43b72de3 100644
+--- a/fs/smb/client/ntlmssp.h
++++ b/fs/smb/client/ntlmssp.h
+@@ -133,8 +133,8 @@ typedef struct _AUTHENTICATE_MESSAGE {
+ 	SECURITY_BUFFER WorkstationName;
+ 	SECURITY_BUFFER SessionKey;
+ 	__le32 NegotiateFlags;
+-	/* SECURITY_BUFFER for version info not present since we
+-	   do not set the version is present flag */
++	struct	ntlmssp_version Version;
++	/* SECURITY_BUFFER */
+ 	char UserString[];
+ } __attribute__((packed)) AUTHENTICATE_MESSAGE, *PAUTHENTICATE_MESSAGE;
  
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index e4168cd8b6c28..bd4dcd1a9af83 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -1201,10 +1201,16 @@ int build_ntlmssp_auth_blob(unsigned char **pbuffer,
+ 	memcpy(sec_blob->Signature, NTLMSSP_SIGNATURE, 8);
+ 	sec_blob->MessageType = NtLmAuthenticate;
+ 
++	/* send version information in ntlmssp authenticate also */
+ 	flags = ses->ntlmssp->server_flags | NTLMSSP_REQUEST_TARGET |
+-		NTLMSSP_NEGOTIATE_TARGET_INFO | NTLMSSP_NEGOTIATE_WORKSTATION_SUPPLIED;
+-	/* we only send version information in ntlmssp negotiate, so do not set this flag */
+-	flags = flags & ~NTLMSSP_NEGOTIATE_VERSION;
++		NTLMSSP_NEGOTIATE_TARGET_INFO | NTLMSSP_NEGOTIATE_VERSION |
++		NTLMSSP_NEGOTIATE_WORKSTATION_SUPPLIED;
++
++	sec_blob->Version.ProductMajorVersion = LINUX_VERSION_MAJOR;
++	sec_blob->Version.ProductMinorVersion = LINUX_VERSION_PATCHLEVEL;
++	sec_blob->Version.ProductBuild = cpu_to_le16(SMB3_PRODUCT_BUILD);
++	sec_blob->Version.NTLMRevisionCurrent = NTLMSSP_REVISION_W2K3;
++
+ 	tmp = *pbuffer + sizeof(AUTHENTICATE_MESSAGE);
+ 	sec_blob->NegotiateFlags = cpu_to_le32(flags);
+ 
+-- 
+2.43.0
+
 
 
 
