@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5A78CD455
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF518CD406
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00A3C1C20E57
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 428661C203A8
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858E913C3D8;
-	Thu, 23 May 2024 13:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C0B14BF85;
+	Thu, 23 May 2024 13:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0lk6mMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPvnTo76"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D3B1D545;
-	Thu, 23 May 2024 13:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FC414AD0D;
+	Thu, 23 May 2024 13:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470622; cv=none; b=iuYyhQMFRAfWA2lx6JXftcelqul2JmDlxEYBMH0fFS1UxxrP9FkM5i9TxA2aU43m3frU4/vHH2VfuhlJ870N1A0v8xfFwRN8Awb/dxZiGKhUtTsQFxy6Tvd46iObv7eZniqGqh+q2xKFVPp6nBVYAb6DeEuDfBkjDI4JwwrHsw0=
+	t=1716470438; cv=none; b=pwZWNWwqHFQ9g2qffl3pbck1WBaCm4hicLAqn2mMtlSYOlRgn2r9+nAqHpS8lAK9k70YXgxDI09Gx848H9NQW0JZXNfGxHnffPbImQjf2oCRMiJJ690PMoUZdiWT0ysFANoCX7jsarXnc/AC03UypNXxrHSRYSKmHJvQK05q0Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470622; c=relaxed/simple;
-	bh=/dB1saJSM7i1ClqqnPCSBFNN9+kvYE6pXVXjUgzXUCI=;
+	s=arc-20240116; t=1716470438; c=relaxed/simple;
+	bh=+IwP8zpJE8n0F0mqqYLMkZVRYo+VpbIDR8oIZwngY84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ku77cywxKVYn26j4vADvuE++CBVJzdMS7zDfJZOXEiYzY0GqkbHWV/eFZGJ+yLvkL8zejtkJuhHuCUDma1kzkAYuxNR5aH9CBswWzFuXoiJajfPuJTkmOzXyRAkMjC0D9VbEmK7F5PvbhNoDudyfVTq/AyruCCVSdSQdNd/sHWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0lk6mMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E6FC2BD10;
-	Thu, 23 May 2024 13:23:41 +0000 (UTC)
+	 MIME-Version; b=PlMFEmMMVQJf0lPqzV4pKHckAIl7I+ZI1Lo7K8nTdOryJHaj7Jei0uI8NM5RTfdc5khmjON/z9vhY+ibA5nP6Ieb7IrjQVM2wMIj4pVaYPIfhvpXNT88vMzgHxTM4RdbrOsT5OlSEm5LBGYna0uB1Rm+5SLeKT4xBsTjeANBLBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPvnTo76; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8861BC2BD10;
+	Thu, 23 May 2024 13:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470622;
-	bh=/dB1saJSM7i1ClqqnPCSBFNN9+kvYE6pXVXjUgzXUCI=;
+	s=korg; t=1716470437;
+	bh=+IwP8zpJE8n0F0mqqYLMkZVRYo+VpbIDR8oIZwngY84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0lk6mMT6g4mRhBq3oKn2ErPh/rmtZqXot9H6lA4inA38B7BsY+tB9IN+DsTXjZRk
-	 xC4/xQeVo1gvQp4atFBZ+T4T5X5hIVpo+BqFLJdgpRlaRTtp5YvK9d4jaL/EZulU8t
-	 WgtZDcbLMtTlWx3udgxMZy4EiCbj17Ngkx2vp6B4=
+	b=QPvnTo766WBeAtPM8N/uipT556rDiDyDkWphs/0Dfph/WLqpeFSg/J4hVvn54VvZi
+	 xhi6ePC69f7xcIPqH9xfoQey+UEtk+fdeIuaOlhOIlG3clbikxxqQ3oqaLq4jlaGcQ
+	 ovYWOJTW5XVDbMUBMi9bQktWrL4BiYWcjq7FIyiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/102] cifs: new mount option called retrans
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
+Subject: [PATCH 6.1 05/45] pinctrl: core: handle radix_tree_insert() errors in pinctrl_register_one_pin()
 Date: Thu, 23 May 2024 15:12:56 +0200
-Message-ID: <20240523130343.638464049@linuxfoundation.org>
+Message-ID: <20240523130332.703764794@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit ce09f8d8a7130e6edfdd6fcad8eb277824d5de95 ]
+commit ecfe9a015d3e1e46504d5b3de7eef1f2d186194a upstream.
 
-We have several places in the code where we treat the
-error -EAGAIN very differently. Some code retry for
-arbitrary number of times.
+pinctrl_register_one_pin() doesn't check the result of radix_tree_insert()
+despite they both may return a negative error code.  Linus Walleij said he
+has copied the radix tree code from kernel/irq/ where the functions calling
+radix_tree_insert() are *void* themselves; I think it makes more sense to
+propagate the errors from radix_tree_insert() upstream if we can do that...
 
-Introducing this new mount option named "retrans", so
-that all these handlers of -EAGAIN can retry a fixed
-number of times. This applies only to soft mounts.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230719202253.13469-3-s.shtylyov@omp.ru
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: "Hemdan, Hagar Gamal Halim" <hagarhem@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsfs.c     | 2 ++
- fs/smb/client/cifsglob.h   | 1 +
- fs/smb/client/connect.c    | 4 ++++
- fs/smb/client/fs_context.c | 6 ++++++
- fs/smb/client/fs_context.h | 2 ++
- 5 files changed, 15 insertions(+)
+ drivers/pinctrl/core.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 44e2cc37a8b63..6d9d2174ee691 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -682,6 +682,8 @@ cifs_show_options(struct seq_file *s, struct dentry *root)
- 		seq_printf(s, ",rasize=%u", cifs_sb->ctx->rasize);
- 	if (tcon->ses->server->min_offload)
- 		seq_printf(s, ",esize=%u", tcon->ses->server->min_offload);
-+	if (tcon->ses->server->retrans)
-+		seq_printf(s, ",retrans=%u", tcon->ses->server->retrans);
- 	seq_printf(s, ",echo_interval=%lu",
- 			tcon->ses->server->echo_interval / HZ);
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -205,6 +205,7 @@ static int pinctrl_register_one_pin(stru
+ 				    const struct pinctrl_pin_desc *pin)
+ {
+ 	struct pin_desc *pindesc;
++	int error;
  
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 414648bf816b2..6acadb53ada79 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -754,6 +754,7 @@ struct TCP_Server_Info {
- 	unsigned int	max_read;
- 	unsigned int	max_write;
- 	unsigned int	min_offload;
-+	unsigned int	retrans;
- 	__le16	compress_algorithm;
- 	__u16	signing_algorithm;
- 	__le16	cipher_type;
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 2466b28379ff8..e28f011f11d6c 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1592,6 +1592,9 @@ static int match_server(struct TCP_Server_Info *server,
- 	if (server->min_offload != ctx->min_offload)
- 		return 0;
+ 	pindesc = pin_desc_get(pctldev, pin->number);
+ 	if (pindesc) {
+@@ -226,18 +227,25 @@ static int pinctrl_register_one_pin(stru
+ 	} else {
+ 		pindesc->name = kasprintf(GFP_KERNEL, "PIN%u", pin->number);
+ 		if (!pindesc->name) {
+-			kfree(pindesc);
+-			return -ENOMEM;
++			error = -ENOMEM;
++			goto failed;
+ 		}
+ 		pindesc->dynamic_name = true;
+ 	}
  
-+	if (server->retrans != ctx->retrans)
-+		return 0;
+ 	pindesc->drv_data = pin->drv_data;
+ 
+-	radix_tree_insert(&pctldev->pin_desc_tree, pin->number, pindesc);
++	error = radix_tree_insert(&pctldev->pin_desc_tree, pin->number, pindesc);
++	if (error)
++		goto failed;
 +
- 	return 1;
+ 	pr_debug("registered pin %d (%s) on %s\n",
+ 		 pin->number, pindesc->name, pctldev->desc->name);
+ 	return 0;
++
++failed:
++	kfree(pindesc);
++	return error;
  }
  
-@@ -1816,6 +1819,7 @@ cifs_get_tcp_session(struct smb3_fs_context *ctx,
- 		goto out_err_crypto_release;
- 	}
- 	tcp_ses->min_offload = ctx->min_offload;
-+	tcp_ses->retrans = ctx->retrans;
- 	/*
- 	 * at this point we are the only ones with the pointer
- 	 * to the struct since the kernel thread not created yet
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 4d9e57be84dbc..f119035a82725 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -139,6 +139,7 @@ const struct fs_parameter_spec smb3_fs_parameters[] = {
- 	fsparam_u32("dir_mode", Opt_dirmode),
- 	fsparam_u32("port", Opt_port),
- 	fsparam_u32("min_enc_offload", Opt_min_enc_offload),
-+	fsparam_u32("retrans", Opt_retrans),
- 	fsparam_u32("esize", Opt_min_enc_offload),
- 	fsparam_u32("bsize", Opt_blocksize),
- 	fsparam_u32("rasize", Opt_rasize),
-@@ -1098,6 +1099,9 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 	case Opt_min_enc_offload:
- 		ctx->min_offload = result.uint_32;
- 		break;
-+	case Opt_retrans:
-+		ctx->retrans = result.uint_32;
-+		break;
- 	case Opt_blocksize:
- 		/*
- 		 * inode blocksize realistically should never need to be
-@@ -1678,6 +1682,8 @@ int smb3_init_fs_context(struct fs_context *fc)
- 	ctx->backupuid_specified = false; /* no backup intent for a user */
- 	ctx->backupgid_specified = false; /* no backup intent for a group */
- 
-+	ctx->retrans = 1;
-+
- /*
-  *	short int override_uid = -1;
-  *	short int override_gid = -1;
-diff --git a/fs/smb/client/fs_context.h b/fs/smb/client/fs_context.h
-index d7c090dbe75db..369a3fea1dfe0 100644
---- a/fs/smb/client/fs_context.h
-+++ b/fs/smb/client/fs_context.h
-@@ -118,6 +118,7 @@ enum cifs_param {
- 	Opt_file_mode,
- 	Opt_dirmode,
- 	Opt_min_enc_offload,
-+	Opt_retrans,
- 	Opt_blocksize,
- 	Opt_rasize,
- 	Opt_rsize,
-@@ -249,6 +250,7 @@ struct smb3_fs_context {
- 	unsigned int rsize;
- 	unsigned int wsize;
- 	unsigned int min_offload;
-+	unsigned int retrans;
- 	bool sockopt_tcp_nodelay:1;
- 	/* attribute cache timemout for files and directories in jiffies */
- 	unsigned long acregmax;
--- 
-2.43.0
-
+ static int pinctrl_register_pins(struct pinctrl_dev *pctldev,
 
 
 
