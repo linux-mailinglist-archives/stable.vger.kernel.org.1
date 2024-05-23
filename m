@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-45913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E348CD486
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D368CD42E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03CA21C22407
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384541F23B25
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E237614A4F0;
-	Thu, 23 May 2024 13:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1EC14A4EC;
+	Thu, 23 May 2024 13:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEReMkdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6XNDUS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08C61D545;
-	Thu, 23 May 2024 13:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3751E497;
+	Thu, 23 May 2024 13:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470723; cv=none; b=eSaPuAgBr1UsLc7dzHq2HzRpBRGqNzRDc6oiOJqWCT66kYyrtrQsy82J9za+abSoIboBa2LXMKEPPxSyaNiqDvXWOktR0xehL1/k6ArbULWvtIpq20ziMXHCE4ysbe/Q06qKgUKcO+AT+E8KUR7pz9nf9nVJnfQ7Q9vdiKpNmoU=
+	t=1716470530; cv=none; b=JP7ZaYyaqfB3kOKE2yd99eL+n6JPFZxUJSPq2OwDyb6ixWECSVITGWYEOKbdyF++uqjdlcJr9KJQQqnOJbzvr90k+63ugpGB77slHUprCQnPQMFPGG+LomHcHSzr5oZZg2fKY7Z29VNucza3EoTjXBnOH1yDHHRA+sU73ZYVxCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470723; c=relaxed/simple;
-	bh=DRikswJ3sA97cw+wRq6VN66As5jmq6V6NJcAMWjaqls=;
+	s=arc-20240116; t=1716470530; c=relaxed/simple;
+	bh=UXQZykt04YnWudBQfkG54J8t/QIIKenYIBm9hQhRlJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/KKvBFzHGAVIT4aqBRe34a1FFRoZknkamqwkPCRTvXhmQ/7/j6o9pilZc/dw9SXS4V76V+O2z+nCpdGXnKNvsxUo5p4hBuKpJvh9NOIKAxn/p4grNGrErVio5okXM3aXNUpPPX6KhQo3CnoBQa8lNgNQJwUH4mijUweIZZC/GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEReMkdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BC6C2BD10;
-	Thu, 23 May 2024 13:25:22 +0000 (UTC)
+	 MIME-Version; b=WfgcWDX5r4X2IWZo0WKGrF1KZsp3IwVsh8uoTesAHiRKuf/Okc2+ENH3ow4nmFxvATUOW9Ex0b1OW3x4xbi6yyXq3kaj+JC0ukU0Lg5iiy9nyGvwsSXsfyPeb4/DrWb1Ja0tWc+pxygOeF5JT0lYYGjedqUMobfaKPAGrzbzgKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6XNDUS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1CEC3277B;
+	Thu, 23 May 2024 13:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470723;
-	bh=DRikswJ3sA97cw+wRq6VN66As5jmq6V6NJcAMWjaqls=;
+	s=korg; t=1716470530;
+	bh=UXQZykt04YnWudBQfkG54J8t/QIIKenYIBm9hQhRlJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEReMkdptFp7erGqM2Qvb0AlKFvmatDJwsOGOEsXCiFr82GcSJG6SM+fI6aWivyQa
-	 vDcTJ+VvI9Ev9tRJLq8nZZ0tv7/pTQLW8KDbYYZwXeaXtkjvtERz0iIEGfr73HEE+n
-	 /t14r/TGyQXegMk9mHRlo8pIXxrjZGRylByJNJtM=
+	b=Q6XNDUS/K5ts+SgPiM2/lGawk+1GH0RVnGCy8scA8MyvqkoT+vkwfCSJQ3yqMtvTn
+	 Fjmy9tVo4sMF2FAu/m6h5JvQq9cM+0Gc9hJlgYG+Pf4wcdyIT8WpVmwtUdszshaVPc
+	 1okI+bq2sHBJ5K0GkS7r7kEzN6wUQdtFIYGH0rKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Chaoming <lometsj@live.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/102] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.8 04/23] ice: remove unnecessary duplicate checks for VF VSI ID
 Date: Thu, 23 May 2024 15:13:31 +0200
-Message-ID: <20240523130344.959847315@linuxfoundation.org>
+Message-ID: <20240523130329.915489506@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
+References: <20240523130329.745905823@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit d10c77873ba1e9e6b91905018e29e196fd5f863d ]
+commit 363f689600dd010703ce6391bcfc729a97d21840 upstream.
 
-If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
-ksmbd_check_message doesn't validate request buffer it correctly.
-So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
-in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
-of the two sums (Name and CreateContext size) as the offset and length of
-the data area.
+The ice_vc_fdir_param_check() function validates that the VSI ID of the
+virtchnl flow director command matches the VSI number of the VF. This is
+already checked by the call to ice_vc_isvalid_vsi_id() immediately
+following this.
 
-Reported-by: Yang Chaoming <lometsj@live.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This check is unnecessary since ice_vc_isvalid_vsi_id() already confirms
+this by checking that the VSI ID can locate the VSI associated with the VF
+structure.
+
+Furthermore, a following change is going to refactor the ice driver to
+report VSI IDs using a relative index for each VF instead of reporting the
+PF VSI number. This additional check would break that logic since it
+enforces that the VSI ID matches the VSI number.
+
+Since this check duplicates  the logic in ice_vc_isvalid_vsi_id() and gets
+in the way of refactoring that logic, remove it.
+
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2misc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
-index 03dded29a9804..7c872ffb4b0a9 100644
---- a/fs/smb/server/smb2misc.c
-+++ b/fs/smb/server/smb2misc.c
-@@ -107,7 +107,10 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 	case SMB2_CREATE:
- 	{
- 		unsigned short int name_off =
--			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
-+			max_t(unsigned short int,
-+			      le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset),
-+			      offsetof(struct smb2_create_req, Buffer));
-+
- 		unsigned short int name_len =
- 			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -94,9 +94,6 @@ ice_vc_fdir_param_check(struct ice_vf *v
+ 	if (!(vf->driver_caps & VIRTCHNL_VF_OFFLOAD_FDIR_PF))
+ 		return -EINVAL;
  
--- 
-2.43.0
-
+-	if (vsi_id != vf->lan_vsi_num)
+-		return -EINVAL;
+-
+ 	if (!ice_vc_isvalid_vsi_id(vf, vsi_id))
+ 		return -EINVAL;
+ 
 
 
 
