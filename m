@@ -1,216 +1,152 @@
-Return-Path: <stable+bounces-45962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA7D8CD6EA
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 17:22:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D716E8CD790
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 17:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDDE41C21814
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CDC228271F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A240C10949;
-	Thu, 23 May 2024 15:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43092125C9;
+	Thu, 23 May 2024 15:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m5DF/WTq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dM8h9LZp"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CFD101CA
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 15:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B0AAD49;
+	Thu, 23 May 2024 15:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716477720; cv=none; b=ZKol1qroxZEbBHSS9mxv+Sr/L38hTbafhnBZaOjirYxWpZaYJsIIdGHLnucBiNQFWP6t37qjO6fNOJjv+NBldWRFIYq2mkK31xoGOapEzWsczwgoCfW9xp3pBrqmcRnF++p7WsXHTprGZXX4t5LI+Mmjwl/84IrkcOOFb/EvtoI=
+	t=1716479254; cv=none; b=YUD7DmzNz6xOH2ZApXBxFLhk+7V3utG94KEN2LZVg14cBvRrf/C+MTOeoGstdCDKFgm19GH30hsixY98d0U5QQAd6TNYLv/G8YMuE4bItL2xdDFa2yDuwdNj0g2UAPxsfWGb9xe9LX6fG8CyV8BZa/Tc5E7SSHyl7b0M6doP4+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716477720; c=relaxed/simple;
-	bh=TyxInEkrWpG2tHdh1+DZg83wJIxDaf+0nnX9CJTxik4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uho0gicDp/M5Pyw/JLNiMFqIrcjUNrTcEM6/H5i1rxQUYDATKs/vZNk9LoF1jOFe1+mbkxP952PdctlbCzPghIXQpVyAeL+6QnJ/CAq510kPYsp0+HoWZFpINOcDu/PH/gkdnnMwOHyBVbXPhTQMrtlSBE/tFNLAZD48KPD9Xhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=m5DF/WTq; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: helgaas@kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1716477716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BgiLi3aS5K3uMTSN7zNHrkjQmdCP6Z8xu20UDmqYnj8=;
-	b=m5DF/WTqWYwoExcg4cADJ1noAh3UIWkQqS9bb08Y+i6lTeiMCqpMmUiAMRqe0Xb47y3GxF
-	Fix+/TQzTzMn84abbmdyFfMA86z8GPD5pYY14LcVfCiutpn5I+Il4aNhD02CQgdmO2NeTz
-	mnxmeKib63GreuCEGxZUFGG/mDDUKg0=
-X-Envelope-To: lpieralisi@kernel.org
-X-Envelope-To: kw@linux.com
-X-Envelope-To: robh@kernel.org
-X-Envelope-To: linux-pci@vger.kernel.org
-X-Envelope-To: michal.simek@amd.com
-X-Envelope-To: thippeswamy.havalige@amd.com
-X-Envelope-To: linux-arm-kernel@lists.infradead.org
-X-Envelope-To: bhelgaas@google.com
-X-Envelope-To: linux-kernel@vger.kernel.org
-X-Envelope-To: stable@vger.kernel.org
-X-Envelope-To: bharatku@xilinx.com
-Message-ID: <9299ee92-a32b-4b82-aa37-c7087a5c1376@linux.dev>
-Date: Thu, 23 May 2024 11:21:52 -0400
+	s=arc-20240116; t=1716479254; c=relaxed/simple;
+	bh=D2zB9oTuuFtkMQqmGUvI6YlJeksrcGZZQQ7omxucUB4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SEqsPmlsoAqL+JIOJmv14Uf9EQIFAgzeNcNTH3nGEv8Av54ccr1es6yKKH+3tSz6iLeLHj2DJqVTlB55tuLYJvmh6PBO6qAuvmtaIf9cVxaDE82ENqN6fytTAPbxx019NIsqMpmQJDZR0mXgLg5/yuveBLCw/zkl74JvlNqdVHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dM8h9LZp; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-420160f8f52so21414315e9.0;
+        Thu, 23 May 2024 08:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716479250; x=1717084050; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JL197cT3QzETxXdjAAEsNcyOFt/5C7nRid5WqhKtJcs=;
+        b=dM8h9LZpHYT/LLbRaZ/4ere6KsBqNIzjOeZnY2cSV+zixk/ASCMl/A3UCf7BWdX5YC
+         A6D+MTNLFPxel6Z3FEQIdM4FVuNMKqBkzJBAQ7Fc4AF2GT9hds1sThHRsIODM3+02wfc
+         dDz27xwqPHNeSCb1G1k+axMKv6aPr20V+69rhOZlIjJvZRqYAN3VJcO9+hR2vRl3VnlM
+         01dlGew2afBzBrOUbAdKCcKbQU9zBLCwCufuVFJ2hQ/sRCVXoOasIOJPFrO6zmi5Q4w2
+         iNJogVAEC3soU0TbAvN2HGfWm4Qkf8+b/96nbuPo+sTJRN/sHm0JQtXA5y8uUf4C3F8F
+         Spgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716479250; x=1717084050;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JL197cT3QzETxXdjAAEsNcyOFt/5C7nRid5WqhKtJcs=;
+        b=uN38sVMrw+eDO/gr5EL66OxjscO82/QSSwSMjYXSkbXdvgDVT6MU/uNhHTQWIGEI7H
+         +LJUS0/fhIU/wzxAQwp0mz1eOpcpdH9pniQloUAqqIXmdvR0xBfZYcEb/s8Y1Z1F3iDX
+         Du80XHucVNLuExlYi617+l9zhPzaS6HUvmcBTxuqTQIXx+PVk+M9l2iawJl2OHWn4UyN
+         fEM+fgWOpEyq5uDJLOTXVRQvmbfxL0xAKghgjgaqUmMA9ppdCwiT7QzBkaDwUcHEN2TX
+         b0Oegqtx+7pRwehRbAdAGmAD/OfVPKpAOTXEpapYssZGww1HQVIVszWk+CW67eODpLx4
+         r1Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPqerbPGtA18mLegXMgSPyuOwbEv0nFFtAZ+kbmxKYdoiWcWL2L1IET2/udHWIMjZ9PDIONEzpHOLMaZHLND/0IEBGSKMLtZ7NuT4Nka6UmUaWFYbqlJsitJy+EBvpaFMQmmHyqRF4torIYDqkjjwzQ0e/N+IDzRkJATrAXKhDIk4=
+X-Gm-Message-State: AOJu0YwEwTZ+S/vBNEB+1sbl+BA6X30z7YM4g3mHJTXeo5WKj2+npcfk
+	Uqg4/N9dBwZidi0WpdwcO49hW7joCVNbXR+PbCMExEVNPGMMVu+X8+nEe+gHEOA=
+X-Google-Smtp-Source: AGHT+IGxPsVE4oweh+WP+FUJLBq0xoaVtpcE2qE4/N2ImfMss5nL9lxKfwnmsp+sN2I7K2Oddpq1HA==
+X-Received: by 2002:a05:600c:c2:b0:419:f9ae:e50 with SMTP id 5b1f17b1804b1-420fd375f0dmr40635925e9.37.1716479250321;
+        Thu, 23 May 2024 08:47:30 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-212-250.cable.dynamic.surfer.at. [84.115.212.250])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42100f5a576sm28569725e9.22.2024.05.23.08.47.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 08:47:29 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 0/3] device property: introduce
+ fwnode_for_each_available_child_node_scoped()
+Date: Thu, 23 May 2024 17:47:13 +0200
+Message-Id: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 2/7] PCI: xilinx-nwl: Fix off-by-one in IRQ handler
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org,
- Michal Simek <michal.simek@amd.com>,
- Thippeswamy Havalige <thippeswamy.havalige@amd.com>,
- linux-arm-kernel@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Bharat Kumar Gogada <bharatku@xilinx.com>
-References: <20240522222834.GA101664@bhelgaas>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20240522222834.GA101664@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-B4-Tracking: v=1; b=H4sIAAJlT2YC/5WNUQrCMBBEryL5NpKNCtUv7yElbJNNs9A2JZGol
+ N7dWPAAfr6ZYd4iMiWmLK67RSQqnDlOFfR+J2zAqSfJrrLQSp/UWYP0zyk6Mj4mQ2iDwYI8YDe
+ QsYEHZ7Y22ziTk40Hry7uiKCsqI9zIs+vzXZvKwfOj5jem7zAN/159F+eAlJJgKbplEPQzt76s
+ a4PNo6iXdf1A7Tyb6jmAAAA
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716479248; l=1994;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=D2zB9oTuuFtkMQqmGUvI6YlJeksrcGZZQQ7omxucUB4=;
+ b=Or/oGb5gVgcBZHPU8VAUKL+asN5MqmDl3TD2Wn6EhUnkhZg0HNxH+ikvLV/RJSmkQ+980RKmL
+ r/vumNcPDmYCo2ykIpn8M6URtL2lgnoig9r9OZUwbf5frZthXoo2xLP
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On 5/22/24 18:28, Bjorn Helgaas wrote:
-> On Mon, May 20, 2024 at 10:53:57AM -0400, Sean Anderson wrote:
->> MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit
->> 2, and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
->> PCI_NUM_INTX irqs. So to enable INTA (aka hwirq 0) we should set bit 0.
->> Remove the subtraction of one. This fixes the following UBSAN error:
-> 
-> Thanks for these details!
-> 
-> I guess UBSAN == "undefined behavior sanitizer", right?  That sounds
-> like an easy way to find this but not the way users are likely to find
-> it.
+The _scoped() version of the fwnode_for_each_available_child_node()
+follows the approach recently taken for other loops that handle child
+nodes like for_each_child_of_node_scoped() or
+device_for_each_child_node_scoped(), which are based on the __free()
+auto cleanup handler to remove the need for fwnode_handle_put() on
+early loop exits.
 
-It's pretty likely they will find it this way, since I found it this way
-and no one else had ;)
+This new variant has been tested with the LTC2992, which currently uses
+the non-scoped variant. There is one error path that does not decrement
+the refcount of the child node, which can be fixed by using the new
+macro. The bug was introduced in a later modification of the loop, which
+shows how useful an automatic cleanup solution can be in many uses of
+the non-scoped version.
 
-> I assume users would notice spurious and missing interrupts, e.g.,
-> a driver that tried to enable INTB would have actually enabled INTA,
-> so we'd see spurious INTA interrupts and the driver would never see
-> the INTB it expected.
-> 
-> And a driver that tried to enable INTA would never see that interrupt,
-> and we might not set any bit in MSGF_LEG_MASK?
+In order to provide a backportable patch, the conversion in the LTC2992
+driver is carried out in two steps: first the missing
+fwnode_handle_put() is added, and then the code is refactored to adopt
+the new, safer approach.
 
-And yes, this would manifest as INTx interrupts being broken.
+@Andy Shevchenko: I kept your Reviewed-by in 3/3, that now also removes
+the new fwnode_handle_put() and braces added with 1/3.
 
-> I think the normal way people would trip over this, i.e., spurious and
-> missing INTx interrupts, is the important thing to mention here.
-> 
->> [    5.037483] ================================================================================
->> [    5.046260] UBSAN: shift-out-of-bounds in ../drivers/pci/controller/pcie-xilinx-nwl.c:389:11
->> [    5.054983] shift exponent 18446744073709551615 is too large for 32-bit type 'int'
->> [    5.062813] CPU: 1 PID: 61 Comm: kworker/u10:1 Not tainted 6.6.20+ #268
->> [    5.070008] Hardware name: xlnx,zynqmp (DT)
->> [    5.074348] Workqueue: events_unbound deferred_probe_work_func
->> [    5.080410] Call trace:
->> [    5.082958] dump_backtrace (arch/arm64/kernel/stacktrace.c:235)
->> [    5.086850] show_stack (arch/arm64/kernel/stacktrace.c:242)
->> [    5.090292] dump_stack_lvl (lib/dump_stack.c:107)
->> [    5.094095] dump_stack (lib/dump_stack.c:114)
->> [    5.097540] __ubsan_handle_shift_out_of_bounds (lib/ubsan.c:218 lib/ubsan.c:387)
->> [    5.103227] nwl_unmask_leg_irq (drivers/pci/controller/pcie-xilinx-nwl.c:389 (discriminator 1))
->> [    5.107386] irq_enable (kernel/irq/internals.h:234 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
->> [    5.110838] __irq_startup (kernel/irq/internals.h:239 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
->> [    5.114552] irq_startup (kernel/irq/chip.c:270)
->> [    5.118266] __setup_irq (kernel/irq/manage.c:1800)
->> [    5.121982] request_threaded_irq (kernel/irq/manage.c:2206)
->> [    5.126412] pcie_pme_probe (include/linux/interrupt.h:168 drivers/pci/pcie/pme.c:348)
-> 
-> The rest of the stacktrace below is not relevant and could be omitted.
-> The timestamps don't add useful information either.
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v2:
+- Fix the memory leak in a backportable patch and tag it for stable.
+- Refactor 1/3 with 3/3 as well.
+- Link to v1: https://lore.kernel.org/r/20240522-fwnode_for_each_available_child_node_scoped-v1-0-1188b0da12dc@gmail.com
 
-OK
+---
+Javier Carrasco (3):
+      hwmon: (ltc2992) Fix memory leak in ltc2992_parse_dt()
+      device property: introduce fwnode_for_each_available_child_node_scoped()
+      hwmon: (ltc2992) Use fwnode_for_each_available_child_node_scoped()
 
---Sean
+ drivers/hwmon/ltc2992.c  | 11 +++--------
+ include/linux/property.h |  5 +++++
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+---
+base-commit: 124cfbcd6d185d4f50be02d5f5afe61578916773
+change-id: 20240521-fwnode_for_each_available_child_node_scoped-8f1f09d3a10c
 
->> [    5.130303] pcie_port_probe_service (drivers/pci/pcie/portdrv.c:528)
->> [    5.134915] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
->> [    5.138720] __driver_probe_device (drivers/base/dd.c:800)
->> [    5.143236] driver_probe_device (drivers/base/dd.c:830)
->> [    5.147571] __device_attach_driver (drivers/base/dd.c:959)
->> [    5.152179] bus_for_each_drv (drivers/base/bus.c:457)
->> [    5.156163] __device_attach (drivers/base/dd.c:1032)
->> [    5.160147] device_initial_probe (drivers/base/dd.c:1080)
->> [    5.164488] bus_probe_device (drivers/base/bus.c:532)
->> [    5.168471] device_add (drivers/base/core.c:3638)
->> [    5.172098] device_register (drivers/base/core.c:3714)
->> [    5.175994] pcie_portdrv_probe (drivers/pci/pcie/portdrv.c:309 drivers/pci/pcie/portdrv.c:363 drivers/pci/pcie/portdrv.c:695)
->> [    5.180338] pci_device_probe (drivers/pci/pci-driver.c:324 drivers/pci/pci-driver.c:392 drivers/pci/pci-driver.c:417 drivers/pci/pci-driver.c:460)
->> [    5.184410] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
->> [    5.188213] __driver_probe_device (drivers/base/dd.c:800)
->> [    5.192729] driver_probe_device (drivers/base/dd.c:830)
->> [    5.197064] __device_attach_driver (drivers/base/dd.c:959)
->> [    5.201672] bus_for_each_drv (drivers/base/bus.c:457)
->> [    5.205657] __device_attach (drivers/base/dd.c:1032)
->> [    5.209641] device_attach (drivers/base/dd.c:1074)
->> [    5.213357] pci_bus_add_device (drivers/pci/bus.c:352)
->> [    5.217518] pci_bus_add_devices (drivers/pci/bus.c:371 (discriminator 2))
->> [    5.221774] pci_host_probe (drivers/pci/probe.c:3099)
->> [    5.225581] nwl_pcie_probe (drivers/pci/controller/pcie-xilinx-nwl.c:938)
->> [    5.229562] platform_probe (drivers/base/platform.c:1404)
->> [    5.233367] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
->> [    5.237169] __driver_probe_device (drivers/base/dd.c:800)
->> [    5.241685] driver_probe_device (drivers/base/dd.c:830)
->> [    5.246020] __device_attach_driver (drivers/base/dd.c:959)
->> [    5.250628] bus_for_each_drv (drivers/base/bus.c:457)
->> [    5.254612] __device_attach (drivers/base/dd.c:1032)
->> [    5.258596] device_initial_probe (drivers/base/dd.c:1080)
->> [    5.262938] bus_probe_device (drivers/base/bus.c:532)
->> [    5.266920] deferred_probe_work_func (drivers/base/dd.c:124)
->> [    5.271619] process_one_work (arch/arm64/include/asm/jump_label.h:21 include/linux/jump_label.h:207 include/trace/events/workqueue.h:108 kernel/workqueue.c:2632)
->> [    5.275788] worker_thread (kernel/workqueue.c:2694 (discriminator 2) kernel/workqueue.c:2781 (discriminator 2))
->> [    5.279686] kthread (kernel/kthread.c:388)
->> [    5.283048] ret_from_fork (arch/arm64/kernel/entry.S:862)
->> [    5.286765] ================================================================================
->> 
->> Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
->> ---
->> 
->> Changes in v3:
->> - Expand commit message
->> 
->>  drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->> 
->> diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
->> index 0408f4d612b5..437927e3bcca 100644
->> --- a/drivers/pci/controller/pcie-xilinx-nwl.c
->> +++ b/drivers/pci/controller/pcie-xilinx-nwl.c
->> @@ -371,7 +371,7 @@ static void nwl_mask_intx_irq(struct irq_data *data)
->>  	u32 mask;
->>  	u32 val;
->>  
->> -	mask = 1 << (data->hwirq - 1);
->> +	mask = 1 << data->hwirq;
->>  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
->>  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
->>  	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
->> @@ -385,7 +385,7 @@ static void nwl_unmask_intx_irq(struct irq_data *data)
->>  	u32 mask;
->>  	u32 val;
->>  
->> -	mask = 1 << (data->hwirq - 1);
->> +	mask = 1 << data->hwirq;
->>  	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
->>  	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
->>  	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
->> -- 
->> 2.35.1.1320.gc452695387.dirty
->> 
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
