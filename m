@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-45867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D908CD447
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11048CD36C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8ED81C2131C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C76428526B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C27E14AD17;
-	Thu, 23 May 2024 13:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AA11E4B0;
+	Thu, 23 May 2024 13:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSuWa+zs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hV9Loekg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2E113BAE2;
-	Thu, 23 May 2024 13:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE7A1E497;
+	Thu, 23 May 2024 13:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470591; cv=none; b=S00yLp8nMLPNOXIibBCShEB8SoaKd2eCPzGFSUO4rDkclInBoGLq0waoEDD2C+Mxm+7w8Ta7o9QPsWzAKl3NWZ0EQGyEAiknSq6hheSDsTuGdrUCvsF/2HYTQOgSWmXLbWOqgK87l0mhJHpgVm2mNhaat9q4cybVDxGfvsxSfr0=
+	t=1716470105; cv=none; b=VyxBrTjWgJZvrnlukYQ2kdyiP4P9q8sh9eyW8U3o+pAIKXIZLr9YRrWieKBCaYPNQCaHU0jN+cai7/anK4x8K3y5Ve/L7AiCs6b/NgFT/8gtoVPf8mGm0SspPU+wRRyXpZGSzoaoGn+E3R6qwrJ7NbaWNZPyRat7cjZL+d6FKVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470591; c=relaxed/simple;
-	bh=48CMA7ej+5xCb5+RqxJWPodp6uB/6oqlR9Aj+DuMV0k=;
+	s=arc-20240116; t=1716470105; c=relaxed/simple;
+	bh=sn3yw1QWvcTAilyXa7sywtAaOauc6GRRDvLXsQVlbTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZevBfPOEbmJG1xL7Xs1p73dmroRVjI5P0BvjQbjXONb6N/2RjxHrPeySBNbg26/UGUl4Duq0Yn8O8qxt7C/Hu4HFpwgXgZy1QD9XD4tXftef5kc7e+xJPNQcESo8eXXcfUHrnYyBt/t/o0/FltmecYYEGgAlrAOzqliyalm8lUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSuWa+zs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0EAC2BD10;
-	Thu, 23 May 2024 13:23:10 +0000 (UTC)
+	 MIME-Version; b=LxEVY1auJf6MbbiJivcrbRlPS7B9/++JpGOpNGFL0/NfEuYVNNVVlfjiKPMT1Cs6hGqSDPE+R1GwARzp2svu45hJIFx4Cg9RomqI3nDTSBs3REDUDm4Bjb91yd0bAHagHQXBqKqBGKQlkpQfg95tvBHWfwMheVfvnJptlOJ9Cpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hV9Loekg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C97C2BD10;
+	Thu, 23 May 2024 13:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470590;
-	bh=48CMA7ej+5xCb5+RqxJWPodp6uB/6oqlR9Aj+DuMV0k=;
+	s=korg; t=1716470105;
+	bh=sn3yw1QWvcTAilyXa7sywtAaOauc6GRRDvLXsQVlbTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSuWa+zs80OESiivi+j2a/3FGBACpBKArPPr1ztNPZXKNu+F93Zzh5jXop7h1erxx
-	 QhgxBmc3a1thuT3al3UEHxV5kNSo/Ooq4rDUGKuLECnzPyvRyYjUwDvIqsZa/M/YbM
-	 F3uBRFQqlQGSuwvdQ6Vn8mNp70NFmMY/LvsAJlII=
+	b=hV9LoekgV5Rc7L8ZJkV+N86v6/c/CKUSe+SGGzUnbFV8Mkl7Mq5yd8SHsmBTmnFIl
+	 PU4gR3NZnlzku4gnuQlpeZWkpBOR8QfSr8BdzrEvpdGu3fDSEZ6MWvD/4KSAo2HW7n
+	 YoB9xvKB8yNq6VjzmVq0CVEn2I4iEAfwJRFz+cvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/102] smb3: more minor cleanups for session handling routines
+	Tom Zanussi <zanussi@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+	George Guo <guodongtai@kylinos.cn>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Joe Perches <joe@perches.com>,
+	Andreas Schwab <schwab@linux-m68k.org>
+Subject: [PATCH 4.19 09/18] string.h: Add str_has_prefix() helper function
 Date: Thu, 23 May 2024 15:12:32 +0200
-Message-ID: <20240523130342.743341536@linuxfoundation.org>
+Message-ID: <20240523130326.087206848@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
+References: <20240523130325.727602650@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +66,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 
-[ Upstream commit 1bc081b67a79b6e75fae686e98048cea1038ae31 ]
+commit 72921427d46bf9731a1ab7864adc64c43dfae29f upstream.
 
-Some trivial cleanup pointed out by checkpatch
+A discussion came up in the trace triggers thread about converting a
+bunch of:
 
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ strncmp(str, "const", sizeof("const") - 1)
+
+use cases into a helper macro. It started with:
+
+	strncmp(str, const, sizeof(const) - 1)
+
+But then Joe Perches mentioned that if a const is not used, the
+sizeof() will be the size of a pointer, which can be bad. And that
+gcc will optimize strlen("const") into "sizeof("const") - 1".
+
+Thinking about this more, a quick grep in the kernel tree found several
+(thousands!) of cases that use this construct. A quick grep also
+revealed that there's probably several bugs in that use case. Some are
+that people forgot the "- 1" (which I found) and others could be that
+the constant for the sizeof is different than the constant (although, I
+haven't found any of those, but I also didn't look hard).
+
+I figured the best thing to do is to create a helper macro and place it
+into include/linux/string.h. And go around and fix all the open coded
+versions of it later.
+
+Note, gcc appears to optimize this when we make it into an always_inline
+static function, which removes a lot of issues that a macro produces.
+
+Link: http://lkml.kernel.org/r/e3e754f2bd18e56eaa8baf79bee619316ebf4cfc.1545161087.git.tom.zanussi@linux.intel.com
+Link: http://lkml.kernel.org/r/20181219211615.2298e781@gandalf.local.home
+Link: http://lkml.kernel.org/r/CAHk-=wg_sR-UEC1ggmkZpypOUYanL5CMX4R7ceuaV4QMf5jBtg@mail.gmail.com
+
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Suggestions-by: Linus Torvalds <torvalds@linux-foundation.org>
+Suggestions-by: Joe Perches <joe@perches.com>
+Suggestions-by: Andreas Schwab <schwab@linux-m68k.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: George Guo <guodongtai@kylinos.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/sess.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ include/linux/string.h |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index bd4dcd1a9af83..70a53dde83eec 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -801,8 +801,7 @@ static void ascii_ssetup_strings(char **pbcc_area, struct cifs_ses *ses,
- 		if (WARN_ON_ONCE(len < 0))
- 			len = CIFS_MAX_DOMAINNAME_LEN - 1;
- 		bcc_ptr += len;
--	} /* else we will send a null domain name
--	     so the server will default to its own domain */
-+	} /* else we send a null domain name so server will default to its own domain */
- 	*bcc_ptr = 0;
- 	bcc_ptr++;
- 
-@@ -898,11 +897,14 @@ static void decode_ascii_ssetup(char **pbcc_area, __u16 bleft,
- 	if (len > bleft)
- 		return;
- 
--	/* No domain field in LANMAN case. Domain is
--	   returned by old servers in the SMB negprot response */
--	/* BB For newer servers which do not support Unicode,
--	   but thus do return domain here we could add parsing
--	   for it later, but it is not very important */
-+	/*
-+	 * No domain field in LANMAN case. Domain is
-+	 * returned by old servers in the SMB negprot response
-+	 *
-+	 * BB For newer servers which do not support Unicode,
-+	 * but thus do return domain here, we could add parsing
-+	 * for it later, but it is not very important
-+	 */
- 	cifs_dbg(FYI, "ascii: bytes left %d\n", bleft);
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -492,4 +492,24 @@ static inline void memcpy_and_pad(void *
+ 		memcpy(dest, src, dest_len);
  }
- #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
-@@ -958,9 +960,12 @@ int decode_ntlmssp_challenge(char *bcc_ptr, int blob_len,
- 	ses->ntlmssp->server_flags = server_flags;
  
- 	memcpy(ses->ntlmssp->cryptkey, pblob->Challenge, CIFS_CRYPTO_KEY_SIZE);
--	/* In particular we can examine sign flags */
--	/* BB spec says that if AvId field of MsvAvTimestamp is populated then
--		we must set the MIC field of the AUTHENTICATE_MESSAGE */
-+	/*
-+	 * In particular we can examine sign flags
-+	 *
-+	 * BB spec says that if AvId field of MsvAvTimestamp is populated then
-+	 * we must set the MIC field of the AUTHENTICATE_MESSAGE
-+	 */
- 
- 	tioffset = le32_to_cpu(pblob->TargetInfoArray.BufferOffset);
- 	tilen = le16_to_cpu(pblob->TargetInfoArray.Length);
--- 
-2.43.0
-
++/**
++ * str_has_prefix - Test if a string has a given prefix
++ * @str: The string to test
++ * @prefix: The string to see if @str starts with
++ *
++ * A common way to test a prefix of a string is to do:
++ *  strncmp(str, prefix, sizeof(prefix) - 1)
++ *
++ * But this can lead to bugs due to typos, or if prefix is a pointer
++ * and not a constant. Instead use str_has_prefix().
++ *
++ * Returns: 0 if @str does not start with @prefix
++         strlen(@prefix) if @str does start with @prefix
++ */
++static __always_inline size_t str_has_prefix(const char *str, const char *prefix)
++{
++	size_t len = strlen(prefix);
++	return strncmp(str, prefix, len) == 0 ? len : 0;
++}
++
+ #endif /* _LINUX_STRING_H_ */
 
 
 
