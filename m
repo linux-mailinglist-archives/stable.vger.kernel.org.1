@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089738CD436
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BE98CD4B1
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39A891C20F35
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB86C1F2283B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E9714BFB4;
-	Thu, 23 May 2024 13:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AA114532F;
+	Thu, 23 May 2024 13:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mR40ZFQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFTlpxPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC4514B950;
-	Thu, 23 May 2024 13:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DC91D545;
+	Thu, 23 May 2024 13:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470550; cv=none; b=qizfZvemPTk5m+2FAOqpwjwXdpDrApFg/kGz4ugBqnCmSW/UHHn3gnnyESA/YbkZPWPdXS7BHWZbOhwRDfr8/MdJOPZLCmoTORpnYCdotfz9lySaVQkNd5WJVPZy+fuRxhBLg8GF8VKvuJaP/lOmESpuuvG5iuKTeQ26CpttUME=
+	t=1716470826; cv=none; b=mvqkoK2Q1IosFBcnYAXfXja2/yy0Xu7R3YDzv+JRiX4UVTK+rBT7mVev9nTA118boE3BjYkP6O91L5cQU4XWg8nFin2ts8Vm17Gx3kVvjhooCimQR8OBa2wm9ofi2PFAbnln4QPWavqKk8MUpG3vkWFRbjCkgypiR6IZ46C22/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470550; c=relaxed/simple;
-	bh=/eX/OjUCZzFP9fLRXekoLokrxJyQUrAbYz9L08Oas9o=;
+	s=arc-20240116; t=1716470826; c=relaxed/simple;
+	bh=kPpELrsGhxluGZL4uadPiTpkPqMcmsM8Hm3FHQ7wfhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=albfz5+I7ISvKH7FE9A2kPu1uEIANuco4CD+e8XSq9VM7J6bGcRIpfaZO25NSxIc+0mSVx6XtOiWjrYkdI+/OOswvF0i8tEoXL9yvuLRSkLQRJkTNaxYWEUTJ22QFxoycB38P7XhvLYPUgle7dR005xOY5GZhvEVjdL3aRkJFbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mR40ZFQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE20CC3277B;
-	Thu, 23 May 2024 13:22:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=letkpbzhmWE0iiwwscaPoTx9+MmWMrGCgvbyl8vG1WUlQ7jQgkuU5NO0hr/alS1IqN1H6M+mZVlhRLJOdWAGvJ5wtQEDTXqicbsF40lNHCj/zCw706TzRDTu+tS0GuG1Kge1y7QsKJZz/wLlrppJjGbgk493+dhLLqmpbisQQ+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFTlpxPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45494C3277B;
+	Thu, 23 May 2024 13:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470550;
-	bh=/eX/OjUCZzFP9fLRXekoLokrxJyQUrAbYz9L08Oas9o=;
+	s=korg; t=1716470826;
+	bh=kPpELrsGhxluGZL4uadPiTpkPqMcmsM8Hm3FHQ7wfhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mR40ZFQbBjH1zY5yOJROACJR3KoZ2zGsUZHqYTGDKR+ErZnXL2XctkJZLQfdgnkDX
-	 BNjlIcyS4xFIIOr65rD1PPpsugS55oSpX9xITvIH8L0TOJfL36/Ir6+9tveYrGbbmS
-	 t4IPoGa2QbvmQCAGVsovcHmVQVTMSz1SIxKOuzAw=
+	b=nFTlpxPNEQpJ7pEA+JLnCqlHg++ikwzGhARVTFGeQkJk7wjzwCxQKUllyQxTnIlEo
+	 WRKxuXp90Vwns4SslTPT7vPx/QsBNJ75fHHMm9Ic+pnitORPmADh929pBpmMFIqUcm
+	 edPXvwa0x+P8k7uP4yP0YtEPkXIHsiWDbeeGq96g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.8 22/23] block: add a disk_has_partscan helper
+	Mengqi Zhang <mengqi.zhang@mediatek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Lin=20Gui=20 ?= <Lin.Gui@mediatek.com>
+Subject: [PATCH 6.6 084/102] mmc: core: Add HS400 tuning in HS400es initialization
 Date: Thu, 23 May 2024 15:13:49 +0200
-Message-ID: <20240523130330.588688366@linuxfoundation.org>
+Message-ID: <20240523130345.638587856@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
-References: <20240523130329.745905823@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,90 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Mengqi Zhang <mengqi.zhang@mediatek.com>
 
-commit 140ce28dd3bee8e53acc27f123ae474d69ef66f0 upstream.
+commit 77e01b49e35f24ebd1659096d5fc5c3b75975545 upstream.
 
-Add a helper to check if partition scanning is enabled instead of
-open coding the check in a few places.  This now always checks for
-the hidden flag even if all but one of the callers are never reachable
-for hidden gendisks.
+During the initialization to HS400es stage, add a HS400 tuning flow as an
+optional process. For Mediatek IP, the HS400es mode requires a specific
+tuning to ensure the correct HS400 timing setting.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240502130033.1958492-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Mengqi Zhang <mengqi.zhang@mediatek.com>
+Link: https://lore.kernel.org/r/20231225093839.22931-2-mengqi.zhang@mediatek.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: "Lin Gui (桂林)" <Lin.Gui@mediatek.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/genhd.c           |    7 ++-----
- block/partitions/core.c |    5 +----
- include/linux/blkdev.h  |   13 +++++++++++++
- 3 files changed, 16 insertions(+), 9 deletions(-)
+ drivers/mmc/core/mmc.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -345,9 +345,7 @@ int disk_scan_partitions(struct gendisk
- 	struct bdev_handle *handle;
- 	int ret = 0;
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -1819,8 +1819,13 @@ static int mmc_init_card(struct mmc_host
  
--	if (disk->flags & (GENHD_FL_NO_PART | GENHD_FL_HIDDEN))
--		return -EINVAL;
--	if (test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
-+	if (!disk_has_partscan(disk))
- 		return -EINVAL;
- 	if (disk->open_partitions)
- 		return -EBUSY;
-@@ -503,8 +501,7 @@ int __must_check device_add_disk(struct
- 			goto out_unregister_bdi;
- 
- 		/* Make sure the first partition scan will be proceed */
--		if (get_capacity(disk) && !(disk->flags & GENHD_FL_NO_PART) &&
--		    !test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
-+		if (get_capacity(disk) && disk_has_partscan(disk))
- 			set_bit(GD_NEED_PART_SCAN, &disk->state);
- 
- 		bdev_add(disk->part0, ddev->devt);
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -584,10 +584,7 @@ static int blk_add_partitions(struct gen
- 	struct parsed_partitions *state;
- 	int ret = -EAGAIN, p;
- 
--	if (disk->flags & GENHD_FL_NO_PART)
--		return 0;
+ 		if (err)
+ 			goto free_card;
 -
--	if (test_bit(GD_SUPPRESS_PART_SCAN, &disk->state))
-+	if (!disk_has_partscan(disk))
- 		return 0;
- 
- 	state = check_partition(disk);
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -233,6 +233,19 @@ static inline unsigned int disk_openers(
- 	return atomic_read(&disk->part0->bd_openers);
- }
- 
-+/**
-+ * disk_has_partscan - return %true if partition scanning is enabled on a disk
-+ * @disk: disk to check
-+ *
-+ * Returns %true if partitions scanning is enabled for @disk, or %false if
-+ * partition scanning is disabled either permanently or temporarily.
-+ */
-+static inline bool disk_has_partscan(struct gendisk *disk)
-+{
-+	return !(disk->flags & (GENHD_FL_NO_PART | GENHD_FL_HIDDEN)) &&
-+		!test_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
-+}
-+
- /*
-  * The gendisk is refcounted by the part0 block_device, and the bd_device
-  * therein is also used for device model presentation in sysfs.
+-	} else if (!mmc_card_hs400es(card)) {
++	} else if (mmc_card_hs400es(card)) {
++		if (host->ops->execute_hs400_tuning) {
++			err = host->ops->execute_hs400_tuning(host, card);
++			if (err)
++				goto free_card;
++		}
++	} else {
+ 		/* Select the desired bus width optionally */
+ 		err = mmc_select_bus_width(card);
+ 		if (err > 0 && mmc_card_hs(card)) {
 
 
 
