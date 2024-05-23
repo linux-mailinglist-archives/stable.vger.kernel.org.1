@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-45731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8628CD39A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D188CD386
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C9DA1F2492B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2448F281604
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E1814B95A;
-	Thu, 23 May 2024 13:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D63913B7AE;
+	Thu, 23 May 2024 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCsEOz+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xt/NVljr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29BB14B955;
-	Thu, 23 May 2024 13:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD2814A4DF;
+	Thu, 23 May 2024 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470200; cv=none; b=mxCB9/mqm4Y1gTu42CzRV0SYVCLN3Z2nZsLXXO3p4EUkw/bD0t85PEBj5YNm6kaaizaxlVePZNPBUTpjKy2zDSNuUZHg6VQNcublqzyEO71Vb/vk4Ab6Ttd5wOhJGMuZhIoHGYPBla20gg0DKhvq9+RTvpzqqSSmjJ9D8XxueZY=
+	t=1716470160; cv=none; b=E0nOObZYwiyiSDQAvcBGYKyb7iKbxsNS2ilCMw5fVXKVivBlagh+LgC+2NuLd5BUP0ZUlwoiB4EK/MBcVVpnxVmtrOmRj4SuScbKvopjMBRr/eTx6xFrc9rYg1Tag+ovyFrmHV6IyJHytYqllV0uw1A/83JxeD5oJshetpw6e8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470200; c=relaxed/simple;
-	bh=coHV7cK9U7GffXQ0kq2o2gTUQBGK8YuQV6blCCWmoUk=;
+	s=arc-20240116; t=1716470160; c=relaxed/simple;
+	bh=pzMwzv6sFCf/5Ejvtn6ejTxGWgM9yUjsIfnF8r+RJcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ten48e/ehCQxD1YKdwX2kDvuAwKWflE3G+OO8KgpQFg4+dUYeF1pqCOH/7jrrOgCdo33tnHaQgldYQT0i84zoflg1xOOGt6dG7lhK2N+7FVmITHmz5XAFiuRzmmvePjj3OGalXuKUAFnoMLKGJaVPPkk1yN4vRuELbW/u0R9NxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCsEOz+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D61C32782;
-	Thu, 23 May 2024 13:16:39 +0000 (UTC)
+	 MIME-Version; b=sJqaYGVipx9u8Q1X8Or+zfwu3a35S+Ql7kjnqdHFgHCzJYU54F7vq//5C4n6KTa5dHyJpS2MU3r+8wUuoLD3glbuBqOoiVGwEDfa5ExJxwfOvYtLM9ltQrXcXEnQ5s5r6RN4p7WQHfMr1uAiDZJbdOP8wj8B3OSRooRi3dlRfpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xt/NVljr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8781BC2BD10;
+	Thu, 23 May 2024 13:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470199;
-	bh=coHV7cK9U7GffXQ0kq2o2gTUQBGK8YuQV6blCCWmoUk=;
+	s=korg; t=1716470159;
+	bh=pzMwzv6sFCf/5Ejvtn6ejTxGWgM9yUjsIfnF8r+RJcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCsEOz+qPCws3BaMLHNAwKl1Tt1i02OlfpQUM/8Ym68YCpzw2dsiQ3NP59iONsiJu
-	 6Asf5Fu7Ce4hSvsBjA8h7BAuzXQCkWXYgRlKGUgGLpldRLhWX6gYIFy8QqQSd+E+yS
-	 uyWGnBFhjEH2VZpz25i4jN33dkV3bJ+zcS6V8Bkc=
+	b=xt/NVljrDYlvdp5Llmaj1a7gicCNXB4mIjkGuVaiSi1I22OLVlp+R2hGuDz/pzd1U
+	 YuisREfWoOFZGB71Vq+vsb2abQNRblX4f+8+RI04mQ6zkEV67mCL69Qya7Yh/bI8ch
+	 IqKGVMNUBdGXRyoGRyu/oZ8O09ixPd42bXlzel9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	liqiong <liqiong@nfschina.com>,
-	THOBY Simon <Simon.THOBY@viveris.fr>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	GUO Zihua <guozihua@huawei.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH 5.10 06/15] ima: fix deadlock when traversing "ima_default_rules".
+	Liuye <liu.yeC@h3c.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>
+Subject: [PATCH 5.4 15/16] serial: kgdboc: Fix NMI-safety problems from keyboard reset code
 Date: Thu, 23 May 2024 15:12:48 +0200
-Message-ID: <20240523130326.696422945@linuxfoundation.org>
+Message-ID: <20240523130326.320872856@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
-References: <20240523130326.451548488@linuxfoundation.org>
+In-Reply-To: <20240523130325.743454852@linuxfoundation.org>
+References: <20240523130325.743454852@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: liqiong <liqiong@nfschina.com>
+From: Daniel Thompson <daniel.thompson@linaro.org>
 
-commit eb0782bbdfd0d7c4786216659277c3fd585afc0e upstream.
+commit b2aba15ad6f908d1a620fd97f6af5620c3639742 upstream.
 
-The current IMA ruleset is identified by the variable "ima_rules"
-that default to "&ima_default_rules". When loading a custom policy
-for the first time, the variable is updated to "&ima_policy_rules"
-instead. That update isn't RCU-safe, and deadlocks are possible.
-Indeed, some functions like ima_match_policy() may loop indefinitely
-when traversing "ima_default_rules" with list_for_each_entry_rcu().
+Currently, when kdb is compiled with keyboard support, then we will use
+schedule_work() to provoke reset of the keyboard status.  Unfortunately
+schedule_work() gets called from the kgdboc post-debug-exception
+handler.  That risks deadlock since schedule_work() is not NMI-safe and,
+even on platforms where the NMI is not directly used for debugging, the
+debug trap can have NMI-like behaviour depending on where breakpoints
+are placed.
 
-When iterating over the default ruleset back to head, if the list
-head is "ima_default_rules", and "ima_rules" have been updated to
-"&ima_policy_rules", the loop condition (&entry->list != ima_rules)
-stays always true, traversing won't terminate, causing a soft lockup
-and RCU stalls.
+Fix this by using the irq work system, which is NMI-safe, to defer the
+call to schedule_work() to a point when it is safe to call.
 
-Introduce a temporary value for "ima_rules" when iterating over
-the ruleset to avoid the deadlocks.
-
-Signed-off-by: liqiong <liqiong@nfschina.com>
-Reviewed-by: THOBY Simon <Simon.THOBY@viveris.fr>
-Fixes: 38d859f991f3 ("IMA: policy can now be updated multiple times")
-Reported-by: kernel test robot <lkp@intel.com> (Fix sparse: incompatible types in comparison expression.)
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: GUO Zihua <guozihua@huawei.com>
+Reported-by: Liuye <liu.yeC@h3c.com>
+Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
+Cc: stable@vger.kernel.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240424-kgdboc_fix_schedule_work-v2-1-50f5a490aec5@linaro.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/ima_policy.c |   29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/tty/serial/kgdboc.c |   30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -210,7 +210,7 @@ static struct ima_rule_entry *arch_polic
- static LIST_HEAD(ima_default_rules);
- static LIST_HEAD(ima_policy_rules);
- static LIST_HEAD(ima_temp_rules);
--static struct list_head *ima_rules = &ima_default_rules;
-+static struct list_head __rcu *ima_rules = (struct list_head __rcu *)(&ima_default_rules);
+--- a/drivers/tty/serial/kgdboc.c
++++ b/drivers/tty/serial/kgdboc.c
+@@ -19,6 +19,7 @@
+ #include <linux/console.h>
+ #include <linux/vt_kern.h>
+ #include <linux/input.h>
++#include <linux/irq_work.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
  
- static int ima_policy __initdata;
+@@ -42,6 +43,25 @@ static int			kgdb_tty_line;
  
-@@ -648,12 +648,14 @@ int ima_match_policy(struct inode *inode
+ static struct platform_device *kgdboc_pdev;
+ 
++/*
++ * When we leave the debug trap handler we need to reset the keyboard status
++ * (since the original keyboard state gets partially clobbered by kdb use of
++ * the keyboard).
++ *
++ * The path to deliver the reset is somewhat circuitous.
++ *
++ * To deliver the reset we register an input handler, reset the keyboard and
++ * then deregister the input handler. However, to get this done right, we do
++ * have to carefully manage the calling context because we can only register
++ * input handlers from task context.
++ *
++ * In particular we need to trigger the action from the debug trap handler with
++ * all its NMI and/or NMI-like oddities. To solve this the kgdboc trap exit code
++ * (the "post_exception" callback) uses irq_work_queue(), which is NMI-safe, to
++ * schedule a callback from a hardirq context. From there we have to defer the
++ * work again, this time using schedule_work(), to get a callback using the
++ * system workqueue, which runs in task context.
++ */
+ #ifdef CONFIG_KDB_KEYBOARD
+ static int kgdboc_reset_connect(struct input_handler *handler,
+ 				struct input_dev *dev,
+@@ -93,10 +113,17 @@ static void kgdboc_restore_input_helper(
+ 
+ static DECLARE_WORK(kgdboc_restore_input_work, kgdboc_restore_input_helper);
+ 
++static void kgdboc_queue_restore_input_helper(struct irq_work *unused)
++{
++	schedule_work(&kgdboc_restore_input_work);
++}
++
++static DEFINE_IRQ_WORK(kgdboc_restore_input_irq_work, kgdboc_queue_restore_input_helper);
++
+ static void kgdboc_restore_input(void)
  {
- 	struct ima_rule_entry *entry;
- 	int action = 0, actmask = flags | (flags << 1);
-+	struct list_head *ima_rules_tmp;
- 
- 	if (template_desc)
- 		*template_desc = ima_template_desc_current();
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(entry, ima_rules, list) {
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 
- 		if (!(entry->action & actmask))
- 			continue;
-@@ -701,11 +703,15 @@ int ima_match_policy(struct inode *inode
- void ima_update_policy_flag(void)
- {
- 	struct ima_rule_entry *entry;
-+	struct list_head *ima_rules_tmp;
- 
--	list_for_each_entry(entry, ima_rules, list) {
-+	rcu_read_lock();
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 		if (entry->action & IMA_DO_MASK)
- 			ima_policy_flag |= entry->action;
- 	}
-+	rcu_read_unlock();
- 
- 	ima_appraise |= (build_ima_appraise | temp_ima_appraise);
- 	if (!ima_appraise)
-@@ -898,10 +904,10 @@ void ima_update_policy(void)
- 
- 	list_splice_tail_init_rcu(&ima_temp_rules, policy, synchronize_rcu);
- 
--	if (ima_rules != policy) {
-+	if (ima_rules != (struct list_head __rcu *)policy) {
- 		ima_policy_flag = 0;
--		ima_rules = policy;
- 
-+		rcu_assign_pointer(ima_rules, policy);
- 		/*
- 		 * IMA architecture specific policy rules are specified
- 		 * as strings and converted to an array of ima_entry_rules
-@@ -989,7 +995,7 @@ static int ima_lsm_rule_init(struct ima_
- 		pr_warn("rule for LSM \'%s\' is undefined\n",
- 			entry->lsm[lsm_rule].args_p);
- 
--		if (ima_rules == &ima_default_rules) {
-+		if (ima_rules == (struct list_head __rcu *)(&ima_default_rules)) {
- 			kfree(entry->lsm[lsm_rule].args_p);
- 			entry->lsm[lsm_rule].args_p = NULL;
- 			result = -EINVAL;
-@@ -1598,9 +1604,11 @@ void *ima_policy_start(struct seq_file *
- {
- 	loff_t l = *pos;
- 	struct ima_rule_entry *entry;
-+	struct list_head *ima_rules_tmp;
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(entry, ima_rules, list) {
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 		if (!l--) {
- 			rcu_read_unlock();
- 			return entry;
-@@ -1619,7 +1627,8 @@ void *ima_policy_next(struct seq_file *m
- 	rcu_read_unlock();
- 	(*pos)++;
- 
--	return (&entry->list == ima_rules) ? NULL : entry;
-+	return (&entry->list == &ima_default_rules ||
-+		&entry->list == &ima_policy_rules) ? NULL : entry;
+ 	if (likely(system_state == SYSTEM_RUNNING))
+-		schedule_work(&kgdboc_restore_input_work);
++		irq_work_queue(&kgdboc_restore_input_irq_work);
  }
  
- void ima_policy_stop(struct seq_file *m, void *v)
-@@ -1823,6 +1832,7 @@ bool ima_appraise_signature(enum kernel_
- 	struct ima_rule_entry *entry;
- 	bool found = false;
- 	enum ima_hooks func;
-+	struct list_head *ima_rules_tmp;
- 
- 	if (id >= READING_MAX_ID)
- 		return false;
-@@ -1834,7 +1844,8 @@ bool ima_appraise_signature(enum kernel_
- 	func = read_idmap[id] ?: FILE_CHECK;
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(entry, ima_rules, list) {
-+	ima_rules_tmp = rcu_dereference(ima_rules);
-+	list_for_each_entry_rcu(entry, ima_rules_tmp, list) {
- 		if (entry->action != APPRAISE)
- 			continue;
- 
+ static int kgdboc_register_kbd(char **cptr)
+@@ -127,6 +154,7 @@ static void kgdboc_unregister_kbd(void)
+ 			i--;
+ 		}
+ 	}
++	irq_work_sync(&kgdboc_restore_input_irq_work);
+ 	flush_work(&kgdboc_restore_input_work);
+ }
+ #else /* ! CONFIG_KDB_KEYBOARD */
 
 
 
