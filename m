@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-45743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE8A8CD3A8
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AE98CD39B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEA9C1C229E4
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82E3F2831FB
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13591E4B0;
-	Thu, 23 May 2024 13:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F30C14AD25;
+	Thu, 23 May 2024 13:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1MSD8Gf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg4h5o1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D71613C66A;
-	Thu, 23 May 2024 13:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF52C14A634;
+	Thu, 23 May 2024 13:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470234; cv=none; b=slcYJI1wGLQEp2DjfY9qY1EvOksb9BxatihAMfUJp6Tk2zhrmgYQTz97Ft9ByIbAtahfG1wmuzWrX2znGs8+STMFB98zN/7EIiAddNd8tQowJIqLFVBju7jdERMXoIu5ZnDi05IJtOUYt45CaIVGicjfEWUGNQfSOMN90BZ+res=
+	t=1716470202; cv=none; b=Y+JSRovNk2unueEK8Y5nPr4Mym7/dfE9LeRCamNYLipSL6I0IDbOAhpGrCOlYWJaZ/tAieGSxSstc1TtCTjrVK6/tWJtjK+tHf1BVVYZas8ZOFa7cylqnVGmSfPpM0dXSux8YyNnjmDoUQxEzKSkhKNtVSwE966zDTTqaRvduwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470234; c=relaxed/simple;
-	bh=Xr5W1Y1vcss3vrjxFVUhmrsrP7AGCd8irn6EFmxERiQ=;
+	s=arc-20240116; t=1716470202; c=relaxed/simple;
+	bh=VylK7EqrcXpIvDC74OQMzKS/2IsPFBOjqKML2obJmZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OC3vmjd+Rtb4cuUXc5POdi0U305hSku8eGeuxWfShigFsL1JvfCIV14nxgRcHl2qSDyqWqxvrhlAGxlsQqI1emn18vv2IgwoWYCoTX7p+a3CVoKqbLWKnCu5+vOzw6/qX6u/bU6bV2t3X3xkaTwnlG/3R3u9sxvqfPU7eN28m2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1MSD8Gf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB4CC3277B;
-	Thu, 23 May 2024 13:17:13 +0000 (UTC)
+	 MIME-Version; b=s4iaDBkVinUbXaCtjmaJrjvgsNepnKgO7kFuO6MEN+2y3/q7sEnygJphAnAPIUq2GEv9lF4RzRf29Z/Paj0nfyORsmiNMzR3gOrHa+shhT+kLSEJxFsegGyqZOOgGR7BdfPuzW7NzMDJGdSFdyA/WJNJQ96CsEtgWNXhTPBdPTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg4h5o1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581AAC2BD10;
+	Thu, 23 May 2024 13:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470234;
-	bh=Xr5W1Y1vcss3vrjxFVUhmrsrP7AGCd8irn6EFmxERiQ=;
+	s=korg; t=1716470202;
+	bh=VylK7EqrcXpIvDC74OQMzKS/2IsPFBOjqKML2obJmZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1MSD8GfEDAAc37LCOwKJ9QtetUz8CBqCyq7gWHLxxZ+pSyg4hzD0uf2NGIQEObT0
-	 EVZMmxPBGvDioGfTKElditvfL8D7fIAxIf64TmN6gDJyPN3ClAV5W/3/5WYlL9vOtT
-	 KOj+zxYCE0tjCBnlxkQyFnFmEOwKZ8d/0RrIy1wc=
+	b=tg4h5o1rzarAVaC7Z/qb2jWKd+IuOKIQ6j+bcgJf0S4g3BGM6wyeu71bcK+LmGxB4
+	 sba5yr/bjl5/WhPq9KXqtKUEaTjUf72RsJfD9gikgmqpxu5/At2P2gIycZfa4h/JHu
+	 9jbVqqmQUyh1k0IvaKm9lw2jHYgcnwhhLULzW6YY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Jose Fernandez <josef@netflix.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Limonciello, Mario" <mario.limonciello@amd.com>
-Subject: [PATCH 6.9 04/25] drm/amd/display: Fix division by zero in setup_dsc_config
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"yenchia.chen" <yenchia.chen@mediatek.com>
+Subject: [PATCH 5.10 07/15] netlink: annotate lockless accesses to nlk->max_recvmsg_len
 Date: Thu, 23 May 2024 15:12:49 +0200
-Message-ID: <20240523130330.552973276@linuxfoundation.org>
+Message-ID: <20240523130326.734443380@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
+References: <20240523130326.451548488@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Fernandez <josef@netflix.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 130afc8a886183a94cf6eab7d24f300014ff87ba upstream.
+commit a1865f2e7d10dde00d35a2122b38d2e469ae67ed upstream.
 
-When slice_height is 0, the division by slice_height in the calculation
-of the number of slices will cause a division by zero driver crash. This
-leaves the kernel in a state that requires a reboot. This patch adds a
-check to avoid the division by zero.
+syzbot reported a data-race in data-race in netlink_recvmsg() [1]
 
-The stack trace below is for the 6.8.4 Kernel. I reproduced the issue on
-a Z16 Gen 2 Lenovo Thinkpad with a Apple Studio Display monitor
-connected via Thunderbolt. The amdgpu driver crashed with this exception
-when I rebooted the system with the monitor connected.
+Indeed, netlink_recvmsg() can be run concurrently,
+and netlink_dump() also needs protection.
 
-kernel: ? die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434 arch/x86/kernel/dumpstack.c:447)
-kernel: ? do_trap (arch/x86/kernel/traps.c:113 arch/x86/kernel/traps.c:154)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? do_error_trap (./arch/x86/include/asm/traps.h:58 arch/x86/kernel/traps.c:175)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? exc_divide_error (arch/x86/kernel/traps.c:194 (discriminator 2))
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? asm_exc_divide_error (./arch/x86/include/asm/idtentry.h:548)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: dc_dsc_compute_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1109) amdgpu
+[1]
+BUG: KCSAN: data-race in netlink_recvmsg / netlink_recvmsg
 
-After applying this patch, the driver no longer crashes when the monitor
-is connected and the system is rebooted. I believe this is the same
-issue reported for 3113.
+read to 0xffff888141840b38 of 8 bytes by task 23057 on cpu 0:
+netlink_recvmsg+0xea/0x730 net/netlink/af_netlink.c:1988
+sock_recvmsg_nosec net/socket.c:1017 [inline]
+sock_recvmsg net/socket.c:1038 [inline]
+__sys_recvfrom+0x1ee/0x2e0 net/socket.c:2194
+__do_sys_recvfrom net/socket.c:2212 [inline]
+__se_sys_recvfrom net/socket.c:2208 [inline]
+__x64_sys_recvfrom+0x78/0x90 net/socket.c:2208
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Jose Fernandez <josef@netflix.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3113
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Limonciello, Mario" <mario.limonciello@amd.com>
+write to 0xffff888141840b38 of 8 bytes by task 23037 on cpu 1:
+netlink_recvmsg+0x114/0x730 net/netlink/af_netlink.c:1989
+sock_recvmsg_nosec net/socket.c:1017 [inline]
+sock_recvmsg net/socket.c:1038 [inline]
+____sys_recvmsg+0x156/0x310 net/socket.c:2720
+___sys_recvmsg net/socket.c:2762 [inline]
+do_recvmmsg+0x2e5/0x710 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0xe2/0x160 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x0000000000000000 -> 0x0000000000001000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 23037 Comm: syz-executor.2 Not tainted 6.3.0-rc4-syzkaller-00195-g5a57b48fdfcb #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
+
+Fixes: 9063e21fb026 ("netlink: autosize skb lengthes")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230403214643.768555-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: yenchia.chen <yenchia.chen@mediatek.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/netlink/af_netlink.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-@@ -1055,7 +1055,12 @@ static bool setup_dsc_config(
- 	if (!is_dsc_possible)
- 		goto done;
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1927,7 +1927,7 @@ static int netlink_recvmsg(struct socket
+ 	struct sock *sk = sock->sk;
+ 	struct netlink_sock *nlk = nlk_sk(sk);
+ 	int noblock = flags & MSG_DONTWAIT;
+-	size_t copied;
++	size_t copied, max_recvmsg_len;
+ 	struct sk_buff *skb, *data_skb;
+ 	int err, ret;
  
--	dsc_cfg->num_slices_v = pic_height/slice_height;
-+	if (slice_height > 0) {
-+		dsc_cfg->num_slices_v = pic_height / slice_height;
-+	} else {
-+		is_dsc_possible = false;
-+		goto done;
-+	}
+@@ -1960,9 +1960,10 @@ static int netlink_recvmsg(struct socket
+ #endif
  
- 	if (target_bandwidth_kbps > 0) {
- 		is_dsc_possible = decide_dsc_target_bpp_x16(
+ 	/* Record the max length of recvmsg() calls for future allocations */
+-	nlk->max_recvmsg_len = max(nlk->max_recvmsg_len, len);
+-	nlk->max_recvmsg_len = min_t(size_t, nlk->max_recvmsg_len,
+-				     SKB_WITH_OVERHEAD(32768));
++	max_recvmsg_len = max(READ_ONCE(nlk->max_recvmsg_len), len);
++	max_recvmsg_len = min_t(size_t, max_recvmsg_len,
++				SKB_WITH_OVERHEAD(32768));
++	WRITE_ONCE(nlk->max_recvmsg_len, max_recvmsg_len);
+ 
+ 	copied = data_skb->len;
+ 	if (len < copied) {
+@@ -2211,6 +2212,7 @@ static int netlink_dump(struct sock *sk)
+ 	struct netlink_ext_ack extack = {};
+ 	struct netlink_callback *cb;
+ 	struct sk_buff *skb = NULL;
++	size_t max_recvmsg_len;
+ 	struct module *module;
+ 	int err = -ENOBUFS;
+ 	int alloc_min_size;
+@@ -2233,8 +2235,9 @@ static int netlink_dump(struct sock *sk)
+ 	cb = &nlk->cb;
+ 	alloc_min_size = max_t(int, cb->min_dump_alloc, NLMSG_GOODSIZE);
+ 
+-	if (alloc_min_size < nlk->max_recvmsg_len) {
+-		alloc_size = nlk->max_recvmsg_len;
++	max_recvmsg_len = READ_ONCE(nlk->max_recvmsg_len);
++	if (alloc_min_size < max_recvmsg_len) {
++		alloc_size = max_recvmsg_len;
+ 		skb = alloc_skb(alloc_size,
+ 				(GFP_KERNEL & ~__GFP_DIRECT_RECLAIM) |
+ 				__GFP_NOWARN | __GFP_NORETRY);
 
 
 
