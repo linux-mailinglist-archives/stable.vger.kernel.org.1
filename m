@@ -1,225 +1,261 @@
-Return-Path: <stable+bounces-45749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45498CD3AF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CB78CD477
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D832B1C20A36
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5B2F1C2157C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3758C14AD17;
-	Thu, 23 May 2024 13:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CDC14B081;
+	Thu, 23 May 2024 13:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVJU7Nmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSpbC1x8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62CC14A62D;
-	Thu, 23 May 2024 13:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E414614AD3B;
+	Thu, 23 May 2024 13:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470252; cv=none; b=GDKb1H0j3T7l86619y9FvulhtgGa7xMCAEwa8IgNFr0JVYh7PmXy13yH0TUnkJi/bIAazRHw92Uo48cLSCfw3hT/88hTI7VlfCLJfBeHeAZF3IfODK2P1Yek+ggxVPl1N8wUXaxPxEEqsHtcPeDyfp26Q0r9FcRFwFU1UELtGiQ=
+	t=1716470686; cv=none; b=YP8s4LUytulaOWRFwWPUnMldyxmx6sSzRw5nfITm6TPx5cZroT0WVeO9soe4A4eXrq/ZfRZSRJChw3n2TfcrzgxBPAWyuSUI2UDf2Gx9hnzfLedjIFWc08t0xEkLxnGqqyXPbvWOMMa+kll35WW1njCxEPKqrgZJMBWoUAeLmRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470252; c=relaxed/simple;
-	bh=/4a/xj7cfRIZDCnPtNaV7cN+oIvMYqd0ViXOU/2Moz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IVXN+XCEX5oIcfkX6Fe5Yy+P5ksYJ7H6O3KcL+p3VEOLByQvYc9Zrc3LPpbFskeqt9wqXabs+vwNOdGZ6UVwyl9jUO39/VOltl5blpkST88/wsQOz9XTvN287ao1MbId4Z+mFv+6RsNXu0J/8Ao6qpRXao0zLGuRYY+0R2R4zpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVJU7Nmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F06C2BD10;
-	Thu, 23 May 2024 13:17:30 +0000 (UTC)
+	s=arc-20240116; t=1716470686; c=relaxed/simple;
+	bh=5EwAjO4XpJTQcTfcKw6ABmgyp64Aru20/pjNXEQs8LY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fbKu92LA0OeGoHql9k9IcwP1MMwbrlAcBsFufeYQKcv9PGYFg1cZITCXtCDzzR6HG7wAntPyPau5nwK89daIAiG0IfNRs4ZcwoaEWheH1PTqJARClkdpUnKD+BwT/Joa0x0Cgr5qf3bFUatbEREwbcxnyJgazSCqo1UUbmWSARk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSpbC1x8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8ECC2BD10;
+	Thu, 23 May 2024 13:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470251;
-	bh=/4a/xj7cfRIZDCnPtNaV7cN+oIvMYqd0ViXOU/2Moz4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=QVJU7NmrrdI6MAaUJzDIiO8XRmKm+T4mMIvoj6UTrJHXfh6dfpQIjcvRlZQy5xZCT
-	 Y7FNDfTtOum7zzevN7ATi4TQnYH9Xx3TNOl9OuKXpggLXiXN5B9+SUNbB/lnNcn4ht
-	 N4LWp5mAioQ9ejDUKoWxPtH0UxSMzZ8QAPZMkIEI=
+	s=korg; t=1716470685;
+	bh=5EwAjO4XpJTQcTfcKw6ABmgyp64Aru20/pjNXEQs8LY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KSpbC1x8jFFvNJZt2yV6bzwcBkSKzmjM7r/SwoAVJh5wQelmc4E+WYk6sShFBT+DZ
+	 p2Gsdn2g36hAHvh6fvzo4pzBl0lPAbJ2+cY5sXaEAk57UlHjWulaytnZPt2En7nug7
+	 Ll7yK9WY+xiLnbiBuAVv7tCUnU+d9BBArMjWz0Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org
-Subject: [PATCH 6.9 00/25] 6.9.2-rc1 review
-Date: Thu, 23 May 2024 15:12:45 +0200
-Message-ID: <20240523130330.386580714@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/102] cifs: Pass unbyteswapped eof value into SMB2_set_eof()
+Date: Thu, 23 May 2024 15:12:46 +0200
+Message-ID: <20240523130343.264420043@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.2-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.9.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.9.2-rc1
-X-KernelTest-Deadline: 2024-05-25T13:03+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.9.2 release.
-There are 25 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.2-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-and the diffstat can be found below.
+From: David Howells <dhowells@redhat.com>
 
-thanks,
+[ Upstream commit 6ebfede8d57a615dcbdec7e490faed585153f7f1 ]
 
-greg k-h
+Change SMB2_set_eof() to take eof as CPU order rather than __le64 and pass
+it directly rather than by pointer.  This moves the conversion down into
+SMB_set_eof() rather than all of its callers and means we don't need to
+undo it for the traceline.
 
--------------
-Pseudo-Shortlog of commits:
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/smb2ops.c   | 37 ++++++++++++++++---------------------
+ fs/smb/client/smb2pdu.c   |  6 +++---
+ fs/smb/client/smb2proto.h |  2 +-
+ 3 files changed, 20 insertions(+), 25 deletions(-)
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.9.2-rc1
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index a623a720db9e0..9b7cdb7d7ece8 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -1932,7 +1932,6 @@ static int
+ smb2_set_file_size(const unsigned int xid, struct cifs_tcon *tcon,
+ 		   struct cifsFileInfo *cfile, __u64 size, bool set_alloc)
+ {
+-	__le64 eof = cpu_to_le64(size);
+ 	struct inode *inode;
+ 
+ 	/*
+@@ -1949,7 +1948,7 @@ smb2_set_file_size(const unsigned int xid, struct cifs_tcon *tcon,
+ 	}
+ 
+ 	return SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
+-			    cfile->fid.volatile_fid, cfile->pid, &eof);
++			    cfile->fid.volatile_fid, cfile->pid, size);
+ }
+ 
+ static int
+@@ -3196,7 +3195,6 @@ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
+ 	unsigned long long new_size;
+ 	long rc;
+ 	unsigned int xid;
+-	__le64 eof;
+ 
+ 	xid = get_xid();
+ 
+@@ -3226,9 +3224,8 @@ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
+ 	 */
+ 	new_size = offset + len;
+ 	if (keep_size == false && (unsigned long long)i_size_read(inode) < new_size) {
+-		eof = cpu_to_le64(new_size);
+ 		rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
+-				  cfile->fid.volatile_fid, cfile->pid, &eof);
++				  cfile->fid.volatile_fid, cfile->pid, new_size);
+ 		if (rc >= 0) {
+ 			truncate_setsize(inode, new_size);
+ 			fscache_resize_cookie(cifs_inode_cookie(inode), new_size);
+@@ -3421,7 +3418,7 @@ static long smb3_simple_falloc(struct file *file, struct cifs_tcon *tcon,
+ 	struct cifsFileInfo *cfile = file->private_data;
+ 	long rc = -EOPNOTSUPP;
+ 	unsigned int xid;
+-	__le64 eof;
++	loff_t new_eof;
+ 
+ 	xid = get_xid();
+ 
+@@ -3450,14 +3447,14 @@ static long smb3_simple_falloc(struct file *file, struct cifs_tcon *tcon,
+ 		if (cifsi->cifsAttrs & FILE_ATTRIBUTE_SPARSE_FILE)
+ 			smb2_set_sparse(xid, tcon, cfile, inode, false);
+ 
+-		eof = cpu_to_le64(off + len);
++		new_eof = off + len;
+ 		rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
+-				  cfile->fid.volatile_fid, cfile->pid, &eof);
++				  cfile->fid.volatile_fid, cfile->pid, new_eof);
+ 		if (rc == 0) {
+-			cifsi->server_eof = off + len;
+-			cifs_setsize(inode, off + len);
++			cifsi->server_eof = new_eof;
++			cifs_setsize(inode, new_eof);
+ 			cifs_truncate_page(inode->i_mapping, inode->i_size);
+-			truncate_setsize(inode, off + len);
++			truncate_setsize(inode, new_eof);
+ 		}
+ 		goto out;
+ 	}
+@@ -3548,8 +3545,7 @@ static long smb3_collapse_range(struct file *file, struct cifs_tcon *tcon,
+ 	struct inode *inode = file_inode(file);
+ 	struct cifsFileInfo *cfile = file->private_data;
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+-	__le64 eof;
+-	loff_t old_eof;
++	loff_t old_eof, new_eof;
+ 
+ 	xid = get_xid();
+ 
+@@ -3574,9 +3570,9 @@ static long smb3_collapse_range(struct file *file, struct cifs_tcon *tcon,
+ 	if (rc < 0)
+ 		goto out_2;
+ 
+-	eof = cpu_to_le64(old_eof - len);
++	new_eof = old_eof - len;
+ 	rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
+-			  cfile->fid.volatile_fid, cfile->pid, &eof);
++			  cfile->fid.volatile_fid, cfile->pid, new_eof);
+ 	if (rc < 0)
+ 		goto out_2;
+ 
+@@ -3600,8 +3596,7 @@ static long smb3_insert_range(struct file *file, struct cifs_tcon *tcon,
+ 	unsigned int xid;
+ 	struct cifsFileInfo *cfile = file->private_data;
+ 	struct inode *inode = file_inode(file);
+-	__le64 eof;
+-	__u64  count, old_eof;
++	__u64 count, old_eof, new_eof;
+ 
+ 	xid = get_xid();
+ 
+@@ -3614,20 +3609,20 @@ static long smb3_insert_range(struct file *file, struct cifs_tcon *tcon,
+ 	}
+ 
+ 	count = old_eof - off;
+-	eof = cpu_to_le64(old_eof + len);
++	new_eof = old_eof + len;
+ 
+ 	filemap_invalidate_lock(inode->i_mapping);
+-	rc = filemap_write_and_wait_range(inode->i_mapping, off, old_eof + len - 1);
++	rc = filemap_write_and_wait_range(inode->i_mapping, off, new_eof - 1);
+ 	if (rc < 0)
+ 		goto out_2;
+ 	truncate_pagecache_range(inode, off, old_eof);
+ 
+ 	rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
+-			  cfile->fid.volatile_fid, cfile->pid, &eof);
++			  cfile->fid.volatile_fid, cfile->pid, new_eof);
+ 	if (rc < 0)
+ 		goto out_2;
+ 
+-	truncate_setsize(inode, old_eof + len);
++	truncate_setsize(inode, new_eof);
+ 	fscache_resize_cookie(cifs_inode_cookie(inode), i_size_read(inode));
+ 
+ 	rc = smb2_copychunk_range(xid, cfile, cfile, off, count, off + len);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 70530108b9bb9..51ff9a967c503 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -5414,18 +5414,18 @@ send_set_info(const unsigned int xid, struct cifs_tcon *tcon,
+ 
+ int
+ SMB2_set_eof(const unsigned int xid, struct cifs_tcon *tcon, u64 persistent_fid,
+-	     u64 volatile_fid, u32 pid, __le64 *eof)
++	     u64 volatile_fid, u32 pid, loff_t new_eof)
+ {
+ 	struct smb2_file_eof_info info;
+ 	void *data;
+ 	unsigned int size;
+ 
+-	info.EndOfFile = *eof;
++	info.EndOfFile = cpu_to_le64(new_eof);
+ 
+ 	data = &info;
+ 	size = sizeof(struct smb2_file_eof_info);
+ 
+-	trace_smb3_set_eof(xid, persistent_fid, tcon->tid, tcon->ses->Suid, le64_to_cpu(*eof));
++	trace_smb3_set_eof(xid, persistent_fid, tcon->tid, tcon->ses->Suid, new_eof);
+ 
+ 	return send_set_info(xid, tcon, persistent_fid, volatile_fid,
+ 			pid, FILE_END_OF_FILE_INFORMATION, SMB2_O_INFO_FILE,
+diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
+index 1e20f87a5f584..343ada691e763 100644
+--- a/fs/smb/client/smb2proto.h
++++ b/fs/smb/client/smb2proto.h
+@@ -221,7 +221,7 @@ extern int SMB2_query_directory_init(unsigned int xid, struct cifs_tcon *tcon,
+ extern void SMB2_query_directory_free(struct smb_rqst *rqst);
+ extern int SMB2_set_eof(const unsigned int xid, struct cifs_tcon *tcon,
+ 			u64 persistent_fid, u64 volatile_fid, u32 pid,
+-			__le64 *eof);
++			loff_t new_eof);
+ extern int SMB2_set_info_init(struct cifs_tcon *tcon,
+ 			      struct TCP_Server_Info *server,
+ 			      struct smb_rqst *rqst,
+-- 
+2.43.0
 
-Christoph Hellwig <hch@lst.de>
-    block: add a partscan sysfs attribute for disks
-
-Christoph Hellwig <hch@lst.de>
-    block: add a disk_has_partscan helper
-
-SeongJae Park <sj@kernel.org>
-    Docs/admin-guide/mm/damon/usage: fix wrong schemes effective quota update command
-
-SeongJae Park <sj@kernel.org>
-    Docs/admin-guide/mm/damon/usage: fix wrong example of DAMOS filter matching sysfs file
-
-Akira Yokosawa <akiyks@gmail.com>
-    docs: kernel_include.py: Cope with docutils 0.21
-
-Thomas Weißschuh <linux@weissschuh.net>
-    admin-guide/hw-vuln/core-scheduling: fix return type of PR_SCHED_CORE_GET
-
-Jarkko Sakkinen <jarkko@kernel.org>
-    KEYS: trusted: Do not use WARN when encode fails
-
-Hans Verkuil <hverkuil-cisco@xs4all.nl>
-    Revert "media: v4l2-ctrls: show all owned controls in log_status"
-
-AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-    remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
-
-Daniel Thompson <daniel.thompson@linaro.org>
-    serial: kgdboc: Fix NMI-safety problems from keyboard reset code
-
-Javier Carrasco <javier.carrasco@wolfvision.net>
-    usb: typec: tipd: fix event checking for tps6598x
-
-Javier Carrasco <javier.carrasco@wolfvision.net>
-    usb: typec: tipd: fix event checking for tps25750
-
-Heikki Krogerus <heikki.krogerus@linux.intel.com>
-    usb: typec: ucsi: displayport: Fix potential deadlock
-
-Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-    net: usb: ax88179_178a: fix link status when link is set to down/up
-
-Prashanth K <quic_prashk@quicinc.com>
-    usb: dwc3: Wait unconditionally after issuing EndXfer command
-
-Carlos Llamas <cmllamas@google.com>
-    binder: fix max_thread type inconsistency
-
-Bard Liao <yung-chuan.liao@linux.intel.com>
-    ASoC: Intel: sof_sdw: use generic rtd_init function for Realtek SDW DMICs
-
-Jarkko Sakkinen <jarkko@kernel.org>
-    KEYS: trusted: Fix memory leak in tpm2_key_encode()
-
-Sungwoo Kim <iam@sung-woo.kim>
-    Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()
-
-Uros Bizjak <ubizjak@gmail.com>
-    x86/percpu: Use __force to cast from __percpu address space
-
-Ronald Wahl <ronald.wahl@raritan.com>
-    net: ks8851: Fix another TX stall caused by wrong ISR flag handling
-
-Jose Fernandez <josef@netflix.com>
-    drm/amd/display: Fix division by zero in setup_dsc_config
-
-Perry Yuan <perry.yuan@amd.com>
-    cpufreq: amd-pstate: fix the highest frequency issue which limits performance
-
-Ben Greear <greearb@candelatech.com>
-    wifi: iwlwifi: Use request_module_nowait
-
-Peter Tsao <peter.tsao@mediatek.com>
-    Bluetooth: btusb: Fix the patch for MT7920 the affected to MT7921
-
-
--------------
-
-Diffstat:
-
- Documentation/ABI/stable/sysfs-block               | 10 +++
- .../admin-guide/hw-vuln/core-scheduling.rst        |  4 +-
- Documentation/admin-guide/mm/damon/usage.rst       |  6 +-
- Documentation/sphinx/kernel_include.py             |  1 -
- Makefile                                           |  4 +-
- arch/x86/include/asm/percpu.h                      |  6 +-
- block/genhd.c                                      | 15 +++--
- block/partitions/core.c                            |  5 +-
- drivers/android/binder.c                           |  2 +-
- drivers/android/binder_internal.h                  |  2 +-
- drivers/bluetooth/btusb.c                          |  1 +
- drivers/cpufreq/amd-pstate.c                       | 22 ++++++-
- drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c        |  7 +-
- drivers/media/v4l2-core/v4l2-ctrls-core.c          | 18 ++----
- drivers/net/ethernet/micrel/ks8851_common.c        | 18 +-----
- drivers/net/usb/ax88179_178a.c                     | 37 +++++++----
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c       | 10 +--
- drivers/remoteproc/mtk_scp.c                       | 10 ++-
- drivers/tty/serial/kgdboc.c                        | 30 ++++++++-
- drivers/usb/dwc3/gadget.c                          |  4 +-
- drivers/usb/typec/tipd/core.c                      | 51 ++++++++++-----
- drivers/usb/typec/tipd/tps6598x.h                  | 11 ++++
- drivers/usb/typec/ucsi/displayport.c               |  4 --
- include/linux/blkdev.h                             | 13 ++++
- include/net/bluetooth/hci.h                        |  9 +++
- include/net/bluetooth/hci_core.h                   |  1 +
- net/bluetooth/hci_conn.c                           | 75 +++++++++++++++-------
- net/bluetooth/hci_event.c                          | 31 +++++----
- net/bluetooth/iso.c                                |  2 +-
- net/bluetooth/l2cap_core.c                         | 17 +----
- net/bluetooth/sco.c                                |  6 +-
- security/keys/trusted-keys/trusted_tpm2.c          | 25 ++++++--
- sound/soc/intel/boards/Makefile                    |  1 +
- sound/soc/intel/boards/sof_sdw.c                   | 12 ++--
- sound/soc/intel/boards/sof_sdw_common.h            |  1 +
- sound/soc/intel/boards/sof_sdw_rt_dmic.c           | 52 +++++++++++++++
- 36 files changed, 357 insertions(+), 166 deletions(-)
 
 
 
