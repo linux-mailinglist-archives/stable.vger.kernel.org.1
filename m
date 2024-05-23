@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-45824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C288CD412
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5C08CD41A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D34C1F26AFC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E0AA1C20AA9
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A3814B07E;
-	Thu, 23 May 2024 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059E114A4EC;
+	Thu, 23 May 2024 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPXOnaH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZeyw8PD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F257413BAC3;
-	Thu, 23 May 2024 13:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65AE2AE94;
+	Thu, 23 May 2024 13:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470467; cv=none; b=sZM/Xe8dmxX9WVaDGn/ONQNcqEpSRKz6A4g0TE+FPyqGmDXKT72Hx2rai9CU4pOmXj3ACOlDMnznTS0lfz7nIKVOACgPMHqC6vgwXH9RM56aIubzDVbzjK0kJluqQ5rRhw2n/adsuIBWFImLI1Z3mNzOpEqer8MBHmGr7lT83N0=
+	t=1716470489; cv=none; b=SG1Wqam8154dJeUZbp0/jfIO27mKMP59r0tNi3zzeyRrwv4dl7AEe80HjP6eXFlcUwHr8720XFlox4ESHON7cpFTW9r94AzdBLVxvfsm7ATvI6e9MZkIMN1U27lWtGqT7O6b/tn/ud7Nw1g/KMsGu9Y/jjpEzVXYYKH+BsBEw/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470467; c=relaxed/simple;
-	bh=sccydqczZNIa8sT7CeFOoI7ZVyAZFm3yw4+/fOK6MfE=;
+	s=arc-20240116; t=1716470489; c=relaxed/simple;
+	bh=/nNjaI5VRdcZpcJGML/zCMRBvWq8zXCDlrNNPaPDHjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpRvkE6vPQuc1Q8qqPjTug+IjlcSQHDzOlRMZX6D4DWLtjZqc8cGTlfnW3jUxaztZQ9suQ94zoDzSiCdUomkoHuTILnWFv+Vf3iIcxdwaaIGeqUr68uBJgJ1MmpN9qxOefh6lOlQCoLJOGOp30nvCTOVnJ708+QmKiPdTdb05pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPXOnaH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791C6C2BD10;
-	Thu, 23 May 2024 13:21:06 +0000 (UTC)
+	 MIME-Version; b=k6vZF0RKFIs2j6r5JQoLfWx0ynnOwqVNNC/DoBu4ytDkFXrW0FC9aTKnGpaNV4B9dPYNwz2XcpX7VFtoJAVTYesmpC4xCRswo+3hi0m2d+RKydI+n0Cl2zV6Yt6bBjGihlKRyCSUz+QpI2OAaZWe5aVSnWL49lFB+Mm3S849YOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZeyw8PD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF1CC3277B;
+	Thu, 23 May 2024 13:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470466;
-	bh=sccydqczZNIa8sT7CeFOoI7ZVyAZFm3yw4+/fOK6MfE=;
+	s=korg; t=1716470489;
+	bh=/nNjaI5VRdcZpcJGML/zCMRBvWq8zXCDlrNNPaPDHjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zPXOnaH2gk8seF5ewEf6t4AjT6xc/+5u9LOnVq6+v1mDxG1slytFYW6P1lT1Xl9fw
-	 2HN9JhNcqBQInVyzSlml7ITvuSrxv55nYyGg6iLIDDb8ACCMYvUhF1Xf/ToHVCIDRZ
-	 L1w8fYhkSvo+8CZ1YnBD0EQWHEpesaNrw6BzoU/M=
+	b=wZeyw8PDSQQ/FavfSckFfb8QBARZ+/wy73uM+WGzbkvyMgvsydi1kfraE+/IsKsgN
+	 SyI3PDjGaBIaFd9sa26hMVE1ULwku8Mhx06RiIu42RyzLnHhipsQbzK1reWZBt4Tnv
+	 xW/Zhb3MQzUeCkmYUQj+GcYKtmOeRb0yMzOds3YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashanth K <quic_prashk@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 37/45] usb: dwc3: Wait unconditionally after issuing EndXfer command
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Jose Fernandez <josef@netflix.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Limonciello, Mario" <mario.limonciello@amd.com>
+Subject: [PATCH 6.8 01/23] drm/amd/display: Fix division by zero in setup_dsc_config
 Date: Thu, 23 May 2024 15:13:28 +0200
-Message-ID: <20240523130333.893976167@linuxfoundation.org>
+Message-ID: <20240523130329.803582727@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
+References: <20240523130329.745905823@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Jose Fernandez <josef@netflix.com>
 
-commit 1d26ba0944d398f88aaf997bda3544646cf21945 upstream.
+commit 130afc8a886183a94cf6eab7d24f300014ff87ba upstream.
 
-Currently all controller IP/revisions except DWC3_usb3 >= 310a
-wait 1ms unconditionally for ENDXFER completion when IOC is not
-set. This is because DWC_usb3 controller revisions >= 3.10a
-supports GUCTL2[14: Rst_actbitlater] bit which allows polling
-CMDACT bit to know whether ENDXFER command is completed.
+When slice_height is 0, the division by slice_height in the calculation
+of the number of slices will cause a division by zero driver crash. This
+leaves the kernel in a state that requires a reboot. This patch adds a
+check to avoid the division by zero.
 
-Consider a case where an IN request was queued, and parallelly
-soft_disconnect was called (due to ffs_epfile_release). This
-eventually calls stop_active_transfer with IOC cleared, hence
-send_gadget_ep_cmd() skips waiting for CMDACT cleared during
-EndXfer. For DWC3 controllers with revisions >= 310a, we don't
-forcefully wait for 1ms either, and we proceed by unmapping the
-requests. If ENDXFER didn't complete by this time, it leads to
-SMMU faults since the controller would still be accessing those
-requests.
+The stack trace below is for the 6.8.4 Kernel. I reproduced the issue on
+a Z16 Gen 2 Lenovo Thinkpad with a Apple Studio Display monitor
+connected via Thunderbolt. The amdgpu driver crashed with this exception
+when I rebooted the system with the monitor connected.
 
-Fix this by ensuring ENDXFER completion by adding 1ms delay in
-__dwc3_stop_active_transfer() unconditionally.
+kernel: ? die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434 arch/x86/kernel/dumpstack.c:447)
+kernel: ? do_trap (arch/x86/kernel/traps.c:113 arch/x86/kernel/traps.c:154)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? do_error_trap (./arch/x86/include/asm/traps.h:58 arch/x86/kernel/traps.c:175)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? exc_divide_error (arch/x86/kernel/traps.c:194 (discriminator 2))
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: ? asm_exc_divide_error (./arch/x86/include/asm/idtentry.h:548)
+kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
+kernel: dc_dsc_compute_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1109) amdgpu
 
-Cc: stable@vger.kernel.org
-Fixes: b353eb6dc285 ("usb: dwc3: gadget: Skip waiting for CMDACT cleared during endxfer")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240502044103.1066350-1-quic_prashk@quicinc.com
+After applying this patch, the driver no longer crashes when the monitor
+is connected and the system is rebooted. I believe this is the same
+issue reported for 3113.
+
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Jose Fernandez <josef@netflix.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3113
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Limonciello, Mario" <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1708,7 +1708,6 @@ static int __dwc3_gadget_get_frame(struc
-  */
- static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool interrupt)
- {
--	struct dwc3 *dwc = dep->dwc;
- 	struct dwc3_gadget_ep_cmd_params params;
- 	u32 cmd;
- 	int ret;
-@@ -1733,8 +1732,7 @@ static int __dwc3_stop_active_transfer(s
- 	dep->resource_index = 0;
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+@@ -1050,7 +1050,12 @@ static bool setup_dsc_config(
+ 	if (!is_dsc_possible)
+ 		goto done;
  
- 	if (!interrupt) {
--		if (!DWC3_IP_IS(DWC3) || DWC3_VER_IS_PRIOR(DWC3, 310A))
--			mdelay(1);
-+		mdelay(1);
- 		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
- 	} else if (!ret) {
- 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+-	dsc_cfg->num_slices_v = pic_height/slice_height;
++	if (slice_height > 0) {
++		dsc_cfg->num_slices_v = pic_height / slice_height;
++	} else {
++		is_dsc_possible = false;
++		goto done;
++	}
+ 
+ 	if (target_bandwidth_kbps > 0) {
+ 		is_dsc_possible = decide_dsc_target_bpp_x16(
 
 
 
