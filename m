@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0396F8CD3A3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5A78CD455
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3282D1C228BB
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00A3C1C20E57
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E99C14B083;
-	Thu, 23 May 2024 13:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858E913C3D8;
+	Thu, 23 May 2024 13:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00jHBSar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0lk6mMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D42914A604;
-	Thu, 23 May 2024 13:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D3B1D545;
+	Thu, 23 May 2024 13:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470220; cv=none; b=fPyNuewtVHENYItsg3DsWXT8FVkN2YMPHjLuzqLf/VfG9Ks1UEDg87DPdCfvH34Sr1bC81RJyOZo/QUE2ZLqhIs+DKQUy2YWWqjGvKSvMNYzwVztz2zl92xG08oLzfU9E3S8SZlZZB7imWLZ2IPnXjJGyOCYxrr4rft7aJ4sYp8=
+	t=1716470622; cv=none; b=iuYyhQMFRAfWA2lx6JXftcelqul2JmDlxEYBMH0fFS1UxxrP9FkM5i9TxA2aU43m3frU4/vHH2VfuhlJ870N1A0v8xfFwRN8Awb/dxZiGKhUtTsQFxy6Tvd46iObv7eZniqGqh+q2xKFVPp6nBVYAb6DeEuDfBkjDI4JwwrHsw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470220; c=relaxed/simple;
-	bh=VDeUaB7sONVvCv9mw69JjrJKS15c3FxR0n4qCnD0n04=;
+	s=arc-20240116; t=1716470622; c=relaxed/simple;
+	bh=/dB1saJSM7i1ClqqnPCSBFNN9+kvYE6pXVXjUgzXUCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwJgZyt2dvPbhMTNV6YgzYK2Nn3cUiftdyYSHcRLlRx+EGDm/UDMdh+X6skcgAZ8AbKZLfIElaGGcVMh9VWMqhQcDOtpBjbR5jnsJAEQt9XIUHAx/y9UN43O4az+vd8RPar8VAbl7jTDhhD0zfztFShNxHuJc+Mz4ff1Gq3b1tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00jHBSar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8020C2BD10;
-	Thu, 23 May 2024 13:16:59 +0000 (UTC)
+	 MIME-Version; b=ku77cywxKVYn26j4vADvuE++CBVJzdMS7zDfJZOXEiYzY0GqkbHWV/eFZGJ+yLvkL8zejtkJuhHuCUDma1kzkAYuxNR5aH9CBswWzFuXoiJajfPuJTkmOzXyRAkMjC0D9VbEmK7F5PvbhNoDudyfVTq/AyruCCVSdSQdNd/sHWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0lk6mMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E6FC2BD10;
+	Thu, 23 May 2024 13:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470220;
-	bh=VDeUaB7sONVvCv9mw69JjrJKS15c3FxR0n4qCnD0n04=;
+	s=korg; t=1716470622;
+	bh=/dB1saJSM7i1ClqqnPCSBFNN9+kvYE6pXVXjUgzXUCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00jHBSarZRTEiGOvcyO5DjeASZlF2NRqoD33bf9eHqO94ZXZZl2/4RDVRWOg16NPm
-	 yp80CJW8yALT5lrBZ9WzXkb2pvNp9joycurQjRaaDNvNlu7RmSKfmtycKgak+d0MfI
-	 NUspWihJzDMdVLxrgKtuRAQBjQAWvKU8U1KwbheE=
+	b=f0lk6mMT6g4mRhBq3oKn2ErPh/rmtZqXot9H6lA4inA38B7BsY+tB9IN+DsTXjZRk
+	 xC4/xQeVo1gvQp4atFBZ+T4T5X5hIVpo+BqFLJdgpRlaRTtp5YvK9d4jaL/EZulU8t
+	 WgtZDcbLMtTlWx3udgxMZy4EiCbj17Ngkx2vp6B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashanth K <quic_prashk@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.9 11/25] usb: dwc3: Wait unconditionally after issuing EndXfer command
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 031/102] cifs: new mount option called retrans
 Date: Thu, 23 May 2024 15:12:56 +0200
-Message-ID: <20240523130330.814020853@linuxfoundation.org>
+Message-ID: <20240523130343.638464049@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 1d26ba0944d398f88aaf997bda3544646cf21945 upstream.
+[ Upstream commit ce09f8d8a7130e6edfdd6fcad8eb277824d5de95 ]
 
-Currently all controller IP/revisions except DWC3_usb3 >= 310a
-wait 1ms unconditionally for ENDXFER completion when IOC is not
-set. This is because DWC_usb3 controller revisions >= 3.10a
-supports GUCTL2[14: Rst_actbitlater] bit which allows polling
-CMDACT bit to know whether ENDXFER command is completed.
+We have several places in the code where we treat the
+error -EAGAIN very differently. Some code retry for
+arbitrary number of times.
 
-Consider a case where an IN request was queued, and parallelly
-soft_disconnect was called (due to ffs_epfile_release). This
-eventually calls stop_active_transfer with IOC cleared, hence
-send_gadget_ep_cmd() skips waiting for CMDACT cleared during
-EndXfer. For DWC3 controllers with revisions >= 310a, we don't
-forcefully wait for 1ms either, and we proceed by unmapping the
-requests. If ENDXFER didn't complete by this time, it leads to
-SMMU faults since the controller would still be accessing those
-requests.
+Introducing this new mount option named "retrans", so
+that all these handlers of -EAGAIN can retry a fixed
+number of times. This applies only to soft mounts.
 
-Fix this by ensuring ENDXFER completion by adding 1ms delay in
-__dwc3_stop_active_transfer() unconditionally.
-
-Cc: stable@vger.kernel.org
-Fixes: b353eb6dc285 ("usb: dwc3: gadget: Skip waiting for CMDACT cleared during endxfer")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240502044103.1066350-1-quic_prashk@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/smb/client/cifsfs.c     | 2 ++
+ fs/smb/client/cifsglob.h   | 1 +
+ fs/smb/client/connect.c    | 4 ++++
+ fs/smb/client/fs_context.c | 6 ++++++
+ fs/smb/client/fs_context.h | 2 ++
+ 5 files changed, 15 insertions(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1699,7 +1699,6 @@ static int __dwc3_gadget_get_frame(struc
-  */
- static int __dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force, bool interrupt)
- {
--	struct dwc3 *dwc = dep->dwc;
- 	struct dwc3_gadget_ep_cmd_params params;
- 	u32 cmd;
- 	int ret;
-@@ -1724,8 +1723,7 @@ static int __dwc3_stop_active_transfer(s
- 	dep->resource_index = 0;
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 44e2cc37a8b63..6d9d2174ee691 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -682,6 +682,8 @@ cifs_show_options(struct seq_file *s, struct dentry *root)
+ 		seq_printf(s, ",rasize=%u", cifs_sb->ctx->rasize);
+ 	if (tcon->ses->server->min_offload)
+ 		seq_printf(s, ",esize=%u", tcon->ses->server->min_offload);
++	if (tcon->ses->server->retrans)
++		seq_printf(s, ",retrans=%u", tcon->ses->server->retrans);
+ 	seq_printf(s, ",echo_interval=%lu",
+ 			tcon->ses->server->echo_interval / HZ);
  
- 	if (!interrupt) {
--		if (!DWC3_IP_IS(DWC3) || DWC3_VER_IS_PRIOR(DWC3, 310A))
--			mdelay(1);
-+		mdelay(1);
- 		dep->flags &= ~DWC3_EP_TRANSFER_STARTED;
- 	} else if (!ret) {
- 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 414648bf816b2..6acadb53ada79 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -754,6 +754,7 @@ struct TCP_Server_Info {
+ 	unsigned int	max_read;
+ 	unsigned int	max_write;
+ 	unsigned int	min_offload;
++	unsigned int	retrans;
+ 	__le16	compress_algorithm;
+ 	__u16	signing_algorithm;
+ 	__le16	cipher_type;
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 2466b28379ff8..e28f011f11d6c 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1592,6 +1592,9 @@ static int match_server(struct TCP_Server_Info *server,
+ 	if (server->min_offload != ctx->min_offload)
+ 		return 0;
+ 
++	if (server->retrans != ctx->retrans)
++		return 0;
++
+ 	return 1;
+ }
+ 
+@@ -1816,6 +1819,7 @@ cifs_get_tcp_session(struct smb3_fs_context *ctx,
+ 		goto out_err_crypto_release;
+ 	}
+ 	tcp_ses->min_offload = ctx->min_offload;
++	tcp_ses->retrans = ctx->retrans;
+ 	/*
+ 	 * at this point we are the only ones with the pointer
+ 	 * to the struct since the kernel thread not created yet
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 4d9e57be84dbc..f119035a82725 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -139,6 +139,7 @@ const struct fs_parameter_spec smb3_fs_parameters[] = {
+ 	fsparam_u32("dir_mode", Opt_dirmode),
+ 	fsparam_u32("port", Opt_port),
+ 	fsparam_u32("min_enc_offload", Opt_min_enc_offload),
++	fsparam_u32("retrans", Opt_retrans),
+ 	fsparam_u32("esize", Opt_min_enc_offload),
+ 	fsparam_u32("bsize", Opt_blocksize),
+ 	fsparam_u32("rasize", Opt_rasize),
+@@ -1098,6 +1099,9 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 	case Opt_min_enc_offload:
+ 		ctx->min_offload = result.uint_32;
+ 		break;
++	case Opt_retrans:
++		ctx->retrans = result.uint_32;
++		break;
+ 	case Opt_blocksize:
+ 		/*
+ 		 * inode blocksize realistically should never need to be
+@@ -1678,6 +1682,8 @@ int smb3_init_fs_context(struct fs_context *fc)
+ 	ctx->backupuid_specified = false; /* no backup intent for a user */
+ 	ctx->backupgid_specified = false; /* no backup intent for a group */
+ 
++	ctx->retrans = 1;
++
+ /*
+  *	short int override_uid = -1;
+  *	short int override_gid = -1;
+diff --git a/fs/smb/client/fs_context.h b/fs/smb/client/fs_context.h
+index d7c090dbe75db..369a3fea1dfe0 100644
+--- a/fs/smb/client/fs_context.h
++++ b/fs/smb/client/fs_context.h
+@@ -118,6 +118,7 @@ enum cifs_param {
+ 	Opt_file_mode,
+ 	Opt_dirmode,
+ 	Opt_min_enc_offload,
++	Opt_retrans,
+ 	Opt_blocksize,
+ 	Opt_rasize,
+ 	Opt_rsize,
+@@ -249,6 +250,7 @@ struct smb3_fs_context {
+ 	unsigned int rsize;
+ 	unsigned int wsize;
+ 	unsigned int min_offload;
++	unsigned int retrans;
+ 	bool sockopt_tcp_nodelay:1;
+ 	/* attribute cache timemout for files and directories in jiffies */
+ 	unsigned long acregmax;
+-- 
+2.43.0
+
 
 
 
