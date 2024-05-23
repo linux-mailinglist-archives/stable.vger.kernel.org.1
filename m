@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-45692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7301B8CD366
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0723D8CD440
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280F2285272
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AFCC1F23F19
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CD914AD0C;
-	Thu, 23 May 2024 13:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976D414B95B;
+	Thu, 23 May 2024 13:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3OIftlQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM3zrhSR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571214A635;
-	Thu, 23 May 2024 13:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C1F14A0A9;
+	Thu, 23 May 2024 13:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470090; cv=none; b=j4LU4dZGtfwpBvzz00FNekDbbCNcJU98Zrp86g5s46PgPO0pt1sIX8Y3EaolhatrFZZBoO4/XhHokCm+PiV82ZvJhcxqpZ+HoQ6FIkDBLGfTfUQL72KjJEVAX0F0RnR3IMhWjDrukhBpteOBqOEql7nSy+4H9rFqU1XkbcKd9Lg=
+	t=1716470576; cv=none; b=KyJXlJQ63CMWumrWTG2r10rAeAGToMAptdOrR42MKVHH71EA1PaSAbK9SfZjPRfWRjP2HbTyxbScCc4r/CEN1Us/whBQDhAi6dmGtJNVDYyejELgbxQi/Ut987JuVlgPOhqMBamTLf4BrJ85VVmEOV/tDOpfnAtPNWug8Amphcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470090; c=relaxed/simple;
-	bh=LHjN11KINyzryf4nyMaoIN+RboFjp4WPgXHkSCr8VAM=;
+	s=arc-20240116; t=1716470576; c=relaxed/simple;
+	bh=letRo7MDHYbSI4kfAQM2yfxRPMfX2MEBhNsyMn10riY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgT8ElQsMiXxwhFLXSitcDFjTZ9nVUlb0YgkOuxKVFzXSm/8r3Ky8wv7PQzJcgI1dLLEGZd0GCkgTLK6h0mKolj7bAz0zuONbtIOVX0U82U0AjkBZs7ckldOWXgf1YEtz8nCuVzIobF005M8vRFB9fHRuPCL/Z3nWGZqkt78XE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3OIftlQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCE2C32782;
-	Thu, 23 May 2024 13:14:50 +0000 (UTC)
+	 MIME-Version; b=KSuKVju9iO2vGzLSothgN04FXxdCk34RjdPwzAJkWm7ay3d19y0mLoU5TKdCk6KOGCWyhyvDvf8iRQ3/Gm8rrjAOEOBeZDwiIiLHdRfVg9+xSri2UUeKZDpyCaGThJsniMMB1sNFwGpYHusiXyLg82+tnFBfi+MpM366zO3vBGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RM3zrhSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50DFC32786;
+	Thu, 23 May 2024 13:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470090;
-	bh=LHjN11KINyzryf4nyMaoIN+RboFjp4WPgXHkSCr8VAM=;
+	s=korg; t=1716470576;
+	bh=letRo7MDHYbSI4kfAQM2yfxRPMfX2MEBhNsyMn10riY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3OIftlQJ2eIuO8/6JSElK6EUNVA1F0hV3C9bK+pss+nNZyHk+PPORCXRpw4s1Hiz
-	 gRqkrCu00zfwEEuqS6ORuRpilMDPa2nq8REMOCjs34pWpSG98w1cDWcCMFCrlxsraw
-	 JReMoy+RqMPlWdi2zAJyJrRDiAyA8cBQZ5t+WuZQ=
+	b=RM3zrhSRUt6eFKbapuKSOkjoq3hQ3JAUDpZwYJuSp3IHcSUccNuKVX7fUzt5wk3Un
+	 OSBEM521CS3ksUnS2Zt9L0Jste9NDZQuW+I2ASQuiKfs2UoEjaNb+rbvdlOeFZV/4O
+	 EcVRy+M4qYYpjx+NNOnzoNBArQrpEQ6BSPNHDKz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"stable@vger.kernel.org, George Guo" <guodongtai@kylinos.cn>,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	George Guo <guodongtai@kylinos.cn>
-Subject: [PATCH 4.19 04/18] tracing: Simplify creation and deletion of synthetic events
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 002/102] SMB3: clarify some of the unused CreateOption flags
 Date: Thu, 23 May 2024 15:12:27 +0200
-Message-ID: <20240523130325.898254176@linuxfoundation.org>
+Message-ID: <20240523130342.556473852@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu <mhiramat@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit faacb361f271be4baf2d807e2eeaba87e059225f upstream.
+[ Upstream commit d5a3c153fd00f5e951c4f20b4c65feb1e1cfbfcb ]
 
-Since the event_mutex and synth_event_mutex ordering issue
-is gone, we can skip existing event check when adding or
-deleting events, and some redundant code in error path.
+Update comments to show flags which should be not set (zero).
 
-This changes release_all_synth_events() to abort the process
-when it hits any error and returns the error code. It succeeds
-only if it has no error.
+See MS-SMB2 section 2.2.13
 
-Link: http://lkml.kernel.org/r/154140847194.17322.17960275728005067803.stgit@devbox
-
-Reviewed-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Tested-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c |   53 +++++++++++++--------------------------
- 1 file changed, 18 insertions(+), 35 deletions(-)
+ fs/smb/common/smb2pdu.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1028,18 +1028,6 @@ struct hist_var_data {
- 	struct hist_trigger_data *hist_data;
- };
+diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
+index 22c94dea52116..465b721f2c06d 100644
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -1100,16 +1100,23 @@ struct smb2_change_notify_rsp {
+ #define FILE_WRITE_THROUGH_LE		cpu_to_le32(0x00000002)
+ #define FILE_SEQUENTIAL_ONLY_LE		cpu_to_le32(0x00000004)
+ #define FILE_NO_INTERMEDIATE_BUFFERING_LE cpu_to_le32(0x00000008)
++/* FILE_SYNCHRONOUS_IO_ALERT_LE		cpu_to_le32(0x00000010) should be zero, ignored */
++/* FILE_SYNCHRONOUS_IO_NONALERT		cpu_to_le32(0x00000020) should be zero, ignored */
+ #define FILE_NON_DIRECTORY_FILE_LE	cpu_to_le32(0x00000040)
+ #define FILE_COMPLETE_IF_OPLOCKED_LE	cpu_to_le32(0x00000100)
+ #define FILE_NO_EA_KNOWLEDGE_LE		cpu_to_le32(0x00000200)
++/* FILE_OPEN_REMOTE_INSTANCE		cpu_to_le32(0x00000400) should be zero, ignored */
+ #define FILE_RANDOM_ACCESS_LE		cpu_to_le32(0x00000800)
+-#define FILE_DELETE_ON_CLOSE_LE		cpu_to_le32(0x00001000)
++#define FILE_DELETE_ON_CLOSE_LE		cpu_to_le32(0x00001000) /* MBZ */
+ #define FILE_OPEN_BY_FILE_ID_LE		cpu_to_le32(0x00002000)
+ #define FILE_OPEN_FOR_BACKUP_INTENT_LE	cpu_to_le32(0x00004000)
+ #define FILE_NO_COMPRESSION_LE		cpu_to_le32(0x00008000)
++/* FILE_OPEN_REQUIRING_OPLOCK		cpu_to_le32(0x00010000) should be zero, ignored */
++/* FILE_DISALLOW_EXCLUSIVE		cpu_to_le32(0x00020000) should be zero, ignored */
++/* FILE_RESERVE_OPFILTER		cpu_to_le32(0x00100000) MBZ */
+ #define FILE_OPEN_REPARSE_POINT_LE	cpu_to_le32(0x00200000)
+ #define FILE_OPEN_NO_RECALL_LE		cpu_to_le32(0x00400000)
++/* #define FILE_OPEN_FOR_FREE_SPACE_QUERY cpu_to_le32(0x00800000) should be zero, ignored */
+ #define CREATE_OPTIONS_MASK_LE          cpu_to_le32(0x00FFFFFF)
  
--static void add_or_delete_synth_event(struct synth_event *event, int delete)
--{
--	if (delete)
--		free_synth_event(event);
--	else {
--		if (!find_synth_event(event->name))
--			list_add(&event->list, &synth_event_list);
--		else
--			free_synth_event(event);
--	}
--}
--
- static int create_synth_event(int argc, char **argv)
- {
- 	struct synth_field *field, *fields[SYNTH_FIELDS_MAX];
-@@ -1072,15 +1060,16 @@ static int create_synth_event(int argc,
- 	if (event) {
- 		if (delete_event) {
- 			if (event->ref) {
--				event = NULL;
- 				ret = -EBUSY;
- 				goto out;
- 			}
--			list_del(&event->list);
--			goto out;
--		}
--		event = NULL;
--		ret = -EEXIST;
-+			ret = unregister_synth_event(event);
-+			if (!ret) {
-+				list_del(&event->list);
-+				free_synth_event(event);
-+			}
-+		} else
-+			ret = -EEXIST;
- 		goto out;
- 	} else if (delete_event) {
- 		ret = -ENOENT;
-@@ -1120,29 +1109,21 @@ static int create_synth_event(int argc,
- 		event = NULL;
- 		goto err;
- 	}
-+	ret = register_synth_event(event);
-+	if (!ret)
-+		list_add(&event->list, &synth_event_list);
-+	else
-+		free_synth_event(event);
-  out:
--	if (event) {
--		if (delete_event) {
--			ret = unregister_synth_event(event);
--			add_or_delete_synth_event(event, !ret);
--		} else {
--			ret = register_synth_event(event);
--			add_or_delete_synth_event(event, ret);
--		}
--	}
- 	mutex_unlock(&synth_event_mutex);
- 	mutex_unlock(&event_mutex);
- 
- 	return ret;
-  err:
--	mutex_unlock(&synth_event_mutex);
--	mutex_unlock(&event_mutex);
--
- 	for (i = 0; i < n_fields; i++)
- 		free_synth_field(fields[i]);
--	free_synth_event(event);
- 
--	return ret;
-+	goto out;
- }
- 
- static int release_all_synth_events(void)
-@@ -1161,10 +1142,12 @@ static int release_all_synth_events(void
- 	}
- 
- 	list_for_each_entry_safe(event, e, &synth_event_list, list) {
--		list_del(&event->list);
--
- 		ret = unregister_synth_event(event);
--		add_or_delete_synth_event(event, !ret);
-+		if (!ret) {
-+			list_del(&event->list);
-+			free_synth_event(event);
-+		} else
-+			break;
- 	}
- 	mutex_unlock(&synth_event_mutex);
- 	mutex_unlock(&event_mutex);
+ #define FILE_READ_RIGHTS_LE (FILE_READ_DATA_LE | FILE_READ_EA_LE \
+-- 
+2.43.0
+
 
 
 
