@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CF28CD43C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 894F38CD35A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA841F240AD
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD0871C219D1
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BA71E497;
-	Thu, 23 May 2024 13:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBF314A4DD;
+	Thu, 23 May 2024 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvOiQO+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+I/+CIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D1714A634;
-	Thu, 23 May 2024 13:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD21613D2BD;
+	Thu, 23 May 2024 13:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470567; cv=none; b=Vqrs7remERvu1iXT6IzXaDPXSMrn/EEzWWWY4i9Ij03Cl1uD6tlCHagK7ATC1UG7alDJf8zPmbSiLP6R0jBZEA2C/GEt1IS6ggC78M0BnmcifPWbTBJ9VrQvyTQDUy9F+Tdl1PxGHX6YYs0cU8WT50+kCugKBGZOJCv6nrH4t6c=
+	t=1716470079; cv=none; b=OiWKzrStocOBY9PUrlAaD8ZZhAlXMBp93ukAoQk8OpCKYkNmlsQ80zXtaGBrLBovWtrade16ChZRr4LPzDJwOA9O6MXLL2zqc6P/SEC4JTGqz/uFynZjwTHAHfLLalolqmbW1rMfAx8VkotWlouzimSS3pBeK4nsDhuVLTUOEHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470567; c=relaxed/simple;
-	bh=ztGmeoKAEGdDm5Ff2G4XSKEy4g/pDR7d2keGr9iRtfI=;
+	s=arc-20240116; t=1716470079; c=relaxed/simple;
+	bh=QeAtZRpzUezzeBXa+nHqCP6K1jNaItu3E71TVXhC34c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jk7YBbeiRqMtHk023POIGDVejuZML3LL6po8Y37j3qb85xIGEZLneFJApUMK8Kws6Q0Wh4klhYEB1KLTIgzlX4jYiVqCi0r8V8T4is665ZIXkvzTMv+DVe2+8Y7V10HiFReVn6ZOl8/WsN8Nr6BSMUmOvjr1uBWY5mi7DRXP0Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvOiQO+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1184BC3277B;
-	Thu, 23 May 2024 13:22:46 +0000 (UTC)
+	 MIME-Version; b=n8gCKYe41/LFFyB6aTRfsDAmShbJbQsuTJ2IwbAjiOubs50ilKN6TjF/GyI9zauYOIVsUyGMLW2aIxKDRCYcys9vxs+QhtEgt+IUeQeJ6blkh+dHAT72vudb3HPF+Rg1c94QPPxl2C1nqUkCb/ETs3euJa0PKSdhaTPV4w5ORWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+I/+CIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F19C2BD10;
+	Thu, 23 May 2024 13:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470567;
-	bh=ztGmeoKAEGdDm5Ff2G4XSKEy4g/pDR7d2keGr9iRtfI=;
+	s=korg; t=1716470079;
+	bh=QeAtZRpzUezzeBXa+nHqCP6K1jNaItu3E71TVXhC34c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvOiQO+iZPSnvOus9bdmW2qSQFcJuMb1kONHFCCYcb35TzN9sxzaa85SXn9H0W8k7
-	 V9auyo2mUkwoMCNhx+kHck//eIwcU44Gmra/2XNGli3VMJ0ttbwPr6835IkL0uE8ZZ
-	 zUhhcAdpoulPe/cKQ90g3ycRtw3HhasO/D6EOaKA=
+	b=H+I/+CIcUBETEDn7PWgndbzwaVWign0zW5y8TxQE90ohvmTT+6D4Yl5p1ZQt23tul
+	 Eh96D9/SRsb8IvM8bTl3E2lkCEfnbiVtqm8FhBbPOq3tFjv1T8PQna5AXnsPIKVkeC
+	 GAagVSqH0RtU2UMmxxL01hOm3Sw2QZ7lxb+2Z+mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Mariani <pierre.mariani@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/102] smb: client: Fix minor whitespace errors and warnings
+	"stable@vger.kernel.org, George Guo" <guodongtai@kylinos.cn>,
+	Tom Zanussi <tom.zanussi@linux.intel.com>,
+	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+	George Guo <guodongtai@kylinos.cn>
+Subject: [PATCH 4.19 14/18] tracing: Split up onmatch action data
 Date: Thu, 23 May 2024 15:12:37 +0200
-Message-ID: <20240523130342.927260629@linuxfoundation.org>
+Message-ID: <20240523130326.280788792@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
+References: <20240523130325.727602650@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +63,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Mariani <pierre.mariani@gmail.com>
+From: Tom Zanussi <tom.zanussi@linux.intel.com>
 
-[ Upstream commit 0108ce08aed195d200ffbad74c1948bbaefe6625 ]
+commit c3e49506a0f426a850675e39419879214060ca8b upstream.
 
-Fixes no-op checkpatch errors and warnings.
+Currently, the onmatch action data binds the onmatch action to data
+related to synthetic event generation.  Since we want to allow the
+onmatch handler to potentially invoke a different action, and because
+we expect other handlers to generate synthetic events, we need to
+separate the data related to these two functions.
 
-Signed-off-by: Pierre Mariani <pierre.mariani@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also rename the onmatch data to something more descriptive, and create
+and use common action data destroy function.
+
+Link: http://lkml.kernel.org/r/b9abbf9aae69fe3920cdc8ddbcaad544dd258d78.1550100284.git.tom.zanussi@linux.intel.com
+
+Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Signed-off-by: George Guo <guodongtai@kylinos.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ kernel/trace/trace.c             |   12 ++++
+ kernel/trace/trace_events_hist.c |   95 +++++++++++++++++++++------------------
+ 2 files changed, 63 insertions(+), 44 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index cb3bed8364e07..2466b28379ff8 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -501,6 +501,7 @@ static int reconnect_target_unlocked(struct TCP_Server_Info *server, struct dfs_
- static int reconnect_dfs_server(struct TCP_Server_Info *server)
- {
- 	struct dfs_cache_tgt_iterator *target_hint = NULL;
-+
- 	DFS_CACHE_TGT_LIST(tl);
- 	int num_targets = 0;
- 	int rc = 0;
-@@ -763,6 +764,7 @@ cifs_read_from_socket(struct TCP_Server_Info *server, char *buf,
- {
- 	struct msghdr smb_msg = {};
- 	struct kvec iov = {.iov_base = buf, .iov_len = to_read};
-+
- 	iov_iter_kvec(&smb_msg.msg_iter, ITER_DEST, &iov, 1, to_read);
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4754,6 +4754,7 @@ static const char readme_msg[] =
+ 	"\t            [:size=#entries]\n"
+ 	"\t            [:pause][:continue][:clear]\n"
+ 	"\t            [:name=histname1]\n"
++	"\t            [:<handler>.<action>]\n"
+ 	"\t            [if <filter>]\n\n"
+ 	"\t    Note, special fields can be used as well:\n"
+ 	"\t            common_timestamp - to record current timestamp\n"
+@@ -4799,7 +4800,16 @@ static const char readme_msg[] =
+ 	"\t    The enable_hist and disable_hist triggers can be used to\n"
+ 	"\t    have one event conditionally start and stop another event's\n"
+ 	"\t    already-attached hist trigger.  The syntax is analagous to\n"
+-	"\t    the enable_event and disable_event triggers.\n"
++	"\t    the enable_event and disable_event triggers.\n\n"
++	"\t    Hist trigger handlers and actions are executed whenever a\n"
++	"\t    a histogram entry is added or updated.  They take the form:\n\n"
++	"\t        <handler>.<action>\n\n"
++	"\t    The available handlers are:\n\n"
++	"\t        onmatch(matching.event)  - invoke on addition or update\n"
++	"\t        onmax(var)               - invoke if var exceeds current max\n\n"
++	"\t    The available actions are:\n\n"
++	"\t        <synthetic_event>(param list)        - generate synthetic event\n"
++	"\t        save(field,...)                      - save current event fields\n"
+ #endif
+ ;
  
- 	return cifs_readv_from_socket(server, &smb_msg);
-@@ -1418,11 +1420,13 @@ cifs_match_ipaddr(struct sockaddr *srcaddr, struct sockaddr *rhs)
- 	case AF_INET: {
- 		struct sockaddr_in *saddr4 = (struct sockaddr_in *)srcaddr;
- 		struct sockaddr_in *vaddr4 = (struct sockaddr_in *)rhs;
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -379,13 +379,22 @@ struct action_data {
+ 	unsigned int		n_params;
+ 	char			*params[SYNTH_FIELDS_MAX];
+ 
++	/*
++	 * When a histogram trigger is hit, the values of any
++	 * references to variables, including variables being passed
++	 * as parameters to synthetic events, are collected into a
++	 * var_ref_vals array.  This var_ref_idx is the index of the
++	 * first param in the array to be passed to the synthetic
++	 * event invocation.
++	 */
++	unsigned int		var_ref_idx;
++	struct synth_event	*synth_event;
 +
- 		return (saddr4->sin_addr.s_addr == vaddr4->sin_addr.s_addr);
- 	}
- 	case AF_INET6: {
- 		struct sockaddr_in6 *saddr6 = (struct sockaddr_in6 *)srcaddr;
- 		struct sockaddr_in6 *vaddr6 = (struct sockaddr_in6 *)rhs;
-+
- 		return (ipv6_addr_equal(&saddr6->sin6_addr, &vaddr6->sin6_addr)
- 			&& saddr6->sin6_scope_id == vaddr6->sin6_scope_id);
- 	}
-@@ -2607,8 +2611,8 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 			rc = -EOPNOTSUPP;
- 			goto out_fail;
- 		} else {
--			cifs_dbg(VFS, "Check vers= mount option. SMB3.11 "
--				"disabled but required for POSIX extensions\n");
-+			cifs_dbg(VFS,
-+				"Check vers= mount option. SMB3.11 disabled but required for POSIX extensions\n");
- 			rc = -EOPNOTSUPP;
- 			goto out_fail;
- 		}
-@@ -2751,7 +2755,6 @@ cifs_put_tlink(struct tcon_link *tlink)
- 	if (!IS_ERR(tlink_tcon(tlink)))
- 		cifs_put_tcon(tlink_tcon(tlink));
- 	kfree(tlink);
--	return;
+ 	union {
+ 		struct {
+-			unsigned int		var_ref_idx;
+-			char			*match_event;
+-			char			*match_event_system;
+-			struct synth_event	*synth_event;
+-		} onmatch;
++			char			*event;
++			char			*event_system;
++		} match_data;
+ 
+ 		struct {
+ 			char			*var_str;
+@@ -1080,9 +1089,9 @@ static void action_trace(struct hist_tri
+ 			 struct ring_buffer_event *rbe, void *key,
+ 			 struct action_data *data, u64 *var_ref_vals)
+ {
+-	struct synth_event *event = data->onmatch.synth_event;
++	struct synth_event *event = data->synth_event;
+ 
+-	trace_synth(event, var_ref_vals, data->onmatch.var_ref_idx);
++	trace_synth(event, var_ref_vals, data->var_ref_idx);
  }
  
- static int
-@@ -2892,6 +2895,7 @@ static inline void
- cifs_reclassify_socket4(struct socket *sock)
+ struct hist_var_data {
+@@ -1648,8 +1657,8 @@ find_match_var(struct hist_trigger_data
+ 		struct action_data *data = hist_data->actions[i];
+ 
+ 		if (data->handler == HANDLER_ONMATCH) {
+-			char *system = data->onmatch.match_event_system;
+-			char *event_name = data->onmatch.match_event;
++			char *system = data->match_data.event_system;
++			char *event_name = data->match_data.event;
+ 
+ 			file = find_var_file(tr, system, event_name, var_name);
+ 			if (!file)
+@@ -3490,22 +3499,33 @@ static void onmax_save(struct hist_trigg
+ 	update_max_vars(hist_data, elt, rbe, rec);
+ }
+ 
+-static void onmax_destroy(struct action_data *data)
++static void action_data_destroy(struct action_data *data)
  {
- 	struct sock *sk = sock->sk;
+ 	unsigned int i;
+ 
+-	destroy_hist_field(data->onmax.max_var, 0);
+-	destroy_hist_field(data->onmax.var, 0);
++	lockdep_assert_held(&event_mutex);
+ 
+-	kfree(data->onmax.var_str);
+ 	kfree(data->action_name);
+ 
+ 	for (i = 0; i < data->n_params; i++)
+ 		kfree(data->params[i]);
+ 
++	if (data->synth_event)
++		data->synth_event->ref--;
 +
- 	BUG_ON(!sock_allow_reclassification(sk));
- 	sock_lock_init_class_and_name(sk, "slock-AF_INET-CIFS",
- 		&cifs_slock_key[0], "sk_lock-AF_INET-CIFS", &cifs_key[0]);
-@@ -2901,6 +2905,7 @@ static inline void
- cifs_reclassify_socket6(struct socket *sock)
+ 	kfree(data);
+ }
+ 
++static void onmax_destroy(struct action_data *data)
++{
++	destroy_hist_field(data->onmax.max_var, 0);
++	destroy_hist_field(data->onmax.var, 0);
++
++	kfree(data->onmax.var_str);
++
++	action_data_destroy(data);
++}
++
+ static int action_create(struct hist_trigger_data *hist_data,
+ 			 struct action_data *data);
+ 
+@@ -3685,21 +3705,10 @@ static struct action_data *onmax_parse(c
+ 
+ static void onmatch_destroy(struct action_data *data)
  {
- 	struct sock *sk = sock->sk;
-+
- 	BUG_ON(!sock_allow_reclassification(sk));
- 	sock_lock_init_class_and_name(sk, "slock-AF_INET6-CIFS",
- 		&cifs_slock_key[1], "sk_lock-AF_INET6-CIFS", &cifs_key[1]);
-@@ -2935,15 +2940,18 @@ static int
- bind_socket(struct TCP_Server_Info *server)
+-	unsigned int i;
+-
+-	lockdep_assert_held(&event_mutex);
++	kfree(data->match_data.event);
++	kfree(data->match_data.event_system);
+ 
+-	kfree(data->onmatch.match_event);
+-	kfree(data->onmatch.match_event_system);
+-	kfree(data->action_name);
+-
+-	for (i = 0; i < data->n_params; i++)
+-		kfree(data->params[i]);
+-
+-	if (data->onmatch.synth_event)
+-		data->onmatch.synth_event->ref--;
+-
+-	kfree(data);
++	action_data_destroy(data);
+ }
+ 
+ static void destroy_field_var(struct field_var *field_var)
+@@ -3760,8 +3769,8 @@ trace_action_find_var(struct hist_trigge
+ 	hist_field = find_target_event_var(hist_data, system, event, var);
+ 	if (!hist_field) {
+ 		if (!system && data->handler == HANDLER_ONMATCH) {
+-			system = data->onmatch.match_event_system;
+-			event = data->onmatch.match_event;
++			system = data->match_data.event_system;
++			event = data->match_data.event;
+ 		}
+ 
+ 		hist_field = find_event_var(hist_data, system, event, var);
+@@ -3800,8 +3809,8 @@ trace_action_create_field_var(struct his
+ 		 * event.
+ 		 */
+ 		if (!system && data->handler == HANDLER_ONMATCH) {
+-			system = data->onmatch.match_event_system;
+-			event = data->onmatch.match_event;
++			system = data->match_data.event_system;
++			event = data->match_data.event;
+ 		}
+ 
+ 		if (!event)
+@@ -3913,8 +3922,8 @@ static int trace_action_create(struct hi
+ 		goto err;
+ 	}
+ 
+-	data->onmatch.synth_event = event;
+-	data->onmatch.var_ref_idx = var_ref_idx;
++	data->synth_event = event;
++	data->var_ref_idx = var_ref_idx;
+  out:
+ 	return ret;
+  err:
+@@ -4000,14 +4009,14 @@ static struct action_data *onmatch_parse
+ 		goto free;
+ 	}
+ 
+-	data->onmatch.match_event = kstrdup(match_event, GFP_KERNEL);
+-	if (!data->onmatch.match_event) {
++	data->match_data.event = kstrdup(match_event, GFP_KERNEL);
++	if (!data->match_data.event) {
+ 		ret = -ENOMEM;
+ 		goto free;
+ 	}
+ 
+-	data->onmatch.match_event_system = kstrdup(match_event_system, GFP_KERNEL);
+-	if (!data->onmatch.match_event_system) {
++	data->match_data.event_system = kstrdup(match_event_system, GFP_KERNEL);
++	if (!data->match_data.event_system) {
+ 		ret = -ENOMEM;
+ 		goto free;
+ 	}
+@@ -4579,8 +4588,8 @@ static void print_onmatch_spec(struct se
+ 			       struct hist_trigger_data *hist_data,
+ 			       struct action_data *data)
  {
- 	int rc = 0;
-+
- 	if (server->srcaddr.ss_family != AF_UNSPEC) {
- 		/* Bind to the specified local IP address */
- 		struct socket *socket = server->ssocket;
-+
- 		rc = kernel_bind(socket,
- 				 (struct sockaddr *) &server->srcaddr,
- 				 sizeof(server->srcaddr));
- 		if (rc < 0) {
- 			struct sockaddr_in *saddr4;
- 			struct sockaddr_in6 *saddr6;
-+
- 			saddr4 = (struct sockaddr_in *)&server->srcaddr;
- 			saddr6 = (struct sockaddr_in6 *)&server->srcaddr;
- 			if (saddr6->sin6_family == AF_INET6)
-@@ -3173,6 +3181,7 @@ void reset_cifs_unix_caps(unsigned int xid, struct cifs_tcon *tcon,
+-	seq_printf(m, ":onmatch(%s.%s).", data->onmatch.match_event_system,
+-		   data->onmatch.match_event);
++	seq_printf(m, ":onmatch(%s.%s).", data->match_data.event_system,
++		   data->match_data.event);
  
- 	if (!CIFSSMBQFSUnixInfo(xid, tcon)) {
- 		__u64 cap = le64_to_cpu(tcon->fsUnixInfo.Capability);
-+
- 		cifs_dbg(FYI, "unix caps which server supports %lld\n", cap);
- 		/*
- 		 * check for reconnect case in which we do not
-@@ -3698,7 +3707,7 @@ CIFSTCon(const unsigned int xid, struct cifs_ses *ses,
- 	smb_buffer_response = smb_buffer;
+ 	seq_printf(m, "%s(", data->action_name);
  
- 	header_assemble(smb_buffer, SMB_COM_TREE_CONNECT_ANDX,
--			NULL /*no tid */ , 4 /*wct */ );
-+			NULL /*no tid */, 4 /*wct */);
+@@ -4618,11 +4627,11 @@ static bool actions_match(struct hist_tr
+ 			return false;
  
- 	smb_buffer->Mid = get_next_mid(ses->server);
- 	smb_buffer->Uid = ses->Suid;
-@@ -3717,12 +3726,12 @@ CIFSTCon(const unsigned int xid, struct cifs_ses *ses,
- 	if (ses->server->sign)
- 		smb_buffer->Flags2 |= SMBFLG2_SECURITY_SIGNATURE;
- 
--	if (ses->capabilities & CAP_STATUS32) {
-+	if (ses->capabilities & CAP_STATUS32)
- 		smb_buffer->Flags2 |= SMBFLG2_ERR_STATUS;
--	}
--	if (ses->capabilities & CAP_DFS) {
-+
-+	if (ses->capabilities & CAP_DFS)
- 		smb_buffer->Flags2 |= SMBFLG2_DFS;
--	}
-+
- 	if (ses->capabilities & CAP_UNICODE) {
- 		smb_buffer->Flags2 |= SMBFLG2_UNICODE;
- 		length =
--- 
-2.43.0
-
+ 		if (data->handler == HANDLER_ONMATCH) {
+-			if (strcmp(data->onmatch.match_event_system,
+-				   data_test->onmatch.match_event_system) != 0)
++			if (strcmp(data->match_data.event_system,
++				   data_test->match_data.event_system) != 0)
+ 				return false;
+-			if (strcmp(data->onmatch.match_event,
+-				   data_test->onmatch.match_event) != 0)
++			if (strcmp(data->match_data.event,
++				   data_test->match_data.event) != 0)
+ 				return false;
+ 		} else if (data->handler == HANDLER_ONMAX) {
+ 			if (strcmp(data->onmax.var_str,
 
 
 
