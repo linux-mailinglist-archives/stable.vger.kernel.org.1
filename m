@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-45741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB1C8CD3A5
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2562F8CD47B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 570E028147E
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15325B234B2
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F4314B076;
-	Thu, 23 May 2024 13:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A78C14BFBC;
+	Thu, 23 May 2024 13:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToQSh2Ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svyRpCA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70421E4B0;
-	Thu, 23 May 2024 13:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288C714BFB0;
+	Thu, 23 May 2024 13:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470228; cv=none; b=CaJy/h42xx8Fmvnp51Yqa/aemQiuvyvEE4yDJUb3mpAGPg/xJ3pN7JKP9kaq0jHwzmgccHohbCWklR8hp+GT7xFa3NcLzChAPiN5ysliuPBSGfmLQxIkJjhXmKNqG9yrSRAniQUYFM8CI57V1ZTSSQ6gpdbzIUGZTDXq/eTeFEY=
+	t=1716470689; cv=none; b=j2U2JVU+0aGrB9jtfKHp/1n0EiQIIrDj4Z9Bn0ocxmPvlltzHjeBenwvBME/4rSaLODXlDrzJat8us59P/BgulHv0HwcNGyOKV9ybrC4CGiWA2JxCtzbX9S5RO/ppmOHgY5Tlk7lQ1vXM9/a+jcMl6e2f6+jHB1Zk3Psu/1CY2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470228; c=relaxed/simple;
-	bh=aGhlp3JAedDgKRd6I0Tf5VtIpwB5f7S2rzEXI08umLA=;
+	s=arc-20240116; t=1716470689; c=relaxed/simple;
+	bh=Md5B/qbY7tNuY9/sgioKDQrDUwodlDNHyX+ewLQRseA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEPRt6tNnT+7bzIl79otpidSr3+o87QzlCSxQSCcoo4n73bYUp5W5hcDI62dVNEkOZFVR3+y/DuxU2pNzsotxEsR92S37fDGHwwcn2idI0PAifWtWnvgQRFQWgpv0BpTnZvGuRlAXH+Xecs78p9kL+kOOitGJKwk45amBZA6iig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToQSh2Ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E38C2BD10;
-	Thu, 23 May 2024 13:17:08 +0000 (UTC)
+	 MIME-Version; b=RuX+SoI/zJZxsBKxei6ImPKrKAzGS4fW3JlBWIhTT8zN4Q3Wj4uGlC41inbIVk1wi4bZvZZ1ZR8GWM4Kbmjm1fNCk78tMPLnbGouNYdWvKv068JRZVI2dGrJsHd+SR5FnM4Nybq/45Fn6x4NAOEqHTvp9XzXdHH771TgigKh4FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svyRpCA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3A0C3277B;
+	Thu, 23 May 2024 13:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470228;
-	bh=aGhlp3JAedDgKRd6I0Tf5VtIpwB5f7S2rzEXI08umLA=;
+	s=korg; t=1716470688;
+	bh=Md5B/qbY7tNuY9/sgioKDQrDUwodlDNHyX+ewLQRseA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToQSh2TyrWN6W1Bj71oBIPfZ8fSPrCKJzaLubKQEmPC6aI/LXyyNHQKwPDWShpxBk
-	 0PhzWVt5McsqX8ODzsy3nq8j601w7Kt+MVH0QEMv8R28JvoJSptVAQVJ2RPVVUagD0
-	 zPhZ6a24aoFGax3Vusjozs9ZrMuVXSUn6vmvV++4=
+	b=svyRpCA/pP2xY2lfnxnUmz+G8WkfU7jVmvsyFHFe3Q3q1jNk3He4cartmuvvnMuim
+	 KsNUzYgAKpzUI8zjxIQWs+LxjtzHmuvTdt+BkNEYoui2atVUilZULVazl1Vqo4Yz+Z
+	 V6NkQTra9lu6S2UJ5dsgaBnI0ATwP3MlB0on8BI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Greear <greearb@candelatech.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.9 02/25] wifi: iwlwifi: Use request_module_nowait
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 022/102] cifs: get rid of dup length check in parse_reparse_point()
 Date: Thu, 23 May 2024 15:12:47 +0200
-Message-ID: <20240523130330.480126336@linuxfoundation.org>
+Message-ID: <20240523130343.301369464@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Greear <greearb@candelatech.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 3d913719df14c28c4d3819e7e6d150760222bda4 upstream.
+[ Upstream commit 8a3c4e44c243308c2364a00f9944c3d6fbdeb125 ]
 
-This appears to work around a deadlock regression that came in
-with the LED merge in 6.9.
+smb2_compound_op(SMB2_OP_GET_REPARSE) already checks if ioctl response
+has a valid reparse data buffer's length, so there's no need to check
+it again in parse_reparse_point().
 
-The deadlock happens on my system with 24 iwlwifi radios, so maybe
-it something like all worker threads are busy and some work that needs
-to complete cannot complete.
+In order to get rid of duplicate check, validate reparse data buffer's
+length also in cifs_query_reparse_point().
 
-Link: https://lore.kernel.org/linux-kernel/20240411070718.GD6194@google.com/
-Fixes: f5c31bcf604d ("Merge tag 'leds-next-6.9' of git://git.kernel.org/pub/scm/linux/kernel/git/lee/leds")
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Link: https://msgid.link/20240430234212.2132958-1-greearb@candelatech.com
-[also remove unnecessary "load_module" var and now-wrong comment]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c |   10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ fs/smb/client/cifssmb.c | 14 ++++++++++++--
+ fs/smb/client/smb2ops.c | 12 ------------
+ 2 files changed, 12 insertions(+), 14 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1484,7 +1484,6 @@ static void iwl_req_fw_callback(const st
- 	size_t trigger_tlv_sz[FW_DBG_TRIGGER_MAX];
- 	u32 api_ver;
- 	int i;
--	bool load_module = false;
- 	bool usniffer_images = false;
- 	bool failure = true;
- 
-@@ -1732,19 +1731,12 @@ static void iwl_req_fw_callback(const st
- 			goto out_unbind;
- 		}
- 	} else {
--		load_module = true;
-+		request_module_nowait("%s", op->name);
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index e9e33b0b3ac47..01e89070df5ab 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -2700,11 +2700,12 @@ int cifs_query_reparse_point(const unsigned int xid,
+ 			     u32 *tag, struct kvec *rsp,
+ 			     int *rsp_buftype)
+ {
++	struct reparse_data_buffer *buf;
+ 	struct cifs_open_parms oparms;
+ 	TRANSACT_IOCTL_REQ *io_req = NULL;
+ 	TRANSACT_IOCTL_RSP *io_rsp = NULL;
+ 	struct cifs_fid fid;
+-	__u32 data_offset, data_count;
++	__u32 data_offset, data_count, len;
+ 	__u8 *start, *end;
+ 	int io_rsp_len;
+ 	int oplock = 0;
+@@ -2774,7 +2775,16 @@ int cifs_query_reparse_point(const unsigned int xid,
+ 		goto error;
  	}
- 	mutex_unlock(&iwlwifi_opmode_table_mtx);
  
- 	complete(&drv->request_firmware_complete);
+-	*tag = le32_to_cpu(((struct reparse_data_buffer *)start)->ReparseTag);
++	data_count = le16_to_cpu(io_rsp->ByteCount);
++	buf = (struct reparse_data_buffer *)start;
++	len = sizeof(*buf);
++	if (data_count < len ||
++	    data_count < le16_to_cpu(buf->ReparseDataLength) + len) {
++		rc = -EIO;
++		goto error;
++	}
++
++	*tag = le32_to_cpu(buf->ReparseTag);
+ 	rsp->iov_base = io_rsp;
+ 	rsp->iov_len = io_rsp_len;
+ 	*rsp_buftype = CIFS_LARGE_BUFFER;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 9b7cdb7d7ece8..3e07ab1564ea7 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -2946,18 +2946,6 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 			u32 plen, struct cifs_sb_info *cifs_sb,
+ 			bool unicode, struct cifs_open_info_data *data)
+ {
+-	if (plen < sizeof(*buf)) {
+-		cifs_dbg(VFS, "%s: reparse buffer is too small. Must be at least 8 bytes but was %d\n",
+-			 __func__, plen);
+-		return -EIO;
+-	}
+-
+-	if (plen < le16_to_cpu(buf->ReparseDataLength) + sizeof(*buf)) {
+-		cifs_dbg(VFS, "%s: invalid reparse buf length: %d\n",
+-			 __func__, plen);
+-		return -EIO;
+-	}
+-
+ 	data->reparse.buf = buf;
  
--	/*
--	 * Load the module last so we don't block anything
--	 * else from proceeding if the module fails to load
--	 * or hangs loading.
--	 */
--	if (load_module)
--		request_module("%s", op->name);
- 	failure = false;
- 	goto free;
- 
+ 	/* See MS-FSCC 2.1.2 */
+-- 
+2.43.0
+
 
 
 
