@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-45804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C690C8CD3FA
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B719D8CD3D9
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DB71F269A1
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2047AB229F2
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D2F14B94F;
-	Thu, 23 May 2024 13:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3372114A4F4;
+	Thu, 23 May 2024 13:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8zSxUdj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gw3h28Hr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371DF14A633;
-	Thu, 23 May 2024 13:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B921E497;
+	Thu, 23 May 2024 13:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470409; cv=none; b=ccVlUrM/hz+r1C/sXeDXKoLjv6S7gchiOD9WAuKpCSvZgw7gAdveSwM6KfFQnt3L1B216BG5xHZNiZsawKqHimcU1EH290xBl1zQrlvm07miMQk9jrESmtIYTgvI7+tqul4gyYCRVZ2WFxknBbIgy/XakWZUwMBxlNfmd5Ok2E8=
+	t=1716470346; cv=none; b=j0fn3tpHrcmvVB2gqdA7CnjTLIa9WOUU5Xl0V30EDYo/ocUQkWmUvl8+2mbkWHyVuaLqry8T2OzlwvwlmhwwvvBsXYM/4ML2bR5Bg4qG0832y+0lo03iTZvzbLkWNuz/6MIq3i8Mp7eHlaxBWTlmWmWm2sJOOPBYCyVytybkCzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470409; c=relaxed/simple;
-	bh=jFQpfPzSRYM/6cfIXxhCWe2mpzmn1rJyqLnIZNdzAUA=;
+	s=arc-20240116; t=1716470346; c=relaxed/simple;
+	bh=2BdwpiaPjOMPc2qA7EsE5fJHFe9Iq6vQ0Uhlggx8tNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZ9Gye5/tpu7NZq70hCWLiYu2RgRDp9WjQ6ToGJ1GcqpQzAKqRmm1tUSFGZ87se9PqFXOUxRrRbHxZD6/hxXXWNgFtTD26mfrEaZw62o6Rkqq3nz8ek6cAg21/ZevHbIwAYduzB4pAtW8y92pSDfMmhs7Xok7i/ZmrNu918JLYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8zSxUdj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D52CC32786;
-	Thu, 23 May 2024 13:20:08 +0000 (UTC)
+	 MIME-Version; b=tKhMTvWGW576Froa9vBDcftabQbfynf0uRuzB1c9/HNphS8wBlO1S/Q0XYgPG0prHV4OSsTLNuD6vxuDsqpFAJcuL6c4b6ViFTRPr3iGt4g4nYn6vpuC/llRH9wDSNxI79NuY7mYA7UWbQEMjPncr53VV/W42QFUM/FiB6/g+7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gw3h28Hr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732D1C2BD10;
+	Thu, 23 May 2024 13:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470408;
-	bh=jFQpfPzSRYM/6cfIXxhCWe2mpzmn1rJyqLnIZNdzAUA=;
+	s=korg; t=1716470345;
+	bh=2BdwpiaPjOMPc2qA7EsE5fJHFe9Iq6vQ0Uhlggx8tNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8zSxUdjvUJ8weyz3/czLcFSq3Bp3oFibJaEwFzabInTJSRSfDumldkPhVMnUo2GQ
-	 k/zfe8ictNja4SBtyu/Xrpj4NumxqwAnE8BaelHcSPiZaLwMeY9Tr3PhDYWfRcope4
-	 fw9JbnZI3Qbcndcy7HwrQ1HoEKxQRXkHz+tl+qY4=
+	b=Gw3h28HrANMAaigEVNuEn02mpu74tH+o6TGWqFODOpnymxSqi4y0AXqBqUxIPa07f
+	 IfL2dP5IQdDovcCHGXl8ZmZpddBGBsqic3DubJYJt85EBEk3G4u/lIB5FKrYhvjGgN
+	 O1K9tfpI8TsnKuvUOQnB2tK05oHcYTKvaRLik5z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Xuenan <guoxuenan@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 26/45] xfs: fix super block buf log item UAF during force shutdown
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 5.15 21/23] KEYS: trusted: Do not use WARN when encode fails
 Date: Thu, 23 May 2024 15:13:17 +0200
-Message-ID: <20240523130333.483183696@linuxfoundation.org>
+Message-ID: <20240523130328.750122646@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Xuenan <guoxuenan@huawei.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 575689fc0ffa6c4bb4e72fd18e31a6525a6124e0 ]
+commit 050bf3c793a07f96bd1e2fd62e1447f731ed733b upstream.
 
-xfs log io error will trigger xlog shut down, and end_io worker call
-xlog_state_shutdown_callbacks to unpin and release the buf log item.
-The race condition is that when there are some thread doing transaction
-commit and happened not to be intercepted by xlog_is_shutdown, then,
-these log item will be insert into CIL, when unpin and release these
-buf log item, UAF will occur. BTW, add delay before `xlog_cil_commit`
-can increase recurrence probability.
+When asn1_encode_sequence() fails, WARN is not the correct solution.
 
-The following call graph actually encountered this bad situation.
-fsstress                    io end worker kworker/0:1H-216
-                            xlog_ioend_work
-                              ->xlog_force_shutdown
-                                ->xlog_state_shutdown_callbacks
-                                  ->xlog_cil_process_committed
-                                    ->xlog_cil_committed
-                                      ->xfs_trans_committed_bulk
-->xfs_trans_apply_sb_deltas             ->li_ops->iop_unpin(lip, 1);
-  ->xfs_trans_getsb
-    ->_xfs_trans_bjoin
-      ->xfs_buf_item_init
-        ->if (bip) { return 0;} //relog
-->xlog_cil_commit
-  ->xlog_cil_insert_items //insert into CIL
-                                           ->xfs_buf_ioend_fail(bp);
-                                             ->xfs_buf_ioend
-                                               ->xfs_buf_item_done
-                                                 ->xfs_buf_item_relse
-                                                   ->xfs_buf_item_free
+1. asn1_encode_sequence() is not an internal function (located
+   in lib/asn1_encode.c).
+2. Location is known, which makes the stack trace useless.
+3. Results a crash if panic_on_warn is set.
 
-when cil push worker gather percpu cil and insert super block buf log item
-into ctx->log_items then uaf occurs.
+It is also noteworthy that the use of WARN is undocumented, and it
+should be avoided unless there is a carefully considered rationale to
+use it.
 
-==================================================================
-BUG: KASAN: use-after-free in xlog_cil_push_work+0x1c8f/0x22f0
-Write of size 8 at addr ffff88801800f3f0 by task kworker/u4:4/105
+Replace WARN with pr_err, and print the return value instead, which is
+only useful piece of information.
 
-CPU: 0 PID: 105 Comm: kworker/u4:4 Tainted: G W
-6.1.0-rc1-00001-g274115149b42 #136
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.13.0-1ubuntu1.1 04/01/2014
-Workqueue: xfs-cil/sda xlog_cil_push_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x4d/0x66
- print_report+0x171/0x4a6
- kasan_report+0xb3/0x130
- xlog_cil_push_work+0x1c8f/0x22f0
- process_one_work+0x6f9/0xf70
- worker_thread+0x578/0xf30
- kthread+0x28c/0x330
- ret_from_fork+0x1f/0x30
- </TASK>
-
-Allocated by task 2145:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- __kasan_slab_alloc+0x54/0x60
- kmem_cache_alloc+0x14a/0x510
- xfs_buf_item_init+0x160/0x6d0
- _xfs_trans_bjoin+0x7f/0x2e0
- xfs_trans_getsb+0xb6/0x3f0
- xfs_trans_apply_sb_deltas+0x1f/0x8c0
- __xfs_trans_commit+0xa25/0xe10
- xfs_symlink+0xe23/0x1660
- xfs_vn_symlink+0x157/0x280
- vfs_symlink+0x491/0x790
- do_symlinkat+0x128/0x220
- __x64_sys_symlink+0x7a/0x90
- do_syscall_64+0x35/0x80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Freed by task 216:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x2a/0x40
- __kasan_slab_free+0x105/0x1a0
- kmem_cache_free+0xb6/0x460
- xfs_buf_ioend+0x1e9/0x11f0
- xfs_buf_item_unpin+0x3d6/0x840
- xfs_trans_committed_bulk+0x4c2/0x7c0
- xlog_cil_committed+0xab6/0xfb0
- xlog_cil_process_committed+0x117/0x1e0
- xlog_state_shutdown_callbacks+0x208/0x440
- xlog_force_shutdown+0x1b3/0x3a0
- xlog_ioend_work+0xef/0x1d0
- process_one_work+0x6f9/0xf70
- worker_thread+0x578/0xf30
- kthread+0x28c/0x330
- ret_from_fork+0x1f/0x30
-
-The buggy address belongs to the object at ffff88801800f388
- which belongs to the cache xfs_buf_item of size 272
-The buggy address is located 104 bytes inside of
- 272-byte region [ffff88801800f388, ffff88801800f498)
-
-The buggy address belongs to the physical page:
-page:ffffea0000600380 refcount:1 mapcount:0 mapping:0000000000000000
-index:0xffff88801800f208 pfn:0x1800e
-head:ffffea0000600380 order:1 compound_mapcount:0 compound_pincount:0
-flags: 0x1fffff80010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
-raw: 001fffff80010200 ffffea0000699788 ffff88801319db50 ffff88800fb50640
-raw: ffff88801800f208 000000000015000a 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88801800f280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88801800f300: fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88801800f380: fc fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                                             ^
- ffff88801800f400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88801800f480: fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-Disabling lock debugging due to kernel taint
-
-Signed-off-by: Guo Xuenan <guoxuenan@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_buf_item.c |    2 ++
- 1 file changed, 2 insertions(+)
+ security/keys/trusted-keys/trusted_tpm2.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_buf_item.c
-+++ b/fs/xfs/xfs_buf_item.c
-@@ -1018,6 +1018,8 @@ xfs_buf_item_relse(
- 	trace_xfs_buf_item_relse(bp, _RET_IP_);
- 	ASSERT(!test_bit(XFS_LI_IN_AIL, &bip->bli_item.li_flags));
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -84,8 +84,9 @@ static int tpm2_key_encode(struct truste
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
++	if (IS_ERR(work1)) {
+ 		ret = PTR_ERR(work1);
++		pr_err("BUG: ASN.1 encoder failed with %d\n", ret);
+ 		goto err;
+ 	}
  
-+	if (atomic_read(&bip->bli_refcount))
-+		return;
- 	bp->b_log_item = NULL;
- 	xfs_buf_rele(bp);
- 	xfs_buf_item_free(bip);
 
 
 
