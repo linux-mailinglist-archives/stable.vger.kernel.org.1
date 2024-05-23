@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55918CD3BC
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A738CD3E6
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E71EF1C22542
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6EA2853C5
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C124714A60E;
-	Thu, 23 May 2024 13:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAAFF14A4E9;
+	Thu, 23 May 2024 13:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9lIsPnD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7+yCKc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1C014A4C1;
-	Thu, 23 May 2024 13:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881EC13BAE2;
+	Thu, 23 May 2024 13:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470274; cv=none; b=Ygoq96kndy7NWSAXsQ480RpWvcDA4yR1wsXhVyvryXXvfAaVkkNpAeU1DeMataSYqhh6xhoZS3X0mxy11ShFNK323P4S1kVZM2w7seiaCwSFQAyA8pG5jHIWGsxZ22CDSKhEPkyLK8zGDdgG6fcVlvCumo7SOFTyG+mo9S118Ko=
+	t=1716470374; cv=none; b=K9/ZWfeCT2yTjxsEYmyd6rAV5B5Qcx9fWTSmPqJ2CudvY0jP4cEsvo29hRT3eci3GCnh8N3fKFk70X4AupUn7Oqcprxck1kTGaHgO0kxAg+90xYPnhEslsGswesd5tUiSXoYq2sABdqWoIUFvCUvBwzb59/Vf9I1OuKIg2FmhBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470274; c=relaxed/simple;
-	bh=le9/UAp6QD0l6YJ5c7wb1qMb3Mm8XeGdue04mozS0hQ=;
+	s=arc-20240116; t=1716470374; c=relaxed/simple;
+	bh=xiQGoUdFglFYGX28XC9yuQkEyeEdckBwGlk5F4ozfXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cp7KB+4+hPLj27+pDb7KpOT5Jt+587F7pROQaxWWTPFQqoEmFLCbHswdA/YLDs0FAB2rbfPjE7rIQtk+c3Cv12iqAvPdLTO+xf3itOTt7e8x+Uqk9fCDSYfYEMKV20AoQT84BaGyQw10aoHcGI8oNHs+fcRh5Csqgwc3nssPj+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9lIsPnD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEDBC2BD10;
-	Thu, 23 May 2024 13:17:53 +0000 (UTC)
+	 MIME-Version; b=q6R5CaIbKADHkPbFKfx730rlk0Vw0oPLVjclpiBcAHQfIWustlUvbsTcUIf65DdxB5pLi+UFpDoLOkGhRVlTLAK2v+TtkIdAXu9L/hrA2ridfq7OlIFZsjLsSrp1iGw4pHAX1S75uHclODc8Dva/icctP3QxErBXWELryIlz/Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7+yCKc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10251C2BD10;
+	Thu, 23 May 2024 13:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470274;
-	bh=le9/UAp6QD0l6YJ5c7wb1qMb3Mm8XeGdue04mozS0hQ=;
+	s=korg; t=1716470374;
+	bh=xiQGoUdFglFYGX28XC9yuQkEyeEdckBwGlk5F4ozfXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9lIsPnDajfs7KCwfAvy2vaTe2DAzy84/iFZj8KtTZnj4ix9LJu9QFI3wvIhL520s
-	 wGL11x92W0dMQo8k7oxM2OYoVnHTB9rIipTV/e1afP86vAe9idEkD8oEPNAQBXaWYP
-	 SuW+b6Z75su746JoPBc1dDM8IFmsfSAE09Xq6/dY=
+	b=b7+yCKc9GJw447SZPfPyCtRwYzN4vK+O03pyN6NwVxdwBR2RNqUn0UBRRV5pS/F/W
+	 5Jeiw8lFMCW4VcMoMexasSCNVWakNnYJQVNro3q/EiptJU27Foy5t7U2Zh5u71+nxr
+	 N0r0WrswIaZDemAw5t29SYK+JJC7UOfHonzsZZLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Chris Hyser <chris.hyser@oracle.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.9 20/25] admin-guide/hw-vuln/core-scheduling: fix return type of PR_SCHED_CORE_GET
-Date: Thu, 23 May 2024 15:13:05 +0200
-Message-ID: <20240523130331.144428352@linuxfoundation.org>
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 15/45] xfs: xfs_bmap_punch_delalloc_range() should take a byte range
+Date: Thu, 23 May 2024 15:13:06 +0200
+Message-ID: <20240523130333.068307510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit 8af2d1ab78f2342f8c4c3740ca02d86f0ebfac5a upstream.
+[ Upstream commit 7348b322332d8602a4133f0b861334ea021b134a ]
 
-sched_core_share_pid() copies the cookie to userspace with
-put_user(id, (u64 __user *)uaddr), expecting 64 bits of space.
-The "unsigned long" datatype that is documented in core-scheduling.rst
-however is only 32 bits large on 32 bit architectures.
+All the callers of xfs_bmap_punch_delalloc_range() jump through
+hoops to convert a byte range to filesystem blocks before calling
+xfs_bmap_punch_delalloc_range(). Instead, pass the byte range to
+xfs_bmap_punch_delalloc_range() and have it do the conversion to
+filesystem blocks internally.
 
-Document "unsigned long long" as the correct data type that is always
-64bits large.
-
-This matches what the selftest cs_prctl_test.c has been doing all along.
-
-Fixes: 0159bb020ca9 ("Documentation: Add usecases, design and interface for core scheduling")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/util-linux/df7a25a0-7923-4f8b-a527-5e6f0064074d@t-8ch.de/
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Chris Hyser <chris.hyser@oracle.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20240423-core-scheduling-cookie-v1-1-5753a35f8dfc@weissschuh.net
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/hw-vuln/core-scheduling.rst |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_aops.c      |   16 ++++++----------
+ fs/xfs/xfs_bmap_util.c |   10 ++++++----
+ fs/xfs/xfs_bmap_util.h |    2 +-
+ fs/xfs/xfs_iomap.c     |    8 ++------
+ 4 files changed, 15 insertions(+), 21 deletions(-)
 
---- a/Documentation/admin-guide/hw-vuln/core-scheduling.rst
-+++ b/Documentation/admin-guide/hw-vuln/core-scheduling.rst
-@@ -67,8 +67,8 @@ arg4:
-     will be performed for all tasks in the task group of ``pid``.
+--- a/fs/xfs/xfs_aops.c
++++ b/fs/xfs/xfs_aops.c
+@@ -114,9 +114,8 @@ xfs_end_ioend(
+ 	if (unlikely(error)) {
+ 		if (ioend->io_flags & IOMAP_F_SHARED) {
+ 			xfs_reflink_cancel_cow_range(ip, offset, size, true);
+-			xfs_bmap_punch_delalloc_range(ip,
+-						      XFS_B_TO_FSBT(mp, offset),
+-						      XFS_B_TO_FSB(mp, size));
++			xfs_bmap_punch_delalloc_range(ip, offset,
++					offset + size);
+ 		}
+ 		goto done;
+ 	}
+@@ -455,12 +454,8 @@ xfs_discard_folio(
+ 	struct folio		*folio,
+ 	loff_t			pos)
+ {
+-	struct inode		*inode = folio->mapping->host;
+-	struct xfs_inode	*ip = XFS_I(inode);
++	struct xfs_inode	*ip = XFS_I(folio->mapping->host);
+ 	struct xfs_mount	*mp = ip->i_mount;
+-	size_t			offset = offset_in_folio(folio, pos);
+-	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, pos);
+-	xfs_fileoff_t		pageoff_fsb = XFS_B_TO_FSBT(mp, offset);
+ 	int			error;
  
- arg5:
--    userspace pointer to an unsigned long for storing the cookie returned by
--    ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
-+    userspace pointer to an unsigned long long for storing the cookie returned
-+    by ``PR_SCHED_CORE_GET`` command. Should be 0 for all other commands.
+ 	if (xfs_is_shutdown(mp))
+@@ -470,8 +465,9 @@ xfs_discard_folio(
+ 		"page discard on page "PTR_FMT", inode 0x%llx, pos %llu.",
+ 			folio, ip->i_ino, pos);
  
- In order for a process to push a cookie to, or pull a cookie from a process, it
- is required to have the ptrace access mode: `PTRACE_MODE_READ_REALCREDS` to the
+-	error = xfs_bmap_punch_delalloc_range(ip, start_fsb,
+-			i_blocks_per_folio(inode, folio) - pageoff_fsb);
++	error = xfs_bmap_punch_delalloc_range(ip, pos,
++			round_up(pos, folio_size(folio)));
++
+ 	if (error && !xfs_is_shutdown(mp))
+ 		xfs_alert(mp, "page discard unable to remove delalloc mapping.");
+ }
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -590,11 +590,13 @@ out_unlock_iolock:
+ int
+ xfs_bmap_punch_delalloc_range(
+ 	struct xfs_inode	*ip,
+-	xfs_fileoff_t		start_fsb,
+-	xfs_fileoff_t		length)
++	xfs_off_t		start_byte,
++	xfs_off_t		end_byte)
+ {
++	struct xfs_mount	*mp = ip->i_mount;
+ 	struct xfs_ifork	*ifp = &ip->i_df;
+-	xfs_fileoff_t		end_fsb = start_fsb + length;
++	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, start_byte);
++	xfs_fileoff_t		end_fsb = XFS_B_TO_FSB(mp, end_byte);
+ 	struct xfs_bmbt_irec	got, del;
+ 	struct xfs_iext_cursor	icur;
+ 	int			error = 0;
+@@ -607,7 +609,7 @@ xfs_bmap_punch_delalloc_range(
+ 
+ 	while (got.br_startoff + got.br_blockcount > start_fsb) {
+ 		del = got;
+-		xfs_trim_extent(&del, start_fsb, length);
++		xfs_trim_extent(&del, start_fsb, end_fsb - start_fsb);
+ 
+ 		/*
+ 		 * A delete can push the cursor forward. Step back to the
+--- a/fs/xfs/xfs_bmap_util.h
++++ b/fs/xfs/xfs_bmap_util.h
+@@ -31,7 +31,7 @@ xfs_bmap_rtalloc(struct xfs_bmalloca *ap
+ #endif /* CONFIG_XFS_RT */
+ 
+ int	xfs_bmap_punch_delalloc_range(struct xfs_inode *ip,
+-		xfs_fileoff_t start_fsb, xfs_fileoff_t length);
++		xfs_off_t start_byte, xfs_off_t end_byte);
+ 
+ struct kgetbmap {
+ 	__s64		bmv_offset;	/* file offset of segment in blocks */
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -1126,12 +1126,8 @@ xfs_buffered_write_delalloc_punch(
+ 	loff_t			offset,
+ 	loff_t			length)
+ {
+-	struct xfs_mount	*mp = XFS_M(inode->i_sb);
+-	xfs_fileoff_t		start_fsb = XFS_B_TO_FSBT(mp, offset);
+-	xfs_fileoff_t		end_fsb = XFS_B_TO_FSB(mp, offset + length);
+-
+-	return xfs_bmap_punch_delalloc_range(XFS_I(inode), start_fsb,
+-				end_fsb - start_fsb);
++	return xfs_bmap_punch_delalloc_range(XFS_I(inode), offset,
++			offset + length);
+ }
+ 
+ static int
 
 
 
