@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-45912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100538CD484
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 190DA8CD414
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF290282381
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A811C20D9D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA44114A4C1;
-	Thu, 23 May 2024 13:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C942D14B084;
+	Thu, 23 May 2024 13:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irQWAiTq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9I9v0be"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A251D545;
-	Thu, 23 May 2024 13:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8577C13BAC3;
+	Thu, 23 May 2024 13:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470720; cv=none; b=W2btomxR4/Cs3m+jJ869EjR2gpOSs3UZW2tUGjG4TMUB48thmxu1VXeiciD1NIaOflkTL/mJSek6z8g3Nir0mhm5n2eJJCzzMa6wH9EdxX0kUJS5X+3TnkjIvKN3wrj2Y0b+CKTr+sLbjqykDXRwnFrq8sW4Ftm7ilVId0EssSc=
+	t=1716470472; cv=none; b=BPp0y34LJOUDvOGXpPFFmK2Sh++ILzqRD3kvgu1uyXSlmUqwV0yVcpSbN6tNwBfpT7WXz8MI7bX3G+CpC6tb4NlxpqYLmNXuYSKDIW1ZD1rD1WLoM8CV/GRT9KT6K25bF8DqZPq2lUFicpWtlDqnHwmgH7sN+ah1/EkHAqLMMvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470720; c=relaxed/simple;
-	bh=sn6BY9OBXK3JfzOURmDtv/aUi4e5dr+Lbzvm0LL+tZg=;
+	s=arc-20240116; t=1716470472; c=relaxed/simple;
+	bh=lZQ9qxANYfS2NdcdmUN+ToNC9QJgskIuplnqMTCgaJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6iG/2NVumdDkLdii2jfea4Eiq3Yd1N+7V+dDKj6D1ZOoZ9CwNdUHhqwyQRFS1XgcOmJ+MvYwgzphjmIQGhYG8eXy3ajzTcVqorm6bVy90ulhXTyNTiycizfEpjILIoP5gdAHHygdZzhNvIw1es9OuH7z0UjTBJ6f35hs1TtcD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irQWAiTq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E127C3277B;
-	Thu, 23 May 2024 13:25:19 +0000 (UTC)
+	 MIME-Version; b=a3NfCGLRfx+2AOPVM6W2kUXPR5p8AvGOWF1ET8Q9fwegtA29xjFdE///gOJR7+hvMpuflvwvZ6ywR0OxnFgy1fO6qZISpqchNZnpbGq0YZNz9pqcIXOnmJmRoUf9KDWWFeRkQFhEIcTAc0HH1sIeCcb6f7/VSIrKFbhLB7DD5wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9I9v0be; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6F4C3277B;
+	Thu, 23 May 2024 13:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470720;
-	bh=sn6BY9OBXK3JfzOURmDtv/aUi4e5dr+Lbzvm0LL+tZg=;
+	s=korg; t=1716470472;
+	bh=lZQ9qxANYfS2NdcdmUN+ToNC9QJgskIuplnqMTCgaJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irQWAiTqX7N0lKn3dnhn5R1Yd8GctqRTU7p5dybGRDcbpWqSaJCSmPaRKubevJlU+
-	 vBg/C+8DWfZATi/fEGGrcs8KSXyNdVpRaRcj/a4dgLvAodySMhLbtjU+tNifHctW/a
-	 Fx/Bw5rjVuinhRXQ64op1DzBTSxbECFOJ8cX6OK4=
+	b=k9I9v0beLrGuO5On/xohMp2Zj0RY5e37yU16RST8pG0jiYhG+TYCfBa/RlRbi0+6Z
+	 MSp3SUcZPvOLvxjmHL0VLfxnQqATyKtguH8/Ex3fadAXanD4kXlpbXKajlwYkcuYGi
+	 kWYDw+D8LBP9932QMWqfci05I9hLouJyStbyeXBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/102] ksmbd: Fix spelling mistake "connction" -> "connection"
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 39/45] usb: typec: ucsi: displayport: Fix potential deadlock
 Date: Thu, 23 May 2024 15:13:30 +0200
-Message-ID: <20240523130344.923042473@linuxfoundation.org>
+Message-ID: <20240523130333.966768467@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit e758fa6956cbc873e4819ec3dd97cfd05a4c147e ]
+commit b791a67f68121d69108640d4a3e591d210ffe850 upstream.
 
-There is a spelling mistake in a ksmbd_debug debug message. Fix it.
+The function ucsi_displayport_work() does not access the
+connector, so it also must not acquire the connector lock.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a potential deadlock scenario:
+
+ucsi_displayport_work() -> lock(&con->lock)
+typec_altmode_vdm()
+dp_altmode_vdm()
+dp_altmode_work()
+typec_altmode_enter()
+ucsi_displayport_enter() -> lock(&con->lock)
+
+Reported-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240507134316.161999-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/displayport.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 58bafe23ded9a..b7adb6549aa0f 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1856,7 +1856,7 @@ int smb2_check_durable_oplock(struct ksmbd_conn *conn,
+--- a/drivers/usb/typec/ucsi/displayport.c
++++ b/drivers/usb/typec/ucsi/displayport.c
+@@ -275,8 +275,6 @@ static void ucsi_displayport_work(struct
+ 	struct ucsi_dp *dp = container_of(work, struct ucsi_dp, work);
+ 	int ret;
  
- 	if (memcmp(conn->ClientGUID, fp->client_guid,
- 				SMB2_CLIENT_GUID_SIZE)) {
--		ksmbd_debug(SMB, "Client guid of fp is not equal to the one of connction\n");
-+		ksmbd_debug(SMB, "Client guid of fp is not equal to the one of connection\n");
- 		ret = -EBADF;
- 		goto out;
- 	}
--- 
-2.43.0
-
+-	mutex_lock(&dp->con->lock);
+-
+ 	ret = typec_altmode_vdm(dp->alt, dp->header,
+ 				dp->vdo_data, dp->vdo_size);
+ 	if (ret)
+@@ -285,8 +283,6 @@ static void ucsi_displayport_work(struct
+ 	dp->vdo_data = NULL;
+ 	dp->vdo_size = 0;
+ 	dp->header = 0;
+-
+-	mutex_unlock(&dp->con->lock);
+ }
+ 
+ void ucsi_displayport_remove_partner(struct typec_altmode *alt)
 
 
 
