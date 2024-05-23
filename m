@@ -1,73 +1,88 @@
-Return-Path: <stable+bounces-45653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555B98CD14D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:34:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887358CD15D
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1BA1F21DF9
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43508283622
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F224A1482FA;
-	Thu, 23 May 2024 11:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A571487D0;
+	Thu, 23 May 2024 11:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyEp80TW"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qPXoTi4M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF91BBA2F;
-	Thu, 23 May 2024 11:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DE413C8FF;
+	Thu, 23 May 2024 11:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716464062; cv=none; b=uJrURL4VyzmNXCD+B4fEjiYY9IlxyOIr9bbFXgWecHo93pC8cDhZk8vaJRd0B5S9v6LLXxzlc8N614+ZIDBMb6YLlkyepXgIb1SKOWA5kqVz+AfntsmZdnG7L+OeYuXBbl2XxY97PqSP5LCJb1P7qafyNmFfLLY1MksswI4AuYw=
+	t=1716464332; cv=none; b=bGpLQzMr1BKw+fhqIRLzQ+ob/EUmFJDrDtVQH6IW1Jrn3gXCbC2QElmoi2JTvie4YaOkLzP+tutyfLqgPf9d9Vn3X8wBz4A4lPBGDMbWDxmusjQlJGSgdISEwtquEHfan/Ee5/RcDbLU8psh3h4Yu0g3sz4q1mA7bdixh7LNXVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716464062; c=relaxed/simple;
-	bh=x/F9LRjG86L3igI7XUfcG8NAtYjBAyxlWrjUdapL0ck=;
+	s=arc-20240116; t=1716464332; c=relaxed/simple;
+	bh=t+BMAGgGVYWb3TWQl8dOTOj/tYR/7eTfx9+KgXq0piQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ImVzH5xAqDhYoNRA1f9xyfRXSUCYnA+E8t7PERliOPXVu2e4J9NB72hHmjQLXj355lOEfPHKCwT3AY8MpJtENM7kb354Zdc98GMqM/iG2ot5sbbDUyepBZTzabmD7a9GFYFQSSCS59p81N4tHxOumSn4FRGNFTMAeDq8R22PphY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyEp80TW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E556AC2BD10;
-	Thu, 23 May 2024 11:34:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716464062;
-	bh=x/F9LRjG86L3igI7XUfcG8NAtYjBAyxlWrjUdapL0ck=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pyEp80TWjGEXXzsl7LKL/sF7j4OiR8gs1hAuVpOqVjVeuTO4/kp4xmDeSQApKv1bx
-	 JYyfLyKfBA2rhv7AwyvxpxJvf2Vg1V4Hmf/qkLLVInDU2kKts6PZhqz8WHu9UN2gdW
-	 lM6mqSGXN7vTkfGjL6Qbr7JP2p+1wzRrqRSL29qI=
-Date: Thu, 23 May 2024 13:34:19 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Zhengchao Shao <shaozhengchao@huawei.com>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net,
-	kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org, kuba@kernel.org,
-	edumazet@google.com, kuniyu@amazon.com, weiyongjun1@huawei.com,
-	yuehaibing@huawei.com
-Subject: Re: [PATCH stable,5.15 0/2] Revert the patchset for fix
- CVE-2024-26865
-Message-ID: <2024052355-doze-implicate-236d@gregkh>
-References: <20240506030554.3168143-1-shaozhengchao@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ds5gc86G2yhCTH8W3MQVsFmN1Sjpij9YNiklmHFNoT7dGGOjIUuaZtNUNm/8/0Thtoa297ekV7L+QiX08SIznRzyHbEEf4+GMtcwQJkq/OjMeBAcrm+FfGp6KHGnJymP/rwFmB/vFVz+/PiqTvpK33ZptBNiwfQOTsGryvkl/kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qPXoTi4M; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 08ADB14C2DD;
+	Thu, 23 May 2024 13:38:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1716464329;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+UPBUNrmPRgLZO1cfVnj+pDwyoFMA4AC4qyOLHtYS/U=;
+	b=qPXoTi4M5WqOx4aD34L9/u0oiRq3brYmaosDXbfCMPkcLS3C/dyS192+PWfzC3i/yeVDuG
+	z0PWX9QmDAIV/Z+ZkIyyu3gsJ4DfJ1hLH+VDsDZKTQYaQH94XpFs4WaThXbsjGxINShYvO
+	J0ZOHrDWqqRtKsgqHeoZojJ89egyCKwMU7ylorj4jQ5smfLxnXMuttJVtFsp1MFRmvlk3d
+	yIng+CYdkxqJlHyHiW+m/+P6dE2b2rYydH2zx5I5YAoiLlE4QbuhYoXuc4ytmJ8mlbHmp4
+	IkAnWkg4TQL8syWa1H2eTuNrmdMuFJ/O7njTWYZQ5YmkmP5lotgIjN3/mHtSPQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1a78be17;
+	Thu, 23 May 2024 11:38:43 +0000 (UTC)
+Date: Thu, 23 May 2024 20:38:28 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>, Greg Kurz <groug@kaod.org>,
+	Jianyong Wu <jianyong.wu@arm.com>, stable@vger.kernel.org,
+	Eric Van Hensbergen <ericvh@gmail.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] 9p: add missing locking around taking dentry fid list
+Message-ID: <Zk8qtPVlhiJOZxek@codewreck.org>
+References: <20240521122947.1080227-1-asmadeus@codewreck.org>
+ <3116644.1xDzT5uuKM@silver>
+ <Zk8MAFAWIUPlhGFe@codewreck.org>
+ <2675095.dNBKFZOyUv@silver>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240506030554.3168143-1-shaozhengchao@huawei.com>
+In-Reply-To: <2675095.dNBKFZOyUv@silver>
 
-On Mon, May 06, 2024 at 11:05:52AM +0800, Zhengchao Shao wrote:
-> There's no "pernet" variable in the struct hashinfo. The "pernet" variable
-> is introduced from v6.1-rc1. Revert pre-patch and post-patch.
+Christian Schoenebeck wrote on Thu, May 23, 2024 at 12:05:44PM +0200:
+> > I really think it's safe, but I do agree that it's hard to read, happy
+> > to move the `h = &dentry->d_fsdata` inside the lock if you prefer -- it
+> > compiles to the same code for me (x86_64/gcc 13.2.0)
+> 
+> No need, you can add my RB. Thanks for the clarification!
+> 
+> Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 
-I do not understand, why are these reverts needed?
+Thanks!
+I've fixed the typo in the commit message and queued it up in -next,
+will send this patch and the trace uninit fix to Linus early next week.
 
-How does the code currently build if there is no variable here?
-
-confused,
-
-greg k-h
+-- 
+Dominique Martinet | Asmadeus
 
