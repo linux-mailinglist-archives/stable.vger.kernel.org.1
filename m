@@ -1,93 +1,55 @@
-Return-Path: <stable+bounces-45663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5238CD196
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84C08CD19C
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AAED1C20FE2
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:57:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25EB81C21A9A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 11:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005513BC15;
-	Thu, 23 May 2024 11:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD6113BC23;
+	Thu, 23 May 2024 11:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="3Bei+NqQ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hB3LTyjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oq5Y/6bv"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A574113BAFA;
-	Thu, 23 May 2024 11:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B4113BC13;
+	Thu, 23 May 2024 11:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716465469; cv=none; b=d7XRjwIWtMkwSf1dhYWmLJYIBkrHCNKuSs156Hi2JfSb9mVXQ44R94UgDVJGkzaFsnNWBDnQnAISl3NaetD1vbTU4v6tavDQxRFCYm1FloSrthrHZgbIFWN9A/ZbKNiJ9ItIL4YJux2s8239oZs52Ay8mGcrgy4JChmoGXNDWZg=
+	t=1716465542; cv=none; b=k72WITAKLDqy8t/F48RUnbxYwV0Qd781idLrtAhPF7x5pxpKgHGojeEZahonP5iNLI+Qfw6Cmo/IYdD+g3lCKbCW/kX4YVNR1K9HW15hA2xFtz438E04o6NUG3vpxMg+x8W6h316uc9et3bhAdlyOcskqCA5L9Vri9fo/ESRuRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716465469; c=relaxed/simple;
-	bh=QM5IKcZN5RvrcFQh2uL0RP3WbNIjDxPpRh4An5D/hC4=;
+	s=arc-20240116; t=1716465542; c=relaxed/simple;
+	bh=ovB6iL5IBWmYqxJJOaGrT6tWCnVgJJf3GENQRYszLvg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YBE3ofnmYBgCsjo9qFGgZ+WBiv1z+H/pRcnrMS1t1wpdGWH/5nYvcZVRLHmtAlfZBvFJ2Ytcmh4y+unKdCis4qc8RW6r63yNOa5H7yeyZ4DWpcK3jR3GsJ2Dg6WvjBCRp5QvnDTw30/XchOQzW2jX9NrIBIk2bRnKI/XZcwyzgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=3Bei+NqQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hB3LTyjW; arc=none smtp.client-ip=64.147.123.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfhigh.west.internal (Postfix) with ESMTP id D77EF180017F;
-	Thu, 23 May 2024 07:57:45 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Thu, 23 May 2024 07:57:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1716465465; x=1716551865; bh=cdF/5ks+gM
-	MxZAFnyrmZUGOhVVo9SQKIKtB3OVCVODA=; b=3Bei+NqQmDoWoGVY0MQphhb+I7
-	tzv8g0BS8dh8OEACHJQy3k2e2pyFgueihF/2OjyDrHmsdvvV+FC/CPy29O1rCsH7
-	Z0FaE7u8UKUthir76AsFN4qxsc+cRzRhymKh0kRnfi7VqOK7fu0gmT8q1ZiCnJ/V
-	Qo6MiEaX9LUKSJtcwoeqWV2k02l+/5TrsHFBaRhMJDF7yDkPK7DrO3O9lEH7+URa
-	7rXAvqIx7Pj+C8nQEc1X8BaurMTOl11fnSlYGBYxzSYYxxS5QZyJgYVlN+SpjtUM
-	aTJpey7dtm1Z+hBcj5FD+WopEvKjE81eTCczFBYCsHa5vIdrFxXN5PJEYVPA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1716465465; x=1716551865; bh=cdF/5ks+gMMxZAFnyrmZUGOhVVo9
-	SQKIKtB3OVCVODA=; b=hB3LTyjWhjUayDyxwERFyr53FYdxivNpvdrgVLIFtrQs
-	Q97T4ENMb/8dHjtKwL0+sHeiP2v88TSDq9x4pWCCRq/fcJy+ZReihKiL2oNdyfzI
-	kbkicjwcsYpUUgPLZ6NRYAva3/vP56yw/lM4rUC/0T4KFJmzKQPfSbIWm+OBBqBj
-	cEVo1QkP5UAzbozAFMlyxXBJW1n0iEqKirzLyxTtb72T0vxpbvhOxDZj5RXNBkWU
-	1gyoiU49/ZE0Z9BD3yS7XxAMpMo+Rx8HRl/WLthptaX6c9T0f2TC5ZJ9kpOQOs3X
-	YGe++7ohm4Civh1oCUVqbwFm9ddI+Ol9NDzxD7Vv/g==
-X-ME-Sender: <xms:OS9PZoNEL8YIpvYR2RKQSkJYnCiT0JtVBG_2mEA9c8poI0yVia25qg>
-    <xme:OS9PZu_5Z-R5qAJZ4ugr0ijfVPjzhB18ss3B0qNfTcmVbOCXF37P9uJzXs6Vimb6z
-    Iv0LKsTyEQKpQ>
-X-ME-Received: <xmr:OS9PZvR8hkxQ8EBy-ysPJ0AfS6dDxMAeWumgFQaWz7_T9D8BqW51uRNeB4EroK4xFcldU48NqM3yfyRkN366qS5Qd7lr7xhsinQq_Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeiiedggeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:OS9PZgvYWXcHRCwNgPFWakA-RS2V-9B9eY5MnAivxQhsQtJ25VoGeg>
-    <xmx:OS9PZgejwnm0cks63IRSc8Y4cpPsXYYVE-uK0SYRKZWT4R1XrDOarQ>
-    <xmx:OS9PZk1QspP1RbVvOlluQNK2AYZ1UQaETCllNbSTVWBgIN51ebYBfA>
-    <xmx:OS9PZk_wqlZ6fqYp_c2Rp_Ojg1TUIq1a1Q1Ot-suPx6cjTG699u2Ig>
-    <xmx:OS9PZjtIxR4Ppi-r3mhFG5aVY1HhWAuiol9AG_Np5W4oTWegDt-UsW3->
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 May 2024 07:57:44 -0400 (EDT)
-Date: Thu, 23 May 2024 13:57:43 +0200
-From: Greg KH <greg@kroah.com>
-To: Ignat Korchagin <ignat@cloudflare.com>
-Cc: stable@vger.kernel.org, bpf@vger.kernel.org, kernel-team@cloudflare.com,
-	Pengfei Xu <pengfei.xu@intel.com>, Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, Hou Tao <houtao1@huawei.com>
-Subject: Re: [PATCH 6.6.y] bpf: Add missing BPF_LINK_TYPE invocations
-Message-ID: <2024052328-squatting-umpire-a826@gregkh>
-References: <20240521101826.95373-1-ignat@cloudflare.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UPL2hHnhkj39v7VV4QR4hTE3UKcHOaXQdFeYJQp963IMbk+7zauxM2tRykBnIxKFvgGx+7JrQOS1CdQdebh3wrII/5HWxuIppy+/+v4x0yvxZ0v4bbrlsPklLn/RJCRX8+8ZFa7gfCEjhEg/gPt1JG49y4CJixEuk2cj9UTASJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oq5Y/6bv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3A6C2BD10;
+	Thu, 23 May 2024 11:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1716465541;
+	bh=ovB6iL5IBWmYqxJJOaGrT6tWCnVgJJf3GENQRYszLvg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oq5Y/6bvRjWdw7HFKcnz6DhROjLv61OtHELAPMTdCf/sVtGEfO5SKEr3bek2LxRS2
+	 URyZbxxyAB3t9iethVKZrGuan0nXcyAQ55yPdW5jYNhNwn6IOFFS2qgKikZjUP64km
+	 lPX/nR9U/4GrAu/XRBoguYNjTc/uggApkbzeawUw=
+Date: Thu, 23 May 2024 13:58:59 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Cristian Marussi <cristian.marussi@arm.com>
+Subject: Re: [PATCH 5.4 / 5.10] firmware: arm_scmi: Harden accesses to the
+ reset domains
+Message-ID: <2024052351-outward-skinny-c38b@gregkh>
+References: <20240513003837.810709-1-dominique.martinet@atmark-techno.com>
+ <ZkHbzRahnQgptrVr@bogus>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,45 +58,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240521101826.95373-1-ignat@cloudflare.com>
+In-Reply-To: <ZkHbzRahnQgptrVr@bogus>
 
-On Tue, May 21, 2024 at 11:18:26AM +0100, Ignat Korchagin wrote:
-> From: Jiri Olsa <jolsa@kernel.org>
+On Mon, May 13, 2024 at 10:22:21AM +0100, Sudeep Holla wrote:
+> On Mon, May 13, 2024 at 09:38:37AM +0900, Dominique Martinet wrote:
+> > From: Cristian Marussi <cristian.marussi@arm.com>
+> >
+> > [ Upstream commit e9076ffbcaed5da6c182b144ef9f6e24554af268 ]
+> >
+> > Accessing reset domains descriptors by the index upon the SCMI drivers
+> > requests through the SCMI reset operations interface can potentially
+> > lead to out-of-bound violations if the SCMI driver misbehave.
+> >
+> > Add an internal consistency check before any such domains descriptors
+> > accesses.
+> >
+> > Link: https://lore.kernel.org/r/20220817172731.1185305-5-cristian.marussi@arm.com
+> > Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+> > ---
+> > This is the backport I promised for CVE-2022-48655[1]
+> > [1] https://lkml.kernel.org/r/Zj4t4q_w6gqzdvhz@codewreck.org
+> >
 > 
-> commit 117211aa739a926e6555cfea883be84bee6f1695 upstream.
-> 
-> Pengfei Xu reported [1] Syzkaller/KASAN issue found in bpf_link_show_fdinfo.
-> 
-> The reason is missing BPF_LINK_TYPE invocation for uprobe multi
-> link and for several other links, adding that.
-> 
-> [1] https://lore.kernel.org/bpf/ZXptoKRSLspnk2ie@xpf.sh.intel.com/
-> 
-> Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
-> Fixes: e420bed02507 ("bpf: Add fd-based tcx multi-prog infra with link support")
-> Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
-> Fixes: 35dfaad7188c ("netkit, bpf: Add bpf programmable net device")
-> Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-> Acked-by: Hou Tao <houtao1@huawei.com>
-> Link: https://lore.kernel.org/bpf/20231215230502.2769743-1-jolsa@kernel.org
-> Cc: stable@vger.kernel.org # 6.6
-> Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-> ---
-> Hi,
-> 
-> We have experienced a KASAN warning in production on a 6.6 kernel, similar to
-> [1]. This backported patch was adjusted to apply onto 6.6 stable branch: the
-> only change is dropping the BPF_LINK_TYPE(BPF_LINK_TYPE_NETKIT, netkit)
-> definition from the header as netkit was only introduced in 6.7 and 6.7 has the
-> backport already.
-> 
-> I was not able to run the syzkaller reproducer from [1], but we have not seen
-> the KASAN warning in production since applying this patch internally.
+> The backport looks good and thanks for doing that. Sometimes since we
+> know all the users are in the kernel, we tend to ignore the facts that
+> they need to be backport as this was considered as theoretical issue when
+> we pushed the fix. We try to keep that in mind and add fixes tag more
+> carefully in the future. Thanks for your effort and bring this to our
+> attention.
 
-Looks good, thanks for the backport, now queued up.
+Now queued up, thanks
 
 greg k-h
 
