@@ -1,178 +1,299 @@
-Return-Path: <stable+bounces-45744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EDD8CD3AA
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C068CD40B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F57C2830ED
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2964285C68
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9885D14A62A;
-	Thu, 23 May 2024 13:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498F614BFB0;
+	Thu, 23 May 2024 13:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYHAfcjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEvt5MrH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B172AE94;
-	Thu, 23 May 2024 13:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0321813BAC3;
+	Thu, 23 May 2024 13:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470237; cv=none; b=m7E8pqzvebcpxYVvsCSy/6NNbcxtmgpCN/6EVzMGXprT9cYZNQKi2ild5+4spdJNjbBFj4RBWtRgi01J4+2atoM3y2kX4MMnTMJtHifesxCMeFH92RD1g8LpEiwruHDeLo7DXMbdV6mqyvhb5gb75e7+Or5DkhlwksgrSOdhcrA=
+	t=1716470453; cv=none; b=EgSpY1JNbY+13AFINBZ6wz+MSiaNT85xY0EwfJNW7phGzvAuUBfVftqlUHoSFagwqOZimC+JnV3+uM/RKoZrgRAm4yVSXpH1rVctom/pJxBiiQOmt5lwX3nq+N3QzeGlyRYU3oy8FEqyeXVOE1pWjtjVd7bqwMsAZRy21qxA/s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470237; c=relaxed/simple;
-	bh=h0OEFTrBAl3IUU3vZApyQdeOfg9xzBvYsIs8xafPDvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmcEFhmB26rzYeiYPc9BauZHqk/hYaSI0kIE01Ph72uC5dJweM6qSTwECIQLZfRwN0Ta2EoEsjbN5ozaAGctzaQE/C5MigGOFoC+EGLFzZwZmUuAJmX2+JGxJlEPrvEqko0ZnSOO3S03N+S+t8bRNJkIJAgLgnWMiqrpCMs0HSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYHAfcjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0DDC2BD10;
-	Thu, 23 May 2024 13:17:16 +0000 (UTC)
+	s=arc-20240116; t=1716470453; c=relaxed/simple;
+	bh=ar6qY6T96THmaK4PF+VaWr6N1OIeuEpfrHMygoEs2Zo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EIBZJal2t7JVsc+sQ2JjCNKQ/5cp5zKcNTGrJQvA55T+DNx4ozRimwzbE1gIPp/e4kjzT9uCtkAJPSANuM5mD9/59Mma3JolRhsP+LtVs1TSh+58FPCFyTDbdDg/+Ed8M6YZH7+QRm5WnebjAK8JRxjZfXdCWikAtUvliTUstPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEvt5MrH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06851C2BD10;
+	Thu, 23 May 2024 13:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470237;
-	bh=h0OEFTrBAl3IUU3vZApyQdeOfg9xzBvYsIs8xafPDvA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iYHAfcjFr/jykaWRYGTEY3RRTbp0C6eBDVrwHqkHuVQGIQd1/+ul9MHIx0swk57HO
-	 0PUTYFAPI5zHTd9GhoTaFobncpuIOh9CyboBpbzgBMyudN1ChITU5GskInOuyo588h
-	 FCxQ4d1is65EzDPbLFcZ9kQpf4oFjURxiRFR+PlA=
+	s=korg; t=1716470452;
+	bh=ar6qY6T96THmaK4PF+VaWr6N1OIeuEpfrHMygoEs2Zo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QEvt5MrHT6ukSpbUXSx8wDujylPunhQ+jC96x4IW+Alr8JAg5k2r/I1HB/R6hCSDO
+	 okAX1Z2Qa8mdEmmtFsF26b8wJN+IhmcklXpjzPYram0QvPrB9KjunzSQjs70MmtkPc
+	 4AcC0BS+Uf0i6yXW5X9rX70HOSJRcrOFHHhA9LUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@raritan.com>
-Subject: [PATCH 6.9 05/25] net: ks8851: Fix another TX stall caused by wrong ISR flag handling
-Date: Thu, 23 May 2024 15:12:50 +0200
-Message-ID: <20240523130330.589159213@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.1 00/45] 6.1.92-rc1 review
+Date: Thu, 23 May 2024 15:12:51 +0200
+Message-ID: <20240523130332.496202557@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.92-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.1.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.1.92-rc1
+X-KernelTest-Deadline: 2024-05-25T13:03+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.1.92 release.
+There are 45 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+Anything received after that time might be too late.
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.92-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+and the diffstat can be found below.
 
-commit 317a215d493230da361028ea8a4675de334bfa1a upstream.
+thanks,
 
-Under some circumstances it may happen that the ks8851 Ethernet driver
-stops sending data.
+greg k-h
 
-Currently the interrupt handler resets the interrupt status flags in the
-hardware after handling TX. With this approach we may lose interrupts in
-the time window between handling the TX interrupt and resetting the TX
-interrupt status bit.
+-------------
+Pseudo-Shortlog of commits:
 
-When all of the three following conditions are true then transmitting
-data stops:
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.1.92-rc1
 
-  - TX queue is stopped to wait for room in the hardware TX buffer
-  - no queued SKBs in the driver (txq) that wait for being written to hw
-  - hardware TX buffer is empty and the last TX interrupt was lost
+Akira Yokosawa <akiyks@gmail.com>
+    docs: kernel_include.py: Cope with docutils 0.21
 
-This is because reenabling the TX queue happens when handling the TX
-interrupt status but if the TX status bit has already been cleared then
-this interrupt will never come.
+Thomas Weißschuh <linux@weissschuh.net>
+    admin-guide/hw-vuln/core-scheduling: fix return type of PR_SCHED_CORE_GET
 
-With this commit the interrupt status flags will be cleared before they
-are handled. That way we stop losing interrupts.
+Jarkko Sakkinen <jarkko@kernel.org>
+    KEYS: trusted: Do not use WARN when encode fails
 
-The wrong handling of the ISR flags was there from the beginning but
-with commit 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX
-buffer overrun") the issue becomes apparent.
+AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+    remoteproc: mediatek: Make sure IPI buffer fits in L2TCM
 
-Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/net/ethernet/micrel/ks8851_common.c |   18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+Daniel Thompson <daniel.thompson@linaro.org>
+    serial: kgdboc: Fix NMI-safety problems from keyboard reset code
 
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -328,7 +328,6 @@ static irqreturn_t ks8851_irq(int irq, v
- {
- 	struct ks8851_net *ks = _ks;
- 	struct sk_buff_head rxq;
--	unsigned handled = 0;
- 	unsigned long flags;
- 	unsigned int status;
- 	struct sk_buff *skb;
-@@ -336,24 +335,17 @@ static irqreturn_t ks8851_irq(int irq, v
- 	ks8851_lock(ks, &flags);
- 
- 	status = ks8851_rdreg16(ks, KS_ISR);
-+	ks8851_wrreg16(ks, KS_ISR, status);
- 
- 	netif_dbg(ks, intr, ks->netdev,
- 		  "%s: status 0x%04x\n", __func__, status);
- 
--	if (status & IRQ_LCI)
--		handled |= IRQ_LCI;
--
- 	if (status & IRQ_LDI) {
- 		u16 pmecr = ks8851_rdreg16(ks, KS_PMECR);
- 		pmecr &= ~PMECR_WKEVT_MASK;
- 		ks8851_wrreg16(ks, KS_PMECR, pmecr | PMECR_WKEVT_LINK);
--
--		handled |= IRQ_LDI;
- 	}
- 
--	if (status & IRQ_RXPSI)
--		handled |= IRQ_RXPSI;
--
- 	if (status & IRQ_TXI) {
- 		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
- 
-@@ -365,20 +357,12 @@ static irqreturn_t ks8851_irq(int irq, v
- 		if (netif_queue_stopped(ks->netdev))
- 			netif_wake_queue(ks->netdev);
- 		spin_unlock(&ks->statelock);
--
--		handled |= IRQ_TXI;
- 	}
- 
--	if (status & IRQ_RXI)
--		handled |= IRQ_RXI;
--
- 	if (status & IRQ_SPIBEI) {
- 		netdev_err(ks->netdev, "%s: spi bus error\n", __func__);
--		handled |= IRQ_SPIBEI;
- 	}
- 
--	ks8851_wrreg16(ks, KS_ISR, handled);
--
- 	if (status & IRQ_RXI) {
- 		/* the datasheet says to disable the rx interrupt during
- 		 * packet read-out, however we're masking the interrupt
+Javier Carrasco <javier.carrasco@wolfvision.net>
+    usb: typec: tipd: fix event checking for tps6598x
+
+Heikki Krogerus <heikki.krogerus@linux.intel.com>
+    usb: typec: ucsi: displayport: Fix potential deadlock
+
+Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+    net: usb: ax88179_178a: fix link status when link is set to down/up
+
+Prashanth K <quic_prashk@quicinc.com>
+    usb: dwc3: Wait unconditionally after issuing EndXfer command
+
+Carlos Llamas <cmllamas@google.com>
+    binder: fix max_thread type inconsistency
+
+Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+    drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
+
+Mark Rutland <mark.rutland@arm.com>
+    arm64: atomics: lse: remove stale dependency on JUMP_LABEL
+
+Eric Sandeen <sandeen@redhat.com>
+    xfs: short circuit xfs_growfs_data_private() if delta is zero
+
+Hironori Shiina <shiina.hironori@gmail.com>
+    xfs: get root inode correctly at bulkstat
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: fix log recovery when unknown rocompat bits are set
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: allow inode inactivation during a ro mount log recovery
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: invalidate xfs_bufs when allocating cow extents
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: estimate post-merge refcounts correctly
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: hoist refcount record merge predicates
+
+Guo Xuenan <guoxuenan@huawei.com>
+    xfs: fix super block buf log item UAF during force shutdown
+
+Guo Xuenan <guoxuenan@huawei.com>
+    xfs: wait iclog complete before tearing down AIL
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: attach dquots to inode before reading data/cow fork mappings
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: invalidate block device page cache during unmount
+
+Long Li <leo.lilong@huawei.com>
+    xfs: fix incorrect i_nlink caused by inode racing
+
+Long Li <leo.lilong@huawei.com>
+    xfs: fix sb write verify for lazysbcount
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: fix incorrect error-out in xfs_remove
+
+Dave Chinner <dchinner@redhat.com>
+    xfs: fix off-by-one-block in xfs_discard_folio()
+
+Dave Chinner <dchinner@redhat.com>
+    xfs: drop write error injection is unfixable, remove it
+
+Dave Chinner <dchinner@redhat.com>
+    xfs: use iomap_valid method to detect stale cached iomaps
+
+Dave Chinner <dchinner@redhat.com>
+    iomap: write iomap validity checks
+
+Dave Chinner <dchinner@redhat.com>
+    xfs: xfs_bmap_punch_delalloc_range() should take a byte range
+
+Dave Chinner <dchinner@redhat.com>
+    iomap: buffered write failure should not truncate the page cache
+
+Dave Chinner <dchinner@redhat.com>
+    xfs,iomap: move delalloc punching to iomap
+
+Dave Chinner <dchinner@redhat.com>
+    xfs: use byte ranges for write cleanup ranges
+
+Dave Chinner <dchinner@redhat.com>
+    xfs: punching delalloc extents on write failure is racy
+
+Dave Chinner <dchinner@redhat.com>
+    xfs: write page faults in iomap are not buffered writes
+
+Mengqi Zhang <mengqi.zhang@mediatek.com>
+    mmc: core: Add HS400 tuning in HS400es initialization
+
+Jarkko Sakkinen <jarkko@kernel.org>
+    KEYS: trusted: Fix memory leak in tpm2_key_encode()
+
+NeilBrown <neilb@suse.de>
+    nfsd: don't allow nfsd threads to be signalled.
+
+Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+    mfd: stpmic1: Fix swapped mask/unmask in irq chip
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    pinctrl: core: handle radix_tree_insert() errors in pinctrl_register_one_pin()
+
+Jacob Keller <jacob.e.keller@intel.com>
+    ice: remove unnecessary duplicate checks for VF VSI ID
+
+Jacob Keller <jacob.e.keller@intel.com>
+    ice: pass VSI pointer into ice_vc_isvalid_q_id
+
+Ronald Wahl <ronald.wahl@raritan.com>
+    net: ks8851: Fix another TX stall caused by wrong ISR flag handling
+
+Jose Fernandez <josef@netflix.com>
+    drm/amd/display: Fix division by zero in setup_dsc_config
+
+
+-------------
+
+Diffstat:
+
+ .../admin-guide/hw-vuln/core-scheduling.rst        |   4 +-
+ Documentation/sphinx/kernel_include.py             |   1 -
+ Makefile                                           |   4 +-
+ arch/arm64/Kconfig                                 |   1 -
+ arch/arm64/include/asm/lse.h                       |   1 -
+ drivers/android/binder.c                           |   2 +-
+ drivers/android/binder_internal.h                  |   2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c            |   3 +
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c        |   7 +-
+ drivers/mfd/stpmic1.c                              |   5 +-
+ drivers/mmc/core/mmc.c                             |   9 +-
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c      |  22 +-
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |   3 -
+ drivers/net/ethernet/micrel/ks8851_common.c        |  18 +-
+ drivers/net/usb/ax88179_178a.c                     |  37 ++-
+ drivers/pinctrl/core.c                             |  14 +-
+ drivers/remoteproc/mtk_scp.c                       |  10 +-
+ drivers/tty/serial/kgdboc.c                        |  30 ++-
+ drivers/usb/dwc3/gadget.c                          |   4 +-
+ drivers/usb/typec/tipd/core.c                      |  45 ++--
+ drivers/usb/typec/tipd/tps6598x.h                  |  11 +
+ drivers/usb/typec/ucsi/displayport.c               |   4 -
+ fs/iomap/buffered-io.c                             | 254 ++++++++++++++++++++-
+ fs/iomap/iter.c                                    |  19 +-
+ fs/nfs/callback.c                                  |   9 +-
+ fs/nfsd/nfs4proc.c                                 |   5 +-
+ fs/nfsd/nfssvc.c                                   |  12 -
+ fs/xfs/libxfs/xfs_bmap.c                           |   8 +-
+ fs/xfs/libxfs/xfs_errortag.h                       |  12 +-
+ fs/xfs/libxfs/xfs_refcount.c                       | 146 ++++++++++--
+ fs/xfs/libxfs/xfs_sb.c                             |   7 +-
+ fs/xfs/xfs_aops.c                                  |  37 +--
+ fs/xfs/xfs_bmap_util.c                             |  10 +-
+ fs/xfs/xfs_bmap_util.h                             |   2 +-
+ fs/xfs/xfs_buf.c                                   |   1 +
+ fs/xfs/xfs_buf_item.c                              |   2 +
+ fs/xfs/xfs_error.c                                 |  27 ++-
+ fs/xfs/xfs_file.c                                  |   2 +-
+ fs/xfs/xfs_fsops.c                                 |   4 +
+ fs/xfs/xfs_icache.c                                |   6 +
+ fs/xfs/xfs_inode.c                                 |  16 +-
+ fs/xfs/xfs_ioctl.c                                 |   4 +-
+ fs/xfs/xfs_iomap.c                                 | 177 ++++++++------
+ fs/xfs/xfs_iomap.h                                 |   6 +-
+ fs/xfs/xfs_log.c                                   |  53 ++---
+ fs/xfs/xfs_mount.c                                 |  15 ++
+ fs/xfs/xfs_pnfs.c                                  |   6 +-
+ include/linux/iomap.h                              |  47 +++-
+ net/sunrpc/svc_xprt.c                              |  16 +-
+ security/keys/trusted-keys/trusted_tpm2.c          |  25 +-
+ 50 files changed, 866 insertions(+), 299 deletions(-)
 
 
 
