@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-45922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D2F8CD492
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3C38CD41E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D5FF285102
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBF231C218DE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AA514A4F0;
-	Thu, 23 May 2024 13:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2C714A62D;
+	Thu, 23 May 2024 13:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0vQalV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZR1K1pMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BADA13BAC3;
-	Thu, 23 May 2024 13:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC1B1D545;
+	Thu, 23 May 2024 13:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470749; cv=none; b=PBhbjdLmGgmHR4WcE9KG3t1i1kx94xCv7s+Tll3YvEQQ4ItaZSaHlrn7WpurLIZzXjpFlGtXVVO2ZDdDG49Sr+rnp1eAdO3efnFhXLwT/ZS8FWYWz9lKdK5vrTg5zvxBz0O5rQyuPKZWpkzvM2cR1DIXTa/KyQ+WQ7hCux0m8rE=
+	t=1716470501; cv=none; b=GBr0uYWyG2SlQBSZImUN2/KnIVFYkNKux9piWnOHIcCAe/JfNBLE1b3nBqqMMmYnVdk+7hRGzgcJDKP/cneVKCbqLYAbbPomFO0BIPDEyvLp1nKwVTA4EKgPPFe+0lGg8H4d/Uk0HPAdwriqHFVKcUxQcrsnEJURr/qnLx1Y5q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470749; c=relaxed/simple;
-	bh=0FRpWfVPv5aSGN8BsnsHItoPdJGXZ8hqaSOeflOTljs=;
+	s=arc-20240116; t=1716470501; c=relaxed/simple;
+	bh=i/wEetXsmwLduTHNYRSBlM8afdEbIrkkOPAOT67Sqmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+d5q1SA8JLoMMICH6gdUbu+Wwq1eqxPQ2I0QQ0vkcdX1QzcmhCH5yxgRU0m4XStY+DsIJZdv08SYbvjC51MagsFkDlXTArDwJ4o22/vARVZpGvrSRKV+BIcKTG8ckO9XFNfiS5rcP1DUlcql5VtEAx55B35ECZizLO5xrZ8tMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0vQalV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D326DC32782;
-	Thu, 23 May 2024 13:25:48 +0000 (UTC)
+	 MIME-Version; b=SnGwpvmGa0m7gpYvFZFnD2eMrX3YmzdMErQyB4MTdbaKshIzzNKqb1lGmuRffGM1mz+fmR6vs/dadfr5o5wZzA4V5JF3fhZYx1bBOI5OXmEulU7663OHwJ07cHenkIqTGhjaX8RJ1SvzwhjS9nw/qhN0NfBnFLyK6KZ6zveiqxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZR1K1pMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB12C2BD10;
+	Thu, 23 May 2024 13:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470749;
-	bh=0FRpWfVPv5aSGN8BsnsHItoPdJGXZ8hqaSOeflOTljs=;
+	s=korg; t=1716470500;
+	bh=i/wEetXsmwLduTHNYRSBlM8afdEbIrkkOPAOT67Sqmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0vQalV2a8fSGzGPsusj4UBYVv0dmOmyWsuf3IxQCq7lnQX2C3QWiZ1MfleC8+EDC
-	 k5RXzoHZs2udOHmFqLyW7ZEGfGi/I5gcZqBAyEFVd/kvNfAPKyAsYRRmRl7TedDfWl
-	 Sg9PS5OK8A+POo/qmTmRxwG24AGyRfspub69fIws=
+	b=ZR1K1pMPmNL2JjTHl8Bi+3vIBpGjXiRgUOLxx5nBUz9HMfBmQIkMPsuhiRAYUlttP
+	 9H7qcuxLGHZdhWwPjX6RdYmNE5jYkeAG8ABWlSGid3VIribhaLESpjC+5mkYWUNLL3
+	 4ues7tC7sOABjCGd2IYGHlGRPy3P177Z98txaIUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/102] cifs: Add tracing for the cifs_tcon struct refcounting
-Date: Thu, 23 May 2024 15:13:39 +0200
-Message-ID: <20240523130345.257483114@linuxfoundation.org>
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.8 13/23] usb: typec: ucsi: displayport: Fix potential deadlock
+Date: Thu, 23 May 2024 15:13:40 +0200
+Message-ID: <20240523130330.252890611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
+References: <20240523130329.745905823@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,521 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit afc23febd51c7e24361e3a9c09f3e892eb0a41ea ]
+commit b791a67f68121d69108640d4a3e591d210ffe850 upstream.
 
-Add tracing for the refcounting/lifecycle of the cifs_tcon struct, marking
-different events with different labels and giving each tcon its own debug
-ID so that the tracelines corresponding to individual tcons can be
-distinguished.  This can be enabled with:
+The function ucsi_displayport_work() does not access the
+connector, so it also must not acquire the connector lock.
 
-	echo 1 >/sys/kernel/debug/tracing/events/cifs/smb3_tcon_ref/enable
+This fixes a potential deadlock scenario:
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ucsi_displayport_work() -> lock(&con->lock)
+typec_altmode_vdm()
+dp_altmode_vdm()
+dp_altmode_work()
+typec_altmode_enter()
+ucsi_displayport_enter() -> lock(&con->lock)
+
+Reported-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240507134316.161999-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsfs.c        |  2 +
- fs/smb/client/cifsglob.h      |  1 +
- fs/smb/client/cifsproto.h     |  9 ++--
- fs/smb/client/connect.c       | 21 ++++----
- fs/smb/client/fscache.c       |  7 +++
- fs/smb/client/misc.c          | 10 ++--
- fs/smb/client/smb2misc.c      | 10 ++--
- fs/smb/client/smb2ops.c       |  7 ++-
- fs/smb/client/smb2pdu.c       |  8 +--
- fs/smb/client/smb2transport.c |  2 +
- fs/smb/client/trace.h         | 92 ++++++++++++++++++++++++++++++++++-
- 11 files changed, 143 insertions(+), 26 deletions(-)
+ drivers/usb/typec/ucsi/displayport.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 539ac9774de1b..f1dcb86ab9894 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -739,6 +739,8 @@ static void cifs_umount_begin(struct super_block *sb)
+--- a/drivers/usb/typec/ucsi/displayport.c
++++ b/drivers/usb/typec/ucsi/displayport.c
+@@ -275,8 +275,6 @@ static void ucsi_displayport_work(struct
+ 	struct ucsi_dp *dp = container_of(work, struct ucsi_dp, work);
+ 	int ret;
  
- 	spin_lock(&cifs_tcp_ses_lock);
- 	spin_lock(&tcon->tc_lock);
-+	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+			    netfs_trace_tcon_ref_see_umount);
- 	if ((tcon->tc_count > 1) || (tcon->status == TID_EXITING)) {
- 		/* we have other mounts to same share or we have
- 		   already tried to umount this and woken up
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 9597887280ff3..c146f83eba9b4 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1190,6 +1190,7 @@ struct cifs_fattr {
-  */
- struct cifs_tcon {
- 	struct list_head tcon_list;
-+	int debug_id;		/* Debugging for tracing */
- 	int tc_count;
- 	struct list_head rlist; /* reconnect list */
- 	spinlock_t tc_lock;  /* protect anything here that is not protected */
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 8e0a348f1f660..fbc358c09da3b 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -303,7 +303,7 @@ cifs_get_tcp_session(struct smb3_fs_context *ctx,
- 		     struct TCP_Server_Info *primary_server);
- extern void cifs_put_tcp_session(struct TCP_Server_Info *server,
- 				 int from_reconnect);
--extern void cifs_put_tcon(struct cifs_tcon *tcon);
-+extern void cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace);
- 
- extern void cifs_release_automount_timer(void);
- 
-@@ -530,8 +530,9 @@ extern int CIFSSMBLogoff(const unsigned int xid, struct cifs_ses *ses);
- 
- extern struct cifs_ses *sesInfoAlloc(void);
- extern void sesInfoFree(struct cifs_ses *);
--extern struct cifs_tcon *tcon_info_alloc(bool dir_leases_enabled);
--extern void tconInfoFree(struct cifs_tcon *);
-+extern struct cifs_tcon *tcon_info_alloc(bool dir_leases_enabled,
-+					 enum smb3_tcon_ref_trace trace);
-+extern void tconInfoFree(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace);
- 
- extern int cifs_sign_rqst(struct smb_rqst *rqst, struct TCP_Server_Info *server,
- 		   __u32 *pexpected_response_sequence_number);
-@@ -721,8 +722,6 @@ static inline int cifs_create_options(struct cifs_sb_info *cifs_sb, int options)
- 		return options;
+-	mutex_lock(&dp->con->lock);
+-
+ 	ret = typec_altmode_vdm(dp->alt, dp->header,
+ 				dp->vdo_data, dp->vdo_size);
+ 	if (ret)
+@@ -285,8 +283,6 @@ static void ucsi_displayport_work(struct
+ 	dp->vdo_data = NULL;
+ 	dp->vdo_size = 0;
+ 	dp->header = 0;
+-
+-	mutex_unlock(&dp->con->lock);
  }
  
--struct super_block *cifs_get_tcon_super(struct cifs_tcon *tcon);
--void cifs_put_tcon_super(struct super_block *sb);
- int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server, bool retry);
- 
- /* Put references of @ses and its children */
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 4e35970681bf0..7a16e12f5da87 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1943,7 +1943,7 @@ cifs_setup_ipc(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 	}
- 
- 	/* no need to setup directory caching on IPC share, so pass in false */
--	tcon = tcon_info_alloc(false);
-+	tcon = tcon_info_alloc(false, netfs_trace_tcon_ref_new_ipc);
- 	if (tcon == NULL)
- 		return -ENOMEM;
- 
-@@ -1960,7 +1960,7 @@ cifs_setup_ipc(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 
- 	if (rc) {
- 		cifs_server_dbg(VFS, "failed to connect to IPC (rc=%d)\n", rc);
--		tconInfoFree(tcon);
-+		tconInfoFree(tcon, netfs_trace_tcon_ref_free_ipc_fail);
- 		goto out;
- 	}
- 
-@@ -2043,7 +2043,7 @@ void __cifs_put_smb_ses(struct cifs_ses *ses)
- 	 * files on session close, as specified in MS-SMB2 3.3.5.6 Receiving an
- 	 * SMB2 LOGOFF Request.
- 	 */
--	tconInfoFree(tcon);
-+	tconInfoFree(tcon, netfs_trace_tcon_ref_free_ipc);
- 	if (do_logoff) {
- 		xid = get_xid();
- 		rc = server->ops->logoff(xid, ses);
-@@ -2432,6 +2432,8 @@ cifs_find_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 			continue;
- 		}
- 		++tcon->tc_count;
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_get_find);
- 		spin_unlock(&tcon->tc_lock);
- 		spin_unlock(&cifs_tcp_ses_lock);
- 		return tcon;
-@@ -2441,7 +2443,7 @@ cifs_find_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- }
- 
- void
--cifs_put_tcon(struct cifs_tcon *tcon)
-+cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
- {
- 	unsigned int xid;
- 	struct cifs_ses *ses;
-@@ -2457,6 +2459,7 @@ cifs_put_tcon(struct cifs_tcon *tcon)
- 	cifs_dbg(FYI, "%s: tc_count=%d\n", __func__, tcon->tc_count);
- 	spin_lock(&cifs_tcp_ses_lock);
- 	spin_lock(&tcon->tc_lock);
-+	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count - 1, trace);
- 	if (--tcon->tc_count > 0) {
- 		spin_unlock(&tcon->tc_lock);
- 		spin_unlock(&cifs_tcp_ses_lock);
-@@ -2493,7 +2496,7 @@ cifs_put_tcon(struct cifs_tcon *tcon)
- 	_free_xid(xid);
- 
- 	cifs_fscache_release_super_cookie(tcon);
--	tconInfoFree(tcon);
-+	tconInfoFree(tcon, netfs_trace_tcon_ref_free);
- 	cifs_put_smb_ses(ses);
- }
- 
-@@ -2547,7 +2550,7 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 		nohandlecache = ctx->nohandlecache;
- 	else
- 		nohandlecache = true;
--	tcon = tcon_info_alloc(!nohandlecache);
-+	tcon = tcon_info_alloc(!nohandlecache, netfs_trace_tcon_ref_new);
- 	if (tcon == NULL) {
- 		rc = -ENOMEM;
- 		goto out_fail;
-@@ -2737,7 +2740,7 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 	return tcon;
- 
- out_fail:
--	tconInfoFree(tcon);
-+	tconInfoFree(tcon, netfs_trace_tcon_ref_free_fail);
- 	return ERR_PTR(rc);
- }
- 
-@@ -2754,7 +2757,7 @@ cifs_put_tlink(struct tcon_link *tlink)
- 	}
- 
- 	if (!IS_ERR(tlink_tcon(tlink)))
--		cifs_put_tcon(tlink_tcon(tlink));
-+		cifs_put_tcon(tlink_tcon(tlink), netfs_trace_tcon_ref_put_tlink);
- 	kfree(tlink);
- }
- 
-@@ -3319,7 +3322,7 @@ void cifs_mount_put_conns(struct cifs_mount_ctx *mnt_ctx)
- 	int rc = 0;
- 
- 	if (mnt_ctx->tcon)
--		cifs_put_tcon(mnt_ctx->tcon);
-+		cifs_put_tcon(mnt_ctx->tcon, netfs_trace_tcon_ref_put_mnt_ctx);
- 	else if (mnt_ctx->ses)
- 		cifs_put_smb_ses(mnt_ctx->ses);
- 	else if (mnt_ctx->server)
-diff --git a/fs/smb/client/fscache.c b/fs/smb/client/fscache.c
-index ecabc4b400535..98c5eebdc7b2f 100644
---- a/fs/smb/client/fscache.c
-+++ b/fs/smb/client/fscache.c
-@@ -94,6 +94,11 @@ int cifs_fscache_get_super_cookie(struct cifs_tcon *tcon)
- 		}
- 		pr_err("Cache volume key already in use (%s)\n", key);
- 		vcookie = NULL;
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_see_fscache_collision);
-+	} else {
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_see_fscache_okay);
- 	}
- 
- 	tcon->fscache = vcookie;
-@@ -115,6 +120,8 @@ void cifs_fscache_release_super_cookie(struct cifs_tcon *tcon)
- 	cifs_fscache_fill_volume_coherency(tcon, &cd);
- 	fscache_relinquish_volume(tcon->fscache, &cd, false);
- 	tcon->fscache = NULL;
-+	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+			    netfs_trace_tcon_ref_see_fscache_relinq);
- }
- 
- void cifs_fscache_get_inode_cookie(struct inode *inode)
-diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
-index ad44f8d66b377..07c468ddb88a8 100644
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -111,9 +111,10 @@ sesInfoFree(struct cifs_ses *buf_to_free)
- }
- 
- struct cifs_tcon *
--tcon_info_alloc(bool dir_leases_enabled)
-+tcon_info_alloc(bool dir_leases_enabled, enum smb3_tcon_ref_trace trace)
- {
- 	struct cifs_tcon *ret_buf;
-+	static atomic_t tcon_debug_id;
- 
- 	ret_buf = kzalloc(sizeof(*ret_buf), GFP_KERNEL);
- 	if (!ret_buf)
-@@ -130,7 +131,8 @@ tcon_info_alloc(bool dir_leases_enabled)
- 
- 	atomic_inc(&tconInfoAllocCount);
- 	ret_buf->status = TID_NEW;
--	++ret_buf->tc_count;
-+	ret_buf->debug_id = atomic_inc_return(&tcon_debug_id);
-+	ret_buf->tc_count = 1;
- 	spin_lock_init(&ret_buf->tc_lock);
- 	INIT_LIST_HEAD(&ret_buf->openFileList);
- 	INIT_LIST_HEAD(&ret_buf->tcon_list);
-@@ -142,17 +144,19 @@ tcon_info_alloc(bool dir_leases_enabled)
- #ifdef CONFIG_CIFS_FSCACHE
- 	mutex_init(&ret_buf->fscache_lock);
- #endif
-+	trace_smb3_tcon_ref(ret_buf->debug_id, ret_buf->tc_count, trace);
- 
- 	return ret_buf;
- }
- 
- void
--tconInfoFree(struct cifs_tcon *tcon)
-+tconInfoFree(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
- {
- 	if (tcon == NULL) {
- 		cifs_dbg(FYI, "Null buffer passed to tconInfoFree\n");
- 		return;
- 	}
-+	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count, trace);
- 	free_cached_dirs(tcon->cfids);
- 	atomic_dec(&tconInfoAllocCount);
- 	kfree(tcon->nativeFileSystem);
-diff --git a/fs/smb/client/smb2misc.c b/fs/smb/client/smb2misc.c
-index cc72be5a93a93..677ef6f99a5be 100644
---- a/fs/smb/client/smb2misc.c
-+++ b/fs/smb/client/smb2misc.c
-@@ -767,7 +767,7 @@ smb2_cancelled_close_fid(struct work_struct *work)
- 	if (rc)
- 		cifs_tcon_dbg(VFS, "Close cancelled mid failed rc:%d\n", rc);
- 
--	cifs_put_tcon(tcon);
-+	cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_cancelled_close_fid);
- 	kfree(cancelled);
- }
- 
-@@ -811,6 +811,8 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
- 	if (tcon->tc_count <= 0) {
- 		struct TCP_Server_Info *server = NULL;
- 
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_see_cancelled_close);
- 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
- 		spin_unlock(&cifs_tcp_ses_lock);
- 
-@@ -823,12 +825,14 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
- 		return 0;
- 	}
- 	tcon->tc_count++;
-+	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+			    netfs_trace_tcon_ref_get_cancelled_close);
- 	spin_unlock(&cifs_tcp_ses_lock);
- 
- 	rc = __smb2_handle_cancelled_cmd(tcon, SMB2_CLOSE_HE, 0,
- 					 persistent_fid, volatile_fid);
- 	if (rc)
--		cifs_put_tcon(tcon);
-+		cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_cancelled_close);
- 
- 	return rc;
- }
-@@ -856,7 +860,7 @@ smb2_handle_cancelled_mid(struct mid_q_entry *mid, struct TCP_Server_Info *serve
- 					 rsp->PersistentFileId,
- 					 rsp->VolatileFileId);
- 	if (rc)
--		cifs_put_tcon(tcon);
-+		cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_cancelled_mid);
- 
- 	return rc;
- }
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index df6c6d31236ad..66cfce456263b 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -2915,8 +2915,11 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
- 		tcon = list_first_entry_or_null(&ses->tcon_list,
- 						struct cifs_tcon,
- 						tcon_list);
--		if (tcon)
-+		if (tcon) {
- 			tcon->tc_count++;
-+			trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+					    netfs_trace_tcon_ref_get_dfs_refer);
-+		}
- 		spin_unlock(&cifs_tcp_ses_lock);
- 	}
- 
-@@ -2980,6 +2983,8 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
- 		/* ipc tcons are not refcounted */
- 		spin_lock(&cifs_tcp_ses_lock);
- 		tcon->tc_count--;
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_dec_dfs_refer);
- 		/* tc_count can never go negative */
- 		WARN_ON(tcon->tc_count < 0);
- 		spin_unlock(&cifs_tcp_ses_lock);
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 86c647a947ccd..a5efce03cb58e 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4138,6 +4138,8 @@ void smb2_reconnect_server(struct work_struct *work)
- 		list_for_each_entry(tcon, &ses->tcon_list, tcon_list) {
- 			if (tcon->need_reconnect || tcon->need_reopen_files) {
- 				tcon->tc_count++;
-+				trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+						    netfs_trace_tcon_ref_get_reconnect_server);
- 				list_add_tail(&tcon->rlist, &tmp_list);
- 				tcon_selected = true;
- 			}
-@@ -4176,14 +4178,14 @@ void smb2_reconnect_server(struct work_struct *work)
- 		if (tcon->ipc)
- 			cifs_put_smb_ses(tcon->ses);
- 		else
--			cifs_put_tcon(tcon);
-+			cifs_put_tcon(tcon, netfs_trace_tcon_ref_put_reconnect_server);
- 	}
- 
- 	if (!ses_exist)
- 		goto done;
- 
- 	/* allocate a dummy tcon struct used for reconnect */
--	tcon = tcon_info_alloc(false);
-+	tcon = tcon_info_alloc(false, netfs_trace_tcon_ref_new_reconnect_server);
- 	if (!tcon) {
- 		resched = true;
- 		list_for_each_entry_safe(ses, ses2, &tmp_ses_list, rlist) {
-@@ -4206,7 +4208,7 @@ void smb2_reconnect_server(struct work_struct *work)
- 		list_del_init(&ses->rlist);
- 		cifs_put_smb_ses(ses);
- 	}
--	tconInfoFree(tcon);
-+	tconInfoFree(tcon, netfs_trace_tcon_ref_free_reconnect_server);
- 
- done:
- 	cifs_dbg(FYI, "Reconnecting tcons and channels finished\n");
-diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
-index 5a3ca62d2f07f..8f346aafc4cf8 100644
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -189,6 +189,8 @@ smb2_find_smb_sess_tcon_unlocked(struct cifs_ses *ses, __u32  tid)
- 		if (tcon->tid != tid)
- 			continue;
- 		++tcon->tc_count;
-+		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
-+				    netfs_trace_tcon_ref_get_find_sess_tcon);
- 		return tcon;
- 	}
- 
-diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
-index 5e83cb9da9028..604e52876cd2d 100644
---- a/fs/smb/client/trace.h
-+++ b/fs/smb/client/trace.h
-@@ -3,6 +3,9 @@
-  *   Copyright (C) 2018, Microsoft Corporation.
-  *
-  *   Author(s): Steve French <stfrench@microsoft.com>
-+ *
-+ * Please use this 3-part article as a reference for writing new tracepoints:
-+ * https://lwn.net/Articles/379903/
-  */
- #undef TRACE_SYSTEM
- #define TRACE_SYSTEM cifs
-@@ -15,9 +18,70 @@
- #include <linux/inet.h>
- 
- /*
-- * Please use this 3-part article as a reference for writing new tracepoints:
-- * https://lwn.net/Articles/379903/
-+ * Specify enums for tracing information.
-+ */
-+#define smb3_tcon_ref_traces					      \
-+	EM(netfs_trace_tcon_ref_dec_dfs_refer,		"DEC DfsRef") \
-+	EM(netfs_trace_tcon_ref_free,			"FRE       ") \
-+	EM(netfs_trace_tcon_ref_free_fail,		"FRE Fail  ") \
-+	EM(netfs_trace_tcon_ref_free_ipc,		"FRE Ipc   ") \
-+	EM(netfs_trace_tcon_ref_free_ipc_fail,		"FRE Ipc-F ") \
-+	EM(netfs_trace_tcon_ref_free_reconnect_server,	"FRE Reconn") \
-+	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
-+	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
-+	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
-+	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
-+	EM(netfs_trace_tcon_ref_get_reconnect_server,	"GET Reconn") \
-+	EM(netfs_trace_tcon_ref_new,			"NEW       ") \
-+	EM(netfs_trace_tcon_ref_new_ipc,		"NEW Ipc   ") \
-+	EM(netfs_trace_tcon_ref_new_reconnect_server,	"NEW Reconn") \
-+	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
-+	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
-+	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
-+	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
-+	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
-+	EM(netfs_trace_tcon_ref_put_tlink,		"PUT Tlink ") \
-+	EM(netfs_trace_tcon_ref_see_cancelled_close,	"SEE Cn-Cls") \
-+	EM(netfs_trace_tcon_ref_see_fscache_collision,	"SEE FV-CO!") \
-+	EM(netfs_trace_tcon_ref_see_fscache_okay,	"SEE FV-Ok ") \
-+	EM(netfs_trace_tcon_ref_see_fscache_relinq,	"SEE FV-Rlq") \
-+	E_(netfs_trace_tcon_ref_see_umount,		"SEE Umount")
-+
-+#undef EM
-+#undef E_
-+
-+/*
-+ * Define those tracing enums.
-+ */
-+#ifndef __SMB3_DECLARE_TRACE_ENUMS_ONCE_ONLY
-+#define __SMB3_DECLARE_TRACE_ENUMS_ONCE_ONLY
-+
-+#define EM(a, b) a,
-+#define E_(a, b) a
-+
-+enum smb3_tcon_ref_trace { smb3_tcon_ref_traces } __mode(byte);
-+
-+#undef EM
-+#undef E_
-+#endif
-+
-+/*
-+ * Export enum symbols via userspace.
-+ */
-+#define EM(a, b) TRACE_DEFINE_ENUM(a);
-+#define E_(a, b) TRACE_DEFINE_ENUM(a);
-+
-+smb3_tcon_ref_traces;
-+
-+#undef EM
-+#undef E_
-+
-+/*
-+ * Now redefine the EM() and E_() macros to map the enums to the strings that
-+ * will be printed in the output.
-  */
-+#define EM(a, b)	{ a, b },
-+#define E_(a, b)	{ a, b }
- 
- /* For logging errors in read or write */
- DECLARE_EVENT_CLASS(smb3_rw_err_class,
-@@ -1125,6 +1189,30 @@ DEFINE_SMB3_CREDIT_EVENT(waitff_credits);
- DEFINE_SMB3_CREDIT_EVENT(overflow_credits);
- DEFINE_SMB3_CREDIT_EVENT(set_credits);
- 
-+
-+TRACE_EVENT(smb3_tcon_ref,
-+	    TP_PROTO(unsigned int tcon_debug_id, int ref,
-+		     enum smb3_tcon_ref_trace trace),
-+	    TP_ARGS(tcon_debug_id, ref, trace),
-+	    TP_STRUCT__entry(
-+		    __field(unsigned int,		tcon)
-+		    __field(int,			ref)
-+		    __field(enum smb3_tcon_ref_trace,	trace)
-+			     ),
-+	    TP_fast_assign(
-+		    __entry->tcon	= tcon_debug_id;
-+		    __entry->ref	= ref;
-+		    __entry->trace	= trace;
-+			   ),
-+	    TP_printk("TC=%08x %s r=%u",
-+		      __entry->tcon,
-+		      __print_symbolic(__entry->trace, smb3_tcon_ref_traces),
-+		      __entry->ref)
-+	    );
-+
-+
-+#undef EM
-+#undef E_
- #endif /* _CIFS_TRACE_H */
- 
- #undef TRACE_INCLUDE_PATH
--- 
-2.43.0
-
+ void ucsi_displayport_remove_partner(struct typec_altmode *alt)
 
 
 
