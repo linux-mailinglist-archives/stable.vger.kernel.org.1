@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-45896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE0D8CD474
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C27FC8CD3DA
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5F03B22B6F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 619741F25EE7
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71FC14A635;
-	Thu, 23 May 2024 13:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFDC14A4C1;
+	Thu, 23 May 2024 13:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDoZgVUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeEuaHTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7456213B7AE;
-	Thu, 23 May 2024 13:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B48B1E497;
+	Thu, 23 May 2024 13:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470674; cv=none; b=nhWnRSJNiz5r04L10WGQeUqs7JMOlLgA13F/Csb/sGxsBUALHpEHar+snywSdlAk5WnO8EzzOXcLYPwN+/NdNEVZfRdkEcBrI2M9uCut5chpJuYSy/bhmii6hM0wY+mMQUGtwRy4ZwbswDZpB8KP2lpxE/BUkJMEmM5/uFviE9A=
+	t=1716470354; cv=none; b=pMHT87K+9DfOC85frmrCJsc35Xgj+fWY/MvCGdRglnka8BZhlBAPVwEGVk5xR752qR8fY6qCYpyLbLSQUnTQHj8mXmHZFDv7EjeXhJy3jMtGYy4CF/u6959qzRGZEuPeF66B4AsAdRN+w/DsZId8/QW1nZIxuWwMhDV+aZktHNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470674; c=relaxed/simple;
-	bh=8ndBFyslHJPmwDf9+0sEsvN7ac99B8+st2VbjnKLm4k=;
+	s=arc-20240116; t=1716470354; c=relaxed/simple;
+	bh=emW3GIWvbtXENMUS/L4Y3q2kITijpYUR3lvcIXdHnmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aH69kq5LYOVHAxZ1xXfOefsEBTR8cVvG1XiEe2GAAwzuGZ3wwIRta9n1J06ba9CsxmMk8SNv8DnB1Ur7jsBMlyeYF1PCm3jbeRVpEhbaTXAS+m+0vuw3JluRAKgsUCZL/KHf/s3sPsFKA3jJSj0NRP7JuR1ZmXrwaF8aqphKTxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDoZgVUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07C2C32782;
-	Thu, 23 May 2024 13:24:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K0D2WZ0+l5pW1PoVHHsacX1tcee6T5W6Do8D8O66HWchosf1//StV/C3VQlo4EAdXfHb4hpEwvEdF1A5wLn5r/nG2JG2CGFGX6Hq3nmNAOfxMk9Ijj0K9JpPK5SPOttOcimm/sSk7oXP9Qny+2ckJm2T+MQVTo+WufyFMRrO5K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeEuaHTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02665C3277B;
+	Thu, 23 May 2024 13:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470674;
-	bh=8ndBFyslHJPmwDf9+0sEsvN7ac99B8+st2VbjnKLm4k=;
+	s=korg; t=1716470354;
+	bh=emW3GIWvbtXENMUS/L4Y3q2kITijpYUR3lvcIXdHnmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDoZgVUb/7vKMLkXGcvhqor2qsDRMCxHSCZcwFj8sfGPC5omJptBVGUpQllr/CdIo
-	 zBgWnzgJxoJ+qgz+vJNzapiE34l2q13A9ljscsx+nkcESlKRM3F0lrhmyS2yLghP8M
-	 szZZd56hwghg/Xt9ARirB0aWVFY60+uZHx/VEcco=
+	b=xeEuaHTmQK0BcNaoHTShKiPSCXz7TiL1Ztej4Z2wjOkIkC9d8kpVDgij+IiydvAwF
+	 Ibj09anMFpOOtCgxJajQMSq4PG8loqn7LjT7PPs8RlSbecpqPubeHkmJD3gIhVrmpQ
+	 A9cIVtgZlK4mSSBEuy363qvrQ0YL0/pO6CCi5QnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/102] smb: client: fix potential broken compound request
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 5.15 16/23] drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
 Date: Thu, 23 May 2024 15:13:12 +0200
-Message-ID: <20240523130344.239290572@linuxfoundation.org>
+Message-ID: <20240523130328.566298893@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,207 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 6914d288c63682e20e0f6e1e0b8e8f5847012d67 ]
+commit b8d55a90fd55b767c25687747e2b24abd1ef8680 upstream.
 
-Now that smb2_compound_op() can accept up to 5 commands in a single
-compound request, set the appropriate NextCommand and related flags to
-all subsequent commands as well as handling the case where a valid
-@cfile is passed and therefore skipping create and close requests in
-the compound chain.
+Return invalid error code -EINVAL for invalid block id.
 
-This fix a potential broken compound request that could be sent from
-smb2_get_reparse_inode() if the client found a valid open
-file (@cfile) prior to calling smb2_compound_op().
+Fixes the below:
 
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:1183 amdgpu_ras_query_error_status_helper() error: we previously assumed 'info' could be null (see line 1176)
+
+Suggested-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Tao Zhou <tao.zhou1@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Ajay: applied AMDGPU_RAS_BLOCK_COUNT condition to amdgpu_ras_query_error_status()
+       as amdgpu_ras_query_error_status_helper() not present in v5.15
+       amdgpu_ras_query_error_status_helper() was introduced in 8cc0f5669eb6]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2inode.c | 106 ++++++++++++++++++++++----------------
- 1 file changed, 63 insertions(+), 43 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index add90eb8fc165..33f3fffcb8277 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -223,14 +223,13 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 							  SMB2_O_INFO_FILE, 0,
- 							  sizeof(struct smb2_file_all_info) +
- 							  PATH_MAX * 2, 0, NULL);
--				if (!rc) {
--					smb2_set_next_command(tcon, &rqst[num_rqst]);
--					smb2_set_related(&rqst[num_rqst]);
--				}
- 			}
--
--			if (rc)
-+			if (!rc && (!cfile || num_rqst > 1)) {
-+				smb2_set_next_command(tcon, &rqst[num_rqst]);
-+				smb2_set_related(&rqst[num_rqst]);
-+			} else if (rc) {
- 				goto finished;
-+			}
- 			num_rqst++;
- 			trace_smb3_query_info_compound_enter(xid, ses->Suid,
- 							     tcon->tid, full_path);
-@@ -260,14 +259,13 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 							  sizeof(struct smb311_posix_qinfo *) +
- 							  (PATH_MAX * 2) +
- 							  (sizeof(struct cifs_sid) * 2), 0, NULL);
--				if (!rc) {
--					smb2_set_next_command(tcon, &rqst[num_rqst]);
--					smb2_set_related(&rqst[num_rqst]);
--				}
- 			}
--
--			if (rc)
-+			if (!rc && (!cfile || num_rqst > 1)) {
-+				smb2_set_next_command(tcon, &rqst[num_rqst]);
-+				smb2_set_related(&rqst[num_rqst]);
-+			} else if (rc) {
- 				goto finished;
-+			}
- 			num_rqst++;
- 			trace_smb3_posix_query_info_compound_enter(xid, ses->Suid,
- 								   tcon->tid, full_path);
-@@ -325,13 +323,13 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 							FILE_END_OF_FILE_INFORMATION,
- 							SMB2_O_INFO_FILE, 0,
- 							data, size);
--				if (!rc) {
--					smb2_set_next_command(tcon, &rqst[num_rqst]);
--					smb2_set_related(&rqst[num_rqst]);
--				}
- 			}
--			if (rc)
-+			if (!rc && (!cfile || num_rqst > 1)) {
-+				smb2_set_next_command(tcon, &rqst[num_rqst]);
-+				smb2_set_related(&rqst[num_rqst]);
-+			} else if (rc) {
- 				goto finished;
-+			}
- 			num_rqst++;
- 			trace_smb3_set_eof_enter(xid, ses->Suid, tcon->tid, full_path);
- 			break;
-@@ -356,14 +354,13 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 							COMPOUND_FID, current->tgid,
- 							FILE_BASIC_INFORMATION,
- 							SMB2_O_INFO_FILE, 0, data, size);
--				if (!rc) {
--					smb2_set_next_command(tcon, &rqst[num_rqst]);
--					smb2_set_related(&rqst[num_rqst]);
--				}
- 			}
--
--			if (rc)
-+			if (!rc && (!cfile || num_rqst > 1)) {
-+				smb2_set_next_command(tcon, &rqst[num_rqst]);
-+				smb2_set_related(&rqst[num_rqst]);
-+			} else if (rc) {
- 				goto finished;
-+			}
- 			num_rqst++;
- 			trace_smb3_set_info_compound_enter(xid, ses->Suid,
- 							   tcon->tid, full_path);
-@@ -397,13 +394,13 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 							COMPOUND_FID, COMPOUND_FID,
- 							current->tgid, FILE_RENAME_INFORMATION,
- 							SMB2_O_INFO_FILE, 0, data, size);
--				if (!rc) {
--					smb2_set_next_command(tcon, &rqst[num_rqst]);
--					smb2_set_related(&rqst[num_rqst]);
--				}
- 			}
--			if (rc)
-+			if (!rc && (!cfile || num_rqst > 1)) {
-+				smb2_set_next_command(tcon, &rqst[num_rqst]);
-+				smb2_set_related(&rqst[num_rqst]);
-+			} else if (rc) {
- 				goto finished;
-+			}
- 			num_rqst++;
- 			trace_smb3_rename_enter(xid, ses->Suid, tcon->tid, full_path);
- 			break;
-@@ -438,15 +435,27 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 			rqst[num_rqst].rq_iov = vars->io_iov;
- 			rqst[num_rqst].rq_nvec = ARRAY_SIZE(vars->io_iov);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -820,6 +820,9 @@ int amdgpu_ras_query_error_status(struct
+ 	if (!obj)
+ 		return -EINVAL;
  
--			rc = SMB2_ioctl_init(tcon, server, &rqst[num_rqst],
--					     COMPOUND_FID, COMPOUND_FID,
--					     FSCTL_SET_REPARSE_POINT,
--					     in_iov[i].iov_base,
--					     in_iov[i].iov_len, 0);
--			if (rc)
-+			if (cfile) {
-+				rc = SMB2_ioctl_init(tcon, server, &rqst[num_rqst],
-+						     cfile->fid.persistent_fid,
-+						     cfile->fid.volatile_fid,
-+						     FSCTL_SET_REPARSE_POINT,
-+						     in_iov[i].iov_base,
-+						     in_iov[i].iov_len, 0);
-+			} else {
-+				rc = SMB2_ioctl_init(tcon, server, &rqst[num_rqst],
-+						     COMPOUND_FID, COMPOUND_FID,
-+						     FSCTL_SET_REPARSE_POINT,
-+						     in_iov[i].iov_base,
-+						     in_iov[i].iov_len, 0);
-+			}
-+			if (!rc && (!cfile || num_rqst > 1)) {
-+				smb2_set_next_command(tcon, &rqst[num_rqst]);
-+				smb2_set_related(&rqst[num_rqst]);
-+			} else if (rc) {
- 				goto finished;
--			smb2_set_next_command(tcon, &rqst[num_rqst]);
--			smb2_set_related(&rqst[num_rqst++]);
-+			}
-+			num_rqst++;
- 			trace_smb3_set_reparse_compound_enter(xid, ses->Suid,
- 							      tcon->tid, full_path);
- 			break;
-@@ -454,14 +463,25 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 			rqst[num_rqst].rq_iov = vars->io_iov;
- 			rqst[num_rqst].rq_nvec = ARRAY_SIZE(vars->io_iov);
- 
--			rc = SMB2_ioctl_init(tcon, server, &rqst[num_rqst],
--					     COMPOUND_FID, COMPOUND_FID,
--					     FSCTL_GET_REPARSE_POINT,
--					     NULL, 0, CIFSMaxBufSize);
--			if (rc)
-+			if (cfile) {
-+				rc = SMB2_ioctl_init(tcon, server, &rqst[num_rqst],
-+						     cfile->fid.persistent_fid,
-+						     cfile->fid.volatile_fid,
-+						     FSCTL_GET_REPARSE_POINT,
-+						     NULL, 0, CIFSMaxBufSize);
-+			} else {
-+				rc = SMB2_ioctl_init(tcon, server, &rqst[num_rqst],
-+						     COMPOUND_FID, COMPOUND_FID,
-+						     FSCTL_GET_REPARSE_POINT,
-+						     NULL, 0, CIFSMaxBufSize);
-+			}
-+			if (!rc && (!cfile || num_rqst > 1)) {
-+				smb2_set_next_command(tcon, &rqst[num_rqst]);
-+				smb2_set_related(&rqst[num_rqst]);
-+			} else if (rc) {
- 				goto finished;
--			smb2_set_next_command(tcon, &rqst[num_rqst]);
--			smb2_set_related(&rqst[num_rqst++]);
-+			}
-+			num_rqst++;
- 			trace_smb3_get_reparse_compound_enter(xid, ses->Suid,
- 							      tcon->tid, full_path);
- 			break;
--- 
-2.43.0
-
++	if (!info || info->head.block == AMDGPU_RAS_BLOCK_COUNT)
++		return -EINVAL;
++
+ 	switch (info->head.block) {
+ 	case AMDGPU_RAS_BLOCK__UMC:
+ 		if (adev->umc.ras_funcs &&
 
 
 
