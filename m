@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-45906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E810D8CD47F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B898CD404
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189FA1C22491
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077D21C20E1A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA0414B957;
-	Thu, 23 May 2024 13:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8F014AD17;
+	Thu, 23 May 2024 13:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5XngfPQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dRMUevF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2D914AD38;
-	Thu, 23 May 2024 13:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B24714A60C;
+	Thu, 23 May 2024 13:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470703; cv=none; b=c+8pkpQ6GKzLNT7ErLl3VGM9zC5MWK9Ty866zSOfrle1B2Kb149sbEkkmjEuD6h4Ytx8MzkZB8Pq6NFSSo55Tp/GfL9zVyBS+ouv3F3ct6Qkn3uz9SfGQUdNt3jd2iMMIEZ6aRZXUgYjbJQyMVuLZFZAH3z1ZOqfLrGLsRxkCik=
+	t=1716470432; cv=none; b=jyW2UKNzajXhBmyMgS3bHzYdCKB5efD2XV9axtzbI5TiGQJWvn48CpY754xBD7ThmXc8r+gOrAWJ4jRQ5sZgzRB/rTYDfWyU0jp8XVI5POpxP2tqlNfTgCYRTJdQettdRoZTC5GqVFUk4a+2zaCYXO4Cb01lhFj+8d4heTEAIe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470703; c=relaxed/simple;
-	bh=obhP4V58EqHvyyGo9rvZ2dydYexh4YrxrU4ZSpP0a5E=;
+	s=arc-20240116; t=1716470432; c=relaxed/simple;
+	bh=n0aloHzOOR5gL3AKTiHG2W4ZUZvf9vs5OkUhYemGlN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ipa+yC8qa+EKHttQlIP2IZqYGvm6dBja4SPeLgIALuPqZERDs917LYJtGXmLqkdNESm23uqNR8fo8FutIlVvB33UJ7qPyU2i4R1Y+uqtWFW1X2EUqAwgbZCRB+v5buamjndGqXjVp48qy+nij4Z77zE98IrsSrRmolfW7YMgtu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5XngfPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94722C2BD10;
-	Thu, 23 May 2024 13:25:02 +0000 (UTC)
+	 MIME-Version; b=JmkIgNnPGBwjqAjwD/srdy2TsDTddoahLNV7fNpzlscNAx5Xu5uvyWxDNHFUj1qBNeqtw2Q9rKiXUdpFn8FhwPZ05I7j1h1gA6SznCshrgJfar4DOHv5e4S/MZ2tVe75GW5SFy2iNAKGtaqJ934xCLUpVQ2xf07HPmatSjSRm4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dRMUevF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65BCC2BD10;
+	Thu, 23 May 2024 13:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470703;
-	bh=obhP4V58EqHvyyGo9rvZ2dydYexh4YrxrU4ZSpP0a5E=;
+	s=korg; t=1716470432;
+	bh=n0aloHzOOR5gL3AKTiHG2W4ZUZvf9vs5OkUhYemGlN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W5XngfPQxeKdKakPJxywVvAKLgplmMXu5PU6DPvmXK/YS2Swp7BZl5Ui/gJfW7UUT
-	 XHlIvi6B21WY1SaK+9MKMfGCWtcXG5QTh2kQ3JDvxX66NfTVvnxclORyXRfoBEeDFn
-	 /CQhzLbEduu6jRdCyMek/T0pMr9xqY6OvmuQXA2Y=
+	b=0dRMUevFngZlAmzXl7k3avpCQJBKi9yeVI+LeeIA0SfL8sb8KkMdASpFoMRJ3CC1F
+	 Jsw/nOcMhiQuSGL9y4WD0a6sI8US3CTVJK88cZzQ6PbHTzWwO5nmYcA9xU2wzTDPbT
+	 DE3ZiWVe3BUcy8YSWlUdPaeph9h2mjzXY6DBGC9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/102] ksmbd: mark SMB2_SESSION_EXPIRED to session when destroying previous session
+	Eric Sandeen <sandeen@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 33/45] xfs: short circuit xfs_growfs_data_private() if delta is zero
 Date: Thu, 23 May 2024 15:13:24 +0200
-Message-ID: <20240523130344.696018317@linuxfoundation.org>
+Message-ID: <20240523130333.747276534@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
+References: <20240523130332.496202557@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit fa9415d4024fd0c58d24a4ad4f1826fb8bfcc4aa ]
+[ Upstream commit 84712492e6dab803bf595fb8494d11098b74a652 ]
 
-Currently ksmbd exit connection as well destroying previous session.
-When testing durable handle feaure, I found that
-destroy_previous_session() should destroy only session, i.e. the
-connection should be still alive. This patch mark SMB2_SESSION_EXPIRED
-on the previous session to be destroyed later and not used anymore.
+Although xfs_growfs_data() doesn't call xfs_growfs_data_private()
+if in->newblocks == mp->m_sb.sb_dblocks, xfs_growfs_data_private()
+further massages the new block count so that we don't i.e. try
+to create a too-small new AG.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This may lead to a delta of "0" in xfs_growfs_data_private(), so
+we end up in the shrink case and emit the EXPERIMENTAL warning
+even if we're not changing anything at all.
+
+Fix this by returning straightaway if the block delta is zero.
+
+(nb: in older kernels, the result of entering the shrink case
+with delta == 0 may actually let an -ENOSPC escape to userspace,
+which is confusing for users.)
+
+Fixes: fb2fc1720185 ("xfs: support shrinking unused space in the last AG")
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c | 27 ++++++++++++++++++++++++++-
- fs/smb/server/mgmt/user_session.h |  3 +++
- fs/smb/server/smb2pdu.c           | 24 ------------------------
- 3 files changed, 29 insertions(+), 25 deletions(-)
+ fs/xfs/xfs_fsops.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 15f68ee050894..83074672fe812 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -156,7 +156,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
- 	kfree(sess);
- }
+--- a/fs/xfs/xfs_fsops.c
++++ b/fs/xfs/xfs_fsops.c
+@@ -129,6 +129,10 @@ xfs_growfs_data_private(
+ 	if (delta < 0 && nagcount < 2)
+ 		return -EINVAL;
  
--static struct ksmbd_session *__session_lookup(unsigned long long id)
-+struct ksmbd_session *__session_lookup(unsigned long long id)
- {
- 	struct ksmbd_session *sess;
- 
-@@ -305,6 +305,31 @@ struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
- 	return sess;
- }
- 
-+void destroy_previous_session(struct ksmbd_conn *conn,
-+			      struct ksmbd_user *user, u64 id)
-+{
-+	struct ksmbd_session *prev_sess;
-+	struct ksmbd_user *prev_user;
++	/* No work to do */
++	if (delta == 0)
++		return 0;
 +
-+	down_write(&sessions_table_lock);
-+	down_write(&conn->session_lock);
-+	prev_sess = __session_lookup(id);
-+	if (!prev_sess || prev_sess->state == SMB2_SESSION_EXPIRED)
-+		goto out;
-+
-+	prev_user = prev_sess->user;
-+	if (!prev_user ||
-+	    strcmp(user->name, prev_user->name) ||
-+	    user->passkey_sz != prev_user->passkey_sz ||
-+	    memcmp(user->passkey, prev_user->passkey, user->passkey_sz))
-+		goto out;
-+
-+	prev_sess->state = SMB2_SESSION_EXPIRED;
-+out:
-+	up_write(&conn->session_lock);
-+	up_write(&sessions_table_lock);
-+}
-+
- static bool ksmbd_preauth_session_id_match(struct preauth_session *sess,
- 					   unsigned long long id)
- {
-diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
-index 63cb08fffde84..dc9fded2cd437 100644
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -88,8 +88,11 @@ struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
- int ksmbd_session_register(struct ksmbd_conn *conn,
- 			   struct ksmbd_session *sess);
- void ksmbd_sessions_deregister(struct ksmbd_conn *conn);
-+struct ksmbd_session *__session_lookup(unsigned long long id);
- struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
- 					       unsigned long long id);
-+void destroy_previous_session(struct ksmbd_conn *conn,
-+			      struct ksmbd_user *user, u64 id);
- struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
- 						    u64 sess_id);
- struct preauth_session *ksmbd_preauth_session_lookup(struct ksmbd_conn *conn,
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index fb9eea631069e..61717917db765 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -611,30 +611,6 @@ int smb2_check_user_session(struct ksmbd_work *work)
- 	return -ENOENT;
- }
- 
--static void destroy_previous_session(struct ksmbd_conn *conn,
--				     struct ksmbd_user *user, u64 id)
--{
--	struct ksmbd_session *prev_sess = ksmbd_session_lookup_slowpath(id);
--	struct ksmbd_user *prev_user;
--	struct channel *chann;
--	long index;
--
--	if (!prev_sess)
--		return;
--
--	prev_user = prev_sess->user;
--
--	if (!prev_user ||
--	    strcmp(user->name, prev_user->name) ||
--	    user->passkey_sz != prev_user->passkey_sz ||
--	    memcmp(user->passkey, prev_user->passkey, user->passkey_sz))
--		return;
--
--	prev_sess->state = SMB2_SESSION_EXPIRED;
--	xa_for_each(&prev_sess->ksmbd_chann_list, index, chann)
--		ksmbd_conn_set_exiting(chann->conn);
--}
--
- /**
-  * smb2_get_name() - get filename string from on the wire smb format
-  * @src:	source buffer
--- 
-2.43.0
-
+ 	oagcount = mp->m_sb.sb_agcount;
+ 	/* allocate the new per-ag structures */
+ 	if (nagcount > oagcount) {
 
 
 
