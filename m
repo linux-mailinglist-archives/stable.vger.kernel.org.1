@@ -1,87 +1,95 @@
-Return-Path: <stable+bounces-45669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829958CD1BB
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 14:05:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A2A8CD1BC
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 14:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B34EB1C20B27
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 12:05:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33B8C2824E7
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 12:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3713D1487D5;
-	Thu, 23 May 2024 12:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ECC13B7A1;
+	Thu, 23 May 2024 12:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLDqECOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zI+xxVBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5C013EFFB
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 12:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A9A13B5B0
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 12:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716465877; cv=none; b=GxYiK+bm9GxgODWFLhYGzwSGnvQDNQJvYKCfZSKPNJy5oF2UoLfjGkRU+yPuOemNok5EjF74xDLM6aXohkMl3U/v42Py6OZKKZQ97ETIY4KBgOupEzInH6Wm/xBuQt9wA8jY/0geJLgX4KSpO/nTgQ7+GUBI2DdgPxk7V7emPI0=
+	t=1716465968; cv=none; b=T3tnRK7LuCcdlGYri+aEzwipwuKoLQK34nMYz+DziCfuVMonK+F1ZF+pdT0waLhIRQHSak93Fnl3SKM04bMZ350fB5yCK3z16RQ00DJQPhl1zETlSTrfaQKnub/1iI3hfz3DrEflDgNaSW04V4toXCRZeaVnVuOu1OWTPYKU4H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716465877; c=relaxed/simple;
-	bh=Y0LhSmJVz8BjWLfi2oZbkhX4rCSvcY2bxJLpmMkX5Ps=;
+	s=arc-20240116; t=1716465968; c=relaxed/simple;
+	bh=zGYbaI2Te9iBvUsdDfPlCxgkx8mcdB0J2FZPmdPk/hw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oRM+2zdgoc/0FIAQRfY5kOgKcjd/Hp0J/6+jZ9tAlId84DMBBOuoETy/NkJJXNpb3ebvFVD1h4lMg1tH8kvE7fUTbUGza6+ssb4Vgc3NJPYAhAwSu6WA9vRblyhVmbh34VbZlDUdaKFSQzsN/ohQ9pvoBYraXQdcYS4Cvk57b2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLDqECOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CFFC2BD10;
-	Thu, 23 May 2024 12:04:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sNQcKhL/aRmHMcH90RfskaQabSKeC/OWXyoeXar0I1WCE9JMRB5Rr5jkc54UuXSn0PB3oHAobLBsEhvLDhTgLak1J4+1S04TH7zkIkPKCoL1AB2MmMcITGPsqmTsc4AGCYZbgjK9gsAGpg0+jtIS8jcEPnky4kZOIZnYz9f3swg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zI+xxVBd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAA2C2BD10;
+	Thu, 23 May 2024 12:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716465876;
-	bh=Y0LhSmJVz8BjWLfi2oZbkhX4rCSvcY2bxJLpmMkX5Ps=;
+	s=korg; t=1716465968;
+	bh=zGYbaI2Te9iBvUsdDfPlCxgkx8mcdB0J2FZPmdPk/hw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xLDqECOkG1aj05Tjc4X1sZAdMJ3KwYseZJm6hWJYuNyrZP1WaPp9PrHuyl405tLBz
-	 UysG/fxOSQoNpOcIUhhNOOUPHBI5vraKzdJow37dAj8V6IUJ8f8MA3aXbZRTidwa1Z
-	 XRt9ttn9VXVK/oKeEVy4Qo/NRnP/9yXtX76Fz7M4=
-Date: Thu, 23 May 2024 14:04:33 +0200
+	b=zI+xxVBdPAJoEjk6+TavmqfaFCliCXzJQBt8BEj8ySmfm695p5BxJmCwSZfHgS1hI
+	 GQiCTVAZFTTjH/kAQVWZybWmbDeQ0QFWZbAWaDM+fCLlBtM2sveoqALHB7bjef3s82
+	 SmMS52/iVeZhCt0OIi9huuIs0iq7UCIaVOvAL9sU=
+Date: Thu, 23 May 2024 14:06:05 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Cc: stable@vger.kernel.org, dsterba@suse.com, pavel@denx.de
-Subject: Re: [PATCH 5.10 / 5.4 / 4.19] btrfs: add missing mutex_unlock in
- btrfs_relocate_sys_chunks()
-Message-ID: <2024052326-suds-scrutiny-9e45@gregkh>
-References: <2024051346-unvocal-magnetism-4ae1@gregkh>
- <20240513230649.1060173-1-dominique.martinet@atmark-techno.com>
+To: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: stable@vger.kernel.org, alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com, Tao Zhou <tao.zhou1@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Subject: Re: [PATCH v5.10, v5.4] drm/amdgpu: Fix possible NULL dereference in
+ amdgpu_ras_query_error_status_helper()
+Message-ID: <2024052358-unleash-thieving-86f8@gregkh>
+References: <1716294141-48647-1-git-send-email-ajay.kaher@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240513230649.1060173-1-dominique.martinet@atmark-techno.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1716294141-48647-1-git-send-email-ajay.kaher@broadcom.com>
 
-On Tue, May 14, 2024 at 08:06:49AM +0900, Dominique Martinet wrote:
-> [ Upstream commit 9af503d91298c3f2945e73703f0e00995be08c30 ]
+On Tue, May 21, 2024 at 05:52:19PM +0530, Ajay Kaher wrote:
+> From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 > 
-> The previous patch that replaced BUG_ON by error handling forgot to
-> unlock the mutex in the error path.
+> [ Upstream commit b8d55a90fd55b767c25687747e2b24abd1ef8680 ]
 > 
-> Link: https://lore.kernel.org/all/Zh%2fHpAGFqa7YAFuM@duo.ucw.cz
-> Reported-by: Pavel Machek <pavel@denx.de>
-> Fixes: 7411055db5ce ("btrfs: handle chunk tree lookup error in btrfs_relocate_sys_chunks()")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Pavel Machek <pavel@denx.de>
-> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+> Return invalid error code -EINVAL for invalid block id.
+> 
+> Fixes the below:
+> 
+> drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:1183 amdgpu_ras_query_error_status_helper() error: we previously assumed 'info' could be null (see line 1176)
+> 
+> Suggested-by: Hawking Zhang <Hawking.Zhang@amd.com>
+> Cc: Tao Zhou <tao.zhou1@amd.com>
+> Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+> Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> [Ajay: applied AMDGPU_RAS_BLOCK_COUNT condition to amdgpu_ras_error_query()
+>        as amdgpu_ras_query_error_status_helper() not present in v5.10, v5.4
+>        amdgpu_ras_query_error_status_helper() was introduced in 8cc0f5669eb6]
+> Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 > ---
-> The conflict is in 7411055db5ce ("btrfs: handle chunk tree lookup error
-> in btrfs_relocate_sys_chunks()") but that no longer cleanly applies
-> after the backport of 7411055db5ce ("btrfs: handle chunk tree lookup
-> error in btrfs_relocate_sys_chunks()"); it's probably simpler to just
-> use the old mutex name directly.
-> 
-> This commit applies and builds on 4.19.313, 5.4.275 and 5.10.216
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Now queued up, thanks.
+All now queued up, thanks.
 
 greg k-h
 
