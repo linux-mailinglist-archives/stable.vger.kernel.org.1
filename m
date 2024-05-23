@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-45753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7878CD3B4
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F364B8CD463
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 117B71F25456
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE308281DC9
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CD414AD36;
-	Thu, 23 May 2024 13:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBE914B955;
+	Thu, 23 May 2024 13:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaSZcmBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/GPRlSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F74714B077;
-	Thu, 23 May 2024 13:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C4F14A632;
+	Thu, 23 May 2024 13:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470263; cv=none; b=inQBlVaxVwnxZgSy0tsTtXCBHj9W7T3efYeXfVca3OhFkJn2QnfxVSqPoZvCxq23sfG8tGGtkinPGcmOZ4ZI71tNl7xyxrhDH4Xn/eE4o2E8KEViiIbEQ3fjPEotnd+veZDqNbae2wCQcPQzq7w2PGdaRePl3jwRUxjF9KX9GoI=
+	t=1716470639; cv=none; b=hUMxQHDsfyE9b7rxUkJVJrwbyEawun6ipl3oOSrUx3w33/x19X1wsCUHFNMSNLajnNmzQq4g9+iTwcrccODCaa7Ljk5UMN6S/3fIXfMt805WJ9qY7F1TYoLVjyp4FicRmByxbFv5R+OP7mMyI7HR3i+CgQHsUZ8tgGTdj9GM9UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470263; c=relaxed/simple;
-	bh=VEhrFf6XuK8g0RJFkHnWvFUeo+LFFvJJ9PrqkT6JsUw=;
+	s=arc-20240116; t=1716470639; c=relaxed/simple;
+	bh=7rt1nvRsAAkAKaL6xV4wacMlnv2CN1bmY2fr4fKGTqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUPWNKmBmzUHJWFYWjCCELgJwUeTpBYP4FnU2sY2BKVG4nyJ2U3Fs8WMm57262p9eSo9vaMOA0KceFwJ8+kgaDEtNgx8lvEul6wsEAYFgoxJOJB+oFrb7oTdxNUysgcL6SVpiVSx47UP4DGLVV4Dq/WcdtoGEM+qrml23URkHvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaSZcmBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8EEC3277B;
-	Thu, 23 May 2024 13:17:42 +0000 (UTC)
+	 MIME-Version; b=WvXJjFvx7Kvtxi9KYeE9zMme7Be0Vgvo5V34ZfncA0yDV6ED/jVFp9y+vGayMvZSxskmukgd4kP4ls55CO1gq3WClrE4RB+KXfksjjz2JdgzQBAXxJjyZu/6G72OKX+TKvIw9pvWwkOBa3PtsBC7oaPhk/2YmWEufruYz6oPz74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/GPRlSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305A7C2BD10;
+	Thu, 23 May 2024 13:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470262;
-	bh=VEhrFf6XuK8g0RJFkHnWvFUeo+LFFvJJ9PrqkT6JsUw=;
+	s=korg; t=1716470639;
+	bh=7rt1nvRsAAkAKaL6xV4wacMlnv2CN1bmY2fr4fKGTqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaSZcmBxhWIrzQ+kVjFtMTndCTnZUvRtEuPNzxOFPtF0CQGGvdAK6QjCjK2bhd1f6
-	 ktiLuQ4M478Gh25q47c7et3PbEh3KJSXy7GKoaDT0ePiSNjuqpHZvzYYKyhcd3mULh
-	 9Szhfd18vuEHEQIwA645kcmeC0rpiculi00yfIyQ=
+	b=s/GPRlSwaRpH8oUDleKUBcTl1YSxuMhhtelLoHZihrI88AbWKYnLSkB8CtOGYvpy8
+	 BcOsUfR2I/b+3/TLjMAqZT1+Rx3naO7I0BMEMrOyELYT+kIUGI4jhCGd5wwtGnaHyf
+	 oRrcd8+DBGCP0m4uQaiSu1CoDhVFHI3B2dTm4Trk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liuye <liu.yeC@h3c.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 6.9 16/25] serial: kgdboc: Fix NMI-safety problems from keyboard reset code
+	Yang Li <yang.lee@linux.alibaba.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 036/102] ksmbd: Add kernel-doc for ksmbd_extract_sharename() function
 Date: Thu, 23 May 2024 15:13:01 +0200
-Message-ID: <20240523130330.998880571@linuxfoundation.org>
+Message-ID: <20240523130343.826551206@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
-References: <20240523130330.386580714@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Yang Li <yang.lee@linux.alibaba.com>
 
-commit b2aba15ad6f908d1a620fd97f6af5620c3639742 upstream.
+[ Upstream commit a12bc36032a2f7917068f9ce9eb26d869e54b31a ]
 
-Currently, when kdb is compiled with keyboard support, then we will use
-schedule_work() to provoke reset of the keyboard status.  Unfortunately
-schedule_work() gets called from the kgdboc post-debug-exception
-handler.  That risks deadlock since schedule_work() is not NMI-safe and,
-even on platforms where the NMI is not directly used for debugging, the
-debug trap can have NMI-like behaviour depending on where breakpoints
-are placed.
+The ksmbd_extract_sharename() function lacked a complete kernel-doc
+comment. This patch adds parameter descriptions and detailed function
+behavior to improve code readability and maintainability.
 
-Fix this by using the irq work system, which is NMI-safe, to defer the
-call to schedule_work() to a point when it is safe to call.
-
-Reported-by: Liuye <liu.yeC@h3c.com>
-Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240424-kgdboc_fix_schedule_work-v2-1-50f5a490aec5@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/kgdboc.c |   30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ fs/smb/server/misc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/kgdboc.c
-+++ b/drivers/tty/serial/kgdboc.c
-@@ -19,6 +19,7 @@
- #include <linux/console.h>
- #include <linux/vt_kern.h>
- #include <linux/input.h>
-+#include <linux/irq_work.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/serial_core.h>
-@@ -48,6 +49,25 @@ static struct kgdb_io		kgdboc_earlycon_i
- static int                      (*earlycon_orig_exit)(struct console *con);
- #endif /* IS_BUILTIN(CONFIG_KGDB_SERIAL_CONSOLE) */
+diff --git a/fs/smb/server/misc.c b/fs/smb/server/misc.c
+index 9e8afaa686e3a..1a5faa6f6e7bc 100644
+--- a/fs/smb/server/misc.c
++++ b/fs/smb/server/misc.c
+@@ -261,6 +261,7 @@ char *ksmbd_casefold_sharename(struct unicode_map *um, const char *name)
  
-+/*
-+ * When we leave the debug trap handler we need to reset the keyboard status
-+ * (since the original keyboard state gets partially clobbered by kdb use of
-+ * the keyboard).
-+ *
-+ * The path to deliver the reset is somewhat circuitous.
-+ *
-+ * To deliver the reset we register an input handler, reset the keyboard and
-+ * then deregister the input handler. However, to get this done right, we do
-+ * have to carefully manage the calling context because we can only register
-+ * input handlers from task context.
-+ *
-+ * In particular we need to trigger the action from the debug trap handler with
-+ * all its NMI and/or NMI-like oddities. To solve this the kgdboc trap exit code
-+ * (the "post_exception" callback) uses irq_work_queue(), which is NMI-safe, to
-+ * schedule a callback from a hardirq context. From there we have to defer the
-+ * work again, this time using schedule_work(), to get a callback using the
-+ * system workqueue, which runs in task context.
-+ */
- #ifdef CONFIG_KDB_KEYBOARD
- static int kgdboc_reset_connect(struct input_handler *handler,
- 				struct input_dev *dev,
-@@ -99,10 +119,17 @@ static void kgdboc_restore_input_helper(
- 
- static DECLARE_WORK(kgdboc_restore_input_work, kgdboc_restore_input_helper);
- 
-+static void kgdboc_queue_restore_input_helper(struct irq_work *unused)
-+{
-+	schedule_work(&kgdboc_restore_input_work);
-+}
-+
-+static DEFINE_IRQ_WORK(kgdboc_restore_input_irq_work, kgdboc_queue_restore_input_helper);
-+
- static void kgdboc_restore_input(void)
- {
- 	if (likely(system_state == SYSTEM_RUNNING))
--		schedule_work(&kgdboc_restore_input_work);
-+		irq_work_queue(&kgdboc_restore_input_irq_work);
- }
- 
- static int kgdboc_register_kbd(char **cptr)
-@@ -133,6 +160,7 @@ static void kgdboc_unregister_kbd(void)
- 			i--;
- 		}
- 	}
-+	irq_work_sync(&kgdboc_restore_input_irq_work);
- 	flush_work(&kgdboc_restore_input_work);
- }
- #else /* ! CONFIG_KDB_KEYBOARD */
+ /**
+  * ksmbd_extract_sharename() - get share name from tree connect request
++ * @um: pointer to a unicode_map structure for character encoding handling
+  * @treename:	buffer containing tree name and share name
+  *
+  * Return:      share name on success, otherwise error
+-- 
+2.43.0
+
 
 
 
