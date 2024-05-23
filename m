@@ -1,111 +1,128 @@
-Return-Path: <stable+bounces-45673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF448CD1D1
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 14:10:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3550C8CD22F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 14:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02AE28457D
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 12:10:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C2041C2100A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 12:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B95E13D896;
-	Thu, 23 May 2024 12:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6245713BAC8;
+	Thu, 23 May 2024 12:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnb1r+TH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoTPBHkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246E013D274;
-	Thu, 23 May 2024 12:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CBC13B5A6
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 12:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716466206; cv=none; b=KLjBDVEC1vXBiiDdj8WPp3o2swzLagfNTH31LowSf5n+tIf9oGcEwbUiuq7w3DAu7Ufq+7N5InaqpCGBDtNGVbWKCvJUdYOQ0G/2ffmx6UpFeXWpj6EMeIxF4RZ2g9zgnV6NrXebWRZQBgxHgYm8SDtrOPaOjD8foRGOZMOBVmI=
+	t=1716466817; cv=none; b=nXVev+3R8CXFbH7UkYGJk5YDa/iyQO8HdniCftdinUKLIDBVpFCDHtT94fVHIpzlvFQ6n9ImTklgqEPPLErLwrP36ID0bj433lY8phRGfNnNktcoQEbDeFpnblD68sWYe7ISVk8r/po6IJcWP72snk18amQCdsowDWtrBPVFqoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716466206; c=relaxed/simple;
-	bh=dV3gYhQ/CCKnsQ1isxyygcfcGCTLC98tQVo44ro3qlY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GbU0If1/B8VpOaaxAa9Tk3DJh7lyMXD9m1wr1FWfUJM7bvOQ1KN/P/dm9KNY13ACaOTJONTOBsjIM5Vy0P3VdpG9VPabWDbxzGJcfYUOWdUtoAPP2nesJEto6dFrswragFeG8kNcuNcrR8kq/Li1YbtRCLJRy0r6BMDNf91PJVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnb1r+TH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A14BC32782;
-	Thu, 23 May 2024 12:10:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716466206;
-	bh=dV3gYhQ/CCKnsQ1isxyygcfcGCTLC98tQVo44ro3qlY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nnb1r+THjTZct8yaqV6VR7y0U0NbSh9ncvJe1MSO/hbQGyZgJx0JSK9xgeYulzbrU
-	 KfcMH8TNKdZUADcCTwZJE1fikT7vuqCi3ZEgksn8xi7yI/r2tN902568Wue9VIB9bN
-	 pM026ERB0RjIHpSzCMEUs2YkgTZyNFQQ5hJuHNnjK/HZMKIrFAJardonZ4Ah+ad/gD
-	 HWGlP8gR9K83PjTHP+X6FHCaievhqgWlxbPl+DfC28oHjuH2bKgHQMqA3GyGU9e/Xu
-	 rfJqEoLRpXCrl6e3SbpxX6MeCXD7HGKPl8fL6Z+qjhTFizk77PjYbT2P0xCh4No5gI
-	 uw0VWgt3BJdCQ==
-Date: Thu, 23 May 2024 13:10:01 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg KH <greg@kroah.com>
-Cc: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, lgirdwood@gmail.com,
-	linux-sound@vger.kernel.org, pierre-louis.bossart@linux.intel.com,
-	kai.vehmanen@linux.intel.com, ranjani.sridharan@linux.intel.com,
-	stable@vger.kernel.org, yung-chuan.liao@linux.intel.com
-Subject: Re: [PATCH stable-6.9.y] ASoC: Intel: sof_sdw: use generic rtd_init
- function for Realtek SDW DMICs
-Message-ID: <a46744fc-541c-42f7-99c9-cc2f1236f960@sirena.org.uk>
-References: <20240521072451.5488-1-peter.ujfalusi@linux.intel.com>
- <2024052345-manhood-overrate-6b7d@gregkh>
+	s=arc-20240116; t=1716466817; c=relaxed/simple;
+	bh=koObKfCQdfJ93+AU42anG1G9oFrQY4V1880EWm/oRBY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BBNf6VG4z1mZLA9lxptubVL8flsVUklsGSH67tXTunikNW0fl9ZxkjNHASvpA1HPVbvYDZSMROub1glIgJy23iR5J+wXsoWsFQ7YPKSmrt6ewhy5SjLnHqBNpbVuvsKzer/DhVDafkfwSX44QoxPKXPvNqVkXy3f7vJuQksDl9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoTPBHkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7B4C2BD10;
+	Thu, 23 May 2024 12:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1716466816;
+	bh=koObKfCQdfJ93+AU42anG1G9oFrQY4V1880EWm/oRBY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xoTPBHkDr3NKS4mzWEK6qcs7tXew6fm9fYSg92+C+k49K0B3UnRygvWbJeHijgRz7
+	 E6DvzOxRfEAOGeTXaMmyubYBZRTW/v8n6rQ46gxh2OZGVQrjsjDwLObmNZGSTJFAuP
+	 0wLRzkMfHTeAFAh3Ai9WBLTVZtC0II3ANLVM5UaY=
+Subject: FAILED: patch "[PATCH] binder: fix max_thread type inconsistency" failed to apply to 5.10-stable tree
+To: cmllamas@google.com,aliceryhl@google.com,arve@android.com,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 23 May 2024 14:20:13 +0200
+Message-ID: <2024052313-runner-spree-04c1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="MgIJRqG73D2t8Nbi"
-Content-Disposition: inline
-In-Reply-To: <2024052345-manhood-overrate-6b7d@gregkh>
-X-Cookie: You auto buy now.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
---MgIJRqG73D2t8Nbi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Thu, May 23, 2024 at 02:02:53PM +0200, Greg KH wrote:
-> On Tue, May 21, 2024 at 10:24:51AM +0300, Peter Ujfalusi wrote:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> > The only thing that the rt_xxx_rtd_init() functions do is to set
-> > card->components. And we can set card->components with name_prefix
-> > as rt712_sdca_dmic_rtd_init() does.
-> > And sof_sdw_rtd_init() will always select the first dai with the
-> > given dai->name from codec_info_list[]. Unfortunately, we have
-> > different codecs with the same dai name. For example, dai name of
-> > rt715 and rt715-sdca are both "rt715-aif2". Using a generic rtd_init
-> > allow sof_sdw_rtd_init() run the rtd_init() callback from a similar
-> > codec dai.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 42316941335644a98335f209daafa4c122f28983
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052313-runner-spree-04c1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-> > The fix for the issue somehow dodged the 6.9 cycle and only landed mainline
-> > for 6.10, before -rc1 tag.
+Possible dependencies:
 
-FWIW it's quite buried in the changelog that this is a fix (I tend to
-just zone out the presence of a Fixes tag because people just put them
-in for no reason) - the subject line makes it look like a cleanup, and
-it's not clear from even the second paragraph that we're actually seeing
-issues in practice as opposed to this being a theoretical thing.
 
---MgIJRqG73D2t8Nbi
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+thanks,
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZPMhgACgkQJNaLcl1U
-h9AgwAf/QpHcGL7yBUm0uVwUOHr91W1tCeE6vcLlRWp6TuWF1zwyvMX2J8oechw5
-WfKuq7pYOKixLENeyW8Xo0pzHQzd/9SkJu2SiPCTp+7sbkiDTguhczQW7N6So8tF
-20sTTf2sxayiFx8SUp7PeO30oX9go2FVSOoebGhbG2VJ6XHmtjwLbu8y9qlMeD6f
-tTsoghBGqbKvO5pi7AQxahU5ipJQUxNQ5XWb8W1Kibg8JiEWfvwNYP+rH3r3+R0F
-oHRYTijkKNauvenTNHyCTM1p3eUSLAvBZWkCn9+c2ipHkpsI1spTzfwl5YGVcQCF
-ADKT0cnWiFO75DK8kL7GtquRGCJ5Jw==
-=5WNu
------END PGP SIGNATURE-----
+greg k-h
 
---MgIJRqG73D2t8Nbi--
+------------------ original commit in Linus's tree ------------------
+
+From 42316941335644a98335f209daafa4c122f28983 Mon Sep 17 00:00:00 2001
+From: Carlos Llamas <cmllamas@google.com>
+Date: Sun, 21 Apr 2024 17:37:49 +0000
+Subject: [PATCH] binder: fix max_thread type inconsistency
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The type defined for the BINDER_SET_MAX_THREADS ioctl was changed from
+size_t to __u32 in order to avoid incompatibility issues between 32 and
+64-bit kernels. However, the internal types used to copy from user and
+store the value were never updated. Use u32 to fix the inconsistency.
+
+Fixes: a9350fc859ae ("staging: android: binder: fix BINDER_SET_MAX_THREADS declaration")
+Reported-by: Arve Hjønnevåg <arve@android.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240421173750.3117808-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index dd6923d37931..b21a7b246a0d 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -5367,7 +5367,7 @@ static long binder_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 			goto err;
+ 		break;
+ 	case BINDER_SET_MAX_THREADS: {
+-		int max_threads;
++		u32 max_threads;
+ 
+ 		if (copy_from_user(&max_threads, ubuf,
+ 				   sizeof(max_threads))) {
+diff --git a/drivers/android/binder_internal.h b/drivers/android/binder_internal.h
+index 7270d4d22207..5b7c80b99ae8 100644
+--- a/drivers/android/binder_internal.h
++++ b/drivers/android/binder_internal.h
+@@ -421,7 +421,7 @@ struct binder_proc {
+ 	struct list_head todo;
+ 	struct binder_stats stats;
+ 	struct list_head delivered_death;
+-	int max_threads;
++	u32 max_threads;
+ 	int requested_threads;
+ 	int requested_threads_started;
+ 	int tmp_ref;
+
 
