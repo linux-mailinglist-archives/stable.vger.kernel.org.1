@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-45936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E1C8CD4A3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E810D8CD47F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 507681F21693
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189FA1C22491
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F166213C66A;
-	Thu, 23 May 2024 13:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA0414B957;
+	Thu, 23 May 2024 13:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUYJMvi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5XngfPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00D013A897;
-	Thu, 23 May 2024 13:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2D914AD38;
+	Thu, 23 May 2024 13:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470789; cv=none; b=M3PotMcU3zYmWHXsg6tYXvUdmmsPZJk9+83mgpjHJr8JKz8GqNmUxsTcG1ebpaPbLA2CMd5OJOOEroXr1ucAs0Pa/RSyGTq4WuQbNdMT4GsbSp10fjr0AXQran/vCH3fAEhxAVQjfbPRjzDtVkWQGKf0ANx5Be8DGmEgvO0UESU=
+	t=1716470703; cv=none; b=c+8pkpQ6GKzLNT7ErLl3VGM9zC5MWK9Ty866zSOfrle1B2Kb149sbEkkmjEuD6h4Ytx8MzkZB8Pq6NFSSo55Tp/GfL9zVyBS+ouv3F3ct6Qkn3uz9SfGQUdNt3jd2iMMIEZ6aRZXUgYjbJQyMVuLZFZAH3z1ZOqfLrGLsRxkCik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470789; c=relaxed/simple;
-	bh=bwq/qULzK88RzKtW+1dSISYttKoA6BwKU1zZPDKqI8Q=;
+	s=arc-20240116; t=1716470703; c=relaxed/simple;
+	bh=obhP4V58EqHvyyGo9rvZ2dydYexh4YrxrU4ZSpP0a5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPDLHbtbwRkaa7q8cRucRYzQqeVEvjkMBsBVnXFnWxAWmj4dhJI06D1LwsLj02HT/GBs0X8KXIZHw67yPcziIAHfFiyY151ZQiTAeHdaoktb0sVDHIw+l+W7bxmUOhv7Gf39+nqjhrTubAkMDm5KvkLbOac89rwe64/+iU9mmZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUYJMvi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD5AC3277B;
-	Thu, 23 May 2024 13:26:29 +0000 (UTC)
+	 MIME-Version; b=Ipa+yC8qa+EKHttQlIP2IZqYGvm6dBja4SPeLgIALuPqZERDs917LYJtGXmLqkdNESm23uqNR8fo8FutIlVvB33UJ7qPyU2i4R1Y+uqtWFW1X2EUqAwgbZCRB+v5buamjndGqXjVp48qy+nij4Z77zE98IrsSrRmolfW7YMgtu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5XngfPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94722C2BD10;
+	Thu, 23 May 2024 13:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470789;
-	bh=bwq/qULzK88RzKtW+1dSISYttKoA6BwKU1zZPDKqI8Q=;
+	s=korg; t=1716470703;
+	bh=obhP4V58EqHvyyGo9rvZ2dydYexh4YrxrU4ZSpP0a5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUYJMvi6GRyT4M3Fe70jwpZ943PHKmPf9SrduXH9mYNgEaaywsN9okge64xKYm6te
-	 kaQlgrdw34HdAuZAlCQjFnrSBVQdoAabjfc3XQUV94iQLuLSk5VSPRDDTNQiwgOP4O
-	 /hdX/QMtxrlcw5vr+atMNJjPg4/rVTusvIuAQPAA=
+	b=W5XngfPQxeKdKakPJxywVvAKLgplmMXu5PU6DPvmXK/YS2Swp7BZl5Ui/gJfW7UUT
+	 XHlIvi6B21WY1SaK+9MKMfGCWtcXG5QTh2kQ3JDvxX66NfTVvnxclORyXRfoBEeDFn
+	 /CQhzLbEduu6jRdCyMek/T0pMr9xqY6OvmuQXA2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enzo Matsumiya <ematsumiya@suse.de>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/102] smb: common: simplify compression headers
-Date: Thu, 23 May 2024 15:13:23 +0200
-Message-ID: <20240523130344.656424262@linuxfoundation.org>
+Subject: [PATCH 6.6 059/102] ksmbd: mark SMB2_SESSION_EXPIRED to session when destroying previous session
+Date: Thu, 23 May 2024 15:13:24 +0200
+Message-ID: <20240523130344.696018317@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
 References: <20240523130342.462912131@linuxfoundation.org>
@@ -66,95 +66,121 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Enzo Matsumiya <ematsumiya@suse.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 24337b60e88219816f84d633369299660e8e8cce ]
+[ Upstream commit fa9415d4024fd0c58d24a4ad4f1826fb8bfcc4aa ]
 
-Unify compression headers (chained and unchained) into a single struct
-so we can use it for the initial compression transform header
-interchangeably.
+Currently ksmbd exit connection as well destroying previous session.
+When testing durable handle feaure, I found that
+destroy_previous_session() should destroy only session, i.e. the
+connection should be still alive. This patch mark SMB2_SESSION_EXPIRED
+on the previous session to be destroyed later and not used anymore.
 
-Also make the OriginalPayloadSize field to be always visible in the
-compression payload header, and have callers subtract its size when not
-needed.
-
-Rename the related structs to match the naming convetion used in the
-other SMB2 structs.
-
-Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smb2pdu.h | 45 ++++++++++++++++++++++++-----------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+ fs/smb/server/mgmt/user_session.c | 27 ++++++++++++++++++++++++++-
+ fs/smb/server/mgmt/user_session.h |  3 +++
+ fs/smb/server/smb2pdu.c           | 24 ------------------------
+ 3 files changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
-index 10a9e20eec43f..61c6e72ccddc4 100644
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -208,36 +208,43 @@ struct smb2_transform_hdr {
- 	__le64  SessionId;
- } __packed;
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 15f68ee050894..83074672fe812 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -156,7 +156,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+ 	kfree(sess);
+ }
  
-+/*
-+ * These are simplified versions from the spec, as we don't need a fully fledged
-+ * form of both unchained and chained structs.
-+ *
-+ * Moreover, even in chained compressed payloads, the initial compression header
-+ * has the form of the unchained one -- i.e. it never has the
-+ * OriginalPayloadSize field and ::Offset field always represent an offset
-+ * (instead of a length, as it is in the chained header).
-+ *
-+ * See MS-SMB2 2.2.42 for more details.
-+ */
-+#define SMB2_COMPRESSION_FLAG_NONE	0x0000
-+#define SMB2_COMPRESSION_FLAG_CHAINED	0x0001
+-static struct ksmbd_session *__session_lookup(unsigned long long id)
++struct ksmbd_session *__session_lookup(unsigned long long id)
+ {
+ 	struct ksmbd_session *sess;
  
--/* See MS-SMB2 2.2.42 */
--struct smb2_compression_transform_hdr_unchained {
--	__le32 ProtocolId;	/* 0xFC 'S' 'M' 'B' */
-+struct smb2_compression_hdr {
-+	__le32 ProtocolId; /* 0xFC 'S' 'M' 'B' */
- 	__le32 OriginalCompressedSegmentSize;
- 	__le16 CompressionAlgorithm;
- 	__le16 Flags;
--	__le16 Length; /* if chained it is length, else offset */
-+	__le16 Offset; /* this is the size of the uncompressed SMB2 header below */
-+	/* uncompressed SMB2 header (READ or WRITE) goes here */
-+	/* compressed data goes here */
- } __packed;
+@@ -305,6 +305,31 @@ struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
+ 	return sess;
+ }
  
--/* See MS-SMB2 2.2.42.1 */
--#define SMB2_COMPRESSION_FLAG_NONE	0x0000
--#define SMB2_COMPRESSION_FLAG_CHAINED	0x0001
++void destroy_previous_session(struct ksmbd_conn *conn,
++			      struct ksmbd_user *user, u64 id)
++{
++	struct ksmbd_session *prev_sess;
++	struct ksmbd_user *prev_user;
++
++	down_write(&sessions_table_lock);
++	down_write(&conn->session_lock);
++	prev_sess = __session_lookup(id);
++	if (!prev_sess || prev_sess->state == SMB2_SESSION_EXPIRED)
++		goto out;
++
++	prev_user = prev_sess->user;
++	if (!prev_user ||
++	    strcmp(user->name, prev_user->name) ||
++	    user->passkey_sz != prev_user->passkey_sz ||
++	    memcmp(user->passkey, prev_user->passkey, user->passkey_sz))
++		goto out;
++
++	prev_sess->state = SMB2_SESSION_EXPIRED;
++out:
++	up_write(&conn->session_lock);
++	up_write(&sessions_table_lock);
++}
++
+ static bool ksmbd_preauth_session_id_match(struct preauth_session *sess,
+ 					   unsigned long long id)
+ {
+diff --git a/fs/smb/server/mgmt/user_session.h b/fs/smb/server/mgmt/user_session.h
+index 63cb08fffde84..dc9fded2cd437 100644
+--- a/fs/smb/server/mgmt/user_session.h
++++ b/fs/smb/server/mgmt/user_session.h
+@@ -88,8 +88,11 @@ struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
+ int ksmbd_session_register(struct ksmbd_conn *conn,
+ 			   struct ksmbd_session *sess);
+ void ksmbd_sessions_deregister(struct ksmbd_conn *conn);
++struct ksmbd_session *__session_lookup(unsigned long long id);
+ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
+ 					       unsigned long long id);
++void destroy_previous_session(struct ksmbd_conn *conn,
++			      struct ksmbd_user *user, u64 id);
+ struct preauth_session *ksmbd_preauth_session_alloc(struct ksmbd_conn *conn,
+ 						    u64 sess_id);
+ struct preauth_session *ksmbd_preauth_session_lookup(struct ksmbd_conn *conn,
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index fb9eea631069e..61717917db765 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -611,30 +611,6 @@ int smb2_check_user_session(struct ksmbd_work *work)
+ 	return -ENOENT;
+ }
+ 
+-static void destroy_previous_session(struct ksmbd_conn *conn,
+-				     struct ksmbd_user *user, u64 id)
+-{
+-	struct ksmbd_session *prev_sess = ksmbd_session_lookup_slowpath(id);
+-	struct ksmbd_user *prev_user;
+-	struct channel *chann;
+-	long index;
 -
--struct compression_payload_header {
-+/*
-+ * ... OTOH, set compression payload header to always have OriginalPayloadSize
-+ * as it's easier to pass the struct size minus sizeof(OriginalPayloadSize)
-+ * than to juggle around the header/data memory.
-+ */
-+struct smb2_compression_payload_hdr {
- 	__le16	CompressionAlgorithm;
- 	__le16	Flags;
- 	__le32	Length; /* length of compressed playload including field below if present */
--	/* __le32 OriginalPayloadSize; */ /* optional, present when LZNT1, LZ77, LZ77+Huffman */
--} __packed;
+-	if (!prev_sess)
+-		return;
 -
--/* See MS-SMB2 2.2.42.2 */
--struct smb2_compression_transform_hdr_chained {
--	__le32 ProtocolId;	/* 0xFC 'S' 'M' 'B' */
--	__le32 OriginalCompressedSegmentSize;
--	/* struct compression_payload_header[] */
-+	__le32 OriginalPayloadSize; /* accounted when LZNT1, LZ77, LZ77+Huffman */
- } __packed;
- 
--/* See MS-SMB2 2.2.42.2.2 */
--struct compression_pattern_payload_v1 {
-+struct smb2_compression_pattern_v1 {
- 	__u8	Pattern;
- 	__u8	Reserved1;
- 	__le16	Reserved2;
+-	prev_user = prev_sess->user;
+-
+-	if (!prev_user ||
+-	    strcmp(user->name, prev_user->name) ||
+-	    user->passkey_sz != prev_user->passkey_sz ||
+-	    memcmp(user->passkey, prev_user->passkey, user->passkey_sz))
+-		return;
+-
+-	prev_sess->state = SMB2_SESSION_EXPIRED;
+-	xa_for_each(&prev_sess->ksmbd_chann_list, index, chann)
+-		ksmbd_conn_set_exiting(chann->conn);
+-}
+-
+ /**
+  * smb2_get_name() - get filename string from on the wire smb format
+  * @src:	source buffer
 -- 
 2.43.0
 
