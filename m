@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-45815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF90B8CD409
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C808CD390
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:16:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46B90B2155C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA97281945
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2652C14A60C;
-	Thu, 23 May 2024 13:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA3214AD3E;
+	Thu, 23 May 2024 13:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2ZTsofT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn2b0YP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B813BAC3;
-	Thu, 23 May 2024 13:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A3A14AD2C;
+	Thu, 23 May 2024 13:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470440; cv=none; b=PDrI7wZq73r9uujZWZuicAe5kNskog/7qZxjBThX5ywMmaSKwUMnbb6s/gGGBU8omZhlFO6njZHNm97OfQb/vIWYakDgc22Mva+NTXsrCelX29r4lLYmocGZM8WJGeRwWI+b8EIksyZZ5uKADM704yfCZ25iONSmWqWqLXf/INI=
+	t=1716470185; cv=none; b=l8reTcxS6LPTzzEtfmQ3QHR9TuBbDUDOCPokL/KgTnjQYlJJjXSRdcItmEspMhva1SVQSi6SFZiymiksK5xSeBn6GuJDhm+TRXVTnJ4O+2VvXv7qlTtaqlA05xqGUys3DsFyW8eK7cAICHsexBohHQbZ4nSG3C1wcdEqe+BWkGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470440; c=relaxed/simple;
-	bh=qPVn5sj0hQphBFDCn+6YY3b5439rF1z4lrhn7UBoDwY=;
+	s=arc-20240116; t=1716470185; c=relaxed/simple;
+	bh=HkSjTsX9TeXAHebVDfM0NLpEDy1bSg8tgvrEt56gsuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISPjaMTQcxxFvLg7iO5EfECjEbtvZtrZWyH2meMMoSeRCdxXlewfntt+OSvjXGvsFDLUBFbaZFvJ8nu/RG5BkRD37vbSFjc6KG6/enbwKzr0PVZ6eF2aW2pcVK3G5pla8wJyZZx8kuSsSf442t3z/ZiFAGSTTgDzgqtwxtgPVoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2ZTsofT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656B3C3277B;
-	Thu, 23 May 2024 13:20:40 +0000 (UTC)
+	 MIME-Version; b=hNGOpNKpJNu+ncOFnnuBFQML8EIvQEID2JP96IxhMI8G2SJXzBPBsi1NwtMhmdXFh5mOzx8XwgHK0xCsvq83A1ctYpgwlNo7XR7yDyyEnlmzFFqtrMWwWWpfiee2vBwpIwKwrlmtfnW/3PVgOJebLyGQ8FR5kBLv15jSZmNmN0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn2b0YP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327A4C2BD10;
+	Thu, 23 May 2024 13:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470440;
-	bh=qPVn5sj0hQphBFDCn+6YY3b5439rF1z4lrhn7UBoDwY=;
+	s=korg; t=1716470185;
+	bh=HkSjTsX9TeXAHebVDfM0NLpEDy1bSg8tgvrEt56gsuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2ZTsofTirOhaQGfCQQUJgVxtyhqa0EulKquz/DWwm50LJXP9nX1miB9eo2xVWFm8
-	 6MvZ9+kqsDWBOU6DRNxfRE7z5pPtPcYC0Ld4YNUZ3P79myz05vGnDCd/tBZWp2c1u/
-	 gHosTPur7/AZGcrYgHvoP1Tyz2j6UKQcSnCfQL+M=
+	b=Gn2b0YP/HeVpDmiXK9tDEgoH9rmERl+4ZH/LApaKJd2zoST2RdAjOolyVPdatw7gF
+	 sCm04vLuRUE4WoHOtVszgRlh6mlUwhW7SfevNIBj22iMXTWl4MQteuGxpZpz+ML3cI
+	 zppcM5dWWHqfV37O9b8uwZgEFdk7l0aUv5Jauc8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH 6.1 06/45] mfd: stpmic1: Fix swapped mask/unmask in irq chip
+	Akira Yokosawa <akiyks@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 5.10 15/15] docs: kernel_include.py: Cope with docutils 0.21
 Date: Thu, 23 May 2024 15:12:57 +0200
-Message-ID: <20240523130332.740537717@linuxfoundation.org>
+Message-ID: <20240523130327.031822133@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130326.451548488@linuxfoundation.org>
+References: <20240523130326.451548488@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+From: Akira Yokosawa <akiyks@gmail.com>
 
-commit c79e387389d5add7cb967d2f7622c3bf5550927b upstream.
+commit d43ddd5c91802a46354fa4c4381416ef760676e2 upstream.
 
-The usual behavior of mask registers is writing a '1' bit to
-disable (mask) an interrupt; similarly, writing a '1' bit to
-an unmask register enables (unmasks) an interrupt.
+Running "make htmldocs" on a newly installed Sphinx 7.3.7 ends up in
+a build error:
 
-Due to a longstanding issue in regmap-irq, mask and unmask
-registers were inverted when both kinds of registers were
-present on the same chip, ie. regmap-irq actually wrote '1's
-to the mask register to enable an IRQ and '1's to the unmask
-register to disable an IRQ.
+    Sphinx parallel build error:
+    AttributeError: module 'docutils.nodes' has no attribute 'reprunicode'
 
-This was fixed by commit e8ffb12e7f06 ("regmap-irq: Fix
-inverted handling of unmask registers") but the fix is opt-in
-via mask_unmask_non_inverted = true because it requires manual
-changes for each affected driver. The new behavior will become
-the default once all drivers have been updated.
+docutils 0.21 has removed nodes.reprunicode, quote from release note [1]:
 
-The STPMIC1 has a normal mask register with separate set and
-clear registers. The driver intends to use the set & clear
-registers with regmap-irq and has compensated for regmap-irq's
-inverted behavior, and should currently be working properly.
-Thus, swap mask_base and unmask_base, and opt in to the new
-non-inverted behavior.
+  * Removed objects:
 
-Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20221112151835.39059-16-aidanmacdonald.0x0@gmail.com
-Cc: Yoann Congal <yoann.congal@smile.fr>
+    docutils.nodes.reprunicode, docutils.nodes.ensure_str()
+        Python 2 compatibility hacks
+
+Sphinx 7.3.0 supports docutils 0.21 [2]:
+
+kernel_include.py, whose origin is misc.py of docutils, uses reprunicode.
+
+Upstream docutils removed the offending line from the corresponding file
+(docutils/docutils/parsers/rst/directives/misc.py) in January 2022.
+Quoting the changelog [3]:
+
+    Deprecate `nodes.reprunicode` and `nodes.ensure_str()`.
+
+    Drop uses of the deprecated constructs (not required with Python 3).
+
+Do the same for kernel_include.py.
+
+Tested against:
+  - Sphinx 2.4.5 (docutils 0.17.1)
+  - Sphinx 3.4.3 (docutils 0.17.1)
+  - Sphinx 5.3.0 (docutils 0.18.1)
+  - Sphinx 6.2.1 (docutils 0.19)
+  - Sphinx 7.2.6 (docutils 0.20.1)
+  - Sphinx 7.3.7 (docutils 0.21.2)
+
+Link: http://www.docutils.org/RELEASE-NOTES.html#release-0-21-2024-04-09 [1]
+Link: https://www.sphinx-doc.org/en/master/changes.html#release-7-3-0-released-apr-16-2024 [2]
+Link: https://github.com/docutils/docutils/commit/c8471ce47a24 [3]
+Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/stpmic1.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ Documentation/sphinx/kernel_include.py |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/mfd/stpmic1.c
-+++ b/drivers/mfd/stpmic1.c
-@@ -108,8 +108,9 @@ static const struct regmap_irq stpmic1_i
- static const struct regmap_irq_chip stpmic1_regmap_irq_chip = {
- 	.name = "pmic_irq",
- 	.status_base = INT_PENDING_R1,
--	.mask_base = INT_CLEAR_MASK_R1,
--	.unmask_base = INT_SET_MASK_R1,
-+	.mask_base = INT_SET_MASK_R1,
-+	.unmask_base = INT_CLEAR_MASK_R1,
-+	.mask_unmask_non_inverted = true,
- 	.ack_base = INT_CLEAR_R1,
- 	.num_regs = STPMIC1_PMIC_NUM_IRQ_REGS,
- 	.irqs = stpmic1_irqs,
+--- a/Documentation/sphinx/kernel_include.py
++++ b/Documentation/sphinx/kernel_include.py
+@@ -94,7 +94,6 @@ class KernelInclude(Include):
+         # HINT: this is the only line I had to change / commented out:
+         #path = utils.relative_path(None, path)
+ 
+-        path = nodes.reprunicode(path)
+         encoding = self.options.get(
+             'encoding', self.state.document.settings.input_encoding)
+         e_handler=self.state.document.settings.input_encoding_error_handler
 
 
 
