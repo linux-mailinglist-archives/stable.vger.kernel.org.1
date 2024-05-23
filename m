@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-45886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459308CD467
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:24:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 964868CD3CF
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4F84B20A3C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 434BA2830ED
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BE214B941;
-	Thu, 23 May 2024 13:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B94A2AE94;
+	Thu, 23 May 2024 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVEp0OfO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWE8l/rA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB814AD36;
-	Thu, 23 May 2024 13:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAD614B083;
+	Thu, 23 May 2024 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470645; cv=none; b=F48mIKxlOhJAiXKPeZr0u19ljZpV88+GnfZaXwMWQP++kBHQ+zSZ7lYrEt2uUAge7IjhQt5kzEOTXPZaB1QyM44OFIljWv+r9XSDJOYPAhJgM3EpQJ0Z/Eg9cm9lj787onbWQ6dR2+Z2820X0KvdMxspncbLnwHm9V26YVAV8I4=
+	t=1716470326; cv=none; b=s839EvFTM1RxwLy6exL1jfySaWW2GGW5EhazrbjVmU0iWpVyyVS9+RAB2sxj+pH+NkW+0RV2phL5mNcIjU4uPIFciEaSxd2gE+nSRF5blnDUT0tYO5E4yuZnDbdFZIVgQVeIPzbZmeJVNZdCz/JlKPdQZ5y/GERWNEL4Rp2hb98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470645; c=relaxed/simple;
-	bh=dvddSzMPNP+7LD38niesJ14ww41MOC8RTMEoDV2wvdk=;
+	s=arc-20240116; t=1716470326; c=relaxed/simple;
+	bh=gH//Nd+UlS+e4EDPhwTPdsUIF5hBHBLdZp2JgyKolaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blgfnolYJoN3pONghVaCBW6v/+3VhG15v/6XMFwpRFTMpfHmZ/KY8hFgox4Uae0ippsYQNs6qbUJw0MeViAfZ1zhMcC4kJ3yB2WQcrNvD94Pw5dS/QU3+tjUVuvI5UBhyKn5BxM9n9p/mmSopZT8jKuE12e1ibSbbiTAr+GmeXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVEp0OfO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B93C4AF0A;
-	Thu, 23 May 2024 13:24:04 +0000 (UTC)
+	 MIME-Version; b=SE11uRukHQauBLeSr9OjvFpj+eZtl+JBiCq1vAjLyG4KPjRi17KlkA1nz/qdFjLDwxAv354e8KOmoZ2aqV9LcxZQS4RfLAsWpsHiQtO8QJyINpYFl/zRsEKQgUfKp2V1Gw+eopn7b940yDaxC0mVHybJoqWJXx6lzg5jIr5RbYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWE8l/rA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A12C3277B;
+	Thu, 23 May 2024 13:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470645;
-	bh=dvddSzMPNP+7LD38niesJ14ww41MOC8RTMEoDV2wvdk=;
+	s=korg; t=1716470325;
+	bh=gH//Nd+UlS+e4EDPhwTPdsUIF5hBHBLdZp2JgyKolaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVEp0OfOq9EHRKhYclsTMKK4era0NvjhZ8XcjXzFxaG7+YT06Irt6N8Url7Pa3KeH
-	 AYc8+fA3LzboIKzzoiSYbNKRVCs92ka4Q9OWVXgwHH/xAf8pDog0DdAiwEs4NvE0v0
-	 PiskvfPwV7n8gF0EVBCrA/BJA8twwtt9cZ7/Wd8o=
+	b=UWE8l/rAffe50mPTwR7LFeOPb8kEwSwAA5zNHnYL166Yr2ezd3D50uGUgKMW5Q2Qi
+	 K8w71nPGUu2YTqQKqx45cxdlHKsHaqudwJ+FUBfZCCdL1V0EQe1VaoP5X2G84nMTWj
+	 tWrv9XSaalNdUVQGGsLQJNLQzFr2ZmI+jhVuUTXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/102] smb: client: handle path separator of created SMB symlinks
-Date: Thu, 23 May 2024 15:13:03 +0200
-Message-ID: <20240523130343.901249804@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shaoying Xu <shaoyi@amazon.com>
+Subject: [PATCH 5.15 08/23] tls: rx: simplify async wait
+Date: Thu, 23 May 2024 15:13:04 +0200
+Message-ID: <20240523130328.268096025@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 8bde59b20de06339d598e8b05e5195f7c631c38b ]
+commit 37943f047bfb88ba4dfc7a522563f57c86d088a0 upstream.
 
-Convert path separator to CIFS_DIR_SEP(cifs_sb) from symlink target
-before sending it over the wire otherwise the created SMB symlink may
-become innaccesible from server side.
+Since we are protected from async completions by decrypt_compl_lock
+we can drop the async_notify and reinit the completion before we
+start waiting.
 
-Fixes: 514d793e27a3 ("smb: client: allow creating symlinks via reparse points")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aec7961916f3 ("tls: fix race between async notify and socket close")
+Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/net/tls.h |    1 -
+ net/tls/tls_sw.c  |   14 ++------------
+ 2 files changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 23cf6e92fd54c..9ade347978709 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5212,7 +5212,7 @@ static int smb2_create_reparse_symlink(const unsigned int xid,
- 	struct inode *new;
- 	struct kvec iov;
- 	__le16 *path;
--	char *sym;
-+	char *sym, sep = CIFS_DIR_SEP(cifs_sb);
- 	u16 len, plen;
- 	int rc = 0;
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -150,7 +150,6 @@ struct tls_sw_context_rx {
+ 	atomic_t decrypt_pending;
+ 	/* protect crypto_wait with decrypt_pending*/
+ 	spinlock_t decrypt_compl_lock;
+-	bool async_notify;
+ };
  
-@@ -5226,7 +5226,8 @@ static int smb2_create_reparse_symlink(const unsigned int xid,
- 		.symlink_target = sym,
- 	};
+ struct tls_record_info {
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -174,7 +174,6 @@ static void tls_decrypt_done(struct cryp
+ 	struct scatterlist *sg;
+ 	struct sk_buff *skb;
+ 	unsigned int pages;
+-	int pending;
  
--	path = cifs_convert_path_to_utf16(symname, cifs_sb);
-+	convert_delimiter(sym, sep);
-+	path = cifs_convert_path_to_utf16(sym, cifs_sb);
- 	if (!path) {
- 		rc = -ENOMEM;
- 		goto out;
-@@ -5249,7 +5250,10 @@ static int smb2_create_reparse_symlink(const unsigned int xid,
- 	buf->PrintNameLength = cpu_to_le16(plen);
- 	memcpy(buf->PathBuffer, path, plen);
- 	buf->Flags = cpu_to_le32(*symname != '/' ? SYMLINK_FLAG_RELATIVE : 0);
-+	if (*sym != sep)
-+		buf->Flags = cpu_to_le32(SYMLINK_FLAG_RELATIVE);
+ 	skb = (struct sk_buff *)req->data;
+ 	tls_ctx = tls_get_ctx(skb->sk);
+@@ -222,9 +221,7 @@ static void tls_decrypt_done(struct cryp
+ 	kfree(aead_req);
  
-+	convert_delimiter(sym, '/');
- 	iov.iov_base = buf;
- 	iov.iov_len = len;
- 	new = smb2_get_reparse_inode(&data, inode->i_sb, xid,
--- 
-2.43.0
-
+ 	spin_lock_bh(&ctx->decrypt_compl_lock);
+-	pending = atomic_dec_return(&ctx->decrypt_pending);
+-
+-	if (!pending && ctx->async_notify)
++	if (!atomic_dec_return(&ctx->decrypt_pending))
+ 		complete(&ctx->async_wait.completion);
+ 	spin_unlock_bh(&ctx->decrypt_compl_lock);
+ }
+@@ -1917,7 +1914,7 @@ recv_end:
+ 
+ 		/* Wait for all previously submitted records to be decrypted */
+ 		spin_lock_bh(&ctx->decrypt_compl_lock);
+-		ctx->async_notify = true;
++		reinit_completion(&ctx->async_wait.completion);
+ 		pending = atomic_read(&ctx->decrypt_pending);
+ 		spin_unlock_bh(&ctx->decrypt_compl_lock);
+ 		if (pending) {
+@@ -1929,15 +1926,8 @@ recv_end:
+ 				decrypted = 0;
+ 				goto end;
+ 			}
+-		} else {
+-			reinit_completion(&ctx->async_wait.completion);
+ 		}
+ 
+-		/* There can be no concurrent accesses, since we have no
+-		 * pending decrypt operations
+-		 */
+-		WRITE_ONCE(ctx->async_notify, false);
+-
+ 		/* Drain records from the rx_list & copy if required */
+ 		if (is_peek || is_kvec)
+ 			err = process_rx_list(ctx, msg, &control, copied,
 
 
 
