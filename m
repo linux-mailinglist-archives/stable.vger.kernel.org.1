@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-45887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5947B8CD469
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7098CD3BA
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB7C1F215E5
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E6011C2213F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE4614D2B4;
-	Thu, 23 May 2024 13:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FEB14A604;
+	Thu, 23 May 2024 13:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EveyBl29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkW/TND6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483EC14BF89;
-	Thu, 23 May 2024 13:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CD91E504;
+	Thu, 23 May 2024 13:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470648; cv=none; b=oSGPMMNJaV0LWorPnHQYvhBLjIVQWpuIr0yjL2djR0FBdrhce/EvZxXpNAZ4T6uau2AtDrWx3hNhLnQz0PhSR0/ZqLxAvrv1W5UZvtfq5HXZMVpozOtal03Ev7wwE9xgfO8eyMdKjQLI8cFLeqaMZPtkdkHjZSLRP3AilcmckDA=
+	t=1716470271; cv=none; b=jSk6KbHXovGRNvrCA77IdUcesAA7n36EPGrq0nlLKJh7/wV8YKxtEbTIFIfuBXx8fccz3A1LMT0vtHUSO9981kMkR/rZE2sbY6A6RCneqpQWpUGCxc+nzRTHfH66rrozpri+4tpmCQe86ypf/x3vvvr/6bnV+d/3r/eQ40zyPAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470648; c=relaxed/simple;
-	bh=5Rjlqt9ne6Qs+glYGpPaiKYjoIKQHXhUNC/GAhng07k=;
+	s=arc-20240116; t=1716470271; c=relaxed/simple;
+	bh=NzXdNlWRESErEhnq6IazWZwIMWEMpykvdphgCdSk4Js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mb3iaQMeb81SCq5Nev5ZwSiyNY8Y6Qc6WgIF4FbzL8/R9DUH/CECTwYYaENTWJDZmYgnPxybO1kn4024BDeBNgKn4RJf/9eXunDn2/GwlxXizhTLkKRRMTFxZxWp6K5ePBI0KJqO+p89oGk95Lv4h5O3W/QFJ4+DWMyLhj6lQaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EveyBl29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64E9C32781;
-	Thu, 23 May 2024 13:24:07 +0000 (UTC)
+	 MIME-Version; b=V/BQAK1n4JbrBR4toMtZ5kNVzGrnFPs1JEO3ZDq7Tc9DX/IylFOAA5hqtI48AsXhZcSqBZBkbo9rdyH0uPkXeama8yeidjTPw1I1qurB/pFss8XuzZ7pmeUDaWXDO7txYV705h0dKUt7Iye+sSMlh9Ce087rdVWZKqbjHqH3svA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkW/TND6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E930C2BD10;
+	Thu, 23 May 2024 13:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470648;
-	bh=5Rjlqt9ne6Qs+glYGpPaiKYjoIKQHXhUNC/GAhng07k=;
+	s=korg; t=1716470271;
+	bh=NzXdNlWRESErEhnq6IazWZwIMWEMpykvdphgCdSk4Js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EveyBl29VTNk5UoZ7Xox1h4UY6Zscc/qSpS0pFAVWtD4W5xAMu9PMeG1DIxUlhGlJ
-	 c9O3FSq9nyRFA1N0ad3+rzu0LveSLq78HV5LWwq/POsJU9iGrDyLwo9Ew8YCs+Ifyb
-	 Nf07/dMTnOdHQ1FmX+s+GqRhbr1Lvqh9sGBURFDw=
+	b=GkW/TND6+34YQkECMzi5qKMaM8C9q4kxE6wPfqsJsXQFlU0Ob1yolYbAaER2e2Jwn
+	 KzbQRVEra25SCr7pzKu+ybu8qc1O/uVZcAs/+trqC/7L0c9noD4J35ljVOe51HttUd
+	 TJrswPMSFobd7+PTJAKpOV8IVe4Hg8o4si5kP7kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/102] smb3: update allocation size more accurately on write completion
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.9 19/25] KEYS: trusted: Do not use WARN when encode fails
 Date: Thu, 23 May 2024 15:13:04 +0200
-Message-ID: <20240523130343.937943967@linuxfoundation.org>
+Message-ID: <20240523130331.107439190@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+References: <20240523130330.386580714@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit dbfdff402d89854126658376cbcb08363194d3cd ]
+commit 050bf3c793a07f96bd1e2fd62e1447f731ed733b upstream.
 
-Changes to allocation size are approximated for extending writes of cached
-files until the server returns the actual value (on SMB3 close or query info
-for example), but it was setting the estimated value for number of blocks
-to larger than the file size even if the file is likely sparse which
-breaks various xfstests (e.g. generic/129, 130, 221, 228).
+When asn1_encode_sequence() fails, WARN is not the correct solution.
 
-When i_size and i_blocks are updated in write completion do not increase
-allocation size more than what was written (rounded up to 512 bytes).
+1. asn1_encode_sequence() is not an internal function (located
+   in lib/asn1_encode.c).
+2. Location is known, which makes the stack trace useless.
+3. Results a crash if panic_on_warn is set.
 
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is also noteworthy that the use of WARN is undocumented, and it
+should be avoided unless there is a carefully considered rationale to
+use it.
+
+Replace WARN with pr_err, and print the return value instead, which is
+only useful piece of information.
+
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/file.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ security/keys/trusted-keys/trusted_tpm2.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 6d44991e1ccdc..751ae89cefe36 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -3204,8 +3204,15 @@ static int cifs_write_end(struct file *file, struct address_space *mapping,
- 	if (rc > 0) {
- 		spin_lock(&inode->i_lock);
- 		if (pos > inode->i_size) {
-+			loff_t additional_blocks = (512 - 1 + copied) >> 9;
-+
- 			i_size_write(inode, pos);
--			inode->i_blocks = (512 - 1 + pos) >> 9;
-+			/*
-+			 * Estimate new allocation size based on the amount written.
-+			 * This will be updated from server on close (and on queryinfo)
-+			 */
-+			inode->i_blocks = min_t(blkcnt_t, (512 - 1 + pos) >> 9,
-+						inode->i_blocks + additional_blocks);
- 		}
- 		spin_unlock(&inode->i_lock);
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -84,8 +84,9 @@ static int tpm2_key_encode(struct truste
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
++	if (IS_ERR(work1)) {
+ 		ret = PTR_ERR(work1);
++		pr_err("BUG: ASN.1 encoder failed with %d\n", ret);
+ 		goto err;
  	}
--- 
-2.43.0
-
+ 
 
 
 
