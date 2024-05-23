@@ -1,150 +1,179 @@
-Return-Path: <stable+bounces-45698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11048CD36C
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EC08CD37F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C76428526B
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04290B21F53
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AA11E4B0;
-	Thu, 23 May 2024 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4E813BC38;
+	Thu, 23 May 2024 13:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hV9Loekg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1W4KnvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE7A1E497;
-	Thu, 23 May 2024 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7463B1D555;
+	Thu, 23 May 2024 13:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470105; cv=none; b=VyxBrTjWgJZvrnlukYQ2kdyiP4P9q8sh9eyW8U3o+pAIKXIZLr9YRrWieKBCaYPNQCaHU0jN+cai7/anK4x8K3y5Ve/L7AiCs6b/NgFT/8gtoVPf8mGm0SspPU+wRRyXpZGSzoaoGn+E3R6qwrJ7NbaWNZPyRat7cjZL+d6FKVQ=
+	t=1716470151; cv=none; b=Ey4ZDb4S1vEpLmmaWTXbXXgdPriamnkG6VLoroh3QKNHvx1iEpreR7ztqEYJYXBHd/sR8kDxTZbmlDgwYgrJFb7rO97KeDf2y+DCyWzTy44uAr8iZwvTje9PT6MHfblsIZIP6yf0+kzANZsc4HQvh02oJ6c18iFGPUR8ZQrXKnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470105; c=relaxed/simple;
-	bh=sn3yw1QWvcTAilyXa7sywtAaOauc6GRRDvLXsQVlbTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxEVY1auJf6MbbiJivcrbRlPS7B9/++JpGOpNGFL0/NfEuYVNNVVlfjiKPMT1Cs6hGqSDPE+R1GwARzp2svu45hJIFx4Cg9RomqI3nDTSBs3REDUDm4Bjb91yd0bAHagHQXBqKqBGKQlkpQfg95tvBHWfwMheVfvnJptlOJ9Cpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hV9Loekg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C97C2BD10;
-	Thu, 23 May 2024 13:15:04 +0000 (UTC)
+	s=arc-20240116; t=1716470151; c=relaxed/simple;
+	bh=Mt40WalPBV+6m7xYF/DZKqbqaHNN2wWWKrpvMV5GrIo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GX9hxNsoUEncWC1XMCD94hdHoDqJVsmYUu2l3KvYlVz0C5tKI9lQbiB6errJwlP0WLBFo3tSHMT2etHZqd2lTf9xhkQPOB42scjC8fySI2Tss+Nj/7ht1pQwa4mHvQZioZ8fSZ+pzsak7xLZP2z/tDYELKA9QQJlk+BednClhCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1W4KnvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C696AC2BD10;
+	Thu, 23 May 2024 13:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470105;
-	bh=sn3yw1QWvcTAilyXa7sywtAaOauc6GRRDvLXsQVlbTA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hV9LoekgV5Rc7L8ZJkV+N86v6/c/CKUSe+SGGzUnbFV8Mkl7Mq5yd8SHsmBTmnFIl
-	 PU4gR3NZnlzku4gnuQlpeZWkpBOR8QfSr8BdzrEvpdGu3fDSEZ6MWvD/4KSAo2HW7n
-	 YoB9xvKB8yNq6VjzmVq0CVEn2I4iEAfwJRFz+cvQ=
+	s=korg; t=1716470151;
+	bh=Mt40WalPBV+6m7xYF/DZKqbqaHNN2wWWKrpvMV5GrIo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=K1W4KnvLB1q5vUNfDnYpvTWbCb+y5ivuSeZNcekXiskPWMaOtBF9BJW7+dVQxxm+G
+	 NbAs49Y+pWBDtymn9t5KR5SIKgC3wcrgdsEiunWRbEWStGn14qgFBeItxVhfcJSzNN
+	 D46RtkeO34QZEfusnRwygI81vzpkEyU44hlGKBk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-	George Guo <guodongtai@kylinos.cn>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Joe Perches <joe@perches.com>,
-	Andreas Schwab <schwab@linux-m68k.org>
-Subject: [PATCH 4.19 09/18] string.h: Add str_has_prefix() helper function
-Date: Thu, 23 May 2024 15:12:32 +0200
-Message-ID: <20240523130326.087206848@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 5.4 00/16] 5.4.277-rc1 review
+Date: Thu, 23 May 2024 15:12:33 +0200
+Message-ID: <20240523130325.743454852@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130325.727602650@linuxfoundation.org>
-References: <20240523130325.727602650@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.277-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.4.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.4.277-rc1
+X-KernelTest-Deadline: 2024-05-25T13:03+00:00
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 5.4.277 release.
+There are 16 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
+Anything received after that time might be too late.
 
-From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.277-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+and the diffstat can be found below.
 
-commit 72921427d46bf9731a1ab7864adc64c43dfae29f upstream.
+thanks,
 
-A discussion came up in the trace triggers thread about converting a
-bunch of:
+greg k-h
 
- strncmp(str, "const", sizeof("const") - 1)
+-------------
+Pseudo-Shortlog of commits:
 
-use cases into a helper macro. It started with:
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.4.277-rc1
 
-	strncmp(str, const, sizeof(const) - 1)
+Akira Yokosawa <akiyks@gmail.com>
+    docs: kernel_include.py: Cope with docutils 0.21
 
-But then Joe Perches mentioned that if a const is not used, the
-sizeof() will be the size of a pointer, which can be bad. And that
-gcc will optimize strlen("const") into "sizeof("const") - 1".
+Daniel Thompson <daniel.thompson@linaro.org>
+    serial: kgdboc: Fix NMI-safety problems from keyboard reset code
 
-Thinking about this more, a quick grep in the kernel tree found several
-(thousands!) of cases that use this construct. A quick grep also
-revealed that there's probably several bugs in that use case. Some are
-that people forgot the "- 1" (which I found) and others could be that
-the constant for the sizeof is different than the constant (although, I
-haven't found any of those, but I also didn't look hard).
+Heikki Krogerus <heikki.krogerus@linux.intel.com>
+    usb: typec: ucsi: displayport: Fix potential deadlock
 
-I figured the best thing to do is to create a helper macro and place it
-into include/linux/string.h. And go around and fix all the open coded
-versions of it later.
+Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+    drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
 
-Note, gcc appears to optimize this when we make it into an always_inline
-static function, which removes a lot of issues that a macro produces.
+Dominique Martinet <dominique.martinet@atmark-techno.com>
+    btrfs: add missing mutex_unlock in btrfs_relocate_sys_chunks()
 
-Link: http://lkml.kernel.org/r/e3e754f2bd18e56eaa8baf79bee619316ebf4cfc.1545161087.git.tom.zanussi@linux.intel.com
-Link: http://lkml.kernel.org/r/20181219211615.2298e781@gandalf.local.home
-Link: http://lkml.kernel.org/r/CAHk-=wg_sR-UEC1ggmkZpypOUYanL5CMX4R7ceuaV4QMf5jBtg@mail.gmail.com
+Rob Herring <robh@kernel.org>
+    arm64: dts: qcom: Fix 'interrupt-map' parent address cells
 
-Cc: Tom Zanussi <zanussi@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Suggestions-by: Linus Torvalds <torvalds@linux-foundation.org>
-Suggestions-by: Joe Perches <joe@perches.com>
-Suggestions-by: Andreas Schwab <schwab@linux-m68k.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Signed-off-by: George Guo <guodongtai@kylinos.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/linux/string.h |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Cristian Marussi <cristian.marussi@arm.com>
+    firmware: arm_scmi: Harden accesses to the reset domains
 
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -492,4 +492,24 @@ static inline void memcpy_and_pad(void *
- 		memcpy(dest, src, dest_len);
- }
- 
-+/**
-+ * str_has_prefix - Test if a string has a given prefix
-+ * @str: The string to test
-+ * @prefix: The string to see if @str starts with
-+ *
-+ * A common way to test a prefix of a string is to do:
-+ *  strncmp(str, prefix, sizeof(prefix) - 1)
-+ *
-+ * But this can lead to bugs due to typos, or if prefix is a pointer
-+ * and not a constant. Instead use str_has_prefix().
-+ *
-+ * Returns: 0 if @str does not start with @prefix
-+         strlen(@prefix) if @str does start with @prefix
-+ */
-+static __always_inline size_t str_has_prefix(const char *str, const char *prefix)
-+{
-+	size_t len = strlen(prefix);
-+	return strncmp(str, prefix, len) == 0 ? len : 0;
-+}
-+
- #endif /* _LINUX_STRING_H_ */
+Paulo Alcantara <pc@manguebit.com>
+    smb: client: fix potential OOBs in smb2_parse_contexts()
+
+Doug Berger <opendmb@gmail.com>
+    net: bcmgenet: synchronize UMAC_CMD access
+
+Doug Berger <opendmb@gmail.com>
+    net: bcmgenet: synchronize use of bcmgenet_set_rx_mode()
+
+Doug Berger <opendmb@gmail.com>
+    net: bcmgenet: synchronize EXT_RGMII_OOB_CTRL access
+
+Doug Berger <opendmb@gmail.com>
+    net: bcmgenet: keep MAC in reset until PHY is up
+
+Doug Berger <opendmb@gmail.com>
+    Revert "net: bcmgenet: use RGMII loopback for MAC reset"
+
+Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+    Revert "selftests: mm: fix map_hugetlb failure on 64K page size systems"
+
+Baokun Li <libaokun1@huawei.com>
+    ext4: fix bug_on in __es_tree_search
+
+Sergey Shtylyov <s.shtylyov@omp.ru>
+    pinctrl: core: handle radix_tree_insert() errors in pinctrl_register_one_pin()
+
+
+-------------
+
+Diffstat:
+
+ Documentation/sphinx/kernel_include.py             |  1 -
+ Makefile                                           |  4 +-
+ arch/arm64/boot/dts/qcom/msm8998.dtsi              |  8 +--
+ drivers/firmware/arm_scmi/reset.c                  |  6 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c            |  3 +
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     | 22 ++++--
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |  2 +
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 12 +++-
+ drivers/net/ethernet/broadcom/genet/bcmmii.c       | 43 +++---------
+ drivers/pinctrl/core.c                             | 14 +++-
+ drivers/tty/serial/kgdboc.c                        | 30 +++++++-
+ drivers/usb/typec/ucsi/displayport.c               |  4 --
+ fs/btrfs/volumes.c                                 |  1 +
+ fs/cifs/smb2ops.c                                  |  4 +-
+ fs/cifs/smb2pdu.c                                  | 79 ++++++++++++++--------
+ fs/cifs/smb2proto.h                                | 10 +--
+ fs/ext4/extents.c                                  | 10 +--
+ tools/testing/selftests/vm/map_hugetlb.c           |  7 --
+ 18 files changed, 161 insertions(+), 99 deletions(-)
 
 
 
