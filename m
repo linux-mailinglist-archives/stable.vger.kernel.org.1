@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-45762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C3A8CD3C1
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D24A8CD3A4
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1FB283ED3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D03A28147E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC3614A635;
-	Thu, 23 May 2024 13:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEBE14A4FF;
+	Thu, 23 May 2024 13:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvAYYwkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVGb2OoX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29071E497;
-	Thu, 23 May 2024 13:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB381E4B0;
+	Thu, 23 May 2024 13:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470289; cv=none; b=avrNbr1zRvCLvRHkviM9JvpaFKNyUllCzaNmYx3+nOf1xfZ4OwmQagz6+eLZkJkDuTntRPV81/DVtYgHqtWsiYm84d/O1tiJ0VFQWPBZLr4hfSaA5CZxvSFU5rllKow1l35drtKqX1tl9noN/F7lzVycsxiWrO2kaJRm5Js6NQ4=
+	t=1716470223; cv=none; b=p8WLp8ujc7DWPJtzWuswzmWGWgT6kkeEgBnKvn8QrDyWFDZllJgId720iiqro9L8EGp6tc4hLt7N+C1FcG+ZrB0QFfJfFm0vEIW3sYe7at/WIDTSrM4wsFcg5C8tsU7E6oDxHaD1+YRgYkZy4gtebCfQxOljLVwemSqlrODDeOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470289; c=relaxed/simple;
-	bh=ofavnzkS8ATe8Yct3OyZNv++Q9edNFjSoHKheyXLWno=;
+	s=arc-20240116; t=1716470223; c=relaxed/simple;
+	bh=BTwqio0Z+CBcrRDOMoYbtt7HfAnXQMGCI4AI3O7koOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPM7UrO/2vTg5oyVL5RMdANiTU03TiEEhoK21GMVbuiBEL+rPvd1OV0QKkK7MCtS5KN83Y3gSUTiJ2bVWX1UPC/kCUSfqEhb1eXgmIwyE5h303wUrbB40L6qepxP3XNikCxYF9vOXOMmxXS9Haw2wDj4wcTdz3SzMyQm64NfSwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvAYYwkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B355C2BD10;
-	Thu, 23 May 2024 13:18:08 +0000 (UTC)
+	 MIME-Version; b=JEahu1V+YKMzKM945x/8yEaVhxovFlzhKUBcuYVGekQi3ZlPbFPdKoxiDpGIkb6qor+8DEt7T48SlBRL7sLX9xHpSLqxWZr3Bj6D+YzJrSMF2KtTKJ0ArXfv66V2r3F+QEMS3NNA8Vrxuwjzi9Tu8KjnHUVwx0X4TbTueaRWjUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVGb2OoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B4AC2BD10;
+	Thu, 23 May 2024 13:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470288;
-	bh=ofavnzkS8ATe8Yct3OyZNv++Q9edNFjSoHKheyXLWno=;
+	s=korg; t=1716470222;
+	bh=BTwqio0Z+CBcrRDOMoYbtt7HfAnXQMGCI4AI3O7koOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvAYYwkpsbLppI4UcU4thCoVScblxj10RRVdxqnuTCATr+9bmODukKNFxlGqYbXtl
-	 B9L+j7NPw6UjmA24CWHEypezvzncQNle2NahGTwSKruZBgrHgQFuh5wnSzs8kLiq7N
-	 6sWrv+cetLo5Iajoe7yh6T/5MnB2CQ5PRRAkLMcs=
+	b=DVGb2OoXOcqsnPW3CeDIZ5jnuh0CRAF4V8y5PhKuKzn/E+5m9sfGqNwpq9q8wvsUV
+	 e+ZPLJPDR6N9QJlPARxCN96puZxLzRbMPrd49aNymi6gKqLpQbWt1kyn74ivrl+EfF
+	 FYkR/LVtbeWeufZYh2Ibaq1tcEe6Oc7gaHTRZK1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Jose Fernandez <josef@netflix.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Limonciello, Mario" <mario.limonciello@amd.com>
-Subject: [PATCH 5.15 01/23] drm/amd/display: Fix division by zero in setup_dsc_config
+	Isaac Ganoung <inventor500@vivaldi.net>,
+	Yongqin Liu <yongqin.liu@linaro.org>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.9 12/25] net: usb: ax88179_178a: fix link status when link is set to down/up
 Date: Thu, 23 May 2024 15:12:57 +0200
-Message-ID: <20240523130328.014252014@linuxfoundation.org>
+Message-ID: <20240523130330.852282367@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130330.386580714@linuxfoundation.org>
+References: <20240523130330.386580714@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Fernandez <josef@netflix.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit 130afc8a886183a94cf6eab7d24f300014ff87ba upstream.
+commit ecf848eb934b03959918f5269f64c0e52bc23998 upstream.
 
-When slice_height is 0, the division by slice_height in the calculation
-of the number of slices will cause a division by zero driver crash. This
-leaves the kernel in a state that requires a reboot. This patch adds a
-check to avoid the division by zero.
+The idea was to keep only one reset at initialization stage in order to
+reduce the total delay, or the reset from usbnet_probe or the reset from
+usbnet_open.
 
-The stack trace below is for the 6.8.4 Kernel. I reproduced the issue on
-a Z16 Gen 2 Lenovo Thinkpad with a Apple Studio Display monitor
-connected via Thunderbolt. The amdgpu driver crashed with this exception
-when I rebooted the system with the monitor connected.
+I have seen that restarting from usbnet_probe is necessary to avoid doing
+too complex things. But when the link is set to down/up (for example to
+configure a different mac address) the link is not correctly recovered
+unless a reset is commanded from usbnet_open.
 
-kernel: ? die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434 arch/x86/kernel/dumpstack.c:447)
-kernel: ? do_trap (arch/x86/kernel/traps.c:113 arch/x86/kernel/traps.c:154)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? do_error_trap (./arch/x86/include/asm/traps.h:58 arch/x86/kernel/traps.c:175)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? exc_divide_error (arch/x86/kernel/traps.c:194 (discriminator 2))
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: ? asm_exc_divide_error (./arch/x86/include/asm/idtentry.h:548)
-kernel: ? setup_dsc_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1053) amdgpu
-kernel: dc_dsc_compute_config (drivers/gpu/drm/amd/amdgpu/../display/dc/dsc/dc_dsc.c:1109) amdgpu
+So, detect the initialization stage (first call) to not reset from
+usbnet_open after the reset from usbnet_probe and after this stage, always
+reset from usbnet_open too (when the link needs to be rechecked).
 
-After applying this patch, the driver no longer crashes when the monitor
-is connected and the system is rebooted. I believe this is the same
-issue reported for 3113.
+Apply to all the possible devices, the behavior now is going to be the same.
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Jose Fernandez <josef@netflix.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3113
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Limonciello, Mario" <mario.limonciello@amd.com>
+cc: stable@vger.kernel.org # 6.6+
+Fixes: 56f78615bcb1 ("net: usb: ax88179_178a: avoid writing the mac address before first reading")
+Reported-by: Isaac Ganoung <inventor500@vivaldi.net>
+Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240510090846.328201-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/usb/ax88179_178a.c |   37 ++++++++++++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-@@ -939,7 +939,12 @@ static bool setup_dsc_config(
- 	if (!is_dsc_possible)
- 		goto done;
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -174,6 +174,7 @@ struct ax88179_data {
+ 	u32 wol_supported;
+ 	u32 wolopts;
+ 	u8 disconnecting;
++	u8 initialized;
+ };
  
--	dsc_cfg->num_slices_v = pic_height/slice_height;
-+	if (slice_height > 0) {
-+		dsc_cfg->num_slices_v = pic_height / slice_height;
-+	} else {
-+		is_dsc_possible = false;
-+		goto done;
-+	}
+ struct ax88179_int_data {
+@@ -1673,6 +1674,18 @@ static int ax88179_reset(struct usbnet *
+ 	return 0;
+ }
  
- 	if (target_bandwidth_kbps > 0) {
- 		is_dsc_possible = decide_dsc_target_bpp_x16(
++static int ax88179_net_reset(struct usbnet *dev)
++{
++	struct ax88179_data *ax179_data = dev->driver_priv;
++
++	if (ax179_data->initialized)
++		ax88179_reset(dev);
++	else
++		ax179_data->initialized = 1;
++
++	return 0;
++}
++
+ static int ax88179_stop(struct usbnet *dev)
+ {
+ 	u16 tmp16;
+@@ -1692,6 +1705,7 @@ static const struct driver_info ax88179_
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1704,6 +1718,7 @@ static const struct driver_info ax88178a
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1716,7 +1731,7 @@ static const struct driver_info cypress_
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1729,7 +1744,7 @@ static const struct driver_info dlink_du
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1742,7 +1757,7 @@ static const struct driver_info sitecom_
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1755,7 +1770,7 @@ static const struct driver_info samsung_
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1768,7 +1783,7 @@ static const struct driver_info lenovo_i
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset = ax88179_reset,
++	.reset = ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1781,7 +1796,7 @@ static const struct driver_info belkin_i
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset	= ax88179_reset,
++	.reset	= ax88179_net_reset,
+ 	.stop	= ax88179_stop,
+ 	.flags	= FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1794,7 +1809,7 @@ static const struct driver_info toshiba_
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset	= ax88179_reset,
++	.reset	= ax88179_net_reset,
+ 	.stop = ax88179_stop,
+ 	.flags	= FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1807,7 +1822,7 @@ static const struct driver_info mct_info
+ 	.unbind	= ax88179_unbind,
+ 	.status	= ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset	= ax88179_reset,
++	.reset	= ax88179_net_reset,
+ 	.stop	= ax88179_stop,
+ 	.flags	= FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1820,7 +1835,7 @@ static const struct driver_info at_umc20
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset  = ax88179_reset,
++	.reset  = ax88179_net_reset,
+ 	.stop   = ax88179_stop,
+ 	.flags  = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1833,7 +1848,7 @@ static const struct driver_info at_umc20
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset  = ax88179_reset,
++	.reset  = ax88179_net_reset,
+ 	.stop   = ax88179_stop,
+ 	.flags  = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
+@@ -1846,7 +1861,7 @@ static const struct driver_info at_umc20
+ 	.unbind = ax88179_unbind,
+ 	.status = ax88179_status,
+ 	.link_reset = ax88179_link_reset,
+-	.reset  = ax88179_reset,
++	.reset  = ax88179_net_reset,
+ 	.stop   = ax88179_stop,
+ 	.flags  = FLAG_ETHER | FLAG_FRAMING_AX,
+ 	.rx_fixup = ax88179_rx_fixup,
 
 
 
