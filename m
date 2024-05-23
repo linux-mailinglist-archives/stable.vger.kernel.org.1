@@ -1,144 +1,153 @@
-Return-Path: <stable+bounces-45616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBF58CCBAF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:15:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 351108CCC3F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 08:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3943E28233F
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 05:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D58371F21D82
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 06:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12ADF13B2A8;
-	Thu, 23 May 2024 05:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044D613B597;
+	Thu, 23 May 2024 06:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vbw8JBUO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEB07CF39;
-	Thu, 23 May 2024 05:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4267813B590
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 06:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716441295; cv=none; b=fr9crh55BvOIgdCjckhDEdz1CShk7gc3ECDoauZqoo8ieERYDkn9n87mYNG8lxNpwN7McbrOlJcx1apnTDKL0DOmQzh4LSW/+WN2QovLZdVZgMVZ6pbaPKb+SY+mUlmaEiOsH9+DuckNbrPWWOSIIfL/IKxkfPwW6skjy+/fIDw=
+	t=1716445764; cv=none; b=fe+blrPleQyOkmSykDLwsSgrSNb1bxnf1ux83ktljgsG6ZQvA0EMkVQrCa37NNHnwax8ZK2pXY+SCgOy/DuXtVJmeY+MCE5/9YE9uBgfPYlntta1DxtKszJnX1Qzu8rpSR6obzhPfIOygSHtywB6rk/psj/jw6zEzetfFehm7Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716441295; c=relaxed/simple;
-	bh=eizr4VBJN08wA60+85eYLp28VIefRPP9CK08mgAxtzg=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=O5+TOYAJ5dK7hwIka8YpOF1xuEtqi/AL5Sx1sHAJSZ//zhIes7GmzpAfB2okGDaTsILUfeQ0IVDdJgdCSkVqCoVlKXpEUgKq1WDN6OJVl7B4VGaixtdX0Bt8xzsv0PyAan80LYGZn7ST0QZYx+4iP8LAGuUaMp2BluVayV5qlIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94F1C4AF0B;
-	Thu, 23 May 2024 05:14:55 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1sA0nk-00000006W79-0AM0;
-	Thu, 23 May 2024 01:15:40 -0400
-Message-ID: <20240523051539.908205106@goodmis.org>
-User-Agent: quilt/0.68
-Date: Thu, 23 May 2024 01:14:29 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>,
- stable@vger.kernel.org
-Subject: [PATCH v2 4/4] tracefs: Clear EVENT_INODE flag in tracefs_drop_inode()
-References: <20240523051425.335105631@goodmis.org>
+	s=arc-20240116; t=1716445764; c=relaxed/simple;
+	bh=DkeyImkNItoVz6DC0vz60wd++hgIhK2QXUuRObW2C6E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FNV/3BNCsEZLLRVFYlzIes6lzOgTtSm+cwiXTiWlvFfRj4MV1vIkjNK0ORXouHBaMcuL7HoQ7nyrn9xEg8YB8/Lfv9VRv5N40Lf3zATlndC9xHGUDEozgQDjccZ27+c9mYLC/IqGUTQ+UxQaSTYmLfoPW0Eflv0WSU2DzjOE84w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vbw8JBUO; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716445763; x=1747981763;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=DkeyImkNItoVz6DC0vz60wd++hgIhK2QXUuRObW2C6E=;
+  b=Vbw8JBUONg2y5dKNr36PM7rD2dG2HH2ZK3OOvrst1QGXkJp8PmKqaeGT
+   UL8eyRuhNPGCxx/2nfkTZzqsq8/FAJMr0b1sq4JejAq4HuBcrf08EjSQW
+   +mh+nEQwljSqFw1uypXuSOrY/Q61l242vDqBjJq7RbjtJfDHD5mPIdPFF
+   yzuUE2xRaRMVfPT31Ccx9lcV6TWM7nNrqcxIhuAYaKMDLUnNnrKWqle0s
+   /Q2UzD1GQasXTv1delvVgkO9YvBb5uaiIBpEqXHL/z2jxrKk2xT5HwiKd
+   EdVAP5nam21xHOfogWvmutoXIBpr8lv8bjLA73WnctHLDMrbgp5f9591l
+   A==;
+X-CSE-ConnectionGUID: NoYAi+nSToO0Vji2EvWAnw==
+X-CSE-MsgGUID: Ur+cFiKeQCOjgStEDl9x7A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="12572838"
+X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
+   d="scan'208";a="12572838"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 23:29:22 -0700
+X-CSE-ConnectionGUID: uVz5PhSYQIW8DMJzIF/iuA==
+X-CSE-MsgGUID: T/AAcBheQuC2pWJkGb6CMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
+   d="scan'208";a="34021125"
+Received: from jlawryno-mobl.ger.corp.intel.com (HELO [10.246.25.110]) ([10.246.25.110])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 23:29:20 -0700
+Message-ID: <6f32bf37-e239-45f9-a41e-46fef2dc2cca@linux.intel.com>
+Date: Thu, 23 May 2024 08:29:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE,
+ MAP_PRIVATE)
+To: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org,
+ "Wachowski, Karol" <karol.wachowski@intel.com>,
+ =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
+ Eric Anholt <eric@anholt.net>, Rob Herring <robh@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, stable@vger.kernel.org
+References: <20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com>
+ <ZkyVyLVQn25taxCn@phenom.ffwll.local>
+ <CAKMK7uFnOYJED0G2XJk4mf-dAD1VWrpVUvccFGz_g2sZSpTsVA@mail.gmail.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <CAKMK7uFnOYJED0G2XJk4mf-dAD1VWrpVUvccFGz_g2sZSpTsVA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Hi,
 
-When the inode is being dropped from the dentry, the TRACEFS_EVENT_INODE
-flag needs to be cleared to prevent a remount from calling
-eventfs_remount() on the tracefs_inode private data. There's a race
-between the inode is dropped (and the dentry freed) to where the inode is
-actually freed. If a remount happens between the two, the eventfs_inode
-could be accessed after it is freed (only the dentry keeps a ref count on
-it).
+On 21.05.2024 14:58, Daniel Vetter wrote:
+> On Tue, 21 May 2024 at 14:38, Daniel Vetter <daniel@ffwll.ch> wrote:
+>>
+>> On Mon, May 20, 2024 at 12:05:14PM +0200, Jacek Lawrynowicz wrote:
+>>> From: "Wachowski, Karol" <karol.wachowski@intel.com>
+>>>
+>>> Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
+>>> allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
+>>> causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
+>>> BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+>>>
+>>> Return -EINVAL early if COW mapping is detected.
+>>>
+>>> This bug affects all drm drivers using default shmem helpers.
+>>> It can be reproduced by this simple example:
+>>> void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
+>>> ptr[0] = 0;
+>>>
+>>> Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
+>>> Cc: Noralf Trønnes <noralf@tronnes.org>
+>>> Cc: Eric Anholt <eric@anholt.net>
+>>> Cc: Rob Herring <robh@kernel.org>
+>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>>> Cc: Maxime Ripard <mripard@kernel.org>
+>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>>> Cc: David Airlie <airlied@gmail.com>
+>>> Cc: Daniel Vetter <daniel@ffwll.ch>
+>>> Cc: dri-devel@lists.freedesktop.org
+>>> Cc: <stable@vger.kernel.org> # v5.2+
+>>> Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+>>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>>
+>> Excellent catch!
+>>
+>> Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+>>
+>> I reviewed the other helpers, and ttm/vram helpers already block this with
+>> the check in ttm_bo_mmap_obj.
+>>
+>> But the dma helpers does not, because the remap_pfn_range that underlies
+>> the various dma_mmap* function (at least on most platforms) allows some
+>> limited use of cow. But it makes no sense at all to all that only for
+>> gpu buffer objects backed by specific allocators.
+>>
+>> Would you be up for the 2nd patch that also adds this check to
+>> drm_gem_dma_mmap, so that we have a consistent uapi?
+>>
+>> I'll go ahead and apply this one to drm-misc-fixes meanwhile.
+> 
+> Forgot to add: A testcase in igt would also be really lovely.
+> 
+> https://dri.freedesktop.org/docs/drm/gpu/drm-uapi.html#validating-changes-with-igt
+> -Sima
 
-Currently the TRACEFS_EVENT_INODE flag is cleared from the dentry iput()
-function. But this is incorrect, as it is possible that the inode has
-another reference to it. The flag should only be cleared when the inode is
-really being dropped and has no more references. That happens in the
-drop_inode callback of the inode, as that gets called when the last
-reference of the inode is released.
-
-Remove the tracefs_d_iput() function and move its logic to the more
-appropriate tracefs_drop_inode() callback function.
-
-Cc: stable@vger.kernel.org
-Fixes: baa23a8d4360d ("tracefs: Reset permissions on remount if permissions are options")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- fs/tracefs/inode.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
-
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index 9252e0d78ea2..7c29f4afc23d 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -426,10 +426,26 @@ static int tracefs_show_options(struct seq_file *m, struct dentry *root)
- 	return 0;
- }
- 
-+static int tracefs_drop_inode(struct inode *inode)
-+{
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+
-+	/*
-+	 * This inode is being freed and cannot be used for
-+	 * eventfs. Clear the flag so that it doesn't call into
-+	 * eventfs during the remount flag updates. The eventfs_inode
-+	 * gets freed after an RCU cycle, so the content will still
-+	 * be safe if the iteration is going on now.
-+	 */
-+	ti->flags &= ~TRACEFS_EVENT_INODE;
-+
-+	return 1;
-+}
-+
- static const struct super_operations tracefs_super_operations = {
- 	.alloc_inode    = tracefs_alloc_inode,
- 	.free_inode     = tracefs_free_inode,
--	.drop_inode     = generic_delete_inode,
-+	.drop_inode     = tracefs_drop_inode,
- 	.statfs		= simple_statfs,
- 	.show_options	= tracefs_show_options,
- };
-@@ -455,22 +471,7 @@ static int tracefs_d_revalidate(struct dentry *dentry, unsigned int flags)
- 	return !(ei && ei->is_freed);
- }
- 
--static void tracefs_d_iput(struct dentry *dentry, struct inode *inode)
--{
--	struct tracefs_inode *ti = get_tracefs(inode);
--
--	/*
--	 * This inode is being freed and cannot be used for
--	 * eventfs. Clear the flag so that it doesn't call into
--	 * eventfs during the remount flag updates. The eventfs_inode
--	 * gets freed after an RCU cycle, so the content will still
--	 * be safe if the iteration is going on now.
--	 */
--	ti->flags &= ~TRACEFS_EVENT_INODE;
--}
--
- static const struct dentry_operations tracefs_dentry_operations = {
--	.d_iput = tracefs_d_iput,
- 	.d_revalidate = tracefs_d_revalidate,
- 	.d_release = tracefs_d_release,
- };
--- 
-2.43.0
+OK, we will take a look at the test case.
+We have no easy way to test dma helpers, so it would be best if someone using them could make a fix.
 
 
+Regards,
+Jacek
 
