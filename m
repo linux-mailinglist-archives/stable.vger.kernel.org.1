@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-45630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B714B8CCCA5
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 09:01:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF8F8CCCAE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 09:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CFEA283D19
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:01:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84BFDB21FD7
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 07:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1952D7711C;
-	Thu, 23 May 2024 07:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0559F13C9AB;
+	Thu, 23 May 2024 07:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlKwILH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFk0PYhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB343BB30
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 07:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CBD13AA24
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 07:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716447677; cv=none; b=CFKjnly7PFnLzth3Nx2YDJPXI1XmE/1rgVG6/FTAKbL1lkoZd5lSgj7MrSb1o4DwFSQC9qIN1OO5eMRCCMK6ie/gIVFf3MSjsZj5q20Ch7WS4DASKAmqord1hXYBc/YI8nH8hFQ7vfDV5IIjOsxivqFEC0IneqpcjytsersFA8k=
+	t=1716447926; cv=none; b=mMCMgvcmvu7NQoOzXiQSQ66okms5jhrC8sgGoH0mZ1W2ijfX+o8MsAEqtpFTWLp2qD6lTTp9KJAQFEpymJBTrlo1K8PLjyl9nLdi6NJxGoWJ/7X35ds4P5VBjXv0wfKIOLBWs0hgKoIn12Q+uqCUXF/aB0/19a1RVab1gp8rS/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716447677; c=relaxed/simple;
-	bh=PmZJigdyaDfrFURNV718QAZvWPzQgEfPZZQfNKJ7k7g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xp5+WJO0OkQX12AJw0k2QB8c72Adps5raFyZwwAAcR85cvt/WyWJExxB6tvkh6Yqt92shK2HCyjAFEcd0JTNBdvHFXc16/kk/GJLD6i5At3BzFZIl1yjgSTwc2KBmc0RE3ciWFzVNpC2ZBISiZbKwk7eSyRxR5hUeGlv7fc8OjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlKwILH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D736DC2BD10;
-	Thu, 23 May 2024 07:01:16 +0000 (UTC)
+	s=arc-20240116; t=1716447926; c=relaxed/simple;
+	bh=PaWn7kO2XqdFAKksmhlCYe+eT0pJhSw2TF3jUbxozAE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nvaGA5vvuDyrSC42n9UUWNjmHAtmI3kxWJp9Or0aUPtRWw1ZEvfPDL/INa9BKtdE9I854Xa7JsOD5hbEhGWdSFb7R31rwwWgMqsRJgYVf3QcFE5FGP+VBHQGsLkMX192LcAclC3inJQ7rRMHCVNa0cRfrLXupdsk0dQsYviSHx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFk0PYhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA96C2BD10;
+	Thu, 23 May 2024 07:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716447677;
-	bh=PmZJigdyaDfrFURNV718QAZvWPzQgEfPZZQfNKJ7k7g=;
+	s=korg; t=1716447925;
+	bh=PaWn7kO2XqdFAKksmhlCYe+eT0pJhSw2TF3jUbxozAE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VlKwILH24JnOHgmQhhfPYoESJfhrq56eP2J289uozYh3jpnR2Cdm9i223R+oe4DL7
-	 vhsNQBQYuw10nmB/VfbDlykQhbj9S83p+Skojb/hfWzm//68dFMmCRSZh16BplviJn
-	 cKsoGQmRAaf0F82hpsk2kj5DRYkyD4DSHk2P0kcY=
-Subject: FAILED: patch "[PATCH] Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()" failed to apply to 4.19-stable tree
-To: iam@sung-woo.kim,luiz.dentz@gmail.com,luiz.von.dentz@intel.com
+	b=qFk0PYhdiQI1aKN43Qz3FCLTxkht3zTYdpj61AVytnR+KS1OOF5S7zTBCibgZ0lZo
+	 tE0PP6mvfRUT6XV5cPBtUqWKHGZFPcHIeQqmKj8QZt7wFOTw8ZR+MMaI9SqBHR4pUq
+	 HkE4AkS8zPuGTh6TiisUTvB7deoBgEN6lgUVhLFM=
+Subject: FAILED: patch "[PATCH] Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()" failed to apply to 6.1-stable tree
+To: iam@sung-woo.kim,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 May 2024 09:01:06 +0200
-Message-ID: <2024052306-disobey-lived-7913@gregkh>
+Date: Thu, 23 May 2024 09:05:23 +0200
+Message-ID: <2024052322-dictation-starting-993c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x a5b862c6a221459d54e494e88965b48dcfa6cc44
+git cherry-pick -x 4d7b41c0e43995b0e992b9f8903109275744b658
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052306-disobey-lived-7913@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024052322-dictation-starting-993c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+4d7b41c0e439 ("Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()")
 
 thanks,
 
@@ -77,461 +77,117 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a5b862c6a221459d54e494e88965b48dcfa6cc44 Mon Sep 17 00:00:00 2001
+From 4d7b41c0e43995b0e992b9f8903109275744b658 Mon Sep 17 00:00:00 2001
 From: Sungwoo Kim <iam@sung-woo.kim>
-Date: Sat, 4 May 2024 15:23:29 -0400
-Subject: [PATCH] Bluetooth: L2CAP: Fix div-by-zero in l2cap_le_flowctl_init()
+Date: Tue, 30 Apr 2024 02:32:10 -0400
+Subject: [PATCH] Bluetooth: L2CAP: Fix slab-use-after-free in l2cap_connect()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-l2cap_le_flowctl_init() can cause both div-by-zero and an integer
-overflow since hdev->le_mtu may not fall in the valid range.
+Extend a critical section to prevent chan from early freeing.
+Also make the l2cap_connect() return type void. Nothing is using the
+returned value but it is ugly to return a potentially freed pointer.
+Making it void will help with backports because earlier kernels did use
+the return value. Now the compile will break for kernels where this
+patch is not a complete fix.
 
-Move MTU from hci_dev to hci_conn to validate MTU and stop the connection
-process earlier if MTU is invalid.
-Also, add a missing validation in read_buffer_size() and make it return
-an error value if the validation fails.
-Now hci_conn_add() returns ERR_PTR() as it can fail due to the both a
-kzalloc failure and invalid MTU value.
+Call stack summary:
 
-divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 0 PID: 67 Comm: kworker/u5:0 Tainted: G        W          6.9.0-rc5+ #20
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: hci0 hci_rx_work
-RIP: 0010:l2cap_le_flowctl_init+0x19e/0x3f0 net/bluetooth/l2cap_core.c:547
-Code: e8 17 17 0c 00 66 41 89 9f 84 00 00 00 bf 01 00 00 00 41 b8 02 00 00 00 4c
-89 fe 4c 89 e2 89 d9 e8 27 17 0c 00 44 89 f0 31 d2 <66> f7 f3 89 c3 ff c3 4d 8d
-b7 88 00 00 00 4c 89 f0 48 c1 e8 03 42
-RSP: 0018:ffff88810bc0f858 EFLAGS: 00010246
-RAX: 00000000000002a0 RBX: 0000000000000000 RCX: dffffc0000000000
-RDX: 0000000000000000 RSI: ffff88810bc0f7c0 RDI: ffffc90002dcb66f
-RBP: ffff88810bc0f880 R08: aa69db2dda70ff01 R09: 0000ffaaaaaaaaaa
-R10: 0084000000ffaaaa R11: 0000000000000000 R12: ffff88810d65a084
-R13: dffffc0000000000 R14: 00000000000002a0 R15: ffff88810d65a000
-FS:  0000000000000000(0000) GS:ffff88811ac00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000100 CR3: 0000000103268003 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- l2cap_le_connect_req net/bluetooth/l2cap_core.c:4902 [inline]
- l2cap_le_sig_cmd net/bluetooth/l2cap_core.c:5420 [inline]
- l2cap_le_sig_channel net/bluetooth/l2cap_core.c:5486 [inline]
- l2cap_recv_frame+0xe59d/0x11710 net/bluetooth/l2cap_core.c:6809
- l2cap_recv_acldata+0x544/0x10a0 net/bluetooth/l2cap_core.c:7506
- hci_acldata_packet net/bluetooth/hci_core.c:3939 [inline]
- hci_rx_work+0x5e5/0xb20 net/bluetooth/hci_core.c:4176
- process_one_work kernel/workqueue.c:3254 [inline]
- process_scheduled_works+0x90f/0x1530 kernel/workqueue.c:3335
- worker_thread+0x926/0xe70 kernel/workqueue.c:3416
- kthread+0x2e3/0x380 kernel/kthread.c:388
- ret_from_fork+0x5c/0x90 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
+[use]
+l2cap_bredr_sig_cmd
+  l2cap_connect
+  ┌ mutex_lock(&conn->chan_lock);
+  │ chan = pchan->ops->new_connection(pchan); <- alloc chan
+  │ __l2cap_chan_add(conn, chan);
+  │   l2cap_chan_hold(chan);
+  │   list_add(&chan->list, &conn->chan_l);   ... (1)
+  └ mutex_unlock(&conn->chan_lock);
+    chan->conf_state              ... (4) <- use after free
 
-Fixes: 6ed58ec520ad ("Bluetooth: Use LE buffers for LE traffic")
-Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+[free]
+l2cap_conn_del
+┌ mutex_lock(&conn->chan_lock);
+│ foreach chan in conn->chan_l:            ... (2)
+│   l2cap_chan_put(chan);
+│     l2cap_chan_destroy
+│       kfree(chan)               ... (3) <- chan freed
+└ mutex_unlock(&conn->chan_lock);
+
+==================================================================
+BUG: KASAN: slab-use-after-free in instrument_atomic_read
+include/linux/instrumented.h:68 [inline]
+BUG: KASAN: slab-use-after-free in _test_bit
+include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: slab-use-after-free in l2cap_connect+0xa67/0x11a0
+net/bluetooth/l2cap_core.c:4260
+Read of size 8 at addr ffff88810bf040a0 by task kworker/u3:1/311
+
+Fixes: 73ffa904b782 ("Bluetooth: Move conf_{req,rsp} stuff to struct l2cap_chan")
 Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 21ebd70f3dcc..de530262d824 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -1665,6 +1665,15 @@ struct hci_cp_le_set_event_mask {
- 	__u8     mask[8];
- } __packed;
- 
-+/* BLUETOOTH CORE SPECIFICATION Version 5.4 | Vol 4, Part E
-+ * 7.8.2 LE Read Buffer Size command
-+ * MAX_LE_MTU is 0xffff.
-+ * 0 is also valid. It means that no dedicated LE Buffer exists.
-+ * It should use the HCI_Read_Buffer_Size command and mtu is shared
-+ * between BR/EDR and LE.
-+ */
-+#define HCI_MIN_LE_MTU 0x001b
-+
- #define HCI_OP_LE_READ_BUFFER_SIZE	0x2002
- struct hci_rp_le_read_buffer_size {
- 	__u8     status;
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 2283d12ee358..be012f393bcb 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -706,6 +706,7 @@ struct hci_conn {
- 	__u16		handle;
- 	__u16		sync_handle;
- 	__u16		state;
-+	__u16		mtu;
- 	__u8		mode;
- 	__u8		type;
- 	__u8		role;
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index b7f8e99001dd..f21e7c73021d 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -904,11 +904,37 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- {
- 	struct hci_conn *conn;
- 
-+	switch (type) {
-+	case ACL_LINK:
-+		if (!hdev->acl_mtu)
-+			return ERR_PTR(-ECONNREFUSED);
-+		break;
-+	case ISO_LINK:
-+		if (hdev->iso_mtu)
-+			/* Dedicated ISO Buffer exists */
-+			break;
-+		fallthrough;
-+	case LE_LINK:
-+		if (hdev->le_mtu && hdev->le_mtu < HCI_MIN_LE_MTU)
-+			return ERR_PTR(-ECONNREFUSED);
-+		if (!hdev->le_mtu && hdev->acl_mtu < HCI_MIN_LE_MTU)
-+			return ERR_PTR(-ECONNREFUSED);
-+		break;
-+	case SCO_LINK:
-+	case ESCO_LINK:
-+		if (!hdev->sco_pkts)
-+			/* Controller does not support SCO or eSCO over HCI */
-+			return ERR_PTR(-ECONNREFUSED);
-+		break;
-+	default:
-+		return ERR_PTR(-ECONNREFUSED);
-+	}
-+
- 	bt_dev_dbg(hdev, "dst %pMR handle 0x%4.4x", dst, handle);
- 
- 	conn = kzalloc(sizeof(*conn), GFP_KERNEL);
- 	if (!conn)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	bacpy(&conn->dst, dst);
- 	bacpy(&conn->src, &hdev->bdaddr);
-@@ -939,10 +965,12 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 	switch (type) {
- 	case ACL_LINK:
- 		conn->pkt_type = hdev->pkt_type & ACL_PTYPE_MASK;
-+		conn->mtu = hdev->acl_mtu;
- 		break;
- 	case LE_LINK:
- 		/* conn->src should reflect the local identity address */
- 		hci_copy_identity_address(hdev, &conn->src, &conn->src_type);
-+		conn->mtu = hdev->le_mtu ? hdev->le_mtu : hdev->acl_mtu;
- 		break;
- 	case ISO_LINK:
- 		/* conn->src should reflect the local identity address */
-@@ -954,6 +982,8 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 		else if (conn->role == HCI_ROLE_MASTER)
- 			conn->cleanup = cis_cleanup;
- 
-+		conn->mtu = hdev->iso_mtu ? hdev->iso_mtu :
-+			    hdev->le_mtu ? hdev->le_mtu : hdev->acl_mtu;
- 		break;
- 	case SCO_LINK:
- 		if (lmp_esco_capable(hdev))
-@@ -961,9 +991,12 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 					(hdev->esco_type & EDR_ESCO_MASK);
- 		else
- 			conn->pkt_type = hdev->pkt_type & SCO_PTYPE_MASK;
-+
-+		conn->mtu = hdev->sco_mtu;
- 		break;
- 	case ESCO_LINK:
- 		conn->pkt_type = hdev->esco_type & ~EDR_ESCO_MASK;
-+		conn->mtu = hdev->sco_mtu;
- 		break;
- 	}
- 
-@@ -1006,7 +1039,7 @@ struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
- 
- 	handle = hci_conn_hash_alloc_unset(hdev);
- 	if (unlikely(handle < 0))
--		return NULL;
-+		return ERR_PTR(-ECONNREFUSED);
- 
- 	return hci_conn_add(hdev, type, dst, role, handle);
- }
-@@ -1312,8 +1345,8 @@ struct hci_conn *hci_connect_le(struct hci_dev *hdev, bdaddr_t *dst,
- 		bacpy(&conn->dst, dst);
- 	} else {
- 		conn = hci_conn_add_unset(hdev, LE_LINK, dst, role);
--		if (!conn)
--			return ERR_PTR(-ENOMEM);
-+		if (IS_ERR(conn))
-+			return conn;
- 		hci_conn_hold(conn);
- 		conn->pending_sec_level = sec_level;
- 	}
-@@ -1489,8 +1522,8 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 		return ERR_PTR(-EADDRINUSE);
- 
- 	conn = hci_conn_add_unset(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
--	if (!conn)
--		return ERR_PTR(-ENOMEM);
-+	if (IS_ERR(conn))
-+		return conn;
- 
- 	conn->state = BT_CONNECT;
- 
-@@ -1533,8 +1566,8 @@ struct hci_conn *hci_connect_le_scan(struct hci_dev *hdev, bdaddr_t *dst,
- 	BT_DBG("requesting refresh of dst_addr");
- 
- 	conn = hci_conn_add_unset(hdev, LE_LINK, dst, HCI_ROLE_MASTER);
--	if (!conn)
--		return ERR_PTR(-ENOMEM);
-+	if (IS_ERR(conn))
-+		return conn;
- 
- 	if (hci_explicit_conn_params_set(hdev, dst, dst_type) < 0) {
- 		hci_conn_del(conn);
-@@ -1581,8 +1614,8 @@ struct hci_conn *hci_connect_acl(struct hci_dev *hdev, bdaddr_t *dst,
- 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
- 	if (!acl) {
- 		acl = hci_conn_add_unset(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
--		if (!acl)
--			return ERR_PTR(-ENOMEM);
-+		if (IS_ERR(acl))
-+			return acl;
- 	}
- 
- 	hci_conn_hold(acl);
-@@ -1650,9 +1683,9 @@ struct hci_conn *hci_connect_sco(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 	sco = hci_conn_hash_lookup_ba(hdev, type, dst);
- 	if (!sco) {
- 		sco = hci_conn_add_unset(hdev, type, dst, HCI_ROLE_MASTER);
--		if (!sco) {
-+		if (IS_ERR(sco)) {
- 			hci_conn_drop(acl);
--			return ERR_PTR(-ENOMEM);
-+			return sco;
- 		}
- 	}
- 
-@@ -1841,8 +1874,8 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 				       qos->ucast.cis);
- 	if (!cis) {
- 		cis = hci_conn_add_unset(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
--		if (!cis)
--			return ERR_PTR(-ENOMEM);
-+		if (IS_ERR(cis))
-+			return cis;
- 		cis->cleanup = cis_cleanup;
- 		cis->dst_type = dst_type;
- 		cis->iso_qos.ucast.cig = BT_ISO_QOS_CIG_UNSET;
-@@ -1977,14 +2010,8 @@ static void hci_iso_qos_setup(struct hci_dev *hdev, struct hci_conn *conn,
- 			      struct bt_iso_io_qos *qos, __u8 phy)
- {
- 	/* Only set MTU if PHY is enabled */
--	if (!qos->sdu && qos->phy) {
--		if (hdev->iso_mtu > 0)
--			qos->sdu = hdev->iso_mtu;
--		else if (hdev->le_mtu > 0)
--			qos->sdu = hdev->le_mtu;
--		else
--			qos->sdu = hdev->acl_mtu;
--	}
-+	if (!qos->sdu && qos->phy)
-+		qos->sdu = conn->mtu;
- 
- 	/* Use the same PHY as ACL if set to any */
- 	if (qos->phy == BT_ISO_PHY_ANY)
-@@ -2065,8 +2092,8 @@ struct hci_conn *hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst,
- 		return ERR_PTR(-EBUSY);
- 
- 	conn = hci_conn_add_unset(hdev, ISO_LINK, dst, HCI_ROLE_SLAVE);
--	if (!conn)
--		return ERR_PTR(-ENOMEM);
-+	if (IS_ERR(conn))
-+		return conn;
- 
- 	conn->iso_qos = *qos;
- 	conn->state = BT_LISTEN;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 122a6a9092e0..97c6f34ba640 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -954,6 +954,9 @@ static u8 hci_cc_read_buffer_size(struct hci_dev *hdev, void *data,
- 	BT_DBG("%s acl mtu %d:%d sco mtu %d:%d", hdev->name, hdev->acl_mtu,
- 	       hdev->acl_pkts, hdev->sco_mtu, hdev->sco_pkts);
- 
-+	if (!hdev->acl_mtu || !hdev->acl_pkts)
-+		return HCI_ERROR_INVALID_PARAMETERS;
-+
- 	return rp->status;
- }
- 
-@@ -1263,6 +1266,9 @@ static u8 hci_cc_le_read_buffer_size(struct hci_dev *hdev, void *data,
- 
- 	BT_DBG("%s le mtu %d:%d", hdev->name, hdev->le_mtu, hdev->le_pkts);
- 
-+	if (hdev->le_mtu && hdev->le_mtu < HCI_MIN_LE_MTU)
-+		return HCI_ERROR_INVALID_PARAMETERS;
-+
- 	return rp->status;
- }
- 
-@@ -2341,8 +2347,8 @@ static void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
- 		if (!conn) {
- 			conn = hci_conn_add_unset(hdev, ACL_LINK, &cp->bdaddr,
- 						  HCI_ROLE_MASTER);
--			if (!conn)
--				bt_dev_err(hdev, "no memory for new connection");
-+			if (IS_ERR(conn))
-+				bt_dev_err(hdev, "connection err: %ld", PTR_ERR(conn));
- 		}
- 	}
- 
-@@ -3153,8 +3159,8 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
- 						      BDADDR_BREDR)) {
- 			conn = hci_conn_add_unset(hdev, ev->link_type,
- 						  &ev->bdaddr, HCI_ROLE_SLAVE);
--			if (!conn) {
--				bt_dev_err(hdev, "no memory for new conn");
-+			if (IS_ERR(conn)) {
-+				bt_dev_err(hdev, "connection err: %ld", PTR_ERR(conn));
- 				goto unlock;
- 			}
- 		} else {
-@@ -3342,8 +3348,8 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
- 	if (!conn) {
- 		conn = hci_conn_add_unset(hdev, ev->link_type, &ev->bdaddr,
- 					  HCI_ROLE_SLAVE);
--		if (!conn) {
--			bt_dev_err(hdev, "no memory for new connection");
-+		if (IS_ERR(conn)) {
-+			bt_dev_err(hdev, "connection err: %ld", PTR_ERR(conn));
- 			goto unlock;
- 		}
- 	}
-@@ -3820,6 +3826,9 @@ static u8 hci_cc_le_read_buffer_size_v2(struct hci_dev *hdev, void *data,
- 	BT_DBG("%s acl mtu %d:%d iso mtu %d:%d", hdev->name, hdev->acl_mtu,
- 	       hdev->acl_pkts, hdev->iso_mtu, hdev->iso_pkts);
- 
-+	if (hdev->le_mtu && hdev->le_mtu < HCI_MIN_LE_MTU)
-+		return HCI_ERROR_INVALID_PARAMETERS;
-+
- 	return rp->status;
- }
- 
-@@ -5768,8 +5777,8 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
- 			goto unlock;
- 
- 		conn = hci_conn_add_unset(hdev, LE_LINK, bdaddr, role);
--		if (!conn) {
--			bt_dev_err(hdev, "no memory for new connection");
-+		if (IS_ERR(conn)) {
-+			bt_dev_err(hdev, "connection err: %ld", PTR_ERR(conn));
- 			goto unlock;
- 		}
- 
-@@ -6497,7 +6506,7 @@ static void hci_le_pa_sync_estabilished_evt(struct hci_dev *hdev, void *data,
- 	pa_sync = hci_conn_add_unset(hdev, ISO_LINK, BDADDR_ANY,
- 				     HCI_ROLE_SLAVE);
- 
--	if (!pa_sync)
-+	if (IS_ERR(pa_sync))
- 		goto unlock;
- 
- 	pa_sync->sync_handle = le16_to_cpu(ev->handle);
-@@ -6921,7 +6930,7 @@ static void hci_le_cis_req_evt(struct hci_dev *hdev, void *data,
- 	if (!cis) {
- 		cis = hci_conn_add(hdev, ISO_LINK, &acl->dst, HCI_ROLE_SLAVE,
- 				   cis_handle);
--		if (!cis) {
-+		if (IS_ERR(cis)) {
- 			hci_le_reject_cis(hdev, ev->cis_handle);
- 			goto unlock;
- 		}
-@@ -7030,7 +7039,7 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
- 		if (!bis) {
- 			bis = hci_conn_add(hdev, ISO_LINK, BDADDR_ANY,
- 					   HCI_ROLE_SLAVE, handle);
--			if (!bis)
-+			if (IS_ERR(bis))
- 				continue;
- 		}
- 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index d0ef7290e5b7..00c0d8413c63 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1258,7 +1258,7 @@ static int iso_sock_sendmsg(struct socket *sock, struct msghdr *msg,
- 		return -ENOTCONN;
- 	}
- 
--	mtu = iso_pi(sk)->conn->hcon->hdev->iso_mtu;
-+	mtu = iso_pi(sk)->conn->hcon->mtu;
- 
- 	release_sock(sk);
- 
 diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 443423538a4c..adc8f990f13e 100644
+index 84fc70862d78..868a370a16aa 100644
 --- a/net/bluetooth/l2cap_core.c
 +++ b/net/bluetooth/l2cap_core.c
-@@ -6264,7 +6264,7 @@ static int l2cap_finish_move(struct l2cap_chan *chan)
- 	BT_DBG("chan %p", chan);
- 
- 	chan->rx_state = L2CAP_RX_STATE_RECV;
--	chan->conn->mtu = chan->conn->hcon->hdev->acl_mtu;
-+	chan->conn->mtu = chan->conn->hcon->mtu;
- 
- 	return l2cap_resegment(chan);
+@@ -3902,13 +3902,12 @@ static inline int l2cap_command_rej(struct l2cap_conn *conn,
+ 	return 0;
  }
-@@ -6331,7 +6331,7 @@ static int l2cap_rx_state_wait_f(struct l2cap_chan *chan,
- 	 */
- 	chan->next_tx_seq = control->reqseq;
- 	chan->unacked_frames = 0;
--	chan->conn->mtu = chan->conn->hcon->hdev->acl_mtu;
-+	chan->conn->mtu = chan->conn->hcon->mtu;
  
- 	err = l2cap_resegment(chan);
- 
-@@ -6889,18 +6889,7 @@ static struct l2cap_conn *l2cap_conn_add(struct hci_conn *hcon)
- 
- 	BT_DBG("hcon %p conn %p hchan %p", hcon, conn, hchan);
- 
--	switch (hcon->type) {
--	case LE_LINK:
--		if (hcon->hdev->le_mtu) {
--			conn->mtu = hcon->hdev->le_mtu;
--			break;
--		}
--		fallthrough;
--	default:
--		conn->mtu = hcon->hdev->acl_mtu;
--		break;
--	}
--
-+	conn->mtu = hcon->mtu;
- 	conn->feat_mask = 0;
- 
- 	conn->local_fixed_chan = L2CAP_FC_SIG_BREDR | L2CAP_FC_CONNLESS;
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index e0ad30862ee4..71d36582d4ef 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -126,7 +126,6 @@ static void sco_sock_clear_timer(struct sock *sk)
- /* ---- SCO connections ---- */
- static struct sco_conn *sco_conn_add(struct hci_conn *hcon)
+-static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+-					struct l2cap_cmd_hdr *cmd,
+-					u8 *data, u8 rsp_code, u8 amp_id)
++static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
++			  u8 *data, u8 rsp_code, u8 amp_id)
  {
--	struct hci_dev *hdev = hcon->hdev;
- 	struct sco_conn *conn = hcon->sco_data;
+ 	struct l2cap_conn_req *req = (struct l2cap_conn_req *) data;
+ 	struct l2cap_conn_rsp rsp;
+-	struct l2cap_chan *chan = NULL, *pchan;
++	struct l2cap_chan *chan = NULL, *pchan = NULL;
+ 	int result, status = L2CAP_CS_NO_INFO;
  
- 	if (conn) {
-@@ -144,9 +143,10 @@ static struct sco_conn *sco_conn_add(struct hci_conn *hcon)
+ 	u16 dcid = 0, scid = __le16_to_cpu(req->scid);
+@@ -3921,7 +3920,7 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+ 					 &conn->hcon->dst, ACL_LINK);
+ 	if (!pchan) {
+ 		result = L2CAP_CR_BAD_PSM;
+-		goto sendresp;
++		goto response;
+ 	}
  
- 	hcon->sco_data = conn;
- 	conn->hcon = hcon;
-+	conn->mtu = hcon->mtu;
+ 	mutex_lock(&conn->chan_lock);
+@@ -4008,17 +4007,15 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+ 	}
  
--	if (hdev->sco_mtu > 0)
--		conn->mtu = hdev->sco_mtu;
-+	if (hcon->mtu > 0)
-+		conn->mtu = hcon->mtu;
- 	else
- 		conn->mtu = 60;
+ response:
+-	l2cap_chan_unlock(pchan);
+-	mutex_unlock(&conn->chan_lock);
+-	l2cap_chan_put(pchan);
+-
+-sendresp:
+ 	rsp.scid   = cpu_to_le16(scid);
+ 	rsp.dcid   = cpu_to_le16(dcid);
+ 	rsp.result = cpu_to_le16(result);
+ 	rsp.status = cpu_to_le16(status);
+ 	l2cap_send_cmd(conn, cmd->ident, rsp_code, sizeof(rsp), &rsp);
  
++	if (!pchan)
++		return;
++
+ 	if (result == L2CAP_CR_PEND && status == L2CAP_CS_NO_INFO) {
+ 		struct l2cap_info_req info;
+ 		info.type = cpu_to_le16(L2CAP_IT_FEAT_MASK);
+@@ -4041,7 +4038,9 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+ 		chan->num_conf_req++;
+ 	}
+ 
+-	return chan;
++	l2cap_chan_unlock(pchan);
++	mutex_unlock(&conn->chan_lock);
++	l2cap_chan_put(pchan);
+ }
+ 
+ static int l2cap_connect_req(struct l2cap_conn *conn,
 
 
