@@ -1,100 +1,101 @@
-Return-Path: <stable+bounces-45623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792DD8CCC63
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 08:42:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FEC8CCC70
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 08:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3939B219FF
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 06:42:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98E4F1C220E9
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 06:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF69C13C685;
-	Thu, 23 May 2024 06:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B1D13C9C6;
+	Thu, 23 May 2024 06:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mjAg75hx"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jLaCiAsd"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCE82D05E
-	for <stable@vger.kernel.org>; Thu, 23 May 2024 06:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A6C13C905
+	for <stable@vger.kernel.org>; Thu, 23 May 2024 06:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716446536; cv=none; b=INCwxGyxz6gu475+HGjkJ0Fkb6hlia82G4QCu4YRuOSIuZBRfmM5pqV6D9P5XAL4CteO6a+dikJ5fhWP20PYNEPhuMWWIL/hmys6Xiif+3EJvr7f5k+8XEM54BfGL/vlHXtFBeo9IHRTx5eDL84kv/klPDUNvfUucVtS15BOazs=
+	t=1716446758; cv=none; b=VPuvRGEan8ae5mDZgZBiUHeRxQJYUngiPajB9Wue0EQFF1kfeiR4Q9E0eUfpgghcCWbrrG4eb+DwrOXQO656aDs+SC8/cOfKM4XC24eRoecvkBeRu+IyFI04ochIhTgec/6FwPnBHzSa2QNLx7fV2+9JbshcLmUTrLM4ScpGVkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716446536; c=relaxed/simple;
-	bh=9+zrY0QdkeR0ldxHcH1HgV5+LEUfsMmojn9R9V5LA0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=me/KbGJi7pjqz4It0qP9+5P/KWY2+cNj4xWfqHulP/UJHOGeo08gjtpmPJXY+iQmw4dP7fJVV2rHhycNz/WEmSP0KPQT3pOaC5Jxtb+PTCmQUFBuGZSKJxbXEEVC1jSfT32yKy6dABHHtyNSt9zxW/J5FcbC9la9mb/mAwD5QPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mjAg75hx; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716446535; x=1747982535;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=9+zrY0QdkeR0ldxHcH1HgV5+LEUfsMmojn9R9V5LA0Q=;
-  b=mjAg75hx5j+H/JR/uJYuqMHKPXWFFgviLEWiH9+4tJVFJgT3U+h+TwW0
-   ZVfsTdMOt2UpvBjC78eHAubnB9BLCPD3azOBTiC3Md3Z/TQzJnVWF6gf+
-   QQ7H3bhCIelMHcX6LeBWRxS1CE36znyHhYEWkNzqDljXuN+SIIB6w+8W3
-   Sl/2+N816TFFrMRqOZi8W6morItXyTim6a9UnyhgbLFCV9CByiwEEx5rk
-   KMPQ4Q0MB7dk+4fmYqYIc4WYWVG7Mt7ppbpwv8z2BR0MLHgZe0OmV/yBy
-   sG5HzXSHrJcHSq3+kUqU/GiurILHStnGTcZTgk4cYse3Ys9edRok45LlQ
-   Q==;
-X-CSE-ConnectionGUID: n1tP7GNbTJaREgenSROGkw==
-X-CSE-MsgGUID: rJiJ2jb/RvieGeB+9nA8Aw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="12618069"
-X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
-   d="scan'208";a="12618069"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 23:42:14 -0700
-X-CSE-ConnectionGUID: DOsMT3JBRkWKbZIpIfNlLQ==
-X-CSE-MsgGUID: a+SMiao2QX6VB1wKWf1eKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; 
-   d="scan'208";a="38338808"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 22 May 2024 23:42:13 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sA298-0002YD-0N;
-	Thu, 23 May 2024 06:41:52 +0000
-Date: Thu, 23 May 2024 14:40:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] selftest: mm: Test if hugepage does not get leaked
- during __bio_release_pages()
-Message-ID: <Zk7k-yCuFM1ud3Ya@4a1dde18ea58>
+	s=arc-20240116; t=1716446758; c=relaxed/simple;
+	bh=QOge68Fw0tzENrc52wcXLnWTfYP7hBED4uLrPeCT0dU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=doG1d6ZFiLmq4I+SZAhMB6oSLVUXZbeJtyfjvbIiAQ3uNCd9dS+WKGyQPdWUjksFAtrDORYzXzdmG9aSi+pYqHhzk1OdS7wlRvCVH4ai5bOoTmf/c+I/X9O6qNfQX2avsU2KE9fclg4fihcSYrfMlyYaBvpzNKRZwLUNiMSz0oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jLaCiAsd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716446756;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yDmW+1GQHZyT/E1Y2bedeCzyZRugpccl1pSBaP9FTL8=;
+	b=jLaCiAsd9rEf9ymSJYSjQtDHW13dZehoOCAkl0qQb9dXQQGwlBZXL7YYtosCPHQl6HJGjG
+	KYujYIPCDx9lTX20ntuuvpLciC/oRRu84aXz5+KwAHoZ/N1m87FeCLLOXI20h47r/30va0
+	axxgygZ2VtPkZF6zd/Ie0keJIGPIvrc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-260-37Yvtka0PjOESfXu_snMHA-1; Thu, 23 May 2024 02:45:51 -0400
+X-MC-Unique: 37Yvtka0PjOESfXu_snMHA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 79410185A78E;
+	Thu, 23 May 2024 06:45:50 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.192.206])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id F13181C008BB;
+	Thu, 23 May 2024 06:45:47 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: yongqin.liu@linaro.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	inventor500@vivaldi.net,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: usb: ax88179_178a: fix link status when link is set to down/up
+Date: Thu, 23 May 2024 08:45:45 +0200
+Message-ID: <20240523064546.7017-1-jtornosm@redhat.com>
+In-Reply-To: <CAMSo37V5uqJ229iFk-t9DBs-1M5pkWNidM6xZocp4Osi+AOc1g@mail.gmail.com>
+References: <CAMSo37V5uqJ229iFk-t9DBs-1M5pkWNidM6xZocp4Osi+AOc1g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240523063905.3173-1-donettom@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-Hi,
+Hello Yongqin,
 
-Thanks for your patch.
+Again, not a lot of information from the logs, but perhaps you coud give me
+more information for your scenario.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Could you try to execute the down interface operation, mac assignment and
+the up interface operation from command line? 
+That works for me.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Maybe some synchronization issue is happening in your boot operation.
+Could you provide more information about how/when you are doing the
+commented operations to try to reproduce?
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] selftest: mm: Test if hugepage does not get leaked during __bio_release_pages()
-Link: https://lore.kernel.org/stable/20240523063905.3173-1-donettom%40linux.ibm.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Best regards
+José Ignacio
 
 
