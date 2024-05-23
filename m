@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-45801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8F58CD3F7
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:21:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5517C8CD47E
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D37ADB20DA4
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0289280C75
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D4F14B083;
-	Thu, 23 May 2024 13:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836C714B954;
+	Thu, 23 May 2024 13:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnO1vB4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kd5j3LOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501381E504;
-	Thu, 23 May 2024 13:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EF214AD38;
+	Thu, 23 May 2024 13:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470400; cv=none; b=ELuQwSkH8lV2addtdW5w1j8G9VYcXcpxNjyWKQKSzFlmtLP7SGtiLCQr0yA8ato7+dun3wKjSj3w6mqr/SyWtfmK/yZlGs3sQPD0HcJkUwwFAYrvUKCGP+ZhwNY40vDxI3uKz50aKDybJXy/OSflBG+MNJR7gcYnXqHyZ+xWXQs=
+	t=1716470700; cv=none; b=rADFmWYDaaFFGOJk3HLXUGzYN1m551gOL6gQ1gwYn79HKWykgKa0dSj1ia7aidJecBoLS5EiYt7syrIGE8BoDCZSfly0pj/yWkoxl+Fws8WppmrLfFJlA0lM1G+0w9uk1/uaw4j6LlK4eSEkIhd3n6uAskCe74blaCvCGFp0ajo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470400; c=relaxed/simple;
-	bh=LmUw0KQKcknYVdYJgOYbstn+3rTGBRb1eRTBRE0bpxI=;
+	s=arc-20240116; t=1716470700; c=relaxed/simple;
+	bh=rKy6NQ/JijREVklffBRBdUGJzsao1OybAmlBrcCY6/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyIR4TQ5n+QrBT8Z/O/COtZKk9S1CrzYdwX+BsgaY+nWS4uEN+BZMvih8gmpFzT3R35hWaQV4j+lLFw6tG9C2rhcC9+6ud0XGPIkvZcASe5FpyYNfR2VV2mnZFai6nyceOaCgRfuNGvSDqJBSgjKdVXv+DM3IowAPzRBThNxN90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnO1vB4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96FFC3277B;
-	Thu, 23 May 2024 13:19:59 +0000 (UTC)
+	 MIME-Version; b=hqD6w2b9UmNNCzkHD+18CuQOJbVdNoCMXE62EpUO7t6mu5ybSRzK2Tf9pDKLYxsNox0zaRSjqSFpeqcoi9nh9gzsghDPcU0TslD6rlmYspWWAuNXB55Y4JpQQiTfXlZEFvJ0icsVxh/FceHYhYrBOp8Purp7L5MTy/79S+diXdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kd5j3LOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1201C3277B;
+	Thu, 23 May 2024 13:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470400;
-	bh=LmUw0KQKcknYVdYJgOYbstn+3rTGBRb1eRTBRE0bpxI=;
+	s=korg; t=1716470700;
+	bh=rKy6NQ/JijREVklffBRBdUGJzsao1OybAmlBrcCY6/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnO1vB4ilwkSvT832VdkmKNREwGQmR+YJ37QAHNttI7B7GSlmUxLM+ubM9GnkDQkE
-	 1zK6N3txnXKR5vGQuxOs9+vyOqiZB8T27xo9BUI2vnT7/C3X2434NCtUKbr2b1otb2
-	 O7j0yVj4v7sEPNIMyrI43i730uPpTwfosLGmRCyI=
+	b=kd5j3LOtTzvlgcEr8a01v4UmqbY0IhdupYTcfPoMc4AqeKxx7yKDy4WVmOHc5Sy5P
+	 xrnX44V86l4X4Sksv7UAMwAhTSj3TiEThAP8J+dl+AR65q5U6ob5eanZxHfexpmXjL
+	 y6Pgzr5bgq2iL7yxb+5oo495useJ8AXdNdft4bq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 23/45] xfs: invalidate block device page cache during unmount
-Date: Thu, 23 May 2024 15:13:14 +0200
-Message-ID: <20240523130333.371532357@linuxfoundation.org>
+	Paulo Alcantara <pc@manguebit.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 050/102] smb: client: Fix a NULL vs IS_ERR() check in wsl_set_xattrs()
+Date: Thu, 23 May 2024 15:13:15 +0200
+Message-ID: <20240523130344.352331943@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130332.496202557@linuxfoundation.org>
-References: <20240523130332.496202557@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 032e160305f6872e590c77f11896fb28365c6d6c ]
+[ Upstream commit e0e1e09b2c41d383a2483f2ee5227b724860ced1 ]
 
-Every now and then I see fstests failures on aarch64 (64k pages) that
-trigger on the following sequence:
+This was intended to be an IS_ERR() check.  The ea_create_context()
+function doesn't return NULL.
 
-mkfs.xfs $dev
-mount $dev $mnt
-touch $mnt/a
-umount $mnt
-xfs_db -c 'path /a' -c 'print' $dev
-
-99% of the time this succeeds, but every now and then xfs_db cannot find
-/a and fails.  This turns out to be a race involving udev/blkid, the
-page cache for the block device, and the xfs_db process.
-
-udev is triggered whenever anyone closes a block device or unmounts it.
-The default udev rules invoke blkid to read the fs super and create
-symlinks to the bdev under /dev/disk.  For this, it uses buffered reads
-through the page cache.
-
-xfs_db also uses buffered reads to examine metadata.  There is no
-coordination between xfs_db and udev, which means that they can run
-concurrently.  Note there is no coordination between the kernel and
-blkid either.
-
-On a system with 64k pages, the page cache can cache the superblock and
-the root inode (and hence the root dir) with the same 64k page.  If
-udev spawns blkid after the mkfs and the system is busy enough that it
-is still running when xfs_db starts up, they'll both read from the same
-page in the pagecache.
-
-The unmount writes updated inode metadata to disk directly.  The XFS
-buffer cache does not use the bdev pagecache, nor does it invalidate the
-pagecache on umount.  If the above scenario occurs, the pagecache no
-longer reflects what's on disk, xfs_db reads the stale metadata, and
-fails to find /a.  Most of the time this succeeds because closing a bdev
-invalidates the page cache, but when processes race, everyone loses.
-
-Fix the problem by invalidating the bdev pagecache after flushing the
-bdev, so that xfs_db will see up to date metadata.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1eab17fe485c ("smb: client: add support for WSL reparse points")
+Reviewed-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_buf.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/reparse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_buf.c
-+++ b/fs/xfs/xfs_buf.c
-@@ -1945,6 +1945,7 @@ xfs_free_buftarg(
- 	list_lru_destroy(&btp->bt_lru);
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index b240ccc9c887c..24feeaa32280e 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -230,7 +230,7 @@ static int wsl_set_xattrs(struct inode *inode, umode_t _mode,
+ 	}
  
- 	blkdev_issue_flush(btp->bt_bdev);
-+	invalidate_bdev(btp->bt_bdev);
- 	fs_put_dax(btp->bt_daxdev, btp->bt_mount);
+ 	cc = ea_create_context(dlen, &cc_len);
+-	if (!cc)
++	if (IS_ERR(cc))
+ 		return PTR_ERR(cc);
  
- 	kmem_free(btp);
+ 	ea = &cc->ea;
+-- 
+2.43.0
+
 
 
 
