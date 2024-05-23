@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-45857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4203E8CD43A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9518CD377
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73DF21C21214
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:23:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDE361C218DE
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1626814AD35;
-	Thu, 23 May 2024 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D658C2AE94;
+	Thu, 23 May 2024 13:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzVRoD8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zsv0I1mO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C940D1D545;
-	Thu, 23 May 2024 13:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D581D52D;
+	Thu, 23 May 2024 13:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470561; cv=none; b=PC7Kdxw/48b777zNdKsNxWVicLGRdDZjuQuf690kREGQVcalBfeYgtPI5gHEDxx5Iz9DL6CRHNDhKaFK0M4SAyWZL/4EhIV0/3UZteeQdZZW+To/SDDC4ROi862spOfMlOi6Y+/SPkW0XuAil+iOqTrtJQetevQvb71Gp0MMWK0=
+	t=1716470128; cv=none; b=o9SqI7E3ogHDC9rRlsHiey4hcYK28PIG16Fet4+3gLfQ/Tb2hYpjMBnANWn5//YTaDomB+QHRMQIeBZfBEG/ig3yZxjZhn199woDkQ3oc2e1m03+yvLaReFeYdXktA4bgmeI8/TVTFcLEYqSNiMOYy3veN1BJl9bmY3w0tx+4VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470561; c=relaxed/simple;
-	bh=JyGcRD1qXDzdztnKIxg597ahw1c+Gtdc14xaMBLrXXU=;
+	s=arc-20240116; t=1716470128; c=relaxed/simple;
+	bh=/F3xNlIT68ioa67sz2a4CU+UJiNJLR6AmW123vCda6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfFOsco3ohMJIAXpA0HioUjgpUFXOX7jte0hUcimYILOthRlRrGRjAAqb010a69vWya3LEv+3+ehvN3P0enxC7yfT0zm4RBNO87EQhAEexfqV5RYY/NDuIoffsHKW1rIpgJq6jR6JC2sTvUwhnWMvVdCLmQ+jfPPgbeMa4Sc/6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzVRoD8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511DBC32781;
-	Thu, 23 May 2024 13:22:41 +0000 (UTC)
+	 MIME-Version; b=al7PDkxvLxck3zgCxvfNajfYOHKW6yWFGPxyxxIaMTNzP00yI69T+qUoz1rwcjmeoHeK1L8dmtmbIo6L5/Jzp1rO+S1L/2IcZdCPQKH4BZVue2FDF5CR691V3WOONbyFvUdI0GiJvFul0WDT1szT68SoIvsXYY8viU1u9yWrAxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zsv0I1mO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAFBC2BD10;
+	Thu, 23 May 2024 13:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470561;
-	bh=JyGcRD1qXDzdztnKIxg597ahw1c+Gtdc14xaMBLrXXU=;
+	s=korg; t=1716470128;
+	bh=/F3xNlIT68ioa67sz2a4CU+UJiNJLR6AmW123vCda6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LzVRoD8xBq9glk0MKtbhFg+k9KLGKS7aLFMT3YkJ+knlOf1gqEio4hObX6YyjGqRM
-	 rqOA57ds4DmsB6zjZQ8fF95vh1AzvHuQeqguIozL2xqQkCtBIvWixauhA85PpwuvC1
-	 JilCZSpuHR6GFk0TR5sE2Rq6y7kD1hIc7JSvEV74=
+	b=Zsv0I1mONm6eCJRsTmKdBzjOapzcUb4Dk3vXrS5mtZ4JN5R/saaZXl1v3BeH3D0gl
+	 qUZqEwgKrezV/vXNR+0NesapGBgxngtrct8rdxy64IJmdgutqMofM/EjyzXtnY42Cj
+	 dthsL4syWlIeTpPepTD2xHJ/yfIV7n2VHgPRiRLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ritvik Budhiraja <rbudhiraja@microsoft.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/102] cifs: fix use after free for iface while disabling secondary channels
+	stable@kernel.org,
+	Hulk Robot <hulkci@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	syzbot+2a58d88f0fb315c85363@syzkaller.appspotmail.com,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: [PATCH 5.4 02/16] ext4: fix bug_on in __es_tree_search
 Date: Thu, 23 May 2024 15:12:35 +0200
-Message-ID: <20240523130342.853784193@linuxfoundation.org>
+Message-ID: <20240523130325.837613911@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130325.743454852@linuxfoundation.org>
+References: <20240523130325.743454852@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +66,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritvik Budhiraja <rbudhiraja@microsoft.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit a15ccef82d3de9a37dc25898c60a394209368dc8 ]
+commit d36f6ed761b53933b0b4126486c10d3da7751e7f upstream.
 
-We were deferencing iface after it has been released. Fix is to
-release after all dereference instances have been encountered.
+Hulk Robot reported a BUG_ON:
+==================================================================
+kernel BUG at fs/ext4/extents_status.c:199!
+[...]
+RIP: 0010:ext4_es_end fs/ext4/extents_status.c:199 [inline]
+RIP: 0010:__es_tree_search+0x1e0/0x260 fs/ext4/extents_status.c:217
+[...]
+Call Trace:
+ ext4_es_cache_extent+0x109/0x340 fs/ext4/extents_status.c:766
+ ext4_cache_extents+0x239/0x2e0 fs/ext4/extents.c:561
+ ext4_find_extent+0x6b7/0xa20 fs/ext4/extents.c:964
+ ext4_ext_map_blocks+0x16b/0x4b70 fs/ext4/extents.c:4384
+ ext4_map_blocks+0xe26/0x19f0 fs/ext4/inode.c:567
+ ext4_getblk+0x320/0x4c0 fs/ext4/inode.c:980
+ ext4_bread+0x2d/0x170 fs/ext4/inode.c:1031
+ ext4_quota_read+0x248/0x320 fs/ext4/super.c:6257
+ v2_read_header+0x78/0x110 fs/quota/quota_v2.c:63
+ v2_check_quota_file+0x76/0x230 fs/quota/quota_v2.c:82
+ vfs_load_quota_inode+0x5d1/0x1530 fs/quota/dquot.c:2368
+ dquot_enable+0x28a/0x330 fs/quota/dquot.c:2490
+ ext4_quota_enable fs/ext4/super.c:6137 [inline]
+ ext4_enable_quotas+0x5d7/0x960 fs/ext4/super.c:6163
+ ext4_fill_super+0xa7c9/0xdc00 fs/ext4/super.c:4754
+ mount_bdev+0x2e9/0x3b0 fs/super.c:1158
+ mount_fs+0x4b/0x1e4 fs/super.c:1261
+[...]
+==================================================================
 
-Signed-off-by: Ritvik Budhiraja <rbudhiraja@microsoft.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202311110815.UJaeU3Tt-lkp@intel.com/
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Above issue may happen as follows:
+-------------------------------------
+ext4_fill_super
+ ext4_enable_quotas
+  ext4_quota_enable
+   ext4_iget
+    __ext4_iget
+     ext4_ext_check_inode
+      ext4_ext_check
+       __ext4_ext_check
+        ext4_valid_extent_entries
+         Check for overlapping extents does't take effect
+   dquot_enable
+    vfs_load_quota_inode
+     v2_check_quota_file
+      v2_read_header
+       ext4_quota_read
+        ext4_bread
+         ext4_getblk
+          ext4_map_blocks
+           ext4_ext_map_blocks
+            ext4_find_extent
+             ext4_cache_extents
+              ext4_es_cache_extent
+               ext4_es_cache_extent
+                __es_tree_search
+                 ext4_es_end
+                  BUG_ON(es->es_lblk + es->es_len < es->es_lblk)
+
+The error ext4 extents is as follows:
+0af3 0300 0400 0000 00000000    extent_header
+00000000 0100 0000 12000000     extent1
+00000000 0100 0000 18000000     extent2
+02000000 0400 0000 14000000     extent3
+
+In the ext4_valid_extent_entries function,
+if prev is 0, no error is returned even if lblock<=prev.
+This was intended to skip the check on the first extent, but
+in the error image above, prev=0+1-1=0 when checking the second extent,
+so even though lblock<=prev, the function does not return an error.
+As a result, bug_ON occurs in __es_tree_search and the system panics.
+
+To solve this problem, we only need to check that:
+1. The lblock of the first extent is not less than 0.
+2. The lblock of the next extent  is not less than
+   the next block of the previous extent.
+The same applies to extent_idx.
+
+Cc: stable@kernel.org
+Fixes: 5946d089379a ("ext4: check for overlapping extents in ext4_valid_extent_entries()")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20220518120816.1541863-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: syzbot+2a58d88f0fb315c85363@syzkaller.appspotmail.com
+[gpiccoli: Manual backport due to unrelated missing patches.]
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/sess.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/extents.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 09bb30610a901..f3d25395d0d3c 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -337,10 +337,10 @@ cifs_disable_secondary_channels(struct cifs_ses *ses)
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -409,7 +409,7 @@ static int ext4_valid_extent_entries(str
+ {
+ 	unsigned short entries;
+ 	ext4_lblk_t lblock = 0;
+-	ext4_lblk_t prev = 0;
++	ext4_lblk_t cur = 0;
  
- 		if (iface) {
- 			spin_lock(&ses->iface_lock);
--			kref_put(&iface->refcount, release_iface);
- 			iface->num_channels--;
- 			if (iface->weight_fulfilled)
- 				iface->weight_fulfilled--;
-+			kref_put(&iface->refcount, release_iface);
- 			spin_unlock(&ses->iface_lock);
+ 	if (eh->eh_entries == 0)
+ 		return 1;
+@@ -435,12 +435,12 @@ static int ext4_valid_extent_entries(str
+ 
+ 			/* Check for overlapping extents */
+ 			lblock = le32_to_cpu(ext->ee_block);
+-			if ((lblock <= prev) && prev) {
++			if (lblock < cur) {
+ 				pblock = ext4_ext_pblock(ext);
+ 				es->s_last_error_block = cpu_to_le64(pblock);
+ 				return 0;
+ 			}
+-			prev = lblock + ext4_ext_get_actual_len(ext) - 1;
++			cur = lblock + ext4_ext_get_actual_len(ext);
+ 			ext++;
+ 			entries--;
  		}
+@@ -460,13 +460,13 @@ static int ext4_valid_extent_entries(str
  
--- 
-2.43.0
-
+ 			/* Check for overlapping index extents */
+ 			lblock = le32_to_cpu(ext_idx->ei_block);
+-			if ((lblock <= prev) && prev) {
++			if (lblock < cur) {
+ 				*pblk = ext4_idx_pblock(ext_idx);
+ 				return 0;
+ 			}
+ 			ext_idx++;
+ 			entries--;
+-			prev = lblock;
++			cur = lblock + 1;
+ 		}
+ 	}
+ 	return 1;
 
 
 
