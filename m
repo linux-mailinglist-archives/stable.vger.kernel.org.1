@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-45889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2EA8CD46A
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:25:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DEC8CD3C2
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539421F21735
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6246728356F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939A414A4F1;
-	Thu, 23 May 2024 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F2E14A4F0;
+	Thu, 23 May 2024 13:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CE+/DwcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPJN5VJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5046D1E497;
-	Thu, 23 May 2024 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083A81E497;
+	Thu, 23 May 2024 13:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470654; cv=none; b=ea8qZdE2bbGrg+swlJ1Sdgh4b5WKIl//I8HuavV279egRiqymp01XGBKgdU8OdFEUp591Oyly6FzbNSqTBQEE9yJ198l4fsO127ffeJ0Zd6o52gN7xgkzihHvaarb3x1VPFQjo4b3h53QLHCTILouaZdmfaxpN9Q8j7MbP9w2Bw=
+	t=1716470292; cv=none; b=VNQDMp79V8nkW4ys1A+QkEJZce4W7KD06yynge6cSjFWAj2E+0DTZcTQgp6t2tzKIPROnKZhqyCx0dehqugvy4CdZILrvU5goDhostAlv5Yq8FZTAwumZPLHaNK4ar7bi0j9mPsANWh4txt1EzWQ/zD/fQ7AvU3DXrIOnTC5wn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470654; c=relaxed/simple;
-	bh=XMYMEKkNuvgzDZSH7hgey4JLAZTZubP28YwI1EImEjw=;
+	s=arc-20240116; t=1716470292; c=relaxed/simple;
+	bh=qyc0NXrU59JpXoUwAJxg2Tu6GugVSO4+qbdbpJQskWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngRxwXqFh76dBJnKAphnLrCs0DbgbWJN8omXXpadAjC3ZyDn4d1PaAtXq2jhd7ISdNSI6maQhZIIprXFNWbSV/8gvgu+aaG1G41ApwLW35TDYmchkC4A00ib49ie1sFgSzUuAncGjoD9HlKj69TiPYJ4K2vgCWHzcuzrs+ILyPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CE+/DwcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C28C2BD10;
-	Thu, 23 May 2024 13:24:13 +0000 (UTC)
+	 MIME-Version; b=pHdaZZyPp+vy9zzzc41yJFKRtmsNYh6invoi8Ex2WHRd4Rzg/gw3rjbMLawulndEm71k3+CNF+y14TlywV7zT5N9WYDwrnWLP4hH5JN/YK80fWLj/SwJvyNy0KjdIpEVmflJvuIpwoW7Bwkx2TytsZdTtw9cS02kpUkYFwpcAWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPJN5VJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBCDC2BD10;
+	Thu, 23 May 2024 13:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470653;
-	bh=XMYMEKkNuvgzDZSH7hgey4JLAZTZubP28YwI1EImEjw=;
+	s=korg; t=1716470291;
+	bh=qyc0NXrU59JpXoUwAJxg2Tu6GugVSO4+qbdbpJQskWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CE+/DwcJcaB8SkRwluJV+9Jnc3adDn/DYq9Yh/4f97PkuQaZ9gl/cTylmg6K8dRqr
-	 diAIbnvjubsNX9fPxABgOuPrRcdvyo+Yg3cQ1Hais8auFtLgckIFxGNyu3o5rhKfuX
-	 AzaRGoBTfLSPP08g3LxofmgjB3oH4YMuiN0cwXYE=
+	b=hPJN5VJmOk0z35OBxbESRzZ9+vt03aTj49X6Ohbw/0tNxzQy15UHiS9uyb07R3up0
+	 EkyL1B5TuaUU/IPDAbTJTR0sXoNFdWMH76zm6T3McE7QEd3da2xn18yky2Zqj3vjsu
+	 YwhxAhHmZLCrlZCCmhAdxTumS0jojUKDLhPnjHZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/102] smb: client: get rid of smb311_posix_query_path_info()
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shaoying Xu <shaoyi@amazon.com>
+Subject: [PATCH 5.15 10/23] net: tls: factor out tls_*crypt_async_wait()
 Date: Thu, 23 May 2024 15:13:06 +0200
-Message-ID: <20240523130344.014795261@linuxfoundation.org>
+Message-ID: <20240523130328.342478955@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
-References: <20240523130342.462912131@linuxfoundation.org>
+In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
+References: <20240523130327.956341021@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,204 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f83709b9e0eb7048d74ba4515f268c6eacbce9c9 ]
+commit c57ca512f3b68ddcd62bda9cc24a8f5584ab01b1 upstream.
 
-Merge smb311_posix_query_path_info into ->query_path_info() to get rid
-of duplicate code.
+Factor out waiting for async encrypt and decrypt to finish.
+There are already multiple copies and a subsequent fix will
+need more. No functional changes.
 
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that crypto_wait_req() returns wait->err
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aec7961916f3 ("tls: fix race between async notify and socket close")
+[v5.15: removed changes in tls_sw_splice_eof and adjusted waiting factor out for
+async descrypt in tls_sw_recvmsg]
+Cc: <stable@vger.kernel.org> # 5.15
+Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/inode.c     |   4 +-
- fs/smb/client/smb2inode.c | 115 +++++++++++---------------------------
- 2 files changed, 36 insertions(+), 83 deletions(-)
+ net/tls/tls_sw.c |   90 +++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 49 insertions(+), 41 deletions(-)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 0110589acb853..d7e3da8489a0b 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1313,6 +1313,7 @@ static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
- 				  const unsigned int xid)
- {
- 	struct cifs_open_info_data tmp_data = {};
-+	struct TCP_Server_Info *server;
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
- 	struct cifs_tcon *tcon;
- 	struct tcon_link *tlink;
-@@ -1323,12 +1324,13 @@ static int smb311_posix_get_fattr(struct cifs_open_info_data *data,
- 	if (IS_ERR(tlink))
- 		return PTR_ERR(tlink);
- 	tcon = tlink_tcon(tlink);
-+	server = tcon->ses->server;
- 
- 	/*
- 	 * 1. Fetch file metadata if not provided (data)
- 	 */
- 	if (!data) {
--		rc = smb311_posix_query_path_info(xid, tcon, cifs_sb,
-+		rc = server->ops->query_path_info(xid, tcon, cifs_sb,
- 						  full_path, &tmp_data);
- 		data = &tmp_data;
- 	}
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 4cd4b8a63316d..dfa4e5362213f 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -699,7 +699,7 @@ int smb2_query_path_info(const unsigned int xid,
- 	struct smb2_hdr *hdr;
- 	struct kvec in_iov[2], out_iov[3] = {};
- 	int out_buftype[3] = {};
--	int cmds[2] = { SMB2_OP_QUERY_INFO,  };
-+	int cmds[2];
- 	bool islink;
- 	int i, num_cmds;
- 	int rc, rc2;
-@@ -707,20 +707,36 @@ int smb2_query_path_info(const unsigned int xid,
- 	data->adjust_tz = false;
- 	data->reparse_point = false;
- 
--	if (strcmp(full_path, ""))
--		rc = -ENOENT;
--	else
--		rc = open_cached_dir(xid, tcon, full_path, cifs_sb, false, &cfid);
--	/* If it is a root and its handle is cached then use it */
--	if (!rc) {
--		if (cfid->file_all_info_is_valid) {
--			memcpy(&data->fi, &cfid->file_all_info, sizeof(data->fi));
-+	/*
-+	 * BB TODO: Add support for using cached root handle in SMB3.1.1 POSIX.
-+	 * Create SMB2_query_posix_info worker function to do non-compounded
-+	 * query when we already have an open file handle for this. For now this
-+	 * is fast enough (always using the compounded version).
-+	 */
-+	if (!tcon->posix_extensions) {
-+		if (*full_path) {
-+			rc = -ENOENT;
- 		} else {
--			rc = SMB2_query_info(xid, tcon, cfid->fid.persistent_fid,
--					     cfid->fid.volatile_fid, &data->fi);
-+			rc = open_cached_dir(xid, tcon, full_path,
-+					     cifs_sb, false, &cfid);
- 		}
--		close_cached_dir(cfid);
--		return rc;
-+		/* If it is a root and its handle is cached then use it */
-+		if (!rc) {
-+			if (cfid->file_all_info_is_valid) {
-+				memcpy(&data->fi, &cfid->file_all_info,
-+				       sizeof(data->fi));
-+			} else {
-+				rc = SMB2_query_info(xid, tcon,
-+						     cfid->fid.persistent_fid,
-+						     cfid->fid.volatile_fid,
-+						     &data->fi);
-+			}
-+			close_cached_dir(cfid);
-+			return rc;
-+		}
-+		cmds[0] = SMB2_OP_QUERY_INFO;
-+	} else {
-+		cmds[0] = SMB2_OP_POSIX_QUERY_INFO;
- 	}
- 
- 	in_iov[0].iov_base = data;
-@@ -743,6 +759,10 @@ int smb2_query_path_info(const unsigned int xid,
- 	switch (rc) {
- 	case 0:
- 	case -EOPNOTSUPP:
-+		/*
-+		 * BB TODO: When support for special files added to Samba
-+		 * re-verify this path.
-+		 */
- 		rc = parse_create_response(data, cifs_sb, &out_iov[0]);
- 		if (rc || !data->reparse_point)
- 			goto out;
-@@ -782,75 +802,6 @@ int smb2_query_path_info(const unsigned int xid,
- 	return rc;
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -226,6 +226,20 @@ static void tls_decrypt_done(struct cryp
+ 	spin_unlock_bh(&ctx->decrypt_compl_lock);
  }
  
--int smb311_posix_query_path_info(const unsigned int xid,
--				 struct cifs_tcon *tcon,
--				 struct cifs_sb_info *cifs_sb,
--				 const char *full_path,
--				 struct cifs_open_info_data *data)
--{
--	int rc;
--	__u32 create_options = 0;
--	struct cifsFileInfo *cfile;
--	struct kvec in_iov[2], out_iov[3] = {};
--	int out_buftype[3] = {};
--	int cmds[2] = { SMB2_OP_POSIX_QUERY_INFO,  };
--	int i, num_cmds;
++static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
++{
++	int pending;
++
++	spin_lock_bh(&ctx->decrypt_compl_lock);
++	reinit_completion(&ctx->async_wait.completion);
++	pending = atomic_read(&ctx->decrypt_pending);
++	spin_unlock_bh(&ctx->decrypt_compl_lock);
++	if (pending)
++		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++
++	return ctx->async_wait.err;
++}
++
+ static int tls_do_decryption(struct sock *sk,
+ 			     struct sk_buff *skb,
+ 			     struct scatterlist *sgin,
+@@ -496,6 +510,28 @@ static void tls_encrypt_done(struct cryp
+ 		schedule_delayed_work(&ctx->tx_work.work, 1);
+ }
+ 
++static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
++{
++	int pending;
++
++	spin_lock_bh(&ctx->encrypt_compl_lock);
++	ctx->async_notify = true;
++
++	pending = atomic_read(&ctx->encrypt_pending);
++	spin_unlock_bh(&ctx->encrypt_compl_lock);
++	if (pending)
++		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	else
++		reinit_completion(&ctx->async_wait.completion);
++
++	/* There can be no concurrent accesses, since we have no
++	 * pending encrypt operations
++	 */
++	WRITE_ONCE(ctx->async_notify, false);
++
++	return ctx->async_wait.err;
++}
++
+ static int tls_do_encryption(struct sock *sk,
+ 			     struct tls_context *tls_ctx,
+ 			     struct tls_sw_context_tx *ctx,
+@@ -946,7 +982,6 @@ int tls_sw_sendmsg(struct sock *sk, stru
+ 	int num_zc = 0;
+ 	int orig_size;
+ 	int ret = 0;
+-	int pending;
+ 
+ 	if (msg->msg_flags & ~(MSG_MORE | MSG_DONTWAIT | MSG_NOSIGNAL |
+ 			       MSG_CMSG_COMPAT))
+@@ -1115,24 +1150,12 @@ trim_sgl:
+ 	if (!num_async) {
+ 		goto send_end;
+ 	} else if (num_zc) {
+-		/* Wait for pending encryptions to get completed */
+-		spin_lock_bh(&ctx->encrypt_compl_lock);
+-		ctx->async_notify = true;
 -
--	data->adjust_tz = false;
--	data->reparse_point = false;
+-		pending = atomic_read(&ctx->encrypt_pending);
+-		spin_unlock_bh(&ctx->encrypt_compl_lock);
+-		if (pending)
+-			crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
+-		else
+-			reinit_completion(&ctx->async_wait.completion);
++		int err;
+ 
+-		/* There can be no concurrent accesses, since we have no
+-		 * pending encrypt operations
+-		 */
+-		WRITE_ONCE(ctx->async_notify, false);
 -
--	/*
--	 * BB TODO: Add support for using the cached root handle.
--	 * Create SMB2_query_posix_info worker function to do non-compounded query
--	 * when we already have an open file handle for this. For now this is fast enough
--	 * (always using the compounded version).
--	 */
--	in_iov[0].iov_base = data;
--	in_iov[0].iov_len = sizeof(*data);
--	in_iov[1] = in_iov[0];
+-		if (ctx->async_wait.err) {
+-			ret = ctx->async_wait.err;
++		/* Wait for pending encryptions to get completed */
++		err = tls_encrypt_async_wait(ctx);
++		if (err) {
++			ret = err;
+ 			copied = 0;
+ 		}
+ 	}
+@@ -1910,22 +1933,14 @@ pick_next_record:
+ 
+ recv_end:
+ 	if (async) {
+-		int pending;
 -
--	cifs_get_readable_path(tcon, full_path, &cfile);
--	rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
--			      FILE_READ_ATTRIBUTES, FILE_OPEN,
--			      create_options, ACL_NO_MODE, in_iov,
--			      cmds, 1, cfile, out_iov, out_buftype);
--	/*
--	 * If first iov is unset, then SMB session was dropped or we've got a
--	 * cached open file (@cfile).
--	 */
--	if (!out_iov[0].iov_base || out_buftype[0] == CIFS_NO_BUFFER)
--		goto out;
+ 		/* Wait for all previously submitted records to be decrypted */
+-		spin_lock_bh(&ctx->decrypt_compl_lock);
+-		reinit_completion(&ctx->async_wait.completion);
+-		pending = atomic_read(&ctx->decrypt_pending);
+-		spin_unlock_bh(&ctx->decrypt_compl_lock);
+-		if (pending) {
+-			err = crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
+-			if (err) {
+-				/* one of async decrypt failed */
+-				tls_err_abort(sk, err);
+-				copied = 0;
+-				decrypted = 0;
+-				goto end;
+-			}
++		err = tls_decrypt_async_wait(ctx);
++		if (err) {
++			/* one of async decrypt failed */
++			tls_err_abort(sk, err);
++			copied = 0;
++			decrypted = 0;
++			goto end;
+ 		}
+ 
+ 		/* Drain records from the rx_list & copy if required */
+@@ -2144,16 +2159,9 @@ void tls_sw_release_resources_tx(struct
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+ 	struct tls_sw_context_tx *ctx = tls_sw_ctx_tx(tls_ctx);
+ 	struct tls_rec *rec, *tmp;
+-	int pending;
+ 
+ 	/* Wait for any pending async encryptions to complete */
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	ctx->async_notify = true;
+-	pending = atomic_read(&ctx->encrypt_pending);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
 -
--	switch (rc) {
--	case 0:
--	case -EOPNOTSUPP:
--		/* BB TODO: When support for special files added to Samba re-verify this path */
--		rc = parse_create_response(data, cifs_sb, &out_iov[0]);
--		if (rc || !data->reparse_point)
--			goto out;
--
--		if (data->reparse.tag == IO_REPARSE_TAG_SYMLINK) {
--			/* symlink already parsed in create response */
--			num_cmds = 1;
--		} else {
--			cmds[1] = SMB2_OP_GET_REPARSE;
--			num_cmds = 2;
--		}
--		create_options |= OPEN_REPARSE_POINT;
--		cifs_get_readable_path(tcon, full_path, &cfile);
--		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path,
--				      FILE_READ_ATTRIBUTES, FILE_OPEN,
--				      create_options, ACL_NO_MODE, in_iov,
--				      cmds, num_cmds, cfile, NULL, NULL);
--		break;
--	}
--
--out:
--	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
--		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
--	return rc;
--}
--
- int
- smb2_mkdir(const unsigned int xid, struct inode *parent_inode, umode_t mode,
- 	   struct cifs_tcon *tcon, const char *name,
--- 
-2.43.0
-
+-	if (pending)
+-		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	tls_encrypt_async_wait(ctx);
+ 
+ 	tls_tx_records(sk, -1);
+ 
 
 
 
