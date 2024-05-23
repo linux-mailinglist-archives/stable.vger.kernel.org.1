@@ -1,150 +1,129 @@
-Return-Path: <stable+bounces-46004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-46005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94CE8CDBE3
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 23:23:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4338CDBEF
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 23:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5FE3282AF8
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 21:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F53F1F24939
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 21:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839D312837C;
-	Thu, 23 May 2024 21:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436A0128360;
+	Thu, 23 May 2024 21:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QWIfwZbT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501E1128365;
-	Thu, 23 May 2024 21:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBDB126F37;
+	Thu, 23 May 2024 21:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716499401; cv=none; b=mUjoUCtOZarZHbpKbwfLR9cNLK8/gL600VtBexyZxhFzn9f8aOtIGaEhbiD4YaVIY/sialBMk4fNpDwd2ipEzM9nTzzWFX1bTTQHJ7SASQnSss6tFEHHWb1ziQw8vYRMUVjCivshXzl7HNGiFPipT7G9VT/7wGJFbzDPiK/f7JI=
+	t=1716499511; cv=none; b=kMAR6qDXYoXVr43uMf2m/YTZOs9JJtyxYVXOG+W1i7ZPWhNQKhUUdkpIg89C+evyE4s2jiAYUXByZ7zrKB8rcBCOyooeJTOkFOZKcTHWHmj6IC7kRfOPi6akJovMIqKMvF9jldnjzKLzbjJzPtOFVJr7BvC6HWJPzIgrfjbw1+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716499401; c=relaxed/simple;
-	bh=1Wy8rfVh+tcDx6TeVrWroMHMwycF9RAXCxOu1SCaAl4=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=eE3HlPPlD3S0DoFqHij/xvwEQoZc6fTJQfo7Es2hRlWC3B79KaCn73rWiwW38yBkPqFuj+hCv6V/nzaWYk9iRUpxJMiGbiMjvngRIjyBURQLyuOe7nrv12oSwQCL+zrz0OpdRXaHbmqzez23NF8FfrOawrq0C9JdqmmrrPnybe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8211C2BD10;
-	Thu, 23 May 2024 21:23:20 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1sAFuw-00000006l9h-308p;
-	Thu, 23 May 2024 17:24:06 -0400
-Message-ID: <20240523212406.575903016@goodmis.org>
-User-Agent: quilt/0.68
-Date: Thu, 23 May 2024 17:23:02 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>,
- stable@vger.kernel.org
-Subject: [for-linus][PATCH 4/8] tracefs: Clear EVENT_INODE flag in tracefs_drop_inode()
-References: <20240523212258.883756004@goodmis.org>
+	s=arc-20240116; t=1716499511; c=relaxed/simple;
+	bh=VHdjSkKxWm5rfyGLl7Yk8K1zO0mB7odDFsgg9+Tfu8s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qic4VedKoX/kUbbmtxTMynylGZgeeiE/qgZAxi9xLfAmEf6FuxvitJkQxc/uliXjR1FbsJowm7GqaEHpLOs+NcErr0U9znxey0ozroHfFIY2V0ce3Ggj0jWvZieMPRl/1NK1VS6gWkCkfO8yyVrg129wkBGxNA8TQVjgC0iWobk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QWIfwZbT; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-354f5fb80d5so1311176f8f.2;
+        Thu, 23 May 2024 14:25:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716499507; x=1717104307; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U+I9c44cbx3EWc9H7lfkabZH5dwju+xdfdQpItJBfjY=;
+        b=QWIfwZbTOC0zEO33zgidA8aomQoEMAc7IufXEgzDrQWlv2hpHckHBomumWqhpxlAAc
+         tn7C5qtv8anrIYE2UiYgfl5wormneDaRUjwrvUEdm/Zn02Cxtg23cr4E9cEM7GeEtAmD
+         rHtoqE7JrmCjnYdwASNQ+nRdH7mLmY66sT5fwFExmLNBWz6dQBahc+96V/byn7iRBW43
+         FyuoUYbRsw1V64l4NoqQW153QfP+zcuHU/llMWFtFtTr5bgKcZkn2O/wuiLzleC+MMnr
+         UHHYecMQElpyQpXdM0fzKiY2WKWAuCFVV3XdDhIrnTiollXHdJ2LAfVoUYbM8z3P00Sq
+         aHQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716499507; x=1717104307;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U+I9c44cbx3EWc9H7lfkabZH5dwju+xdfdQpItJBfjY=;
+        b=TJTWdFdE8khAB8/NpCLRVqnNZoP7F62l3LB+Fnn8Y04aQY/ADBEEP4gjtqRaBYlkWs
+         Y6Ljpybjb0dqScqytWpfkNMqJQhr1rYsqqL/rIVo9bd/MIdlCVHPoEgYtCZVIPmpsL3J
+         /0a9c5WE9fFKPgqKtF++c8cnWMo6ujgwXZybLptSNh/AykBZK8YghygVDFTMZszpMp+d
+         t6WDlQ7+Hs1Km8OPGh78dfEXzfZddh7OnjyS1WmYRH3GxqiBNko7CptOIMoGg8+tXvE+
+         Y1uA/Yg0PcJkvdSq3u11mZiKagq1sumRqYR0AIeQ4rzfvBlv3PNCJJmHFrYjwKPV43Js
+         SC3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUufJrHGoGi0Nc58UaBXSHMZHcDBE61rcwfLR8MUXKlXksb5boMdURnZLVzztX6h+xWfS9Xew+ksYjYsVRJqLC7QQH1pwfJQK38QxbGNO0MmgDpCoVX9rPHrD4/59c07qo01OLxsH+RkRCAk/FlBFlv+U9+wEgO78Jd72rkNpE=
+X-Gm-Message-State: AOJu0YzQaSqxT5dNFdm9mhaEpO95aTUilPD9Mq3S85sFRG5XefwjvzoD
+	eLIK0cdgklZP3bkj1hrgmo6MeH7B2+ZCoH2nFtsKuRxB1XPU4mmyzehjuAJ3zXY=
+X-Google-Smtp-Source: AGHT+IH8OD5gV8/1smKKDoZX9EgdPWl5N+fjjkenQw6jr7OYD/hRr8503cKcLcTN5wI0POCJ16VABQ==
+X-Received: by 2002:a05:600c:54c4:b0:421:17d:1ec1 with SMTP id 5b1f17b1804b1-421089f9d92mr2601535e9.18.1716499506783;
+        Thu, 23 May 2024 14:25:06 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-212-250.cable.dynamic.surfer.at. [84.115.212.250])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089ae976sm2522955e9.38.2024.05.23.14.25.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 14:25:06 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] cpufreq: qcom-nvmem: fix memory leaks and add auto
+ device node cleanup
+Date: Thu, 23 May 2024 23:24:58 +0200
+Message-Id: <20240523-qcom-cpufreq-nvmem_memleak-v1-0-e57795c7afa7@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACq0T2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDUyNj3cLk/Fzd5ILStKLUQt28stzU3HggzklNzNY1SzKzMDJMSTI1SjJ
+ UAhpQUJSallkBNjw6trYWAK274S1sAAAA
+To: Ilia Lin <ilia.lin@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716499505; l=1291;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=VHdjSkKxWm5rfyGLl7Yk8K1zO0mB7odDFsgg9+Tfu8s=;
+ b=14d9eQKhZyHNHy3nsPQ8V1gTIq1GdV//SoUiwVSvFMrNQfJq/NT5EnqCuIOUXdL29hOEemMpn
+ 1x9zo3p7LKYAt1mKWn9Bwdn+AKuTBdXDc4saqt3Npwyf1jsQKQphVHX
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+There are a number of error paths in the probe function that do not call
+of_node_put() to decrement the np device node refcount, leading to
+memory leaks if those errors occur.
 
-When the inode is being dropped from the dentry, the TRACEFS_EVENT_INODE
-flag needs to be cleared to prevent a remount from calling
-eventfs_remount() on the tracefs_inode private data. There's a race
-between the inode is dropped (and the dentry freed) to where the inode is
-actually freed. If a remount happens between the two, the eventfs_inode
-could be accessed after it is freed (only the dentry keeps a ref count on
-it).
+In order to ease backporting, the fix has been divided into two patches:
+the first one simply adds the missing calls to of_node_put(), and the
+second one adds the __free() macro to the existing device nodes to
+remove the need for of_node_put(), ensuring that the same bug will not
+arise in the future.
 
-Currently the TRACEFS_EVENT_INODE flag is cleared from the dentry iput()
-function. But this is incorrect, as it is possible that the inode has
-another reference to it. The flag should only be cleared when the inode is
-really being dropped and has no more references. That happens in the
-drop_inode callback of the inode, as that gets called when the last
-reference of the inode is released.
+The issue was found by chance while analyzing the code, and I do not
+have the hardware to test it beyond compiling and static analysis tools.
+Although the issue is clear and the fix too, if someone wants to
+volunteer to test the series with real hardware, it would be great.
 
-Remove the tracefs_d_iput() function and move its logic to the more
-appropriate tracefs_drop_inode() callback function.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240523051539.908205106@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Fixes: baa23a8d4360d ("tracefs: Reset permissions on remount if permissions are options")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- fs/tracefs/inode.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+Javier Carrasco (2):
+      cpufreq: qcom-nvmem: fix memory leaks in probe error paths
+      cpufreq: qcom-nvmem: eliminate uses of of_node_put()
 
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index 9252e0d78ea2..7c29f4afc23d 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -426,10 +426,26 @@ static int tracefs_show_options(struct seq_file *m, struct dentry *root)
- 	return 0;
- }
- 
-+static int tracefs_drop_inode(struct inode *inode)
-+{
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+
-+	/*
-+	 * This inode is being freed and cannot be used for
-+	 * eventfs. Clear the flag so that it doesn't call into
-+	 * eventfs during the remount flag updates. The eventfs_inode
-+	 * gets freed after an RCU cycle, so the content will still
-+	 * be safe if the iteration is going on now.
-+	 */
-+	ti->flags &= ~TRACEFS_EVENT_INODE;
-+
-+	return 1;
-+}
-+
- static const struct super_operations tracefs_super_operations = {
- 	.alloc_inode    = tracefs_alloc_inode,
- 	.free_inode     = tracefs_free_inode,
--	.drop_inode     = generic_delete_inode,
-+	.drop_inode     = tracefs_drop_inode,
- 	.statfs		= simple_statfs,
- 	.show_options	= tracefs_show_options,
- };
-@@ -455,22 +471,7 @@ static int tracefs_d_revalidate(struct dentry *dentry, unsigned int flags)
- 	return !(ei && ei->is_freed);
- }
- 
--static void tracefs_d_iput(struct dentry *dentry, struct inode *inode)
--{
--	struct tracefs_inode *ti = get_tracefs(inode);
--
--	/*
--	 * This inode is being freed and cannot be used for
--	 * eventfs. Clear the flag so that it doesn't call into
--	 * eventfs during the remount flag updates. The eventfs_inode
--	 * gets freed after an RCU cycle, so the content will still
--	 * be safe if the iteration is going on now.
--	 */
--	ti->flags &= ~TRACEFS_EVENT_INODE;
--}
--
- static const struct dentry_operations tracefs_dentry_operations = {
--	.d_iput = tracefs_d_iput,
- 	.d_revalidate = tracefs_d_revalidate,
- 	.d_release = tracefs_d_release,
- };
+ drivers/cpufreq/qcom-cpufreq-nvmem.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+---
+base-commit: 3689b0ef08b70e4e03b82ebd37730a03a672853a
+change-id: 20240523-qcom-cpufreq-nvmem_memleak-6b6821db52b1
+
+Best regards,
 -- 
-2.43.0
-
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
