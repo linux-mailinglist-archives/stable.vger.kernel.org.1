@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-45784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91CE98CD3D8
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:19:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9A88CD49F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332061F25B51
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:19:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2675A28624A
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAB714A4E9;
-	Thu, 23 May 2024 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9589714A4F0;
+	Thu, 23 May 2024 13:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPZsJ2Xk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMlUiLWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0471E497;
-	Thu, 23 May 2024 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B813A897;
+	Thu, 23 May 2024 13:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470351; cv=none; b=tJb7UsPioBFmdL2lt8d/UGKXQ8PEZeO00OsaVhn1j12pluDiQd92TkOltlsAt12oVLlvtPJZcac+lgSODIUYJUW38srUejGttjGWNU82UlcontLG1cvlf5rz42vufb6CKqDxTweJH8xujuzAq/1BvHoIw7Rc6FRaHQ92eFl+Mn8=
+	t=1716470778; cv=none; b=pXCd68BImxjGdWWEEQ7uf87+qmpy5eoXH+qQ0KzIR3Jwc7BmdLkPgeKBoJp1XxoXa32fEHTNCnSwN1pCqR0vMQ8bDEntkzfL82QrhOMoZ3zpEvBVPSt09GmW1Ox3QQ+TDVul1QsfIQG0qS5ikf4/ViD77F40kq5WR0q3OdBNRtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470351; c=relaxed/simple;
-	bh=uGVWeSYk/5RAHoFtLjmOifmJ5FmaLMeq7h3UDFqWa8I=;
+	s=arc-20240116; t=1716470778; c=relaxed/simple;
+	bh=N2X4gLyO5oopsbNW0rsekWgW05fJBPqVM1oyuq0GpTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFzfWsTGkurm61YS2xNf/ATam+SNd1NIwtxcbYtCpp2PZsGZ+PqiMwx+94VLK6bAtAIkRC72djPTP3Od+aZ31INdQ6WhtM3wayEoWb+ahApuDKdb2SN9JoD6x0E5Vp3HAkqmHRUzachyKAaiQfi2J5r2ef77rtAbaRgE3E4o4UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPZsJ2Xk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E01C32786;
-	Thu, 23 May 2024 13:19:10 +0000 (UTC)
+	 MIME-Version; b=S6l9phmQ4f19i8diV5BAGCeEhQMqVduyImCkyc8x/BA0GdommEVqcd+aO8UfsFKijpSDFkSU+Im5JhpDNOUJYIxQhcrXzorS3p/RVhKpkxRHlrvFE8gOS811JVn7KSe+BfeuuwB5IDY88kd+pe+XW8p0QR2h/cUWHeZ6OIgCUR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMlUiLWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEFFC3277B;
+	Thu, 23 May 2024 13:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470351;
-	bh=uGVWeSYk/5RAHoFtLjmOifmJ5FmaLMeq7h3UDFqWa8I=;
+	s=korg; t=1716470778;
+	bh=N2X4gLyO5oopsbNW0rsekWgW05fJBPqVM1oyuq0GpTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPZsJ2Xk/lM1CCzwveddSrHwk7JP7JfXN6eKFnl9b4ToZe4HLK0AIi55joGVXnLh6
-	 uas0RfQPmXMf/MdcfNeLCvX+Y5WksjUHOEBrDzHhrokeBH4+GqiMG5LCTLWTRkLdLb
-	 DRO2TS9SYyzIjihVXSu3kmzQPO2lS9a9z/MpxP0o=
+	b=XMlUiLWtPc7bOF2oozd+xcjHSkoNi0rGDqkfLvLGxJMxnCRrL047PlADgcO0btf0A
+	 4FDqfy3E6TpOXDBwSWAk694JKCflFIm29nc+j8q5XtOHSYpCL5umnyj9oYpudoVeX7
+	 gp7r6OhSiaGP0uNWtmtFOPkvoayRqYhYqZvEdlco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 5.15 23/23] docs: kernel_include.py: Cope with docutils 0.21
+	kernel test robot <lkp@intel.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 054/102] smb: client: return reparse type in /proc/mounts
 Date: Thu, 23 May 2024 15:13:19 +0200
-Message-ID: <20240523130328.823590263@linuxfoundation.org>
+Message-ID: <20240523130344.502869322@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-References: <20240523130327.956341021@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akira Yokosawa <akiyks@gmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit d43ddd5c91802a46354fa4c4381416ef760676e2 upstream.
+[ Upstream commit 1e5f4240714bb238d2d17c7e14e5fb45c9140665 ]
 
-Running "make htmldocs" on a newly installed Sphinx 7.3.7 ends up in
-a build error:
+Add support for returning reparse mount option in /proc/mounts.
 
-    Sphinx parallel build error:
-    AttributeError: module 'docutils.nodes' has no attribute 'reprunicode'
-
-docutils 0.21 has removed nodes.reprunicode, quote from release note [1]:
-
-  * Removed objects:
-
-    docutils.nodes.reprunicode, docutils.nodes.ensure_str()
-        Python 2 compatibility hacks
-
-Sphinx 7.3.0 supports docutils 0.21 [2]:
-
-kernel_include.py, whose origin is misc.py of docutils, uses reprunicode.
-
-Upstream docutils removed the offending line from the corresponding file
-(docutils/docutils/parsers/rst/directives/misc.py) in January 2022.
-Quoting the changelog [3]:
-
-    Deprecate `nodes.reprunicode` and `nodes.ensure_str()`.
-
-    Drop uses of the deprecated constructs (not required with Python 3).
-
-Do the same for kernel_include.py.
-
-Tested against:
-  - Sphinx 2.4.5 (docutils 0.17.1)
-  - Sphinx 3.4.3 (docutils 0.17.1)
-  - Sphinx 5.3.0 (docutils 0.18.1)
-  - Sphinx 6.2.1 (docutils 0.19)
-  - Sphinx 7.2.6 (docutils 0.20.1)
-  - Sphinx 7.3.7 (docutils 0.21.2)
-
-Link: http://www.docutils.org/RELEASE-NOTES.html#release-0-21-2024-04-09 [1]
-Link: https://www.sphinx-doc.org/en/master/changes.html#release-7-3-0-released-apr-16-2024 [2]
-Link: https://github.com/docutils/docutils/commit/c8471ce47a24 [3]
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/faf5fa45-2a9d-4573-9d2e-3930bdc1ed65@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202402262152.YZOwDlCM-lkp@intel.com/
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/sphinx/kernel_include.py |    1 -
- 1 file changed, 1 deletion(-)
+ fs/smb/client/cifsfs.c   |  2 ++
+ fs/smb/client/cifsglob.h | 12 ++++++++++++
+ 2 files changed, 14 insertions(+)
 
---- a/Documentation/sphinx/kernel_include.py
-+++ b/Documentation/sphinx/kernel_include.py
-@@ -94,7 +94,6 @@ class KernelInclude(Include):
-         # HINT: this is the only line I had to change / commented out:
-         #path = utils.relative_path(None, path)
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 6d9d2174ee691..30bf754c9fc93 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -674,6 +674,8 @@ cifs_show_options(struct seq_file *s, struct dentry *root)
+ 		seq_printf(s, ",backupgid=%u",
+ 			   from_kgid_munged(&init_user_ns,
+ 					    cifs_sb->ctx->backupgid));
++	seq_show_option(s, "reparse",
++			cifs_reparse_type_str(cifs_sb->ctx->reparse_type));
  
--        path = nodes.reprunicode(path)
-         encoding = self.options.get(
-             'encoding', self.state.document.settings.input_encoding)
-         e_handler=self.state.document.settings.input_encoding_error_handler
+ 	seq_printf(s, ",rsize=%u", cifs_sb->ctx->rsize);
+ 	seq_printf(s, ",wsize=%u", cifs_sb->ctx->wsize);
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index ddb64af50a45d..053556ca6f011 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -159,6 +159,18 @@ enum cifs_reparse_type {
+ 	CIFS_REPARSE_TYPE_DEFAULT = CIFS_REPARSE_TYPE_NFS,
+ };
+ 
++static inline const char *cifs_reparse_type_str(enum cifs_reparse_type type)
++{
++	switch (type) {
++	case CIFS_REPARSE_TYPE_NFS:
++		return "nfs";
++	case CIFS_REPARSE_TYPE_WSL:
++		return "wsl";
++	default:
++		return "unknown";
++	}
++}
++
+ struct session_key {
+ 	unsigned int len;
+ 	char *response;
+-- 
+2.43.0
+
 
 
 
