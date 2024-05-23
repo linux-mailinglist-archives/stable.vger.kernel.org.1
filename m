@@ -1,120 +1,149 @@
-Return-Path: <stable+bounces-45987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC0A8CDA35
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 20:50:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6B58CDA4F
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 20:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68253282C00
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 18:50:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6CA328350B
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 18:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E21142067;
-	Thu, 23 May 2024 18:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8Z76W0b"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE0782872;
+	Thu, 23 May 2024 18:58:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unicorn.mansr.com (unicorn.mansr.com [81.2.72.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62654AEE9;
-	Thu, 23 May 2024 18:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1761D4F602;
+	Thu, 23 May 2024 18:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.2.72.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716490216; cv=none; b=K037nrAhbQ26O5NWgcjqzX71IYFIpgLngXCDtF467alAN6KDa6+v7gi8vg5bjZpngcRR9xAXIIlVTt5lwjPhZoEB3e5beAesdnZNKRiB1jHBg9aKoMMr5IVjSqKRBpH3pI7JsPJM327nN+iZgYJaBs93IbNjlkFQU8K2d35nIq8=
+	t=1716490690; cv=none; b=gCpi9SJhTjyMGoA9O8LY0SDlYCRvTdkN4Kuz35CAaFKCvBH+pOjER5N9XzAdDoHotjY6AfmmL+hhcim5hNm9POj1aUnzsgO+x4qRuRuK8fUgvuKrjCxKDG/SkgJjfRfk9+AbmOhF6Oo152p8M8XlDAOY7QfUsVfNOym+sJpYrGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716490216; c=relaxed/simple;
-	bh=kyE+MwN/uIjHh3K6ejdqz58qWZ5WZfIAknWZx2NbxUg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Aw5oDjCVqGZYBBWT2U/BDImY3QU3lJvsa6ymaSgSRhxZbeQqES3vcuo7RwXVVGSnlTP1L/9/q3DgxblovJcmy9XbDCFn4+Oc/7Y/andmutEUBG6SZIxnOIzWBukdqM8PM22YPkngucKqzDKaG5nteQ83RE8m4ZSj2yk/cASSotQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L8Z76W0b; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1ee5235f5c9so122955415ad.2;
-        Thu, 23 May 2024 11:50:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716490214; x=1717095014; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T5jWOQ5e4KuXtG3+BV+nC19AzmmlYRZIw5wGYbugR1o=;
-        b=L8Z76W0bkIvF0JdeaS+QqGRE3E6HOrRf+YTUMY2mB1EgHA8H3gU0LIMrgpQmbwYaX/
-         dOBstVDGBT81Z1cuIuWcOSt6gQTloooRcnycY1wiBLeljRcI+P3zUT/W151gMfOPyBee
-         p3YLiSBHBWu6IuWtSQdL797stP35tRlhXTRk+eup3A7ekThjoovAHPHuT2tpLLR7vMxa
-         Z8ekDntQjUKttr22XCveALbbtsjDI0xVOpRP2TsW3RovN3PVYR31y59OeDpTEny6Df4A
-         qicgs2l93YMvZ6vH/pnJpNqBrK7EpH8Coyf0Nsvj3v6dd7mHFTjW0kg1699S7afsDCqs
-         FgNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716490214; x=1717095014;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T5jWOQ5e4KuXtG3+BV+nC19AzmmlYRZIw5wGYbugR1o=;
-        b=oXCCqHyuhi4YD3MlSjxJWgQMLywuCDxIA/BG9TIUY6/j/YyzBAA7f8Kmd+U50tHE47
-         zIbOUro2K8VorCY+WOt5ppbjWoOIcAiBpOOL3PkV2kgIMiyIjlLink06WHzm93k+9Z6j
-         bFCQTsM7i6HImFc2F9WDHNRzeBzJrjnBA6lH1ZAFQMX0QL11TqXw+vIiYLpR87H3ocf2
-         Xsn6OMcSips67+Io3x+w9AR1+2U+cXfFj5M2252pr41dWBpiavJjA4ffTo868XZNc1T8
-         zKAQ2C6a89/4e3HtC/unCG9aPQYEvswmdug2w2zj+bk9Q/IQuY0VTWueMbFj46pUrEAT
-         jRWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVC3s0lObWE15Hjl4O00rkDVAjVokXA4GA0rNU5J+7GF7XnWCqqaUD2gRDUi2iiKi1iwsOFvK4iCjPYgOqha04s+rTZwSxdiYsbwicseTU6kRD4v38gAha65FpLCWD8agKoIaC0
-X-Gm-Message-State: AOJu0YzutcEaVAtGjqhYrQE/jVGKQk+HnjanH5+E69yfjuOAX0Xo6EnW
-	UaAEWueVMrdUQ3edFSTW9wapzJz+gd+eq3i6W6Eh5fRmnSqy41nl
-X-Google-Smtp-Source: AGHT+IH8TfXPmp+k2+6BFrZp7D5q+d4zjU2H10O3j9gFv9PYr2beC6QHykVOAGJXFo/xesXdoPw53Q==
-X-Received: by 2002:a17:902:f987:b0:1e6:7700:1698 with SMTP id d9443c01a7336-1f448c266e3mr1967485ad.35.1716490214038;
-        Thu, 23 May 2024 11:50:14 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1ef0bbde9d7sm266512825ad.106.2024.05.23.11.50.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 May 2024 11:50:13 -0700 (PDT)
-Message-ID: <19753311-98f5-40af-8e53-173e12e83503@gmail.com>
-Date: Thu, 23 May 2024 11:50:11 -0700
+	s=arc-20240116; t=1716490690; c=relaxed/simple;
+	bh=QQNdtzoOdLf6SuKfsjdq8VOWrAdYs1aQG2dt+TDRoKM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ls34WKFO/0TOGc7CjLU+ahs5Si74WilWqfomIzwfg7L8T+sOb/oUvpoI1uZmfTjrGnQDRvqZEySDAlmS86UTESvibwLB/lpGVlaLy9S4bq7otN7j5SiAVWYKd4Aksgj5XtcJSsyyWFn2vGfUPIMFSjV7IL4I5KTJxUP4rURNQjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com; spf=pass smtp.mailfrom=mansr.com; arc=none smtp.client-ip=81.2.72.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mansr.com
+Received: from raven.mansr.com (raven.mansr.com [IPv6:2001:8b0:ca0d:1::3])
+	by unicorn.mansr.com (Postfix) with ESMTPS id DA6A515364;
+	Thu, 23 May 2024 19:58:00 +0100 (BST)
+Received: by raven.mansr.com (Postfix, from userid 51770)
+	id CACE3219FCA; Thu, 23 May 2024 19:58:00 +0100 (BST)
+From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To: Frank Oltmanns <frank@oltmanns.dev>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Guido
+ =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>, Purism Kernel Team
+ <kernel@puri.sm>, Ondrej
+ Jirman <megi@xff.cz>, Neil Armstrong <neil.armstrong@linaro.org>, Jessica
+ Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] clk: sunxi-ng: common: Support minimum and
+ maximum rate
+In-Reply-To: <yw1x4jap90va.fsf@mansr.com> (=?iso-8859-1?Q?=22M=E5ns_Rullg?=
+ =?iso-8859-1?Q?=E5rd=22's?= message of "Wed,
+	22 May 2024 19:07:21 +0100")
+References: <20240310-pinephone-pll-fixes-v4-0-46fc80c83637@oltmanns.dev>
+	<20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
+	<yw1xo78z8ez0.fsf@mansr.com>
+	<c4c1229c-1ed3-4b6e-a53a-e1ace2502ded@oltmanns.dev>
+	<yw1x4jap90va.fsf@mansr.com>
+Date: Thu, 23 May 2024 19:58:00 +0100
+Message-ID: <yw1xo78w73uv.fsf@mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/29.3 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/23] 5.15.160-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240523130327.956341021@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240523130327.956341021@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-On 5/23/24 06:12, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.160 release.
-> There are 23 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 25 May 2024 13:03:15 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.160-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+M=E5ns Rullg=E5rd <mans@mansr.com> writes:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+> Frank Oltmanns <frank@oltmanns.dev> writes:
+>
+>> Hi M=E5ns,
+>>
+>> 21.05.2024 15:43:10 M=E5ns Rullg=E5rd <mans@mansr.com>:
+>>
+>>> Frank Oltmanns <frank@oltmanns.dev> writes:
+>>>
+>>>> The Allwinner SoC's typically have an upper and lower limit for their
+>>>> clocks' rates. Up until now, support for that has been implemented
+>>>> separately for each clock type.
+>>>>
+>>>> Implement that functionality in the sunxi-ng's common part making use =
+of
+>>>> the CCF rate liming capabilities, so that it is available for all clock
+>>>> types.
+>>>>
+>>>> Suggested-by: Maxime Ripard <mripard@kernel.org>
+>>>> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+>>>> Cc: stable@vger.kernel.org
+>>>> ---
+>>>> drivers/clk/sunxi-ng/ccu_common.c | 19 +++++++++++++++++++
+>>>> drivers/clk/sunxi-ng/ccu_common.h |=A0 3 +++
+>>>> 2 files changed, 22 insertions(+)
+>>>
+>>> This just landed in 6.6 stable, and it broke HDMI output on an A20 based
+>>> device, the clocks ending up all wrong as seen in this diff of
+>>> /sys/kernel/debug/clk/clk_summary:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+[...]
 
+>>> Reverting this commit makes it work again.
+>>
+>> Thank you for your detailed report!
+>>
+>> I've had a first look at hdmi-tmds and hdmi-ddc, and neither seems to
+>> be calling ccu_is_better_rate() in their determine_rate()
+>> functions. Their parents have the exact same rates in your diff, so,
+>> my current working assumption is that they can't be the cause either.
+>>
+>> I'll have a more detailed look over the weekend. Until then, if anyone
+>> has some ideas where I should have a look next, please share your
+>> thoughts.
+>
+> In case it's relevant, this system doesn't use the HDMI DDC, the
+> physical DDC pins being connected to a different I2C adapter for
+> various reasons.
+>
+> From the clk_summary diff, I see a few things:
+>
+> 1. hdmi-tmds has changed parent from pll-video1-2x to pll-video0-2x.
+> 2. The ratio of hdmi-tmds to its parent has changed from 1/8 to 1.
+> 3. The resulting rate bears no relation to the pixel clock from EDID.
+>
+> I tried kernel 6.9.1 as well, and that doesn't work either.  I'll keep
+> digging and try to narrow it down.
+
+It turns out HDMI output is broken in v6.9 for a different reason.
+However, this commit (b914ec33b391 clk: sunxi-ng: common: Support
+minimum and maximum rate) requires two others as well in order not
+to break things on the A20:
+
+cedb7dd193f6 drm/sun4i: hdmi: Convert encoder to atomic
+9ca6bc246035 drm/sun4i: hdmi: Move mode_set into enable
+
+With those two (the second depends on the first) cherry-picked on top of
+v6.6.31, the HDMI output is working again.  Likewise on v6.8.10.
+
+--=20
+M=E5ns Rullg=E5rd
 
