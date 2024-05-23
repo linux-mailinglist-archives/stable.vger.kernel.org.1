@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-45839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-45926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31958CD423
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:22:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9DB8CD498
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 15:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EA211F26BAB
-	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE2381C22291
+	for <lists+stable@lfdr.de>; Thu, 23 May 2024 13:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B7B14B06C;
-	Thu, 23 May 2024 13:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F5714AD15;
+	Thu, 23 May 2024 13:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPFS7HXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XloqCdMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A540D14AD25;
-	Thu, 23 May 2024 13:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C70313BAC3;
+	Thu, 23 May 2024 13:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716470509; cv=none; b=dQfFKJW/J+XUsQ38PrxtcLhb5Gwt4C3KVx2GNLNGY1/YBZJXE+sJSPJoAIPxPs5/2LumOWSgVynoedKBkQS+86sBdTaS3TNjuHNDo0DHPz6BemRLZOZWfl/Wx+qw9MXFBe+ZvbI+zRCy1btT8RLoLQkn9727up+oU0XvE2IvL/I=
+	t=1716470761; cv=none; b=ZKoH5NVvv8jlw396T34g+faqLG5CSy/maCOwWGtB56GsvkZC/22N6dYQj0HqrSUGPiny5hntSs4TTFuGAC5d9or6H2Z7gt8Loa1PrOw3iF5S7JODDucUsrxZ/vDJhIVJ2Zl0nO7InC2ctjRDibyHCpQNicULbj5SE012dIrcsSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716470509; c=relaxed/simple;
-	bh=E0kj4I8+XqssYF+uCmlkllRLDhzmVjCvdqVOrcBzhyQ=;
+	s=arc-20240116; t=1716470761; c=relaxed/simple;
+	bh=f/oxHXUbFIWaQ+ViiCGL5kOIzgHUlBSfpA1+uYOV8mI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBwx668xo9R+STdh3v7X/UC16IongtQ39B6cqzNAubXwG4S+EMBt5IBBLqxxeiBvk4MXg9J9DgG6nrncdRg7HQ5NYqaO5LDgJIJETyanYQlDM9m933wgynF0FOhvmMSUxiRGceo1w+/SIuUZ7ovbgW4kqqxnCD5iPQquk48MrjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPFS7HXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F588C3277B;
-	Thu, 23 May 2024 13:21:49 +0000 (UTC)
+	 MIME-Version; b=mW1F/B5VmbfZMD+RosOMo3FpMVZo11f+mFtXSYM5LpoxgeoImUUJU8Isp8zlBHqMOGE6cBJ9VhpRpEt579vQJyPalui/i9FOIRx2kpYZW17vdn+F0prP6jZIWms/T0jlTEdhB0SuXcxucZPsmiPkC62msUgDcX8HL9wJ1xsu6X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XloqCdMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89038C2BD10;
+	Thu, 23 May 2024 13:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1716470509;
-	bh=E0kj4I8+XqssYF+uCmlkllRLDhzmVjCvdqVOrcBzhyQ=;
+	s=korg; t=1716470760;
+	bh=f/oxHXUbFIWaQ+ViiCGL5kOIzgHUlBSfpA1+uYOV8mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPFS7HXOSuu3pU/W6gG7QMEpiH9of0tQ+yzAbN4rqFzzP9zTU2TAqufn5vnyEvDpo
-	 +fmCMw43Byow3+tUMfAmqrO79dvu4pMEkyxCxBQW07hb9enh1XCAl+3H79DswYZJbQ
-	 4sLXMVWGYEqVcKBHJJHdErhYp8qWvPgVVhr0Fi9Y=
+	b=XloqCdMYfABJtIkMbWFcPs1SWyAgkLX7O77hp/iE4NT8fy8pKBhRrG+vEJi1KqNN2
+	 UBgBpeYqeb7yh3rbK5PRwKE26boWJ7sA6f3xKl6hg2xDIDH7usvm4CvLCdlqqS90va
+	 IZNAvpxlgBz8b4TVeGSRo7VJjYQYqrDrQgHXUYk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liuye <liu.yeC@h3c.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>
-Subject: [PATCH 6.8 16/23] serial: kgdboc: Fix NMI-safety problems from keyboard reset code
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>
+Subject: [PATCH 6.6 078/102] net: ks8851: Fix another TX stall caused by wrong ISR flag handling
 Date: Thu, 23 May 2024 15:13:43 +0200
-Message-ID: <20240523130330.364679220@linuxfoundation.org>
+Message-ID: <20240523130345.408565178@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523130329.745905823@linuxfoundation.org>
-References: <20240523130329.745905823@linuxfoundation.org>
+In-Reply-To: <20240523130342.462912131@linuxfoundation.org>
+References: <20240523130342.462912131@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +66,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit b2aba15ad6f908d1a620fd97f6af5620c3639742 upstream.
+commit 317a215d493230da361028ea8a4675de334bfa1a upstream.
 
-Currently, when kdb is compiled with keyboard support, then we will use
-schedule_work() to provoke reset of the keyboard status.  Unfortunately
-schedule_work() gets called from the kgdboc post-debug-exception
-handler.  That risks deadlock since schedule_work() is not NMI-safe and,
-even on platforms where the NMI is not directly used for debugging, the
-debug trap can have NMI-like behaviour depending on where breakpoints
-are placed.
+Under some circumstances it may happen that the ks8851 Ethernet driver
+stops sending data.
 
-Fix this by using the irq work system, which is NMI-safe, to defer the
-call to schedule_work() to a point when it is safe to call.
+Currently the interrupt handler resets the interrupt status flags in the
+hardware after handling TX. With this approach we may lose interrupts in
+the time window between handling the TX interrupt and resetting the TX
+interrupt status bit.
 
-Reported-by: Liuye <liu.yeC@h3c.com>
-Closes: https://lore.kernel.org/all/20240228025602.3087748-1-liu.yeC@h3c.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240424-kgdboc_fix_schedule_work-v2-1-50f5a490aec5@linaro.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+When all of the three following conditions are true then transmitting
+data stops:
+
+  - TX queue is stopped to wait for room in the hardware TX buffer
+  - no queued SKBs in the driver (txq) that wait for being written to hw
+  - hardware TX buffer is empty and the last TX interrupt was lost
+
+This is because reenabling the TX queue happens when handling the TX
+interrupt status but if the TX status bit has already been cleared then
+this interrupt will never come.
+
+With this commit the interrupt status flags will be cleared before they
+are handled. That way we stop losing interrupts.
+
+The wrong handling of the ISR flags was there from the beginning but
+with commit 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX
+buffer overrun") the issue becomes apparent.
+
+Fixes: 3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/kgdboc.c |   30 +++++++++++++++++++++++++++++-
- 1 file changed, 29 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/micrel/ks8851_common.c |   18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
---- a/drivers/tty/serial/kgdboc.c
-+++ b/drivers/tty/serial/kgdboc.c
-@@ -19,6 +19,7 @@
- #include <linux/console.h>
- #include <linux/vt_kern.h>
- #include <linux/input.h>
-+#include <linux/irq_work.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/serial_core.h>
-@@ -48,6 +49,25 @@ static struct kgdb_io		kgdboc_earlycon_i
- static int                      (*earlycon_orig_exit)(struct console *con);
- #endif /* IS_BUILTIN(CONFIG_KGDB_SERIAL_CONSOLE) */
- 
-+/*
-+ * When we leave the debug trap handler we need to reset the keyboard status
-+ * (since the original keyboard state gets partially clobbered by kdb use of
-+ * the keyboard).
-+ *
-+ * The path to deliver the reset is somewhat circuitous.
-+ *
-+ * To deliver the reset we register an input handler, reset the keyboard and
-+ * then deregister the input handler. However, to get this done right, we do
-+ * have to carefully manage the calling context because we can only register
-+ * input handlers from task context.
-+ *
-+ * In particular we need to trigger the action from the debug trap handler with
-+ * all its NMI and/or NMI-like oddities. To solve this the kgdboc trap exit code
-+ * (the "post_exception" callback) uses irq_work_queue(), which is NMI-safe, to
-+ * schedule a callback from a hardirq context. From there we have to defer the
-+ * work again, this time using schedule_work(), to get a callback using the
-+ * system workqueue, which runs in task context.
-+ */
- #ifdef CONFIG_KDB_KEYBOARD
- static int kgdboc_reset_connect(struct input_handler *handler,
- 				struct input_dev *dev,
-@@ -99,10 +119,17 @@ static void kgdboc_restore_input_helper(
- 
- static DECLARE_WORK(kgdboc_restore_input_work, kgdboc_restore_input_helper);
- 
-+static void kgdboc_queue_restore_input_helper(struct irq_work *unused)
-+{
-+	schedule_work(&kgdboc_restore_input_work);
-+}
-+
-+static DEFINE_IRQ_WORK(kgdboc_restore_input_irq_work, kgdboc_queue_restore_input_helper);
-+
- static void kgdboc_restore_input(void)
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -328,7 +328,6 @@ static irqreturn_t ks8851_irq(int irq, v
  {
- 	if (likely(system_state == SYSTEM_RUNNING))
--		schedule_work(&kgdboc_restore_input_work);
-+		irq_work_queue(&kgdboc_restore_input_irq_work);
- }
+ 	struct ks8851_net *ks = _ks;
+ 	struct sk_buff_head rxq;
+-	unsigned handled = 0;
+ 	unsigned long flags;
+ 	unsigned int status;
+ 	struct sk_buff *skb;
+@@ -336,24 +335,17 @@ static irqreturn_t ks8851_irq(int irq, v
+ 	ks8851_lock(ks, &flags);
  
- static int kgdboc_register_kbd(char **cptr)
-@@ -133,6 +160,7 @@ static void kgdboc_unregister_kbd(void)
- 			i--;
- 		}
+ 	status = ks8851_rdreg16(ks, KS_ISR);
++	ks8851_wrreg16(ks, KS_ISR, status);
+ 
+ 	netif_dbg(ks, intr, ks->netdev,
+ 		  "%s: status 0x%04x\n", __func__, status);
+ 
+-	if (status & IRQ_LCI)
+-		handled |= IRQ_LCI;
+-
+ 	if (status & IRQ_LDI) {
+ 		u16 pmecr = ks8851_rdreg16(ks, KS_PMECR);
+ 		pmecr &= ~PMECR_WKEVT_MASK;
+ 		ks8851_wrreg16(ks, KS_PMECR, pmecr | PMECR_WKEVT_LINK);
+-
+-		handled |= IRQ_LDI;
  	}
-+	irq_work_sync(&kgdboc_restore_input_irq_work);
- 	flush_work(&kgdboc_restore_input_work);
- }
- #else /* ! CONFIG_KDB_KEYBOARD */
+ 
+-	if (status & IRQ_RXPSI)
+-		handled |= IRQ_RXPSI;
+-
+ 	if (status & IRQ_TXI) {
+ 		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 
+@@ -365,20 +357,12 @@ static irqreturn_t ks8851_irq(int irq, v
+ 		if (netif_queue_stopped(ks->netdev))
+ 			netif_wake_queue(ks->netdev);
+ 		spin_unlock(&ks->statelock);
+-
+-		handled |= IRQ_TXI;
+ 	}
+ 
+-	if (status & IRQ_RXI)
+-		handled |= IRQ_RXI;
+-
+ 	if (status & IRQ_SPIBEI) {
+ 		netdev_err(ks->netdev, "%s: spi bus error\n", __func__);
+-		handled |= IRQ_SPIBEI;
+ 	}
+ 
+-	ks8851_wrreg16(ks, KS_ISR, handled);
+-
+ 	if (status & IRQ_RXI) {
+ 		/* the datasheet says to disable the rx interrupt during
+ 		 * packet read-out, however we're masking the interrupt
 
 
 
